@@ -1,0 +1,127 @@
+*{
+    padding: 0;
+    margin: 0;
+    
+
+    }
+    body{
+        background: rgb(43,48,121);
+        background: linear-gradient(90deg, rgba(43,48,121,1) 19%, rgba(101,78,170,0.9697128851540616) 73%, rgba(136,136,168,1) 100%);
+        font-family: sans-serif;
+        
+    }
+.colour {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    list-style: none;
+    padding: 50px;
+    gap: 20px;
+}
+#colour1 {
+    height: 45px;
+    width:45px;
+    border : 2px solid white ;
+    border-radius: 50%;
+    background: rgb(232,221,227);
+background: linear-gradient(to top, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%);
+cursor: pointer;
+
+}
+#colour2 {
+    height: 45px;
+    width: 45px;
+    border : 2px solid white ;
+    border-radius: 50%;
+    background-image : linear-gradient( to bottom , #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%);
+    cursor: pointer;
+}
+#colour3 {
+    height:45px;
+    width:45px;
+    border : 2px solid white ;
+    border-radius: 50%;
+    background-image: linear-gradient(to bottom, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d);
+    cursor: pointer;
+}
+#colour1:hover,#colour2:hover,#colour3:hover{
+    height: 55px;
+    width: 55px;
+    border : 2px solid white ;
+    border-radius: 50%;
+    transition: 0.8s;
+}
+.main {
+    display: grid;
+    gap: 60px;
+    
+}
+.heading {
+    font-size: 80px;
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-direction: normal;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+
+}
+#newtask {
+    height: 40px;
+    width: 30%;
+    left: 540px;
+    text-align: center;
+    position: relative;
+    background-color: black;
+    color: white;
+    border-radius: 9px;
+    font-size: 15px;
+    z-index: 999;
+}
+#submittask{
+    height: 42px;
+    width: 10%;
+    left: 524px;
+    text-align: center;
+    position: relative;
+    background-color: white;
+    color: black;
+    border-radius: 9px;
+    font-size: 15px;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 1px;
+    gap: 20px;
+}
+.container li{
+    width: 35%;
+    word-wrap: break-word;
+    left: 35%;
+    border: 2px solid #c6c6c6;
+    border-radius: 50px;
+    list-style: none;
+    position: relative;
+    background-color: rgb(5, 31, 31);
+    color: white;
+    font-size: 19px;
+    padding: 7px;
+    justify-content: center;
+    
+ }
+ .container li i{
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+ .container li a{
+    position: absolute;
+    right: 40px;
+    cursor: pointer;
+    font-size: 30px;
+    top: -4px; 
+    font-weight: 900;}
