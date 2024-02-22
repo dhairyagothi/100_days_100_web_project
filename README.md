@@ -3,4 +3,5 @@ This repository contains 50 web projects from basic to intermediate using html c
 
  PROJECT NAME --- LIVE DEMO 
 
-1.] TODOLIST     
+DAY-1.] TODOLIST     
+DAY-2.] DIGITAL CLOCK 
