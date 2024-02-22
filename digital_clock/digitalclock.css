@@ -1,0 +1,31 @@
+body{
+    background-color: black;
+    color: green;
+}
+#clock{ border: 5px double green;
+    width: 30%;
+    margin: auto;
+    justify-content: center;
+    position: relative;
+    
+   
+}
+#date{
+     border: 5px double green;
+    width: 30%;
+    margin: auto;
+    justify-content: center;
+    position: relative;
+    
+}
+
+@media (min-width: 0px ) and (max-width: 1439px) {
+    #clock{
+        font-size: 60px;
+        width: auto;
+    }
+    #date{
+        font-size: 60px;
+        width: auto;
+    }
+  }
