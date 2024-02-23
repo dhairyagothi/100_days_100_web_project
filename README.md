@@ -5,3 +5,4 @@ This repository contains 50 web projects from basic to intermediate using html c
 
 DAY-1.] TODOLIST     
 DAY-2.] DIGITAL CLOCK 
+DAY-3.] INDIAN FLAG 
