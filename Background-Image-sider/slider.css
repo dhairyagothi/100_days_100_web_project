@@ -1,0 +1,96 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: black;
+    color: white;
+    background-image: url(images/iceland.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+    width: 100%;
+    animation: bg-change 20s linear infinite ;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+
+}
+.navbar{
+      font-size: x-large;
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 550px
+}
+.content{
+    top: 50vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 20px;
+    align-items: center;
+    width: auto;
+    gap: 50px;
+}
+.content{
+  width: 800px;
+  position: relative;
+  top: 50vh;
+  word-wrap: break-word;
+  padding-left: 70px;
+}
+@keyframes bg-change {
+ 0%{background-image: url(images/iceland.jpg);}
+ 5%{background-image: url(images/iceland.jpg);}
+10%{background-image: url(images/iceland.jpg);}
+15%{background-image: url(images/iceland.jpg);}
+20%{background-image: url(images/iceland.jpg);}
+25%{background-image: url(images/iceland.jpg);}
+30%{background-image: url(images/castelmezzano.jpg);}
+35%{background-image: url(images/castelmezzano.jpg);}
+40%{background-image: url(images/castelmezzano.jpg);}
+45%{background-image: url(images/castelmezzano.jpg);}
+50%{background-image: url(images/castelmezzano.jpg);}
+55%{background-image: url(images/castelmezzano.jpg);}
+60%{background-image: url(images/mountains-862870.jpg);}
+65%{background-image: url(images/mountains-862870.jpg);}
+70%{background-image: url(images/mountains-862870.jpg);}
+75%{background-image: url(images/mountains-862870.jpg);}
+80%{background-image: url(images/mountains-862870.jpg);}
+85%{background-image: url(images/mountains-862870.jpg);}
+90%{background-image: url(images/snow-3193865.jpg);}
+95%{background-image: url(images/snow-3193865.jpg);}
+100%{background-image: url(images/snow-3193865.jpg);}
+
+
+}
+
+@media only screen and (max-width: 768px) {
+
+    
+    ul {
+        flex-direction: column;
+        width: auto;
+        gap: 10px;
+    }
+    .navbar{
+        font-size: large;
+      align-items: baseline;
+      gap: 100px
+  }
+  .content{
+    width: auto;
+    top: 40vh;
+    padding-left: 10px;
+  }
+}
