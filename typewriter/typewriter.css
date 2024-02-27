@@ -1,0 +1,46 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: black;
+    color: white;
+    font-size: 50px;
+    font-weight: 600;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.text{
+    position: relative;
+    color : rgb(59 130 246) ;
+}
+
+
+
+.text::before{
+    z-index: 2;
+    position: absolute;
+    background-color: black;
+    content: "";
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-left: 5px solid rgb(59 130 246);
+    animation: animate 5s steps(12) infinite;
+}
+
+@keyframes animate {
+    40%,60%{
+        left: 100%;
+    }
+    100%{
+        left: 0%;
+    }
+}
