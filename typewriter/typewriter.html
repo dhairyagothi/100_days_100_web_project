@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset= "UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TYPEWRITER</title>
+<link rel="stylesheet" href="typewriter.css">
+</head>
+<body >
+     <span class="text1">I am a </span>
+     <span class=" text"></span>
+
+     <script>
+          const typewriter = document.querySelector(".text");
+
+          function change(){
+              
+                    setTimeout(() => {
+                         typewriter.textContent="Freelancer";
+                    }, 0);
+                    
+                    setTimeout(() => {
+                         typewriter.textContent="Blogger";
+                    }, 4000);
+                    
+                    setTimeout(() => {
+                         typewriter.textContent="Developer";
+                    }, 8000);
+                    
+               }
+               change();
+               setInterval(() => {
+                    change()
+               }, 12000);
+     </script>
+</body>
+</html>
