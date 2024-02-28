@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+body {
+    font-family: "Roboto Condensed", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    color: #359381;
+    font-weight: 700;
+    font-size: 32px;
+    padding: 20px;
+    padding-right: 20px;
+    gap: 325px;
+    z-index: 30;
+}
+nav ul{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    gap:50px;
+    padding-right: 10px;
+    
+}
+.active{
+    color: white;
+    background-color: #359381;
+    border-radius: 20px;
+    width: 100%;
+}
+nav ul :hover{
+    color: white;
+    background-color: #359381;
+    border-radius: 20px;
+    width: 100%;
+}
+.parallal{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+.text{
+    font-size: 90px;
+    position: relative;
+    color: #ffffff;
+    font-weight: bolder;
+    text-shadow: 2px -2px 8px black;
+}
+img{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left:0;
+}
+
+.content{
+    background: #01372d;
+    color: white;
+    font-size: 25px;
+    position: relative;
+    padding: 60px;
+    height: 100dvh;
+}
