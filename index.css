@@ -1,0 +1,41 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background: black;
+    color: grey;
+    
+}
+a{
+    color: white;
+}
+.text{
+    font-size: xx-large;
+    text-align: center;
+    padding: 30px;
+    font-weight: bold;
+
+}
+.text1{
+    font-size: 30px;
+    text-align: center;
+    padding: 30px;
+
+}
+.links{
+    display: grid;
+    font-size: larger;
+    justify-content: center;
+    padding: 50px;
+    gap: 10px;
+    width: auto;
+    height: fit-content;
+}
+.table{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
