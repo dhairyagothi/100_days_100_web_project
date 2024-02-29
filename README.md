@@ -2,7 +2,7 @@
 This repository contains 50 web projects from basic to intermediate using html css and js 
 
  PROJECT NAME --- LIVE DEMO           
-visit URL for live demo :- https://dhairyagothi.github.io/50_days_50_web_project/     
+visit URL for live demo :- https://50-days-50-web-project.vercel.app/  
 DAY-1.] TODOLIST     
 DAY-2.] DIGITAL CLOCK      
 DAY-3.] INDIAN FLAG     
