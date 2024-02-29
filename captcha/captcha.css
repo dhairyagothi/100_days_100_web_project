@@ -1,0 +1,97 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    background: black;
+
+}
+.container{
+    display: grid;
+    height: auto;
+    width: auto;
+    justify-items:left;
+    gap: 30px;
+    border-radius: 20px;
+    background: white;
+    border:2px solid transparent;
+    color: black;
+    padding: 20px;
+    font-size: larger;
+    box-shadow: 0px 0px 14px 9px gray;
+}
+.container header{
+    justify-self: center;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bolder;
+}
+.container p{
+    color: grey;
+}
+.result{
+    text-align: left;
+    font-size: medium;
+    font-weight: bold;
+    color: grey;
+    display: none;
+
+}
+.result.active{
+    display: block;
+}
+input{
+    height: 50px;
+    color: black;
+    width: 300px;
+    font-size: 40px;
+    border-radius: 20px;
+    padding: 31px;
+    border: 1px solid grey;
+}
+.textcaptcha{
+    margin-top: -15px;
+}
+.textcaptcha input{
+    font-size: large;
+
+}
+.refresh {
+    position: relative;
+    right: 51px;
+    top: -5px;
+    height: 40px;
+    background: grey;
+    border: none;
+    font-size: x-large;
+    z-index: 2;
+    width: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.button{justify-self: center;}
+.button button{
+    
+    text-align: center;
+    height: 45px;
+    background: grey;
+    color:white;
+    width: 200px;
+    font-size: 15px;
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid grey;
+    cursor: pointer;
+}
+.button :hover{
+    background: rgb(71, 69, 69);
+}
+@media only screen and (max-width: 600px) {
+   
+  }

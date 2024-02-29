@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset= "UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPTCHA</title>
+<link rel="stylesheet" href="captcha.css">
+<script src="https://kit.fontawesome.com/1f26e3c220.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <header>CAPTCHA </header>
+    <p>Enter value shown in below image</p>
+    <div class="image">
+        <input type="text" value="x 5 f 0 t" disabled /><button class="refresh"><i class="fa-solid fa-rotate-right"></i></button>
+    </div>
+    <div class="textcaptcha">
+        <input type="text" value="" placeholder="Enter captcha" />
+    </div>
+    <div class="result">Entered Captcha is correct</div>
+    <div class="button">
+      <button>Submit Captcha</button>
+    </div>
+</div>
+     <script src="captcha.js"></script>
+</body>
+</html>
