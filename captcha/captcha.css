@@ -93,5 +93,27 @@ input{
     background: rgb(71, 69, 69);
 }
 @media only screen and (max-width: 600px) {
+   .container{
+    height: 500px;
+    width: 400px;
+    display: grid;
    
+    justify-items:left;
+    gap: 0px;
+    border-radius: 20px;
+    background: white;
+    border:2px solid transparent;
+    color: black;
+    padding: 20px;
+    font-size: larger;
+    box-shadow: 0px 0px 14px 9px gray;
+
+   }
+   .container header{
+    justify-self: center;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bolder;
+    padding-bottom: 0px;
+}
   }
