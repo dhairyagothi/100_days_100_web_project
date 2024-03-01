@@ -1,0 +1,87 @@
+*{
+    height: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    width: auto;
+}
+.container{
+    background-color: white;
+    color: black;
+    display: grid;
+    height:500px;
+    width: auto;
+    padding: 26px;
+    font-size: 10px;
+    border-radius: 50px;
+    text-align: center;
+    gap: 5px;
+    box-shadow: 0px 0px 11px 9px #7d7a7a;
+}
+
+.head{
+    font-size: x-large;
+    margin-bottom: -16px;
+}
+.subhead{
+    color: grey;
+    font-size: small;
+}
+.inputtext input{
+    background: white;
+    color: grey;
+    height: 58px;
+    padding: 15px;
+    border: 1px solid grey;
+    width: 100%;
+    margin-top: -20px;
+    border-radius: 15px;
+
+}
+.image{
+    justify-self: center;
+    margin-top: -30px; 
+   margin-bottom: 5px;
+}
+#qrimage{
+     height: 100px;
+    width:100px ;
+    border: 1px solid grey; 
+    border-radius: 20px;
+    display : none;
+}
+#qrimage.active{
+    display: block;
+    
+}
+
+button{
+
+    height: 40px;
+    width: 80%;
+    border-radius: 15px;
+    color: white;
+    font-size: medium;
+    background: rgb(106, 104, 104);
+    border: 1px solid transparent;
+    justify-self: center;
+    cursor: pointer;
+}
+
+button:hover{
+    background: rgb(106, 104, 104);
+    box-shadow: 0px 0px 11px 3px rgb(106, 104, 104);
+}
+
+@media only screen and (max-width: 600px) {
+    .container{
+    width: 350px;
+    height: 450px;
+    }
+  }
