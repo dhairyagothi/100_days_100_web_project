@@ -95,7 +95,7 @@ input{
 @media only screen and (max-width: 600px) {
    .container{
     height: 500px;
-    width: 400px;
+    width: 330px;
     display: grid;
    
     justify-items:left;
@@ -116,4 +116,20 @@ input{
     font-weight: bolder;
     padding-bottom: 0px;
 }
+input{
+    height: 50px;
+    color: black;
+    width: 280px;
+    font-size: 40px;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid grey;
+}
+.refresh {
+    position: relative;
+    right: -223px;
+    top: -46px;}
+    .textcaptcha{
+        margin-top: -62px;
+    }
   }
