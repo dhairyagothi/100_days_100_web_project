@@ -12,4 +12,6 @@ DAY-6.] AUTO-BACKGROUND-IMAGE-SLIDER
 DAY-7.] TYPEWRITER          
 DAY-8.] PARALLEL-X WEBSITE          
 DAY-9.] CAPTCHA-GENERATOR                    
-DAY-10.] QR-CODE-GENERATOR                    
+DAY-10.] QR-CODE-GENERATOR       
+DAY-11.] SERVING WEBSITE USING EXPRESS                              
+             
