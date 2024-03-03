@@ -13,5 +13,7 @@ DAY-7.] TYPEWRITER
 DAY-8.] PARALLEL-X WEBSITE          
 DAY-9.] CAPTCHA-GENERATOR                    
 DAY-10.] QR-CODE-GENERATOR       
-DAY-11.] SERVING WEBSITE USING EXPRESS                              
+DAY-11.] SERVING WEBSITE USING EXPRESS           
+DAY-12.] NODEMAILER GMAIL SENDER-->( to use this email sender you need to first clone this repo ->open folder gmail_nodemailer npm i -> nodemon index.js -> open http://localhost:5500/ -> enter your name and email address server automatically will share a email to you from my side . that's it all set.                       
+
              
