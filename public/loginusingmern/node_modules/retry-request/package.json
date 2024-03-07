@@ -1,0 +1,36 @@
+{
+  "name": "retry-request",
+  "version": "4.2.2",
+  "description": "Retry a request.",
+  "main": "index.js",
+  "repository": "stephenplusplus/retry-request",
+  "scripts": {
+    "test": "mocha --timeout 0"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "license"
+  ],
+  "types": "index.d.ts",
+  "keywords": [
+    "request",
+    "retry",
+    "stream"
+  ],
+  "author": "Stephen Sawchuk <sawchuk@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.10.0"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "extend": "^3.0.2"
+  },
+  "devDependencies": {
+    "async": "^3.0.1",
+    "lodash.range": "^3.2.0",
+    "mocha": "^6.1.4",
+    "request": "^2.87.0"
+  }
+}

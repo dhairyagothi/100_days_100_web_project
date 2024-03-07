@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta HTTP-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login page  </title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="image"><iframe src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe></div>
+    <form action="/login" method="post">
+        <!-- Headings for the form -->
+        <div class="headingsContainer">
+            <h3>Log In
+              </h3>
+            </div>
+
+        <!-- The Wrapper contains all the inputs -->
+        <div class="mainContainer">
+            <!-- Username -->
+            <label for="username">Username</label>
+            <input type="text" placeholder="Enter Your Username Here" name="username" required>
+
+            <br><br>
+
+            <!-- Password -->
+            <label for="pswrd">Password</label>
+            <input type="password" placeholder="Enter Your Password Here" name="pswrd" required>
+
+            <!-- sub-container for the checkbox and forgot password link -->
+            <div class="subcontainer">
+                <label>
+                  <input type="checkbox" checked="checked" name="remember">Keep me signed in
+                </label>
+                <p class="forgotpsd"> <a href="#">Forgot Password?</a></p>
+            </div>
+
+
+            <!-- Submit button -->
+            <button type="submit">Login</button>
+
+            <!-- Sign up link -->
+            <p class="register">Not a member?  <a href="/signup">Sign Up here!</a></p>
+
+        </div>
+
+    </form>
+</body>
+</html>
