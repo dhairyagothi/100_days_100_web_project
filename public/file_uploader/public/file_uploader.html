@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset= "UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FILE-UPLOADER</title>
+<link rel="stylesheet" href="file_uploader.css">
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: auto;
+    background-color: black;
+}
+.myform{
+  height: auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    color: #000;
+    font-size: larger;
+    display: grid;
+    gap: 25px;
+    justify-items: center;
+    width: auto;
+}
+input{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    width: auto;
+
+}
+.form-field{
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+}
+input[type="submit"]{
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+    width: auto;
+    padding: 10px;
+    font-size: medium;
+    height: 40px;
+    border-radius: 5px;
+}
+</style>
+</head>
+<body>
+    <div class="container">
+    
+    <form
+      action = "/upload"
+      enctype = "multipart/form-data"
+      method = "post"
+      class = "myform"
+    >
+      <div class = "form-field">
+        <label>FirstName</label>
+        <input
+          type = "text"
+          id = "firstName"
+          name = "firstName"
+          placeholder = "Enter your firstname"
+        />
+      </div>
+      <div class = "form-field">
+        <label>LastName</label>
+        <input
+          type = "text"
+          id = "lastName"
+          name = "lastName"
+          placeholder = "Enter your lastname"
+        />
+      </div>
+      <div class = "form-field">
+        <label>Upload file here</label>
+        <input type = "file" id = "myFile" name = "myFile" multiple = "true" />
+      </div>
+      <div class = "form-field">
+        <input type = "submit" />
+      </div>
+    </form>
+  </div>
+     
+</body>
+</html>

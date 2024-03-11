@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: auto;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Upload</title>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+</head>
+<body>
+  <div id="upload-status" style="display: none;"></div>
+  <script>
+    $(document).ready(function() {
+      const message = $('#upload-status').text();
+      if (message) {
+        alert(message); // Display alert
+      }
+    });
+  </script>
+</body>
+</html>
