@@ -16,7 +16,8 @@ DAY-10.] QR-CODE-GENERATOR
 DAY-11.] SERVING WEBSITE USING EXPRESS           
 DAY-12.] NODEMAILER GMAIL SENDER-->( to use this email sender you need to first clone this repo ->open folder gmail_nodemailer npm i -> nodemon index.js -> open http://localhost:5500/ -> enter your name and email address server automatically will share a email to you from my side . that's it all set.                       
 DAY-13.] LOGIN FORM USING MERN-->( to use this Login form you need to first clone this repo ->open folder loginusingmern npm i -> nodemon index.js -> open http://localhost:3000/ -> go to register page enter your details , your details are submitted and stored in mongodb . that's it all set.                       
-DAY-14.] FILE UPLOADER-->( to use this file uploader you need to first clone this repo ->open folder file_uploader npm i -> npm run start -> open http://localhost:3000/file -> fill all thing and submit file and open your clone folder -> uploads you will see file . that's it all set.                   
+DAY-14.] FILE UPLOADER-->( to use this file uploader you need to first clone this repo ->open folder file_uploader npm i -> npm run start -> open http://localhost:3000/file -> fill all thing and submit file and open your clone folder -> uploads you will see file . that's it all set.                               
+DAY-15.] PROGRESS-BAR            
 
 
              
