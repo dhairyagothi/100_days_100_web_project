@@ -1,0 +1,60 @@
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+ background-image: url("/public/images/i1.jpg") ;
+background-size: cover;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+    justify-content: center;
+}
+
+.swiper {
+  width: 500px;
+  height: 75%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swiper-slide video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  
+}
+.text{
+    z-index: 1;
+    position: absolute;
+    color: white;
+    font-weight: bold;
+    padding-top: 100px;
+    
+}
+.title{
+  text-align: center;
+  
+  color: white;
+  font-weight: bolder;
+}
