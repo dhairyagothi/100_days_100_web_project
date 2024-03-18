@@ -23,7 +23,7 @@ DAY-17.] SLIDER USING SWIPER API
 DAY-18.] CAROUSAL SOLAR SYSTEM                         
 DAY-16.] SCROLL-BAR-CSS               
 DAY-17.] SLIDER USING SWIPER API                          
-
+DAY-18.] CAROUSAL SOLAR SYSTEM        
 
 
              
