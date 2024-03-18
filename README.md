@@ -19,7 +19,8 @@ DAY-13.] LOGIN FORM USING MERN-->( to use this Login form you need to first clon
 DAY-14.] FILE UPLOADER-->( to use this file uploader you need to first clone this repo ->open folder file_uploader npm i -> npm run start -> open http://localhost:3000/file -> fill all thing and submit file and open your clone folder -> uploads you will see file . that's it all set.                               
 DAY-15.] PROGRESS-BAR     
 DAY-16.] SCROLL-BAR-CSS 
-DAY-17.] SLIDER USING SWIPER API                          
+DAY-17.] SLIDER USING SWIPER API                                                    
+DAY-18.] CAROUSAL SOLAR SYSTEM                      
 
 
              

@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
+
+* {
+  box-sizing: border-box;
+  Padding: 0;
+  Margin: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: url("./images/universe.png");
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+}
+
+.carousal {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+}
+.top{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 40px;
+  font-size: xx-large;
+  font-weight: bolder;
+}
+.left {
+  flex-basis: 50%;
+  height: fit-content;
+  display: flex;
+  align-items: flex-start;
+  justify-content: left;
+  flex-direction: column;
+  box-sizing: border-box;
+  z-index: 10;
+  gap: 350px;
+  text-align: left;
+  padding: 120px;
+  margin-bottom: 200px;
+}
+.center{
+  height: 100vh;
+}
+.text {
+  font-size: 40px;
+  font-family: poppins;
+  font-weight: 700;
+  color: white;
+  text-align: left;
+}
+
+.right {
+  position: sticky;
+  top: 0;
+  right: 0;
+  
+  height: 100vh;
+  flex-basis: 50%;
+  display: flex;
+}
+.details {
+  font-size: 18px;
+  font-family: poppins;
+  font-weight: 300;
+  color: white;
+}
+.item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  transition: 0.25s;
+  transform: scale(1.3);
+}
+.item.active {
+  transform: scale(1);
+  opacity: 1;
+}
+.item img {
+  width: 350px;
+}
+.item ::before {
+  position: absolute;
+  content: "";
+  border-radius: 10%;
+  top: 10px;
+  left: -100%;
+  width: 100%;
+  height: 100vh;
+  backdrop-filter: blur(6px) saturate(200%);
+  -webkit-backdrop-filter: blur(6px) saturate(200%);
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  z-index: -1;
+}
+
+.item button {
+  background: white;
+  padding: 15px 40px;
+  font-family: poppins;
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+  outline: none;
+  border: none;
+  border-radius: 7mm;
+  margin-top: 50px;
+  cursor: pointer;
+}
+.item button:hover {
+  background-color: grey;
+}
+@media screen and (max-width: 768px) {
+.left{
+  margin-bottom: 40px;
+}
+.item{
+  position: fixed;
+  top: -121px;
+  
+}
+.details{
+  text-align: center;
+  font-size: large;
+  font-weight: 800;
+}
+  
+}
