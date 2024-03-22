@@ -18,14 +18,13 @@ DAY-12.] NODEMAILER GMAIL SENDER-->( to use this email sender you need to first 
 DAY-13.] LOGIN FORM USING MERN-->( to use this Login form you need to first clone this repo ->open folder loginusingmern npm i -> nodemon index.js -> open http://localhost:3000/ -> go to register page enter your details , your details are submitted and stored in mongodb . that's it all set.                       
 DAY-14.] FILE UPLOADER-->( to use this file uploader you need to first clone this repo ->open folder file_uploader npm i -> npm run start -> open http://localhost:3000/file -> fill all thing and submit file and open your clone folder -> uploads you will see file . that's it all set.                               
 DAY-15.] PROGRESS-BAR     
-<<<<<<< HEAD
 DAY-16.] SCROLL-BAR-CSS 
 DAY-17.] SLIDER USING SWIPER API                                                    
 DAY-18.] CAROUSAL SOLAR SYSTEM                      
-=======
 DAY-16.] SCROLL-BAR-CSS               
-DAY-17.] SLIDER USING SWIPER API                          
->>>>>>> 06527786984b3db8dcb8cbe56c809edfb0c71801
+DAY-17.] SLIDER USING SWIPER API            
+DAY-18.] SOLAR SYSTEM CAROUSAL WEBSITE                     
+DAY-19.] PLANTO                 
 
 
              
