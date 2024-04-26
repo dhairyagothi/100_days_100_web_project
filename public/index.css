@@ -48,8 +48,8 @@ a{
   position: fixed;
   height: 100vh;
   width: 100%;
-  background: rgba(180, 179, 179, 0.127);
-  background: url(https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnd4NWt5ZTRkOWZ0OTQ5dmd6bG40bmhydHpuZnExdmRnZW9sZGxyMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MydKZ8HdiPWALc0Lqf/giphy.gif);
+  background: black;
+  background: url(./images/imageloader.gif);
   z-index: 100000;
   background-repeat: no-repeat;
   background-position: center;
