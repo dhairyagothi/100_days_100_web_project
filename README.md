@@ -27,7 +27,7 @@ DAY-18.] SOLAR SYSTEM CAROUSAL WEBSITE
 DAY-19.] PLANTO                       
 DAY-20.] EVESPARKS                       
 DAY-21.] Video bg slider using react  ( to use this Video bg slider using react you need to first clone this repo ->open folder travel_website -> npm i -> npm run dev -> open http://localhost:5120 -> see Video bg slider using react . that's it all set.                            
-
+DAY-22.] PAGELOADER                 
 
 
 

@@ -7,7 +7,8 @@
 <link rel="stylesheet" href="index.css">
 
 </head>
-<body>
+<body class="load">
+    <div id="loader"></div>
     <div class="text">50_days_50_webprojects</div>
     <P class="text">HERE IS LIVE DEMO OF ALL PROJECTS</P>
     <div class="links">
@@ -34,7 +35,15 @@
         <div class="table">DAY-19.] PLANTO <a href="plantwebsite/plant.html">DEMO</a></div>
         <div class="table">DAY-20.] EVESPARKS <a href="https://evesparks.onrender.com/">DEMO</a></div>
         <div class="table">DAY-21.] Video bg slider using react <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/travel_website">DEMO</a></div>
+        <div class="table">DAY-22.] Page loader <a href="./pageloader/pageloader.html">DEMO</a></div>
         
     </div>
+
+    <script>
+        window.addEventListener("load",()=>{
+            const loader = document.getElementById("loader");
+            loader.style.display = "none";
+        })
+    </script>
 </body>
 </html>
