@@ -9,6 +9,14 @@ body{
     align-items: center;
     height: 100dvh;
     background: black;
+    --dot-bg: black;
+    --dot-color: white;
+    --dot-size: 1px;
+    --dot-space: 22px;
+      background:
+          linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+          linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+          var(--dot-color);
 
 }
 .container{
@@ -23,7 +31,7 @@ body{
     color: black;
     padding: 20px;
     font-size: larger;
-    box-shadow: 0px 0px 14px 9px gray;
+    box-shadow:  12px 9px 18px 0px #707070;
 }
 .container header{
     justify-self: center;
