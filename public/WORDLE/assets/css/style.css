@@ -1,0 +1,206 @@
+.heading {
+    font-family: "Roboto Slab", serif;
+}
+
+.nav__icon {
+    width: 2rem;
+}
+.navbar {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-between;
+    padding: 0 3rem;
+}
+.navele {
+    margin: 0;
+}
+.infoCard {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+    text-align: left;
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: absolute;
+    left: 25%;
+    background-color: white;
+}
+.hidden {
+    display: none;
+}
+.example__img {
+    width: 20rem;
+}
+.words {
+    margin: auto;
+    padding: 10px;
+}
+.inputBox {
+    width: 50px;
+    height: 50px;
+    caret-color: transparent;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    border: solid 2px rgb(182, 182, 182);
+}
+.button {
+    width: 40px;
+    height: 60px;
+    padding: 10px;
+    margin: 2px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: rgb(221, 220, 220);
+    font-weight: bold;
+}
+.button:hover {
+    background-color: rgb(207, 205, 205);
+}
+.keyboard {
+    margin: auto;
+}
+
+.buttonRow2 {
+    margin: auto;
+}
+.enter {
+    width: 80px;
+}
+.backspace {
+    width: 50px;
+    font-size: 18px;
+}
+.message {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.cross {
+    font-weight: 900;
+    border: none;
+    background-color: white;
+}
+.cross:hover,
+.button:hover,
+.nav__icon:hover {
+    cursor: pointer;
+}
+.yellow {
+    background-color: rgb(205, 226, 16);
+    border-color: rgb(205, 226, 16);
+    color: white;
+}
+.green {
+    background-color: rgb(21, 172, 89);
+    border-color: rgb(21, 172, 89);
+    color: white;
+}
+.grey {
+    background-color: rgb(161, 161, 161);
+    border-color: rgb(161, 161, 161);
+    color: white;
+}
+
+@media screen and (max-width: 568px) {
+    .heading {
+        font-family: "Roboto Slab", serif;
+        font-size: 1.5rem;
+    }
+    .popup {
+        width: 70%;
+        left: 8%;
+    }
+    .infoCard {
+        font-size: 12px;
+        margin: 0 auto;
+        padding: 15px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        position: absolute;
+        background-color: white;
+    }
+    .example__img {
+        width: 80%;
+    }
+    .nav__icon {
+        width: 1.5rem;
+    }
+    .button {
+        width: 28px;
+        height: 45px;
+        padding: 3px;
+        margin: 1px;
+        font-weight: 550;
+    }
+    .backspace {
+        font-weight: 600;
+    }
+    .enter {
+        width: 55px;
+    }
+    .backspace {
+        width: 40px;
+        font-size: 18px;
+    }
+    .inputBox {
+        width: 40px;
+        height: 45px;
+        font-size: 20px;
+    }
+    .navbar {
+        padding: 0 1rem;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .infoCard {
+        width: 30%;
+        left: 34%;
+    }
+}
+/* .info {
+    padding-left: 0px;
+    padding-right: 30em;
+    width: 30px;
+}
+.stats {
+    padding-left: 30rem;
+    padding-right: 0px;
+    width: 30px;
+}
+.navbar {
+    text-align: center;
+}
+.navbar li {
+    display: inline-block;
+}
+.navele {
+    display: block;
+}
+
+.crossOuter {
+    padding: 0;
+    margin: 0;
+    text-align: right;
+}
+#eximg {
+    width: 80%;
+}
+#stats,
+#result {
+    font-size: 20px;
+    text-align: center;
+}
+.mini {
+    font-size: 10px;
+} */
