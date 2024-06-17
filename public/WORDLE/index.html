@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto+Slab:wght@600;700&family=Ubuntu:wght@700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./assets/css/style.css">
+        <script type='text/javascript' src='./assets/js/words.js'></script>
+        <title>Wordle</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <ul class='navbar'>
+            <li><img class='info navele nav__icon' src="img/information.png" alt=""></li>
+            <li><h1 class="heading navele">Wordle</h1></li>
+            <li><img class='stats navele nav__icon' src="img/statistics.png" alt=""></li>
+        </ul>
+        
+        <hr />
+        <div class='message hidden' id='message'>
+            <p>This is message</p>
+        </div>
+        <div class='infoCard popup' id="rules">
+            <p class='crossOuter'><button class='cross' id='closeInfo'>&#9587</button></p>
+            <p>Guess the <strong>WORDLE</strong> in six tries.</p>
+            <p>Each guess must be a valid five-letter word. Hit the enter button to submit.</p>
+            <p>After each guess, the color of the tiles will change to show how close your guess was to the word.</p>
+            <hr>
+            <p><strong>Examples</strong></p>
+            <img class='example__img' src="img/rules.png" alt="">
+            <p>The letter <strong>A</strong> is in the word and in the correct spot.</p>
+            <p>The letters <strong>L</strong> and <strong>E</strong> are in the word but are not in the correct spot.</p>
+            <p>The letter <strong>F</strong> and <strong>E</strong> are not in the word.</p>
+            <hr>
+            <p><strong>A new WORDLE will be available each day!</strong></p>
+        </div>
+        <div class='infoCard hidden popup' id="stats">
+            <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
+            <p><strong>STATISTICS</strong></p>
+            <p>0 &emsp;&emsp;0 &emsp;&emsp;0 &emsp;&emsp;0</p>
+            <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
+            
+        </div>
+        <div class='infoCard hidden popup' id="result">
+            <p class='crossOuter'><button class='cross' id='closeResult'>&#9587</button></p>
+            <p><strong>RESULT</strong></p>
+            <p>1 &emsp;&emsp;100 &emsp;&emsp;1 &emsp;&emsp;1</p>
+            <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
+            
+        </div>
+        <div>
+            <table class="words">
+                <tr class="inputRow">
+                    <td><input class="inputBox" id="b11" maxlength="1" /></td>
+                    <td>
+                        <input class="inputBox" id="b12" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b13" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b14" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b15" maxlength="1" />
+                    </td>
+                </tr>
+                <tr class="inputRow">
+                    <td><input class="inputBox" id="b21" maxlength="1" /></td>
+                    <td>
+                        <input class="inputBox" id="b22" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b23" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b24" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b25" maxlength="1" />
+                    </td>
+                </tr>
+                <tr class="inputRow">
+                    <td><input class="inputBox" id="b31" maxlength="1" /></td>
+                    <td>
+                        <input class="inputBox" id="b32" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b33" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b34" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b35" maxlength="1" />
+                    </td>
+                </tr>
+                <tr class="inputRow">
+                    <td><input class="inputBox" id="b41" maxlength="1" /></td>
+                    <td>
+                        <input class="inputBox" id="b42" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b43" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b44" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b45" maxlength="1" />
+                    </td>
+                </tr>
+                <tr class="inputRow">
+                    <td><input class="inputBox" id="b51" maxlength="1" /></td>
+                    <td>
+                        <input class="inputBox" id="b52" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b53" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b54" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b55" maxlength="1" />
+                    </td>
+                </tr>
+                <tr class="inputRow">
+                    <td><input class="inputBox" id="b61" maxlength="1" /></td>
+                    <td>
+                        <input class="inputBox" id="b62" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b63" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b64" maxlength="1" />
+                    </td>
+                    <td>
+                        <input class="inputBox" id="b65" maxlength="1" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table class="keyboard">
+                <tr>
+                    <td><button class="button" id="Q">Q</button></td>
+                    <td><button class="button" id="W">W</button></td>
+                    <td><button class="button" id="E">E</button></td>
+                    <td><button class="button" id="R">R</button></td>
+                    <td><button class="button" id="T">T</button></td>
+                    <td><button class="button" id="Y">Y</button></td>
+                    <td><button class="button" id="U">U</button></td>
+                    <td><button class="button" id="I">I</button></td>
+                    <td><button class="button" id="O">O</button></td>
+                    <td><button class="button" id="P">P</button></td>
+                </tr>
+            </table>
+            <table class="keyboard">
+                <tr class="buttonRow2">
+                    <td><button class="button" id="A">A</button></td>
+                    <td><button class="button" id="S">S</button></td>
+                    <td><button class="button" id="D">D</button></td>
+                    <td><button class="button" id="F">F</button></td>
+                    <td><button class="button" id="G">G</button></td>
+                    <td><button class="button" id="H">H</button></td>
+                    <td><button class="button" id="J">J</button></td>
+                    <td><button class="button" id="K">K</button></td>
+                    <td><button class="button" id="L">L</button></td>
+                </tr>
+            </table>
+            <table class="keyboard">
+                <tr>
+                    <td><button class="button enter" id="enter">ENTER</button></td>
+                    <td><button class="button" id="Z">Z</button></td>
+                    <td><button class="button" id="X">X</button></td>
+                    <td><button class="button" id="C">C</button></td>
+                    <td><button class="button" id="V">V</button></td>
+                    <td><button class="button" id="B">B</button></td>
+                    <td><button class="button" id="N">N</button></td>
+                    <td><button class="button" id="M">M</button></td>
+                    <td>
+                        <button class="button backspace" id="back">&#9746</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <script type='text/javascript' src='./assets/js/script.js'></script>
+    </body>
+</html>
