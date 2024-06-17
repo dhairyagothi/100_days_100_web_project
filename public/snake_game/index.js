@@ -3,7 +3,7 @@ let snake = [{ top: 200, left: 200 }];
 let food = null;
 let score = 0;
 let highScore = 0;
-let speed =100;
+let speed =140;
 //Create a object named direction 
 let direction = { key: 'ArrowRight', dx: 20, dy: 0 };
  
