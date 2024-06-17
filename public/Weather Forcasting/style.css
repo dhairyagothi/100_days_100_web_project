@@ -1,0 +1,19 @@
+h1,h2{
+    color:#ffe189;
+    font-weight: 400;
+}
+
+.card-header py-3{
+    background-color: #0d6efd;
+    color:white
+}
+
+.w-100 btn btn-lg btn-outline-primary{
+    background-color: #0d6efd;
+    color: white;
+}
+
+
+
+
+
