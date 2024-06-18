@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Mono", monospace;
+}
+
+.main {
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main .image-container {
+    padding: 10px;
+}
+
+.main .image-container .image {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main .image-container .image img {
+    width: 350px;
+    align-items: center;
+}
+
+.main .image-container h1 {
+    color: #00bcd4;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 40px;
+}
+
+.main .image-container p {
+    color: #324042;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.main .input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40vw;
+    height: 50px;
+    border-radius: 20px;
+    background: rgb(202 253 255 / 50%);
+}
+
+.main .input .talk {
+    background: transparent;
+    outline: none;
+    border: none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.main .input .talk i {
+    font-size: 20px;
+    color: #aed0d0;
+}
+
+.main .input .content {
+    color: #aed0d0;
+    font-size: 15px;
+    margin-right: 20px;
+}
