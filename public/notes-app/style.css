@@ -5,6 +5,11 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+h1{
+    font-family: sans-serif;
+    font-size: 50px;
+    color: rgb(32, 13, 107);
+}
 body{
   background: #ffcb88;
 }
