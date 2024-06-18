@@ -51,7 +51,9 @@ This repository contains 50 web projects from basic to intermediate using html c
 - DAY-27 ] MemoryGame 
 - DAY-28 ] wordle 
 - DAY-29 ] Snake Game 
-- DAY-31 ] Password Manager 
+- DAY-31 ] Password Manager
+- DAY-32 ] Weather Forcasting
+- DAY-33 ] Email Validator
 
 ## Discord Channel for VSoC 2024 Contributors
 
