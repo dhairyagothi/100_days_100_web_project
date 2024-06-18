@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#fashion-dd{
+    left: 450px;
+}
+
+.label{
+    height: 80vh;
+}

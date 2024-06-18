@@ -1,50 +1,106 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-body{
-    background: black;
-    color: grey;
-    
-}
-a{
-    color: white;
-}
-.text{
-    font-size: xx-large;
-    text-align: center;
-    padding: 30px;
-    font-weight: bold;
-    text-decoration: underline;
-    text-decoration-color: lightseagreen;
-    background-image: linear-gradient(299deg, #3048bc, #467c32);
-    background-clip: text;
-    color: transparent;
-}
-.text1{
-    font-size: 30px;
-    text-align: center;
-    padding: 30px;
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
-}
-.links{
-    display: grid;
-    font-size: larger;
-    justify-content: center;
-    padding: 50px;
-    gap: 10px;
-    width: auto;
-    height: fit-content;
-}
-.table{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-#loader{
+body {
+  background: black;
+  color: grey;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin: 0;
+}
+
+@media screen and (min-width: 600px) and (max-width: 899px) {
+  body {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1199px) {
+  body {
+    padding-left: 200px;
+    padding-right: 200px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  body {
+    padding-left: 400px;
+    padding-right: 400px;
+  }
+}
+
+a {
+  color: white;
+}
+
+.header {
+  text-align: center;
+  padding: 30px;
+  margin-bottom: 35px;
+  background: linear-gradient(90deg, #ff8a00, #da1b60);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: xx-large;
+}
+
+.subheader {
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #a7ed5d, #30ccf7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: x-large;
+}
+
+.table {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+}
+
+.day-number,
+.project-name,
+.demo-link {
+  flex: 1;
+  text-align: center;
+}
+
+.demo-link {
+  color: #00d4ff;
+  text-decoration: none;
+}
+
+.demo-link:hover {
+  text-decoration: underline;
+}
+
+#loader {
   position: fixed;
   height: 100vh;
   width: 100%;
@@ -53,41 +109,50 @@ a{
   z-index: 100000;
   background-repeat: no-repeat;
   background-position: center;
-  
 }
+
 body::-webkit-scrollbar {
+  width: 1em;
+  height: 1em;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0px 0px 5px 3px #2356c3;
+  border-radius: 30px;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    188deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(51, 51, 131, 1) 18%,
+    rgba(9, 9, 121, 1) 55%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+@media screen and (max-width: 600px) {
+  ::-webkit-scrollbar {
     width: 1em;
     height: 1em;
   }
-   
-  body::-webkit-scrollbar-track {
+
+  ::-webkit-scrollbar-track {
     box-shadow: inset 0px 0px 5px 3px #2356c3;
     border-radius: 30px;
   }
-   
-  body::-webkit-scrollbar-thumb {
+
+  ::-webkit-scrollbar-thumb {
     border-radius: 30px;
-    background: rgb(2,0,36);
-background: linear-gradient(188deg, rgba(2,0,36,1) 0%, rgba(51,51,131,1) 18%, rgba(9,9,121,1) 55%, rgba(0,212,255,1) 100%);
-   
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+      188deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(51, 51, 131, 1) 18%,
+      rgba(9, 9, 121, 1) 55%,
+      rgba(0, 212, 255, 1) 100%
+    );
   }
-
-
-  @media screen and (max-width: 600px){
-    ::-webkit-scrollbar {
-        width: 1em;
-        height: 1em;
-      }
-       
-      ::-webkit-scrollbar-track {
-        box-shadow: inset 0px 0px 5px 3px #2356c3;
-        border-radius: 30px;
-      }
-       
-      ::-webkit-scrollbar-thumb {
-        border-radius: 30px;
-        background: rgb(2,0,36);
-    background: linear-gradient(188deg, rgba(2,0,36,1) 0%, rgba(51,51,131,1) 18%, rgba(9,9,121,1) 55%, rgba(0,212,255,1) 100%);
-       
-      }
-  }
+}
