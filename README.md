@@ -45,7 +45,13 @@ This repository contains 50 web projects from basic to intermediate using html c
 - DAY-20.] EVESPARKS                       
 - DAY-21.] Video bg slider using react  ( to use this Video bg slider using react you need to first clone this repo ->open folder travel_website -> npm i -> npm run dev -> open http://localhost:5120 -> see Video bg slider using react . that's it all set.                            
 - DAY-22.] PAGELOADER
-- DAY - 24 ] AI ChatBot
+- DAY-24 ] AI ChatBot
+- DAY-25 ] Tic-Tac-Toe
+- DAY-26 ] Maze game
+- DAY-27 ] MemoryGame 
+- DAY-28 ] wordle 
+- DAY-29 ] Snake Game 
+- DAY-31 ] Password Manager 
 
 ## Discord Channel for VSoC 2024 Contributors
 
