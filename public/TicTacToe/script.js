@@ -87,13 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function determineOverallWinner() {
         let winnerMessage;
 
-        if (playerXScore > playerOScore && playerXScore > tieCount) {
+        if (playerXScore > playerOScore) {
             winnerMessage = 'Player X Wins Overall!';
-        } else if (playerOScore > playerXScore && playerOScore > tieCount) {
+        } else if (playerOScore > playerXScore) {
             winnerMessage = 'Player O Wins Overall!';
-        } else if (tieCount > playerXScore && tieCount > playerOScore) {
-            winnerMessage = 'It\'s a Draw Overall!';
-        } else if (playerXScore === playerOScore && playerXScore > tieCount) {
+        } else if (playerXScore === playerOScore && (playerXScore > 0 || playerOScore > 0)) {
             winnerMessage = 'It\'s a Tie between Player X and Player O!';
         } else {
             winnerMessage = 'It\'s a Draw Overall!';
