@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2&family=Poppins:ital,wght@0,300;0,500;1,400&family=Potta+One&family=Roboto:wght@300&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Baloo Bhaina 2', cursive;
+    font-family: 'Poppins', sans-serif;
+}
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: black;
+    color: white;
+    padding: 19px 12px;
+
+}
+
+ul{
+    display: flex;
+
+}
+
+ul li{
+    list-style: none;
+    padding: 0 13px;
+    /* font-size: 13px; */
+
+}
+
+ul li a{
+
+    color: white;
+    text-decoration: none;
+}
+
+ul>li>a:hover{
+    color: rgb(205, 189, 189);
+}
+main{
+    min-height: 100vh;
+    /* padding: 2px; */
+
+}
+.logo img{
+    width: 15px;
+    filter:invert(1) ;
+}
+.container{
+    background-color: white;
+    max-width: 80vw;
+    margin: auto;
+    padding: 9px 15px;
+
+}
+.container h1{
+    padding: 12px 0;
+
+}
+.input[type='text']{
+    min-width: 244px;
+    padding: 3px 12p;
+    border: 2px solid black;
+    border-radius: 4px;
+    font-size: 20px;
+}
+.btn{
+    background-color: black;
+    color: white;
+    padding: 9px 12px;
+    border: 1px solid gray;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#resultCont div::first-letter{
+    text-transform: uppercase;
+}
+
+footer{
+    font-size: 12px;
+    background-color: black;
+    color: white;
+    display: flex;
+    padding: 12px;
+    display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+@media only screen and (max-width:600px){
+    /* body{
+        background-color: lightblue;
+    
+    } */
+    .container{
+        font-size: 12px;
+    }
+    nav{
+        flex-direction: column;
+    }
+    .logo{
+        padding: 6px 0;
+        font-size: 12px;
+    }
+    .logo span{
+        font-size: 20px;
+    }
+    .logo img{
+        width: 15px;
+        filter:invert(1) ;
+    }
+}
