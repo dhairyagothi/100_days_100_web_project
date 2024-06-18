@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedConsult</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>🧘🏼‍♀️🧘🏼‍♀️MedConsult🧘🏼‍♀️🧘🏼‍♀️</h1>
+        <p>👨🏼‍⚕️👨🏼‍⚕️Connecting Local Doctors with Specialists👨🏼‍⚕️👨🏼‍⚕️</p>
+    </header>
+    <main>
+        <section id="consultation-form">
+            <h2>Request a Consultation</h2>
+            <form id="requestForm">
+                <label for="doctorName">Doctor's Name:</label>
+                <input type="text" id="doctorName" name="doctorName" required>
+
+                <label for="patientCondition">Patient's Condition:</label>
+                <textarea id="patientCondition" name="patientCondition" required></textarea>
+
+                <label for="specialistType">Specialist Needed:</label>
+                <select id="specialistType" name="specialistType" required></select>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+        <section id="consultation-status">
+            <h2>Consultation Status</h2>
+            <div id="statusMessage"></div>
+        </section>
+        <section id="specialist-response" style="display:none;">
+            <h2>Provide Your Suggestion</h2>
+            <form id="responseForm">
+                <label for="consultationId">Consultation ID:</label>
+                <input type="text" id="consultationId" name="consultationId" required>
+
+                <label for="suggestion">Your Suggestion:</label>
+                <textarea id="suggestion" name="suggestion" required></textarea>
+
+                <button type="submit">Submit Suggestion</button>
+            </form>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
