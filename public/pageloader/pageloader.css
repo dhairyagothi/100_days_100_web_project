@@ -1,33 +1,40 @@
 
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
 
-}
+    }
 
-body{
-    font-family: 'Poppins', sans-serif;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    color: white;
+    body{
+        font-family: 'Poppins', sans-serif;
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        color: white;
+        overflow: hidden;
+        position: relative; /* Ensure body is the reference for z-index */
+        }
+
+    #loading {
+        background : url(https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnd4NWt5ZTRkOWZ0OTQ5dmd6bG40bmhydHpuZnExdmRnZW9sZGxyMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MydKZ8HdiPWALc0Lqf/giphy.gif);
+        background-size: contain;
+        position: fixed;
+        z-index: 1;
+        top: 50%; /* Align the preloader vertically at 50% from the top */
+        left: 50%; /* Align the preloader horizontally at 50% from the left */
+        transform: translate(-50%, -50%); /* Center the preloader */
+        height: 100px; /* Set height */
+        width: 200px; /* Set width */
+    }
+    #text-container {
+        position: relative; /* Ensure text is above the loader */
+        z-index: 999; /* Higher than the preloader */
+        text-align: center;
+    }
     
-    
-}
-
-#loading {
-    background : url(https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnd4NWt5ZTRkOWZ0OTQ5dmd6bG40bmhydHpuZnExdmRnZW9sZGxyMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MydKZ8HdiPWALc0Lqf/giphy.gif);
-    background-color: black;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: fixed;
-    z-index: 999;
-    height: 100vh;
-    width: 100%;
-}
