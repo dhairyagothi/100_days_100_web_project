@@ -7,20 +7,32 @@
 <title>Pageloader</title>
 </head>
 <body>
-    <div id="loading"></div>
-    <div id="text-container">
-        <div><h1>Welcome to Pageloader!</h1></div>
-        <br/><br>
-        <div><h3>Thank you for visiting our website.</h3></div>
-        <br/>
-        <p>Here is a simple example of a pageloader.</p>
-<br/>
-
-<script >
-    window.addEventListener("load", function () {
-        const loader = document.getElementById("loading");
-        loader.style.display = "none";
-    });
-</script>
+    <div id="container">
+        <div id="loading"></div>
+        <nav class="navbar">
+            <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <header id ="home">
+        <h1>Welcome to Pageloader!</h1></div>
+        </header>
+        <section id="about" class="content">
+            <h2>About Us</h2>
+            <p>Thank you for visiting our website. Here is a simple example of a pageloader.</p>
+        </section>
+        <footer id="contact">
+            <h2>Contact Us</h2>
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+        </footer>
+    </div>
+       <script>
+         window.addEventListener("load", function () {
+            const loader = document.getElementById("loading");
+            loader.style.display = "none";
+        });
+    </script>
 </body>
 </html>
