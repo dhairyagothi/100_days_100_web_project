@@ -1,33 +1,85 @@
 
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    *{
+        margin: 1px;
+        padding: 0;
+        box-sizing: border-box;
 
+    }
+
+    body{
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        background-color: #000000;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow: hidden;
+        }
+    
+
+    
+    .container {
+        margin: auto;
+        width: 80%;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #000000;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-body{
-    font-family: 'Poppins', sans-serif;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+
+
+/* Navigation styles */
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
     text-align: center;
-    color: white;
-    
-    
+}
+
+.navbar ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.navbar ul li:last-child {
+    margin-right: 0;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #555;
+}
+
+
+header, section, footer {
+    text-align: center;
+    padding: 40px 0;
 }
 
 #loading {
-    background : url(https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnd4NWt5ZTRkOWZ0OTQ5dmd6bG40bmhydHpuZnExdmRnZW9sZGxyMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MydKZ8HdiPWALc0Lqf/giphy.gif);
-    background-color: black;
+    background: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMm41bHQ1Y2c1YTE2NHc1a2lxMW5tYzV5dGZqN3JhNmpsd3FkYTN1dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uIJBFZoOaifHf52MER/giphy.webp');
+    background-color: rgba(0, 0, 0, 0.8);
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 10%;
     position: fixed;
     z-index: 999;
-    height: 100vh;
-    width: 100%;
-}
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+        }
