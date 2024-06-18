@@ -17,10 +17,7 @@ To get started with this project, you will need to have Node.js installed. Follo
    git clone https://github.com/dhairyagothi/50_days_50_web_project
    cd ./public/dropdown_navbar
 
-2. **Install dependencies:**
-    ```bash
-    npm install
 
-3. **Start the development server:**
-    ```bash
-    npm run start
+2. **Open the index.html file:**
+
+    Open the index.html file in your web browser to view the dropdown menu navigation bar.
