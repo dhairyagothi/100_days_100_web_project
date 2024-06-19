@@ -1,31 +1,49 @@
-body{
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#clock-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#display {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.classic {
+    color: green;
+    border-color: green;
+}
+
+.modern {
+    color: blue;
+    border-color: blue;
+}
+
+.futuristic {
+    color: red;
+    border-color: red;
+}
+
+select {
     background-color: black;
     color: green;
 }
-#clock{ border: 5px double green;
-    width: 30%;
-    margin: auto;
-    justify-content: center;
-    position: relative;
-    
-   
-}
-#date{
-     border: 5px double green;
-    width: 30%;
-    margin: auto;
-    justify-content: center;
-    position: relative;
-    
+
+.date-size {
+  font-size: 2rem; /* Adjust font size for date as needed */
 }
 
-@media (min-width: 0px ) and (max-width: 1439px) {
-    #clock{
-        font-size: 60px;
-        width: auto;
-    }
-    #date{
-        font-size: 60px;
-        width: auto;
-    }
-  }
+.clock-face-btn {
+  transition: background-color 0.2s ease; /* Add transition for smooth hover effect */
+}
+
+.clock-face-btn:hover {
+  cursor: pointer; /* Indicate clickable button */
+}
+
+

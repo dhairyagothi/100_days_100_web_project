@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset= "UTF-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>digital clock</title>
+<title>Digital Clock</title>
 <link rel="stylesheet" href="digitalclock.css">
 <script src="digitalclock.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="grid gap-10 pt-52 ">
-<div class="relative font-mono text-[50px] text-center" id="date"></div>
-<div class="relative font-mono text-center text-[70px] " id="clock"></div>
-     </div>
+<body class="bg-black flex flex-col items-center justify-center h-screen">
+    <div class="text-center">
+        <div id="display" class="relative font-mono text-6xl md:text-8xl text-green-500 border-4 border-green-500 rounded-lg p-4 mb-4"></div>
+        <div id="clock" class="relative font-mono text-8xl md:text-9xl text-green-500 border-4 border-green-500 rounded-lg p-4"></div>
+    </div>
+    <div class="mt-10 flex space-x-4">
+        <button class="clock-face-btn px-4 py-2 hover:bg-green-700 border-2 border-green-500 text-green-500 rounded-lg" onclick="setClockStyleAndFormat('classic', 'format1')">Classic</button>
+        <button class="clock-face-btn px-4 py-2 hover:bg-blue-700 border-2 border-blue-500 text-blue-500 rounded-lg" onclick="setClockStyleAndFormat('modern', 'format2')">Modern</button>
+        <button class="clock-face-btn px-4 py-2 hover:bg-red-700 border-2 border-red-500 text-red-500 rounded-lg" onclick="setClockStyleAndFormat('futuristic', 'format3')">Futuristic</button>
+    </div>
+    <div class="mt-10">
+        <select id="timezone" class="px-4 py-2 border-2 border-green-500 text-green-500 rounded-lg" onchange="updateClock()">
+            <option value="local">Local Time</option>
+            <option value="UTC">UTC</option>
+            <option value="America/New_York">New York (USA)</option>
+            <option value="Europe/London">London (UK)</option>
+            <option value="Asia/Kolkata">Kolkata (India)</option>
+            </select>
+    </div>
 </body>
 </html>
+
