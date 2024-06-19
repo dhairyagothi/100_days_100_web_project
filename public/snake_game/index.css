@@ -1,0 +1,41 @@
+body {
+    background-color: #181818;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  #game-board {
+    position: relative;
+    height: 400px;
+    width: 400px;
+    border: 1px solid white;
+  }
+  
+  #score-board {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+    color: white;
+  }
+  
+  .snake {
+    background-color: darkgreen;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+  }
+  
+  .snake.head {
+    background-color: lime;
+  }
+  
+  .food {
+    background-color: red;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+  }
