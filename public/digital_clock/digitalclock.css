@@ -14,6 +14,11 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
+.classic, .modern, .futuristic {
+    padding: 1rem; /* Adjusted padding for medium size */
+    font-size: 4rem; /* Adjusted font size for medium size */
+}
+
 .classic {
     color: green;
     border-color: green;
@@ -35,15 +40,28 @@ select {
 }
 
 .date-size {
-  font-size: 2rem; /* Adjust font size for date as needed */
+    font-size: 1.5rem; /* Adjust font size for date as needed */
 }
 
 .clock-face-btn {
-  transition: background-color 0.2s ease; /* Add transition for smooth hover effect */
+    transition: background-color 0.2s ease; /* Add transition for smooth hover effect */
 }
 
 .clock-face-btn:hover {
-  cursor: pointer; /* Indicate clickable button */
+    cursor: pointer; /* Indicate clickable button */
 }
 
+.hidden {
+    display: none;
+}
 
+#alarm-container input {
+    background-color: black;
+    color: yellow;
+}
+
+#alarm-popup {
+    z-index: 1000; /* Ensure popup is on top */
+    padding: 1rem; /* Adjust padding for popup */
+    font-size: 1.5rem; /* Adjust font size for popup text */
+}

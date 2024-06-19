@@ -10,7 +10,7 @@ function updateClock() {
       showTimeFirst(now);
       break;
     case 'format2':
-      showDateFirstModern(now); // Changed function name
+      showDateFirstModern(now);
       break;
     case 'format3':
       showDayFirst(now);
@@ -19,6 +19,7 @@ function updateClock() {
       showTimeFirst(now);
       break;
   }
+  checkAlarm(now.time);
 }
 
 function showTimeFirst(now) {
@@ -27,11 +28,11 @@ function showTimeFirst(now) {
   document.getElementById('display').innerHTML = `${time}<br><span class="date-size">${date}</span>`;
 }
 
-function showDateFirstModern(now) { // New function for modern format
+function showDateFirstModern(now) {
   const time = now.time;
   const dateParts = now.date.split('/');
   const day = dateParts[0];
-  const month = getMonthName(dateParts[1]); // Function to get month name
+  const month = getMonthName(dateParts[1]);
   const year = dateParts[2];
   const formattedDate = `${day} ${month} ${year}`;
   document.getElementById('display').innerHTML = `<span class="date-size">${formattedDate}</span><br>${time}`;
@@ -88,17 +89,52 @@ function setClockStyleAndFormat(face, format) {
 
 function setClockFace(face) {
   const display = document.getElementById('display');
-  display.className = `relative font-mono text-6xl md:text-8xl border-4 rounded-lg p-4 mb-4 ${face}`;
+  display.className = `relative font-mono text-4xl md:text-5xl border-4 rounded-lg p-4 mb-4 ${face}`;
 
   const clock = document.getElementById('clock');
-  clock.className = `relative font-mono text-8xl md:text-9xl border-4 rounded-lg p-4 ${face}`;
+  clock.className = `relative font-mono text-4xl md:text-5xl border-4 rounded-lg p-4 ${face}`;
 }
 
-// Function to get month name from month number
 function getMonthName(monthNumber) {
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
   return monthNames[monthNumber - 1];
+}
+
+function toggleAlarmMode() {
+  const alarmInput = document.getElementById('alarm-time');
+  const confirmButton = document.querySelector('#alarm-container button:nth-child(3)');
+  alarmInput.classList.toggle('hidden');
+  confirmButton.classList.toggle('hidden');
+}
+
+function setAlarm() {
+  const alarmTime = document.getElementById('alarm-time').value;
+  localStorage.setItem('alarmTime', alarmTime);
+  alert(`Alarm set for ${alarmTime}`);
+}
+
+function checkAlarm(currentTime) {
+  const alarmTime = localStorage.getItem('alarmTime');
+  if (alarmTime && currentTime.includes(alarmTime)) {
+    triggerAlarm();
+  }
+}
+
+function triggerAlarm() {
+  const alarmSound = document.getElementById('alarm-sound');
+  const alarmPopup = document.getElementById('alarm-popup');
+  alarmSound.play();
+  alarmPopup.classList.remove('hidden');
+}
+
+function stopAlarm() {
+  const alarmSound = document.getElementById('alarm-sound');
+  const alarmPopup = document.getElementById('alarm-popup');
+  alarmSound.pause();
+  alarmSound.currentTime = 0;
+  alarmPopup.classList.add('hidden');
+  localStorage.removeItem('alarmTime');
 }
 
 // Initial call to set the format and style
