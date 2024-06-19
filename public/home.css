@@ -102,13 +102,12 @@ a {
 
 #loader {
   position: fixed;
+  top: 0;
+  left: 0;
   height: 100vh;
   width: 100%;
-  background: black;
-  background: url(./images/imageloader.gif);
+  background: black url('./images/imageloader.gif') no-repeat center center;
   z-index: 100000;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 body::-webkit-scrollbar {
