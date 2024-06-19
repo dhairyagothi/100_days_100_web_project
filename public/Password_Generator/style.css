@@ -1,0 +1,55 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: rgb(63, 94, 251);
+    background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(23, 7, 80, 1) 100%);
+    color: white;
+}
+
+.container {
+    height: 100vh;
+}
+
+.flex {
+    display: flex;
+}
+
+.jc-center{
+    justify-content: center;
+}
+
+.jc {
+    justify-content: start;
+}
+
+.ai {
+    align-items: center;
+}
+
+.direction {
+    flex-direction: column;
+}
+/* 
+.gap-1{
+    gap: 10px;
+} */
+/* 
+.gap-5{
+    gap: 50px;
+} */
+
+.heading {
+    font-size: 60px;
+}
+
+.bool{
+    font-size: 18px;
+}
+
+.btn{
+    margin-top: 20px;
+    /* background-color: rgb(194, 70, 70); */
+}
