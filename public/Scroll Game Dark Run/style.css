@@ -1,0 +1,603 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+body {
+	margin: 0;
+	overflow: hidden;
+	font-family: "Anton", sans-serif;
+}
+
+#gameContainer {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	background: linear-gradient(to bottom, #87ceeb, #ffffff); /* sky background */
+	overflow: hidden;
+	background: url("bg-forest.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+
+#left-wall {
+	position: absolute;
+	width: 2000px;
+	height: calc(50% - 200px);
+	margin-left: -2000px;
+	background-color: black !important;
+	top: calc(50% + 200px);
+}
+#left-wall::before {
+	content: "";
+	position: absolute;
+	top: -400px;
+	left: 0;
+	width: 100%;
+	height: 400px;
+	background: url("trees-1.png")
+		no-repeat;
+	background-size: cover;
+	background-position: bottom right;
+	margin-left: 200px;
+}
+
+.tree {
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+}
+
+.sign {
+	position: absolute;
+	z-index: 0;
+	height: 100px;
+	top: calc(50% + 110px);
+	left: 500px;
+}
+
+#hero {
+	position: fixed;
+	width: 32px;
+	height: 44px;
+	background-repeat: no-repeat;
+	top: calc(50% + 200px);
+	left: 10%;
+	transform: translate(-50%, -50%);
+	transition: top 0.2s;
+	margin-top: -20px;
+	z-index: 99;
+}
+
+/* Idle state */
+#hero.idle-right {
+	background-image: url("idle-back.png");
+	background-position: 0 0;
+}
+
+/* Idle state */
+#hero.idle-left {
+	background-image: url("idle.png");
+	background-position: 0 0;
+}
+
+/* Running right */
+#hero.running-right {
+	background-image: url("running-back.png");
+	animation: runRight 1s steps(6) infinite;
+}
+
+@keyframes runRight {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: -192px 0;
+	}
+}
+
+/* Running left */
+#hero.running-left {
+	background-image: url("running.png");
+	animation: runLeft 1s steps(6) infinite;
+}
+
+@keyframes runLeft {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: -192px 0;
+	}
+}
+
+#hero.jump {
+	animation: jump 0.5s ease-in-out;
+}
+
+@keyframes jump {
+	0% {
+		top: 70%;
+	}
+	50% {
+		top: 50%;
+	}
+	100% {
+		top: 70%;
+	}
+}
+
+.obstacle {
+	position: absolute;
+	z-index: 2;
+}
+
+@keyframes MoveUpDown {
+	0%,
+	100% {
+		bottom: calc(50% + 300px);
+	}
+	50% {
+		bottom: calc(50% - 210px);
+	}
+}
+
+@keyframes fly {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 0 -400px;
+	}
+}
+
+@keyframes flyHorizontal {
+	0% {
+		margin-left: 10000px;
+	}
+	100% {
+		margin-left: -10000px;
+	}
+}
+
+@keyframes flyVertical {
+	0%,
+	100% {
+		top: calc(50% - 120px);
+	}
+	50% {
+		top: calc(50% + 120px);
+	}
+}
+
+.bird {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	background-image: url("bird.png");
+	background-size: cover;
+}
+
+.bird:nth-child(1) {
+	animation: flyHorizontal 30s linear infinite,
+		flyVertical 3s ease-in-out infinite, fly 0.5s steps(8) infinite;
+}
+
+.bird:nth-child(2) {
+	animation: flyHorizontal 24s linear infinite,
+		flyVertical 2s ease-in-out infinite, fly 0.3s steps(8) infinite;
+}
+
+.bird:nth-child(3) {
+	animation: flyHorizontal 22s linear infinite,
+		flyVertical 2.5s ease-in-out infinite, fly 0.2s steps(8) infinite;
+}
+
+.bird:nth-child(4) {
+	animation: flyHorizontal 18s linear infinite,
+		flyVertical 5s ease-in-out infinite, fly 1s steps(8) infinite;
+}
+
+.hammer {
+	background-color: red;
+	width: 100px;
+	height: 100%;
+	animation: MoveUpDown 2s cubic-bezier(0.95, 0.05, 0.795, 0.035) infinite;
+	background: url("pillar.png")
+		repeat-y;
+	z-index: 0;
+	bottom: 0;
+}
+
+#finishLine {
+	position: absolute;
+	width: 200px;
+	height: 100%;
+	top: 0;
+}
+
+#scores {
+	position: fixed;
+	top: 40px;
+	left: 10px;
+	font-size: 24px;
+	color: #fff;
+}
+
+#restartButton {
+	padding: 10px 20px;
+	font-size: 16px;
+}
+
+.floor {
+	position: absolute;
+	width: 20000px;
+	height: calc(50% - 200px);
+	background-color: black;
+	margin-left: -5000px;
+	z-index: 999;
+}
+
+.floor::before {
+	content: "";
+	position: absolute;
+	top: -40px;
+	left: 0;
+	width: 100%;
+	height: 40px;
+	background: url("Grass.png")
+		repeat-x;
+}
+
+#top {
+	background: black;
+	position: fixed;
+	top: 0;
+	height: calc(50% - 200px);
+	width: 100vw;
+	z-index: 0;
+}
+
+.saw {
+	height: 200px;
+	width: 200px;
+	background-color: #bbb;
+	border-radius: 50%;
+	top: calc(50% + 300px);
+	background: url("saw.png");
+	background-size: cover;
+	z-index: 0;
+}
+
+.saw:nth-child(1) {
+	animation: saw 5s ease-in-out infinite;
+}
+
+.saw:nth-child(2) {
+	animation: saw 6s ease-in-out infinite;
+	filter: invert(100%) brightness(10%);
+}
+
+@keyframes saw {
+	0%,
+	100% {
+		top: calc(50% + 300px);
+		transform: rotate(0deg);
+	}
+	50% {
+		top: calc(50% + 100px);
+		transform: rotate(360deg);
+	}
+}
+
+.bush,
+.monster {
+	position: absolute;
+	z-index: 0;
+	width: 200px;
+	height: 100%;
+	background: green;
+	top: calc(50% + 140px);
+	background-color: lightgreen;
+	transition: background-color 1s ease; /* Smooth transition for background color */
+	background-repeat: no-repeat;
+	background-size: contain;
+	transition: margin-top 1s;
+}
+
+.silhouette,
+.object {
+	position: absolute;
+}
+
+.bush {
+	background: url("bush.png");
+	background-position: top center;
+	margin-top: -20px;
+}
+
+.monster {
+	background: url("bush-monster.png");
+	margin-top: -120px;
+}
+
+#hero.invert {
+	filter: invert(100%) brightness(20%);
+	transition: filter 1s;
+}
+
+.tree:nth-child(1) {
+	height: 400px;
+	top: calc(50% - 200px);
+	left: 800px;
+}
+
+.tree:nth-child(2) {
+	height: 200px;
+	top: calc(50% - 0px);
+	left: 2000px;
+}
+
+.tree:nth-child(3) {
+	height: 200px;
+	top: calc(50% - 0px);
+	left: 3000px;
+}
+
+.tree:nth-child(4) {
+	height: 390px;
+	top: calc(50% - 180px);
+	left: 5000px;
+}
+
+.tree:nth-child(5) {
+	height: 390px;
+	top: calc(50% - 180px);
+	left: 6000px;
+}
+
+.house {
+	height: 200px;
+	top: calc(50% - 0px);
+	left: 10000px;
+	margin-left: -140px;
+}
+
+.obstacle.hammer:nth-child(1),
+.obstacle.hammer:nth-child(4) {
+	animation: MoveUpDown 3s cubic-bezier(0.95, 0.05, 0.795, 0.035) infinite;
+}
+
+.obstacle.hammer:nth-child(2),
+.obstacle.hammer:nth-child(5) {
+	animation: MoveUpDown 4s cubic-bezier(0.95, 0.05, 0.795, 0.035) infinite;
+}
+
+.obstacle.hammer:nth-child(3),
+.obstacle.hammer:nth-child(6) {
+	animation: MoveUpDown 5s cubic-bezier(0.95, 0.05, 0.795, 0.035) infinite;
+}
+
+.obstacle.hammer:nth-child(7) {
+	animation: MoveUpDown 6s cubic-bezier(0.95, 0.05, 0.795, 0.035) infinite;
+}
+
+.obstacle.hammer:nth-child(8) {
+	animation: MoveUpDown 7s cubic-bezier(0.95, 0.05, 0.795, 0.035) infinite;
+}
+
+.house {
+	position: absolute;
+	height: 200px;
+	width: 270px;
+	top: calc(50% - 0px);
+	left: 10000px;
+	margin-left: -140px;
+	background-image: url("house.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	animation: lights 3s infinite;
+}
+
+/* Smoke animation */
+@keyframes lights {
+	0% {
+		filter: brightness(110%);
+	}
+	25% {
+		filter: brightness(90%);
+	}
+	30% {
+		filter: brightness(100%);
+	}
+	80% {
+		filter: brightness(95%);
+	}
+	100% {
+		filter: brightness(110%);
+	}
+}
+
+.chimney {
+	position: absolute;
+	width: 15px;
+	height: 60px;
+	top: 1px;
+	left: 176px;
+}
+
+.smoke {
+	position: absolute;
+	bottom: 50%;
+	left: 50%;
+	width: 20px;
+	height: 100px;
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 50%;
+	animation: smoke 3s infinite;
+	opacity: 0.5;
+	filter: blur(20px);
+}
+
+.smoke:nth-child(2) {
+	animation-delay: 0.5s;
+}
+
+.smoke:nth-child(3) {
+	animation-delay: 1s;
+}
+.smoke:nth-child(4) {
+	animation-delay: 1.5s;
+}
+.smoke:nth-child(5) {
+	animation-delay: 2s;
+}
+.smoke:nth-child(6) {
+	animation-delay: 2.5s;
+}
+.smoke:nth-child(7) {
+	animation-delay: 3s;
+}
+
+/* Smoke animation */
+@keyframes smoke {
+	0% {
+		transform: translate(-50%, 0) scale(0.5);
+		opacity: 0.2;
+	}
+	25% {
+		transform: translate(-60%, -30px) scale(0.7);
+		opacity: 0.4;
+	}
+	50% {
+		transform: translate(-70%, -60px) scale(1);
+		opacity: 0.4;
+	}
+	75% {
+		transform: translate(-80%, -90px) scale(1.2);
+		opacity: 0.4;
+	}
+	100% {
+		transform: translate(-90%, -120px) scale(1.5);
+		opacity: 0;
+	}
+}
+
+.screen {
+	position: fixed;
+	left: 0;
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	padding:80px;
+}
+
+.screen h1 {
+	font-size: 5rem;
+	color: black;
+	text-align: center;
+	color: #fff;
+}
+
+.screen p {
+	color: #ccc;
+	font-size: 1rem;
+	text-align:center
+}
+
+.main-title {
+	height: 100%;
+	flex-direction: column;
+}
+
+.mouse-scroll {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+
+.mouse {
+	width: 48px;
+	height: 80px;
+	border: 4px solid #fff;
+	border-radius: 24px;
+	display: flex;
+	justify-content: center;
+	align-items: start;
+}
+
+.wheel {
+	width: 8px;
+	height: 16px;
+	background-color: #fff;
+	border-radius: 4px;
+	animation: scroll 1s infinite;
+	margin-top: 8px;
+}
+
+/* Scroll animation */
+@keyframes scroll {
+	0% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(8px);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
+}
+
+.arrow-right {
+	width: 10px;
+	height: 10px;
+	border-right: 4px solid #fff;
+	border-bottom: 4px solid #fff;
+	transform: rotate(-45deg);
+	margin-top: -24px;
+	margin-left: 80px;
+}
+
+.arrow-left {
+	width: 10px;
+	height: 10px;
+	border-right: 4px solid #fff;
+	border-bottom: 4px solid #fff;
+	transform: rotate(135deg);
+	margin-top: -52px;
+	margin-left: -80px;
+}
+
+.game-over,
+.win,
+.bestTime {
+	display: none;
+}
+
+#scores p,
+.scores p {
+	margin: 0;
+}
+
+.btn {
+	padding: 8px 24px;
+  font-size: 1.3rem;
+}
+
+
+@media only screen and (max-width: 600px) {
+	.screen h1 {
+  font-size: 2.2rem;
+}
+	.screen p {
+  color: #ccc;
+  font-size: 1rem;
+}
+	.screen {
+  width: 100vw;
+}
+}

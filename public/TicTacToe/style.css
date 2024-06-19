@@ -83,3 +83,21 @@ button {
 .close:focus {
     color: black;
 }
+
+.scoreboard {
+    width: 310px;
+    margin-left: 0px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .scoreboard h2 {
+    margin-bottom: 10px;
+  }
+  
+  .scoreboard p {
+    margin-bottom: 5px;
+  }
+  
