@@ -1,62 +1,65 @@
-*{
+* {
     padding: 0;
     margin: 0;
-    
-
-    }
-    body{
-        background: rgb(43,48,121);
-        background: linear-gradient(90deg, rgba(43,48,121,1) 19%, rgba(101,78,170,0.9697128851540616) 73%, rgba(136,136,168,1) 100%);
-        font-family: sans-serif;
-        
-    }
-.colour {
+}
+body {
+    background: rgb(43,48,121);
+    background: linear-gradient(90deg, rgba(43,48,121,1) 19%, rgba(101,78,170,0.9697128851540616) 73%, rgba(136,136,168,1) 100%);
+    font-family: sans-serif;
+}
+.navbar {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
     list-style: none;
-    padding: 50px;
-    gap: 20px;
+    background-color: rgba(225, 225, 225, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
-#colour1 {
-    height: 45px;
-    width:45px;
-    border : 2px solid white ;
-    border-radius: 50%;
-    background: rgb(232,221,227);
-background: linear-gradient(to top, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%);
-cursor: pointer;
-
+.navbar li {
+    margin: 0 10px;
 }
-#colour2 {
+.navbar li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgba(101,78,170,0.7);
+    transition: background-color 0.3s, color 0.3s;
+}
+.navbar li a:hover {
+    background-color: rgba(101,78,170,1);
+    color: yellow;
+}
+#colour1, #colour2, #colour3 {
     height: 45px;
     width: 45px;
-    border : 2px solid white ;
+    border: 2px solid white;
     border-radius: 50%;
-    background-image : linear-gradient( to bottom , #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%);
     cursor: pointer;
+}
+#colour1 {
+    background: linear-gradient(to top, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%);
+    margin-left: 1060px;
+}
+#colour2 {
+    background-image: linear-gradient(to bottom, #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%);
 }
 #colour3 {
-    height:45px;
-    width:45px;
-    border : 2px solid white ;
-    border-radius: 50%;
     background-image: linear-gradient(to bottom, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d);
-    cursor: pointer;
 }
-#colour1:hover,#colour2:hover,#colour3:hover{
+#colour1:hover, #colour2:hover, #colour3:hover {
     height: 55px;
     width: 55px;
-    border : 2px solid white ;
-    border-radius: 50%;
     transition: 0.8s;
 }
 .main {
     display: grid;
     gap: 60px;
-    
+    justify-items: center;
 }
 .heading {
+    margin-top: 65px;
     font-size: 80px;
     justify-content: center;
     text-align: center;
@@ -66,39 +69,57 @@ cursor: pointer;
     animation-direction: normal;
     animation-duration: 5s;
     animation-iteration-count: infinite;
-
+}
+.task {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 #newtask {
+    margin-top: 22px;
     height: 40px;
-    width: 30%;
-    left: 540px;
+    width: 146%;
     text-align: center;
-    position: relative;
     background-color: black;
     color: white;
     border-radius: 9px;
     font-size: 15px;
     z-index: 999;
+    margin-bottom: 23px;
 }
-#submittask{
+.buttons {
+    margin-bottom: 23px;
+    display: flex;
+    justify-content: center;
+    gap: 51px;
+    width: 100%;
+}
+#submittask, #savepdf {
     height: 42px;
-    width: 10%;
-    left: 524px;
+    width: 15%;
     text-align: center;
-    position: relative;
     background-color: white;
     color: black;
     border-radius: 9px;
     font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
-.container{
+#submittask:hover, #savepdf:hover {
+    background-color: black;
+    color: white;
+}
+.container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     box-shadow: 1px;
     gap: 20px;
+    margin-right: 0px;
+    padding-right: 55px;
+    width: 780px;
 }
-.container li{
+.container li {
     width: 35%;
     word-wrap: break-word;
     left: 35%;
@@ -111,17 +132,60 @@ cursor: pointer;
     font-size: 19px;
     padding: 7px;
     justify-content: center;
-    
- }
- .container li i{
+}
+.container li i {
     position: absolute;
     right: 10px;
     cursor: pointer;
 }
- .container li a{
+.container li a {
     position: absolute;
     right: 40px;
     cursor: pointer;
     font-size: 30px;
-    top: -4px; 
-    font-weight: 900;}
+    top: -4px;
+    font-weight: 900;
+}
+.documents-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.document-item {
+    margin-top: 30px;
+    width: 80%;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+.document-item:hover {
+    background-color: #f0f0f0;
+}
+.document-item button {
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+.document-item button:hover {
+    background-color: black;
+    color: white;
+}
+
+.pdf-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #4caf50;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    z-index: 1000;
+}
