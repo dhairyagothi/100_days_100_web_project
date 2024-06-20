@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Budget Tracker</h1>
+        <div class="budget-summary">
+            <h3>Main Salary: <span id="main-salary">₹0.00</span></h3>
+            <h3>Remaining Budget: <span id="remaining-budget">₹0.00</span></h3>
+        </div>
+        <form id="budget-form">
+            <input type="number" id="input-salary" placeholder="Enter Main Salary (₹)">
+            <input type="text" id="input-description" placeholder="Enter Description">
+            <input type="number" id="input-amount" placeholder="Enter Amount (₹)">
+            <button type="submit">Add Expense</button>
+        </form>
+        <div class="expense-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount (₹)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="expense-list">
+                    <!-- Expense items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
