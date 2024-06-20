@@ -1,7 +1,7 @@
 *{
     padding: 0;
-    margin: 0;
-    
+    /* here its is 1 */
+    margin: 0; 
 
     }
     body{
@@ -59,38 +59,99 @@ cursor: pointer;
 .heading {
     font-size: 80px;
     justify-content: center;
+ 
     text-align: center;
-    font-weight: 700;
+    font-weight: 600;
     animation-timing-function: linear;
     animation-delay: 0s;
     animation-direction: normal;
     animation-duration: 5s;
     animation-iteration-count: infinite;
+    margin-left:70px;
 
 }
 #newtask {
     height: 40px;
-    width: 30%;
-    left: 540px;
+    width: 27%;
+    left: 410px;
     text-align: center;
     position: relative;
     background-color: black;
     color: white;
-    border-radius: 9px;
+    border-radius: 15px;
+    border: 1px solid white;
     font-size: 15px;
     z-index: 999;
 }
-#submittask{
-    height: 42px;
-    width: 10%;
-    left: 524px;
+.button {
+    display: inline-block;
+    height: 38px;
+    width: 150px;
+    left: 440px;
     text-align: center;
     position: relative;
-    background-color: white;
-    color: black;
-    border-radius: 9px;
+
+    padding: 12px 28px;
+    margin: 10px;
     font-size: 15px;
-}
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background-image: linear-gradient(to bottom right, #00c6ff, #0072ff);
+    border: none;
+    border-radius: 40px;
+    box-shadow: 0px 4px 0px #0072ff;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 0px #0072ff;
+  }
+  
+  .button:active {
+    transform: translateY(0px);
+    box-shadow: none;
+    background-image: linear-gradient(to bottom right, #0072ff, #00c6ff);
+  }
+  
+  .button:before,
+  .button:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  
+  .button:before {
+    top: -3px;
+    left: -3px;
+    border-radius: 40px;
+    border-top: 3px solid #fff;
+    border-left: 3px solid #fff;
+  }
+  
+  .button:after {
+    bottom: -3px;
+    right: -3px;
+    border-radius: 40px;
+    border-bottom: 3px solid #fff;
+    border-right: 3px solid #fff;
+  }
+  
+/* #submittask{
+    height: 42px;
+    width: 7%;
+    left: 475px;
+    text-align: center;
+    position: relative;
+    background-color: skyblue;
+    color: black;
+    border-radius: 15px;
+    border: 1px solid white;
+    font-size: 15px;
+} */
 .container{
     display: flex;
     flex-direction: column;
