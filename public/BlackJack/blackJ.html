@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oooh+Baby&family=Pushster&family=Teko&family=Ubuntu:ital@1&family=Vujahday+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./blackJ.css">
+    <title>Black Jack</title>
+</head>
+<body>
+    <h1 class="title">BLACK JACK</h1>
+    <div class="main">
+        <h2><span id="command">Let's Play</span></h2>
+        <div class="row1">
+            <div id="your-box">
+                <h2>You: <span id="yourscore">0</span></h2>
+            </div>
+            <div id="dealer-box">
+                <h2>Dealer: <span id="dealerscore">0</span></h2>
+            </div>
+        </div>
+        <div class="row2">
+            <div class="buttons">
+                <button class="btn-lg btn-primary" id="hit" onmouseover="tink.play()" > Hit </button> 
+                <button class="btn-lg btn-warning" id="stand" onmouseover="tink.play()">Stand</button>
+                <button class="btn-lg btn-danger" id="deal" onmouseover="tink.play()">Deal</button>
+            </div>
+        </div>
+        <div class="row3">
+            <h3>Scoreboard: </h3>
+            <table>
+                <tr>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                    <th>Draws</th>
+                </tr>
+                <tr>
+                    <td><span id="wins">0</span></td>
+                    <td><span id="losses">0</span></td>
+                    <td><span id="draws">0</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script src="./blackJ.js"></script>
+</body>
+</html>
