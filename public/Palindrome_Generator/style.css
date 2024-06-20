@@ -1,0 +1,92 @@
+/* Reset default styles */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box; /* Ensure all elements respect padding and border */
+}
+
+/* Body styles */
+body {
+    background: rgb(4, 22, 112);
+    background: linear-gradient(90deg, rgba(4, 22, 112, 1) 0%, rgba(189, 42, 23, 1) 50%, rgba(103, 0, 87, 1) 100%);
+    font-family: "Playwrite ES", cursive;
+    color: white;
+}
+
+/* Heading styles */
+.heading {
+    color: white;
+}
+
+/* Font size classes */
+.f1 {
+    font-size: 10px;
+}
+
+.f2 {
+    font-size: 20px;
+}
+
+.f3 {
+    font-size: 30px;
+}
+
+.f4 {
+    font-size: 40px;
+}
+
+.f5 {
+    font-size: 50px;
+}
+
+/* Height class */
+.height {
+    height: 100vh;
+}
+
+/* Button styles */
+.btn {
+    width: fit-content;
+}
+
+/* Custom list item styles */
+.list-group-item {
+    background-color: transparent;
+    color: white;
+    border: none;
+}
+
+/* Additional styles specific to the palindrome generator */
+.container {
+    max-width: 600px;
+    margin: 0 auto; /* Center align the container */
+    padding: 20px;
+}
+
+.loading-text {
+    display: none;
+    font-style: italic;
+    color: white;
+    margin-top: 1rem;
+}
+
+#palindromeResults {
+    margin-top: 2rem;
+}
+
+#palindromeList {
+    margin-top: 1rem;
+}
+
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent white background */
+    color: white;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.list-group-item:first-child {
+    margin-top: 0; /* Remove top margin for the first item */
+}
+
