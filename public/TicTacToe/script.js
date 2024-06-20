@@ -105,7 +105,14 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal.addEventListener('click', () => {
         modal.style.display = 'none';
     });
-    newGameButton.addEventListener('click', showResult);
+    newGameButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+        // Reset game state for a new game
+        boardState = Array(9).fill('');
+        currentPlayer = 'X';
+        gameActive = true;
+        cells.forEach(cell => cell.textContent = '');
+    });
 
     const resetScoreboardButton = document.getElementById('resetScoreboard');
     resetScoreboardButton.addEventListener('click', () => {

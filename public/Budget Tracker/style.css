@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(./budget.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+h1 {
+    text-align: center;
+    font-size: 53px;
+}
+
+.budget-summary {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.budget-summary h3 {
+    margin: 5px 0;
+}
+
+.expense-table {
+    margin-top: 20px;
+    overflow: auto; /* Scrollbar for the table */
+    max-height: 300px; /* Adjust the height as needed */
+    width: 97%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #3498db;
+    color: #fff;
+}
+
+table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+input[type="number"], input[type="text"], button {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
