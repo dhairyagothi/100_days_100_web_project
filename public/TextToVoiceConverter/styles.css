@@ -20,10 +20,12 @@ body {
     width: 100%;
 }
 
-h1 {
-    color: #333;
+.title { 
+    font-size: 2.5em; /* Larger font size */
+    margin-bottom: 20px;
+    color: #1352c7; /* Added a blue color for contrast */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Text shadow for a more 3D effect */
 }
-
 textarea {
     width: 100%;
     height: 150px;
