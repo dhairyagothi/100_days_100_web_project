@@ -14,9 +14,9 @@ body {
     text-align: center;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box shadow for depth */
+    border-radius: 12px; /* Rounded corners */
+    max-width: 500px; /* Increased width for more space */
     width: 100%;
 }
 
