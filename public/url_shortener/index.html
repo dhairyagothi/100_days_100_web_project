@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="./output.css">
+    <script>
+        function sendurl() {
+            let input = document.getElementById("urlInput")
+            let output = document.getElementById("urlOutput")
+            if (!URL.canParse(input.value)) {
+                alert("invalid url!")
+                return;
+            }
+            let request = new XMLHttpRequest()
+            request.open("POST", `/new`,)
+            request.onload = () => {
+                console.log(request.response)
+                let url = `${window.location}${JSON.parse(request.response).urlPath}`
+                output.innerHTML = `<a href="${url}">${url}</a>`
+            }
+            request.setRequestHeader(
+                'Content-Type', 'application/json'
+            )
+            request.send(JSON.stringify({
+                url: input.value
+            }),)
+        }
+    </script>
+</head>
+
+<body class="bg-slate-900">
+
+    <div class="flex h-screen">
+        <div class="m-auto items-center">
+            <div class="font-sans font-bold text-pink-50 text-3xl text-center mb-5">URL Shortener</div>
+            <input id="urlInput" class="rounded px-4 py-2 outline-none bg-pink-50 w-[280px] md:w-[400px]"
+                placeholder="Enter the URL to shorten here">
+            <button class="md:ml-3 bg-green-500 hover:bg-green-600 p-2 rounded text-white" onclick="sendurl()">
+                <p class="hidden md:block">Generate</p>
+                <p class="block md:hidden"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                        <path
+                            d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                    </svg></p>
+            </button>
+            <div class=" flex p-1 bg-green-100 rounded mt-2"><b>URL:&nbsp;</b>
+                <div id="urlOutput"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
