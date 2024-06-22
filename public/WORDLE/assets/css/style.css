@@ -27,6 +27,7 @@
     position: absolute;
     left: 25%;
     background-color: white;
+    z-index: 100;
 }
 .hidden {
     display: none;
@@ -38,6 +39,18 @@
     margin: auto;
     padding: 10px;
 }
+
+.container{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.item{
+    padding: 5% 4%;
+}
+
 .inputBox {
     width: 50px;
     height: 50px;

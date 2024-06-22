@@ -1,60 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto+Slab:wght@600;700&family=Ubuntu:wght@700&display=swap"
-            rel="stylesheet"
-        />
-        <link rel="stylesheet" href="./assets/css/style.css">
-        <script type='text/javascript' src='./assets/js/words.js'></script>
-        <title>Wordle</title>
-        <style>
-            
-        </style>
-    </head>
-    <body>
-        <ul class='navbar'>
-            <li><img class='info navele nav__icon' src="img/information.png" alt=""></li>
-            <li><h1 class="heading navele">Wordle</h1></li>
-            <li><img class='stats navele nav__icon' src="img/statistics.png" alt=""></li>
-        </ul>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto+Slab:wght@600;700&family=Ubuntu:wght@700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script type='text/javascript' src='./assets/js/words.js'></script>
+    <title>Wordle</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <ul class='navbar'>
+        <li><img class='info navele nav__icon' src="img/information.png" alt=""></li>
+        <li>
+            <h1 class="heading navele">Wordle</h1>
+        </li>
+        <li><img class='stats navele nav__icon' src="img/statistics.png" alt=""></li>
+    </ul>
+
+    <hr />
+    <div class='message hidden' id='message'>
+        <p>This is message</p>
+    </div>
+    <div class='infoCard popup' id="rules">
+        <p class='crossOuter'><button class='cross' id='closeInfo'>&#9587</button></p>
+        <p>Guess the <strong>WORDLE</strong> in six tries.</p>
+        <p>Each guess must be a valid five-letter word. Hit the enter button to submit.</p>
+        <p>After each guess, the color of the tiles will change to show how close your guess was to the word.</p>
+        <hr>
+        <p><strong>Examples</strong></p>
+        <img class='example__img' src="img/rules.png" alt="">
+        <p>The letter <strong>A</strong> is in the word and in the correct spot.</p>
+        <p>The letters <strong>L</strong> and <strong>E</strong> are in the word but are not in the correct spot.</p>
+        <p>The letter <strong>F</strong> and <strong>E</strong> are not in the word.</p>
+        <hr>
+        <p><strong>A new WORDLE will be available each day!</strong></p>
+    </div>
+    <div class='infoCard hidden popup' id="stats">
+        <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
+        <p><strong>STATISTICS</strong></p>
+        <p>0 &emsp;&emsp;0 &emsp;&emsp;0 &emsp;&emsp;0</p>
+        <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
+
+    </div>
+    <div class='infoCard hidden popup' id="result">
+        <p class='crossOuter'><button class='cross' id='closeResult'>&#9587</button></p>
+        <p><strong>RESULT</strong></p>
+        <p>1 &emsp;&emsp;&emsp;100 &emsp;&emsp;&emsp;&emsp;1 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1</p>
+        <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
         
-        <hr />
-        <div class='message hidden' id='message'>
-            <p>This is message</p>
-        </div>
-        <div class='infoCard popup' id="rules">
-            <p class='crossOuter'><button class='cross' id='closeInfo'>&#9587</button></p>
-            <p>Guess the <strong>WORDLE</strong> in six tries.</p>
-            <p>Each guess must be a valid five-letter word. Hit the enter button to submit.</p>
-            <p>After each guess, the color of the tiles will change to show how close your guess was to the word.</p>
-            <hr>
-            <p><strong>Examples</strong></p>
-            <img class='example__img' src="img/rules.png" alt="">
-            <p>The letter <strong>A</strong> is in the word and in the correct spot.</p>
-            <p>The letters <strong>L</strong> and <strong>E</strong> are in the word but are not in the correct spot.</p>
-            <p>The letter <strong>F</strong> and <strong>E</strong> are not in the word.</p>
-            <hr>
-            <p><strong>A new WORDLE will be available each day!</strong></p>
-        </div>
-        <div class='infoCard hidden popup' id="stats">
-            <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
-            <p><strong>STATISTICS</strong></p>
-            <p>0 &emsp;&emsp;0 &emsp;&emsp;0 &emsp;&emsp;0</p>
-            <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
-            
-        </div>
-        <div class='infoCard hidden popup' id="result">
-            <p class='crossOuter'><button class='cross' id='closeResult'>&#9587</button></p>
-            <p><strong>RESULT</strong></p>
-            <p>1 &emsp;&emsp;100 &emsp;&emsp;1 &emsp;&emsp;1</p>
-            <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
-            
-        </div>
-        <div>
+    </div>
+    <div class="container">
+        <div class="item">
             <table class="words">
                 <tr class="inputRow">
                     <td><input class="inputBox" id="b11" maxlength="1" /></td>
@@ -148,7 +152,7 @@
                 </tr>
             </table>
         </div>
-        <div>
+        <div class="item">
             <table class="keyboard">
                 <tr>
                     <td><button class="button" id="Q">Q</button></td>
@@ -191,7 +195,11 @@
                     </td>
                 </tr>
             </table>
+            <div style="justify-content: center;position: relative;top: 10px;z-index: 1; display: flex;"><button class="button" id="reset" style="width: 90%;">reset</button></div>
+            <div style="height: 12px;"></div>
         </div>
-        <script type='text/javascript' src='./assets/js/script.js'></script>
-    </body>
+    </div>
+    <script type='text/javascript' src='./assets/js/script.js'></script>
+</body>
+
 </html>
