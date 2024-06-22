@@ -14,16 +14,18 @@ body {
     text-align: center;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box shadow for depth */
+    border-radius: 12px; /* Rounded corners */
+    max-width: 500px; /* Increased width for more space */
     width: 100%;
 }
 
-h1 {
-    color: #333;
+.title { 
+    font-size: 2.5em; /* Larger font size */
+    margin-bottom: 20px;
+    color: #1352c7; /* Added a blue color for contrast */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Text shadow for a more 3D effect */
 }
-
 textarea {
     width: 100%;
     height: 150px;
@@ -33,6 +35,9 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.9); /* Adjust background color for better readability */
+    resize: vertical; /* Allow only vertical resizing */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+
 }
 
 button {
@@ -43,7 +48,13 @@ button {
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
 }
 
 button:disabled {

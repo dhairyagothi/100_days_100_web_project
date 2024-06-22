@@ -1,18 +1,22 @@
 "use strict";
-//initializing variables
+
 let playing = true;
 let row = 1;
 let col = 1;
 let inputWord = "";
 
-//getting random secret word
-let date = new Date();
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let secretWord = shuffledWords[31 * (month - 1) + day].toUpperCase();
+// Function to get a random word from the shuffledWords array
+function getRandomWord() {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    return shuffledWords[31 * (month +1) + day].toUpperCase();
+}
+
+let secretWord = getRandomWord();
 let currentBox = "b11";
 
-//selecting elements
+// Selecting elements
 const enterButton = document.querySelector(".enter");
 const backButton = document.querySelector("#back");
 const message = document.querySelector("#message");
@@ -21,7 +25,9 @@ const info = document.querySelector(".info");
 const closeStats = document.querySelector("#closeStats");
 const stats = document.querySelector(".stats");
 const closeResult = document.querySelector("#closeResult");
-//functions
+const resetbutton=document.querySelector("#reset");
+
+// Function to change control based on input
 const changeControl = function (type) {
     if (row === 7) {
         playing = false;
@@ -38,10 +44,12 @@ const changeControl = function (type) {
     }
 };
 
+// Function to get the value of a specific input box
 const getBoxValue = function (elementId) {
     return document.querySelector(`#${elementId}`).value;
 };
 
+// Function to check the guessed word against the secret word
 const checkWord = function (word) {
     for (let i = 0; i < 5; i++) {
         if (word[i] === secretWord[i]) {
@@ -60,16 +68,14 @@ const checkWord = function (word) {
         message.classList.remove("hidden");
         setTimeout(function () {
             message.classList.add("hidden");
-            result.classList.remove("hidden");
-            // console.log("Show result");
+            document.querySelector("#result").classList.remove("hidden");
         }, 1000);
 
         playing = false;
     }
 };
 
-//----------------eventlisteners--------------------------
-//enter button
+// Event listener for the enter button
 enterButton.addEventListener("click", function () {
     if (playing) {
         for (let i = 1; i <= 5; i++) {
@@ -78,7 +84,7 @@ enterButton.addEventListener("click", function () {
                 inputWord = inputWord + document.querySelector(boxId).value;
             }
         }
-        console.log(inputWord, inputWord.length);
+
         if (inputWord.length === 5) {
             if (allowedWords.includes(inputWord.toLowerCase())) {
                 checkWord(inputWord);
@@ -107,50 +113,69 @@ enterButton.addEventListener("click", function () {
     }
 });
 
-//backbutton
+// Event listener for the back button
 backButton.addEventListener("click", function () {
     const boxValue = getBoxValue(currentBox);
     if (boxValue === "") changeControl(-1);
     document.querySelector(`#${currentBox}`).value = "";
 });
 
-//keyboard buttons
+// Event listeners for virtual keyboard buttons
 for (const alphabet of alphabets) {
-    document
-        .querySelector(`#${alphabet}`)
-        .addEventListener("click", function () {
-            if (
-                Number(currentBox[2]) <= 5 &&
-                getBoxValue(currentBox) === "" &&
-                playing === true
-            ) {
-                document.querySelector(`#${currentBox}`).value = alphabet;
-                changeControl(1);
-            }
-        });
+    document.querySelector(`#${alphabet}`).addEventListener("click", function () {
+        if (Number(currentBox[2]) <= 5 && getBoxValue(currentBox) === "" && playing === true) {
+            document.querySelector(`#${currentBox}`).value = alphabet;
+            changeControl(1);
+        }
+    });
 }
 
-//info close button
-closeInfo.addEventListener("click", function () {
-    document.querySelector("#rules").classList.add("hidden");
+// Event listener for physical keyboard input
+document.addEventListener("keydown", function (event) {
+    const key = event.key.toUpperCase();
+    if (playing && key.length === 1 && key >= 'A' && key <= 'Z') {
+        if (Number(currentBox[2]) <= 5 && getBoxValue(currentBox) === "") {
+            document.querySelector(`#${currentBox}`).value = key;
+            changeControl(1);
+        }
+    }
 });
 
-//rules info
+// Event listener for closing the rules popup
+document.addEventListener("DOMContentLoaded", function() {
+    const closeInfo = document.querySelector("#closeInfo");
+    const rulesPopup = document.querySelector("#rules");
+
+    closeInfo.addEventListener("click", function () {
+        rulesPopup.classList.add("hidden");
+    });
+});
+
+// Event listener for showing the rules popup
 info.addEventListener("click", function () {
     document.querySelector("#rules").classList.remove("hidden");
 });
 
-//stats close button
+// Event listener for closing the stats popup
 closeStats.addEventListener("click", function () {
     document.querySelector("#stats").classList.add("hidden");
 });
 
-//rules info
+// Event listener for showing the stats popup
 stats.addEventListener("click", function () {
     document.querySelector("#stats").classList.remove("hidden");
 });
 
-//close result
+// Event listener for closing the result popup
 closeResult.addEventListener("click", function () {
     document.querySelector("#result").classList.add("hidden");
+});
+
+resetbutton.addEventListener("click", function () {
+    // Clear wins and losses statistics from localStorage
+    localStorage.removeItem("wins");
+    localStorage.removeItem("losses");
+
+    // Refresh the page
+    location.reload();
 });
