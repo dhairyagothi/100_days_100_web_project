@@ -9,15 +9,20 @@ class Calculator {
     this.currentOperand = '';
     this.previousOperand = '';
     this.operation = undefined;
+    this.expression = ''; // To store the entire expression
+    this.ans = 0; // Store the last answer
+    this.deg = true; // Default to degrees mode
   }
 
   delete() {
     this.currentOperand = this.currentOperand.toString().slice(0, -1);
+    this.expression = this.expression.toString().slice(0, -1);
   }
 
   appendNumber(number) {
     if (number === '.' && this.currentOperand.includes('.')) return;
     this.currentOperand = this.currentOperand.toString() + number.toString();
+    this.expression = this.expression.toString() + number.toString();
   }
 
   chooseOperation(operation) {
@@ -28,47 +33,42 @@ class Calculator {
     this.operation = operation;
     this.previousOperand = this.currentOperand;
     this.currentOperand = '';
+    this.expression += ` ${operation} `;
   }
 
   compute() {
-    let computation;
-    const prev = parseFloat(this.previousOperand);
-    const current = parseFloat(this.currentOperand);
-    if (isNaN(prev) || isNaN(current)) return;
-    switch (this.operation) {
-      case '+':
-        computation = prev + current;
-        break;
-      case '-':
-        computation = prev - current;
-        break;
-      case '*':
-        computation = prev * current;
-        break;
-      case '÷':
-        computation = prev / current;
-        break;
-      default:
-        return;
+    try {
+      const formattedExpression = this.formatExpression(this.expression);
+      this.currentOperand = eval(formattedExpression); // Evaluate the formatted expression
+      this.ans = this.currentOperand; // Store the result as the last answer
+      this.expression = this.currentOperand.toString();
+    } catch (error) {
+      this.currentOperand = 'Error';
     }
-    this.currentOperand = computation;
     this.operation = undefined;
     this.previousOperand = '';
+    this.updateDisplay();
+  }
+
+  formatExpression(expression) {
+    // Insert multiplication signs where needed (e.g., between a number and an opening bracket)
+    return expression.replace(/(\d)(\()/g, '$1*(').replace(/(\))(\d)/g, ')*$2');
   }
 
   computeFunction(func) {
     let result;
     const current = parseFloat(this.currentOperand);
-    if (isNaN(current)) return;
+    if (isNaN(current) && func !== 'ans') return;
+
     switch (func) {
       case 'sin':
-        result = Math.sin(current);
+        result = Math.sin(this.deg ? (current * Math.PI) / 180 : current);
         break;
       case 'cos':
-        result = Math.cos(current);
+        result = Math.cos(this.deg ? (current * Math.PI) / 180 : current);
         break;
       case 'tan':
-        result = Math.tan(current);
+        result = Math.tan(this.deg ? (current * Math.PI) / 180 : current);
         break;
       case 'sqrt':
         result = Math.sqrt(current);
@@ -99,14 +99,19 @@ class Calculator {
         break;
       case 'rad':
         this.deg = false;
-        break;
+        return; // No need to update the display
       case 'deg':
         this.deg = true;
+        return; // No need to update the display
+      case 'ans':
+        result = this.ans;
         break;
       default:
         return;
     }
+
     this.currentOperand = result;
+    this.expression = result.toString(); // Update the expression with the result
     this.updateDisplay();
   }
 
@@ -117,6 +122,16 @@ class Calculator {
       result *= i;
     }
     return result;
+  }
+
+  appendBracket(bracket) {
+    if (bracket === '(' && this.currentOperand !== '' && !isNaN(this.currentOperand.slice(-1))) {
+      this.expression += `*${bracket}`;
+    } else {
+      this.expression += bracket;
+    }
+    this.currentOperand = '';
+    this.updateDisplay();
   }
 
   getDisplayNumber(number) {
@@ -138,8 +153,7 @@ class Calculator {
   }
 
   updateDisplay() {
-    this.currentOperandTextElement.innerText =
-      this.getDisplayNumber(this.currentOperand);
+    this.currentOperandTextElement.innerText = this.expression || this.getDisplayNumber(this.currentOperand);
     if (this.operation != null) {
       this.previousOperandTextElement.innerText =
         `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
@@ -149,62 +163,94 @@ class Calculator {
   }
 }
 
+// Helper function to determine the active calculator instance
+function activeCalculator() {
+  return document.getElementById('scientific-calculator').classList.contains('hidden') ? basicCalculator : scientificCalculator;
+}
+
+// Initialization of calculator instances
+const basicCalculator = new Calculator(
+  document.querySelector('#basic-calculator [data-previous-operand]'),
+  document.querySelector('#basic-calculator [data-current-operand]')
+);
+
+const scientificCalculator = new Calculator(
+  document.querySelector('#scientific-calculator [data-previous-operand]'),
+  document.querySelector('#scientific-calculator [data-current-operand]')
+);
+
+// Event listeners for number buttons
 const numberButtons = document.querySelectorAll('[data-number]');
-const operationButtons = document.querySelectorAll('[data-operation]');
-const equalsButton = document.querySelector('[data-equals]');
-const deleteButton = document.querySelector('[data-delete]');
-const allClearButton = document.querySelector('[data-all-clear]');
-const previousOperandTextElement = document.querySelector('[data-previous-operand]');
-const currentOperandTextElement = document.querySelector('[data-current-operand]');
-const functionButtons = document.querySelectorAll('[data-function]');
-const toggleScientific = document.getElementById('toggle-scientific');
-
-const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement);
-
 numberButtons.forEach(button => {
   button.addEventListener('click', () => {
-    calculator.appendNumber(button.innerText);
-    calculator.updateDisplay();
+    activeCalculator().appendNumber(button.innerText);
+    activeCalculator().updateDisplay();
   });
 });
 
+// Event listeners for operation buttons
+const operationButtons = document.querySelectorAll('[data-operation]');
 operationButtons.forEach(button => {
   button.addEventListener('click', () => {
-    calculator.chooseOperation(button.innerText);
-    calculator.updateDisplay();
+    activeCalculator().chooseOperation(button.innerText);
+    activeCalculator().updateDisplay();
   });
 });
 
-equalsButton.addEventListener('click', button => {
-  calculator.compute();
-  calculator.updateDisplay();
+// Event listener for equals button
+const equalsButton = document.querySelectorAll('[data-equals]');
+equalsButton.forEach(button => {
+  button.addEventListener('click', () => {
+    activeCalculator().compute();
+  });
 });
 
-allClearButton.addEventListener('click', button => {
-  calculator.clear();
-  calculator.updateDisplay();
+// Event listener for all clear button
+const allClearButton = document.querySelectorAll('[data-all-clear]');
+allClearButton.forEach(button => {
+  button.addEventListener('click', () => {
+    activeCalculator().clear();
+    activeCalculator().updateDisplay();
+  });
 });
 
-deleteButton.addEventListener('click', button => {
-  calculator.delete();
-  calculator.updateDisplay();
+// Event listener for delete button
+const deleteButton = document.querySelectorAll('[data-delete]');
+deleteButton.forEach(button => {
+  button.addEventListener('click', () => {
+    activeCalculator().delete();
+    activeCalculator().updateDisplay();
+  });
 });
 
+// Event listeners for function buttons
+const functionButtons = document.querySelectorAll('[data-function]');
 functionButtons.forEach(button => {
   button.addEventListener('click', () => {
-    calculator.computeFunction(button.getAttribute('data-function'));
-    calculator.updateDisplay();
+    activeCalculator().computeFunction(button.getAttribute('data-function'));
   });
 });
 
+// Event listeners for bracket buttons
+const leftParenButton = document.querySelectorAll('[data-function="left-paren"]');
+leftParenButton.forEach(button => {
+  button.addEventListener('click', () => {
+    activeCalculator().appendBracket('(');
+  });
+});
+
+const rightParenButton = document.querySelectorAll('[data-function="right-paren"]');
+rightParenButton.forEach(button => {
+  button.addEventListener('click', () => {
+    activeCalculator().appendBracket(')');
+  });
+});
+
+// Event listener for toggling between basic and scientific calculator
+const toggleScientific = document.getElementById('toggle-scientific');
 toggleScientific.addEventListener('click', () => {
   const basicCalc = document.getElementById('basic-calculator');
   const scientificCalc = document.getElementById('scientific-calculator');
-  if (scientificCalc.classList.contains('hidden')) {
-    scientificCalc.classList.remove('hidden');
-    basicCalc.classList.add('hidden');
-  } else {
-    scientificCalc.classList.add('hidden');
-    basicCalc.classList.remove('hidden');
-  }
+  scientificCalc.classList.toggle('hidden');
+  basicCalc.classList.toggle('hidden');
 });
