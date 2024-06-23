@@ -52,7 +52,7 @@ class Calculator {
 
   formatExpression(expression) {
     // Insert multiplication signs where needed (e.g., between a number and an opening bracket)
-    return expression.replace(/(\d)(\()/g, '$1*(').replace(/(\))(\d)/g, ')*$2');
+    return expression.replace(/(\d)(\()/g, '$1*($2').replace(/(\))(\d)/g, '$1)*$2');
   }
 
   computeFunction(func) {
