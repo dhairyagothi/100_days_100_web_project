@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖼️</text></svg>">
+  <title>WallpaperWorld</title>
+  
+  <link rel="stylesheet" href="styles.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
+  <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 id="header">WallpaperWorld</h1>
+    <div id="wallpaper-gallery" class="gallery"></div>
+    <div class="pagination">
+      <button id="prev-btn">Previous Page</button>
+      <button id="next-btn">Next Page</button>
+    </div>
+  </div>
+
+  <div id="fullscreen-view" class="fullscreen hidden">
+    <div class="fullscreen-content">
+      <img id="fullscreen-img" src="" alt="Full Screen Wallpaper">
+      <div class="buttons">
+        <button id="close-btn">Close</button>
+        <button id="download-btn">Download</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  
+</body>
+
+</html>
