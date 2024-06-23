@@ -26,7 +26,7 @@ class Calculator {
   }
 
   chooseOperation(operation) {
-    if (this.currentOperand === '') return;
+    if (this.currentOperand === '' && operation !== '-') return; // allow negative numbers
     if (this.previousOperand !== '') {
       this.compute();
     }
@@ -51,8 +51,8 @@ class Calculator {
   }
 
   formatExpression(expression) {
-    // Insert multiplication signs where needed (e.g., between a number and an opening bracket)
-    return expression.replace(/(\d)(\()/g, '$1*($2').replace(/(\))(\d)/g, '$1)*$2');
+    // Replace the division symbol with JavaScript's division operator
+    return expression.replace(/÷/g, '/').replace(/×/g, '*');
   }
 
   computeFunction(func) {
@@ -153,7 +153,7 @@ class Calculator {
   }
 
   updateDisplay() {
-    this.currentOperandTextElement.innerText = this.expression || this.getDisplayNumber(this.currentOperand);
+    this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
     if (this.operation != null) {
       this.previousOperandTextElement.innerText =
         `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
@@ -202,6 +202,7 @@ const equalsButton = document.querySelectorAll('[data-equals]');
 equalsButton.forEach(button => {
   button.addEventListener('click', () => {
     activeCalculator().compute();
+    activeCalculator().updateDisplay(); // Ensure the display is updated after computing
   });
 });
 
