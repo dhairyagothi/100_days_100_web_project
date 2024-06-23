@@ -1,4 +1,7 @@
 # 50_days_50_web_project
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
 
@@ -118,23 +121,25 @@ Stay updated with the latest news and announcements:
 ## Badges
 
 
+## Contributors ✨
+
+Thanks goes to these wonderful people :
 
 
-## Contributors
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/deepesh611"><img src="https://avatars.githubusercontent.com/u/123585104?v=4?s=85" width="85px;" alt="Deepesh Patil"/><br /><sub><b>Deepesh Patil</b></sub></a><br /><a href="https://github.com/dhairyagothi/50_days_50_web_project/commits?author=deepesh611" title="Code">💻</a> <a href="https://github.com/dhairyagothi/50_days_50_web_project/commits?author=deepesh611" title="Documentation">📖</a></td>
+    </tr>
+  </tbody>
+</table>
 
-<!--
-[![Contributors](https://contributors-img.web.app/image?repo=codeharborhub/codeharborhub)](https://github.com/CodeHarborHub/codeharborhub/graphs/contributors)
--->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
-<a href="https://github.com/dhairyagothi/50_days_50_web_project/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=dhairyagothi/50_days_50_web_project" />
-</a>
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
-
-
-
-         
-
-
-
-             
+<!-- This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome! -->
