@@ -1,0 +1,93 @@
+.explore-options {
+    padding: 5rem 0;
+    width: 110rem;
+    margin: auto;
+  }
+  
+  .explore-options .heading {
+    margin: 0px 0px 2rem;
+    color: rgb(54, 54, 54);
+    font-size: 3rem;
+    line-height: 4rem;
+    font-weight: 500;
+  }
+  
+  .accordions {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .accordion {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    border-radius: 0.8rem;
+    padding: 2rem 2.4rem;
+    border: 1px solid rgb(232, 232, 232);
+    cursor: pointer;
+  }
+  
+  .accordion-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 200;
+  }
+  
+  .accordion-container i {
+    font-size: 15px;
+    transition: 0.2s;
+  }
+  
+  .accordion-data {
+    margin-top: 2rem;
+    display: none;
+  }
+  
+  .show {
+    display: block;
+  }
+  
+  .accordion-data ul {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    list-style: none;
+    align-items: center;
+  }
+  
+  .accordion-data li {
+    text-decoration: none;
+    color: rgb(130, 130, 130);
+    font-size: 1.6rem;
+    line-height: 1.8;
+    margin-right: 1rem;
+    font-weight: 200;
+  }
+  
+  .accordion-data li:hover {
+    color: black;
+  }
+  
+  .accordion-data .small-circle {
+    display: inline-block;
+    width: 0.3rem;
+    height: 0.3rem;
+    background: rgb(130, 130, 130);
+    border-radius: 50%;
+    margin-right: 1rem;
+    margin-bottom: 0.35rem;
+  }
+  
+  .animate {
+    transform: rotate(180deg);
+  }
+  
+  @media (max-width: 800px) {
+    .explore-options {
+      margin: 0px 2.4rem;
+      max-width: 100vw;
+      width: auto;
+    }
+  }
