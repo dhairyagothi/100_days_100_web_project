@@ -9,7 +9,9 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="calculator-grid">
+  <button id="toggle-scientific">🕒</button>
+  
+  <div id="basic-calculator" class="calculator-grid">
     <div class="output">
       <div data-previous-operand class="previous-operand"></div>
       <div data-current-operand class="current-operand"></div>
@@ -28,10 +30,52 @@
     <button data-number>7</button>
     <button data-number>8</button>
     <button data-number>9</button>
-    <button data-operation>-</button>
     <button data-number>.</button>
+    <button data-number></button>
     <button data-number>0</button>
     <button data-equals class="span-two">=</button>
+  </div>
+
+  <div id="scientific-calculator" class="calculator-grid hidden">
+    <div class="output">
+      <div data-previous-operand class="previous-operand"></div>
+      <div data-current-operand class="current-operand"></div>
+    </div>
+    <button data-function="rad">Rad</button>
+    <button data-function="deg">Deg</button>
+    <button data-function="factorial">x!</button>
+    <button data-function="left-paren">(</button>
+    <button data-function="right-paren">)</button>
+    <button data-function="percent">%</button>
+    <button data-all-clear>AC</button>
+    <button data-function="inv">Inv</button>
+    <button data-function="sin">sin</button>
+    <button data-function="ln">ln</button>
+    <button data-number>7</button>
+    <button data-number>8</button>
+    <button data-number>9</button>
+    <button data-operation>÷</button>
+    <button data-function="pi">π</button>
+    <button data-function="cos">cos</button>
+    <button data-function="log">log</button>
+    <button data-number>4</button>
+    <button data-number>5</button>
+    <button data-number>6</button>
+    <button data-operation>*</button>
+    <button data-function="e">e</button>
+    <button data-function="tan">tan</button>
+    <button data-function="sqrt">√</button>
+    <button data-number>1</button>
+    <button data-number>2</button>
+    <button data-number>3</button>
+    <button data-operation>-</button>
+    <button data-function="ans">Ans</button>
+    <button data-function="exp">EXP</button>
+    <button data-function="pow">x^y</button>
+    <button data-number>0</button>
+    <button data-number>.</button>
+    <button data-equals>=</button>
+    <button data-operation>+</button>
   </div>
 </body>
 </html>

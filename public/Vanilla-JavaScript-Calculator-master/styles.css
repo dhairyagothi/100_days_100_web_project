@@ -19,9 +19,14 @@ body {
   grid-template-rows: minmax(120px, auto) repeat(5, 100px);
 }
 
+#scientific-calculator {
+  grid-template-columns: repeat(7, 100px);
+  grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+}
+
 .calculator-grid > button {
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 1.5rem;
   border: 1px solid white;
   outline: none;
   background-color: rgba(255, 255, 255, .75);
@@ -55,4 +60,8 @@ body {
 .output .current-operand {
   color: white;
   font-size: 2.5rem;
+}
+
+.hidden {
+  display: none;
 }
