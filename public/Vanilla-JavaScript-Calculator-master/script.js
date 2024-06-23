@@ -10,37 +10,38 @@ class Calculator {
     this.previousOperand = '';
     this.operation = undefined;
     this.expression = ''; // To store the entire expression
-    this.ans = 0; // Store the last answer
     this.deg = true; // Default to degrees mode
+    this.updateDisplay();
   }
 
   delete() {
     this.currentOperand = this.currentOperand.toString().slice(0, -1);
     this.expression = this.expression.toString().slice(0, -1);
+    this.updateDisplay();
   }
 
   appendNumber(number) {
     if (number === '.' && this.currentOperand.includes('.')) return;
     this.currentOperand = this.currentOperand.toString() + number.toString();
     this.expression = this.expression.toString() + number.toString();
+    this.updateDisplay();
   }
 
   chooseOperation(operation) {
-    if (this.currentOperand === '' && operation !== '-') return; // allow negative numbers
-    if (this.previousOperand !== '') {
-      this.compute();
+    if (this.currentOperand === '' && this.expression === '') return;
+    if (this.currentOperand !== '') {
+      this.expression += ` ${operation} `;
+      this.currentOperand = '';
+    } else {
+      this.expression = this.expression.toString().slice(0, -3) + ` ${operation} `;
     }
-    this.operation = operation;
-    this.previousOperand = this.currentOperand;
-    this.currentOperand = '';
-    this.expression += ` ${operation} `;
+    this.updateDisplay();
   }
 
   compute() {
     try {
       const formattedExpression = this.formatExpression(this.expression);
       this.currentOperand = eval(formattedExpression); // Evaluate the formatted expression
-      this.ans = this.currentOperand; // Store the result as the last answer
       this.expression = this.currentOperand.toString();
     } catch (error) {
       this.currentOperand = 'Error';
@@ -52,13 +53,16 @@ class Calculator {
 
   formatExpression(expression) {
     // Replace the division symbol with JavaScript's division operator
-    return expression.replace(/÷/g, '/').replace(/×/g, '*');
+    return expression.replace(/÷/g, '/')
+                     .replace(/×/g, '*')
+                     .replace(/(\d)\(/g, '$1*(')
+                     .replace(/\)(\d)/g, ')*$1');
   }
 
   computeFunction(func) {
     let result;
     const current = parseFloat(this.currentOperand);
-    if (isNaN(current) && func !== 'ans') return;
+    if (isNaN(current)) return;
 
     switch (func) {
       case 'sin':
@@ -103,9 +107,6 @@ class Calculator {
       case 'deg':
         this.deg = true;
         return; // No need to update the display
-      case 'ans':
-        result = this.ans;
-        break;
       default:
         return;
     }
@@ -125,12 +126,16 @@ class Calculator {
   }
 
   appendBracket(bracket) {
-    if (bracket === '(' && this.currentOperand !== '' && !isNaN(this.currentOperand.slice(-1))) {
-      this.expression += `*${bracket}`;
-    } else {
+    if (bracket === '(') {
+      if (this.currentOperand !== '' && !isNaN(this.currentOperand.slice(-1))) {
+        this.expression += `*${bracket}`;
+      } else {
+        this.expression += bracket;
+      }
+      this.currentOperand = ''; // Reset current operand
+    } else if (bracket === ')') {
       this.expression += bracket;
     }
-    this.currentOperand = '';
     this.updateDisplay();
   }
 
@@ -153,7 +158,7 @@ class Calculator {
   }
 
   updateDisplay() {
-    this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
+    this.currentOperandTextElement.innerText = this.expression || this.getDisplayNumber(this.currentOperand);
     if (this.operation != null) {
       this.previousOperandTextElement.innerText =
         `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
@@ -184,7 +189,6 @@ const numberButtons = document.querySelectorAll('[data-number]');
 numberButtons.forEach(button => {
   button.addEventListener('click', () => {
     activeCalculator().appendNumber(button.innerText);
-    activeCalculator().updateDisplay();
   });
 });
 
@@ -193,7 +197,6 @@ const operationButtons = document.querySelectorAll('[data-operation]');
 operationButtons.forEach(button => {
   button.addEventListener('click', () => {
     activeCalculator().chooseOperation(button.innerText);
-    activeCalculator().updateDisplay();
   });
 });
 
@@ -202,7 +205,6 @@ const equalsButton = document.querySelectorAll('[data-equals]');
 equalsButton.forEach(button => {
   button.addEventListener('click', () => {
     activeCalculator().compute();
-    activeCalculator().updateDisplay(); // Ensure the display is updated after computing
   });
 });
 
@@ -211,7 +213,6 @@ const allClearButton = document.querySelectorAll('[data-all-clear]');
 allClearButton.forEach(button => {
   button.addEventListener('click', () => {
     activeCalculator().clear();
-    activeCalculator().updateDisplay();
   });
 });
 
@@ -220,7 +221,6 @@ const deleteButton = document.querySelectorAll('[data-delete]');
 deleteButton.forEach(button => {
   button.addEventListener('click', () => {
     activeCalculator().delete();
-    activeCalculator().updateDisplay();
   });
 });
 
