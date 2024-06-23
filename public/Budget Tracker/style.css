@@ -11,20 +11,35 @@ body {
     height: 100vh;
 }
 
+.main-container {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 80%;
+    max-width: 1200px;
+    height: 90vh;
+}
+
 .container {
+    margin-left: 30px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 600px;
-    max-height: 90vh;
+    width: 48%;
+    height: 100%;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 h1 {
     text-align: center;
     font-size: 53px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .budget-summary {
@@ -65,7 +80,7 @@ table tbody tr:hover {
     background-color: #f9f9f9;
 }
 
-input[type="number"], input[type="text"], button {
+input[type="number"], input[type="text"], select, button {
     width: calc(100% - 22px);
     padding: 10px;
     margin-bottom: 10px;
@@ -79,8 +94,16 @@ button {
     color: #fff;
     border: none;
     cursor: pointer;
+    
 }
 
 button:hover {
     background-color: #2980b9;
+}
+
+.charts {
+    margin-top: 20px;
+    text-align: center;
+    overflow: auto; /* Add scrollbar */
+    max-height: calc(90vh - 80px); /* Adjust height as needed, considering margins and other container heights */
 }
