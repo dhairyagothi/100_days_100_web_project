@@ -1,4 +1,4 @@
-const API_KEY = '3yuctmGlPYidqQZwrCn3oH1wTZx2bwGsK6yISCd13Nknx6lblpSDzFnO';
+const API_KEY = '';
 let PAGE = 1;
 const PER_PAGE = 6;
 let API_URL = `https://api.pexels.com/v1/search?query=nature&page=${PAGE}&per_page=${PER_PAGE}`;
