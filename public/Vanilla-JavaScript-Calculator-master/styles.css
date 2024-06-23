@@ -44,14 +44,16 @@ body {
 
 .output {
   grid-column: 1 / -1;
-  background-color: rgba(0, 0, 0, .75);
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  flex-direction: column;
-  padding: 10px;
-  word-wrap: break-word;
-  word-break: break-all;
+    background-color: rgba(0, 0, 0, .75);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    flex-direction: column;
+    padding-right: 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+    padding-left: 10px;
+    
 }
 
 .output .previous-operand {
@@ -68,3 +70,9 @@ body {
   display: none;
 }
 
+#toggle-scientific {
+  width: 35.2px;
+  height: 32.2px;
+  margin-bottom: 0px;
+  place-self: flex-start;
+}
