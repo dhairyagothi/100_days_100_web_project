@@ -38,10 +38,28 @@ class Calculator {
     this.updateDisplay();
   }
 
+  choosePowerOperation() {
+    if (this.currentOperand === '' && this.expression === '') return;
+    if (this.currentOperand !== '') {
+      this.expression += `^`;
+      this.previousOperand = this.currentOperand;
+      this.currentOperand = '';
+    }
+    this.updateDisplay();
+  }
+
   compute() {
     try {
       const formattedExpression = this.formatExpression(this.expression);
-      this.currentOperand = eval(formattedExpression); // Evaluate the formatted expression
+      const powerMatch = formattedExpression.match(/(\d+)\^(\d+)/);
+      if (powerMatch) {
+        const base = parseFloat(powerMatch[1]);
+        const exponent = parseFloat(powerMatch[2]);
+        this.currentOperand = Math.pow(base, exponent);
+      } else {
+        this.currentOperand = eval(formattedExpression);
+      }
+      this.latestAnswer = this.currentOperand; // Store the latest answer
       this.expression = this.currentOperand.toString();
     } catch (error) {
       this.currentOperand = 'Error';
@@ -62,7 +80,7 @@ class Calculator {
   computeFunction(func) {
     let result;
     const current = parseFloat(this.currentOperand);
-    if (isNaN(current)) return;
+    if (isNaN(current) && func !== 'ans') return;
 
     switch (func) {
       case 'sin':
@@ -107,12 +125,28 @@ class Calculator {
       case 'deg':
         this.deg = true;
         return; // No need to update the display
+      case 'pow':
+        if (this.previousOperand !== '' &&    !isNaN(parseFloat(this. previousOperand))) {
+            const base = parseFloat(this.previousOperand);
+            result = Math.pow(base, current);
+          } else {
+            return;
+          }
+          break;
+      case 'ans':
+        if (this.latestAnswer !== null) {
+            this.currentOperand = this.latestAnswer;
+            this.expression = this.latestAnswer.toString();
+            this.updateDisplay();
+          }
+          return;
       default:
         return;
     }
 
     this.currentOperand = result;
-    this.expression = result.toString(); // Update the expression with the result
+    this.expression = result.toString();
+    this.latestAnswer = result; // Update the latest answer
     this.updateDisplay();
   }
 
@@ -253,5 +287,13 @@ toggleScientificButtons.forEach(button => {
   button.addEventListener('click', () => {
     document.getElementById('basic-calculator').classList.toggle('hidden');
     document.getElementById('scientific-calculator').classList.toggle('hidden');
+  });
+});
+
+// event listener for the x^y button:
+const powerButton = document.querySelectorAll('[data-function="pow"]');
+powerButton.forEach(button => {
+  button.addEventListener('click', () => {
+    activeCalculator().choosePowerOperation();
   });
 });
