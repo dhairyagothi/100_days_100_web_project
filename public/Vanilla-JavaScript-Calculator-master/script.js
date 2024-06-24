@@ -247,11 +247,11 @@ rightParenButton.forEach(button => {
   });
 });
 
-// Event listener for toggling between basic and scientific calculator
-const toggleScientific = document.getElementById('toggle-scientific');
-toggleScientific.addEventListener('click', () => {
-  const basicCalc = document.getElementById('basic-calculator');
-  const scientificCalc = document.getElementById('scientific-calculator');
-  scientificCalc.classList.toggle('hidden');
-  basicCalc.classList.toggle('hidden');
+// Event listener for toggle scientific button
+const toggleScientificButtons = document.querySelectorAll('#toggle-scientific');
+toggleScientificButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    document.getElementById('basic-calculator').classList.toggle('hidden');
+    document.getElementById('scientific-calculator').classList.toggle('hidden');
+  });
 });
