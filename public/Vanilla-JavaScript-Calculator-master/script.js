@@ -38,6 +38,23 @@ class Calculator {
     this.updateDisplay();
   }
 
+  convertCurrentOperand() {
+    const current = parseFloat(this.currentOperand);
+    if (isNaN(current)) return;
+  
+    if (this.deg) {
+      // Convert radians to degrees
+      this.currentOperand = (current * (180 / Math.PI)).toString();
+    } else {
+      // Convert degrees to radians
+      this.currentOperand = (current * (Math.PI / 180)).toString();
+    }
+  
+    this.expression = this.currentOperand.toString();
+    this.updateDisplay();
+  }
+  
+
   choosePowerOperation() {
     if (this.currentOperand === '' && this.expression === '') return;
     if (this.currentOperand !== '') {
@@ -119,12 +136,14 @@ class Calculator {
       case 'e':
         result = Math.E;
         break;
-      case 'rad':
-        this.deg = false;
-        return; // No need to update the display
-      case 'deg':
-        this.deg = true;
-        return; // No need to update the display
+        case 'rad':
+          this.deg = false;
+          this.convertCurrentOperand(); // Convert and update the display
+          return; // No need to update the display further
+        case 'deg':
+          this.deg = true;
+          this.convertCurrentOperand(); // Convert and update the display
+          return; // No need to update the display further
       case 'pow':
         if (this.previousOperand !== '' &&    !isNaN(parseFloat(this. previousOperand))) {
             const base = parseFloat(this.previousOperand);
