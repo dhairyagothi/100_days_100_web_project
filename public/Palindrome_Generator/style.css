@@ -9,67 +9,90 @@
 body {
     background: rgb(4, 22, 112);
     background: linear-gradient(90deg, rgba(4, 22, 112, 1) 0%, rgba(189, 42, 23, 1) 50%, rgba(103, 0, 87, 1) 100%);
-    font-family: "Playwrite ES", cursive;
-    color: white;
+    font-family: 'Roboto', sans-serif; /* Update to desired font */
+    color: #f0f0f0; /* Lighter text color for better contrast */
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 /* Heading styles */
-.heading {
-    color: white;
+h1, h2, h3, h4, h5, h6 {
+    color: #fff; /* White heading color */
+    text-align: center;
 }
 
-/* Font size classes */
-.f1 {
-    font-size: 10px;
-}
-
-.f2 {
-    font-size: 20px;
-}
-
-.f3 {
-    font-size: 30px;
-}
-
-.f4 {
-    font-size: 40px;
-}
-
-.f5 {
-    font-size: 50px;
-}
-
-/* Height class */
-.height {
-    height: 100vh;
-}
-
-/* Button styles */
-.btn {
-    width: fit-content;
-}
-
-/* Custom list item styles */
-.list-group-item {
-    background-color: transparent;
-    color: white;
-    border: none;
-}
-
-/* Additional styles specific to the palindrome generator */
+/* Container styles */
 .container {
     max-width: 600px;
-    margin: 0 auto; /* Center align the container */
-    padding: 20px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent white background */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
 
+/* Form styles */
+.form-label {
+    color: #fff; /* White label color */
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent white background */
+    color: #fff; /* White text color */
+    border-color: transparent; /* Transparent border */
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.2); /* Lighter background on focus */
+    border-color: #fff; /* White border on focus */
+}
+
+.btn-primary {
+    width: 100%;
+    max-width: 200px; /* Max width for larger screens */
+    background-color: #dc3545; /* Bootstrap primary color */
+    border-color: #dc3545; /* Bootstrap primary color */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+.btn-primary:hover {
+    transform: scale(1.05); /* Scale up on hover */
+}
+
+/* Loading text styles */
 .loading-text {
     display: none;
+    text-align: center;
     font-style: italic;
-    color: white;
+    color: #ccc; /* Lighter loading text color */
     margin-top: 1rem;
 }
 
+.loading-text.show {
+    display: block;
+    animation: pulse 1.5s infinite; /* Apply the pulse animation */
+}
+.text-center{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+/* Results styles */
 #palindromeResults {
     margin-top: 2rem;
 }
@@ -79,14 +102,23 @@ body {
 }
 
 .list-group-item {
-    background-color: rgba(255, 255, 255, 0.1); /* Transparent white background */
-    color: white;
-    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.15); /* Lighter background */
+    color: #fff; /* White text color */
+    padding: 1rem; /* Padding */
     margin-bottom: 0.5rem;
     border-radius: 0.25rem;
+    font-size: 1.2rem; /* Increased font size */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
 }
 
-.list-group-item:first-child {
-    margin-top: 0; /* Remove top margin for the first item */
+.list-group-item:hover {
+    background-color: rgba(255, 255, 255, 0.25); /* Lighter background on hover */
+    transform: translateY(-3px); /* Lift on hover */
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+}
