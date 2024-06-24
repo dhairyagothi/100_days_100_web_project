@@ -76,3 +76,15 @@ body {
   margin-bottom: 0px;
   place-self: flex-start;
 }
+#toggle-scientific {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+#toggle-scientific img {
+  width: 35px;
+  height: 35px;
+  border-radius: 100px;
+}
