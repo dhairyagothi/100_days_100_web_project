@@ -1,22 +1,20 @@
 body {
   background-image: url(../images/background.jpg);
-  background-repeat: no-repeat;
   background-size: cover;
-  font-family: Arial, sans-serif;
+  font-family: "Arial", "sans-serif";
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  background-color: white;
   justify-content: space-evenly;
   max-width: 40%;
   height: 300px;
-  margin: 15% auto;
-  padding: 20px;
-  background-color: #fff;
+  margin: 10% auto;
+  padding: 10px 20px 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding-top: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 h1 {
@@ -27,14 +25,14 @@ h3 {
   margin: 0;
 }
 
-.answer-container {
+.answer {
   width: 100%;
   text-align: center;
 }
 
 input {
-  text-align: center;
   width: 30%;
+  text-align: center;
   margin: 10px auto;
   padding: 10px;
   border: 1px solid #ccc;
@@ -55,7 +53,7 @@ button {
   cursor: pointer;
 }
 
-.horizontal-container {
+.score {
   display: flex;
   justify-content: space-between;
 }
