@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Player</title>
+
+    <script src="https://kit.fontawesome.com/5eb2c51ffb.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <section class="music-box" id="musicBox">
+        <div class="blur" id="blurElement"></div>
+        <div class="themes" id="themes">
+            <div class="theme theme1 active-theme" data-theme="theme1"></div>
+            <div class="theme theme2" data-theme="theme2"></div>
+            <div class="theme theme3" data-theme="theme3"></div>
+        </div>
+        <section class="cover-wrapper">
+            <img class="cover-image" id="coverImage" src="" alt="🎵 Cover Image 🎵" srcset="" />
+        </section>
+        <section class="queue">
+            <div class="track-items-wrapper" id="trackItemsWrapper"></div>
+        </section>
+        <section class="track-information">
+            <div>
+                <svg version="1.1" width="480.79175" height="424.00003" x="0" y="0" viewBox="0 0 480.79175 424.00003" xml:space="preserve" class="track-information-icon" id="svg13" sodipodi:docname="artist.svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+          <defs id="defs17" />
+          <sodipodi:namedview id="namedview15" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25"
+            inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0"
+            inkscape:deskcolor="#d1d1d1" showgrid="false" inkscape:zoom="0.4609375" inkscape:cx="241.89831"
+            inkscape:cy="184.40678" inkscape:window-width="1440" inkscape:window-height="837"
+            inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1"
+            inkscape:current-layer="outline" />
+          <g id="g11" style="fill: #adadad" transform="translate(-15.998759,-71.999977)">
+            <g id="outline" style="fill: #adadad">
+              <path
+                d="m 487.288,312.312 -40,-8.151 a 7.979,7.979 0 0 0 -5.942,1.122 l -20.1,13 -68.665,7.506 -0.571,-84.39 3.1,-8.418 26.305,12.377 a 7.994,7.994 0 0 0 10.644,-3.832 l 13.629,-28.95 a 8,8 0 0 0 -3.833,-10.646 l -60.478,-28.452 a 32.041,32.041 0 1 0 -21.372,43.689 c 0.314,-0.081 0.622,-0.176 0.932,-0.266 l 19.641,9.242 -4.085,11.091 A 8,8 0 0 0 336,240.053 l 0.592,87.483 -15.549,1.7 -0.514,-35.972 a 69.842,69.842 0 0 0 -38.194,-61.372 l -21.322,-10.875 -0.062,-0.032 -3.7,-1.882 v -28.9 A 39.764,39.764 0 0 0 264,168 V 127.718 A 28,28 0 0 0 260,72 h -46 a 54.062,54.062 0 0 0 -54,54 v 26 a 24.028,24.028 0 0 0 24,24 h 0.805 a 39.875,39.875 0 0 0 8.445,17.549 V 200 h -22.23 a 127.289,127.289 0 0 0 -66.732,18.887 L 35.18,261.416 a 33.135,33.135 0 0 0 -12.3,13.446 l -3.359,6.718 A 33.2,33.2 0 0 0 48.079,329.643 79.973,79.973 0 0 0 105.25,455.6 V 488 a 8,8 0 0 0 8,8 H 256 a 8,8 0 0 0 7.973,-8.665 l -7.286,-87.377 a 63.245,63.245 0 0 0 5.057,-11.081 l 1.736,6.079 A 18.088,18.088 0 0 0 280.79,408 h 24.46 a 7.886,7.886 0 0 0 0.8,-0.04 v 0 h 0.036 l 31.03,-3.1 0.563,83.2 16,-0.108 -0.551,-81.408 c 0.288,-0.039 0.576,-0.071 0.863,-0.129 l 32.058,-6.449 a 8,8 0 0 0 7.2,-7.96 v -22.393 l 29.893,-3.271 c 0,0 29.704,9.658 30.548,9.658 a 7.989,7.989 0 0 0 3.319,-0.721 l 35.1,-16 a 8,8 0 0 0 4.644,-8.053 l -3.1,-31.85 a 8,8 0 0 0 -6.365,-7.064 z M 366.209,202.843 387.8,213 l -6.815,14.475 -20.329,-9.566 z m -50.2,-1.167 a 16,16 0 1 1 11.491,-19.492 15.878,15.878 0 0 1 -11.495,19.492 z m -48.38,62.216 a 8,8 0 0 0 6.3,-10.344 l -3.081,-9.548 4.218,2.151 a 53.882,53.882 0 0 1 29.465,47.348 l 0.536,37.489 -38.622,4.222 5.316,-21.265 a 8,8 0 0 0 -15.522,-3.88 l -4.621,18.484 A 64.279,64.279 0 0 0 211.3,304.808 l 12.841,-33.67 z m -139.721,99.672 a 8.02,8.02 0 0 0 -2.22,-2.22 L 68.734,323.372 c 0.021,-0.014 0.042,-0.027 0.063,-0.042 l 23,-13.474 39.8,39.8 a 8.016,8.016 0 0 0 4.087,2.188 l 33.57,6.719 V 384 h -27.733 z m 7.173,35.347 a 23.981,23.981 0 0 1 -29.416,-31.686 l 9.815,6.544 13.336,20.017 a 14.007,14.007 0 0 0 6.265,5.125 z m 6.113,-62.28 -24.538,-24.539 a 63.408,63.408 0 0 1 42.287,19.125 8,8 0 0 0 10.946,0.458 47.964,47.964 0 0 1 68.991,6.545 l -60.574,6.62 a 13.916,13.916 0 0 0 -4.316,-1.645 z M 248,168 a 24,24 0 0 1 -48,0 v -40 h 48 z m 3.058,66.739 4.8,14.893 -18.732,3.122 z m -41.808,-29.57 a 39.9,39.9 0 0 0 32,-1.085 v 17.183 l -19.8,25.6 -12.2,-40.054 z M 184,160 a 8,8 0 0 1 0,-16 z m 8,-48 a 8,8 0 0 0 -8,8 v 8 a 23.889,23.889 0 0 0 -8,1.376 V 126 a 38.043,38.043 0 0 1 38,-38 h 46 a 12,12 0 0 1 0,24 z m 4.976,109.437 7.16,23.5 -20.145,-13.429 z M 38.9,310.239 a 17.227,17.227 0 0 1 -5.074,-21.5 l 3.364,-6.727 c 1.434,-2.876 75.483,-49.5 75.483,-49.5 A 111.3,111.3 0 0 1 171.02,216 h 6.86 l -12.48,9.679 a 8,8 0 0 0 0.466,12.977 l 42.688,28.459 -14.212,37.264 a 64.019,64.019 0 0 0 -29.172,10.77 79.246,79.246 0 0 0 -51.5,-19.14 l 26.677,-17.3 a 8,8 0 1 0 -8.706,-13.424 c 0,0 -77.612,48.021 -80.83,48.322 H 50.783 A 17.112,17.112 0 0 1 38.9,310.239 Z M 49.25,376 a 63.773,63.773 0 0 1 12.542,-38.027 l 30.38,20.256 A 39.989,39.989 0 0 0 159.984,400 h 11.266 a 14.008,14.008 0 0 0 12.366,-7.453 l 62.233,-6.807 a 47.987,47.987 0 0 1 -68.871,23.665 8,8 0 0 0 -10.683,2.41 A 64,64 0 0 1 49.25,376 Z M 184,480 h -62.75 v -24.407 a 79.958,79.958 0 0 0 54.05,-29.093 63.848,63.848 0 0 0 8.7,3.117 z m 16,0 v -48.033 c 0.417,0.008 0.833,0.033 1.25,0.033 a 63.7,63.7 0 0 0 40.828,-14.685 L 247.306,480 Z m 97.512,-88 H 280.79 a 2.015,2.015 0 0 1 -1.928,-1.447 l -2.333,-8.169 21.38,-2.338 z M 185.25,376.273 v -16.1 l 151.45,-16.553 0.109,16.076 z m 128.3,14.857 0.426,-12.841 22.943,-2.51 0.088,13.009 z m 32.579,-180.057 -9.507,-4.473 a 32.2,32.2 0 0 0 6.819,-14.468 l 8.237,3.875 z m 31.117,174.368 -24,4.8 v -23.379 c 0,-0.054 0,-0.108 0,-0.162 v -0.141 l 24,-4.8 z m 75.978,-26.02 -26.716,-8.821 a 7.953,7.953 0 0 0 -3.378,-0.356 l -32.045,3.507 a 15.946,15.946 0 0 0 -16.978,-7.686 l -21.36,4.272 -0.058,-8.468 72.181,-7.891 a 7.967,7.967 0 0 0 3.475,-1.235 l 18.948,-12.256 31.008,6.318 1.973,20.281 z"
+                fill="#000000" data-original="#000000" class="" id="path8" style="fill: #adadad" />
+            </g>
+          </g>
+        </svg>
+
+                <div class="track-information-texts" id="trackArtistName"></div>
+            </div>
+            <div>
+                <svg version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 128 128" xml:space="preserve" class="track-information-icon" id="svg10" sodipodi:docname="album.svg" style="enable-background: new 0 0 512 512" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+                    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+          <defs id="defs14" />
+          <sodipodi:namedview id="namedview12" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25"
+            inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0"
+            inkscape:deskcolor="#d1d1d1" showgrid="false" inkscape:zoom="1.3037281" inkscape:cx="239.69721"
+            inkscape:cy="310.64759" inkscape:window-width="1440" inkscape:window-height="837"
+            inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1"
+            inkscape:current-layer="g6" />
+          <g id="g8" style="fill: #adadad" transform="matrix(1.1226926,0,0,1.1226926,-7.7232168,-8.2621092)">
+            <g id="g6" style="fill: #adadad">
+              <path
+                d="m 99.1269,17.0169 h -61.88 a 11.149,11.149 0 0 0 -11.03,9.678 11.148,11.148 0 0 0 -9.68,11.032 v 61.87 a 11.157,11.157 0 0 0 11.14,11.15 h 61.88 a 11.15,11.15 0 0 0 11.031,-9.677 11.15,11.15 0 0 0 9.679,-11.033 v -61.88 a 11.153,11.153 0 0 0 -11.14,-11.14 z m -9.57,90.23 h -61.88 a 7.653,7.653 0 0 1 -7.64,-7.65 v -61.87 a 7.651,7.651 0 0 1 6.07,-7.476 v 59.786 a 11.153,11.153 0 0 0 11.14,11.14 h 59.784 a 7.653,7.653 0 0 1 -7.474,6.07 z m 17.21,-17.21 a 7.649,7.649 0 0 1 -7.64,7.64 h -61.88 a 7.649,7.649 0 0 1 -7.64,-7.64 v -61.88 a 7.648,7.648 0 0 1 7.64,-7.64 h 61.88 a 7.648,7.648 0 0 1 7.64,7.64 z"
+                fill="#000000" data-original="#000000" id="path2" style="fill: #adadad" />
+              <path
+                d="m 89.1739,35.3049 a 1.751,1.751 0 0 0 -1.484,-0.335 l -25.081,5.795 a 1.751,1.751 0 0 0 -1.356,1.705 v 24.528 a 9.1,9.1 0 1 0 3.5,7.161 v -21.4 l 21.581,-4.986 v 13.221 a 9.1,9.1 0 1 0 3.5,7.162 v -31.481 a 1.752,1.752 0 0 0 -0.66,-1.37 z m -33.528,44.461 a 5.607,5.607 0 1 1 5.607,-5.607 5.614,5.614 0 0 1 -5.607,5.607 z m 9.107,-35.9 21.581,-4.987 v 5.305 l -21.581,4.982 z m 15.975,29.9 a 5.607,5.607 0 1 1 5.606,-5.606 5.613,5.613 0 0 1 -5.606,5.602 z"
+                fill="#000000" data-original="#000000" id="path4" style="fill: #adadad" />
+            </g>
+          </g>
+        </svg>
+
+                <div class="track-information-texts" id="trackAlbumName"></div>
+            </div>
+        </section>
+        <section class="track-progress">
+            <div class="track-time" id="currentTrackTimeNumber">0:00</div>
+            <div class="track-progress-bar" id="trackProgressBar">
+                <div id="trackLoading"></div>
+                <div class="track-current-time-progress-bar" id="currentTrackTimeBar"></div>
+            </div>
+            <div class="track-time" id="currentTrackDuration">0:00</div>
+        </section>
+        <section class="buttons">
+            <div class="button" id="previousButton">
+                <svg version="1.1" width="549.64148" height="512.31622" x="0" y="0" viewBox="0 0 49.403337 46.048437" xml:space="preserve" class="" id="svg40" sodipodi:docname="next.svg.2022_09_13_01_11_39.0 - Copy.svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+                    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+          <defs id="defs44" />
+          <sodipodi:namedview id="namedview42" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25"
+            inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0"
+            inkscape:deskcolor="#d1d1d1" showgrid="false" inkscape:zoom="0.39333333" inkscape:cx="279.66102"
+            inkscape:cy="264.40678" inkscape:window-width="1440" inkscape:window-height="837"
+            inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1"
+            inkscape:current-layer="svg40" />
+          <g id="g38" style="fill: #ffffff" transform="matrix(-1,0,0,1,36.965131,0.02843878)">
+            <g id="g6" style="fill: #ffffff">
+              <g id="g4" style="fill: #ffffff">
+                <path
+                  d="m 14.757,46.02 c -1.412,0 -2.825,-0.521 -3.929,-1.569 -2.282,-2.17 -2.373,-5.78 -0.204,-8.063 L 23.382,22.97 10.637,9.645 C 8.46,7.37 8.54,3.76 10.816,1.582 c 2.277,-2.178 5.886,-2.097 8.063,0.179 l 16.505,17.253 c 2.104,2.2 2.108,5.665 0.013,7.872 L 18.893,44.247 c -1.123,1.177 -2.626,1.773 -4.136,1.773 z"
+                  fill="#ffffff" data-original="#000000" id="path2" style="fill: #ffffff" />
+              </g>
+            </g>
+            <g id="g8" style="fill: #ffffff"></g>
+            <g id="g10" style="fill: #ffffff"></g>
+            <g id="g12" style="fill: #ffffff"></g>
+            <g id="g14" style="fill: #ffffff"></g>
+            <g id="g16" style="fill: #ffffff"></g>
+            <g id="g18" style="fill: #ffffff"></g>
+            <g id="g20" style="fill: #ffffff"></g>
+            <g id="g22" style="fill: #ffffff"></g>
+            <g id="g24" style="fill: #ffffff"></g>
+            <g id="g26" style="fill: #ffffff"></g>
+            <g id="g28" style="fill: #ffffff"></g>
+            <g id="g30" style="fill: #ffffff"></g>
+            <g id="g32" style="fill: #ffffff"></g>
+            <g id="g34" style="fill: #ffffff"></g>
+            <g id="g36" style="fill: #ffffff"></g>
+          </g>
+          <g id="g38-4" style="fill: #ffffff" transform="matrix(-1,0,0,1,58.458378,1.7267946e-4)">
+            <g id="g6-1" style="fill: #ffffff">
+              <g id="g4-3" style="fill: #ffffff">
+                <path
+                  d="m 14.757,46.02 c -1.412,0 -2.825,-0.521 -3.929,-1.569 -2.282,-2.17 -2.373,-5.78 -0.204,-8.063 L 23.382,22.97 10.637,9.645 C 8.46,7.37 8.54,3.76 10.816,1.582 c 2.277,-2.178 5.886,-2.097 8.063,0.179 l 16.505,17.253 c 2.104,2.2 2.108,5.665 0.013,7.872 L 18.893,44.247 c -1.123,1.177 -2.626,1.773 -4.136,1.773 z"
+                  fill="#ffffff" data-original="#000000" id="path2-8" style="fill: #ffffff" />
+              </g>
+            </g>
+            <g id="g8-2" style="fill: #ffffff"></g>
+            <g id="g10-1" style="fill: #ffffff"></g>
+            <g id="g12-1" style="fill: #ffffff"></g>
+            <g id="g14-4" style="fill: #ffffff"></g>
+            <g id="g16-0" style="fill: #ffffff"></g>
+            <g id="g18-8" style="fill: #ffffff"></g>
+            <g id="g20-2" style="fill: #ffffff"></g>
+            <g id="g22-3" style="fill: #ffffff"></g>
+            <g id="g24-3" style="fill: #ffffff"></g>
+            <g id="g26-8" style="fill: #ffffff"></g>
+            <g id="g28-1" style="fill: #ffffff"></g>
+            <g id="g30-3" style="fill: #ffffff"></g>
+            <g id="g32-8" style="fill: #ffffff"></g>
+            <g id="g34-2" style="fill: #ffffff"></g>
+            <g id="g36-2" style="fill: #ffffff"></g>
+          </g>
+        </svg>
+            </div>
+            <div class="button" id="playButton">
+                <svg version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" xml:space="preserve" class="" id="svg7" sodipodi:docname="play.svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+          <defs id="defs11" />
+          <sodipodi:namedview id="namedview9" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25"
+            inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0"
+            inkscape:deskcolor="#d1d1d1" showgrid="false" inkscape:zoom="0.70710678" inkscape:cx="277.89296"
+            inkscape:cy="246.07316" inkscape:window-width="1440" inkscape:window-height="837"
+            inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1"
+            inkscape:current-layer="svg7" />
+          <g id="g411" transform="matrix(1.1428832,0,0,1.1428832,-1.3924967,-2.2857665)"
+            style="fill: #ffffff">
+            <g id="g409" data-name="01-Play" style="fill: #ffffff">
+              <path
+                d="M 26.17,12.37 9,2.45 A 3.23,3.23 0 0 0 7.38,2 3.38,3.38 0 0 0 4,5.38 v 21.29 a 3.33,3.33 0 0 0 5.1,2.82 L 26.29,18.63 a 3.65,3.65 0 0 0 -0.12,-6.26 z"
+                fill="#ffffff" data-original="#000000" id="path407" style="fill: #ffffff" />
+            </g>
+          </g>
+        </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 47.607 47.607" style="
+          enable-background: new 0 0 512 512;
+          opacity: 0;
+          position: absolute;
+          " xml:space="preserve" class="">
+          <g>
+            <g xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M17.991,40.976c0,3.662-2.969,6.631-6.631,6.631l0,0c-3.662,0-6.631-2.969-6.631-6.631V6.631C4.729,2.969,7.698,0,11.36,0   l0,0c3.662,0,6.631,2.969,6.631,6.631V40.976z"
+                fill="#ffffff" data-original="#000000"></path>
+              <path
+                d="M42.877,40.976c0,3.662-2.969,6.631-6.631,6.631l0,0c-3.662,0-6.631-2.969-6.631-6.631V6.631   C29.616,2.969,32.585,0,36.246,0l0,0c3.662,0,6.631,2.969,6.631,6.631V40.976z"
+                fill="#ffffff" data-original="#000000"></path>
+            </g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+            <g xmlns="http://www.w3.org/2000/svg"></g>
+          </g>
+        </svg>
+            </div>
+            <div class="button" id="nextButton">
+                <svg version="1.1" width="549.64148" height="512.31622" x="0" y="0" viewBox="0 0 49.403337 46.048437" xml:space="preserve" class="" id="svg40" sodipodi:docname="next.svg.2022_09_13_01_11_39.0.svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+          <defs id="defs44" />
+          <sodipodi:namedview id="namedview42" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25"
+            inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0"
+            inkscape:deskcolor="#d1d1d1" showgrid="false" inkscape:zoom="0.39333333" inkscape:cx="277.11865"
+            inkscape:cy="264.40678" inkscape:window-width="1440" inkscape:window-height="837"
+            inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1"
+            inkscape:current-layer="svg40" />
+          <g id="g38" style="fill: #ffffff" transform="translate(12.438204,0.02843878)">
+            <g id="g6" style="fill: #ffffff">
+              <g id="g4" style="fill: #ffffff">
+                <path
+                  d="m 14.757,46.02 c -1.412,0 -2.825,-0.521 -3.929,-1.569 -2.282,-2.17 -2.373,-5.78 -0.204,-8.063 L 23.382,22.97 10.637,9.645 C 8.46,7.37 8.54,3.76 10.816,1.582 c 2.277,-2.178 5.886,-2.097 8.063,0.179 l 16.505,17.253 c 2.104,2.2 2.108,5.665 0.013,7.872 L 18.893,44.247 c -1.123,1.177 -2.626,1.773 -4.136,1.773 z"
+                  fill="#ffffff" data-original="#000000" id="path2" style="fill: #ffffff" />
+              </g>
+            </g>
+            <g id="g8" style="fill: #ffffff"></g>
+            <g id="g10" style="fill: #ffffff"></g>
+            <g id="g12" style="fill: #ffffff"></g>
+            <g id="g14" style="fill: #ffffff"></g>
+            <g id="g16" style="fill: #ffffff"></g>
+            <g id="g18" style="fill: #ffffff"></g>
+            <g id="g20" style="fill: #ffffff"></g>
+            <g id="g22" style="fill: #ffffff"></g>
+            <g id="g24" style="fill: #ffffff"></g>
+            <g id="g26" style="fill: #ffffff"></g>
+            <g id="g28" style="fill: #ffffff"></g>
+            <g id="g30" style="fill: #ffffff"></g>
+            <g id="g32" style="fill: #ffffff"></g>
+            <g id="g34" style="fill: #ffffff"></g>
+            <g id="g36" style="fill: #ffffff"></g>
+          </g>
+          <g id="g38-4" style="fill: #ffffff" transform="translate(-9.0550423,1.7267946e-4)">
+            <g id="g6-1" style="fill: #ffffff">
+              <g id="g4-3" style="fill: #ffffff">
+                <path
+                  d="m 14.757,46.02 c -1.412,0 -2.825,-0.521 -3.929,-1.569 -2.282,-2.17 -2.373,-5.78 -0.204,-8.063 L 23.382,22.97 10.637,9.645 C 8.46,7.37 8.54,3.76 10.816,1.582 c 2.277,-2.178 5.886,-2.097 8.063,0.179 l 16.505,17.253 c 2.104,2.2 2.108,5.665 0.013,7.872 L 18.893,44.247 c -1.123,1.177 -2.626,1.773 -4.136,1.773 z"
+                  fill="#ffffff" data-original="#000000" id="path2-8" style="fill: #ffffff" />
+              </g>
+            </g>
+            <g id="g8-2" style="fill: #ffffff"></g>
+            <g id="g10-1" style="fill: #ffffff"></g>
+            <g id="g12-1" style="fill: #ffffff"></g>
+            <g id="g14-4" style="fill: #ffffff"></g>
+            <g id="g16-0" style="fill: #ffffff"></g>
+            <g id="g18-8" style="fill: #ffffff"></g>
+            <g id="g20-2" style="fill: #ffffff"></g>
+            <g id="g22-3" style="fill: #ffffff"></g>
+            <g id="g24-3" style="fill: #ffffff"></g>
+            <g id="g26-8" style="fill: #ffffff"></g>
+            <g id="g28-1" style="fill: #ffffff"></g>
+            <g id="g30-3" style="fill: #ffffff"></g>
+            <g id="g32-8" style="fill: #ffffff"></g>
+            <g id="g34-2" style="fill: #ffffff"></g>
+            <g id="g36-2" style="fill: #ffffff"></g>
+          </g>
+        </svg>
+            </div>
+            <div class="button volume-wrapper" id="volumeWrapper">
+                <div class="volume-number" id="volumeNumber">100</div>
+                <div class="volume-button" id="volumeButton">
+                    <div class="main-volume-button">
+                        <svg version="1.1" width="474.216" height="418.98331" x="0" y="0" viewBox="0 0 59.277 52.372913" xml:space="preserve" class="" id="svg10" sodipodi:docname="volume - Copy.svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                            xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+              <defs id="defs14" />
+              <sodipodi:namedview id="namedview12" pagecolor="#ffffff" bordercolor="#000000"
+                borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0"
+                inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" showgrid="false"
+                inkscape:zoom="0.4609375" inkscape:cx="238.64407" inkscape:cy="210.44068"
+                inkscape:window-width="1440" inkscape:window-height="837" inkscape:window-x="-8"
+                inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="g6" />
+              <g id="g6" style="fill: #666666" transform="translate(-2.361,-5.814087)">
+                <path
+                  d="M 42.75,6.963 C 39.885,5.369 36.405,5.437 33.593,7.146 l -14.232,8.693 h -7.205 c -5.401,0 -9.795,4.394 -9.795,9.795 v 12.728 c 0,5.386 4.394,9.768 9.795,9.768 h 7.205 l 14.22,8.685 c 1.446,0.897 3.079,1.372 4.721,1.372 1.519,0 3.057,-0.409 4.447,-1.182 2.916,-1.619 4.657,-4.583 4.657,-7.928 V 14.891 C 47.408,11.532 45.716,8.646 42.75,6.963 Z M 17.924,44.129 h -5.767 c -3.195,0 -5.795,-2.587 -5.795,-5.768 V 25.634 c 0,-3.195 2.6,-5.795 5.795,-5.795 h 5.767 z m 25.484,4.947 c 0,1.898 -0.947,3.514 -2.6,4.432 -1.672,0.929 -3.509,0.904 -5.129,-0.101 l -13.754,-8.4 V 18.961 l 13.75,-8.399 c 1.621,-0.984 3.494,-1.013 5.117,-0.111 1.687,0.958 2.616,2.534 2.616,4.44 z"
+                  fill="#ffffff" data-original="#000000" id="path2" style="fill: #ffffff"
+                  sodipodi:nodetypes="cccssssccscscccssssccsccccccss" />
+              </g>
+            </svg>
+                    </div>
+                    <div class="waves-volume-button" id="wavesVolumeButton">
+                        <div class="low-volume-button">
+                            <svg version="1.1" width="474.216" height="418.98331" x="0" y="0" viewBox="0 0 59.277 52.372913" xml:space="preserve" class="" id="svg10" sodipodi:docname="volume - Copy (2).svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                                xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                <defs id="defs14" />
+                <sodipodi:namedview id="namedview12" pagecolor="#ffffff" bordercolor="#000000"
+                  borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0"
+                  inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" showgrid="false"
+                  inkscape:zoom="0.4609375" inkscape:cx="238.64407" inkscape:cy="210.44068"
+                  inkscape:window-width="1440" inkscape:window-height="837" inkscape:window-x="-8"
+                  inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="g6" />
+                <g id="g6" style="fill: #666666" transform="translate(-2.361,-5.814087)">
+                  <path
+                    d="m 55.482,39.258 c -0.789,-0.774 -2.056,-0.763 -2.828,0.027 -0.773,0.789 -0.761,2.056 0.028,2.828 l 1.389,1.361 c 0.389,0.382 0.895,0.572 1.4,0.572 0.519,0 1.037,-0.2 1.428,-0.6 0.773,-0.789 0.761,-2.056 -0.028,-2.828 z"
+                    fill="#ffffff" data-original="#000000" id="lowVolumeSymbol"
+                    style="fill: #ffffff" sodipodi:nodetypes="ccccsccc" />
+                </g>
+              </svg>
+                        </div>
+                        <div class="medium-volume-button">
+                            <svg version="1.1" width="474.216" height="418.98331" x="0" y="0" viewBox="0 0 59.277 52.372913" xml:space="preserve" class="" id="svg10" sodipodi:docname="volume - Copy (3).svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                                xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                <defs id="defs14" />
+                <sodipodi:namedview id="namedview12" pagecolor="#ffffff" bordercolor="#000000"
+                  borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0"
+                  inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" showgrid="false"
+                  inkscape:zoom="0.4609375" inkscape:cx="238.64407" inkscape:cy="210.44068"
+                  inkscape:window-width="1440" inkscape:window-height="837" inkscape:window-x="-8"
+                  inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="g6" />
+                <g id="g6" style="fill: #666666" transform="translate(-2.361,-5.814087)">
+                  <path
+                    d="m 59.638,29.983 h -1.956 c -1.104,0 -2,0.896 -2,2 0,1.104 0.896,2 2,2 h 1.956 c 1.104,0 2,-0.896 2,-2 0,-1.104 -0.896,-2 -2,-2 z"
+                    fill="#ffffff" data-original="#000000" id="mediumVolumeSymbol"
+                    style="fill: #ffffff" sodipodi:nodetypes="sssssss" />
+                </g>
+              </svg>
+                        </div>
+                        <div class="high-volume-button">
+                            <svg version="1.1" width="474.216" height="418.98331" x="0" y="0" viewBox="0 0 59.277 52.372913" xml:space="preserve" class="" id="svg10" sodipodi:docname="volume - Copy (4).svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                                xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                <defs id="defs14" />
+                <sodipodi:namedview id="namedview12" pagecolor="#ffffff" bordercolor="#000000"
+                  borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0"
+                  inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" showgrid="false"
+                  inkscape:zoom="0.4609375" inkscape:cx="238.64407" inkscape:cy="210.44068"
+                  inkscape:window-width="1440" inkscape:window-height="837" inkscape:window-x="-8"
+                  inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="g6" />
+                <g id="g6" style="fill: #666666" transform="translate(-2.361,-5.814087)">
+                  <path
+                    d="m 54.082,25.31 c 0.512,0 1.024,-0.195 1.414,-0.586 l 1.389,-1.389 c 0.781,-0.781 0.781,-2.047 0,-2.828 -0.78,-0.781 -2.048,-0.781 -2.828,0 l -1.389,1.389 c -0.781,0.781 -0.781,2.047 0,2.828 0.39,0.39 0.902,0.586 1.414,0.586 z"
+                    fill="#ffffff" data-original="#000000" id="highVolumeSymbol"
+                    style="fill: #ffffff" sodipodi:nodetypes="scsccsss" />
+                </g>
+              </svg>
+                        </div>
+                    </div>
+                    <div class="volume-cross" id="volumeCross">
+                        <svg version="1.1" width="474.216" height="418.983" x="0" y="0" viewBox="0 0 59.277 52.372875" xml:space="preserve" class="" id="svg11" sodipodi:docname="volume-cross.svg" inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                            xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+              <defs id="defs15" />
+              <sodipodi:namedview id="namedview13" pagecolor="#ffffff" bordercolor="#000000"
+                borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0"
+                inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" showgrid="false"
+                inkscape:zoom="0.921875" inkscape:cx="221.28814" inkscape:cy="252.74576"
+                inkscape:window-width="1440" inkscape:window-height="837" inkscape:window-x="-8"
+                inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="svg11"
+                showguides="false" />
+              <g id="g9" style="fill: #ffffff"
+                transform="matrix(0.0432537,0,0,0.0432537,45.410256,19.253064)">
+                <g id="g7" style="fill: #ffffff">
+                  <g id="close_1_" style="fill: #ffffff">
+                    <path
+                      d="m 30.391,318.583 c -7.86,0.457 -15.59,-2.156 -21.56,-7.288 -11.774,-11.844 -11.774,-30.973 0,-42.817 L 266.643,10.665 c 12.246,-11.459 31.462,-10.822 42.921,1.424 10.362,11.074 10.966,28.095 1.414,39.875 L 51.647,311.295 c -5.893,5.058 -13.499,7.666 -21.256,7.288 z"
+                      fill="#ffffff" data-original="#000000" class="" id="path2"
+                      style="fill: #ffffff" />
+                    <path
+                      d="m 287.9,318.583 c -7.966,-0.034 -15.601,-3.196 -21.257,-8.806 L 8.83,51.963 C -2.078,39.225 -0.595,20.055 12.143,9.146 c 11.369,-9.736 28.136,-9.736 39.504,0 l 259.331,257.813 c 12.243,11.462 12.876,30.679 1.414,42.922 -0.456,0.487 -0.927,0.958 -1.414,1.414 -6.35,5.522 -14.707,8.161 -23.078,7.288 z"
+                      fill="#ffffff" data-original="#000000" class="" id="path4"
+                      style="fill: #ffffff" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <script src="script.js"></script>
+</body>
+
+</html>
