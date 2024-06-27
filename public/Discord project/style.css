@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/***************/
+/*   Whitney   */
+/***************/
+
+@font-face {
+  font-family: Whitney;
+  font-weight: 300;
+  src: url(fonts/Whitney/Whitney-300.woff) format("woff");
+}
+
+@font-face {
+  font-family: Whitney;
+  font-weight: 400;
+  src: url(fonts/Whitney/Whitney-400.woff) format("woff");
+}
+
+@font-face {
+  font-family: Whitney;
+  font-weight: 500;
+  src: url(fonts/Whitney/Whitney-500.woff) format("woff");
+}
+
+@font-face {
+  font-family: Whitney;
+  font-weight: 600;
+  src: url(fonts/Whitney/Whitney-600.woff) format("woff");
+}
+
+@font-face {
+  font-family: Whitney;
+  font-weight: 700;
+  src: url(fonts/Whitney/Whitney-700.woff) format("woff");
+}
+
+/***************/
+/*    Ginto    */
+/***************/
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 300;
+  src: url(fonts/Ginto/Ginto-300.woff) format("woff");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 400;
+  src: url(fonts/Ginto/Ginto-400.woff) format("woff");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 500;
+  src: url(fonts/Ginto/Ginto-500.woff) format("woff");
+}
+
+@font-face {
+  font-family: Ginto;
+  src: url(fonts/Ginto/Ginto-600.woff) format("woff");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 700;
+  src: url(fonts/Ginto/Ginto-700.woff) format("woff");
+}
+
+/****************/
+/* Ginto-Italic */
+/****************/
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 300;
+  font-style: italic;
+  src: url(fonts/Ginto/Ginto-300-italic.woff) format("woff");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 400;
+  font-style: italic;
+  src: url(fonts/Ginto/Ginto-400-italic.woff) format("woff");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 500;
+  font-style: italic;
+  src: url(fonts/Ginto/Ginto-500-italic.woff) format("woff");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 600;
+  font-style: italic;
+  src: url(fonts/Ginto/Ginto-600-italic.woff) format("woff");
+}
+
+@font-face {
+  font-family: Ginto;
+  font-weight: 700;
+  font-style: italic;
+  src: url(fonts/Ginto/Ginto-700-italic.woff) format("woff");
+}
+
+/**************/
+/* Ginto-Nord */
+/**************/
+
+@font-face {
+  font-family: GintoNord;
+  font-weight: 500;
+  src: url(fonts/Ginto-Nord/Ginto-Nord-500.woff2) format("woff2"),
+    url(fonts/Ginto-Nord/Ginto-Nord-500.woff) format("woff");
+}
+
+@font-face {
+  font-family: GintoNord;
+  font-weight: 600;
+  src: url(fonts/Ginto-Nord/Ginto-Nord-600.woff2) format("woff2"),
+    url(fonts/Ginto-Nord/Ginto-Nord-600.woff) format("woff");
+}
+
+@font-face {
+  font-family: GintoNord;
+  font-weight: 700;
+  src: url(fonts/Ginto-Nord/Ginto-Nord-700.woff2) format("woff2"),
+    url(fonts/Ginto-Nord/Ginto-Nord-700.woff) format("woff");
+}
+
+/***************/
+/*   gg sans   */
+/***************/
+@font-face {
+  font-family: "ggSans";
+  font-weight: 400;
+  src: url(fonts/gg-sans/ggsans-Normal.ttf);
+}
+@font-face {
+  font-family: "ggSans";
+  font-weight: 500;
+  src: url(fonts/gg-sans/ggsans-Medium.ttf);
+}
+@font-face {
+  font-family: "ggSans";
+  font-weight: 600;
+  src: url(fonts/gg-sans/ggsans-Semibold.ttf);
+}
+@font-face {
+  font-family: "ggSans";
+  font-weight: 700;
+  src: url(fonts/gg-sans/ggsans-Bold.ttf);
+}
