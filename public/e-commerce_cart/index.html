@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroStride</title>
+  <link rel="stylesheet" href="index.css">
+  <script type="module" src="index.js"></script>
+</head>
+<body>
+
+  <!-- Nav bar and the cart window-->
+  <header>
+    <div class="navbar">
+      <div class="website_title">AeroStride</div>
+      <div class="button-container">
+        <button class="button">
+          <img src="images_used/home_icon.png" width="17px"/>
+        </button>
+        <button class="button">
+          <img src="images_used/search_icon.png" width="17px"/>
+        </button>
+        <button class="button">
+          <img src="images_used/profile_icon.png" width="19px"/>
+        </button>
+        <div class="box">
+          <div class="cart-count">0</div>
+          <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <div class="cart">
+        <div class="cart-title">Cart Items</div>
+        <div class="cart-content">
+          <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <div class="total">
+          <div class="total-title">Total</div>
+          <div class="total-price">Rs.0</div>
+        </div>
+        <button class="btn-buy">Place Order</button>
+        <img src="images_used/cross.png" name="close" id="cart-close"/>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- hero section of the website-->
+  <div class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Exclusive Collections 2024</h1>
+        <p>Discover our latest range of stylish and comfortable footwear, designed for every occasion.</p>
+        <a class="button1" href="#trending-section">
+          Shop now
+          <img src="images_used/cart_icon.png"/>
+        </a>
+      </div>
+      <div class="hero-image">
+        <img src="images_used/hero_shoe.png" alt="Shoe" width="70%">
+      </div>
+    </div>
+  </div>
+
+  <!-- Trending Right Now section-->
+  <div class="trending-section" id="trending-section">
+    <div class="trending-line"></div>
+    <div class="trending-text">
+        <span>Trending Right Now</span>
+    </div>
+    <div class="trending-line"></div>
+</div>
+
+  <!--Shoe cards (contains same code repeated 8 times)-->
+  <div class="container">
+    <div class="shop-content">
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/messi shoes 0.png" class="shoe-img"></div>
+        <h2 class="shoe-title">GOAT</h2>
+        <span class="shoe-price">Rs.5000</span>
+        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+      </div>
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
+        <h2 class="shoe-title">CR7</h2>
+        <span class="shoe-price">Rs.3000</span>
+        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+      </div>
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
+        <h2 class="shoe-title">The Greek Freak</h2>
+        <span class="shoe-price">Rs.2500</span>
+        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+      </div>
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
+        <h2 class="shoe-title">Sewy</h2>
+        <span class="shoe-price">Rs.1500</span>
+        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+      </div>
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
+        <h2 class="shoe-title">Black Mamba</h2>
+        <span class="shoe-price">Rs.3000</span>
+        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+      </div>
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
+        <h2 class="shoe-title">Jordan X</h2>
+        <span class="shoe-price">Rs.2500</span>
+        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+      </div>
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
+        <h2 class="shoe-title">KING</h2>
+        <span class="shoe-price">Rs.5000</span>
+        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+      </div>
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
+        <h2 class="shoe-title">Mr.360</h2>
+        <span class="shoe-price">Rs.5000</span>
+        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+      </div>
+    </div>
+  </div>
+
+  <!--footer section of the website-->
+  <footer class="site-footer">
+    <div class="container1">
+      <div class="footer-about">
+        <h3>About Us</h3>
+        <p style="margin-top:15px;">At AeroStride, we blend innovative design with exceptional comfort
+          to create stylish, high-performance footwear. Our mission is to 
+          support your every step with shoes that fit seamlessly into your 
+          dynamic lifestyle. Discover the perfect balance of style and 
+          functionality with AeroStride.
+        </p>
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#hero" style="margin-left:15px;font-size:18px;">Home</a></li>
+          <li><a href="#trending-section" style="margin-left:15px;font-size:18px;">Shoes</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact" id="footer">
+        <h3>Contact Us</h3>
+        <p style="margin-top:15px;">Email: info@example.com</p>
+        <p>Phone: +123 456 7890</p>
+      </div>
+    </div>
+    <div class="copyright_part"><span style="margin-right:10px;">&copy;</span>AeroStride 2024</div>
+  </footer>
+
+  
+
+  <script src="js/script.js"></script>
+</body>
+</html>
