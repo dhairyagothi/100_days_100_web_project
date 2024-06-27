@@ -1,0 +1,458 @@
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+    background-color: #ff4757;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: black;
+    height: 80px;
+    padding: 0 10px;
+}
+
+.website_title {
+    color: #fff;
+    font-size: 35px;
+    flex-grow: 1;
+    margin-left: 40px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    }
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+.button {
+    outline: 0 !important;
+    border: 0 !important;
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+    border-radius: 50%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    transition: all ease-in-out 0.3s;
+    cursor: pointer;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+}
+
+    /* hero section*/
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    background-color: #f4f4f4;
+    min-height: 70vh;
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.hero-text {
+    max-width: 50%;
+    padding-left: 20px;
+}
+
+.hero-text h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.hero-text p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+.hero-image img {
+    max-width: 70%;
+    height: auto;
+    margin-left: 250px;
+    margin-top:100px;
+}
+
+.button1 img{
+    width:10%;
+
+}
+
+.button1 {
+    height:50px;
+    width:200px;
+    background-image: linear-gradient(#000000, rgb(0, 0, 0));
+    border: none;
+    border-radius: 50px;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    box-shadow: 1px 3px 0px #18cfe7;
+    transition-duration: 0.3s;
+}
+
+.button1:active {
+    transform: translate(2px, 0px);
+    box-shadow: 0px 1px 0px rgb(0, 0, 0);
+    padding-bottom: 1px;
+}
+
+
+    /* nav bar cart icon- the display part before click on cart button */
+.box {
+    color: white;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    position: relative;
+    margin-right:10px;
+}
+
+.cart-count {
+    position: absolute;
+    background-color: #2f3542;
+    top: -5px;
+    right: 0;
+    padding: 3px;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    z-index: 99;
+}
+
+#cart-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-top:3px;
+    width: 75%;
+}
+
+
+    
+    /*trending right now*/
+.trending-section {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.trending-text {
+    font-size: 2em;
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.trending-text::before,
+.trending-text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 100px;
+    height: 2px;
+    background-color: #000;
+    transform: translateY(-50%);
+}
+
+.trending-text::before {
+    right: 100%;
+    margin-right: 10px;
+}
+
+.trending-text::after {
+    left: 100%;
+    margin-left: 10px;
+}
+
+    /* shoe-cards*/
+.container {
+    max-width: 1200px;
+    padding: 4rem;
+    margin: auto;
+    width: 100%;
+}
+
+h2.title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+}
+
+.shop-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, auto));
+    gap: 1.5rem;
+    justify-content: center;
+    align-content: center;
+}
+
+.shoe-box {
+    position: relative;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 1px 4px rgba(40, 37, 37, 0.1);
+    border-radius: 3px;
+    width: 250px;
+    height: 300px;
+    object-fit: contain;
+}
+
+.pic {
+    overflow: hidden;
+}
+
+.pic:hover img {
+    transform: scale(1.5);
+}
+
+.shoe-img {
+    transition: 0.4s;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    width:100%;
+}
+
+.shoe-title {
+    margin-top:10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ff6348;
+}
+
+.shoe-price {
+    font-weight: 500;
+}
+
+.add-cart {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #2ed573;
+    color: white;
+    padding: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.5s;
+    width:15%;
+}
+
+.add-cart:hover {
+    background-color: rgba(255, 0, 0, 0.786);
+}
+
+
+    /*the cart on the side ,when top cart icon is pressed*/
+.cart {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 400px;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(40, 37, 37, 0.1);
+    z-index: 100;
+}
+
+.cart-active {
+    right: 0;
+    transition: 0.5s;
+}
+
+.cart-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cart-box {
+    display: grid;
+    grid-template-columns: 32% 50% 18%;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+}
+
+.cart-img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 5px;
+}
+
+.detail-box {
+    display: grid;
+    row-gap: 0.5rem;
+}
+
+.price-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart-shoe-title {
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: #ff6348;
+    font-weight: 500;
+}
+
+.cart-price {
+    font-weight: 500;
+}
+
+.cart-quantity {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    outline: none;
+    width: 2.4rem;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.cart-remove {
+    font-size: 24px;
+    color: red;
+    cursor: pointer;
+}
+
+.total {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.total-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.total-price {
+    margin-left: 0.5rem;
+}
+
+.btn-buy {
+    padding: 12px 20px;
+    background-color: #2f3542;
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#cart-close {
+    position: absolute;
+    top: 1rem;
+    right: 0.8rem;
+    font-size: 2rem;
+    cursor: pointer;
+    width:5%;
+    margin-top:15px;
+    margin-right: 20px;
+}
+
+
+
+    /* footer part of the website*/
+.site-footer {
+    background-color: #000000;
+    color: white;
+    padding: 20px 0;
+    margin-top:70px;
+}
+    
+.container1 {
+    margin-left:180px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+    
+.footer-about,
+.footer-links,
+.footer-contact {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+}
+
+.footer-links{
+    margin-left:100px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 10px;
+}
+
+.footer-links ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 600px) {
+    .container {
+    flex-direction: column;
+    align-items: center;
+    }
+
+    .footer-about,
+    .footer-links,
+    .footer-contact {
+    min-width: 100%;
+    text-align: center;
+    }
+}
+
+.copyright_part{
+    margin-top:20px;
+    display:flex;
+    justify-content: center;
+}

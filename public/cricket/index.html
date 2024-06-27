@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cricket_Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1 style="color: white;">Ball Bat Stump Game</h1>
+  <button  class="game_buttons"  onclick="
+  let usermsg='Bat';
+
+  let computerchoice=computergeneratechoice();
+
+  let cmpmsg=computerchoice;
+
+
+  let result=getresult(usermsg,computerchoice);
+  /*
+  if(computerchoice==='Bat'){
+    result='both are tie';
+  }
+  else if(computerchoice ==='Ball'){
+    result='user won';
+  }
+  else{
+    result='computer won';
+  }
+  */
+
+
+//  alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
+showresult(usermsg,cmpmsg,result);
+
+  
+  
+  
+  ">  
+<img src="bat.jpeg"  class="game_image" alt="Bat_button">
+</button>
+
+  <button  class="game_buttons"   onclick="
+  usermsg='Ball';
+  computerchoice=computergeneratechoice();
+  cmpmsg=computerchoice;
+
+  result=getresult('Ball',computerchoice);
+
+  /*
+  if(computerchoice==='Bat'){
+    result='computer won';
+  }
+  else if(computerchoice ==='Ball'){
+    result='its a tie';
+  }
+  else{
+    result='user won';
+  }
+  */
+
+
+ // alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
+
+ showresult(usermsg,cmpmsg,result);
+  
+  
+  
+  ">  <img src="ball.jpeg"  class="game_image" alt="Ball_button">  </button>
+
+  <Button    class="game_buttons"  onclick="
+  usermsg='stump';
+
+  computerchoice=computergeneratechoice();
+  cmpmsg=computerchoice;
+
+  result=getresult('stump',computerchoice);
+
+  /*
+  if(computerchoice==='Bat'){
+    result='user won';
+  }
+  else if(computerchoice ==='Ball'){
+    result='computer won';
+  }
+  else{
+    result='tie';
+  }
+  */
+
+
+  //alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
+  showresult(usermsg,cmpmsg,result);
+  
+  
+  
+  ">  <img src="wickets.jpeg"   class="game_image" alt="wickets_button">  </Button>
+
+
+
+
+
+
+<!-- use moves and results in a heading type instead of using alert.. -->
+
+<div class="show">
+
+<h2 id="user-move"></h2>
+<h2 id="computer-move"></h2>
+<h2 id="result"></h2>
+<h2 id="score"></h2>
+
+</div>
+
+
+
+<button   onclick="localStorage.clear()
+resetscore(); //undefind value..             //without this function ,only the values in storage location can be changed..
+                                      //using reset function we can also so in alert notification 
+" id="reset">  RESET </button>
+
+
+<!-- added script -->
+<script src="script.js"></script>  
+  
+</body>
+</html>
