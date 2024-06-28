@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Text Conversion</title>
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-tr from-blue-600 to-emerald-400 flex justify-center items-center h-screen">
+    <div
+        class="bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border border-gray-100 p-6">
+        <h1 class="text-3xl font-bold mb-6 text-center text-white">Image to Text Conversion</h1>
+        <input type="file" id="fileInput" accept="image/*"
+            class="mb-4 w-full py-2 px-4 rounded-lg bg-white bg-opacity-50 backdrop-blur-md">
+        <button onclick="convertImage()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-full">Convert
+            Image</button>
+        <div class="flex flex-col justify-center items-center">
+            <div id="output" class="mt-8 p-4 bg-white bg-opacity-50 backdrop-blur-md rounded-lg text-center">Select an
+                image and get started</div>
+            <img id="imagePreview" class="hidden rounded-lg shadow-md h-96 w-full" src="#" alt="Selected Image Preview">
+        </div>
+    </div>
+
+    <script src='https://unpkg.com/tesseract.js@4.0.1/dist/tesseract.min.js'></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
