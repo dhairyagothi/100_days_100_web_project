@@ -1,10 +1,29 @@
-.chat-container {
+ body{
     background-color: white;
+    color: black;
+}
+
+/* Dark mode */
+body.dark-mode {
+    background-color: black;
+    color:white;
+    
+}
+/* styles.css */
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.chat-container {
+    background-color: rgba(51, 110, 123);
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 100%;
     margin: auto;
+    position:absolute;
+    bottom: 0;
     
 }
 
@@ -159,15 +178,15 @@ pre code {
 }
 
 .user-message {
-    background-color: var(--user-message-bg-color);
-    color: var(--user-message-text-color);
+    background-color: white;   /*var(--user-message-bg-color); */
+    color:var(--user-message-text-color);
     align-self: flex-end;
     text-align: right;
     border-bottom-right-radius: 5px;
 }
 
 .ai-message {
-    background-color: var(--ai-message-bg-color);
+    background-color:  white;   /* var(--ai-message-bg-color); */
     color: var(--ai-message-text-color);
     align-self: flex-start;
     border-bottom-left-radius: 5px;
