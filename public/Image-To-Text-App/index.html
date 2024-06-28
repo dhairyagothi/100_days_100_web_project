@@ -18,10 +18,10 @@
         <button onclick="convertImage()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-full">Convert
             Image</button>
-        <div class="flex flex-col justify-center items-center">
-            <div id="output" class="mt-8 p-4 bg-white bg-opacity-50 backdrop-blur-md rounded-lg text-center">Select an
+        <div class="mt-4 flex flex-col md:flex-row gap-10 justify-center items-center">
+            <div id="output" class="p-4 bg-white bg-opacity-50 backdrop-blur-md rounded-lg text-center h-auto max-h-64 max-w-96 overflow-scroll">Select an
                 image and get started</div>
-            <img id="imagePreview" class="hidden rounded-lg shadow-md h-96 w-full" src="#" alt="Selected Image Preview">
+            <img id="imagePreview" class="hidden rounded-lg shadow-md h-64 max-w-96 overflow-x-scroll" width="auto" src="#" alt="Selected Image Preview">
         </div>
     </div>
 
