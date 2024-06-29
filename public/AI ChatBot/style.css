@@ -1,32 +1,15 @@
- body{
-    background-color: white;
-    color: black;
-}
-
-/* Dark mode */
-body.dark-mode {
-    background-color: black;
-    color:white;
-    
-}
-/* styles.css */
-
-body {
-    transition: background-color 0.3s, color 0.3s;
-}
-
 .chat-container {
-    background-color: rgba(51, 110, 123);
+    background-color: rgb(87, 143, 190);
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 100%;
     margin: auto;
-    position:absolute;
-    bottom: 0;
-    
+    position: relative;
+    height: 90vh;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
 }
-
 
 .copy-btn {
     display: inline-block;
@@ -34,7 +17,7 @@ body {
     margin-top: 5px;
     cursor: pointer;
     font-size: 0.8em;
-    background-color: #007bff; /* Updated to match user-message background color */
+    background-color: #0065d2; /* Updated to match user-message background color */
     color: white;
     border: none;
     border-radius: 3px;
@@ -55,17 +38,15 @@ body {
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Optional: add a focus style that matches your design */
 }
 
-
 pre code {
     padding: 12px;
-	position: relative;
-	color: #dcdcdc; /* Light grey color for better contrast */
+    position: relative;
+    color: #dcdcdc; /* Light grey color for better contrast */
     background: #333; /* Darker background for the code block */
     border-radius: 8px;
     overflow-x: auto;
     font-family: 'Source Code Pro', monospace; /* Use a monospaced font for better code readability */
 }
-
 
 .loading {
     display: flex;
@@ -103,7 +84,6 @@ pre code {
     }
 }
 
-
 #output-field {
     background-color: var(--ai-message-bg-color);
     border-radius: 12px;
@@ -118,10 +98,12 @@ pre code {
     color: #000000;
 }
 
-
 .input-group {
+    display: flex;
     flex-wrap: nowrap;
     align-items: stretch;
+    margin-top: auto;
+    margin-bottom:10px;
 }
 
 .input-group-text {
@@ -150,7 +132,7 @@ pre code {
 }
 
 #send-btn {
-    background-color: var(--user-message-bg-color);
+    background-color: rgba(51, 110, 123); /* var(--user-message-bg-color); */
     color: var(--user-message-text-color);
     border: 1px solid var(--user-message-bg-color);
     border-radius: 0 20px 20px 0;
@@ -160,13 +142,13 @@ pre code {
 }
 
 #send-btn:hover {
-    background-color: var(--button-hover-color);
+    background-color: rgba(51, 110, 123);
 }
 
 #output-container {
+    flex-grow: 1; /* Allow the output container to grow and take up available space */
     overflow-y: auto;
-    max-height: 65vh;
-    margin-bottom: 20px;
+    padding-right: 10px; /* Optional: Add some padding for better appearance */
 }
 
 .chat-message {
@@ -178,15 +160,15 @@ pre code {
 }
 
 .user-message {
-    background-color: white;   /*var(--user-message-bg-color); */
-    color:var(--user-message-text-color);
+    background-color: white; /* var(--user-message-bg-color); */
+    color: var(--user-message-text-color);
     align-self: flex-end;
     text-align: right;
     border-bottom-right-radius: 5px;
 }
 
 .ai-message {
-    background-color:  white;   /* var(--ai-message-bg-color); */
+    background-color: white; /* var(--ai-message-bg-color); */
     color: var(--ai-message-text-color);
     align-self: flex-start;
     border-bottom-left-radius: 5px;
@@ -198,7 +180,6 @@ pre code {
     position: relative;
     z-index: 20;
 }
-
 
 /* Responsive adjustments as needed */
 @media (max-width: 768px) {
@@ -225,5 +206,12 @@ pre code {
     .input-group-text {
         border-radius: 20px;
     }
+}
 
+.btn-primary {
+    background-color: rgb(23, 45, 93);
+    border-radius: 40%;
+}
+.user-message {
+    margin-right: 0;
 }

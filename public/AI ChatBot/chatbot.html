@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="chat-container">
-    <div id="output-field">How can I help you today?</div>
+    <div id="output-field">AI Chatbot</div>
     <div id="output-container" class="mb-3"></div>
     <div class="input-group mb-3">
         <!-- Image Preview Inside Input -->
@@ -30,14 +30,12 @@
             </svg>
         </button>
         <input type="file" id="image-input" accept="image/*">
-        <button id="generate-btn" class="btn btn-primary">Send</button>
-        <button id="toggle-dark-mode">Dark Mode</button>
-       
+        <button id="generate-btn" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i>Send</button>       
     </div>
 </div>
-
 <style>
     body, html {
+      
         height: 100%;
         margin: 0;
         display: block;
@@ -47,6 +45,7 @@
         padding-right: 10px;
         justify-content: center;
         align-items: center;
+        background-color: rgba(1, 50, 67);
         background-image: url(Hackathon\ images/org.jpeg); /* Optional: to visualize the centering */
     }
 </style>
@@ -57,24 +56,6 @@
         "@google/generative-ai": "https://esm.run/@google/generative-ai"
     }
 }
-</script>
-<script>
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    if (localStorage.getItem('dark-mode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-    }
-});
-
-document.getElementById('toggle-dark-mode').addEventListener('click', function() {
-    document.body.classList.toggle('dark-mode');
-    if (document.body.classList.contains('dark-mode')) {
-        localStorage.setItem('dark-mode', 'enabled');
-    } else {
-        localStorage.setItem('dark-mode', 'disabled');
-    }
-});
-
 </script>
 
 <script type="module">
