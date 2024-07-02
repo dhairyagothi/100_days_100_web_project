@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Blog</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header id="main-header" class="header1">
+        <nav>
+            <div class="logo">
+                DevBlog
+            </div>
+            <ul>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" id="authBtn">Login/Signup</a></li>
+            </ul>
+            <button id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <div class="video-background">
+                <video autoplay muted loop id="myVideo">
+                    <source src="./assets/61695-499594106_medium.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="intro-text">
+                <h1>Welcome to DevBlog</h1>
+                <p>Your go-to resource for cutting-edge development insights and tutorials.</p>
+            </div>
+        </section>
+
+        <div class="content-wrapper">
+            <section id="blog">
+                <h2>Latest Posts</h2>
+                <div id="blogPosts"></div>
+                <button id="morePosts" class="more-posts-btn">More Posts</button>
+            </section>
+            <aside id="sidebar">
+                <div id="authors">
+                    <h3>Top Authors</h3>
+                </div>
+                <div id="categories">
+                    <h3>Categories</h3>
+                </div>
+            </aside>
+        </div>
+
+        <section id="about-contact" id="about" id="contact">
+            <div class="about-contact-wrapper">
+                <div class="about-us" id="about" >
+                    <h2>About Us</h2>
+                    <div class="about-content">
+                        <img src="./assets/writer_6543533.png" alt="Ayush Carpenter" class="about-photo">
+                        <div class="about-text">
+                            <h3>Ayush Carpenter</h3>
+                            <p>Hi, I'm Ayush Carpenter, the creator of DevBlog. I'm passionate about web development and sharing knowledge with the community. With years of experience in the field, I aim to provide valuable insights and tutorials to help developers of all levels grow their skills.</p>
+                        </div>
+                    </div>
+                    <div class="social-icons" style="justify-content: center;margin: 34px;">
+                        <a href="https://linkedin.com/in/ayushcarpenter" target="_blank"><img src="./assets/linkedin.png"></a>
+                        <a href="https://twitter.com/carpenterAyush" target="_blank"><img src="./assets/github.png"></i></a>
+                        <a href="https://github.com/Ayushswirlon" target="_blank"><img src="./assets/discord.png"></a>
+                        
+                    </div>
+                </div>
+                <div class="contact-us" id="contact" >
+                    <h2>Contact Us</h2>
+                    <form id="contactForm">
+                        <input type="text" placeholder="Name" required>
+                        <input type="email" placeholder="Email" required>
+                        <textarea placeholder="Message" required></textarea>
+                        <button type="submit">Send Message</button>
+                    </form>
+                    <div class="subscribe">
+                        <h3>Subscribe to Our Blog</h3>
+                        <form id="subscribeForm">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About DevBlog</h4>
+                <p>DevBlog is your source for the latest in web development, programming tips, and tech insights.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="quick-links" type="none">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="https://linkedin.com/in/ayushcarpenter" target="_blank"><img src="./assets/linkedin.png"></a>
+                    <a href="https://twitter.com/carpenterAyush" target="_blank"><img src="./assets/github.png"></i></a>
+                    <a href="https://github.com/Ayushswirlon" target="_blank"><img src="./assets/icons8-facebook-96.png"></a>
+                    <a href="https://github.com/Ayushswirlon" target="_blank"><img src="./assets/icons8-youtube-96.png"></a>
+                </div>
+                <p>Email at</p>
+                <n style="padding: 0px;margin: 0px;">devblogs.info@gmail.com</n>
+                
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 DevBlog. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+            <form id="loginForm" class="auth-form active">
+                <h2>Login</h2>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <form id="signupForm" class="auth-form">
+                <h2>Sign Up</h2>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    
+    
+    <button id="backToTop" title="Back to Top"><img src="assets/arrow_6353601.png" style="height: 50px;width: 50px;"></button>
+
+
+    <script src="script.js"></script>
+</body>
+</html>

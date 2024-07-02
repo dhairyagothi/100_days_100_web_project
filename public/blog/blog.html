@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBlog - Blog</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header id="main-header" class="header1">
+        <nav>
+            <div class="logo">
+                DevBlog
+            </div>
+            <ul>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" id="authBtn">Login/Signup</a></li>
+            </ul>
+            <button id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main class="blog-content">
+        <div class="featured-posts-slider">
+            <!-- Featured posts slider will be populated by JavaScript -->
+        </div>
+        <div class="search-container">
+            <form id="search-form">
+                <input type="text" placeholder="Search by author, tag, or date..." id="search-input">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="two-column-layout">
+            <div class="main-content">
+                <div id="blogPosts">
+                    <!-- Blog posts will be populated by JavaScript -->
+                </div>
+                <div class="pagination">
+                    <button id="prevPage">Previous</button>
+                    <span id="currentPage">1</span>
+                    <button id="nextPage">Next</button>
+                </div>
+            </div>
+            <aside class="sidebar">
+                <div class="widget">
+                    <h3>Categories</h3>
+                    <div id="categories">
+                        <!-- Categories will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="widget">
+                    <h3>Recent Posts</h3>
+                    <ul id="recentPosts">
+                        <!-- Recent posts will be populated by JavaScript -->
+                    </ul>
+                </div>
+                <div class="widget">
+                    <h3>Popular Posts</h3>
+                    <ul id="popularPosts">
+                        <!-- Popular posts will be populated by JavaScript -->
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <section id="subscribe">
+        <div class="container">
+            <h2>Subscribe to Our Blog</h2>
+            <p>Stay updated with our latest posts!</p>
+            <form id="subscribe-form">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About DevBlog</h4>
+                <p>DevBlog is your source for the latest in web development, programming tips, and tech insights.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="quick-links" type="none">
+                    <li><a href="main.html">Home</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="https://linkedin.com/in/ayushcarpenter" target="_blank"><img src="./assets/linkedin.png"></a>
+                    <a href="https://twitter.com/carpenterAyush" target="_blank"><img src="./assets/github.png"></i></a>
+                    <a href="https://github.com/Ayushswirlon" target="_blank"><img src="./assets/icons8-facebook-96.png"></a>
+                    <a href="https://github.com/Ayushswirlon" target="_blank"><img src="./assets/icons8-youtube-96.png"></a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 DevBlog. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+            <form id="loginForm" class="auth-form active">
+                <h2>Login</h2>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <form id="signupForm" class="auth-form">
+                <h2>Sign Up</h2>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <button id="backToTop" title="Back to Top"><img src="assets/arrow_6353601.png" style="height: 50px;width: 50px;"></button>
+
+    <script src="blog-script.js"></script>
+</body>
+</html>
