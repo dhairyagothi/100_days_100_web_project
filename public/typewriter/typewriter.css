@@ -30,8 +30,9 @@ body {
     border-radius: 10px;
     background-color: var(--container-bg-color);
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-    width: 390px;
+    width: 600px;
     height: 60px;
+    font-size: 50px;
 }
 .text {
     position: relative;
