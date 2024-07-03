@@ -30,12 +30,15 @@ body {
     border-radius: 10px;
     background-color: var(--container-bg-color);
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    width: 390px;
+    height: 60px;
 }
 .text {
     position: relative;
     color: var(--accent-color);
-    margin-left: 10px; /* Add space between "I am a" and the changing text */
+    margin-left: 10px; 
 }
+
 .cursor {
     display: inline-block;
     background-color: var(--accent-color);
