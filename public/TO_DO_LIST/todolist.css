@@ -155,12 +155,12 @@ body {
 .document-item {
     margin-top: 30px;
     width: 80%;
-    padding: 10px;
+    padding: 10px 8px;
     background-color: white;
     color: black;
-    border-radius: 10px;
+    border-radius: 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     transition: background-color 0.3s;
 }
@@ -171,6 +171,8 @@ body {
     margin-left: 10px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    padding: 5px 8px;
+    border-radius: 10px;
 }
 .document-item button:hover {
     background-color: black;
