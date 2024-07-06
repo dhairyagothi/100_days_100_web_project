@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #0A0A23; /* Dark blue background */
+}
+.wrapper {
+  width: 65vmin;
+  height: 75vmin;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background: #1E1E3F; /* Dark theme for game board */
+  box-shadow: 0 20px 40px rgba(52, 87, 220, 0.2);
+}
+.game-details {
+  color: #B8C6DC;
+  font-weight: 500;
+  font-size: 1.2rem;
+  padding: 20px 27px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.play-board {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  background: #2C2C54; /* Darker background for play board */
+  grid-template: repeat(30, 1fr) / repeat(30, 1fr);
+}
+.play-board .food {
+  background: #FF003D; /* Contrasting red food */
+}
+.play-board .bonus-food {
+  background: #FFD700; /* Gold for bonus food */
+}
+.play-board .head {
+  background: #60CBFF; /* Light blue for snake */
+}
+.play-board .obstacle {
+  background: #000000; /* Black for obstacles */
+}
+.play-board .power-up {
+  background: #00FF00; /* Green for power-ups */
+}
+.controls {
+  display: none;
+  justify-content: space-between;
+}
+.controls i {
+  padding: 25px 0;
+  text-align: center;
+  font-size: 1.3rem;
+  color: #B8C6DC;
+  width: calc(100% / 4);
+  cursor: pointer;
+  border-right: 1px solid #171B26;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.new-game-button, .restart-game-button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background: #607D8B;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.new-game-button:hover, .restart-game-button:hover {
+  background: #455A64;
+  transform: scale(1.05);
+}
+@media screen and (max-width: 800px) {
+  .wrapper {
+    width: 90vmin;
+    height: 120vmin;
+  }
+  .game-details {
+    font-size: 1rem;
+    padding: 15px 27px;
+  }
+  .controls {
+    display: flex;
+  }
+  .controls i {
+    padding: 15px 0;
+    font-size: 1rem;
+  }
+}
