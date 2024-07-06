@@ -49,7 +49,7 @@ body {
   background: #FFD700; /* Gold for bonus food */
 }
 .play-board .head {
-  border-radius: 10px;
+  border-radius: 5px;
   background: #60CBFF; /* Light blue for snake */
 }
 .play-board .obstacle {
