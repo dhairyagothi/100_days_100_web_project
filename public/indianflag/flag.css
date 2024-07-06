@@ -1,55 +1,61 @@
-<style>
+
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
-  flex-direction: column;
-}
-    .block1{
-        height: 80px;
-        width: 500px;
-        background-color:rgb(244, 196, 48);
-        
-    }
-    .block2{
-        height:80px;
-        width: 500px;
-        background-color:white;
-        align-items: center;
-        display: contents;
-    }
-    .block3{
-        height:80px;
-        width: 500px;
-        background-color:green;
-        
-    }
-    .wheel{
-    border-radius: 100px;
-    border-style: solid;
-    border-color: darkblue;
-    border-width: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+    background-color: #3d3131;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .flag {
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .block {
+    height: 80px;
+    width: 100%;
+  }
+  
+  .block1 {
+    background-color: rgb(244, 196, 48);
+  }
+  
+  .block2 {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .block3 {
+    background-color: green;
+  }
+  
+  .wheel {
+    border-radius: 50%;
+    border: 2px solid darkblue;
     height: 75px;
     width: 75px;
-
-    }
-
-    .wheel .line {
+    position: relative;
+    animation: rotate 5s infinite linear;
+  }
+  
+  .line {
     height: 100%;
     width: 1px;
     display: inline-block;
     position: absolute;
     left: 50%;
     background: darkblue;
-}
-.wheel{
-    animation-name: rotate ;
-    animation-iteration-count: infinite;
-    animation-duration: 5s;
-    animation-timing-function: linear;
-}
+  }
  
 .line:nth-child(1) {
     transform: rotate(15deg)
@@ -108,4 +114,4 @@ body {
     transform: rotate(360deg);
   }
 }
-</style>
+
