@@ -41,12 +41,15 @@ body {
   grid-template: repeat(30, 1fr) / repeat(30, 1fr);
 }
 .play-board .food {
+  border-radius: 30px;
   background: #FF003D; /* Contrasting red food */
 }
 .play-board .bonus-food {
+  border-radius:30px;
   background: #FFD700; /* Gold for bonus food */
 }
 .play-board .head {
+  border-radius: 10px;
   background: #60CBFF; /* Light blue for snake */
 }
 .play-board .obstacle {
