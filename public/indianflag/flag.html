@@ -1,38 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Indian National Flag</title>
-<meta name="description" content="A page displaying the Indian national flag.">
-<meta name="keywords" content="Indian flag, India, national flag">
-<link rel="stylesheet" href="flag.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jay Hind</title>
+    <link href="../indianflag/flag.css" rel="stylesheet">
 </head>
 
 <body>
-<div class=" block block1">
+    <div class="wrapper">
+        <div class="bar"></div>
+        <div class="flag">
+            <div class="top"></div>
+            <div class="middle">
+                <img src="../indianflag/img/ashokchakr.gif" alt="" width="80px">
+            </div>
+            <div class="bottom"></div>
+        </div>
 
-</div>
-<div class="block block2">
-    <div class="wheel">
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
+        <div class="quote-container">
+            <div class="quote">"Give me blood and I will give you freedom."</div>
+            <div class="author">- Subhas Chandra Bose</div>
+            <div class="quote-nav">
+                <button id="prev-quote">&#8592;</button>
+                <button id="next-quote">&#8594;</button>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class=" block block3">
+    <script>
+        // JavaScript for quote navigation
+        const quotes = [
+            { text: '"Give me blood and I will give you freedom."', author: '- Subhas Chandra Bose' },
+            { text: '"Swaraj is my birthright and I shall have it."', author: '- Bal Gangadhar Tilak' },
+            { text: '"Inquilab Zindabad."', author: '- Bhagat Singh' },
+            { text: '"Jai Jawan Jai Kisan."', author: '- Lal Bahadur Shastri' },
+            { text: '"Jai Hind!."', author: '- Netaji Subhas Chandra Bose' },
+            { text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."', author: '- Ram Prasad Bismil' },
+            { text: '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."', author: '- Chandrashekhar Azad' },
+            { text: '"Satyameva Jayate."', author: '- Pandit Madan Mohan Malaviya' },
+            { text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."', author: '- Mahatma Gandhi' },
+            { text: '"Karo ya maro."', author: '- Mahatma Gandhi' },
+           
+        ];
+        let currentQuoteIndex = 0;
 
-</div>
-     
+        const quoteText = document.querySelector('.quote');
+        const quoteAuthor = document.querySelector('.author');
+
+        function displayQuote() {
+            quoteText.textContent = quotes[currentQuoteIndex].text;
+            quoteAuthor.textContent = quotes[currentQuoteIndex].author;
+        }
+
+        displayQuote(); // Initial display
+
+        document.getElementById('prev-quote').addEventListener('click', () => {
+            currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
+            displayQuote();
+        });
+
+        document.getElementById('next-quote').addEventListener('click', () => {
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            displayQuote();
+        });
+    </script>
 </body>
+
 </html>
