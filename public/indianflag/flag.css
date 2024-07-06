@@ -15,8 +15,8 @@ body {
 }
 
 .bar {
-  margin-left: 10px;
-  height: 700px;
+  margin-left: 20px;
+  height: 650px;
   width: 10px;
   background: #222;
   border-left: 2px solid rgb(167, 167, 167);
@@ -25,7 +25,7 @@ body {
 }
 
 .flag {
-  margin-top: -360px;
+  margin-top: -320px;
   height: 300px;
   width: 500px;
   box-shadow: 10px 10px 20px #959595;
