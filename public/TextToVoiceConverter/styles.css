@@ -5,8 +5,9 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-image: url('abc.jpeg'); /* Add the background image */
+    /*background-image: url('abc.jpeg'); /* Add the background image */
     background-size: cover;
+    background-color: rgba(37, 41, 88);
     background-position: center; 
 }
 
@@ -46,7 +47,7 @@ button {
     font-size: 16px;
     margin-top: 10px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color:rgba(51, 110, 123);
     color: white;
     border: none;
     border-radius: 8px; /* Rounded corners */
@@ -55,7 +56,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #21b029; /* Darker green on hover */
 }
 
 button:disabled {
@@ -65,7 +66,9 @@ button:disabled {
 
 .whole{
     display: flex;
-    justify-content: center;
+   align-content: center;
+    width: 100%;
+    background-color: rgba(11, 127, 171);
 }
 .container2 {
     text-align: center;
@@ -91,7 +94,7 @@ button {
 }
 
 #start-btn {
-    background-color: #4CAF50;
+    background-color:rgba(51, 110, 123);
     color: white;
 }
 
