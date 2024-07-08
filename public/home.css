@@ -222,12 +222,13 @@ footer h4 {
 }
 
 .footer-container2 img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   margin-bottom: 20px;
+  margin-left: 10px;
 }
 
 .footer-container2 img:hover {
@@ -235,11 +236,14 @@ footer h4 {
 }
 
 .footer-container2 p {
+  display: block;
+  width: 15%;
   margin-top: 0;
   font-size: 1.2em;
   color: #fff;
-  margin-right: 10px;
+  margin-right: 15px;
   margin-bottom: 25px;
+  text-align: left;
 }
 
 @media screen and (max-width: 600px) {
