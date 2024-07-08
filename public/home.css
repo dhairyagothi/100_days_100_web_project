@@ -132,6 +132,116 @@ body::-webkit-scrollbar-thumb {
   );
 }
 
+footer {
+  background: #1e1e1e;
+  padding: 20px 0;
+  bottom: 0;
+  width: 100%;
+  font-family: inherit;
+  margin-top: 50px;
+  border-radius: 5px 5px 0 0;
+  color: #fff;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.footer-container, .footer-container2 {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-container2 {
+  flex-wrap: wrap;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.footer-left {
+  width: 50%;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.footer-right a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.footer-right a:hover {
+  color: #ddd;
+}
+
+.footer-container .icons {
+  width: 30px;
+  height: 30px;
+  filter: invert();
+  transition: opacity 0.3s ease;
+}
+
+.footer-container .icons:hover {
+  opacity: 0.7;
+}
+
+footer h4 {
+  color: #fff;
+  width: 100%;
+  padding-bottom: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 20px;
+  font-size: 1.5em;
+  font-weight: 500;
+  border-bottom: 1px solid white;
+}
+
+.footer-container2 .footer-right {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 20px 0;
+  color: #fff;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.footer-container2 img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.footer-container2 img:hover {
+  transform: scale(1.1);
+}
+
+.footer-container2 p {
+  margin-top: 0;
+  font-size: 1.2em;
+  color: #fff;
+  margin-right: 10px;
+  margin-bottom: 25px;
+}
+
 @media screen and (max-width: 600px) {
   ::-webkit-scrollbar {
     width: 1em;
