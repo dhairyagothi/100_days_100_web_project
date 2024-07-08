@@ -221,6 +221,43 @@ loader.load("#", objGeom => {
 
 var clock = new THREE.Clock();
 
+document.addEventListener("DOMContentLoaded", function () {
+    const projectList = document.getElementById("project-list");
+    const searchInput = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchButton");
+
+    const projects = [
+        { name: "Project Alpha", link: "#alpha" },
+        { name: "Project Beta", link: "#beta" },
+        { name: "Project Gamma", link: "#gamma" }
+    ];
+
+    function renderProjects() {
+        projectList.innerHTML = "";
+        projects.forEach(project => {
+            const projectElement = document.createElement("div");
+            projectElement.className = "project";
+            projectElement.innerHTML = `<h2>${project.name}</h2><a href="${project.link}">View Project</a>`;
+            projectList.appendChild(projectElement);
+        });
+    }
+
+    function searchProjects(query) {
+        const project = projects.find(p => p.name.toLowerCase().includes(query.toLowerCase()));
+        if (project) {
+            window.location.href = project.link;
+        } else {
+            alert("Project not found!");
+        }
+    }
+
+    searchButton.addEventListener("click", function () {
+        const query = searchInput.value;
+        searchProjects(query);
+    });
+
+    renderProjects();
+});
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
