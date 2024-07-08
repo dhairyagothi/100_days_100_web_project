@@ -5,8 +5,6 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    /*background-image: url('abc.jpeg'); /* Add the background image */
-    background-size: cover;
     background-color: rgba(37, 41, 88);
     background-position: center; 
 }
