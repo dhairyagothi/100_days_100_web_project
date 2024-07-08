@@ -12,12 +12,14 @@ body {
 
 .container {
     text-align: center;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background */
+    padding-right: 20px;
+    margin: 10px;
+    background-color:white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box shadow for depth */
     border-radius: 12px; /* Rounded corners */
     max-width: 500px; /* Increased width for more space */
     width: 100%;
+    position:relative;
 }
 
 .title { 
@@ -26,11 +28,10 @@ body {
     color: #1352c7; /* Added a blue color for contrast */
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Text shadow for a more 3D effect */
 }
-textarea {
+.textarea1{
     width: 100%;
     height: 150px;
     margin-bottom: 10px;
-    padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -60,4 +61,55 @@ button:hover {
 button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+.whole{
+    display: flex;
+    justify-content: center;
+}
+.container2 {
+    text-align: center;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position:relative;
+    margin: 10px;
+    width:100%;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#start-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#stop-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.textarea2 {
+    width: 100%;
+    height: 150px;
+    margin-top: 20px;   
+     font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+
+textarea{
+    border-color: black;
 }
