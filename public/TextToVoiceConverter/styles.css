@@ -5,38 +5,38 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-image: url('abc.jpeg'); /* Add the background image */
-    background-size: cover; /* Cover the entire viewport */
-    background-position: center; /* Center the background image */
+    background-color: rgba(37, 41, 88);
+    background-position: center; 
 }
 
 .container {
     text-align: center;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box shadow for depth */
-    border-radius: 12px; /* Rounded corners */
-    max-width: 500px; /* Increased width for more space */
+    padding-right: 20px;
+    margin: 10px;
+    background-color:white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
+    border-radius: 12px; 
+    max-width: 500px; 
     width: 100%;
+    position:relative;
 }
 
 .title { 
-    font-size: 2.5em; /* Larger font size */
+    font-size: 2.5em; 
     margin-bottom: 20px;
-    color: #1352c7; /* Added a blue color for contrast */
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Text shadow for a more 3D effect */
+    color: #1352c7; 
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
-textarea {
+.textarea1{
     width: 100%;
     height: 150px;
     margin-bottom: 10px;
-    padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.9); /* Adjust background color for better readability */
-    resize: vertical; /* Allow only vertical resizing */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+    background-color: rgba(255, 255, 255, 0.9);
+    resize: vertical;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
 }
 
@@ -45,19 +45,75 @@ button {
     font-size: 16px;
     margin-top: 10px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color:rgba(51, 110, 123);
     color: white;
     border: none;
-    border-radius: 8px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+    border-radius: 8px; 
+    transition: background-color 0.3s ease; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #21b029; 
 }
 
 button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+.whole{
+    display: flex;
+   align-content: center;
+    width: 100%;
+    background-color: rgba(11, 127, 171);
+}
+.container2 {
+    text-align: center;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position:relative;
+    margin: 10px;
+    width:100%;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#start-btn {
+    background-color:rgba(51, 110, 123);
+    color: white;
+}
+#start-btn:hover {
+    background-color: #21b029; 
+}
+
+#stop-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.textarea2 {
+    width: 100%;
+    height: 150px;
+    margin-top: 20px;   
+     font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+
+textarea{
+    border-color: black;
 }
