@@ -268,4 +268,19 @@ footer h4 {
       rgba(0, 212, 255, 1) 100%
     );
   }
+  .footer-container2 .footer-right {
+    width: 95%;
+    padding: 0;
+    margin: 0;
+  }
+  .footer-container2 p {
+    width: 45%;
+    margin-left: 0;
+    font-size: 1em;
+    gap: 25px;
+  }
+  .footer-container2 img {
+    margin-top: 10px;
+    margin-left: 80px;
+  }
 }
