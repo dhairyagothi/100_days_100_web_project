@@ -14,9 +14,9 @@ body {
     padding-right: 20px;
     margin: 10px;
     background-color:white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box shadow for depth */
-    border-radius: 12px; /* Rounded corners */
-    max-width: 500px; /* Increased width for more space */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
+    border-radius: 12px; 
+    max-width: 500px; 
     width: 100%;
     position:relative;
 }
