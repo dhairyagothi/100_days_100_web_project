@@ -48,13 +48,13 @@ button {
     background-color:rgba(51, 110, 123);
     color: white;
     border: none;
-    border-radius: 8px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+    border-radius: 8px; 
+    transition: background-color 0.3s ease; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 button:hover {
-    background-color: #21b029; /* Darker green on hover */
+    background-color: #21b029; 
 }
 
 button:disabled {
