@@ -6,8 +6,8 @@ body {
     height: 100vh;
     margin: 0;
     background-image: url('abc.jpeg'); /* Add the background image */
-    background-size: cover; /* Cover the entire viewport */
-    background-position: center; /* Center the background image */
+    background-size: cover;
+    background-position: center; 
 }
 
 .container {
