@@ -97,6 +97,9 @@ button {
     background-color:rgba(51, 110, 123);
     color: white;
 }
+#start-btn:hover {
+    background-color: #21b029; /* Darker green on hover */
+}
 
 #stop-btn {
     background-color: #f44336;
