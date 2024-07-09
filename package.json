@@ -5,5 +5,8 @@
   },
   "scripts": {
     "start": "nodemon index.js"
+  },
+  "devDependencies": {
+    "all-contributors-cli": "^6.26.1"
   }
 }

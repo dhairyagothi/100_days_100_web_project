@@ -1,111 +1,148 @@
-<style>
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #f3f3f3;
+  text-align: center;
   margin: 0;
-  flex-direction: column;
-}
-    .block1{
-        height: 80px;
-        width: 500px;
-        background-color:rgb(244, 196, 48);
-        
-    }
-    .block2{
-        height:80px;
-        width: 500px;
-        background-color:white;
-        align-items: center;
-        display: contents;
-    }
-    .block3{
-        height:80px;
-        width: 500px;
-        background-color:green;
-        
-    }
-    .wheel{
-    border-radius: 100px;
-    border-style: solid;
-    border-color: darkblue;
-    border-width: 2px;
-    height: 75px;
-    width: 75px;
-
-    }
-
-    .wheel .line {
-    height: 100%;
-    width: 1px;
-    display: inline-block;
-    position: absolute;
-    left: 50%;
-    background: darkblue;
-}
-.wheel{
-    animation-name: rotate ;
-    animation-iteration-count: infinite;
-    animation-duration: 5s;
-    animation-timing-function: linear;
-}
- 
-.line:nth-child(1) {
-    transform: rotate(15deg)
-}
- 
-.line:nth-child(2) {
-    transform: rotate(30deg)
-}
- 
-.line:nth-child(3) {
-    transform: rotate(45deg)
-}
- 
-.line:nth-child(4) {
-    transform: rotate(60deg)
-}
- 
-.line:nth-child(5) {
-    transform: rotate(75deg)
-}
- 
-.line:nth-child(6) {
-    transform: rotate(90deg)
-}
- 
-.line:nth-child(7) {
-    transform: rotate(105deg)
-}
- 
-.line:nth-child(8) {
-    transform: rotate(120deg)
-}
- 
-.line:nth-child(9) {
-    transform: rotate(135deg)
-}
- 
-.line:nth-child(10) {
-    transform: rotate(150deg)
-}
- 
-.line:nth-child(11) {
-    transform: rotate(165deg)
-}
- 
-.line:nth-child(12) {
-    transform: rotate(180deg)
+  padding: 0;
+  overflow: hidden;
 }
 
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.background-video video {
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-size: cover;
+}
+
+.wrapper {
+  display: flex;
+  position: relative;
+  justify-content: left;
+  align-items: center;
+  height: 100vh;
+}
+
+.bar {
+  margin-left: 20px;
+  height: 650px;
+  width: 10px;
+  background: #222;
+  border-left: 2px solid rgb(167, 167, 167);
+  box-shadow: 10px 10px 20px #959595;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.flag {
+  margin-top: -320px;
+  height: 300px;
+  width: 500px;
+  box-shadow: 10px 10px 20px #959595;
+  position: relative;
+}
+
+.top {
+  height: 100px;
+  width: 100%;
+  background-color: #FF671F;
+}
+
+.middle {
+  height: 100px;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle img {
+  width: 80px;
+  animation: rotate 4s linear infinite;
+}
+
+.bottom {
+  height: 100px;
+  width: 100%;
+  background-color: #046A38;
+}
 
 @keyframes rotate {
   from {
-    transform: rotate(0deg);
+      transform: rotate(0deg);
   }
+
   to {
-    transform: rotate(360deg);
+      transform: rotate(360deg);
   }
 }
-</style>
+
+.quote-container {
+  margin-left: 20px; /* Adjust margin for spacing */
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+  width: 450px; /* Adjust width as needed */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 190px; /* Adjust right position as needed */
+}
+
+.quote {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
+}
+
+.author {
+  font-size: 1.2em;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.quote:hover {
+  color: #FF671F;
+}
+
+.quote:hover .author {
+  color: #046A38;
+}
+
+.quote-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.quote-nav button {
+  background-color: #FF671F;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.quote-nav button:hover {
+  background-color: #046A38;
+}

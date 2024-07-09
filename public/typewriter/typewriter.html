@@ -1,37 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset= "UTF-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TYPEWRITER</title>
+<title>Typewriter</title>
 <link rel="stylesheet" href="typewriter.css">
 </head>
-<body >
-     <span class="text1">I am a </span>
-     <span class=" text"></span>
-
-     <script>
-          const typewriter = document.querySelector(".text");
-
-          function change(){
-              
-                    setTimeout(() => {
-                         typewriter.textContent="Freelancer";
-                    }, 0);
-                    
-                    setTimeout(() => {
-                         typewriter.textContent="Blogger";
-                    }, 4000);
-                    
-                    setTimeout(() => {
-                         typewriter.textContent="Developer";
-                    }, 8000);
-                    
-               }
-               change();
-               setInterval(() => {
-                    change()
-               }, 12000);
-     </script>
+<body>
+    <div class="typewriter-container" aria-live="polite" aria-label="Typewriter text">
+        <span class="text1">I am a </span>
+        <span class="text"></span>
+        <span class="cursor"></span>
+    </div>
+    <div class="controls">
+        <input type="text" id="userInput" placeholder="Enter your text here" aria-label="User input for custom text">
+        <button id="addText">Add Text</button>
+        <button id="deleteText">Delete Latest Text</button>
+        <button id="pauseResume">Pause</button>
+        <label for="speedSlider">Speed:</label>
+        <input type="range" id="speedSlider" min="50" max="300" value="100" aria-label="Adjust typing speed">
+        <button id="toggleTheme">Toggle Theme</button>
+        <!-- <button id="changeBackground">Change Background</button> -->
+    </div>
+    <script src="typewriter.js"></script>
 </body>
 </html>

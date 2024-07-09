@@ -2,6 +2,8 @@
 
 Shorten URLs into simple redirect codes.
 
+**Stack used:** Svelte-Kit, TailwindCSS, PostgreSQL
+
 ## setup
 
 * Install the required packages using the package manager of your choice (`npm`, `yarn`, `pnpm`, etc...)

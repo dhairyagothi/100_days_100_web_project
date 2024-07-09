@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>50_days_50_webprojects</title>
     <link rel="stylesheet" href="home.css">
-    <script src="home.js"></script>
 
     <meta content="50 Days, 50 Web Projects" property="og:title" />
     <meta content="A collection of 50 web projects from basic to intermediate using html css and js."
@@ -15,10 +14,46 @@
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
     <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
     <meta name="twitter:card" content="summary_large_image" />
+    <style>
+        body,
+        html {
+            margin: 0;
+            overflow: auto;
+        }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* This ensures the canvas is behind other content */
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            /* This ensures the content is in front of the canvas */
+            padding: 20px;
+        }
+
+        #bgCanvas {
+            filter: blur(5px);
+            /* Adjust the value to control the blur strength */
+        }
+    </style>
+
 </head>
 
 <body class="load">
+
+
     <div id="loader"></div>
+
+    <canvas id="bgCanvas"></canvas>
+    <div class="content">
+    </div>
 
     <div class="header">50_days_50_webprojects</div>
     <P class="subheader">HERE IS LIVE DEMO OF ALL PROJECTS</P>
@@ -221,7 +256,8 @@
         <div class="table">
             <div class="day-number">Day 38</div>
             <div class="project-name">Github Profile Finder</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/github_profile_finder" class="demo-link">Demo</a>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/github_profile_finder"
+                class="demo-link">Demo</a>
         </div>
         <div class="table">
             <div class="day-number">Day 39</div>
@@ -264,7 +300,7 @@
             <a href="Palindrome_Generator/index.html" class="demo-link">Demo</a>
         </div>
         <div class="table">
-            <div class="day-number">Day 48</div>
+            <div class="day-number">Day 47</div>
             <div class="project-name">Ping Pong Game</div>
             <a href="ping/index.html" class="demo-link">Demo</a>
         </div>
@@ -276,12 +312,14 @@
         <div class="table">
             <div class="day-number">Day 49</div>
             <div class="project-name">Url Shortener</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/url_shortener" class="demo-link">Demo</a>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/url_shortener"
+                class="demo-link">Demo</a>
         </div>
         <div class="table">
             <div class="day-number">Day 50</div>
             <div class="project-name">Recipe Genie</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/Recipe-Genie" class="demo-link">Demo</a>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/Recipe-Genie"
+                class="demo-link">Demo</a>
         </div>
         <div class="table">
             <div class="day-number">Day 51</div>
@@ -290,16 +328,106 @@
         </div>
         <div class="table">
             <div class="day-number">Day 52</div>
+            <div class="project-name">ClimaCode</div>
+            <a href="ClimaCode 2.0/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 53</div>
             <div class="project-name">E-Commerce Website with Simple Cart Functionality</div>
             <a href="e-commerce_cart/index.html" class="demo-link">Demo</a>
         </div>
         <div class="table">
-            <div class="day-number">Day 53</div>
-            <div class="project-name">Movie Search</div>
-            <a href="movie search/index.html" class="demo-link">Demo</a>
-      </div>
+            <div class="day-number">Day 54</div>
+            <div class="project-name">Budget Tracker</div>
+            <a href="Budget Tracker/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 55</div>
+            <div class="project-name">Cricket Game</div>
+            <a href="cricket/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 56</div>
+            <div class="project-name">Pastebin using svelte</div>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/pastebin"
+                class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 57</div>
+            <div class="project-name">Glowing Social Media Icons</div>
+            <a href="Social Media Glowing/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 58</div>
+            <div class="project-name">Music App</div>
+            <a href="Music App/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 59</div>
+            <div class="project-name">Blog Page</div>
+            <a href="Blog Page/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 60</div>
+            <div class="project-name">Marketing template website</div>
+            <a href="marketing_website/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 61</div>
+            <div class="project-name">Hologram Button</div>
+            <a href="Holo Button/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 62</div>
+            <div class="project-name">Solar System Explorer</div>
+            <a href="Solar System Explorer in CSS only haml/template.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 63</div>
+            <div class="project-name">Image to Text App</div>
+            <a href="Image-To-Text-App/index.html" class="demo-link">Demo</a>
+        </div>
+
+        <div class="table">
+            <div class="day-number">Day 64</div>
+            <div class="project-name">Zomato-clone</div>
+            <a href="zomato-clone/zomato.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 65</div>
+            <div class="project-name">The Cube</div>
+            <a href="The Cube/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 66</div>
+            <div class="project-name">Flask Authentication App</div>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/flask_auth_app/README.md"
+                class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 67</div>
+            <div class="project-name">Blog-Website</div>
+            <a href="blog/main.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 68</div>
+            <div class="project-name">3d Rotating Card</div>
+            <a href="3d cards/index.html" class="demo-link">Demo</a>
+        </div>
+
+
+        <div class="table">
+            <div class="day-number">Day 69</div>
+            <div class="project-name">Spotify Clone Project</div>
+            <a href="spotify-clone -project/index.html" class="demo-link">Demo</a>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/utils/BufferGeometryUtils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="./home.js"></script>
     <script>
         window.addEventListener("load", () => {
             const loader = document.getElementById("loader");
