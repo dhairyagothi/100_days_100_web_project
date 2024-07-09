@@ -7,14 +7,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="whole">
     <div class="container">
         <h1 class="title">Text to Voice Converter</h1>
         <div class="input-area">
-            <textarea id="text-input" placeholder="Enter text here..."></textarea>
+            <textarea class="textarea1" id ="text-input" placeholder="Enter text here..."></textarea>
             <button id="convert-btn">Convert to Speech</button>
             <button id="stop-btn" disabled>Stop</button>
         </div>
     </div>
+
+    <div class="container2">
+        <h1 class="title">Voice to Text Converter</h1>
+        <button id="start-btn">Speak</button>
+        <button id="stop-btn">Stop</button>
+        <textarea class="textarea2" id="output" placeholder="Your speech will appear here..."></textarea>
+    </div>
+</div>
     <script src="script.js"></script>
 </body>
 </html>
