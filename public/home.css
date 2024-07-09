@@ -13,6 +13,7 @@ body {
   padding-left: 25px;
   padding-right: 25px;
   margin: 0;
+  
 }
 
 @media screen and (min-width: 600px) and (max-width: 899px) {
@@ -133,12 +134,13 @@ body::-webkit-scrollbar-thumb {
 }
 
 footer {
+  position: absolute;
+  left: 50%;
+  width: 100vw;
   background: #1e1e1e;
   padding: 20px 0;
-  bottom: 0;
-  width: 100%;
-  font-family: inherit;
   margin-top: 50px;
+  transform: translateX(-50%); /* Centrar el footer */
   border-radius: 5px 5px 0 0;
   color: #fff;
   font-family: "Noto Sans", sans-serif;
@@ -221,29 +223,23 @@ footer h4 {
   flex-wrap: wrap;
 }
 
-.footer-container2 img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  margin-bottom: 20px;
-  margin-left: 10px;
-}
-
-.footer-container2 img:hover {
-  transform: scale(1.1);
-}
-
 .footer-container2 p {
   display: block;
-  width: 15%;
+  width: 100%;
   margin-top: 0;
   font-size: 1.2em;
   color: #fff;
-  margin-right: 15px;
   margin-bottom: 25px;
-  text-align: left;
+  text-align: center;
+}
+.footer-container2 a {
+  display: block;
+  width: 45%;
+  margin-top: 0;
+  font-size: 1.2em;
+  color: #fff;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
 @media screen and (max-width: 600px) {
@@ -268,16 +264,21 @@ footer h4 {
       rgba(0, 212, 255, 1) 100%
     );
   }
+  footer{
+    width: 100%;
+  }
   .footer-container2 .footer-right {
-    width: 95%;
+    width: 100%;
     padding: 0;
     margin: 0;
   }
   .footer-container2 p {
-    width: 45%;
+    width: 100%;
     margin-left: 0;
     font-size: 1em;
-    gap: 25px;
+  }
+  .footer-container2 a {
+    width: 100%;
   }
   .footer-container2 img {
     margin-top: 10px;
