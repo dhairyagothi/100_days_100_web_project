@@ -6,295 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>50_days_50_webprojects</title>
     <link rel="stylesheet" href="home.css">
-    <script src="home.js"></script>
 
     <meta content="50 Days, 50 Web Projects" property="og:title" />
-    <meta content="A collection of 50 web projects from basic to intermediate using html css and js."
-        property="og:description" />
+    <meta content="A collection of 50 web projects from basic to intermediate using html css and js." property="og:description" />
     <meta content="/" property="og:url" />
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
     <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
     <meta name="twitter:card" content="summary_large_image" />
-        <style>
-        body, html {
+    <style>
+        body,
+        html {
             margin: 0;
             overflow: auto;
         }
-    
+
         #bgCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* This ensures the canvas is behind other content */
+            z-index: -1;
         }
-    
+
         .content {
             position: relative;
-            z-index: 1; /* This ensures the content is in front of the canvas */
+            z-index: 1;
             padding: 20px;
         }
-        #bgCanvas {
-    filter: blur(5px); /* Adjust the value to control the blur strength */
-}
 
+        #bgCanvas {
+            filter: blur(5px);
+        }
     </style>
+
 </head>
 
 <body class="load">
     <div id="loader"></div>
+    <canvas id="bgCanvas"></canvas>
 
-     <canvas id="bgCanvas"></canvas>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+               
+            <a href="#" class="navbar-logo"><img src="../public/logo1.png" alt="Logo"></a>
+           
+            <ul class="navbar-menu">
+                <li class="navbar-item"><a href="#home" class="navbar-link">Home</a></li>
+                <li class="navbar-item"><a href="#projects" class="navbar-link">Projects</a></li>
+                <li class="navbar-item"><a href="#about" class="navbar-link">About</a></li>
+                <li class="navbar-item"><a href="#contact" class="navbar-link">Contact</a></li>
+            </ul>
+            <a id="github-logo" href ="https://github.com/dhairyagothi" target="_blank">
+                <img src="../public/github1.png" alt="GitHub" width="40" height="40">
+            </a>
+        </div>
+    </nav>
+
     <div class="content">
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/utils/BufferGeometryUtils.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/loaders/STLLoader.js"></script>
-    <script>
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 500);
-        camera.position.set(0, -25, 80);
-
-        var renderer = new THREE.WebGLRenderer({ antialias: true, canvas: document.getElementById('bgCanvas') });
-        renderer.setClearColor(0x0F0A03);
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        var controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.maxDistance = 150;
-        controls.enableDamping = true;
-
-        let geoms = [];
-        let pts = [
-            new THREE.Vector2(0, 1.0),
-            new THREE.Vector2(0.25, 1.0),
-            new THREE.Vector2(0.25, 0.875),
-            new THREE.Vector2(0.45, 0.875),
-            new THREE.Vector2(0.45, 0.05)
-        ];
-        var geom = new THREE.LatheBufferGeometry(pts, 20);
-        geoms.push(geom);
-
-        var geomLight = new THREE.CylinderBufferGeometry(0.1, 0.1, 0.05, 20);
-        geoms.push(geomLight);
-
-        var fullGeom = THREE.BufferGeometryUtils.mergeBufferGeometries(geoms);
-        var instGeom = new THREE.InstancedBufferGeometry().copy(fullGeom);
-
-        var num = 500;
-        let instPos = [];
-        let instSpeed = [];
-        let instLight = [];
-        for (let i = 0; i < num; i++) {
-            instPos.push(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
-            instSpeed.push(Math.random() * 0.25 + 1);
-            instLight.push(Math.PI + (Math.PI * Math.random()), Math.random() + 5);
-        }
-        instGeom.setAttribute("instPos", new THREE.InstancedBufferAttribute(new Float32Array(instPos), 3));
-        instGeom.setAttribute("instSpeed", new THREE.InstancedBufferAttribute(new Float32Array(instSpeed), 1));
-        instGeom.setAttribute("instLight", new THREE.InstancedBufferAttribute(new Float32Array(instLight), 2));
-
-        var mat = new THREE.ShaderMaterial({
-            uniforms: {
-                uTime: { value: 0 },
-                uLight: { value: new THREE.Color("red").multiplyScalar(1.5) },
-                uColor: { value: new THREE.Color("gold").multiplyScalar(1) },
-                uFire: { value: new THREE.Color(255, 223, 0) }
-            },
-            vertexShader: `
-                uniform float uTime;
-
-                attribute vec3 instPos;
-                attribute float instSpeed;
-                attribute vec2 instLight;
-
-                varying vec2 vInstLight;
-                varying float vY;
-
-                void main() {
-                    vInstLight = instLight;
-                    vY = position.y;
-
-                    vec3 pos = vec3(position) * 2.;
-                    vec3 iPos = instPos * 200.;
-
-                    iPos.xz += vec2(
-                        cos(instLight.x + instLight.y * uTime),
-                        sin(instLight.x + instLight.y * uTime * fract(sin(instLight.x)))
-                    );
-
-                    iPos.y = mod(iPos.y + 100. + (uTime * instSpeed), 200.) - 100.;
-                    pos += iPos;
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
-                }
-            `,
-            fragmentShader: `
-                uniform float uTime;
-                uniform vec3 uLight;
-                uniform vec3 uColor;
-                uniform vec3 uFire;
-
-                varying vec2 vInstLight;
-                varying float vY;
-
-                void main() {
-                    vec3 col = vec3(0);
-                    float t = vInstLight.x + (vInstLight.y * uTime * 10.);
-                    float ts = sin(t * 3.14) * 0.5 + 0.5;
-                    float tc = cos(t * 2.7) * 0.5 + 0.5;
-                    float f = smoothstep(0.12, 0.12 + (ts + tc) * 0.25, vY);
-                    float li = (0.5 + smoothstep(0., 1., ts * ts + tc * tc) * 0.5);
-                    col = mix(uLight * li, uColor * (0.75 + li * 0.25), f);
-
-                    col = mix(col, uFire, step(vY, 0.05) * (0.75 + li * 0.25));
-
-                    gl_FragColor = vec4(col, 1);
-                }
-            `,
-            side: THREE.DoubleSide
-        });
-
-        var lantern = new THREE.Mesh(instGeom, mat);
-        scene.add(lantern);
-
-        let oUs = [];
-
-        let loader = new THREE.STLLoader();
-        loader.load("#", objGeom => {
-            console.log(objGeom);
-
-            let baseVector = new THREE.Vector3(40, 0, 0);
-            let axis = new THREE.Vector3(0, 1, 0);
-            let cPts = [];
-            let cSegments = 6;
-            let cStep = Math.PI * 2 / cSegments;
-            for (let i = 0; i < cSegments; i++) {
-                cPts.push(
-                    new THREE.Vector3().copy(baseVector)
-                    .applyAxisAngle(axis, cStep * i).setY(THREE.MathUtils.randFloat(-10, 10))
-                );
-            }
-            let curve = new THREE.CatmullRomCurve3(cPts);
-            curve.closed = true;
-
-            let numPoints = 511;
-            let cPoints = curve.getSpacedPoints(numPoints);
-            let cObjects = curve.computeFrenetFrames(numPoints, true);
-            let pGeom = new THREE.BufferGeometry().setFromPoints(cPoints);
-            let pMat = new THREE.LineBasicMaterial({ color: "yellow" });
-            let pathLine = new THREE.Line(pGeom, pMat);
-
-            let data = [];
-            cPoints.forEach(v => { data.push(v.x, v.y, v.z); });
-            cObjects.binormals.forEach(v => { data.push(v.x, v.y, v.z); });
-            cObjects.normals.forEach(v => { data.push(v.x, v.y, v.z); });
-            cObjects.tangents.forEach(v => { data.push(v.x, v.y, v.z); });
-
-            let dataArray = new Float32Array(data);
-
-            let tex = new THREE.DataTexture(dataArray, numPoints + 1, 4, THREE.RGBFormat, THREE.FloatType);
-            tex.magFilter = THREE.NearestFilter;
-
-            objGeom.center();
-            objGeom.rotateX(-Math.PI * 0.5);
-            objGeom.scale(0.5, 0.5, 0.5);
-            let objBox = new THREE.Box3().setFromBufferAttribute(objGeom.getAttribute("position"));
-            let objSize = new THREE.Vector3();
-            objBox.getSize(objSize);
-
-            objUniforms = {
-                uSpatialTexture: { value: tex },
-                uTextureSize: { value: new THREE.Vector2(numPoints + 1, 4) },
-                uTime: { value: 0 },
-                uLengthRatio: { value: objSize.z / curve.cacheArcLengths[200] },
-                uObjSize: { value: objSize }
-            }
-            oUs.push(objUniforms);
-
-            let objMat = new THREE.MeshBasicMaterial({ color: 0xFF4500, wireframe: true });
-            objMat.onBeforeCompile = shader => {
-                shader.uniforms.uSpatialTexture = objUniforms.uSpatialTexture;
-                shader.uniforms.uTextureSize = objUniforms.uTextureSize;
-                shader.uniforms.uTime = objUniforms.uTime;
-                shader.uniforms.uLengthRatio = objUniforms.uLengthRatio;
-                shader.uniforms.uObjSize = objUniforms.uObjSize;
-
-                shader.vertexShader = `
-                    uniform sampler2D uSpatialTexture;
-                    uniform vec2 uTextureSize;
-                    uniform float uTime;
-                    uniform float uLengthRatio;
-                    uniform vec3 uObjSize;
-
-                    struct splineData {
-                        vec3 point;
-                        vec3 binormal;
-                        vec3 normal;
-                    };
-
-                    splineData getSplineData(float t){
-                        float step = 1. / uTextureSize.y;
-                        float halfStep = step * 0.5;
-                        splineData sd;
-                        sd.point    = texture2D(uSpatialTexture, vec2(t, step * 0. + halfStep)).rgb;
-                        sd.binormal = texture2D(uSpatialTexture, vec2(t, step * 1. + halfStep)).rgb;
-                        sd.normal   = texture2D(uSpatialTexture, vec2(t, step * 2. + halfStep)).rgb;
-                        return sd;
-                    }
-                ` + shader.vertexShader;
-                shader.vertexShader = shader.vertexShader.replace(
-                    `#include <begin_vertex>`,
-                    `#include <begin_vertex>
-
-                    vec3 pos = position;
-
-                    float wStep = 1. / uTextureSize.x;
-                    float hWStep = wStep * 0.5;
-
-                    float d = pos.z / uObjSize.z;
-                    float t = fract((uTime * 0.1) + (d * uLengthRatio));
-                    float numPrev = floor(t / wStep);
-                    float numNext = numPrev + 1.;
-                    float tPrev = numPrev * wStep + hWStep;
-                    float tNext = numNext * wStep + hWStep;
-                    splineData splinePrev = getSplineData(tPrev);
-                    splineData splineNext = getSplineData(tNext);
-
-                    float f = (t - tPrev) / wStep;
-                    vec3 P = mix(splinePrev.point, splineNext.point, f);
-                    vec3 B = mix(splinePrev.binormal, splineNext.binormal, f);
-                    vec3 N = mix(splinePrev.normal, splineNext.normal, f);
-
-                    transformed = P + (N * pos.x) + (B * pos.y);
-                `
-                );
-            }
-            let obj = new THREE.Mesh(objGeom, objMat);
-            scene.add(obj);
-        });
-
-        var clock = new THREE.Clock();
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        window.addEventListener('resize', onWindowResize, false);
-
-        renderer.setAnimationLoop(() => {
-            controls.update();
-            let t = clock.getElapsedTime();
-            mat.uniforms.uTime.value = t;
-            oUs.forEach(ou => { ou.uTime.value = t; });
-            renderer.render(scene, camera);
-        });
-    </script>
-
-    <div class="header">50_days_50_webprojects</div>
-    <P class="subheader">HERE IS LIVE DEMO OF ALL PROJECTS</P>
+        <div class="header">50_days_50_webprojects</div>
+        <p class="subheader">HERE IS LIVE DEMO OF ALL PROJECTS</p>
 
     <div class="links">
         <div class="table subheader">
@@ -494,7 +266,8 @@
         <div class="table">
             <div class="day-number">Day 38</div>
             <div class="project-name">Github Profile Finder</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/github_profile_finder" class="demo-link">Demo</a>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/github_profile_finder"
+                class="demo-link">Demo</a>
         </div>
         <div class="table">
             <div class="day-number">Day 39</div>
@@ -549,19 +322,21 @@
         <div class="table">
             <div class="day-number">Day 49</div>
             <div class="project-name">Url Shortener</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/url_shortener" class="demo-link">Demo</a>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/url_shortener"
+                class="demo-link">Demo</a>
         </div>
         <div class="table">
             <div class="day-number">Day 50</div>
             <div class="project-name">Recipe Genie</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/Recipe-Genie" class="demo-link">Demo</a>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/Recipe-Genie"
+                class="demo-link">Demo</a>
         </div>
         <div class="table">
             <div class="day-number">Day 51</div>
             <div class="project-name">Netflix Landing Page Clone</div>
             <a href="Netflix_Cloning/Index.html" class="demo-link">Demo</a>
         </div>
-         <div class="table">
+        <div class="table">
             <div class="day-number">Day 52</div>
             <div class="project-name">ClimaCode</div>
             <a href="ClimaCode 2.0/index.html" class="demo-link">Demo</a>
@@ -575,36 +350,99 @@
             <div class="day-number">Day 54</div>
             <div class="project-name">Budget Tracker</div>
             <a href="Budget Tracker/index.html" class="demo-link">Demo</a>
-      </div>
+        </div>
         <div class="table">
             <div class="day-number">Day 55</div>
             <div class="project-name">Cricket Game</div>
             <a href="cricket/index.html" class="demo-link">Demo</a>
-      </div>
-    </div>
-    <div class="table">
-        <div class="day-number">Day 56</div>
-        <div class="project-name">Pastebin using svelte</div>
-        <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/pastebin" class="demo-link">Demo</a>
-  </div>
-    <div class="table">
-    <div class="day-number">Day 57</div>
-    <div class="project-name">Glowing Social Media Icons</div>
-    <a href="Social Media Glowing/index.html" class="demo-link">Demo</a>
-    </div>
+        </div>
         <div class="table">
-        <div class="day-number">Day 58</div>
-        <div class="project-name">Music App</div>
-        <a href="Music App/index.html" class="demo-link">Demo</a>
-    </div>
+            <div class="day-number">Day 56</div>
+            <div class="project-name">Pastebin using svelte</div>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/pastebin"
+                class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 57</div>
+            <div class="project-name">Glowing Social Media Icons</div>
+            <a href="Social Media Glowing/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 58</div>
+            <div class="project-name">Music App</div>
+            <a href="Music App/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 59</div>
+            <div class="project-name">Blog Page</div>
+            <a href="Blog Page/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 60</div>
+            <div class="project-name">Marketing template website</div>
+            <a href="marketing_website/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 61</div>
+            <div class="project-name">Hologram Button</div>
+            <a href="Holo Button/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 62</div>
+            <div class="project-name">Solar System Explorer</div>
+            <a href="Solar System Explorer in CSS only haml/template.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 63</div>
+            <div class="project-name">Image to Text App</div>
+            <a href="Image-To-Text-App/index.html" class="demo-link">Demo</a>
+        </div>
+
+        <div class="table">
+            <div class="day-number">Day 64</div>
+            <div class="project-name">Zomato-clone</div>
+            <a href="zomato-clone/zomato.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 65</div>
+            <div class="project-name">The Cube</div>
+            <a href="The Cube/index.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 66</div>
+            <div class="project-name">Flask Authentication App</div>
+            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/flask_auth_app/README.md"
+                class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 67</div>
+            <div class="project-name">Blog-Website</div>
+            <a href="blog/main.html" class="demo-link">Demo</a>
+        </div>
+        <div class="table">
+            <div class="day-number">Day 68</div>
+            <div class="project-name">3d Rotating Card</div>
+            <a href="3d cards/index.html" class="demo-link">Demo</a>
+        </div>
+
+
+        <div class="table">
+            <div class="day-number">Day 69</div>
+            <div class="project-name">Spotify Clone Project</div>
+            <a href="spotify-clone -project/index.html" class="demo-link">Demo</a>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/utils/BufferGeometryUtils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="./home.js"></script>
     <script>
         window.addEventListener("load", () => {
             const loader = document.getElementById("loader");
             loader.style.display = "none";
-        })
+        });
     </script>
 </body>
-
 </html>

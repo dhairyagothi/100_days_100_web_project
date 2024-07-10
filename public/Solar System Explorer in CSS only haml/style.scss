@@ -1,0 +1,1168 @@
+$planetCount: 9;
+$planetSize: 1200px; // Size of each planet
+$planetSpacing: 2300px; // Space between each planet
+$planetTransitionSpeed: 2s;
+$mainPlanetViewAmount: 280; // Less means we see more of the planet at the bottom
+$globalPerspective: 800px;
+$sceneAxisTilt: -20deg;
+$menuSpacing: 14px;
+$traverse: "";
+$traverseTriggers: "";
+
+// Colors
+$mercury:#E8927C;
+$venus: #b45d15;
+$earth: #26daaa;
+$mars: #e55f45;
+$jupiter: orange;
+$saturn: #b29d81;
+$uranus: #8dcdd8;
+$neptune: #4f83e2;
+$pluto: #FF8732;
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700');
+
+// fix
+
+.solar_systm {
+    transform-style: preserve-3d;
+    pointer-events: none;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+* {
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */   
+}
+%absPosition {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+}
+
+@mixin makePlanet($outer, $inner, $texture) {
+    background: url($texture);
+    box-shadow: 0 (-590px) 150px black inset, 0 0px 130px 40px $inner inset, 0 0px 23px 4px $inner inset, 0 -10px 130px $outer;
+}
+
+%trajectory {
+    border: 2px dashed white;
+    position: absolute;
+    border-radius: 3400px;
+    background: none !important;
+    z-index: -2;
+}
+
+@mixin makeTrajectory($width, $left, $top) {
+    @extend %trajectory;
+
+    width: $width;
+    height: $width;
+    left: $left;
+    top: $top;
+}
+
+@mixin makeMoon($left, $top, $scale, $texture) {
+    left: $left;
+    top: $top;
+    transform: scale($scale);
+    background: url($texture);
+    z-index: -1;
+    box-shadow: 0px -30px 30px 10px black inset;
+}
+%planet {
+    height: $planetSize;
+    width: $planetSize;
+    border-radius: $planetSize / 2;
+    background: red;
+    transition: transform 2.8s .23s cubic-bezier(0.33, 0, 0, 1), opacity 2s .8s, box-shadow 0s 0s; //
+    background-size: 1140px 910px !important;
+    top: auto;
+    bottom: - $planetSize + $mainPlanetViewAmount;
+
+    & .moon {
+        height: 200px;
+        width: 200px;
+        border-radius: $planetSize / 2;
+        background: red;  
+        position: absolute;
+        text-align: center;
+        color: white;
+        text-transform: uppercase;
+        opacity: 0;
+        transition: all .6s .2s;
+
+        h2 {     
+            font-weight: 100;
+            font-size: 40px;
+            letter-spacing: 5px;
+            margin: 0;
+            position: relative;
+            top: -120px;
+
+        }
+        h3 {     
+            font-weight: 100;
+            font-size: 20px;
+            letter-spacing: 5px;
+            color: #fea082;
+            margin: 0;
+            position: relative;
+            top: -120px;
+        }
+    }
+
+    @keyframes planet {
+        from {background-position-y: 0px;}
+        to {background-position-y: -1000px;}
+    }
+}
+
+%viewPort {
+    position: absolute;
+    transform: rotatex($sceneAxisTilt);
+    perspective: $globalPerspective;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+// Unforunately we cant be super dynamic with this as 
+// perspective changes the scales of objects
+%trigger {
+    @extend %absPosition;
+
+    width: 220px;
+    height: 220px;
+    border-radius: 550px;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    z-index: 12;
+    left: 18px;
+    bottom: 282px;
+}
+
+%checkbox { 
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid white;
+    outline: none;
+    border-radius: 20px;
+    left: 43px;
+    z-index: 2;
+
+    &:checked {
+        &::before {
+            display:block;
+            width: 6px;
+            height: 6px;
+            background: white;
+            position: relative;
+            top: 3px;
+            left: 3px;
+            content: '';
+            border-radius: 10px;
+        }
+    }
+}
+
+body {
+    overflow: hidden;
+    background: black;
+    height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    .logo {
+        color: white;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        text-align: center;
+        font-size: 14px;
+        text-transform: uppercase;
+        font-weight: 100;
+        letter-spacing: 4px;
+        span  {
+            font-size: 12px;
+            color: #f39041;
+            display: block;
+        }
+    }
+    label {
+        cursor: pointer;
+
+        &.mercury {
+            & > .preview {
+                background: url('https://www.solarsystemscope.com/images/textures/full/2k_makemake_fictional.jpg') !important;
+            }
+        }
+        &.venus {
+            & > .preview {
+                background: url('https://nasa3d.arc.nasa.gov/shared_assets/images/ven0aaa2/ven0aaa2-copy-428-321.jpg') !important;
+            }
+        }
+        &.earth {
+            & > .preview {
+                background: url('https://img00.deviantart.net/04ef/i/2009/114/3/e/new_earth_texture_map_by_lightondesigns.jpg') !important;
+            }
+        }
+        &.mars {
+            & > .preview {
+                background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/mars_texture.jpg') !important;
+            }
+        }
+
+        &.jupiter {
+            & > .preview {
+                background: url('https://www.jpl.nasa.gov/spaceimages/images/largesize/PIA07782_hires.jpg') !important;
+            }
+        }
+
+        &.saturn {
+            & > .preview {
+                background: url('https://www.solarsystemscope.com/images/textures/full/2k_saturn.jpg') !important;
+            }
+        }
+
+        &.uranus {
+            & > .preview {
+                background: url('https://img00.deviantart.net/957c/i/2017/165/4/9/uranus_texture_map_by_jcpag2010-db7yjwb.png') !important;
+            }
+        }
+
+        &.neptune {
+            & > .preview {
+                background: url('https://img00.deviantart.net/f068/i/2017/165/b/c/neptune_texture_map_by_jcpag2010-dbcjcv5.png') !important;
+            }
+        }
+        &.pluto {
+            & > .preview {
+                background: url('https://pre00.deviantart.net/4677/th/pre/f/2015/314/4/e/pluto_map__2015_nov_10__by_snowfall_the_cat-d918tlb.png') !important;
+            }
+        }
+    }
+    label.menu {
+        color: white;
+        display: block;
+        position: absolute;
+        cursor: pointer;
+        left: 90px;
+        z-index: 2;
+
+        &:after {
+            display: block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid white;
+            border-radius: 60px;
+            content: '';
+            z-index: 2;
+            position: absolute;
+            top: -4px;
+            left:-4px;
+        }
+
+        &:hover {
+            h2,h3 {
+                opacity: 1;
+            }
+        }
+
+        &.mercury {
+            h2 .pip {
+                background: $mercury;
+            }
+        }
+
+        &.venus {
+            h2 .pip {
+                background: $venus;
+            }
+        }
+
+        &.earth {
+            h2 .pip {
+                background: $earth;
+            }
+        }
+
+        &.mars {
+            h2 .pip {
+                background: $mars;
+            }
+        }
+
+        &.jupiter {
+            h2 .pip {
+                background: $jupiter;
+            }
+        }
+
+        &.saturn {
+            h2 .pip {
+                background: $saturn;
+            }
+        }
+
+        &.uranus {
+            h2 .pip {
+                background: $uranus;
+            }
+        }
+
+        &.neptune {
+            h2 .pip {
+                background: $neptune;
+            }
+        }
+
+        &.pluto {
+            h2 .pip {
+                background: $pluto;
+            }
+        }
+
+
+        & .preview {
+            width: 30px;
+            height: 30px;
+            background: yellow;
+            float: left;
+            background-size: auto 100% !important;
+            position: absolute;
+            border-radius: 100px;
+            //border: 2px solid white;
+            box-shadow: 0 -13px 10px 2px black inset;
+        }
+
+        & .info {
+            position: relative;
+            left: 50px;
+            top:1px;
+        }
+
+
+        h2,
+        h3 {
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 100;
+            letter-spacing: 2px;
+
+        }
+
+        h2 {
+            font-size: 11px;
+            opacity: 0.4;
+            margin-bottom: 4px;
+
+
+            & .pip {
+                width: 0;
+                height: 9px;
+                background: #fea082;
+                float: left;
+                position: relative;
+                top: 3px;
+                transition: all 0.3s;
+                //transform: skew(-10deg);
+                margin-right: 0px;
+            }
+        }
+
+        h3 {
+            font-size: 8px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            opacity: 0.3;
+        }
+
+        @for $l from 1 through $planetCount {
+            &:nth-of-type(#{$l}) {
+                // Caluclate middle and distribute evenly
+                $labelSize: 34px;
+                $labelSpacing: $menuSpacing;
+                $totalHeight: ($labelSize * $planetCount) + ($labelSpacing * ($planetCount)) / 2;
+
+                top: calc(50vh + 100px + ((#{$labelSpacing} + #{$labelSize}) * #{$l}) + 0px - #{$totalHeight});   
+            }
+        }
+    }
+
+    & input.read {
+        display: none;
+    }
+
+    & .read:checked + label + input + .panel {
+        right: 0;
+    }
+
+    & .read:checked + label {
+        width: calc(100% - 420px);
+
+        &::after {
+            opacity: 1;
+            left: 0;
+        }
+
+
+    }
+
+    & .read:checked + label + label {
+        transition: all 0.3s .6s;
+        opacity: 1;
+    }
+
+    & .read:not(:checked) + label + label {
+        transition: all 0.3s 0s;
+        opacity: 0;
+    }
+
+    label.close {
+        position: absolute;
+        right: 60px;
+        opacity: 0;
+        transition: all 0.3s 0.4s;
+        z-index: 3;
+        top: 65px;
+
+    }
+
+    label.closeBig {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        height: 100vh;
+        transition: all 0.2s;
+        z-index: 10;
+
+        width: 0;
+        background: rgba(56, 37, 99, 0.38);
+
+        &::after {
+            content: 'Back';
+            text-align: center;
+            font-size: 30px;
+            color: white;
+            position: absolute;
+            left: -140px;
+            opacity: 0;
+            right: 0;
+
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+    }
+
+    & .overlay {
+        @extend %absPosition;
+        border-bottom: 1020px solid black;
+        width: 1800px;
+        height: 620px;
+        top: auto;
+        -webkit-transform: none;
+        transform: none;
+        top: -240px;
+        left: -303px;
+        opacity: 1;
+        border-radius: 100%;
+        z-index: 0;
+        //transition: all .95s .2s;
+        box-shadow: 0px -190px 215px 110px black inset;
+
+    }
+
+    @for $a from 1 through $planetCount {
+
+        $traverse: $traverse + " input + label +";
+        $traverseTriggers: $traverseTriggers + " input + label +";
+
+        @if ($a == 1) {
+            $traverseTriggers: "label +";
+        } 
+
+        @if ($a == 2) {
+            $traverseTriggers: "label +";
+        } 
+
+        @if($a == 1) {
+            $traverse: "label +";
+        }
+
+        input[type="radio"][name="planet"] {
+            //@extend %checkbox;
+            appearance: none;
+
+            &::after {
+                @extend %absPosition;
+                @extend %trigger;
+
+                content: '';
+            }
+
+
+            &.planet#{$a}:checked {
+                &::after {
+                    display: none;
+                }
+
+                $input: "";
+
+                @for $b from 1 through $a {
+                    $input: $input + "+label + input";
+                    & #{$input}::after {
+                        display: none;
+                    }
+                }
+
+                & + #{$traverse} div {
+                    // Now in root
+
+                    & .solar_systm {
+                       
+                        
+                        &:nth-of-type(#{$a}) {
+                             pointer-events: all;
+                        }
+                        
+                        @for $i from 1 through $planetCount {
+                            &:nth-of-type(#{$i}) .planet {
+                                $translateY: 0;
+                                $translateZ: - $planetSpacing * ($i - 1) + ($planetSpacing * ($a - 1));
+                                $rotateX: 4deg;
+                                $scaleOffset: 0.89;
+                                $opacity: 2 - ($i - 1) + ($a - 1);
+                                
+                                transform: translateZ($translateZ) translateY($translateY) rotatex($rotateX) scaleX($scaleOffset);
+                                opacity: $opacity;
+
+                                @if($a == $i) {
+                                    animation: planet 60s 3.9s infinite linear;
+                                }
+                                
+                                &_description {
+                                    @if($a == $i) {
+                                        opacity: 1;
+                                        transition: all .6s 2.6s;
+                                        h2,
+                                        h1 {
+                                            position: relative;
+                                            top: 0px;
+                                            transition: all .5s 3s;
+                                        }
+
+                                        p, 
+                                        a {
+                                            transition: all 1s 3.5s, padding 0.3s 0s;
+                                            opacity: 1;
+                                        }
+                                    }
+                                }
+
+                                & .moon {
+                                    @if($a == $i) {
+                                        opacity: 1;
+                                        transition: all 1s 3.2s;
+                                    }  
+                                }
+
+                                & .trajectory {
+                                    @if($a == $i) {
+                                        opacity: 0.2;
+                                        transition: all .6s 2.9s;
+                                    }  
+                                }
+
+                                & .overlay {
+                                    @debug $a;
+                                    @debug $i;
+
+                                    @if($a == $i) {
+                                        opacity: 1;
+                                        top: -240px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & + label.mercury {
+                    & > .info h3 {
+                        color:$mercury;
+                    }
+                }
+
+                & + label.venus {
+                    & > .info h3 {
+                        color:$venus;
+                    }
+                }
+
+                & + label.earth {
+                    & > .info h3 {
+                        color:$earth;
+                    }
+                }
+
+                & + label.mars {
+                    & > .info h3 {
+                        color:$mars;
+                    }
+                }
+
+                & + label.jupiter {
+                    & > .info h3 {
+                        color:$jupiter;
+                    }
+                }
+
+                & + label.saturn {
+                    & > .info h3 {
+                        color:$saturn;
+                    }
+                }
+
+                & + label.uranus {
+                    & > .info h3 {
+                        color:$uranus;
+                    }
+                }
+
+                & + label.neptune {
+                    & > .info h3 {
+                        color:$neptune;
+                    }
+                }
+
+                & + label.pluto {
+                    & > .info h3 {
+                        color:$pluto;
+                    }
+                }
+
+                & + label {
+                    opacity: 1;
+
+                    &:before {
+                        display: block;
+                        width: 4px;
+                        height: 4px;
+                        position: absolute;
+                        left: 2px;
+                        top: 2px;
+                        z-index: 2;
+                        background: white;
+                        border-radius: 4px;
+                        content: '';
+                    }
+                    & > .info h2  {
+                        opacity: 1;
+                        & .pip {
+                            width: 30px;
+                            margin-right: 6px;   
+                        }
+
+                    }
+
+                    & > .info h3 {
+                        opacity: 1;
+                        color:#fea082;
+                    }
+                }
+            }
+        }
+    }
+
+    .solar {
+        @extend %viewPort;
+
+        &_systm {
+            @for $i from 1 through 10 {
+                &:nth-of-type(#{$i}) {
+                    & .planet {
+                        // This is our initial view of the planets before anything is pressed
+                        $translateY: 0;
+                        $translateZ: -$planetSpacing * ($i - 1);
+                        $opacity: 2 - ($i - 1);
+                        $rotateX: 4deg;
+                        $scaleOffset: 0.89;
+                        transform: translateZ($translateZ) translateY($translateY) rotatex($rotateX) scalex($scaleOffset);
+                        opacity: $opacity;
+
+                        &_description {
+                            opacity: 1;
+                            
+                            p,
+                            a {
+                                opacity: 0;
+                            }
+
+                            h1,
+                            h2 {
+                                position: relative;
+                                top: -330px;
+                                transition: all .5s 0s;
+                            }
+                        }
+                    }
+                }
+            }
+
+            & .planet {
+                @extend %absPosition;
+                @extend %planet;
+
+                & .trajectory {
+                    transition: all .6s 0s;
+                    opacity: 0;
+                }
+
+                &.mercury {
+                    @include makePlanet(rgba(188, 143, 127, 0.6), rgba(234, 205, 199, 0.6), 'https://www.solarsystemscope.com/images/textures/full/2k_makemake_fictional.jpg');
+                }
+
+                &.venus {
+                    @include makePlanet(#b85a07, #ffcb9c, 'https://nasa3d.arc.nasa.gov/shared_assets/images/ven0aaa2/ven0aaa2-copy-428-321.jpg');
+                }
+
+                &.earth {
+                    @include makePlanet(#7894a9, #8cbaff, 'https://img00.deviantart.net/04ef/i/2009/114/3/e/new_earth_texture_map_by_lightondesigns.jpg');
+
+                    & .trajectory.m {
+                        @include makeTrajectory(1500px, -150px, -110px);
+                    }
+                    & .moon {
+                        @include makeMoon(800px, -160px, 0.45, 'https://img2.cgtrader.com/items/702173/682fad2a11/92k-moon-color-map-3d-model.jpg');
+
+                        h3 {
+                            color: $earth;
+                        }
+
+                    }
+                }
+
+                &.mars {
+                    @include makePlanet(#6b261a,#e86363, 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/mars_texture.jpg');
+                    & .moon {
+
+                        h3 {
+                            color: $mars;
+                        }
+
+                    }
+
+                    & .deimos {
+                        @include makeMoon(900px, -100px, 0.45, 'https://www.jpl.nasa.gov/spaceimages/images/largesize/PIA07782_hires.jpg');
+                    }
+
+                    & .trajectory.d {
+                        @include makeTrajectory(1770px, -317px, -110px);
+                    }
+
+                    & .trajectory.p {
+                        @include makeTrajectory(1600px, -200px, -160px);
+                    }
+
+                    & .phoebos {
+                        @include makeMoon(100px, -160px, 0.5, 'https://www.jpl.nasa.gov/spaceimages/images/largesize/PIA07782_hires.jpg');
+                    }
+                }
+
+                &.jupiter {
+                    & .moon {
+                        h3 {
+                            color: $jupiter;
+                        }
+                    }
+                    
+                    & .trajectory.lop {
+                        @include makeTrajectory(1500px, -210px, -189px);
+                    }
+                    
+                    & .trajectory.eu {
+                        @include makeTrajectory(1530px, -165px, -130px);
+                    }
+                    
+                    & .trajectory.ga {
+                        @include makeTrajectory(1760px, -360px, -114px);
+                    }
+
+                    @include makePlanet(rgba(188, 143, 127, 0.6), rgba(234, 205, 199, 0.6), 'https://www.jpl.nasa.gov/spaceimages/images/largesize/PIA07782_hires.jpg');
+
+                    & .lo {
+                        @include makeMoon(100px, -100px, 0.4, 'http://stevealbers.net/albers/sos/jupiter/io/io_rgb_cyl.jpg');
+                    }
+
+                    & .europa {
+                        @include makeMoon(400px, -210px, 0.45, 'http://i.imgur.com/ZZBiHOH.jpg');
+                    }
+
+                    & .ganymede {
+                        @include makeMoon(900px, -70px, 0.4, 'https://vignette.wikia.nocookie.net/planet-texture-maps/images/1/14/Ganymede.jpg/revision/latest?cb=20180104001948');
+                    }
+                }
+                
+                &.saturn {
+                    & .moon {
+                        h3 {
+                            color: $saturn;
+                        }
+
+                    }
+                    
+                    @include makePlanet(rgba(188, 143, 127, 0.6), rgba(234, 205, 199, 0.6), 'https://www.solarsystemscope.com/images/textures/full/2k_saturn.jpg');
+                    
+                    & .trajectory.ti {
+                        @include makeTrajectory(1500px, -210px, -189px);
+                    }
+                    
+                    & .trajectory.di {
+                        @include makeTrajectory(1530px, -165px, -130px);
+                    }
+                    
+                    & .trajectory.enc {
+                        @include makeTrajectory(1760px, -360px, -114px);
+                    }
+
+                    & .titan {
+                        @include makeMoon(100px, -100px, 0.4, 'https://pre00.deviantart.net/bea3/th/pre/i/2017/057/7/f/titan_texture_map_8k_by_fargetanik-db0f8m0.png');
+                    }
+
+                    & .dione {
+                        @include makeMoon(400px, -210px, 0.45, 'https://www.jpl.nasa.gov/spaceimages/images/wallpaper/PIA12577-640x350.jpg');
+                    }
+
+                    & .enceladus {
+                        @include makeMoon(900px, -70px, 0.4, 'https://img.purch.com/w/660/aHR0cDovL3d3dy5zcGFjZS5jb20vaW1hZ2VzL2kvMDAwLzA0NC8yMzkvb3JpZ2luYWwvZW5jZWxhZHVzLW1hcC1jYXNzaW5pLmpwZw==');
+                    }
+                }
+                
+                &.uranus {
+                    & .moon {
+
+
+                        h3 {
+                            color: $uranus;
+                        }
+
+                    }
+
+                    & .trajectory.mir {
+                        @include makeTrajectory(1500px, -210px, -189px);
+                    }
+                    & .trajectory.ari {
+                        @include makeTrajectory(1530px, -165px, -130px);
+                    }
+                    & .trajectory.umb {
+                        @include makeTrajectory(1760px, -360px, -114px);
+                    }
+
+                    & .miranda {
+                        @include makeMoon(100px, -100px, 0.4, 'http://celestia.simulatorlabbs.com/CelSL/textures/medres/miranda.jpg');
+                    }
+
+                    & .ariel {
+                        @include makeMoon(400px, -210px, 0.45, 'http://celestia.freedoors.org/Celestia-Doors/textures/medres/ariel.jpg');
+                    }
+
+                    & .umbriel {
+                        @include makeMoon(900px, -70px, 0.4, 'http://celestia.freedoors.org/Celestia-Doors/textures/medres/titania.jpg');
+                    }
+                    @include makePlanet(rgba(127, 188, 171, 0.6), rgba(234, 205, 199, 0.6), 'https://img00.deviantart.net/957c/i/2017/165/4/9/uranus_texture_map_by_jcpag2010-db7yjwb.png');
+                }
+
+                &.neptune {
+                    & .moon {
+
+
+                        h3 {
+                            color: $neptune;
+                        }
+
+                    }
+                    & .trajectory.tri {
+                        @include makeTrajectory(1500px, -210px, -189px);
+                    }
+                    & .trajectory.pro {
+                        @include makeTrajectory(1530px, -165px, -130px);
+                    }
+                    & .trajectory.ner {
+                        @include makeTrajectory(1760px, -360px, -114px);
+                    }
+
+                    & .triton {
+                        @include makeMoon(100px, -100px, 0.4, 'https://img00.deviantart.net/b934/i/2016/198/b/0/triton_texture_map_14k_by_fargetanik-daac9tm.png');
+                    }
+
+                    & .proteus {
+                        @include makeMoon(400px, -210px, 0.45, 'http://2.bp.blogspot.com/-NrsDNbSk8TU/VKmLHdOgw0I/AAAAAAAAHvY/dod1Kqv2Ta8/s1600/NereidTxt2.jpg');
+                    }
+
+                    & .nereid {
+                        @include makeMoon(900px, -70px, 0.4, 'http://4.bp.blogspot.com/-3eyaVs4az74/VKmMpLo6FYI/AAAAAAAAHvs/zK5NTllQYnk/s1600/NereidTxt.jpg');
+                    }
+
+                    @include makePlanet(rgb(45, 65, 83), rgba(234, 205, 199, 0.6), 'https://www.solarsystemscope.com/images/textures/full/2k_neptune.jpg');
+                }
+
+                &.pluto {
+                    @include makePlanet(rgb(45, 65, 83), rgba(234, 205, 199, 0.6), 'https://pre00.deviantart.net/4677/th/pre/f/2015/314/4/e/pluto_map__2015_nov_10__by_snowfall_the_cat-d918tlb.png');
+                }
+
+                &_description {
+                    width: 620px;
+                    text-align: center;
+                    position: absolute;
+                    margin: auto;
+                    left: 0;
+                    z-index: 2;
+                    right: 0;
+                    color: white;
+                    font-weight: 100;
+                    transition: all .4s 0s;
+                    text-transform: uppercase;
+                    z-index: 1;
+
+                    &.mercury {
+                        a {
+                            color: $mercury;
+                        }
+
+                        h2 {
+                            color: lighten($mercury, 20);  
+                        }
+                    }
+
+                    &.venus {
+                        a {
+                            color: $venus;
+                        }
+
+                        h2 {
+                            color: lighten($venus, 20);  
+                        }
+                    }
+
+                    &.earth {
+                        a {
+                            color: $earth;
+                        }
+
+                        h2 {
+                            color: lighten($earth, 20);  
+                        }
+                    }
+
+                    &.mars {
+                        a {
+                            color: $mars;
+                        }
+
+                        h2 {
+                            color: lighten($mars, 20);  
+                        }
+                    }
+
+                    &.jupiter {
+                        a {
+                            color: $jupiter;
+                        }
+
+                        h2 {
+                            color: lighten($jupiter, 20);  
+                        }
+                    }
+
+                    &.saturn {
+                        a {
+                            color: $saturn;
+                        }
+
+                        h2 {
+                            color: lighten($saturn, 20);  
+                        }
+                    }
+
+                    &.uranus {
+                        a {
+                            color: $uranus;
+                        }
+
+                        h2 {
+                            color: lighten($uranus, 20);  
+                        }
+                    }
+
+                    &.neptune {
+                        a {
+                            color: $neptune;
+                        }
+
+                        h2 {
+                            color: lighten($neptune, 20);
+                        }
+                    }
+
+                    &.pluto {
+                        a {
+                            color: $pluto;
+                        }
+
+                        h2 {
+                            color: lighten($pluto, 20);
+                        }
+                    }
+
+                    h1,
+                    h2,
+                    p,
+                    a {
+                        font-weight: 100;
+                        font-size: 10px;
+                        letter-spacing: 5px;
+                        margin: 0;
+                    }
+
+                    h1 {
+                        letter-spacing: 16px;
+                        font-size: 34px;
+                    }
+
+                    h2,
+                    a {
+                        color: #fabfad;
+                    }
+
+                    h2 {
+                        margin-top: 60px;
+                        margin-bottom:6px;
+                    }
+
+                    p {
+                        line-height: 26px;
+                        margin-top:14px;
+                        oapcity: 0.9;
+                        margin-bottom: 10px;
+                    }
+
+                    a {
+                        color: #fea082;
+                        font-size: 11px;
+                        font-weight: 500;
+                        padding: 0 2px 5px 0px;
+                        border-bottom: 2px solid;
+                        transition: all 0.2s;
+                        position: relative;
+                        left: 0;
+
+                        &:hover {
+                            padding: 0 10px 5px 10px;
+                            left: -1px;
+                        }
+
+                        span {
+                            letter-spacing: 0;
+                            margin-left: -5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    & .panel {
+        position: absolute;
+        right: -520px;
+        width: 300px;
+        top: 0;
+        height: 100vh;
+        transition: all 0.2s;
+        color: black;
+        background: white;
+        padding: 10px 60px 0px 60px;
+        overflow: scroll;
+        body::-webkit-scrollbar {
+            width: 1em;
+        }
+
+        body::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: darkgrey;
+            outline: 1px solid slategrey;
+        }
+        .profile {
+            padding-top: 4px;
+            p {
+                line-height: 10px;
+                span {
+                    font-weight: 600;
+                    color: black;
+                }
+            }
+        }
+
+        img {
+            border-radius: 2px;
+            width: 100%;
+        }
+        h1 {
+            text-transform: uppercase;
+            font-weight: 100;
+            margin: 0 0 0 0;
+            letter-spacing: 3px;
+            top: 0;
+            padding: 49px 0 0 0;
+            width: 100%;
+
+            font-size: 20px;
+            &::after {
+                width: 30px;
+                height: 2px;
+                background: black;
+                display: block;
+                content: '';
+                margin-bottom: 30px;
+                margin-top: 8px;
+            }
+        }
+        h2 {
+            font-size: 13px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 30px;
+
+            &::after {
+                width: 30px;
+                height: 2px;
+                background: black;
+                display: block;
+                content: '';
+                margin-top: 8px;
+            }
+        }
+
+
+        p {
+            color: #a0a0a0;
+            font-size: 12px;
+            line-height: 20px;
+        }
+    }
+}

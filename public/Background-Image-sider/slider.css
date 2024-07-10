@@ -16,13 +16,14 @@ body{
     animation: bg-change 20s linear infinite ;
 }
 
-ul {
-    list-style: none;
+ul{
+    list-style-type: none;
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    gap: 40px; 
 
 }
+
 .navbar{
       font-size: x-large;
     display: flex;
@@ -30,8 +31,35 @@ ul {
     padding: 20px;
     justify-content: space-evenly;
     align-items: center;
-    gap: 550px
+    gap: 550px;
 }
+.navbar ul li {
+  position: relative;
+}
+
+.navbar ul li a{
+  text-decoration:none;
+  color: white;
+
+}
+
+
+ul li::after{
+  content: '';
+  height: 3px;
+  width: 0;
+  background-color: green;
+  position: absolute;
+ left: 0;
+ bottom: -10px;
+ transition: 0.5s;
+  
+}
+
+ul li:hover::after{
+  width: 100%;
+}
+
 .content{
     top: 50vh;
     display: flex;

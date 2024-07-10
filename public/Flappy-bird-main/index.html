@@ -55,7 +55,14 @@
       let gravity = 0.4;
 
       let gameOver = false;
+      let gameStarted = false;
       let score = 0;
+      let highscore = 0; //adding high socre
+
+      //sound 
+      //let jumpsound;
+      //let scoresound;
+      //let gameoversound;
 
       window.onload = function () {
         board = document.getElementById("board");
@@ -83,10 +90,23 @@
         requestAnimationFrame(update);
         setInterval(placePipes, 1500); //every 1.5 seconds
         document.addEventListener("keydown", moveBird);
+
+        jumpsound = new Audio("C:/Users/sharm/OneDrive/Desktop/flappy bird music/cartoon-jump-6462.mp3");
+        scoresound = new Audio("score.mp3");
+        gameoversound = new Audio("C:/Users/sharm/OneDrive/Desktop/flappy bird music/game-over-arcade-6435.mp3");
+
+        //requestAnimationFrame(update);
+        //document.addEventListener("keydown" , moveBird);
+        
+        
+        showInstruction(); //show intial instructions of the game
       };
 
       function update() {
         requestAnimationFrame(update);
+        if(!gameStarted){
+          return;
+        }
         if (gameOver) {
           return;
         }
@@ -100,6 +120,10 @@
 
         if (bird.y > board.height) {
           gameOver = true;
+          //gameoversound.play();
+          if(highscore > score){
+            highscore = score;  //assigning score to highscore
+          }
         }
 
         //pipes
@@ -111,10 +135,15 @@
           if (!pipe.passed && bird.x > pipe.x + pipe.width) {
             score += 0.5; //0.5 because there are 2 pipes! so 0.5*2 = 1, 1 for each set of pipes
             pipe.passed = true;
+            //scoresound.play();
           }
 
           if (detectCollision(bird, pipe)) {
             gameOver = true;
+           // gameoversound.play();
+            if(highscore < score){
+              highscore = score;
+            }
           }
         }
 
@@ -124,14 +153,25 @@
         }
 
         //score
-        context.fillStyle = "white";
-        context.font = "45px sans-serif";
+        context.fillStyle = "red";
+        context.font = "45px sans-setif";
         context.fillText(score, 5, 45);
 
+        //highscore
+        context.fillStyle = "red";
+        context.font = "30px sans-setif";
+        context.fillText("HIGH SCORE : " + highscore , 5 , 85);
+
         if (gameOver) {
-          context.fillText("GAME OVER", 5, 90);
+          context.fillStyle = "red";
+          context.font = "30px sans-setif";
+          let gameOverText = "GAME OVER";
+          let textWidth = context.measureText(gameOverText).width;
+
+          context.fillText(gameOverText,(boardWidth - textWidth)/2 , boardHeight / 2);
         }
       }
+
 
       function placePipes() {
         if (gameOver) {
@@ -170,6 +210,12 @@
         if (e.code == "Space" || e.code == "ArrowUp" || e.code == "KeyX") {
           //jump
           velocityY = -6;
+          //game started
+          if(!gameStarted){
+            gameStarted = true;
+            //placePipes();
+            //setInterval(placePipes , 1500);
+          }
 
           //reset game
           if (gameOver) {
@@ -177,8 +223,16 @@
             pipeArray = [];
             score = 0;
             gameOver = false;
+            gameStarted = false;
+            showInstruction();
           }
         }
+      }
+      function showInstruction(){
+        context.clearRect(0,0 , board.width , board.height);
+        context.fillStyle = "red";
+        context.font = "25px sans-setif";
+        context.fillText("Press Space to Start the Game" , 50 , boardHeight/2);
       }
 
       function detectCollision(a, b) {

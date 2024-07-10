@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <h1 class="text-4xl font-bold text-center mb-8">Sign Up</h1>
+        <form action="/signup" method="post" class="max-w-md mx-auto">
+            <input type="text" name="name" placeholder="Name" class="border border-gray-300 rounded-md px-3 py-2 mb-4 block w-full">
+            <input type="email" name="email" placeholder="Email" class="border border-gray-300 rounded-md px-3 py-2 mb-4 block w-full">
+            <input type="password" name="password" placeholder="Password" class="border border-gray-300 rounded-md px-3 py-2 mb-4 block w-full">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sign Up</button>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -22,6 +22,7 @@
                 <textarea id="patientCondition" name="patientCondition" required></textarea>
 
                 <label for="specialistType">Specialist Needed:</label>
+                <input type="text" id="specialistSearch" placeholder="Search Specialist...">
                 <select id="specialistType" name="specialistType" required></select>
 
                 <button type="submit">Submit</button>
@@ -30,6 +31,7 @@
         <section id="consultation-status">
             <h2>Consultation Status</h2>
             <div id="statusMessage"></div>
+            <div id="loading" style="display:none;">Loading...</div>
         </section>
         <section id="specialist-response" style="display:none;">
             <h2>Provide Your Suggestion</h2>
@@ -41,6 +43,18 @@
                 <textarea id="suggestion" name="suggestion" required></textarea>
 
                 <button type="submit">Submit Suggestion</button>
+            </form>
+        </section>
+        <section id="consultation-history">
+            <h2>Consultation History</h2>
+            <ul id="historyList"></ul>
+        </section>
+        <section id="feedback">
+            <h2>Provide Feedback</h2>
+            <form id="feedbackForm">
+                <label for="feedbackMessage">Your Feedback:</label>
+                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
+                <button type="submit">Submit Feedback</button>
             </form>
         </section>
     </main>
