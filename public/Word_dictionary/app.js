@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('#input');
     const searchBtn = document.querySelector('#search');
-    const apiKey = '771aa8f7-d363-4ff0-a824-10181a86ac47';
+    const apiUrl = 'https://www.example.com/api/word-definition'; // Place for the API URL
     const notFound = document.querySelector('.not__found');
     const defBox = document.querySelector('.def');
     const audioBox = document.querySelector('.audio');
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function getData(word) {
         loading.style.display = 'block';
         try {
-            const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`);
+            const response = await fetch(`${apiUrl}?word=${word}`);
             const data = await response.json();
             loading.style.display = 'none';
             if (!data.length) {
