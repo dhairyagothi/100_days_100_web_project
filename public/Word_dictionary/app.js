@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('#input');
     const searchBtn = document.querySelector('#search');
-    const apiUrl = 'https://www.example.com/api/word-definition'; // Place for the API URL
+    const apiUrl = 'https://www.example.com/api/word-definition'; // Placeholder for the API URL
     const notFound = document.querySelector('.not__found');
     const defBox = document.querySelector('.def');
     const audioBox = document.querySelector('.audio');
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const str = input.value;
         if (oldLength !== str.length) {
             oldLength = str.length;
-            const strToSearch = str.split(" ").pop();
+            const strToSearch = str.split(' ').pop();
             getData(strToSearch);
         }
     }
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Word is required');
             return;
         }
-        const wordToSearch = word.split(" ").pop();
+        const wordToSearch = word.split(' ').pop();
         getData(wordToSearch);
     });
 
@@ -62,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
         loading.style.display = 'block';
         try {
             const response = await fetch(`${apiUrl}?word=${word}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
             loading.style.display = 'none';
             if (!data.length) {
@@ -75,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             displayDefinition(data[0], word);
         } catch (error) {
             loading.style.display = 'none';
+            notFound.innerText = 'Error fetching data';
             console.error('Error fetching data:', error);
         }
     }
