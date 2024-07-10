@@ -6,14 +6,14 @@ let defBox = document.querySelector('.def');
 let audioBox = document.querySelector('.audio');
 let loading = document.querySelector('.loading');
 let wordBox = document.querySelector('.words_and_meaning');
-//const tableBody = document.querySelector('#tableData');
+ //const tableBody = document.querySelector('#tableData');
 let i = 0;
 let oldLength = 0;
 
 function myFunction() {
     let elem = $('#input');
     let str = elem.val();
-    // alert(elem.val() + " " + oldLength); // Comment out or remove this line
+     // alert(elem.val() + " " + oldLength); // Comment out or remove this line
     if (oldLength != elem.val().length) {
         oldLength = elem.val().length;
         let strTosearch;
