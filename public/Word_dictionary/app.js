@@ -23,7 +23,7 @@ function myFunction() {
             strTosearch = str;
         }
         getData(strTosearch);
-        // alert(elem.val()); // Comment out or remove this line
+            // alert(elem.val()); // Comment out or remove this line
         i++;
     }
 }
