@@ -18,6 +18,7 @@
         html {
             margin: 0;
             overflow: auto;
+            overflow-x: hidden;
         }
 
         #bgCanvas {
@@ -50,21 +51,21 @@
     <nav class="navbar">
         <div class="navbar-container">
                
-            <a href="#" class="navbar-logo"><img src="../public/logo1.png" alt="Logo"></a>
+            <a href="#" class="navbar-logo"><img src="./logo1.png" alt="Logo"></a>
            
             <ul class="navbar-menu">
                 <li class="navbar-item"><a href="#home" class="navbar-link">Home</a></li>
                 <li class="navbar-item"><a href="#projects" class="navbar-link">Projects</a></li>
                 <li class="navbar-item"><a href="#about" class="navbar-link">About</a></li>
-                <li class="navbar-item"><a href="#contact" class="navbar-link">Contact</a></li>
+                <li class="navbar-item"><a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" class="navbar-link">Contact</a></li>
             </ul>
             <a id="github-logo" href ="https://github.com/dhairyagothi" target="_blank">
-                <img src="../public/github1.png" alt="GitHub" width="40" height="40">
+                <img src="./github1.png" alt="GitHub" width="40" height="40">
             </a>
         </div>
     </nav>
 
-    <div class="content">
+    <div class="content" id="projects">
         <div class="header">50_days_50_webprojects</div>
         <p class="subheader">HERE IS LIVE DEMO OF ALL PROJECTS</p>
 
@@ -431,7 +432,31 @@
             <div class="project-name">Spotify Clone Project</div>
             <a href="spotify-clone -project/index.html" class="demo-link">Demo</a>
         </div>
+
+
+        <div class="table">
+            <div class="day-number">Day 70</div>
+            <div class="project-name">Insect-Catch_Game</div>
+            <a href="public/Insect-Catch-Game/index.html" class="demo-link">Demo</a>
+        </div>
+
     </div>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <p>&copy; 2024 50_days_50_webprojects. Made by Dhairya.</p>
+            </div>
+            <div class="footer-right">
+                <a href="#" target="_blank">
+                    <img class="icons" src="./Img/twitter.png" alt="Twitter Icon">
+                </a>
+                <a href="https://github.com/dhairyagothi/50_days_50_web_project" target="_blank">
+                    <img class="icons" src="./Img//github.png" alt="Github Icon">
+                </a>
+            </div>
+        </div>
+    </footer>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/utils/BufferGeometryUtils.js"></script>
