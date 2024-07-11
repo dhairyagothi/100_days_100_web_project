@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('#input');
     const searchBtn = document.querySelector('#search');
-    const apiUrl = 'https://www.example.com/api/word-definition'; // Placeholder for the API URL
+    const apiUrl = 'put your API key here';
     const notFound = document.querySelector('.not__found');
     const defBox = document.querySelector('.def');
     const audioBox = document.querySelector('.audio');
