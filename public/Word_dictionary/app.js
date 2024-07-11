@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('#input');
     const searchBtn = document.querySelector('#search');
-    const apiKey = '771aa8f7-d363-4ff0-a824-10181a86ac47';
+    //const apiKey = '771aa8f7-d363-4ff0-a824-10181a86ac47';
     const notFound = document.querySelector('.not__found');
     const defBox = document.querySelector('.def');
     const audioBox = document.querySelector('.audio');
