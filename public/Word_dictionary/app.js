@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('#input');
     const searchBtn = document.querySelector('#search');
-    const apiUrl = 'https://www.example.com/api/word-definition'; // Placeholder for the API URL
     const notFound = document.querySelector('.not__found');
     const defBox = document.querySelector('.def');
     const audioBox = document.querySelector('.audio');
@@ -9,12 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordBox = document.querySelector('.words_and_meaning');
     let oldLength = 0;
 
-    function myFunction() {
+    async function getApiUrl() {
+        const response = await fetch('/api/config');
+        const config = await response.json();
+        return config.apiUrl;
+    }
+
+    async function myFunction() {
         const str = input.value;
         if (oldLength !== str.length) {
             oldLength = str.length;
             const strToSearch = str.split(' ').pop();
-            getData(strToSearch);
+            const apiUrl = await getApiUrl();
+            getData(strToSearch, apiUrl);
         }
     }
 
@@ -40,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Speech Recognition API not supported in this browser.');
     }
 
-    searchBtn.addEventListener('click', e => {
+    searchBtn.addEventListener('click', async e => {
         e.preventDefault();
         clearData();
         const word = input.value.trim();
@@ -49,7 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const wordToSearch = word.split(' ').pop();
-        getData(wordToSearch);
+        const apiUrl = await getApiUrl();
+        getData(wordToSearch, apiUrl);
     });
 
     function clearData() {
@@ -58,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         defBox.innerText = '';
     }
 
-    async function getData(word) {
+    async function getData(word, apiUrl) {
         loading.style.display = 'block';
         try {
             const response = await fetch(`${apiUrl}?word=${word}`);
@@ -112,4 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
         wordBox.appendChild(meaningElement);
         wordBox.appendChild(br);
     }
+});
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/api/config', (req, res) => {
+    res.json({ apiUrl: process.env.API_URL });
+});
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });
