@@ -6,18 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planto</title>
     <link rel="stylesheet" href="plant.css">
-    <link rel="shortcut icon" href="images/plant 1.png" type="image/x-icon">
+    <link rel="shortcut icon" href="images/indoor-plants_5451442.png" type="image/x-icon">
 </head>
 
 <body>
     <nav class="navbar">
-        <div class="logo"><img src="images/plant 1.png" alt="Planto" srcset=""></div>
+        <div class="logo"><img src="images/indoor-plants_5451442.png" alt="Planto" srcset=""></div>
+        <button id="mobile-menu-button">☰</button>
         <div class="items">
             <ul>
-                <li>Home</li>
-                <li>Plant Type</li>
-                <li>More</li>
-                <li>Contact</li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#plant-type">Plant Type</a></li>
+                <li><a href="#more">More</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
         <div class="icons">
@@ -29,7 +31,7 @@
         </div>
     </nav>
     <main>
-        <div class="block1">
+        <div id="home" class="block1">
             <div class="block1-text">
                 <h1>Breathe Natural</h1>
                 <p>Plants are mainly multicellular, predominantly photosynthetic eukaryotes of the kingdom Plantae.
@@ -37,38 +39,64 @@
                     animals, and all algae and fungi were treated as plants.</p>
             </div>
             <div class="block1-img">
-                <div> <img src="images/p2.png" alt="" srcset=""></div>
-
+                <div> <img src="images/p2.png" alt="Trendy house plant" srcset=""></div>
                 <div>
                     <h3>Trendy house plant</h3>
                     <h2>Calathea Plant</h2>
                 </div>
             </div>
         </div>
-        <div class="block2-head">Our Trendy Plants</div>
-        <div class="block2">
+        <div id="plant-type" class="block2-head">Our Trendy Plants</div>
+        <div id="more" class="block2">
             <div class="block2-p1">
-                <div class="block2-img"><img src="images/p3.png" alt="" srcset=""></div>
+                <div class="block2-img"><img src="images/p3.png" alt="Small desk plant" srcset=""></div>
                 <div class="block2-text">
                     <h3>For small desk plant</h3>
                     <p>Calathea is a genus of plants belonging to the family Marantaceae. There are several dozen
                         species in this genus. Native to the tropical Americas, many of the species are popular as pot
                         plants due to their decorative leaves and, in some species, colorful inflorescences.</p>
-                    <h3>Rs.599</h3>
+                    <div class="buy-option">
+                        <h3>Rs.599</h3>
+                        <div class="button-container">
+                            <a href="https://www.amazon.com/s?k=calathea+plant" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.flipkart.com/search?q=calathea%20plant" target="_blank" class="buy-button">Buy on Flipkart</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="block2-p2">
-                <div class="block2-img"><img src="images/p4.png" alt="" srcset=""></div>
+                <div class="block2-img"><img src="images/p4.png" alt="Another small desk plant" srcset=""></div>
                 <div class="block2-text">
                     <h3>For small desk plant</h3>
                     <p>Calathea is a genus of plants belonging to the family Marantaceae. There are several dozen
                         species in this genus. Native to the tropical Americas, many of the species are popular as pot
                         plants due to their decorative leaves and, in some species, colorful inflorescences.</p>
-                    <h3>Rs.599</h3>
+                    <div class="buy-option">
+                        <h3>Rs.599</h3>
+                        <div class="button-container">
+                            <a href="https://www.amazon.com/s?k=calathea+plant" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.flipkart.com/search?q=calathea%20plant" target="_blank" class="buy-button">Buy on Flipkart</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div id="about" class="about-section">
+            <h2>About Us</h2>
+            <p>We are passionate about bringing nature into your home. Our carefully curated selection of plants is designed to enhance your living space and improve your well-being. With years of experience in plant care, we provide not just plants, but a greener lifestyle.</p>
+        </div>
     </main>
+    <section id="contact" class="newsletter">
+        <h2>Subscribe to Our Newsletter</h2>
+        <form>
+            <input type="email" placeholder="Enter your email">
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+    <footer>
+        <p>&copy; 2024 Planto. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 
 </html>

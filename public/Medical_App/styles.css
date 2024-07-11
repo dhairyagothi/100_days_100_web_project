@@ -1,32 +1,50 @@
-/* Global Reset and Basic Styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #333;
+    animation: fadeIn 1s ease-in-out;
 }
 
 header {
-    background-color: #4CAF50;
-    color: white;
     text-align: center;
-    padding: 1em 0;
+    margin-bottom: 20px;
+    animation: slideDown 1s ease-in-out;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+header p {
+    font-size: 1.5rem;
+    margin: 5px 0;
+    color: #777;
 }
 
 main {
-    margin: 20px;
+    width: 90%;
+    max-width: 800px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 section {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
 
 h2 {
-    margin-top: 0;
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
 form {
@@ -35,41 +53,64 @@ form {
 }
 
 label {
-    margin-top: 10px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-input, textarea, select, button {
-    margin-top: 5px;
+input[type="text"], textarea, select {
     padding: 10px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 1rem;
 }
 
 button {
-    background-color: #4CAF50;
+    padding: 10px;
+    background-color: #3498db;
     color: white;
     border: none;
+    border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
-    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #2980b9;
 }
 
-#statusMessage {
-    margin-top: 20px;
+#loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #3498db;
 }
 
-/* Media Query for Responsive Design */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 @media (max-width: 600px) {
-    main {
-        margin: 10px;
+    header h1 {
+        font-size: 2rem;
     }
-    section {
-        padding: 15px;
-    }
-    input, textarea, select, button {
-        padding: 8px;
+
+    header p {
+        font-size: 1rem;
     }
 }

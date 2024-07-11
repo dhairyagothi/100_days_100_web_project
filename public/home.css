@@ -1,71 +1,186 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
 
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background: black;
-  color: grey;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin: 0;
+    background: black;
+    color: grey;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin: 0;
 }
 
 @media screen and (min-width: 600px) and (max-width: 899px) {
-  body {
-    padding-left: 100px;
-    padding-right: 100px;
-  }
+    body {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
 }
 
 @media screen and (min-width: 900px) and (max-width: 1199px) {
-  body {
-    padding-left: 200px;
-    padding-right: 200px;
-  }
+    body {
+        padding-left: 200px;
+        padding-right: 200px;
+    }
 }
 
 @media screen and (min-width: 1200px) {
-  body {
-    padding-left: 400px;
-    padding-right: 400px;
-  }
+    body {
+        padding-left: 400px;
+        padding-right: 400px;
+    }
 }
 
 a {
-  color: white;
+    color: white;
+    text-decoration: none;
 }
 
 .header {
-  text-align: center;
-  padding: 30px;
-  margin-bottom: 35px;
-  background: linear-gradient(90deg, #ff8a00, #da1b60);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-family: "IBM Plex Sans", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: xx-large;
+    text-align: center;
+    padding: 80px 0px 40px 0px;  
+    margin-bottom: 0px;
+    background: linear-gradient(90deg, #ff8a00, #da1b60);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 700;
+    font-size: xx-large;
 }
 
 .subheader {
-  text-align: center;
-  padding: 10px;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #a7ed5d, #30ccf7);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-family: "IBM Plex Sans", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: x-large;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #a7ed5d, #30ccf7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 400;
+    font-size: x-large;
+}
+
+.navbar {
+    width: 100%;
+    background: #333;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(255,255,255,0.5);
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin-left: 100px;   
+}
+
+
+.navbar-logo img {
+  height: 40px;
+  width: auto;
+  transition: transform 0.3s;
+}
+
+.navbar-logo img:hover {
+  transform: scale(1.1);
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    margin-left: 790px;
+}
+
+.navbar-item {
+    margin-left: 20px;
+}
+
+.navbar-link {
+    color: #fff;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.navbar-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #ff8a00;
+    transition: width 0.3s;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+}
+
+.navbar-link:hover {
+    color: #ff8a00;
+}
+
+.navbar-link:hover::after {
+    width: 100%;
+}
+
+.navbar-link::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #da1b60;
+    transition: width 0.3s;
+    position: absolute;
+    top: -5px;
+    left: 0;
+}
+
+.navbar-link:hover::before {
+    width: 100%;
+}
+
+#brand {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#search-bar {
+  display: flex;
+  align-items: center;
+}
+
+#searchInput {
+  padding: 5px;
+  font-size: 16px;
+}
+
+#searchButton {
+  padding: 6px 10px;
+  margin-left: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#github-logo img {
+  width: 30px;
+  height: 30px;
+  margin-left: 60px;
 }
 
 .table {
@@ -132,6 +247,68 @@ body::-webkit-scrollbar-thumb {
   );
 }
 
+footer {
+  position: absolute;
+  left: 50%;
+  width: 100vw;
+  background: #1e1e1e;
+  padding: 20px 0;
+  margin-top: 50px;
+  transform: translateX(-50%); /* Centrar el footer */
+  border-radius: 5px 5px 0 0;
+  color: #fff;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.footer-container{
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-left {
+  width: 50%;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.footer-right a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.footer-right a:hover {
+  color: #ddd;
+}
+
+.footer-container .icons {
+  width: 30px;
+  height: 30px;
+  filter: invert();
+  transition: opacity 0.3s ease;
+}
+
+.footer-container .icons:hover {
+  opacity: 0.7;
+}
+
+
 @media screen and (max-width: 600px) {
   ::-webkit-scrollbar {
     width: 1em;
@@ -153,5 +330,8 @@ body::-webkit-scrollbar-thumb {
       rgba(9, 9, 121, 1) 55%,
       rgba(0, 212, 255, 1) 100%
     );
+  }
+  footer{
+    width: 100%;
   }
 }

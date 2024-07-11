@@ -1,11 +1,20 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
   }
   body {
     height: 100vh;
     width: 100vw;
     background: #18191f;
+    margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   }
   .container {
     display: flex;
@@ -13,6 +22,7 @@
     align-items: center;
     height: 100vh;
     width: 100vw;
+    flex-wrap: wrap;
   }
   #apple,
   #twitter,
@@ -27,11 +37,17 @@
       inset 2px 2px 10px #00000080;
     border-radius: 29px;
     padding: 11px 19px;
-    margin: 0 40px;
+    margin: 20px;
     animation: animate 3s linear infinite;
     text-shadow: 0 0 50px #0072ff, 0 0 100px #0072ff, 0 0 150px #0072ff,
       0 0 200px #0072ff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
+  /* Icon Hover Effects */
+#apple:hover, #twitter:hover, #github:hover, #facebook:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
   #twitter {
     animation-delay: 0.3s;
   }
@@ -51,4 +67,16 @@
     }
   }
   
-  
+  /* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+  }
+
+  #apple, #twitter, #github, #facebook {
+    font-size: 4em;
+    margin: 10px 0;
+  }
+}

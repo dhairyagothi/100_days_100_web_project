@@ -1,0 +1,164 @@
+.top {
+    position: relative;
+    height: calc(100vh - 30rem);
+    margin-bottom: 4rem;
+    min-height: 42rem;
+    max-height: 57rem;
+  }
+  
+  main .bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 30rem);
+    min-height: 42rem;
+    max-height: 57rem;
+    z-index: -1;
+    object-fit: cover;
+  }
+  
+  main .center-content {
+    position: absolute;
+    bottom: calc(50% - 11.1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 1.6rem;
+    width: 100%;
+  }
+  
+  main .main-logo {
+    height: 6rem;
+    width: 30rem;
+    position: relative;
+  }
+  
+  main h1 {
+    margin-top: 3rem;
+    color: white;
+    text-align: center;
+    font-size: 3.6rem;
+    font-weight: 200;
+  }
+  
+  main .place {
+    font-size: 36px;
+    font-weight: 500;
+  }
+  
+  main .search_container {
+    margin-top: 3rem;
+    display: flex;
+    border-radius: 0.8rem;
+    background-color: white;
+    box-shadow: rgba(28, 28, 28, 0.08) 0px 2px 8px;
+    border: 1px solid rgb(232, 232, 232);
+    height: 5.4rem;
+    align-items: center;
+  }
+  
+  main .search_container .location {
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    width: 24rem;
+    height: 100%;
+    justify-content: space-around;
+  }
+  
+  main .search_container .location i {
+    color: rgb(255, 126, 139);
+  }
+  
+  main .search_container .location svg {
+    color: rgb(255, 126, 139);
+  }
+  
+  main .search_container input {
+    border: none;
+  }
+  
+  main .search_container input:focus {
+    outline: none;
+  }
+  
+  main .search_container .line {
+    width: 0rem;
+    height: 2rem;
+    border: 0.05rem solid rgb(207, 207, 207);
+  }
+  
+  main .search_container .search {
+    border-radius: 0.8rem;
+    width: 53rem;
+    height: 100%;
+    display: flex;
+    position: relative;
+  }
+  
+  main .search_container .search .search_icon {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 6rem;
+    margin: -1px -0.6rem -1px -1px;
+  }
+  
+  main .search_container .search .search_icon svg {
+    color: rgb(130, 130, 130);
+  }
+  
+  main .search_container .search .search_box {
+    border: none;
+    font-size: 1.4rem;
+    width: 100%;
+    border-radius: 0.8rem;
+  }
+  
+  @media (max-width: 800px) {
+    main .main-logo {
+      height: 3rem;
+      width: 16rem;
+      position: relative;
+    }
+  
+    main .search_container {
+      width: calc(100% - 2.4rem);
+      flex-direction: column;
+    }
+  
+    main .search_container .location {
+      margin-top: 1.2rem;
+      margin-bottom: 0.8rem;
+      justify-content: space-between;
+      width: 100%;
+      gap: 2rem;
+      height: 5rem;
+    }
+  
+    main .search_container .location input {
+      flex: 1;
+    }
+  
+    main .search_container .search {
+      margin-top: 1.8rem;
+      background-color: white;
+      padding: 1.5rem 1rem;
+      width: 100%;
+      justify-content: space-between;
+    }
+  
+    main .search_container .search .search_icon {
+      width: fit-content;
+    }
+  
+    main .search_container .search input {
+      margin-left: 1.5rem;
+    }
+  }

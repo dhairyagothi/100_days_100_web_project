@@ -1,0 +1,21 @@
+/* author: https://codepen.io/chrisgannon/details/dyEmEeq
+Chris Gannon
+ */
+
+body {
+    background-color: #0A1012;
+      margin: 0;
+    overflow: hidden;
+    }
+    
+    #container{
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      height: 100% !important;
+    
+    }
+    #canvas3d{
+      width: 100% !important;
+      height: 100% !important;
+    }
