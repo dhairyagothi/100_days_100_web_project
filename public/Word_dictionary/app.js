@@ -113,3 +113,53 @@ document.addEventListener('DOMContentLoaded', () => {
         wordBox.appendChild(br);
     }
 });
+//voice search 
+document.addEventListener('DOMContentLoaded', () => {
+    const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const output = document.getElementById('input');
+    const status = document.getElementById('status');
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        status.textContent = 'Speech Recognition API is not supported in this browser.';
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+        status.textContent = 'Listening...';
+    };
+
+    recognition.onend = () => {
+        status.textContent = 'Stopped listening.';
+    };
+
+    recognition.onresult = (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+        }
+        output.value = transcript;
+        console.log('Transcript:', transcript); // Log transcript for debugging
+    };
+
+    recognition.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        status.textContent = 'Error occurred in recognition: ' + event.error;
+    };
+
+    startBtn.addEventListener('click', () => {
+        output.value = ''; // Clear the output textarea
+        recognition.start();
+    });
+
+    stopBtn.addEventListener('click', () => {
+        recognition.stop();
+    });
+});
+
