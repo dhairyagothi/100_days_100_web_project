@@ -17,6 +17,17 @@ body{
   color: #fff;
   background: #618cf8;
 }
+.search-bar {
+  margin: 20px;
+  text-align: center;
+}
+.search-bar input {
+  width: 80%;
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 .wrapper{
   margin: 50px;
   display: grid;
@@ -92,6 +103,11 @@ body{
   color: #575757;
   font-size: 16px;
   margin-top: 5px;
+}
+.note .tags {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6d6d6d;
 }
 .note .bottom-content{
   padding-top: 10px;
@@ -247,4 +263,19 @@ form button{
   .bottom-content .settings i{
     font-size: 17px;
   }
+}
+/* Add this to the existing CSS */
+
+.note .details.locked {
+  filter: blur(5px);
+  cursor: pointer;
+}
+
+.note .details.locked::after {
+  content: "\1F512";
+  font-size: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
