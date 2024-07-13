@@ -1,0 +1,463 @@
+* {
+  font-family: "Dangrek", "Roboto";
+}
+body {
+  background-color: #8cc461;
+  overflow: hidden;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.display {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 13px;
+  border: 2px solid #fff;
+  padding: 15px;
+  width: 800px;
+  height: 120px;
+}
+.heading {
+  color: #fff;
+  font-family: Roboto;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 4px;
+}
+.scoreboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.score {
+  border-radius: 9px;
+  background: #fff;
+  width: 125px;
+  height: 110px;
+  color: #656565;
+  font-family: Roboto;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 1.7px;
+  text-align: center;
+}
+.game {
+  margin-top: 5vh;
+}
+.export {
+  display: none;
+}
+.stone1 {
+  position: relative;
+}
+.paper1 {
+  position: relative;
+}
+.scissor1 {
+  position: relative;
+}
+.line {
+  position: relative;
+}
+.line1 {
+  position: absolute;
+  background: none;
+  bottom: 14vh;
+  left: 2.5%;
+  z-index: 1;
+}
+.stone {
+  position: relative;
+  right: 90%;
+  background: none;
+}
+.logo1 {
+  position: absolute;
+  top: 25%;
+  right: 25%;
+  background: none;
+  cursor: pointer;
+}
+.paper {
+  position: relative;
+  left: 76.5%;
+  margin-top: -175px;
+}
+.logo2 {
+  position: absolute;
+  top: 25%;
+  right: 25%;
+  background: none;
+  cursor: pointer;
+}
+.line3 {
+  position: absolute;
+  background: none;
+  bottom: -10.5vh;
+  right: 80%;
+  z-index: 1;
+}
+.line2 {
+  position: absolute;
+  background: none;
+  bottom: -10.5vh;
+  left: 68%;
+  z-index: 1;
+}
+.scissor {
+  position: relative;
+  background: none;
+  margin-top: 30px;
+  right: 7%;
+}
+.logo3 {
+  position: absolute;
+  top: 28%;
+  right: 35%;
+  background: none;
+  cursor: pointer;
+}
+@keyframes example {
+  from {
+    background-color: #2eae19;
+  }
+  to {
+    background-color: #3dc029;
+  }
+}
+.bg img {
+  border-radius: 100%;
+  animation-name: example;
+  animation-duration: 1s;
+}
+#rul {
+  color: #fff;
+  font-family: Roboto;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 2.1px;
+}
+.box {
+  width: 278px;
+  height: 325px;
+  border-radius: 13px;
+  border: 7px solid #fff;
+  background-color: #004429;
+  top: 35%;
+  right: 3%;
+  display: none;
+  position: fixed;
+  z-index: 1;
+}
+.headline {
+  color: #fff;
+  font-family: Roboto;
+  font-size: 29px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  background-color: #004429;
+  text-align: center;
+}
+.listrule {
+  color: #fff;
+  font-family: Roboto;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: #004429;
+}
+li {
+  margin: 5px 5px;
+}
+ul {
+  list-style: none;
+}
+ul li::before {
+  color: #ffd600;
+  content: "\25AA";
+  display: inline-block;
+  width: 1em;
+  font-size: 1.1rem;
+  margin-left: -2em;
+  text-align: center;
+}
+.close {
+  position: relative;
+  text-align: center;
+  border: none;
+  float: right;
+  top: -13%;
+  right: -13%;
+  background: none;
+  cursor: pointer;
+}
+.close img {
+  background: none;
+}
+.symbol {
+  position: absolute;
+  color: #fff;
+  font-family: Dangrek;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  top: -7px;
+  right: 23px;
+  background: none;
+}
+.you-win {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 7%;
+  margin-bottom: -80px;
+  gap: 80px;
+  display: none;
+}
+.you-lost {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 7%;
+  margin-bottom: -80px;
+  gap: 80px;
+  display: none;
+}
+.tie-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  padding-bottom: 50px;
+  gap: 80px;
+  background: none;
+  display: none;
+}
+.you-picked {
+  position: relative;
+}
+.ipt-U {
+  background: none;
+  color: #fff;
+  font-family: Roboto;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 1.7px;
+}
+.opt-U {
+  background: none;
+}
+.opt-P {
+  background: none;
+}
+.ipt-P {
+  color: #fff;
+  font-family: Roboto;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 1.7px;
+  background: none;
+}
+.opt-U img {
+  background: none;
+}
+.opt-P img {
+  background: none;
+}
+.result h2 {
+  color: #fff;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 39px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 3.9px;
+  background: none;
+}
+.result h3 {
+  color: #fff;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 2.5px;
+  background: none;
+}
+.result button {
+  width: 174px;
+  height: 44px;
+  border-radius: 9px;
+  background: #fff;
+  color: #6b6b6b;
+  font-family: Roboto;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  border: none;
+}
+.ipt-U1 {
+  position: absolute;
+  z-index: 1;
+  top: 100px;
+  left: 42%;
+}
+.opt-U1 {
+  position: absolute;
+  z-index: 1;
+  bottom: 32%;
+  left: 33%;
+}
+.ipt-P1 {
+  margin-left: 30px;
+  margin-top: -55px;
+}
+.opt-P1 {
+  margin-top: 35px;
+}
+.result1 {
+  margin-left: -140px;
+  background: none;
+  z-index: 1;
+}
+.result1 h3 {
+  margin-top: -25px;
+}
+.result1 button {
+  margin-left: 5px;
+}
+
+.ipt-U2 {
+  margin-top: -50px;
+  margin-left: 30px;
+}
+.opt-U2 {
+  margin-top: 40px;
+}
+.ipt-P2 {
+  position: absolute;
+  z-index: 1;
+  margin-top: 100px;
+  margin-left: 185px;
+}
+.opt-P2 {
+  position: absolute;
+  z-index: 1;
+  margin-top: -322px;
+  margin-left: 155px;
+}
+.result2 {
+  margin-right: -150px;
+  background: none;
+  z-index: 1;
+}
+.result2 h3 {
+  margin-top: -25px;
+}
+.result2 button {
+  margin-left: 15px;
+}
+
+.ipt-U3 {
+  margin-left: 50px;
+}
+.opt-U3 {
+  margin-left: 30px;
+  margin-top: 30px;
+}
+.ipt-P3 {
+  margin-left: 60px;
+}
+.opt-P3 {
+  margin-left: 30px;
+  margin-top: 30px;
+}
+.next {
+  border: 2px solid white;
+  color: white;
+  border-radius: 5px;
+  background-color: #8cc461;
+  padding: 5px 20px;
+  text-align: center;
+  font-family: "Roboto Mono", monospace;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+.btn {
+  text-align: right;
+  position: absolute;
+  margin-left: 85vw;
+  margin-top: 45vh;
+}
+.rules {
+  border: 2px solid white;
+  color: white;
+  border-radius: 5px;
+  background-color: #8cc461;
+  padding: 5px 20px;
+  text-align: center;
+  font-family: "Roboto Mono", monospace;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+.btn1 {
+  text-align: right;
+  position: absolute;
+  margin-left: 60vw;
+  margin-top: 85vh;
+}
+#nxt {
+  color: #fff;
+  font-family: Roboto;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 2.1px;
+}
+#comscore {
+  font-size: 45px;
+  font-weight: bold;
+  line-height: 2;
+  margin-bottom: 2%;
+  margin-top: 1%;
+  color: #000;
+}
+#youscore {
+  font-size: 45px;
+  font-weight: bold;
+  line-height: 2;
+  margin-bottom: 2%;
+  margin-top: 1%;
+  color: #000;
+}
+.symbol {
+  background-color: red;
+  border-radius: 100%;
+  border: 3px solid white;
+  height: 70px;
+  width: 60px;
+  margin-top: 3vh;
+  margin-left: 3vw;
+}
