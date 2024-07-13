@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Stock Profit Calculator</title>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <h1>Stock Profit Calculator</h1>
+            <div class="input-group">
+                <label for="shares">Number of Shares</label>
+                <input type="number" id="shares" required>
+            </div>
+            <div class="input-group">
+                <label for="purchasePrice">Purchase Price (INR)</label>
+                <input type="number" id="purchasePrice" step="0.01" required>
+            </div>
+            <div class="input-group">
+                <label for="sellPrice">Sell Price (INR)</label>
+                <input type="number" id="sellPrice" step="0.01" required>
+            </div>
+            <div class="input-group">
+                <label for="buyCommission">Buy Commission (INR)</label>
+                <input type="number" id="buyCommission" step="0.01" required>
+            </div>
+            <div class="input-group">
+                <label for="sellCommission">Sell Commission (INR)</label>
+                <input type="number" id="sellCommission" step="0.01" required>
+            </div>
+            <button onclick="calculateProfit()">Calculate</button>
+        </div>
+        <div class="results">
+            <h2>Results</h2>
+            <div id="result">
+                <p>Purchased For: <span id="purchasedFor">0</span> INR</p>
+                <p>Sold For: <span id="soldFor">0</span> INR</p>
+                <p>Profit Amount: <span id="profitAmount">0</span> INR</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
