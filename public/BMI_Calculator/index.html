@@ -8,16 +8,31 @@
     <meta name="author" content="Supritha">
     <link rel="stylesheet" href="style.css">
      <!-- =====BOX ICONS===== -->
-    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div class="bmi">
       <h2>Body Mass Index Calculator</h2>
-      <p class="text">Height in cm</p><input type="text" id="height">
-      <p class="text">Weight in kg</p><input type="text" id="weight">
-      <p id="result"></p><button id="btn">Calculate</button>
+      <p class="text">Height</p>
+        <select id="height-unit">
+            <option value="cm">cm</option>
+            <option value="feet">feet/inches</option>
+        </select>
+        <input type="text" id="height">
+        <p class="text">Weight</p>
+        <select id="weight-unit">
+            <option value="kg">kg</option>
+            <option value="lb">pounds</option>
+        </select>
+        <input type="text" id="weight">
+        <p id="result"></p><button id="btn">Calculate</button>
+        <div id="result"></div>
+        <div id="category"></div>
+        <div id="tips"></div>
     </div>
     <div class="chart">
+
       <table>
         <thead>
           <tr>
@@ -44,6 +59,7 @@
           </tr>
         </tbody>
       </table>
+      <canvas id="bmiChart"></canvas>
     </div>
     <script src="script.js"></script>
     <footer class="footer">

@@ -10,6 +10,19 @@ body {
   flex-direction: column;
   align-items: center;
 }
+h1 {
+  color: #fff;
+}
+
+label, input, button {
+  margin: 10px;
+}
+
+#result, #category, #tips {
+  margin-top: 20px;
+  color: #fff;
+  font-size: 18px;
+}
 .display {
   margin-top: 30px;
   display: flex;
@@ -461,3 +474,10 @@ ul li::before {
   margin-top: 3vh;
   margin-left: 3vw;
 }
+/* Add this to your existing CSS */
+.chart {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
