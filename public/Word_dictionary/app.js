@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('#input');
     const searchBtn = document.querySelector('#search');
-   // const apiUrl = 'put your API key here';
+    const apiUrl = '';  // Your API key here
     const notFound = document.querySelector('.not__found');
     const defBox = document.querySelector('.def');
     const audioBox = document.querySelector('.audio');
@@ -113,12 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
         wordBox.appendChild(br);
     }
 });
-//voice search 
+
+// Voice search functionality
 document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('start-btn');
     const stopBtn = document.getElementById('stop-btn');
-    const output = document.getElementById('input');
+    const output = document.getElementById('output');
     const status = document.getElementById('status');
+    const input = document.querySelector('#input');
+    const apiUrl = 'put your API key here';  // Your API key here
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -145,6 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
             transcript += event.results[i][0].transcript;
         }
         output.value = transcript;
+        input.value = transcript;  // Pass transcript to input field
+
+        // Automatically trigger search after a short delay
+        setTimeout(() => {
+            searchBtn.click();
+        }, 1000);
+        
         console.log('Transcript:', transcript); // Log transcript for debugging
     };
 
@@ -162,4 +172,3 @@ document.addEventListener('DOMContentLoaded', () => {
         recognition.stop();
     });
 });
-
