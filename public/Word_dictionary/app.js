@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const output = document.getElementById('output');
     const status = document.getElementById('status');
     const input = document.querySelector('#input');
-    const apiUrl = 'put your API key here';  // Your API key here
+    const apiUrl = '';  // Your API key here
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
