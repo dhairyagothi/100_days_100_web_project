@@ -1,117 +1,128 @@
-document.addEventListener('DOMContentLoaded', () => {
+
 let input = document.querySelector('#input');
 let searchBtn = document.querySelector('#search');
-//let apiKey = '771aa8f7-d363-4ff0-a824-10181a86ac47';
+let startSpeakBtn = document.querySelector('#startSpeak');
+let stopSpeakBtn = document.querySelector('#stopSpeak');
+let apiKey = 'put API key Here';
 let notFound = document.querySelector('.not__found');
 let defBox = document.querySelector('.def');
 let audioBox = document.querySelector('.audio');
 let loading = document.querySelector('.loading');
 let wordBox = document.querySelector('.words_and_meaning');
- //const tableBody = document.querySelector('#tableData');
 let i = 0;
 let oldLength = 0;
 
-    function myFunction() {
-        const str = input.value;
-        if (oldLength !== str.length) {
-            oldLength = str.length;
-            const strToSearch = str.split(' ').pop();
-            getData(strToSearch);
+function myFunction() {
+    let elem = $('#input');
+    let str = elem.val();
+    if (oldLength != elem.val().length) {
+        oldLength = elem.val().length;
+        let strTosearch;
+        if (i != 0) {
+            strTosearch = str.slice(str.lastIndexOf(" ") + 1, str.length);
+        } else {
+            strTosearch = str;
+
         }
+        getData(strTosearch);
+        i++;
     }
+}
 
-    setInterval(myFunction, 5000);
+setInterval(myFunction, 5000);
 
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
-        recognition.interimResults = true;
-        recognition.continuous = true;
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-        recognition.addEventListener('result', e => {
-            const transcript = Array.from(e.results)
-                .map(result => result[0])
-                .map(result => result.transcript)
-                .join('');
-            input.value = transcript;
-        });
+const recognition = new SpeechRecognition();
 
-        recognition.addEventListener('end', recognition.start);
-        recognition.start();
+recognition.interimResults = true;
+recognition.continuous = true;
+
+recognition.addEventListener('result', e => {
+    let transcript = Array.from(e.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('');
+    
+    document.getElementById("input").value = transcript;
+});
+
+startSpeakBtn.addEventListener('click', function() {
+    recognition.start();
+});
+
+stopSpeakBtn.addEventListener('click', function() {
+    recognition.stop();
+});
+
+searchBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // clear data 
+    audioBox.innerHTML = '';
+    notFound.innerText = '';
+    defBox.innerText = '';
+
+    // Get input data
+    let word = input.value.trim();
+    // call API get data
+    if (word === '') {
+        alert('Word is required');
+        return;
+    }
+    let wordTosearch = "";
+    if (i != 0) {
+        wordTosearch = word.slice(word.lastIndexOf(" ") + 1, word.length);
     } else {
-        console.log('Speech Recognition API not supported in this browser.');
+        wordTosearch = word;
     }
 
-    searchBtn.addEventListener('click', e => {
-        e.preventDefault();
-        clearData();
-        const word = input.value.trim();
-        if (word === '') {
-            alert('Word is required');
-            return;
-        }
-        const wordToSearch = word.split(' ').pop();
-        getData(wordToSearch);
-    });
+    getData(wordTosearch);
+    i++;
+});
 
-    function clearData() {
-        audioBox.innerHTML = '';
-        notFound.innerText = '';
-        defBox.innerText = '';
+async function getData(word) {
+    if (!word) {
+        return;
     }
 
-    async function getData(word) {
-        loading.style.display = 'block';
-        try {
-            const response = await fetch(`${apiUrl}?word=${word}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            loading.style.display = 'none';
-            if (!data.length) {
-                notFound.innerText = 'No result found';
-                return;
-            }
-            if (typeof data[0] === 'string') {
-                displaySuggestions(data);
-                return;
-            }
-            displayDefinition(data[0], word);
-        } catch (error) {
-            loading.style.display = 'none';
-            notFound.innerText = 'Error fetching data';
-            console.error('Error fetching data:', error);
-        }
+    loading.style.display = 'block';
+    const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`);
+    const data = await response.json();
+
+    loading.style.display = 'none';
+
+    if (!data.length) {
+        notFound.innerText = 'No result found';
+        return;
     }
 
-    function displaySuggestions(suggestions) {
-        const heading = document.createElement('h3');
+    if (typeof data[0] === 'string') {
+        let heading = document.createElement('h3');
         heading.innerText = 'Did you mean?';
         notFound.appendChild(heading);
-        suggestions.forEach(suggestion => {
-            const suggestionElement = document.createElement('span');
-            suggestionElement.classList.add('suggested');
-            suggestionElement.innerText = suggestion;
-            notFound.appendChild(suggestionElement);
+        data.forEach(element => {
+            let suggestion = document.createElement('span');
+            suggestion.classList.add('suggested');
+            suggestion.innerText = element;
+            notFound.appendChild(suggestion);
         });
+        return;
     }
 
-    function displayDefinition(data, word) {
-        const definition = data.shortdef[0];
-        defBox.innerText = definition;
+    let definition = data[0].shortdef[0];
+    defBox.innerText = definition;
 
-        const wordElement = document.createElement('span');
-        const meaningElement = document.createElement('span');
-        const br = document.createElement('br');
+    let words = document.createElement('span');
+    let meaning = document.createElement('span');
+    let br = document.createElement('br');
 
-        wordElement.classList.add('suggested');
-        meaningElement.classList.add('suggested');
-        wordElement.innerHTML = word;
-        meaningElement.innerHTML = definition;
+    words.classList.add('suggested');
+    meaning.classList.add('suggested');
+    words.innerHTML = word;
+    meaning.innerHTML = definition;
 
-        wordBox.appendChild(wordElement);
-        wordBox.appendChild(meaningElement);
-        wordBox.appendChild(br);
-    }
-});
+    wordBox.appendChild(words);
+    wordBox.appendChild(meaning);
+    wordBox.appendChild(br);
+}
