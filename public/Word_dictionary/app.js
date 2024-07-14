@@ -1,3 +1,4 @@
+
 let input = document.querySelector('#input');
 let searchBtn = document.querySelector('#search');
 let startSpeakBtn = document.querySelector('#startSpeak');
@@ -21,6 +22,7 @@ function myFunction() {
             strTosearch = str.slice(str.lastIndexOf(" ") + 1, str.length);
         } else {
             strTosearch = str;
+
         }
         getData(strTosearch);
         i++;
