@@ -16,9 +16,10 @@ body {
     margin: 0 auto;
 }
 nav {
-    background: #553C9A;
+    background:rgb(1, 80, 129);
     color: #fff;
     padding: 1rem 0;
+    margin-bottom: 20px;
 }
 section.input {
     padding-top: 100px;
@@ -26,6 +27,7 @@ section.input {
 h2 {
     text-align: center;
     font-size: 36px;
+    
 }
 
 .form__wrap {
@@ -36,7 +38,7 @@ h2 {
     display: flex;
     align-items: center;
     border: 1px solid #ddd;
-    margin-top: 20px;
+    margin:10px;
 }
 
 input {
@@ -47,12 +49,14 @@ input {
     outline: none;
 }
 button{
-    background:#553C9A;
+    background-color: #584290;
     color: #fff;
     height: 100%;
     font-size: 16px;
     padding: 0 20px;
     cursor: pointer;
+    border-radius:2px;
+
 }
 section.data{
     max-width: 600px;
@@ -93,4 +97,21 @@ td,th{
 th{
     font-weight: bold;
     text-transform: uppercase;
+}
+
+
+button:hover {
+    background-color:darkcyan;
+}
+
+.input
+{
+    background-color: rgb(241, 241, 241);
+   
+}
+
+.box{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
 }
