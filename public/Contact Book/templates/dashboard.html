@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-10">
+    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+    <input type="text" id="search" placeholder="Search contacts..." class="w-full p-2 mb-4 border border-gray-300 rounded">
+    <a href="{{ url_for('add_contact') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Add Contact</a>
+    <ul id="contactList" class="mt-4 space-y-2">
+        {% for contact in contacts %}
+        <li class="bg-white p-4 rounded shadow flex justify-between items-center contact-item">
+            <div>
+                <p class="font-bold contact-name">{{ contact.name }}</p>
+                <p class="contact-email">{{ contact.email }}</p>
+                <p class="contact-phone">{{ contact.phone }}</p>
+            </div>
+            <div class="space-x-2">
+                <a href="{{ url_for('edit_contact', id=contact.id) }}" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</a>
+                <a href="{{ url_for('delete_contact', id=contact.id) }}" class="bg-red-600 text-white px-4 py-2 rounded">Delete</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<script>
+document.getElementById('search').addEventListener('input', function() {
+    let filter = this.value.toLowerCase();
+    let contacts = document.querySelectorAll('.contact-item');
+
+    contacts.forEach(function(contact) {
+        let name = contact.querySelector('.contact-name').textContent.toLowerCase();
+        let email = contact.querySelector('.contact-email').textContent.toLowerCase();
+        let phone = contact.querySelector('.contact-phone').textContent.toLowerCase();
+        
+        if (name.includes(filter) || email.includes(filter) || phone.includes(filter)) {
+            contact.style.display = '';
+        } else {
+            contact.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}
