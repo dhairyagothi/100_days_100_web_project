@@ -1,174 +1,126 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const input = document.querySelector('#input');
-    const searchBtn = document.querySelector('#search');
-    const apiUrl = '';  // Your API key here
-    const notFound = document.querySelector('.not__found');
-    const defBox = document.querySelector('.def');
-    const audioBox = document.querySelector('.audio');
-    const loading = document.querySelector('.loading');
-    const wordBox = document.querySelector('.words_and_meaning');
-    let oldLength = 0;
+let input = document.querySelector('#input');
+let searchBtn = document.querySelector('#search');
+let startSpeakBtn = document.querySelector('#startSpeak');
+let stopSpeakBtn = document.querySelector('#stopSpeak');
+let apiKey = 'put API key Here';
+let notFound = document.querySelector('.not__found');
+let defBox = document.querySelector('.def');
+let audioBox = document.querySelector('.audio');
+let loading = document.querySelector('.loading');
+let wordBox = document.querySelector('.words_and_meaning');
+let i = 0;
+let oldLength = 0;
 
-    function myFunction() {
-        const str = input.value;
-        if (oldLength !== str.length) {
-            oldLength = str.length;
-            const strToSearch = str.split(' ').pop();
-            getData(strToSearch);
+function myFunction() {
+    let elem = $('#input');
+    let str = elem.val();
+    if (oldLength != elem.val().length) {
+        oldLength = elem.val().length;
+        let strTosearch;
+        if (i != 0) {
+            strTosearch = str.slice(str.lastIndexOf(" ") + 1, str.length);
+        } else {
+            strTosearch = str;
         }
+        getData(strTosearch);
+        i++;
     }
+}
 
-    setInterval(myFunction, 5000);
+setInterval(myFunction, 5000);
 
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
-        recognition.interimResults = true;
-        recognition.continuous = true;
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-        recognition.addEventListener('result', e => {
-            const transcript = Array.from(e.results)
-                .map(result => result[0])
-                .map(result => result.transcript)
-                .join('');
-            input.value = transcript;
-        });
+const recognition = new SpeechRecognition();
 
-        recognition.addEventListener('end', recognition.start);
-        recognition.start();
-    } else {
-        console.log('Speech Recognition API not supported in this browser.');
-    }
+recognition.interimResults = true;
+recognition.continuous = true;
 
-    searchBtn.addEventListener('click', e => {
-        e.preventDefault();
-        clearData();
-        const word = input.value.trim();
-        if (word === '') {
-            alert('Word is required');
-            return;
-        }
-        const wordToSearch = word.split(' ').pop();
-        getData(wordToSearch);
-    });
-
-    function clearData() {
-        audioBox.innerHTML = '';
-        notFound.innerText = '';
-        defBox.innerText = '';
-    }
-
-    async function getData(word) {
-        loading.style.display = 'block';
-        try {
-            const response = await fetch(`${apiUrl}?word=${word}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            loading.style.display = 'none';
-            if (!data.length) {
-                notFound.innerText = 'No result found';
-                return;
-            }
-            if (typeof data[0] === 'string') {
-                displaySuggestions(data);
-                return;
-            }
-            displayDefinition(data[0], word);
-        } catch (error) {
-            loading.style.display = 'none';
-            notFound.innerText = 'Error fetching data';
-            console.error('Error fetching data:', error);
-        }
-    }
-
-    function displaySuggestions(suggestions) {
-        const heading = document.createElement('h3');
-        heading.innerText = 'Did you mean?';
-        notFound.appendChild(heading);
-        suggestions.forEach(suggestion => {
-            const suggestionElement = document.createElement('span');
-            suggestionElement.classList.add('suggested');
-            suggestionElement.innerText = suggestion;
-            notFound.appendChild(suggestionElement);
-        });
-    }
-
-    function displayDefinition(data, word) {
-        const definition = data.shortdef[0];
-        defBox.innerText = definition;
-
-        const wordElement = document.createElement('span');
-        const meaningElement = document.createElement('span');
-        const br = document.createElement('br');
-
-        wordElement.classList.add('suggested');
-        meaningElement.classList.add('suggested');
-        wordElement.innerHTML = word;
-        meaningElement.innerHTML = definition;
-
-        wordBox.appendChild(wordElement);
-        wordBox.appendChild(meaningElement);
-        wordBox.appendChild(br);
-    }
+recognition.addEventListener('result', e => {
+    let transcript = Array.from(e.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('');
+    
+    document.getElementById("input").value = transcript;
 });
 
-// Voice search functionality
-document.addEventListener('DOMContentLoaded', () => {
-    const startBtn = document.getElementById('start-btn');
-    const stopBtn = document.getElementById('stop-btn');
-    const output = document.getElementById('output');
-    const status = document.getElementById('status');
-    const input = document.querySelector('#input');
-    const apiUrl = '';  // Your API key here
+startSpeakBtn.addEventListener('click', function() {
+    recognition.start();
+});
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-        status.textContent = 'Speech Recognition API is not supported in this browser.';
+stopSpeakBtn.addEventListener('click', function() {
+    recognition.stop();
+});
+
+searchBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // clear data 
+    audioBox.innerHTML = '';
+    notFound.innerText = '';
+    defBox.innerText = '';
+
+    // Get input data
+    let word = input.value.trim();
+    // call API get data
+    if (word === '') {
+        alert('Word is required');
+        return;
+    }
+    let wordTosearch = "";
+    if (i != 0) {
+        wordTosearch = word.slice(word.lastIndexOf(" ") + 1, word.length);
+    } else {
+        wordTosearch = word;
+    }
+
+    getData(wordTosearch);
+    i++;
+});
+
+async function getData(word) {
+    if (!word) {
         return;
     }
 
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
+    loading.style.display = 'block';
+    const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${apiKey}`);
+    const data = await response.json();
 
-    recognition.onstart = () => {
-        status.textContent = 'Listening...';
-    };
+    loading.style.display = 'none';
 
-    recognition.onend = () => {
-        status.textContent = 'Stopped listening.';
-    };
+    if (!data.length) {
+        notFound.innerText = 'No result found';
+        return;
+    }
 
-    recognition.onresult = (event) => {
-        let transcript = '';
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-            transcript += event.results[i][0].transcript;
-        }
-        output.value = transcript;
-        input.value = transcript;  // Pass transcript to input field
+    if (typeof data[0] === 'string') {
+        let heading = document.createElement('h3');
+        heading.innerText = 'Did you mean?';
+        notFound.appendChild(heading);
+        data.forEach(element => {
+            let suggestion = document.createElement('span');
+            suggestion.classList.add('suggested');
+            suggestion.innerText = element;
+            notFound.appendChild(suggestion);
+        });
+        return;
+    }
 
-        // Automatically trigger search after a short delay
-        setTimeout(() => {
-            searchBtn.click();
-        }, 1000);
-        
-        console.log('Transcript:', transcript); // Log transcript for debugging
-    };
+    let definition = data[0].shortdef[0];
+    defBox.innerText = definition;
 
-    recognition.onerror = (event) => {
-        console.error('Speech recognition error', event.error);
-        status.textContent = 'Error occurred in recognition: ' + event.error;
-    };
+    let words = document.createElement('span');
+    let meaning = document.createElement('span');
+    let br = document.createElement('br');
 
-    startBtn.addEventListener('click', () => {
-        output.value = ''; // Clear the output textarea
-        recognition.start();
-    });
+    words.classList.add('suggested');
+    meaning.classList.add('suggested');
+    words.innerHTML = word;
+    meaning.innerHTML = definition;
 
-    stopBtn.addEventListener('click', () => {
-        recognition.stop();
-    });
-});
+    wordBox.appendChild(words);
+    wordBox.appendChild(meaning);
+    wordBox.appendChild(br);
+}
