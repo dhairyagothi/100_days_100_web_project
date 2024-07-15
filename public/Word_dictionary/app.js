@@ -124,3 +124,4 @@ async function getData(word) {
     wordBox.appendChild(meaning);
     wordBox.appendChild(br);
 }
+
