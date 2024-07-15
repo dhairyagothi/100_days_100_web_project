@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stone-Paper-Scissors Game</title>
+  </head>
+  <link rel="stylesheet" href="./style.css" class="rel" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dangrek&family=Roboto:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <body>
+    <div class="container">
+      <div class="display">
+        <div class="heading">
+          ROCK<br />
+          PAPER<br />
+          SCISSOR
+        </div>
+        <div class="scoreboard">
+          <div class="score">
+            Computer score
+            <div id="comscore"></div>
+          </div>
+          <div class="score">
+            Your<br />
+            score
+            <div id="youscore"></div>
+          </div>
+        </div>
+      </div>
+      <div class="export">
+        <div class="stone1">
+          <img src="./images/Group 2.png" />
+          <img class="logo1" src="./images/stone.png" />
+        </div>
+        <div class="paper1">
+          <img src="./images/Group 1.png" />
+          <img class="logo2" src="./images/paper.png" />
+        </div>
+        <div class="scissor1">
+          <img src="./images/Group 3.png" />
+          <img class="logo3" src="./images/scissors.png" />
+        </div>
+      </div>
+
+      <div class="game">
+        <div class="stone">
+          <img class="back" src="./images/Group 2.png" />
+          <img onclick="game('rock')" class="logo1" src="./images/stone.png" />
+        </div>
+        <div class="line"><img class="line1" src="./images/Line 1.png" /></div>
+        <div class="paper">
+          <img class="back" src="./images/Group 1.png" />
+          <img onclick="game('paper')" class="logo2" src="./images/paper.png" />
+        </div>
+        <div class="line"><img class="line3" src="./images/Line 3.png" /></div>
+        <div class="line"><img class="line2" src="./images/Line 2.png" /></div>
+        <div class="scissor">
+          <img class="back" src="./images/Group 3.png" />
+          <img
+            onclick="game('scissor')"
+            class="logo3"
+            src="./images/scissors.png"
+          />
+        </div>
+      </div>
+
+      <div class="you-win">
+        <div class="you-picked">
+          <div class="ipt-U ipt-U1">You picked</div>
+          <div class="bg"><img src="./images/Ellipse 4.png" /></div>
+          <div class="opt-U opt-U1">
+            <div id="opt-U1"></div>
+            <!-- <div class="backopt" class="stone">
+                <img src="./images1/Group 2.png" />
+                <img onclick="game('rock')" class="logo1" src="./images1/icons8-fist-67 1.png" />
+              </div> -->
+          </div>
+        </div>
+        <div class="result result1">
+          <h2>YOU WIN</h2>
+          <h3>AGAINST PC</h3>
+          <button onclick="replay()">Play Again</button>
+        </div>
+
+        <div class="btn">
+          <a href="index1.html"><button id="nxt" class="next">Next</button></a>
+        </div>
+
+        <div class="pc-picked">
+          <div class="ipt-P ipt-P1">PC picked</div>
+          <div id="opt-P" class="opt-P opt-P1">
+            <div id="opt-P1"></div>
+          </div>
+        </div>
+      </div>
+      <div class="you-lost">
+        <div class="you-picked">
+          <div class="ipt-U ipt-U2">YOU PICKED</div>
+
+          <div class="opt-U opt-U2">
+            <div id="opt-U2"></div>
+          </div>
+        </div>
+        <div class="result result2">
+          <h2>YOU LOST</h2>
+          <h3>AGAINST PC</h3>
+          <button onclick="replay()">Play Again</button>
+        </div>
+        <div class="pc-picked">
+          <div class="ipt-P ipt-P2">PC PICKED</div>
+          <div class="bg"><img src="./images/Ellipse 4.png" /></div>
+          <div class="opt-P opt-P2">
+            <div id="opt-P2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tie-up">
+        <div class="you-picked">
+          <div class="ipt-U ipt-U3">YOU PICKED</div>
+          <div class="opt-U opt-U3">
+            <div id="opt-U3"></div>
+          </div>
+        </div>
+        <div class="result result3">
+          <h2>TIE-UP</h2>
+          <button onclick="replay()">REPLAY</button>
+        </div>
+        <div class="pc-picked">
+          <div class="ipt-P ipt-P3">PC PICKED</div>
+          <div class="opt-P opt-P3">
+            <div id="opt-P3"></div>
+          </div>
+        </div>
+      </div>
+      <div class="btn1">
+        <button onclick="popup()" id="rul" class="rules">Rules</button>
+      </div>
+      <div class="box">
+        <button onclick="popdown()" class="close">
+          <img onclick="popdown()" />
+          <span class="symbol">X</span>
+        </button>
+        <h3 class="headline">Game Rules</h3>
+        <ul class="listrule">
+          <li class="listrule">
+            Rock beats scissors,scissors beat paper,and paper beats rock.
+          </li>
+          <li class="listrule">
+            Agree ahead of time whether you'll count off
+            “rock,paper,scissors,shoot” or just “rock,paper,scissors.”
+          </li>
+          <li class="listrule">
+            Use rock,paper,scissors to settle minor decisions or simply play to
+            pass the time
+          </li>
+          <li class="listrule">
+            If both players lay down the same hand,each player lays down another
+            hand
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
