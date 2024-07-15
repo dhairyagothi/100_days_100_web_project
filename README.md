@@ -124,7 +124,7 @@ Thanks goes to these wonderful people :
 
 <center>
 <div>
-<a href="https://github.com/dhairyagothi/50_days_50_web_project/graphs/contributors">
+<!-- <a href="https://github.com/dhairyagothi/50_days_50_web_project/graphs/contributors"> -->
   <img width="90%" src="https://contrib.rocks/image?repo=dhairyagothi/50_days_50_web_project" />
 </a>
 </div>
