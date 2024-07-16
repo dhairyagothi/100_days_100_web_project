@@ -43,7 +43,7 @@ const generateMathCaptcha = () => {
     return { question, answer };
 };
 
-const speakCaptcha = (text, repeat = 2, speed = 0.8) => {
+const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
   return new Promise((resolve) => {
       const utterance = new SpeechSynthesisUtterance();
       utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
