@@ -102,7 +102,7 @@ a {
 .navbar-menu {
     list-style: none;
     display: flex;
-    margin-left: 790px;
+    margin-left: 767px;
 }
 
 .navbar-item {
@@ -333,5 +333,7 @@ footer {
   }
   footer{
     width: 100%;
+      padding:20px
+    
   }
 }

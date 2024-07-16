@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Profit Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <h1>Stock Profit Calculator</h1>
+            
+            <div class="input-group">
+                <label for="currency">Currency</label>
+                <select id="currency">
+                    <option value="INR">Indian Rupee (INR)</option>
+                    <option value="USD">US Dollar (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                    <option value="GBP">British Pound (GBP)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="shares">Number of Shares</label>
+                <input type="number" id="shares" min="0" step="1">
+            </div>
+
+            <div class="input-group">
+                <label for="purchasePrice">Purchase Price</label>
+                <input type="number" id="purchasePrice" min="0" step="0.01">
+            </div>
+
+            <div class="input-group">
+                <label for="sellPrice">Sell Price</label>
+                <input type="number" id="sellPrice" min="0" step="0.01">
+            </div>
+
+            <div class="input-group">
+                <label for="buyCommission">Buy Commission</label>
+                <input type="number" id="buyCommission" min="0" step="0.01">
+            </div>
+
+            <div class="input-group">
+                <label for="sellCommission">Sell Commission</label>
+                <input type="number" id="sellCommission" min="0" step="0.01">
+            </div>
+
+            <div class="input-group">
+                <label for="holdingPeriod">Holding Period (in days)</label>
+                <input type="number" id="holdingPeriod" min="1" step="1">
+            </div>
+
+            <button onclick="calculateProfit()">Calculate</button>
+        </div>
+
+        <div class="results">
+            <h2>Results</h2>
+            <div id="result">
+                <p>Purchased For: <span id="purchasedFor">0</span> <span id="currencySymbol1">INR</span></p>
+                <p>Sold For: <span id="soldFor">0</span> <span id="currencySymbol2">INR</span></p>
+                <p>Profit Amount: <span id="profitAmount">0</span> <span id="currencySymbol3">INR</span></p>
+                <p>ROI: <span id="roi">0</span>%</p>
+                <p>Annualized Return: <span id="annualizedReturn">0</span>%</p>
+            </div>
+            <canvas id="profitChart"></canvas>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
