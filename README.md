@@ -54,7 +54,51 @@ This repository contains 50 web projects from basic to intermediate using html c
 - DAY-27 ] MemoryGame 
 - DAY-28 ] wordle 
 - DAY-29 ] Snake Game 
-- DAY-31 ] Password Manager 
+- DAY-31 ] Password Manager
+- DAY-32 ] Missionaries & Cannibals
+- Day 33 ] Weather Forcasting
+- Day 34 ] Email Validator
+- Day 35 ] Vanilla-JavaScript-Calculator
+- Day 36 ] Medical App
+- Day 37 ] 2048 Game
+- Day 38 ] Github Profile Finder
+- Day 39 ] Notes App
+- Day 40 ] Analog Clock
+- Day 41 ] Scroll Dark Game
+- Day 42 ] Amazon App
+- Day 43 ] Password Generator
+- Day 44 ] BMI Calculator
+- Day 45 ] Black Jack
+- Day 46 ] Palindrome Generator
+- Day 47 ] Ping Pong Game
+- Day 48 ] TextToVoiceConverter
+- Day 49 ] Url Shortener
+- Day 50 ] Recipe Genie
+- Day 51 ] Netflix Landing Page Clone
+- Day 52 ] ClimaCode
+- Day 53 ] E-Commerce Website with Simple Cart Functionality
+- Day 54 ] Budget Tracker
+- Day 55 ] Cricket Game
+- Day 56 ] Pastebin using svelte
+- Day 57 ] Glowing Social Media Icons
+- Day 58 ] Music App
+- Day 59 ] Blog Page
+- Day 60 ] Marketing template website
+- Day 61 ] Hologram Button
+- Day 62 ] Solar System Explorer
+- Day 63 ] Image to Text App
+- Day 64 ] Zomato-clone
+- Day 65 ] The Cube
+- Day 66 ] Flask Authentication App
+- Day 67 ] Blog-Website
+- Day 68 ] 3d Rotating Card
+- Day 69 ] Spotify Clone Project
+- Day 70 ] Insect-Catch_Game
+- Day 71 ] Quotely Laughs
+- Day 72 ] Contact Book
+- Day 73 ] Candy_Crush_Game
+- Day 74 ] Stock Profit Calculator
+- Day 75 ] code-space-game project
 
 ## Discord Channel for VSoC 2024 Contributors
 
