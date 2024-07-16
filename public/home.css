@@ -67,6 +67,37 @@ a {
     font-size: x-large;
 }
 
+/* search bar code starts here */
+
+form {
+    position: relative;
+    box-shadow: 0px 32px 40px -19px rgba(0,0,0,0.25);
+}
+ 
+input {
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    padding: 0.7rem 0.9rem;
+    width: 300px;
+}
+
+i{
+    position: absolute !important;
+    right: 1.2rem;
+    top: 10px;
+    font-size: 1.20rem;
+    color: rgb(255, 132, 0);
+}
+
+
+/* search bar code ends here */
+
+/* removing style for projects list */
+.projects {
+  list-style-type: none;
+}
+
 .navbar {
     width: 100%;
     background: #333;
@@ -102,12 +133,14 @@ a {
 .navbar-menu {
     list-style: none;
     display: flex;
-    margin-left: 790px;
+    margin-left: 500px;
 }
 
 .navbar-item {
     margin-left: 20px;
+    margin-top: 5px;
 }
+
 
 .navbar-link {
     color: #fff;
@@ -180,7 +213,8 @@ a {
 #github-logo img {
   width: 30px;
   height: 30px;
-  margin-left: 60px;
+  margin-left: 30px;
+  margin-top: 3px;
 }
 
 .table {
@@ -197,6 +231,11 @@ a {
   font-weight: 400;
   font-style: normal;
   color: white;
+}
+
+/* added margin bottom for content class */
+.content {
+  margin-bottom: 70px;
 }
 
 .day-number,
@@ -247,14 +286,17 @@ body::-webkit-scrollbar-thumb {
   );
 }
 
+footer { /* here changd footer to fixed*/
+  position: fixed; 
+  bottom: 0;
+  width: 100%; 
+  text-align: center;
+}
+
 footer {
-  position: absolute;
-  left: 50%;
-  width: 100vw;
+  left: 0;
   background: #1e1e1e;
   padding: 20px 0;
-  margin-top: 50px;
-  transform: translateX(-50%); /* Centrar el footer */
   border-radius: 5px 5px 0 0;
   color: #fff;
   font-family: "Noto Sans", sans-serif;
@@ -267,12 +309,12 @@ footer {
   justify-content: space-between;
   align-items: center;
   max-width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
+  /* margin: 0 auto;
+  padding: 0 20px; */
 }
 
 .footer-left {
-  width: 50%;
+  /* width: 50%; */
   font-size: 14px;
   color: #fff;
   letter-spacing: 1px;
@@ -283,7 +325,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-}
+} 
 
 .footer-right a {
   color: #fff;

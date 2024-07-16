@@ -273,3 +273,20 @@ renderer.setAnimationLoop(() => {
     oUs.forEach(ou => { ou.uTime.value = t; });
     renderer.render(scene, camera);
 });
+
+
+// adding function search bar to search projects..
+function search_project() {
+    let input = document.getElementById('searchbar').value
+    input = input.toLowerCase();
+    let projectLists = document.getElementsByClassName('projects-list');
+
+    for (i = 0; i < projectLists.length; i++) {
+        if (!projectLists[i].innerHTML.toLowerCase().includes(input)) {
+            projectLists[i].style.display = "none";
+        }
+        else {
+            projectLists[i].style.display = "list-item";
+        }
+    }
+}
