@@ -1,4 +1,3 @@
-/*===== GOOGLE FONTS =====*/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
 
 body {
@@ -31,8 +30,8 @@ h2 {
 .text {
   text-align: center;
 }
-#weight,
-#height {
+#weight-unit,
+#height-unit {
   color: #222f3e;
   text-align: left;
   font-size: 20px;
@@ -42,6 +41,8 @@ h2 {
   border-radius: 7px;
   width: 200px;
   height: 35px;
+  height: 35px;
+  margin-top: 10px;
 }
 #weight:focus,
 #height:focus {
@@ -73,6 +74,8 @@ table {
   width: 650px;
   border-collapse: collapse;
   margin: 600px auto;
+  margin-top: 700px;
+  margin-bottom: 80px;
 }
 
 tr {
@@ -91,4 +94,17 @@ th {
   border: 1px solid #000;
   text-align: center;
   font-size: 18px;
+}
+
+#bmichart {
+  display: block;
+    box-sizing: border-box;
+    height: 759px;
+    width: 1519px;
+    margin-bottom: 80px;
+}
+
+#height, #weight {
+  height: 35px;
+  margin-top: 10px;
 }

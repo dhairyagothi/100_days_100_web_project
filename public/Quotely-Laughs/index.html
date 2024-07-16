@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quotely Laughs</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😉</text></svg>">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .loader {
+        border-top-color: #3498db;
+        animation: spinner 1.5s linear infinite;
+      }
+
+      @keyframes spinner {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <script defer src="script.js"></script>
+  </head>
+  <body
+    class="bg-gray-100 text-gray-900 flex flex-col justify-between h-screen relative"
+  >
+    <header
+      class="bg-gradient-to-r from-blue-500 to-green-500 p-4 shadow-md text-center"
+    >
+      <h1 class="text-3xl font-bold text-white">Quotely Laughs</h1>
+    </header>
+    <main class="flex-grow flex flex-col items-center justify-center">
+      <button
+        id="generate"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6"
+      >
+        Generate Quote and Joke
+      </button>
+      <div
+        id="content"
+        class="bg-gray-200 p-6 rounded shadow-md text-center max-w-md w-full"
+      >
+        <div class="mb-6">
+          <p id="quote" class="text-lg font-medium mb-4"></p>
+          <div class="flex items-center justify-center">
+            <p class="text-base">Share quote on:</p>
+            <div>
+              <a id="share-quote-x" href="#" target="_blank">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="black"
+                    d="M389.2 48h70.6L305.6 224.2L487 464H345L233.7 318.6L106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p id="joke" class="text-lg font-medium mb-4"></p>
+          <div class="flex items-center justify-center">
+            <p class="text-base">Share joke on:</p>
+            <div>
+              <a id="share-joke-x" href="#" target="_blank">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="black"
+                    d="M389.2 48h70.6L305.6 224.2L487 464H345L233.7 318.6L106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div
+      id="loading"
+      class="hidden absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+    >
+      <div
+        class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"
+      ></div>
+    </div>
+  </body>
+</html>

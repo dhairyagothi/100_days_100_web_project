@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-md mx-auto mt-10 bg-white p-8 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">{{ action }} Contact</h1>
+    <form method="POST" class="space-y-4">
+        <div>
+            <label for="name" class="block text-gray-700">Name:</label>
+            <input type="text" id="name" name="name" value="{{ contact.name if contact else '' }}" class="w-full p-2 border border-gray-300 rounded" required>
+        </div>
+        <div>
+            <label for="email" class="block text-gray-700">Email:</label>
+            <input type="email" id="email" name="email" value="{{ contact.email if contact else '' }}" class="w-full p-2 border border-gray-300 rounded" required>
+        </div>
+        <div>
+            <label for="phone" class="block text-gray-700">Phone:</label>
+            <input type="text" id="phone" name="phone" value="{{ contact.phone if contact else '' }}" class="w-full p-2 border border-gray-300 rounded" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded">{{ action }} Contact</button>
+    </form>
+</div>
+{% endblock %}
