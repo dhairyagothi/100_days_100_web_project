@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary app</title>
+    <title>Dictionary App</title>
     <link rel="stylesheet" href="./style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -17,22 +17,20 @@
     </nav>
     <section class="input container">
         <div id="box">
-        <h2>Find any word exist in the world</h2>
-        <div class="form__wrap">
-            <div class="input__wrap">
-                <input type="text" placeholder="Type a word" id="input">
-                
-                <button id="start-btn">Start Speaking</button>
-                <button id="stop-btn">Stop</button>
-                <button id="search">Search</button>
+            <h2>Find any word that exists in the world</h2>
+            <div class="form__wrap">
+                <div class="input__wrap">
+                    <input type="text" placeholder="Type a word" id="input">
+                    <button id="start-btn" aria-label="Start Speaking">Start Speaking</button>
+                    <button id="stop-btn" aria-label="Stop">Stop</button>
+                    <button id="search" aria-label="Search">Search</button>
+                </div>
             </div>
         </div>
-        </div>
     </section>
-   <section class="words_Meaning">
-      
 
-   </section>
+    <section class="words_Meaning">
+    </section>
 
     <section class="data container">
         <span class="loading">Loading...</span>
@@ -40,7 +38,6 @@
         <div class="audio"></div>
         <div class="not__found"></div>
         <div class="words_and_meaning">
-            
         </div>
     </section>
     <script src="./app.js"></script>
