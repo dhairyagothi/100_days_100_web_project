@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CAPTCHA</title>
-<link rel="stylesheet" href="captcha.css">
-<script src="https://kit.fontawesome.com/1f26e3c220.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced CAPTCHA</title>
+    <link rel="stylesheet" href="captcha.css">
 </head>
 <body>
-<div class="container">
-    <header>CAPTCHA </header>
-    <p>Enter value shown in below image</p>
-    <div class="image">
-        <input type="text" value="x 5 f 0 t" disabled /><button class="refresh"><i class="fa-solid fa-rotate-right"></i></button>
+    <div class="container">
+        <header>CAPTCHA</header>
+        <p>Select CAPTCHA type:</p>
+        <select id="captchaType">
+            <option value="text">Text</option>
+            <option value="image">Image</option>
+            <option value="audio">Audio</option>
+            <option value="math">Math</option>
+        </select>
+        <div id="captchaContainer"></div>
+        <div class="textcaptcha">
+            <input type="text" placeholder="Enter CAPTCHA">
+        </div>
+        <button class="refresh">↻</button>
+        <p class="result"></p>
+        <div class="button">
+            <button>Submit CAPTCHA</button>
+        </div>
     </div>
-    <div class="textcaptcha">
-        <input type="text" value="" placeholder="Enter captcha" />
-    </div>
-    <div class="result">Entered Captcha is correct</div>
-    <div class="button">
-      <button>Submit Captcha</button>
-    </div>
-</div>
-     <script src="captcha.js"></script>
+    <script src="captcha.js"></script>
 </body>
 </html>
