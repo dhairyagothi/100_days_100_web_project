@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        body {
+          background-image: url(".vscode\imGW.jpg");  /* Replace with your image path */
+          background-repeat: no-repeat;  /* Optional: set how the image repeats */
+          background-position: center;  /* Optional: set the position of the image */
+          background-size: cover;       /* Optional: set the size of the image */
+          font-family: 'Open Sans', sans-serif;
+          background-color:rgb(220, 220, 220);
+        }
+
+        main {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+
+        .signup {
+            background-color:#FAF9F6;
+          padding: 40px; 
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          max-width: 500px; 
+          width: 100%;
+          background-image: url(".vscode\imGW.jpg"); /* Replace with your image path */
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+
+        .signup h2 {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .signup form {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .signup label {
+          margin-bottom: 5px;
+        }
+
+        .signup input {
+          padding: 10px;
+          margin-bottom: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        
+
+        .signup button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 4px;
+          background: #333;
+          color: #fff;
+          cursor: pointer;
+          transition: background 0.3s;
+        }
+
+        .signup button:hover {
+          background: #555;
+        }
+
+        .password-info {
+          font-size: 12px;
+          color: #666;
+        }
+
+        .social-buttons {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .social-buttons a,
+        .social-buttons button {
+          flex: 1;
+          margin: 5px;
+          padding: 10px;
+          border: none;
+          border-radius: 4px;
+          background: #4285F4; /* Default to Google Blue */
+          color: #fff;
+          cursor: pointer;
+          text-align: center;
+          text-decoration: none;
+          transition: background 0.3s;
+        }
+
+        .social-buttons button {
+          background: #3b5998; /* Facebook Blue */
+        }
+
+        .social-buttons a:hover,
+        .social-buttons button:hover {
+          background: #666;
+        }
+
+        #success {
+          color: green;
+          font-size: 14px;
+          text-align: center;
+          margin-top: 10px;
+        }
+        
+    </style>
+</head>
+
+<body>
+  <main>
+    <section class="signup">
+      <h2>Sign Up</h2>
+      <form name="submit-to-google-sheet">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required placeholder="Enter your full name">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required placeholder="name@email.com">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required placeholder="Create password">
+        <p class="password-info">Between 8 and 72 characters</p>
+        <button type="submit">submit</button>
+        <span id="success"></span>
+      </form>
+      <p>or</p>
+      <div class="social-buttons">
+        <a href="#"><i class="fab fa-google"></i> Continue with Google</a>
+        <button><i class="fab fa-facebook"></i> Continue with Facebook</button>
+      </div>
+      <h7><a href="index.html">back Homepage</a></h7>
+    </section>
+    </main>
+
+  <!-- JavaScript for form submission -->
+  <script>
+    const scriptURL = 'put the url';  // Change this URL to point to the desired endpoint
+    const form = document.forms['submit-to-google-sheet'];
+    const success = document.getElementById("success");
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          success.innerHTML = "Data successfully submitted";
+          setTimeout(() => success.innerHTML = "", 7000);
+          form.reset();
+        })
+        .catch(error => console.error('Error!', error.message));
+    });
+  </script>
+</body>
+</html>
