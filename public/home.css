@@ -162,19 +162,40 @@ a {
 
 #search-bar {
   display: flex;
+  justify-content: center;
   align-items: center;
+  margin: 20px 0;
 }
 
 #searchInput {
-  padding: 5px;
+  padding: 10px;
   font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+  border-color: #666;
+  outline: none;
 }
 
 #searchButton {
-  padding: 6px 10px;
-  margin-left: 5px;
+  padding: 10px 15px;
+  margin-left: 10px;
   font-size: 16px;
+  background-color: #4A90E2;
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#searchButton:hover {
+  background-color: #007BFF;
 }
 
 #github-logo img {
@@ -213,6 +234,17 @@ a {
 
 .demo-link:hover {
   text-decoration: underline;
+}
+
+#no-projects {
+  text-align: center;
+  margin-top: 20px;
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  color: white;
 }
 
 #loader {
@@ -254,7 +286,7 @@ footer {
   background: #1e1e1e;
   padding: 20px 0;
   margin-top: 50px;
-  transform: translateX(-50%); /* Centrar el footer */
+  transform: translateX(-50%);
   border-radius: 5px 5px 0 0;
   color: #fff;
   font-family: "Noto Sans", sans-serif;

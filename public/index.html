@@ -70,8 +70,16 @@
         <div class="header">50_days_50_webprojects</div>
         <p class="subheader">HERE IS LIVE DEMO OF ALL PROJECTS</p>
 
+        <div id="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for projects..." onkeyup="filterProjects()">
+            <button id="searchButton" onclick="filterProjects()">
+                Go
+            </button>
+        </div>
+
     <div class="links">
-        <div class="table subheader">
+
+        <div id="table-subheader" class="table subheader">
             <div class="day-number">Day #</div>
             <div class="project-name">Project Name</div>
             <p class="demo-link">Demo Link</p>
@@ -441,7 +449,6 @@
             <a href="public/Insect-Catch-Game/index.html" class="demo-link">Demo</a>
         </div>
        
-    </div>
         <div class="table">
             <div class="day-number">Day 71</div>
             <div class="project-name">Quotely Laughs</div>
@@ -490,6 +497,11 @@
             <a href="./NPM Package Search/index.html" class="demo-link">Demo</a>
        </div>
 
+    </div>
+
+    <div id="no-projects" style="display: none;">No Projects Found</div>
+    </div>
+
     <footer>
         <div class="footer-container">
             <div class="footer-left">
@@ -517,6 +529,38 @@
             const loader = document.getElementById("loader");
             loader.style.display = "none";
         });
+    </script>
+    <script>
+        function filterProjects() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const tables = document.querySelectorAll('.table');
+
+            let hasResults = false;
+
+            tables.forEach(table => {
+                const projectName = table.querySelector('.project-name').textContent.toLowerCase();
+                
+                if (projectName.includes(filter)) {
+                    table.style.display = '';
+                    hasResults = true;
+                } else if (table.id !== 'table-subheader') {
+                    table.style.display = 'none';
+                }
+            });
+
+            const subheader = document.querySelector('.subheader');
+            const noProjectsMessage = document.getElementById('no-projects');
+
+            if (hasResults) {
+                subheader.style.display = 'block';
+                noProjectsMessage.style.display = 'none';
+            } else {
+                document.getElementById('table-subheader').style.display = 'none';
+                subheader.style.display = 'none';
+                noProjectsMessage.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>
