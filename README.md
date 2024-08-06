@@ -9,6 +9,7 @@
 
 # 50_days_50_web_project
 
+
 Welcome to 50_days_50_web_project! learn and practise web development by contributing your projects.
 
 <a href="[https://github.com/Dhairyagoth](https://github.com/dhairyagothi)i"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=DEF72C&random=false&center=false &width=1000&lines=Hi%2C+there.+If+you+like+50_days_50_web_project,+give+it+a+Star" alt="Typing SVG" /></a>
