@@ -3,7 +3,7 @@
 [Cite any related issue(s) this pull request addresses. If none, simply state "None”]
 write issue no. here
 
-## Email id used to regsiter for VSoc'24
+
 
 
 ## Description
