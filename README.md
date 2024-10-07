@@ -1,28 +1,28 @@
-# 50_days_50_web_project
+# 100_days_100_web_project
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&weight=900&pause=1000&color=0FF26C&random=false&center=false&width=1500&height=100&lines=Announcement:+Contributors,+please+ensure+tasks+are+completed+within+assigned+timeframes+as+per+project+sidebar." alt="Announcement" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&weight=900&pause=1000&color=0FF26C&random=false&center=false&width=11000&height=100&lines=Announcement:+Contributors,+please+ensure+tasks+are+completed+within+assigned+timeframes+as+per+project+sidebar." alt="Announcement" />
 
-# 50_days_50_web_project
+# 100_days_100_web_project
 
 
-Welcome to 50_days_50_web_project! learn and practise web development by contributing your projects.
+Welcome to 100_days_100_web_project! learn and practise web development by contributing your projects.
 
-<a href="[https://github.com/Dhairyagoth](https://github.com/dhairyagothi)i"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=DEF72C&random=false&center=false &width=1000&lines=Hi%2C+there.+If+you+like+50_days_50_web_project,+give+it+a+Star" alt="Typing SVG" /></a>
+<a href="[https://github.com/Dhairyagoth](https://github.com/dhairyagothi)i"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=DEF72C&random=false&center=false &width=1000&lines=Hi%2C+there.+If+you+like+100_days_100_web_project,+give+it+a+Star" alt="Typing SVG" /></a>
 
-[![Website](https://img.shields.io/website?url=https%3A%2F%2F50-days-50-web-project.vercel.app/%2F)](https://50-days-50-web-project.vercel.app/)
-[![Contributors](https://img.shields.io/github/contributors/50_days_50_web_project/50_days_50_web_project)](https://github.com/dhairyagothi/50_days_50_web_project)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2F100-days-100-web-project.vercel.app/%2F)](https://100-days-100-web-project.vercel.app/)
+[![Contributors](https://img.shields.io/github/contributors/100_days_100_web_project/100_days_100_web_project)](https://github.com/dhairyagothi/100_days_100_web_project)
 
 ## About
 
-This repository contains 50 web projects from basic to intermediate using html css and js 
+This repository contains 100 web projects from basic to intermediate using html css and js 
 
  **PROJECT NAME --- LIVE DEMO**          
-**visit URL for live demo :-** https://50-days-50-web-project.vercel.app/  
+**visit URL for live demo :-** https://100-days-100-web-project.vercel.app/  
 
 - DAY-1.] TODOLIST     
 - DAY-2.] DIGITAL CLOCK      
@@ -35,7 +35,7 @@ This repository contains 50 web projects from basic to intermediate using html c
 - DAY-9.] CAPTCHA-GENERATOR                    
 - DAY-10.] QR-CODE-GENERATOR       
 - DAY-11.] SERVING WEBSITE USING EXPRESS           
-- DAY-12.] NODEMAILER GMAIL SENDER-->( to use this email sender you need to first clone this repo ->open folder gmail_nodemailer npm i -> nodemon index.js -> open http://localhost:5500/ -> enter your name and email address server automatically will share a email to you from my side . that's it all set.                       
+- DAY-12.] NODEMAILER GMAIL SENDER-->( to use this email sender you need to first clone this repo ->open folder gmail_nodemailer npm i -> nodemon index.js -> open http://localhost:51000/ -> enter your name and email address server automatically will share a email to you from my side . that's it all set.                       
 - DAY-13.] LOGIN FORM USING MERN-->( to use this Login form you need to first clone this repo ->open folder loginusingmern npm i -> nodemon index.js -> open http://localhost:3000/ -> go to register page enter your details , your details are submitted and stored in mongodb . that's it all set.                       
 - DAY-14.] FILE UPLOADER-->( to use this file uploader you need to first clone this repo ->open folder file_uploader npm i -> npm run start -> open http://localhost:3000/file -> fill all thing and submit file and open your clone folder -> uploads you will see file . that's it all set.                               
 - DAY-15.] PROGRESS-BAR     
@@ -109,15 +109,15 @@ Now, resolve your all doubts and communicate with our all contributors.
 
 ## Getting Started
 
-<!-- ⚠️ new update: Read carefully👉 https://github.com/50_days_50_web_project/discussions/1028 -->
+<!-- ⚠️ new update: Read carefully👉 https://github.com/100_days_100_web_project/discussions/1028 -->
 
-To get started with contributing to 50_days_50_Web Projects , please refer to our [Contributing Guidelines](CONTRIBUTING.md).
+To get started with contributing to 100_days_100_Web Projects , please refer to our [Contributing Guidelines](CONTRIBUTING.md).
 
 Follow these steps:
 
 1. **Clone the repository:** 
    ```bash
-   git clone https://github.com/your-username/50_days_50_web_project.git
+   git clone https://github.com/your-username/100_days_100_web_project.git
 
 
    or Use Github desktop to directly clone it in your system
@@ -125,7 +125,7 @@ Follow these steps:
 
 2. **Navigate to the project directory:**
    ```bash
-   cd 50_days_50_Web Projects
+   cd 100_days_100_Web Projects
    ```
 
 3. **Install dependencies:**
@@ -143,7 +143,7 @@ Follow these steps:
 
     This command will start a development server and open the application in your default web browser on local host .
 
-**If you'd like to contribute to 50_days_50_Web Projects , please follow these guidelines:**
+**If you'd like to contribute to 100_days_100_Web Projects , please follow these guidelines:**
 
 - **Fork** the repository and clone it locally.
 - Create a new branch for your feature or bug fix: `git checkout -b feature-name`
@@ -154,13 +154,13 @@ Follow these steps:
 
 ## Support
 
-For any questions or issues, feel free to reach out to us through our [disscusion](https://github.com/dhairyagothi/50_days_50_web_project/discussions) or by opening an [issue](https://github.com/dhairyagothi/50_days_50_web_project/issues) on GitHub.
+For any questions or issues, feel free to reach out to us through our [disscusion](https://github.com/dhairyagothi/100_days_100_web_project/discussions) or by opening an [issue](https://github.com/dhairyagothi/100_days_100_web_project/issues) on GitHub.
 
 Stay updated with the latest news and announcements:
 
 - Follow me on [Instagram](https://www.instagram.com/dhairyaa__31/)
 - Connect with me on [LinkedIn](https://www.linkedin.com/in/dhairya-gothi-65945b288/)
-- Join our Discord channel [VSoC'24](1234877876382208082/1251770938995773552)
+
 
 
 ## Contributors ✨
@@ -169,7 +169,7 @@ Thanks goes to these wonderful people :
 
 <center>
 <div>
-<!-- <a href="https://github.com/dhairyagothi/50_days_50_web_project/graphs/contributors"> -->
-  <img width="90%" src="https://contrib.rocks/image?repo=dhairyagothi/50_days_50_web_project" />
+<!-- <a href="https://github.com/dhairyagothi/100_days_100_web_project/graphs/contributors"> -->
+  <img width="90%" src="https://contrib.rocks/image?repo=dhairyagothi/100_days_100_web_project" />
 </a>
 </div>
