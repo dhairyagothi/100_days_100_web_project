@@ -5,7 +5,7 @@
 
 
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&weight=900&pause=1000&color=0FF26C&random=false&center=false&width=11000&height=100&lines=Announcement:+Contributors,+please+ensure+tasks+are+completed+within+assigned+timeframes+as+per+project+sidebar." alt="Announcement" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=100&weight=900&pause=1000&color=0FF26C&random=false&center=false&width=11000&height=1000&lines=Announcement:+ Contributors,+please+ensure+tasks+are+completed+within+assigned+timeframes+as+per+project+sidebar." alt="Announcement" />
 
 # 100_days_100_web_project
 
