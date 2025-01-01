@@ -1,6 +1,6 @@
-# Contributing to 50 Days 50 Web Projects
+# Contributing to 100 Days 100 Web Projects
 
-Thank you for considering contributing to the 50 Days 50 Web Projects repository! We welcome all kinds of contributions, including bug reports, feature requests, documentation improvements, and code.
+Thank you for considering contributing to the 100 Days 100 Web Projects repository! We welcome all kinds of contributions, including bug reports, feature requests, documentation improvements, and code.
 
 ## Table of Contents
 
@@ -40,29 +40,10 @@ Follow these steps:
 
 1. **Clone the repository:** 
    ```bash
-   git clone https://github.com/your-username/50_days_50_web_project.git
+   git clone https://github.com/your-username/100_days_100_web_project.git
    
    ```
 
-2. **Navigate to the project directory:**
-   ```bash
-   cd 50_days_50_Web Projects
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-4. **Running the Application:**
-
-    Once you have installed the dependencies, you can run the application locally using:
-
-    ```bash
-    npm run start
-    ```
-
-    This command will start a development server and open the application in your default web browser on local host .
 
 
 
@@ -124,4 +105,4 @@ We look forward to your contributions and appreciate your effort in helping us i
 
 By contributing, you agree that your contributions will be licensed under the same license as the project.
 
-Thank you for contributing to 50 Days 50 Web Projects!
+Thank you for contributing to 100 Days 100 Web Projects!
