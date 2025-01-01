@@ -51,17 +51,13 @@
     <nav class="navbar">
         <div class="navbar-container">
                
-            <a href="./public/" class="navbar-logo"><img src="./logo1.png" alt="Logo"></a>
+            <a href="./public/" class="navbar-logo"><img src="	https://100-days-100-web-project.vercel.app/logo1.png" alt="Logo"></a>
            
             <ul class="navbar-menu">
-                <li class="navbar-item"><a href="./public/home" class="navbar-link">Home</a></li>
-                <li class="navbar-item"><a href="./public/projects" class="navbar-link">Projects</a></li>
-                <li class="navbar-item"><a href="./public/about" class="navbar-link">About</a></li>
-                <li class="navbar-item"><a href="./public/https://www.linkedin.com/in/dhairya-gothi-65945b288/" class="navbar-link">Contact</a>
-                <li class="navbar-item"><a href="./public/Login.html" class="navbar-link">Login</a></li></li>
+                 <!-- Dynamic Navbar Items -->
             </ul>
             <a id="github-logo" href ="https://github.com/dhairyagothi" target="_blank">
-                <img src="./github1.png" alt="GitHub" width="40" height="40">
+                <img src="https://100-days-100-web-project.vercel.app/github1.png" alt="GitHub" width="40" height="40">
             </a>
         </div>
     </nav>
@@ -497,6 +493,12 @@
             <a href="./public/NPM Package Search/index.html" class="demo-link">Demo</a>
        </div>
 
+      <div class="table">
+            <div class="day-number">Day 80</div>
+            <div class="project-name">Currency Converter</div>
+            <a href="./public/currency_converter/index.html" class="demo-link">Demo</a>
+       </div>
+
     </div>
 
     <div id="no-projects" style="display: none;">No Projects Found</div>
@@ -561,6 +563,39 @@
                 noProjectsMessage.style.display = 'block';
             }
         }
+
+        // Update Navbar for Login Status
+        const navbarMenu = document.querySelector('.navbar-menu');
+
+        function updateNavbar() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                navbarMenu.innerHTML = `
+                    <li class="navbar-item" style="margin-right: 10px; font-weight: bold; color: #e9f1d6; font-family: 'Arial';">Welcome, ${username}</li>
+                    <li class="navbar-item"><a href="#" id="logout" class="navbar-link">Logout</a></li>
+                `;
+                document.getElementById('logout').addEventListener('click', () => {
+                    localStorage.removeItem('username');
+                    updateNavbar();
+                });
+            } else {
+                navbarMenu.innerHTML = `
+                    <li class="navbar-item"><a href="./public/home" class="navbar-link">Home</a></li>
+                    <li class="navbar-item"><a href="./public/projects" class="navbar-link">Projects</a></li>
+                    <li class="navbar-item"><a href="./public/about" class="navbar-link">About</a></li>
+                    <li class="navbar-item"><a href="./public/Login.html" class="navbar-link">Login</a></li>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', updateNavbar);
+
+        // Loader Handling
+        window.addEventListener("load", () => {
+            const loader = document.getElementById("loader");
+            loader.style.display = "none";
+        });
+    </script>
     </script>
 </body>
 </html>
