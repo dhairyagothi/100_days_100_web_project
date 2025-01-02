@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100_days_100_webprojects</title>
+    <title>100 Days 100 Web Projects</title>
     <link rel="stylesheet" href="home.css">
     <link rel="icon" type="image/x-icon" href="favicon.png"/>
     <meta content="100 Days, 100 Web Projects" property="og:title" />
@@ -13,493 +13,73 @@
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
     <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
     <meta name="twitter:card" content="summary_large_image" />
-    <style>
-        body,
-        html {
-            margin: 0;
-            overflow: auto;
-            overflow-x: hidden;
-        }
-
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .content {
-            position: relative;
-            z-index: 1;
-            padding: 20px;
-        }
-
-        #bgCanvas {
-            filter: blur(5px);
-        }
-    </style>
+    
+    
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 
 </head>
 
-<body class="load">
-    <div id="loader"></div>
-    <canvas id="bgCanvas"></canvas>
+<body>
+    
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-container">
-               
-            <a href="./public/" class="navbar-logo"><img src="	https://100-days-100-web-project.vercel.app/logo1.png" alt="Logo"></a>
-           
-            <ul class="navbar-menu">
-                 <!-- Dynamic Navbar Items -->
-            </ul>
-            <a id="github-logo" href ="https://github.com/dhairyagothi" target="_blank">
-                <img src="https://100-days-100-web-project.vercel.app/github1.png" alt="GitHub" width="40" height="40">
-            </a>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item has-text-weight-bold" href="/">
+            100 DAYS 100 WEB PROJECTS
+          </a>
+      
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
         </div>
-    </nav>
+      
+        <div class="navbar-menu" id="navbar-menu">
+          
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
 
+
+      <!-- Main Page Starts Here -->
     <div class="content" id="projects">
-        <div class="header">50_days_50_webprojects</div>
-        <p class="subheader">HERE IS LIVE DEMO OF ALL PROJECTS</p>
+        <div class="title is-2 has-text-centered my-6">100 Days 100 Web Projects</div>
+        <p class="subtitle has-text-centered">here are live demos of all the projects</p>
 
         <div id="search-bar">
-            <input type="text" id="searchInput" placeholder="Search for projects..." onkeyup="filterProjects()">
-            <button id="searchButton" onclick="filterProjects()">
-                Go
-            </button>
+            <div class="control">
+                <input class="input" type="text" id="searchInput" placeholder="Search for projects..." onkeyup="filterProjects()">
+            </div>
+            <div class="control">
+                <button id="searchButton" class='button is-primary mx-2' onclick="filterProjects()">
+                    Go
+                </button>
+            </div>
         </div>
 
     <div class="links">
-
-        <div id="table-subheader" class="table subheader">
-            <div class="day-number">Day #</div>
-            <div class="project-name">Project Name</div>
-            <p class="demo-link">Demo Link</p>
-        </div>
-
-        <div class="table">
-            <div class="day-number">Day 1</div>
-            <div class="project-name">To-Do List</div>
-            <a href="./public/TO_DO_LIST/todolist.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 2</div>
-            <div class="project-name">Digital Clock</div>
-            <a href="./public/digital_clock/digitalclock.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 3</div>
-            <div class="project-name">Indian Flag</div>
-            <a href="./public/indianflag/flag.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 4</div>
-            <div class="project-name">Dropdown Nav Bar</div>
-            <a href="./public/dropdown_navbar/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 5</div>
-            <div class="project-name">Animated Cursor</div>
-            <a href="./public/Animated-cursor/animated-cursor.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 6</div>
-            <div class="project-name">Auto Background Image Slider</div>
-            <a href="./public/Background-Image-sider/slider.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 7</div>
-            <div class="project-name">Typewriter</div>
-            <a href="./public/typewriter/typewriter.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 8</div>
-            <div class="project-name">Parallel-X Website</div>
-            <a href="./public/Parallel-x website/parallal.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 9</div>
-            <div class="project-name">Captcha Generator</div>
-            <a href="./public/captcha/captcha.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 10</div>
-            <div class="project-name">QR Code Generator</div>
-            <a href="./public/qr generator/qr.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 11</div>
-            <div class="project-name">Serve Website Using Express</div>
-            <a href="./public/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 12</div>
-            <div class="project-name">Nodemailer Contact Form</div>
-            <a href="./public/gmail_nodemailer/public/mail.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 13</div>
-            <div class="project-name">Login Form Using MERN</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/loginusingmern"
-                class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 14</div>
-            <div class="project-name">File Uploader</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/file_uploader"
-                class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 15</div>
-            <div class="project-name">Progress Bar</div>
-            <a href="./public/progress_bar/progress_bar.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 16</div>
-            <div class="project-name">Scroll Bar CSS</div>
-            <a href="./public/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 17</div>
-            <div class="project-name">Slider Using Swiper API</div>
-            <a href="./public/slider box/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 18</div>
-            <div class="project-name">Carousel Solar System</div>
-            <a href="./public/carousal/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 19</div>
-            <div class="project-name">Planto</div>
-            <a href="./public/plantwebsite/plant.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 20</div>
-            <div class="project-name">EveSparks</div>
-            <a href="./public/https://evesparks.onrender.com/" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 21</div>
-            <div class="project-name">Video BG Slider Using React</div>
-            <a href="./public/https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/travel_website"
-                class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 22</div>
-            <div class="project-name">Page Loader</div>
-            <a href="./public/pageloader/pageloader.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 23</div>
-            <div class="project-name">Jarvis Virtual Assistant</div>
-            <a href="./public/Jarvis-AI-main/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 24</div>
-            <div class="project-name">Chat Bot</div>
-            <a href="./public/AI ChatBot/chatbot.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 25</div>
-            <div class="project-name">Tic-Tac-Toe</div>
-            <a href="./public/TicTacToe/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 26</div>
-            <div class="project-name">Maze Game</div>
-            <a href="./public/Maze-Game-main/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 27</div>
-            <div class="project-name">Memory Game</div>
-            <a href="./public/MemoryGame/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 28</div>
-            <div class="project-name">Wordle</div>
-            <a href="./public/WORDLE/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 29</div>
-            <div class="project-name">Snake Game</div>
-            <a href="./public/snake_game/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 30</div>
-            <div class="project-name">Flappy-bird-game</div>
-            <a href="./public/Flappy-bird-main/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 31</div>
-            <div class="project-name">Password Manager</div>
-            <a href="./public/password manager/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">DAY-32</div>
-            <div class="project-name">Missionaries & Cannibals</div>
-            <a href="./public/Missionaries&Cannibals/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 33</div>
-            <div class="project-name">Weather Forcasting</div>
-            <a href="./public/Weather Forcasting/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 34</div>
-            <div class="project-name">Email Validator</div>
-            <a href="./public/email validator/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 35</div>
-            <div class="project-name">Vanilla-JavaScript-Calculator</div>
-            <a href="./public/Vanilla-JavaScript-Calculator-master/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 36</div>
-            <div class="project-name">Medical App</div>
-            <a href="./public/Medical_App/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 37</div>
-            <div class="project-name">2048 Game</div>
-            <a href="./public/2048_game/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 38</div>
-            <div class="project-name">Github Profile Finder</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/github_profile_finder"
-                class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 39</div>
-            <div class="project-name">Notes App</div>
-            <a href="./public/notes-app/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 40</div>
-            <div class="project-name">Analog Clock</div>
-            <a href="./public/AnalogClock/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 41</div>
-            <div class="project-name">Scroll Dark Game</div>
-            <a href="./public/Scroll Game Dark Run/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 42</div>
-            <div class="project-name">Amazon App</div>
-            <a href="./public/Amazon_Clone/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 43</div>
-            <div class="project-name">Password Generator</div>
-            <a href="./public/Password_Generator/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 44</div>
-            <div class="project-name">BMI Calculator</div>
-            <a href="./public/BMI_Calculator/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 45</div>
-            <div class="project-name">Black Jack</div>
-            <a href="./public/BlackJack/blackJ.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 46</div>
-            <div class="project-name">Palindrome Generator</div>
-            <a href="./public/Palindrome_Generator/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 47</div>
-            <div class="project-name">Ping Pong Game</div>
-            <a href="./public/ping/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 48</div>
-            <div class="project-name">TextToVoiceConverter</div>
-            <a href="./public/TextToVoiceConverter/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 49</div>
-            <div class="project-name">Url Shortener</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/url_shortener"
-                class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 50</div>
-            <div class="project-name">Recipe Genie</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/Recipe-Genie"
-                class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 51</div>
-            <div class="project-name">Netflix Landing Page Clone</div>
-            <a href="./public/Netflix_Cloning/Index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 52</div>
-            <div class="project-name">ClimaCode</div>
-            <a href="./public/ClimaCode 2.0/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 53</div>
-            <div class="project-name">E-Commerce Website with Simple Cart Functionality</div>
-            <a href="./public/e-commerce_cart/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 54</div>
-            <div class="project-name">Budget Tracker</div>
-            <a href="./public/Budget Tracker/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 55</div>
-            <div class="project-name">Cricket Game</div>
-            <a href="./public/cricket/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 56</div>
-            <div class="project-name">Pastebin using svelte</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/pastebin"
-                class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 57</div>
-            <div class="project-name">Glowing Social Media Icons</div>
-            <a href="./public/Social Media Glowing/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 58</div>
-            <div class="project-name">Music App</div>
-            <a href="./public/Music App/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 59</div>
-            <div class="project-name">Blog Page</div>
-            <a href="./public/Blog Page/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 60</div>
-            <div class="project-name">Marketing template website</div>
-            <a href="./public/marketing_website/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 61</div>
-            <div class="project-name">Hologram Button</div>
-            <a href="./public/Holo Button/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 62</div>
-            <div class="project-name">Solar System Explorer</div>
-            <a href="./public/Solar System Explorer in CSS only haml/template.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 63</div>
-            <div class="project-name">Image to Text App</div>
-            <a href="./public/Image-To-Text-App/index.html" class="demo-link">Demo</a>
-        </div>
-
-        <div class="table">
-            <div class="day-number">Day 64</div>
-            <div class="project-name">Zomato-clone</div>
-            <a href="./public/zomato-clone/zomato.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 65</div>
-            <div class="project-name">The Cube</div>
-            <a href="./public/The Cube/index.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 66</div>
-            <div class="project-name">Flask Authentication App</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/flask_auth_app/README.md"
-                class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 67</div>
-            <div class="project-name">Blog-Website</div>
-            <a href="./public/blog/main.html" class="demo-link">Demo</a>
-        </div>
-        <div class="table">
-            <div class="day-number">Day 68</div>
-            <div class="project-name">3d Rotating Card</div>
-            <a href="./public/3d cards/index.html" class="demo-link">Demo</a>
-        </div>
-
-
-        <div class="table">
-            <div class="day-number">Day 69</div>
-            <div class="project-name">Spotify Clone Project</div>
-            <a href="./public/spotify-clone -project/index.html" class="demo-link">Demo</a>
-        </div>
-
-
-        <div class="table">
-            <div class="day-number">Day 70</div>
-            <div class="project-name">Insect-Catch_Game</div>
-            <a href="./public/Insect-Catch-Game/index.html" class="demo-link">Demo</a>
-        </div>
-       
-        <div class="table">
-            <div class="day-number">Day 71</div>
-            <div class="project-name">Quotely Laughs</div>
-            <a href="./public/Quotely-Laughs/index.html" class="demo-link">Demo</a>
-        </div>
-
-        <div class="table">
-            <div class="day-number">Day 72</div>
-            <div class="project-name">Contact Book</div>
-            <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/Contact%20Book/README.md" class="demo-link">Demo</a>
-        </div>
-
-        <div class="table">
-            <div class="day-number">Day 73</div>
-            <div class="project-name">Candy_Crush_Game</div>
-            <a href="./public/Candy_Crush_Game/index.html" class="demo-link">Demo</a>
-        </div>
-      
-      <div class="table">
-            <div class="day-number">Day 74</div>
-      <div class="project-name">Stock Profit Calculator</div>
-            <a href="./public/Stock-Profit-Calculator/index.html" class="demo-link">Demo</a>
-      </div>
-
-      <div class="table">
-        <div class="day-number">Day 75</div>
-  <div class="project-name">code-space-game project</div>
-        <a href="./public/code-jump-space-game/index.html" class="demo-link">Demo</a>
-  </div>
-
-      <div class="table">
-            <div class="day-number">Day 76</div>
-            <div class="project-name">Animated Searchbar</div>
-            <a href="./public/Animated Searchbar/index.html" class="demo-link">Demo</a>
-        </div>
-
-      <div class="table">
-            <div class="day-number">Day 77</div>
-            <div class="project-name">Rock-Paper-Scissor-game project</div>
-            <a href="./public/Stone-Paper-Scissor/index.html" class="demo-link">Demo</a>
-       </div>
-
-      <div class="table">
-            <div class="day-number">Day 78</div>
-            <div class="project-name">NPM Package Search</div>
-            <a href="./public/NPM Package Search/index.html" class="demo-link">Demo</a>
-       </div>
-       
-       <div class="table">
-        <div class="day-number">Day 79</div>
-        <div class="project-name">Linkedin Homepage Clone </div>
-        <a href="./public/Linkedin-Clone/index.html" class="demo-link">Demo</a>
-   </div>
-
-
+        <table class="table is-fullwidth is-bordered is-striped  is-hoverable">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Project Name</th>
+                    <th>Demo Link</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                
+            </tbody>
+        </table>
     </div>
 
     <div id="no-projects" style="display: none;">No Projects Found</div>
@@ -522,81 +102,18 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/utils/BufferGeometryUtils.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/loaders/STLLoader.js"></script>
-    <script src="./home.js"></script>
-    <script>
-        window.addEventListener("load", () => {
-            const loader = document.getElementById("loader");
-            loader.style.display = "none";
-        });
-    </script>
-    <script>
-        function filterProjects() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const tables = document.querySelectorAll('.table');
 
-            let hasResults = false;
+    <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+            <strong>© <script>document.write(new Date().getFullYear())</script> 100 Days 100 Projects</strong> by <a href="https://github.com/dhairyagothi/100_days_100_web_project">Dhairya And Contributors</a>.
+          </p>
+        </div>
+      </footer>
 
-            tables.forEach(table => {
-                const projectName = table.querySelector('.project-name').textContent.toLowerCase();
-                
-                if (projectName.includes(filter)) {
-                    table.style.display = '';
-                    hasResults = true;
-                } else if (table.id !== 'table-subheader') {
-                    table.style.display = 'none';
-                }
-            });
+    <script src="index.js"></script>
+    <script src="bulma.js"></script>
 
-            const subheader = document.querySelector('.subheader');
-            const noProjectsMessage = document.getElementById('no-projects');
 
-            if (hasResults) {
-                subheader.style.display = 'block';
-                noProjectsMessage.style.display = 'none';
-            } else {
-                document.getElementById('table-subheader').style.display = 'none';
-                subheader.style.display = 'none';
-                noProjectsMessage.style.display = 'block';
-            }
-        }
-
-        // Update Navbar for Login Status
-        const navbarMenu = document.querySelector('.navbar-menu');
-
-        function updateNavbar() {
-            const username = localStorage.getItem('username');
-            if (username) {
-                navbarMenu.innerHTML = `
-                    <li class="navbar-item" style="margin-right: 10px; font-weight: bold; color: #e9f1d6; font-family: 'Arial';">Welcome, ${username}</li>
-                    <li class="navbar-item"><a href="#" id="logout" class="navbar-link">Logout</a></li>
-                `;
-                document.getElementById('logout').addEventListener('click', () => {
-                    localStorage.removeItem('username');
-                    updateNavbar();
-                });
-            } else {
-                navbarMenu.innerHTML = `
-                    <li class="navbar-item"><a href="./public/home" class="navbar-link">Home</a></li>
-                    <li class="navbar-item"><a href="./public/projects" class="navbar-link">Projects</a></li>
-                    <li class="navbar-item"><a href="./public/about" class="navbar-link">About</a></li>
-                    <li class="navbar-item"><a href="./public/Login.html" class="navbar-link">Login</a></li>
-                `;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', updateNavbar);
-
-        // Loader Handling
-        window.addEventListener("load", () => {
-            const loader = document.getElementById("loader");
-            loader.style.display = "none";
-        });
-    </script>
-    </script>
 </body>
 </html>

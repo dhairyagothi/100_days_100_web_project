@@ -1,19 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
 
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: IBM Plex Sans;
 }
 
-body {
-    background: black;
-    color: grey;
-    padding-left: 25px;
-    padding-right: 25px;
-    margin: 0;
-}
+
 
 @media screen and (min-width: 600px) and (max-width: 899px) {
     body {
@@ -36,129 +30,12 @@ body {
     }
 }
 
-a {
-    color: white;
-    text-decoration: none;
-}
-
-.header {
-    text-align: center;
-    padding: 80px 0px 40px 0px;  
-    margin-bottom: 0px;
-    background: linear-gradient(90deg, #ff8a00, #da1b60);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-family: "IBM Plex Serif", serif;
-    font-weight: 700;
-    font-size: xx-large;
-}
-
-.subheader {
-    text-align: center;
-    padding: 10px;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, #a7ed5d, #30ccf7);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-family: "IBM Plex Serif", serif;
-    font-weight: 400;
-    font-size: x-large;
-}
-
-.navbar {
-    width: 100%;
-    background: #333;
-    padding: 15px 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(255,255,255,0.5);
-}
-
-.navbar-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    margin-left: 100px;   
-}
 
 
-.navbar-logo img {
-  height: 40px;
-  width: auto;
-  transition: transform 0.3s;
-}
 
-.navbar-logo img:hover {
-  transform: scale(1.1);
-}
 
-.navbar-menu {
-    list-style: none;
-    display: flex;
-    margin-left: 767px;
-}
 
-.navbar-item {
-    margin-left: 20px;
-}
 
-.navbar-link {
-    color: #fff;
-    font-family: "Noto Sans", sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    text-decoration: none;
-    position: relative;
-    transition: color 0.3s;
-}
-
-.navbar-link::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 2px;
-    background: #ff8a00;
-    transition: width 0.3s;
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-}
-
-.navbar-link:hover {
-    color: #ff8a00;
-}
-
-.navbar-link:hover::after {
-    width: 100%;
-}
-
-.navbar-link::before {
-    content: '';
-    display: block;
-    width: 0;
-    height: 2px;
-    background: #da1b60;
-    transition: width 0.3s;
-    position: absolute;
-    top: -5px;
-    left: 0;
-}
-
-.navbar-link:hover::before {
-    width: 100%;
-}
-
-#brand {
-  font-size: 24px;
-  font-weight: bold;
-}
 
 #search-bar {
   display: flex;
@@ -170,71 +47,14 @@ a {
 #searchInput {
   padding: 10px;
   font-size: 16px;
-  border: 2px solid #ccc;
+
   border-radius: 5px;
   width: 300px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: border-color 0.3s;
 }
 
-#searchInput:focus {
-  border-color: #666;
-  outline: none;
-}
 
-#searchButton {
-  padding: 10px 15px;
-  margin-left: 10px;
-  font-size: 16px;
-  background-color: #4A90E2;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#searchButton:hover {
-  background-color: #007BFF;
-}
-
-#github-logo img {
-  width: 30px;
-  height: 30px;
-  margin-left: 60px;
-}
-
-.table {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background: #1e1e1e;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  font-family: "Noto Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  color: white;
-}
-
-.day-number,
-.project-name,
-.demo-link {
-  flex: 1;
-  text-align: center;
-}
-
-.demo-link {
-  color: #00d4ff;
-  text-decoration: none;
-}
-
-.demo-link:hover {
-  text-decoration: underline;
-}
 
 #no-projects {
   text-align: center;
@@ -247,15 +67,6 @@ a {
   color: white;
 }
 
-#loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100%;
-  background: black url('./images/imageloader.gif') no-repeat center center;
-  z-index: 100000;
-}
 
 body::-webkit-scrollbar {
   width: 1em;
