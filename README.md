@@ -100,6 +100,10 @@ This repository contains 100 web projects from basic to intermediate using html 
 - Day 73 ] Candy_Crush_Game
 - Day 74 ] Stock Profit Calculator
 - Day 75 ] code-space-game project
+- Day 76 ] animated searchbar
+- Day 77 ] rock-paper-scissor-game project
+- Day 78 ] npm package search
+- Day 79 ] linkedin homepage clone using react 
 
 ## Discord Channel for VSoC 2024 Contributors
 
