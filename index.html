@@ -4,813 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100_days_100_webprojects</title>
+    <title>100 Days 100 Web Projects</title>
     <link rel="stylesheet" href="home.css">
     <link rel="icon" type="image/x-icon" href="favicon.png"/>
     <meta content="100 Days, 100 Web Projects" property="og:title" />
     <meta content="A collection of 100 web projects from basic to intermediate using html css and js." property="og:description" />
     <meta content="/" property="og:url" />
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
-    <link href=
-"https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
-          rel="stylesheet">
     <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
     <meta name="twitter:card" content="summary_large_image" />
-    <style>
-        body,
-        html {
-            margin: 0;
-            overflow: auto;
-            overflow-x: hidden;
-            width: 100vw;
-        }
-
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .content {
-            position: relative;
-            z-index: 1;
-            padding: 20px;
-        }
-
-        #bgCanvas {
-            filter: blur(5px);
-        }
-.card {
- width: 350px;
- height: 300px;
-
-background: #4187C5;
-background: radial-gradient(at top, #235581, #401696,#08233e,rgb(48, 48, 48));
- border-radius: 15px;
- box-shadow: 1px 5px 60px 0px #100a886b;
-}
-
-.card .card-border-top {
- width: 60%;
- height: 7%;
- text-align: center;
- color: black;
- background: #ededed;
- margin: auto;
- border-radius: 0px 0px 15px 15px;
-}
-
-.card span {
- font-weight: 600;
- color: white;
- text-align: center;
- display: block;
- padding-top: 10px;
- font-size: 16px;
-}
-
-
-.card .img{
- width: 90%;
- height: 37%;
- background: #ededed;
- border-radius: 15px;
- margin: auto;
- margin-top: 25px;
-}
-
-.card .demo-link {
-    padding: 15px;
- width: 40%;
- display: block;
- margin: auto;
- border-radius: 8px;
- margin-top: 30px;
- background: #ededed;
- color: black;
- font-weight: 600;
- z-index: 10;
-}
-
-.card .demo-link:hover {
- background: #16ac87;
-}
-
-.grid{
-    grid-template-columns: repeat(3, 400px);
-    row-gap: 20px;
-}
-
-@media screen and (min-width: 1200px) {
-    body {
-        padding-left: 80px;
-        padding-right: 0;
-    }
-}
-        
-    </style>
+    
+    <!-- Pushed CSS Code Here and Imported Bulma StyleSheet as well -->
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 
 </head>
 
-<body class="load">
-    <div id="loader"></div>
-    <canvas id="bgCanvas"></canvas>
+<body>
+    
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-container">
-               
-            <a href="./public/" class="navbar-logo"><img src="icons8-working-with-a-laptop-48.png" alt="Logo"></a>
-           
-            <ul class="navbar-menu">
-                 <!-- Dynamic Navbar Items -->
-            </ul>
-            <a id="github-logo" href ="https://github.com/dhairyagothi" target="_blank">
-                <img src="GitHub.png" alt="GitHub" width="40" height="40">
-            </a>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item has-text-weight-bold" href="/">
+            100 DAYS 100 WEB PROJECTS
+          </a>
+      
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
         </div>
-    </nav>
+      
+        <div class="navbar-menu" id="navbar-menu">
+          
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
 
+
+      <!-- Main Page Starts Here -->
     <div class="content" id="projects">
-        <div class="header">100_days_100_webprojects</div>
-        <p class="subheader">HERE IS LIVE DEMO OF ALL PROJECTS</p>
+        <div class="title is-2 has-text-centered my-6">100 Days 100 Web Projects</div>
+        <p class="subtitle has-text-centered">here are live demos of all the projects</p>
 
         <div id="search-bar">
-            <input type="text" id="searchInput" placeholder="Search for projects..." onkeyup="filterProjects()">
-            <button id="searchButton" onclick="filterProjects()">
-                Go
-            </button>
+            <div class="control">
+                <input class="input" type="text" id="searchInput" placeholder="Search for projects..." onkeyup="filterProjects()">
+            </div>
+            <div class="control">
+                <button id="searchButton" class='button is-primary mx-2' onclick="filterProjects()">
+                    Go
+                </button>
+            </div>
         </div>
 
-    </div> 
-    <div class="container mx-auto w-[1200px]"> 
-        <div class="grid">
-            <div class="card">
-                <div class="card-border-top">Day 1</div>
-                <div class="img"><img src="/images/1.png" alt=""></div>
-                <span> To-Do List</span>
-                <a href="./public/TO_DO_LIST/todolist.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 2</div>
-                <div class="img"><img src="/images/2.png" alt=""></div>
-                <span> Digital Clock</span>
+    <div class="links">
+        <table class="table is-fullwidth is-bordered is-striped  is-hoverable">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Project Name</th>
+                    <th>Demo Link</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
                 
-                <a href="./public/digital_clock/digitalclock.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 3</div>
-                <div class="img"><img src="/images/3.png" alt=""></div>
-                <span>Indian Flag</span>
-                
-                <a href="./public/indianflag/flag.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 4</div>
-                <div class="img"><img src="/images/4.png" alt=""></div>
-                <span> Dropdown Nav Bar</span>
-                
-                <a href="./public/dropdown_navbar/index.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 5</div>
-                <div class="img"><img src="/images/5.png" alt=""></div>
-                <span>Animated Cursor</span>
-                <a href="./public/Animated-cursor/animated-cursor.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 6</div>
-                <div class="img"><img src="/images/6.png" alt=""></div>
-                <span>Auto Background Image Slider</span>
-                <a href="./public/Background-Image-sider/slider.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 7</div>
-                <div class="img"><img src="/images/7.png" alt=""></div>
-                <span>Typewriter</span>
-                <a href="./public/typewriter/typewriter.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 8</div>
-                <div class="img"><img src="/images/8.png" alt=""></div>
-                <span>Parallel-X Website</span>
-                <a href="./public/Parallel-x website/parallal.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 9</div>
-                <div class="img"><img src="/images/9.png" alt=""></div>
-                <span>Captcha Generator</span>
-                <a href="./public/captcha/captcha.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 10</div>
-                <div class="img"><img src="/images/10.png" alt=""></div>
-                <span>QR Code Generator</span>
-                <a href="./public/qr generator/qr.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 11</div>
-                <div class="img"><img src="/images/11.png" alt=""></div>
-                <span>Serve Website Using Express</span>
-                <a href="./public/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 12</div>
-                <div class="img"><img src="/images/12.png" alt=""></div>
-                <span>Nodemailer Contact Form</span>
-                <a href="./public/gmail_nodemailer/public/mail.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 13</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Login Form Using MERN</span>
-                <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/loginusingmern" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 14</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>File Uploader</span>
-                <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/file_uploader" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 15</div>
-                <div class="img"><img src="/images/15.png" alt=""></div>
-                <span>Progress Bar</span>
-                <a href="./public/progress_bar/progress_bar.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 16</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Scroll Bar CSS</span>
-                <a href="./public/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 17</div>
-                <div class="img"><img src="/images/17.png" alt=""></div>
-                <span>Slider Using Swiper API</span>
-                <a href="./public/slider box/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 18</div>
-                <div class="img"><img src="/images/18.png" alt=""></div>
-                <span>Carousel Solar System</span>
-                <a href="./public/carousal/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 19</div>
-                <div class="img"><img src="/images/19.png" alt=""></div>
-                <span>Planto</span>
-                <a href="./public/plantwebsite/plant.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 20</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>EveSparks</span>
-                <a href="./public/https://evesparks.onrender.com/" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 21</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Video BG Slider Using React</span>
-                <a href="./public/https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/travel_website" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 22</div>
-                <div class="img"><img src="/images/22.png" alt=""></div>
-                <span>Page Loader</span>
-                <a href="./public/pageloader/pageloader.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 23</div>
-                <div class="img"><img src="/images/23.png" alt=""></div>
-                <span>Jarvis Virtual Assistant</span>
-                <a href="./public/Jarvis-AI-main/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 24</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Chat Bot</span>
-                <a href="./public/AI ChatBot/chatbot.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 25</div>
-                <div class="img"><img src="/images/25.png" alt=""></div>
-                <span>Tic-Tac-Toe</span>
-                <a href="./public/TicTacToe/index.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 26</div>
-                <div class="img"><img src="/images/26.png" alt=""></div>
-                <span>Maze Game</span>
-                <a href="./public/Maze-Game-main/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 27</div>
-                <div class="img"><img src="/images/27.png" alt=""></div>
-                <span>Memory Game</span>
-                <a href="./public/MemoryGame/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 28</div>
-                <div class="img"><img src="/images/28.png" alt=""></div>
-                <span>Wordle</span>
-                <a href="./public/WORDLE/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 29</div>
-                <div class="img"><img src="/images/29.png" alt=""></div>
-                <span>Snake Game</span>
-                <a href="./public/snake_game/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 30</div>
-                <div class="img"><img src="/images/30.png" alt=""></div>
-                <span>Flappy-bird-game</span>
-                <a href="./public/Flappy-bird-main/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 31</div>
-                <div class="img"><img src="/images/31.png" alt=""></div>
-                <span>Password Manager</span>
-                <a href="./public/password manager/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 32</div>
-                <div class="img"><img src="/images/32.png" alt=""></div>
-                <span>Missionaries & Cannibals</span>
-                <a href="./public/Missionaries&Cannibals/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 33</div>
-                <div class="img"><img src="/images/33.png" alt=""></div>
-                <span>Weather Forcasting</span>
-                <a href="./public/Weather Forcasting/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 34</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Email Validator</span>
-                <a href="./public/email validator/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 35</div>
-                <div class="img"><img src="/images/35.png" alt=""></div>
-                <span>Vanilla-JavaScript-Calculator</span>
-                <a href="./public/Vanilla-JavaScript-Calculator-master/index.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 36</div>
-                <div class="img"><img src="/images/36.png" alt=""></div>
-                <span>Medical App</span>
-                <a href="./public/Medical_App/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 37</div>
-                <div class="img"><img src="/images/37.png" alt=""></div>
-                <span>2048 Game</span>
-                <a href="./public/2048_game/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 38</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Github Profile Finder</span>
-                <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/github_profile_finder" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 39</div>
-                <div class="img"><img src="/images/39.png" alt=""></div>
-                <span>Notes App</span>
-                <a href="./public/notes-app/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 40</div>
-                <div class="img"><img src="/images/40.png" alt=""></div>
-                <span>Analog Clock</span>
-                <a href="./public/AnalogClock/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 41</div>
-                <div class="img"><img src="/images/41.png" alt=""></div>
-                <span>Scroll Dark Game</span>
-                <a href="./public/Scroll Game Dark Run/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 42</div>
-                <div class="img"><img src="/images/42.png" alt=""></div>
-                <span>Amazon App</span>
-                <a href="./public/Amazon_Clone/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 43</div>
-                <div class="img"><img src="/images/43.png" alt=""></div>
-                <span>Password Generator</span>
-                <a href="./public/Password_Generator/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 44</div>
-                <div class="img"><img src="/images/44.png" alt=""></div>
-                <span>BMI Calculator</span>
-                <a href="./public/BMI_Calculator/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 45</div>
-                <div class="img"><img src="/images/45.png" alt=""></div>
-                <span>Black Jack</span>
-                <a href="./public/BlackJack/blackJ.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 46</div>
-                <div class="img"><img src="/images/46.png" alt=""></div>
-                <span>Palindrome Generator</span>
-                <a href="./public/Palindrome_Generator/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 47</div>
-                <div class="img"><img src="/images/47.png" alt=""></div>
-                <span>Ping Pong Game</span>
-                <a href="./public/ping/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 48</div>
-                <div class="img"><img src="/images/48.png" alt=""></div>
-                <span>TextToVoiceConverter</span>
-                <a href="./public/TextToVoiceConverter/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 49</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Url Shortener</span>
-                <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/url_shortener" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 50</div>
-                <div class="img"><img src="/images/50.png" alt=""></div>
-                <span>Recipe Genie</span>
-                <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/Recipe-Genie" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 51</div>
-                <div class="img"><img src="/images/51.png" alt=""></div>
-                <span>Netflix Landing Page Clone</span>
-                <a href="./public/Netflix_Cloning/Index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 52</div>
-                <div class="img"><img src="/images/52.png" alt=""></div>
-                <span>ClimaCode</span>
-                <a href="./public/ClimaCode 2.0/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 53</div>
-                <div class="img"><img src="/images/53.png" alt=""></div>
-                <span>E-Commerce Website with Simple Cart Functionality</span>
-                <a href="./public/e-commerce_cart/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 54</div>
-                <div class="img"><img src="/images/54.png" alt=""></div>
-                <span>Budget Tracker</span>
-                <a href="./public/Budget Tracker/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 55</div>
-                <div class="img"><img src="/images/55.png" alt=""></div>
-                <span>Cricket Game</span>
-                <a href="./public/cricket/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 56</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Pastebin using svelte</span>
-                <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/pastebin" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 57</div>
-                <div class="img"><img src="/images/57.png" alt=""></div>
-                <span>Glowing Social Media Icons</span>
-                <a href="./public/Social Media Glowing/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 58</div>
-                <div class="img"><img src="/images/58.png" alt=""></div>
-                <span>Music App</span>
-                <a href="./public/Music App/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 59</div>
-                <div class="img"><img src="/images/59.png" alt=""></div>
-                <span>Blog Page</span>
-                <a href="./public/Blog Page/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 60</div>
-                <div class="img"><img src="/images/60.png" alt=""></div>
-                <span>Marketing template website</span>
-                <a href="./public/marketing_website/index.html" class="demo-link">Demo</a>
-            </div>
-            <div class="card">
-                <div class="card-border-top">Day 61</div>
-                <div class="img"><img src="/images/61.png" alt=""></div>
-                <span>Hologram Button</span>
-                <a href="./public/Holo Button/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 62</div>
-                <div class="img"><img src="/images/62.png" alt=""></div>
-                <span>Solar System Explorer</span>
-                <a href="./public/Solar System Explorer in CSS only haml/template.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 63</div>
-                <div class="img"><img src="/images/63.png" alt=""></div>
-                <span>Image to Text App</span>
-                <a href="./public/Image-To-Text-App/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 64</div>
-                <div class="img"><img src="/images/64.png" alt=""></div>
-                <span>Zomato-clone</span>
-                <a href="./public/zomato-clone/zomato.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 65</div>
-                <div class="img"><img src="/images/65.png" alt=""></div>
-                <span>The Cube</span>
-                <a href="./public/The Cube/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 66</div>
-                <div class="img"><img src="/images/not found.png" alt=""></div>
-                <span>Flask Authentication App</span>
-                <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/flask_auth_app/README.md" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 67</div>
-                <div class="img"><img src="/images/67.png" alt=""></div>
-                <span>Blog-Website</span>
-                <a href="./public/blog/main.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 68</div>
-                <div class="img"><img src="/images/68.png" alt=""></div>
-                <span>3d Rotating Card</span>
-                <a href="./public/3d cards/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 69</div>
-                <div class="img"><img src="/images/69.png" alt=""></div>
-                <span>Spotify Clone Project</span>
-                <a href="./public/spotify-clone -project/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 70</div>
-                <div class="img"><img src="/images/70.png" alt=""></div>
-                <span>Insect-Catch_Game</span>
-                <a href="./public/Insect-Catch-Game/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 71</div>
-                <div class="img"><img src="/images/71.png" alt=""></div>
-                <span>Quotely Laughs</span>
-                <a href="./public/Quotely-Laughs/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 72</div>
-                <div class="img"><img src="/images/72.png" alt=""></div>
-                <span>Contact Book</span>
-                <a href="https://github.com/dhairyagothi/50_days_50_web_project/tree/Main/public/Contact%20Book/README.md" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 73</div>
-                <div class="img"><img src="/images/73.png" alt=""></div>
-                <span>Candy_Crush_Game</span>
-                <a href="./public/Candy_Crush_Game/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 74</div>
-                <div class="img"><img src="/images/74.png" alt=""></div>
-                <span>Stock Profit Calculator</span>
-                <a href="./public/Stock-Profit-Calculator/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 75</div>
-                <div class="img"><img src="/images/75.png" alt=""></div>
-                <span>code-space-game project</span>
-                <a href="./public/code-jump-space-game/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 76</div>
-                <div class="img"><img src="/images/76.png" alt=""></div>
-                <span>Animated Searchbar</span>
-                <a href="./public/Animated Searchbar/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 77</div>
-                <div class="img"><img src="/images/77.png" alt=""></div>
-                <span>Rock-Paper-Scissor-game project</span>
-                <a href="./public/Stone-Paper-Scissor/index.html" class="demo-link">Demo</a>
-            </div>
-            
-            <div class="card">
-                <div class="card-border-top">Day 78</div>
-                <div class="img"><img src="/images/78.png" alt=""></div>
-                <span>NPM Package Search</span>
-                <a href="./public/NPM Package Search/index.html" class="demo-link">Demo</a>
-            </div>
-                                    
-            <div class="card">
-                <div class="card-border-top">Day 79</div>
-                <div class="img"><img src="/images/78.png" alt=""></div>
-                <span>Linkedin Homepage Clone </span>
-                <a href="./public/Linkedin-Clone/index.html" class="demo-link">Demo</a>
-           </div>                                         
-           <div class="card">
-            <div class="card-border-top">Day 80</div>
-            <div class="img"><img src="/images/80.png" alt=""></div>
-            <span>Developer Portfolio </span>
-            <a href="./public/Developer portfolio/index.html" class="demo-link">Demo</a>
-       </div>  
-            
-        
-        
-
-
-    
-        </div>
-
-
-        
-       
-       
-
-
+            </tbody>
+        </table>
     </div>
 
     <div id="no-projects" style="display: none;">No Projects Found</div>
     </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-left">
-                <!-- <p>&copy; 2024 50_days_50_webprojects. Made by Dhairya.</p> -->
-                <p> &copy; <script>document.write(new Date().getFullYear())</script> 50_days_50_webprojects. Made by Dhairya & Contributors.</p>
-            </div>
-            <div class="footer-right">
-                <a href="./" target="_blank" id="twitter-icon">
-                    <img class="icons" src="twitter_x_new_logo_x_rounded_icon_256078.svg" alt="Twitter Icon">
-                </a>
-                <a href="./public/https://github.com/dhairyagothi/50_days_50_web_project" target="_blank">
-                    <img class="icons" src="GitHub.png" alt="Github Icon">
-                </a>
-            </div>
+  
+    <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+            <strong>© <script>document.write(new Date().getFullYear())</script> 100 Days 100 Projects</strong> by <a href="https://github.com/dhairyagothi/100_days_100_web_project">Dhairya And Contributors</a>.
+          </p>
         </div>
-    </footer>
+      </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/utils/BufferGeometryUtils.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.115.0/examples/js/loaders/STLLoader.js"></script>
-    <script src="./home.js"></script>
-    <script>
-        window.addEventListener("load", () => {
-            const loader = document.getElementById("loader");
-            loader.style.display = "none";
-        });
-    </script>
-    <script>
-        function filterProjects() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const tables = document.querySelectorAll('.table');
+    <!-- Pushed JavaScript Code To Here -->
+    <script src="index.js"></script>
+    <script src="bulma.js"></script>
 
-            let hasResults = false;
 
-            tables.forEach(table => {
-                const projectName = table.querySelector('.project-name').textContent.toLowerCase();
-                
-                if (projectName.includes(filter)) {
-                    table.style.display = '';
-                    hasResults = true;
-                } else if (table.id !== 'table-subheader') {
-                    table.style.display = 'none';
-                }
-            });
-
-            const subheader = document.querySelector('.subheader');
-            const noProjectsMessage = document.getElementById('no-projects');
-
-            if (hasResults) {
-                subheader.style.display = 'block';
-                noProjectsMessage.style.display = 'none';
-            } else {
-                document.getElementById('table-subheader').style.display = 'none';
-                subheader.style.display = 'none';
-                noProjectsMessage.style.display = 'block';
-            }
-        }
-
-        // Update Navbar for Login Status
-        const navbarMenu = document.querySelector('.navbar-menu');
-
-        function updateNavbar() {
-            const username = localStorage.getItem('username');
-            if (username) {
-                navbarMenu.innerHTML = `
-                    <li class="navbar-item" style="margin-right: 10px; font-weight: bold; color: #e9f1d6; font-family: 'Arial';">Welcome, ${username}</li>
-                    <li class="navbar-item"><a href="#" id="logout" class="navbar-link">Logout</a></li>
-                `;
-                document.getElementById('logout').addEventListener('click', () => {
-                    localStorage.removeItem('username');
-                    updateNavbar();
-                });
-            } else {
-                navbarMenu.innerHTML = `
-                    <li class="navbar-item"><a href="./public/home" class="navbar-link">Home</a></li>
-                    <li class="navbar-item"><a href="./public/projects" class="navbar-link">Projects</a></li>
-                    <li class="navbar-item"><a href="./public/about" class="navbar-link">About</a></li>
-                    <li class="navbar-item"><a href="./public/Login.html" class="navbar-link">Login</a></li>
-                `;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', updateNavbar);
-
-        // Loader Handling
-        window.addEventListener("load", () => {
-            const loader = document.getElementById("loader");
-            loader.style.display = "none";
-        });
-    </script>
-    </script>
 </body>
 </html>
