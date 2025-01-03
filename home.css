@@ -202,8 +202,17 @@ a {
   width: 30px;
   height: 30px;
   margin-left: 60px;
+  background-color: white;
+  border-radius: 50%;
 }
 
+#github-logo img:hover{
+  transform: scale(1.1);
+}
+
+#twitter-icon{
+  transform: scale(1.5);
+}
 .table {
   display: flex;
   flex-direction: row;
@@ -304,11 +313,15 @@ footer {
 }
 
 .footer-left {
-  width: 50%;
+  width: 1200%;
   font-size: 14px;
   color: #fff;
   letter-spacing: 1px;
   font-weight: 400;
+}
+
+.footer-left p {
+  text-align: center;
 }
 
 .footer-right {
