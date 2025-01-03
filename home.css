@@ -90,67 +90,6 @@ body::-webkit-scrollbar-thumb {
   );
 }
 
-footer {
-  position: absolute;
-  left: 50%;
-  width: 100vw;
-  background: #1e1e1e;
-  padding: 20px 0;
-  margin-top: 50px;
-  transform: translateX(-50%);
-  border-radius: 5px 5px 0 0;
-  color: #fff;
-  font-family: "Noto Sans", sans-serif;
-}
-
-.footer-container{
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.footer-left {
-  width: 50%;
-  font-size: 14px;
-  color: #fff;
-  letter-spacing: 1px;
-  font-weight: 400;
-}
-
-.footer-right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.footer-right a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 10px;
-  letter-spacing: 1px;
-  transition: color 0.3s ease;
-}
-
-.footer-right a:hover {
-  color: #ddd;
-}
-
-.footer-container .icons {
-  width: 30px;
-  height: 30px;
-  filter: invert();
-  transition: opacity 0.3s ease;
-}
-
-.footer-container .icons:hover {
-  opacity: 0.7;
-}
-
 
 @media screen and (max-width: 600px) {
   ::-webkit-scrollbar {
@@ -174,9 +113,5 @@ footer {
       rgba(0, 212, 255, 1) 100%
     );
   }
-  footer{
-    width: 100%;
-      padding:20px
-    
-  }
+
 }
