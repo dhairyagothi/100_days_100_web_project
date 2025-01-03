@@ -30,11 +30,14 @@
             100 DAYS 100 WEB PROJECTS
           </a>
       
+          
+
           <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
+            
           </a>
         </div>
       
@@ -49,6 +52,47 @@
           </div>
         </div>
       </nav>
+
+      <a href="contributors/contributor.html" class="contributors-btn">
+        Contributors
+      </a>
+      
+      <style>
+        .contributors-btn {
+          background: linear-gradient(45deg, #1abc9c, #16a085);
+          color: white;
+          padding: 10px 20px; /* Adjust padding to make the button rectangular */
+          font-size: 0.8rem; /* Font size */
+          font-weight: bold;
+          text-decoration: none;
+          border: none;
+          border-radius: 5px; /* Optional: Rounded corners */
+          position: absolute;
+          top: 60px; /* Shifted slightly upwards */
+          right: 20px;
+          transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          cursor: pointer;
+          text-align: center;
+          display: inline-block;
+          z-index: 10; /* Ensures the button stays on top */
+          font-family: 'Circular Std', 'Arial', sans-serif; /* Circular font */
+        }
+      
+        .contributors-btn:hover {
+          background: linear-gradient(45deg, #16a085, #1abc9c);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+      
+        .contributors-btn:active {
+          transform: translateY(0);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+      </style>
+      
+      
+
 
 
       <!-- Main Page Starts Here -->
