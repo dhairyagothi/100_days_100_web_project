@@ -16,6 +16,12 @@ body {
     background-color: rgba(225, 225, 225, 0.5);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
+.nav-left, .nav-right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .navbar li {
     margin: 0 10px;
 }
@@ -40,7 +46,7 @@ body {
 }
 #colour1 {
     background: linear-gradient(to top, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%);
-    margin-left: 1060px;
+    /* margin-left: 1060px; */
 }
 #colour2 {
     background-image: linear-gradient(to bottom, #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%);
@@ -190,4 +196,61 @@ body {
     border-radius: 10px;
     display: none;
     z-index: 1000;
+}
+
+@media(max-width:768px) {
+    .container{
+        width: 650px;
+    }
+}
+
+@media(max-width:710px) {
+    .container{
+        width: 550px;
+    }
+}
+
+@media(max-width:615px) {
+    .container{
+        width: 400px;
+    }
+}
+
+@media(max-width:485px) {
+    .container{
+        width: 100px;
+    }
+
+    .navbar li a{
+        padding: 8px 9px;
+    }
+
+    #colour1, #colour2, #colour3{
+        height: 27px;
+    width: 27px;
+    }
+
+    #home-tab .heading{
+        font-size: 60px;
+    }
+
+    #submittask, #savepdf{
+        width: 30%;
+    }
+}
+
+@media(max-width:375px){
+    #home-tab .heading{
+        font-size: 45px;
+    }
+}
+
+@media (max-width: 320px) {
+    .navbar li a {
+        padding: 7px 4px;
+    }
+
+    .navbar{
+        padding: 9px 0px 9px 0px;
+    }
 }
