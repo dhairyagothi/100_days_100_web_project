@@ -54,8 +54,6 @@
   transition: border-color 0.3s;
 }
 
-
-
 #no-projects {
   text-align: center;
   margin-top: 20px;
@@ -114,4 +112,29 @@ body::-webkit-scrollbar-thumb {
     );
   }
 
+}
+ 
+@media(max-width: 430px) {
+  #searchInput{
+    width: 250px;
+    margin-left: 17px;
+  }
+}
+
+@media(max-width:380px) {
+  #searchButton {
+    margin-right: 0;
+  }
+}
+
+
+@media(max-width: 330px) {
+  #searchInput{
+    width: 195px;
+    margin-left: 0px;
+  }
+
+  #projects{
+    padding: 9px;
+  }
 }
