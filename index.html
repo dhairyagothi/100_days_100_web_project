@@ -1,147 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>100 Days 100 Web Projects</title>
-    <link rel="stylesheet" href="home.css">
-    <link rel="icon" type="image/x-icon" href="favicon.png"/>
+    <link rel="stylesheet" href="home.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.png" />
     <meta content="100 Days, 100 Web Projects" property="og:title" />
-    <meta content="A collection of 100 web projects from basic to intermediate using html css and js." property="og:description" />
+    <meta
+      content="A collection of 100 web projects from basic to intermediate using html css and js."
+      property="og:description"
+    />
     <meta content="/" property="og:url" />
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
     <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
     <meta name="twitter:card" content="summary_large_image" />
-    
+
     <!-- Pushed CSS Code Here and Imported Bulma StyleSheet as well -->
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
+  </head>
 
-</head>
-
-<body>
-    
-
+  <body>
     <!-- Navbar -->
-    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <a class="navbar-item has-text-weight-bold" href="/">
-            100 DAYS 100 WEB PROJECTS
-          </a>
-      
-          
+    <nav
+      class="navbar is-primary"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item has-text-weight-bold" href="/">
+          100 DAYS 100 WEB PROJECTS
+        </a>
 
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            
-          </a>
-        </div>
-      
-        <div class="navbar-menu" id="navbar-menu">
-          
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                
-              </div>
-            </div>
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarBasicExample"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="navbar-menu" id="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons"></div>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
 
-      <a href="contributors/contributor.html" class="contributors-btn">
-        Contributors
-      </a>
-      
-      <style>
-        .contributors-btn {
-          background: linear-gradient(45deg, #1abc9c, #16a085);
-          color: white;
-          padding: 10px 20px; /* Adjust padding to make the button rectangular */
-          font-size: 0.8rem; /* Font size */
-          font-weight: bold;
-          text-decoration: none;
-          border: none;
-          border-radius: 5px; /* Optional: Rounded corners */
-          position: absolute;
-          top: 60px; /* Shifted slightly upwards */
-          right: 20px;
-          transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-          cursor: pointer;
-          text-align: center;
-          display: inline-block;
-          z-index: 10; /* Ensures the button stays on top */
-          font-family: 'Circular Std', 'Arial', sans-serif; /* Circular font */
-        }
-      
-        .contributors-btn:hover {
-          background: linear-gradient(45deg, #16a085, #1abc9c);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-      
-        .contributors-btn:active {
-          transform: translateY(0);
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-      </style>
-      
-      
+    <a href="contributors/contributor.html" class="contributors-btn">
+      Contributors
+    </a>
 
+    <style>
+      .contributors-btn {
+        background: linear-gradient(45deg, #1abc9c, #16a085);
+        color: white;
+        padding: 10px 20px; /* Adjust padding to make the button rectangular */
+        font-size: 0.8rem; /* Font size */
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px; /* Optional: Rounded corners */
+        position: absolute;
+        top: 60px; /* Shifted slightly upwards */
+        right: 6px;
+        transition: background 0.3s ease, transform 0.2s ease,
+          box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        text-align: center;
+        display: inline-block;
+        z-index: 10; /* Ensures the button stays on top */
+        font-family: "Circular Std", "Arial", sans-serif; /* Circular font */
+      }
 
+      .contributors-btn:hover {
+        background: linear-gradient(45deg, #16a085, #1abc9c);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
 
-      <!-- Main Page Starts Here -->
+      .contributors-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+
+    <!-- Main Page Starts Here -->
     <div class="content" id="projects">
-        <div class="title is-2 has-text-centered my-6">100 Days 100 Web Projects</div>
-        <p class="subtitle has-text-centered">here are live demos of all the projects</p>
+      <div class="title is-2 has-text-centered my-6">
+        100 Days 100 Web Projects
+      </div>
+      <p class="subtitle has-text-centered">
+        here are live demos of all the projects
+      </p>
 
-        <div id="search-bar">
-            <div class="control">
-                <input class="input" type="text" id="searchInput" placeholder="Search for projects..." onkeyup="filterProjects()">
-            </div>
-            <div class="control">
-                <button id="searchButton" class='button is-primary mx-2' onclick="filterProjects()">
-                    Go
-                </button>
-            </div>
+      <div id="search-bar">
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            id="searchInput"
+            placeholder="Search for projects..."
+            onkeyup="filterProjects()"
+          />
         </div>
+        <div class="control">
+          <button
+            id="searchButton"
+            class="button is-primary mx-4"
+            onclick="filterProjects()"
+          >
+            Go
+          </button>
+        </div>
+      </div>
 
-    <div class="links">
-        <table class="table is-fullwidth is-bordered is-striped  is-hoverable">
-            <thead>
-                <tr>
-                    <th>Day</th>
-                    <th>Project Name</th>
-                    <th>Demo Link</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                
-            </tbody>
+      <div class="links">
+        <table class="table is-fullwidth is-bordered is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Project Name</th>
+              <th>Demo Link</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
         </table>
+      </div>
+
+      <div id="no-projects" style="display: none">No Projects Found</div>
     </div>
 
-    <div id="no-projects" style="display: none;">No Projects Found</div>
-    </div>
-
-  
     <footer class="footer">
-        <div class="content has-text-centered">
-          <p>
-            <strong>© <script>document.write(new Date().getFullYear())</script> 100 Days 100 Projects</strong> by <a href="https://github.com/dhairyagothi/100_days_100_web_project">Dhairya And Contributors</a>.
-          </p>
-        </div>
-      </footer>
+      <div class="content has-text-centered">
+        <p>
+          <strong
+            >©
+            <script>
+              document.write(new Date().getFullYear());
+            </script>
+            100 Days 100 Projects</strong
+          >
+          by
+          <a href="https://github.com/dhairyagothi/100_days_100_web_project"
+            >Dhairya And Contributors</a
+          >.
+        </p>
+      </div>
+    </footer>
 
     <!-- Pushed JavaScript Code To Here -->
     <script src="index.js"></script>
     <script src="bulma.js"></script>
-
-
-</body>
+  </body>
 </html>

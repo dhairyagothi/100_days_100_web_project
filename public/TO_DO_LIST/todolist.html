@@ -1,43 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
-<link rel="stylesheet" href="todolist.css">
-<script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</head>
-<body>
-<nav>
-    <ul class="navbar">
-        <li><a href="#" onclick="showHome()">Home</a></li>
-        <li><a href="#" onclick="showDocuments()">Documents</a></li>
-        <li><button id="colour1" onclick="c1()"></button></li>
-        <li><button id="colour2" onclick="c2()"></button></li>
-        <li><button id="colour3" onclick="c3()"></button></li>
-    </ul>
-</nav>
-<main class="main">
-    <div id="home-tab">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="todolist.css" />
+    <script
+      src="https://kit.fontawesome.com/f30fac2c61.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <nav>
+      <ul class="navbar">
+        <div class="nav-left">
+          <li><a href="#" onclick="showHome()">Home</a></li>
+          <li><a href="#" onclick="showDocuments()">Documents</a></li>
+        </div>
+        <div class="nav-right">
+          <li><button id="colour1" onclick="c1()"></button></li>
+          <li><button id="colour2" onclick="c2()"></button></li>
+          <li><button id="colour3" onclick="c3()"></button></li>
+        </div>
+      </ul>
+    </nav>
+    <main class="main">
+      <div id="home-tab">
         <div class="heading">JUST DO IT.</div>
         <div class="task">
-            <input type="text" id="newtask" placeholder="Add a Task ...">
+          <input type="text" id="newtask" placeholder="Add a Task ..." />
         </div>
         <div class="buttons">
-            <button onclick="Add()" id="submittask">Got This!</button>
-            <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
+          <button onclick="Add()" id="submittask">Got This!</button>
+          <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
         </div>
         <div class="container"></div>
-    </div>
-    <div id="documents-tab" style="display: none;">
+      </div>
+      <div id="documents-tab" style="display: none">
         <div class="heading">Saved Documents</div>
         <div class="documents-list"></div>
-    </div>
-</main>
+      </div>
+    </main>
 
-<div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
+    <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
 
-<script src="todolist.js"></script>
-</body>
+    <script src="todolist.js"></script>
+  </body>
 </html>
