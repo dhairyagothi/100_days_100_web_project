@@ -137,4 +137,9 @@ body::-webkit-scrollbar-thumb {
   #projects{
     padding: 9px;
   }
+
+ .links table tbody tr td{
+    margin-left: 100px;
+  }
+
 }

@@ -23,3 +23,25 @@ html {
 #bgCanvas {
     filter: blur(5px);
 }
+
+@media(max-width:426px) {
+    .links table tbody tr td{
+        padding: 8px 4px;
+    }
+}
+
+@media(max-width:330px) {
+    .links table tbody tr td{
+        padding-left: 2px;
+        padding-right: 2px;
+      }
+
+      .links table tbody tr .project-name{
+        padding: 8px 7px;
+      }
+
+      .links table tbody tr td a{
+        margin-left: 4px;
+      }
+    
+}

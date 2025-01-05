@@ -96,11 +96,23 @@
         transform: translateY(0);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
+
+      #title-heading {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      @media (max-width: 426px) {
+        #title-heading {
+          margin-top: 5rem;
+          margin-bottom: 3rem;
+        }
+      }
     </style>
 
     <!-- Main Page Starts Here -->
     <div class="content" id="projects">
-      <div class="title is-2 has-text-centered my-6">
+      <div class="title is-2 has-text-centered" id="title-heading">
         100 Days 100 Web Projects
       </div>
       <p class="subtitle has-text-centered">
