@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Studio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Resume Studio</h1>
+        <button id="themeSwitcher" title="Switch Theme">🌙</button>
+    </header>
+    <main>
+        <section class="builder">
+            <h2>Resume Builder</h2>
+            <form id="resumeForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="education">Education:</label>
+                    <input type="text" id="education" placeholder="Enter your education details">
+                </div>
+                <div class="form-group">
+                    <label for="summary">Summary:</label>
+                    <textarea id="summary" placeholder="Brief about yourself"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projects">Projects:</label>
+                    <textarea id="projects" placeholder="Brief about projects develope by you"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="skills">Skills:</label>
+                    <textarea id="skills" placeholder="Separate skills with commas"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience:</label>
+                    <textarea id="experience" placeholder="Describe your past experiences"></textarea>
+                </div>
+                <button type="button" id="previewBtn">Live Preview</button>
+                <button type="button" id="downloadBtn">Download Resume</button>
+            </form>
+        </section>
+        <section class="preview">
+            <h2>Live Preview</h2>
+            <div id="resumePreview">
+                <p class="placeholder">Fill the form to see live preview...</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
