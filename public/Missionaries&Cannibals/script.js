@@ -86,3 +86,4 @@ function resetGame() {
 }
 
 window.onload = resetGame;
+
