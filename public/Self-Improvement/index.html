@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Improvement</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="responsive.css" rel="stylesheet">
+</head>
+<body>
+    <div class="full">
+        <div class="top">
+            <div class="acc">
+                <i class="fa-solid fa-user"></i>
+                <p>Nishant Rana</p>
+            </div>
+            <div class="macbook-island">
+                <!-- You can add content like icons or text here -->
+                <div class="cam"></div>
+                <div class="cam"></div>
+            </div>
+            <div class="streak">
+                <i class="fa-solid fa-fire-flame-curved"></i>
+                <P>Count</P>
+            </div>
+            <div class="login">
+                <button class="button">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 0.296997C5.37 0.296997 0 5.67 0 12.297C0 17.6 3.438 22.097 8.205 23.682C8.805 23.795 9.025 23.424 9.025 23.105C9.025 22.82 9.015 22.065 9.01 21.065C5.672 21.789 4.968 19.455 4.968 19.455C4.422 18.07 3.633 17.7 3.633 17.7C2.546 16.956 3.717 16.971 3.717 16.971C4.922 17.055 5.555 18.207 5.555 18.207C6.625 20.042 8.364 19.512 9.05 19.205C9.158 18.429 9.467 17.9 9.81 17.6C7.145 17.3 4.344 16.268 4.344 11.67C4.344 10.36 4.809 9.29 5.579 8.45C5.444 8.147 5.039 6.927 5.684 5.274C5.684 5.274 6.689 4.952 8.984 6.504C9.944 6.237 10.964 6.105 11.984 6.099C13.004 6.105 14.024 6.237 14.984 6.504C17.264 4.952 18.269 5.274 18.269 5.274C18.914 6.927 18.509 8.147 18.389 8.45C19.154 9.29 19.619 10.36 19.619 11.67C19.619 16.28 16.814 17.295 14.144 17.59C14.564 17.95 14.954 18.686 14.954 19.81C14.954 21.416 14.939 22.706 14.939 23.096C14.939 23.411 15.149 23.786 15.764 23.666C20.565 22.092 24 17.592 24 12.297C24 5.67 18.627 0.296997 12 0.296997Z" fill="white"></path>
+                  </svg>
+                  <p class="text">Log in</p>
+                </button>
+            </div>
+        </div>
+
+        <div class="mid">
+            <div class="p1">
+
+                <div class="card">
+                    <p class="time-text"><!-- Time will be inserted here --></p>
+                    <p class="day-text"><!-- Date will be inserted here --></p>
+                
+                
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" stroke-width="0" fill="currentColor" stroke="currentColor" class="moon"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"></path><path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"></path></svg>
+                </div>
+
+            </div>
+            <div class="p2">
+                <div class="time_set">
+                    <p id="goalTime">Goal: 5:00 A.M.</p>
+                    <i class="fa-solid fa-gear" id="setGoalTime"></i>
+                </div>
+                <p><center>Wake Up?</center></p>
+                <div class="btns">
+                    <button id="yesBtn">Yes</button>
+                    <button id="noBtn">No</button>
+                </div>
+                <p>Timer: <span id="timerDisplay">00:00:00</span></p>                
+            </div>
+            <div class="p3">
+               
+                <div id="calendar-container" class="calendar-container">
+
+                        <!-- <table class="calendar-table">
+                          
+                            <tr>
+                                <th>Sun</th>
+                                <th>Mon</th>
+                                <th>Tue</th>
+                                <th>Wed</th>
+                                <th>Thu</th>
+                                <th>Fri</th>
+                                <th>Sat</th>
+                            </tr>
+                    
+                            
+                            <tr>
+                                <td></td> >
+                                <td></td>
+                                <td></td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                            </tr>
+                    
+                            
+                            <tr>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                                <td>8</td>
+                                <td>9</td>
+                                <td>10</td>
+                                <td>11</td>
+                            </tr>
+                    
+                            
+                            <tr>
+                                <td>12</td>
+                                <td>13</td>
+                                <td>14</td>
+                                <td>15</td>
+                                <td>16</td>
+                                <td>17</td>
+                                <td>18</td>
+                            </tr>
+                    
+                            
+                            <tr>
+                                <td>19</td>
+                                <td>20</td>
+                                <td>21</td>
+                                <td>22</td>
+                                <td>23</td>
+                                <td>24</td>
+                                <td>25</td>
+                            </tr>
+                    
+
+                            <tr>
+                                <td>26</td>
+                                <td>27</td>
+                                <td>28</td>
+                                <td>29</td>
+                                <td>30</td>
+                                <td>31</td>
+                                <td></td> 
+                            </tr>
+                        </table> -->
+                </div>
+                <div id="progress-container">
+                    <center><label for="progressCheck">Check Progress for Today:</label>
+                    <input type="checkbox" id="progressCheck" value="false"></center>
+                </div>
+            </div>
+        </div>
+
+        <!--MIDDLE PART-->
+
+        <div class="mid mids">
+            <div class="marquee">
+                <p>Stay Motivated Bro!</p>
+            </div>
+        </div>
+
+        <div class="todo">
+            <div class="container">
+                <h1>Task Manager</h1>
+        
+                <!-- Input Fields -->
+                <div class="input-section">
+                    <input type="text" id="taskInput" placeholder="Enter task" required>
+                    <select id="taskPriority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+                    <input type="date" id="dueDateInput">
+                    <input type="text" id="categoryInput" placeholder="Category (Optional)">
+                    <button id="addTaskBtn">Add Task</button>
+                </div>
+        
+                <!-- Progress Bar -->
+                <div class="progress-section">
+                    <p style="margin-bottom:3px;">Task Progress</p>
+                    <div id="progressContainer">
+                        <div id="progressBar"></div>
+                    </div>
+                </div>
+        
+                <!-- Filters -->
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="active">Active</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+        
+                <!-- Task List (Table) -->
+                <div class="task-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Priority</th>
+                                <th>Due Date</th>
+                                <th>Category</th>
+                                <th>Completed</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskList"></tbody>
+                    </table>
+                </div>
+        
+                <!-- Clear Completed Button -->
+                <div class="clear-section">
+                    <button id="clearCompleted">Clear Completed Tasks</button>
+                </div>
+        
+                <!-- Dark Mode Toggle -->
+                <div class="dark-mode-toggle">
+                    <button id="darkModeToggle">Toggle Dark Mode</button>
+                </div>
+            </div>
+        
+        </div>
+
+    </div>
+    <div class="footer">
+        <div class="footer-content">
+            <p style="font-family:arial; color:white">&copy; 2024 Self-Improvement. All rights reserved. | Designed by <a href="https://www.linkedin.com/in/NishantRana07/" style="color:rgb(0, 0, 0)">Nishant Rana</a></p>
+            <div class="socials">
+               
+                <div class="share">
+                <button class="btn1">
+                    <svg fill-rule="nonzero" height="30px" width="30px" viewBox="0,0,256,256" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="instagram"><g style="mix-blend-mode: normal" text-anchor="none" font-size="none" font-weight="none" font-family="none" stroke-dashoffset="0" stroke-dasharray="" stroke-miterlimit="10" stroke-linejoin="miter" stroke-linecap="butt" stroke-width="1" stroke="none" fill-rule="nonzero"><g transform="scale(8,8)"><path d="M11.46875,5c-3.55078,0 -6.46875,2.91406 -6.46875,6.46875v9.0625c0,3.55078 2.91406,6.46875 6.46875,6.46875h9.0625c3.55078,0 6.46875,-2.91406 6.46875,-6.46875v-9.0625c0,-3.55078 -2.91406,-6.46875 -6.46875,-6.46875zM11.46875,7h9.0625c2.47266,0 4.46875,1.99609 4.46875,4.46875v9.0625c0,2.47266 -1.99609,4.46875 -4.46875,4.46875h-9.0625c-2.47266,0 -4.46875,-1.99609 -4.46875,-4.46875v-9.0625c0,-2.47266 1.99609,-4.46875 4.46875,-4.46875zM21.90625,9.1875c-0.50391,0 -0.90625,0.40234 -0.90625,0.90625c0,0.50391 0.40234,0.90625 0.90625,0.90625c0.50391,0 0.90625,-0.40234 0.90625,-0.90625c0,-0.50391 -0.40234,-0.90625 -0.90625,-0.90625zM16,10c-3.30078,0 -6,2.69922 -6,6c0,3.30078 2.69922,6 6,6c3.30078,0 6,-2.69922 6,-6c0,-3.30078 -2.69922,-6 -6,-6zM16,12c2.22266,0 4,1.77734 4,4c0,2.22266 -1.77734,4 -4,4c-2.22266,0 -4,-1.77734 -4,-4c0,-2.22266 1.77734,-4 4,-4z"></path></g></g></svg>
+                    <span class="tooltiptext1"><a href="https://www.instagram.com/nishantrana._.69">
+                        <div class="card" style="background-image:url(insta.jpg);background-size: cover;background-position: center; margin:0px auto; ">
+                   
+                    </div>
+                    <div class="username">@Nishantrana._.69</div>
+                </a>
+                    </span>
+                </button>
+                <button class="btn2">
+                    <!-- <svg height="30px" width="30px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="twitter"><path d="M42,12.429c-1.323,0.586-2.746,0.977-4.247,1.162c1.526-0.906,2.7-2.351,3.251-4.058c-1.428,0.837-3.01,1.452-4.693,1.776C34.967,9.884,33.05,9,30.926,9c-4.08,0-7.387,3.278-7.387,7.32c0,0.572,0.067,1.129,0.193,1.67c-6.138-0.308-11.582-3.226-15.224-7.654c-0.64,1.082-1,2.349-1,3.686c0,2.541,1.301,4.778,3.285,6.096c-1.211-0.037-2.351-0.374-3.349-0.914c0,0.022,0,0.055,0,0.086c0,3.551,2.547,6.508,5.923,7.181c-0.617,0.169-1.269,0.263-1.941,0.263c-0.477,0-0.942-0.054-1.392-0.135c0.94,2.902,3.667,5.023,6.898,5.086c-2.528,1.96-5.712,3.134-9.174,3.134c-0.598,0-1.183-0.034-1.761-0.104C9.268,36.786,13.152,38,17.321,38c13.585,0,21.017-11.156,21.017-20.834c0-0.317-0.01-0.633-0.025-0.945C39.763,15.197,41.013,13.905,42,12.429"></path></svg> -->
+                    <i class="fa-brands fa-linkedin-in addcolor"  ></i>
+                    <span class="tooltiptext2"><a href="https://www.linkedin.com/in/NishantRana07/">
+                 
+                        <div class="card" style="background-image:url(linked.jpg);background-size: cover;background-position: center; margin:0px auto; ">
+                    </div>
+                    <div class="username">@NishantRana07</div>
+                    </a>
+                    </span>
+                </button>
+                <button class="btn3">
+                    <svg height="30px" width="30px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" class="git">    <path d="M15,3C8.373,3,3,8.373,3,15c0,5.623,3.872,10.328,9.092,11.63C12.036,26.468,12,26.28,12,26.047v-2.051 c-0.487,0-1.303,0-1.508,0c-0.821,0-1.551-0.353-1.905-1.009c-0.393-0.729-0.461-1.844-1.435-2.526 c-0.289-0.227-0.069-0.486,0.264-0.451c0.615,0.174,1.125,0.596,1.605,1.222c0.478,0.627,0.703,0.769,1.596,0.769 c0.433,0,1.081-0.025,1.691-0.121c0.328-0.833,0.895-1.6,1.588-1.962c-3.996-0.411-5.903-2.399-5.903-5.098 c0-1.162,0.495-2.286,1.336-3.233C9.053,10.647,8.706,8.73,9.435,8c1.798,0,2.885,1.166,3.146,1.481C13.477,9.174,14.461,9,15.495,9 c1.036,0,2.024,0.174,2.922,0.483C18.675,9.17,19.763,8,21.565,8c0.732,0.731,0.381,2.656,0.102,3.594 c0.836,0.945,1.328,2.066,1.328,3.226c0,2.697-1.904,4.684-5.894,5.097C18.199,20.49,19,22.1,19,23.313v2.734 c0,0.104-0.023,0.179-0.035,0.268C23.641,24.676,27,20.236,27,15C27,8.373,21.627,3,15,3z"></path></svg>
+                    <span class="tooltiptext3"><a href="https://github.com/NishantRana07">
+                        
+                        <div class="card" style="background-image:url(git.jpg);background-size: cover;background-position: center; margin:0px auto; ">
+                    </div>
+                    <div class="username">@NishantRana07</div>
+                    </a>
+                    </span>
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/f794a9dced.js" crossorigin="anonymous"></script>
+</body>
+</html>
