@@ -148,3 +148,12 @@ button {
 .highlight {
     color: #7303c0;
 }
+.reset {
+    background: #7303c0;
+    margin-left: 10px;
+}
+
+.reset.disabled {
+    background: #757575;
+    cursor: not-allowed;
+}
