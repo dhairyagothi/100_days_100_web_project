@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>100 Days 100 Web Projects</title>
     <link rel="stylesheet" href="home.css" />
-    <link rel="icon" type="image/x-icon" href="favicon.png" />
+    <link rel="icon" href="public/favv.png" type="image/x-icon" />
     <meta content="100 Days, 100 Web Projects" property="og:title" />
     <meta
       content="A collection of 100 web projects from basic to intermediate using html css and js."
@@ -44,10 +44,11 @@
       aria-label="main navigation"
     >
       <div class="navbar-brand">
-        <a class="navbar-item has-text-weight-bold" href="/">
+        <a class="navbar-item has-text-weight-bold" href="index.html">
+          <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"/>
           100 DAYS 100 WEB PROJECTS
         </a>
-
+       
         <a
           role="button"
           class="navbar-burger"
@@ -62,18 +63,18 @@
         </a>
       </div>
 
-      <div class="navbar-menu" id="navbar-menu">
+      <div class="navbar-menu is-active" id="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item">
-            <div class="buttons"></div>
+            <div class="buttons">
+              
+            </div>
           </div>
         </div>
       </div>
     </nav>
 
-    <a href="contributors/contributor.html" class="contributors-btn">
-      Contributors
-    </a>
+    
 
     <style>
       #scrollBtn {
@@ -98,7 +99,7 @@
     transform: scale(1.2); /* Slightly enlarge */
 }
       .contributors-btn {
-        background: linear-gradient(45deg, #1abc9c, #16a085);
+        background: linear-gradient(45deg, #10866f, #054135);
         color: white;
         padding: 10px 20px; /* Adjust padding to make the button rectangular */
         font-size: 0.8rem; /* Font size */
@@ -189,23 +190,53 @@
       <div id="no-projects" style="display: none">No Projects Found</div>
     </div>
 
-    <footer class="footer">
-      <div class="content has-text-centered">
-        <p>
-          <strong
-            >©
-            <script>
-              document.write(new Date().getFullYear());
-            </script>
-            100 Days 100 Projects</strong
-          >
-          by
-          <a href="https://github.com/dhairyagothi/100_days_100_web_project"
-            >Dhairya And Contributors</a
-          >.
-        </p>
+
+
+    <footer>
+      <div class="footer-content" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; padding: 20px; background-color: #00D1B2; color: black;">
+        <div class="footer-section about" style="flex: 2; min-width: 300px; display: flex; align-items:flex-start; margin: 10px; transition: transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+          <img src="images/1736231291121.png" alt="100 Days 100 Web Projects Logo" style="width: 100px; margin-right: 20px;">
+          <p style="margin: 0;">The "100 Days, 100 Web Projects" challenge involves building one mini-project daily using HTML, CSS, and JavaScript. It boosts web development skills, creativity, and builds a strong project portfolio.</p>
+        </div>
+    
+        <div class="footer-section services" style="flex: 1; min-width: 150px; margin: 10px;">
+          <h2 style="font-size: 18px; margin-bottom: 10px; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">100 Days 100 Web Projects</h2>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="#who-we-are" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Who We Are</a></li>
+            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Blog</a></li>
+            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Work With Us</a></li>
+            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Investor Relations</a></li>
+            <li><a href="#contact-us" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Contact Us</a></li>
+          </ul>
+        </div>
+    
+        <div class="footer-section learn-more" style="flex: 1; min-width: 150px; margin: 10px;">
+          <h2 style="font-size: 18px; margin-bottom: 10px; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">Learn More</h2>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="privacy.html" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Privacy Policy</a></li>
+            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Security</a></li>
+            <li><a href="Terms.html" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Terms of Service</a></li>
+          </ul>
+        </div>
+    
+        <div class="footer-section social-links" style="flex: 1; min-width: 150px; margin: 10px;">
+          <h2 style="font-size: 18px; margin-bottom: 10px; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">Follow Us</h2>
+          <ul class="social-icons" style="list-style: none; padding: 0; display: flex; gap: 10px;">
+            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-facebook"></i></a></li>
+            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-youtube"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    
+      <div class="footer-bottom" style="margin:10px; padding: 10px; text-align: center;">
+        <p style="margin: 0; color: white; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='white'">© 2024 100 Days 100 Web Projects. All rights reserved.</p>
       </div>
     </footer>
+    
+
 
     <!-- Top scroll button -->
     <button id="scrollBtn" title="Go to top">
