@@ -51,6 +51,9 @@ function updateNavbar() {
         <a class="button is-primary is-dark" href ="https://github.com/dhairyagothi">
                   <strong>GitHub</strong>
         </a>
+        <a class="button is-primary is-dark " href="contributors/contributor.html">
+            <strong>Contributors</strong>
+        </a>
         `
 
         document.getElementById('logout').addEventListener('click', () => {
@@ -59,9 +62,13 @@ function updateNavbar() {
         });
     } else {
         // buttons to append if login not present
-       buttons.innerHTML = ` <a class="button is-primary is-dark" href ="https://github.com/dhairyagothi">
+       buttons.innerHTML = ` <a class="button is-primary is-dark" href="contributors/contributor.html">
+            <strong>Contributors</strong>
+        </a>
+        <a class="button is-primary is-dark" href ="https://github.com/dhairyagothi">
                   <strong>GitHub</strong>
                 </a>
+               
                 <a class="button is-success is-light" href="/public/Login.html">
                   Log in
                 </a>`
