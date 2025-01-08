@@ -1,0 +1,65 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #d4fc79, #96e6a1);
+}
+.container {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 40px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+    animation: fadeIn 1s;
+}
+h1, h2 {
+    color: #333;
+}
+textarea, input {
+    width: 100%;
+    margin: 15px 0;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+button {
+    padding: 15px 40px;
+    font-size: 16px;
+    background-color: #5e60ce;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background-color: #4e4fb3;
+}
+.hidden {
+    display: none;
+}
+p {
+    font-size: 18px;
+    color: #555;
+    margin-top: 20px;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
