@@ -115,43 +115,68 @@ body {
     background-color: black;
     color: white;
 }
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: 1px;
-    gap: 20px;
-    margin-right: 0px;
-    padding-right: 55px;
-    width: 780px;
-}
-.container li {
-    width: 35%;
-    word-wrap: break-word;
-    left: 35%;
-    border: 2px solid #c6c6c6;
-    border-radius: 50px;
-    list-style: none;
-    position: relative;
-    background-color: rgb(5, 31, 31);
+#addNoteButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #ff6f61;
+    border: none;
     color: white;
-    font-size: 19px;
-    padding: 7px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#addNoteButton:hover {
+    background-color: #e55d50;
+}
+
+#notesContainer {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
 }
-.container li i {
+
+.note {
+    width: 250px;
+    background-color: #fdfd96;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    font-size: 1rem;
+}
+
+.note input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.note .note-label {
+    font-weight: bold;
+}
+
+.note .complete-btn {
     position: absolute;
+    top: 10px;
     right: 10px;
+    background-color: #5cb85c;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 5px;
+    border-radius: 50%;
     cursor: pointer;
 }
-.container li a {
-    position: absolute;
-    right: 40px;
-    cursor: pointer;
-    font-size: 30px;
-    top: -4px;
-    font-weight: 900;
+
+.note .complete-btn:hover {
+    background-color: #4cae4c;
 }
+
+.note.completed {
+    background-color: #d9fdd3;
+    text-decoration: line-through;
+}
+
 .documents-list {
     display: flex;
     flex-direction: column;

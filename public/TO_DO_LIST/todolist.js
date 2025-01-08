@@ -4,22 +4,32 @@ let documentsList = document.querySelector(".documents-list");
 let pdfMessage = document.getElementById("pdfMessage");
 
 function Add() {
-    if (task.value == "") {
-        alert("Please enter a task");
-    } else {
-        let newelement = document.createElement("li");
-        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
-        container.appendChild(newelement);
-        task.value = "";
-        newelement.querySelector("i").addEventListener("click", remove);
-        function remove() {
-            newelement.remove();
+    document.getElementById("addNoteButton").addEventListener("click", function () {
+        const inputField = document.getElementById("taskInput"); // Assuming input has this ID
+        const taskText = inputField.value.trim();
+        if (taskText === "") {
+            alert("Please enter a task.");
+            return;
         }
-        newelement.querySelector("a").addEventListener("click", strike);
-        function strike() {
-            newelement.style.textDecoration = "line-through";
-        }
-    }
+
+        const notesContainer = document.getElementById("notesContainer");
+        const note = document.createElement("div");
+        note.className = "note";
+
+        note.innerHTML = `
+            <input type="checkbox" id="noteCheckbox">
+            <label for="noteCheckbox" class="note-label">${taskText}</label>
+            <button class="complete-btn">&#10003;</button>
+        `;
+        notesContainer.appendChild(note);
+
+        inputField.value = "";
+
+        const completeButton = note.querySelector(".complete-btn");
+        completeButton.addEventListener("click", function () {
+            note.classList.add("completed");
+        });
+    });
 }
 
 function saveAsPDF() {
