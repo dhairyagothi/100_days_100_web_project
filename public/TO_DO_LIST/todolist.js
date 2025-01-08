@@ -1,35 +1,38 @@
-let task = document.getElementById("newtask");
-let container = document.querySelector(".container");
+let taskInput = document.getElementById("newtask");   
+let notesContainer = document.getElementById("notes-container"); 
+let submittask = document.getElementById("submittask");
 let documentsList = document.querySelector(".documents-list");
 let pdfMessage = document.getElementById("pdfMessage");
 
 function Add() {
-    document.getElementById("addNoteButton").addEventListener("click", function () {
-        const inputField = document.getElementById("taskInput"); // Assuming input has this ID
-        const taskText = inputField.value.trim();
-        if (taskText === "") {
-            alert("Please enter a task.");
-            return;
+  const notes = document.querySelectorAll('.notes');
+
+  if (notes.length > 0) {
+    const lastNote = notes[notes.length - 1];
+
+    if (lastNote.innerText.trim() === 'Click here to add a task...' || lastNote.innerText.trim() === '') {
+      alert('Please add a task to the previous note!');
+      return; 
+    } 
+  } else {
+      const note = document.createElement('div');
+      note.classList.add('notes');
+      note.contentEditable = true;
+      note.innerText = 'Click here to add a task...';
+      notesContainer.appendChild(note);
+
+      note.addEventListener('focus', () => {
+        if (note.innerText.trim() === 'Click here to add a task...') {
+          note.innerText = '';
         }
+      });
 
-        const notesContainer = document.getElementById("notesContainer");
-        const note = document.createElement("div");
-        note.className = "note";
-
-        note.innerHTML = `
-            <input type="checkbox" id="noteCheckbox">
-            <label for="noteCheckbox" class="note-label">${taskText}</label>
-            <button class="complete-btn">&#10003;</button>
-        `;
-        notesContainer.appendChild(note);
-
-        inputField.value = "";
-
-        const completeButton = note.querySelector(".complete-btn");
-        completeButton.addEventListener("click", function () {
-            note.classList.add("completed");
-        });
-    });
+      note.addEventListener('blur', () => {
+        if (note.innerText.trim() === '') {
+          note.innerText = 'Click here to add a task...';
+        }
+      });
+  }
 }
 
 function saveAsPDF() {
