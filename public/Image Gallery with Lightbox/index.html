@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Gallery with Lightbox</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Heading Section -->
+    <header>
+        <h1>Welcome to the Image Gallery</h1>
+        <p>Click on any image to view it in a larger format.</p>
+    </header>
+    
+    <div class="gallery">
+        <img src="https://images.unsplash.com/photo-1735399554370-4f9eab0cfc4f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3Mnx8fGVufDB8fHx8fA%3D%3D" alt="Image 4" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1736192252876-e086cd9fa39b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMnx8fGVufDB8fHx8fA%3D%3D" alt="Image 1" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1735805319048-88b05ac08eef?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3OXx8fGVufDB8fHx8fA%3D%3D" alt="Image 4" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1735399554370-4f9eab0cfc4f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3Mnx8fGVufDB8fHx8fA%3D%3D" alt="Image 4" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1599476160130-3af44b69ec6e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGluZGlhbiUyMGdpcmx8ZW58MHx8MHx8fDA%3D" alt="Image 4" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1444491741275-3747c53c99b4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJpa2V8ZW58MHx8MHx8fDA%3D" alt="Image 4" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1735399554370-4f9eab0cfc4f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3Mnx8fGVufDB8fHx8fA%3D%3D" alt="Image 4" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1736210811075-7509d5023a4a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxM3x8fGVufDB8fHx8fA%3D%3D" alt="Image 2" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1735399554370-4f9eab0cfc4f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3Mnx8fGVufDB8fHx8fA%3D%3D" alt="Image 4" class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1735969702825-9b7ea1598391?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzNXx8fGVufDB8fHx8fA%3D%3D" alt="Image 3" class="gallery-item">
+    </div>
+
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img" src="" alt="Large View">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
