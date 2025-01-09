@@ -104,6 +104,7 @@ This repository contains 100 web projects from basic to intermediate using html 
 - Day 77 ] rock-paper-scissor-game project
 - Day 78 ] npm package search
 - Day 79 ] linkedin homepage clone using react 
+- Day 80 ] Github File explorer
 
 ## Discord Channel for VSoC 2024 Contributors
 
