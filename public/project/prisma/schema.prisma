@@ -1,0 +1,74 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String        @unique
+  password      String
+  image         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  interviews    Interview[]
+  assessments   Assessment[]
+}
+
+model Interview {
+  id            String       @id @default(cuid())
+  title         String
+  description   String
+  company       String
+  difficulty    String
+  duration      Int          // in minutes
+  questions     Question[]
+  assessments   Assessment[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  content       String
+  type          String      // technical, behavioral, etc.
+  interview     Interview    @relation(fields: [interviewId], references: [id])
+  interviewId   String
+  assessments   AssessmentQuestion[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Assessment {
+  id            String       @id @default(cuid())
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+  interview     Interview   @relation(fields: [interviewId], references: [id])
+  interviewId   String
+  status        String      // pending, completed, failed
+  score         Float?
+  feedback      String?
+  questions     AssessmentQuestion[]
+  faceAnalysis  Json?
+  voiceAnalysis Json?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model AssessmentQuestion {
+  id            String       @id @default(cuid())
+  assessment    Assessment   @relation(fields: [assessmentId], references: [id])
+  assessmentId  String
+  question      Question    @relation(fields: [questionId], references: [id])
+  questionId    String
+  answer        String?
+  score         Float?
+  feedback      String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
