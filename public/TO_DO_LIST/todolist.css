@@ -1,320 +1,324 @@
 * {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
+}
+body {
+  background: rgb(43, 48, 121);
+  background: linear-gradient(
+    90deg,
+    rgba(43, 48, 121, 1) 19%,
+    rgba(101, 78, 170, 0.9697128851540616) 73%,
+    rgba(136, 136, 168, 1) 100%
+  );
+  font-family: sans-serif;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  list-style: none;
+  background-color: rgba(225, 225, 225, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar li {
+  margin: 0 10px;
+}
+.navbar li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: rgba(101, 78, 170, 0.7);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+.navbar li a:hover {
+  background-color: rgba(101, 78, 170, 1);
+  color: yellow;
+}
+#colour1,
+#colour2,
+#colour3 {
+  height: 45px;
+  width: 45px;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+#colour1 {
+  background: linear-gradient(
+    to top,
+    rgba(232, 221, 227, 1) 33%,
+    rgba(219, 185, 200, 1) 100%,
+    rgba(227, 230, 235, 1) 100%
+  );
+  /* margin-left: 1060px; */
+}
+#colour2 {
+  background-image: linear-gradient(
+    to bottom,
+    #E4AFCB 0%,
+    #B8CBB8 0%,
+    #B8CBB8 0%,
+    #E2C58B 30%,
+    #C2CE9C 64%,
+    #7EDBDC 100%
+  );
+}
+#colour3 {
+  background-image: linear-gradient(
+    to bottom,
+    #39DB8C,
+    #A0C559,
+    #D1AB51,
+    #E6936B,
+    #DF868D
+  );
+}
+#colour1:hover,
+#colour2:hover,
+#colour3:hover {
+  height: 55px;
+  width: 55px;
+  transition: 0.8s;
+}
+.main {
+  display: grid;
+  gap: 60px;
+  justify-items: center;
+}
+.heading {
+  margin-top: 30px;
+  font-size: 60px;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-direction: normal;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+.buttons {  
+  border-radius: 9px;
+  font-size: 15px;
+  z-index: 999;
+  margin-bottom: 23px;
+  margin-top: 23px;
+  display: flex;
+  gap: 1700px;
+}
+#submittask{
+  height: 42px;
+  width: 15%;
+  text-align: center;
+  position: absolute;
+  left: 20px;
+  background-color: black;
+  color: white;
+  border-radius: 9px;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+#savepdf {
+  height: 42px;
+  width: 15%;
+  text-align: center;
+  position: absolute;
+  right: 20px;
+  background-color: black;
+  color: white;
+  border-radius: 9px;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+#submittask:hover{
+  background-color: black;
+  color: white;
+}
+#savepdf:hover {
+  background-color: black;
+  color: white;
+}
+
+#notes-container {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; 
+  width: 100%; 
+  height: calc(100% - 150px); 
+  position: absolute; 
+  padding: 0; 
+  overflow: hidden; 
+  left: 20px;
+}
+
+.notes {
+width: 150px;
+border-radius: 15px;
+background-color: #E1BEE7;
+padding: 10px;
+margin: 10px 0;
+position: relative;
+display: inline-block;
+box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+cursor: move;
+color: #000;
+font-size: 16px;
+font-family: 'Safaniah';
+overflow-wrap: break-word;
+left: 20px;
+word-wrap: break-word; 
+white-space: normal; 
+height: auto; 
+max-height: 100px; 
+overflow-x: auto; 
+}
+
+.notes:focus {
+outline: 2px solid #a1a1a1;
+}
+
+.completed {
+text-decoration: line-through;
+}
+
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.document-item {
+  margin-top: 30px;
+  width: 80%;
+  padding: 10px 8px;
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+.document-item:hover {
+  background-color: #F0F0F0;
+}
+.document-item button {
+  margin-left: 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  padding: 5px 8px;
+  border-radius: 10px;
+}
+.document-item button:hover {
+  background-color: bl;
+  color: white;
+}
+
+.pdf-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: none;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 650px;
   }
-  body {
-    background: rgb(43, 48, 121);
-    background: linear-gradient(
-      90deg,
-      rgba(43, 48, 121, 1) 19%,
-      rgba(101, 78, 170, 0.9697128851540616) 73%,
-      rgba(136, 136, 168, 1) 100%
-    );
-    font-family: sans-serif;
+}
+
+@media (max-width: 710px) {
+  .container {
+    width: 550px;
   }
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    list-style: none;
-    background-color: rgba(225, 225, 225, 0.5);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 615px) {
+  .container {
+    width: 400px;
   }
-  
-  .nav-left,
-  .nav-right {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+}
+
+@media (max-width: 485px) {
+  .container {
+    width: 100px;
   }
-  .navbar li {
-    margin: 0 10px;
-  }
+
   .navbar li a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    background-color: rgba(101, 78, 170, 0.7);
-    transition:
-      background-color 0.3s,
-      color 0.3s;
+    padding: 8px 9px;
   }
-  .navbar li a:hover {
-    background-color: rgba(101, 78, 170, 1);
-    color: yellow;
-  }
+
   #colour1,
   #colour2,
   #colour3 {
-    height: 45px;
-    width: 45px;
-    border: 2px solid white;
-    border-radius: 50%;
-    cursor: pointer;
+    height: 27px;
+    width: 27px;
   }
-  #colour1 {
-    background: linear-gradient(
-      to top,
-      rgba(232, 221, 227, 1) 33%,
-      rgba(219, 185, 200, 1) 100%,
-      rgba(227, 230, 235, 1) 100%
-    );
-    /* margin-left: 1060px; */
-  }
-  #colour2 {
-    background-image: linear-gradient(
-      to bottom,
-      #E4AFCB 0%,
-      #B8CBB8 0%,
-      #B8CBB8 0%,
-      #E2C58B 30%,
-      #C2CE9C 64%,
-      #7EDBDC 100%
-    );
-  }
-  #colour3 {
-    background-image: linear-gradient(
-      to bottom,
-      #39DB8C,
-      #A0C559,
-      #D1AB51,
-      #E6936B,
-      #DF868D
-    );
-  }
-  #colour1:hover,
-  #colour2:hover,
-  #colour3:hover {
-    height: 55px;
-    width: 55px;
-    transition: 0.8s;
-  }
-  .main {
-    display: grid;
-    gap: 60px;
-    justify-items: center;
-  }
-  .heading {
-    margin-top: 30px;
+
+  #home-tab .heading {
     font-size: 60px;
-    justify-content: center;
-    text-align: center;
-    font-weight: 700;
-    animation-timing-function: linear;
-    animation-delay: 0s;
-    animation-direction: normal;
-    animation-duration: 5s;
-    animation-iteration-count: infinite;
   }
-  .buttons {  
-    border-radius: 9px;
-    font-size: 15px;
-    z-index: 999;
-    margin-bottom: 23px;
-    margin-top: 23px;
-    display: flex;
-    gap: 1700px;
-  }
-  #submittask{
-    height: 42px;
-    width: 15%;
-    text-align: center;
-    position: absolute;
-    left: 20px;
-    background-color: black;
-    color: white;
-    border-radius: 9px;
-    font-size: 15px;
-    cursor: pointer;
-    transition:
-      background-color 0.3s,
-      color 0.3s;
-  }
-  
+
+  #submittask,
   #savepdf {
-    height: 42px;
-    width: 15%;
-    text-align: center;
-    position: absolute;
-    right: 20px;
-    background-color: black;
-    color: white;
-    border-radius: 9px;
-    font-size: 15px;
-    cursor: pointer;
-    transition:
-      background-color 0.3s,
-      color 0.3s;
+    width: 30%;
   }
-  #submittask:hover,
-  #savepdf:hover {
-    background-color: black;
-    color: white;
+}
+
+@media (max-width: 375px) {
+  #home-tab .heading {
+    font-size: 45px;
   }
-  
-  #notes-container {
-    margin-top: 50px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; 
-    width: 100%; 
-    height: calc(100% - 150px); 
-    position: absolute; 
-    padding: 0; 
-    overflow: hidden; 
-    left: 20px;
+}
+
+@media (max-width: 320px) {
+  .navbar li a {
+    padding: 7px 4px;
   }
-  .notes {
-    width: 150px;
-    height: 150px;
-    background-color: #E2BFD9;
-    padding: 10px;
-    position: absolute;
-    border: 1px solid #674188;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    cursor: move;
-    color: #000;
-    font-size: 16px;
-    font-family: 'Safaniah';
-    overflow-wrap: break-word;
-    left: 20px;
+
+  .navbar {
+    padding: 9px 0px 9px 0px;
   }
-  
-  
-  #the tick box container .container li {
-    width: 35%;
-    word-wrap: break-word;
-    left: 35%;
-    border: 2px solid #C6C6C6;
-    border-radius: 10px;
-    list-style: none;
-    position: relative;
-    background-color: black;
-    color: white;
-    font-size: 19px;
-    padding: 7px;
-    justify-content: center;
-  }
-  .container li i {
-    position: absolute;
-    right: 10px;
-    cursor: pointer;
-  }
-  .container li a {
-    position: absolute;
-    right: 40px;
-    cursor: pointer;
-    font-size: 30px;
-    top: -4px;
-    font-weight: 900;
-  }
-  .documents-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  .document-item {
-    margin-top: 30px;
-    width: 80%;
-    padding: 10px 8px;
-    background-color: white;
-    color: black;
-    border-radius: 15px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    transition: background-color 0.3s;
-  }
-  .document-item:hover {
-    background-color: #F0F0F0;
-  }
-  .document-item button {
-    margin-left: 10px;
-    cursor: pointer;
-    transition:
-      background-color 0.3s,
-      color 0.3s;
-    padding: 5px 8px;
-    border-radius: 10px;
-  }
-  .document-item button:hover {
-    background-color: bl;
-    color: white;
-  }
-  
-  .pdf-message {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #4CAF50;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    display: none;
-    z-index: 1000;
-  }
-  
-  @media (max-width: 768px) {
-    .container {
-      width: 650px;
-    }
-  }
-  
-  @media (max-width: 710px) {
-    .container {
-      width: 550px;
-    }
-  }
-  
-  @media (max-width: 615px) {
-    .container {
-      width: 400px;
-    }
-  }
-  
-  @media (max-width: 485px) {
-    .container {
-      width: 100px;
-    }
-  
-    .navbar li a {
-      padding: 8px 9px;
-    }
-  
-    #colour1,
-    #colour2,
-    #colour3 {
-      height: 27px;
-      width: 27px;
-    }
-  
-    #home-tab .heading {
-      font-size: 60px;
-    }
-  
-    #submittask,
-    #savepdf {
-      width: 30%;
-    }
-  }
-  
-  @media (max-width: 375px) {
-    #home-tab .heading {
-      font-size: 45px;
-    }
-  }
-  
-  @media (max-width: 320px) {
-    .navbar li a {
-      padding: 7px 4px;
-    }
-  
-    .navbar {
-      padding: 9px 0px 9px 0px;
-    }
-  }
-  
+}
+
+.theme1 {
+background-color: #E1BEE7; 
+border: #000;
+}
+
+.theme2 {
+background-color: #E2C58B; 
+border: #000;
+}
+
+.theme3 {
+background-color: #DF868D; 
+border: #000;
+}
