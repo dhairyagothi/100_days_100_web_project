@@ -1,0 +1,56 @@
+@media screen and (max-width: 800px) {
+    .top
+    {
+     
+        .streak
+        {
+            margin:auto 15px;
+        }
+        i
+        {
+            margin:auto 0px;
+        }
+    }
+    .login{
+        margin:auto 0px;
+    }
+    .mid
+    {
+        display: flex;
+        width:100%;
+        height: fit-content;
+        flex-direction: column;
+    }
+    .p1
+    {
+        margin:10px auto;
+    }
+    .p1 .card
+    {
+        position: absolute;
+        left:0;
+        top:0;
+        margin-left:-70px;
+        
+    }
+    .p2
+    {
+        width:100%;
+        z-index:1000;
+        margin-bottom:50px;
+    }
+    .p3
+    {
+    position: relative;
+    margin-left:-55px;   
+    }
+    .mids
+    {
+        position: relative;
+        display:none;
+    }
+    .task-table {
+        width: 100%;
+        overflow: scroll; /* Enable horizontal scrolling if the table is too wide */
+    }
+}
