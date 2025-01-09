@@ -55,7 +55,7 @@ function updateNavbar() {
         <a class="button is-primary is-dark " href="contributors/contributor.html">
             <strong>Contributors</strong>
         </a>
-    -----------------------------------------------------------------    // `
+    -------------------------------------------------------------------    // `
 
         document.getElementById('logout').addEventListener('click', () => {
             localStorage.removeItem('username');
