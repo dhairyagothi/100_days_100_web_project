@@ -49,7 +49,6 @@ nav {
     align-items: center;
 }
 
-
 .nav-center {
     height: 40px;
     display: flex;
@@ -185,7 +184,6 @@ nav {
     background-color: #222f3d;
     color: white;
     justify-content: start;
-
 }
 
 .nav-options * {
@@ -319,6 +317,12 @@ main {
     padding: 1rem;
     cursor: pointer;
     overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.item-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .item-card img {
@@ -421,7 +425,6 @@ main {
     text-decoration: none;
     color: white;
     margin-left: 1rem;
-
 }
 
 /* Small Devices */
@@ -475,7 +478,6 @@ main {
     .arrow i {
         height: 4vw;
     }
-
 
     .item-card {
         height: 25vw;
