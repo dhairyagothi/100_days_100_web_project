@@ -7,50 +7,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Calculator</title>
 
-    <!-- Include Appwrite SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/appwrite"></script>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Love Calculator - Find out how compatible you are with your crush using this fun and interactive love calculator.">
+    <meta name="keywords" content="Love Calculator, Relationship Calculator, Compatibility Test, Love Percentage, Fun Tool">
+    <meta name="author" content="Dhairya Gothi">
 
-    <!-- Link to external CSS -->
+    <!-- Open Graph Meta Tags for social sharing -->
+    <meta property="og:title" content="Love Calculator">
+    <meta property="og:description" content="Find out your compatibility with your crush! Enter your names to calculate the love percentage.">
+    <meta property="og:image" content="https://github.com/dhairyagothi/100_days_100_web_project/raw/main/public/Love-Calculator/images/love-calculator-image.png">
+    <meta property="og:url" content="https://dhairyagothi.github.io/100_days_100_web_project/Love-Calculator">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://github.com/dhairyagothi/100_days_100_web_project/raw/main/public/Love-Calculator/images/favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts (Roboto for modern text) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-k1sSxG21Jf7tG7iRRLkDROaAvax4DeA3O+UHSuM2bzz6/3RvGsdOr8P91FDC24hlXJ/ziFWW5rPi5Gz9U0ABlw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- External CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="contentbox">
-        <h1><span>Love</span> Calculator</h1>
-        <p>Enter your name and your crush's name to see the chance that this relationship will work out:</p>
+    <main class="content-box">
+        <header>
+            <h1><span class="highlight">Love</span> Calculator</h1>
+            <p>Enter your name and your crush's name below to calculate your compatibility!</p>
+        </header>
 
-        <!-- Input for Your Name -->
-        <div class="input-group">
-            <input type="text" required id="fname">
-            <span class="highlight"></span>
-            <span class="bar"></span>
-            <label>Your Name</label>
-        </div>
+        <section class="form-container">
+            <!-- Input for Your Name -->
+            <div class="input-group">
+                <input type="text" id="fname" placeholder="Your Name" required>
+            </div>
 
-        <!-- Input for Crush's Name -->
-        <div class="input-group">
-            <input type="text" required id="cname">
-            <span class="highlight"></span>
-            <span class="bar"></span>
-            <label>Crush Name</label>
-        </div>
+            <!-- Input for Crush's Name -->
+            <div class="input-group">
+                <input type="text" id="cname" placeholder="Crush's Name" required>
+            </div>
 
-        <!-- Calculate Button -->
-        <button id="calculate">Calculate</button>
+            <!-- Calculate Button -->
+            <button id="calculate">Calculate</button>
+        </section>
 
-        <!-- Result Display -->
-        <div class="footer">
+        <section class="result-container">
+            <!-- Result Display -->
             <h2 id="result-message"></h2>
             <p id="result-percentage"></p>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <!-- Link to external JavaScript -->
-    <!-- <script>
-        // Appwrite database and collection IDs (replace with actual IDs)
-        const databaseId = "6780f5140020681e525e"; // Replace with your Appwrite database ID
-        const collectionId = "6780f564000eb2946fc7";
-    </script> -->
+    <footer>
+        <p>&copy; 2025 Love Calculator. All rights reserved. Created by Dhairya Gothi.</p>
+    </footer>
+
+    <!-- External JavaScript -->
     <script src="script.js"></script>
 </body>
 
