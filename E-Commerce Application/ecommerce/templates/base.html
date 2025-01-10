@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <script>
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    };
+</script>
+  <title>
+    {% block title %}
+    {% endblock title %}
+  </title>
+  <meta name="description" content="e commerce website : we deliver product in least time">
+  <meta name="keywords" content="amazon,flipkart,selling,products">
+
+  <!-- Favicons -->
+  <link href="{% static '/assets/img/pogo.png' %}" rel="icon">
+  <link href="{% static '/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static '/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static '/assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static '/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static '/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static '/assets/css/main.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+      <a href="\" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <img src="{% static '/assets/img/pogo.png' %}" alt="">
+        <h1 class="sitename" style="color:orange"><i class="fas fa-shopping-cart"></i>Shop Cart</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+            <li><a href="#hero" class="active"> <i class="fas fa-home"></i>&nbsp;Home</a></li>
+            <li><a href="/about"> <i class="fas fa-user"></i>&nbsp;My Profile</a></li>
+            <li><a href="/checkout"> <i class="fas fa-shopping-bag"></i>&nbsp;CheckOut</a></li>
+
+          <li><button type="button" id="popcart" data-toggle="popover" title="Cart"
+          data-placement="right" 
+          data-html="true" data-content="Cart isEmpty" class="btn bg-danger p-3 m-3">
+          <i class="fas fa-shopping-cart"></i> Cart(<span id="cart">0</span>)</button>
+          </li>
+
+          
+          {% if  request.user.is_authenticated %}
+            <li><a href="/auth/logout/"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout {{user.username}}</a></li>
+            {% else %}
+          <li class="dropdown"><a href="#"><span></i><i class="fas fa-sign-in-alt"></i> Account  Menu</span><i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+                <li><a href="/auth/login/">Login</a></li>
+              <li><a href="/auth/signup/">Sign up</a></li>
+            </ul>
+          </li>
+          {% endif %}
+          
+          
+          
+          <li>
+            <a href="/contact" class="bg-dark p-3 m-3" style="border-radius: 0.5em;">
+              <i class="fas fa-envelope"></i>&nbsp;Contact
+            </a>
+          </li>
+          
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section  dark-background">
+
+      <img src="{% static '/assets/img/bg.jpg' %}" alt="" data-aos="fade-in">
+
+      <div class="container text-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            {% block content %}
+            
+            {% endblock content %}
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /Hero Section -->
+
+  <main class=main>
+  {% block main %}{% endblock main %}
+  </main>
+
+  <footer id="footer" class="footer dark-background">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-md-12">
+          <a href="\" class="logo d-flex align-items-center justify-content-center">
+            <span class="sitename">Shop Cart</span>
+          </a>
+          <p class="mt-3">Delivering products in the least time possible.</p>
+          <div class="social-links d-flex justify-content-center mt-3">
+            <a href="https://x.com/Anuraj_xoxo"><i class="bi bi-twitter"></i></a>
+            <a href="https://github.com/Anuraj-IND"><i class="bi bi-github"></i></a>
+            <a href="https://www.instagram.com/anuraj._.m/"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/anuraj-maddheshiya"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <p>© <span>Copyright</span> <strong class="px-1 sitename">Shop Cart</strong> <span>All Rights Reserved</span></p>
+          <div class="credits">
+            Designed by <a href="https://www.linkedin.com/in/anuraj-maddheshiya">Anuraj Maddheshiya</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static '/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static '/assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static '/assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static '/assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static '/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static '/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static '/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static '/assets/js/main.js' %}"></script>
+
+</body>
+</html>
