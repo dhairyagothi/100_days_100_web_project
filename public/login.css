@@ -19,7 +19,6 @@ body {
     background: rgb(240, 240, 240);
     display: flex;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
     overflow: hidden;
 }
 
@@ -33,7 +32,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #4b4b4b; /* Light Green */
+    background: hsl(171.1deg 100% 40.98%); 
     text-align: center;
 }
 
@@ -63,11 +62,15 @@ body {
 
 .input-field {
     padding: 12px 20px;
-    border: 2px solid #000000; /* Yellow */
+    border: none;
     border-radius: 90px;
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s;
+}
+
+.input-field:focus{
+    border: 2px solid #000000;
 }
 
 .input-field:focus {
@@ -91,20 +94,21 @@ body {
     background-color: #ffffff; /* Darker Yellow */
     transform: scale(1.05);
     color: #000000;
-    border:#000000;
-    border-style: groove;
+  
 }
 
 
 .right-section {
     flex: 5;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #000000;
-    position: relative;
-    overflow: hidden;
+  background-color: white;
     padding: 0;
+   
+}
+
+.right-section img{
+    width: 80%;
+    height: 100%;
 }
 
 .transition-image {
@@ -118,6 +122,14 @@ body {
 
 .transition-image:first-child {
     opacity: 1;
+}
+
+.signup-div{
+    display: flex; gap: 5px
+}
+
+.signup-div label{
+   cursor: pointer;
 }
 
 @keyframes fadeIn {
@@ -145,7 +157,7 @@ body {
     position: absolute;
     top: 20px;
     left: 20px;
-    background: #4b4b4b;
+    background: hsl(171.1deg 100% 40.98%); 
     border: none;
     color:rgb(8, 8, 8);
     padding: 0px;
@@ -168,11 +180,11 @@ body {
 .already-signed-up {
     font-size: 14px;
     color: #000000;
-    margin-top: 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
     text-decoration: none;
+    cursor: pointer;
     gap: 5px; /* Add some space between the text and the link */
 }
 a{
