@@ -2,38 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Game</title>
+    <title>Memory Matching Game</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-    <style type="text/css">
-        body {
-            background-image: url('abc.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-    </style>
 </head>
 <body>
-    <div class="game">
-        <h1 class="title">Memory Game</h1>
-        <div class="controls">
-            <button>Start</button>
-            <div class="stats">
-                <div class="moves">0 Moves</div>
-                <div class="timer">Time: 0 sec</div>
-            </div>
-        </div>
-        <div class="board-container">
-            <div class="board" data-dimension="4"></div>
-            <div class="win">You won!</div>
-        </div>
-    </div>
+
+    <h1 id="game-title">Memory Matching Game</h1>
+    <div id="game-container" class="grid"></div>
+    <p id="score-board">Matches: 0</p>
+
+    <script src="script.js"></script>
 </body>
 </html>

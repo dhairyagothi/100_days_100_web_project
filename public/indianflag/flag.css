@@ -38,13 +38,39 @@ body {
 }
 
 .bar {
-  margin-left: 20px;
+  margin-left: 140px;
   height: 650px;
   width: 10px;
   background: #222;
   border-left: 2px solid rgb(167, 167, 167);
   box-shadow: 10px 10px 20px #959595;
   border-radius: 10px 10px 0px 0px;
+}
+
+.bar div{ 
+  background-color: #222;
+  height: 20px;
+  width: 130px;
+  left: -62px;
+  position: relative;
+  top: 92%;
+  border: 1px solid white;
+}
+
+.bar .bar-1{
+  width: 65px;
+  left: -27px;
+}
+
+.bar .bar-2{
+  width: 101px;
+  left: -44px;
+}
+
+.bar .bar-3{
+  width: 134px;
+  left: -62px;
+
 }
 
 .flag {
