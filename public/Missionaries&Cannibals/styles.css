@@ -128,3 +128,9 @@ button:hover {
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+#move-count {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #fff;
+}
