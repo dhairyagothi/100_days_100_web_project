@@ -10,8 +10,16 @@ html, body {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #fff;
+    background: linear-gradient(135deg, #053e88, #eabfb3); /* Vibrant background */
+    background-size: 200% 200%;
+    animation: gradient-animation 10s ease infinite;
     font-family: 'Poppins', sans-serif;
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 #view {
@@ -20,44 +28,60 @@ html, body {
 
 #mazeContainer {
     top: 15px;
-    opacity: 0;
+    opacity: 1;
     display: inline-block;
     margin: auto;
     border-radius: 10px;
+    background: linear-gradient(145deg, #850707, #f0b5a4); /* Soft gradient background */
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
 }
+
 #mazeContainer #mazeCanvas {
     margin: 0;
     display: block;
-    border: solid 2px black;
+    border: solid 3px #ff6f61; /* Bright border */
     height: 400px;
+    background-color:  #f7d3a3;
 }
+
 input, select {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.30);
+    background-color: #f0c080; /* Vibrant button color */
     height: 45px;
     width: 150px;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: black;
     display: inline-block;
     font-size: 15px;
     text-align: center;
     text-decoration: none;
-    appearance: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 input:hover, select:hover {
-	background-color: rgba(0, 0, 0, 0.70);
+    background-color: green; /* Hover with gradient */
+    transform: translateY(-3px);
 }
+
 input:active, select:active {
-	background-color: black;
+    background-color: white;
+    transform: translateY(1px);
 }
+
 input:focus, select:focus {
-	outline: none;
+    outline: none;
+    box-shadow: 0 0 10px #ff6f61; /* Glow effect */
 }
+
+/* Custom dropdown styling */
 .custom-select {
-	display: inline-block;
+    display: inline-block;
 }
+
 .custom-select select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -65,6 +89,8 @@ input:focus, select:focus {
     background-repeat: no-repeat;
     background-position: 125px center;
 }
+
+/* Modal Styling */
 #Message-Container {
     visibility: hidden;
     color: white;
@@ -76,9 +102,16 @@ input:focus, select:focus {
     left: 0;
     bottom: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.30);
+    background-color: rgba(0, 0, 0, 0.6); /* Darker background for modal */
     z-index: 1;
+    transition: visibility 0.3s ease, opacity 0.3s ease;
 }
+
+#Message-Container.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
 #Message-Container #message {
     width: 300px;
     height: 300px;
@@ -87,25 +120,38 @@ input:focus, select:focus {
     left: 50%;
     margin-left: -150px;
     margin-top: -150px;
+    background: linear-gradient(135deg, #ff6a88, #ff99ac); /* Vibrant message box */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
+
+/* Main Page Layout */
 #page {
-	text-align: center;
-	height: auto;
-	width: auto;
-	margin: auto;
+    text-align: center;
+    height: auto;
+    width: auto;
+    margin: auto;
 }
+
 #page #menu {
     margin: auto;
     padding: 10px;
     height: 65px;
     box-sizing: border-box;
 }
+
 #page #menu h1 {
     margin: 0;
     margin-bottom: 10px;
     font-weight: 600;
     font-size: 3.2rem;
+    color: #ff6f61; /* Vibrant heading color */
 }
+
 #page #view {
     position: absolute;
     top: 65px;
@@ -115,18 +161,48 @@ input:focus, select:focus {
     width: 100%;
     height: auto;
 }
+
+/* Border for canvas container */
 .border {
-    border: 10px black solid;
+    border: 10px solid #36d1dc;
     border-radius: 10px;
+    padding: 10px;
 }
 
 #instructions {
-    margin-top: 425px;
+    margin-top: 20px;
+    color: #333;
 }
- 
-/* Extra small devices (phones, 600px and down) */
+
+/* Responsive Design */
+@media only screen and (max-width: 600px) {
+    input, select {
+        width: 130px; /* Adjust width on smaller screens */
+    }
+
+    #mazeContainer {
+        margin: 10px;
+    }
+
+    #mazeCanvas {
+        height: 250px;
+        width: 250px;
+    }
+
+    #Message-Container #message {
+        width: 250px;
+        height: 250px;
+        margin-left: -125px;
+        margin-top: -125px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+}
+
 @media only screen and (max-width: 400px) {
-	input, select {
-	    width: 120px;
-	}
+    input, select {
+        width: 120px; /* Further reduce width on very small screens */
+    }
 }
