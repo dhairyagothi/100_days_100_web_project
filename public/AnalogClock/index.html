@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,32 @@
     <link rel="stylesheet" href="index.css">
     <script src="index.js"></script>
 </head>
+
 <body>
     <div id="clockContainer">
         <div id="hour"></div>
         <div id="minute"></div>
         <div id="second"></div>
     </div>
+
+    <div id="timerContainer">
+        <div id="timeInput">
+            <input type="number" id="hours" placeholder="HH" min="0" max="23" />
+            <input type="number" id="minutes" placeholder="MM" min="0" max="59" />
+            <input type="number" id="seconds" placeholder="SS" min="0" max="59" />
+        </div>
+        <button onclick="startCountdown()">Start Countdown</button>
+        <div id="countdownDisplay">00:00:00</div>
+
+        <div id="timerUpMsg"  style="display: none;">
+            <p><b>Time's Up!</b></p>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="timerSound" src="timer.mp3"></audio>
+
+    
 </body>
+
 </html>
