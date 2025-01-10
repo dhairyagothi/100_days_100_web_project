@@ -37,15 +37,15 @@ body {
 }
 
 .animated-heading {
-    font-size: 50px;
-    font-weight: 600;               
-    margin-bottom: 20px;
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 10px;               
     color: black; /* Yellow */
     animation: fadeIn 2s ease-in-out;
 }
 
 .description {
-    font-size: 20px;
+    font-size: 18px;
     color: #000000;
     margin-bottom: 20px;
     line-height: 1.5;
@@ -213,3 +213,5 @@ a{
 /* .already-signed-up a:hover {
     color: white;
     background-color: #FFA500; /* Darker Yellow */
+
+    
