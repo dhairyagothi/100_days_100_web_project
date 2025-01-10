@@ -120,8 +120,8 @@ EMAIL_HOST ='smtp.gmail.com'
 # EMAIL_HOST ='smtpout.secureserver.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'anuraj6970@gmail.com'
-EMAIL_HOST_PASSWORD = 'ijyc vavp kzaf hdiq'
+EMAIL_HOST_USER = 'ENTER YOUR MAIL ID'
+EMAIL_HOST_PASSWORD = 'ENTER YOUR PASSWORD'
 
  
 
