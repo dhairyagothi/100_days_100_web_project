@@ -1,0 +1,18 @@
+.node
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React
+build/
+dist/
+
+# TypeScript
+*.tsbuildinfo
+
+# JavaScript
+*.log
+*.cache
+.DS_Store
