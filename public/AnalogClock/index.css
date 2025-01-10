@@ -1,10 +1,23 @@
+html {
+    background: radial-gradient(circle, #ff7e5f, #feb47b); /* Gradient background */
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: space-between; /* Align clock to the left and timer to the right */
+    padding: 20px;
+}
+
 #clockContainer{  
     position: relative;
-    margin: auto;
+    margin: 20px;
     height: 40vw;
     width: 40vw; 
     background: url(clock.png) no-repeat;
     background-size: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 #hour, #minute, #second{
@@ -12,6 +25,7 @@
     background: black;
     border-radius: 10px; 
     transform-origin: bottom;
+    transition: transform 0.1s ease; /* Smooth transition for rotations */
 }
 #hour{
     width: 1.8%;
@@ -34,4 +48,56 @@
     left: 49.25%;
     opacity: 0.8; 
     
+}
+
+#timerContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 340px;
+    border-radius: 8px;
+    padding: 20px;
+    margin-left: 5px;
+    margin-right: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Adding shadow to the timer container */
+}
+
+#timeInput {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100px;
+    padding: 5px;
+    font-size: 16px;
+    text-align: center;
+    margin: 2px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #ff7e5f;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+button:hover {
+    background-color: #feb47b;
+}
+
+#countdownDisplay {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+#timerUpMsg{
+    font-size: 35px;
+    text-align: center;
+    color: rgb(98, 0, 255);
 }

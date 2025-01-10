@@ -136,20 +136,20 @@ body {
     background-color: rgb(5, 31, 31);
     color: white;
     font-size: 19px;
-    padding: 7px;
+    padding: 10px 50px 10px 25px;
     justify-content: center;
 }
 .container li i {
-    position: absolute;
-    right: 10px;
+    position: relative;
     cursor: pointer;
 }
 .container li a {
     position: absolute;
-    right: 40px;
+    right: 20px;
     cursor: pointer;
     font-size: 30px;
-    top: -4px;
+    top: 50%;
+    transform: translateY(-50%);
     font-weight: 900;
 }
 .documents-list {

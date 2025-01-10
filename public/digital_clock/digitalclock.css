@@ -20,17 +20,17 @@ body {
 }
 
 .classic {
-    color: green;
+    color:white;
     border-color: green;
 }
 
 .modern {
-    color: blue;
+    color: white;
     border-color: blue;
 }
 
 .futuristic {
-    color: red;
+    color:white;
     border-color: red;
 }
 

@@ -1,78 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jay Hind</title>
-    <link href="../indianflag/flag.css" rel="stylesheet">
-</head>
+    <link href="../indianflag/flag.css" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
     <div class="background-video">
-        <video autoplay muted loop id="bg-video">
-            <source src="https://media.istockphoto.com/id/1503396346/video/happy-indian-republic-day-creative-flag-design-background.mp4?s=mp4-640x640-is&k=20&c=sScbw69iYMiOdC9_KZ2L12EL43ke3lsggE9aK7StIt4=" type="video/mp4">
-            Your browser does not support HTML5 video.
-        </video>
+      <video autoplay muted loop id="bg-video">
+        <source
+          src="https://media.istockphoto.com/id/1503396346/video/happy-indian-republic-day-creative-flag-design-background.mp4?s=mp4-640x640-is&k=20&c=sScbw69iYMiOdC9_KZ2L12EL43ke3lsggE9aK7StIt4="
+          type="video/mp4"
+        />
+        Your browser does not support HTML5 video.
+      </video>
     </div>
-    
-    <div class="wrapper">
-        <div class="bar"></div>
-        <div class="flag">
-            <div class="top"></div>
-            <div class="middle">
-                <img src="../indianflag/img/ashokchakr.gif" alt="" width="80px">
-            </div>
-            <div class="bottom"></div>
-        </div>
 
-        <div class="quote-container">
-            <div class="quote">"Give me blood and I will give you freedom."</div>
-            <div class="author">- Subhas Chandra Bose</div>
-            <div class="quote-nav">
-                <button id="prev-quote">&#8592;</button>
-                <button id="next-quote">&#8594;</button>
-            </div>
+    <div class="wrapper">
+      <div class="bar">
+        <div class="bar-1"></div>
+        <div class="bar-2"></div>
+        <div class="bar-3"></div>
+      </div>
+      <div class="flag">
+        <div class="top"></div>
+        <div class="middle">
+          <img src="../indianflag/img/ashokchakr.gif" alt="" width="80px" />
         </div>
+        <div class="bottom"></div>
+      </div>
+
+      <div class="quote-container">
+        <img id="patriot-image" src="" alt="Patriot Image" width="150px" />
+        <div class="quote">"Give me blood and I will give you freedom."</div>
+        <div class="author">- Subhas Chandra Bose</div>
+        <div class="quote-nav">
+          <button id="prev-quote">&#8592;</button>
+          <button id="next-quote">&#8594;</button>
+        </div>
+      </div>
     </div>
 
     <script>
-        // JavaScript for quote navigation
-        const quotes = [
-            { text: '"Give me blood and I will give you freedom."', author: '- Subhas Chandra Bose' },
-            { text: '"Swaraj is my birthright and I shall have it."', author: '- Bal Gangadhar Tilak' },
-            { text: '"Inquilab Zindabad."', author: '- Bhagat Singh' },
-            { text: '"Jai Jawan Jai Kisan."', author: '- Lal Bahadur Shastri' },
-            { text: '"Jai Hind!."', author: '- Netaji Subhas Chandra Bose' },
-            { text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."', author: '- Ram Prasad Bismil' },
-            { text: '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."', author: '- Chandrashekhar Azad' },
-            { text: '"Satyameva Jayate."', author: '- Pandit Madan Mohan Malaviya' },
-            { text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."', author: '- Mahatma Gandhi' },
-            { text: '"Karo ya maro."', author: '- Mahatma Gandhi' },
-        ];
-        let currentQuoteIndex = 0;
+      // JavaScript for quote navigation
+      const quotes = [
+        {
+          text: '"Give me blood and I will give you freedom."',
+          author: "- Subhas Chandra Bose",
+          image: "./img/subhas_bose.png",
+        },
+        {
+          text: '"Swaraj is my birthright and I shall have it."',
+          author: "- Bal Gangadhar Tilak",
+          image: "./img/bal_tilak.png",
+        },
+        {
+          text: '"Inquilab Zindabad."',
+          author: "- Bhagat Singh",
+          image: "./img/bhagat_singh.jpg",
+        },
+        {
+          text: '"Jai Jawan Jai Kisan."',
+          author: "- Lal Bahadur Shastri",
+          image: "./img/lal_bahadur.png",
+        },
+        {
+          text: '"Jai Hind!"',
+          author: "- Netaji Subhas Chandra Bose",
+          image: "./img/subhas_bose.png",
+        },
+        {
+          text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."',
+          author: "- Ram Prasad Bismil",
+          image: "./img/ram_prasad.png",
+        },
+        {
+          text: '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
+          author: "- Chandrashekhar Azad",
+          image: "./img/azad.png",
+        },
+        {
+          text: '"Satyameva Jayate."',
+          author: "- Pandit Madan Mohan Malaviya",
+          image: "./img/pandit_madan_mohan.webp",
+        },
+        {
+          text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."',
+          author: "- Mahatma Gandhi",
+          image: "./img/gandhi.png",
+        },
+        {
+          text: '"Karo ya maro."',
+          author: "- Mahatma Gandhi",
+          image: "./img/gandhi.png",
+        },
+      ];
+      let currentQuoteIndex = 0;
 
-        const quoteText = document.querySelector('.quote');
-        const quoteAuthor = document.querySelector('.author');
+      const quoteText = document.querySelector(".quote");
+      const quoteAuthor = document.querySelector(".author");
+      const patriotImage = document.getElementById("patriot-image");
 
-        function displayQuote() {
-            quoteText.textContent = quotes[currentQuoteIndex].text;
-            quoteAuthor.textContent = quotes[currentQuoteIndex].author;
-        }
+      function displayQuote() {
+        quoteText.textContent = quotes[currentQuoteIndex].text;
+        quoteAuthor.textContent = quotes[currentQuoteIndex].author;
+        patriotImage.src = quotes[currentQuoteIndex].image;
+        patriotImage.alt = quotes[currentQuoteIndex].author;
+      }
 
-        displayQuote(); // Initial display
+      displayQuote();
 
-        document.getElementById('prev-quote').addEventListener('click', () => {
-            currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
-            displayQuote();
-        });
+      document.getElementById("prev-quote").addEventListener("click", () => {
+        currentQuoteIndex =
+          (currentQuoteIndex - 1 + quotes.length) % quotes.length;
+        displayQuote();
+      });
 
-        document.getElementById('next-quote').addEventListener('click', () => {
-            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-            displayQuote();
-        });
+      document.getElementById("next-quote").addEventListener("click", () => {
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        displayQuote();
+      });
     </script>
-</body>
-
+  </body>
 </html>
