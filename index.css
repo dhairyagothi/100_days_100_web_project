@@ -26,7 +26,7 @@ html {
 
 @media(max-width:426px) {
     .links table tbody tr td{
-        padding: 8px 4px;
+        padding: 6px 2px; /* Reduce padding for smaller screens */
     }
 }
 
@@ -37,11 +37,16 @@ html {
       }
 
       .links table tbody tr .project-name{
-        padding: 8px 7px;
+        padding: 6px 4px; /* Reduce padding for project names */
       }
 
       .links table tbody tr td a{
         margin-left: 4px;
       }
     
+}
+/* Add hover effect for links */
+.links table tbody tr td a:hover {
+    color: #007BFF; /* Change color on hover */
+    text-decoration: underline; /* Highlight links */
 }
