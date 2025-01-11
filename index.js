@@ -51,10 +51,11 @@ function updateNavbar() {
         <a class="button is-primary is-dark" href ="https://github.com/dhairyagothi">
                   <strong>GitHub</strong>  
         </a>
+        // ----------------------added contributors to navbar---------------------
         <a class="button is-primary is-dark " href="contributors/contributor.html">
             <strong>Contributors</strong>
         </a>
-        `
+    -------------------------------------------------------------------    // `
 
         document.getElementById('logout').addEventListener('click', () => {
             localStorage.removeItem('username');
