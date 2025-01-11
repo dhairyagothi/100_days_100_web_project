@@ -45,3 +45,93 @@ html {
       }
     
 }
+
+
+/* Base styles */
+body {
+  font-family: sans-serif;
+  background-color: #181818; /* Dark gray background */
+  color: #ffffff; /* White text color */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header styles */
+header {
+  background-color: #2ecc71; /* Teal color */
+  color: #ffffff; /* White text */
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem; /* Adjust font size as needed */
+}
+
+header nav {
+  display: flex;
+  gap: 1rem;
+}
+
+header a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Main content styles */
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+main h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ffffff; /* White heading text */
+}
+
+/* Search bar styles */
+#search-bar {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+#searchInput {
+  padding: 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #f4e8e8; /* Dark gray input background */
+  color: #ffffff; /* White input text */
+  flex-grow: 1;
+}
+
+#searchButton {
+  padding: 1rem 1.5rem;
+  background-color: #2ecc71; /* Teal button color */
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* No projects message */
+#no-projects {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Footer styles */
+footer {
+  background-color: #222222;
+  padding: 1rem;
+  text-align: center;
+  color: #f3eeee; /* Light gray footer text */
+}
