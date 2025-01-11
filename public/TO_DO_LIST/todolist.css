@@ -1,256 +1,324 @@
 * {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 body {
-    background: rgb(43,48,121);
-    background: linear-gradient(90deg, rgba(43,48,121,1) 19%, rgba(101,78,170,0.9697128851540616) 73%, rgba(136,136,168,1) 100%);
-    font-family: sans-serif;
+  background: rgb(43, 48, 121);
+  background: linear-gradient(
+    90deg,
+    rgba(43, 48, 121, 1) 19%,
+    rgba(101, 78, 170, 0.9697128851540616) 73%,
+    rgba(136, 136, 168, 1) 100%
+  );
+  font-family: sans-serif;
 }
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    list-style: none;
-    background-color: rgba(225, 225, 225, 0.5);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  list-style: none;
+  background-color: rgba(225, 225, 225, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.nav-left, .nav-right{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.nav-left,
+.nav-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .navbar li {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 .navbar li a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    background-color: rgba(101,78,170,0.7);
-    transition: background-color 0.3s, color 0.3s;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: rgba(101, 78, 170, 0.7);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 .navbar li a:hover {
-    background-color: rgba(101,78,170,1);
-    color: yellow;
+  background-color: rgba(101, 78, 170, 1);
+  color: yellow;
 }
-#colour1, #colour2, #colour3 {
-    height: 45px;
-    width: 45px;
-    border: 2px solid white;
-    border-radius: 50%;
-    cursor: pointer;
+#colour1,
+#colour2,
+#colour3 {
+  height: 45px;
+  width: 45px;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
 }
 #colour1 {
-    background: linear-gradient(to top, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%);
-    /* margin-left: 1060px; */
+  background: linear-gradient(
+    to top,
+    rgba(232, 221, 227, 1) 33%,
+    rgba(219, 185, 200, 1) 100%,
+    rgba(227, 230, 235, 1) 100%
+  );
+  /* margin-left: 1060px; */
 }
 #colour2 {
-    background-image: linear-gradient(to bottom, #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%);
+  background-image: linear-gradient(
+    to bottom,
+    #E4AFCB 0%,
+    #B8CBB8 0%,
+    #B8CBB8 0%,
+    #E2C58B 30%,
+    #C2CE9C 64%,
+    #7EDBDC 100%
+  );
 }
 #colour3 {
-    background-image: linear-gradient(to bottom, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d);
+  background-image: linear-gradient(
+    to bottom,
+    #39DB8C,
+    #A0C559,
+    #D1AB51,
+    #E6936B,
+    #DF868D
+  );
 }
-#colour1:hover, #colour2:hover, #colour3:hover {
-    height: 55px;
-    width: 55px;
-    transition: 0.8s;
+#colour1:hover,
+#colour2:hover,
+#colour3:hover {
+  height: 55px;
+  width: 55px;
+  transition: 0.8s;
 }
 .main {
-    display: grid;
-    gap: 60px;
-    justify-items: center;
+  display: grid;
+  gap: 60px;
+  justify-items: center;
 }
 .heading {
-    margin-top: 65px;
-    font-size: 80px;
-    justify-content: center;
-    text-align: center;
-    font-weight: 700;
-    animation-timing-function: linear;
-    animation-delay: 0s;
-    animation-direction: normal;
-    animation-duration: 5s;
-    animation-iteration-count: infinite;
+  margin-top: 30px;
+  font-size: 60px;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-direction: normal;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
 }
-.task {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+.buttons {  
+  border-radius: 9px;
+  font-size: 15px;
+  z-index: 999;
+  margin-bottom: 23px;
+  margin-top: 23px;
+  display: flex;
+  gap: 1700px;
 }
-#newtask {
-    margin-top: 22px;
-    height: 40px;
-    width: 146%;
-    text-align: center;
-    background-color: black;
-    color: white;
-    border-radius: 9px;
-    font-size: 15px;
-    z-index: 999;
-    margin-bottom: 23px;
+#submittask{
+  height: 42px;
+  width: 15%;
+  text-align: center;
+  position: absolute;
+  left: 20px;
+  background-color: black;
+  color: white;
+  border-radius: 9px;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
-.buttons {
-    margin-bottom: 23px;
-    display: flex;
-    justify-content: center;
-    gap: 51px;
-    width: 100%;
+
+#savepdf {
+  height: 42px;
+  width: 15%;
+  text-align: center;
+  position: absolute;
+  right: 20px;
+  background-color: black;
+  color: white;
+  border-radius: 9px;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
-#submittask, #savepdf {
-    height: 42px;
-    width: 15%;
-    text-align: center;
-    background-color: white;
-    color: black;
-    border-radius: 9px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+#submittask:hover{
+  background-color: black;
+  color: white;
 }
-#submittask:hover, #savepdf:hover {
-    background-color: black;
-    color: white;
+#savepdf:hover {
+  background-color: black;
+  color: white;
 }
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: 1px;
-    gap: 20px;
-    margin-right: 0px;
-    padding-right: 55px;
-    width: 780px;
+
+#notes-container {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; 
+  width: 100%; 
+  height: calc(100% - 150px); 
+  position: absolute; 
+  padding: 0; 
+  overflow: hidden; 
+  left: 20px;
 }
-.container li {
-    width: 35%;
-    word-wrap: break-word;
-    left: 35%;
-    border: 2px solid #c6c6c6;
-    border-radius: 50px;
-    list-style: none;
-    position: relative;
-    background-color: rgb(5, 31, 31);
-    color: white;
-    font-size: 19px;
-    padding: 10px 50px 10px 25px;
-    justify-content: center;
+
+.notes {
+width: 150px;
+border-radius: 15px;
+background-color: #E1BEE7;
+padding: 10px;
+margin: 10px 0;
+position: relative;
+display: inline-block;
+box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+cursor: move;
+color: #000;
+font-size: 16px;
+font-family: 'Safaniah';
+overflow-wrap: break-word;
+left: 20px;
+word-wrap: break-word; 
+white-space: normal; 
+height: auto; 
+max-height: 100px; 
+overflow-x: auto; 
 }
-.container li i {
-    position: relative;
-    cursor: pointer;
+
+.notes:focus {
+outline: 2px solid #a1a1a1;
 }
-.container li a {
-    position: absolute;
-    right: 20px;
-    cursor: pointer;
-    font-size: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-weight: 900;
+
+.completed {
+text-decoration: line-through;
 }
+
 .documents-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 .document-item {
-    margin-top: 30px;
-    width: 80%;
-    padding: 10px 8px;
-    background-color: white;
-    color: black;
-    border-radius: 15px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    transition: background-color 0.3s;
+  margin-top: 30px;
+  width: 80%;
+  padding: 10px 8px;
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  transition: background-color 0.3s;
 }
 .document-item:hover {
-    background-color: #f0f0f0;
+  background-color: #F0F0F0;
 }
 .document-item button {
-    margin-left: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    padding: 5px 8px;
-    border-radius: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  padding: 5px 8px;
+  border-radius: 10px;
 }
 .document-item button:hover {
-    background-color: black;
-    color: white;
+  background-color: bl;
+  color: white;
 }
 
 .pdf-message {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #4caf50;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    display: none;
-    z-index: 1000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: none;
+  z-index: 1000;
 }
 
-@media(max-width:768px) {
-    .container{
-        width: 650px;
-    }
+@media (max-width: 768px) {
+  .container {
+    width: 650px;
+  }
 }
 
-@media(max-width:710px) {
-    .container{
-        width: 550px;
-    }
+@media (max-width: 710px) {
+  .container {
+    width: 550px;
+  }
 }
 
-@media(max-width:615px) {
-    .container{
-        width: 400px;
-    }
+@media (max-width: 615px) {
+  .container {
+    width: 400px;
+  }
 }
 
-@media(max-width:485px) {
-    .container{
-        width: 100px;
-    }
+@media (max-width: 485px) {
+  .container {
+    width: 100px;
+  }
 
-    .navbar li a{
-        padding: 8px 9px;
-    }
+  .navbar li a {
+    padding: 8px 9px;
+  }
 
-    #colour1, #colour2, #colour3{
-        height: 27px;
+  #colour1,
+  #colour2,
+  #colour3 {
+    height: 27px;
     width: 27px;
-    }
+  }
 
-    #home-tab .heading{
-        font-size: 60px;
-    }
+  #home-tab .heading {
+    font-size: 60px;
+  }
 
-    #submittask, #savepdf{
-        width: 30%;
-    }
+  #submittask,
+  #savepdf {
+    width: 30%;
+  }
 }
 
-@media(max-width:375px){
-    #home-tab .heading{
-        font-size: 45px;
-    }
+@media (max-width: 375px) {
+  #home-tab .heading {
+    font-size: 45px;
+  }
 }
 
 @media (max-width: 320px) {
-    .navbar li a {
-        padding: 7px 4px;
-    }
+  .navbar li a {
+    padding: 7px 4px;
+  }
 
-    .navbar{
-        padding: 9px 0px 9px 0px;
-    }
+  .navbar {
+    padding: 9px 0px 9px 0px;
+  }
+}
+
+.theme1 {
+background-color: #E1BEE7; 
+border: #000;
+}
+
+.theme2 {
+background-color: #E2C58B; 
+border: #000;
+}
+
+.theme3 {
+background-color: #DF868D; 
+border: #000;
 }

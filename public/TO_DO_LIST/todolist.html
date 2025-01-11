@@ -28,21 +28,20 @@
     <main class="main">
       <div id="home-tab">
         <div class="heading">JUST DO IT.</div>
-        <div class="task">
-          <input type="text" id="newtask" placeholder="Add a Task ..." />
-        </div>
-        <div class="buttons">
-          <button onclick="Add()" id="submittask">Got This!</button>
+        <div class="buttons">  
+          <button onclick="Add()" id="submittask">Add a task!</button>
           <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
         </div>
-        <div class="container"></div>
+        <div id="notes-container"></div>
+        <div class="container">
+        </div>
       </div>
       <div id="documents-tab" style="display: none">
         <div class="heading">Saved Documents</div>
         <div class="documents-list"></div>
       </div>
     </main>
-
+    
     <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
 
     <script src="todolist.js"></script>
