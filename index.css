@@ -109,7 +109,7 @@ main h1 {
   border-radius: 5px;
   border: none;
   background-color: #f4e8e8; /* Dark gray input background */
-  color: #ffffff; /* White input text */
+  color: #0b0b0b; /* White input text */
   flex-grow: 1;
 }
 
