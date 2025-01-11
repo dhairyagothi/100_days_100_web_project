@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>100 Days 100 Web Projects</title>
     <link rel="stylesheet" href="home.css" />
-    <link rel="icon" type="image/x-icon" href="favicon.png" />
+    <link rel="icon" href="public/favv.png" type="image/x-icon" />
     <meta content="100 Days, 100 Web Projects" property="og:title" />
     <meta
       content="A collection of 100 web projects from basic to intermediate using html css and js."
@@ -44,10 +44,11 @@
       aria-label="main navigation"
     >
       <div class="navbar-brand">
-        <a class="navbar-item has-text-weight-bold" href="/">
+        <a class="navbar-item has-text-weight-bold" href="index.html">
+          <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"/>
           100 DAYS 100 WEB PROJECTS
         </a>
-
+       
         <a
           role="button"
           class="navbar-burger"
@@ -62,20 +63,30 @@
         </a>
       </div>
 
-      <div class="navbar-menu" id="navbar-menu">
+      <div class="navbar-menu is-active" id="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item">
-            <div class="buttons"></div>
+            <div class="buttons">
+              
+            </div>
           </div>
         </div>
       </div>
     </nav>
 
-    <a href="contributors/contributor.html" class="contributors-btn">
-      Contributors
-    </a>
+    
 
     <style>
+
+    nav.navbar {
+        position: fixed;
+        top: 0;
+        width: 100%; 
+        z-index: 1000; 
+        background-color: #1abc9c;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
       #scrollBtn {
     position: fixed;
     bottom: 20px; /* Place closer to the bottom */
@@ -98,7 +109,7 @@
     transform: scale(1.2); /* Slightly enlarge */
 }
       .contributors-btn {
-        background: linear-gradient(45deg, #1abc9c, #16a085);
+        background: linear-gradient(45deg, #10866f, #054135);
         color: white;
         padding: 10px 20px; /* Adjust padding to make the button rectangular */
         font-size: 0.8rem; /* Font size */
@@ -190,22 +201,69 @@
     </div>
 
     <footer class="footer">
-      <div class="content has-text-centered">
-        <p>
-          <strong
-            >©
-            <script>
-              document.write(new Date().getFullYear());
-            </script>
-            100 Days 100 Projects</strong
-          >
-          by
-          <a href="https://github.com/dhairyagothi/100_days_100_web_project"
-            >Dhairya And Contributors</a
-          >.
-        </p>
+      <div class="content">
+        <div class="columns is-vcentered">
+          <!-- Left Side -->
+          <div class="column has-text-left">
+            <div class="heading">
+              <h2 class="is-size-4">About</h2>
+              <p>This repository contains 100 web projects from basic to intermediate using HTML, CSS, and JS.</p>
+              <p>
+                <strong>
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  100 Days, 100 Projects
+                </strong>
+                by <a href="#">Dhairya</a> and <a href="#">Contributors</a>.
+              </p>
+            </div>
+          </div>
+    
+          <!-- Right Side -->
+          <div class="column">
+            <div class="heading">
+              <h2 class="is-size-4">Important Links</h2>
+              <!-- Social Media Icons -->
+              <div class="buttons">
+                <a class="button is-dark is-rounded" href="https://www.instagram.com/dhairyaa__31/" target="_blank" aria-label="Instagram">
+                  <span class="icon">
+                    <i class="fab fa-instagram"></i>
+                  </span>
+                </a>
+                <a class="button is-dark is-rounded" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" aria-label="GitHub">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                </a>
+                <a class="button is-dark is-rounded" href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" aria-label="LinkedIn">
+                  <span class="icon">
+                    <i class="fab fa-linkedin"></i>
+                  </span>
+                </a>
+              </div>
+              <!-- Navigation Links -->
+              <div class="buttons">
+                <a class="button is-primary is-rounded" href="#">
+                  <span class="icon">
+                    <i class="fas fa-home"></i>
+                  </span>
+                  <span>Home</span>
+                </a>
+                <a class="button is-link is-rounded" href="contributors/contributor.html">
+                  <span class="icon">
+                    <i class="fas fa-users"></i>
+                  </span>
+                  <span>Contributors</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
+    <!------------------------------------------------------------------------  -->
 
     <!-- Top scroll button -->
     <button id="scrollBtn" title="Go to top">
