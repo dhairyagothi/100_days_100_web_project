@@ -5,20 +5,22 @@ body {
   padding: 0;
   text-align: center;
   font-family: "Montserrat";
-  background: rgb(34, 193, 195);
+  /* background: rgb(34, 193, 195); */
   background: linear-gradient(
     0deg,
-    rgba(34, 193, 195, 1) 0%,
-    rgba(253, 68, 45, 1) 100%
+    #cc5333 0%,
+    #23074d 100%
+    
   );
   min-height: 100vh;
 }
 .bmi {
+  color: white;
   width: 350px;
   position: absolute;
   top: 50%;
   left: 50%;
-  background-color: #fff;
+  background-color: black;
   transform: translate(-50%, -50%);
   padding: 20px;
   border-radius: 10px;
@@ -32,13 +34,13 @@ h2 {
 }
 #weight-unit,
 #height-unit {
-  color: #222f3e;
+  color: black;
   text-align: left;
   font-size: 20px;
   font-weight: 200;
   outline: none;
   border: 1px solid black;
-  border-radius: 7px;
+  border-radius: 10px;
   width: 200px;
   height: 35px;
   height: 35px;
@@ -50,18 +52,18 @@ h2 {
   transition: 0.5s;
 }
 #result {
-  color: #341f97;
+  color: white;
 }
 #btn {
   font-family: inherit;
   margin-top: 10px;
-  border: none;
+  border: blue;
   color: #000;
-  background: lightblue;
+  background: gainsboro;
   width: 150px;
   padding: 10px;
-  border-radius: 30px;
-  outline: none;
+  border-radius: 30px ;
+  outline: white;
   cursor: pointer;
   transition: 0.5s;
 }
@@ -79,12 +81,13 @@ table {
 }
 
 tr {
-  background: lightblue;
+  background: rgb(68, 38, 105);
+  color: white;
 }
 
 th {
-  background: #fff;
-  color: #000;
+  background: #0d0101;
+  color: #fffbfb;
   font-weight: bold;
 }
 
@@ -102,9 +105,13 @@ th {
     height: 759px;
     width: 1519px;
     margin-bottom: 80px;
+    
 }
 
 #height, #weight {
   height: 35px;
   margin-top: 10px;
+}
+.footer_social{
+  color: white;
 }
