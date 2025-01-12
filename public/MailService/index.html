@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+    <div class="form-container">
+        <form class="form">
+            <div class="form-group">
+                <label for="name">Enter Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Enter Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="textarea">How Can We Help You?</label>
+                <textarea name="textarea" id="textarea" rows="10" cols="50" required></textarea>
+            </div>            
+            <button class="form-submit-btn" id="submit" type="submit">Submit</button>
+        </form>
+        <div id="success-message" style="display: none; color: green;">Your message has been sent successfully!</div> <!-- Success message -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
