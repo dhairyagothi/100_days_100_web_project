@@ -2,12 +2,36 @@ body{
     margin-top: 50px;
     text-align: center;
 
-    background-image:url(stadium.jpeg);
+    background-image:url(stadiumimage.webp);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: fixed;
     
   }
+
+.box1{
+  background-color: black;
+  width: 50%;
+  display: inline-block;
+  align-items: center;
+  margin-top: 20px;
+  border-radius: 30px;
+  border: 3px solid white;
+  
+}
+.game-image{
+  align-items: center;
+}
+.box1 h1{
+  color: white;
+  padding: 30px;
+  font-weight: bold;
+  font-size: 50px;
+  font-style: italic;
+  text-decoration: underline;
+  
+}
+
 .game_buttons{
  
 height: 100px;
