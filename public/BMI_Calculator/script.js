@@ -70,17 +70,20 @@ var bmiChart = new Chart(ctx, {
         labels: [],
         datasets: [{
             label: 'BMI Over Time',
+            
             data: [],
-            borderColor: 'rgba(75, 192, 192, 1)',
+            borderColor: 'rgb(254, 250, 250)',
             borderWidth: 1,
-            fill: false
+            fill: true,
         }]
     },
     options: {
         scales: {
             y: {
-                beginAtZero: true
-            }
+                beginAtZero: true,
+            },
+            
+
         }
     }
 });

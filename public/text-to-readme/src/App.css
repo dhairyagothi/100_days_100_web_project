@@ -1,0 +1,18 @@
+html, body {
+  background-color: black;
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  height: 100vh;
+  font-family: "Roboto", serif;
+}
+
+.app-h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: rgb(185, 45, 255);
+}
+
