@@ -15,12 +15,12 @@ function Add() {
         container.appendChild(newelement);
         task.value = "";
 
-        // Add event listener for the trash icon to remove the task
+        
         newelement.querySelector("i").addEventListener("click", () => {
             newelement.remove();
         });
 
-        // Add event listener for the checkmark to toggle the strike-through
+        
         newelement.querySelector("a").addEventListener("click", () => {
             if (newelement.style.textDecoration === "line-through") {
                 newelement.style.textDecoration = "none";
