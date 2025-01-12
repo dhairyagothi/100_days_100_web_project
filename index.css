@@ -108,8 +108,8 @@ main h1 {
   padding: 1rem;
   border-radius: 5px;
   border: none;
-  background-color: #f4e8e8; /* Dark gray input background */
-  color: #0b0b0b; /* White input text */
+  background-color: #0d0d0d; /* Dark gray input background */
+  color: #f5eeee; /* White input text */
   flex-grow: 1;
 }
 
@@ -120,9 +120,10 @@ main h1 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  height: 21px;
 }
 
-/* No projects message */
+/* No projects message */s
 #no-projects {
   text-align: center;
   margin-top: 2rem;
