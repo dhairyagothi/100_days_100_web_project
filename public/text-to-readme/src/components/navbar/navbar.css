@@ -1,57 +1,59 @@
 .navbar {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    background-color: #333;
-    padding: 1rem;
-    max-width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar-button {
-    padding: 0.5rem;
-    background-color: #444;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    width: 100%;
-    text-align: left;
-  }
-  
-  .navbar-button:hover {
-    background-color: #555;
-  }
-  
-  .dropdown {
-    position: absolute;
-    z-index: 10;
-    margin-top: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    background-color: #444;
-    border-radius: 8px;
-    padding: 0.5rem;
-  }
-  
-  .dropdown-item {
-    padding: 0.5rem;
-    background-color: #555;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    text-align: left;
-  }
-  
-  .dropdown-item:hover {
-    background-color: #666;
-  }
-  
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 10;
+}
+
+.navbar-button {
+  padding: 0.5rem;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  text-align: left;
+}
+
+.navbar-button:hover {
+  background-color: #555;
+}
+
+.dropdown {
+  position: absolute;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: #444;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.dropdown-item {
+  padding: 0.5rem;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background-color: #666;
+}

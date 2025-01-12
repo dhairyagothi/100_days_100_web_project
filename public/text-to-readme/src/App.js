@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Editor from './components/editor/Editor';
 import AlertBox from './components/alert/AlertBox';
+import { Typewriter } from 'react-simple-typewriter'
 
 const App = () => {
   const [isPc, setIsPc] = useState(true);
@@ -39,7 +40,15 @@ const App = () => {
       {showAlert && <AlertBox message="Please load on a PC for better experience" onClose={handleCloseAlert} />}
       {isPc && (
         <>
-          <h1 className="app-h1">Text 2 Readme!</h1>
+          <h1 className="app-h1">
+          <Typewriter
+            words={['Welcome to Text2Readme']}
+            cursor
+            cursorBlinking
+            cursorStyle='!'
+            typeSpeed={70}
+          />
+          </h1>
           <Editor />
         </>
       )}

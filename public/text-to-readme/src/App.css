@@ -1,5 +1,5 @@
 html, body {
-  background-color: black;
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
 }
 
 .App {
@@ -15,5 +15,6 @@ html, body {
   font-size: 3rem;
   font-weight: 800;
   color: rgb(185, 45, 255);
+  text-shadow:0px 0px 0 rgb(146,6,216),1px 1px 0 rgb(117,-23,187),2px 2px 0 rgb(88,-52,158), 3px 3px 0 rgb(59,-81,129),4px 4px 3px rgba(0,0,0,0.6),4px 4px 1px rgba(0,0,0,0.5),0px 0px 3px rgba(0,0,0,.2);
 }
 
