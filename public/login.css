@@ -37,7 +37,7 @@ body {
 }
 
 .animated-heading {
-    font-size: 50px;
+    font-size: 34px;
     font-weight: 600;               
     margin-bottom: 20px;
     color: black; /* Yellow */
@@ -45,7 +45,7 @@ body {
 }
 
 .description {
-    font-size: 20px;
+    font-size: 1rem;
     color: #000000;
     margin-bottom: 20px;
     line-height: 1.5;
