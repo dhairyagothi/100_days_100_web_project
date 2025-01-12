@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap");
+/ * @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap");
 
 * {
     padding: 0;
@@ -142,4 +142,142 @@ body::-webkit-scrollbar-thumb {
     margin-left: 100px;
   }
 
+}
+*/
+
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: IBM Plex Sans;
+}
+
+/* Responsive padding */
+@media screen and (min-width: 600px) and (max-width: 899px) {
+  body {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1199px) {
+  body {
+    padding-left: 200px;
+    padding-right: 200px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  body {
+    padding-left: 400px;
+    padding-right: 400px;
+  }
+}
+
+/* Search bar */
+#search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+#searchInput {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 300px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
+}
+
+#no-projects {
+  text-align: center;
+  margin-top: 20px;
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  color: white;
+}
+
+/* Custom scrollbar */
+body::-webkit-scrollbar {
+  width: 1em;
+  height: 1em;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0px 0px 5px 3px #2356c3;
+  border-radius: 30px;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    188deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(51, 51, 131, 1) 18%,
+    rgba(9, 9, 121, 1) 55%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+/* Responsive scrollbar adjustments */
+@media screen and (max-width: 600px) {
+  body::-webkit-scrollbar {
+    width: 1em;
+    height: 1em;
+  }
+
+  body::-webkit-scrollbar-track {
+    box-shadow: inset 0px 0px 5px 3px #2356c3;
+    border-radius: 30px;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    border-radius: 30px;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+      188deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(51, 51, 131, 1) 18%,
+      rgba(9, 9, 121, 1) 55%,
+      rgba(0, 212, 255, 1) 100%
+    );
+  }
+}
+
+/* Small screen adjustments */
+@media(max-width: 430px) {
+  #searchInput {
+    width: 250px;
+    margin-left: 17px;
+  }
+}
+
+@media(max-width: 380px) {
+  #searchButton {
+    margin-right: 0;
+  }
+}
+
+@media(max-width: 330px) {
+  #searchInput {
+    width: 195px;
+    margin-left: 0px;
+  }
+
+  #projects {
+    padding: 9px;
+  }
+
+  .links table tbody tr td {
+    margin-left: 100px;
+  }
 }
