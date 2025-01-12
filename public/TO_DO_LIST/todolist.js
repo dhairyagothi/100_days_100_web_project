@@ -4,21 +4,30 @@ let documentsList = document.querySelector(".documents-list");
 let pdfMessage = document.getElementById("pdfMessage");
 
 function Add() {
-    if (task.value == "") {
+    if (task.value === "") {
         alert("Please enter a task");
     } else {
         let newelement = document.createElement("li");
-        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
+        newelement.innerHTML =
+            task.value + 
+            '<i class="fa-solid fa-trash"></i>' + 
+            '<a>&#10003;</a>';
         container.appendChild(newelement);
         task.value = "";
-        newelement.querySelector("i").addEventListener("click", remove);
-        function remove() {
+
+        // Add event listener for the trash icon to remove the task
+        newelement.querySelector("i").addEventListener("click", () => {
             newelement.remove();
-        }
-        newelement.querySelector("a").addEventListener("click", strike);
-        function strike() {
-            newelement.style.textDecoration = "line-through";
-        }
+        });
+
+        // Add event listener for the checkmark to toggle the strike-through
+        newelement.querySelector("a").addEventListener("click", () => {
+            if (newelement.style.textDecoration === "line-through") {
+                newelement.style.textDecoration = "none";
+            } else {
+                newelement.style.textDecoration = "line-through";
+            }
+        });
     }
 }
 
