@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeedBack</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: url(pngtree-medical-device-line-draft-border-png-image_2392872.jpg);">
+    <div  class="feedbackmain">
+        <h2>FeedBack</h2>
+        <p>Help us help you.</p>
+
+        
+            <form id="feedbackform">
+                <label for="feedbackMessage">Your Feedback:</label>
+                <br><br>
+                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
+                <br><br>
+                <button type="submit">Submit Feedback</button>
+            </form>
+            <a href="index.html" class="back"><button>Back To the Main</button></a>
+    </div>
+    <script>
+        
+        document.getElementById("feedbackform").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+            
+            const feedbackMessage = document.getElementById("feedbackMessage").value;
+            console.log("User Feedback:", feedbackMessage);
+            alert("Thank you for your feedback: " + feedbackMessage);
+        });
+    </script>
+</body>
+</html>
