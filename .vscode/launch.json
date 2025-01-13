@@ -11,5 +11,8 @@
             "url": "http://localhost:8080",
             "webRoot": "${workspaceFolder}"
         }
-    ]
+    ],
+    "scripts": {
+        "start": "node app.js"
+    }
 }
