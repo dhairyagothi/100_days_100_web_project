@@ -38,8 +38,8 @@
     margin: 20px 0;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
-  
-  .board {
+
+.board {
     display: grid;
     grid-template-columns: repeat(3, 170px);
     grid-template-rows: repeat(3, 170px);

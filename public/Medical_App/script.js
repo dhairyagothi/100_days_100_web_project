@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const specialistSearch = document.getElementById('specialistSearch');
     const specialistTypeSelect = document.getElementById('specialistType');
 
-    const specialists = ['Cardiologist', 'Dermatologist', 'Neurologist', 'Orthopedist', 'Pediatrician', 'Psychiatrist'];
+    const specialists = ['Allergist/Immunologist', 'Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Hematologist', 'Nephrologist', 'Neurologist', 'Oncologist', 'Ophthalmologist', 'Otolaryngologist (ENT)', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Rheumatologist', 'Urologist', 'Cardiothoracic Surgeon', 'General Surgeon', 'Neurosurgeon', 'Orthopedic Surgeon', 'Plastic Surgeon', 'Vascular Surgeon', 'Family Medicine Physician', 'General Practitioner (GP)', 'Internal Medicine Physician (Internist)'];
     const consultationHistory = [];
 
     function updateSpecialistOptions(searchText) {
@@ -69,7 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
             consultationHistory.push(newHistoryItem);
             renderHistory();
 
-            statusMessage.textContent = `Consultation requested for Dr. ${doctorName} regarding ${patientCondition}. Specialist type: ${specialistType}.`;
+            statusMessage.textContent = `Consultation requested for Dr.${doctorName} regarding ${patientCondition}.            
+            Specialist type: ${specialistType}.`;
             specialistResponseSection.style.display = 'block';
             requestForm.reset();
         }, 2000);
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderHistory();
         }
 
-        statusMessage.textContent = `Suggestion submitted for Consultation ID ${consultationId}: ${suggestion}`;
+        statusMessage.innerHTML = `Suggestion submitted for Consultation ID <strong>${consultationId}</strong>:${suggestion}`;
         responseForm.reset();
     });
 
