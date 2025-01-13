@@ -17,14 +17,13 @@ function Add() {
         }
         newelement.querySelector("a").addEventListener("click", strike);
         function strike() {
-            if(newelement.style.textDecoration === "line-through")
-              {
-                newelement.style.textDecoration= "none";
-              }
-            else
-            {
-                newelement.style.textDecoration= "line-through";
-            }
+           if(newelement.style.textDecoration === "line-through")
+           {
+            newelement.style.textDecoration="none";
+           }
+           else{
+            newelement.style.textDecoration="line-through";
+           }
         }
     }
 }
