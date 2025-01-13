@@ -5,16 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Love Calculator</title>
 
+    <!-- Include Appwrite SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite"></script>
+
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="contentbox">
         <h1><span>Love</span> Calculator</h1>
-        <p>Enter your name and your crush's name to see the chance that this relationship will work out: </p>
+        <p>Enter your name and your crush's name to see the chance that this relationship will work out:</p>
 
+        <!-- Input for Your Name -->
         <div class="input-group">
             <input type="text" required id="fname">
             <span class="highlight"></span>
@@ -22,22 +27,30 @@
             <label>Your Name</label>
         </div>
 
+        <!-- Input for Crush's Name -->
         <div class="input-group">
             <input type="text" required id="cname">
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Crush Name</label>
         </div>
+
+        <!-- Calculate Button -->
         <button id="calculate">Calculate</button>
 
+        <!-- Result Display -->
         <div class="footer">
             <h2 id="result-message"></h2>
             <p id="result-percentage"></p>
-
         </div>
-
-
     </div>
+
+    <!-- Link to external JavaScript -->
+    <!-- <script>
+        // Appwrite database and collection IDs (replace with actual IDs)
+        const databaseId = "6780f5140020681e525e"; // Replace with your Appwrite database ID
+        const collectionId = "6780f564000eb2946fc7";
+    </script> -->
     <script src="script.js"></script>
 </body>
 

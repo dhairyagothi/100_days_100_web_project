@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: wavy;
+    scroll-behavior: smooth;
+
+}
+@media (max-width: 600px) {
+    /* Adjust styles for mobile devices */
+
+@media (max-width: 768px) { 
+.navbar .menu a{ 
+    padding: 14px, 16px;
+    width: 100%; 
+    text-align:center; 
+    padding: 0px;
+    display:inline-block;
+    font-size:17px;
+} 
+.navbar .menu.active { 
+    display: flex; } 
+.navbar .menu-btn, .navbar .cancel-btn { 
+    display: block; } 
+}
+}
+.navbar .logo a{
+    font-weight: 500;
+    font-size: 35px;
+    color: #4bab5f;
+    font-weight: bold;
+}
+.navbar .logo a:hover{
+    color: #51e55bf3;  
+    text-shadow: 2px 2px 10px rgb(141, 190, 144);
+    transition: text-shadow 0.3s ease-in-out;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0);
+    color:white;
+}
+.navbar .menu{
+    display: flex;
+    position:calc(100%-50px);
+    gap:20px;
+}
+.navbar .menu li a{
+    list-style: none;
+    margin: 0 8px;
+    text-decoration: none;
+    font-size: 18px;
+}
+.navbar .menu li a{
+    font-size: 18px;
+    font-weight: 500;
+    color: #67d7b9;
+    padding: 6px 0;
+    transition: all 0.4s ease;
+}
+.navbar .menu li a{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center;
+    color: #609489;
+    font-weight: 700;
+    font-size: 32px;
+    padding: 20px;
+    padding-right: 50px;
+    gap: 325px;
+    z-index: 30;
+}
+.navbar .menu li a:hover{
+    color: rgb(208, 234, 206);
+    background-color: #224833;
+    border-radius: 3px;
+    width: 100%;
+}
+.quote{
+    text-align: center; 
+    margin: 20px 0; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    border-right: 0.15em solid #ffffff; 
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite; }
+
+body {
+    font-family: "Roboto Condensed", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.typewriter h1 { 
+    overflow: hidden; /* Ensures the text stays within the bounds */
+    border-right: 0.15em solid #ffffff; /* Cursor effect */ 
+    white-space: nowrap; /* Keeps the text on a single line */ 
+    margin: 0 auto; /* Centers the text */ 
+    letter-spacing: 0.15em; /* Adds space between letters */ 
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+} 
+@keyframes typing { 
+    from { width: 0 } 
+    to { width: 100% } 
+} 
+@keyframes blink-caret { 
+    from, to { border-color: transparent } 50% { border-color: #ffffff; } 
+}
+.parallal{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+.text{
+    font-size: 90px;
+    position:relative;
+    color: #ffffff;
+    font-weight: bolder;
+    text-shadow: 2px -2px 8px black;
+}
+img{
+    position: absolute;
+    width: 100%;
+    top: 100px;
+    left:0;
+}
+.text_E{
+    font-size: 50px;
+    color: whitesmoke;
+    text-shadow: #dbefdcf3;
+    align-content: baseline;
+}
+.content{
+    background: #01372d;
+    color: white;
+    font-size: 25px;
+    position:relative;
+    padding: 60px;
+    height: 100dvh;
+}
+.content_blog{
+    background: #01372d;
+    color: white;
+    font-size: 25px;
+    position: relative;
+    padding: 60px;
+    height: 100dvh;
+}
+.quote{
+    text-align: center;
+    margin-bottom: 50px;
+}
+@keyframes slideIn { 
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; } 
+    } 
+@keyframes fadeIn { 
+    from { opacity: 0; }
+    to { opacity: 1; } 
+} 
+@keyframes zoomIn { 
+    from { transform: scale(0); opacity: 0; } 
+    to { transform: scale(1); opacity: 1; } 
+} 
+.about-content, .blog-content, .diy-content {
+    animation: fadeIn 2s ease-in-out; 
+} 
+.about-header { 
+    animation: slideIn 2s ease-out;
+} .blog-header, .diy-header { 
+    animation: zoomIn 2s ease-in-out; 
+} 
+.quote { 
+    text-align: center; 
+    margin-bottom: 50px; 
+    animation: fadeIn 2s ease-in-out;
+}
