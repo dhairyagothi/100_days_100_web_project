@@ -118,34 +118,47 @@ Now, resolve your all doubts and communicate with our all contributors.
 To get started with contributing to 100_days_100_Web Projects , please refer to our [Contributing Guidelines](CONTRIBUTING.md).
 
 Follow these steps:
-
 1. **Clone the repository:** 
-   ```bash
+   
+```bash
    git clone https://github.com/your-username/100_days_100_web_project.git
-
+```
 
    or Use Github desktop to directly clone it in your system
-   ```
+
 
 2. **Navigate to the project directory:**
-   ```bash
-   cd 100_days_100_Web Projects
-   ```
+   
+```bash
+   cd 100_days_100_web_project
+```
 
-3. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-4. **Running the Application:**
-
-    Once you have installed the dependencies, you can run the application locally using:
-
-    ```bash
-    npm run start
-    ```
-
-    This command will start a development server and open the application in your default web browser on local host .
+3. **Initialize the project**
+    Run the following command to initialize a new package.json file:
+    
+```bash
+      npm init -y
+```
+4. **Install lite-server**
+    To set up a development server, install lite-server by running:
+ 
+```bash
+      npm install lite-server --save-dev
+```
+5. **Edit package.json**
+   Open the package.json file and add the following under the "scripts" section:
+   
+```bash 
+   "start": "lite-server",
+```
+6. **Run the Project **
+     Use the following command to start the server:
+    
+```bash
+       npm run start
+```
+   This command will start a development server and open the application in your default web browser on local host.
+   The server will be accessible at http://localhost:3000
 
 **If you'd like to contribute to 100_days_100_Web Projects , please follow these guidelines:**
 
