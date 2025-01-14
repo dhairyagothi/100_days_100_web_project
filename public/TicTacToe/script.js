@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateScoreboard(winner) {
         if (winner === 'X') {
             playerXScore++;
-            playerXWins.textContent = `Player X Wins: ${playerXScore}`;
+            playerXWins.textContent = `Wins: ${playerXScore}`;
         } else if (winner === 'O') {
             playerOScore++;
-            playerOWins.textContent = `Player O Wins: ${playerOScore}`;
+            playerOWins.textContent = `Wins: ${playerOScore}`;
         } else {
             tieCount++;
             draws.textContent = `Draws: ${tieCount}`;
@@ -122,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         tieCount = 0;
 
         // Update scoreboard elements directly after clicking "Reset Scoreboard"
-        playerXWins.textContent = `Player X Wins: ${playerXScore}`;
-        playerOWins.textContent = `Player O Wins: ${playerOScore}`;
+        playerXWins.textContent = `Wins: ${playerXScore}`;
+        playerOWins.textContent = `Wins: ${playerOScore}`;
         draws.textContent = `Draws: ${tieCount}`;
     });
 });
