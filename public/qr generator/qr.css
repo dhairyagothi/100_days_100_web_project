@@ -104,6 +104,13 @@ button:active {
     transform: translateY(0);
 }
 
+.result-card {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+}
+
 #qrcode {
     margin: 1rem auto;
 }
