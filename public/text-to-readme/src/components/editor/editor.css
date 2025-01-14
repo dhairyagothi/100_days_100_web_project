@@ -1,0 +1,94 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  gap: 1rem;
+}
+
+.editor-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.markdown-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  gap: 1rem;
+}
+
+.editor,
+.preview {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+textarea {
+  flex: 1;
+  border: none;
+  padding: 1rem;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  background-color: #f9f9f9;
+}
+
+.preview {
+  padding: 1rem;
+  overflow-y: auto;
+  font-size: 16px;
+}
+
+.preview h1,
+.preview h2,
+.preview h3 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  margin-top: 1rem;
+}
+
+.preview pre {
+  background-color: #f6f6f6;
+  padding: 8px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.download-button-container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.download-button {
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #0056b3;
+}
