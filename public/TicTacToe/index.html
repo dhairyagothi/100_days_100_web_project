@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>TIC-TAC-TOE</h1>
   <div class="container">
+    <h1>Tic Tac Toe</h1>
     <div class="game-wrapper">
       <div class="board" id="board">
         <div class="cell" data-index="0"></div>
@@ -22,14 +22,19 @@
         <div class="cell" data-index="8"></div>
       </div>
       <div class="scoreboard">
-        <h2>Scoreboard</h2>
-        <p id="playerXWins">Player X Wins: 0</p>
-        <p id="playerOWins">Player O Wins: 0</p>
-        <p id="draws">Draws: 0</p>
-        <button id="resetScoreboard">Reset Scoreboard</button>
+        <div class="player" id="playerO">
+          <h2>Player O</h2>
+          <p id="playerOWins">Wins: 0</p>
+        </div>
+        <div class="player" id="draws1">
+          <p id="draws">Draws: 0</p>
+        </div>
+        <div class="player" id="playerX">
+          <h2>Player X</h2>
+          <p id="playerXWins">Wins: 0</p>
+        </div>
       </div>
-    </div>
-    
+      <button id="resetScoreboard">Reset Scoreboard</button>
   </div>
 
   <div class="modal" id="resultModal">
@@ -41,5 +46,5 @@
   </div>
 
   <script src="script.js"></script>
-</body>
+</body> 
 </html>
