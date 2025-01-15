@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Job Dashboard</title>
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+
+    <link rel="stylesheet" href="jobs.css" />
+  </head>
+  <body>
+
+     <!-- job filter section starts -->
+    
+         <section class="job-filter">
+             <h1 class="heading">filter jobs</h1>
+             <form id="jobFilterForm" onsubmit="return filterJobs()">
+                 <div class="flex">
+                     <div class="box">
+                         <p>job title</p>
+                         <input type="text" name="title" placeholder="keyword, category or company"  maxlength="20" class="input">
+                     </div>
+                     <div class="box">
+                         <p>job location</p>
+                         <input type="text" name="location" placeholder="city, state or country" maxlength="50" class="input">
+                     </div>
+                 </div>
+                 <div class="dropdown-container">
+                     <div class="dropdown">
+                         <input type="text" readonly name="datePosted" placeholder="date posted" maxlength="20" class="output">
+                         <div class="lists">
+                             <p class="items" onclick="selectDropdown(this)">today</p>
+                             <p class="items" onclick="selectDropdown(this)">3 days ago</p>
+                             <p class="items" onclick="selectDropdown(this)">7 days ago</p>
+                             <p class="items" onclick="selectDropdown(this)">15 days ago</p>
+                             <p class="items" onclick="selectDropdown(this)">30 days ago</p>
+                         </div>
+                     </div>
+     
+                     <div class="dropdown">
+                         <input type="text" readonly name="salary" placeholder="estimated salary" maxlength="20" class="output">
+                         <div class="lists">
+                             <p class="items" onclick="selectDropdown(this)">1k or less</p>
+                             <p class="items" onclick="selectDropdown(this)">1k - 5k</p>
+                             <p class="items" onclick="selectDropdown(this)">5k - 10k</p>
+                             <p class="items" onclick="selectDropdown(this)">10k - 20k</p>
+                             <p class="items" onclick="selectDropdown(this)">20k - 30k</p>
+                             <p class="items" onclick="selectDropdown(this)">30k - 40k</p>
+                             <p class="items" onclick="selectDropdown(this)">40k - 50k</p>
+                             <p class="items" onclick="selectDropdown(this)">50k - 1 lakh</p>
+                             <p class="items" onclick="selectDropdown(this)">1 lakh - 5 lakh</p>
+                             <p class="items" onclick="selectDropdown(this)">5 lakh - 10 lakh</p>
+                             <p class="items" onclick="selectDropdown(this)">10 lakh - 20 lakh</p>
+                             <p class="items" onclick="selectDropdown(this)">20 lakh - 50 lakh</p>
+                             <p class="items" onclick="selectDropdown(this)">50 lakh - 1 crore</p>
+                         </div>
+                     </div>
+     
+                     <div class="dropdown">
+                         <input type="text" readonly name="jobType" placeholder="job type" maxlength="20" class="output">
+                         <div class="lists">
+                             <p class="items" onclick="selectDropdown(this)">full time</p>
+                             <p class="items" onclick="selectDropdown(this)">part-time</p>
+                             <p class="items" onclick="selectDropdown(this)">internship</p>
+                             <p class="items" onclick="selectDropdown(this)">contract</p>
+                             <p class="items" onclick="selectDropdown(this)">temporary</p>
+                             <p class="items" onclick="selectDropdown(this)">fresher</p>
+                         </div>
+                     </div>
+     
+                     <div class="dropdown">
+                         <input type="text" readonly name="education" placeholder="education level" maxlength="20" class="output">
+                         <div class="lists">
+                             <p class="items" onclick="selectDropdown(this)">10th pass</p>
+                             <p class="items" onclick="selectDropdown(this)">12th pass</p>
+                             <p class="items" onclick="selectDropdown(this)">bachelor's degree</p>
+                             <p class="items" onclick="selectDropdown(this)">master's degree</p>
+                             <p class="items" onclick="selectDropdown(this)">diploma</p>
+                         </div>
+                     </div>
+     
+                     <div class="dropdown">
+                         <input type="text" readonly name="shift" placeholder="work shifts" maxlength="20" class="output">
+                         <div class="lists">
+                             <p class="items" onclick="selectDropdown(this)">day shift</p>
+                             <p class="items" onclick="selectDropdown(this)">night shift</p>
+                             <p class="items" onclick="selectDropdown(this)">flexible shift</p>
+                             <p class="items" onclick="selectDropdown(this)">fixed shift</p>
+                         </div>
+                     </div>
+                 </div>
+                 <button type="submit" class="btn">Apply Filter</button>
+                 <button type="button" id="resetButton" class="btn">Reset Filters</button>
+
+             </form>
+         </section>
+     
+       
+        
+       <!-- job filter section ends -->
+ <!-- all jobs section starts -->
+ <section class="job-container">
+     <h1 class="heading">All Jobs</h1>
+     <div class="box-container">
+         <div class="box">
+             <div class="company">
+                 <img src="./image/html.webp" alt=" ">
+                 <div>
+                     <h3>IT Infosy co.</h3>
+                     <p>2 days ago</p>
+                 </div>
+             </div>
+             <h3 class="job-title">Senior Web Developer</h3>
+             <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
+             <div class="tags">
+                 <p><i class="fas fa-indian-rupee-sign"></i> <span>10k - 20k</span></p>
+                 <p><i class="fas fa-briefcase"></i> <span>Part-time</span></p>
+                 <p><i class="fas fa-clock"></i> <span>Day shift</span></p>
+             </div>
+             <div class="flex-btn">
+                 <a href="ITinfosy.html" class="btn">View details</a>
+                 <button class="far fa-heart"></button>
+             </div>
+         </div>
+         <div class="box">
+           <div class="company">
+               <img src="./image/css3-logo-png-transparent.png" alt=" ">
+               <div>
+                   <h3>All Media Ltd.</h3>
+                   <p>2 days ago</p>
+               </div>
+           </div>
+           <h3 class="job-title">Qualified Developer</h3>
+           <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
+           <div class="tags">
+               <p><i class="fas fa-indian-rupee-sign"></i> <span>9000</span></p>
+               <p><i class="fas fa-briefcase"></i> <span>full-time</span></p>
+               <p><i class="fas fa-clock"></i> <span>flexible shift</span></p>
+           </div>
+           <div class="flex-btn">
+               <a href="AllmediaLts.html" class="btn">View details</a>
+               <button class="far fa-heart"></button>
+           </div>
+       </div>
+       <div class="box">
+         <div class="company">
+             <img src="./image/java.jpg" alt=" ">
+             <div>
+                 <h3>Software Soution</h3>
+                 <p>posted today</p>
+             </div>
+         </div>
+         <h3 class="job-title">Javascript Developer</h3>
+         <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
+         <div class="tags">
+             <p><i class="fas fa-indian-rupee-sign"></i> <span>10k - 20k</span></p>
+             <p><i class="fas fa-briefcase"></i> <span>internship</span></p>
+             <p><i class="fas fa-clock"></i> <span>night shift</span></p>
+         </div>
+         <div class="flex-btn">
+             <a href="softwareSolution.html" class="btn">View details</a>
+             <button class="far fa-heart"></button>
+         </div>
+     </div>
+     <div class="box">
+       <div class="company">
+           <img src="https://static.vecteezy.com/system/resources/previews/001/198/090/non_2x/world-png.png" alt=" ">
+           <div>
+               <h3>IT World</h3>
+               <p>19 days ago</p>
+           </div>
+       </div>
+       <h3 class="job-title">Junior Front-End</h3>
+       <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
+       <div class="tags">
+           <p><i class="fas fa-indian-rupee-sign"></i> <span>40k - 50k</span></p>
+           <p><i class="fas fa-briefcase"></i> <span>contract</span></p>
+           <p><i class="fas fa-clock"></i> <span>fixed shift</span></p>
+       </div>
+       <div class="flex-btn">
+           <a href="ITWorlds.html" class="btn">View details</a>
+           <button class="far fa-heart"></button>
+       </div>
+   </div>
+   <div class="box">
+     <div class="company">
+         <img src="https://th.bing.com/th/id/OIP.iJbuiX_YdBeTqI7wYawlwwHaHa?rs=1&pid=ImgDetMain" alt=" ">
+         <div>
+             <h3>Info Statics</h3>
+             <p>2 days ago</p>
+         </div>
+     </div>
+     <h3 class="job-title">Junior Assistant</h3>
+     <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
+     <div class="tags">
+         <p><i class="fas fa-indian-rupee-sign"></i> <span>5000</span></p>
+         <p><i class="fas fa-briefcase"></i> <span>temporary</span></p>
+         <p><i class="fas fa-clock"></i> <span>flexible shift</span></p>
+     </div>
+     <div class="flex-btn">
+         <a href="InfoStatics.html" class="btn">View details</a>
+         <button class="far fa-heart"></button>
+     </div>
+ </div>
+ <div class="box">
+   <div class="company">
+       <img src="./image/php.jpg" alt=" ">
+       <div>
+           <h3>Mass Idea</h3>
+           <p>2 days ago</p>
+       </div>
+   </div>
+   <h3 class="job-title">PHP Developer</h3>
+   <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
+   <div class="tags">
+       <p><i class="fas fa-indian-rupee-sign"></i> <span>50k - 1lakh</span></p>
+       <p><i class="fas fa-briefcase"></i> <span>fresher</span></p>
+       <p><i class="fas fa-clock"></i> <span>Day shift</span></p>
+   </div>
+   <div class="flex-btn">
+       <a href="massIdea.html" class="btn">View details</a>
+       <button class="far fa-heart"></button>
+   </div>
+ </div>
+ 
+ 
+  </div>
+ 
+ </section>
+ <!-- all jobs section end -->
+ 
+
+   
+    <script src="jobs.js"></script>
+  
+  </body>
+</html>
