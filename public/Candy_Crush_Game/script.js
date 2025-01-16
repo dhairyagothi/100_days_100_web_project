@@ -19,6 +19,20 @@ window.onload = function() {
         generateCandy();
     }, 100);
 }
+    // Reset button functionality
+    document.getElementById("Reset").addEventListener("click", function() {
+        // Reset score
+        score = 0;
+        document.getElementById("score").innerText = score; // Update the score display
+
+        // Clear the board array and HTML content
+        board = [];
+        document.getElementById("board").innerHTML = ""; // Clear the board visually
+
+        // Reinitialize the game
+        startGame();
+    });
+
 
 function randomCandy() {
     return candies[Math.floor(Math.random() * candies.length)]; //0 - 5.99

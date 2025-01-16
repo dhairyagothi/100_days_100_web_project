@@ -12,6 +12,7 @@ html {
     width: 100%;
     height: 100%;
     z-index: -1;
+    filter: blur(5px);
 }
 
 .content {
@@ -20,119 +21,119 @@ html {
     padding: 20px;
 }
 
-#bgCanvas {
-    filter: blur(5px);
-}
-
 @media(max-width:426px) {
-    .links table tbody tr td{
-        padding: 8px 4px;
+    .links table tbody tr td {
+        padding: 6px 2px; /* Reduce padding for smaller screens */
     }
 }
 
 @media(max-width:330px) {
-    .links table tbody tr td{
+    .links table tbody tr td {
         padding-left: 2px;
         padding-right: 2px;
-      }
+    }
 
-      .links table tbody tr .project-name{
-        padding: 8px 7px;
-      }
+    .links table tbody tr .project-name {
+        padding: 6px 4px; /* Reduce padding for project names */
+    }
 
-      .links table tbody tr td a{
+    .links table tbody tr td a {
         margin-left: 4px;
-      }
-    
+    }
 }
 
+/* Add hover effect for links */
+.links table tbody tr td a:hover {
+    color: #007BFF; /* Change color on hover */
+    text-decoration: underline; /* Highlight links */
+}
 
 /* Base styles */
 body {
-  font-family: sans-serif;
-  background-color: #181818; /* Dark gray background */
-  color: #ffffff; /* White text color */
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    font-family: sans-serif;
+    background-color: #181818; /* Dark gray background */
+    color: #ffffff; /* White text color */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* Header styles */
 header {
-  background-color: #2ecc71; /* Teal color */
-  color: #ffffff; /* White text */
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    background-color: #2ecc71; /* Teal color */
+    color: #ffffff; /* White text */
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 header h1 {
-  margin: 0;
-  font-size: 2rem; /* Adjust font size as needed */
+    margin: 0;
+    font-size: 2rem; /* Adjust font size as needed */
 }
 
 header nav {
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: 1rem;
 }
 
 header a {
-  color: #ffffff;
-  text-decoration: none;
+    color: #ffffff;
+    text-decoration: none;
 }
 
 /* Main content styles */
 main {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 main h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: #ffffff; /* White heading text */
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ffffff; /* White heading text */
 }
 
 /* Search bar styles */
 #search-bar {
-  display: flex;
-  margin-bottom: 2rem;
+    display: flex;
+    margin-bottom: 2rem;
 }
 
 #searchInput {
-  padding: 1rem;
-  border-radius: 5px;
-  border: none;
-  background-color: #0d0d0d; /* Dark gray input background */
-  color: #f5eeee; /* White input text */
-  flex-grow: 1;
+    padding: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #0d0d0d; /* Dark gray input background */
+    color: #f5eeee; /* White input text */
+    flex-grow: 1;
 }
 
 #searchButton {
-  padding: 1rem 1.5rem;
-  background-color: #2ecc71; /* Teal button color */
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  height: 24px;
+    padding: 1rem 1.5rem;
+    background-color: #2ecc71; /* Teal button color */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 24px;
 }
 
-/* No projects message */s
+/* No projects message */
 #no-projects {
-  text-align: center;
-  margin-top: 2rem;
+    text-align: center;
+    margin-top: 2rem;
 }
 
 /* Footer styles */
 footer {
-  background-color: #222222;
-  padding: 1rem;
-  text-align: center;
-  color: #f3eeee; /* Light gray footer text */
+    background-color: #222222;
+    padding: 1rem;
+    text-align: center;
+    color: #f3eeee; /* Light gray footer text */
 }
