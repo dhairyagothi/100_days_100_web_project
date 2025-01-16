@@ -2,55 +2,92 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-}
-
-body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
     display: flex;
-    justify-content: center;
+    justify-content: ceer;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, rgb(46, 46, 46), rgb(60, 59, 59));
-}
-
-.container {
+    background: #000435;
+    font-size: 18px;
+    flex-direction: column;
+    padding: 0 20px;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: row;
     text-align: center;
-}
-
-h1 {
-    margin-bottom: 20px;
+    color: #000435;
+    flex: 1;
+    gap: 20px;
+    width: 90%;
+    max-width: 1000px;
+    justify-content: center;
+  }
+  
+  h1 {
+    font-family: "Arial", sans-serif;
+    font-size: 3em;
+    font-weight: bold;
     color: white;
-}
-
-.board {
+    border: 2px #8A00C4;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .board {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 5px;
-    margin-bottom: 20px;
-}
-
-.cell {
+    grid-template-columns: repeat(3, 170px);
+    grid-template-rows: repeat(3, 170px);
+    gap: 15px;
+    margin-top: 20px;
+    left: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  .cell {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    font-size: 2em;
+    background-color: #8A00C4;
+    border: 2px solid #FFFFFF;
+    font-size: 3em;
     cursor: pointer;
-}
-
-.cell:hover {
-    background-color: #e0e0e0;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 1em;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .cell:hover {
+    background-color: #FDFDFD;
+    transform: scale(1.1);
+  }
+  
+  button {
+    padding: 12px 25px;
+    font-size: 1.2em;
     cursor: pointer;
-}
-
-.modal {
+    background-color: #8A00C4;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 5px;
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #11790B;
+    transform: scale(1.05);
+  }
+  
+  .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -58,46 +95,76 @@ button {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto;
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 20px;
+  }
+  
+  .modal-content {
+    background-color: #E8E8E8;
+    margin: 15% auto;
+    padding: 30px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 300px;
+    max-width: 350px;
     text-align: center;
-}
-
-.close {
-    color: #aaa;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .close {
+    color: #AAA;
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
+  }
+  
+  .close:hover,
+  .close:focus {
     color: black;
-}
-
-.scoreboard {
-    width: 310px;
-    margin-left: 0px;
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .scoreboard {
+    width: 300px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    margin-top: 30px;
+    animation: slideIn 0.3s ease-out;
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
   }
   
   .scoreboard h2 {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #000000;
   }
   
   .scoreboard p {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-size: 1.2em;
+    color: #555;
   }
   
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }

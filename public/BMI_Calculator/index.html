@@ -13,20 +13,24 @@
   </head>
   <body>
     <div class="bmi">
-      <h2>Body Mass Index Calculator</h2>
-      <p class="text">Height</p>
-        <select id="height-unit">
-            <option value="cm">cm</option>
-            <option value="feet">feet/inches</option>
+      <h2 style="color: azure;font-weight: bold;font-size:40px">Body Mass Index Calculator</h2>
+      <p class="text" style="font-weight: bold;font-size:20px">Height</p>
+        <select id="height-unit" style="text-align: center;">
+            <option value="cm" >Centimeter</option>
+            <option value="feet">Feet/Inches</option>
         </select>
-        <input type="text" id="height">
-        <p class="text">Weight</p>
-        <select id="weight-unit">
-            <option value="kg">kg</option>
-            <option value="lb">pounds</option>
+        <input type="text" id="height" title="Enter your height" placeholder="Height">
+        <br>
+        <br>
+
+        <p class="text" style="font-weight: bold;font-size:20px">Weight</p>
+        <select id="weight-unit" style="text-align: center;">
+            <option value="kg">Kilogram</option>
+            <option value="lb">Pounds</option>
         </select>
-        <input type="text" id="weight">
+        <input type="text" id="weight" title="Enter your weight" placeholder="Weight">
         <p id="result"></p><button id="btn">Calculate</button>
+        <br>
         <div id="result"></div>
         <div id="category"></div>
         <div id="tips"></div>
@@ -59,7 +63,7 @@
           </tr>
         </tbody>
       </table>
-      <canvas id="bmiChart"></canvas>
+      <canvas id="bmiChart" style="background-color: black;"></canvas>
     </div>
     <script src="script.js"></script>
     <footer class="footer">

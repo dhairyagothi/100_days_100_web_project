@@ -3,45 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Missionaries and Cannibals Game</title>
+    <title>Missionaries and Cannibals</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Missionaries and Cannibals Game</h1>
+    <h1>Missionaries and Cannibals</h1>
     <div class="instructions">
-        <h2>How to Play</h2>
-        <p>Your goal is to get all the missionaries and cannibals across the river safely.</p>
-        <p>Rules:</p>
-        <ul>
-            <li>The boat can carry a maximum of 2 people at a time.</li>
-            <li>If cannibals outnumber missionaries on either bank, the missionaries will be eaten.</li>
-        </ul>
-        <p>Steps:</p>
-        <ol>
-            <li>Select one or two passengers to board the boat from the current bank.</li>
-            <li>Move the boat to the opposite bank.</li>
-            <li>Unload the passengers on the other bank.</li>
-            <li>Ensure that no missionaries are outnumbered by cannibals on either bank.</li>
-            <li>Repeat until all missionaries and cannibals are on the right bank.</li>
-            <li>Click on M or C to move them from one place to another,</li>
-        </ol>
+        <p>Use the boat to transfer missionaries and cannibals between the banks. The boat can carry two people at a time.</p>
     </div>
+
     <div class="game-container">
-        <div id="left-bank" class="bank">
-            <div class="people missionaries-container" id="left-missionaries"></div>
-            <div class="people cannibals-container" id="left-cannibals"></div>
+        <!-- Left Bank -->
+        <div class="bank" id="left-bank">
+            <h2>Left Bank</h2>
+            <div class="people" id="left-people">
+                <!-- Missionaries and Cannibals -->
+            </div>
         </div>
-        <div id="boat" class="boat"></div>
-        <div id="right-bank" class="bank">
-            <div class="people missionaries-container" id="right-missionaries"></div>
-            <div class="people cannibals-container" id="right-cannibals"></div>
+
+        <!-- Boat -->
+        <div class="boat" id="boat">
+            <h2>Boat</h2>
+            <div class="people" id="boat-people">
+                <!-- Boat People -->
+            </div>
+        </div>
+
+        <!-- Right Bank -->
+        <div class="bank" id="right-bank">
+            <h2>Right Bank</h2>
+            <div class="people" id="right-people">
+                <!-- Missionaries and Cannibals -->
+            </div>
         </div>
     </div>
+
     <div class="controls">
-        <button onclick="moveBoat()">Move Boat</button>
-        <button onclick="resetGame()">Reset Game</button>
+        <button id="start-reset">Start Game</button>
     </div>
+
     <div id="message"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
+

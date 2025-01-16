@@ -77,13 +77,23 @@
     
 
     <style>
+
+    nav.navbar {
+        position: fixed;
+        top: 0;
+        width: 100%; 
+        z-index: 1000; 
+        background-color: #1abc9c;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
       #scrollBtn {
     position: fixed;
     bottom: 20px; /* Place closer to the bottom */
     right: 20px;  /* Place closer to the right */
     display: none; /* Initially hidden */
     background-color: #1abc9c;
-    color: white;
+    color: rgb(247, 242, 242);
     border: none;
     border-radius: 50%;
     padding: 15px;
@@ -134,6 +144,7 @@
       #title-heading {
         margin-top: 3rem;
         margin-bottom: 3rem;
+        color: white;
       }
 
       @media (max-width: 426px) {
@@ -149,7 +160,7 @@
       <div class="title is-2 has-text-centered" id="title-heading">
         100 Days 100 Web Projects
       </div>
-      <p class="subtitle has-text-centered">
+      <p class="subtitle has-text-centered" style="color: white;">
         here are live demos of all the projects
       </p>
 
@@ -190,51 +201,70 @@
       <div id="no-projects" style="display: none">No Projects Found</div>
     </div>
 
-
-
-    <footer>
-      <div class="footer-content" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; padding: 20px; background-color: #00D1B2; color: black;">
-        <div class="footer-section about" style="flex: 2; min-width: 300px; display: flex; align-items:flex-start; margin: 10px; transition: transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-          <img src="images/1736231291121.png" alt="100 Days 100 Web Projects Logo" style="width: 100px; margin-right: 20px;">
-          <p style="margin: 0;">The "100 Days, 100 Web Projects" challenge involves building one mini-project daily using HTML, CSS, and JavaScript. It boosts web development skills, creativity, and builds a strong project portfolio.</p>
-        </div>
+    <footer class="footer">
+      <div class="content">
+        <div class="columns is-vcentered">
+          <!-- Left Side -->
+          <div class="column has-text-left">
+            <div class="heading">
+              <h2 class="is-size-4">About</h2>
+              <p>This repository contains 100 web projects from basic to intermediate using HTML, CSS, and JS.</p>
+              <p>
+                <strong>
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  100 Days, 100 Projects
+                </strong>
+                by <a href="#">Dhairya</a> and <a href="#">Contributors</a>.
+              </p>
+            </div>
+          </div>
     
-        <div class="footer-section services" style="flex: 1; min-width: 150px; margin: 10px;">
-          <h2 style="font-size: 18px; margin-bottom: 10px; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">100 Days 100 Web Projects</h2>
-          <ul style="list-style: none; padding: 0;">
-            <li><a href="#who-we-are" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Who We Are</a></li>
-            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Blog</a></li>
-            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Work With Us</a></li>
-            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Investor Relations</a></li>
-            <li><a href="#contact-us" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Contact Us</a></li>
-          </ul>
+          <!-- Right Side -->
+          <div class="column">
+            <div class="heading">
+              <h2 class="is-size-4">Important Links</h2>
+              <!-- Social Media Icons -->
+              <div class="buttons">
+                <a class="button is-dark is-rounded" href="https://www.instagram.com/dhairyaa__31/" target="_blank" aria-label="Instagram">
+                  <span class="icon">
+                    <i class="fab fa-instagram"></i>
+                  </span>
+                </a>
+                <a class="button is-dark is-rounded" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" aria-label="GitHub">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                </a>
+                <a class="button is-dark is-rounded" href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" aria-label="LinkedIn">
+                  <span class="icon">
+                    <i class="fab fa-linkedin"></i>
+                  </span>
+                </a>
+              </div>
+              <!-- Navigation Links -->
+              <div class="buttons">
+                <a class="button is-primary is-rounded" href="#">
+                  <span class="icon">
+                    <i class="fas fa-home"></i>
+                  </span>
+                  <span>Home</span>
+                </a>
+                <a class="button is-link is-rounded" href="contributors/contributor.html">
+                  <span class="icon">
+                    <i class="fas fa-users"></i>
+                  </span>
+                  <span>Contributors</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-    
-        <div class="footer-section learn-more" style="flex: 1; min-width: 150px; margin: 10px;">
-          <h2 style="font-size: 18px; margin-bottom: 10px; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">Learn More</h2>
-          <ul style="list-style: none; padding: 0;">
-            <li><a href="privacy.html" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Privacy Policy</a></li>
-            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Security</a></li>
-            <li><a href="Terms.html" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.paddingLeft='10px'" onmouseout="this.style.color='black'; this.style.paddingLeft='0'">Terms of Service</a></li>
-          </ul>
-        </div>
-    
-        <div class="footer-section social-links" style="flex: 1; min-width: 150px; margin: 10px;">
-          <h2 style="font-size: 18px; margin-bottom: 10px; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">Follow Us</h2>
-          <ul class="social-icons" style="list-style: none; padding: 0; display: flex; gap: 10px;">
-            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-instagram"></i></a></li>
-            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-facebook"></i></a></li>
-            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="#" style="color: black; text-decoration: none; font-size: 24px; transition: all 0.3s ease;" onmouseover="this.style.color='#e67e22'; this.style.transform='scale(1.2)'; this.style.display='inline-block'" onmouseout="this.style.color='black'; this.style.transform='scale(1)'"><i class="fab fa-youtube"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    
-      <div class="footer-bottom" style="margin:10px; padding: 10px; text-align: center;">
-        <p style="margin: 0; color: white; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='white'">© 2024 100 Days 100 Web Projects. All rights reserved.</p>
       </div>
     </footer>
+
     
 
 
