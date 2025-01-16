@@ -20,11 +20,6 @@
                 <li><a href="#more">More</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <!-- dark mode -->
-                <li>
-                    <input type="checkbox" id="dark-mode-toggle"/>
-                    <label for="dark-mode-toggle" class="theme-label"></label>
-                </li>
             </ul>
         </div>
         <div class="icons">
@@ -35,7 +30,6 @@
             </ul>
         </div>
     </nav>
-    
     <main>
         <div id="home" class="block1">
             <div class="block1-text">
@@ -103,27 +97,6 @@
         <p>&copy; 2024 Planto. All rights reserved.</p>
     </footer>
     <script src="script.js"></script>
-   
-
-
-<script>
-document.getElementById('dark-mode-toggle').addEventListener('change', function() {
-    document.body.classList.toggle('dark-mode');
-    document.querySelector('.navbar').classList.toggle('dark-mode');
-    document.querySelector('.block1').classList.toggle('dark-mode');
-    document.querySelector('.block2').classList.toggle('dark-mode');
-    document.querySelector('.about-section').classList.toggle('dark-mode');
-    document.querySelector('.newsletter').classList.toggle('dark-mode');
-    document.querySelector('footer').classList.toggle('dark-mode');
-    document.querySelectorAll('.items ul li a').forEach(function(element) {
-        element.classList.toggle('dark-mode');
-    });
-    document.querySelectorAll('.buy-button').forEach(function(element) {
-        element.classList.toggle('dark-mode');
-    });
-});
-</script>
-
 </body>
 
 </html>
