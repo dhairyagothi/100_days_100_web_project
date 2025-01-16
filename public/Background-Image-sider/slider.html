@@ -1,30 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>slider</title>
-<link rel="stylesheet" href="slider.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Trip Advisor</title>
+    <link rel="stylesheet" href="slider.css">
+    <style>
+        body {
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s ease-in-out;
+            color: white;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #00ff00;
+        }
+
+        .content {
+            text-align: center;
+            margin-top: 5%;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+
+        select {
+            padding: 10px;
+            font-size: 1em;
+            margin: 20px 0;
+        }
+
+        .booking {
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 2px solid white;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        @media screen and (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .content {
+                margin-top: 10%;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+
+            .booking {
+                width: 80%;
+            }
+        }
+    </style>
 </head>
 <body>
 <header>
-    <nav class="navbar"><div><h1>TRIP ADVISOR</h1></div>
-    <div>
+    <div class="navbar">
+        <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-style:italic;font-style:bold">TRIP ADVISOR</h1>
         <ul>
             <li><a href="#">HOME</a></li>
             <li><a href="#">CONTACT US</a></li>
             <li><a href="#">ABOUT US</a></li>
+            <li><a href="#">SERVICES</a></li>
         </ul>
     </div>
-    
-    </nav>
 </header>
-<div class="content">
-    <div><h1>TRIP ADVISOR</h1><br>
-    <h2>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit quae quidem at iure repudiandae. Et, non! Impedit nobis eum ut ipsum deleniti doloremque!</h2></div>
-       
-    </div>
-    
 
+<div class="content">
+    <p id="placeDescription">Explore the beauty of glaciers and the breathtaking landscapes of Iceland.</p>
+    <h1 id="placeTitle">Iceland</h1>
+    
+    <select id="placeSelector">
+        <option value="Iceland">Iceland</option>
+        <option value="Switzerland">Switzerland</option>
+        <option value="Scotland">Scotland</option>
+        <option value="Ireland">Ireland</option>
+        <option value="Germany">Germany</option>
+    </select>
+    <br>
+    <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
+</div>
+
+<script>
+    const placeBackgrounds = {
+        "Iceland": "url('images/iceland.jpg')",
+        "Switzerland": "url('images/Jennifer.avif')",
+        "Scotland": "url('images/Daniel.jpeg')",
+        "Ireland": "url('images/kai.jpg')",
+        "Germany": "url('images/Hannes-Becker4.jpg')"
+    };
+
+    const placeDescriptions = {
+        "Iceland": "Explore the beauty of glaciers and the breathtaking landscapes of Iceland.",
+        "Switzerland": "Experience the serene beauty of the Swiss Alps and picturesque villages.",
+        "Scotland": "Discover the rich history and stunning highlands of Scotland.",
+        "Ireland": "Immerse yourself in the lush green landscapes and vibrant culture of Ireland.",
+        "Germany": "Explore Germany's charming cities and stunning countryside."
+    };
+
+    const placeSelector = document.getElementById('placeSelector');
+    const bookingButton = document.getElementById('bookingButton');
+    const placeTitle = document.getElementById('placeTitle');
+    const placeDescription = document.getElementById('placeDescription');
+    const body = document.body;
+
+    // Function to update the UI
+    function updatePlace(place) {
+        body.style.backgroundImage = placeBackgrounds[place];
+        placeTitle.textContent = place;
+        placeDescription.textContent = placeDescriptions[place];
+        bookingButton.textContent = `Book a Trip to ${place}`;
+    }
+
+    // Event listener for place selection
+    placeSelector.addEventListener('change', function () {
+        const selectedPlace = placeSelector.value;
+        updatePlace(selectedPlace);
+    });
+
+    
+    window.onload = function () {
+        const defaultPlace = "Iceland";
+        updatePlace(defaultPlace);
+        placeSelector.value = defaultPlace;
+    };
+</script>
 </body>
 </html>
