@@ -6,11 +6,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Candy Crush</title>
         <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
         <script src="script.js"></script>
     </head>
 
     <body>
+        <div class="logo-container">
+            <p class="logo-text">Candy Crush</p>
+            <p class="logo-subtext">Sweetness overload!</p>
+        </div>
         <h1>Score: <span id="score">0</span></h1>
+        <div id="rules">
+            <h2>Game Rules</h2>
+            <ul>
+                <li>Swap adjacent candies to make a row or column of 3 or more candies of the same color.</li>
+                <li>When 3 or more candies are aligned, they are crushed and your score increases.</li>
+                <li>Continue swapping candies to create new combinations and increase your score.</li>
+                
+            </ul>
+        </div>
         <div id="board"></div>
+        <button id="Reset">Reset</button>
     </body>
 </html>
