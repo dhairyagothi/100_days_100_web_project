@@ -123,6 +123,7 @@ input:focus, select:focus {
     background: linear-gradient(135deg, #ff6a88, #ff99ac); /* Vibrant message box */
     border-radius: 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: white;
