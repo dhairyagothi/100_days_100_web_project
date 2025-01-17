@@ -113,8 +113,10 @@ main h1 {
   border-radius: 5px;
   border: none;
   /* background-color: #0d0d0d; Dark gray input background */
-  color: #f5eeee; /* White input text */
+  color: #22428C; /* White input text */
   flex-grow: 1;
+  font-weight: 500;
+
 }
 
 #searchButton {
@@ -148,4 +150,30 @@ footer {
   font-family: "Indie Flower", serif;
   font-weight: 800;
   font-style: normal;
+}
+
+.cursor-follower{
+  height:35px;
+  width:35px;
+  border-radius: 100%;
+  position: absolute;
+  background-color: transparent;
+  z-index: 1000;
+  top:100px;
+  transition: 2s ease-in;
+  background-image: url("./react.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  animation: circle 4s linear infinite alternate-reverse;
+  background-blend-mode:overlay;
+}
+
+@keyframes circle {
+  0%{
+    transform: rotateZ(0deg);
+  }
+  
+  100%{
+    transform: rotateZ(360deg);
+  }
 }

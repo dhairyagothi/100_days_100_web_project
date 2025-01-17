@@ -276,11 +276,36 @@
       <i class="fa-solid fa-arrow-up fa-lg"></i>
     </button>
 
+    <div class="cursor-follower">
+
+    </div>
+
     <!-- Pushed JavaScript Code To Here -->
     <script src="index.js"></script>
     <script src="bulma.js"></script>
 
     <script>
+
+      //cursor-follower code
+      var body = document.querySelector("body");
+      var cf = document.querySelector(".cursor-follower");
+      var xp=0;
+      var yp=0;
+      var mouseX=0;
+      var mouseY=0;
+      body.addEventListener("mousemove",(e)=>{
+        mouseX=e.pageX;
+        mouseY=e.pageY;
+      })
+
+      setInterval(()=>{
+        xp+=(mouseX - xp);
+        yp+=(mouseY - yp);
+
+        cf.style.left=xp+"px";
+        cf.style.top=yp+"px";
+      },20);
+
       // Get the button element
       const scrollBtn = document.getElementById('scrollBtn');
   
@@ -300,6 +325,8 @@
             behavior: "smooth"
         });
       };
+
+
   
     </script>
   </body>
