@@ -103,7 +103,9 @@ This repository contains 100 web projects from basic to intermediate using html 
 - Day 76 ] animated searchbar
 - Day 77 ] rock-paper-scissor-game project
 - Day 78 ] npm package search
-- Day 79 ] linkedin homepage clone using react 
+- Day 79 ] linkedin homepage clone using react
+
+- Day-95.] TodoList in React-TS-Tailwind ( to use this TodoList you need to first clone this repo -> open folder TodoList-React-TS-Tailwind -> npm i -> npm run dev -> open http://localhost:5173 -> see TodoList . that's it all set.   
 
 ## Discord Channel for VSoC 2024 Contributors
 
