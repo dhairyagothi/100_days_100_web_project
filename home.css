@@ -67,7 +67,7 @@
 
 
 body::-webkit-scrollbar {
-  width: 1em;
+  width: 1  em;
   height: 1em;
 }
 

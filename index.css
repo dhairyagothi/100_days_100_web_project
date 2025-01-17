@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
 body,
 html {
     margin: 0;
@@ -50,7 +53,7 @@ html {
 /* Base styles */
 body {
   font-family: sans-serif;
-  background-color: #181818; /* Dark gray background */
+  background-color: #22428C; 
   color: #ffffff; /* White text color */
   margin: 0;
   display: flex;
@@ -96,6 +99,7 @@ main h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
   color: #ffffff; /* White heading text */
+  
 }
 
 /* Search bar styles */
@@ -108,7 +112,7 @@ main h1 {
   padding: 1rem;
   border-radius: 5px;
   border: none;
-  background-color: #0d0d0d; /* Dark gray input background */
+  /* background-color: #0d0d0d; Dark gray input background */
   color: #f5eeee; /* White input text */
   flex-grow: 1;
 }
@@ -123,6 +127,12 @@ main h1 {
   height: 24px;
 }
 
+.links{
+  font-family: "Indie Flower", serif;
+  font-weight: 400;
+  font-size: 18px;
+  font-style: normal;
+}
 /* No projects message */s
 #no-projects {
   text-align: center;
@@ -135,4 +145,7 @@ footer {
   padding: 1rem;
   text-align: center;
   color: #f3eeee; /* Light gray footer text */
+  font-family: "Indie Flower", serif;
+  font-weight: 800;
+  font-style: normal;
 }

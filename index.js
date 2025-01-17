@@ -99,9 +99,9 @@ function fillTable(){
         link = document.createElement("td")
         a = document.createElement("a")
         
-
-        days.innerText = (e[0]) // Putting Data in the table data elements
-        nameP.innerText = (e[1])
+        
+        days.innerHTML = ("<i class='fa-solid fa-calendar'></i> "+e[0]) // Putting Data in the table data elements
+        nameP.innerHTML = ("<i class='fa-solid fa-list-check'></i> "+e[1])
         a.href = e[2]
         a.innerText = "Here"
         nameP.classList.add("project-name") // Added this class to search among the results
