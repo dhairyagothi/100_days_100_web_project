@@ -35,50 +35,8 @@
     />
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   </head>
-
-  <body>
-    <!-- Navbar -->
-    <nav
-      class="navbar is-primary"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div class="navbar-brand">
-        <a class="navbar-item has-text-weight-bold" href="index.html">
-          <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"/>
-          100 DAYS 100 WEB PROJECTS
-        </a>
-       
-        <a
-          role="button"
-          class="navbar-burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div class="navbar-menu is-active" id="navbar-menu">
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    
-
-    <style>
-
-    nav.navbar {
+  <style type="text/css">
+     nav.navbar {
         position: fixed;
         top: 0;
         width: 100%; 
@@ -109,7 +67,7 @@
     transform: scale(1.2); /* Slightly enlarge */
 }
       .contributors-btn {
-        background: linear-gradient(45deg, #10866f, #054135);
+        background: linear-gradient(45deg, #10866f, );
         color: white;
         padding: 10px 20px; /* Adjust padding to make the button rectangular */
         font-size: 0.8rem; /* Font size */
@@ -153,8 +111,51 @@
           margin-bottom: 3rem;
         }
       }
-    </style>
+    
+  </style>
 
+  <body>
+    
+    <!-- Navbar -->
+    <nav
+      class="navbar is-primary"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item has-text-weight-bold" href="index.html">
+          <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"/>
+          100 DAYS 100 WEB PROJECTS
+        </a>
+       
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarBasicExample"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="navbar-menu is-active" id="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav><br><br>
+
+    
+
+    
     <!-- Main Page Starts Here -->
     <div class="content" id="projects">
       <div class="title is-2 has-text-centered" id="title-heading">
@@ -194,7 +195,20 @@
               <th>Demo Link</th>
             </tr>
           </thead>
-          <tbody id="tableBody"></tbody>
+          <tbody id="tableBody">
+            <tr>
+              <td>Day 1</td>
+              <td>To-Do List</td>
+              <td><a href="#" class="demo-link">Here</a></td>
+            </tr>
+            <tr>
+              <td>Day 2</td>
+              <td>Digital Clock</td>
+              <td><a href="#" class="demo-link">Here</a></td>
+            </tr>
+            <!-- Add more rows as needed -->
+          </tbody>
+
         </table>
       </div>
 
@@ -223,7 +237,7 @@
           </div>
     
           <!-- Right Side -->
-          <div class="column">
+          <div class="column ms-4">
             <div class="heading">
               <h2 class="is-size-4">Important Links</h2>
               <!-- Social Media Icons -->
@@ -245,7 +259,7 @@
                 </a>
               </div>
               <!-- Navigation Links -->
-              <div class="buttons">
+              <div class="buttons ms-5">
                 <a class="button is-primary is-rounded" href="#">
                   <span class="icon">
                     <i class="fas fa-home"></i>
@@ -301,3 +315,6 @@
     </script>
   </body>
 </html>
+
+
+
