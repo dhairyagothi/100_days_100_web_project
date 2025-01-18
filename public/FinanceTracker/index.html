@@ -1,0 +1,536 @@
+<!-- Kept Everything in one file  for ease of access -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --accent-color: #fd79a8;
+            --background-color: #f0f3f6;
+            --text-color: #2d3436;
+            --card-background: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        header h1 {
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .balance, .income, .expense {
+            flex: 1;
+            min-width: 250px;
+            background: var(--card-background);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .balance:hover, .income:hover, .expense:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .balance { border-bottom: 5px solid var(--primary-color); }
+        .income { border-bottom: 5px solid #2ecc71; }
+        .expense { border-bottom: 5px solid var(--accent-color); }
+
+        h2 { 
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+
+        #balance, #income, #expense {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        #balance:hover, #income:hover, #expense:hover {
+            transform: scale(1.05);
+        }
+
+        form {
+            background: var(--card-background);
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        form:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+        }
+
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #transactions {
+            margin-top: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            background: var(--card-background);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            text-align: left;
+            padding: 15px;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+
+        tr {
+            background-color: var(--card-background);
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .income-row { background-color: rgba(46, 204, 113, 0.1); }
+        .expense-row { background-color: rgba(253, 121, 168, 0.1); }
+
+        #chart-container {
+            width: 100%;
+            height: 400px;
+            margin-top: 40px;
+            background: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #chart-container:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        #expense-chart {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard > div, form, #transactions, #chart-container {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            .balance, .income, .expense {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        #theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-background);
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        #theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        body.dark-mode {
+            --background-color: #1a1a2e;
+            --text-color: #e0e0e0;
+            --card-background: #16213e;
+            --primary-color: #0f3460;
+            --secondary-color: #533483;
+            --accent-color: #e94560;
+        }
+
+        body.dark-mode #theme-toggle svg {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <header>
+        <div class="container">
+            <h1>Personal Finance Tracker</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="balance">
+                <h2>Current Balance</h2>
+                <div id="balance">$0.00</div>
+            </div>
+            <div class="income">
+                <h2>Total Income</h2>
+                <div id="income">$0.00</div>
+            </div>
+            <div class="expense">
+                <h2>Total Expenses</h2>
+                <div id="expense">$0.00</div>
+            </div>
+        </div>
+
+        <form id="transaction-form">
+            <input type="text" id="description" placeholder="Description" required>
+            <input type="number" id="amount" placeholder="Amount" step="0.01" required>
+            <select id="type" required>
+                <option value="">Select Type</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <select id="category" required>
+                <option value="">Select Category</option>
+                <option value="salary">Salary</option>
+                <option value="food">Food</option>
+                <option value="rent">Rent</option>
+                <option value="utilities">Utilities</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="other">Other</option>
+            </select>
+            <input type="submit" value="Add Transaction">
+        </form>
+
+        <div id="transactions">
+            <h2>Recent Transactions</h2>
+            <table id="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div id="chart-container">
+            <canvas id="expense-chart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        const balanceEl = document.getElementById('balance');
+        const incomeEl = document.getElementById('income');
+        const expenseEl = document.getElementById('expense');
+        const form = document.getElementById('transaction-form');
+        const transactionsTable = document.getElementById('transactions-table').getElementsByTagName('tbody')[0];
+        const chartContainer = document.getElementById('chart-container');
+
+        function updateBalance() {
+            const balance = transactions.reduce((acc, transaction) => {
+                if (transaction.type === 'income') {
+                    return acc + transaction.amount;
+                } else {
+                    return acc - transaction.amount;
+                }
+            }, 0);
+
+            const income = transactions
+                .filter(transaction => transaction.type === 'income')
+                .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+            const expense = transactions
+                .filter(transaction => transaction.type === 'expense')
+                .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+            balanceEl.textContent = `$${balance.toFixed(2)}`;
+            incomeEl.textContent = `$${income.toFixed(2)}`;
+            expenseEl.textContent = `$${expense.toFixed(2)}`;
+
+            // Add animation to updated values
+            [balanceEl, incomeEl, expenseEl].forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // Trigger reflow
+                el.style.animation = 'fadeIn 0.5s ease-out';
+            });
+        }
+
+        function addTransaction(e) {
+            e.preventDefault();
+
+            const description = document.getElementById('description').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const type = document.getElementById('type').value;
+            const category = document.getElementById('category').value;
+            const date = new Date().toISOString().split('T')[0];
+
+            const transaction = { description, amount, type, category, date };
+            transactions.push(transaction);
+
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+
+            updateBalance();
+            displayTransactions();
+            updateChart();
+
+            form.reset();
+
+            // Add animation to form on submit
+            form.style.animation = 'none';
+            form.offsetHeight; // Trigger reflow
+            form.style.animation = 'fadeIn 0.5s ease-out';
+        }
+
+        function displayTransactions() {
+            transactionsTable.innerHTML = '';
+
+            transactions.slice().reverse().forEach((transaction, index) => {
+                const row = transactionsTable.insertRow();
+                row.className = transaction.type === 'income' ? 'income-row' : 'expense-row';
+
+                const descCell = row.insertCell(0);
+                const amountCell = row.insertCell(1);
+                const typeCell = row.insertCell(2);
+                const categoryCell = row.insertCell(3);
+                const dateCell = row.insertCell(4);
+
+                descCell.textContent = transaction.description;
+                amountCell.textContent = `$${transaction.amount.toFixed(2)}`;
+                typeCell.textContent = transaction.type;
+                categoryCell.textContent = transaction.category;
+                dateCell.textContent = transaction.date;
+
+                // Add staggered animation to new rows
+                row.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s`;
+            });
+        }
+
+        function updateChart() {
+            const categories = {};
+            transactions.forEach(transaction => {
+                if (transaction.type === 'expense') {
+                    if (categories[transaction.category]) {
+                        categories[transaction.category] += transaction.amount;
+                    } else {
+                        categories[transaction.category] = transaction.amount;
+                    }
+                }
+            });
+
+            const labels = Object.keys(categories);
+            const data = Object.values(categories);
+
+            if (window.myChart) {
+                window.myChart.destroy();
+            }
+
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const chartColors = isDarkMode 
+                ? ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40']
+                : ['#ff9ff3', '#54a0ff', '#5f27cd', '#48dbfb', '#ff6b6b', '#10ac84'];
+
+            const ctx = document.getElementById('expense-chart').getContext('2d');
+            window.myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: chartColors,
+                        borderColor: isDarkMode ? '#2d3436' : 'white',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Expense Breakdown by Category',
+                            font: {
+                                size: 18
+                            },
+                            color: isDarkMode ? '#e0e0e0' : '#2d3436'
+                        },
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: isDarkMode ? '#e0e0e0' : '#2d3436'
+                            }
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            });
+        }
+
+        form.addEventListener('submit', addTransaction);
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            localStorage.setItem('dark-mode', body.classList.contains('dark-mode'));
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('dark-mode') === 'true') {
+            body.classList.add('dark-mode');
+        }
+
+        // Update chart colors when theme changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    updateChart();
+                }
+            });
+        });
+
+        observer.observe(body, { attributes: true });
+
+
+        updateBalance();
+        displayTransactions();
+        updateChart();
+    </script>
+</body>
+</html>
+
