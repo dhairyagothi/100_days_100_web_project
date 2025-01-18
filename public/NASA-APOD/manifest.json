@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "APOD",
+    "version": "1.0",
+    "description": "Displays the Astronomy Picture of the Day when the first tab of the day is opened.",
+    "permissions": ["storage", "activeTab", "scripting"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+      }
+    },
+    "icons": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  }
+  

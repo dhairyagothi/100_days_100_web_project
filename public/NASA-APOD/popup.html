@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APOD Explorer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="content">
+    <div class="header">
+      <div class="search-container">
+        <input type="date" id="date-search" class="date-input">
+        <button id="search-btn" class="search-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <button id="bookmarks-list-btn" class="nav-btn">
+        <i class="fas fa-list"></i>
+      </button>
+      <button id="bookmark-btn" class="nav-btn">
+        <i class="far fa-star"></i>
+      </button>
+    </div>
+
+
+<div id="main-view">
+    <div id="loader" class="loader-overlay">
+      <div class="loader"></div>
+    </div>
+    <div class="content-container">
+      <h1 id="title" class="title">Loading...</h1>
+      <div class="image-container fade-in">
+        <img id="image" alt="Astronomy Picture of the Day" src="/api/placeholder/400/250">
+      </div>
+      <div class="description-container fade-in">
+        <p id="description">Loading amazing space content...</p>
+      </div>
+    </div>
+  </div>
+
+    <div id="bookmarks-view" class="hidden">
+      <h2 class="bookmarks-title">Your Bookmarked Images</h2>
+      <div id="bookmarks-list" class="bookmarks-list">
+      </div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
