@@ -167,11 +167,8 @@ function fillTable() {
       ["Day 96","HCL Color Generator","./public/HCL Color Generator/index.html"],
       ["Day 97","Time Capsule","public/Time-Capsule/index.html"],
          ["Day 98","Virtual Piano","./public/Virtual Piano/index.html"]
-        ["Day 99","Drumkit Game","public/Drumkit_Game/index.html"],
         
-        
-
-
+    
     ];
 
     const tbody = document.getElementById('tableBody');
