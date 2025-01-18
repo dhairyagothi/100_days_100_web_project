@@ -126,7 +126,7 @@ body {
     position:relative;
     color: #ffffff;
     font-weight: bolder;
-    text-shadow: 2px -2px 8px black;
+    text-shadow: 2px -2px 10px rgb(86,228,96);
 }
 img{
     position: absolute;
@@ -146,7 +146,7 @@ img{
     font-size: 25px;
     position:relative;
     padding: 60px;
-    height: 100dvh;
+    height: 80dvh;
 }
 .content_blog{
     background: #01372d;
@@ -154,10 +154,11 @@ img{
     font-size: 25px;
     position: relative;
     padding: 60px;
-    height: 100dvh;
+    height: 140dvh;
 }
 .quote{
     text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
     margin-bottom: 50px;
 }
 @keyframes slideIn { 
@@ -184,4 +185,10 @@ img{
     text-align: center; 
     margin-bottom: 50px; 
     animation: fadeIn 2s ease-in-out;
+}
+
+.Content_header{
+    font-size:35px;
+    font-weight: bold;
+    font-family:Arial, Helvetica, sans-serif;
 }
