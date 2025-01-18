@@ -158,7 +158,7 @@ function fillTable() {
         ["Day 87", "Breakout game", "/public/Breakout game/index.html"],
         ["Day 88","Job dashboard","/public/Job dashboard/jobs.html"],
         ["Day 89","N-Queen","/public/N_Queen/index.html"],
-        ["Day 90","Kowledge Quiz","public/knowledge quiz/index1.html"],
+        ["Day 90","Quize App Timer","public/QuizeApp Timer/index1.html"],
         ["Day 91","Voting Application Backend", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public"],
         ["Day 92","Slide puzzle Game","public/Slide puzzle Game/index.html"],
         ["Day 93","TextUtils", "/public/Textutils/src/App.js"],
