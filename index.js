@@ -164,7 +164,8 @@ function fillTable() {
         ["Day 93","TextUtils", "/public/Textutils/src/App.js"],
         ["Day 94","Hangman Game","./public/HangmanGame/index.html"],
         ["Day 95","TodoList in React TS Tailwind","./public/TodoList-React-TS-Tailwind/index.html"],
-      ["Day 96","HCL Color Generator","./public/HCL Color Generator/index.html"]
+      ["Day 96","HCL Color Generator","./public/HCL Color Generator/index.html"],
+        ["Day 98","Personal Finance Tracker","./public/FinanceTracker/index.html"]
 
     ];
 
