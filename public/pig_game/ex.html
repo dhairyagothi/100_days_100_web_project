@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            background: none;
+            display: block;
+            margin: 0 auto;
+            cursor: pointer;
+            border: 1px solid blue;
+        }
+    </style>
+    <title>Firecracker Animation</title>
+</head>
+<body>
+    <canvas id="firecrackerCanvas" width="1400" height="650">
+
+
+        
+    </canvas>
+
+    <script>
+        const canvas = document.getElementById("firecrackerCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const particles = [];
+
+        canvas.addEventListener("click", launchFirecracker);
+
+        function launchFirecracker(event) {
+            const x = event.clientX - canvas.getBoundingClientRect().left;
+            const y = event.clientY - canvas.getBoundingClientRect().top;
+
+            explode(x, y);
+        }
+
+        function explode(x, y) {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+
+            for (let i = 0; i < 100; i++) {
+                const particle = {
+                    x: x,
+                    y: y,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 6,
+                    speedY: (Math.random() - 0.5) * 6,
+                    color: colors[Math.floor(Math.random() * colors.length)]
+                };
+
+                particles.push(particle);
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                const particle = particles[i];
+
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                particle.size *= 0.95;
+
+                ctx.fillStyle = particle.color;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (particle.size <= 0.5) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

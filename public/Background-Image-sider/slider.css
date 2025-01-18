@@ -7,13 +7,13 @@
 body{
     background: black;
     color: white;
-    background-image: url(images/iceland.jpg);
+    background-image:placebackground;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     min-height: 100vh;
     width: 100%;
-    animation: bg-change 20s linear infinite ;
+    animation: bg-change 40s infinite ;
 }
 
 ul{
@@ -32,6 +32,8 @@ ul{
     justify-content: space-evenly;
     align-items: center;
     gap: 550px;
+    
+    
 }
 .navbar ul li {
   position: relative;
@@ -40,7 +42,7 @@ ul{
 .navbar ul li a{
   text-decoration:none;
   color: white;
-
+  
 }
 
 
@@ -60,47 +62,89 @@ ul li:hover::after{
   width: 100%;
 }
 
-.content{
-    top: 50vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding: 20px;
-    align-items: center;
-    width: auto;
-    gap: 50px;
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.content{
-  width: 800px;
+
+/* @keyframes bg-change {
+  0%, 5%, 10% {
+    background-image: url(images/iceland.jpg);
+  }
+  15%, 20%, 25% {
+    background-image: url(images/Brooke-Holm.jpeg);
+  }
+  30%, 35%, 40% {
+    background-image: url(images/Jennifer.avif);
+  }
+  45%, 50%, 55% {
+    background-image: url(images/Daniel.jpeg);
+  }
+  60%, 65%, 70% {
+    background-image: url(images/kai.jpg);
+  }
+  75%, 80%, 85% {
+    background-image: url(images/Hannes-Becker4.jpg);
+  }
+  90%, 95%, 100% {
+    background-image: url(images/Tobias-Hagg.jpg);
+  }
+}
+
+@keyframes text-change {
+  0%, 10% {
+    content: "Iceland - Explore the beauty of glaciers";
+  }
+  15%, 25% {
+    content: "Iceland By: Brooke Holm";
+  }
+  30%, 40% {
+    content: "Switzerland By: Jennifer Esseiva";
+  }
+  45%, 55% {
+    content: "Scotland By: Daniel Casson";
+  }
+  60%, 70% {
+    content: "Ireland By: Kai Hornung";
+  }
+  75%, 85% {
+    content: "Germany By: Hannes Becker";
+  }
+  90%, 100% {
+    content: "Snowfields - Dive into the serene whites";
+  }
+} */
+
+.container {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  animation: bg-change 40s infinite;
   position: relative;
-  top: 50vh;
-  word-wrap: break-word;
-  padding-left: 70px;
 }
-@keyframes bg-change {
- 0%{background-image: url(images/iceland.jpg);}
- 5%{background-image: url(images/iceland.jpg);}
-10%{background-image: url(images/iceland.jpg);}
-15%{background-image: url(images/iceland.jpg);}
-20%{background-image: url(images/iceland.jpg);}
-25%{background-image: url(images/iceland.jpg);}
-30%{background-image: url(images/castelmezzano.jpg);}
-35%{background-image: url(images/castelmezzano.jpg);}
-40%{background-image: url(images/castelmezzano.jpg);}
-45%{background-image: url(images/castelmezzano.jpg);}
-50%{background-image: url(images/castelmezzano.jpg);}
-55%{background-image: url(images/castelmezzano.jpg);}
-60%{background-image: url(images/mountains-862870.jpg);}
-65%{background-image: url(images/mountains-862870.jpg);}
-70%{background-image: url(images/mountains-862870.jpg);}
-75%{background-image: url(images/mountains-862870.jpg);}
-80%{background-image: url(images/mountains-862870.jpg);}
-85%{background-image: url(images/mountains-862870.jpg);}
-90%{background-image: url(images/snow-3193865.jpg);}
-95%{background-image: url(images/snow-3193865.jpg);}
-100%{background-image: url(images/snow-3193865.jpg);}
 
+.container::after {
+  content: "Iceland - Explore the beauty of glaciers"; /* Default text */
+  animation: text-change 40s infinite;
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  font-size: 1.5em;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
 
+.booking{
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  width: 40%;
+  margin-right: 30px;
+  border-radius: 100px ;
+  border: solid 2px white;
 }
 
 @media only screen and (max-width: 768px) {
@@ -121,4 +165,30 @@ ul li:hover::after{
     top: 40vh;
     padding-left: 10px;
   }
+}
+
+
+
+
+
+
+
+
+#placeDescription {
+  font-size: 1.2em;
+  margin-bottom: 50px; 
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+#placeTitle {
+  font-size: 2.5em;
+  margin-bottom: 50px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  color: white;
+  font-family: Georgia,serif;
+  font-style: italic;
+  background-color: rgb(9, 5, 9);
+  padding: 15px;
+  border-radius: 10px;
+  border: solid 5px white;
 }
