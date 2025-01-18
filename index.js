@@ -171,7 +171,7 @@ function fillTable() {
       ["Day 100","Text Saver Extension","public/Text_Saver_Ext/popup.html"],
       ["Day 101","Personal Finance Tracker","./public/FinanceTracker/index.html"],
 ["Day 102","Travel Booking Website","./public/Travel_booking_website/index.html"],
-["Day 103","Drumkit Game","./public/Drumkit_game/index.html"]
+["Day 103","Drumkit Game","./public/Drumkit_Game/index.html"]
     ];
 
     const tbody = document.getElementById('tableBody');
