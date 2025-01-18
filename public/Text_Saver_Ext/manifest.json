@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "Text Saver",
+    "description": "Save selected text and its source with a keypress or double-click.",
+    "version": "1.0",
+    "permissions": ["storage", "activeTab", "scripting"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ],
+    "action": {
+      "default_popup": "popup.html",
+      "default_title": "Saved Texts"
+    }
+  }
+  
