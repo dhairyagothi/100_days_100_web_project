@@ -1,0 +1,82 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: sans-serif;
+    background: linear-gradient(120deg,#3494e6,#ec6ead);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container{
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    padding: 30px;
+    width: auto;
+}
+
+h1{
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.color-display{
+    width: 400px;
+    height: 200px;
+    margin: 20px auto;
+    border-radius: 12px;
+    /* background-color: aqua; */
+    transition: background-color 0.3s ease-in-out;
+}
+
+.controls{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control{
+    display: flex;
+    align-items: center;
+    margin: 10px 0px 10px 80px;
+    width: 400px;
+}
+
+.slider-container{
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin-left: 40px;
+}
+
+
+label{
+    width: 50px;
+    font-weight: bold;
+    text-align: left;
+}
+
+input{
+    width: 60%;
+    margin-right: 10px;
+}
+
+#copyButton{
+    background-color: red;
+    color: ghostwhite;
+    border: none;
+    border-radius: 10px;
+    transition: all;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
