@@ -148,7 +148,7 @@
             box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
         }
 
-        input[type="submit"] {
+        input[type="submit"], button {
             display: block;
             width: 100%;
             padding: 12px;
@@ -161,7 +161,7 @@
             transition: all 0.3s ease;
         }
 
-        input[type="submit"]:hover {
+        input[type="submit"]:hover, button:hover {
             background: var(--secondary-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -256,15 +256,21 @@
             background: var(--card-background);
             border: none;
             border-radius: 50%;
-            padding: 10px;
+            padding: 8px;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             z-index: 1000;
             transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        #theme-toggle:hover {
-            transform: scale(1.1);
+        #theme-toggle svg {
+            width: 20px;
+            height: 20px;
         }
 
         body.dark-mode {
@@ -279,11 +285,20 @@
         body.dark-mode #theme-toggle svg {
             transform: rotate(180deg);
         }
+
+        #clear-storage {
+            margin-top: 20px;
+            background-color: #e74c3c;
+        }
+
+        #clear-storage:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body>
     <button id="theme-toggle" aria-label="Toggle dark mode">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
     </button>
     <header>
         <div class="container">
@@ -327,6 +342,8 @@
             <input type="submit" value="Add Transaction">
         </form>
 
+        <button id="clear-storage">Clear All Data</button>
+
         <div id="transactions">
             <h2>Recent Transactions</h2>
             <table id="transactions-table">
@@ -357,6 +374,7 @@
         const form = document.getElementById('transaction-form');
         const transactionsTable = document.getElementById('transactions-table').getElementsByTagName('tbody')[0];
         const chartContainer = document.getElementById('chart-container');
+        const clearStorageBtn = document.getElementById('clear-storage');
 
         function updateBalance() {
             const balance = transactions.reduce((acc, transaction) => {
@@ -500,7 +518,19 @@
             });
         }
 
+        function clearStorage() {
+            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+                localStorage.removeItem('transactions');
+                transactions = [];
+                updateBalance();
+                displayTransactions();
+                updateChart();
+                alert('All data has been cleared.');
+            }
+        }
+
         form.addEventListener('submit', addTransaction);
+        clearStorageBtn.addEventListener('click', clearStorage);
 
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
@@ -508,24 +538,13 @@
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             localStorage.setItem('dark-mode', body.classList.contains('dark-mode'));
+            updateChart();
         });
 
         // Check for saved theme preference
         if (localStorage.getItem('dark-mode') === 'true') {
             body.classList.add('dark-mode');
         }
-
-        // Update chart colors when theme changes
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    updateChart();
-                }
-            });
-        });
-
-        observer.observe(body, { attributes: true });
-
 
         updateBalance();
         displayTransactions();
