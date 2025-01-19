@@ -22,7 +22,7 @@ Welcome to 100_days_100_web_project! learn and practise web development by contr
 This repository contains 100 web projects from basic to intermediate using html css and js 
 
  **PROJECT NAME --- LIVE DEMO**          
-**visit URL for live demo :-** https://100-days-100-web-project.vercel.app/  
+**visit URL for live demo :-** https://100-days-100-web-project.vercel.app/ 
 
 | Day | Project Name | Link to the Project Folder | Description |
 |--------|--------------|----------------------------|-------------|
