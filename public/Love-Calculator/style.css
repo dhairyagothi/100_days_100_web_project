@@ -12,6 +12,19 @@ body {
     align-items: center;
     min-height: 100vh;
     background: #f472b6;
+    background-image: url('white-3d-heart-free-png.webp');
+            background-repeat:repeat;
+            
+            background-size: 30px 30px;
+            animation: moveBackground 3s ease-in-out infinite alternate;
+}
+@keyframes moveBackground {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 50px 50px;
+    }
 }
 
 .contentbox {
