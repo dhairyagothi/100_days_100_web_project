@@ -17,6 +17,7 @@
     border-radius: 1rem;
     min-height: 45vh;
     width: 40vh;
+    box-shadow: 5px -2px 5px black;
   }
   
   form {
@@ -75,8 +76,12 @@
   
   form button {
     height: 3rem;
-    background-color: #af4d98;
+    background-color: #9a3082;
     color: #fff;
     font-size: 1.15rem;
     cursor: pointer;
+  }
+
+  form button:hover{
+    background-color;
   }
