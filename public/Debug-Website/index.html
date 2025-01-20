@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🎮 Debug Quest | GDG RCCIIT</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="k1" content="GREAT_DEVELOPER" />
+    <meta name="k2" content="SECRET_KEY" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Droid+Serif:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .debug-key::after {
+        --secret: "76616c7565";
+        content: attr(data-null);
+      }
+      .key-fragment {
+        position: absolute;
+        clip: rect(0 0 0 0);
+        kerning: 3px;
+        /* emphasis: none;
+            yacht: none; */
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="key-fragment"
+      data-part1="Y29uZ3JhdHVsYXRpb25z"
+      data-part2="eW91IGFyZSBh"
+      data-part3="Z3JlYXQgZGV2ZWxvcGVy"
+    ></div>
+    <div
+      style="display: none"
+      class="debug-key"
+      data-value="fake_key_here"
+    ></div>
+
+    <div
+      class="trailing-cursor"
+      style="position: absolute; left: 100px; top: 100px"
+    ></div>
+
+    <div class="nav">
+      <button onclick="startRotation(); playSpinSound()">O for Orange</button>
+      <h1 class="logo">Debug Quest | Level 2</h1>
+      <div class="score">Score: <span id="score">0</span>/10</div>
+    </div>
+
+    <div class="grid">
+      <div
+        class="card glitch vanish-on-click"
+        id="card1"
+        onclick="improveVanishingAct()"
+      >
+        <h2 style="padding-top: 10px">The Ghostly Revelation</h2>
+        <p>
+          Unravel the mystery as shadows blend with the night,<br />
+          Click to unveil the spirit hidden from sight.
+        </p>
+        <p class="distorted-text">Hover to Reveal the Distortion!</p>
+        <div class="glitch-effect">
+          <span
+            class="glitch-text"
+            style="display: inline-block; margin: 0 auto"
+            >You can't escape!</span
+          >
+        </div>
+        <button
+          class="action-btn vanish-btn"
+          id="ghost-button"
+          onclick="playEerieSound()"
+        >
+          Discover the Secret
+        </button>
+      </div>
+
+      <div class="card glitch" id="diwali-text">
+        <h2>Festival of Lights</h2>
+        <p>
+          A night filled with joy, bright and loud,<br />
+          Light the diyas, gather the crowd.
+        </p>
+        <p>Points: <span id="points">0</span></p>
+        <button id="celebrate-button" class="action-btn" onclick="celebrate()">
+          Celebrate
+        </button>
+      </div>
+
+      <div class="card potion" id="POTION">
+        <h2>The Restless Message</h2>
+        <h3>(The "Does Nothing" Card)</h3>
+        <p>
+          There's nothing like the laughter<br />
+          of a baby. Unless it's 1 A.M<br />
+          and you're home alone!
+        </p>
+        <p id="hidden-message">Boo! You found a hidden message!</p>
+        <div class="potion-bottle">
+          <div class="liquid"></div>
+          <div class="bubbles">
+            <!-- Bubbles -->
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card elevate glitch" id="chaotic">
+        <h2>🤪 The Bouncing Bamboozler</h2>
+        <p>
+          🎈 Bouncing around with no sense of space,<br />
+          🚀 I zoom through your screen, leaving no trace!
+        </p>
+        <button class="action-btn" onclick="distortScreen(); playDisSound();">
+          🚀 Launch Into Chaos! 🎉
+        </button>
+      </div>
+
+      <div class="card glitch" id="safari-card">
+        <h2>Safari Adventure</h2>
+        <p>
+          "Venture into the safari, where the wild is tamed and the tamed is
+          wild—just don’t ask the giraffe for directions, they never look down."
+        </p>
+        <div class="chamber">
+          <button class="action-btn" onclick="embarkOnAdventure()">
+            Embark on Adventure
+          </button>
+        </div>
+        <div class="safari-effect"></div>
+        <div class="bsod-message" style="display: none"></div>
+      </div>
+
+      <div class="card glitch" id="disturb">
+        <h2 id="disturbance-title">The Disturbance Code</h2>
+        <button
+          class="action-btn"
+          id="disturbance-btn"
+          onclick="triggerDisturbance(),moveCardAround(), playAmogus();"
+        >
+          Tap If You Dare
+        </button>
+        <p id="disturbance-text">What you seek is... unfindable.</p>
+        <p id="hidden-disturbance" class="hidden-message">
+          Nothing is as it seems...
+        </p>
+        <div
+          class="bsoD"
+          id="bsod"
+          style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            z-index: 9999;
+          "
+        >
+          FATAL ERROR! SYSTEM CRASHED!
+        </div>
+      </div>
+
+      <div id="card7">
+        <h2>SYSTEM FAILURE</h2>
+        <button
+          id="glitch-message"
+          class="actionbutton"
+          onclick="triggerCrash()"
+        >
+          UNLEASH CHAOS
+        </button>
+        <button id="glitch-message2" class="sevencard" onclick="createMemory()">
+          ERROR MEMORY
+        </button>
+        <!-- Floating cyberpunk emojis inside the card -->
+        <div class="floating-element">🦾</div>
+        <div class="floating-element">💀</div>
+        <div class="floating-element">🤖</div>
+        <div class="floating-element">👾</div>
+        <div class="floating-element">⚡</div>
+      </div>
+
+      <div class="card glitch" id="card8">
+        <h2 style="font-size: 2.5rem">Clumsy Time Machine</h2>
+        <div class="fake-ip" id="fake-ip" style="display: none"></div>
+        <button
+          style="padding: 10px"
+          class="action-btn"
+          id="timeButton"
+          onclick="triggerTimeMachine()"
+        >
+          Travel Through Time
+        </button>
+      </div>
+
+      <div class="card glitch" id="finale">
+        <h2>The Final Call <span class="laughing-emoji">😂</span></h2>
+        <p>
+          The screen flickers, shadows creep.<br />
+          A simple press, and you may weep,<br />
+          What you seek is far from deep.
+        </p>
+        <button
+          class="action-btn"
+          id="finale_btn"
+          onclick="triggerFullScreenImage()"
+        >
+          Embrace the Unknown
+        </button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>🎮 Level 2: The Confounding Catastrophes</p>
+      <p>Made with 🖤 by Debarati Seal</p>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
