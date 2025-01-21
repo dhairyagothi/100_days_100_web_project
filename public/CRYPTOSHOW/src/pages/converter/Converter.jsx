@@ -6,10 +6,11 @@ const Convert = () => {
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('BTC');
   const [result, setResult] = useState('');
-  const apiKey = '685419b6bedfb725bb6af07ed3dd6fef8f20a83f05c066d1eb20a10c563c7801';
+  const apiKey = process.env.REACT_APP_API_KEY;
 
   const handleConvert = () => {
     const apiUrl = `https://min-api.cryptocompare.com/data/price?fsym=${toCurrency}&tsyms=${fromCurrency}&api_key=${apiKey}`;
+
     
     fetch(apiUrl)
       .then(response => response.json())
