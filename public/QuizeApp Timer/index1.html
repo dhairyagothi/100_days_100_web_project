@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Multi-Category Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <div class="container">
+        <div id="start-screen" class="screen">
+            <div class="quiz-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <h1>Welcome to QuizMaster!</h1>
+            <p class="intro-text">Choose a category and test your knowledge!</p>
+            
+            <div class="categories-grid">
+                <div class="category-card" data-category="general">
+                    <i class="fas fa-globe"></i>
+                    <h3>General Knowledge</h3>
+                    <p>Test your knowledge about various topics</p>
+                </div>
+                <div class="category-card" data-category="science">
+                    <i class="fas fa-flask"></i>
+                    <h3>Science</h3>
+                    <p>Explore the wonders of science</p>
+                </div>
+                <div class="category-card" data-category="history">
+                    <i class="fas fa-landmark"></i>
+                    <h3>History</h3>
+                    <p>Journey through time</p>
+                </div>
+                <div class="category-card" data-category="tech">
+                    <i class="fas fa-microchip"></i>
+                    <h3>Technology</h3>
+                    <p>Dive into the world of tech</p>
+                </div>
+            </div>
+
+            <div class="quiz-options">
+                <div class="difficulty-select">
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <div class="questions-select">
+                    <label for="num-questions">Number of Questions:</label>
+                    <select id="num-questions">
+                        <option value="5">5 Questions</option>
+                        <option value="10" selected>10 Questions</option>
+                        <option value="15">15 Questions</option>
+                        <option value="20">20 Questions</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="rules">
+                <h3><i class="fas fa-info-circle"></i> Quick Rules</h3>
+                <ul>
+                    <li>Time limit varies by difficulty</li>
+                    <li>10 points for each correct answer</li>
+                    <li>No negative marking</li>
+                </ul>
+            </div>
+
+            <button id="start-btn" class="btn">
+                <i class="fas fa-play"></i> Start Quiz
+            </button>
+        </div>
+
+        <div id="quiz-screen" class="screen hidden">
+            <div class="header">
+                <div class="category-badge" id="current-category">
+                    <i class="fas fa-folder"></i>
+                    <span>Category</span>
+                </div>
+                <div class="timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="time">60</span>s
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <div class="score">
+                    <i class="fas fa-star"></i>
+                    Score: <span id="score">0</span>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="question-number">
+                    Question <span id="current-question">1</span>/<span id="total-questions">10</span>
+                </div>
+                <h2 id="question"></h2>
+                <div id="choices" class="choices"></div>
+            </div>
+        </div>
+
+        <div id="end-screen" class="screen hidden">
+            <div class="result-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2>Quiz Completed!</h2>
+            <div class="category-result" id="category-result">Category: General Knowledge</div>
+            <div class="final-score-container">
+                <p>Your Score</p>
+                <div class="final-score" id="final-score">0</div>
+                <div class="max-score">out of <span id="max-possible">100</span></div>
+            </div>
+            <div class="result-stats">
+                <div class="stat-item">
+                    <i class="fas fa-check"></i>
+                    Correct: <span id="correct-answers">0</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-times"></i>
+                    Wrong: <span id="wrong-answers">0</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    Time Taken: <span id="time-taken">0</span>s
+                </div>
+            </div>
+            <div class="result-message" id="result-message"></div>
+            <div class="end-buttons">
+                <button id="restart-btn" class="btn">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+                <button id="home-btn" class="btn btn-secondary">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

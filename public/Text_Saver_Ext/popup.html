@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saved Texts</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 10px; width: 300px; }
+    .text-entry { margin-bottom: 10px; padding: 5px; border-bottom: 1px solid #ccc; }
+    .url { color: blue; font-size: 0.9em; }
+    #clearButton, #downloadButton { margin-top: 10px; padding: 5px; cursor: pointer; background-color: #4CAF50; color: white; border: none; width: 100%; }
+    #clearButton { background-color: #f44336; }
+  </style>
+</head>
+<body>
+  <h2>Saved Texts</h2>
+  <div id="textList"></div>
+  <button id="downloadButton">Download as File</button>
+  <button id="clearButton">Clear Saved Texts</button>
+  <script src="popup.js"></script>
+</body>
+</html>
