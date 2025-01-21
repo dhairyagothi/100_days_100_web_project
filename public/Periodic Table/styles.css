@@ -1,0 +1,173 @@
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+.table-container {
+    display: grid;
+    grid-template-columns: repeat(18, 65px);
+    grid-gap: 8px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.element {
+    width: 65px;
+    height: 85px;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Element Categories with distinct colors */
+.metal { background: linear-gradient(145deg, #e6e6e6, #f0f0f0); }
+.nonmetal { background: linear-gradient(145deg, #c8e6c9, #dcedc8); }
+.noble-gas { background: linear-gradient(145deg, #bbdefb, #90caf9); }
+.alkali { background: linear-gradient(145deg, #ffcdd2, #ef9a9a); }
+.alkaline-earth { background: linear-gradient(145deg, #f8bbd0, #f48fb1); }
+.transition { background: linear-gradient(145deg, #fff9c4, #fff59d); }
+.metalloid { background: linear-gradient(145deg, #d1c4e9, #b39ddb); }
+
+.element:hover {
+    transform: translateY(-10px) scale(1.1);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.element:active {
+    transform: scale(0.95);
+}
+
+.element::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1));
+    z-index: 1;
+}
+
+.element-number {
+    font-size: 12px;
+    color: #666;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-weight: 500;
+}
+
+.element-symbol {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 5px 0;
+    background: linear-gradient(45deg, #333, #666);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.element-name {
+    font-size: 11px;
+    color: #555;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.element:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+}
+
+.empty {
+    background-color: transparent;
+    border: none;
+    pointer-events: none;
+}
+
+/* Adding loading animation for elements */
+@keyframes elementFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.element {
+    animation: elementFadeIn 0.5s ease-out backwards;
+}
+
+/* Stagger the animation for each element */
+.element:nth-child(n) {
+    animation-delay: calc(0.05s * var(--i, 0));
+}
+
+/* Add subtle pulse animation on hover */
+@keyframes elementPulse {
+    0% { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+    50% { box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
+    100% { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+}
+
+.element:hover {
+    animation: elementPulse 1.5s infinite;
+}
+
+/* Add media query for better responsiveness */
+@media (max-width: 1200px) {
+    .table-container {
+        grid-template-columns: repeat(9, 65px);
+        transform: scale(0.9);
+    }
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        grid-template-columns: repeat(6, 65px);
+        transform: scale(0.8);
+    }
+}
