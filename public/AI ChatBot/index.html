@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Chat Interface</title>
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>Chat Assistant</h1>
+        </header>
+
+        <div id="output-container" class="output-container" aria-live="polite">
+        </div>
+
+        <form class="input-group" id="chat-form" autocomplete="off">
+            <input type="text" id="prompt-input" placeholder="Type your message..." aria-label="Chat input field" required>
+            <button type="submit" id="send-btn" aria-label="Send message">Send</button>
+        </form>
+    </div>
+
+    <script src="chat.js"></script> 
+</body>
+</html>

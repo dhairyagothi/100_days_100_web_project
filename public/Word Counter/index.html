@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Word Counter</h1>
+        <textarea id="inputText" placeholder="Type or paste your text here..." oninput="updateStats()"></textarea>
+        <div class="stats">
+            <div id="wordCount" class="stat-item">Word Count: 0</div>
+            <div id="charCount" class="stat-item">Character Count: 0</div>
+            <div id="sentenceCount" class="stat-item">Sentence Count: 0</div>
+        </div>
+        <button onclick="clearText()">Clear</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
