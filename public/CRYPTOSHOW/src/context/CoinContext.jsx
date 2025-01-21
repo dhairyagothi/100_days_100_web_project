@@ -9,37 +9,26 @@ const CoinContextProvider = (props) => {
     symbol: "$",
   });
 
-  // Use the API key from environment variables
-  const apiKey = process.env.REACT_APP_CG_API_KEY;
-
   const fetchAllCoins = async () => {
     const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-cg-api-key": apiKey, // Use environment variable
-      },
-    };
-
-    fetch(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.name}`,
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => setAllCoins(response))
-      .catch((err) => console.error(err));
+        method: 'GET',
+        headers: {accept: 'application/json', 'x-cg-demo-api-key': "CG-CB6T9gSjB4dTfYVcbrgLwHh1"}
+      };
+      
+      fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.name}`, options)
+        .then(response => response.json())
+        .then(response => setAllCoins(response))
+        .catch(err => console.error(err));
   };
 
   useEffect(() => {
     fetchAllCoins();
-  }, [currency]);
+  },[currency]);
+
 
   const contextValue = {
-    allCoins,
-    currency,
-    setCurrency,
+    allCoins, currency, setCurrency
   };
-
   return (
     <CoinContext.Provider value={contextValue}>
       {props.children}
