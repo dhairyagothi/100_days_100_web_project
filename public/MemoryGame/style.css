@@ -89,11 +89,6 @@ h1 {
     transform: rotateY(180deg);
 }
 
-/* Add some hover effect for the card */
-.card:hover .card-inner {
-    transform: rotateY(180deg);
-}
-
 /* Responsive adjustments */
 @media (max-width: 500px) {
     .grid {
