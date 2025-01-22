@@ -177,7 +177,8 @@ function fillTable() {
         ["Day 105", "Plants Website", "./public/Plants Website/index.html"],
         ["Day 106", "DocNow", "/public/DocNow/index.html"],
         ["Day 107", "expense_Tracker", "./public/expense_Tracker/index.html"],
-      ["Day 108","Mood Tracker","./public/Mood Tracker/index.html"]
+      ["Day 108","Mood Tracker","./public/Mood Tracker/index.html"],
+    ["Day 109","CRYPTOSHOW","/public/CRYPTOSHOW/index.html"]
 
     ];
 
