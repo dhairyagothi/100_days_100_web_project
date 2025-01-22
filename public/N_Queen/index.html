@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N-Queens Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+
+    <h1>N-Queens Game</h1>
+
+    <div class="borad-details">
+        <div class="board-size">
+            <label for="boardSize">Choose Board Size (N):</label>
+            <input type="number" id="boardSize" min="4" value="4">
+        </div>
+        <div class="start-reset-button">
+            <button id="startGame">Start Game</button>
+        </div>
+    </div>
+   
+    <button id="resetGame" class="reset-button" style="display: none;">Reset Game</button>
+    <p id="message"></p>
+    <div id="gameBoard"></div>
+    
+  </div>  
+  <script src="script.js"></script>
+</body>
+</html>

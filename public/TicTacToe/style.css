@@ -2,77 +2,92 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
     display: flex;
-    justify-content: center;
+    justify-content: ceer;
     align-items: center;
     height: 100vh;
-    background: #56341a;
+    background: #000435;
     font-size: 18px;
-}
-
-.container {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: row;
     text-align: center;
-    color: #591111;
-    max-width: 100%;
-}
-
-h1 {
-    margin-bottom: 30px;
+    color: #000435;
+    flex: 1;
+    gap: 20px;
+    width: 90%;
+    max-width: 1000px;
+    justify-content: center;
+  }
+  
+  h1 {
+    font-family: "Arial", sans-serif;
+    font-size: 3em;
+    font-weight: bold;
     color: white;
-    font-size: 2.5em;
-    text-shadow: 2px 2px 8px rgba(3, 3, 3, 0.5);
-}
-
-.board {
+    border: 2px #8A00C4;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .board {
     display: grid;
-    grid-template-columns: repeat(3, 120px);
-    grid-template-rows: repeat(3, 120px);
-    gap: 10px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(3, 170px);
+    grid-template-rows: repeat(3, 170px);
+    gap: 15px;
+    margin-top: 20px;
+    left: 30px;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
-.cell {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  .cell {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:#4C9B8E ;
-    border: 1px solid #ffffff;
-    font-size: 2.5em;
+    background-color: #8A00C4;
+    border: 2px solid #FFFFFF;
+    font-size: 3em;
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.cell:hover {
-    background-color: #fdfdfd;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .cell:hover {
+    background-color: #FDFDFD;
     transform: scale(1.1);
-}
-
-button {
+  }
+  
+  button {
     padding: 12px 25px;
     font-size: 1.2em;
     cursor: pointer;
-    background-color: #14635e;
+    background-color: #8A00C4;
     color: rgb(255, 255, 255);
     border: none;
     border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease;
     margin-top: 20px;
-}
-
-button:hover {
-    background-color: #11790b;
+  }
+  
+  button:hover {
+    background-color: #11790B;
     transform: scale(1.05);
-}
-
-.modal {
+  }
+  
+  .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -82,10 +97,10 @@ button:hover {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 20px;
-}
-
-.modal-content {
-    background-color: #e8e8e8;
+  }
+  
+  .modal-content {
+    background-color: #E8E8E8;
     margin: 15% auto;
     padding: 30px;
     border: 1px solid #888;
@@ -95,57 +110,61 @@ button:hover {
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.3s ease;
-}
-
-.close {
-    color: #aaa;
+  }
+  
+  .close {
+    color: #AAA;
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
+  }
+  
+  .close:hover,
+  .close:focus {
     color: black;
-}
-
-@keyframes fadeIn {
+  }
+  
+  @keyframes fadeIn {
     from {
-        opacity: 0;
+      opacity: 0;
     }
     to {
-        opacity: 1;
+      opacity: 1;
     }
-}
-
-.scoreboard {
-    width: 320px;
+  }
+  
+  .scoreboard {
+    width: 300px;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     margin-top: 30px;
     animation: slideIn 0.3s ease-out;
-}
-
-.scoreboard h2 {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+  }
+  
+  .scoreboard h2 {
     margin-bottom: 15px;
     font-size: 1.5em;
     color: #000000;
-}
-
-.scoreboard p {
+  }
+  
+  .scoreboard p {
     margin-bottom: 8px;
     font-size: 1.2em;
     color: #555;
-}
-
-@keyframes slideIn {
+  }
+  
+  @keyframes slideIn {
     from {
-        transform: translateX(-100%);
+      transform: translateX(-100%);
     }
     to {
-        transform: translateX(0);
+      transform: translateX(0);
     }
-}
+  }

@@ -28,7 +28,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+    background-color: #1db95445;
     z-index: -1;
 }
 .navbar {
@@ -340,4 +340,134 @@ footer {
     .newsletter input[type="email"], .newsletter button {
         width: 100%;
     }
+}
+
+
+/* Dark Mode */
+/* Adjusted styling for dark mode toggle */
+.theme-label {
+    width: 70px;
+    height: 30px;
+    position: relative;
+    display: block;
+    background: #ebebeb;
+    border-radius: 200px;
+    box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: -25px;
+    margin-left: 26rem;
+}
+.theme-label:after {
+    content: "";
+    width: 23px;
+    height: 23px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: linear-gradient(100deg, #ffcc89, #d8860b);
+    border-radius: 180px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+  #dark-mode-toggle{
+    width: 0;
+    height: 0;
+    visibility: hidden;
+  }
+  #dark-mode-toggle:checked + .theme-label{
+    background: #242424;
+  }
+  #dark-mode-toggle:checked  + .theme-label:after{
+    left: 62px;
+    transform: translateX(-100%);
+    background: linear-gradient(100deg,#777, #3a3a3a);
+  }
+  .theme-label:active:after{
+    width: 45px;
+  }
+  .background{
+    width:100vw;
+    height: 100vh;background: #fff;
+    z-index: -1;
+    position:absolute;
+    transition: 0.3s;
+  }
+  #dark-mode-toggle:checked + .theme-label + .background{
+    background: #242424;
+  }
+  
+  
+  
+    @media (max-width: 480px) {
+        label {
+            width: 50px;
+            height: 25px;
+            margin-top: -45px;
+          margin-left: 286px;
+        }
+        label:after {
+          width: 20px;
+          height: 20px;
+          top: 2.5px;
+          margin-left:0px;
+        }
+  
+              input:checked + label:after {
+                 left: 44px;
+                transform: translateX(-100%);
+                background: linear-gradient(100deg, #777, #3a3a3a);
+            }
+              label svg {
+                  width: 100px;
+                  top: 30px;
+              }
+            }
+
+/* body.dark-mode{
+    background-color:rgba(33 33 33 /1);
+} */
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: rgba(33, 33, 33, 1);
+    color: white;
+}
+
+.navbar.dark-mode {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.block1.dark-mode, .block2.dark-mode, .about-section.dark-mode, .newsletter.dark-mode, footer.dark-mode {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(198, 198, 198, 0.3);
+}
+
+.items ul li a.dark-mode {
+    color: white;
+}
+
+.items ul li a.dark-mode::after {
+    background-color: #ffc107 ;/* Dark mode accent color */
+}
+
+.buy-button.dark-mode {
+    background-color: #ffc107 ;
+}
+
+.buy-button.dark-mode:hover {
+    background-color: #ffc107 ;
+}
+.dark-mode .newsletter button{
+    background-color: #ffc107;
+}
+.dark-mode .block1-text h1{
+    color: #4caf50;
+}
+
+.dark-mode .about-section h2 ,.newsletter h2 {
+    color:#ffc107;
+}
+.dark-mode .icons ul{
+    background: #eadcdcb5;
 }

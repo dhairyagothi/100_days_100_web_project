@@ -33,10 +33,92 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
+  <style type="text/css">
+     nav.navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: #1abc9c;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      #scrollBtn {
+        position: fixed;
+        bottom: 20px; /* Place closer to the bottom */
+        right: 20px; /* Place closer to the right */
+        display: none; /* Initially hidden */
+        background-color: #1abc9c;
+        color: rgb(247, 242, 242);
+        border: none;
+        border-radius: 50%;
+        padding: 15px;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000; /* Ensure visibility above other elements */
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      #scrollBtn:hover {
+        background-color: #000; /* Change color on hover */
+        transform: scale(1.2); /* Slightly enlarge */
+      }
+      .contributors-btn {
+        background: linear-gradient(45deg, #10866f, );
+        color: white;
+        padding: 10px 20px; /* Adjust padding to make the button rectangular */
+        font-size: 0.8rem; /* Font size */
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px; /* Optional: Rounded corners */
+        position: absolute;
+        top: 60px; /* Shifted slightly upwards */
+        right: 6px;
+        transition: background 0.3s ease, transform 0.2s ease,
+          box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        text-align: center;
+        display: inline-block;
+        z-index: 10; /* Ensures the button stays on top */
+        font-family: "Circular Std", "Arial", sans-serif; /* Circular font */
+      }
+
+      .contributors-btn:hover {
+        background: linear-gradient(45deg, #16a085, #1abc9c);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .contributors-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      #title-heading {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        color: white;
+      }
+
+      @media (max-width: 426px) {
+        #title-heading {
+          margin-top: 5rem;
+          margin-bottom: 3rem;
+        }
+      }
+    
+  </style>
 
   <body>
+    
     <!-- Navbar -->
     <nav
       class="navbar is-primary"
@@ -72,94 +154,17 @@
           </div>
         </div>
       </div>
-    </nav>
+    </nav><br><br>
 
     
 
-    <style>
-
-    nav.navbar {
-        position: fixed;
-        top: 0;
-        width: 100%; 
-        z-index: 1000; 
-        background-color: #1abc9c;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-      #scrollBtn {
-    position: fixed;
-    bottom: 20px; /* Place closer to the bottom */
-    right: 20px;  /* Place closer to the right */
-    display: none; /* Initially hidden */
-    background-color: #1abc9c;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    padding: 15px;
-    font-size: 18px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Ensure visibility above other elements */
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-#scrollBtn:hover {
-    background-color: #000; /* Change color on hover */
-    transform: scale(1.2); /* Slightly enlarge */
-}
-      .contributors-btn {
-        background: linear-gradient(45deg, #10866f, #054135);
-        color: white;
-        padding: 10px 20px; /* Adjust padding to make the button rectangular */
-        font-size: 0.8rem; /* Font size */
-        font-weight: bold;
-        text-decoration: none;
-        border: none;
-        border-radius: 5px; /* Optional: Rounded corners */
-        position: absolute;
-        top: 60px; /* Shifted slightly upwards */
-        right: 6px;
-        transition: background 0.3s ease, transform 0.2s ease,
-          box-shadow 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        text-align: center;
-        display: inline-block;
-        z-index: 10; /* Ensures the button stays on top */
-        font-family: "Circular Std", "Arial", sans-serif; /* Circular font */
-      }
-
-      .contributors-btn:hover {
-        background: linear-gradient(45deg, #16a085, #1abc9c);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-      }
-
-      .contributors-btn:active {
-        transform: translateY(0);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      #title-heading {
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-      }
-
-      @media (max-width: 426px) {
-        #title-heading {
-          margin-top: 5rem;
-          margin-bottom: 3rem;
-        }
-      }
-    </style>
-
+    
     <!-- Main Page Starts Here -->
     <div class="content" id="projects">
       <div class="title is-2 has-text-centered" id="title-heading">
         100 Days 100 Web Projects
       </div>
-      <p class="subtitle has-text-centered">
+      <p class="subtitle has-text-centered" style="color: white">
         here are live demos of all the projects
       </p>
 
@@ -176,7 +181,7 @@
         <div class="control">
           <button
             id="searchButton"
-            class="button is-primary mx-4"
+            class="mx-4 button is-primary"
             onclick="filterProjects()"
           >
             Go
@@ -193,73 +198,100 @@
               <th>Demo Link</th>
             </tr>
           </thead>
-          <tbody id="tableBody"></tbody>
+          <tbody id="tableBody">
+            
+          </tbody>
+
         </table>
       </div>
 
       <div id="no-projects" style="display: none">No Projects Found</div>
     </div>
 
-  <footer style="background-color: #00D1B2; color: black; padding: 40px 20px; font-family: Arial, sans-serif;">
-      <div class="footer-container" style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; text-align: left;">
-        <!-- About Section -->
-        <div class="footer-section about">
-          <div style="display: flex; align-items: center; margin-bottom: 15px;">
-            <img src="images/1736231291121.png" alt="100 Days 100 Web Projects Logo" style="width: 80px; margin-right: 15px;">
-            <h3 style="margin: 0; font-size: 24px;">100 Days, 100 Web Projects</h3>
-          </div>
-          <p style="font-size: 16px; line-height: 1.6; margin-bottom: 15px;">
-            Join the challenge to build one mini-project daily using HTML, CSS, and JavaScript. Improve your skills, unleash creativity, and expand your portfolio.
-          </p>
-        </div>
-    
-        <!-- Quick Links Section -->
-        <div class="footer-section quick-links">
-          <h3 style="font-size: 20px; margin-bottom: 15px; border-bottom: 2px solid #e67e22; display: inline-block; padding-bottom: 5px;">Quick Links</h3>
-          <ul style="list-style: none; padding: 0; font-size: 16px; line-height: 2;">
-            <li><a href="#who-we-are" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(5px)'; this.style.color='#e67e22';" onmouseout="this.style.transform='translateX(0px)'; this.style.color='black';">Who We Are</a></li>
-            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(5px)'; this.style.color='#e67e22';" onmouseout="this.style.transform='translateX(0px)'; this.style.color='black';">Blog</a></li>
-            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(5px)'; this.style.color='#e67e22';" onmouseout="this.style.transform='translateX(0px)'; this.style.color='black';">Work With Us</a></li>
-            <li><a href="#" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(5px)'; this.style.color='#e67e22';" onmouseout="this.style.transform='translateX(0px)'; this.style.color='black';">Investor Relations</a></li>
-            <li><a href="#contact-us" style="color: black; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(5px)'; this.style.color='#e67e22';" onmouseout="this.style.transform='translateX(0px)'; this.style.color='black';">Contact Us</a></li>
-          </ul>
-        </div>
-    
-        <!-- Policies Section -->
-        <div class="footer-section policies">
-          <h3 style="font-size: 20px; margin-bottom: 15px; border-bottom: 2px solid #e67e22; display: inline-block; padding-bottom: 5px;">Policies</h3>
-          <ul style="list-style: none; padding: 0; font-size: 16px; line-height: 2;">
-            <li><a href="privacy.html" style="color: black; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">Privacy Policy</a></li>
-            <li><a href="#" style="color: black; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">Security</a></li>
-            <li><a href="Terms.html" style="color: black; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'">Terms of Service</a></li>
-          </ul>
-        </div>
-    
-        <!-- Social Links Section -->
-        <div class="footer-section social-links">
-          <h3 style="font-size: 20px; margin-bottom: 15px; border-bottom: 2px solid #e67e22; display: inline-block; padding-bottom: 5px;">Follow Us</h3>
-          <div style="display: flex; gap: 15px; font-size: 24px;">
-            <a href="#" style="color: black; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'"><i class="fab fa-instagram"></i></a>
-            <a href="#" style="color: black; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'"><i class="fab fa-facebook"></i></a>
-            <a href="#" style="color: black; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'"><i class="fab fa-linkedin"></i></a>
-            <a href="#" style="color: black; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'"><i class="fab fa-twitter"></i></a>
-            <a href="#" style="color: black; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'"><i class="fab fa-youtube"></i></a>
-            <a href="#" style="color: black; transition: color 0.3s ease;" onmouseover="this.style.color='#e67e22'" onmouseout="this.style.color='black'"><i class="fab fa-github"></i></a>
+    <footer class="footer">
+      <div class="content">
+        <div class="columns is-vcentered">
+          <!-- Left Side -->
+          <div class="column has-text-left">
+            <div class="heading">
+              <h2 class="is-size-4">About</h2>
+              <p>
+                This repository contains 100 web projects from basic to
+                intermediate using HTML, CSS, and JS.
+              </p>
+              <p>
+                <strong>
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  100 Days, 100 Projects
+                </strong>
+                by <a href="#">Dhairya</a> and <a href="#">Contributors</a>.
+              </p>
+            </div>
           </div>
 
+          <!-- Right Side -->
+          <div class="column ms-4">
+            <div class="heading">
+              <h2 class="is-size-4">Important Links</h2>
+              <!-- Social Media Icons -->
+              <div class="buttons">
+                <a
+                  class="button is-dark is-rounded"
+                  href="https://www.instagram.com/dhairyaa__31/"
+                  target="_blank"
+                  aria-label="Instagram"
+                >
+                  <span class="icon">
+                    <i class="fab fa-instagram"></i>
+                  </span>
+                </a>
+                <a
+                  class="button is-dark is-rounded"
+                  href="https://github.com/dhairyagothi/100_days_100_web_project"
+                  target="_blank"
+                  aria-label="GitHub"
+                >
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                </a>
+                <a
+                  class="button is-dark is-rounded"
+                  href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
+                  target="_blank"
+                  aria-label="LinkedIn"
+                >
+                  <span class="icon">
+                    <i class="fab fa-linkedin"></i>
+                  </span>
+                </a>
+              </div>
+              <!-- Navigation Links -->
+              <div class="buttons ms-5">
+                <a class="button is-primary is-rounded" href="#">
+                  <span class="icon">
+                    <i class="fas fa-home"></i>
+                  </span>
+                  <span>Home</span>
+                </a>
+                <a
+                  class="button is-link is-rounded"
+                  href="contributors/contributor.html"
+                >
+                  <span class="icon">
+                    <i class="fas fa-users"></i>
+                  </span>
+                  <span>Contributors</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
-    
-    <!-- Footer Bottom -->
-    <div style="background-color: #f1f1f1; text-align: center; padding: 10px 20px; font-size: 16px; color: black; margin-top: 10px;">
-      <p style="margin: 0;">© 2024 100 Days 100 Web Projects. All rights reserved.</p>
-    </div>
-    
-    
- 
-
-
 
     <!-- Top scroll button -->
     <button id="scrollBtn" title="Go to top">
@@ -272,25 +304,30 @@
 
     <script>
       // Get the button element
-      const scrollBtn = document.getElementById('scrollBtn');
-  
+      const scrollBtn = document.getElementById("scrollBtn");
+
       // Show the button when the user scrolls down 100px from the top
       window.onscroll = function () {
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            scrollBtn.style.display = "block";
+        if (
+          document.body.scrollTop > 100 ||
+          document.documentElement.scrollTop > 100
+        ) {
+          scrollBtn.style.display = "block";
         } else {
-            scrollBtn.style.display = "none";
+          scrollBtn.style.display = "none";
         }
       };
-  
+
       // Scroll to the top of the page when the button is clicked
       scrollBtn.onclick = function () {
         window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+          top: 0,
+          behavior: "smooth",
         });
       };
-  
     </script>
   </body>
 </html>
+
+
+

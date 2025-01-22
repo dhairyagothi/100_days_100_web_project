@@ -1,115 +1,113 @@
 let score;
-let scorestr=localStorage.getItem('SCORE');
+let scorestr = localStorage.getItem('SCORE');
 resetscore(scorestr);
 
-function resetscore(scorestr){
- score=scorestr?JSON.parse(scorestr):  {  //if 1st condition is !== undefined its run else
-                                    // score={ all values equals to 0}.....
-   win:0,
-   lost:0,                   //1.this helps 1st to clear data from storage..
-   tie:0,                    //2.and click refresh in broswer to restart newly..!   hint:you can use refresh button
- };                          // to do both at same-time..
-
-score.display_results=function(){
- return `  won: ${score.win},lost: ${score.lost},tie: ${score.tie}.  `;
- 
+function resetscore(scorestr) {
+  // Explicitly reset the score to 0 if no score is stored in localStorage
+  score = {
+    win: 0,
+    lost: 0,
+    tie: 0,
   };
- showresult();  //clicking reset button the function prints without pass parameters...
 
+  score.display_results = function () {
+    return `<br>Won: ${score.win/2}<br><span style="color:red"> Lost: ${score.lost/2}</span><br>
+    Tie: ${score.tie/2} <br> <span style="color:purple;">Total Games: ${score.win/2 + score.lost/2 + score.tie/2}</span>`;
+  };
 
- }
+  // Save the reset score back to localStorage
+  localStorage.setItem('SCORE', JSON.stringify(score));
 
-
-function computergeneratechoice(){
- let choice;
- //random choice by computer in between 0 & 3.
-let randomnum=Math.random()*3;
-
-if(randomnum>0 && randomnum<=1){
- return 'Bat';
-}
-else if(randomnum >1 && randomnum<=2){
- return 'Ball';
-}
-else{
- return 'stump';
-}
-
-//return choice;
-//cmpmsg='computer has chosen:'+computerchoice;
+  
+  
 }
 
 
-// let total=0;
+function computergeneratechoice() {
+  let randomnum = Math.random() * 3;
 
-
-function getresult(usermove,cmpchoice){
- if(usermove==='Bat'){
-   //total++;
-   if(cmpchoice==='Bat'){
-   score.tie+=1;
-   return 'its a tie';
-   }
-   else if(cmpchoice==='Ball'){
-     score.win++;
-   return 'user won';
-   }
-   else
-   {
-     score.lost++;
-     return 'computer has won';
-   }
- }
- else if(usermove==='Ball'){
-   //total++;
-   if(cmpchoice==='Ball'){
-     score.tie+=1;
-   return 'its a tie';
-   }
-   else if(cmpchoice==='Bat'){
-     score.lost+=1;
-     return 'computer won';
-   }
-   else
-   {
-     score.win+=1;
-     return 'user won';
-   }
- }
- else if(usermove==='stump'){
-  //  total++;
-   if(cmpchoice==='stump'){
-     score.tie+=1;
-     return 'its a tie';
-   }
-   else if(cmpchoice==='Ball'){
-     score.lost+=1;
-     return 'computer has won';
-   }
-   else
-   {
-     score.win+=1;
-     return 'user won';
-   }
- }
+  if (randomnum > 0 && randomnum <= 1) {
+    return 'Bat'; 
+  } else if (randomnum > 1 && randomnum <= 2) {
+    return 'Ball';
+  } else {
+    return 'stump';
+  }
 }
 
 
-
- function showresult(usermove,cmpchoice,result){
-
- localStorage.setItem('SCORE',JSON.stringify(score));   
- 
- document.querySelector('#user-move').innerHTML=  
- usermove ? `user_chosen:  ${usermove}` : '';
- document.querySelector('#computer-move').innerHTML=
- cmpchoice ? `computer_chosen:  ${cmpchoice}` : '';
- document.querySelector('#result').innerHTML= result || '';
- document.querySelector('#score').innerHTML=`score:  ${score.display_results()}`;
-
- 
-   //alert( `1.user chosen: ${usermove} \n2.computer chosen:${cmpchoice} \n3.the result is:${result}\n ${score.display_results()}`);
-
-
+function choiceimage(choice) {
+  if (choice === 'Bat') {
+    return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="bat.jpeg" alt="Bat" class="game-image" style="width: 80px; height: 80px;"></div>';
+  } else if (choice === 'Ball') {
+    return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="ball.jpeg" alt="Ball" class="game-image" style="width: 80px; height: 80px;"></div>';
+  } else if (choice === 'stump') {  // ensure 'stump' is used properly
+    return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="wickets.jpeg" alt="Stump" class="game-image" style="width: 80px; height: 80px;"></div>';
+  }
+  return '';  
 }
 
+function getresult(usermove, cmpchoice) {
+  let resultMessage = '';
+  let userimage = '';
+  let cmpimage = '';
+
+  // Get the image HTML for both user and computer choices
+  // userimage = choiceimage(usermove);
+  // cmpimage = choiceimage(cmpchoice);
+
+  // Determine the result message based on user and computer choices
+  if (usermove === 'Bat') {
+    if (cmpchoice === 'Bat') {
+      score.tie += 1;
+      resultMessage = ` It's a tie.`;
+    } else if (cmpchoice === 'Ball') {
+      score.win++;
+      resultMessage = ` User won.`;
+    } else {
+      score.lost++;
+      resultMessage = `Computer won.`;
+    }
+  } else if (usermove === 'Ball') {
+    if (cmpchoice === 'Ball') {
+      score.tie += 1;
+      resultMessage = ` It's a tie.`;
+    } else if (cmpchoice === 'Bat') {
+      score.lost += 1;
+      resultMessage = `Computer won.`;
+    } else {
+      score.win += 1;
+      resultMessage = ` User won.`;
+    }
+  } else if (usermove === 'stump') {  
+    if (cmpchoice === 'stump') {
+      score.tie += 1;
+      resultMessage = ` It's a tie.`;
+    } else if (cmpchoice === 'Ball') {
+      score.lost += 1;
+      resultMessage = ` Computer won.`;
+    } else {
+      score.win += 1;
+      resultMessage = `User won.`;
+    }
+  }
+
+  return `<span style="color:gold">${resultMessage}</span>`;
+}
+
+
+function showresult(usermove, cmpchoice) {
+  
+  let result = getresult(usermove, cmpchoice);
+
+  
+  localStorage.setItem('SCORE', JSON.stringify(score));
+
+  // Display only the images of the user and computer's choices
+  document.querySelector('#user-move').innerHTML = `User chose: ${choiceimage(usermove)}`;
+  document.querySelector('#computer-move').innerHTML = `Computer chose: ${choiceimage(cmpchoice)}`;
+
+  // Display the result text (not repeating images)
+  document.querySelector('#result').innerHTML = result; 
+  document.querySelector('#score').innerHTML = `${score.display_results()}`;
+}
