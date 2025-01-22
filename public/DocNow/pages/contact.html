@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocNow</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css">
+    <style>
+        body {
+            background-color: aliceblue;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden !important; /* Keep horizontal overflow hidden */
+            overflow-y: auto !important; /* Allow vertical scrolling */
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        * {
+            text-decoration: none;
+        }
+        
+        .nav {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 80px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            background-color: antiquewhite;
+            box-shadow: 0 19px 38px rgba(0, 0, 0, 0.10);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .nav .logo {
+            /* Align the logo to the left */
+            flex: 0 0 auto; /* Do not grow or shrink */
+            margin-right: auto; /* Pushes the logo to the left */
+        }
+        
+        .nav .logo img {
+            /* Adjust the size of the logo */
+            max-width: 100px; /* Smaller max width of the logo */
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Remove any extra space below the image */
+        }
+        .nav .link a {
+            margin-right: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .nav .link .mainlink {
+            color: dodgerblue;
+        }
+        
+        .nav .link {
+            color: deepskyblue;
+        }
+        
+        .nav .link .button {
+            padding: 8.5px 34px;
+            margin-left: 65px;
+            display: inline-block;
+            font-size: 14px;
+            color: #000;
+            transition: all 0.4s ease-in-out;
+            text-transform: capitalize;
+            border: 1px solid #000;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        
+        .nav .link .button:hover {
+            color: rgb(39, 120, 213);
+        }
+        .landing {
+            display: flex;
+            flex-direction: column; /* Changed to column to center content */
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            padding-top: 120px; /* Increased padding to prevent content from being hidden */
+            height: 100vh;
+        }
+        .landingtext {
+            max-width: 800px; /* Limiting width for better readability */
+            text-align: center; /* Centered text alignment */
+        }
+        h1 {
+            font-size: 2.5rem; /* Increased font size */
+            font-weight: bold; /* Bold text */
+            color: darkblue; /* Better color for the heading */
+            margin-bottom: 20px; /* Spacing below the heading */
+        }
+        p {
+            font-size: 1.1rem; /* Slightly larger font size for readability */
+            color: #333; /* Darker color for better readability */
+            line-height: 1.6; /* Increased line height for readability */
+            margin: 0 auto; /* Centering paragraph content */
+            text-align: left; /* Align text to the left for readability */
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="nav">
+            <div class="logo">
+                <img src="../images/docnow.png" alt="DocNow Logo">
+            </div>
+            <div class="link">
+                <a href="../index.html" class="mainlink">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="#">Chat</a>
+                <a href="#">News</a>
+                <a href="#">Contact-us</a>
+                <a href="#" class="button">Learn more</a>
+            </div>
+        </div>
+        <!-- Landing page -->
+        <div class="landing">
+            <div class="landingtext" data-aos="fade-right" data-aos-duration="2000">
+                
+                <p>Made by:-</p>
+                <p>Peehu Mishra(https://github.com/Peehu1308)</p>
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>
