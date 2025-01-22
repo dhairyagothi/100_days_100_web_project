@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream_Journal</title>
+    <link rel="stylesheet" href="Journal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css">
+</head>
+<body>
+    <header class="header blur-header" id="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">
+                <img src="https://cdn-icons-png.flaticon.com/512/6024/6024814.png" alt="image"> Dream
+            </a>
+            
+             <div class="nav__menu" id="nav-menu"> 
+                <ul class="nav__list"> 
+                    <li> 
+                        <a href="#home" class="nav__link">Home</a> 
+                    </li> 
+                    <li> 
+                        <a href="#dream" class="nav__link">Dream</a> 
+                    </li> 
+                    <li> 
+                        <a href="#fill_form" class="nav__link">Fill-Form</a> 
+                    </li> 
+                    <li> <a href="#dream_list" class="nav__link">Dream_List</a> 
+                    </li> 
+                </ul> 
+                <div class="nav__close" id="nav-close"> 
+                    <i class="ri-close-circle-fill"></i> 
+                </div>
+                <img src="https://static.vecteezy.com/system/resources/previews/018/795/982/non_2x/dreamy-glowing-shape-free-png.png" alt="image" class="nav__img" >
+                </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="ri-menu-4-fill"></i>
+            </div>
+            </nav>
+    </header> 
+
+    <main class="main">
+        <section class="home section" id="home">
+            <img src="https://png.pngtree.com/png-clipart/20230117/ourmid/pngtree-beautiful-dreamy-clouds-png-image_6159039.png" alt="image" class="home__bg">
+
+            <div class="home__container container grid">
+                <div class="home__data">
+                    <h1 class="home__title">
+                        <span>WELCOME</span>
+                        <span>TO YOUR</span>
+                        <span>DREAM JOURNAL</span>
+                    </h1>
+                    <a href="#" class="button button__yellow">Explore About Dreams</a>
+                    <img src="https://png.pngtree.com/png-vector/20240705/ourmid/pngtree-dreamy-and-ethereal-flower-artwork-png-image_12974151.png" alt="image" class="home__ovni">
+                </div>
+                <img src="https://png.pngtree.com/png-clipart/20221123/ourmid/pngtree-blue-glowing-butterfly-png-image_6152743.png" alt="image" class="home__img">
+            </div>
+        </section>
+        <div>
+        <section class="form" id="fill_form">
+            <div class="dream_form">
+                <h1 display="inline">Fill Your Dream Journal 💭</h1>
+                <form id="dreamForm">
+                    <label for="datein">Date</label>
+                    <input type="date" id="date" name="date" required>
+        
+                    <label for="dreamType">Dream Type</label>
+                    <select id="dreamType" name="dreamType" required>
+                        <option value="Nightmare">Nightmare</option>
+                        <option value="Peaceful">Peaceful</option>
+                        <option value="Adventure">Adventure</option>
+                    </select>
+        
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="description">Describe Your Dream</label>
+                    <textarea name="description" rows="5" cols="50"></textarea>
+                    <button type="submit" class="submit-btn">Submit Now!!</button>
+                </form>
+            </div>
+        </section>
+        </div>
+        <section class="dream_list" id="dream_list">
+            <div id="displayArea">  
+                <h9> Dream-List</h9>    
+             </div>
+         </section>
+        <section class="dream section" id="dream">
+        <div class="dream__container container">
+            <h2 class="section__title">
+                 <span>TYPES</span>             
+            </h2>
+            <div>
+                <article class="dream__card">
+                    <img src="https://www.pngarts.com/files/17/Sally-Nightmare-Before-Christmas-PNG-Image.png" alt="image" class="dream__img1">
+                    <h3 calss="dream__title">NIGHTMARE</h3>
+                    <span class="dream__info">DREAM</span>
+                    <p class="dream__description">
+                            A nightmare is a distressing dream that stirs up strong feelings of fear, dread, or anxiety. Unlike regular dreams, nightmares are often vivid and can wake you up with a racing heart, lingering unease, and a sense of impending doom.
+                            By keeping a dream journal, you can start to identify patterns and triggers for your nightmares, helping you understand and eventually overcome them. Hope that this is helpful!
+                    </p>
+                </article>
+                <article class="dream__card">
+                    <img src="https://static.vecteezy.com/system/resources/previews/021/477/620/original/happy-girl-daydream-visualize-happy-future-png.png" alt="image" class="dream__img2">
+                    <h3 calss="dream__title">PEACEFUL</h3>
+                    <span class="dream__info">DREAM</span>
+                    <p class="dream__description">
+                            Peaceful dreams are the gentle whispers of our subconscious, offering tranquility and comfort. 
+                            These dreams transport you to serene landscapes, soothing scenarios, and bring a sense of calm. They leave you feeling refreshed and uplifted, like a warm hug for your soul
+                    </p>
+                </article>
+                <article class="dream__card">
+                    <img src="https://png.pngtree.com/png-vector/20231213/ourmid/pngtree-summer-vacation-girl-adventure-mountain-climbing-cartoon-hand-drawn-elements-png-image_11331063.png" alt="image" class="dream__img3">
+                    <h3 class="dream__title">ADVENTURE</h3>
+                    <span class="dream__info">DREAM</span>
+                    <p class="dream__description">
+                            Adventure dreams are thrilling escapades into the unknown. 
+                            They whisk you away to uncharted territories and daring quests, whether it's exploring ancient ruins, sailing stormy seas, or battling mythical creatures. 
+                            These dreams ignite your sense of wonder and excitement, leaving you with a spirit of adventure upon waking.
+                    </p>
+                </article>
+            </div>
+        </div>
+        </section>
+</main>
+<script src="script.js"> </script>
+</body>
+</html>
