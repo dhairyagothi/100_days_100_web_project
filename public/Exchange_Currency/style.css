@@ -17,6 +17,7 @@
     border-radius: 1rem;
     min-height: 45vh;
     width: 40vh;
+    box-shadow: 5px -2px 5px black;
   }
   
   form {
@@ -67,6 +68,7 @@
   .select-container select {
     font-size: 1rem;
     width: auto;
+    cursor:pointer;
   }
   
   .msg {
@@ -75,8 +77,15 @@
   
   form button {
     height: 3rem;
-    background-color: #af4d98;
+    background-color: #983681;
     color: #fff;
     font-size: 1.15rem;
     cursor: pointer;
+  }
+
+  form button:hover{
+    height:3.2rem;
+    font-size:1.2rem;
+    box-shadow: 2px 2px 2px 2px grey;
+    background-color: rgb(42, 3, 31);
   }
