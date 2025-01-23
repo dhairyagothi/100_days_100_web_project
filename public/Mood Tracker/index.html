@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="toggle-theme" class="btn waves-effect waves-light">
+            <i id="theme-icon" class="fas fa-sun"></i>
+        </button>
+    </div>
+    <div class="container">
+        <h1 class="center-align">Mood Flow</h1>
+        <div class="welcome-message">
+            <p>Welcome to your Mood Tracker! Start by selecting your current mood and intensity. Add notes to reflect on your day.</p>
+        </div>
+        <div id="mood-buttons" class="mood-buttons">
+            <button class="mood-button btn-floating btn-large waves-effect waves-light yellow" data-mood="Happy">😊</button>
+            <button class="mood-button btn-floating btn-large waves-effect waves-light blue" data-mood="Sad">😢</button>
+            <button class="mood-button btn-floating btn-large waves-effect waves-light red" data-mood="Angry">😡</button>
+            <button class="mood-button btn-floating btn-large waves-effect waves-light green" data-mood="Calm">😌</button>
+            <button class="mood-button btn-floating btn-large waves-effect waves-light orange" data-mood="Excited">😃</button>
+        </div>
+        <div class="intensity-slider">
+            <label for="intensity">Intensity: <span id="intensity-value">5</span></label>
+            <p class="range-field">
+                <input type="range" id="intensity" min="1" max="10" value="5">
+            </p>
+        </div>
+        <div class="notes-section input-field">
+            <textarea id="notes" class="materialize-textarea" placeholder="What made you feel this way?"></textarea>
+            <label for="notes">Notes</label>
+        </div>
+        <button id="save-entry" class="btn waves-effect waves-light">Save Entry</button>
+        <div class="entries-section">
+            <h2>Saved Entries</h2>
+            <ul id="entries-list" class="collection">
+                <li class="collection-item">No entries yet. Start tracking your mood today!</li>
+            </ul>
+        </div>
+        <div class="entry-days-section">
+            <h2>Entry Days</h2>
+            <ul id="entry-days-list" class="collection">
+                <li class="collection-item">No entries yet. Your entry days will appear here.</li>
+            </ul>
+        </div>
+        <div class="graph-section">
+            <h2>Mood History</h2>
+            <canvas id="moodChart"></canvas>
+            <p class="center-align">Your mood history will be visualized here once you start adding entries.</p>
+        </div>
+        <div class="summary-section">
+            <h2>Mood Summary</h2>
+            <p id="mood-summary">Your mood summary will appear here after you add some entries.</p>
+        </div>
+        <div class="recommendations-section">
+            <h2>Recommendations</h2>
+            <div id="recommendations-content">
+                <p>Select a mood to see recommendations.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

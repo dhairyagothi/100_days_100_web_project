@@ -15,6 +15,29 @@ const taskTypes = [
 ];
 
 function Add() {
+
+    if (task.value == "") {
+        alert("Please enter a task");
+    } else {
+        let newelement = document.createElement("li");
+        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
+        container.appendChild(newelement);
+        task.value = "";
+        newelement.querySelector("i").addEventListener("click", remove);
+        function remove() {
+            newelement.remove();
+        }
+        newelement.querySelector("a").addEventListener("click", strike);
+        function strike() {
+           if(newelement.style.textDecoration === "line-through")
+           {
+            newelement.style.textDecoration="none";
+           }
+           else{
+            newelement.style.textDecoration="line-through";
+           }
+        }
+
   const notes = document.querySelectorAll(".notes");
 
   if (notes.length > 0) {
@@ -88,6 +111,7 @@ function Add() {
   taskText.addEventListener("blur", () => {
     if (taskText.innerText.trim() === "") {
       taskText.innerText = "Click here to add a task...";
+
     }
   });
 
