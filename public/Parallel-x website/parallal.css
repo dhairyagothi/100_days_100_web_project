@@ -22,7 +22,7 @@ header{
     color: #359381;
     font-weight: 700;
     font-size: 32px;
-    padding: 17px;
+    padding: 20px;
     padding-right: 20px;
     gap: 125px;
     z-index: 30;
@@ -47,8 +47,7 @@ nav ul :hover{
     width: 100%;
 }
 nav ul li{
-    padding: 7px;
-    cursor: pointer;
+    padding: 6px;
 }
 .parallal{
     height: 100vh;
