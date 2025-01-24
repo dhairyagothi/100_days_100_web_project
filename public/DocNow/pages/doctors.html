@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocNow</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css">
+    <style>
+        body {
+            background-color: aliceblue;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        * {
+            text-decoration: none;
+        }
+        
+        .nav {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 80px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            background-color: antiquewhite;
+            box-shadow: 0 19px 38px rgba(0, 0, 0, 0.10);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .nav .logo {
+            
+            flex: 0 0 auto;
+            margin-right: auto;
+        }
+        
+        .nav .logo img {
+
+            max-width: 100px;
+            height: auto;
+            display: block;
+        }
+        .nav .link a {
+            margin-right: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .nav .link .mainlink {
+            color: dodgerblue;
+        }
+        
+        .nav .link {
+            color: deepskyblue;
+        }
+        
+        .nav .link .button {
+            padding: 8.5px 34px;
+            margin-left: 65px;
+            display: inline-block;
+            font-size: 14px;
+            color: #000;
+            transition: all 0.4s ease-in-out;
+            text-transform: capitalize;
+            border: 1px solid #000;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        
+        .nav .link .button:hover {
+            color: rgb(39, 120, 213);
+        }
+        .landing {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            height: 100vh;
+        }
+        ol {
+            list-style: none;
+            color: chocolate;
+        }
+        
+        ol li {
+            font-size: 34px;
+            position: relative;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #fff;
+        }
+        
+        li p {
+            font: 16px;
+            color: #000;
+            padding-left: 60px;
+            line-height: 30px;
+            opacity: 0.6;
+        }
+        
+        li span {
+            position: absolute;
+            line-height: 25px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="nav">
+            <div class="logo">
+                <img src="images\docnow.png" alt="DocNow Logo">
+            </div>
+            <div class="link">
+                <a href="../index.html" class="mainlink">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="#">Chat</a>
+                <a href="#">News</a>
+                <a href="contact.html">Contact-us</a>
+                <a href="#" class="button">Learn more</a>
+            </div>
+        </div>
+        <!-- Landing page -->
+        <div class="landing">
+            <div class="landingtext" data-aos="fade-up" data-aos-duration="2000">
+                <ol>
+                    <li>
+                        <span style="color:darkblue">01</span>
+                        <p>Dr. Dhyana Tripathi - Dentist</p>
+                    </li>
+                    <li>
+                        <span style="color:darkblue">02</span>
+                        <p>Dr. Ram Singh - Cardiologist</p>
+                    </li>
+                    <li>
+                        <span style="color:darkblue">03</span>
+                        <p>Dr. Dipti Srivastava - Dermatologist</p>
+                    </li>
+                    <li>
+                        <span style="color:darkblue">04</span>
+                        <p>Dr. Kanchan Das - Gynecologist</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>
+
