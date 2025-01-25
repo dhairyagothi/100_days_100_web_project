@@ -1,333 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>100 Days 100 Web Projects</title>
-    <link rel="stylesheet" href="home.css" />
-    <link rel="icon" href="public/favv.png" type="image/x-icon" />
-    <meta content="100 Days, 100 Web Projects" property="og:title" />
-    <meta
-      content="A collection of 100 web projects from basic to intermediate using html css and js."
-      property="og:description"
-    />
-    <meta content="/" property="og:url" />
-    <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
-    <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <!-- Pushed CSS Code Here and Imported Bulma StyleSheet as well -->
-    <link rel="stylesheet" href="index.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <script
-      src="https://kit.fontawesome.com/a076d05399.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <style type="text/css">
-     nav.navbar {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        background-color: #1abc9c;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      #scrollBtn {
-        position: fixed;
-        bottom: 20px; /* Place closer to the bottom */
-        right: 20px; /* Place closer to the right */
-        display: none; /* Initially hidden */
-        background-color: #1abc9c;
-        color: rgb(247, 242, 242);
-        border: none;
-        border-radius: 50%;
-        padding: 15px;
-        font-size: 18px;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000; /* Ensure visibility above other elements */
-        transition: background-color 0.3s ease, transform 0.3s ease;
-      }
-
-      #scrollBtn:hover {
-        background-color: #000; /* Change color on hover */
-        transform: scale(1.2); /* Slightly enlarge */
-      }
-      .contributors-btn {
-        background: linear-gradient(45deg, #10866f, );
-        color: white;
-        padding: 10px 20px; /* Adjust padding to make the button rectangular */
-        font-size: 0.8rem; /* Font size */
-        font-weight: bold;
-        text-decoration: none;
-        border: none;
-        border-radius: 5px; /* Optional: Rounded corners */
-        position: absolute;
-        top: 60px; /* Shifted slightly upwards */
-        right: 6px;
-        transition: background 0.3s ease, transform 0.2s ease,
-          box-shadow 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        text-align: center;
-        display: inline-block;
-        z-index: 10; /* Ensures the button stays on top */
-        font-family: "Circular Std", "Arial", sans-serif; /* Circular font */
-      }
-
-      .contributors-btn:hover {
-        background: linear-gradient(45deg, #16a085, #1abc9c);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-      }
-
-      .contributors-btn:active {
-        transform: translateY(0);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      #title-heading {
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-        color: white;
-      }
-
-      @media (max-width: 426px) {
-        #title-heading {
-          margin-top: 5rem;
-          margin-bottom: 3rem;
-        }
-      }
-    
-  </style>
-
-  <body>
-    
-    <!-- Navbar -->
-    <nav
-      class="navbar is-primary"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div class="navbar-brand">
-        <a class="navbar-item has-text-weight-bold" href="index.html">
-          <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"/>
-          100 DAYS 100 WEB PROJECTS
-        </a>
-       
-        <a
-          role="button"
-          class="navbar-burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div class="navbar-menu is-active" id="navbar-menu">
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav><br><br>
-
-    
-
-    
-    <!-- Main Page Starts Here -->
-    <div class="content" id="projects">
-      <div class="title is-2 has-text-centered" id="title-heading">
-        100 Days 100 Web Projects
-      </div>
-      <p class="subtitle has-text-centered" style="color: white">
-        here are live demos of all the projects
-      </p>
-
-      <div id="search-bar">
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            id="searchInput"
-            placeholder="Search for projects..."
-            onkeyup="filterProjects()"
-          />
-        </div>
-        <div class="control">
-          <button
-            id="searchButton"
-            class="mx-4 button is-primary"
-            onclick="filterProjects()"
-          >
-            Go
-          </button>
-        </div>
-      </div>
-
-      <div class="links">
-        <table class="table is-fullwidth is-bordered is-striped is-hoverable">
-          <thead>
-            <tr>
-              <th>Day</th>
-              <th>Project Name</th>
-              <th>Demo Link</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody">
-            
-          </tbody>
-
-        </table>
-      </div>
-
-      <div id="no-projects" style="display: none">No Projects Found</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEATHER APP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cursor">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
     </div>
 
-    <footer class="footer">
-      <div class="content">
-        <div class="columns is-vcentered">
-          <!-- Left Side -->
-          <div class="column has-text-left">
-            <div class="heading">
-              <h2 class="is-size-4">About</h2>
-              <p>
-                This repository contains 100 web projects from basic to
-                intermediate using HTML, CSS, and JS.
-              </p>
-              <p>
-                <strong>
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  100 Days, 100 Projects
-                </strong>
-                by <a href="#">Dhairya</a> and <a href="#">Contributors</a>.
-              </p>
-            </div>
-          </div>
-
-          <!-- Right Side -->
-          <div class="column ms-4">
-            <div class="heading">
-              <h2 class="is-size-4">Important Links</h2>
-              <!-- Social Media Icons -->
-              <div class="buttons">
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://www.instagram.com/dhairyaa__31/"
-                  target="_blank"
-                  aria-label="Instagram"
-                >
-                  <span class="icon">
-                    <i class="fab fa-instagram"></i>
-                  </span>
-                </a>
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://github.com/dhairyagothi/100_days_100_web_project"
-                  target="_blank"
-                  aria-label="GitHub"
-                >
-                  <span class="icon">
-                    <i class="fab fa-github"></i>
-                  </span>
-                </a>
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
-                  target="_blank"
-                  aria-label="LinkedIn"
-                >
-                  <span class="icon">
-                    <i class="fab fa-linkedin"></i>
-                  </span>
-                </a>
-              </div>
-              <!-- Navigation Links -->
-              <div class="buttons ms-5">
-                <a class="button is-primary is-rounded" href="#">
-                  <span class="icon">
-                    <i class="fas fa-home"></i>
-                  </span>
-                  <span>Home</span>
-                </a>
-                <a
-                  class="button is-link is-rounded"
-                  href="contributors/contributor.html"
-                >
-                  <span class="icon">
-                    <i class="fas fa-users"></i>
-                  </span>
-                  <span>Contributors</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="navbar">
+        <img src="https://img.freepik.com/free-icon/rainy_318-774488.jpg" alt="Weather App Logo" height="35px" >
+         <form>
+          <input id="text" type="text" placeholder="Enter City Name">
+          <button type="submit" id="submit">Search</button>
+        </form>
       </div>
-    </footer>
+      
+    
+    <div class="main">
+        <div id="container">
+            <p id="temp">Current Temperature:</p>
+            <br>
+            <p id="max-temp">Max Temperature:</p><br>
+            <p id="min-temp">Min Temperature :</p><br>
+            <p id="wind">Wind  :</p><br>
+            <p id="clouds">Clouds  :</p><br>
+            <p id="sunrise">Sunrise:</p><br>
+            <p id="sunset">Sunset  :</p>
+        </div>
+        
+        <iframe
+            width="550"
+            height="450"
+            style="border:0"
+            loading="lazy"
+            src="https://www.google.com/maps?q=&t=&z=13&ie=UTF8&iwloc=&output=embed"
+        ></iframe>
+    </div>
+    <div class="forecast-container">
+        
+    </div>
+    <div class="last">
+    </div>
 
-    <!-- Top scroll button -->
-    <button id="scrollBtn" title="Go to top">
-      <i class="fa-solid fa-arrow-up fa-lg"></i>
-    </button>
-
-    <!-- Pushed JavaScript Code To Here -->
-    <script src="index.js"></script>
-    <script src="bulma.js"></script>
-
-    <script>
-      // Get the button element
-      const scrollBtn = document.getElementById("scrollBtn");
-
-      // Show the button when the user scrolls down 100px from the top
-      window.onscroll = function () {
-        if (
-          document.body.scrollTop > 100 ||
-          document.documentElement.scrollTop > 100
-        ) {
-          scrollBtn.style.display = "block";
-        } else {
-          scrollBtn.style.display = "none";
-        }
-      };
-
-      // Scroll to the top of the page when the button is clicked
-      scrollBtn.onclick = function () {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      };
-    </script>
-  </body>
+    <script src="script.js"></script>
+</body>
 </html>
-
-
-
