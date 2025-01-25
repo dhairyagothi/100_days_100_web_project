@@ -1,0 +1,27 @@
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(90deg,#8A2387,#E94057,#F27121);
+}
+.slider-container {
+    margin: 20px;
+}
+.slider {
+    width: 300px;
+}
+.color-display {
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    border: 2px solid #000;
+    border-radius: 10px;
+}
+.container{
+    background-color: white;
+    opacity: 0.8;
+    border-radius: 10px;
+    padding: 20px;
+    border: solid 5px ;
+}
