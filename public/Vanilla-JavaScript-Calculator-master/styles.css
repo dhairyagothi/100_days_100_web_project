@@ -1,58 +1,103 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
-
-*{
-    margin: 0;
-    padding: 0;
+*, *::before, *::after {
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-body{
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    Flex-direction : column;
+    font-family: Gotham Rounded, sans-serif;
+    font-weight: normal;
+   
+  }
+  
+  
+  body {
+    padding: 0;
+    margin: 0;
+    background: linear-gradient(#41ade3,#11568f, #0d6e9e, #00e3ef);
+  }
+  
+  
+  .calculator-grid {
+    display: grid;
     justify-content: center;
-    align-items: center;
-    background: linear-gradient(45deg, #0a0a0a, #3a4452);
-}
-
-.calculator{
-    border: 1px solid #717377;
-    padding: 20px;
-    border-radius: 16px;
-    background: transparent;
-    box-shadow: 0px 3px 15px rgba(113, 115, 119, 0.5);
-
-}
-
-input{
-    width: 100%;
-    border: none;
-    padding: 24px;
-    margin: 10px;
-    background: transparent;
-    box-shadow: 0px 3px 15px rgbs(84, 84, 84, 0.1);
+    align-content: center;
+    min-height: 100vh;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+  }
+  
+  
+  #scientific-calculator {
+    grid-template-columns: repeat(7, 100px);
+    grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+  }
+  
+  
+  .calculator-grid > button {
     cursor: pointer;
-    color: #ffffff;
-}
-input::placeholder{
- color: #ffffff;
-}
-button{
+    font-size: 1.5rem;
+    border: 1px solid white;
+    outline: none;
+    background-color: rgba(255, 255, 255, .75);
+   
+  }
+  
+  
+  .calculator-grid > button:hover {
+    background-color: rgba(255, 255, 255, .9);
+  }
+  
+  
+  .span-two {
+    grid-column: span 2;
+  }
+  
+  
+  .output {
+    grid-column: 1 / -1;
+      background-color: rgba(0, 0, 0, .75);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      flex-direction: column;
+      padding-right: 10px;
+      word-wrap: break-word;
+      word-break: break-all;
+      padding-left: 10px;
+     
+  }
+  
+  
+  .output .previous-operand {
+    color: rgba(255, 255, 255, .75);
+    font-size: 1.5rem;
+  }
+  
+  
+  .output .current-operand {
+    color: white;
+    font-size: 2.5rem;
+  }
+  
+  
+  .hidden {
+    display: none;
+  }
+  
+  
+  #toggle-scientific {
+    width: 35.2px;
+    height: 32.2px;
+    margin-bottom: 0px;
+    place-self: flex-start;
+  }
+  #toggle-scientific {
     border: none;
-    width: 60px;
-    height: 60px;
-    margin: 10px;
-    border-radius: 50%;
-    background: transparent;
-    color: #ffffff;
-    box-shadow: -8px -8px 15px rgba(255,255,255,0.1);
+    background: none;
     cursor: pointer;
-}
-.equalBtn{
-    background-color: bisque;
-}
-.operator{
-   color: aquamarine;
-}
+    padding: 0;
+  }
+  
+  
+  #toggle-scientific img {
+    width: 35px;
+    height: 35px;
+    border-radius: 100px;
+  }
+  
