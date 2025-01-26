@@ -61,7 +61,7 @@ function updateNavbar() {
             <strong>GitHub</strong>
         </a>
         <a class="button is-success is-light" href="/public/Login.html">
-            Log in
+            <strong>Log in</strong>
         </a>`;
     }
 }
@@ -180,7 +180,6 @@ function fillTable() {
       ["Day 108","Mood Tracker","./public/Mood Tracker/index.html"],
     ["Day 109","CRYPTOSHOW","/public/CRYPTOSHOW/index.html"],
       ["Day 110","Whack-a-Mole Game","./public/Whack-a-Mole Game/index.html"]
-
     ];
 
 
@@ -199,6 +198,7 @@ function fillTable() {
         nameP.innerText = e[1];
         a.href = e[2];
         a.innerText = 'Here';
+        a.target = '_blank'; // Open link in a new tab
         nameP.classList.add('project-name');
 
         link.appendChild(a);
@@ -213,4 +213,29 @@ function fillTable() {
 document.addEventListener('DOMContentLoaded', () => {
     updateNavbar();
     fillTable();
+});
+
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Check if the user has a saved theme preference
+if (localStorage.getItem('theme') === 'dark') {
+  body.classList.add('dark-theme');  // Apply dark theme if saved
+  themeToggle.textContent = '☀️';  // Change button icon to sun (light mode)
+} else {
+  themeToggle.textContent = '🌙';  // Default icon is moon (dark mode)
+}
+
+// Toggle theme on button click
+themeToggle.addEventListener('click', () => {
+  body.classList.toggle('dark-theme');  // Toggle dark theme class
+  
+  // Update the button icon and save the theme preference
+  if (body.classList.contains('dark-theme')) {
+    themeToggle.textContent = '☀️';  // Change to light icon
+    localStorage.setItem('theme', 'dark');  // Save dark theme preference
+  } else {
+    themeToggle.textContent = '🌙';  // Change to dark icon
+    localStorage.setItem('theme', 'light');  // Save light theme preference
+  }
 });

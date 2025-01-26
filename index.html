@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>100 Days 100 Web Projects</title>
@@ -25,7 +29,7 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFFlcgUa6xLiPY/NS5R+E6ztJQ=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
@@ -39,86 +43,84 @@
     ></script>
   </head>
   <style type="text/css">
-     nav.navbar {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        background-color: #1abc9c;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
+    nav.navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: #1abc9c;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-      #scrollBtn {
-        position: fixed;
-        bottom: 20px; /* Place closer to the bottom */
-        right: 20px; /* Place closer to the right */
-        display: none; /* Initially hidden */
-        background-color: #1abc9c;
-        color: rgb(247, 242, 242);
-        border: none;
-        border-radius: 50%;
-        padding: 15px;
-        font-size: 18px;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000; /* Ensure visibility above other elements */
-        transition: background-color 0.3s ease, transform 0.3s ease;
-      }
+    #scrollBtn {
+      position: fixed;
+      bottom: 20px; /* Place closer to the bottom */
+      right: 20px; /* Place closer to the right */
+      display: none; /* Initially hidden */
+      background-color: #1abc9c;
+      color: rgb(247, 242, 242);
+      border: none;
+      border-radius: 50%;
+      padding: 15px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000; /* Ensure visibility above other elements */
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
 
-      #scrollBtn:hover {
-        background-color: #000; /* Change color on hover */
-        transform: scale(1.2); /* Slightly enlarge */
-      }
-      .contributors-btn {
-        background: linear-gradient(45deg, #10866f, );
-        color: white;
-        padding: 10px 20px; /* Adjust padding to make the button rectangular */
-        font-size: 0.8rem; /* Font size */
-        font-weight: bold;
-        text-decoration: none;
-        border: none;
-        border-radius: 5px; /* Optional: Rounded corners */
-        position: absolute;
-        top: 60px; /* Shifted slightly upwards */
-        right: 6px;
-        transition: background 0.3s ease, transform 0.2s ease,
-          box-shadow 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        text-align: center;
-        display: inline-block;
-        z-index: 10; /* Ensures the button stays on top */
-        font-family: "Circular Std", "Arial", sans-serif; /* Circular font */
-      }
+    #scrollBtn:hover {
+      background-color: #000; /* Change color on hover */
+      transform: scale(1.2); /* Slightly enlarge */
+    }
+    .contributors-btn {
+      background: linear-gradient(45deg, #10866f);
+      color: white;
+      padding: 10px 20px; /* Adjust padding to make the button rectangular */
+      font-size: 0.8rem; /* Font size */
+      font-weight: bold;
+      text-decoration: none;
+      border: none;
+      border-radius: 5px; /* Optional: Rounded corners */
+      position: absolute;
+      top: 60px; /* Shifted slightly upwards */
+      right: 6px;
+      transition: background 0.3s ease, transform 0.2s ease,
+        box-shadow 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      text-align: center;
+      display: inline-block;
+      z-index: 10; /* Ensures the button stays on top */
+      font-family: "Circular Std", "Arial", sans-serif; /* Circular font */
+    }
 
-      .contributors-btn:hover {
-        background: linear-gradient(45deg, #16a085, #1abc9c);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-      }
+    .contributors-btn:hover {
+      background: linear-gradient(45deg, #16a085, #1abc9c);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
 
-      .contributors-btn:active {
-        transform: translateY(0);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
+    .contributors-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 
+    #title-heading {
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+      color: white;
+    }
+
+    @media (max-width: 426px) {
       #title-heading {
-        margin-top: 3rem;
+        margin-top: 5rem;
         margin-bottom: 3rem;
-        color: white;
       }
-
-      @media (max-width: 426px) {
-        #title-heading {
-          margin-top: 5rem;
-          margin-bottom: 3rem;
-        }
-      }
-    
+    }
   </style>
 
   <body>
-    
     <!-- Navbar -->
     <nav
       class="navbar is-primary"
@@ -127,10 +129,12 @@
     >
       <div class="navbar-brand">
         <a class="navbar-item has-text-weight-bold" href="index.html">
-          <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"/>
+          <img
+            src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"
+          />
           100 DAYS 100 WEB PROJECTS
         </a>
-       
+        <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
         <a
           role="button"
           class="navbar-burger"
@@ -148,24 +152,20 @@
       <div class="navbar-menu is-active" id="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item">
-            <div class="buttons">
-              
-            </div>
+            <div class="buttons"></div>
           </div>
         </div>
       </div>
-    </nav><br><br>
+    </nav>
+    <br /><br />
 
-    
-
-    
     <!-- Main Page Starts Here -->
     <div class="content" id="projects">
       <div class="title is-2 has-text-centered" id="title-heading">
         100 Days 100 Web Projects
       </div>
       <p class="subtitle has-text-centered" style="color: white">
-        here are live demos of all the projects
+        Here are live demos of all the projects:
       </p>
 
       <div id="search-bar">
@@ -190,7 +190,7 @@
       </div>
 
       <div class="links">
-        <table class="table is-fullwidth is-bordered is-striped is-hoverable">
+        <table style="margin: bottom 0px;" class="table is-fullwidth is-bordered is-striped is-hoverable">
           <thead>
             <tr>
               <th>Day</th>
@@ -198,29 +198,26 @@
               <th>Demo Link</th>
             </tr>
           </thead>
-          <tbody id="tableBody">
-            
-          </tbody>
-
+          <tbody id="tableBody"></tbody>
         </table>
       </div>
 
       <div id="no-projects" style="display: none">No Projects Found</div>
     </div>
 
-    <footer class="footer">
+    <footer style="padding-bottom: 50px;" class="footer">
       <div class="content">
         <div class="columns is-vcentered">
           <!-- Left Side -->
           <div class="column has-text-left">
             <div class="heading">
-              <h2 class="is-size-4">About</h2>
-              <p>
+              <h2 id="footer_title" class="is-size-4">About</h2>
+              <p style="padding-bottom: 29px;" id="footer_title">
                 This repository contains 100 web projects from basic to
                 intermediate using HTML, CSS, and JS.
               </p>
               <p>
-                <strong>
+                <strong id="footer_title">
                   ©
                   <script>
                     document.write(new Date().getFullYear());
@@ -233,11 +230,11 @@
           </div>
 
           <!-- Right Side -->
-          <div class="column ms-4">
+          <div style="padding-left: 400px" class="column ms-4">
             <div class="heading">
-              <h2 class="is-size-4">Important Links</h2>
+              <h2 style="padding-left: 55px" class="is-size-4" id="footer_title">Important Links</h2>
               <!-- Social Media Icons -->
-              <div class="buttons">
+              <div style="padding-left: 200px" class="buttons">
                 <a
                   class="button is-dark is-rounded"
                   href="https://www.instagram.com/dhairyaa__31/"
@@ -270,7 +267,7 @@
                 </a>
               </div>
               <!-- Navigation Links -->
-              <div class="buttons ms-5">
+              <div style="padding-left: 200px" class="buttons ms-5">
                 <a class="button is-primary is-rounded" href="#">
                   <span class="icon">
                     <i class="fas fa-home"></i>
@@ -328,6 +325,3 @@
     </script>
   </body>
 </html>
-
-
-
