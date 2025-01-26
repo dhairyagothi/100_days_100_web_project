@@ -220,22 +220,24 @@ const body = document.body;
 
 // Check if the user has a saved theme preference
 if (localStorage.getItem('theme') === 'dark') {
-  body.classList.add('dark-theme');  // Apply dark theme if saved
-  themeToggle.textContent = '☀️';  // Change button icon to sun (light mode)
+  body.classList.add('dark-theme');
+  themeToggle.textContent = '☀️';
 } else {
-  themeToggle.textContent = '🌙';  // Default icon is moon (dark mode)
+  body.classList.add('light-theme');  // Explicitly set light theme
+  themeToggle.textContent = '🌙';
 }
 
 // Toggle theme on button click
 themeToggle.addEventListener('click', () => {
-  body.classList.toggle('dark-theme');  // Toggle dark theme class
-  
-  // Update the button icon and save the theme preference
   if (body.classList.contains('dark-theme')) {
-    themeToggle.textContent = '☀️';  // Change to light icon
-    localStorage.setItem('theme', 'dark');  // Save dark theme preference
+    body.classList.remove('dark-theme');
+    body.classList.add('light-theme');
+    themeToggle.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
   } else {
-    themeToggle.textContent = '🌙';  // Change to dark icon
-    localStorage.setItem('theme', 'light');  // Save light theme preference
+    body.classList.remove('light-theme');
+    body.classList.add('dark-theme');
+    themeToggle.textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
   }
 });

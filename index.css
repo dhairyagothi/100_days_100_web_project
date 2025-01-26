@@ -113,8 +113,8 @@
   /* Adjust body and overall font-family */
   body {
     font-family: "Poppins", sans-serif;
-    background-color: #181818;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #000000;
 
     @media (max-width: 426px) {
       .links table tbody tr td {
@@ -147,7 +147,7 @@
     body {
       font-family: sans-serif;
       background-color: #181818; /* Dark gray background */
-      color: #ffffff; /* White text color */
+      color: #000000;
       margin: 0;
       display: flex;
       flex-direction: column;
@@ -157,7 +157,7 @@
     /* Header styles */
     header {
       background-color: #2ecc71; /* Teal color */
-      color: #ffffff; /* White text */
+      color: #000000; /* White text */
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -175,7 +175,7 @@
     }
 
     header a {
-      color: #ffffff;
+      color: #000000;
       text-decoration: none;
     }
 
@@ -191,7 +191,7 @@
     main h1 {
       font-size: 3rem;
       margin-bottom: 1rem;
-      color: #ffffff; /* White heading text */
+      color: #000000; /* White heading text */
     }
 
     /* Search bar styles */
@@ -240,7 +240,7 @@
       background-color: #222222;
       padding: 1rem;
       text-align: center;
-      color: #f3eeee; /* Light gray footer text */
+      color: #000000; /* Light gray footer text */
     }
   }
 }
@@ -248,18 +248,21 @@
 /* Dark theme styles */
 body.dark-theme {
   background: linear-gradient(
-    145deg,
-    #0f0f0f,
-    #3b3b3b
-  ); /* Subtle dark grey to dark charcoal gradient */
-  color: #e4e4e4; /* Soft white text */
+    to right,
+    #000000,
+    /* Pure black */ #101010,
+    /* Very dark shade of black */ #1a1a1a,
+    /* Slightly lighter black */ #000000
+      /* Keep it consistent with pure black on the ends */
+  );
+  color: #ffffff; /* Light text color */
   transition: background 0.5s ease, color 0.5s ease; /* Smooth transition */
 }
 
 /* Navbar */
 body.dark-theme .navbar {
   background-color: #2c3e50; /* Elegant deep blue-gray */
-  color: #ecf0f1;
+  color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
 }
 
@@ -337,13 +340,16 @@ body.dark-theme table th {
 }
 body.dark-theme table th {
   background-color: #284a6b;
-  color: #000000 !important; /* Force white color */
   padding: 12px;
   text-align: left;
   font-size: 1.1rem;
   text-transform: uppercase;
   font-family: "Orbitron", sans-serif;
   font-weight: bold;
+}
+
+body.dark-theme #title-two {
+  color: white;
 }
 
 body.dark-theme table td {
@@ -406,53 +412,51 @@ body.dark-theme #scrollBtn:hover {
   transform: scale(1.1);
 }
 
+/*........................................................................................................................*/
+
 /* Light theme styles */
-body {
+body.light-theme {
   background: linear-gradient(
     145deg,
-    #ffffff,
-    #3b3b3b
+    #f0f9ff,
+    #5cff33
   ); /* Subtle dark grey to dark charcoal gradient */
-  color: #000000; /* Soft white text */
+  color: #ffffff; /* Soft white text */
   transition: background 0.5s ease, color 0.5s ease; /* Smooth transition */
 }
 
 /* Navbar */
-.navbar {
-  background-color: #2c3e50; /* Elegant deep blue-gray */
-  color: #ecf0f1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+body.light-theme .navbar {
+  background: rgb(0, 157, 219);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
 }
 
-.navbar-item {
+body.light-theme .navbar-item {
   color: #ffffff; /* Lighter navbar text */
   font-family: "Orbitron", sans-serif; /* Tech-inspired font */
 }
 
-.navbar-item:hover {
-  color: #e67e22; /* Warm orange on hover */
-  transition: color 0.3s ease;
+body.light-theme .navbar-item:hover {
+  color: #f39c12; /* Gold accent on hover */
 }
 
 /* Footer */
-.footer {
-  color: rgb(255, 255, 255);
-  background: linear-gradient(
-    145deg,
-    #000000,
-    #2f2f2f
-  ); /* Dark gradient effect */
-  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.3); /* More prominent shadow */ /* Very dark footer with a bluish tint */
+body.light-theme .footer {
+  color: rgb(0, 0, 0);
+  background: linear-gradient(145deg, #f0f9ff, #dfffd7);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.3);
   text-align: center;
   box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.3);
 }
 
-.footer p {
-  font-size: 0.9rem;
+body.light-theme #footer_title {
+  color: rgb(0, 0, 0);
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Title */
-#title-heading {
+body.light-theme #title-heading {
   color: #000000; /* Soft white for titles */
   font-size: 2.5rem;
   font-weight: 700; /* Bold title */
@@ -463,34 +467,43 @@ body {
   font-family: "Orbitron", sans-serif; /* Tech-inspired font */
   transition: transform 0.2s ease, text-shadow 0.2s ease;
 }
-
-#title-heading:hover {
+/* Hover effect */
+body.light-theme #title-heading:hover {
   transform: scale(1.05); /* Slightly enlarge the title */
   text-shadow: 0 0 30px #00f5ff; /* Glowing blue text shadow */
 }
 
 /* Theme toggle */
-#theme-toggle {
-  color: #ecf0f1;
+body.light-theme #theme-toggle {
+  color: #000000;
   font-size: 2rem;
   transition: color 0.3s ease;
-  padding: 5px;
 }
 
-#theme-toggle:hover {
-  transform: scale(1.1);
-  color: #e67e22; /* Warm orange on hover */
+body.light-theme #theme-toggle:hover {
+  color: #f39c12; /* Warm gold hover effect */
 }
 
 /* Table Styles */
-table {
+body.light-theme table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 2rem;
 }
 
-table th {
-  background-color: #284a6b;
+body.light-theme table th {
+  background-color: #0080ff; /* Darker header */
+  color: #000000; /* Set white color for text */
+  padding: 12px;
+  text-align: left;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-family: "Orbitron", sans-serif; /* Tech-inspired font */
+  font-weight: bold; /* Optional: Makes the header bolder */
+}
+body.light-theme table th {
+  background-color: hsl(131, 100%, 42%);
+  color: #000000 !important; /* Force white color */
   padding: 12px;
   text-align: left;
   font-size: 1.1rem;
@@ -499,69 +512,69 @@ table th {
   font-weight: bold;
 }
 
-table th {
-  background-color: #34495e; /* Darker header */
-  color: #ffffff; /* Set white color for text */
+body.light-theme #title-two {
+  color: black;
+  font-family: "Montserrat", sans-serif;
+}
+
+body.light-theme table td {
+  background-color: linear-gradient(145deg, #f0f9ff, #5cff33);
+  color: black;
   padding: 12px;
-  text-align: left;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  font-family: 'Orbitron', sans-serif; /* Tech-inspired font */
-  font-weight: bold; /* Optional: Makes the header bolder */
 }
 
-table td {
-  background-color: #000000; /* Darker table rows */
-  color: #ffffff;
-  padding: 15px;
+body.light-theme table tr:hover {
+  background-color: linear-gradient(145deg, #f0f9ff, #5cff33, white);
+  transition: background-color 0.4s ease;
 }
 
-table tr:hover {
-  transition: background-color 0.3s ease;
-}
-
-table td a {
-  color: #f39c12; /* Gold links for contrast */
+body.light-theme table td a {
+  color: hsl(200, 100%, 55%); /* Gold links for contrast */
   text-decoration: none;
   font-weight: bold;
 }
 
-table td a:hover {
-  text-decoration: underline; /* Underline on hover */
+body.light-theme table td a:hover {
+  text-decoration: underline; /* Underline effect on hover */
 }
 
 /* Buttons */
-.button {
-  background-color: #f39c12; /* Bright yellow buttons */
+body.light-theme .button {
+  background-color: #000000; /* Soft teal buttons */
   color: #ffffff;
   border-radius: 5px;
-  padding: 12px 24px;
+  padding: 10px 20px;
   font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.button:hover {
-  background-color: #f1c40f; /* Slightly brighter yellow on hover */
+body.light-theme .button:hover {
+  background-color: #00866b; /* Slightly brighter teal on hover */
   transform: translateY(-2px); /* Hover lift effect */
 }
 
-.button:active {
-  transform: translateY(0); /* Reset lift on click */
+body.light-theme .button:active {
+  transform: translateY(0); /* Button active state */
+}
+
+/* Smooth transitions for interactive elements */
+body,
+.navbar,
+.footer,
+table {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Scroll to Top Button */
-#scrollBtn {
-  background-color: #f39c12;
+body.light-theme #scrollBtn {
+  background-color: #2c3e50;
   color: #ffffff;
-  border-radius: 50%;
-  padding: 10px 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-#scrollBtn:hover {
-  background-color: #f1c40f;
-  transform: scale(1.1); /* Hover scale effect */
+body.light-theme #scrollBtn:hover {
+  background-color: #34495e;
+  transform: scale(1.1);
 }
 
 /* Smooth Transitions for All Interactive Elements */
@@ -571,7 +584,7 @@ table td a:hover {
 
 /* Default (Light mode) style for the Log in button */
 a[href="/public/Login.html"] {
-  background-color: #4caf50; /* Green background */
+  background-color: #000000; /* Green background */
   color: white; /* White text */
   padding: 10px 20px; /* Button size */
   font-size: 1rem;
@@ -583,7 +596,7 @@ a[href="/public/Login.html"] {
 
 /* Hover effect in light mode */
 a[href="/public/Login.html"]:hover {
-  background-color: #45a049; /* Slightly darker green on hover */
+  background-color: #00ff0d; /* Slightly darker green on hover */
   transform: translateY(-2px); /* Slight lift effect */
 }
 
@@ -594,7 +607,7 @@ a[href="/public/Login.html"]:active {
 
 /* Dark Mode Style */
 body.dark-theme a[href="/public/Login.html"] {
-  background-color: #1abc9c; /* Darker teal background */
+  background-color: #00fecb; /* Darker teal background */
   color: #ecf0f1; /* Lighter text */
   padding: 10px 20px;
   font-size: 1rem;
@@ -606,7 +619,7 @@ body.dark-theme a[href="/public/Login.html"] {
 
 /* Hover effect in dark mode */
 body.dark-theme a[href="/public/Login.html"]:hover {
-  background-color: #16a085; /* Slightly darker teal */
+  background-color: #000000; /* Slightly darker teal */
   transform: translateY(-2px);
 }
 
@@ -615,3 +628,20 @@ body.dark-theme a[href="/public/Login.html"]:active {
   transform: translateY(0);
 }
 
+/* Ensure the body takes full height */
+body {
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: space-between; /* Space between header, content, and footer */
+}
+
+/* Keep the footer fixed at the bottom of the page */
+.footer {
+  margin-top: auto; /* Push footer to the bottom of the page */
+}
+
+/* Optional: Add more space in the content area if the search bar is large */
+.content {
+  flex: 1; /* This will make sure the content area takes up the remaining space */
+}
