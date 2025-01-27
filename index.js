@@ -180,6 +180,7 @@ function fillTable() {
       ["Day 108","Mood Tracker","./public/Mood Tracker/index.html"],
     ["Day 109","CRYPTOSHOW","/public/CRYPTOSHOW/index.html"],
       ["Day 110","Whack-a-Mole Game","./public/Whack-a-Mole Game/index.html"]
+        ["Day 111","Dream_Jounal","./Dream_Journal/index.html"]
 
     ];
 
