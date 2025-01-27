@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <h4>Projects</h4>
             <p>${projects || "write about projects developed by you."}</p>
             <h4>Skills</h4>
-            <ul>${skills.split(",").map(skill => `<li>${skill.trim()}</li>`).join("")}</ul>
+            ${skills ? `<ul>${skills.split(",").map(skill => `<li>${skill.trim()}</li>`).join("")}</ul>` : "<p>No Skills added.</p>"}
             <h4>Experience</h4>
             <p>${experience || "Add your work experience here."}</p>
         `;
