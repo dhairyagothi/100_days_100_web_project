@@ -1,0 +1,113 @@
+body{
+    /* background: url("download.jpeg") no-repeat center center; */
+    background:url("back.jpg");
+    background-size:cover;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+
+}
+
+h1{
+    text-align: center;
+    color: white;
+    padding: 20px;
+    align-self: space-between;
+    background: linear-gradient(0deg,#f7ff00,#db36a4);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+.taskbar {
+    position: fixed;
+    top: 0; /* Keeps it at the bottom of the page */
+    width: 100%; /* Ensures it spans the full width */
+    color: white;
+    background-color: black;
+    margin: 0;
+    border-radius: 0 0 50px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px; /* Add some padding if needed */
+}
+
+.links{
+    padding: 10px;
+    display: flex;
+    gap: 30px;
+    margin-left:10px;
+    margin-bottom: 2px;
+}
+.data{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-left: 20px;
+    overflow: hidden;
+    /* width: 25%;
+    height: 100%; */
+    /* border-radius: 30px; */
+    justify-content: space-between;
+    align-items: center; 
+} 
+
+.sidebar{
+    background-color: black;
+    height: 100vh;
+    width: 20%;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 140px;
+    animation: fadeIn 5s ease-in;
+
+    /* display: flex; */
+    /* justify-content: space-between;
+    gap: 20px; */
+    
+
+}
+.line{
+    border-top: 2px solid white;
+    margin: 1px 0;
+}
+.sidebar ul{
+    list-style-type: disc;
+    list-style-position: inside;
+    color: aliceblue;
+}
+
+ul li a{
+    text-decoration: none;
+    background-color:white; 
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    gap: 20px;
+    font-size: 24px;
+    
+    
+}
+.maincontent{
+    background-color: black;
+    color: white;
+    border-radius: 30px;
+    padding: 20px;
+    width: 70%;
+    margin-top: 150px;
+    margin-left:20px ;
+    margin-right: 20px;
+    animation: fadeIn 3s ease-in;
+    /* margin: 20px; */
+}
+
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
