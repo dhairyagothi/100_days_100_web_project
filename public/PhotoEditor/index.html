@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-section {
+            text-align: center;
+            padding: 40px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-section:hover {
+            border-color: #64ffda;
+            background: rgba(100, 255, 218, 0.05);
+        }
+
+        .upload-section p {
+            margin-top: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+        }
+
+        .editor-section {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+
+        .canvas-container {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #canvas {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .control-group {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .control-group h3 {
+            margin-bottom: 15px;
+            color: #64ffda;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            appearance: none;
+            margin-bottom: 15px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #64ffda;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        button:hover {
+            background: rgba(100, 255, 218, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .action-buttons button:last-child {
+            background: rgba(255, 99, 99, 0.1);
+            color: #ff6363;
+            border-color: rgba(255, 99, 99, 0.2);
+        }
+
+        .action-buttons button:last-child:hover {
+            background: rgba(255, 99, 99, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .editor-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="upload-section">
+            <input type="file" id="upload" accept="image/*" hidden>
+            <button onclick="document.getElementById('upload').click()">Upload Image</button>
+            <p>or drag and drop your image here</p>
+        </div>
+        
+        <div class="editor-section">
+            <div class="canvas-container">
+                <canvas id="canvas"></canvas>
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <h3>Adjustments</h3>
+                    <label>Brightness</label>
+                    <input type="range" id="brightness" min="-100" max="100" value="0">
+                    
+                    <label>Contrast</label>
+                    <input type="range" id="contrast" min="-100" max="100" value="0">
+                    
+                    <label>Saturation</label>
+                    <input type="range" id="saturation" min="-100" max="100" value="0">
+                </div>
+
+                <div class="control-group">
+                    <h3>Filters</h3>
+                    <div class="filters">
+                        <button onclick="applyFilter('grayscale')">Grayscale</button>
+                        <button onclick="applyFilter('sepia')">Sepia</button>
+                        <button onclick="applyFilter('blur')">Blur</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button onclick="downloadImage()">Download</button>
+                    <button onclick="resetImage()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let originalImage = null;
+
+        // Handle file upload
+        document.getElementById('upload').addEventListener('change', handleUpload);
+        
+        // Handle drag and drop
+        const uploadSection = document.querySelector('.upload-section');
+        uploadSection.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadSection.style.borderColor = '#64ffda';
+        });
+
+        uploadSection.addEventListener('dragleave', () => {
+            uploadSection.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        });
+
+        uploadSection.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadSection.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleFile(file);
+            }
+        });
+
+        function handleUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    // Calculate dimensions to maintain aspect ratio and fit in container
+                    const maxWidth = window.innerWidth * 0.6;
+                    const maxHeight = window.innerHeight * 0.7;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxWidth) {
+                        height = (maxWidth * height) / width;
+                        width = maxWidth;
+                    }
+                    if (height > maxHeight) {
+                        width = (maxHeight * width) / height;
+                        height = maxHeight;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    ctx.drawImage(img, 0, 0, width, height);
+                    originalImage = img;
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Handle adjustments
+        const adjustments = ['brightness', 'contrast', 'saturation'];
+        adjustments.forEach(adjustment => {
+            document.getElementById(adjustment).addEventListener('input', updateImage);
+        });
+
+        function updateImage() {
+            if (!originalImage) return;
+
+            ctx.filter = `
+                brightness(${100 + parseInt(document.getElementById('brightness').value)}%)
+                contrast(${100 + parseInt(document.getElementById('contrast').value)}%)
+                saturate(${100 + parseInt(document.getElementById('saturation').value)}%)
+            `;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+        }
+
+        function applyFilter(type) {
+            if (!originalImage) return;
+
+            switch(type) {
+                case 'grayscale':
+                    ctx.filter = 'grayscale(100%)';
+                    break;
+                case 'sepia':
+                    ctx.filter = 'sepia(100%)';
+                    break;
+                case 'blur':
+                    ctx.filter = 'blur(5px)';
+                    break;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+        }
+
+        function downloadImage() {
+            if (!originalImage) return;
+
+            const link = document.createElement('a');
+            link.download = 'edited-image.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function resetImage() {
+            if (!originalImage) return;
+
+            // Reset all adjustments
+            adjustments.forEach(adjustment => {
+                document.getElementById(adjustment).value = 0;
+            });
+
+            ctx.filter = 'none';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+        }
+    </script>
+</body>
+</html>

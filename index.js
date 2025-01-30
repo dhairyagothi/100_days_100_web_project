@@ -156,6 +156,7 @@ function fillTable() {
         ["Day 85", "Image Search Engine", "/public/Image Search Engine/index.html"],
         ["Day 86", "Profile Card", "/public/3d profile Card/index.html"],
         ["Day 87", "Breakout game", "/public/Breakout game/index.html"],
+ 
         ["Day 88", "Job dashboard", "/public/Job dashboard/jobs.html"],
         ["Day 89", "N-Queen", "/public/N_Queen/index.html"],
         ["Day 90", "Quize App Timer", "public/QuizeApp Timer/index1.html"],
@@ -179,10 +180,10 @@ function fillTable() {
         ["Day 107", "expense_Tracker", "./public/expense_Tracker/index.html"],
       ["Day 108","Mood Tracker","./public/Mood Tracker/index.html"],
     ["Day 109","CRYPTOSHOW","/public/CRYPTOSHOW/index.html"],
-      ["Day 110","Whack-a-Mole Game","./public/Whack-a-Mole Game/index.html"]
+      ["Day 110","Whack-a-Mole Game","./public/Whack-a-Mole Game/index.html"],
+      ["Day 111","Photo Editor","./public/PhotoEditor/index.html"]
 
     ];
-
 
 
 
