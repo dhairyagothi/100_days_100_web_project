@@ -519,7 +519,7 @@ body.light-theme #title-two {
 
 body.light-theme table td {
   background-color: linear-gradient(145deg, #f0f9ff, #5cff33);
-  color: black;
+ color: rgb(213, 213, 213);
   padding: 12px;
 }
 
