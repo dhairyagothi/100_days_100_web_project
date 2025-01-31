@@ -105,7 +105,37 @@ This repository contains 100 web projects from basic to intermediate using html 
 | Day 77 | rock-paper-scissor-game project | [rock-paper-scissor-game project](public/Stone-Paper-Scissor) | |
 | Day 78 | npm package search | [npm package search](<public/NPM Package Search>) | |
 | Day 79 | linkedin homepage clone using react | [linkedin homepage clone using react](public/Linkedin-Clone) | |
-| Day-95 | TodoList in React-TS-Tailwind | [TodoList in React-TS-Tailwind](public/TodoList-React-TS-Tailwind) | to use this TodoList you need to first clone this repo -> open folder TodoList-React-TS-Tailwind -> npm i -> npm run dev -> open http://localhost:5173 -> see TodoList . that's it all set. |
+| Day 80 | Resume Studio |[Resume Studio](public/ResumeStudio) | |
+| Day 81 | Simon Says Game |[Simon Says Game](public/Simon_Says_Game) | |
+| Day 82 | Love Calculator Game |[Love Calculator Game](public/Love-Calculator) | |
+| Day 83 | Exchange Currency | [Exchange Currency](public/Exchange_Currency)| |
+| Day 84 | Lights Out Puzzle | [Lights Out Puzzle](public/Lights_Out_Puzzle)| |
+| Day 85 | Image Search Engine | [Image Search Engine](<public/Image Search Engine>)| |
+| Day 86 | Profile Card | [Profile Card](<public/3d profile Card>)| |
+| Day 87 | Breakout game | [Breakout game](<public/Breakout game>)| |
+| Day 88 | Job dashboard | [Job dashboard](<public/Job dashboard>)| |
+| Day 89 | N-Queen |[N-Queen](public/N_Queen) | |
+| Day 90 | Quize App Timer | [Quize App Timer](<public/QuizeApp Timer>)| |
+| Day 91 | Voting Application Backend | [Voting Application Backend](public/Voting_Application_Backend)| |
+| Day 92 | Slide puzzle Game | [Slide puzzle Game](<public/Slide puzzle Game>)| |
+| Day 93 | TextUtils | [TextUtils](public/Textutils)| |
+| Day 94 | Hangman Game | [Hangman Game](public/HangmanGame)| |
+| Day 95 | TodoList in React TS Tailwind | [TodoList in React-TS-Tailwind](public/TodoList-React-TS-Tailwind) | to use this TodoList you need to first clone this repo -> open folder TodoList-React-TS-Tailwind -> npm i -> npm run dev -> open http://localhost:5173 -> see TodoList . that's it all set. |
+| Day 96 | HCL Color Generator | [HCL Color Generator](<public/HCL Color Generator>)| |
+| Day 97 | Time Capsule | [Time Capsule](public/Time-Capsule)| |
+| Day 98 | Virtual Piano | [Virtual Piano](<public/Virtual Piano>)| |
+| Day 99 | NASA-APOD Extension | [NASA-APOD Extension](public/NASA-APOD) | |
+| Day 100 | Text Saver Extension | [Text Saver Extension](public/Text_Saver_Ext)| |
+| Day 101 | Personal Finance Tracker | [Personal Finance Tracker](public/FinanceTracker)| |
+| Day 102 | Travel Booking Website | [Travel Booking Website](public/Travel_booking_website)| |
+| Day 103 | Drumkit Game | [Drumkit Game](public/Drumkit_Game)| |
+| Day 104 | Debug-Website | [Debug-Website](public/Debug-Website) | |
+| Day 105 | Plants Website | [Plants Website](<public/Plants Website>)| |
+| Day 106 | DocNow |[DocNow](public/DocNow) | |
+| Day 107 | expense_Tracker |[expense_Tracker](public/expense_Tracker) | |
+| Day 108 | Mood Tracker | [Mood Tracker](<public/Mood Tracker>)| |
+| Day 109 | CRYPTOSHOW | [CRYPTOSHOW](public/CRYPTOSHOW)| |
+| Day 110 | Whack-a-Mole Game | [Whack-a-Mole Game](<public/Whack-a-Mole Game>)| |
 
 ## Discord Channel for VSoC 2024 Contributors
 
