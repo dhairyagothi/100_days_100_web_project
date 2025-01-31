@@ -61,7 +61,7 @@ function updateNavbar() {
             <strong>GitHub</strong>
         </a>
         <a class="button is-success is-light" href="/public/Login.html">
-            Log in
+            <strong>Log in</strong>
         </a>`;
     }
 }
@@ -180,7 +180,6 @@ function fillTable() {
       ["Day 108","Mood Tracker","./public/Mood Tracker/index.html"],
     ["Day 109","CRYPTOSHOW","/public/CRYPTOSHOW/index.html"],
       ["Day 110","Whack-a-Mole Game","./public/Whack-a-Mole Game/index.html"]
-
     ];
 
 
@@ -199,6 +198,7 @@ function fillTable() {
         nameP.innerText = e[1];
         a.href = e[2];
         a.innerText = 'Here';
+        a.target = '_blank'; // Open link in a new tab
         nameP.classList.add('project-name');
 
         link.appendChild(a);
@@ -213,4 +213,31 @@ function fillTable() {
 document.addEventListener('DOMContentLoaded', () => {
     updateNavbar();
     fillTable();
+});
+
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Check if the user has a saved theme preference
+if (localStorage.getItem('theme') === 'dark') {
+  body.classList.add('dark-theme');
+  themeToggle.textContent = '☀️';
+} else {
+  body.classList.add('light-theme');  // Explicitly set light theme
+  themeToggle.textContent = '🌙';
+}
+
+// Toggle theme on button click
+themeToggle.addEventListener('click', () => {
+  if (body.classList.contains('dark-theme')) {
+    body.classList.remove('dark-theme');
+    body.classList.add('light-theme');
+    themeToggle.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  } else {
+    body.classList.remove('light-theme');
+    body.classList.add('dark-theme');
+    themeToggle.textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
+  }
 });

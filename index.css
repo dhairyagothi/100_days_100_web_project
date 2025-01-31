@@ -1,10 +1,11 @@
-
+/* Import the Orbitron font */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap");
 
 .navbar-item {
   font-family: "Poppins", sans-serif;
   transition: color 0.3s ease, background-color 0.3s ease;
 
-#bgCanvas {
+  #bgCanvas {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,233 +13,635 @@
     height: 100%;
     z-index: -1;
     filter: blur(5px);
+  }
 
+  .navbar-item:hover {
+    color: #ffffff; /* White text */
+    text-decoration: none;
+  }
+
+  .navbar-burger:hover {
+    background-color: #1abc9c; /* Teal hover for burger menu */
+    color: #ffffff;
+  }
+
+  /* Buttons */
+  button,
+  .button {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  button:hover,
+  .button:hover {
+    transform: scale(1.1);
+    background-color: #27ae60; /* Darker green for hover */
+  }
+
+  /* Links */
+  a {
+    color: #1abc9c; /* Teal color */
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+  }
+
+  a:hover {
+    color: #ffffff; /* Change to white */
+    text-decoration: underline;
+  }
+
+  /* Search bar */
+  #searchInput {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #27ae60; /* Green border */
+    background-color: #2c3e50; /* Dark background */
+    color: #ecf0f1; /* Light text */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #searchInput:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px rgba(26, 188, 156, 0.8);
+  }
+
+  #searchButton {
+    background-color: #1abc9c;
+    color: #ffffff;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  #searchButton:hover {
+    background-color: #27ae60;
+    transform: scale(1.05);
+  }
+
+  /* Table links hover effects */
+  .table a {
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    color: #1abc9c; /* Initial teal color */
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+  }
+
+  .table a:hover {
+    color: #16a085; /* Darker teal */
+    text-decoration: underline;
+  }
+
+  /* Footer social icons hover */
+  .footer .button.is-dark.is-rounded {
+    background-color: #2c3e50; /* Dark background */
+    color: #ecf0f1;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  .footer .button.is-dark.is-rounded:hover {
+    background-color: #1abc9c; /* Teal on hover */
+    transform: scale(1.2);
+  }
+
+  /* Navbar title hover */
+  .navbar-brand .navbar-item.has-text-weight-bold:hover {
+    color: #ffffff; /* White text */
+    background-color: #16a085; /* Green background */
+  }
+
+  /* Adjust body and overall font-family */
+  body {
+    font-family: "Poppins", sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+
+    @media (max-width: 426px) {
+      .links table tbody tr td {
+        padding: 6px 2px; /* Reduce padding for smaller screens */
+      }
+    }
+
+    @media (max-width: 330px) {
+      .links table tbody tr td {
+        padding-left: 2px;
+        padding-right: 2px;
+      }
+
+      .links table tbody tr .project-name {
+        padding: 6px 4px; /* Reduce padding for project names */
+      }
+
+      .links table tbody tr td a {
+        margin-left: 4px;
+      }
+    }
+
+    /* Add hover effect for links */
+    .links table tbody tr td a:hover {
+      color: #007bff; /* Change color on hover */
+      text-decoration: underline; /* Highlight links */
+    }
+
+    /* Base styles */
+    body {
+      font-family: sans-serif;
+      background-color: #181818; /* Dark gray background */
+      color: #000000;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header styles */
+    header {
+      background-color: #2ecc71; /* Teal color */
+      color: #000000; /* White text */
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem; /* Adjust font size as needed */
+    }
+
+    header nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    header a {
+      color: #000000;
+      text-decoration: none;
+    }
+
+    /* Main content styles */
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    main h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #000000; /* White heading text */
+    }
+
+    /* Search bar styles */
+    #search-bar {
+      display: flex;
+      margin-bottom: 2rem;
+    }
+
+    #searchInput {
+      padding: 1rem;
+      border-radius: 5px;
+      border: none;
+      background-color: #0d0d0d; /* Dark gray input background */
+      color: #f5eeee; /* White input text */
+      flex-grow: 1;
+    }
+
+    #searchButton {
+      padding: 1rem 1.5rem;
+      background-color: #2ecc71; /* Teal button color */
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      height: 24px;
+    }
+
+    /* No projects message */
+    #no-projects {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    footer {
+      background-color: #222222;
+      color: #f3eeee;
+      font-family: "Orbitron", sans-serif;
+    }
+
+    footer a:hover {
+      color: #1abc9c; /* Teal hover */
+      text-decoration: underline;
+    }
+    #title-heading {
+      margin-bottom: 20px;
+      background-color: #222222;
+      padding: 1rem;
+      text-align: center;
+      color: #000000; /* Light gray footer text */
+    }
+  }
 }
 
-.navbar-item:hover {
-  color: #ffffff; /* White text */
-  text-decoration: none;
+/* Dark theme styles */
+body.dark-theme {
+  background: linear-gradient(
+    to right,
+    #000000,
+    /* Pure black */ #101010,
+    /* Very dark shade of black */ #1a1a1a,
+    /* Slightly lighter black */ #000000
+      /* Keep it consistent with pure black on the ends */
+  );
+  color: #ffffff; /* Light text color */
+  transition: background 0.5s ease, color 0.5s ease; /* Smooth transition */
 }
 
-
-.navbar-burger:hover {
-  background-color: #1abc9c; /* Teal hover for burger menu */
+/* Navbar */
+body.dark-theme .navbar {
+  background-color: #2c3e50; /* Elegant deep blue-gray */
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
+}
+
+body.dark-theme .navbar-item {
+  color: #ffffff; /* Lighter navbar text */
+  font-family: "Orbitron", sans-serif; /* Tech-inspired font */
+}
+
+body.dark-theme .navbar-item:hover {
+  color: #f39c12; /* Gold accent on hover */
+}
+
+/* Footer */
+body.dark-theme .footer {
+  color: rgb(255, 255, 255);
+  background: linear-gradient(
+    145deg,
+    #000000,
+    #2f2f2f
+  ); /* Dark gradient effect */
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.3); /* More prominent shadow */ /* Very dark footer with a bluish tint */
+  text-align: center;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme #footer_title {
+  color: white;
+}
+
+/* Title */
+body.dark-theme #title-heading {
+  color: #ffffff; /* Soft white for titles */
+  font-size: 2.5rem;
+  font-weight: 700; /* Bold title */
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  font-family: "Orbitron", sans-serif; /* Tech-inspired font */
+  transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+/* Hover effect */
+body.dark-theme #title-heading:hover {
+  transform: scale(1.05); /* Slightly enlarge the title */
+  text-shadow: 0 0 30px #00f5ff; /* Glowing blue text shadow */
+}
+
+/* Theme toggle */
+body.dark-theme #theme-toggle {
+  color: #ecf0f1;
+  font-size: 2rem;
+  transition: color 0.3s ease;
+}
+
+body.dark-theme #theme-toggle:hover {
+  color: #f39c12; /* Warm gold hover effect */
+}
+
+/* Table Styles */
+body.dark-theme table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+body.dark-theme table th {
+  background-color: #34495e; /* Darker header */
+  color: #ffffff; /* Set white color for text */
+  padding: 12px;
+  text-align: left;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-family: "Orbitron", sans-serif; /* Tech-inspired font */
+  font-weight: bold; /* Optional: Makes the header bolder */
+}
+body.dark-theme table th {
+  background-color: #284a6b;
+  padding: 12px;
+  text-align: left;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-family: "Orbitron", sans-serif;
+  font-weight: bold;
+}
+
+body.dark-theme #title-two {
+  color: white;
+}
+
+body.dark-theme table td {
+  background-color: #1c2833; /* Darker table rows */
+  color: #ffffff;
+  padding: 12px;
+}
+
+body.dark-theme table tr:hover {
+  background-color: #3b4b63; /* Lighter hover effect */
+  transition: background-color 0.3s ease;
+}
+
+body.dark-theme table td a {
+  color: #f39c12; /* Gold links for contrast */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+body.dark-theme table td a:hover {
+  text-decoration: underline; /* Underline effect on hover */
 }
 
 /* Buttons */
-button, .button {
-  font-family: "Poppins", sans-serif;
-  font-size: 1rem;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-button:hover, .button:hover {
-  transform: scale(1.1);
-  background-color: #27ae60; /* Darker green for hover */
-}
-
-/* Links */
-a {
-  color: #1abc9c; /* Teal color */
-  transition: color 0.3s ease, text-decoration 0.3s ease;
-}
-
-a:hover {
-  color: #ffffff; /* Change to white */
-  text-decoration: underline;
-}
-
-/* Search bar */
-#searchInput {
-  font-family: "Poppins", sans-serif;
-  font-size: 1rem;
-  padding: 10px;
+body.dark-theme .button {
+  background-color: #16a085; /* Soft teal buttons */
+  color: #ffffff;
   border-radius: 5px;
-  border: 1px solid #27ae60; /* Green border */
-  background-color: #2c3e50; /* Dark background */
-  color: #ecf0f1; /* Light text */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#searchInput:focus {
-  outline: none;
-  border-color: #1abc9c;
-  box-shadow: 0 0 8px rgba(26, 188, 156, 0.8);
+body.dark-theme .button:hover {
+  background-color: #1abc9c; /* Slightly brighter teal on hover */
+  transform: translateY(-2px); /* Hover lift effect */
 }
 
-#searchButton {
-  background-color: #1abc9c;
+body.dark-theme .button:active {
+  transform: translateY(0); /* Button active state */
+}
+
+/* Smooth transitions for interactive elements */
+body,
+.navbar,
+.footer,
+table {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Scroll to Top Button */
+body.dark-theme #scrollBtn {
+  background-color: #2c3e50;
   color: #ffffff;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-#searchButton:hover {
-  background-color: #27ae60;
-  transform: scale(1.05);
+body.dark-theme #scrollBtn:hover {
+  background-color: #34495e;
+  transform: scale(1.1);
 }
 
-/* Table links hover effects */
-.table a {
-  font-family: "Poppins", sans-serif;
+/*........................................................................................................................*/
+
+/* Light theme styles */
+body.light-theme {
+  background: linear-gradient(
+    145deg,
+    #f0f9ff,
+    #5cff33
+  ); /* Subtle dark grey to dark charcoal gradient */
+  color: #ffffff; /* Soft white text */
+  transition: background 0.5s ease, color 0.5s ease; /* Smooth transition */
+}
+
+/* Navbar */
+body.light-theme .navbar {
+  background: rgb(0, 157, 219);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
+}
+
+body.light-theme .navbar-item {
+  color: #ffffff; /* Lighter navbar text */
+  font-family: "Orbitron", sans-serif; /* Tech-inspired font */
+}
+
+body.light-theme .navbar-item:hover {
+  color: #f39c12; /* Gold accent on hover */
+}
+
+/* Footer */
+body.light-theme .footer {
+  color: rgb(0, 0, 0);
+  background: linear-gradient(145deg, #f0f9ff, #dfffd7);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme #footer_title {
+  color: rgb(0, 0, 0);
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Title */
+body.light-theme #title-heading {
+  color: #000000; /* Soft white for titles */
+  font-size: 2.5rem;
+  font-weight: 700; /* Bold title */
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  font-family: "Orbitron", sans-serif; /* Tech-inspired font */
+  transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+/* Hover effect */
+body.light-theme #title-heading:hover {
+  transform: scale(1.05); /* Slightly enlarge the title */
+  text-shadow: 0 0 30px #00f5ff; /* Glowing blue text shadow */
+}
+
+/* Theme toggle */
+body.light-theme #theme-toggle {
+  color: #000000;
+  font-size: 2rem;
+  transition: color 0.3s ease;
+}
+
+body.light-theme #theme-toggle:hover {
+  color: #f39c12; /* Warm gold hover effect */
+}
+
+/* Table Styles */
+body.light-theme table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+body.light-theme table th {
+  background-color: #0080ff; /* Darker header */
+  color: #000000; /* Set white color for text */
+  padding: 12px;
+  text-align: left;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-family: "Orbitron", sans-serif; /* Tech-inspired font */
+  font-weight: bold; /* Optional: Makes the header bolder */
+}
+body.light-theme table th {
+  background-color: hsl(131, 100%, 42%);
+  color: #000000 !important; /* Force white color */
+  padding: 12px;
+  text-align: left;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-family: "Orbitron", sans-serif;
   font-weight: bold;
-  color: #1abc9c; /* Initial teal color */
-  transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
-.table a:hover {
-  color: #16a085; /* Darker teal */
-  text-decoration: underline;
+body.light-theme #title-two {
+  color: black;
+  font-family: "Montserrat", sans-serif;
 }
 
-/* Footer social icons hover */
-.footer .button.is-dark.is-rounded {
-  background-color: #2c3e50; /* Dark background */
-  color: #ecf0f1;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+body.light-theme table td {
+  background-color: linear-gradient(145deg, #f0f9ff, #5cff33);
+ color: rgb(213, 213, 213);
+  padding: 12px;
 }
 
-.footer .button.is-dark.is-rounded:hover {
-  background-color: #1abc9c; /* Teal on hover */
-  transform: scale(1.2);
+body.light-theme table tr:hover {
+  background-color: linear-gradient(145deg, #f0f9ff, #5cff33, white);
+  transition: background-color 0.4s ease;
 }
 
-/* Navbar title hover */
-.navbar-brand .navbar-item.has-text-weight-bold:hover {
-  color: #ffffff; /* White text */
-  background-color: #16a085; /* Green background */
+body.light-theme table td a {
+  color: hsl(200, 100%, 55%); /* Gold links for contrast */
+  text-decoration: none;
+  font-weight: bold;
 }
 
-/* Adjust body and overall font-family */
-body {
-  font-family: "Poppins", sans-serif;
-  background-color: #181818;
+body.light-theme table td a:hover {
+  text-decoration: underline; /* Underline effect on hover */
+}
+
+/* Buttons */
+body.light-theme .button {
+  background-color: #000000; /* Soft teal buttons */
   color: #ffffff;
-
-@media(max-width:426px) {
-    .links table tbody tr td {
-        padding: 6px 2px; /* Reduce padding for smaller screens */
-    }
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-@media(max-width:330px) {
-    .links table tbody tr td {
-        padding-left: 2px;
-        padding-right: 2px;
-    }
-
-    .links table tbody tr .project-name {
-        padding: 6px 4px; /* Reduce padding for project names */
-    }
-
-    .links table tbody tr td a {
-        margin-left: 4px;
-    }
+body.light-theme .button:hover {
+  background-color: #00866b; /* Slightly brighter teal on hover */
+  transform: translateY(-2px); /* Hover lift effect */
 }
 
-/* Add hover effect for links */
-.links table tbody tr td a:hover {
-    color: #007BFF; /* Change color on hover */
-    text-decoration: underline; /* Highlight links */
+body.light-theme .button:active {
+  transform: translateY(0); /* Button active state */
 }
 
-/* Base styles */
+/* Smooth transitions for interactive elements */
+body,
+.navbar,
+.footer,
+table {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Scroll to Top Button */
+body.light-theme #scrollBtn {
+  background-color: #2c3e50;
+  color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme #scrollBtn:hover {
+  background-color: #34495e;
+  transform: scale(1.1);
+}
+
+/* Smooth Transitions for All Interactive Elements */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Default (Light mode) style for the Log in button */
+a[href="/public/Login.html"] {
+  background-color: #000000; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Button size */
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+/* Hover effect in light mode */
+a[href="/public/Login.html"]:hover {
+  background-color: #00ff0d; /* Slightly darker green on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Active state in light mode */
+a[href="/public/Login.html"]:active {
+  transform: translateY(0); /* Pressed effect */
+}
+
+/* Dark Mode Style */
+body.dark-theme a[href="/public/Login.html"] {
+  background-color: #00fecb; /* Darker teal background */
+  color: #ecf0f1; /* Lighter text */
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect in dark mode */
+body.dark-theme a[href="/public/Login.html"]:hover {
+  background-color: #000000; /* Slightly darker teal */
+  transform: translateY(-2px);
+}
+
+/* Active state in dark mode */
+body.dark-theme a[href="/public/Login.html"]:active {
+  transform: translateY(0);
+}
+
+/* Ensure the body takes full height */
 body {
-    font-family: sans-serif;
-    background-color: #181818; /* Dark gray background */
-    color: #ffffff; /* White text color */
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: space-between; /* Space between header, content, and footer */
 }
 
-/* Header styles */
-header {
-    background-color: #2ecc71; /* Teal color */
-    color: #ffffff; /* White text */
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Keep the footer fixed at the bottom of the page */
+.footer {
+  margin-top: auto; /* Push footer to the bottom of the page */
 }
 
-header h1 {
-    margin: 0;
-    font-size: 2rem; /* Adjust font size as needed */
-}
-
-header nav {
-    display: flex;
-    gap: 1rem;
-}
-
-header a {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-/* Main content styles */
-main {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-main h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #ffffff; /* White heading text */
-}
-
-/* Search bar styles */
-#search-bar {
-    display: flex;
-    margin-bottom: 2rem;
-}
-
-#searchInput {
-    padding: 1rem;
-    border-radius: 5px;
-    border: none;
-    background-color: #0d0d0d; /* Dark gray input background */
-    color: #f5eeee; /* White input text */
-    flex-grow: 1;
-}
-
-#searchButton {
-    padding: 1rem 1.5rem;
-    background-color: #2ecc71; /* Teal button color */
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    height: 24px;
-}
-
-/* No projects message */
-#no-projects {
-    text-align: center;
-    margin-top: 2rem;
-
-}
-
-footer {
-
-  background-color: #222222;
-  color: #f3eeee;
-}
-
-footer a:hover {
-  color: #1abc9c; /* Teal hover */
-  text-decoration: underline;
-}
-#title-heading {
-  margin-bottom: 20px;
-    background-color: #222222;
-    padding: 1rem;
-    text-align: center;
-    color: #f3eeee; /* Light gray footer text */
+/* Optional: Add more space in the content area if the search bar is large */
+.content {
+  flex: 1; /* This will make sure the content area takes up the remaining space */
 }
