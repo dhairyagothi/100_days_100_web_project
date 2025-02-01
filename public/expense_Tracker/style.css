@@ -1,0 +1,79 @@
+*{
+    margin: 0;
+    padding: 5px;
+}
+
+.Header{
+    background-color: black;
+    color: linear-gradient(90deg,#FC5C7D,#6A82FB,#ff6e7f);
+    height: 140px;
+    margin-top: 0;
+    border-radius: 10px;
+}
+.Header h1{
+    margin-top: 40px;
+    margin-left: 40px;
+    font-style: italic;
+    background: linear-gradient(90deg, #FC5C7D, #6A82FB, #ff6e7f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+}
+.taskbar{
+    text-align: right;
+
+}
+.taskbar a{
+    text-align: right;
+    /* margin-left: 1000px; */
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+body{
+    
+    background: linear-gradient(90deg,#FC5C7D,#6A82FB,#ff6e7f);
+    height: 100%;
+}
+
+.main{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    
+}
+.left{
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    width: 50%;
+    height: 400px;
+    text-decoration: none;
+}
+.left a{
+    text-decoration: none;
+    color: white;
+    display: flex;
+    margin-left: 10px;
+
+}
+.right{
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    width: 50%;
+    text-align: center;
+    
+    display: flex;
+    justify-content: center;
+    /* justify-content: space-between;
+    gap: 20px; */
+    height: 400px;
+    
+}
+.money{
+    background-color: black;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}

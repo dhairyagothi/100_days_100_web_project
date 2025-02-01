@@ -1,0 +1,299 @@
+body {
+    background-color: aliceblue;
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: hidden !important; /* Keep horizontal overflow hidden */
+    overflow-y: auto !important; /* Allow vertical scrolling */
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+* {
+    text-decoration: none;
+}
+
+.nav {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    background-color: antiquewhite;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.10);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.nav .logo {
+    /* Align the logo to the left */
+    flex: 0 0 auto; /* Do not grow or shrink */
+    margin-right: auto; /* Pushes the logo to the left */
+}
+
+.nav .logo img {
+    /* Adjust the size of the logo */
+    max-width: 100px; /* Smaller max width of the logo */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove any extra space below the image */
+}
+.nav .link a {
+    margin-right: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+}
+
+.nav .link .mainlink {
+    color:dodgerblue;
+}
+
+.nav .link {
+    color:deepskyblue;
+}
+
+.nav .link .button {
+    padding: 8.5px 34px;
+    margin-left: 65px;
+    display: inline-block;
+    font-size: 14px;
+    color: #000;
+    transition: all 0.4s ease-in-out;
+    text-transform: capitalize;
+    border: 1px solid #000;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.nav .link .button:hover {
+    color: midnightblue;
+}
+
+/* Landing  */
+.landing {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    height: 100vh;
+}
+
+.landingtext.h1 {
+    font-size: 6vw;
+    margin: 0 !important;
+}
+
+.landingtext h3 {
+    margin: 6px !important;
+    font-size: 2vw;
+    line-height: 1.8;
+    color: rgb(43, 46, 226);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding-right: 20px;
+}
+
+.landingtext .btn {
+    width: 120px;
+    margin-top: 30px;
+    padding: 14px 20px 12px 20px;
+    background-color: blue;
+    border-radius: 45px;
+    text-align: center;
+}
+
+.landingtext .btn a {
+    font-size: 1.2vw;
+    color: #fff;
+}
+
+.landingImage img {
+    width: 28vw;
+}
+
+/* Services */
+.about {
+    height: 600px;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.abouttext {
+    position: relative;
+    padding: 0 50px;
+    height: inherit;
+}
+
+.abouttext h1 {
+    position: relative;
+    left: 0;
+}
+
+.abouttext img {
+    width: 10vw;
+    position: absolute;
+    top: 50px;
+}
+
+.aboutlist {
+    width: 50%;
+}
+
+ol {
+    list-style: none;
+    color: chocolate;
+}
+
+ol li {
+    font-size: 34px;
+    position: relative;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #fff;
+}
+
+li p {
+    font: 16px;
+    color: #000;
+    padding-left: 60px;
+    line-height: 30px;
+    opacity: 0.6;
+}
+
+li span {
+    position: absolute;
+    line-height: 25px;
+    font-weight: 600;
+}
+
+/* Info  */
+.infosection {
+    height: 600px;
+}
+
+.infoheader {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.infocards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 40px 0;
+}
+
+.infocards .card {
+    position: relative;
+    height: 360px;
+    width: 210px;
+    background: #fff;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.10), 0 10px 10px rgba(0, 0, 0, 0.10);
+}
+
+.infocards .one .cardone,
+.infocards .two .cardtwo,
+.infocards .three .cardthree,
+.infocards .four .cardfour,
+.infocards .five .cardfive {
+    width: 150px;
+    position: absolute;
+    top: -50px;
+    right: -50px;
+}
+
+.cardbgone,
+.cardbgtwo,
+.cardbgthree,
+.cardbgfour,
+.cardbgfive {
+    height: 150px;
+    background-color: rgb(16, 127, 224);
+}
+
+.cardcontent {
+    padding: 0 20px;
+}
+
+.cardcontent p {
+    line-height: 30px;
+    opacity: 0.6;
+}
+
+.cardcontent .cardbtn {
+    position: absolute;
+    right: 20px;
+    background-color: #1b94e0;
+    width: 25px;
+    height: 20px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all ease-in-out 0.2s;
+}
+
+.cardcontent .cardbtn:hover {
+    background-color: rgb(81, 121, 231);
+}
+
+.cardcontent .cardicon {
+    position: relative;
+}
+
+/* Banner */
+.banner {
+    height: 400px;
+    background-color: darkcyan;
+    display: flex;
+    flex-direction: row;
+    padding: 50px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bannertext h1 {
+    font-size: 3vw;
+    color: #000;
+    font-weight: 600;
+}
+
+.bannertext img {
+    width: 10vw;
+    margin-right: 0;
+}
+
+.bannerimg img {
+    width: 22vw;
+}
+
+/* Footer */
+.footer {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.footerlinks a {
+    margin: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.footerlink .mainlink {
+    color: #0bb3d1;
+}
+
+.footer a:hover {
+    color: darkslateblue;
+}
+
+/* Responsive */

@@ -6,14 +6,20 @@
   }
   
   body {
+    font-family: 'Cosmic Sans MS', cursive, sans-serif;
+    color: #fff;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     height: 100vh;
     background: linear-gradient(135deg, #4a90e2,  #1abc9c);
   }
+
+ 
   
   .container {
+    margin-top: 5px;
     width: 90%;
     max-width: 1200px;
     height: 90%;
@@ -21,14 +27,15 @@
     display: flex;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
-    overflow: hidden;
+    overflow-y: scroll;
     border: 3px solid black;
-    border-radius: 6px;
+    border-radius: 15px;
   }
   
   /* Left Section */
-  .left-section {
-    flex: 3;
+  .left-section  {
+    
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -36,7 +43,34 @@
     background:#f0f0f0;
     color: black;
     text-align: center;
-    padding: 20px;
+    padding: 40px;
+    overflow-y: scroll;
+  }
+
+  .navbar {
+    
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    background-color: #1c2833;
+    border-bottom: 2px solid #34495e;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    color: #f39c12;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 15px;
+    transition: color 0.3s;
+  }
+  
+  .nav-link:hover {
+    color: #d35400;
   }
   
   .animated-heading {
@@ -45,6 +79,7 @@
     margin-bottom: 20px;
     margin-top: 20px;
     animation: fadeIn 2s ease-in-out;
+    
   }
   
   .description {
@@ -106,7 +141,8 @@
   
   /* Right Section */
   .right-section {
-    flex: 5;
+    
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;

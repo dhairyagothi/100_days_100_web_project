@@ -1,0 +1,122 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(to bottom, #a8edea, #fed6e3);
+    transition: background 0.5s;
+}
+
+body.dark-theme {
+    background: linear-gradient(to bottom, #2c3e50, #4ca1af);
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    overflow-y: auto;
+    max-height: 90vh;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+body.dark-theme .container {
+    background-color: #333;
+    color: #fff;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.welcome-message {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.mood-buttons {
+    margin: 20px 0;
+}
+
+.mood-button {
+    font-size: 24px;
+    margin: 5px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.mood-button:hover {
+    transform: scale(1.1);
+}
+
+.intensity-slider {
+    margin-top: 20px;
+}
+
+.notes-section {
+    margin-top: 20px;
+}
+
+.entries-section, .entry-days-section, .graph-section, .summary-section {
+    margin-top: 30px;
+    text-align: left;
+}
+
+#entries-list, #entry-days-list {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#entries-list li, #entry-days-list li {
+    background-color: #e0e0e0;
+    margin: 5px 0;
+    padding: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #333;
+    transition: background-color 0.3s;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+#entries-list li:hover, #entry-days-list li:hover {
+    background-color: #d0d0d0;
+}
+
+.recommendations-section {
+    margin-top: 30px;
+    text-align: left;
+}
+
+#recommendations-content {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 5px;
+    color: #333;
+}
