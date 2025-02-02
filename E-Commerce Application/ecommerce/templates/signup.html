@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Sign up Please!{% endblock title %}
+{% block content %}
+
+<form action="/auth/signup/" method="post">
+    {% csrf_token %}
+    <br>
+    <div class="row justify-content-center">
+    <div class="card col-md-4" style="background-color: rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(10px);">
+    <h3 data-aos="fade-up" class="text-dark">Sign up</h3>
+    {% for message in messages %} 
+            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert"> <strong>{{message}}</strong> 
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+    {% endfor %}
+    <label for="email">Email</label>
+    <div class="form-group">
+        <input type="email" class="form-control" id="email" name="email" required type="text" style="display: block; margin: 0 auto; width: 80%;">
+    </div>
+    <label for="pass1">Password</label>
+    <div class="form-group">
+        <input type="password" class="form-control" id="pass1" name="pass1" required type="text" style="display: block; margin: 0 auto; width: 80%;">
+    </div>
+    <label for="pass2">Confirm Password</label>
+    <div class="form-group">
+        <input type="password" class="form-control" id="pass2" name="pass2" required type="text" style="display: block; margin: 0 auto; width: 80%;">
+    </div>
+    <br>
+    <button type="submit" style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(10px);" class="btn">Sign Up</button>
+    <br>
+    Already a user? <a style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(10px);" href="/auth/login/">Login</a>
+    <br>
+  </form>
+  </div>
+  </div>
+
+{% endblock content %}
+{% block body %}
+
+
+{% endblock body %}

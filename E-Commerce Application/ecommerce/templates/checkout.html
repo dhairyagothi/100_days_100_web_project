@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% block title %}
+Check Out
+{% endblock title %}
+{% block content %}
+<h1>Welcome to Shop Cart</h1>
+{% endblock content %}
+{% block main %}
+{% load static %}
+
+<!-- ======= Portfolio Section ======= -->
+<section id="portfolio" class="portfolio">
+    <div class="container">
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
+        <div class="section-title">
+            <h2>Welcome to Shop Cart</h2>
+            <h3>Checkout Page </h3>
+        </div>
+
+        <div class="container">
+            <div class="col my-4">
+                <h2>Step 1 - My Awesome Cart Express Checkout - Review Your Cart Items</h2>
+                <div class="my-4">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items">
+                            <!-- Rows will be dynamically appended here -->
+                        </tbody>
+                    </table>
+
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mt-3 p-3 rounded border" style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                            <li class="breadcrumb-item active" aria-current="page" style="font-weight: bold;">
+                                <div class="d-flex justify-content-between align-items-center" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                    <div style="flex: 1; display: flex; align-items: center;">
+                                        <i class="fas fa-shopping-cart" style="margin-right: 10px;"></i> Your Cart Total Is 
+                                        <b>Rs. <span id="totalprice"></span></b>.
+                                    </div>
+                                    <div style="flex: 1;">
+                                        Enter your details below & place your order. Thanks for using Shopping Cart
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- If you want to add a link back to the cart, you can uncomment the following line -->
+                            <!-- <li class="breadcrumb-item"><a href="/cart/">Go to Cart</a></li> -->
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="col my-4">
+                <h2>Step 2 - Enter Address & Other Details:</h2>
+                <form method="post" action="checkout">{% csrf_token %}
+                    <input type="hidden" name="itemsJson" id="itemsJson">
+                    <input type="hidden" id="amt" name="amt">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputname">Name</label>
+                            <input type="text" class="form-control mt-3" id="name" name="name" placeholder="Name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Email</label>
+                            <input type="email" class="form-control mt-3" id="email" name="email" placeholder="Email" value="{{user.email}}" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputAddress">Address</label>
+                            <input type="text" class="form-control mt-3" id="address1" name="address1" placeholder="1234 Main St" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputAddress">Address line 2</label>
+                            <input type="text" class="form-control mt-3" id="address2" name="address2" placeholder="1234 Main St" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputCity">City</label>
+                            <input type="text" class="form-control mt-3" id="city" name="city" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputState">State</label>
+                            <input type="text" class="form-control mt-3" id="state" name="state" placeholder="Enter State" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputZip">Pin Code</label>
+                            <input type="number" class="form-control mt-3" id="zip_code" name="zip_code" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputZip">Phone Number</label>
+                            <input type="number" class="form-control mt-3" id="phone" name="phone" required>
+                        </div>
+                        <br>
+                        <button id="btn" type="submit" class="btn btn-success btn-sm btn-block col-md-4">Place Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+        <script>
+        if (localStorage.getItem('cart') == null) {
+            var cart = {};
+        } else {
+            cart = JSON.parse(localStorage.getItem('cart'));
+        }
+        console.log(cart);
+
+        var sum = 0;
+        var totalPrice = 0;
+
+        if ($.isEmptyObject(cart)) {
+            // If the cart is empty
+            mystr = `<tr><td colspan="3">Your cart is empty, please add some items to your cart before checking out!</td></tr>`;
+            $('#items').append(mystr);
+        } else {
+            for (item in cart) {
+                let name = cart[item][1];
+                let qty = cart[item][0];
+                let itemPrice = cart[item][2];
+
+                // Check if quantity is zero and remove item from cart
+                if (qty <= 0) {
+                    delete cart[item];
+                    continue;
+                }
+
+                sum += qty;
+                totalPrice += qty * itemPrice;
+
+                mystr = `<tr>
+                            <td>${name}</td>
+                            <td>${qty}</td>
+                            <td>${qty * itemPrice}</td>
+                        </tr>`;
+                $('#items').append(mystr);
+            }
+
+            if ($.isEmptyObject(cart)) {
+                mystr = `<tr><td colspan="3">Your cart is empty, please add some items to your cart before checking out!</td></tr>`;
+                $('#items').append(mystr);
+            }
+
+            document.getElementById('totalprice').innerHTML = totalPrice;
+        }
+
+        document.getElementById('totalprice').innerHTML = totalPrice;
+
+        $('#itemsJson').val(JSON.stringify(cart));
+
+        {% if thank %}
+        alert('Thanks for ordering with us. Your order is {{id}}. Use it to track your order using our order tracker');
+        localStorage.clear();
+        document.location = "/";
+        {% endif %}
+
+        var test = `${totalPrice}`;
+        document.getElementById("amt").value = test;
+        </script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    </div>
+</section>
+
+{% endblock main %}
