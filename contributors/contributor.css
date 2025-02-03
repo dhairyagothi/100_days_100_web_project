@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Cosmic Sans MS', cursive, sans-serif;
-  background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
+  background: radial-gradient(circle, #0f2027, black, black);
   color: #fff;
   height: 100vh;
   display: flex;
@@ -79,11 +79,7 @@ h1 {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-}
-
-.contributor-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2);
+  animation: pulse 1.5s ease-in-out infinite; /* Continuous pulse effect */
 }
 
 .contributor-card img {
@@ -117,28 +113,43 @@ h1 {
   text-decoration: underline;
 }
 
-/* Animated Button */
-.button {
-  background: #1abc9c;
-  color: #fff;
-  padding: 15px 30px;
-  font-size: 1.2rem;
+/* Scroll Button */
+#scrollBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  background-color: #1abc9c;
+  color: rgb(247, 242, 242);
   border: none;
-  border-radius: 50px;
+  border-radius: 50%;
+  padding: 15px;
+  font-size: 18px;
   cursor: pointer;
-  margin-top: 20px;
-  transition: transform 0.2s ease, background 0.3s ease;
-  text-transform: uppercase;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.button:hover {
-  transform: translateY(-3px);
-  background: #16a085;
+#scrollBtn:hover {
+  background-color: #000;
+  transform: scale(1.2);
 }
 
-.button:focus {
-  outline: none;
+/* Pulse Effect */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.15);
+  }
 }
 
 /* Responsive Design for Mobile */
