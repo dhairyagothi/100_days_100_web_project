@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Color Picker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        
+    <h1>Custom Color Picker</h1>
+    <div class="slider-container">
+        <label for="red">Red: </label>
+        <input type="range" id="red" class="slider" min="0" max="255" value="255">
+    </div>
+    <div class="slider-container">
+        <label for="green">Green: </label>
+        <input type="range" id="green" class="slider" min="0" max="255" value="0">
+    </div>
+    <div class="slider-container">
+        <label for="blue">Blue: </label>
+        <input type="range" id="blue" class="slider" min="0" max="255" value="0">
+    </div>
+    <div class="color-display" id="customColorDisplay"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

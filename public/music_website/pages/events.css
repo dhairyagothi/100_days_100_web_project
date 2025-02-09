@@ -1,0 +1,132 @@
+body{
+    /* background-color: rgb(215, 107, 57); */
+    background: linear-gradient(rgba(243, 123, 4, 0.788), rgba(234, 108, 5, 0.6)), 
+                url('../maxresdefault.jpg') center/cover no-repeat;
+    color: white;
+    margin:0 ;
+    display: flex;
+    flex-direction: column;
+
+}
+.taskbar{
+    position: fixed;
+    background-color: black;
+    height: 13vh;
+    display: flex;
+    justify-content:center;
+    gap: 20px;
+    padding: 0 20px;
+    border-radius:0 0 20px 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+.taskbar a{
+    text-decoration: none;
+    color: white;
+    margin: 9px;
+    gap: 10px;
+    /* padding-bottom: 10px; */
+    padding-top: 40px;
+}
+.taskbar h1{
+    /* padding-left:10px; */
+    text-align: center;
+    justify-content: center;
+    background:linear-gradient(90deg,#f12711,#f5af19) ;
+    -webkit-background-clip:text ;
+    color: transparent;
+    padding-top: 15px;
+
+}
+.links{
+    display: flex;
+    justify-content: flex-end;
+    margin: 9px;
+    gap: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.links input{
+    height: 10px;
+    padding: 5px;
+}
+.content{
+    padding-top: 80px;
+    padding-bottom:2px ;
+}
+.content h1{
+    text-align: center;
+    display: block;
+}
+.line{
+    height: 2px;
+    background-color: white;
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 1px;
+    border-radius: 10px;
+}
+
+.align{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.left_content{
+    padding: 20px;
+}
+
+.right_content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.dates{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    padding-top: 10px;
+    gap: 15px;
+}
+.data{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.data h1{
+    margin-bottom: 1px;
+}
+.data h4{
+    margin-top: 0;
+    font-size: 20px;
+}
+.type{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 40px;
+}
+.dest{
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    color: black;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 20px;
+    
+}
+.place{
+    background-color: black;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 10px;
+}
+button{
+    font-weight: 900;
+    border-radius: 10px;
+    padding: 7px;
+}
