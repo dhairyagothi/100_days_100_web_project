@@ -42,7 +42,118 @@
       crossorigin="anonymous"
     ></script>
   </head>
+
+
+  <body>
+    <!-- Navbar -->
+    <nav
+      class="navbar is-primary"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item has-text-weight-bold" href="index.html">
+          <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"/>
+          100 DAYS 100 WEB PROJECTS
+        </a>
+
+        <button id="theme-toggle" class="fas fa-moon">
+        </button>
+       
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarBasicExample"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="navbar-menu is-active" id="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    
+
+    <style>
+
+/* Light mode styles */
+body.light-mode {
+  background-color: #fff; /* White background */
+  color: #000; /* Black text */
+}
+
+/* Placeholder text color in input fields */
+body.light-mode input::placeholder {
+  color: #666; /* Light gray for better readability */
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  background-color: #121212; /* Dark background */
+  color: #fff; /* White text */
+}
+
+.button:hover {
+  background-color: #45a049; /* Slightly darker green on hover */
+}
+
+.button i {
+  margin-right: 8px; /* Add some space between the icon and the text */
+}
+
+/* Style for the moon/sun icon */
+.fas {
+  font-size: 18px; /* Icon size */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .fas {
+    font-size: 16px;
+  }
+}
+
+#search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 10px; /* Space between the input and button */
+}
+
+
+    nav.navbar {
+      
   <style type="text/css">
+
+     nav.navbar {
+       
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: #1abc9c;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
     nav.navbar {
       position: fixed;
       top: 0;
@@ -51,6 +162,7 @@
       background-color: #1abc9c;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+
 
     #scrollBtn {
       position: fixed;
@@ -116,9 +228,45 @@
       #title-heading {
         margin-top: 5rem;
         margin-bottom: 3rem;
+
+        color: white;
+      }
+
+        /* General Styling */
+      body {
+      background-color: black; /* Background color of the page */
+      color: white; /* Default text color on black background */
+      }
+
+
+  p.subtitle {
+    color: white; /* White text for the subtitle on black background */
+  }
+
+
+  /* Inverting colors for sections with white background */
+  .inverted {
+    background-color: white; /* Section with white background */
+    color: black; /* Text color becomes black */
+  }
+
+  /* Responsive styling for smaller screens */
+  @media (max-width: 426px) {
+    #title-heading {
+      margin-top: 5rem;
+      margin-bottom: 3rem;
+    }
+  }
+
+    </style>
+
+    
+
       }
     }
+
   </style>
+
 
   <body>
     <!-- Navbar -->
@@ -309,6 +457,33 @@
     <script src="bulma.js"></script>
 
     <script>
+
+  // Select the toggle button
+  const themeToggle = document.getElementById('theme-toggle');
+
+  // Add click event listener
+  themeToggle.addEventListener('click', () => {
+    const body = document.body;
+    const isLightMode = body.classList.toggle('light-mode');
+    
+    // Update button icon
+    themeToggle.classList.toggle('fa-sun', isLightMode);
+    themeToggle.classList.toggle('fa-moon', !isLightMode);
+
+    // Save theme preference in localStorage
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+  });
+
+  // Load saved theme preference
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-mode');
+      themeToggle.classList.remove('fa-moon');
+      themeToggle.classList.add('fa-sun');
+    }
+  });
+
       // Get the button element
       const scrollBtn = document.getElementById("scrollBtn");
 
