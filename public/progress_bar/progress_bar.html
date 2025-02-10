@@ -10,16 +10,22 @@
 
 <body>
     <div class="container">
-        <div class="block1">
-            <div class="block2">
-                <div class="block3">
-                    <div id="num">100%</div>
-                </div>
-
+        <!-- Circular Progress Bar -->
+        <div class="progress-wrapper">
+            <div class="progress-circle">
+                <div id="num">0%</div>
             </div>
-
-        </div><button id="btn">Check progress</button>
+        </div>
+        <!-- Scrollable Meter -->
+        <div class="scroll-meter">
+            <div id="scroll-value">0%</div>
+            <div class="meter-track">
+                <div id="meter-bar"></div>
+            </div>
+        </div>
+        <button id="btn">Start Progress</button>
     </div>
+  
     <script src="progress_bar.js"></script>
 </body>
 
