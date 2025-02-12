@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="height: 100%;
+    margin: 10px;
+    padding: 10px;
+    background: linear-gradient(0deg, #000046, #1CB5E0);
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: white;">
+    <h1>Story Animations</h1>
+    <h4 style="text-align: center;">Step into a world where stories come to life! Our Interactive Storyteller transforms classic tales into an engaging experience where you can click, explore, and make choices that shape the journey.</h4>
+    <div class="box1">
+        <h3>The clever Rabbit and the Lion</h3>
+        <img src="images/poster.jpeg" alt="Rabbit and the Lion" title="The clever Rabbit and the Lion" width="200" >
+        <br>
+        <button id="start">Start</button>
+    </div>
+    <script>
+        document.getElementById("start").addEventListener("click", Changes);
+
+function Changes(){
+    console.log("Redirecting...");
+    window.location.href="story.html";
+}
+    </script>
+</body>
+</html>
