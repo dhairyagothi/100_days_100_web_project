@@ -1,336 +1,634 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>100 Days 100 Web Projects</title>
-    <link rel="stylesheet" href="home.css" />
-    <link rel="icon" href="public/favv.png" type="image/x-icon" />
-    <meta content="100 Days, 100 Web Projects" property="og:title" />
-    <meta
-      content="A collection of 100 web projects from basic to intermediate using html css and js."
-      property="og:description"
-    />
-    <meta content="/" property="og:url" />
-    <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
-    <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
-    <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Pushed CSS Code Here and Imported Bulma StyleSheet as well -->
-    <link rel="stylesheet" href="index.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFFlcgUa6xLiPY/NS5R+E6ztJQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <script
-      src="https://kit.fontawesome.com/a076d05399.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <style type="text/css">
-    nav.navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      background-color: #1abc9c;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 
+    - primary meta tags
+  -->
+  <title>GameQuest- Game Bolg Website</title>
+  <meta name="title" content="GameQuest- Game Blogging Website">
+  <meta name="description" content="This is a blog html template made by KhushiBhaskar">
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-    #scrollBtn {
-      position: fixed;
-      bottom: 20px; /* Place closer to the bottom */
-      right: 20px; /* Place closer to the right */
-      display: none; /* Initially hidden */
-      background-color: #1abc9c;
-      color: rgb(247, 242, 242);
-      border: none;
-      border-radius: 50%;
-      padding: 15px;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      z-index: 1000; /* Ensure visibility above other elements */
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="style.css">
+</head>
 
-    #scrollBtn:hover {
-      background-color: #000; /* Change color on hover */
-      transform: scale(1.2); /* Slightly enlarge */
-    }
-    .contributors-btn {
-      background: linear-gradient(45deg, #10866f);
-      color: white;
-      padding: 10px 20px; /* Adjust padding to make the button rectangular */
-      font-size: 0.8rem; /* Font size */
-      font-weight: bold;
-      text-decoration: none;
-      border: none;
-      border-radius: 5px; /* Optional: Rounded corners */
-      position: absolute;
-      top: 60px; /* Shifted slightly upwards */
-      right: 6px;
-      transition: background 0.3s ease, transform 0.2s ease,
-        box-shadow 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      text-align: center;
-      display: inline-block;
-      z-index: 10; /* Ensures the button stays on top */
-      font-family: "Circular Std", "Arial", sans-serif; /* Circular font */
-    }
+<body id="top">
 
-    .contributors-btn:hover {
-      background: linear-gradient(45deg, #16a085, #1abc9c);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    }
+  <!-- 
+    - #HEADER
+  -->
 
-    .contributors-btn:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+  <header class="header" data-header>
+    <div class="container">
 
-    #title-heading {
-      margin-top: 3rem;
-      margin-bottom: 3rem;
-      color: white;
-    }
+      <a href="#" class="logo">
+        <img src="https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/9d4e05f7-e46c-4696-83b2-f995ba3b0e2e/Logo_for_circle_image_Hyperise-removebg-preview/w=3840,quality=80" width="119" height="37" alt="girl logo">
+      </a>
 
-    @media (max-width: 426px) {
-      #title-heading {
-        margin-top: 5rem;
-        margin-bottom: 3rem;
-      }
-    }
-  </style>
+      <nav class="navbar" data-navbar>
 
-  <body>
-    <!-- Navbar -->
-    <nav
-      class="navbar is-primary"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div class="navbar-brand">
-        <a class="navbar-item has-text-weight-bold" href="index.html">
-          <img
-            src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"
-          />
-          100 DAYS 100 WEB PROJECTS
-        </a>
-        <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
-        <a
-          role="button"
-          class="navbar-burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
+        <div class="navbar-top">
+          <a href="#" class="logo">
+            <img src="https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/9d4e05f7-e46c-4696-83b2-f995ba3b0e2e/Logo_for_circle_image_Hyperise-removebg-preview/w=3840,quality=80" width="119" height="37" alt="girl logo">
+          </a>
 
-      <div class="navbar-menu is-active" id="navbar-menu">
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons"></div>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <br /><br />
-
-    <!-- Main Page Starts Here -->
-    <div class="content" id="projects">
-      <div class="title is-2 has-text-centered" id="title-heading">
-        100 Days 100 Web Projects
-      </div>
-      <p class="subtitle has-text-centered" id="title-two">
-        Here are live demos of all the projects:
-      </p>
-
-      <div id="search-bar">
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            id="searchInput"
-            placeholder="Search for projects..."
-            onkeyup="filterProjects()"
-          />
-        </div>
-        <div class="control">
-          <button
-            id="searchButton"
-            class="mx-4 button is-primary"
-            onclick="filterProjects()"
-          >
-            Go
+          <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+            <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
           </button>
         </div>
-      </div>
 
-      <div class="links">
-        <table
-          style="margin: bottom 0px"
-          class="table is-fullwidth is-bordered is-striped is-hoverable"
-        >
-          <thead>
-            <tr>
-              <th style="color: black">Day</th>
-              <th style="color: black">Project Name</th>
-              <th style="color: black">Demo Link</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
+        <ul class="navbar-list">
 
-      <div id="no-projects" style="display: none">No Projects Found</div>
-    </div>
+          <li>
+            <a href="#home" class="navbar-link hover-1" data-nav-toggler>Home</a>
+          </li>
 
-    <footer style="padding-bottom: 50px" class="footer">
-      <div class="content">
-        <div class="columns is-vcentered">
-          <!-- Left Side -->
-          <div class="column has-text-left">
-            <div class="heading">
-              <h2 id="footer_title" class="is-size-4">About</h2>
-              <p style="padding-bottom: 29px" id="footer_title">
-                This repository contains 100 web projects from basic to
-                intermediate using HTML, CSS, and JS.
-              </p>
-              <p>
-                <strong id="footer_title">
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  100 Days, 100 Projects
-                </strong>
-                by <a href="#">Dhairya</a> and <a href="#">Contributors</a>.
+          <li>
+            <a href="#game" class="navbar-link hover-1" data-nav-toggler>Games</a>
+          </li>
+
+          <li>
+            <a href="#featured" class="navbar-link hover-1" data-nav-toggler>Featured Post</a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-link hover-1" data-nav-toggler>Contact</a>
+          </li>
+
+        </ul>
+
+        <div class="navbar-bottom">
+
+          <div class="profile-card">
+            <img src="https://i.pinimg.com/originals/da/af/dc/daafdc5e760a07c752df645c7e4c5d69.png" width="48" height="48" alt="Reyna" class="profile-banner">
+
+            <div>
+              <p class="card-title">Hello Reyna !</p>
+
+              <p class="card-subtitle">
+                You have 3 new messages
               </p>
             </div>
           </div>
 
-          <!-- Right Side -->
-          <div style="padding-left: 400px" class="column ms-4">
-            <div class="heading">
-              <h2
-                style="padding-left: 60px"
-                class="is-size-4"
-                id="footer_title"
-              >
-                Important Links
-              </h2>
-              <!-- Social Media Icons -->
-              <div style="padding-left: 200px" class="buttons">
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://www.instagram.com/dhairyaa__31/"
-                  target="_blank"
-                  aria-label="Instagram"
-                >
-                  <span class="icon">
-                    <i class="fab fa-instagram"></i>
-                  </span>
-                </a>
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://github.com/dhairyagothi/100_days_100_web_project"
-                  target="_blank"
-                  aria-label="GitHub"
-                >
-                  <span class="icon">
-                    <i class="fab fa-github"></i>
-                  </span>
-                </a>
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
-                  target="_blank"
-                  aria-label="LinkedIn"
-                >
-                  <span class="icon">
-                    <i class="fab fa-linkedin"></i>
-                  </span>
-                </a>
-              </div>
-              <!-- Navigation Links -->
-              <div style="padding-left: 200px" class="buttons ms-5">
-                <a class="button is-primary is-rounded" href="#">
-                  <span class="icon">
-                    <i class="fas fa-home"></i>
-                  </span>
-                  <span>Home</span>
-                </a>
-                <a
-                  class="button is-link is-rounded"
-                  href="contributors/contributor.html"
-                >
-                  <span class="icon">
-                    <i class="fas fa-users"></i>
-                  </span>
-                  <span>Contributors</span>
-                </a>
-              </div>
-            </div>
-          </div>
+          <ul class="link-list">
+
+            <li>
+              <a href="#" class="navbar-bottom-link hover-1">Profile</a>
+            </li>
+
+            <li>
+              <a href="#" class="navbar-bottom-link hover-1">Articles Saved</a>
+            </li>
+
+            <li>
+              <a href="#" class="navbar-bottom-link hover-1">Add New Post</a>
+            </li>
+
+            <li>
+              <a href="#" class="navbar-bottom-link hover-1">My Likes</a>
+            </li>
+
+            <li>
+              <a href="#" class="navbar-bottom-link hover-1">Account Setting</a>
+            </li>
+
+            <li>
+              <a href="#" class="navbar-bottom-link hover-1">Sign Out</a>
+            </li>
+
+          </ul>
+
         </div>
+
+        <p class="copyright-text">
+          Copyright 2025 © GameQuest - Gaming Blog Template.
+          Developed by KhushiBhaskar
+        </p>
+
+      </nav>
+
+      <a href="#" class="btn btn-primary">Level Up</a>
+
+      <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+        <ion-icon name="menu-outline" aria-hidden="true"></ion-icon>
+      </button>
+
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <!-- 
+        - #HERO
+      -->
+
+      <section class="hero" id="home" aria-label="home">
+        <div class="container">
+
+          <div class="hero-content">
+            <p class="hero-subtitle">Hello Everyone!</p>
+            <h1 class="headline headline-1 section-title">
+            Welcome To <span class="span">GameQuest</span>
+            </h1>
+            <p class="hero-text">
+            GameQuest is your ultimate destination for all things gaming! Dive into our blog to explore a treasure trove of game descriptions, insightful tips, and expert advice. 
+            Whether you're a casual player or a hardcore gamer, GameQuest has something for everyone.
+            </p>
+            <div class="input-wrapper">
+
+              <input type="email" name="email_address" placeholder="Type your email address" required
+                class="input-field" autocomplete="off">
+
+              <button class="btn btn-primary">
+                <span class="span">Level_Up</span>
+
+                <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="hero-banner">
+
+            <img src="girl.png.png" width="327" height="490" alt="girl" class="w-100">
+
+            <img src="https://static.vecteezy.com/system/resources/previews/024/913/071/original/glowing-neon-star-png.png" width="90" height="100" alt="shape" class="shape shape-1">
+
+            <img src="https://static.vecteezy.com/system/resources/previews/010/975/218/original/neon-blue-octagon-banner-neon-octagon-png.png" width="100" height="30" alt="shape" class="shape shape-2">
+
+          </div>
+
+          <img src="https://raw.githubusercontent.com/codewithsadee/wren/b3bc8e117c0bb0ef6fbc51860eda24c23423beee/assets/images/shadow-1.svg" width="500" height="800" alt="" class="hero-bg hero-bg-1">
+
+          <img src="https://wallpapers.com/images/hd/green-gradient-concentric-circles-kjvt3bhakaskm0dj.png" width="500" height="500" alt="" class="hero-bg hero-bg-2">
+
+        </div>
+      </section>
+      <!-- 
+        - #GAMES
+      -->
+
+      <section class="topics" id="game" aria-labelledby="topic-label">
+        <div class="container">
+
+          <div class="card topic-card">
+
+            <div class="card-content">
+
+              <h2 class="headline headline-2 section-title card-title" id="topic-label">
+                Games
+              </h2>
+
+              <p class="card-text">
+                Don't miss out on the latest news about Gaming tips, Gaming review, Guide...
+              </p>
+
+              <div class="btn-group">
+                <button class="btn-icon" aria-label="previous" data-slider-prev>
+                  <ion-icon name="arrow-back" aria-hidden="true"></ion-icon>
+                </button>
+
+                <button class="btn-icon" aria-label="next" data-slider-next>
+                  <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+                </button>
+              </div>
+
+            </div>
+
+            <div class="slider" data-slider>
+              <ul class="slider-list" data-slider-container>
+
+                <li class="slider-item">
+                  <a href="#" class="slider-card">
+
+                    <figure class="slider-banner img-holder" style="--width: 507; --height: 618;">
+                      <img src="https://static.invenglobal.com/upload/image/2020/05/01/o1588354905739963.jpeg" width="507" height="618" loading="lazy" alt="Sport"
+                        class="img-cover">
+                    </figure>
+
+                    <div class="slider-content">
+                      <span class="slider-title">Valorent</span>
+                      <p class="slider-subtitle">🎯💥</p>
+                    </div>
+
+                  </a>
+                </li>
+
+                <li class="slider-item">
+                  <a href="#" class="slider-card">
+
+                    <figure class="slider-banner img-holder" style="--width: 507; --height: 618;">
+                      <img src="https://www.esportsbonus.net/wp-content/uploads/2023/01/fortnite-skins.jpg" width="507" height="618" loading="lazy" alt="Fortnite"
+                        class="img-cover">
+                    </figure>
+
+                    <div class="slider-content">
+                      <span class="slider-title">Fortnite</span>
+
+                      <p class="slider-subtitle">🎮🪂</p>
+                    </div>
+
+                  </a>
+                </li>
+
+                <li class="slider-item">
+                  <a href="#" class="slider-card">
+
+                    <figure class="slider-banner img-holder" style="--width: 507; --height: 618;">
+                      <img src="https://www.dexerto.com/cdn-image/wp-content/uploads/2024/05/14/Pride-image-LoL-resize.jpg?width=3840&quality=75&format=auto" width="507" height="618" loading="lazy" alt="Design"
+                        class="img-cover">
+                    </figure>
+
+                    <div class="slider-content">
+                      <span class="slider-title">League of Legends</span>
+
+                      <p class="slider-subtitle">🛡️⚔️🔥</p>
+                    </div>
+
+                  </a>
+                </li>
+
+                <li class="slider-item">
+                  <a href="#" class="slider-card">
+
+                    <figure class="slider-banner img-holder" style="--width: 507; --height: 618;">
+                      <img src="https://gameriv.com/wp-content/uploads/2020/02/dota2-1.jpg" width="507" height="618" loading="lazy" alt="Movie"
+                        class="img-cover">
+                    </figure>
+
+                    <div class="slider-content">
+                      <span class="slider-title">Dota 2</span>
+
+                      <p class="slider-subtitle">⚔️🔥</p>
+                    </div>
+
+                  </a>
+                </li>
+
+                <li class="slider-item">
+                  <a href="#" class="slider-card">
+
+                    <figure class="slider-banner img-holder" style="--width: 507; --height: 618;">
+                      <img src="https://wallpapers.com/images/hd/roblox-pictures-kr9dxy2z296bf7b9.jpg" width="507" height="618" loading="lazy" alt="Lifestyle"
+                        class="img-cover">
+                    </figure>
+
+                    <div class="slider-content">
+                      <span class="slider-title">Roblox</span>
+
+                      <p class="slider-subtitle">🛠️🎮</p>
+                    </div>
+
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 
+        - #FEATURED POST
+      -->
+
+      <section class="section feature" aria-label="feature" id="featured">
+        <div class="container">
+
+          <h2 class="headline headline-2 section-title">
+            <span class="span">Featured Post</span>
+          </h2>
+
+          <p class="section-text">
+            Featured and highly rated articles
+          </p>
+
+          <ul class="feature-list">
+
+            <li>
+              <div class="card feature-card">
+
+                <figure class="card-banner img-holder" style="--width: 1602; --height: 903;">
+                  <img src="https://th.bing.com/th/id/OIP.L-uOUP8UhtaGRsUv60gQqQHaEK?rs=1&pid=ImgDetMain" width="1602" height="903" loading="lazy"
+                    alt="Valorent" class="img-cover">
+                </figure>
+
+                <div class="card-content">
+
+                  <div class="card-wrapper">
+                    <div class="card-tag">
+                      <a href="#" class="span hover-2">#Gaming</a>
+
+                      <a href="#" class="span hover-2">#Valorent</a>
+                    </div>
+
+                    <div class="wrapper">
+                      <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+
+                      <span class="span">3 mins read</span>
+                    </div>
+                  </div>
+
+                  <h3 class="headline headline-3">
+                    <a href="#" class="card-title hover-2">
+                      Tips/Avoid Things while playing Valorent
+                    </a>
+                  </h3>
+
+                  <div class="card-wrapper">
+
+                    <div class="profile-card">
+                      <div>
+                        <p class="card-title">Reyana</p>
+                        <p class="card-subtitle">25 Nov 2024</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="card feature-card">
+
+                <figure class="card-banner img-holder" style="--width: 1602; --height: 903;">
+                  <img src="https://th.bing.com/th/id/R.8b31beab4e90edea10b9cffaf462c700?rik=AstYnCnbtXmL5A&riu=http%3a%2f%2fhdqwalls.com%2fwallpapers%2ffortnite-season-7-kg.jpg&ehk=p0grQyYMjrQt7BHssxF6hazHauJevzvsybtSJ0KiT%2bY%3d&risl=&pid=ImgRaw&r=0" width="1602" height="903" loading="lazy"
+                    alt="Fortnite" class="img-cover">
+                </figure>
+
+                <div class="card-content">
+
+                  <div class="card-wrapper">
+                    <div class="card-tag">
+                      <a href="#" class="span hover-2">#Gaming</a>
+
+                      <a href="#" class="span hover-2">#Fortnite</a>
+                    </div>
+
+                    <div class="wrapper">
+                      <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+
+                      <span class="span">6 mins read</span>
+                    </div>
+                  </div>
+
+                  <h3 class="headline headline-3">
+                    <a href="#" class="card-title hover-2">
+                      Tips/Avoid Things while playing Fortnite
+                    </a>
+                  </h3>
+                  <div class="card-wrapper">
+                      <div>
+                        <p class="card-title">Jonesy</p>
+
+                        <p class="card-subtitle">28 Nov 2024</p>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+            </li>
+          </ul>
+          <a href="#" class="btn btn-secondary" id="showMoreBtn">
+              <button>Show More Post</button>
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </a>
+
+        </div>
+
+        <img src="https://raw.githubusercontent.com/codewithsadee/wren/b3bc8e117c0bb0ef6fbc51860eda24c23423beee/assets/images/shadow-3.svg" width="500" height="1500" loading="lazy" alt="" class="feature-bg">
+
+      </section>
+
+      <!-- 
+        - #POPULAR TAGS
+      -->
+
+      <section class="tags" aria-labelledby="tag-label">
+        <div class="container">
+
+          <h2 class="headline headline-2 section-title" id="tag-label">
+            <span class="span">Popular Tags</span>
+          </h2>
+
+          <p class="section-text">
+            Most searched keywords
+          </p>
+
+          <ul class="grid-list">
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Fortnite</p>
+              </button>
+            </li>
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Valorent</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">GTA 6</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Minecraft</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Roblox</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Among Us</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Car For Sale</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">LOL</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Free Fire</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Smite</p>
+              </button>
+            </li>
+
+            <li>
+              <button class="card tag-btn">
+                <p class="btn-text">Superaland</p>
+              </button>
+            </li>
+               
+          </ul>
+
+        </div>
+
+    </article>
+  </main>
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer>
+    <div class="container">
+
+      <div class="card footer">
+
+        <div class="section footer-top">
+
+          <div class="footer-brand">
+
+            <a href="#" class="logo">
+              <img src="https://png.pngtree.com/png-clipart/20210311/big/pngtree-neon-game-zone-with-console-and-triangle-png-image_6030413.png" width="119" height="37" loading="lazy" alt="girl logo">
+            </a>
+
+            <p class="footer-text">
+              📢 Join the Game Zone Community!
+              Subscribe to our newsletter and never miss out on gaming trends, updates, and exclusive content.
+            </p>
+
+            <p class="footer-list-title">Address</p>
+
+            <address class="footer-text address">
+              🏠 123 Main Street <br>
+              New Delhi- 1100XX
+            </address>
+
+          </div>
+          <div class="footer-list">
+
+            <p class="footer-list-title">Newsletter</p>
+
+            <p class="footer-text">
+              🔹 📩 Stay Connected & Keep Gaming! 🎧🔥
+            </p>
+
+            <div class="input-wrapper">
+              <input type="text" name="name" placeholder="Your name" required class="input-field" autocomplete="off">
+
+              <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+            </div>
+
+            <div class="input-wrapper">
+              <input type="email" name="email_address" placeholder="Emaill address" required class="input-field"
+                autocomplete="off">
+
+              <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+            </div>
+
+            <a href="#" class="btn btn-primary">
+              <span class="span">Subscribe</span>
+
+              <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+            </a>
+
+          </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+          <p class="copyright">
+            &copy; Developed by <a href="#" class="copyright-link">KhushiBhaskar</a>
+          </p>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+
+                <span class="span">LinkedIn</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-instagram"></ion-icon>
+
+                <span class="span">Instagram</span>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
       </div>
-    </footer>
 
-    <!-- Top scroll button -->
-    <button id="scrollBtn" title="Go to top">
-      <i class="fa-solid fa-arrow-up fa-lg"></i>
-    </button>
+    </div>
+  </footer>
 
-    <!-- Pushed JavaScript Code To Here -->
-    <script src="index.js"></script>
-    <script src="bulma.js"></script>
+  <!-- 
+    - #BACK TO TOP
+  -->
 
-    <script>
-      // Get the button element
-      const scrollBtn = document.getElementById("scrollBtn");
+  <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+    <ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon>
+  </a>
 
-      // Show the button when the user scrolls down 100px from the top
-      window.onscroll = function () {
-        if (
-          document.body.scrollTop > 100 ||
-          document.documentElement.scrollTop > 100
-        ) {
-          scrollBtn.style.display = "block";
-        } else {
-          scrollBtn.style.display = "none";
-        }
-      };
 
-      // Scroll to the top of the page when the button is clicked
-      scrollBtn.onclick = function () {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      };
-    </script>
-  </body>
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="script.js"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
 </html>
