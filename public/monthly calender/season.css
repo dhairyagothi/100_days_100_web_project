@@ -1,0 +1,140 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    padding-top: 130px;
+    transition: background-image 1s ease-in-out;
+    box-sizing: border-box;
+    position: relative;
+}
+
+header,
+footer {
+    color: white;
+    padding: 0.1em 0;
+    width: 100%;
+    text-align: center;
+}
+
+header {
+    top: 0;
+    position: fixed;
+}
+
+footer {
+    bottom: 0;
+}
+
+.C-and-S {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Creates two equal columns */
+    grid-template-rows: auto; /* Automatically adjust rows based on content */
+    gap: 20px; /* Space between the columns */
+    width: 100%; /* Adjust the width as needed */
+}
+
+#current-season {
+    color: #333;
+    border: 2px dashed #4b9cd3;
+    border-radius: 10px;
+    width: 63%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 1em;
+    background: linear-gradient(rgba(100, 100, 100, 0.9) -100%, rgba(255, 255, 255, 0.9) 100%);
+    filter: drop-shadow(10px 10px 14px rgba(0, 0, 0, 0.3));
+}
+
+#season-months-spring p,
+#season-months-summer p,
+#season-months-autumn p,
+#season-months-winter p {
+    padding: 0.5em;
+    margin: 0 4em;
+    border: dotted 4px rgb(225, 125, 120);
+    border-radius: 70px;
+}
+
+section {
+    padding: 2em;
+}
+
+.season-month {
+    display: flex;
+    width: 100%;
+    margin: 20px auto;
+    padding: 10px;
+    justify-content: center;  /* Centers content horizontally */
+    align-items: center; 
+    text-align: center;   
+}
+
+.season {
+    margin: 1em;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgba(230, 230, 250, 0.8);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.season.live {
+    background-color: rgba(255, 223, 186, 0.8);  /* Highlight active season */
+    border-color: #ff9e00;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 800px;
+}
+
+.calendar div {
+    padding: 10px;
+    background-color: rgba(240, 240, 240);
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.calendar div.highlight {
+    background-color: rgba(255, 182, 193, 0.8);
+    font-weight: bold;
+}
+
+.calendar div:hover,
+.calendar div:focus {
+    background-color: rgba(220, 220, 220, 0.8);
+}
+
+@media (max-width: 600px) {
+    .calendar {
+        max-width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .C-and-S {
+        grid-template-columns: 1fr;
+    }
+
+    #hided {
+        display: none;
+    }
+}
+
+.season live{
+    text-decoration: none;
+    color: rgb(150, 15, 15); /* Deep red for emphasis */
+}
+
+/* line 140 */
