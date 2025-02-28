@@ -1,0 +1,96 @@
+body{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    /* background:linear-gradient(90deg,rgba(5, 199, 247, 0.37),rgb(232, 229, 229),rgba(82, 82, 230, 0.799),rgb(232, 229, 229),rgba(5, 199, 247, 0.37)); */
+    background:linear-gradient( 90deg,rgb(140, 16, 223),rgba(222, 106, 233, 0.505), rgb(140, 16, 223));
+    color:aliceblue;
+    margin: 0;
+    padding: 0;
+}
+nav{
+    
+    flex-direction: row;
+    background:rgb(2, 25, 31);
+    margin-top: 0;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-radius: 0 0 20px 20px;
+    color: white;
+
+}
+nav a{
+    text-decoration: none;
+    color:white;
+    gap: 10px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+nav h2{
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.data{
+    background-color: rgb(2, 12, 17);
+    box-shadow: 2px black;
+    padding: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    width: 70vh;
+    height: 80vh;
+    justify-content: space-evenly;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+    margin: auto;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    animation: ease-in 3s slidein;
+
+}
+@keyframes slidein {
+    from {
+        margin-left: 100%;
+        width: 300%;
+    }
+
+    to {
+        margin-left: 0%;
+        width: 100%;
+    }
+}
+.personal{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: flex-start;
+    text-align: left;
+    /* justify-content: space-between;
+    gap: 20px;
+    padding: 20px; */
+}
+.content{
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-evenly;
+    gap:5px; */
+    padding: 20px;
+    width: 100%;
+    
+}
+footer{
+    background-color: black;
+    color: white;
+    bottom: 0;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
