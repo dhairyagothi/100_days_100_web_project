@@ -1,117 +1,66 @@
-'use strict';
+// Sticky Navigation Menu
+let nav = document.querySelector("nav");
+let scrollBtn = document.querySelector(".scroll-button a");
 
-
-
-/**
- * Add event listener on multiple elements
- */
-
-const addEventOnElements = function (elements, eventType, callback) {
-  for (let i = 0, len = elements.length; i < len; i++) {
-    elements[i].addEventListener(eventType, callback);
-  }
-}
-
-
-
-/**
- * MOBILE NAVBAR TOGGLER
- */
-
-const navbar = document.querySelector("[data-navbar]");
-const navTogglers = document.querySelectorAll("[data-nav-toggler]");
-
-const toggleNav = () => {
-  navbar.classList.toggle("active");
-  document.body.classList.toggle("nav-active");
-}
-
-addEventOnElements(navTogglers, "click", toggleNav);
-
-
-
-/**
- * HEADER ANIMATION
- * When scrolled donw to 100px header will be active
- */
-
-const header = document.querySelector("[data-header]");
-const backTopBtn = document.querySelector("[data-back-top-btn]");
-
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 100) {
-    header.classList.add("active");
-    backTopBtn.classList.add("active");
+// Show/hide sticky navigation and scroll button based on scroll position
+window.onscroll = function () {
+  if (document.documentElement.scrollTop > 20) {
+    nav.classList.add("sticky");
+    scrollBtn.style.display = "block";
   } else {
-    header.classList.remove("active");
-    backTopBtn.classList.remove("active");
+    nav.classList.remove("sticky");
+    scrollBtn.style.display = "none";
   }
-});
-
-
-
-/**
- * SLIDER
- */
-
-const slider = document.querySelector("[data-slider]");
-const sliderContainer = document.querySelector("[data-slider-container]");
-const sliderPrevBtn = document.querySelector("[data-slider-prev]");
-const sliderNextBtn = document.querySelector("[data-slider-next]");
-
-let totalSliderVisibleItems = Number(getComputedStyle(slider).getPropertyValue("--slider-items"));
-let totalSlidableItems = sliderContainer.childElementCount - totalSliderVisibleItems;
-
-let currentSlidePos = 0;
-
-const moveSliderItem = function () {
-  sliderContainer.style.transform = `translateX(-${sliderContainer.children[currentSlidePos].offsetLeft}px)`;
-}
-
-/**
- * NEXT SLIDE
- */
-
-const slideNext = function () {
-  const slideEnd = currentSlidePos >= totalSlidableItems;
-
-  if (slideEnd) {
-    currentSlidePos = 0;
-  } else {
-    currentSlidePos++;
-  }
-
-  moveSliderItem();
-}
-
-sliderNextBtn.addEventListener("click", slideNext);
-
-/**
- * PREVIOUS SLIDE
- */
-
-const slidePrev = function () {
-  if (currentSlidePos <= 0) {
-    currentSlidePos = totalSlidableItems;
-  } else {
-    currentSlidePos--;
-  }
-
-  moveSliderItem();
-}
-
-sliderPrevBtn.addEventListener("click", slidePrev);
-
-/**
- * RESPONSIVE
- */
-window.addEventListener("resize", function () {
-  totalSliderVisibleItems = Number(getComputedStyle(slider).getPropertyValue("--slider-items"));
-  totalSlidableItems = sliderContainer.childElementCount - totalSliderVisibleItems;
-
-  moveSliderItem();
-});
-
-document.getElementById("showMoreBtn").onclick = function(){
-  location.href = "blog.html";
 };
+
+// Side Navigation Menu
+let body = document.querySelector("body");
+let navBar = document.querySelector(".navbar");
+let menuBtn = document.querySelector(".menu-btn");
+let cancelBtn = document.querySelector(".cancel-btn");
+
+menuBtn.onclick = function () {
+  navBar.classList.add("active");
+  menuBtn.style.opacity = "0";
+  menuBtn.style.pointerEvents = "none";
+  body.style.overflow = "hidden";
+  scrollBtn.style.pointerEvents = "none";
+};
+
+const hideNavMenu = () => {
+  navBar.classList.remove("active");
+  menuBtn.style.opacity = "1";
+  menuBtn.style.pointerEvents = "auto";
+  body.style.overflow = "auto";
+  scrollBtn.style.pointerEvents = "auto";
+};
+
+cancelBtn.onclick = hideNavMenu;
+
+let navLinks = document.querySelectorAll(".menu li a");
+navLinks.forEach((link) => {
+  link.addEventListener("click", hideNavMenu);
+});
+
+// Gallery Section
+const images = [
+  "https://www.ciraltos.com/wp-content/uploads/2019/10/VSGit.png",
+  "https://avatars.githubusercontent.com/u/98707668?v=4?s=400",
+  "https://user-images.githubusercontent.com/73171829/149663097-e77294c3-769c-45ae-92c9-011fbba94965.gif"
+]; 
+
+let currentIndex = 0;
+const galleryImage = document.getElementById("galleryImage");
+galleryImage.src = images[currentIndex];
+
+function changeImageOnHover() {
+  currentIndex = (currentIndex + 1 + images.length) % images.length;
+  galleryImage.src = images[currentIndex];
+}
+//Add hover event listener 
+galleryImage.addEventListener("mouseover", changeImageOnHover)
+
+document.getElementById('redirectButton').addEventListener('click', function() {
+  window.open('https://giffiles.alphacoders.com/174/1744.gif', '_blank');
+});
+

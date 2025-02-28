@@ -1,332 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>100 Days 100 Web Projects</title>
-    <link rel="stylesheet" href="home.css" />
-    <link rel="icon" href="public/favv.png" type="image/x-icon" />
-    <meta content="100 Days, 100 Web Projects" property="og:title" />
-    <meta
-      content="A collection of 100 web projects from basic to intermediate using html css and js."
-      property="og:description"
-    />
-    <meta content="/" property="og:url" />
-    <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
-    <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <!-- Pushed CSS Code Here and Imported Bulma StyleSheet as well -->
-    <link rel="stylesheet" href="index.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <script
-      src="https://kit.fontawesome.com/a076d05399.js"
-      crossorigin="anonymous"
-    ></script>
+    <title>Responsive Portfolio Website HTML CSS</title>
+    <link rel="stylesheet" href="Portfolio.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700&display=swap"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.14.0/devicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
-  <style type="text/css">
-     nav.navbar {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        background-color: #1abc9c;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      #scrollBtn {
-        position: fixed;
-        bottom: 20px; /* Place closer to the bottom */
-        right: 20px; /* Place closer to the right */
-        display: none; /* Initially hidden */
-        background-color: #1abc9c;
-        color: rgb(247, 242, 242);
-        border: none;
-        border-radius: 50%;
-        padding: 15px;
-        font-size: 18px;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000; /* Ensure visibility above other elements */
-        transition: background-color 0.3s ease, transform 0.3s ease;
-      }
-
-      #scrollBtn:hover {
-        background-color: #000; /* Change color on hover */
-        transform: scale(1.2); /* Slightly enlarge */
-      }
-      .contributors-btn {
-        background: linear-gradient(45deg, #10866f, );
-        color: white;
-        padding: 10px 20px; /* Adjust padding to make the button rectangular */
-        font-size: 0.8rem; /* Font size */
-        font-weight: bold;
-        text-decoration: none;
-        border: none;
-        border-radius: 5px; /* Optional: Rounded corners */
-        position: absolute;
-        top: 60px; /* Shifted slightly upwards */
-        right: 6px;
-        transition: background 0.3s ease, transform 0.2s ease,
-          box-shadow 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        text-align: center;
-        display: inline-block;
-        z-index: 10; /* Ensures the button stays on top */
-        font-family: "Circular Std", "Arial", sans-serif; /* Circular font */
-      }
-
-      .contributors-btn:hover {
-        background: linear-gradient(45deg, #16a085, #1abc9c);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-      }
-
-      .contributors-btn:active {
-        transform: translateY(0);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      #title-heading {
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-        color: white;
-      }
-
-      @media (max-width: 426px) {
-        #title-heading {
-          margin-top: 5rem;
-          margin-bottom: 3rem;
-        }
-      }
-    
-  </style>
-
   <body>
-    
-    <!-- Navbar -->
-    <nav
-      class="navbar is-primary"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div class="navbar-brand">
-        <a class="navbar-item has-text-weight-bold" href="index.html">
-          <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"/>
-          100 DAYS 100 WEB PROJECTS
-        </a>
-       
-        <a
-          role="button"
-          class="navbar-burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div class="navbar-menu is-active" id="navbar-menu">
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav><br><br>
-
-    
-
-    
-    <!-- Main Page Starts Here -->
-    <div class="content" id="projects">
-      <div class="title is-2 has-text-centered" id="title-heading">
-        100 Days 100 Web Projects
-      </div>
-      <p class="subtitle has-text-centered" style="color: black">
-        here are live demos of all the projects
-      </p>
-
-      <div id="search-bar">
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            id="searchInput"
-            placeholder="Search for projects..."
-            onkeyup="filterProjects()"
-          />
-        </div>
-        <div class="control">
-          <button
-            id="searchButton"
-            class="mx-4 button is-primary"
-            onclick="filterProjects()"
-          >
-            Go
-          </button>
-        </div>
-      </div>
-
-      <div class="links">
-        <table class="table is-fullwidth is-bordered is-striped is-hoverable">
-          <thead>
-            <tr>
-              <th>Day</th>
-              <th>Project Name</th>
-              <th>Demo Link</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody">
-            
-          </tbody>
-
-        </table>
-      </div>
-
-      <div id="no-projects" style="display: none">No Projects Found</div>
+    <!-- Move to up button -->
+    <div class="scroll-button">
+      <a href="#home"><i class="fas fa-arrow-up"></i></a>
     </div>
-
-    <footer class="footer">
-      <div class="content">
-        <div class="columns is-vcentered">
-          <!-- Left Side -->
-          <div class="column has-text-left">
-            <div class="heading">
-              <h2 class="is-size-4">About</h2>
-              <p>
-                This repository contains 100 web projects from basic to
-                intermediate using HTML, CSS, and JS.
-              </p>
-              <p>
-                <strong>
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  100 Days, 100 Projects
-                </strong>
-                by <a href="#">Dhairya</a> and <a href="#">Contributors</a>.
-              </p>
-            </div>
+    <!-- navgaition menu -->
+    <nav>
+      <div class="navbar">
+        <div class="logo"><a href="#">Portfolio.</a></div>
+        <ul class="menu">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <div class="cancel-btn">
+            <i class="fas fa-times"></i>
           </div>
+        </ul>
+      </div>
+      <div class="menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
+    </nav>
 
-          <!-- Right Side -->
-          <div class="column ms-4">
-            <div class="heading">
-              <h2 class="is-size-4">Important Links</h2>
-              <!-- Social Media Icons -->
-              <div class="buttons">
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://www.instagram.com/dhairyaa__31/"
-                  target="_blank"
-                  aria-label="Instagram"
-                >
-                  <span class="icon">
-                    <i class="fab fa-instagram"></i>
-                  </span>
-                </a>
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://github.com/dhairyagothi/100_days_100_web_project"
-                  target="_blank"
-                  aria-label="GitHub"
-                >
-                  <span class="icon">
-                    <i class="fab fa-github"></i>
-                  </span>
-                </a>
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
-                  target="_blank"
-                  aria-label="LinkedIn"
-                >
-                  <span class="icon">
-                    <i class="fab fa-linkedin"></i>
-                  </span>
-                </a>
-              </div>
-              <!-- Navigation Links -->
-              <div class="buttons ms-5">
-                <a class="button is-primary is-rounded" href="#">
-                  <span class="icon">
-                    <i class="fas fa-home"></i>
-                  </span>
-                  <span>Home</span>
-                </a>
-                <a
-                  class="button is-link is-rounded"
-                  href="contributors/contributor.html"
-                >
-                  <span class="icon">
-                    <i class="fas fa-users"></i>
-                  </span>
-                  <span>Contributors</span>
-                </a>
-              </div>
+    <!-- Home Section Start -->
+    <section class="home" id="home">
+      <div class="home-content">
+        <div class="text">
+          <div class="text-one">Hello,</div>
+          <div class="text-two">I'm XYZ</div>
+          <div class="text-three">Pursuing BTech 
+              <p>in CSE </p>
+          </div>   
+          <div class="text-four">From ABC, XYZ UNIVERSITY.</div>
+        </div>
+        <div class="button">
+          <button>WELCOME!</button>
+        </div>
+      </div>
+    </section>
+  <input type="text" writingsuggestions="true">
+    <!-- About Section Start -->
+    <section class="about" id="about">
+      <div class="content">
+        <div class="title"><span>About Me</span></div>
+        <div class="about-details"> 
+        <div class="left" >
+            <img id="galleryImage"src= "https://www.ciraltos.com/wp-content/uploads/2019/10/VSGit.png" alt="Image 1">
+        </div>
+        <div class="right">
+            <div class="topic">Design is the silent ambassador of my creativity....</div>
+            <p>
+                Hello! I'm a dedicated individual with a profound passion for designing. I believe that creativity and innovation are at the heart of meaningful design, and I am constantly driven by the urge to create something unique and impactful.
+                From conceptualizing ideas to bringing them to life, designing is at the core of everything I do. I find joy in exploring new design techniques, experimenting with different styles, and pushing the boundaries of my creative capabilities. Whether it's graphic design, user experience, or architectural planning, my goal is to blend aesthetics with functionality to create designs that truly resonate.
+                I am committed to continuously learning and growing in my field, embracing new challenges, and staying updated with the latest design trends. With a keen eye for detail and a relentless pursuit of excellence, I strive to make a positive impact through my designs.
+                Let's embark on this exciting journey of creativity and innovation together!
+            </p>
+            <div class="button">
+              <button id="redirectButton">Click Me!</button>
+              </a>
             </div>
           </div>
         </div>
+      </div>
+      
+    </section>
+
+    <!-- My Skill Section Start -->
+    <section class="skills" id="skills">
+      <div class="content">
+        <div class="title"><span>My Skills</span></div>
+       
+        <div class="skills-details">
+          <div class="text">
+            <div class="topic">Skills Reflects Our Knowledge</div>
+            <p>Skills are the tangible manifestations of our knowledge and experience. They are the tools we use to bring our ideas to life and achieve our goals. Whether it's technical prowess, creative flair, or interpersonal abilities, each skill adds value and shapes our journey.</p>
+        <div class="experience">
+                <div class="num">11</div>
+                <div class="exp">
+                  Months Of <br />
+                  Experience
+        </div>
+        </div>
+          </div> <div class="air">
+          <img src="https://media2.giphy.com/media/eN4AxQLFu8gM96uvXd/giphy.gif?cid=6c09b952o9aq9yvwzq51vqxx01f0paiyrqbks5k6ar5matvk&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s" alt="gif">
+        </div>
+          <div class="boxes">
+            <div class="box">
+              <div class="topic">HTML</div>
+              <div class="per ">90%</div>
+            </div>
+            
+            <div class="box">
+              <div class="topic">CSS</div>
+              <div class="per">75%</div>
+            </div>
+            
+            <div class="box">
+              <div class="topic">Python</div>
+              <div class="per">80%</div>
+            </div>
+            
+            <div class="box">
+              <div class="topic">Canva</div>
+              <div class="per">90%</div>
+            </div>
+            <div class="IMAGE1">
+                <img src="https://camo.githubusercontent.com/daff83ef6264fc831bb3879c389cc02271b420b5a89c52b1f53d1832698d7718/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f4a72706665764f566f6769785a595770394f2f736f757263652e676966" alt="one">
+             </div> 
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- My Services Section Start -->
+    <section class="services" id="services">
+      <div class="content">
+        <div class="title"><span>My Services</span></div>
+        <div class="boxes">
+          <div class="box">
+            <div class="icon">
+              <i class="fas fa-desktop"></i>
+            </div>
+            <div class="topic">Front-End Devlopment</div>
+            <p>I bring creativity and technical expertise to every project I undertake. As an active member of Devsource (ACM), I've honed my skills by collaborating on innovative front-end projects, crafting effective web solutions.</p>
+          </div>
+          <div class="box">
+            <div class="icon">
+              <i class="fas fa-paint-brush"></i>
+            </div>
+            <div class="topic">Graphic Design</div>
+            <p>I specialize in graphic design, blending creativity with technical skills to produce stunning visuals. From logos and branding to marketing materials, my designs bring ideas to life. I also create professional content for social media platforms like LinkedIn and Instagram..</p>
+          </div>
+          <div class="box">
+            <div class="icon">
+              <i class="fab fa-android"></i>
+            </div>
+            <div class="topic">Video Editing </div>
+            <p>I edit videos with creativity and precision, ensuring your footage is polished and engaging. From cutting and splicing to adding effects and transitions, I tailor your videos to meet your specific needs. Although I am a beginner, I am continuously learning and improving my skills.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Me section Start -->
+    <section class="contact" id="contact">
+      <div class="content">
+        <div class="title"><span>Contact Me</span></div>
+        <div class="text">
+          <div class="topic">Have Any Project?</div>
+          <p>I'd love to hear about it! Let's collaborate and bring your vision to life. Feel free to reach out to me, and let's get started on something amazing together.</p>
+          <div class="button">
+            <button>Let's Connect</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section Start -->
+    <footer>
+      <div class="text">
+        <span>Created By <a href="#">KHUSHI BHASKAR</a></span>
       </div>
     </footer>
-
-    <!-- Top scroll button -->
-    <button id="scrollBtn" title="Go to top">
-      <i class="fa-solid fa-arrow-up fa-lg"></i>
-    </button>
-
-    <!-- Pushed JavaScript Code To Here -->
-    <script src="index.js"></script>
-    <script src="bulma.js"></script>
-
-    <script>
-      // Get the button element
-      const scrollBtn = document.getElementById("scrollBtn");
-
-      // Show the button when the user scrolls down 100px from the top
-      window.onscroll = function () {
-        if (
-          document.body.scrollTop > 100 ||
-          document.documentElement.scrollTop > 100
-        ) {
-          scrollBtn.style.display = "block";
-        } else {
-          scrollBtn.style.display = "none";
-        }
-      };
-
-      // Scroll to the top of the page when the button is clicked
-      scrollBtn.onclick = function () {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      };
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
-
-
