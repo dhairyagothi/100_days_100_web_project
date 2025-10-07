@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,12 +17,37 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: rgba(255, 255, 255, 0.03);
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --accent-color: #1abc9c;
+            --accent-hover: #16a085;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --particle-color: rgba(26, 188, 156, 0.7);
+        }
+
+        body.light-mode {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: rgba(0, 0, 0, 0.03);
+            --text-primary: #2c3e50;
+            --text-secondary: rgba(0, 0, 0, 0.7);
+            --accent-color: #1abc9c;
+            --accent-hover: #16a085;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --particle-color: rgba(26, 188, 156, 0.3);
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
-            background: #0a0a0a;
-            color: #fff;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             position: relative;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         #bgCanvas {
@@ -39,9 +66,9 @@
             z-index: 1000;
             background: rgba(26, 188, 156, 0.1);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border-color);
             padding: 1rem 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px var(--shadow-color);
             animation: slideDown 0.8s ease-out;
             display: flex;
             justify-content: space-between;
@@ -97,13 +124,14 @@
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .buttons .button {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
             padding: 0.6rem 1.2rem;
             border-radius: 8px;
             text-decoration: none;
@@ -112,8 +140,29 @@
         }
 
         .buttons .button:hover {
-            background: #1abc9c;
+            background: var(--accent-color);
             transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(26, 188, 156, 0.4);
+        }
+
+        #themeToggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        #themeToggle:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px) rotate(15deg);
             box-shadow: 0 5px 20px rgba(26, 188, 156, 0.4);
         }
 
@@ -153,7 +202,7 @@
 
         .hero-subtitle {
             font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-secondary);
             margin-bottom: 3rem;
             animation: fadeInUp 1s ease-out 0.3s backwards;
         }
@@ -168,36 +217,37 @@
         .search-wrapper {
             display: flex;
             gap: 1rem;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-secondary);
             backdrop-filter: blur(20px);
             padding: 1rem;
             border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px var(--shadow-color);
             transition: all 0.3s ease;
         }
 
         .search-wrapper:focus-within {
             box-shadow: 0 0 40px rgba(26, 188, 156, 0.6);
-            border-color: #1abc9c;
+            border-color: var(--accent-color);
         }
 
         .search-input {
             flex: 1;
             background: transparent;
             border: none;
-            color: #fff;
+            color: var(--text-primary);
             font-size: 1.1rem;
             padding: 0 1rem;
             outline: none;
         }
 
         .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-secondary);
+            opacity: 0.5;
         }
 
         .search-btn {
-            background: linear-gradient(135deg, #1abc9c, #16a085);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
             border: none;
             color: #fff;
             padding: 0.8rem 2rem;
@@ -219,12 +269,12 @@
         }
 
         .table-container {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--bg-secondary);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px var(--shadow-color);
             overflow-x: auto;
         }
 
@@ -235,7 +285,7 @@
         }
 
         thead th {
-            background: linear-gradient(135deg, #1abc9c, #16a085);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
             color: #fff;
             padding: 1.5rem;
             font-family: 'Orbitron', sans-serif;
@@ -246,7 +296,7 @@
         }
 
         tbody tr {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-secondary);
             transition: all 0.3s ease;
         }
 
@@ -259,12 +309,12 @@
         tbody td {
             padding: 1.5rem;
             border: none;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-secondary);
         }
 
         tbody td:first-child {
             font-weight: 700;
-            color: #1abc9c;
+            color: var(--accent-color);
             font-family: 'Orbitron', sans-serif;
         }
 
@@ -276,7 +326,7 @@
         }
 
         tbody td a:hover {
-            color: #1abc9c;
+            color: var(--accent-color);
             text-shadow: 0 0 10px rgba(26, 188, 156, 0.8);
         }
 
@@ -290,7 +340,7 @@
             right: 30px;
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #1abc9c, #16a085);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
             border: none;
             border-radius: 50%;
             color: #fff;
@@ -315,7 +365,7 @@
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(20px);
             padding: 3rem 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--border-color);
             margin-top: 4rem;
         }
 
@@ -329,7 +379,7 @@
 
         .footer h3 {
             font-family: 'Orbitron', sans-serif;
-            color: #1abc9c;
+            color: var(--accent-color);
             margin-bottom: 1rem;
             font-size: 1.5rem;
         }
@@ -353,14 +403,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #1abc9c;
+            color: var(--accent-color);
             font-size: 1.3rem;
             transition: all 0.3s ease;
             text-decoration: none;
         }
 
         .social-btn:hover {
-            background: #1abc9c;
+            background: var(--accent-color);
             color: #fff;
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(26, 188, 156, 0.5);
@@ -370,7 +420,8 @@
             display: none;
             text-align: center;
             font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-secondary);
+            opacity: 0.5;
             padding: 3rem;
         }
 
@@ -414,7 +465,11 @@
             <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
             <span>100 DAYS 100 WEB PROJECTS</span>
         </div>
-        <div class="buttons"></div>
+        <div class="buttons">
+            <button id="themeToggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
     </nav>
 
     <section class="hero-section">
@@ -479,7 +534,7 @@
     <button id="scrollBtn">
         <i class="fas fa-arrow-up"></i>
     </button>
-        <script src="index.js"></script>
-
+    
+    <script src="index.js"></script>
 </body>
 </html>

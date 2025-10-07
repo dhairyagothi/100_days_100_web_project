@@ -1,3 +1,4 @@
+
 // Canvas Background Animation
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
@@ -24,7 +25,9 @@ class Particle {
     }
 
     draw() {
-        ctx.fillStyle = `rgba(26, 188, 156, ${Math.random() * 0.5 + 0.2})`;
+        const isDark = !document.body.classList.contains('light-mode');
+        const alpha = isDark ? Math.random() * 0.5 + 0.2 : Math.random() * 0.3 + 0.1;
+        ctx.fillStyle = `rgba(26, 188, 156, ${alpha})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -36,7 +39,8 @@ for (let i = 0; i < particleCount; i++) {
 }
 
 function animate() {
-    ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+    const isDark = !document.body.classList.contains('light-mode');
+    ctx.fillStyle = isDark ? 'rgba(10, 10, 10, 0.1)' : 'rgba(245, 245, 245, 0.1)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     particles.forEach(p => {
@@ -51,7 +55,8 @@ function animate() {
             const dist = Math.sqrt(dx * dx + dy * dy);
 
             if (dist < 100) {
-                ctx.strokeStyle = `rgba(26, 188, 156, ${0.2 * (1 - dist / 100)})`;
+                const alpha = isDark ? 0.2 * (1 - dist / 100) : 0.1 * (1 - dist / 100);
+                ctx.strokeStyle = `rgba(26, 188, 156, ${alpha})`;
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(particles[i].x, particles[i].y);
@@ -71,11 +76,44 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
+// Theme Toggle Functionality
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = themeToggle.querySelector('i');
+
+// Check for saved theme preference or default to dark mode
+const currentTheme = window.theme || 'dark';
+if (currentTheme === 'light') {
+    document.body.classList.add('light-mode');
+    themeIcon.classList.remove('fa-moon');
+    themeIcon.classList.add('fa-sun');
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    
+    if (document.body.classList.contains('light-mode')) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        window.theme = 'light';
+    } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        window.theme = 'dark';
+    }
+});
+
 // Update Navbar for Login Status
 const buttons = document.getElementsByClassName('buttons')[0];
 
 function updateNavbar() {
-    const username = localStorage.getItem('username');
+    const username = window.username || null;
+    
+    const themeButton = `
+        <button id="themeToggle" title="Toggle Theme">
+            <i class="fas ${document.body.classList.contains('light-mode') ? 'fa-sun' : 'fa-moon'}"></i>
+        </button>
+    `;
+    
     if (username) {
         buttons.innerHTML = `
         <button class="button is-success is-dark has-text-weight-bold">
@@ -89,10 +127,11 @@ function updateNavbar() {
         </a>
         <a class="button is-primary is-dark" href="contributors/contributor.html">
             <strong>Contributors</strong>
-        </a>`;
+        </a>
+        ${themeButton}`;
 
         document.getElementById('logout').addEventListener('click', () => {
-            localStorage.removeItem('username');
+            window.username = null;
             updateNavbar();
         });
     } else {
@@ -105,8 +144,27 @@ function updateNavbar() {
         </a>
         <a class="button is-success is-light" href="/public/Login.html">
             <strong>Log in</strong>
-        </a>`;
+        </a>
+        ${themeButton}`;
     }
+    
+    // Re-attach theme toggle event listener
+    const newThemeToggle = document.getElementById('themeToggle');
+    const newThemeIcon = newThemeToggle.querySelector('i');
+    
+    newThemeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        
+        if (document.body.classList.contains('light-mode')) {
+            newThemeIcon.classList.remove('fa-moon');
+            newThemeIcon.classList.add('fa-sun');
+            window.theme = 'light';
+        } else {
+            newThemeIcon.classList.remove('fa-sun');
+            newThemeIcon.classList.add('fa-moon');
+            window.theme = 'dark';
+        }
+    });
 }
 
 // Populate the table with project data
@@ -238,7 +296,7 @@ function fillTable() {
 
         days.innerText = e[0];
         nameP.innerText = e[1];
-        a.href = e[2].trim();       // Remove any leading/trailing spaces here!
+        a.href = e[2].trim();
         a.innerHTML = 'View Demo <i class="fas fa-external-link-alt"></i>';
         a.target = '_blank';
         nameP.classList.add('project-name');
