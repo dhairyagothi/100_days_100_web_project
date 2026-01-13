@@ -1,4 +1,36 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const text = "100 DAYS 100 WEB PROJECTS"; 
+    const target = document.getElementById("typewriter-text");
+    let index = 0;
+    let isDeleting = false;
 
+    function type() {
+        const currentText = isDeleting 
+            ? text.substring(0, index - 1) 
+            : text.substring(0, index + 1);
+
+        target.textContent = currentText;
+        target.setAttribute('data-text', currentText); 
+        
+        index = isDeleting ? index - 1 : index + 1;
+
+      
+        let typeSpeed = 200; 
+        if (isDeleting) typeSpeed = 100; 
+
+        if (!isDeleting && index === text.length) {
+            typeSpeed = 2000;
+            isDeleting = true;
+        } else if (isDeleting && index === 0) {
+            isDeleting = false;
+            typeSpeed = 100;
+        }
+
+        setTimeout(type, typeSpeed);
+    }
+
+    type();
+});
 // Canvas Background Animation
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
