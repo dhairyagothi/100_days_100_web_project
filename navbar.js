@@ -83,7 +83,7 @@
 
   window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), { persist: false });
 
-  // Mobile Menu Logic
+  // Mobile Menu Logic (systematic)
   const menuToggle = document.getElementById("menuToggle");
   const navButtonsDiv = document.getElementById("navButtons");
   if (menuToggle && navButtonsDiv) {
