@@ -4,134 +4,161 @@ let pdfMessage = document.getElementById("pdfMessage");
 
 let currentTheme = "theme1"; // Default theme
 
-// Task types with updated labels, values, and colors
 const taskTypes = [
-  { label: "Select Type", value: "", color: "white" },
-  { label: "Work", value: "Work", color: "#FFDE59" }, // Bright Yellow
-  { label: "Personal", value: "Personal", color: "#FFC0CB" }, // Soft Pastel Pink
-  { label: "Professional", value: "Urgent", color: "#B0BEC5" }, // Cool Gray
-  { label: "Fitness", value: "Fitness", color: "#B1EE99" }, // Vibrant Green
-  { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
+  { label: "Uncategorized", value: "", color: "rgba(255, 255, 255, 0.05)" },
+  { label: "Work", value: "Work", color: "rgba(6, 182, 212, 0.15)" }, 
+  { label: "Personal", value: "Personal", color: "rgba(236, 72, 153, 0.15)" }, 
+  { label: "Urgent", value: "Urgent", color: "rgba(239, 68, 68, 0.15)" }, 
+  { label: "Fitness", value: "Fitness", color: "rgba(34, 197, 94, 0.15)" }, 
+  { label: "Misc", value: "Misc", color: "rgba(168, 85, 247, 0.15)" }, 
 ];
 
 function Add() {
-
-    if (task.value == "") {
-        alert("Please enter a task");
-    } else {
-        let newelement = document.createElement("li");
-        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
-        container.appendChild(newelement);
-        task.value = "";
-        newelement.querySelector("i").addEventListener("click", remove);
-        function remove() {
-            newelement.remove();
-        }
-        newelement.querySelector("a").addEventListener("click", strike);
-        function strike() {
-           if(newelement.style.textDecoration === "line-through")
-           {
-            newelement.style.textDecoration="none";
-           }
-           else{
-            newelement.style.textDecoration="line-through";
-           }
-        }
+  // Remove empty state if present
+  const emptyState = document.querySelector(".empty-state");
+  if (emptyState) emptyState.remove();
 
   const notes = document.querySelectorAll(".notes");
-
   if (notes.length > 0) {
     const lastNote = notes[notes.length - 1];
     const taskText = lastNote.querySelector("span");
-
     if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
-      alert("Please add a task to the previous note before creating a new one!");
+      alert("Please focus on your current task before adding another one! ✨");
       return;
     }
   }
 
-  // Create a note container
   const note = document.createElement("div");
   note.classList.add("notes");
-  note.style.backgroundColor = "white";
-
-  const noteWrapper = document.createElement("div");
-  noteWrapper.style.display = "flex";
-  noteWrapper.style.alignItems = "center";
-  noteWrapper.style.justifyContent = "space-between";
-  noteWrapper.style.width = "100%";
-
+  
   const taskText = document.createElement("span");
   taskText.innerText = "Click here to add a task...";
   taskText.contentEditable = true;
-  taskText.style.flex = "1";
-  taskText.style.marginRight = "10px";
 
-  // Dropdown menu for task type
   const dropdown = document.createElement("select");
-  dropdown.style.marginLeft = "10px";
-
-  // Populate dropdown with task types
-  taskTypes.forEach((taskType) => {
+  taskTypes.forEach((type) => {
     const option = document.createElement("option");
-    option.value = taskType.value;
-    option.innerText = taskType.label;
+    option.value = type.value;
+    option.innerText = type.label;
     dropdown.appendChild(option);
   });
 
-  // Update task background color based on dropdown selection
   dropdown.addEventListener("change", () => {
-    const selectedType = taskTypes.find((type) => type.value === dropdown.value);
+    const selectedType = taskTypes.find((t) => t.value === dropdown.value);
     if (selectedType) {
-      note.style.backgroundColor = selectedType.color;
+      note.style.background = selectedType.color;
+      note.style.borderColor = selectedType.color.replace("0.15", "0.3");
     }
   });
 
-  const tickIcon = document.createElement("a");
-  tickIcon.innerHTML = "&#10003"; // Checkmark symbol
-  tickIcon.style.cursor = "pointer";
-  tickIcon.style.color = "black";
-  tickIcon.style.fontSize = "20px";
-  tickIcon.style.marginLeft = "10px";
+  const footer = document.createElement("div");
+  footer.classList.add("notes-footer");
 
-  noteWrapper.appendChild(taskText);
-  noteWrapper.appendChild(dropdown);
-  noteWrapper.appendChild(tickIcon);
+  const controls = document.createElement("div");
+  controls.classList.add("note-controls");
 
-  note.appendChild(noteWrapper);
+  const tickBtn = document.createElement("a");
+  tickBtn.classList.add("tick-btn");
+  tickBtn.innerHTML = '<i class="fas fa-check"></i>';
+  tickBtn.title = "Mark as Done";
+
+  const deleteBtn = document.createElement("a");
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+  deleteBtn.title = "Delete Task";
+
+  controls.appendChild(tickBtn);
+  controls.appendChild(deleteBtn);
+  
+  footer.appendChild(dropdown);
+  footer.appendChild(controls);
+
+  note.appendChild(taskText);
+  note.appendChild(footer);
   notesContainer.appendChild(note);
 
-  // Event listeners for task text
+  // Focus interactions
   taskText.addEventListener("focus", () => {
     if (taskText.innerText.trim() === "Click here to add a task...") {
       taskText.innerText = "";
     }
+    note.style.borderColor = "var(--accent-cyan)";
+    note.style.boxShadow = "0 0 20px rgba(6, 182, 212, 0.2)";
   });
 
   taskText.addEventListener("blur", () => {
     if (taskText.innerText.trim() === "") {
       taskText.innerText = "Click here to add a task...";
-
     }
+    note.style.borderColor = "var(--glass-border)";
+    note.style.boxShadow = "var(--card-shadow)";
   });
 
-  tickIcon.addEventListener("click", (event) => {
+  tickBtn.addEventListener("click", () => {
     taskText.classList.toggle("completed");
-    taskText.style.textDecoration = taskText.classList.contains("completed")
-      ? "line-through"
-      : "none";
-    event.stopPropagation();
+    note.classList.toggle("note-completed");
   });
+
+  deleteBtn.addEventListener("click", () => {
+    note.style.transform = "scale(0.8)";
+    note.style.opacity = "0";
+    setTimeout(() => {
+      note.remove();
+      if (document.querySelectorAll(".notes").length === 0) {
+        showEmptyState();
+      }
+    }, 300);
+  });
+}
+
+function showEmptyState() {
+  notesContainer.innerHTML = `
+    <div class="empty-state">
+      <i class="fas fa-clipboard-list"></i>
+      <p>No tasks yet. Click 'Add a task!' to begin your journey.</p>
+    </div>
+  `;
 }
 
 function saveAsPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   let tasks = document.querySelectorAll(".notes");
-  tasks.forEach((task, index) => {
-    doc.text(20, 10 + (10 * index), task.textContent.trim());
+  let yPos = 20;
+
+  doc.setFontSize(24);
+  doc.setTextColor(6, 182, 212);
+  doc.text(20, yPos, "TASKFLOW ARCHIVE");
+  yPos += 15;
+  
+  doc.setFontSize(10);
+  doc.setTextColor(150, 150, 150);
+  doc.text(20, yPos, `Generated on ${new Date().toLocaleString()}`);
+  yPos += 15;
+
+  let hasTasks = false;
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+
+  tasks.forEach((task) => {
+    let text = task.querySelector("span").innerText.trim();
+    if (text !== "Click here to add a task..." && text !== "") {
+      const type = task.querySelector("select").value;
+      const displayType = type ? `[${type}] ` : "[Task] ";
+      const status = task.querySelector("span").classList.contains("completed") ? " (COMPLETED)" : "";
+      
+      doc.text(20, yPos, `${displayType}${text}${status}`);
+      yPos += 10;
+      hasTasks = true;
+    }
   });
-  let fileName = `ToDoList_${Date.now()}.pdf`;
+
+  if (!hasTasks) {
+    alert("Your task list is empty! Add some tasks before exporting. 📥");
+    return;
+  }
+
+  let fileName = `TaskFlow_${Date.now()}.pdf`;
   let fileURL = URL.createObjectURL(doc.output("blob"));
   saveDocument(fileName, fileURL);
   showPDFMessage();
@@ -141,34 +168,30 @@ function saveDocument(fileName, fileURL) {
   let docItem = document.createElement("div");
   docItem.className = "document-item";
   docItem.innerHTML = `
-        <span>${fileName}</span>
-        <button onclick="viewPDF('${fileURL}')">View</button>
-        <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
-        <button onclick="deletePDF(this)">Delete</button>
+        <span><i class="far fa-file-pdf"></i> ${fileName}</span>
+        <div class="doc-btns">
+          <button onclick="viewPDF('${fileURL}')">View</button>
+          <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
+          <button onclick="deletePDF(this)" style="color: #ef4444;">Delete</button>
+        </div>
     `;
   documentsList.appendChild(docItem);
 }
 
-function viewPDF(fileURL) {
-  window.open(fileURL, "_blank");
-}
-
+function viewPDF(fileURL) { window.open(fileURL, "_blank"); }
 function downloadPDF(fileURL, fileName) {
   let a = document.createElement("a");
   a.href = fileURL;
   a.download = fileName;
   a.click();
 }
-
-function deletePDF(button) {
-  button.parentElement.remove();
-}
+function deletePDF(button) { button.closest(".document-item").remove(); }
 
 function showPDFMessage() {
-  pdfMessage.style.display = "block";
-  setTimeout(() => {
-    pdfMessage.style.display = "none";
-  }, 3000);
+  pdfMessage.style.display = "flex";
+  pdfMessage.style.alignItems = "center";
+  pdfMessage.style.gap = "10px";
+  setTimeout(() => { pdfMessage.style.display = "none"; }, 3000);
 }
 
 function showHome() {
@@ -181,55 +204,14 @@ function showDocuments() {
   document.getElementById("documents-tab").style.display = "block";
 }
 
-// Functions to apply themes
-function c1() {
-  let image = 'linear-gradient(90deg, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%)';
-  document.body.style.background = image;
-  currentTheme = "theme1";
-  updateNotesTheme();
+// Themes
+function applyTheme(gradient, name) {
+  document.body.style.backgroundImage = gradient;
+  currentTheme = name;
 }
 
-function c2() {
-  let image = 'linear-gradient( 90deg, #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%)';
-  document.body.style.background = image;
-  currentTheme = "theme2";
-  updateNotesTheme();
-}
-
-function c3() {
-  let image = 'linear-gradient(90deg, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d)';
-  document.body.style.background = image;
-  currentTheme = "theme3";
-  updateNotesTheme();
-}
-
-function c4() {
-  let image = 'linear-gradient(90deg,rgb(120, 25, 105),rgb(197, 211, 201))';
-  document.body.style.background = image;
-  currentTheme = "theme4";
-  updateNotesTheme();
-}
-
-function c5() {
-  let image = 'linear-gradient(90deg, #b92b27, #1565c0)';
-  document.body.style.background = image;
-  currentTheme = "theme5";
-  updateNotesTheme();
-}
-
-function updateNotesTheme() {
-  const notes = document.querySelectorAll(".notes");
-  notes.forEach((note) => {
-    if (note.style.backgroundColor === "white") {
-      note.style.backgroundColor = currentTheme === "theme1"
-        ? "rgba(232,221,227,1)"
-        : currentTheme === "theme2"
-        ? "#e4afcb"
-        : currentTheme === "theme3"
-        ? "#39db8c"
-        : currentTheme === "theme4"
-        ? "rgb(120, 25, 105)"
-        : "#b92b27";
-    }
-  });
-}
+function c1() { applyTheme("radial-gradient(at 0% 0%, rgba(244, 63, 94, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.1) 0px, transparent 50%)", "rose"); }
+function c2() { applyTheme("radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%)", "sky"); }
+function c3() { applyTheme("radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.1) 0px, transparent 50%)", "amber"); }
+function c4() { applyTheme("radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%)", "emerald"); }
+function c5() { applyTheme("radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%)", "purple"); }
