@@ -1,47 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
-    <link rel="stylesheet" href="Calculator.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scientific Calculator</title>
+    <link rel="stylesheet" href="Calculator.css" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-</head>
-<body>
+  </head>
+  <body>
     <div class="calculator">
-        <input type="text" placeholder="0" id="inputBox">
-        <div>
-            <button class="Clear">AC</button>
-            <button class="Clear">DEL</button>
-            <button class="operators">%</button>
-            <button class="operators">/</button>
-        </div>
-        <div>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
-            <button class="operators">*</button>
-        </div>
-        <div>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
-            <button class="operators">-</button>
-        </div>
-        <div>
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button class="operators">+</button>
-        </div>
-        <div>
-            <button>00</button>
-            <button>0</button>
-            <button>.</button>
-            <button class="equalTo">=</button>
-        </div>
+      <div class="calculator-header">
+        <h2>Scientific Calculator</h2>
+      </div>
+      <div class="display-section">
+        <div id="previousDisplay" class="previous-display"></div>
+        <input
+          type="text"
+          placeholder="0"
+          id="inputBox"
+          readonly
+          aria-label="Calculator Display"
+        />
+      </div>
+      <div class="scientific-panel">
+        <button data-value="sin(" type="button">sin</button>
+        <button data-value="cos(" type="button">cos</button>
+        <button data-value="tan(" type="button">tan</button>
+        <button data-value="log(" type="button">log</button>
+
+        <button data-value="sqrt(" type="button">√</button>
+        <button data-value="**2" type="button">x²</button>
+        <button data-value="**" type="button">xʸ</button>
+        <button data-value="(" type="button">(</button>
+
+        <button data-value=")" type="button">)</button>
+        <button data-value="pi" type="button">π</button>
+        <button data-value="e" type="button">e</button>
+        <button data-value="%" type="button">%</button>
+      </div>
+      <div class="button-grid">
+        <button class="Clear" type="button">AC</button>
+        <button class="Clear" type="button">DEL</button>
+        <button class="operators" type="button">%</button>
+        <button class="operators" type="button">/</button>
+        <button type="button">7</button>
+        <button type="button">8</button>
+        <button type="button">9</button>
+        <button class="operators" type="button">*</button>
+        <button type="button">4</button>
+        <button type="button">5</button>
+        <button type="button">6</button>
+        <button class="operators" type="button">-</button>
+        <button type="button">1</button>
+        <button type="button">2</button>
+        <button type="button">3</button>
+        <button class="operators" type="button">+</button>
+        <button type="button">00</button>
+        <button type="button">0</button>
+        <button type="button">.</button>
+        <button class="equalTo" type="button">=</button>
+      </div>
+      <div class="extra-actions">
+        <button id="copyBtn" type="button">Copy</button>
+        <button id="clearHistoryBtn" type="button">Clear History</button>
+      </div>
+      <div class="history-section">
+        <h3>History</h3>
+
+        <ul id="historyList"></ul>
+      </div>
     </div>
 
+    <!-- JavaScript -->
     <script src="Calculator.js"></script>
-</body>
+  </body>
 </html>
