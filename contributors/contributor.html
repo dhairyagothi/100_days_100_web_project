@@ -225,6 +225,9 @@
         overflow-x: auto;
         gap: 0.4rem;
         scrollbar-width: none;
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 0;
       }
 
       .buttons::-webkit-scrollbar {
@@ -250,11 +253,20 @@
       .container h1 {
         font-size: clamp(1.2rem, 8vw, 2rem);
         margin-bottom: 20px;
+        padding: 0 10px;
       }
 
       .contributors-grid {
         padding: 10px;
-        gap: 15px;
+        gap: 20px;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        width: 100%;
+      }
+
+      .contributor-card {
+        max-width: 280px;
+        margin: 0 auto;
       }
     }
   </style>
