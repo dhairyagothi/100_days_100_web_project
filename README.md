@@ -186,7 +186,9 @@ The website features:
 
 ## Getting Started
 
-<!-- ⚠️ new update: Read carefully👉 https://github.com/100_days_100_web_project/discussions/1028 -->
+Welcome! Whether you want to explore projects online or run them locally, here's everything you need to get going.
+
+<!-- ⚠️ new update: Read carefully👉 https://github.com/dhairyagothi/100_days_100_web_project/discussions/1028 -->
 
 ## 🚀 Quick Start
 
