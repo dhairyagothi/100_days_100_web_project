@@ -204,17 +204,57 @@
         }
 
     @media (max-width: 768px) {
+      .navbar {
+        padding: 0.5rem 1rem;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        min-height: 60px;
+      }
+
+      .navbar-brand img {
+        width: 35px;
+        height: 35px;
+      }
+
       .navbar-brand span {
+        display: none;
+      }
+
+      .buttons {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 0.4rem;
+        scrollbar-width: none;
+      }
+
+      .buttons::-webkit-scrollbar {
+        display: none;
+      }
+
+      .buttons .button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+      }
+
+      #themeToggle {
+        width: 35px;
+        height: 35px;
         font-size: 1rem;
       }
-      
-      .navbar {
-        padding: 1rem;
+
+      .container {
+        padding: 80px 15px 20px;
       }
-      
-      .buttons .button {
-        font-size: 0.9rem;
-        padding: 0.5rem 1rem;
+
+      .container h1 {
+        font-size: clamp(1.2rem, 8vw, 2rem);
+        margin-bottom: 20px;
+      }
+
+      .contributors-grid {
+        padding: 10px;
+        gap: 15px;
       }
     }
   </style>
