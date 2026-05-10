@@ -1,0 +1,17 @@
+body {
+  margin: 0;             
+  height: 100vh;       
+  display: flex;         
+  justify-content: center; 
+  align-items: center;
+  background-color: #0a0a0a;
+  overflow: hidden;
+  cursor: crosshair;    
+}
+#text {
+    color:azure;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 3rem;
+    opacity: 0.4;
+    user-select: none;
+}

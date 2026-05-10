@@ -283,7 +283,8 @@ function fillTable() {
         ["Day 111", "Whack-a-Mole Game", "./public/Whack-a-Mole Game/index.html"],
         ["Day 112", "Nykaa Clone Website", "./public/Nykaa-clone/index.html"],
         ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
-     ["Day 114","EchoNotes","./public/EchoNotes/index.html"]
+     ["Day 114","EchoNotes","./public/EchoNotes/index.html"],
+	["Day 115", "Fireworks Click Effect", "./public/Fireworks-Click-Effect/index.html"]
     ];
 
     const tbody = document.getElementById('tableBody');
