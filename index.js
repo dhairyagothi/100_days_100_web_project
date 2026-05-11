@@ -362,6 +362,7 @@ function filterProjects() {
 // Search on Enter key
 const searchInput = document.getElementById('searchInput');
 if (searchInput) {
+    searchInput.addEventListener('input', filterProjects);
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             filterProjects();
