@@ -52,12 +52,15 @@ body {
 #colour2,
 #colour3,
 #colour4,
-#colour5{
+#colour5 {
   height: 45px;
   width: 45px;
   border: 2px solid white;
   border-radius: 50%;
   cursor: pointer;
+  /* Transition on the BASE state so animation plays in BOTH directions */
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transform: scale(1);
 }
 #colour1 {
   background: linear-gradient(
@@ -66,7 +69,6 @@ body {
     rgba(219, 185, 200, 1) 100%,
     rgba(227, 230, 235, 1) 100%
   );
-  /* margin-left: 1060px; */
 }
 #colour2 {
   background-image: linear-gradient(
@@ -89,14 +91,12 @@ body {
     #DF868D
   );
 }
-
 #colour4 {
   background-image: linear-gradient(
     to bottom,
-    rgb(120, 25, 105),rgb(197, 211, 201)
+    rgb(120, 25, 105), rgb(197, 211, 201)
   );
 }
-
 #colour5 {
   background-image: linear-gradient(
     to bottom,
@@ -105,12 +105,12 @@ body {
 }
 #colour1:hover,
 #colour2:hover,
-#colour3:hover ,
-#colour4:hover ,
+#colour3:hover,
+#colour4:hover,
 #colour5:hover {
-  height: 55px;
-  width: 55px;
-  transition: 0.8s;
+  /* scale() avoids layout shifts; transition above ensures smooth enter & exit */
+  transform: scale(1.22);
+  box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.55);
 }
 .main {
   display: grid;
@@ -301,7 +301,9 @@ text-decoration: line-through;
 
   #colour1,
   #colour2,
-  #colour3 {
+  #colour3,
+  #colour4,
+  #colour5 {
     height: 27px;
     width: 27px;
   }
