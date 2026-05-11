@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 body {
@@ -12,7 +12,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #0A0A23; /* Dark blue background */
+  background: #0a0a23; /* Dark blue background */
 }
 
 .wrapper {
@@ -24,12 +24,12 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  background: #1E1E3F; /* Dark theme for game board */
+  background: #1e1e3f; /* Dark theme for game board */
   box-shadow: 0 20px 40px rgba(52, 87, 220, 0.2);
 }
 
 .game-details {
-  color: #B8C6DC;
+  color: #b8c6dc;
   font-weight: 500;
   font-size: 1.2rem;
   padding: 20px 27px;
@@ -53,22 +53,65 @@ body {
 
 .play-board .bonus-food {
   border-radius: 100%;
-  background: #FFD700; /* Gold for bonus food */
+  background: #ffd700; /* Gold for bonus food */
 }
 
 .play-board .head {
   border-radius: 5px;
-  background: #13f317; /* Light blue for snake */
+  background: #13f317;
+}
+
+/* Snake Head */
+.play-board .snake-head {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+  border: 2px solid #dcfce7;
+  position: relative;
+}
+
+/* Snake Body */
+.play-board .snake-body {
+  background: linear-gradient(135deg, #4ade80, #166534);
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+  border: 1px solid rgba(220, 252, 231, 0.3);
 }
 
 .play-board .obstacle {
   background: #0de6f1; /* Black for obstacles */
 }
-
-.play-board .power-up {
-  background: #00FF00; /* Green for power-ups */
+/* Snake Eyes */
+.snake-head .eye {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  top: 3px;
 }
 
+/* Left eye */
+.snake-head .left-eye {
+  left: 2px;
+}
+
+/* Right eye */
+.snake-head .right-eye {
+  right: 2px;
+}
+
+.play-board .power-up {
+  background: #00ff00; /* Green for power-ups */
+}
+
+#headline {
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
 .controls {
   display: none;
   justify-content: space-between;
@@ -78,10 +121,10 @@ body {
   padding: 25px 0;
   text-align: center;
   font-size: 1.3rem;
-  color: #B8C6DC;
+  color: #b8c6dc;
   width: calc(100% / 4);
   cursor: pointer;
-  border-right: 1px solid #171B26;
+  border-right: 1px solid #171b26;
 }
 
 .button-container {
@@ -90,35 +133,50 @@ body {
   margin-top: 10px;
 }
 
-.new-game-button, .restart-game-button {
+.new-game-button,
+.restart-game-button {
   margin: 0 10px;
   padding: 15px 25px;
   font-size: 1.1rem;
   color: #fff;
-  background: linear-gradient(135deg, #FFD700, #FFB300); /* Yellow gradient background */
+  background: linear-gradient(
+    135deg,
+    #ffd700,
+    #ffb300
+  ); /* Yellow gradient background */
   border: none;
   border-radius: 8px; /* Rounded corners */
   cursor: pointer;
-  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  transition:
+    background 0.3s,
+    transform 0.3s,
+    box-shadow 0.3s;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
   font-weight: bold;
 }
 
-.new-game-button:hover, .restart-game-button:hover {
-  background: linear-gradient(135deg, #FFB300, #FFD700); /* Reverse gradient on hover */
+.new-game-button:hover,
+.restart-game-button:hover {
+  background: linear-gradient(
+    135deg,
+    #ffb300,
+    #ffd700
+  ); /* Reverse gradient on hover */
   transform: scale(1.1); /* Slightly enlarge on hover */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
 }
 
-.new-game-button:active, .restart-game-button:active {
+.new-game-button:active,
+.restart-game-button:active {
   transform: scale(1); /* Return to normal size when clicked */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Smaller shadow when clicked */
 }
 
 /* Button Focus Effects */
-.new-game-button:focus, .restart-game-button:focus {
+.new-game-button:focus,
+.restart-game-button:focus {
   outline: none;
-  border: 2px solid #FFD700; /* Yellow border on focus */
+  border: 2px solid #ffd700; /* Yellow border on focus */
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Soft yellow glow */
 }
 
@@ -142,4 +200,10 @@ body {
     padding: 15px 0;
     font-size: 1rem;
   }
+}
+
+/* snake Head */
+.snake-head {
+  background: #14532d;
+  border-radius: 8px;
 }

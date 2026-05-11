@@ -8,9 +8,12 @@ const restartGameButton = document.querySelector(".restart-game-button");
 
 let gameOver = false;
 let foodX, foodY, bonusFoodX, bonusFoodY, powerUpX, powerUpY;
-let bonusFoodVisible = false, powerUpVisible = false;
-let snakeX = 5, snakeY = 5;
-let velocityX = 0, velocityY = 0;
+let bonusFoodVisible = false,
+  powerUpVisible = false;
+let snakeX = 5,
+  snakeY = 5;
+let velocityX = 0,
+  velocityY = 0;
 let snakeBody = [];
 let setIntervalId, powerUpTimerId;
 let score = 0;
@@ -27,7 +30,7 @@ highScoreElement.innerText = `High Score: ${highScore}`;
 const updateFoodPosition = () => {
   foodX = Math.floor(Math.random() * 30) + 1;
   foodY = Math.floor(Math.random() * 30) + 1;
-}
+};
 
 const updateBonusFoodPosition = () => {
   bonusFoodX = Math.floor(Math.random() * 30) + 1;
@@ -36,7 +39,7 @@ const updateBonusFoodPosition = () => {
   setTimeout(() => {
     bonusFoodVisible = false;
   }, 5000);
-}
+};
 
 const updatePowerUpPosition = () => {
   powerUpX = Math.floor(Math.random() * 30) + 1;
@@ -45,14 +48,14 @@ const updatePowerUpPosition = () => {
   setTimeout(() => {
     powerUpVisible = false;
   }, 5000);
-}
+};
 
 const activatePowerUp = () => {
   powerUpActive = true;
   setTimeout(() => {
     powerUpActive = false;
   }, powerUpDuration);
-}
+};
 
 const updateObstacles = () => {
   obstacles = [];
@@ -61,16 +64,16 @@ const updateObstacles = () => {
     let obstacleY = Math.floor(Math.random() * 30) + 1;
     obstacles.push([obstacleX, obstacleY]);
   }
-}
+};
 
 const handleGameOver = () => {
   clearInterval(setIntervalId);
   clearTimeout(powerUpTimerId);
   alert("Game Over! Press OK to replay...");
   location.reload();
-}
+};
 
-const changeDirection = e => {
+const changeDirection = (e) => {
   if (e.key === "ArrowUp" && velocityY != 1) {
     velocityX = 0;
     velocityY = -1;
@@ -84,9 +87,13 @@ const changeDirection = e => {
     velocityX = 1;
     velocityY = 0;
   }
-}
+};
 
-controls.forEach(button => button.addEventListener("click", () => changeDirection({ key: button.dataset.key })));
+controls.forEach((button) =>
+  button.addEventListener("click", () =>
+    changeDirection({ key: button.dataset.key }),
+  ),
+);
 
 const initGame = () => {
   if (gameOver) return handleGameOver();
@@ -135,8 +142,34 @@ const initGame = () => {
   }
 
   for (let i = 0; i < snakeBody.length; i++) {
-    html += `<div class="head" style="grid-area: ${snakeBody[i][1]} / ${snakeBody[i][0]}"></div>`;
-    if (i !== 0 && snakeBody[0][1] === snakeBody[i][1] && snakeBody[0][0] === snakeBody[i][0]) {
+    // Snake head
+    if (i === 0) {
+      html += `
+      <div class="snake-head"
+         style="grid-area: ${snakeBody[i][1]} / ${snakeBody[i][0]}">
+
+      <span class="eye left-eye"></span>
+      <span class="eye right-eye"></span>
+
+    </div>
+    `;
+    }
+
+    // Snake body
+    else {
+      html += `
+      <div class="snake-body"
+           style="grid-area: ${snakeBody[i][1]} / ${snakeBody[i][0]}">
+      </div>
+    `;
+    }
+
+    // Collision detection
+    if (
+      i !== 0 &&
+      snakeBody[0][1] === snakeBody[i][1] &&
+      snakeBody[0][0] === snakeBody[i][0]
+    ) {
       gameOver = true;
     }
   }
@@ -158,7 +191,7 @@ const initGame = () => {
   }
 
   playBoard.innerHTML = html;
-}
+};
 
 const startNewGame = () => {
   gameOver = false;
@@ -179,7 +212,7 @@ const startNewGame = () => {
   updateObstacles();
   clearInterval(setIntervalId);
   setIntervalId = setInterval(initGame, gameSpeed);
-}
+};
 
 const restartGame = () => {
   gameOver = false;
@@ -195,7 +228,7 @@ const restartGame = () => {
   updateObstacles();
   clearInterval(setIntervalId);
   setIntervalId = setInterval(initGame, gameSpeed);
-}
+};
 
 newGameButton.addEventListener("click", startNewGame);
 restartGameButton.addEventListener("click", restartGame);
