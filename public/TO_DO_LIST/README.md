@@ -53,16 +53,16 @@ cd TaskFlow
 ## Screenshots
 
 ### Home Page UI
-![Home Page](images/homepage.png)
+![Home Page](homepage.png)
 
 ### Documents Section
-![Documents Section](images/documents.png)
+![Documents Section](documents.png)
 
 ### Progress Tracking
-![Progress Tracking](images/progressbar.png)
+![Progress Tracking](progressbar.png)
 
 ### Dark/Light Theme Interface
-![Theme Interface](images/lightmode.png)
+![Theme Interface](lightmode.png)
 
 ## Contributing
 
