@@ -16,28 +16,6 @@ const taskTypes = [
 
 function Add() {
 
-    if (task.value == "") {
-        alert("Please enter a task");
-    } else {
-        let newelement = document.createElement("li");
-        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
-        container.appendChild(newelement);
-        task.value = "";
-        newelement.querySelector("i").addEventListener("click", remove);
-        function remove() {
-            newelement.remove();
-        }
-        newelement.querySelector("a").addEventListener("click", strike);
-        function strike() {
-           if(newelement.style.textDecoration === "line-through")
-           {
-            newelement.style.textDecoration="none";
-           }
-           else{
-            newelement.style.textDecoration="line-through";
-           }
-        }
-
   const notes = document.querySelectorAll(".notes");
 
   if (notes.length > 0) {
@@ -85,8 +63,18 @@ function Add() {
     if (selectedType) {
       note.style.backgroundColor = selectedType.color;
     }
+    saveTasks();
   });
 
+  const deleteIcon = document.createElement("i");
+  deleteIcon.className = "fa-solid fa-trash";
+  deleteIcon.style.cursor = "pointer";
+  deleteIcon.style.marginLeft = "10px";
+
+  deleteIcon.addEventListener("click", () => {
+    note.remove();
+    saveTasks();
+  });
   const tickIcon = document.createElement("a");
   tickIcon.innerHTML = "&#10003"; // Checkmark symbol
   tickIcon.style.cursor = "pointer";
@@ -96,10 +84,13 @@ function Add() {
 
   noteWrapper.appendChild(taskText);
   noteWrapper.appendChild(dropdown);
+  noteWrapper.appendChild(deleteIcon);
   noteWrapper.appendChild(tickIcon);
 
   note.appendChild(noteWrapper);
   notesContainer.appendChild(note);
+
+  saveTasks();
 
   // Event listeners for task text
   taskText.addEventListener("focus", () => {
@@ -113,6 +104,7 @@ function Add() {
       taskText.innerText = "Click here to add a task...";
 
     }
+    saveTasks();
   });
 
   tickIcon.addEventListener("click", (event) => {
@@ -120,8 +112,29 @@ function Add() {
     taskText.style.textDecoration = taskText.classList.contains("completed")
       ? "line-through"
       : "none";
+
+    saveTasks();
+
     event.stopPropagation();
   });
+}
+
+function saveTasks() {
+  const tasks = [];
+
+  document.querySelectorAll(".notes").forEach((note) => {
+    const text = note.querySelector("span").innerText;
+    const type = note.querySelector("select").value;
+    const completed = note.querySelector("span").classList.contains("completed");
+
+    tasks.push({
+      text,
+      type,
+      completed
+    });
+  });
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function saveAsPDF() {
@@ -219,17 +232,106 @@ function c5() {
 
 function updateNotesTheme() {
   const notes = document.querySelectorAll(".notes");
+
   notes.forEach((note) => {
     if (note.style.backgroundColor === "white") {
-      note.style.backgroundColor = currentTheme === "theme1"
-        ? "rgba(232,221,227,1)"
-        : currentTheme === "theme2"
-        ? "#e4afcb"
-        : currentTheme === "theme3"
-        ? "#39db8c"
-        : currentTheme === "theme4"
-        ? "rgb(120, 25, 105)"
-        : "#b92b27";
+      note.style.backgroundColor =
+        currentTheme === "theme1"
+          ? "rgba(232,221,227,1)"
+          : currentTheme === "theme2"
+            ? "#e4afcb"
+            : currentTheme === "theme3"
+              ? "#39db8c"
+              : currentTheme === "theme4"
+                ? "rgb(120, 25, 105)"
+                : "#b92b27";
     }
   });
 }
+
+function loadTasks() {
+  const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  savedTasks.forEach((taskData) => {
+    const note = document.createElement("div");
+    note.classList.add("notes");
+
+    const noteWrapper = document.createElement("div");
+    noteWrapper.style.display = "flex";
+    noteWrapper.style.alignItems = "center";
+    noteWrapper.style.justifyContent = "space-between";
+    noteWrapper.style.width = "100%";
+
+    const taskText = document.createElement("span");
+    taskText.innerText = taskData.text;
+    taskText.contentEditable = true;
+
+    if (taskData.completed) {
+      taskText.classList.add("completed");
+      taskText.style.textDecoration = "line-through";
+    }
+
+    const dropdown = document.createElement("select");
+
+    taskTypes.forEach((taskType) => {
+      const option = document.createElement("option");
+      option.value = taskType.value;
+      option.innerText = taskType.label;
+
+      if (taskType.value === taskData.type) {
+        option.selected = true;
+        note.style.backgroundColor = taskType.color;
+      }
+
+      dropdown.appendChild(option);
+    });
+
+    const deleteIcon = document.createElement("i");
+    deleteIcon.className = "fa-solid fa-trash";
+    deleteIcon.style.cursor = "pointer";
+    deleteIcon.style.marginLeft = "10px";
+
+    deleteIcon.addEventListener("click", () => {
+      note.remove();
+      saveTasks();
+    });
+    const tickIcon = document.createElement("a");
+    tickIcon.innerHTML = "&#10003";
+
+    tickIcon.addEventListener("click", () => {
+      taskText.classList.toggle("completed");
+
+      taskText.style.textDecoration =
+        taskText.classList.contains("completed")
+          ? "line-through"
+          : "none";
+
+      saveTasks();
+    });
+
+    dropdown.addEventListener("change", () => {
+      const selectedType = taskTypes.find(
+        (type) => type.value === dropdown.value
+      );
+
+      if (selectedType) {
+        note.style.backgroundColor = selectedType.color;
+      }
+
+      saveTasks();
+    });
+
+    taskText.addEventListener("blur", saveTasks);
+
+    noteWrapper.appendChild(taskText);
+    noteWrapper.appendChild(dropdown);
+    noteWrapper.appendChild(deleteIcon);
+    noteWrapper.appendChild(tickIcon);
+
+    note.appendChild(noteWrapper);
+
+    notesContainer.appendChild(note);
+  });
+}
+
+loadTasks();
