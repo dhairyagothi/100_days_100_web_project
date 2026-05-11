@@ -1,94 +1,150 @@
-const gameContainer = document.getElementById('game-container');
-const colors = ['#2980b9', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c', '#34495e', '#1abc9c', '#e67e22'];
+const gameContainer = document.getElementById("game-container");
+const scoreBoard = document.getElementById("score-board");
+const restartBtn = document.getElementById("restart-btn");
+
+const colors = [
+  "#2980b9",
+  "#2ecc71",
+  "#9b59b6",
+  "#f1c40f",
+  "#e74c3c",
+  "#34495e",
+  "#1abc9c",
+  "#e67e22",
+];
+
 let cards = [];
-let firstCard, secondCard;
+let firstCard = null;
+let secondCard = null;
 let lockBoard = false;
 let matchesCount = 0;
 
 // Create cards dynamically
 function createCards() {
-    const cardsArray = [...colors, ...colors];
-    cardsArray.sort(() => 0.5 - Math.random()); // Shuffle cards
-    
-    cardsArray.forEach(color => {
-        const cardElement = document.createElement('div');
-        cardElement.classList.add('card');
-        
-        // HTML structure of each card
-        const innerHTML = `
-            <div class="card-inner">
-                <div class="card-front"></div>
-                <div class="card-back" style="background-color:${color}"></div>
-            </div>
-        `;
-        cardElement.innerHTML = innerHTML;
-        gameContainer.appendChild(cardElement);
-    });
-    
-    cards = document.querySelectorAll('.card');
+  const cardsArray = [...colors, ...colors];
+
+  // Shuffle cards
+  cardsArray.sort(() => 0.5 - Math.random());
+
+  cardsArray.forEach((color) => {
+    const cardElement = document.createElement("div");
+
+    cardElement.classList.add("card");
+
+    // Store card color as dataset attribute
+    cardElement.dataset.color = color;
+
+    // Card structure
+    cardElement.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front"></div>
+        <div class="card-back" style="background-color:${color}"></div>
+      </div>
+    `;
+
+    gameContainer.appendChild(cardElement);
+  });
+
+  cards = document.querySelectorAll(".card");
 }
 
-// Flip card function
+// Flip card
 function flipCard(event) {
-    if (lockBoard) return;
+  // Prevent clicking while board is locked
+  if (lockBoard) return;
 
-    const clickedCard = event.currentTarget;
-    clickedCard.classList.add('flipped');
+  const clickedCard = event.currentTarget;
 
-    if (!firstCard) {
-        firstCard = clickedCard;
-    } else if (!secondCard) {
-        secondCard = clickedCard;
+  // Prevent clicking same card twice
+  if (clickedCard === firstCard) return;
 
-        checkForMatch();
-    }
+  clickedCard.classList.add("flipped");
+
+  // First card selection
+  if (!firstCard) {
+    firstCard = clickedCard;
+    return;
+  }
+
+  // Second card selection
+  secondCard = clickedCard;
+
+  // Check if cards match
+  checkForMatch();
 }
 
-// Check for matching cards
+// Check matching logic
 function checkForMatch() {
-    lockBoard = true;
+  lockBoard = true;
 
-    if (firstCard.children[0].innerHTML === secondCard.children[0].innerHTML) {
-        disableCards();
-        updateScore();
-    } else {
-        unflipCards();
-    }
+  const isMatch = firstCard.dataset.color === secondCard.dataset.color;
+
+  if (isMatch) {
+    disableCards();
+    updateScore();
+  } else {
+    unflipCards();
+  }
 }
 
 // Disable matched cards
 function disableCards() {
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
-    resetBoard();
+  resetBoard();
 }
 
-// Unflip cards if they don't match
+// Unflip unmatched cards
 function unflipCards() {
-    setTimeout(() => {
-        firstCard.classList.remove('flipped');
-        secondCard.classList.remove('flipped');
-        resetBoard();
-    }, 1000);
+  setTimeout(() => {
+    firstCard.classList.remove("flipped");
+    secondCard.classList.remove("flipped");
+
+    resetBoard();
+  }, 1000);
 }
 
-// Update the score based on matching pairs
+// Update score
 function updateScore() {
-    matchesCount++;
-    document.getElementById('score-board').innerText = `Matches: ${matchesCount}`;
+  matchesCount++;
+
+  scoreBoard.innerText = `Matches: ${matchesCount}`;
 }
 
-// Reset variables and unlock board
+// Reset board state
 function resetBoard() {
-    [firstCard, secondCard] = [null, null];
-    lockBoard = false;
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
 }
 
-// Initialize the game
+// Restart game
+function restartGame() {
+  // Remove all cards
+  gameContainer.innerHTML = "";
+
+  // Reset game state
+  matchesCount = 0;
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+
+  // Reset score UI
+  scoreBoard.innerText = "Matches: 0";
+
+  // Generate fresh shuffled cards
+  createCards();
+}
+
+// Initialize game
 createCards();
-gameContainer.addEventListener('click', function(event) {
-    const clickedCard = event.target.closest('.card');
-    if (clickedCard && !clickedCard.classList.contains('flipped')) {
-        flipCard({currentTarget: clickedCard});
-    }
+
+// Restart button listener
+restartBtn.addEventListener("click", restartGame);
+
+// Card click handling using event delegation
+gameContainer.addEventListener("click", function (event) {
+  const clickedCard = event.target.closest(".card");
+
+  if (clickedCard && !clickedCard.classList.contains("flipped")) {
+    flipCard({ currentTarget: clickedCard });
+  }
 });
