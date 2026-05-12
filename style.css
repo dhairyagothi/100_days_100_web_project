@@ -42,6 +42,38 @@ body {
     line-height: 1.6;
 }
 
+/* Custom Web Scrollbar */
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border: 1px solid var(--glass-border);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-glow));
+    border-radius: 10px;
+    border: 2px solid var(--bg-primary);
+    transition: var(--transition);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--accent-color), #00ff88);
+    transform: scale(1.1);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--bg-primary);
+}
+
+/* Firefox scrollbar */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--bg-primary);
+}
+
 #bgCanvas {
     position: fixed;
     top: 0;
@@ -336,6 +368,41 @@ body {
     border: 1px solid var(--glass-border);
     box-shadow: 0 50px 120px rgba(0, 0, 0, 0.4);
     overflow-x: auto;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* Custom Scrollbar */
+.table-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: var(--glass-bg);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 10px;
+    border: 2px solid var(--glass-bg);
+    transition: var(--transition);
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-glow);
+    transform: scale(1.1);
+}
+
+.table-container::-webkit-scrollbar-corner {
+    background: var(--glass-bg);
+}
+
+/* Firefox scrollbar */
+.table-container {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--glass-bg);
 }
 
 table {
@@ -359,11 +426,15 @@ thead th {
 tbody tr {
     background: rgba(255, 255, 255, 0.015);
     transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 136, 0.1);
+    border-radius: 20px;
+    position: relative;
 }
 
 tbody tr:hover {
     background: rgba(255, 255, 255, 0.04);
     transform: scale(1.015) translateX(15px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4), 0 0 30px rgba(0, 255, 136, 0.3), 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 tbody td {
@@ -407,7 +478,7 @@ tbody td a:hover {
     background: var(--accent-color);
     color: #000;
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px var(--accent-glow);
+    box-shadow: 0 10px 20px var(--accent-glow), 0 0 25px rgba(0, 255, 136, 0.6), 0 5px 15px rgba(0, 255, 136, 0.4);
 }
 
 /* Footer */
