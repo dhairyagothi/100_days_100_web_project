@@ -62,7 +62,9 @@ function Add() {
   noteWrapper.style.width = "100%";
 
   const taskText = document.createElement("span");
-  taskText.innerText = "Click here to add a task...";
+  const taskInput = document.getElementById("taskInput");
+  taskText.innerText = taskInput.value || "Click here to add a task...";
+  taskInput.value = "";
   taskText.contentEditable = true;
   taskText.style.flex = "1";
   taskText.style.marginRight = "10px";
