@@ -14,6 +14,7 @@ const taskTypes = [
   { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
 ];
 
+//function to add todo using the input 
 function createTask() {
   const input=document.getElementById('taskInput')
   const notes=document.getElementById('notes-container')

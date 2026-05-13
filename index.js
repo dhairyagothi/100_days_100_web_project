@@ -334,6 +334,7 @@ function fillTable() {
 
     console.log(data.length);
 
+    //conditonal changes when the data is empty for projects to show 
     if (data.length === 0) {
         const noProjects = document.createElement("div");
         console.dir(noProjects);
