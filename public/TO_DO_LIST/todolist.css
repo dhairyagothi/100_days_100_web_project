@@ -181,6 +181,13 @@ body {
   color: rgb(245, 245, 244);
 }
 
+
+/* todo css */
+#taskInput{
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
 #notes-container {
   margin-top: 50px;
   display: flex;
@@ -192,7 +199,24 @@ body {
   padding: 0; 
   overflow: hidden; 
   left: 20px;
+  align-items: start;
+  justify-content: center;
 }
+
+#li-item{
+  border: 3px solid teal;
+  width: 20rem;
+  height: 2.4rem;
+  font-size: 1.5rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* color: white; */
+  margin-top: 5px;
+  margin-right: 27px;
+}
+
 
 .notes {
 width: 200px;

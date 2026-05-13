@@ -124,7 +124,7 @@ if (currentTheme === 'light') {
 
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('light-mode');
-    
+
     if (document.body.classList.contains('light-mode')) {
         themeIcon.classList.remove('fa-moon');
         themeIcon.classList.add('fa-sun');
@@ -143,13 +143,13 @@ function updateNavbar() {
     const username = window.username || null;
     const isRoot = !window.location.pathname.includes('/contributors/');
     const basePath = isRoot ? '' : '../';
-    
+
     const themeButton = `
         <button id="themeToggle" class="button" title="Toggle Theme">
             <i class="fas ${document.body.classList.contains('light-mode') ? 'fa-sun' : 'fa-moon'}"></i>
         </button>
     `;
-    
+
     if (username) {
         buttons.innerHTML = `
         <span class="welcome-text">Welcome, ${username}</span>
@@ -169,14 +169,14 @@ function updateNavbar() {
         <a class="button login-btn" href="${basePath}public/Login.html">Log in</a>
         ${themeButton}`;
     }
-    
+
     // Re-attach theme toggle event listener
     const newThemeToggle = document.getElementById('themeToggle');
     const newThemeIcon = newThemeToggle.querySelector('i');
-    
+
     newThemeToggle.addEventListener('click', () => {
         document.body.classList.toggle('light-mode');
-        
+
         if (document.body.classList.contains('light-mode')) {
             newThemeIcon.classList.remove('fa-moon');
             newThemeIcon.classList.add('fa-sun');
@@ -191,7 +191,7 @@ function updateNavbar() {
 
 // Populate the table with project data
 function fillTable() {
-   const data = [
+    const data = [
         ["Day 1", "To-Do List", "./public/TO_DO_LIST/todolist.html"],
         ["Day 2", "Digital Clock", "./public/digital_clock/digitalclock.html"],
         ["Day 3", "Indian Flag", "./public/indianflag/flag.html"],
@@ -305,7 +305,7 @@ function fillTable() {
         ["Day 111", "Whack-a-Mole Game", "./public/Whack-a-Mole Game/index.html"],
         ["Day 112", "Nykaa Clone Website", "./public/Nykaa-clone/index.html"],
         ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
-     ["Day 114","EchoNotes","./public/EchoNotes/index.html"]
+        ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"]
     ];
 
     const tbody = document.getElementById('tableBody');
@@ -331,7 +331,29 @@ function fillTable() {
 
         tbody.appendChild(row);
     });
+
+    console.log(data.length);
+
+    //conditonal changes when the data is empty for projects to show 
+    if (data.length === 0) {
+        const noProjects = document.createElement("div");
+        console.dir(noProjects);
+
+        noProjects.id = "no-projects";
+        noProjects.innerText = "No Projects Found";
+        noProjects.style.cssText = `
+        font-size: 30px;
+        text-align: center;
+        margin-top: 20px;
+        `;
+
+        const projectsSection = document.querySelector(".projects-section");
+
+        projectsSection.appendChild(noProjects);
+
+    }
 }
+
 
 // Filter Projects
 function filterProjects() {
