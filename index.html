@@ -3,119 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100 Days 100 Web Projects</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>100 Days 100 Web Projects — A Curated Open Source Collection</title>
+    <meta name="description" content="A beautifully curated collection of 114+ web projects built with HTML, CSS, and JavaScript. From interactive games to full-stack apps.">
+    <link rel="icon" href="./public/fav.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="bgCanvas"></canvas>
+    <canvas id="three-canvas"></canvas>
+    <div class="noise-overlay"></div>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
 
-    <nav class="navbar">
-        <div class="navbar-brand">
-            <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
-            <span>100 DAYS 100 WEB PROJECTS</span>
-        </div>
-        <div class="buttons">
-            <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn">
-                <i class="fas fa-rocket"></i>
-                <span>Generate README</span>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+        <span class="loader-text" id="loaderText">Loading</span>
+    </div>
+
+    <!-- Navbar -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="#" class="nav-brand">
+                <div class="brand-mark">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <rect width="28" height="28" rx="7" fill="url(#g1)"/>
+                        <path d="M8 14L12 10L16 14L12 18Z" fill="white" opacity="0.9"/>
+                        <path d="M14 10L18 14L14 18" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+                        <defs><linearGradient id="g1" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <span class="brand-name"><span class="brand-accent">100 DAYS 100</span> WEB PROJECTS</span>
             </a>
-            <button id="themeToggle" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-            </button>
-        </div>
-    </nav>
-
-    <section class="hero-section">
-        <h1 class="hero-title">100 Days 100 Web Projects</h1>
-        <p class="hero-subtitle">Exploring the art of the possible through 100+ high-quality web experiments</p>
-        
-        <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-value" id="starCount">...</div>
-                <div class="stat-label">Stars</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="forkCount">...</div>
-                <div class="stat-label">Forks</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="issueCount">...</div>
-                <div class="stat-label">Open Issues</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="prCount">...</div>
-                <div class="stat-label">Pull Requests</div>
-            </div>
-        </div>
-
-        <div class="search-container">
-            <div class="search-wrapper">
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    id="searchInput" 
-                    placeholder="Search 112+ projects..."
-                >
-                <button class="search-btn" onclick="filterProjects()">
-                    <i class="fas fa-search"></i>
+            <div class="nav-end">
+                <a href="./contributors/contributor.html" class="nav-btn ghost">Contributors</a>
+                <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="nav-btn ghost">GitHub</a>
+                <a href="#" class="nav-btn primary">Log in</a>
+                <button id="themeToggle" class="nav-btn icon" aria-label="Toggle theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="nav-btn icon mobile-toggle" id="mobileToggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
-        </div>
-    </section>
+        </nav>
+    </header>
 
-    <section class="projects-section">
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Project Name</th>
-                        <th>Demo Link</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        </div>
-        <div id="no-projects">No Projects Found</div>
-    </section>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div>
-                <h3>About</h3>
-                <p>This repository contains 112 web projects from basic to intermediate using HTML, CSS, and JS.</p>
-                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-inner">
+            <div class="hero-eyebrow" id="heroEyebrow">
+                <span class="eyebrow-dot"></span>
+                <span>Open Source · 114+ Projects · Community Driven</span>
             </div>
-            <div>
-                <h3>Connect With Us</h3>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
+            <h1 class="hero-h1" id="heroH1">
+                Build. Learn.<br>
+                <span class="hero-gradient">Ship Every Day.</span>
+            </h1>
+            <p class="hero-desc" id="heroDesc">
+                A curated collection of <strong>114+</strong> web projects — from pixel-perfect UIs 
+                to interactive games — built with vanilla HTML, CSS & JavaScript.
+            </p>
+            <div class="hero-actions" id="heroActions">
+                <a href="#projects" class="cta primary">
+                    <span>Browse Projects</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="https://www.github-readme.tech" target="_blank" class="cta secondary">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span>README Generator</span>
+                </a>
+            </div>
+            <div class="hero-proof" id="heroProof">
+                <div class="proof-avatars">
+                    <div class="avatar" style="background: #6366f1;">D</div>
+                    <div class="avatar" style="background: #8b5cf6;">V</div>
+                    <div class="avatar" style="background: #a78bfa;">S</div>
+                    <div class="avatar" style="background: #c4b5fd;">+</div>
+                </div>
+                <span>Loved by <strong>250+</strong> contributors worldwide</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats" id="stats">
+        <div class="container">
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-num" id="starCount">—</span>
+                    <span class="stat-lbl">Stars</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="forkCount">—</span>
+                    <span class="stat-lbl">Forks</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="issueCount">—</span>
+                    <span class="stat-lbl">Issues</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="prCount">—</span>
+                    <span class="stat-lbl">PRs</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num">114+</span>
+                    <span class="stat-lbl">Projects</span>
                 </div>
             </div>
-            <div>
-                <h3>Featured Project</h3>
-                <p>Generate free, stunning GitHub README profiles in minutes.</p>
-                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top: 1rem;">
-                    <i class="fas fa-magic"></i> Try README Generator
-                </a>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <div class="projects-header">
+                <div class="projects-header-left">
+                    <h2 class="section-h2">Project Gallery</h2>
+                    <p class="section-sub">Every project built, documented, and ready to explore</p>
+                </div>
+                <div class="projects-header-right">
+                    <div class="search-wrap" id="searchWrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search projects..." autocomplete="off">
+                        <kbd>⌘K</kbd>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-bar" id="filterBar">
+                <button class="pill active" data-filter="all">All <span class="pill-count" id="countAll">114</span></button>
+                <button class="pill" data-filter="game"><i class="fas fa-gamepad"></i> Games</button>
+                <button class="pill" data-filter="clone"><i class="fas fa-clone"></i> Clones</button>
+                <button class="pill" data-filter="tool"><i class="fas fa-wrench"></i> Tools</button>
+                <button class="pill" data-filter="app"><i class="fas fa-cube"></i> Apps</button>
+            </div>
+            <div class="project-grid" id="projectGrid"></div>
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-telescope"></i>
+                <h3>No results found</h3>
+                <p>Try a different search term or filter</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-main">
+                    <a href="#" class="nav-brand">
+                        <div class="brand-mark">
+                            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+                                <rect width="28" height="28" rx="7" fill="url(#g2)"/>
+                                <path d="M8 14L12 10L16 14L12 18Z" fill="white" opacity="0.9"/>
+                                <path d="M14 10L18 14L14 18" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+                                <defs><linearGradient id="g2" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                            </svg>
+                        </div>
+                        <span class="brand-name"><span class="brand-accent">100 DAYS 100</span> WEB PROJECTS</span>
+                    </a>
+                    <p class="footer-desc">A repository of 114+ web experiments from basic to advanced, built by an amazing open-source community.</p>
+                    <div class="social-row">
+                        <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <a href="#hero">Home</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#stats">Statistics</a>
+                    <a href="./contributors/contributor.html">Contributors</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">Source Code</a>
+                    <a href="https://www.github-readme.tech" target="_blank">README Generator</a>
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project/issues" target="_blank">Report Bug</a>
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project/blob/Main/CONTRIBUTING.md" target="_blank">Contributing Guide</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2024 Dhairya Gothi & Contributors. MIT License.</span>
+                <span>Built with passion for the open-source community.</span>
             </div>
         </div>
     </footer>
 
-    <button id="scrollBtn">
-        <i class="fas fa-arrow-up"></i>
+    <button id="scrollTop" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
     </button>
-    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="index.js"></script>
 </body>
 </html>

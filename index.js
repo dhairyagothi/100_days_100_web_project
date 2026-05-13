@@ -1,397 +1,422 @@
+/* ============================================
+   100 Days 100 Projects — Premium JS
+   ============================================ */
+
 if (typeof REPO_OWNER === 'undefined') {
     window.REPO_OWNER = "dhairyagothi";
     window.REPO_NAME = "100_days_100_web_project";
 }
 
-async function fetchRepoStats() {
+/* ---------- DATA ---------- */
+const DATA = [
+    ["Day 1","To-Do List","./public/TO_DO_LIST/todolist.html"],
+    ["Day 2","Digital Clock","./public/digital_clock/digitalclock.html"],
+    ["Day 3","Indian Flag","./public/indianflag/flag.html"],
+    ["Day 4","Dropdown Nav Bar","./public/dropdown_navbar/index.html"],
+    ["Day 5","Animated Cursor","./public/Animated-cursor/animated-cursor.html"],
+    ["Day 6","Auto Background Image Slider","./public/Background-Image-sider/slider.html"],
+    ["Day 7","Typewriter","./public/typewriter/typewriter.html"],
+    ["Day 8","Parallel-X Website","./public/Parallel-x%20website/parallal.html"],
+    ["Day 9","Captcha Generator","./public/captcha/captcha.html"],
+    ["Day 10","QR Code Generator","./public/qr%20generator/qr.html"],
+    ["Day 11","Serve Website Using Express","./public/index.html"],
+    ["Day 12","Nodemailer Contact Form","./public/gmail_nodemailer/public/mail.html"],
+    ["Day 13","Login Form Using MERN","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern"],
+    ["Day 14","File Uploader","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader"],
+    ["Day 15","Progress Bar","./public/progress_bar/progress_bar.html"],
+    ["Day 16","Scroll Bar CSS","./public/index.html"],
+    ["Day 17","Slider Using Swiper API","./public/slider%20box/index.html"],
+    ["Day 18","Carousel Solar System","./public/carousal/index.html"],
+    ["Day 19","Planto","./public/plantwebsite/plant.html"],
+    ["Day 20","EveSparks","https://evesparks.onrender.com/"],
+    ["Day 21","Video BG Slider Using React","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website"],
+    ["Day 22","Page Loader","./public/pageloader/pageloader.html"],
+    ["Day 23","Jarvis Virtual Assistant","./public/Jarvis-AI-main/index.html"],
+    ["Day 24","Chat Bot","./public/AI%20ChatBot/chatbot.html"],
+    ["Day 25","Tic-Tac-Toe","./public/TicTacToe/index.html"],
+    ["Day 26","Maze Game","./public/Maze-Game-main/index.html"],
+    ["Day 27","Memory Game","./public/MemoryGame/index.html"],
+    ["Day 28","Wordle","./public/WORDLE/index.html"],
+    ["Day 29","Snake Game","./public/snake_game/index.html"],
+    ["Day 30","Flappy Bird Game","./public/Flappy-bird-main/index.html"],
+    ["Day 31","Password Manager","./public/password%20manager/index.html"],
+    ["Day 32","Missionaries & Cannibals","./public/Missionaries&Cannibals/index.html"],
+    ["Day 33","Weather Forecasting","./public/Weather%20Forcasting/index.html"],
+    ["Day 34","Email Validator","./public/email%20validator/index.html"],
+    ["Day 35","JavaScript Calculator","./public/Vanilla-JavaScript-Calculator-master/index.html"],
+    ["Day 36","Medical App","./public/Medical_App/index.html"],
+    ["Day 37","2048 Game","./public/2048_game/index.html"],
+    ["Day 38","Github Profile Finder","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder"],
+    ["Day 39","Notes App","./public/notes-app/index.html"],
+    ["Day 40","Analog Clock","./public/AnalogClock/index.html"],
+    ["Day 41","Scroll Dark Game","./public/Scroll%20Game%20Dark%20Run/index.html"],
+    ["Day 42","Amazon Clone","./public/Amazon_Clone/index.html"],
+    ["Day 43","Password Generator","./public/Password_Generator/index.html"],
+    ["Day 44","BMI Calculator","./public/BMI_Calculator/index.html"],
+    ["Day 45","Black Jack","./public/BlackJack/blackJ.html"],
+    ["Day 46","Palindrome Generator","./public/Palindrome_Generator/index.html"],
+    ["Day 47","Ping Pong Game","./public/ping/index.html"],
+    ["Day 48","Text To Voice Converter","./public/TextToVoiceConverter/index.html"],
+    ["Day 49","Url Shortener","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/url_shortener"],
+    ["Day 50","Recipe Genie","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe-Genie"],
+    ["Day 51","Netflix Clone","./public/Netflix_Cloning/Index.html"],
+    ["Day 52","ClimaCode","./public/ClimaCode%202.0/index.html"],
+    ["Day 53","E-Commerce Cart","./public/e-commerce_cart/index.html"],
+    ["Day 54","Budget Tracker","./public/Budget%20Tracker/index.html"],
+    ["Day 55","Cricket Game","./public/cricket/index.html"],
+    ["Day 56","Pastebin (Svelte)","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/pastebin"],
+    ["Day 57","Glowing Social Icons","./public/Social%20Media%20Glowing/index.html"],
+    ["Day 58","Music App","./public/Music%20App/index.html"],
+    ["Day 59","Blog Page","./public/Blog%20Page/index.html"],
+    ["Day 60","Marketing Website","./public/marketing_website/index.html"],
+    ["Day 61","Hologram Button","./public/Holo%20Button/index.html"],
+    ["Day 62","Solar System Explorer","./public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html"],
+    ["Day 63","Image to Text App","./public/Image-To-Text-App/index.html"],
+    ["Day 64","Zomato Clone","./public/zomato-clone/zomato.html"],
+    ["Day 65","The Cube","./public/The%20Cube/index.html"],
+    ["Day 66","Flask Auth App","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app"],
+    ["Day 67","Blog Website","./public/blog/main.html"],
+    ["Day 68","3D Rotating Card","./public/3d%20cards/index.html"],
+    ["Day 69","Spotify Clone","./public/spotify-clone%20-project/index.html"],
+    ["Day 70","Insect Catch Game","./public/Insect-Catch-Game/index.html"],
+    ["Day 71","Quotely Laughs","./public/Quotely-Laughs/index.html"],
+    ["Day 72","Contact Book","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book"],
+    ["Day 73","Candy Crush Game","./public/Candy_Crush_Game/index.html"],
+    ["Day 74","Stock Profit Calculator","./public/Stock-Profit-Calculator/index.html"],
+    ["Day 75","Code Space Game","./public/code-jump-space-game/index.html"],
+    ["Day 76","Animated Searchbar","./public/Animated%20Searchbar/index.html"],
+    ["Day 77","Rock Paper Scissor","./public/Stone-Paper-Scissor/index.html"],
+    ["Day 78","NPM Package Search","./public/NPM%20Package%20Search/index.html"],
+    ["Day 79","LinkedIn Clone","./public/Linkedin-Clone/index.html"],
+    ["Day 80","Resume Studio","./public/ResumeStudio/index.html"],
+    ["Day 81","Simon Says Game","./public/Simon_Says_Game/index.html"],
+    ["Day 82","Love Calculator","./public/Love-Calculator/index.html"],
+    ["Day 83","Exchange Currency","./public/Exchange_Currency/index.html"],
+    ["Day 84","Lights Out Puzzle","./public/Lights_Out_Puzzle/index.html"],
+    ["Day 85","Image Search Engine","./public/Image Search Engine/index.html"],
+    ["Day 86","3D Profile Card","./public/3d profile Card/index.html"],
+    ["Day 87","Breakout Game","./public/Breakout game/index.html"],
+    ["Day 88","Job Dashboard","./public/Job dashboard/jobs.html"],
+    ["Day 89","N-Queen Solver","./public/N_Queen/index.html"],
+    ["Day 90","Quiz App Timer","./public/QuizeApp Timer/index1.html"],
+    ["Day 91","Voting App Backend","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend"],
+    ["Day 92","Slide Puzzle Game","./public/Slide puzzle Game/index.html"],
+    ["Day 93","TextUtils","https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils"],
+    ["Day 94","Hangman Game","./public/HangmanGame/index.html"],
+    ["Day 95","TodoList (React TS)","./public/TodoList-React-TS-Tailwind/index.html"],
+    ["Day 96","HCL Color Generator","./public/HCL Color Generator/index.html"],
+    ["Day 97","Time Capsule","./public/Time-Capsule/index.html"],
+    ["Day 98","Virtual Piano","./public/Virtual Piano/index.html"],
+    ["Day 99","NASA APOD Extension","./public/NASA-APOD/popup.html"],
+    ["Day 100","Text Saver Extension","./public/Text_Saver_Ext/popup.html"],
+    ["Day 101","Finance Tracker","./public/FinanceTracker/index.html"],
+    ["Day 102","Travel Booking Website","./public/Travel_booking_website/index.html"],
+    ["Day 103","Drumkit Game","./public/Drumkit_Game/index.html"],
+    ["Day 104","Debug Website","./public/Debug-Website/index.html"],
+    ["Day 105","Periodic Table","./public/Periodic Table/index.html"],
+    ["Day 106","Plants Website","./public/Plants Website/index.html"],
+    ["Day 107","DocNow","./public/DocNow/index.html"],
+    ["Day 108","Expense Tracker","./public/expense_Tracker/index.html"],
+    ["Day 109","Mood Tracker","./public/Mood Tracker/index.html"],
+    ["Day 110","CryptoShow","./public/CRYPTOSHOW/index.html"],
+    ["Day 111","Whack-a-Mole","./public/Whack-a-Mole Game/index.html"],
+    ["Day 112","Nykaa Clone","./public/Nykaa-clone/index.html"],
+    ["Day 113","CPU Scheduler","./public/CpuScheduler/index.html"],
+    ["Day 114","EchoNotes","./public/EchoNotes/index.html"]
+];
+
+const CAT_MAP = { game: 'Game', clone: 'Clone', tool: 'Tool', app: 'App' };
+
+function categorize(name) {
+    const n = name.toLowerCase();
+    if (/game|tic|snake|pong|puzzle|crush|breakout|whack|hangman|simon|maze|flappy|wordle|cricket|2048|blackjack|scroll dark|drumkit|mole/i.test(n)) return 'game';
+    if (/clone|amazon|netflix|spotify|zomato|nykaa|linkedin/i.test(n)) return 'clone';
+    if (/calculator|generator|converter|validator|tracker|search|scheduler|manager|shortener|finder/i.test(n)) return 'tool';
+    return 'app';
+}
+
+/* ---------- THREE.JS BACKGROUND ---------- */
+function initScene() {
+    const canvas = document.getElementById('three-canvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 100);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+    // Particles
+    const geo = new THREE.BufferGeometry();
+    const N = 600;
+    const pos = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+        pos[i*3]   = (Math.random() - 0.5) * 30;
+        pos[i*3+1] = (Math.random() - 0.5) * 30;
+        pos[i*3+2] = (Math.random() - 0.5) * 20 - 5;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ color: 0x6366f1, size: 0.02, transparent: true, opacity: 0.6 });
+    const pts = new THREE.Points(geo, mat);
+    scene.add(pts);
+
+    // Subtle grid plane
+    const gridGeo = new THREE.PlaneGeometry(40, 40, 40, 40);
+    const gridMat = new THREE.MeshBasicMaterial({ color: 0x6366f1, wireframe: true, transparent: true, opacity: 0.015 });
+    const grid = new THREE.Mesh(gridGeo, gridMat);
+    grid.rotation.x = -Math.PI / 2.5;
+    grid.position.y = -4;
+    grid.position.z = -5;
+    scene.add(grid);
+
+    camera.position.z = 5;
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+        mx = (e.clientX / innerWidth - 0.5) * 2;
+        my = (e.clientY / innerHeight - 0.5) * 2;
+    });
+
+    (function loop() {
+        requestAnimationFrame(loop);
+        pts.rotation.y += 0.0003;
+        pts.rotation.x += 0.0001;
+        grid.rotation.z += 0.0002;
+        camera.position.x += (mx * 0.3 - camera.position.x) * 0.015;
+        camera.position.y += (-my * 0.3 - camera.position.y) * 0.015;
+        camera.lookAt(0, 0, 0);
+        renderer.render(scene, camera);
+    })();
+
+    addEventListener('resize', () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+    });
+}
+
+/* ---------- LOADER ---------- */
+function initLoader() {
+    const fill = document.getElementById('loaderFill');
+    const text = document.getElementById('loaderText');
+    const loader = document.getElementById('loader');
+    let p = 0;
+    const iv = setInterval(() => {
+        p += Math.random() * 20 + 10;
+        if (p >= 100) {
+            p = 100; clearInterval(iv);
+            setTimeout(() => {
+                loader.classList.add('done');
+                revealHero();
+                document.getElementById('header').classList.add('visible');
+            }, 300);
+        }
+        fill.style.width = p + '%';
+        text.textContent = p >= 100 ? 'Ready' : 'Loading';
+    }, 100);
+}
+
+/* ---------- GSAP HERO REVEAL ---------- */
+function revealHero() {
+    if (typeof gsap === 'undefined') return;
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    tl.to('#heroEyebrow', { opacity: 1, y: 0, duration: 0.6 })
+      .to('#heroH1', { opacity: 1, y: 0, duration: 0.8 }, '-=0.3')
+      .to('#heroDesc', { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
+      .to('#heroActions', { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
+      .to('#heroProof', { opacity: 1, y: 0, duration: 0.5 }, '-=0.2');
+}
+
+function initScrollAnims() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from('.stats-row', {
+        scrollTrigger: { trigger: '.stats', start: 'top 85%' },
+        opacity: 0, y: 30, duration: 0.7, ease: 'power3.out'
+    });
+
+    gsap.from('.projects-header', {
+        scrollTrigger: { trigger: '.projects', start: 'top 80%' },
+        opacity: 0, y: 20, duration: 0.6, ease: 'power3.out'
+    });
+
+    gsap.utils.toArray('.p-card').forEach((c, i) => {
+        gsap.from(c, {
+            scrollTrigger: { trigger: c, start: 'top 92%' },
+            opacity: 0, y: 24,
+            duration: 0.45, delay: (i % 3) * 0.06,
+            ease: 'power2.out'
+        });
+    });
+}
+
+/* ---------- GITHUB STATS ---------- */
+async function fetchStats() {
     try {
-        const [repoRes, prRes] = await Promise.all([
-            fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-            fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+        const [rr, pr] = await Promise.all([
+            fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`),
+            fetch(`https://api.github.com/search/issues?q=repo:${REPO_OWNER}/${REPO_NAME}+type:pr+state:open`)
         ]);
-
-        if (!repoRes.ok || !prRes.ok) throw new Error("Stats fetch failed");
-
-        const repoData = await repoRes.json();
-        const prData = await prRes.json();
-
-        const starEl = document.getElementById('starCount');
-        const forkEl = document.getElementById('forkCount');
-        const issueEl = document.getElementById('issueCount');
-        const prEl = document.getElementById('prCount');
-
-        if (starEl) starEl.textContent = repoData.stargazers_count.toLocaleString();
-        if (forkEl) forkEl.textContent = repoData.forks_count.toLocaleString();
-        if (issueEl) issueEl.textContent = (repoData.open_issues_count - prData.total_count).toLocaleString();
-        if (prEl) prEl.textContent = prData.total_count.toLocaleString();
-    } catch (error) {
-        console.error("Error fetching repo stats:", error);
-    }
+        if (!rr.ok || !pr.ok) throw new Error('fail');
+        const rd = await rr.json(), pd = await pr.json();
+        count('starCount', rd.stargazers_count);
+        count('forkCount', rd.forks_count);
+        count('issueCount', rd.open_issues_count - pd.total_count);
+        count('prCount', pd.total_count);
+    } catch(e) { console.error('Stats:', e); }
 }
 
-// Canvas Background Animation
-function initCanvas() {
-    const canvas = document.getElementById('bgCanvas');
-    if (!canvas) return;
+function count(id, target) {
+    const el = document.getElementById(id);
+    if (!el || target <= 0) { if(el) el.textContent = '0'; return; }
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(target / 50));
+    const iv = setInterval(() => {
+        cur += step;
+        if (cur >= target) { cur = target; clearInterval(iv); }
+        el.textContent = cur.toLocaleString();
+    }, 30);
+}
 
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+/* ---------- BUILD CARDS ---------- */
+function buildCards() {
+    const grid = document.getElementById('projectGrid');
+    if (!grid) return;
 
-    const particles = [];
-    const particleCount = 100;
+    DATA.forEach(([day, name, link]) => {
+        const cat = categorize(name);
+        const card = document.createElement('div');
+        card.className = 'p-card';
+        card.dataset.cat = cat;
+        card.dataset.name = name.toLowerCase();
+        card.innerHTML = `
+            <div class="p-card-top">
+                <span class="p-day">${day}</span>
+                <span class="p-cat">${CAT_MAP[cat]}</span>
+            </div>
+            <div class="p-name">${name}</div>
+            <div class="p-actions">
+                <a href="${link.trim()}" target="_blank" class="p-link">
+                    View Demo <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>`;
+        grid.appendChild(card);
+    });
 
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.size = Math.random() * 2 + 1;
-        }
+    updateCount(DATA.length);
+}
 
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-        }
+/* ---------- SEARCH & FILTER ---------- */
+function filterAll() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const f = document.querySelector('.pill.active')?.dataset.filter || 'all';
+    let vis = 0;
+    document.querySelectorAll('.p-card').forEach(c => {
+        const show = c.dataset.name.includes(q) && (f === 'all' || c.dataset.cat === f);
+        c.style.display = show ? '' : 'none';
+        if (show) vis++;
+    });
+    updateCount(vis);
+    document.getElementById('emptyState').style.display = vis ? 'none' : 'block';
+}
 
-        draw() {
-            const isDark = !document.body.classList.contains('light-mode');
-            const alpha = isDark ? Math.random() * 0.5 + 0.2 : Math.random() * 0.3 + 0.1;
-            ctx.fillStyle = `rgba(26, 188, 156, ${alpha})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
+function updateCount(n) {
+    const el = document.getElementById('countAll');
+    if (el) el.textContent = n;
+}
+
+/* ---------- THEME ---------- */
+function initTheme() {
+    const btn = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+    if (!btn) return;
+    const saved = localStorage.getItem('theme');
+    // Default to dark mode
+    if (saved === 'light') {
+        document.body.classList.add('light-mode');
+        icon.classList.replace('fa-moon', 'fa-sun');
+    } else {
+        document.body.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
     }
+    btn.addEventListener('click', () => {
+        const isLight = document.body.classList.toggle('light-mode');
+        icon.classList.replace(isLight ? 'fa-moon' : 'fa-sun', isLight ? 'fa-sun' : 'fa-moon');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+}
 
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-    }
-
-    function animate() {
-        const isDark = !document.body.classList.contains('light-mode');
-        ctx.fillStyle = isDark ? 'rgba(10, 10, 10, 0.1)' : 'rgba(245, 245, 245, 0.1)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
-
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < 100) {
-                    const alpha = isDark ? 0.2 * (1 - dist / 100) : 0.1 * (1 - dist / 100);
-                    ctx.strokeStyle = `rgba(26, 188, 156, ${alpha})`;
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
+/* ---------- HEADER ---------- */
+function initHeader() {
+    const header = document.getElementById('header');
+    const links = document.querySelectorAll('.nav-item[data-sec]');
+    addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', scrollY > 20);
+        ['hero','stats','projects','footer'].forEach(id => {
+            const s = document.getElementById(id);
+            if (!s) return;
+            const r = s.getBoundingClientRect();
+            if (r.top <= 150 && r.bottom > 150) {
+                links.forEach(l => l.classList.toggle('active', l.dataset.sec === id));
             }
-        }
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-}
-
-// Theme Toggle Functionality
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = themeToggle.querySelector('i');
-
-// Check for saved theme preference or default to dark mode
-const currentTheme = window.theme || 'dark';
-if (currentTheme === 'light') {
-    document.body.classList.add('light-mode');
-    themeIcon.classList.remove('fa-moon');
-    themeIcon.classList.add('fa-sun');
-}
-
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('light-mode');
-    
-    if (document.body.classList.contains('light-mode')) {
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-        window.theme = 'light';
-    } else {
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-        window.theme = 'dark';
-    }
-});
-
-// Update Navbar for Login Status
-const buttons = document.getElementsByClassName('buttons')[0];
-
-function updateNavbar() {
-    const username = window.username || null;
-    const isRoot = !window.location.pathname.includes('/contributors/');
-    const basePath = isRoot ? '' : '../';
-    
-    const themeButton = `
-        <button id="themeToggle" class="button" title="Toggle Theme">
-            <i class="fas ${document.body.classList.contains('light-mode') ? 'fa-sun' : 'fa-moon'}"></i>
-        </button>
-    `;
-    
-    if (username) {
-        buttons.innerHTML = `
-        <span class="welcome-text">Welcome, ${username}</span>
-        <button class="button logout-btn" id='logout'>Logout</button>
-        <a class="button" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub</a>
-        <a class="button" href="${basePath}contributors/contributor.html">Contributors</a>
-        ${themeButton}`;
-
-        document.getElementById('logout').addEventListener('click', () => {
-            window.username = null;
-            updateNavbar();
         });
-    } else {
-        buttons.innerHTML = `
-        <a class="button" href="${basePath}contributors/contributor.html">Contributors</a>
-        <a class="button" href="https://github.com/dhairyagothi" target="_blank">GitHub</a>
-        <a class="button login-btn" href="${basePath}public/Login.html">Log in</a>
-        ${themeButton}`;
-    }
-    
-    // Re-attach theme toggle event listener
-    const newThemeToggle = document.getElementById('themeToggle');
-    const newThemeIcon = newThemeToggle.querySelector('i');
-    
-    newThemeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        
-        if (document.body.classList.contains('light-mode')) {
-            newThemeIcon.classList.remove('fa-moon');
-            newThemeIcon.classList.add('fa-sun');
-            window.theme = 'light';
-        } else {
-            newThemeIcon.classList.remove('fa-sun');
-            newThemeIcon.classList.add('fa-moon');
-            window.theme = 'dark';
-        }
     });
-}
-
-// Populate the table with project data
-function fillTable() {
-   const data = [
-        ["Day 1", "To-Do List", "./public/TO_DO_LIST/todolist.html"],
-        ["Day 2", "Digital Clock", "./public/digital_clock/digitalclock.html"],
-        ["Day 3", "Indian Flag", "./public/indianflag/flag.html"],
-        ["Day 4", "Dropdown Nav Bar", "./public/dropdown_navbar/index.html"],
-        ["Day 5", "Animated Cursor", "./public/Animated-cursor/animated-cursor.html"],
-        ["Day 6", "Auto Background Image Slider", "./public/Background-Image-sider/slider.html"],
-        ["Day 7", "Typewriter", "./public/typewriter/typewriter.html"],
-        ["Day 8", "Parallel-X Website", "./public/Parallel-x%20website/parallal.html"],
-        ["Day 9", "Captcha Generator", "./public/captcha/captcha.html"],
-        ["Day 10", "QR Code Generator", "./public/qr%20generator/qr.html"],
-        ["Day 11", "Serve Website Using Express", "./public/index.html"],
-        ["Day 12", "Nodemailer Contact Form", "./public/gmail_nodemailer/public/mail.html"],
-        ["Day 13", "Login Form Using MERN", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern"],
-        ["Day 14", "File Uploader", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader"],
-        ["Day 15", "Progress Bar", "./public/progress_bar/progress_bar.html"],
-        ["Day 16", "Scroll Bar CSS", "./public/index.html"],
-        ["Day 17", "Slider Using Swiper API", "./public/slider%20box/index.html"],
-        ["Day 18", "Carousel Solar System", "./public/carousal/index.html"],
-        ["Day 19", "Planto", "./public/plantwebsite/plant.html"],
-        ["Day 20", "EveSparks", "https://evesparks.onrender.com/"],
-        ["Day 21", "Video BG Slider Using React", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website"],
-        ["Day 22", "Page Loader", "./public/pageloader/pageloader.html"],
-        ["Day 23", "Jarvis Virtual Assistant", "./public/Jarvis-AI-main/index.html"],
-        ["Day 24", "Chat Bot", "./public/AI%20ChatBot/chatbot.html"],
-        ["Day 25", "Tic-Tac-Toe", "./public/TicTacToe/index.html"],
-        ["Day 26", "Maze Game", "./public/Maze-Game-main/index.html"],
-        ["Day 27", "Memory Game", "./public/MemoryGame/index.html"],
-        ["Day 28", "Wordle", "./public/WORDLE/index.html"],
-        ["Day 29", "Snake Game", "./public/snake_game/index.html"],
-        ["Day 30", "Flappy-bird-game", "./public/Flappy-bird-main/index.html"],
-        ["Day 31", "Password Manager", "./public/password%20manager/index.html"],
-        ["DAY-32", "Missionaries & Cannibals", "./public/Missionaries&Cannibals/index.html"],
-        ["Day 33", "Weather Forcasting", "./public/Weather%20Forcasting/index.html"],
-        ["Day 34", "Email Validator", "./public/email%20validator/index.html"],
-        ["Day 35", "Vanilla-JavaScript-Calculator", "./public/Vanilla-JavaScript-Calculator-master/index.html"],
-        ["Day 36", "Medical App", "./public/Medical_App/index.html"],
-        ["Day 37", "2048 Game", "./public/2048_game/index.html"],
-        ["Day 38", "Github Profile Finder", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder"],
-        ["Day 39", "Notes App", "./public/notes-app/index.html"],
-        ["Day 40", "Analog Clock", "./public/AnalogClock/index.html"],
-        ["Day 41", "Scroll Dark Game", "./public/Scroll%20Game%20Dark%20Run/index.html"],
-        ["Day 42", "Amazon App", "./public/Amazon_Clone/index.html"],
-        ["Day 43", "Password Generator", "./public/Password_Generator/index.html"],
-        ["Day 44", "BMI Calculator", "./public/BMI_Calculator/index.html"],
-        ["Day 45", "Black Jack", "./public/BlackJack/blackJ.html"],
-        ["Day 46", "Palindrome Generator", "./public/Palindrome_Generator/index.html"],
-        ["Day 47", "Ping Pong Game", "./public/ping/index.html"],
-        ["Day 48", "TextToVoiceConverter", "./public/TextToVoiceConverter/index.html"],
-        ["Day 49", "Url Shortener", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/url_shortener"],
-        ["Day 50", "Recipe Genie", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe-Genie"],
-        ["Day 51", "Netflix Landing Page Clone", "./public/Netflix_Cloning/Index.html"],
-        ["Day 52", "ClimaCode", "./public/ClimaCode%202.0/index.html"],
-        ["Day 53", "E-Commerce Website with Simple Cart Functionality", "./public/e-commerce_cart/index.html"],
-        ["Day 54", "Budget Tracker", "./public/Budget%20Tracker/index.html"],
-        ["Day 55", "Cricket Game", "./public/cricket/index.html"],
-        ["Day 56", "Pastebin using svelte", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/pastebin"],
-        ["Day 57", "Glowing Social Media Icons", "./public/Social%20Media%20Glowing/index.html"],
-        ["Day 58", "Music App", "./public/Music%20App/index.html"],
-        ["Day 59", "Blog Page", "./public/Blog%20Page/index.html"],
-        ["Day 60", "Marketing template website", "./public/marketing_website/index.html"],
-        ["Day 61", "Hologram Button", "./public/Holo%20Button/index.html"],
-        ["Day 62", "Solar System Explorer", "./public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html"],
-        ["Day 63", "Image to Text App", "./public/Image-To-Text-App/index.html"],
-        ["Day 64", "Zomato-clone", "./public/zomato-clone/zomato.html"],
-        ["Day 65", "The Cube", "./public/The%20Cube/index.html"],
-        ["Day 66", "Flask Authentication App", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app"],
-        ["Day 67", "Blog-Website", "./public/blog/main.html"],
-        ["Day 68", "3d Rotating Card", "./public/3d%20cards/index.html"],
-        ["Day 69", "Spotify Clone Project", "./public/spotify-clone%20-project/index.html"],
-        ["Day 70", "Insect-Catch_Game", "./public/Insect-Catch-Game/index.html"],
-        ["Day 71", "Quotely Laughs", "./public/Quotely-Laughs/index.html"],
-        ["Day 72", "Contact Book", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book"],
-        ["Day 73", "Candy_Crush_Game", "./public/Candy_Crush_Game/index.html"],
-        ["Day 74", "Stock Profit Calculator", "./public/Stock-Profit-Calculator/index.html"],
-        ["Day 75", "code-space-game project", "./public/code-jump-space-game/index.html"],
-        ["Day 76", "Animated Searchbar", "./public/Animated%20Searchbar/index.html"],
-        ["Day 77", "Rock-Paper-Scissor-game project", "./public/Stone-Paper-Scissor/index.html"],
-        ["Day 78", "NPM Package Search", "./public/NPM%20Package%20Search/index.html"],
-        ["Day 79", "Linkedin Homepage Clone", "./public/Linkedin-Clone/index.html"],
-        ["Day 80", "Resume Studio", "./public/ResumeStudio/index.html"],
-        ["Day 81", "Simon Says Game", "./public/Simon_Says_Game/index.html"],
-        ["Day 82", "Love Calculator Game", "./public/Love-Calculator/index.html"],
-        ["Day 83", "Exchange Currency", "./public/Exchange_Currency/index.html"],
-        ["Day 84", "Lights Out Puzzle", "./public/Lights_Out_Puzzle/index.html"],
-        ["Day 85", "Image Search Engine", "./public/Image Search Engine/index.html"],
-        ["Day 86", "Profile Card", "./public/3d profile Card/index.html"],
-        ["Day 87", "Breakout game", "./public/Breakout game/index.html"],
-        ["Day 88", "Job dashboard", "./public/Job dashboard/jobs.html"],
-        ["Day 89", "N-Queen", "./public/N_Queen/index.html"],
-        ["Day 90", "Quize App Timer", "./public/QuizeApp Timer/index1.html"],
-        ["Day 91", "Voting Application Backend", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend"],
-        ["Day 92", "Slide puzzle Game", "./public/Slide puzzle Game/index.html"],
-        ["Day 93", "TextUtils", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils"],
-        ["Day 94", "Hangman Game", "./public/HangmanGame/index.html"],
-        ["Day 95", "TodoList in React TS Tailwind", "./public/TodoList-React-TS-Tailwind/index.html"],
-        ["Day 96", "HCL Color Generator", "./public/HCL Color Generator/index.html"],
-        ["Day 97", "Time Capsule", "./public/Time-Capsule/index.html"],
-        ["Day 98", "Virtual Piano", "./public/Virtual Piano/index.html"],
-        ["Day 99", "NASA-APOD Extension", "./public/NASA-APOD/popup.html"],
-        ["Day 100", "Text Saver Extension", "./public/Text_Saver_Ext/popup.html"],
-        ["Day 101", "Personal Finance Tracker", "./public/FinanceTracker/index.html"],
-        ["Day 102", "Travel Booking Website", "./public/Travel_booking_website/index.html"],
-        ["Day 103", "Drumkit Game", "./public/Drumkit_Game/index.html"],
-        ["Day 104", "Debug-Website", "./public/Debug-Website/index.html"],
-        ["Day 105", "Periodic Table", "./public/Periodic Table/index.html"],
-        ["Day 106", "Plants Website", "./public/Plants Website/index.html"],
-        ["Day 107", "DocNow", "./public/DocNow/index.html"],
-        ["Day 108", "expense_Tracker", "./public/expense_Tracker/index.html"],
-        ["Day 109", "Mood Tracker", "./public/Mood Tracker/index.html"],
-        ["Day 110", "CRYPTOSHOW", "./public/CRYPTOSHOW/index.html"],
-        ["Day 111", "Whack-a-Mole Game", "./public/Whack-a-Mole Game/index.html"],
-        ["Day 112", "Nykaa Clone Website", "./public/Nykaa-clone/index.html"],
-        ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
-     ["Day 114","EchoNotes","./public/EchoNotes/index.html"]
-    ];
-
-    const tbody = document.getElementById('tableBody');
-
-    data.forEach(e => {
-        const row = document.createElement('tr');
-        const days = document.createElement('td');
-        const nameP = document.createElement('td');
-        const link = document.createElement('td');
-        const a = document.createElement('a');
-
-        days.innerText = e[0];
-        nameP.innerText = e[1];
-        a.href = e[2].trim();
-        a.innerHTML = 'View Demo <i class="fas fa-external-link-alt"></i>';
-        a.target = '_blank';
-        nameP.classList.add('project-name');
-
-        link.appendChild(a);
-        row.appendChild(days);
-        row.appendChild(nameP);
-        row.appendChild(link);
-
-        tbody.appendChild(row);
-    });
-}
-
-// Filter Projects
-function filterProjects() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toLowerCase();
-    const rows = document.querySelector('tbody').querySelectorAll('tr');
-    let hasResults = false;
-
-    rows.forEach(row => {
-        const projectName = row.querySelector('.project-name')?.innerText.toLowerCase();
-
-        if (projectName && projectName.includes(filter)) {
-            row.style.display = '';
-            hasResults = true;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    const noProjectsMessage = document.getElementById('no-projects');
-    if (hasResults) {
-        noProjectsMessage.style.display = 'none';
-    } else {
-        noProjectsMessage.style.display = 'block';
+    // Mobile
+    const tog = document.getElementById('mobileToggle');
+    const nav = document.getElementById('navCenter');
+    if (tog && nav) {
+        tog.addEventListener('click', () => {
+            nav.classList.toggle('open');
+            const i = tog.querySelector('i');
+            i.classList.toggle('fa-bars'); i.classList.toggle('fa-xmark');
+        });
+        nav.querySelectorAll('.nav-item').forEach(l => l.addEventListener('click', () => nav.classList.remove('open')));
     }
 }
 
-// Search on Enter key
-const searchInput = document.getElementById('searchInput');
-if (searchInput) {
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            filterProjects();
+/* ---------- SCROLL TOP ---------- */
+function initScrollTop() {
+    const btn = document.getElementById('scrollTop');
+    if (!btn) return;
+    addEventListener('scroll', () => btn.classList.toggle('show', scrollY > 500));
+    btn.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+}
+
+/* ---------- KEYBOARD SHORTCUT ---------- */
+function initKeyboard() {
+    addEventListener('keydown', e => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            document.getElementById('searchInput')?.focus();
         }
     });
 }
 
-// Scroll to Top Button
-const scrollBtn = document.getElementById('scrollBtn');
-if (scrollBtn) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            scrollBtn.classList.add('show');
-        } else {
-            scrollBtn.classList.remove('show');
-        }
-    });
-
-    scrollBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+/* ---------- PILLS ---------- */
+function initPills() {
+    document.querySelectorAll('.pill').forEach(p => {
+        p.addEventListener('click', () => {
+            document.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+            p.classList.add('active');
+            filterAll();
         });
     });
 }
 
-// Initialize on DOM Load
+/* ---------- INIT ---------- */
 document.addEventListener('DOMContentLoaded', () => {
-    initCanvas();
-    updateNavbar();
-    if (document.getElementById('tableBody')) fillTable();
-    if (document.getElementById('starCount')) fetchRepoStats();
+    initLoader();
+    initScene();
+    initTheme();
+    initHeader();
+    initScrollTop();
+    initKeyboard();
+    buildCards();
+    initPills();
+    fetchStats();
+
+    const si = document.getElementById('searchInput');
+    if (si) si.addEventListener('input', filterAll);
+
+    setTimeout(initScrollAnims, 1200);
 });

@@ -1,137 +1,153 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>100 Days 100 Web Projects</title>
-    <link rel="icon" href="../public/favv.png" type="image/x-icon" />
-    <meta content="100 Days, 100 Web Projects" property="og:title" />
-    <meta
-      content="A collection of 100 web projects from basic to intermediate using html css and js."
-      property="og:description"
-    />
-    <meta content="/" property="og:url" />
-    <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
-    <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contributors — 100 Days 100 Web Projects</title>
+    <meta name="description" content="Meet the brilliant contributors behind 100 Days 100 Web Projects.">
+    <link rel="icon" href="../public/favv.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="contributor.css">
 </head>
-  
+<body>
+    <div class="noise-overlay"></div>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
 
-  <body>
-    
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-brand">
-            <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
-            <span>100 DAYS 100 WEB PROJECTS</span>
-        </div>
-        <div class="buttons">
-            <a class="button" href="../index.html">
-              Home
+    <!-- Navbar — matches home page -->
+    <header class="header visible" id="header">
+        <nav class="nav">
+            <a href="../index.html" class="nav-brand">
+                <div class="brand-mark">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <rect width="28" height="28" rx="7" fill="url(#g1)"/>
+                        <path d="M8 14L12 10L16 14L12 18Z" fill="white" opacity="0.9"/>
+                        <path d="M14 10L18 14L14 18" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+                        <defs><linearGradient id="g1" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <span class="brand-name"><span class="brand-accent">100 DAYS 100</span> WEB PROJECTS</span>
             </a>
-            <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn">
-                <i class="fas fa-rocket"></i>
-                <span>Generate README</span>
-            </a>
-            <a class="button" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-              GitHub
-            </a>
-            <button id="themeToggle" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-            </button>
-        </div>
-    </nav>
-
-    
-
-    <div class="container">
-      <div class="contributor-header">
-        <h1>Project Contributors</h1>
-        <p class="subtitle">Highlighting the brilliant minds behind this journey</p>
-      </div>
-      
-      <div class="stats-overview">
-        <div class="stat-item">
-          <div class="value" id="starCount">...</div>
-          <label>Stars</label>
-        </div>
-        <div class="stat-item">
-          <div class="value" id="forkCount">...</div>
-          <label>Forks</label>
-        </div>
-        <div class="stat-item">
-          <div class="value" id="issueCount">...</div>
-          <label>Open Issues</label>
-        </div>
-        <div class="stat-item">
-          <div class="value" id="prCount">...</div>
-          <label>Pull Requests</label>
-        </div>
-        <div class="stat-item">
-          <div class="value" id="totalCommits">...</div>
-          <label>Total Commits</label>
-        </div>
-        <div class="stat-item">
-          <div class="value" id="contributorCount">...</div>
-          <label>Contributors</label>
-        </div>
-      </div>
-
-      <div id="contributors" class="contributors-grid"></div>
-
-      <div class="contributor-header" style="margin-top: 5rem;">
-        <h1>Project Stargazers</h1>
-        <p class="subtitle">The community supporting our growth</p>
-      </div>
-      <div id="stargazers" class="stargazers-grid"></div>
-    </div>
-
-    
-    
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div>
-                <h3>About</h3>
-                <p>This repository contains 112 web projects from basic to intermediate using HTML, CSS, and JS.</p>
-                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
+            <div class="nav-end">
+                <a href="../index.html" class="nav-btn ghost">Home</a>
+                <a href="./contributor.html" class="nav-btn ghost active">Contributors</a>
+                <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="nav-btn ghost">GitHub</a>
+                <a href="#" class="nav-btn primary">Log in</a>
+                <button id="themeToggle" class="nav-btn icon" aria-label="Toggle theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="nav-btn icon mobile-toggle" id="mobileToggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-            <div>
-                <h3>Connect With Us</h3>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
+        </nav>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    <span>Open Source Community</span>
+                </div>
+                <h1 class="page-title">
+                    Project <span class="gradient-text">Contributors</span>
+                </h1>
+                <p class="page-desc">
+                    The brilliant minds powering this open-source journey. 
+                    Every commit, every fix, every feature — made possible by this community.
+                </p>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-num" id="starCount">—</span>
+                    <span class="stat-lbl">Stars</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="forkCount">—</span>
+                    <span class="stat-lbl">Forks</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="issueCount">—</span>
+                    <span class="stat-lbl">Issues</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="prCount">—</span>
+                    <span class="stat-lbl">PRs</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="totalCommits">—</span>
+                    <span class="stat-lbl">Commits</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="contributorCount">—</span>
+                    <span class="stat-lbl">Contributors</span>
                 </div>
             </div>
-            <div>
-                <h3>Featured Project</h3>
-                <p>Generate free, stunning GitHub README profiles in minutes.</p>
-                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top: 1rem;">
-                    <i class="fas fa-magic"></i> Try README Generator
-                </a>
+
+            <!-- Contributors Grid -->
+            <section class="section">
+                <div class="section-head">
+                    <h2 class="section-h2">All Contributors</h2>
+                    <p class="section-sub" id="contribSub">Loading contributors...</p>
+                </div>
+                <div id="contributors" class="contrib-grid"></div>
+            </section>
+
+            <!-- Stargazers -->
+            <section class="section">
+                <div class="section-head">
+                    <h2 class="section-h2">Stargazers</h2>
+                    <p class="section-sub">The community supporting our growth</p>
+                </div>
+                <div id="stargazers" class="stargazers-wrap"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-left">
+                    <a href="../index.html" class="nav-brand">
+                        <div class="brand-mark">
+                            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+                                <rect width="28" height="28" rx="7" fill="url(#g2)"/>
+                                <path d="M8 14L12 10L16 14L12 18Z" fill="white" opacity="0.9"/>
+                                <path d="M14 10L18 14L14 18" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+                                <defs><linearGradient id="g2" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                            </svg>
+                        </div>
+                        <span class="brand-name"><span class="brand-accent">100 DAYS 100</span> WEB PROJECTS</span>
+                    </a>
+                    <p>&copy; 2024 Dhairya Gothi & Contributors. MIT License.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Top scroll button -->
-    <button id="scrollBtn" title="Go to top">
-      <i class="fa-solid fa-arrow-up fa-lg"></i>
+    <button id="scrollTop" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
     </button>
 
-    <!-- Pushed JavaScript Code To Here -->
-    <script src="../index.js"></script>
     <script src="contributor.js"></script>
-    
-  </body>
+</body>
 </html>

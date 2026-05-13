@@ -4,8 +4,12 @@
   "description": "A repository containing 112+ web projects from basic to intermediate using HTML, CSS, and JavaScript",
   "main": "index.html",
   "scripts": {
-    "dev": "serve .",
+    "dev": "serve . -p 3000",
+    "tunnel": "npx cloudflared tunnel --url http://localhost:3000",
     "build": "echo 'No build step required for static site'"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
   },
   "repository": {
     "type": "git",
