@@ -33,18 +33,24 @@
         <div class="heading">JUST DO IT.</div>
         <div class="buttons"> 
           <div>
-            <button onclick="Add()" id="submittask">Add a task!</button>
+            <button onclick="createTask()" id="submittask">Add a task!</button>
             <!-- <select id="tasktype" >
               <option value="task1">Work</option>
               <option value="task2">School</option>
               <option value="task3">Personal</option>
               <option value="task4">Fitness</option>
             </select> -->
+            <input type="text" id="taskInput" placeholder="Enter a Task" style="width: 20rem; height: 2.3rem; border-radius: 10px;">
           </div> 
+          
           
           <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
         </div>
-        <div id="notes-container"></div>
+        <div id="notes-container">
+          <ul id="todos">
+
+          </ul>
+        </div>
         <div class="container">
         </div>
       </div>

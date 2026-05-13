@@ -14,29 +14,22 @@ const taskTypes = [
   { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
 ];
 
-function Add() {
+function createTask() {
+  const input=document.getElementById('taskInput')
+  const notes=document.getElementById('notes-container')
+  const todo=document.getElementById('todos')
+  console.dir(notes)
+  if(input.value===''){
+    alert('input is empty')
+  }else{
+    let li=document.createElement('li')
+    li.id='li-item'
+    li.innerText=input.value;
+    todo.appendChild(li);
+  }
+}
 
-    if (task.value == "") {
-        alert("Please enter a task");
-    } else {
-        let newelement = document.createElement("li");
-        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
-        container.appendChild(newelement);
-        task.value = "";
-        newelement.querySelector("i").addEventListener("click", remove);
-        function remove() {
-            newelement.remove();
-        }
-        newelement.querySelector("a").addEventListener("click", strike);
-        function strike() {
-           if(newelement.style.textDecoration === "line-through")
-           {
-            newelement.style.textDecoration="none";
-           }
-           else{
-            newelement.style.textDecoration="line-through";
-           }
-        }
+function Add() {
 
   const notes = document.querySelectorAll(".notes");
 
@@ -123,6 +116,7 @@ function Add() {
     event.stopPropagation();
   });
 }
+
 
 function saveAsPDF() {
   const { jsPDF } = window.jspdf;
@@ -224,12 +218,12 @@ function updateNotesTheme() {
       note.style.backgroundColor = currentTheme === "theme1"
         ? "rgba(232,221,227,1)"
         : currentTheme === "theme2"
-        ? "#e4afcb"
-        : currentTheme === "theme3"
-        ? "#39db8c"
-        : currentTheme === "theme4"
-        ? "rgb(120, 25, 105)"
-        : "#b92b27";
+          ? "#e4afcb"
+          : currentTheme === "theme3"
+            ? "#39db8c"
+            : currentTheme === "theme4"
+              ? "rgb(120, 25, 105)"
+              : "#b92b27";
     }
   });
 }
