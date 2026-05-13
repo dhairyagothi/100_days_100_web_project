@@ -504,6 +504,66 @@ tbody td a:hover {
     transform: scale(1.1) translateY(-8px);
 }
 
+.filters-container {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filters-container {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+#categoryFilter,
+#difficultyFilter {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+
+    padding: 0.9rem 1.4rem;
+    border-radius: 16px;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    outline: none;
+    cursor: pointer;
+
+    transition: var(--transition);
+
+    min-width: 190px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+#categoryFilter:hover,
+#difficultyFilter:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 25px var(--accent-glow);
+    transform: translateY(-2px);
+}
+
+#categoryFilter:focus,
+#difficultyFilter:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 35px var(--accent-glow);
+}
+
+#categoryFilter option,
+#difficultyFilter option {
+    background: #111;
+    color: white;
+}
+
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
