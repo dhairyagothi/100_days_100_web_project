@@ -404,6 +404,76 @@ tbody td:last-child {
     font-size: 1.1rem;
 }
 
+.project-name .project-title {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
+}
+
+.tech-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.light-mode .tech-tag {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.tech-tag:hover {
+    transform: translateY(-2px);
+}
+
+.tech-tag.tech-html       { background: rgba(227, 79, 38, 0.15);  color: #ff7043; border-color: rgba(227, 79, 38, 0.4); }
+.tech-tag.tech-css        { background: rgba(21, 114, 182, 0.15); color: #4fc3f7; border-color: rgba(21, 114, 182, 0.4); }
+.tech-tag.tech-js         { background: rgba(247, 223, 30, 0.15); color: #ffd54f; border-color: rgba(247, 223, 30, 0.4); }
+.tech-tag.tech-react      { background: rgba(97, 218, 251, 0.15); color: #61dafb; border-color: rgba(97, 218, 251, 0.4); }
+.tech-tag.tech-node-js    { background: rgba(104, 160, 99, 0.15); color: #8bc34a; border-color: rgba(104, 160, 99, 0.4); }
+.tech-tag.tech-express    { background: rgba(160, 160, 160, 0.15); color: #cfd8dc; border-color: rgba(160, 160, 160, 0.4); }
+.tech-tag.tech-mongodb    { background: rgba(76, 175, 80, 0.15); color: #66bb6a; border-color: rgba(76, 175, 80, 0.4); }
+.tech-tag.tech-api        { background: rgba(112, 0, 255, 0.18); color: #b388ff; border-color: rgba(112, 0, 255, 0.4); }
+.tech-tag.tech-canvas     { background: rgba(255, 138, 101, 0.15); color: #ff8a65; border-color: rgba(255, 138, 101, 0.4); }
+.tech-tag.tech-typescript { background: rgba(49, 120, 198, 0.15); color: #5fa8ff; border-color: rgba(49, 120, 198, 0.4); }
+.tech-tag.tech-tailwind   { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); }
+.tech-tag.tech-svelte     { background: rgba(255, 62, 0, 0.15);  color: #ff7043; border-color: rgba(255, 62, 0, 0.4); }
+.tech-tag.tech-python     { background: rgba(53, 114, 165, 0.15); color: #4fc3f7; border-color: rgba(53, 114, 165, 0.4); }
+.tech-tag.tech-flask      { background: rgba(120, 144, 156, 0.15); color: #b0bec5; border-color: rgba(120, 144, 156, 0.4); }
+.tech-tag.tech-haml       { background: rgba(236, 76, 71, 0.15); color: #ef5350; border-color: rgba(236, 76, 71, 0.4); }
+
+body.light-mode .tech-tag.tech-html       { color: #c63d12; }
+body.light-mode .tech-tag.tech-css        { color: #0b69a3; }
+body.light-mode .tech-tag.tech-js         { color: #a98a00; }
+body.light-mode .tech-tag.tech-react      { color: #0b8db3; }
+body.light-mode .tech-tag.tech-node-js    { color: #4e8c44; }
+body.light-mode .tech-tag.tech-express    { color: #455a64; }
+body.light-mode .tech-tag.tech-mongodb    { color: #2e7d32; }
+body.light-mode .tech-tag.tech-api        { color: #5b00d6; }
+body.light-mode .tech-tag.tech-canvas     { color: #d84315; }
+body.light-mode .tech-tag.tech-typescript { color: #1c5fbf; }
+body.light-mode .tech-tag.tech-tailwind   { color: #0284c7; }
+body.light-mode .tech-tag.tech-svelte     { color: #c53d10; }
+body.light-mode .tech-tag.tech-python     { color: #2c5d8a; }
+body.light-mode .tech-tag.tech-flask      { color: #455a64; }
+body.light-mode .tech-tag.tech-haml       { color: #c62828; }
+
 tbody td a {
     color: var(--text-primary);
     text-decoration: none;
