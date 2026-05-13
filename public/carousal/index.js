@@ -1,42 +1,51 @@
-// let carousal = document.querySelector('.carousal');
-// let items = document.querySelectorAll('.item');
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.slide');
+    let currentIndex = 0;
+    let isScrolling = false;
 
-// document.addEventListener('scroll', () => {
-// let primary = carousal.getBoundingClientRect().top/ window.innerHeight;
-
-// let index= Math.ceil(-1.75*(primary+0.5));
-// items.forEach((item, i) => {
-//     item.className = "item";
-//     if (i == index) {
-//       item.className = "item active";
-//     }
-//   });
-
-
-// })
-
-
-const leftItems = document.querySelectorAll('.item-left'); // Content blocks
-const rightItems = document.querySelectorAll('.item');     // Images
-
-window.addEventListener('scroll', () => {
-  let activeIndex = 0;
-
-  // Loop through content blocks to find the active one
-  leftItems.forEach((item, index) => {
-    const rect = item.getBoundingClientRect();
-    if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-      activeIndex = index;
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
     }
-  });
 
-  // Update image visibility based on the active content block
-  rightItems.forEach((item, index) => {
-    if (index === activeIndex) {
-      item.classList.add('active');
-    } else {
-      item.classList.remove('active');
-    }
-  });
+    const nextBtn = document.getElementById('next');
+    const prevBtn = document.getElementById('prev');
+
+    nextBtn.addEventListener('click', () => {
+        currentIndex++;
+        if (currentIndex >= slides.length) {
+            currentIndex = 0; // Loop back to the first slide
+        }
+        showSlide(currentIndex);
+    });
+
+    prevBtn.addEventListener('click', () => {
+        currentIndex--;
+        if (currentIndex < 0) {
+            currentIndex = slides.length - 1; // Loop to the last slide
+        }
+        showSlide(currentIndex);
+    });
+
+    window.addEventListener('wheel', (event) => {
+
+        if (isScrolling) return;
+        if (Math.abs(event.deltaY) < 2) return;
+
+        isScrolling = true;
+
+        if (event.deltaY > 0) {
+            currentIndex = (currentIndex + 1) % slides.length;
+        } else {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        }
+        showSlide(currentIndex);
+
+        setTimeout(() => {
+            isScrolling = false;
+        }, 1800); 
+    }, { passive: false }); 
 });
 
+
+    

@@ -1,168 +1,267 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
-
+/* Reset and Base Styles */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  Padding: 0;
-  Margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  background: url("./images/universe.png");
-  background-attachment: fixed;
-  background-size: cover;
-  background-repeat: no-repeat;
-  overflow-x: hidden;
+  background-color: #050505; /* Deep space black */
+  color: #fff;
+  overflow: hidden; /* Prevents scrollbars during animations */
 }
 
-.carousal {
-  width: 100%;
-  height: fit-content;
-  display: flex;
-  justify-content: center;
+.slider-container {
+  width: 100vw;
+  height: 100vh;
   position: relative;
+}
 
-}
-.top{
+/* Navbar with relative positioning */
+.navbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 30px 50px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
-  text-align: center;
-  padding: 40px;
-  font-size: xx-large;
-  font-weight: bolder;
-}
-.left {
-  flex-basis: 50%;
-  height: fit-content;
-  display: flex;
-  align-items: flex-start;
-  justify-content: left;
-  flex-direction: column;
-  box-sizing: border-box;
   z-index: 10;
-  gap: 350px;
-  text-align: left;
-  padding: 120px;
-  margin-bottom: 200px;
-}
-.center{
-  height: 100vh;
-}
-.text {
-  font-size: 40px;
-  font-family: poppins;
-  font-weight: 700;
-  color: white;
-  text-align: left;
 }
 
-.right {
-  position: sticky;
-  top: 0;
-  right: 0;
-  
-  height: 100vh;
-  flex-basis: 50%;
-  display: flex;
+.logo {
+  font-weight: 800;
+  letter-spacing: 4px;
+  font-size: 1.2rem;
 }
-.details {
-  font-size: 18px;
-  font-family: poppins;
-  font-weight: 300;
-  color: white;
+
+/* Hamburger Container Logic */
+.hamburger-container {
+  position: relative;
+  cursor: pointer;
+  padding: 10px;
 }
-/* .item {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+
+/* Icon Styling - Left Aligned Symbol Style */
+.hamburger-icon {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  opacity: 0;
-  transition: transform 1s ease, opacity 0.5s ease;
-  transform: scale(1.3);
-}
-.item.active {
-  transform: scale(1);
-  opacity: 1;
-} */
-.item {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  opacity: 0;
-  transition: transform 1s ease, opacity 0.5s ease;
-  transform: scale(1.3);
+  gap: 6px;
+  align-items: flex-end; /* This pushes the lines to the right */
+  cursor: pointer;
 }
 
-.item.active {
-  transform: scale(1);
-  opacity: 1;
+/* Individual lines */
+.line {
+  height: 2px;
+  background-color: white;
+  border-radius: 2px;
+  /* Ensure smooth transitions if you add hover effects later */
+  transition: all 0.3s ease; 
 }
 
-.item img {
-  width: 350px;
+.line.long { width: 30px; }
+.line.medium { width: 20px; }
+.line.short { width: 12px; }
+
+.planet-mini-list {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    /* Use viewport units for responsive spacing */
+    gap: 2vh; 
+    background: transparent; /* Removes the box look */
+    padding: 10px;
+    align-items: flex-end;
+    z-index: 100;
+    
+    /* Hover logic from previous steps */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
 }
-.item ::before {
+
+/* Responsive Image Sizing */
+.mini-planet {
+    width: 3vw; 
+    min-width: 30px; 
+    max-width: 60px; 
+    height: auto;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+}
+
+
+.mini-planet:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 15px rgba(90, 85, 85, 0.5));
+}
+
+/* Toggle visibility when hovering over the hamburger container */
+.hamburger-container:hover .planet-mini-list {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Main Slide Structure */
+.slide {
   position: absolute;
-  content: "";
-  border-radius: 10%;
-  top: 10px;
-  left: -100%;
-  width: 100%;
-  height: 100vh;
-  backdrop-filter: blur(6px) saturate(200%);
-  -webkit-backdrop-filter: blur(6px) saturate(200%);
-  background: rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(209, 213, 219, 0.3);
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Background Layer with Parallax feel */
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.4);
   z-index: -1;
 }
 
-.item button {
-  background: white;
-  padding: 15px 40px;
-  font-family: poppins;
-  font-size: 16px;
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 10%;
+}
+
+/* Glassmorphism Text Cards */
+.left-col, .right-col {
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px); /* The "Glass" effect */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  z-index: 5;
+}
+.left-col {
+  width: 300px;
+}
+
+.right-col {
+  width: 250px;
+}
+
+.planet-title {
+  font-size: 2.5rem;
+  margin: 10px 0;
+  letter-spacing: 5px;
+}
+
+.description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 20px;
+}
+
+/* Floating Planet Animation */
+.center-col {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.planet-img {
+  width: 80%;
+  max-width: 500px;
+  filter: drop-shadow(0 0 50px var(--glow-color, rgba(255, 165, 0, 0.3)));
+  /* Set a default scale variable */
+  --planet-scale: 1; 
+  animation: float 6s ease-in-out infinite;
+}
+
+.planet-large {
+  /* Just change the variable value here */
+  --planet-scale: 1.3; 
+}
+
+@keyframes float {
+  0%, 100% { 
+    /* Multiply the floating movement by the scale variable */
+    transform: translateY(0px) rotate(0deg) scale(var(--planet-scale)); 
+  }
+  50% { 
+    transform: translateY(-20px) rotate(2deg) scale(var(--planet-scale)); 
+  }
+}
+
+/* Add classes for the blue planets */
+.blue-glow {
+  --glow-color: rgba(8, 89, 165, 0.568); /* Bright Blue shadow */
+}
+
+
+/* Technical Stats */
+.stat {
+  margin-bottom: 20px;
+}
+
+.stat .label {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 2px;
+}
+
+.stat .value {
+  font-size: 1.1rem;
   font-weight: 600;
-  color: black;
-  outline: none;
+}
+
+/* Controls */
+.controls {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50px;
+  z-index: 10;
+}
+
+.control-btn {
+  background: none;
   border: none;
-  border-radius: 7mm;
-  margin-top: 50px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  letter-spacing: 3px;
   cursor: pointer;
+  transition: 0.3s;
 }
-.item button:hover {
-  background-color: grey;
+
+.control-btn:hover {
+  color: #fff;
 }
-@media screen and (max-width: 768px) {
-.left{
-  margin-bottom: 40px;
+
+.learn-more {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 10px 25px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: opacity 0.8s ease-in-out;
 }
-.item{
-  position: fixed;
-  top: -121px;
-  
-}
-.details{
-  text-align: center;
-  font-size: large;
-  font-weight: 800;
-}
-  
+
+.learn-more:hover {
+  background: #fff;
+  color: #000;
 }
