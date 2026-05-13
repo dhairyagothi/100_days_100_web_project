@@ -484,6 +484,12 @@
         function showError(message) {
             elements.errorText.textContent = message;
             elements.errorMessage.classList.remove('hidden');
+            elements.results.style.display = 'none';
+            elements.outputTable.innerHTML = '';
+            elements.ganttChart.innerHTML = '';
+            elements.processLegend.innerHTML = '';
+            elements.metricsPanel.innerHTML = '';
+            elements.analysisContent.innerHTML = '';
             elements.errorMessage.scrollIntoView({ behavior: 'smooth' });
         }
 
