@@ -295,6 +295,19 @@
         #clear-storage:hover {
             background-color: #c0392b;
         }
+        .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
     </style>
 </head>
 <body>
@@ -355,6 +368,7 @@
                         <th>Type</th>
                         <th>Category</th>
                         <th>Date</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -432,29 +446,37 @@
             form.style.animation = 'fadeIn 0.5s ease-out';
         }
 
-        function displayTransactions() {
-            transactionsTable.innerHTML = '';
+       function displayTransactions() {
+    transactionsTable.innerHTML = '';
 
-            transactions.slice().reverse().forEach((transaction, index) => {
-                const row = transactionsTable.insertRow();
-                row.className = transaction.type === 'income' ? 'income-row' : 'expense-row';
+    transactions.slice().reverse().forEach((transaction, index) => {
+        const actualIndex = transactions.length - 1 - index;
 
-                const descCell = row.insertCell(0);
-                const amountCell = row.insertCell(1);
-                const typeCell = row.insertCell(2);
-                const categoryCell = row.insertCell(3);
-                const dateCell = row.insertCell(4);
+        const row = transactionsTable.insertRow();
+        row.className = transaction.type === 'income' ? 'income-row' : 'expense-row';
 
-                descCell.textContent = transaction.description;
-                amountCell.textContent = `$${transaction.amount.toFixed(2)}`;
-                typeCell.textContent = transaction.type;
-                categoryCell.textContent = transaction.category;
-                dateCell.textContent = transaction.date;
+        const descCell = row.insertCell(0);
+        const amountCell = row.insertCell(1);
+        const typeCell = row.insertCell(2);
+                        const categoryCell = row.insertCell(3);
+        const dateCell = row.insertCell(4);
+        const actionCell = row.insertCell(5);
 
-                // Add staggered animation to new rows
-                row.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s`;
-            });
-        }
+        descCell.textContent = transaction.description;
+        amountCell.textContent = `$${transaction.amount.toFixed(2)}`;
+        typeCell.textContent = transaction.type;
+        categoryCell.textContent = transaction.category;
+        dateCell.textContent = transaction.date;
+
+        actionCell.innerHTML = `
+            <button class="delete-btn" onclick="deleteTransaction(${actualIndex})">
+                Delete
+            </button>
+        `;
+
+        row.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s`;
+    });
+}
 
         function updateChart() {
             const categories = {};
@@ -529,6 +551,20 @@
                 alert('All data has been cleared.');
             }
         }
+
+        function deleteTransaction(index) {
+    const confirmDelete = confirm('Are you sure you want to delete this transaction?');
+
+    if (!confirmDelete) return;
+
+    transactions.splice(index, 1);
+
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+
+    updateBalance();
+    displayTransactions();
+      updateChart();
+}
 
         form.addEventListener('submit', addTransaction);
         clearStorageBtn.addEventListener('click', clearStorage);
