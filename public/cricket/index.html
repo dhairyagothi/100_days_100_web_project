@@ -1,132 +1,147 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cricket_Game</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Cricket Game</title>
+
+  <link
+    rel="stylesheet"
+    href="./style.css"
+  />
+
+  <link
+    rel="icon"
+    href="../../favv.png"
+    type="image/x-icon"
+  />
 </head>
+
 <body>
+
   <div class="box1">
-    <h1 >Ball Bat Stump Game</h1>
-  <button  class="game_buttons"  onclick="
-  let usermsg='Bat';
 
-  let computerchoice=computergeneratechoice();
+    <h1>Ball Bat Stump Game</h1>
 
-  let cmpmsg=computerchoice;
+    <button
+      class="game_buttons"
 
+      onclick="
+        let usermsg='Bat';
 
-  let result=getresult(usermsg,computerchoice);
-  /*
-  if(computerchoice==='Bat'){
-    result='both are tie';
-  }
-  else if(computerchoice ==='Ball'){
-    result='user won';
-  }
-  else{
-    result='computer won';
-  }
-  */
+        let computerchoice =
+          computergeneratechoice();
 
+        let result =
+          getresult(usermsg, computerchoice);
 
-//  alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
-showresult(usermsg,cmpmsg,result);
+        showresult(
+          usermsg,
+          computerchoice,
+          result
+        );
+      "
+    >
 
-  
-  
-  
-  ">
-<img src="bat.jpeg"  class="game_image" alt="Bat_button">
-</button>
+      <img
+        src="./bat.jpeg"
+        class="game_image"
+        alt="Bat Button"
+      />
 
-  <button  class="game_buttons"   onclick="
-  usermsg='Ball';
-  computerchoice=computergeneratechoice();
-  cmpmsg=computerchoice;
+    </button>
 
-  result=getresult('Ball',computerchoice);
+    <button
+      class="game_buttons"
 
-  /*
-  if(computerchoice==='Bat'){
-    result='computer won';
-  }
-  else if(computerchoice ==='Ball'){
-    result='its a tie';
-  }
-  else{
-    result='user won';
-  }
-  */
+      onclick="
+        let usermsg='Ball';
 
+        let computerchoice =
+          computergeneratechoice();
 
- // alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
+        let result =
+          getresult(usgitermsg, computerchoice);
 
- showresult(usermsg,cmpmsg,result);
-  
-  
-  
-  ">  <img src="ball.jpeg"  class="game_image" alt="Ball_button">  </button>
+        showresult(
+          usermsg,
+          computerchoice,
+          result
+        );
+      "
+    >
 
-  <Button    class="game_buttons"  onclick="
-  usermsg='stump';
+      <img
+        src="./ball.jpeg"
+        class="game_image"
+        alt="Ball Button"
+      />
 
-  computerchoice=computergeneratechoice();
-  cmpmsg=computerchoice;
+    </button>
 
-  result=getresult('stump',computerchoice);
+    <button
+      class="game_buttons"
 
-  /*
-  if(computerchoice==='Bat'){
-    result='user won';
-  }
-  else if(computerchoice ==='Ball'){
-    result='computer won';
-  }
-  else{
-    result='tie';
-  }
-  */
+      onclick="
+        let usermsg='Stump';
 
+        let computerchoice =
+          computergeneratechoice();
 
-  //alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
-  showresult(usermsg,cmpmsg,result);
-  
-  
-  
-  ">  <img src="wickets.jpeg"   class="game_image" alt="wickets_button">  </Button>
+        let result =
+          getresult(usermsg, computerchoice);
 
+        showresult(
+          usermsg,
+          computerchoice,
+          result
+        );
+      "
+    >
 
+      <img
+        src="./wickets.jpeg"
+        class="game_image"
+        alt="Wickets Button"
+      />
 
+    </button>
 
+    <div class="show">
 
+      <h2 id="user-move"></h2>
 
-<!-- use moves and results in a heading type instead of using alert.. -->
+      <h2 id="computer-move"></h2>
 
-<div class="show">
+      <h2 id="result"></h2>
 
-<h2 id="user-move"></h2>
-<h2 id="computer-move"></h2>
-<h2 id="result"></h2>
-<h2 id="score"></h2>
+      <h2 id="score"></h2>
 
-</div>
+    </div>
 
+    <button
+      id="reset"
 
-
-<button   onclick="localStorage.clear()
-resetscore(); //undefind value..             //without this function ,only the values in storage location can be changed..
-                                      //using reset function we can also so in alert notification 
-" id="reset">  RESET </button>
+      onclick="
+        localStorage.clear();
+        resetscore();
+      "
+    >
+      RESET
+    </button>
 
   </div>
 
-  
+  <script src="./script.js"></script>
 
-<!-- added script -->
-<script src="script.js"></script>  
-  
 </body>
+
 </html>
+```
