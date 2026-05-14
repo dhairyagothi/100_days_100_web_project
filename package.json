@@ -5,7 +5,8 @@
   "main": "index.html",
   "scripts": {
     "dev": "serve .",
-    "build": "echo 'No build step required for static site'"
+    "build": "echo 'No build step required for static site'",
+    "validate:projects": "node scripts/validate-projects.mjs"
   },
   "repository": {
     "type": "git",
