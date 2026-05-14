@@ -4,23 +4,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress_bar</title>
+    <title>Smart Progress Bar</title>
     <link rel="stylesheet" href="progress_bar.css">
 </head>
 
 <body>
+
     <div class="container">
+
+        <!-- Progress Circle -->
         <div class="block1">
             <div class="block2">
                 <div class="block3">
-                    <div id="num">100%</div>
+                    <div id="num">0%</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Duration Input -->
+        <div class="input-group">
+            <label for="duration">⏱ Duration (seconds)</label>
+
+            <input type="number"
+                   id="duration"
+                   min="1"
+                   max="300"
+                   value="60"
+                   placeholder="Enter duration">
+
+            <small>Time required to reach 100%</small>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+            <button id="startBtn" class="btn btn-start">▶ Start</button>
+            <button id="pauseBtn" class="btn btn-pause">⏸ Pause</button>
+            <button id="stopBtn" class="btn btn-stop">⏹ Stop</button>
+        </div>
+
+        <!-- Status -->
+        <div id="status" class="status"></div>
+
+    </div>
+
+    <!-- Popup -->
+    <div id="popup" class="popup hidden">
+
+        <div class="popup-card">
+
+            <span class="close-btn">&times;</span>
+
+            <div class="popup-content">
+
+                <h2 id="popupMessage">🎉 Milestone Achieved!</h2>
+
+                <p id="popupSubtext">Keep Going!</p>
+
+                <button id="popupCloseBtn" class="popup-btn">
+                    Continue
+                </button>
 
             </div>
 
-        </div><button id="btn">Check progress</button>
+        </div>
+
     </div>
+
     <script src="progress_bar.js"></script>
+
 </body>
 
 </html>
