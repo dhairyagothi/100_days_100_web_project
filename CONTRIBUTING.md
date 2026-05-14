@@ -504,6 +504,21 @@ Thank you for considering contributing to our project! To ensure smooth collabor
 
 We look forward to your contributions and appreciate your effort in helping us improve the project!
 
+## 🌐 Browser Compatibility
+
+For the best experience, contributors should test projects on multiple browsers whenever possible.
+
+Recommended browsers:
+- Google Chrome
+- Mozilla Firefox
+- Microsoft Edge
+
+Suggested checks:
+- Responsive layout testing
+- Console error checking
+- Cross-browser UI consistency
+
+
 ## License
 
 By contributing, you agree that your contributions will be licensed under the same license as the project.
