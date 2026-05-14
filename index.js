@@ -141,49 +141,66 @@ function initScene() {
     if (!canvas || typeof THREE === 'undefined') return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(innerWidth, innerHeight);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-    // Particles
-    const geo = new THREE.BufferGeometry();
-    const N = 600;
-    const pos = new Float32Array(N * 3);
-    for (let i = 0; i < N; i++) {
-        pos[i*3]   = (Math.random() - 0.5) * 30;
-        pos[i*3+1] = (Math.random() - 0.5) * 30;
-        pos[i*3+2] = (Math.random() - 0.5) * 20 - 5;
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
+
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 800;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+        starPos[i*3] = (Math.random() - 0.5) * 100;
+        starPos[i*3+1] = (Math.random() - 0.5) * 100;
+        starPos[i*3+2] = (Math.random() - 0.5) * 100;
     }
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const mat = new THREE.PointsMaterial({ color: 0x6366f1, size: 0.02, transparent: true, opacity: 0.6 });
-    const pts = new THREE.Points(geo, mat);
-    scene.add(pts);
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05, transparent: true, opacity: 0.2 });
+    const stars = new THREE.Points(starGeo, starMat);
+    mainGroup.add(stars);
 
-    // Subtle grid plane
-    const gridGeo = new THREE.PlaneGeometry(40, 40, 40, 40);
-    const gridMat = new THREE.MeshBasicMaterial({ color: 0x6366f1, wireframe: true, transparent: true, opacity: 0.015 });
+    const gridCount = 40;
+    const gridGeo = new THREE.PlaneGeometry(100, 100, gridCount, gridCount);
+    const gridMat = new THREE.MeshBasicMaterial({ 
+        color: 0x6366f1, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.05,
+        side: THREE.DoubleSide
+    });
     const grid = new THREE.Mesh(gridGeo, gridMat);
-    grid.rotation.x = -Math.PI / 2.5;
-    grid.position.y = -4;
-    grid.position.z = -5;
-    scene.add(grid);
+    grid.rotation.x = -Math.PI / 2;
+    grid.position.y = -6;
+    mainGroup.add(grid);
 
-    camera.position.z = 5;
+    camera.position.z = 15;
+
     let mx = 0, my = 0;
     document.addEventListener('mousemove', e => {
-        mx = (e.clientX / innerWidth - 0.5) * 2;
-        my = (e.clientY / innerHeight - 0.5) * 2;
+        mx = (e.clientX / innerWidth - 0.5);
+        my = (e.clientY / innerHeight - 0.5);
     });
 
     (function loop() {
         requestAnimationFrame(loop);
-        pts.rotation.y += 0.0003;
-        pts.rotation.x += 0.0001;
-        grid.rotation.z += 0.0002;
-        camera.position.x += (mx * 0.3 - camera.position.x) * 0.015;
-        camera.position.y += (-my * 0.3 - camera.position.y) * 0.015;
-        camera.lookAt(0, 0, 0);
+        const t = Date.now() * 0.0005;
+
+        const pos = grid.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+            const x = pos.getX(i);
+            const y = pos.getY(i);
+            const z = Math.sin(x * 0.15 + t) * 1.0 + Math.cos(y * 0.15 + t) * 1.0;
+            pos.setZ(i, z);
+        }
+        pos.needsUpdate = true;
+
+        mainGroup.rotation.y += (mx * 0.03 - mainGroup.rotation.y) * 0.05;
+        mainGroup.rotation.x += (my * 0.03 - mainGroup.rotation.x) * 0.05;
+        stars.rotation.y += 0.0001;
+
         renderer.render(scene, camera);
     })();
 
@@ -283,27 +300,54 @@ function buildCards() {
     const grid = document.getElementById('projectGrid');
     if (!grid) return;
 
+    const typeColors = {
+        'APP': { bg: 'rgba(6, 182, 212, 0.1)', text: '#06b6d4', glow: 'rgba(6, 182, 212, 0.4)' },
+        'GAME': { bg: 'rgba(16, 185, 129, 0.1)', text: '#10b981', glow: 'rgba(16, 185, 129, 0.4)' },
+        'TOOL': { bg: 'rgba(139, 92, 246, 0.1)', text: '#8b5cf6', glow: 'rgba(139, 92, 246, 0.4)' },
+        'OTHER': { bg: 'rgba(100, 116, 139, 0.1)', text: '#64748b', glow: 'rgba(100, 116, 139, 0.4)' }
+    };
+
     DATA.forEach(([day, name, link]) => {
         const cat = categorize(name);
+        const type = CAT_MAP[cat].toUpperCase();
+        const colors = typeColors[type] || typeColors['OTHER'];
+        
         const card = document.createElement('div');
         card.className = 'p-card';
         card.dataset.cat = cat;
         card.dataset.name = name.toLowerCase();
         card.innerHTML = `
             <div class="p-card-top">
-                <span class="p-day">${day}</span>
-                <span class="p-cat">${CAT_MAP[cat]}</span>
+                <span class="p-tag" style="background:${colors.bg}; color:${colors.text}; box-shadow: 0 0 10px ${colors.glow}">
+                    ${day}
+                </span>
+                <span class="p-category" style="color:${colors.text}; font-size: 10px; font-weight: 700; letter-spacing: 1px;">${type}</span>
             </div>
             <div class="p-name">${name}</div>
             <div class="p-actions">
                 <a href="${link.trim()}" target="_blank" class="p-link">
-                    View Demo <i class="fas fa-arrow-right"></i>
+                    VIEW DEMO <i class="fas fa-arrow-right"></i>
                 </a>
             </div>`;
         grid.appendChild(card);
     });
 
     updateCount(DATA.length);
+
+    if (window.gsap && window.ScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.from(".p-card", {
+            scrollTrigger: {
+                trigger: "#projectGrid",
+                start: "top 80%",
+            },
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.03,
+            ease: "power2.out"
+        });
+    }
 }
 
 /* ---------- SEARCH & FILTER ---------- */
@@ -350,8 +394,16 @@ function initTheme() {
 function initHeader() {
     const header = document.getElementById('header');
     const links = document.querySelectorAll('.nav-item[data-sec]');
+    const sp = document.getElementById('scrollProgress');
     addEventListener('scroll', () => {
         header.classList.toggle('scrolled', scrollY > 20);
+        
+        // Update progress bar
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        if (sp) sp.style.width = scrolled + "%";
+
         ['hero','stats','projects','footer'].forEach(id => {
             const s = document.getElementById(id);
             if (!s) return;
@@ -361,17 +413,7 @@ function initHeader() {
             }
         });
     });
-    // Mobile
-    const tog = document.getElementById('mobileToggle');
-    const nav = document.getElementById('navCenter');
-    if (tog && nav) {
-        tog.addEventListener('click', () => {
-            nav.classList.toggle('open');
-            const i = tog.querySelector('i');
-            i.classList.toggle('fa-bars'); i.classList.toggle('fa-xmark');
-        });
-        nav.querySelectorAll('.nav-item').forEach(l => l.addEventListener('click', () => nav.classList.remove('open')));
-    }
+    //
 }
 
 /* ---------- SCROLL TOP ---------- */
@@ -415,8 +457,20 @@ document.addEventListener('DOMContentLoaded', () => {
     initPills();
     fetchStats();
 
-    const si = document.getElementById('searchInput');
-    if (si) si.addEventListener('input', filterAll);
+    // Hero Typing & Reveal
+    const heroText = document.querySelector('.hero-desc');
+    if (heroText) {
+        const content = heroText.textContent;
+        heroText.textContent = "";
+        gsap.to(heroText, {
+            duration: 1.5,
+            text: content,
+            ease: "none",
+            delay: 0.5
+        });
+    }
 
-    setTimeout(initScrollAnims, 1200);
+    gsap.from(".hero-h1", { y: 60, opacity: 0, duration: 1, ease: "power4.out" });
+    gsap.from(".hero-eyebrow", { y: 20, opacity: 0, duration: 0.8, ease: "power2.out", delay: 0.3 });
+    gsap.from(".search-container", { y: 30, opacity: 0, duration: 0.8, ease: "power2.out", delay: 0.6 });
 });

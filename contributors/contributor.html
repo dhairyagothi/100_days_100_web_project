@@ -11,11 +11,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="contributor.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+    <canvas id="three-canvas"></canvas>
     <div class="noise-overlay"></div>
     <div class="gradient-orb orb-1"></div>
     <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
 
     <!-- Navbar — matches home page -->
     <header class="header visible" id="header">
@@ -38,9 +41,6 @@
                 <a href="#" class="nav-btn primary">Log in</a>
                 <button id="themeToggle" class="nav-btn icon" aria-label="Toggle theme">
                     <i class="fas fa-moon" id="themeIcon"></i>
-                </button>
-                <button class="nav-btn icon mobile-toggle" id="mobileToggle" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
                 </button>
             </div>
         </nav>
@@ -148,6 +148,7 @@
         <i class="fas fa-chevron-up"></i>
     </button>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="contributor.js"></script>
 </body>
 </html>

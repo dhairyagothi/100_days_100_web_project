@@ -24,21 +24,7 @@ function initTheme() {
     });
 }
 
-/* ---------- MOBILE MENU ---------- */
-function initMobile() {
-    const tog = document.getElementById('mobileToggle');
-    const nav = document.getElementById('navCenter');
-    if (!tog || !nav) return;
-    tog.addEventListener('click', () => {
-        nav.classList.toggle('open');
-        const i = tog.querySelector('i');
-        i.classList.toggle('fa-bars');
-        i.classList.toggle('fa-xmark');
-    });
-    nav.querySelectorAll('.nav-item').forEach(l =>
-        l.addEventListener('click', () => nav.classList.remove('open'))
-    );
-}
+
 
 /* ---------- SCROLL TOP ---------- */
 function initScrollTop() {
@@ -148,9 +134,85 @@ async function fetchStargazers() {
 /* ---------- INIT ---------- */
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
-    initMobile();
     initScrollTop();
     fetchStats();
     fetchContributors();
     fetchStargazers();
+    initScene();
 });
+
+/* ---------- THREE.JS BACKGROUND ---------- */
+function initScene() {
+    const canvas = document.getElementById('three-canvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
+
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 800;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+        starPos[i*3] = (Math.random() - 0.5) * 100;
+        starPos[i*3+1] = (Math.random() - 0.5) * 100;
+        starPos[i*3+2] = (Math.random() - 0.5) * 100;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05, transparent: true, opacity: 0.2 });
+    const stars = new THREE.Points(starGeo, starMat);
+    mainGroup.add(stars);
+
+    const gridCount = 40;
+    const gridGeo = new THREE.PlaneGeometry(100, 100, gridCount, gridCount);
+    const gridMat = new THREE.MeshBasicMaterial({ 
+        color: 0x6366f1, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.05,
+        side: THREE.DoubleSide
+    });
+    const grid = new THREE.Mesh(gridGeo, gridMat);
+    grid.rotation.x = -Math.PI / 2;
+    grid.position.y = -6;
+    mainGroup.add(grid);
+
+    camera.position.z = 15;
+
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+        mx = (e.clientX / innerWidth - 0.5);
+        my = (e.clientY / innerHeight - 0.5);
+    });
+
+    (function loop() {
+        requestAnimationFrame(loop);
+        const t = Date.now() * 0.0005;
+
+        const pos = grid.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+            const x = pos.getX(i);
+            const y = pos.getY(i);
+            const z = Math.sin(x * 0.15 + t) * 1.0 + Math.cos(y * 0.15 + t) * 1.0;
+            pos.setZ(i, z);
+        }
+        pos.needsUpdate = true;
+
+        mainGroup.rotation.y += (mx * 0.03 - mainGroup.rotation.y) * 0.05;
+        mainGroup.rotation.x += (my * 0.03 - mainGroup.rotation.x) * 0.05;
+        stars.rotation.y += 0.0001;
+
+        renderer.render(scene, camera);
+    })();
+
+    addEventListener('resize', () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+    });
+}

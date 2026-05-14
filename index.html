@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 </head>
 <body>
     <canvas id="three-canvas"></canvas>
@@ -27,6 +28,7 @@
 
     <!-- Navbar -->
     <header class="header" id="header">
+        <div class="scroll-progress" id="scrollProgress"></div>
         <nav class="nav">
             <a href="#" class="nav-brand">
                 <div class="brand-mark">
@@ -46,9 +48,6 @@
                 <button id="themeToggle" class="nav-btn icon" aria-label="Toggle theme">
                     <i class="fas fa-moon" id="themeIcon"></i>
                 </button>
-                <button class="nav-btn icon mobile-toggle" id="mobileToggle" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
             </div>
         </nav>
     </header>
@@ -62,7 +61,7 @@
             </div>
             <h1 class="hero-h1" id="heroH1">
                 Build. Learn.<br>
-                <span class="hero-gradient">Ship Every Day.</span>
+                <span class="hero-gradient">Innovate Daily.</span>
             </h1>
             <p class="hero-desc" id="heroDesc">
                 A curated collection of <strong>114+</strong> web projects — from pixel-perfect UIs 
@@ -206,6 +205,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
     <script src="index.js"></script>
 </body>
 </html>
