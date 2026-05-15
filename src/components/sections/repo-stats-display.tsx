@@ -6,10 +6,10 @@ import { GitHubStats } from "../../lib/github";
 
 export function RepoStatsDisplay({ stats }: { stats: GitHubStats }) {
   const statItems = [
-    { label: "Stars", value: stats.stars, icon: Star, color: "text-yellow-500" },
-    { label: "Forks", value: stats.forks, icon: GitFork, color: "text-blue-500" },
-    { label: "Issues", value: stats.openIssues, icon: AlertCircle, color: "text-green-500" },
-    { label: "PRs", value: stats.pullRequests, icon: GitPullRequest, color: "text-purple-500" },
+    { label: "Stars", value: stats?.stars ?? 0, icon: Star, color: "text-yellow-500" },
+    { label: "Forks", value: stats?.forks ?? 0, icon: GitFork, color: "text-blue-500" },
+    { label: "Issues", value: stats?.openIssues ?? 0, icon: AlertCircle, color: "text-green-500" },
+    { label: "PRs", value: stats?.pullRequests ?? 0, icon: GitPullRequest, color: "text-purple-500" },
   ];
 
   return (
