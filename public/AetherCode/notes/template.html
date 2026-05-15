@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes - AetherCode</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../assets/logo.PNG" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Lato&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">AetherCode</div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../notes.html">Streams</a></li>
+        </ul>
+    </header>
+    <section class="note-topic reveal" style="padding: 8rem 2rem; background: #000; text-align: center;">
+        <h1 id="subjectTitle" style="font-size: 3rem; font-family: 'Montserrat';">Subject Notes</h1>
+        <p class="subtitle" style="color: #666; margin-top: 1rem;">Comprehensive study materials for 2026</p>
+        <a id="downloadBtn" href="#" download class="btn" style="margin-top: 2rem; display: none;">
+            <i class="ri-download-2-line"></i> Download Full Notes (PDF)
+        </a>
+        <div class="card-container" id="topicsContainer"></div>
+        <a href="javascript:history.back()" class="btn" style="margin-top: 4rem; background-color: #333;">Back to
+            Stream</a>
+    </section>
+
+    <script>
+        const defaultTopics = [
+            { title: "Introduction", desc: "Fundamental concepts and overview of the subject.", time: "3 hrs" },
+            { title: "Core Principles", desc: "The essential building blocks and theories.", time: "4 hrs" },
+            { title: "Advanced Modules", desc: "In-depth analysis and complex applications.", time: "6 hrs" },
+            { title: "Case Studies", desc: "Real-world examples and practical implications.", time: "3 hrs" },
+            { title: "Exam Preparation", desc: "Summary, key points, and revision notes.", time: "2 hrs" },
+        ];
+
+        const container = document.getElementById("topicsContainer");
+        const titleElement = document.getElementById("subjectTitle");
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        const filename = window.location.pathname.split('/').pop().split('.')[0];
+        const subjectRaw = filename.replace('-notes', '').replace('notes', '').toLowerCase();
+        const readableTitle = filename.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+        titleElement.innerHTML = `<span class="highlight">${readableTitle}</span> Notes`;
+
+        const subjectMap = {
+            'os': { stream: 'engineering', file: 'Engineering_Operating_Systems.pdf' },
+            'dsa': { stream: 'engineering', file: 'Engineering_Data_Structures.pdf' },
+            'networking': { stream: 'engineering', file: 'Engineering_Computer_Networks.pdf' },
+            'dbms': { stream: 'engineering', file: 'Engineering_DBMS.pdf' },
+            'graphics': { stream: 'engineering', file: 'Engineering_Computer_Graphics.pdf' },
+            'anatomy': { stream: 'medical', file: 'Medical_Anatomy.pdf' },
+            'physiology': { stream: 'medical', file: 'Medical_Physiology.pdf' },
+            'biochemistry': { stream: 'medical', file: 'Medical_Biochemistry.pdf' },
+            'physics': { stream: 'science', file: 'Science_Physics.pdf' },
+            'chemistry': { stream: 'science', file: 'Science_Chemistry.pdf' },
+            'maths': { stream: 'science', file: 'Science_Mathematics.pdf' },
+            'business': { stream: 'commerce', file: 'Commerce_Business_Studies.pdf' },
+            'economics': { stream: 'commerce', file: 'Commerce_Economics.pdf' },
+            'accountancy': { stream: 'commerce', file: 'Commerce_Accounting.pdf' },
+            'history': { stream: 'arts', file: 'Arts_History.pdf' },
+            'sociology': { stream: 'arts', file: 'Arts_Sociology.pdf' },
+            'constitution': { stream: 'law', file: 'Law_Constitutional_Law.pdf' },
+            'criminal': { stream: 'law', file: 'Law_Criminal_Law.pdf' },
+            'corporate': { stream: 'law', file: 'Law_Corporate_Law.pdf' }
+        };
+
+        const match = subjectMap[subjectRaw];
+        if (match) {
+            downloadBtn.href = `../pdfs/${match.stream}/${match.file}`;
+            downloadBtn.style.display = 'inline-block';
+        } else {
+            downloadBtn.href = '../assets/notes/sample-notes.pdf';
+            downloadBtn.style.display = 'inline-block';
+        }
+
+        defaultTopics.forEach((t, i) => {
+            container.innerHTML += `
+        <div class="note-card reveal" style="animation-delay: ${0.2 * i}s">
+            <h3>${t.title}</h3>
+            <p style="color:#ccc;">${t.desc}</p>
+            <p style="margin-top:1rem;">⏱ ${t.time}</p>
+        </div>`;
+        });
+    </script>
+</body>
+
+</html>
