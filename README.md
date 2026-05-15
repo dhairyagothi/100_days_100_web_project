@@ -193,8 +193,14 @@ The website features:
 
 ## Getting Started
 
-<!-- ⚠️ new update: Read carefully👉 https://github.com/100_days_100_web_project/discussions/1028 -->
+### Setup Instructions
 
+1. Fork the repository
+
+2. Clone your forked repository
+
+```bash
+git clone https://github.com/pradnya1212/100_days_100_web_project.git
 ## 🚀 Quick Start
 
 ### 🌐 View Projects Online
@@ -284,6 +290,13 @@ We welcome contributions from developers of all skill levels! Here's how you can
 - Update documentation if needed
 
 **📖 For detailed guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)**
+
+### 🌟 Documentation
+
+- Add setup instructions
+- Improve README formatting
+- Add screenshots for projects
+- Fix broken links
 
 ## 🎯 Learning Path
 
