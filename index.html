@@ -60,6 +60,19 @@
                 </button>
             </div>
         </div>
+        <!-- Filters: generated dynamically by JS -->
+        <div id="filtersContainer" class="filters-container">
+            <div id="categoryFilters" class="category-filters" aria-label="Project categories"></div>
+            <div class="difficulty-filter">
+                <label for="difficultyFilter">Difficulty:</label>
+                <select id="difficultyFilter">
+                    <option value="All">All</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+        </div>
     </section>
 
     <section class="projects-section">
@@ -68,10 +81,12 @@
                 
                 <thead>
                     <tr>
-                        <th>Day</th>
-                        <th>Project Name</th>
-                        <th>Demo Link</th>
-                    </tr>
+                                <th>Day</th>
+                                <th>Project Name</th>
+                                <th>Category</th>
+                                <th>Difficulty</th>
+                                <th>Demo Link</th>
+                            </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>

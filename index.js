@@ -181,10 +181,32 @@ let projectData = [];
 // Populate the table with project data
 
 // Complete fillTable implementation with search filtering
+function inferCategory(name, url) {
+    const n = name.toLowerCase();
+    if (/game|snake|hangman|breakout|drumkit|2048|piano|flappy|whack|quiz|quiz|memory|insect|candy|hangman|simon|whack-a-mole|maze|wordle|tictac|love-calculator/.test(n)) return 'Game';
+    if (/calculator|calculator|bmi|stock|finance|budget|password|converter|generator|qr|text|time|timer|clock|todo|notes|pastebin|password manager/.test(n)) return 'Utility';
+    if (/api|backend|server|express|flask|node|mern|backend|voting|auth|gmail_nodemailer/.test(n)) return 'Backend/API';
+    if (/react|tailwind|ts|typescript|todo list|linkedin|netflix|amazon|e-commerce|clone|clone website|clone project/.test(n)) return 'Frontend';
+    if (/ai|image classifier|chatbot|jarvis|nasa|apod|machine|classifier|ai image/.test(n)) return 'AI/ML';
+    if (/game|gameplay/.test(url)) return 'Game';
+    return 'Other';
+}
+
+function inferDifficulty(name) {
+    const n = name.toLowerCase();
+    if (/clone|backend|mern|flask|express|react|typescript|tailwind|api|advanced|extension/.test(n)) return 'Intermediate';
+    if (/calculator|todo|clock|game|simple|beginner|generator|quiz|puzzle/.test(n)) return 'Beginner';
+    return 'Intermediate';
+}
+
+function filterProjects() {
+    const term = (document.getElementById('searchInput') || {}).value || '';
+    fillTable(term);
+}
+
 function fillTable(searchTerm = "") {
     const tableBody = document.getElementById("tableBody"); // Ensure your <tbody> has this ID
-    const noProjectsMessage = document.getElementById("noProjects"); // The "No Projects Found" element
-    
+    const noProjectsMessage = document.getElementById("no-projects") || document.getElementById("noProjects"); // The "No Projects Found" element
     if (!tableBody) return;
 
     const data = [
@@ -312,11 +334,29 @@ function fillTable(searchTerm = "") {
     // Clear existing rows
     tableBody.innerHTML = "";
 
-    // Filter projects based on the search query
-    const filteredData = data.filter(project => 
-        project[0].toLowerCase().includes(searchTerm.toLowerCase()) || 
-        project[1].toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Read active filters
+    const catBtns = document.querySelectorAll('.category-btn.active');
+    const selectedCategories = Array.from(catBtns).map(b => b.dataset.category);
+    const difficultySelect = document.getElementById('difficultyFilter');
+    const selectedDifficulty = difficultySelect ? difficultySelect.value : 'All';
+
+    // Map entries to include inferred metadata
+    const enriched = data.map(project => {
+        const day = project[0] || '';
+        const name = project[1] || '';
+        const url = project[2] || '';
+        const category = inferCategory(name, url);
+        const difficulty = inferDifficulty(name);
+        return { day, name, url, category, difficulty };
+    });
+
+    // Filter projects based on the search query and filters
+    const filteredData = enriched.filter(p => {
+        const termMatch = (p.day + ' ' + p.name).toLowerCase().includes(searchTerm.toLowerCase());
+        const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes('All') || selectedCategories.includes(p.category);
+        const difficultyMatch = selectedDifficulty === 'All' || p.difficulty === selectedDifficulty;
+        return termMatch && categoryMatch && difficultyMatch;
+    });
 
     // Toggle "No Projects Found" visibility
     if (filteredData.length === 0) {
@@ -327,12 +367,14 @@ function fillTable(searchTerm = "") {
     }
 
     // Build and append table rows
-    filteredData.forEach(project => {
+    filteredData.forEach(p => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${project[0]}</td>
-            <td>${project[1]}</td>
-            <td><a class="button" href="${project[2]}" target="_blank">Live Demo</a></td>
+            <td>${p.day}</td>
+            <td>${p.name}</td>
+            <td>${p.category}</td>
+            <td>${p.difficulty}</td>
+            <td><a class="button" href="${p.url}" target="_blank">Live Demo</a></td>
         `;
         tableBody.appendChild(row);
     });
@@ -345,12 +387,71 @@ document.addEventListener('DOMContentLoaded', () => {
     updateNavbar();
     fillTable(); // Renders the complete table on page load
 
-    // Optional: Hook into search input if you have one
-    const searchInput = document.getElementById("projectSearch");
+    // Hook into search input
+    const searchInput = document.getElementById("searchInput");
     if (searchInput) {
         searchInput.addEventListener("input", (e) => {
             fillTable(e.target.value);
         });
+    }
+
+    // Build category filter buttons from inferred categories
+    // derive categories from current data set
+    try {
+        const dataCategories = new Set();
+        // Re-use the in-file data by calling fillTable's local data mapping indirectly
+        const sampleData = [];
+        // we replicate the data array minimally by reading currently rendered table rows if present
+        // but simpler: infer categories by running fillTable once and gathering unique categories from its generated rows
+        // Create a temporary run to collect categories
+        const tempData = [];
+        // Access the internal `data` defined in fillTable by triggering it and then reading rows
+        fillTable('');
+        const rows = document.querySelectorAll('#tableBody tr');
+        rows.forEach(r => {
+            const tds = r.querySelectorAll('td');
+            if (tds.length >= 4) {
+                dataCategories.add(tds[2].textContent.trim());
+            }
+        });
+
+        const categoryContainer = document.getElementById('categoryFilters');
+        if (categoryContainer) {
+            // add an 'All' button
+            const allBtn = document.createElement('button');
+            allBtn.className = 'button category-btn active';
+            allBtn.dataset.category = 'All';
+            allBtn.textContent = 'All';
+            allBtn.addEventListener('click', (e) => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                fillTable(document.getElementById('searchInput').value || '');
+            });
+            categoryContainer.appendChild(allBtn);
+
+            Array.from(dataCategories).sort().forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'button category-btn';
+                btn.dataset.category = cat;
+                btn.textContent = cat;
+                btn.addEventListener('click', (e) => {
+                    // toggle single-select behavior
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    fillTable(document.getElementById('searchInput').value || '');
+                });
+                categoryContainer.appendChild(btn);
+            });
+        }
+
+        const difficultySelect = document.getElementById('difficultyFilter');
+        if (difficultySelect) {
+            difficultySelect.addEventListener('change', () => {
+                fillTable(document.getElementById('searchInput').value || '');
+            });
+        }
+    } catch (e) {
+        console.warn('Failed to build category filters dynamically', e);
     }
 });
 
