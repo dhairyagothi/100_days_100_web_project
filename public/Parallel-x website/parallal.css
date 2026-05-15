@@ -51,11 +51,14 @@ header {
     left: 0;
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    gap: 80px;
+    gap: 30px;
     padding: 20px 55px;
     z-index: 1000;
+
+    background: rgba(1, 55, 45, 0.92);
+    backdrop-filter: blur(10px);
 }
 
 .name {
@@ -162,7 +165,7 @@ nav ul li:hover a {
     background: linear-gradient(135deg, #01372d, #025c4a);
     color: white;
     position: relative;
-    padding: 110px 70px;
+    padding: 140px 70px 110px;
     min-height: 100vh;
 }
 
@@ -366,7 +369,7 @@ footer {
     }
 
     .content {
-        padding: 100px 30px;
+        padding: 150px 30px 100px;
     }
 
     .content h2 {
@@ -392,7 +395,7 @@ footer {
 
 /* Theme Toggle Button */
 
-#theme-toggle{
+#theme-toggle {
     padding: 10px 16px;
     border: none;
     border-radius: 30px;
