@@ -1,9 +1,8 @@
 *{
-    margin: 0;
-    font-family: Arial;
-    border: border-box;
+   margin:0;
+   padding:0;
+   box-sizing:border-box;
 }
-
 .navbar{
     height: 60px;
     background-color: #0f1111;
@@ -29,7 +28,7 @@
     border: 2px solid transparent;
 }
 .border:hover{
-    border: 1.5px solid white;
+   outline:1.5px solid white;
 
 }
 
@@ -108,7 +107,7 @@ span{
     font-size: 30px;
 }
 .nav-cart{
-    font-size: o.85rem;
+    font-size: 0.85rem;
     font-weight: 700;
 }
 
@@ -181,6 +180,13 @@ span{
     padding: 20px 0px 15px;
     margin-top: 15px;
 
+}
+.box{
+   transition: transform 0.3s ease;
+}
+
+.box:hover{
+   transform: translateY(-5px);
 }
 
 .box-img {
@@ -290,3 +296,19 @@ ul a {
 
 }
 
+@media(max-width:768px){
+
+   .navbar{
+      flex-direction:column;
+      height:auto;
+   }
+
+   .shop-section{
+      flex-direction:column;
+      align-items:center;
+   }
+
+   .box{
+      width:90%;
+   }
+}
