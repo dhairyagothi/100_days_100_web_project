@@ -1,5 +1,3 @@
-
-
 const changeSizeBtn = document.getElementById("changeSizeBtn");
 const noteContent = document.getElementById("noteContent");
 
@@ -31,6 +29,13 @@ dropdown.addEventListener("click", (e) => {
   if (selection.rangeCount === 0) return;
 
   const range = selection.getRangeAt(0);
+
+  if (!noteContent.contains(range.commonAncestorContainer)) {
+    alert("You can only change the text size within the note body!");
+    dropdown.classList.remove("visible");
+    return;
+  }
+
   const selectedText = selection.toString();
 
   if (!selectedText) {
@@ -47,7 +52,6 @@ dropdown.addEventListener("click", (e) => {
 
   dropdown.classList.remove("visible"); // hide dropdown
 });
-
 
 const changeColorBtn = document.getElementById("changeColorBtn");
 
@@ -81,6 +85,13 @@ colorDropdown.addEventListener("click", (e) => {
   if (selection.rangeCount === 0) return;
 
   const range = selection.getRangeAt(0);
+
+  if (!noteContent.contains(range.commonAncestorContainer)) {
+    alert("You can only change the color of the note body text!");
+    colorDropdown.classList.remove("visible");
+    return;
+  }
+
   const selectedText = selection.toString();
 
   if (!selectedText) {
@@ -97,7 +108,6 @@ colorDropdown.addEventListener("click", (e) => {
 
   colorDropdown.classList.remove("visible");
 });
-
 
 const saveNoteBtn = document.getElementById("saveNoteBtn");
 
@@ -131,9 +141,6 @@ clearNoteBtn.addEventListener("click", () => {
     localStorage.removeItem("myNote");
   }
 });
-
-
-
 
 // ---------------------------
 // 🔹 SAVE & LOAD NOTES
@@ -170,4 +177,3 @@ noteContent_.addEventListener("input", saveNoteToLocal);
 
 // Load when page opens
 window.addEventListener("load", loadNoteFromLocal);
-
