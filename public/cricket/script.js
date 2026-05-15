@@ -1,10 +1,11 @@
-
 let score = JSON.parse(
   localStorage.getItem("SCORE")
 ) || {
+
   win: 0,
   lost: 0,
   tie: 0
+
 };
 
 const choices = [
@@ -25,36 +26,40 @@ function saveScore() {
 function displayResults() {
 
   return `
+
     <div class="score-item">
-       Wins:
+      Wins
       <span>${score.win}</span>
     </div>
 
     <div class="score-item">
-       Losses:
+      Losses
       <span>${score.lost}</span>
     </div>
 
     <div class="score-item">
-       Ties:
+      Ties
       <span>${score.tie}</span>
     </div>
 
     <div class="score-item total-games">
-       Total Games:
+      Total Games
       <span>
         ${score.win + score.lost + score.tie}
       </span>
     </div>
+
   `;
 }
 
 function resetscore() {
 
   score = {
+
     win: 0,
     lost: 0,
     tie: 0
+
   };
 
   saveScore();
@@ -64,6 +69,21 @@ function resetscore() {
   ).innerHTML =
     displayResults();
 
+  document.querySelector(
+    "#user-move"
+  ).innerHTML = "";
+
+  document.querySelector(
+    "#computer-move"
+  ).innerHTML = "";
+
+  document.querySelector(
+    "#result"
+  ).innerHTML = `
+    <div class="result-text">
+      Score Reset Successfully
+    </div>
+  `;
 }
 
 function computergeneratechoice() {
@@ -90,15 +110,17 @@ function choiceimage(choice) {
   };
 
   return `
+
     <div class="choice-container">
 
       <img
         src="${images[choice]}"
         alt="${choice}"
-        class="game-image"
+        class="game_image"
       >
 
     </div>
+
   `;
 }
 
@@ -113,7 +135,7 @@ function getresult(
 
     score.tie++;
 
-    return " It's a Tie!";
+    return "🤝 It's a Tie!";
 
   }
 
@@ -134,13 +156,13 @@ function getresult(
 
     score.win++;
 
-    return " You Won!";
+    return "🎉 You Won!";
 
   }
 
   score.lost++;
 
-  return "Computer Won!";
+  return "💻 Computer Won!";
 
 }
 
@@ -160,23 +182,37 @@ function showresult(
   document.querySelector(
     "#user-move"
   ).innerHTML = `
+
+    <h3>Your Move</h3>
+
     ${choiceimage(usermove)}
-    <p>You chose ${usermove}</p>
+
+    <p>${usermove}</p>
+
   `;
 
   document.querySelector(
     "#computer-move"
   ).innerHTML = `
+
+    <h3>Computer Move</h3>
+
     ${choiceimage(cmpchoice)}
-    <p>Computer chose ${cmpchoice}</p>
+
+    <p>${cmpchoice}</p>
+
   `;
 
   document.querySelector(
     "#result"
   ).innerHTML = `
+
     <div class="result-text">
+
       ${result}
+
     </div>
+
   `;
 
   document.querySelector(
@@ -190,3 +226,14 @@ document.querySelector(
   "#score"
 ).innerHTML =
   displayResults();
+function playGame(usermove) {
+
+  const computerchoice =
+    computergeneratechoice();
+
+  showresult(
+    usermove,
+    computerchoice
+  );
+
+}
