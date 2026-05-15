@@ -39,3 +39,18 @@ body {
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+#restartBtn {
+    margin-bottom: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: #111;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+#restartBtn:hover {
+    background: #333;
+}
