@@ -7,6 +7,10 @@
   font-family: "Poppins", sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   width: 100%;
   min-height: 100vh;
@@ -14,45 +18,131 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(135deg, #0b0b0b, #3a4452);
+  overflow-x: hidden;
+  position: relative;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(109, 238, 10, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(0, 183, 255, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #090909, #1f2732, #111827);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* AMBIENT GLOW */
+body::before {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  background: #6dee0a;
+  filter: blur(140px);
+  opacity: 0.12;
+  top: -120px;
+  right: -120px;
+  z-index: -1;
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background: #00b7ff;
+  filter: blur(140px);
+  opacity: 0.1;
+  bottom: -100px;
+  left: -100px;
+  z-index: -1;
+}
+
+/* MAIN CONTAINER */
+.calculator-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CALCULATOR */
 .calculator {
   width: 100%;
-  max-width: 460px;
+  max-width: 470px;
   padding: 24px;
-  border-radius: 24px;
-  border: 1px solid rgba(113, 115, 119, 0.35);
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
   background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
   box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.35),
-    0 0 40px rgba(120, 121, 121, 0.15);
-  overflow: hidden; /* Keeps all buttons inside the card */
+    0 10px 40px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(109, 238, 10, 0.08);
+
+  animation: floating 5s ease-in-out infinite;
 }
+
+/* GLASS SHINE */
+.calculator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.08),
+    transparent 40%
+  );
+  pointer-events: none;
+}
+
+@keyframes floating {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* HEADER */
 .calculator-header {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .calculator-header h2 {
   color: #ffffff;
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
+
+/* DISPLAY */
 .display-section {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .previous-display {
   min-height: 22px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   text-align: right;
-  color: #aeb6c2;
-  font-size: 0.9rem;
-  word-break: break-all;
+  color: #9ea8b5;
+  font-size: 0.95rem;
+  word-break: break-word;
 }
 
 #inputBox {
@@ -62,59 +152,89 @@ body {
   background: transparent;
   color: #ffffff;
   text-align: right;
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-weight: 600;
-  padding: 16px 8px;
+  padding: 14px 6px;
+  letter-spacing: 1px;
+
   white-space: nowrap;
   overflow-x: auto;
+  scrollbar-width: none;
+}
+
+#inputBox::-webkit-scrollbar {
+  display: none;
 }
 
 #inputBox::placeholder {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.75);
 }
+
+/* BUTTON BASE */
 button {
   border: none;
   outline: none;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
-  transition: all 0.2s ease;
+
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.03);
+
+  background: rgba(255, 255, 255, 0.04);
+
   box-shadow:
-    -6px -6px 16px rgba(255, 255, 255, 0.05),
-    6px 6px 16px rgba(0, 0, 0, 0.25);
+    -6px -6px 14px rgba(255, 255, 255, 0.03),
+    6px 6px 14px rgba(0, 0, 0, 0.25);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
+/* HOVER EFFECT */
 button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.02);
+  background: rgba(255, 255, 255, 0.08);
 }
 
+/* CLICK EFFECT */
 button:active {
   transform: scale(0.96);
+
+  box-shadow:
+    inset 4px 4px 10px rgba(0, 0, 0, 0.35),
+    inset -4px -4px 10px rgba(255, 255, 255, 0.03);
 }
 
 button:focus-visible {
   outline: 2px solid rgba(109, 238, 10, 0.6);
   outline-offset: 2px;
 }
+
+/* SCIENTIFIC PANEL */
 .scientific-panel {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+
   margin-bottom: 18px;
   padding-bottom: 18px;
+
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .scientific-panel button {
   width: 100%;
-  height: 52px;
-  border-radius: 14px;
+  height: 54px;
+  border-radius: 16px;
+
   color: #6dee0a;
   font-size: 1rem;
   font-weight: 600;
 }
+
+/* MAIN GRID */
 .button-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -124,39 +244,65 @@ button:focus-visible {
 .button-grid button {
   width: 100%;
   aspect-ratio: 1 / 1;
+
   border-radius: 50%;
-  font-size: 1.35rem;
+
+  font-size: 1.3rem;
   font-weight: 600;
 }
+
+/* OPERATORS */
 .operators {
   color: #6dee0a;
   font-size: 1.5rem;
+  background: rgba(109, 238, 10, 0.08);
 }
+
+/* CLEAR BUTTONS */
 .Clear {
-  color: orangered;
+  color: #ff5f5f;
 }
+
+/* EQUAL BUTTON */
 .equalTo {
-  background: linear-gradient(135deg, #6dee0a, #4bcf00);
-  color: #0b0b0b;
+  background: linear-gradient(135deg, #6dee0a, #49c900);
+
+  color: #081100;
+
   font-weight: 700;
+
+  box-shadow: 0 0 20px rgba(109, 238, 10, 0.35);
 }
+
+/* EXTRA ACTIONS */
 .extra-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 20px;
+
+  margin-top: 22px;
 }
 
 .extra-actions button {
   width: 100%;
-  height: 46px;
-  border-radius: 12px;
-  font-size: 0.9rem;
+  height: 48px;
+
+  border-radius: 14px;
+
+  font-size: 0.92rem;
   font-weight: 500;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
+
+/* HISTORY */
 .history-section {
-  margin-top: 22px;
-  padding-top: 16px;
+  margin-top: 24px;
+  padding-top: 18px;
+
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -164,64 +310,100 @@ button:focus-visible {
   color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 12px;
-  text-align: center;
+
+  margin-bottom: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
+/* HISTORY LIST */
 #historyList {
   list-style: none;
+
   max-height: 180px;
   overflow-y: auto;
+
   padding-right: 4px;
 }
 
 #historyList li {
-  padding: 8px 10px;
-  margin-bottom: 6px;
-  border-radius: 8px;
-  color: #dcdcdc;
-  font-size: 0.85rem;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+
+  border-radius: 10px;
+
+  color: #d8d8d8;
+  font-size: 0.88rem;
+
   cursor: pointer;
+
   word-break: break-word;
-  transition: background 0.2s ease;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 #historyList li:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateX(4px);
 }
 
 #historyList .empty-history {
   text-align: center;
-  color: #8f9aa8;
+  color: #8793a3;
   cursor: default;
 }
+
+/* SCROLLBAR */
 #historyList::-webkit-scrollbar {
   width: 5px;
 }
 
 #historyList::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 10px;
 }
+
+/* POP ANIMATION */
+.pop {
+  animation: pop 0.2s ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.96);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* RESPONSIVE */
 @media (max-width: 576px) {
   body {
-    padding: 12px;
+    padding: 14px;
     align-items: flex-start;
     padding-top: 20px;
   }
 
   .calculator {
     padding: 18px;
-    border-radius: 18px;
+    border-radius: 22px;
   }
 
   .calculator-header h2 {
-    font-size: 1.35rem;
+    font-size: 1.5rem;
   }
 
   #inputBox {
-    font-size: 2rem;
-    padding: 12px 4px;
+    font-size: 2.2rem;
   }
 
   .scientific-panel {
@@ -242,7 +424,7 @@ button:focus-visible {
   }
 
   .operators {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   .extra-actions {
@@ -250,7 +432,7 @@ button:focus-visible {
   }
 
   .extra-actions button {
-    height: 42px;
+    height: 44px;
     font-size: 0.85rem;
   }
 
@@ -259,28 +441,31 @@ button:focus-visible {
   }
 }
 
+/* SMALL DEVICES */
 @media (max-width: 360px) {
   .calculator {
     padding: 14px;
   }
 
   .calculator-header h2 {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
   }
 
   #inputBox {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
   }
 
   .scientific-panel button {
     height: 40px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 
   .button-grid button {
     font-size: 1rem;
   }
 }
+
+/* ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

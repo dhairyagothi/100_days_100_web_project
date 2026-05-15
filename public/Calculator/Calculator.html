@@ -3,75 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scientific Calculator</title>
+
+    <title>Modern Scientific Calculator</title>
+
     <link rel="stylesheet" href="Calculator.css" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
   </head>
+
   <body>
-    <div class="calculator">
-      <div class="calculator-header">
-        <h2>Scientific Calculator</h2>
-      </div>
-      <div class="display-section">
-        <div id="previousDisplay" class="previous-display"></div>
-        <input
-          type="text"
-          placeholder="0"
-          id="inputBox"
-          readonly
-          aria-label="Calculator Display"
-        />
-      </div>
-      <div class="scientific-panel">
-        <button data-value="sin(" type="button">sin</button>
-        <button data-value="cos(" type="button">cos</button>
-        <button data-value="tan(" type="button">tan</button>
-        <button data-value="log(" type="button">log</button>
+    <main class="calculator-container">
+      <section class="calculator">
+        <!-- HEADER -->
+        <div class="calculator-header">
+          <h2>Smart Calculator</h2>
+        </div>
 
-        <button data-value="sqrt(" type="button">√</button>
-        <button data-value="**2" type="button">x²</button>
-        <button data-value="**" type="button">xʸ</button>
-        <button data-value="(" type="button">(</button>
+        <!-- DISPLAY SECTION -->
+        <div class="display-section">
+          <div class="previous-display" id="previousDisplay"></div>
 
-        <button data-value=")" type="button">)</button>
-        <button data-value="pi" type="button">π</button>
-        <button data-value="e" type="button">e</button>
-        <button data-value="%" type="button">%</button>
-      </div>
-      <div class="button-grid">
-        <button class="Clear" type="button">AC</button>
-        <button class="Clear" type="button">DEL</button>
-        <button class="operators" type="button">%</button>
-        <button class="operators" type="button">/</button>
-        <button type="button">7</button>
-        <button type="button">8</button>
-        <button type="button">9</button>
-        <button class="operators" type="button">*</button>
-        <button type="button">4</button>
-        <button type="button">5</button>
-        <button type="button">6</button>
-        <button class="operators" type="button">-</button>
-        <button type="button">1</button>
-        <button type="button">2</button>
-        <button type="button">3</button>
-        <button class="operators" type="button">+</button>
-        <button type="button">00</button>
-        <button type="button">0</button>
-        <button type="button">.</button>
-        <button class="equalTo" type="button">=</button>
-      </div>
-      <div class="extra-actions">
-        <button id="copyBtn" type="button">Copy</button>
-        <button id="clearHistoryBtn" type="button">Clear History</button>
-      </div>
-      <div class="history-section">
-        <h3>History</h3>
+          <input
+            type="text"
+            id="inputBox"
+            placeholder="0"
+            readonly
+            aria-label="Calculator Display"
+          />
+        </div>
 
-        <ul id="historyList"></ul>
-      </div>
-    </div>
+        <!-- SCIENTIFIC PANEL -->
+        <div class="scientific-panel">
+          <button data-value="sin(">sin</button>
+          <button data-value="cos(">cos</button>
+          <button data-value="tan(">tan</button>
+          <button data-value="sqrt(">√</button>
 
-    <!-- JavaScript -->
+          <button data-value="log(">log</button>
+          <button data-value="pi">π</button>
+          <button data-value="e">e</button>
+          <button data-value="(">(</button>
+
+          <button data-value=")">)</button>
+          <button data-value="**2">x²</button>
+          <button data-value="**">xʸ</button>
+          <button data-value="%">%</button>
+        </div>
+
+        <!-- MAIN BUTTON GRID -->
+        <div class="button-grid">
+          <button class="Clear">AC</button>
+          <button class="Clear">DEL</button>
+          <button class="operators">/</button>
+          <button class="operators">*</button>
+
+          <button>7</button>
+          <button>8</button>
+          <button>9</button>
+          <button class="operators">-</button>
+
+          <button>4</button>
+          <button>5</button>
+          <button>6</button>
+          <button class="operators">+</button>
+
+          <button>1</button>
+          <button>2</button>
+          <button>3</button>
+          <button class="equalTo">=</button>
+
+          <button>00</button>
+          <button>0</button>
+          <button>.</button>
+          <button data-value="ans">ANS</button>
+        </div>
+
+        <!-- EXTRA ACTION BUTTONS -->
+        <div class="extra-actions">
+          <button id="copyBtn">
+            <i class="fa-regular fa-copy"></i>
+            Copy
+          </button>
+
+          <button id="clearHistoryBtn">
+            <i class="fa-solid fa-trash"></i>
+            Clear History
+          </button>
+        </div>
+
+        <!-- HISTORY SECTION -->
+        <div class="history-section">
+          <h3>
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            Calculation History
+          </h3>
+
+          <ul id="historyList"></ul>
+        </div>
+      </section>
+    </main>
+
     <script src="Calculator.js"></script>
   </body>
 </html>
