@@ -32,14 +32,9 @@ export function HeroContent({ onExplore, showGrid }: HeroContentProps) {
         </p>
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
-        className="w-full max-w-3xl mx-auto"
-      >
+      <div className="w-full max-w-3xl mx-auto">
         <RepoStatsDisplay stats={stats} />
-      </motion.div>
+      </div>
 
       <div className="pt-8 flex flex-col items-center gap-4">
         <button

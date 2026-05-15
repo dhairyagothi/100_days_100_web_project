@@ -22,7 +22,7 @@ export function HomeWrapper({
   return (
     <div className="flex flex-col w-full">
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex flex-col items-center justify-center overflow-hidden bg-background px-4">
+      <section className="relative min-h-[85vh] flex flex-col items-center justify-center overflow-hidden bg-background px-4 border-2 border-red-500">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/5 rounded-full blur-[120px] opacity-50" />
