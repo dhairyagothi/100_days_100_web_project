@@ -9,10 +9,10 @@ export default function About() {
       <FadeIn>
         <div className="space-y-12">
           <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground font-geist-sans">
-              About the Project
-            </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground font-geist-sans">
+            About the Project
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
               The <strong className="text-foreground font-medium">100 Days 100 Web Projects</strong> initiative is a journey of continuous learning and creation. This platform archives one hundred interactive web experiences built using vanilla HTML, CSS, JavaScript, and modern frameworks.
             </p>
           </div>
@@ -51,16 +51,16 @@ export default function About() {
           <div className="pt-8 border-t border-border/50">
             <Link
               href="/contributors"
-              className="group flex items-center justify-between rounded-2xl border border-border/40 bg-card p-6 transition-all hover:shadow-lg hover:border-primary/30"
+              className="group flex flex-col sm:flex-row items-center justify-between rounded-2xl border border-border/40 bg-card p-5 md:p-6 transition-all hover:shadow-lg hover:border-primary/30 gap-4"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 text-center sm:text-left flex-col sm:flex-row">
                 <Users className="h-8 w-8 text-primary" />
                 <div>
                   <h3 className="text-lg font-semibold">Our Contributors</h3>
                   <p className="text-sm text-muted-foreground">Meet the amazing people who helped build this project.</p>
                 </div>
               </div>
-              <span className="text-muted-foreground group-hover:text-foreground transition-colors text-2xl">→</span>
+              <span className="hidden sm:block text-muted-foreground group-hover:text-foreground transition-colors text-2xl">→</span>
             </Link>
           </div>
         </div>

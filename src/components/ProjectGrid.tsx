@@ -44,20 +44,20 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
-          <div className="relative h-full overflow-hidden rounded-[1.5rem] bg-card p-6 border border-border/40 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1">
+          <div className="relative h-full overflow-hidden rounded-[1.5rem] bg-card p-5 sm:p-6 border border-border/40 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1">
             <div className="flex justify-between items-start mb-4">
-              <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary font-mono">
+              <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] sm:text-xs font-medium text-primary font-mono">
                 {project.day}
               </span>
               <button
                 onClick={() => toggleFavorite(project.id)}
-                className={`p-2 rounded-full transition-colors ${isFavorite(project.id) ? 'text-yellow-500' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`p-1.5 sm:p-2 rounded-full transition-colors ${isFavorite(project.id) ? 'text-yellow-500' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <Star className="h-4 w-4" fill={isFavorite(project.id) ? "currentColor" : "none"} />
               </button>
             </div>
-            <h3 className="text-xl font-semibold mb-2 line-clamp-1">{project.title}</h3>
-            <p className="text-sm text-muted-foreground mb-6 line-clamp-2">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 line-clamp-1">{project.title}</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground mb-6 line-clamp-2">
               Interactive web project built during the 100 days of code challenge.
             </p>
             
