@@ -2,153 +2,793 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>100 Days 100 Web Projects</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: white;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        body.light-theme {
+            background: #f5f5f5;
+            color: #111;
+        }
+
+        canvas {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+
+        /* Progress Bar */
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 0%;
+            background: linear-gradient(90deg, #7f5af0, #2cb67d);
+            z-index: 9999;
+        }
+
+        /* Navbar */
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-brand img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .navbar-brand span {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button,
+        .button {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #7f5af0, #2cb67d);
+        }
+
+        button:hover,
+        .button:hover {
+            transform: translateY(-3px) scale(1.04);
+        }
+
+        /* Hero */
+
+        .hero-section {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+
+        /* Stats */
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .stat-card {
+            padding: 30px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            transition: 0.4s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(127, 90, 240, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+
+        /* Search */
+
+        .search-container {
+            margin-top: 40px;
+        }
+
+        .search-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-input {
+            width: 320px;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            padding: 14px 18px;
+        }
+
+        /* Table */
+
+        .projects-section {
+            padding: 40px 20px;
+        }
+
+        .table-container {
+            max-width: 1000px;
+            margin: auto;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        th,
+        td {
+            padding: 18px;
+            text-align: left;
+        }
+
+        tbody tr {
+            background: rgba(255, 255, 255, 0.04);
+            transition: 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(127, 90, 240, 0.2);
+            transform: scale(1.01);
+        }
+
+        tbody tr.hidden-row {
+            display: none;
+        }
+
+        /* Footer */
+
+        .footer {
+            margin-top: 60px;
+            padding: 50px 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7f5af0, #2cb67d);
+            color: white;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: rotate(8deg) scale(1.1);
+        }
+
+        /* Scroll Button */
+
+        #scrollBtn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: none;
+            z-index: 999;
+        }
+
+        /* Toast */
+
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #111;
+            color: white;
+            padding: 14px 22px;
+            border-radius: 12px;
+            opacity: 0;
+            transition: 0.4s ease;
+            z-index: 9999;
+        }
+
+        #toast.show {
+            opacity: 1;
+        }
+
+        /* Animation */
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+
+        @media(max-width:768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .search-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-input {
+                width: 90%;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
+    <div id="progress-bar"></div>
+
     <canvas id="bgCanvas"></canvas>
 
-    <nav class="navbar">
+    <!-- TOAST -->
+
+    <div id="toast"></div>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar hidden">
+
         <div class="navbar-brand">
             <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
+
             <span>100 DAYS 100 WEB PROJECTS</span>
         </div>
+
         <div class="buttons">
-            <button id="theme-toggle" title="Toggle Theme">
+
+            <button id="theme-toggle">
                 <i class="fas fa-moon"></i>
             </button>
-            <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn">
+
+            <a href="https://www.github-readme.tech" target="_blank" class="button">
                 <i class="fas fa-rocket"></i>
-                <span>Generate README</span>
+                Generate README
             </a>
+
         </div>
+
     </nav>
 
-    <section class="hero-section">
+    <!-- HERO -->
+
+    <section class="hero-section hidden">
+
         <h1 class="hero-title">100 Days 100 Web Projects</h1>
-        <p class="hero-subtitle">Exploring the art of the possible through 100+ high-quality web experiments</p>
+
+        <p class="hero-subtitle">
+            Exploring the art of the possible through interactive web experiments
+        </p>
+
+        <!-- STATS -->
 
         <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-value" id="starCount">...</div>
+
+            <div class="stat-card hidden">
+                <div class="stat-value" id="starCount">0</div>
                 <div class="stat-label">Stars</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="forkCount">...</div>
+
+            <div class="stat-card hidden">
+                <div class="stat-value" id="forkCount">0</div>
                 <div class="stat-label">Forks</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="issueCount">...</div>
+
+            <div class="stat-card hidden">
+                <div class="stat-value" id="issueCount">0</div>
                 <div class="stat-label">Open Issues</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="prCount">...</div>
+
+            <div class="stat-card hidden">
+                <div class="stat-value" id="prCount">0</div>
                 <div class="stat-label">Pull Requests</div>
             </div>
+
         </div>
 
+        <!-- SEARCH -->
+
         <div class="search-container">
+
             <div class="search-wrapper">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search 112+ projects...">
+
+                <input type="text" id="searchInput" class="search-input"
+                    placeholder="Search Projects..." />
+
                 <button class="search-btn" onclick="filterProjects()">
                     <i class="fas fa-search"></i>
                 </button>
+
             </div>
+
         </div>
+
     </section>
 
-    <section class="projects-section">
+    <!-- PROJECTS -->
+
+    <section class="projects-section hidden">
+
         <div class="table-container">
+
             <table>
-                
+
                 <thead>
                     <tr>
                         <th>Day</th>
                         <th>Project Name</th>
-                        <th>Demo Link</th>
+                        <th>Demo</th>
                     </tr>
                 </thead>
+
                 <tbody id="tableBody"></tbody>
+
             </table>
-            <div id="pagination" class="pagination-container"></div>
+
         </div>
-        <div id="no-projects">No Projects Found</div>
+
     </section>
 
-    <footer class="footer">
+    <!-- FOOTER -->
+
+    <footer class="footer hidden">
+
         <div class="footer-content">
+
             <div>
                 <h3>About</h3>
-                <p>This repository contains 112 web projects from basic to intermediate using HTML, CSS, and JS.</p>
-                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
+                <p>
+                    100+ interactive web projects built using HTML, CSS and JavaScript.
+                </p>
             </div>
+
             <div>
-                <h3>Connect With Us</h3>
+                <h3>Connect</h3>
+
                 <div class="social-links">
-                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
-                        class="social-btn">
+
+                    <a href="#" class="social-btn">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
+
+                    <a href="#" class="social-btn">
                         <i class="fab fa-linkedin"></i>
                     </a>
+
+                    <a href="#" class="social-btn">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+
                 </div>
+
             </div>
-            <div>
-                <h3>Featured Project</h3>
-                <p>Generate free, stunning GitHub README profiles in minutes.</p>
-                <br />
-                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn"
-                    id="try-readme-button">
-                    <i class="fas fa-magic"></i> Try README Generator
-                </a>
-            </div>
+
         </div>
+
     </footer>
+
+    <!-- SCROLL BUTTON -->
 
     <button id="scrollBtn">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="index.js"></script>
-    <style>
-       #try-readme-button {
-    margin-top: 1rem;
-    padding: 14px 26px;
-    border-radius: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    <!-- JAVASCRIPT -->
 
-    background: linear-gradient(135deg, #7f5af0, #2cb67d);
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
+    <script>
 
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
-}
+        // SAMPLE PROJECT DATA
 
-#try-readme-button:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
-}
-#try-readme-button i {
-    transition: transform 0.3s ease;
-}
+        const projects = [
+            ["Day 1", "Calculator App"],
+            ["Day 2", "Weather App"],
+            ["Day 3", "Todo App"],
+            ["Day 4", "Music Player"],
+            ["Day 5", "Typing Speed Test"],
+            ["Day 6", "Quiz App"],
+            ["Day 7", "Password Generator"],
+            ["Day 8", "Netflix Clone"],
+            ["Day 9", "Portfolio Website"],
+            ["Day 10", "Expense Tracker"]
+        ];
 
-#try-readme-button:hover i {
-    transform: rotate(-30deg) scale(1.2);
-}
-    </style>
+        // RENDER TABLE
+
+        const tableBody = document.getElementById("tableBody");
+
+        function renderProjects(data) {
+
+            tableBody.innerHTML = "";
+
+            data.forEach((project, index) => {
+
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${project[0]}</td>
+                    <td>${project[1]}</td>
+                    <td>
+                        <button onclick="openProject('${project[1]}')">
+                            Open
+                        </button>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+
+            });
+
+        }
+
+        renderProjects(projects);
+
+        // FILTER PROJECTS
+
+        function filterProjects() {
+
+            const searchValue =
+                document.getElementById("searchInput")
+                    .value
+                    .toLowerCase();
+
+            const filtered = projects.filter(project =>
+                project[1].toLowerCase().includes(searchValue)
+            );
+
+            renderProjects(filtered);
+
+            if (filtered.length === 0) {
+                showToast("No Projects Found");
+            }
+
+        }
+
+        document
+            .getElementById("searchInput")
+            .addEventListener("input", filterProjects);
+
+        // OPEN PROJECT
+
+        function openProject(name) {
+
+            showToast(`${name} opened successfully!`);
+
+        }
+
+        // THEME TOGGLE
+
+        const themeToggle =
+            document.getElementById("theme-toggle");
+
+        themeToggle.addEventListener("click", () => {
+
+            document.body.classList.toggle("light-theme");
+
+            const icon =
+                themeToggle.querySelector("i");
+
+            if (document.body.classList.contains("light-theme")) {
+
+                localStorage.setItem("theme", "light");
+
+                icon.className = "fas fa-sun";
+
+                showToast("Light Mode Enabled");
+
+            } else {
+
+                localStorage.setItem("theme", "dark");
+
+                icon.className = "fas fa-moon";
+
+                showToast("Dark Mode Enabled");
+
+            }
+
+        });
+
+        // LOAD SAVED THEME
+
+        window.onload = () => {
+
+            const savedTheme =
+                localStorage.getItem("theme");
+
+            if (savedTheme === "light") {
+
+                document.body.classList.add("light-theme");
+
+                themeToggle.querySelector("i")
+                    .className = "fas fa-sun";
+
+            }
+
+        };
+
+        // TOAST
+
+        function showToast(message) {
+
+            const toast =
+                document.getElementById("toast");
+
+            toast.textContent = message;
+
+            toast.classList.add("show");
+
+            setTimeout(() => {
+
+                toast.classList.remove("show");
+
+            }, 3000);
+
+        }
+
+        // ANIMATED COUNTERS
+
+        function animateValue(id, start, end, duration) {
+
+            let current = start;
+
+            const range = end - start;
+
+            const increment = end > start ? 1 : -1;
+
+            const stepTime =
+                Math.abs(Math.floor(duration / range));
+
+            const obj = document.getElementById(id);
+
+            const timer = setInterval(() => {
+
+                current += increment;
+
+                obj.textContent = current;
+
+                if (current == end) {
+
+                    clearInterval(timer);
+
+                }
+
+            }, stepTime);
+
+        }
+
+        animateValue("starCount", 0, 1240, 1000);
+        animateValue("forkCount", 0, 420, 1000);
+        animateValue("issueCount", 0, 18, 1000);
+        animateValue("prCount", 0, 32, 1000);
+
+        // SCROLL BUTTON
+
+        const scrollBtn =
+            document.getElementById("scrollBtn");
+
+        window.addEventListener("scroll", () => {
+
+            if (window.scrollY > 300) {
+
+                scrollBtn.style.display = "block";
+
+            } else {
+
+                scrollBtn.style.display = "none";
+
+            }
+
+            // PROGRESS BAR
+
+            const scrollTop =
+                document.documentElement.scrollTop;
+
+            const scrollHeight =
+                document.documentElement.scrollHeight -
+                document.documentElement.clientHeight;
+
+            const progress =
+                (scrollTop / scrollHeight) * 100;
+
+            document.getElementById("progress-bar")
+                .style.width = progress + "%";
+
+        });
+
+        scrollBtn.addEventListener("click", () => {
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        });
+
+        // INTERSECTION OBSERVER
+
+        const observer =
+            new IntersectionObserver((entries) => {
+
+                entries.forEach((entry) => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("show");
+
+                    }
+
+                });
+
+            });
+
+        document.querySelectorAll(".hidden")
+            .forEach(el => observer.observe(el));
+
+        // BACKGROUND PARTICLES
+
+        const canvas =
+            document.getElementById("bgCanvas");
+
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+
+        for (let i = 0; i < 80; i++) {
+
+            particles.push({
+
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2,
+                dx: Math.random() - 0.5,
+                dy: Math.random() - 0.5
+
+            });
+
+        }
+
+        function animateParticles() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+
+                ctx.beginPath();
+
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+
+                ctx.fillStyle = "rgba(127,90,240,0.7)";
+
+                ctx.fill();
+
+                p.x += p.dx;
+                p.y += p.dy;
+
+                if (p.x < 0 || p.x > canvas.width)
+                    p.dx *= -1;
+
+                if (p.y < 0 || p.y > canvas.height)
+                    p.dy *= -1;
+
+            });
+
+            requestAnimationFrame(animateParticles);
+
+        }
+
+        animateParticles();
+
+    </script>
+
 </body>
 
 </html>
