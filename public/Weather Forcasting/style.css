@@ -1,17 +1,172 @@
-h1,h2{
-    color:#eeebe2;
-    font-weight: 400;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-color: #ffffff;
 }
 
-.card-header py-3{
-    background-color: #0d6efd;
-    color:white
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-color);
+    min-height: 100vh;
+    transition: background 1s ease;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-image: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Default */
 }
 
-.w-100 btn btn-lg btn-outline-primary{
-    background-color: #0d6efd;
+/* Weather Gradients */
+body.weather-clear {
+    background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+}
+
+body.weather-sunny {
+    background: linear-gradient(135deg, #FFD200 0%, #F7971E 100%);
+}
+
+body.weather-rainy {
+    background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+}
+
+body.weather-cloudy {
+    background: linear-gradient(135deg, #3a7bd5 0%, #3a6073 100%);
+}
+
+body.weather-stormy {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%, #24243e 100%);
+}
+
+body.weather-snowy {
+    background: linear-gradient(135deg, #83a4d4 0%, #b6fbff 100%);
+    color: #333;
+}
+
+body.weather-snowy .card, 
+body.weather-snowy .navbar,
+body.weather-snowy h1,
+body.weather-snowy h2 {
+    color: #333;
+}
+
+.navbar {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 0;
+}
+
+.navbar-brand, .nav-link {
+    color: var(--text-color) !important;
+    font-weight: 600;
+}
+
+.container {
+    padding-top: 2rem;
+}
+
+h1 {
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    color: var(--text-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.card:nth-child(2) { animation-delay: 1s; }
+.card:nth-child(3) { animation-delay: 2s; }
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.table {
+    color: var(--text-color);
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.table th, .table td {
+    border-color: var(--glass-border);
+    padding: 1rem;
+}
+
+#weatherIcon {
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+    width: 80px;
+    height: 80px;
+}
+
+.form-control {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    color: #ffffff !important;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-outline-success {
+    border-color: var(--glass-border);
     color: white;
+    border-radius: 10px;
 }
+
+.btn-outline-success:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white;
+}
+
 
 
 

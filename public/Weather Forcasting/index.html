@@ -4,232 +4,143 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Weather App</title>
+    <title>Weather App | Premium Weather Insights</title>
     <link rel="icon" href="logo.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body background="nice-beach-suning-weather-hd-wallapaper.jpg">
-    
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">⛅Weather App</a>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid container">
+            <a class="navbar-brand" href="#"><i class="fa-solid fa-cloud-sun-rain me-2"></i> Weather App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+                data-bs-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About this App</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Delhi</a></li>
-                            <li><a class="dropdown-item" href="#">Seattle</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Bangalore</a></li>
-                        </ul>
+                        <a class="nav-link" href="#">Insights</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">Usage Guide</a>
+                        <a class="nav-link" href="#">Global Map</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
-                    <input  id="city" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <input id="city" class="form-control me-2" type="search" placeholder="Enter city name..." aria-label="Search">
                     <button class="btn btn-outline-success" type="submit" id="submit">Search</button>
                 </form>
             </div>
         </div>
     </nav>
 
-
-
-
     <div class="container">
-        <h1 class="my-4 text-center">Weather for <span id="cityName"></span></h1>
+        <div class="text-center mt-5 mb-4">
+            <h1 class="display-4">Weather in <span id="cityName">---</span></h1>
+            <img id="weatherIcon" src="" alt="">
+        </div>
+
         <main>
-            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+            <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+                <!-- Temperature Card -->
                 <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3" style="background-color:#0d6efd; color: white;">
-                            <h4 class="my-0 fw-normal">Temperatures</h4>
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header text-center py-3">
+                            <h4 class="my-0"><i class="fa-solid fa-temperature-half me-2"></i> Temperature</h4>
                         </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title"><span id="temp2"></span><small
-                                    class="text-body-secondary fw-light"><span>&#8451;</span></small></h1>
+                        <div class="card-body text-center">
+                            <h1 class="card-title pricing-card-title display-3"><span id="temp2">0</span>°</h1>
                             <ul class="list-unstyled mt-3 mb-4">
-                                <li>Temperature is <span id="temp"></span></li>
-                                <li>Min Temperature is <span id="min_temp"></span></li>
-                                <li>Max Temperature is <span id="max_temp"></span></li>
-                               
+                                <li class="mb-2">Real Feel: <strong><span id="temp">0</span>°C</strong></li>
+                                <li class="mb-2">Min Temp: <span id="min_temp">0</span>°C</li>
+                                <li class="mb-2">Max Temp: <span id="max_temp">0</span>°C</li>
                             </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-outline-primary" style="background-color: #0d6efd;color: white;">Temperature Info</button>
                         </div>
                     </div>
                 </div>
+
+                <!-- Humidity Card -->
                 <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3" style="background-color: #0d6efd;color: white;">
-                            <h4 class="my-0 fw-normal">Humidity Info</h4>
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header text-center py-3">
+                            <h4 class="my-0"><i class="fa-solid fa-droplet me-2"></i> Humidity</h4>
                         </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title"><span id="humidity2"></span><small
-                                    class="text-body-secondary fw-light"> %</small></h1>
+                        <div class="card-body text-center">
+                            <h1 class="card-title pricing-card-title display-3"><span id="humidity2">0</span>%</h1>
                             <ul class="list-unstyled mt-3 mb-4">
-                                <li>Wind Degree is <span id="wind_degrees"></span></li>
-                                <li>Feels like <span id="feels_like"></span></li>
-                                <li>Humidity is <span id="humidity"></span></li>
+                                <li class="mb-2">Feels like: <span id="feels_like">0</span>°C</li>
+                                <li class="mb-2">Humidity Level: <span id="humidity">0</span>%</li>
+                                <li class="mb-2">Wind Angle: <span id="wind_degrees">0</span>°</li>
                             </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-primary">Humidity Info</button>
                         </div>
                     </div>
                 </div>
+
+                <!-- Wind Card -->
                 <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                        <div class="card-header py-3 text-bg-primary border-primary">
-                            <h4 class="my-0 fw-normal">Sun Info</h4>
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header text-center py-3">
+                            <h4 class="my-0"><i class="fa-solid fa-wind me-2"></i> Wind & Sun</h4>
                         </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title"><span id="wind_speed2"></span><small
-                                    class="text-body-secondary fw-light"> km/hr</small></h1>
+                        <div class="card-body text-center">
+                            <h1 class="card-title pricing-card-title display-3"><span id="wind_speed2">0</span><small class="fs-5"> km/h</small></h1>
                             <ul class="list-unstyled mt-3 mb-4">
-                               
-                                <li>Wind Speed is <span id="wind_speed"></span></li>
-                                <li>Sunrise Time is <span id="sunrise"></span></li>
-                                <li>Sunset Time is <span id="sunset"></span></li>
-                                
+                                <li class="mb-2">Wind Speed: <span id="wind_speed">0</span> km/h</li>
+                                <li class="mb-2"><i class="fa-solid fa-sun me-1"></i> Sunrise: <span id="sunrise">--:--</span></li>
+                                <li class="mb-2"><i class="fa-solid fa-moon me-1"></i> Sunset: <span id="sunset">--:--</span></li>
                             </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-primary">Wind Info</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <h2 class="display-6 text-center mb-4">Weather of other Commom Places</h2>
-
+            <h2 class="display-6 text-center mb-4 mt-5">Major Cities Comparison</h2>
             <div class="table-responsive">
-                <table class="table text-center">
+                <table class="table table-hover text-center">
                     <thead>
                         <tr>
-                            <th style="width: 34%;"></th>
-                            <th style="width: 22%;"> Cloud_pct</th>
-                            <th style="width: 22%;">Feels_like</th>
-                            <th style="width: 22%;">Humidity</th>
-                            <th style="width: 22%;">Max_temp</th>
-                            <th style="width: 22%;">Min_temp</th>
-                            <th style="width: 22%;">Sunrise</th>
-                            <th style="width: 22%;">Sunset</th>
-                            <th style="width: 22%;">Temp</th>
-                            <th style="width: 22%;">Wind_degrees</th>
-                            <th style="width: 22%;">Wind_speed</th>
+                            <th class="text-start">City</th>
+                            <th>Temp (°C)</th>
+                            <th>Feels Like</th>
+                            <th>Humidity</th>
+                            <th>Wind (km/h)</th>
+                            <th>Sunrise</th>
+                            <th>Sunset</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row" class="text-start">Bangalore</th>
-                             
-                            <td>40</td>
-                            <td>23</td>
-                            <td>23</td>
-                            <td>88</td>
-                            <td>23</td>
-                            <td>23</td>
-                            <td>5.14</td>
-                            <td>230</td>
-                            <td>1694651927</td>
-                            <td>1694695937</td>
-                             
+                            <th scope="row" class="text-start">London</th>
+                            <td>12</td><td>11</td><td>78</td><td>15</td><td>05:12</td><td>20:45</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="text-start">Chennai</th>
-                            <td>75</td>
-                            <td>29</td>
-                            <td>35</td>
-                            <td>81</td>
-                            <td>27</td>
-                            <td>29</td>
-                            <td>4.12</td>
-                            <td>150</td>
-                            <td>1694651283</td>
-                            <td>1694695297</td>
-                            
-                        </tr>
-                    </tbody>
-
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="text-start">Hyderabad</th>
-                            <td> 75</td>
-                            <td> 25</td>
-                            <td> 26</td>
-                            <td> 83</td>
-                            <td> 24</td>
-                            <td> 25</td>
-                            <td> 2.06</td>
-                            <td> 280</td>
-                            <td> 1694651642</td>
-                            <td> 1694695804</td>
+                            <th scope="row" class="text-start">New York</th>
+                            <td>22</td><td>24</td><td>65</td><td>12</td><td>05:45</td><td>20:12</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="text-start">Pune</th>
-                            <td> 39</td>
-                            <td> 22</td>
-                            <td> 23</td>
-                            <td> 90</td>
-                            <td> 22</td>
-                            <td> 22</td>
-                            <td> 3.31</td>
-                            <td> 255</td>
-                            <td> 1694652730</td>
-                            <td> 1694696933</td>
-                        </tr>
-                         <tr>
-                            <th scope="row" class="text-start">Noida</th>
-<td> 100</td>
-                            <td> 32</td>
-                            <td> 37</td>
-                            <td> 58</td>
-                            <td> 32</td>
-                            <td> 32</td>
-                            <td> 2.14</td>
-                            <td> 133</td>
-                            <td> 1694651697</td>
-                            <td> 1694696298</td>
+                            <th scope="row" class="text-start">Tokyo</th>
+                            <td>28</td><td>32</td><td>85</td><td>10</td><td>04:30</td><td>18:50</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="text-start">Delhi</th>
-                            <td> 40</td>
-                            <td> 32</td>
-                            <td> 39</td>
-                            <td> 70</td>
-                            <td> 32</td>
-                            <td> 32</td>
-                            <td> 2.57</td>
-                            <td> 140</td>
-                            <td> 1694651722</td>
-                            <td> 1694696327</td>
-                        </tr> 
+                            <th scope="row" class="text-start">Sydney</th>
+                            <td>18</td><td>18</td><td>60</td><td>25</td><td>06:50</td><td>17:15</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-start">Paris</th>
+                            <td>19</td><td>19</td><td>70</td><td>8</td><td>06:05</td><td>21:30</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 
