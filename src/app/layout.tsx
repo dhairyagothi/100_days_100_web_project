@@ -40,7 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            <Preloader />
+            {/* <Preloader /> */}
             <Navbar />
             <main className="flex-1">
               {children}
