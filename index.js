@@ -303,7 +303,8 @@ function fillTable(searchTerm = "") {
         ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
         ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"],
         ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
-        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
+        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html"],
+        ["Day 117", "Habit Tracker Web App", "/public/Habit-Tracker-Web-App/index.html"],
     ];
     
 
