@@ -1,3 +1,5 @@
+document.body.classList.add('cyberpunk-mode');
+document.body.setAttribute('data-theme', 'cyberpunk');
 if (typeof REPO_OWNER === 'undefined') {
     window.REPO_OWNER = "dhairyagothi";
     window.REPO_NAME = "100_days_100_web_project";
@@ -19,6 +21,7 @@ async function fetchRepoStats() {
         const forkEl = document.getElementById('forkCount');
         const issueEl = document.getElementById('issueCount');
         const prEl = document.getElementById('prCount');
+        
 
         if (starEl) starEl.textContent = repoData.stargazers_count.toLocaleString();
         if (forkEl) forkEl.textContent = repoData.forks_count.toLocaleString();
@@ -57,10 +60,12 @@ function initCanvas() {
             if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
         }
 
-        draw() {
-            const isDark = !document.body.classList.contains('light-mode');
-            const alpha = isDark ? Math.random() * 0.5 + 0.2 : Math.random() * 0.3 + 0.1;
-            ctx.fillStyle = `rgba(26, 188, 156, ${alpha})`;
+      draw() {
+    const isDark = !document.body.classList.contains('light-mode');
+    const alpha = isDark ? Math.random() * 0.5 + 0.2 : Math.random() * 0.3 + 0.1;
+    ctx.fillStyle = document.body.classList.contains('light-mode') 
+  ? `rgba(0, 0, 0, ${alpha})`
+  : `rgba(0, 255, 255, ${alpha})`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
@@ -73,7 +78,9 @@ function initCanvas() {
 
     function animate() {
         const isDark = !document.body.classList.contains('light-mode');
-        ctx.fillStyle = isDark ? 'rgba(10, 10, 10, 0.1)' : 'rgba(245, 245, 245, 0.1)';
+       ctx.fillStyle = document.body.classList.contains('light-mode')
+  ? 'rgba(240, 240, 240, 0.3)'
+  : 'rgba(10, 10, 15, 0.15)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         particles.forEach(p => {
@@ -89,7 +96,9 @@ function initCanvas() {
 
                 if (dist < 100) {
                     const alpha = isDark ? 0.2 * (1 - dist / 100) : 0.1 * (1 - dist / 100);
-                    ctx.strokeStyle = `rgba(26, 188, 156, ${alpha})`;
+                    ctx.strokeStyle = document.body.classList.contains('light-mode')
+  ? `rgba(255, 0, 255, ${alpha})`
+  : `rgba(0, 255, 255, ${alpha})`;
                     ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
@@ -114,10 +123,61 @@ function initCanvas() {
 const savedTheme = localStorage.getItem('theme') || window.theme || 'dark';
 window.theme = savedTheme;
 
-if (savedTheme === 'light') {
+// Load theme preference from localStorage
+if (localStorage.getItem('theme') === 'light') {
     document.body.classList.add('light-mode');
 } else {
     document.body.classList.remove('light-mode');
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    
+    if (document.body.classList.contains('light-mode')) {
+        localStorage.setItem('theme', 'light');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    } else {
+        localStorage.setItem('theme', 'dark');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    }
+});
+
+// Check for saved theme preference or default to dark mode
+const currentTheme = localStorage.getItem('theme') || 'dark';
+if (currentTheme === 'light') {
+const currentTheme = window.theme || 'dark';
+if (currentTheme === 'light' && themeIcon) {
+    document.body.classList.add('light-mode');
+    themeIcon.classList.remove('fa-moon');
+    themeIcon.classList.add('fa-sun');
+}
+
+if (themeToggle && themeIcon) {
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+
+    if (document.body.classList.contains('light-mode')) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'light');
+    } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'dark');
+    }
+});
+        if (document.body.classList.contains('light-mode')) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            window.theme = 'light';
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            window.theme = 'dark';
+        }
+    });
 }
 
 // Update Navbar for Login Status
@@ -163,13 +223,13 @@ function updateNavbar() {
     toggleBtn.addEventListener('click', () => {
         const currentlyLight = document.body.classList.toggle('light-mode');
         
-        if (currentlyLight) {
-            toggleIcon.className = 'fas fa-sun';
-            window.theme = 'light';
+        if (document.body.classList.contains('light-mode')) {
+            newThemeIcon.classList.remove('fa-moon');
+            newThemeIcon.classList.add('fa-sun');
             localStorage.setItem('theme', 'light');
         } else {
-            toggleIcon.className = 'fas fa-moon';
-            window.theme = 'dark';
+            newThemeIcon.classList.remove('fa-sun');
+            newThemeIcon.classList.add('fa-moon');
             localStorage.setItem('theme', 'dark');
         }
     });
@@ -194,9 +254,12 @@ function updateNavbar() {
 let currentPage = 1;
 const itemsPerPage = 10;
 let projectData = [];
+let filteredProjectData = [];
 
 // Populate the table with project data
 
+function fillTable() {
+    const data = [
 // Complete fillTable implementation with search filtering
 function fillTable(searchTerm = "") {
     const tableBody = document.getElementById("tableBody"); // Ensure your <tbody> has this ID
@@ -204,7 +267,7 @@ function fillTable(searchTerm = "") {
     
     if (!tableBody) return;
 
-    const data = [
+    projectData = [
         ["Day 1", "To-Do List", "./public/TO_DO_LIST/todolist.html"],
         ["Day 2", "Digital Clock", "./public/digital_clock/digitalclock.html"],
         ["Day 3", "Indian Flag", "./public/indianflag/flag.html"],
@@ -320,28 +383,141 @@ function fillTable(searchTerm = "") {
         ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
         ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"],
         ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
-        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
+        ["Day 116", "AI Image Classifier", "/public/AI Image CLassifier/index.html"]
     ];
-    
+        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
+        ["Day 116", "AI Image Classifier", "./public/AI Image CLassifier/index.html"],
+        ["Day 117", "ZEN TIMER", "./public/ZEN_TIMER/index.html"],
+      [ "Day 118" , "Random-Joke-Generator" , "./public/RandomJokeGenerator/index.html" ],
+    ];
 
- 
+    filteredProjectData = [...projectData];
+    currentPage = 1;
 
-    // Clear existing rows
-    tableBody.innerHTML = "";
+    renderTable();
+    createPagination();
+}
 
-    // Filter projects based on the search query
-    const filteredData = data.filter(project => 
-        project[0].toLowerCase().includes(searchTerm.toLowerCase()) || 
-        project[1].toLowerCase().includes(searchTerm.toLowerCase())
-    );
+function renderTable() {
+    const tbody = document.getElementById('tableBody');
 
-    // Toggle "No Projects Found" visibility
-    if (filteredData.length === 0) {
-        if (noProjectsMessage) noProjectsMessage.style.display = "block";
-        return;
+    tbody.innerHTML = '';
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    const paginatedData = filteredProjectData.slice(startIndex, endIndex);
+
+    paginatedData.forEach(e => {
+        const row = document.createElement('tr');
+
+        const days = document.createElement('td');
+        const nameP = document.createElement('td');
+        const link = document.createElement('td');
+        const a = document.createElement('a');
+
+        days.innerText = e[0];
+        nameP.innerText = e[1];
+
+        a.href = e[2].trim();
+        a.innerHTML = 'View Demo <i class="fas fa-external-link-alt"></i>';
+        a.target = '_blank';
+
+        nameP.classList.add('project-name');
+
+        link.appendChild(a);
+
+        row.appendChild(days);
+        row.appendChild(nameP);
+        row.appendChild(link);
+
+        tbody.appendChild(row);
+    });
+}
+function createPagination() {
+    const paginationContainer = document.getElementById('pagination');
+
+    paginationContainer.innerHTML = '';
+
+    const totalPages = Math.max(1, Math.ceil(filteredProjectData.length / itemsPerPage));
+
+    // Previous Button
+    const prevBtn = document.createElement('button');
+    prevBtn.innerText = 'Previous';
+    prevBtn.disabled = currentPage === 1;
+
+    prevBtn.addEventListener('click', () => {
+        currentPage--;
+        renderTable();
+        createPagination();
+    });
+
+    paginationContainer.appendChild(prevBtn);
+
+    // Page Indicator
+    const pageInfo = document.createElement('span');
+    pageInfo.innerText = ` Page ${currentPage} of ${totalPages} `;
+    pageInfo.style.margin = '0 10px';
+
+    paginationContainer.appendChild(pageInfo);
+
+    // Next Button
+    const nextBtn = document.createElement('button');
+    nextBtn.innerText = 'Next';
+    nextBtn.disabled = currentPage === totalPages;
+
+    nextBtn.addEventListener('click', () => {
+        currentPage++;
+        renderTable();
+        createPagination();
+    });
+
+    paginationContainer.appendChild(nextBtn);
+}
+
+// Filter Projects
+function filterProjects() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    filteredProjectData = projectData.filter(project => {
+        const day = (project[0] || '').toLowerCase();
+        const name = (project[1] || '').toLowerCase();
+        const link = (project[2] || '').toLowerCase();
+        return day.includes(filter) || name.includes(filter) || link.includes(filter);
+    });
+
+    currentPage = 1;
+    renderTable();
+    createPagination();
+
+    const noProjectsMessage = document.getElementById('no-projects');
+    if (filteredProjectData.length > 0) {
+        noProjectsMessage.style.display = 'none';
     } else {
-        if (noProjectsMessage) noProjectsMessage.style.display = "none";
+        noProjectsMessage.style.display = 'block';
     }
+}
+
+
+// Search on Enter key
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            filterProjects();
+        }
+    });
+}
+// Word and Character Count
+        const inputField = document.querySelector('input'); // Use the correct selector for the search bar
+        const wordDisplay = document.getElementById('wordCount');
+        const charDisplay = document.getElementById('charCount');
+
+inputField.addEventListener('input', () => {
+        const value = inputField.value.trim();
+        
+        // Count characters
+        charDisplay.innerText = value.length;
 
     // Build and append table rows
     filteredData.forEach(project => {
@@ -352,10 +528,34 @@ function fillTable(searchTerm = "") {
             <td data-label="Demo Link"><a class="button" href="${project[2]}" target="_blank">Live Demo</a></td>
         `;
         tableBody.appendChild(row);
+        // Count words
+        const words = value ? value.split(/\s+/).length : 0;
+        wordDisplay.innerText = words;
+    });
+
+// Scroll to Top Button
+const scrollBtn = document.getElementById('scrollBtn');
+if (scrollBtn) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollBtn.classList.add('show');
+        } else {
+            scrollBtn.classList.remove('show');
+        }
+    });
+
+    scrollBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
 }
 
+// Initialize on DOM Load
+
 // Global initialization sequence
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchRepoStats();
     initCanvas();
