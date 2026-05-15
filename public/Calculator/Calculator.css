@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 *{
     padding:0;
@@ -7,68 +7,246 @@
     font-family:"Poppins",sans-serif;
 }
 
+/* Body */
 body{
     width:100%;
-    height:100vh;
+    min-height:100vh;
+
     display:flex;
     justify-content:center;
     align-items:center;
+
+    padding:20px;
+
     background:linear-gradient(45deg,#0b0b0b,#3a4452);
 }
 
+/* Main Layout */
+.container{
+    display:flex;
+
+    gap:25px;
+
+    justify-content:center;
+    align-items:flex-start;
+
+    flex-wrap:wrap;
+}
+
+/* Calculator */
 .calculator{
     border:1px solid #717377;
+
     padding:20px;
+
     border-radius:20px;
+
     background:transparent;
-    box-shadow: 0px 6px 25px rgba(120,121,121,0.5);
+
+    box-shadow:0px 6px 25px rgba(120,121,121,0.35);
+
+    transition:0.3s ease;
 }
 
+/* Hover Glow */
+.calculator:hover,
+.history-panel:hover{
+    box-shadow:0px 8px 35px rgba(120,121,121,0.45);
+}
+
+/* Input Box */
 input{
     width:350px;
-    border:none;    
+
+    border:none;
+
     padding:24px;
+
     margin:10px;
+
     background:transparent;
+
     box-shadow:0px 6px 25px rgba(84,84,84,0.1);
+
     font-size:3rem;
+
     text-align:right;
+
     cursor:pointer;
+
     color:#ffffff;
+
+    border-radius:12px;
 }
 
-/*Set color of the placeholder*/
+/* Placeholder */
 input::placeholder{
     color:#ffffff;
 }
 
-/*Set properties of the buttons of the calculator*/
+/* Buttons */
 button{
     border:none;
+
     width:60px;
     height:60px;
-    margin:13.5px;
+
+    margin:13px;
+
     border-radius:50%;
+
     color:#ffffff;
-    font-size:2 rem;
+
+    font-size:2rem;
+
     background:transparent;
-    box-shadow:-8px -8px 20px rgba(255,255,255,0.1);
+
+    box-shadow:-8px -8px 20px rgba(255,255,255,0.08);
+
     cursor:pointer;
 
+    transition:all 0.2s ease;
 }
 
-/* Set different background color for the equal to operator*/
+/* Hover Animation */
+button:hover{
+    transform:scale(1.05);
+}
+
+/* Click Animation */
+button:active{
+    transform:scale(0.95);
+}
+
+/* Equal Button */
 .equalTo{
     background-color:#6dee0a;
+
+    color:#ffffff;
 }
 
-/*Set color and font size of the mathematical operators seperately*/
+/* Operators */
 .operators{
     color:#6dee0a;
+
     font-size:20px;
 }
 
-/*Set color of AC and DEL operators*/
+/* AC + DEL */
 .Clear{
     color:orangered;
+}
+
+/* History Panel */
+.history-panel{
+    width:280px;
+
+    min-height:520px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,0.06);
+
+    box-shadow:0px 6px 25px rgba(120,121,121,0.25);
+
+    backdrop-filter:blur(12px);
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+
+    transition:0.3s ease;
+}
+
+/* History Title */
+.history-panel h2{
+    text-align:center;
+
+    margin-bottom:10px;
+
+    font-size:32px;
+
+    letter-spacing:1px;
+}
+
+/* History List */
+#historyList{
+    flex:1;
+
+    overflow-y:auto;
+
+    margin-top:15px;
+
+    padding-right:5px;
+}
+
+/* History Item */
+.history-item{
+    padding:12px;
+
+    margin-bottom:10px;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.08);
+
+    font-size:16px;
+
+    color:#ffffff;
+
+    box-shadow:0px 2px 10px rgba(0,0,0,0.2);
+
+    word-wrap:break-word;
+}
+
+/* Clear History Button */
+#clearHistory{
+    width:100%;
+
+    height:50px;
+
+    border-radius:12px;
+
+    margin-top:15px;
+
+    font-size:18px;
+
+    color:orangered;
+}
+
+/* Custom Scrollbar */
+#historyList::-webkit-scrollbar{
+    width:6px;
+}
+
+#historyList::-webkit-scrollbar-thumb{
+    background:#6dee0a;
+
+    border-radius:10px;
+}
+
+/* Responsive Design */
+@media(max-width:768px){
+
+    body{
+        padding:20px;
+    }
+
+    .container{
+        flex-direction:column;
+
+        align-items:center;
+    }
+
+    .history-panel{
+        width:100%;
+    }
+
+    input{
+        width:100%;
+    }
+
 }

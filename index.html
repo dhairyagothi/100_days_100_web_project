@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -19,13 +20,13 @@
             <span>100 DAYS 100 WEB PROJECTS</span>
         </div>
         <div class="buttons">
+            <button id="theme-toggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
             <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn">
                 <i class="fas fa-rocket"></i>
                 <span>Generate README</span>
             </a>
-            <button id="themeToggle" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-            </button>
         </div>
     </nav>
 
@@ -60,11 +61,19 @@
                 </button>
             </div>
         </div>
+
+        
+<div class="stats-counter">
+  Words: <span id="wordCount">0</span> | 
+  Letters: <span id="charCount">0</span>
+</div>
+
     </section>
 
     <section class="projects-section">
         <div class="table-container">
             <table>
+                
                 <thead>
                     <tr>
                         <th>Day</th>
@@ -74,6 +83,7 @@
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>
+            <div id="pagination" class="pagination-container"></div>
         </div>
         <div id="no-projects">No Projects Found</div>
     </section>
