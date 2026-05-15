@@ -1,11 +1,7 @@
-import { projects } from "@/data/projects"
-import { ProjectGrid } from "@/components/ProjectGrid"
-import { HomeWrapper } from "../components/sections/home-wrapper"
-
 export default function Home() {
   return (
-    <HomeWrapper>
-      <ProjectGrid projects={projects} />
-    </HomeWrapper>
+    <div className="flex items-center justify-center min-h-screen bg-blue-500">
+      <h1 className="text-white text-4xl">DEBUG PAGE IS WORKING</h1>
+    </div>
   )
 }
