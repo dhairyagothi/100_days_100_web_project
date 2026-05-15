@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do List | 100 Days 100 Projects</title>
     <link rel="stylesheet" href="todolist.css" />
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <body>
     <nav>
       <ul class="navbar">
         <div class="nav-left">
-          <li ><a href="#" onclick="showHome()">Home</a></li>
+          <li><a href="#" onclick="showHome()">Home</a></li>
           <li><a href="#" onclick="showDocuments()">Documents</a></li>
         </div>
         <div class="nav-right">
@@ -23,32 +23,59 @@
         </div>
       </ul>
     </nav>
+
     <main class="main">
       <div id="home-tab">
         <div class="heading">JUST DO IT.</div>
-        <div class="buttons"> 
-          <div>
-            <input type="text" id="task" placeholder="Enter a task">
-            <button onclick="Add()" id="submittask">Add a task!</button>
-            <!-- <select id="tasktype" >
-              <option value="task1">Work</option>
-              <option value="task2">School</option>
-              <option value="task3">Personal</option>
-              <option value="task4">Fitness</option>
-            </select> -->
-          </div> 
-          
+
+        <!-- Input Section -->
+        <div class="buttons">
+          <div class="input-row">
+            <input type="text" id="task" placeholder="Enter a task..." />
+            <select id="taskPriority">
+              <option value="">⚡ Priority</option>
+              <option value="High">🔴 High</option>
+              <option value="Medium">🟡 Medium</option>
+              <option value="Low">🟢 Low</option>
+            </select>
+            <select id="taskCategory">
+              <option value="">📂 Category</option>
+              <option value="Work">💼 Work</option>
+              <option value="Personal">🏠 Personal</option>
+              <option value="Fitness">💪 Fitness</option>
+              <option value="Urgent">🚨 Urgent</option>
+              <option value="Miscellaneous">🗂️ Misc</option>
+            </select>
+            <input type="date" id="taskDueDate" title="Due Date" />
+            <button onclick="Add()" id="submittask">Add Task</button>
+          </div>
+
+          <!-- Filter Row -->
+          <div class="filter-row">
+            <span class="filter-label">Filter:</span>
+            <button class="filter-btn active" onclick="filterTasks('all', this)">All</button>
+            <button class="filter-btn" onclick="filterTasks('High', this)">🔴 High</button>
+            <button class="filter-btn" onclick="filterTasks('Medium', this)">🟡 Medium</button>
+            <button class="filter-btn" onclick="filterTasks('Low', this)">🟢 Low</button>
+            <button class="filter-btn" onclick="filterTasks('completed', this)">✅ Done</button>
+            <button class="filter-btn" onclick="filterTasks('overdue', this)">⏰ Overdue</button>
+            <span class="stats" id="taskStats"></span>
+          </div>
+
           <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
         </div>
+
         <div id="notes-container"></div>
+        <p id="empty-msg" class="empty-msg">No tasks yet. Add one above! 🎯</p>
       </div>
+
       <div id="documents-tab" style="display: none">
         <div class="heading">Saved Documents</div>
         <div class="documents-list"></div>
       </div>
     </main>
-    
-    <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
+
+    <div id="pdfMessage" class="pdf-message">✅ PDF Created Successfully!</div>
 
     <script src="todolist.js"></script>
   </body>
