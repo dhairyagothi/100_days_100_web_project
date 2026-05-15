@@ -1,103 +1,275 @@
 html {
-    background: radial-gradient(circle, #ff7e5f, #feb47b); /* Gradient background */
+    background: radial-gradient(circle, #ff7e5f, #feb47b);
     font-family: Arial, sans-serif;
+    min-height: 100%;
 }
 
 body {
     display: flex;
-    justify-content: space-between; /* Align clock to the left and timer to the right */
+    justify-content: space-between;
+    align-items: center;
+
+    min-height: 100vh;
+
     padding: 20px;
+
+    margin: 0;
+
+    gap: 40px;
+
+    box-sizing: border-box;
+
+    overflow-x: hidden;
 }
 
-#clockContainer{  
+/* Back Button */
+
+.back-home-btn {
+    position: fixed;
+
+    top: 20px;
+    right: 20px;
+
+    padding: 12px 18px;
+
+    background: linear-gradient(135deg, #ff5f6d, #6c757d);
+
+    color: white;
+    text-decoration: none;
+
+    border-radius: 12px;
+
+    font-weight: 600;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+    transition: 0.3s ease;
+
+    z-index: 1000;
+}
+
+.back-home-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+}
+
+/* Clock */
+
+#clockContainer {  
     position: relative;
+
     margin: 20px;
+
     height: 40vw;
-    width: 40vw; 
+    width: 40vw;
+
+    min-width: 280px;
+    min-height: 280px;
+
     background: url(clock.png) no-repeat;
+
     background-size: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+    transition: 0.3s ease;
 }
 
-#hour, #minute, #second{
-    position: absolute;
-    background: black;
-    border-radius: 10px; 
-    transform-origin: bottom;
-    transition: transform 0.1s ease; /* Smooth transition for rotations */
+#clockContainer:hover {
+    transform: scale(1.01);
 }
-#hour{
+
+#hour,
+#minute,
+#second {
+    position: absolute;
+
+    background: black;
+
+    border-radius: 10px;
+
+    transform-origin: bottom;
+
+    transition: transform 0.1s ease;
+}
+
+#hour {
     width: 1.8%;
     height: 25%;
     top: 25%;
     left: 48.85%;
-    opacity: 0.8;  
+    opacity: 0.8;
 }
-#minute{
+
+#minute {
     width: 1.6%;
     height: 30%;
     top: 19%;
     left: 48.9%;
-    opacity: 0.8;  
+    opacity: 0.8;
 }
-#second{
+
+#second {
     width: 1%;
     height: 40%;
     top: 9%;
     left: 49.25%;
-    opacity: 0.8; 
-    
+    opacity: 0.8;
 }
+
+/* Timer Container */
 
 #timerContainer {
     display: flex;
     flex-direction: column;
+
     justify-content: center;
     align-items: center;
+
     width: 340px;
-    border-radius: 8px;
-    padding: 20px;
-    margin-left: 5px;
-    margin-right: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Adding shadow to the timer container */
+
+    border-radius: 18px;
+
+    padding: 30px 20px;
+
+    background: rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(8px);
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+    transition: 0.3s ease;
 }
+
+#timerContainer:hover {
+    transform: translateY(-3px);
+}
+
+/* Input Section */
 
 #timeInput {
     display: flex;
-    justify-content: space-between;
+
+    justify-content: center;
+
+    gap: 10px;
+
     margin-bottom: 20px;
+
+    flex-wrap: wrap;
 }
 
 input {
-    width: 100px;
-    padding: 5px;
+    width: 90px;
+
+    padding: 10px;
+
     font-size: 16px;
+
     text-align: center;
-    margin: 2px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    transition: 0.3s ease;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
 
+input:focus {
+    transform: scale(1.03);
+
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* Button */
+
 button {
-    padding: 10px 20px;
+    padding: 12px 24px;
+
     font-size: 16px;
+
     cursor: pointer;
-    background-color: #ff7e5f;
+
+    background: linear-gradient(135deg, #ff7e5f, #ff9966);
+
     border: none;
-    border-radius: 5px;
+
+    border-radius: 10px;
+
     color: white;
+
+    font-weight: 600;
+
+    transition: 0.3s ease;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 button:hover {
-    background-color: #feb47b;
+    transform: scale(1.05);
+
+    background: linear-gradient(135deg, #feb47b, #ff7e5f);
 }
+
+/* Countdown */
 
 #countdownDisplay {
-    font-size: 32px;
+    font-size: 36px;
+
     font-weight: bold;
+
+    margin-top: 20px;
+
+    color: white;
+
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-#timerUpMsg{
+/* Time Up Message */
+
+#timerUpMsg {
     font-size: 35px;
+
     text-align: center;
+
     color: rgb(98, 0, 255);
+
+    margin-top: 15px;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+    body {
+        flex-direction: column;
+
+        justify-content: center;
+
+        padding-top: 100px;
+    }
+
+    #clockContainer {
+        width: 80vw;
+        height: 80vw;
+    }
+
+    #timerContainer {
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .back-home-btn {
+        top: 10px;
+        right: 10px;
+
+        padding: 10px 14px;
+
+        font-size: 13px;
+    }
 }

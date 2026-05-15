@@ -74,3 +74,55 @@ body {
 .hidden {
   visibility: hidden;
 }
+.back-home-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  padding: 10px 18px;
+
+  background: #292929;
+
+  color: #ffa31a;
+
+  text-decoration: none;
+
+  border: 1px solid #ffa31a;
+
+  border-radius: 40px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+
+  box-shadow:
+    0 0 10px rgba(255, 163, 26, 0.15);
+
+  transition: all 0.3s ease;
+
+  z-index: 1000;
+}
+
+.back-home-btn:hover {
+  background: #ffa31a;
+
+  color: #1b1b1b;
+
+  transform: translateY(-2px) scale(1.05);
+
+  box-shadow:
+    0 0 18px rgba(255, 163, 26, 0.4);
+}
+
+@media (max-width: 768px) {
+
+  .back-home-btn {
+    top: 12px;
+    right: 12px;
+
+    padding: 8px 14px;
+
+    font-size: 12px;
+  }
+}

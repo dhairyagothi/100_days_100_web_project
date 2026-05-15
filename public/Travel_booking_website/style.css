@@ -562,3 +562,30 @@ nav{
         grid-area: unset;
       }
 }
+.back-home-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  text-decoration: none;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  z-index: 9999;
+}
+
+.back-home-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
+}

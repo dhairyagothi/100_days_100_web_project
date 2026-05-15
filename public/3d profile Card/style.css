@@ -208,3 +208,55 @@
 .card-inner:hover {
     transform: rotateY(0deg);
 }
+.back-home-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    padding: 10px 20px;
+
+    background: rgba(255, 255, 255, 0.2);
+
+    color: white;
+
+    text-decoration: none;
+
+    border: 1px solid rgba(255,255,255,0.4);
+
+    border-radius: 30px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
+    transition: all 0.3s ease;
+
+    z-index: 1000;
+}
+
+.back-home-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+
+    background: rgba(255,255,255,0.3);
+
+    box-shadow: 0 10px 25px rgba(0,145,198,0.4);
+
+    border-color: rgb(0, 145, 198);
+}
+
+@media only screen and (max-width: 600px) {
+
+    .back-home-btn {
+        top: 12px;
+        right: 12px;
+
+        padding: 8px 16px;
+
+        font-size: 12px;
+    }
+}

@@ -72,3 +72,28 @@ button{
 .Clear{
     color:orangered;
 }
+.back-home-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    padding: 10px 18px;
+    background: #5c4b4b;
+    color: #ffffff;
+
+    border: 1px solid #8b6f6f;
+    border-radius: 10px;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.3s ease;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.back-home-btn:hover {
+    background: #7a5f5f;
+    transform: translateY(-2px);
+}

@@ -110,3 +110,66 @@ button:hover {
 .upload-btn:hover {
     transform: scale(1.05);
 }
+
+.back-home-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    padding: 12px 20px;
+
+    background: linear-gradient(
+        135deg,
+        #00c6ff,
+        #0072ff
+    );
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 14px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    letter-spacing: 0.4px;
+
+    box-shadow:
+        0 5px 18px rgba(0, 114, 255, 0.45);
+
+    transition: all 0.3s ease;
+
+    backdrop-filter: blur(10px);
+
+    z-index: 1000;
+}
+
+.back-home-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+
+    box-shadow:
+        0 8px 24px rgba(0, 114, 255, 0.65);
+
+    background: linear-gradient(
+        135deg,
+        #38bdf8,
+        #2563eb
+    );
+}
+
+.back-home-btn:active {
+    transform: scale(0.97);
+}
+
+@media (max-width: 600px) {
+
+    .back-home-btn {
+        top: 12px;
+        right: 12px;
+
+        padding: 10px 16px;
+
+        font-size: 13px;
+    }
+}

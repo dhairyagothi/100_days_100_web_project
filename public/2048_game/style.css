@@ -658,3 +658,85 @@ body.dark  .stats-modal { background: rgba(0, 10, 25, 0.94); }
   .tile[data-val="1024"],
   .tile[data-val="2048"] { font-size: 17px; }
 }
+.back-home-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+
+  padding: 10px 18px;
+
+  border-radius: 14px;
+
+  text-decoration: none;
+
+  font-family: var(--font);
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+
+  color: #fff;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,0.25),
+    0 0 12px rgba(255,255,255,0.05);
+
+  transition: all 0.25s ease;
+
+  z-index: 1000;
+
+  overflow: hidden;
+}
+
+.back-home-btn::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.15),
+    rgba(255,255,255,0.02)
+  );
+
+  opacity: 0;
+
+  transition: 0.25s ease;
+}
+
+.back-home-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+
+  background: rgba(255,255,255,0.18);
+
+  border-color: rgba(255,255,255,0.35);
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.3),
+    0 0 18px rgba(105,240,174,0.35);
+}
+
+.back-home-btn:hover::before {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+
+  .back-home-btn {
+    top: 12px;
+    right: 12px;
+
+    padding: 8px 14px;
+
+    font-size: 11px;
+  }
+}

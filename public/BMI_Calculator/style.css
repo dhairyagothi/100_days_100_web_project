@@ -4,114 +4,288 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: "Montserrat";
-  /* background: rgb(34, 193, 195); */
+  font-family: "Montserrat", sans-serif;
+
   background: linear-gradient(
     0deg,
     #cc5333 0%,
     #23074d 100%
-    
   );
+
   min-height: 100vh;
 }
+
+/*  Back Button  */
+
+.back-home-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  padding: 12px 18px;
+
+  background: linear-gradient(135deg, #ff5f6d, #6c757d);
+
+  color: white;
+  text-decoration: none;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+  transition: 0.3s ease;
+
+  z-index: 1000;
+}
+
+.back-home-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  opacity: 0.95;
+}
+
+/*  BMI Card  */
+
 .bmi {
   color: white;
+
   width: 350px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  background-color: black;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  border-radius: 10px;
+
+  margin: 100px auto 50px auto;
+
+  background: rgba(0, 0, 0, 0.8);
+
+  padding: 25px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+  backdrop-filter: blur(5px);
+
+  transition: 0.3s ease;
 }
+
+.bmi:hover {
+  transform: scale(1.01);
+}
+
+/*  Headings  */
+
 h2 {
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 700;
+
+  margin-bottom: 15px;
 }
+
 .text {
   text-align: center;
 }
+
+/*  Inputs */
+
 #weight-unit,
-#height-unit {
+#height-unit,
+#height,
+#weight {
   color: black;
-  text-align: left;
-  font-size: 20px;
-  font-weight: 200;
+
+  text-align: center;
+
+  font-size: 16px;
+
   outline: none;
-  border: 1px solid black;
-  border-radius: 10px;
-  width: 200px;
-  height: 35px;
-  height: 35px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  width: 220px;
+
+  height: 40px;
+
   margin-top: 10px;
+
+  padding: 0 10px;
+
+  transition: 0.3s ease;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
+
 #weight:focus,
 #height:focus {
   width: 250px;
-  transition: 0.5s;
+
+  box-shadow: 0 0 10px rgba(255,255,255,0.4);
 }
+
+/*  Result  */
+
 #result {
   color: white;
+
+  margin-top: 15px;
+
+  font-size: 18px;
+
+  font-weight: 600;
 }
+
+/* Button  */
+
 #btn {
   font-family: inherit;
-  margin-top: 10px;
-  border: blue;
-  color: #000;
-  background: gainsboro;
-  width: 150px;
-  padding: 10px;
-  border-radius: 30px ;
-  outline: white;
+
+  margin-top: 15px;
+
+  border: none;
+
+  color: white;
+
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+
+  width: 170px;
+
+  padding: 12px;
+
+  border-radius: 30px;
+
   cursor: pointer;
-  transition: 0.5s;
+
+  font-weight: 600;
+
+  transition: 0.3s ease;
+
+  box-shadow: 0 5px 15px rgba(0,114,255,0.3);
 }
+
 #btn:hover {
-  transform: scale(1.1);
-  transition: 0.5s;
+  transform: scale(1.06);
+
+  box-shadow: 0 8px 20px rgba(0,114,255,0.5);
 }
+
+/* Table  */
 
 table {
   width: 650px;
+
   border-collapse: collapse;
-  margin: 600px auto;
-  margin-top: 700px;
-  margin-bottom: 80px;
+
+  margin: 40px auto 80px auto;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 tr {
-  background: rgb(68, 38, 105);
+  background: rgba(68, 38, 105, 0.9);
+
   color: white;
 }
 
 th {
   background: #0d0101;
+
   color: #fffbfb;
+
   font-weight: bold;
 }
 
 td,
 th {
-  padding: 10px;
+  padding: 12px;
+
   border: 1px solid #000;
+
   text-align: center;
+
   font-size: 18px;
 }
 
+/*  Chart  */
+
 #bmichart {
   display: block;
-    box-sizing: border-box;
-    height: 759px;
-    width: 1519px;
-    margin-bottom: 80px;
-    
+
+  box-sizing: border-box;
+
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 0 auto 80px auto;
 }
 
-#height, #weight {
-  height: 35px;
-  margin-top: 10px;
-}
-.footer_social{
+/*  Footer */
+
+.footer {
   color: white;
+
+  padding-bottom: 30px;
+}
+
+.footer__social {
+  margin: 15px 0;
+}
+
+.footer__icon {
+  color: white;
+
+  font-size: 24px;
+
+  margin: 0 10px;
+
+  transition: 0.3s ease;
+}
+
+.footer__icon:hover {
+  color: #00c6ff;
+
+  transform: translateY(-3px);
+}
+
+/*  Responsive */
+
+@media (max-width: 768px) {
+
+  .bmi {
+    width: 85%;
+    padding: 20px;
+  }
+
+  table {
+    width: 95%;
+  }
+
+  .back-home-btn {
+    top: 10px;
+    right: 10px;
+
+    padding: 10px 14px;
+
+    font-size: 13px;
+  }
+
+  #weight-unit,
+  #height-unit,
+  #height,
+  #weight {
+    width: 90%;
+  }
+
+  #weight:focus,
+  #height:focus {
+    width: 95%;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
 }

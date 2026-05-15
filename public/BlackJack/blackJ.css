@@ -141,3 +141,50 @@ table{
         font-size: 30%;
     }
 }
+ .back-home-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    padding: 1rem 1.8rem;
+
+    background: linear-gradient(
+        135deg,
+        rgb(232,224,117),
+        rgb(150,110,20)
+    );
+
+    color: black;
+
+    text-decoration: none;
+
+    border: 2px solid gold;
+
+    border-radius: 1.2rem;
+
+    font-weight: 700;
+
+    font-size: 1.6rem;
+
+    font-family: 'Teko', sans-serif;
+
+    letter-spacing: .1rem;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+
+    transition: 0.3s ease;
+
+    z-index: 1000;
+}
+
+.back-home-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+
+    background: linear-gradient(
+        135deg,
+        gold,
+        rgb(232,224,117)
+    );
+
+    box-shadow: 0 0 12px gold;
+}

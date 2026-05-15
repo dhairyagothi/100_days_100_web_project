@@ -114,9 +114,66 @@
                 width: 80%;
             }
         }
+        .back-home-btn {
+    position: fixed;
+    top: 18px;
+    right: 20px;
+
+    padding: 10px 18px;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    color: white;
+
+    text-decoration: none;
+
+    border: 2px solid rgba(255,255,255,0.7);
+
+    border-radius: 50px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    letter-spacing: 0.4px;
+
+    backdrop-filter: blur(6px);
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.3);
+
+    transition: all 0.3s ease;
+
+    z-index: 1200;
+}
+
+.back-home-btn:hover {
+    background: #00ff00;
+
+    color: black;
+
+    border-color: #00ff00;
+
+    transform: translateY(-2px) scale(1.05);
+
+    box-shadow:
+        0 0 15px rgba(0,255,0,0.5);
+}
+
+@media screen and (max-width: 768px) {
+
+    .back-home-btn {
+        top: 12px;
+        right: 12px;
+
+        padding: 8px 14px;
+
+        font-size: 12px;
+    }
+}
     </style>
 </head>
 <body>
+  <a href="../../index.html" class="back-home-btn"> ← Back to Home </a>
 <header>
     <div class="navbar">
         <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-style:italic;font-style:bold">TRIP ADVISOR</h1>
