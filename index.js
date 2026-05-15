@@ -173,6 +173,23 @@ function updateNavbar() {
             localStorage.setItem('theme', 'dark');
         }
     });
+
+    // Mobile Hamburger Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navButtons = document.querySelector('.navbar .buttons');
+    if (hamburger && navButtons) {
+        hamburger.onclick = () => {
+            navButtons.classList.toggle('active');
+            const icon = hamburger.querySelector('i');
+            if (navButtons.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        };
+    }
 }
 let currentPage = 1;
 const itemsPerPage = 10;
@@ -330,9 +347,9 @@ function fillTable(searchTerm = "") {
     filteredData.forEach(project => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${project[0]}</td>
-            <td>${project[1]}</td>
-            <td><a class="button" href="${project[2]}" target="_blank">Live Demo</a></td>
+            <td data-label="Day">${project[0]}</td>
+            <td data-label="Project Name">${project[1]}</td>
+            <td data-label="Demo Link"><a class="button" href="${project[2]}" target="_blank">Live Demo</a></td>
         `;
         tableBody.appendChild(row);
     });
@@ -346,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fillTable(); // Renders the complete table on page load
 
     // Optional: Hook into search input if you have one
-    const searchInput = document.getElementById("projectSearch");
+    const searchInput = document.getElementById("searchInput");
     if (searchInput) {
         searchInput.addEventListener("input", (e) => {
             fillTable(e.target.value);

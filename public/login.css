@@ -185,4 +185,43 @@
     transform: scale(1.2);
   }
 
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    body {
+      height: auto;
+      padding-bottom: 20px;
+    }
+
+    .container {
+      flex-direction: column;
+      height: auto;
+      width: 95%;
+      margin-top: 20px;
+      overflow-y: visible;
+    }
+
+    .left-section {
+      padding: 30px 20px;
+      overflow-y: visible;
+    }
+
+    .right-section {
+      height: 250px;
+      min-height: 250px;
+      order: -1; /* Show image on top */
+    }
+
+    .animated-heading {
+      font-size: 28px;
+    }
+
+    .description {
+      font-size: 16px;
+    }
+
+    .navbar {
+      position: relative;
+    }
+  }
+
   
