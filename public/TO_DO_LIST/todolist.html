@@ -1,55 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To-Do List | 100 Days 100 Projects</title>
-    <link rel="stylesheet" href="todolist.css" />
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  </head>
-  <body>
-    <nav>
-      <ul class="navbar">
-        <div class="nav-left">
-          <li ><a href="#" onclick="showHome()">Home</a></li>
-          <li><a href="#" onclick="showDocuments()">Documents</a></li>
-        </div>
-        <div class="nav-right">
-          <li><button id="colour1" onclick="c1()"></button></li>
-          <li><button id="colour2" onclick="c2()"></button></li>
-          <li><button id="colour3" onclick="c3()"></button></li>
-          <li><button id="colour4" onclick="c4()"></button></li>
-          <li><button id="colour5" onclick="c5()"></button></li>
-        </div>
-      </ul>
-    </nav>
-    <main class="main">
-      <div id="home-tab">
-        <div class="heading">JUST DO IT.</div>
-        <div class="buttons"> 
-          <div>
-            <input type="text" id="task" placeholder="Enter a task">
-            <button onclick="Add()" id="submittask">Add a task!</button>
-            <!-- <select id="tasktype" >
-              <option value="task1">Work</option>
-              <option value="task2">School</option>
-              <option value="task3">Personal</option>
-              <option value="task4">Fitness</option>
-            </select> -->
-          </div> 
-          
-          <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
-        </div>
-        <div id="notes-container"></div>
-      </div>
-      <div id="documents-tab" style="display: none">
-        <div class="heading">Saved Documents</div>
-        <div class="documents-list"></div>
-      </div>
-    </main>
-    
-    <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List | 100 Days 100 Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="todolist.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <!-- Floating decorative shapes -->
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
 
-    <script src="todolist.js"></script>
-  </body>
+  <!-- Navbar -->
+  <nav>
+    <ul class="navbar">
+      <div class="nav-left">
+        <li><a href="#" onclick="showHome()">🏠 Home</a></li>
+        <li><a href="#" onclick="showDocuments()">📄 Documents</a></li>
+      </div>
+      <div class="nav-right">
+        <span class="theme-label">Theme</span>
+        <li><button id="colour1" onclick="c1()" aria-label="Theme 1"></button></li>
+        <li><button id="colour2" onclick="c2()" aria-label="Theme 2"></button></li>
+        <li><button id="colour3" onclick="c3()" aria-label="Theme 3"></button></li>
+        <li><button id="colour4" onclick="c4()" aria-label="Theme 4"></button></li>
+        <li><button id="colour5" onclick="c5()" aria-label="Theme 5"></button></li>
+      </div>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Home Tab -->
+    <div id="home-tab">
+      <div class="hero">
+        <div class="hero-badge">🚀 Stay Productive</div>
+        <h1 class="heading home-heading">JUST DO IT.</h1>
+        <p class="hero-subtitle">Organise your day, conquer your goals.</p>
+        <!-- Progress bar -->
+        <div class="progress-wrapper" id="progressWrapper">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressFill"></div>
+          </div>
+          <span class="progress-text" id="progressText">0 / 0 done</span>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-panel">
+        <div class="input-group">
+          <select id="task-category" aria-label="Choose task category">
+            <option value="" disabled selected>📂 Category</option>
+            <option value="Work">💼 Work</option>
+            <option value="Personal">🧑 Personal</option>
+            <option value="Urgent">⚡ Urgent</option>
+            <option value="Fitness">💪 Fitness</option>
+            <option value="Miscellaneous">📌 Miscellaneous</option>
+          </select>
+          <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
+          <button onclick="Add()" id="submittask">➕ Add Task</button>
+        </div>
+        <div class="input-actions">
+          <button onclick="saveAsPDF()" id="savepdf">📥 Save as PDF</button>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">📋</div>
+        <p class="empty-title">No tasks yet</p>
+        <p class="empty-desc">Add your first task above and get things done!</p>
+      </div>
+
+      <!-- Task Cards Container -->
+      <div id="notes-container"></div>
+    </div>
+
+    <!-- Documents Tab -->
+    <div id="documents-tab" style="display: none">
+      <div class="documents-header">
+        <h2 class="heading">📂 Saved Documents</h2>
+      </div>
+      <div class="empty-state" id="emptyDocsState">
+        <div class="empty-icon">📄</div>
+        <p class="empty-title">No saved documents</p>
+        <p class="empty-desc">Save your to-do list as a PDF to see it here.</p>
+      </div>
+      <div class="documents-list"></div>
+    </div>
+  </main>
+
+  <!-- PDF Toast -->
+  <div id="pdfMessage" class="pdf-message">✅ PDF Created Successfully!</div>
+
+  <script src="todolist.js"></script>
+</body>
 </html>
