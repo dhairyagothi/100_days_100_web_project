@@ -35,46 +35,29 @@ export function Preloader() {
     }
   }, [percentage])
 
-  if (!isClient) return null
+  if (!isClient || !loading) return null
 
   return (
-    <AnimatePresence>
-      {loading && (
-        <motion.div 
-          initial={{ opacity: 1 }}
-          exit={{ 
-            y: "-100%",
-            transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }
-          }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
-        >
-          <div className="flex flex-col items-center gap-8 px-4">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col items-center gap-4"
-            >
-              <span className="text-6xl md:text-8xl font-bold font-geist-sans tracking-tighter text-foreground">
-                100<span className="text-muted-foreground italic">DAYS</span>
-              </span>
-              
-              <div className="h-[2px] w-64 bg-muted overflow-hidden rounded-full">
-                <motion.div 
-                  className="h-full bg-foreground"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${percentage}%` }}
-                  transition={{ duration: 0.1 }}
-                />
-              </div>
-            </motion.div>
-            
-            <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground uppercase tracking-[0.3em]">
-              <span>INITIALIZING</span>
-              <span className="w-12 text-right text-foreground font-bold">{percentage}%</span>
-            </div>
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background">
+      <div className="flex flex-col items-center gap-8 px-4">
+        <div className="flex flex-col items-center gap-4">
+          <span className="text-6xl md:text-8xl font-bold font-geist-sans tracking-tighter text-foreground">
+            100<span className="text-muted-foreground italic">DAYS</span>
+          </span>
+          
+          <div className="h-[2px] w-64 bg-muted overflow-hidden rounded-full">
+            <div 
+              className="h-full bg-foreground transition-all duration-100"
+              style={{ width: `${percentage}%` }}
+            />
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </div>
+        
+        <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground uppercase tracking-[0.3em]">
+          <span>INITIALIZING</span>
+          <span className="w-12 text-right text-foreground font-bold">{percentage}%</span>
+        </div>
+      </div>
+    </div>
   )
 }
