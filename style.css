@@ -131,6 +131,7 @@ body {
 
 .featured-btn {
     background: var(--gradient-1) !important;
+    background-color: transparent !important;
     color: #000 !important;
     border: none !important;
     font-weight: 700 !important;
