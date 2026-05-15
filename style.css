@@ -530,28 +530,6 @@ tbody td a:hover {
     thead { display: none; }
     tbody td { padding: 1.2rem 1rem; }
 }
-<<<<<<< HEAD
-.light-theme {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-.light-theme .navbar {
-    background-color: #f5f5f5;
-}
-
-.light-theme .card {
-    background-color: #eaeaea;
-feature/pagination-project-list
-=======
-
-.stats-counter {
-    color: #00ff88;
-    font-family: 'Courier New', monospace;
-    margin-top: 8px;
-    font-size: 14px;
->>>>>>> 9d2f5581 (fix: restore deployed index.js with pagination and add Day 119 - The Last Tab)
-}
 
 .pagination-container {
     display: flex;
@@ -576,14 +554,14 @@ feature/pagination-project-list
     opacity: 0.5;
     cursor: not-allowed;
 }
-<<<<<<< HEAD
 #no-projects {
     display: none;
 }
-.pagination-container button:hover {
-    opacity: 0.9
 
+.pagination-container button:hover {
+    opacity: 0.9;
 }
+
 /* ============================================
    Category Filter Buttons | Issue #1209
    Author: Sweksha Kakkar
@@ -655,13 +633,3 @@ feature/pagination-project-list
     font-size: 11px;
   }
 }
-=======
-
-.pagination-container button:hover {
-    opacity: 0.9;
-}
-
-#no-projects {
-    display: none;
-}
->>>>>>> 9d2f5581 (fix: restore deployed index.js with pagination and add Day 119 - The Last Tab)
