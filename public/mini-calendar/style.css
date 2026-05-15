@@ -1,0 +1,64 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.calendar-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    min-width: 350px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.day-header {
+    text-align: center;
+    font-weight: bold;
+    color: #667eea;
+    padding: 10px;
+}
+
+.day {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    background: #f0f0f0;
+    cursor: pointer;
+}
+
+.day.today {
+    background: #667eea;
+    color: white;
+    font-weight: bold;
+}
+
+#todayInfo {
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
