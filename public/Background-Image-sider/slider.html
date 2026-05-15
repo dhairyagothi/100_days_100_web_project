@@ -17,39 +17,45 @@
         }
 
         header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 20px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-        .navbar h1 {
-            font-size: 24px;
-            margin: 0;
-        }
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
 
-        .navbar ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
+.navbar h1 {
+    font-size: 32px;
+    margin: 0;
+    color: white;
+}
 
-        .navbar ul li a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-            transition: color 0.3s;
-        }
+.navbar ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
 
-        .navbar ul li a:hover {
-            color: #00ff00;
-        }
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #00ff88;
+}
 
         .content {
             text-align: center;
@@ -86,41 +92,55 @@
             font-size: 1em;
         }
 
-        @media screen and (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-            }
+       @media screen and (max-width: 768px) {
 
-            .navbar ul {
-                flex-direction: column;
-                gap: 10px;
-            }
+    header {
+        padding: 15px;
+    }
 
-            .content {
-                margin-top: 10%;
-                padding: 10px;
-            }
+    .navbar {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
 
-            h1 {
-                font-size: 2em;
-            }
+    .navbar ul {
+        flex-direction: column;
+        gap: 15px;
+    }
 
-            p {
-                font-size: 1em;
-            }
+    .navbar h1 {
+        font-size: 28px;
+    }
 
-            .booking {
-                width: 80%;
-            }
-        }
+    .content {
+        margin-top: 15%;
+        padding: 20px;
+    }
+
+    #placeTitle {
+        font-size: 2rem;
+    }
+
+    #placeDescription {
+        font-size: 1rem;
+    }
+
+    .booking {
+        width: 90%;
+        max-width: 320px;
+    }
+}
     </style>
 </head>
 <body>
 <header>
     <div class="navbar">
         <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-style:italic;font-style:bold">TRIP ADVISOR</h1>
+        
         <ul>
+            <li><a href="login.html">LOGIN</a></li>
+            <li><a href="signup.html">SIGN UP</a></li>
             <li><a href="#">HOME</a></li>
             <li><a href="#">CONTACT US</a></li>
             <li><a href="#">ABOUT US</a></li>
