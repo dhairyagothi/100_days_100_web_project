@@ -11,7 +11,7 @@ let foodX, foodY, bonusFoodX, bonusFoodY, powerUpX, powerUpY;
 let bonusFoodVisible = false, powerUpVisible = false;
 let snakeX = 5, snakeY = 5;
 let velocityX = 0, velocityY = 0;
-let snakeBody = [];
+let snakeBody = [[snakeX, snakeY]];
 let setIntervalId, powerUpTimerId;
 let score = 0;
 let level = 1;
@@ -148,10 +148,11 @@ const initGame = () => {
     }
   }
 
-  if (score !== 0 && score % 10 === 0 && score / 10 === level) {
+  if (score / 10 >= level) {
     level++;
     levelElement.innerText = `Level: ${level}`;
-    gameSpeed -= 20;
+    // Prevent speed from becoming too fast
+    gameSpeed = Math.max(80, 300 - (level - 1) * 20);
     updateObstacles();
     clearInterval(setIntervalId);
     setIntervalId = setInterval(initGame, gameSpeed);
@@ -165,7 +166,7 @@ const startNewGame = () => {
   score = 0;
   level = 1;
   gameSpeed = 300;
-  snakeBody = [];
+  snakeBody = [[snakeX, snakeY]];
   velocityX = 0;
   velocityY = 0;
   snakeX = 5;
@@ -184,7 +185,7 @@ const startNewGame = () => {
 const restartGame = () => {
   gameOver = false;
   score = 0;
-  snakeBody = [];
+  snakeBody = [[snakeX, snakeY]];
   velocityX = 0;
   velocityY = 0;
   snakeX = 5;
