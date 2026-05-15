@@ -1,56 +1,49 @@
-# Vercel Deployment Guide
+# Deployment Guide
 
-## Quick Deploy Steps
+The **100 Days 100 Web Projects** repository has been migrated to Next.js 15, which makes deploying it incredibly simple using Vercel or any other hosting provider that supports Node.js or static exports.
 
-1. **Push changes to GitHub:**
-   ```bash
-   git add .
-   git commit -m "Fix Vercel deployment configuration"
-   git push origin main
+## Deploying to Vercel (Recommended)
+
+Vercel is the creator of Next.js and provides the most seamless deployment experience.
+
+1. **Push your code to GitHub:**
+   Ensure your latest changes are pushed to your `main` branch.
+
+2. **Import Project into Vercel:**
+   - Log in to [Vercel](https://vercel.com/).
+   - Click **Add New** > **Project**.
+   - Connect your GitHub account and select the `100_days_100_web_project` repository.
+
+3. **Configure Project:**
+   - Framework Preset: `Next.js` (Vercel should auto-detect this).
+   - Root Directory: `./`
+   - Build Command: `npm run build`
+   - Install Command: `npm install`
+
+4. **Deploy:**
+   Click **Deploy**. Vercel will automatically build the Next.js application and provide you with a live URL.
+
+## Deploying as a Static Site (GitHub Pages / Netlify)
+
+If you wish to deploy the project as a static site without server-side rendering features:
+
+1. Update your `next.config.ts` to enable static exports:
+   ```typescript
+   import type { NextConfig } from "next";
+
+   const nextConfig: NextConfig = {
+     output: "export",
+     images: {
+       unoptimized: true,
+     }
+   };
+
+   export default nextConfig;
    ```
 
-2. **Vercel Settings:**
-   - Framework Preset: **Other**
-   - Build Command: **Leave empty** (no build needed)
-   - Output Directory: **`.`** (current directory)
-   - Install Command: **Leave empty**
+2. Run the build command:
+   ```bash
+   npm run build
+   ```
 
-3. **Redeploy:**
-   - Go to your Vercel dashboard
-   - Click "Redeploy" on the latest deployment
-   - Or trigger a new deployment by pushing to GitHub
-
-## What Was Fixed
-
-✅ Corrected `vercel.json` configuration for static site hosting  
-✅ Set proper output directory to root (`.`)  
-✅ Fixed absolute paths to relative paths in Login.html  
-✅ Removed unnecessary rewrites that caused 404 errors  
-✅ Added proper cache headers for static assets  
-
-## Project Structure
-
-```
-/
-├── index.html              # Main entry point
-├── index.js                # Project routing logic
-├── vercel.json             # Vercel configuration
-├── contributors/           # Contributors page
-└── public/                 # All 142+ projects
-    ├── Login.html
-    ├── signup.html
-    └── [project folders]/
-```
-
-## Troubleshooting
-
-If you still see 404 errors:
-
-1. Check Vercel deployment logs
-2. Verify all file paths use relative paths (`./` or `../`)
-3. Ensure no absolute paths starting with `/`
-4. Clear browser cache and try again
-
-## Testing Locally
-
-Open `index.html` directly in your browser to test locally before deploying.
+3. Next.js will generate an `out` folder containing the static HTML/CSS/JS assets. You can upload this `out` folder directly to GitHub Pages, Netlify, or any static hosting service.

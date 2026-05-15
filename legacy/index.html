@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 Days 100 Web Projects</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
+            <span>100 DAYS 100 WEB PROJECTS</span>
+        </div>
+        <div class="buttons">
+            <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn">
+                <i class="fas fa-rocket"></i>
+                <span>Generate README</span>
+            </a>
+            <button id="themeToggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <h1 class="hero-title">100 Days 100 Web Projects</h1>
+        <p class="hero-subtitle">Exploring the art of the possible through 100+ high-quality web experiments</p>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value" id="starCount">...</div>
+                <div class="stat-label">Stars</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="forkCount">...</div>
+                <div class="stat-label">Forks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="issueCount">...</div>
+                <div class="stat-label">Open Issues</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="prCount">...</div>
+                <div class="stat-label">Pull Requests</div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-wrapper">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="Search 112+ projects..."
+                >
+                <button class="search-btn" onclick="filterProjects()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects-section">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Project Name</th>
+                        <th>Demo Link</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+        <div id="no-projects">No Projects Found</div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h3>About</h3>
+                <p>This repository contains 112 web projects from basic to intermediate using HTML, CSS, and JS.</p>
+                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
+            </div>
+            <div>
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3>Featured Project</h3>
+                <p>Generate free, stunning GitHub README profiles in minutes.</p>
+                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top: 1rem;">
+                    <i class="fas fa-magic"></i> Try README Generator
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <button id="scrollBtn">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <script src="index.js"></script>
+</body>
+</html>
