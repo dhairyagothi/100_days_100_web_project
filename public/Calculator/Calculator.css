@@ -45,16 +45,31 @@ input::placeholder{
 /*Set properties of the buttons of the calculator*/
 button{
     border:none;
-    width:60px;
-    height:60px;
-    margin:13.5px;
+    width:65px;
+    height:65px;
+    margin:10px;
     border-radius:50%;
     color:#ffffff;
-    font-size:2 rem;
-    background:transparent;
-    box-shadow:-8px -8px 20px rgba(255,255,255,0.1);
+    font-size:1.4rem;
+    font-weight:600;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
     cursor:pointer;
+    transition: all 0.3s ease;
 
+    box-shadow:
+    8px 8px 18px rgba(0,0,0,0.4),
+    -4px -4px 12px rgba(255,255,255,0.08);
+}
+
+button:hover{
+    transform: translateY(-5px) scale(1.08);
+
+    box-shadow:
+    0 0 10px rgba(255,255,255,0.2),
+    0 0 20px rgba(109,238,10,0.3);
+
+    background:rgba(255,255,255,0.15);
 }
 
 /* Set different background color for the equal to operator*/
