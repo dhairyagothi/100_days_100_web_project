@@ -5,16 +5,32 @@ var currTile;
 var otherTile; // blank tile
 
 var turns = 0;
+var timerInterval;
 
 var imgOrder = ["4", "2", "8", "5", "1", "6", "7", "9", "3"];
 var winOrder = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg"];
 
 window.onload = function() {
+    createBoard();
+
+    document.getElementById("shuffleBtn").addEventListener("click", randomizeBoard);
+
+    // Set a timer for 5 minutes (300,000 milliseconds) and display the countdown
+    startTimer(5 * 60);
+};
+
+function createBoard() {
+
+    document.getElementById("board").innerHTML = "";
+
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < column; c++) {
+
             let tile = document.createElement("img");
+
             tile.id = r.toString() + "-" + c.toString();
-            tile.src = imgOrder.shift() + ".jpg";
+
+            tile.src = imgOrder[r * column + c] + ".jpg";
 
             // DRAG FUNCTIONALITY
             tile.addEventListener("dragstart", dragStart); // click an image
@@ -27,14 +43,34 @@ window.onload = function() {
             document.getElementById("board").append(tile);
         }
     }
+}
 
-    // Set a timer for 5 minutes (300,000 milliseconds) and display the countdown
+function randomizeBoard() {
+
+    for (let i = imgOrder.length - 1; i > 0; i--) {
+
+        let j = Math.floor(Math.random() * (i + 1));
+
+        [imgOrder[i], imgOrder[j]] = [imgOrder[j], imgOrder[i]];
+    }
+
+    createBoard();
+
+    turns = 0;
+
+    document.getElementById("turns").innerText = "Turns: 0";
+
     startTimer(5 * 60);
-};
+}
 
 function startTimer(duration) {
+
+    clearInterval(timerInterval);
+
     var timer = duration, minutes, seconds;
-    var interval = setInterval(function () {
+
+    timerInterval = setInterval(function () {
+
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
 
@@ -44,9 +80,10 @@ function startTimer(duration) {
         document.getElementById("time").innerText = "Time Left: " + minutes + ":" + seconds;
 
         if (--timer < 0) {
-            clearInterval(interval);
+            clearInterval(timerInterval);
             alert("Time's up! 5 minutes have passed.");
         }
+
     }, 1000);
 }
 
@@ -75,6 +112,7 @@ function dragEnd() {
         console.log("Not a valid move. Tile is not blank.");
         return;
     }
+
     console.log("Drag End: " + currTile.id + " -> " + otherTile.id);
 
     let currCoords = currTile.id.split("-");
@@ -91,9 +129,11 @@ function dragEnd() {
     let moveDown = c == c2 && r2 == r + 1;
 
     let isAdjacent = moveLeft || moveRight || moveUp || moveDown;
+
     console.log("Is Adjacent: " + isAdjacent);
 
     if (isAdjacent) {
+
         let currImg = currTile.src;
         let otherImg = otherTile.src;
 
@@ -101,22 +141,29 @@ function dragEnd() {
         otherTile.src = currImg;
 
         turns++;
+
         document.getElementById("turns").innerText = "Turns: " + turns;
+
         console.log("Turns: " + turns);
 
         // Check if the player has won
         if (checkWin()) {
+            clearInterval(timerInterval);
             alert("Congratulations! You've solved the puzzle!");
         }
     }
 }
 
 function checkWin() {
+
     let tiles = document.getElementsByTagName("img");
+
     for (let i = 0; i < tiles.length; i++) {
+
         if (tiles[i].src.includes(winOrder[i]) === false) {
             return false;
         }
     }
+
     return true;
 }

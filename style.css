@@ -181,7 +181,7 @@ body {
 #themeToggle:hover {
     background: var(--accent-color);
     color: #000;
-    transform: translateY(-3px) rotate(15deg);
+    
     box-shadow: 0 10px 25px var(--accent-glow);
 }
 
@@ -521,6 +521,19 @@ tbody td a:hover {
     .table-container { padding: 1.5rem; }
     thead { display: none; }
     tbody td { padding: 1.2rem 1rem; }
+}
+
+.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.light-theme .navbar {
+    background-color: #f5f5f5;
+}
+
+.light-theme .card {
+    background-color: #eaeaea;
 }
 
 .pagination-container {
