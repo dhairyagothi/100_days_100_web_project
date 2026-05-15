@@ -17,6 +17,13 @@
 
 </div>
 
+<div align="center">
+   
+[![oosmetrics](https://api.oosmetrics.com/api/v1/badge/achievement/a3722273-95cf-4a9e-b9ae-5e241e148e86.svg)](https://oosmetrics.com/repo/dhairyagothi/100_days_100_web_project)
+
+[![oosmetrics](https://api.oosmetrics.com/api/v1/badge/achievement/504bb60b-df6f-4e90-94f7-123a64ba852d.svg)](https://oosmetrics.com/repo/dhairyagothi/100_days_100_web_project)
+</div>
+
 ## 🌟 About This Project
 
 Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **112+ web development projects** ranging from beginner to intermediate level. Our goal is to help developers learn and practice web development through hands-on projects using various technologies.

@@ -111,6 +111,21 @@ body {
     border-color: transparent;
 }
 
+.featured-btn {
+    background: var(--gradient-1) !important;
+    color: #000 !important;
+    border: none !important;
+    font-weight: 700 !important;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.85rem !important;
+    gap: 8px;
+}
+
+.featured-btn:hover {
+    transform: translateY(-3px) scale(1.05) !important;
+    box-shadow: 0 10px 30px var(--accent-glow) !important;
+}
+
 .welcome-text {
     font-weight: 600;
     color: var(--accent-color);
@@ -297,7 +312,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 4rem;
 }
 
