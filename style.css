@@ -319,6 +319,13 @@ body {
     outline: none;
 }
 
+.stats-counter {
+      color: #00ff88;
+      font-family: 'Courier New', monospace;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
 .search-btn {
     background: var(--accent-color);
     border: none;
