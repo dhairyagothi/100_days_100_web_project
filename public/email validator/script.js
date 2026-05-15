@@ -32,7 +32,7 @@ submitBtn.addEventListener("click", async (e) => {
     resultCont.innerHTML = `
 <div class="loading-container">
     <img width="60" src="loading.svg" alt="Loading">
-    <p><p>Validating email... Please wait</p></p>
+    <p>Validating email... Please wait</p>
 </div>
 `
 
