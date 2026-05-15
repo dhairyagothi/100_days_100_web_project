@@ -141,6 +141,7 @@ function toggleTheme() {
 const buttons = document.getElementsByClassName('buttons')[0];
 
 function updateNavbar() {
+    if (!buttons) return;
     const username = window.username || null;
     const isRoot = !window.location.pathname.includes('/contributors/');
     const basePath = isRoot ? '' : '../';
@@ -158,7 +159,7 @@ function updateNavbar() {
         buttons.innerHTML = `
         <span class="welcome-text">Welcome, ${username}</span>
         <button class="button logout-btn" id='logout'>Logout</button>
-        <a class="button" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub</a>
+        <a class="button" href="https://github.com/dhairyagothi" target="_blank">GitHub</a>
         <a class="button" href="${basePath}contributors/contributor.html">Contributors</a>
         ${themeButton}`;
 
@@ -204,8 +205,8 @@ function fillTable() {
         ["Day 10", "QR Code Generator", "./public/qr%20generator/qr.html"],
         ["Day 11", "Serve Website Using Express", "./public/index.html"],
         ["Day 12", "Nodemailer Contact Form", "./public/gmail_nodemailer/public/mail.html"],
-        ["Day 13", "Login Form Using MERN", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern"],
-        ["Day 14", "File Uploader", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader"],
+        ["Day 13", "Login Form Using MERN", "github.com"],
+        ["Day 14", "File Uploader", "github.com"],
         ["Day 15", "Progress Bar", "./public/progress_bar/progress_bar.html"],
         ["Day 16", "Scroll Bar CSS", "./public/index.html"],
         ["Day 17", "Slider Using Swiper API", "./public/slider%20box/index.html"],
@@ -354,100 +355,27 @@ function renderTable() {
 function createPagination() {
     const paginationContainer = document.getElementById('pagination');
 
-    paginationContainer.innerHTML = '';
-
-    const totalPages = Math.ceil(projectData.length / itemsPerPage);
-
-    // Previous Button
-    const prevBtn = document.createElement('button');
-    prevBtn.innerText = 'Previous';
-    prevBtn.disabled = currentPage === 1;
-
-    prevBtn.addEventListener('click', () => {
-        currentPage--;
-        renderTable();
-        createPagination();
-    });
-
-    paginationContainer.appendChild(prevBtn);
-
-    // Page Indicator
-    const pageInfo = document.createElement('span');
-    pageInfo.innerText = ` Page ${currentPage} of ${totalPages} `;
-    pageInfo.style.margin = '0 10px';
-
-    paginationContainer.appendChild(pageInfo);
-
-    // Next Button
-    const nextBtn = document.createElement('button');
-    nextBtn.innerText = 'Next';
-    nextBtn.disabled = currentPage === totalPages;
-
-    nextBtn.addEventListener('click', () => {
-        currentPage++;
-        renderTable();
-        createPagination();
-    });
-
-    paginationContainer.appendChild(nextBtn);
-}
-
-// Filter Projects
-function filterProjects() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toLowerCase();
-    const rows = document.querySelector('tbody').querySelectorAll('tr');
-    let hasResults = false;
-
-    rows.forEach(row => {
-        const projectName = row.querySelector('.project-name')?.innerText.toLowerCase();
-
-        if (projectName && projectName.includes(filter)) {
-            row.style.display = '';
-            hasResults = true;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    const noProjectsMessage = document.getElementById('no-projects');
-    if (hasResults) {
-        noProjectsMessage.style.display = 'none';
+    // Toggle "No Projects Found" visibility
+    if (filteredData.length === 0) {
+        if (noProjectsMessage) noProjectsMessage.style.display = "block";
+        return;
     } else {
-        noProjectsMessage.style.display = 'block';
+        if (noProjectsMessage) noProjectsMessage.style.display = "none";
     }
-}
 
-// Search on Enter key
-const searchInput = document.getElementById('searchInput');
-if (searchInput) {
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            filterProjects();
-        }
+    // Build and append table rows
+    filteredData.forEach(project => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${project[0]}</td>
+            <td>${project[1]}</td>
+            <td><a class="button" href="${project[2]}" target="_blank">Live Demo</a></td>
+        `;
+        tableBody.appendChild(row);
     });
 }
 
-// Scroll to Top Button
-const scrollBtn = document.getElementById('scrollBtn');
-if (scrollBtn) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            scrollBtn.classList.add('show');
-        } else {
-            scrollBtn.classList.remove('show');
-        }
-    });
-
-    scrollBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-}
-
-// Initialize on DOM Load
+// Global initialization sequence
 document.addEventListener('DOMContentLoaded', () => {
     // FIX: Apply saved theme from localStorage BEFORE updateNavbar() builds
     //      the button, so the icon is rendered correctly on first load.
