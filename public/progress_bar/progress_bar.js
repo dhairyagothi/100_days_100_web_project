@@ -77,60 +77,19 @@ function updateProgress(){
 
     if(currentProgress >= end){
 
-        clearInterval(timer);
-
-        timer = null;
-
-        isRunning = false;
-
-        pauseBtn.innerHTML = '⏸ Pause';
-
-        statusDiv.innerHTML = '✅ Progress Completed!';
-        statusDiv.style.background = '#d4edda';
-        statusDiv.style.color = '#155724';
-
-        showPopup(100);
-
-        return;
+// Function to update progress
+function updateProgress() {
+    progress.style.background = `conic-gradient(#52c234 ${start * 3.6}deg, white 0deg)`;
+    value.textContent = `${start}%`;
+    
+    if (start >= end) { 
+        clearInterval(timer); 
+        isRunning = false; 
+        start = 0; 
+        return; 
     }
-
-    currentProgress++;
-
-    // Milestones
-
-    if(targetMilestones.includes(currentProgress) &&
-       !completedMilestones.has(currentProgress)){
-
-        completedMilestones.add(currentProgress);
-
-        showPopup(currentProgress);
-    }
-
-    // Update Circle
-
-    progress.style.background =
-        `conic-gradient(
-            #52c234 ${currentProgress * 3.6}deg,
-            #061700 ${currentProgress * 3.6}deg
-        )`;
-
-    value.innerHTML = `${currentProgress}%`;
-
-    // Remaining Time
-
-    let remaining = end - currentProgress;
-
-    let totalDuration = parseInt(durationInput.value);
-
-    let timePerStep = (totalDuration * 1000) / end;
-
-    let remainingSeconds = (remaining * timePerStep) / 1000;
-
-    statusDiv.innerHTML =
-        `⏳ ${currentProgress}% Completed | ${remainingSeconds.toFixed(1)}s Remaining`;
-
-    statusDiv.style.background = '#e3f2fd';
-    statusDiv.style.color = '#004085';
+    
+    start++;
 }
 
 
