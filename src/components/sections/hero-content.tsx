@@ -4,7 +4,7 @@ import * as React from "react"
 import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 import { RepoStatsDisplay } from "./repo-stats-display"
-import { GitHubStats } from "@/lib/github"
+import { GitHubStats } from "../../lib/github"
 
 interface HeroContentProps {
   stats: GitHubStats

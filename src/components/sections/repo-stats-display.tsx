@@ -2,7 +2,7 @@
 
 import { Star, GitFork, AlertCircle, GitPullRequest } from "lucide-react";
 import { motion } from "framer-motion"
-import { GitHubStats } from "@/lib/github";
+import { GitHubStats } from "../../lib/github";
 
 export function RepoStatsDisplay({ stats }: { stats: GitHubStats }) {
   const statItems = [

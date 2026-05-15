@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { HeroContent } from "./hero-content"
-import { GitHubStats } from "@/lib/github"
+import { GitHubStats } from "../../lib/github"
 
 export function HomeWrapper({ 
   stats, 
