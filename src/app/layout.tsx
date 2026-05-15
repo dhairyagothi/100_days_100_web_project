@@ -33,9 +33,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background font-sans selection:bg-primary selection:text-primary-foreground flex flex-col`}
       >
-        <div style={{ background: 'red', color: 'white', padding: '20px', position: 'fixed', top: 0, left: 0, zIndex: 9999 }}>
-          V10 - DEBUG RENDER
-        </div>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -43,7 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            {/* <Preloader /> */}
+            <Preloader />
             <Navbar />
             <main className="flex-1">
               {children}

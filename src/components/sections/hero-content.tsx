@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 import { RepoStatsDisplay } from "./repo-stats-display"
 import { getRepoStats, GitHubStats } from "../../lib/github"
@@ -13,13 +13,29 @@ interface HeroContentProps {
 
 export function HeroContent({ onExplore, showGrid }: HeroContentProps) {
   const [stats, setStats] = React.useState<GitHubStats | null>(null)
+  const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
+    setMounted(true)
     getRepoStats().then(setStats)
   }, [])
 
+  const containerVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" }
+    }
+  }
+
   return (
-    <div className="container mx-auto max-w-5xl text-center space-y-12 py-20 relative z-10">
+    <motion.div 
+      initial={mounted ? "hidden" : false}
+      animate={mounted ? "visible" : false}
+      variants={containerVariants}
+      className="container mx-auto max-w-5xl text-center space-y-12 py-20 relative z-10"
+    >
       <div className="space-y-6">
         <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-foreground font-geist-sans leading-[1.1]">
           100 Days of <br />
@@ -48,6 +64,6 @@ export function HeroContent({ onExplore, showGrid }: HeroContentProps) {
           Scroll or click to discover
         </p>
       </div>
-    </div>
+    </motion.div>
   )
 }

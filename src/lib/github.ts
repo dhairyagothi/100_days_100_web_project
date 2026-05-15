@@ -16,6 +16,18 @@ const REPO_OWNER = "shouri123";
 const REPO_NAME = "100_days_100_web_project";
 
 export async function getRepoStats(): Promise<GitHubStats> {
+  // If in browser, fetch from our own API route to avoid CORS
+  if (typeof window !== 'undefined') {
+    try {
+      const res = await fetch('/api/stats');
+      const data = await res.json();
+      return data.stats;
+    } catch (error) {
+      console.error("Error fetching stats from API:", error);
+      return { stars: 0, forks: 0, openIssues: 0, pullRequests: 0 };
+    }
+  }
+
   try {
     const [repoRes, prRes] = await Promise.all([
       fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`, { next: { revalidate: 3600 } }),
@@ -40,6 +52,18 @@ export async function getRepoStats(): Promise<GitHubStats> {
 }
 
 export async function getContributors(): Promise<Contributor[]> {
+  // If in browser, fetch from our own API route to avoid CORS
+  if (typeof window !== 'undefined') {
+    try {
+      const res = await fetch('/api/stats');
+      const data = await res.json();
+      return data.contributors;
+    } catch (error) {
+      console.error("Error fetching contributors from API:", error);
+      return [];
+    }
+  }
+
   try {
     const response = await fetch(
       `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contributors?per_page=100`,

@@ -3,6 +3,11 @@
 import { useEffect, useRef } from "react"
 import Image from "next/image"
 import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 interface Contributor {
   login: string
