@@ -31,7 +31,7 @@
     --mono: 'JetBrains Mono', monospace;
     --container: 1240px;
     --header-h: 88px;
-    --glass: blur(12px) saturate(180%);
+    --glass: blur(8px) saturate(180%);
 }
 
 body.light-mode {
@@ -477,6 +477,7 @@ body.light-mode .gradient-orb { opacity: 0.08; }
     transition: all var(--duration) var(--ease);
     cursor: pointer;
     overflow: hidden;
+    will-change: transform, opacity;
 }
 .p-card::before {
     content: '';

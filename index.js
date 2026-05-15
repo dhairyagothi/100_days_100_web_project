@@ -184,21 +184,23 @@ function initScene() {
         my = (e.clientY / innerHeight - 0.5);
     });
 
+    const pos = grid.geometry.attributes.position;
+    const count = pos.count;
+
     (function loop() {
         requestAnimationFrame(loop);
         const t = Date.now() * 0.0005;
 
-        const pos = grid.geometry.attributes.position;
-        for (let i = 0; i < pos.count; i++) {
+        for (let i = 0; i < count; i++) {
             const x = pos.getX(i);
             const y = pos.getY(i);
-            const z = Math.sin(x * 0.15 + t) * 1.0 + Math.cos(y * 0.15 + t) * 1.0;
+            const z = Math.sin(x * 0.15 + t) * 0.8 + Math.cos(y * 0.15 + t) * 0.8;
             pos.setZ(i, z);
         }
         pos.needsUpdate = true;
 
-        mainGroup.rotation.y += (mx * 0.03 - mainGroup.rotation.y) * 0.05;
-        mainGroup.rotation.x += (my * 0.03 - mainGroup.rotation.x) * 0.05;
+        mainGroup.rotation.y += (mx * 0.02 - mainGroup.rotation.y) * 0.05;
+        mainGroup.rotation.x += (my * 0.02 - mainGroup.rotation.x) * 0.05;
         stars.rotation.y += 0.0001;
 
         renderer.render(scene, camera);
@@ -236,11 +238,29 @@ function initLoader() {
 function revealHero() {
     if (typeof gsap === 'undefined') return;
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to('#heroEyebrow', { opacity: 1, y: 0, duration: 0.6 })
-      .to('#heroH1', { opacity: 1, y: 0, duration: 0.8 }, '-=0.3')
-      .to('#heroDesc', { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
-      .to('#heroActions', { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
-      .to('#heroProof', { opacity: 1, y: 0, duration: 0.5 }, '-=0.2');
+    
+    // Clear initial states to prevent flickers
+    gsap.set(['#heroEyebrow', '#heroH1', '#heroDesc', '#heroActions', '#heroProof'], { opacity: 0, y: 30 });
+
+    tl.to('#heroEyebrow', { opacity: 1, y: 0, duration: 0.8 })
+      .to('#heroH1', { opacity: 1, y: 0, duration: 1, scale: 1 }, '-=0.5')
+      .to('#heroDesc', { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1,
+          onStart: () => {
+              // Start typing effect when desc starts appearing
+              const el = document.querySelector('.hero-desc');
+              if (el && !el.dataset.typed) {
+                  el.dataset.typed = "true";
+                  const text = el.textContent;
+                  el.textContent = "";
+                  gsap.to(el, { duration: 1.5, text: text, ease: "none" });
+              }
+          }
+      }, '-=0.7')
+      .to('#heroActions', { opacity: 1, y: 0, duration: 0.6 }, '-=0.5')
+      .to('#heroProof', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3');
 }
 
 function initScrollAnims() {
@@ -249,22 +269,15 @@ function initScrollAnims() {
 
     gsap.from('.stats-row', {
         scrollTrigger: { trigger: '.stats', start: 'top 85%' },
-        opacity: 0, y: 30, duration: 0.7, ease: 'power3.out'
+        opacity: 0, y: 30, duration: 0.8, ease: 'power3.out'
     });
 
     gsap.from('.projects-header', {
-        scrollTrigger: { trigger: '.projects', start: 'top 80%' },
-        opacity: 0, y: 20, duration: 0.6, ease: 'power3.out'
+        scrollTrigger: { trigger: '.projects', start: 'top 85%' },
+        opacity: 0, y: 20, duration: 0.7, ease: 'power3.out'
     });
 
-    gsap.utils.toArray('.p-card').forEach((c, i) => {
-        gsap.from(c, {
-            scrollTrigger: { trigger: c, start: 'top 92%' },
-            opacity: 0, y: 24,
-            duration: 0.45, delay: (i % 3) * 0.06,
-            ease: 'power2.out'
-        });
-    });
+    // Cards animation moved to a more robust handler
 }
 
 /* ---------- GITHUB STATS ---------- */
@@ -318,10 +331,10 @@ function buildCards() {
         card.dataset.name = name.toLowerCase();
         card.innerHTML = `
             <div class="p-card-top">
-                <span class="p-tag" style="background:${colors.bg}; color:${colors.text}; box-shadow: 0 0 10px ${colors.glow}">
+                <span class="p-day" style="background:${colors.bg}; color:${colors.text}; border: 1px solid ${colors.text}44;">
                     ${day}
                 </span>
-                <span class="p-category" style="color:${colors.text}; font-size: 10px; font-weight: 700; letter-spacing: 1px;">${type}</span>
+                <span class="p-cat" style="color:${colors.text};">${type}</span>
             </div>
             <div class="p-name">${name}</div>
             <div class="p-actions">
@@ -334,18 +347,21 @@ function buildCards() {
 
     updateCount(DATA.length);
 
+    // Smooth staggered reveal as you scroll
     if (window.gsap && window.ScrollTrigger) {
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.from(".p-card", {
-            scrollTrigger: {
-                trigger: "#projectGrid",
-                start: "top 80%",
-            },
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.03,
-            ease: "power2.out"
+        gsap.utils.toArray('.p-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 95%",
+                    toggleActions: "play none none none"
+                },
+                y: 30,
+                opacity: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                clearProps: "all" // Ensures styles are cleared after animation
+            });
         });
     }
 }
@@ -455,22 +471,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initKeyboard();
     buildCards();
     initPills();
+    initScrollAnims();
     fetchStats();
-
-    // Hero Typing & Reveal
-    const heroText = document.querySelector('.hero-desc');
-    if (heroText) {
-        const content = heroText.textContent;
-        heroText.textContent = "";
-        gsap.to(heroText, {
-            duration: 1.5,
-            text: content,
-            ease: "none",
-            delay: 0.5
-        });
-    }
-
-    gsap.from(".hero-h1", { y: 60, opacity: 0, duration: 1, ease: "power4.out" });
-    gsap.from(".hero-eyebrow", { y: 20, opacity: 0, duration: 0.8, ease: "power2.out", delay: 0.3 });
-    gsap.from(".search-container", { y: 30, opacity: 0, duration: 0.8, ease: "power2.out", delay: 0.6 });
 });
