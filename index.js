@@ -183,7 +183,7 @@ let projectData = [];
 // Complete fillTable implementation with search filtering
 function fillTable(searchTerm = "") {
     const tableBody = document.getElementById("tableBody"); // Ensure your <tbody> has this ID
-    const noProjectsMessage = document.getElementById("noProjects"); // The "No Projects Found" element
+    const noProjectsMessage = document.getElementById("no-projects"); // The "No Projects Found" element
     
     if (!tableBody) return;
 
@@ -301,15 +301,11 @@ function fillTable(searchTerm = "") {
         ["Day 111", "Whack-a-Mole Game", "./public/Whack-a-Mole Game/index.html"],
         ["Day 112", "Nykaa Clone Website", "./public/Nykaa-clone/index.html"],
         ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
-     ["Day 114","EchoNotes","./public/EchoNotes/index.html"],
-    ["Day 115","FocusRoom","./public/FocusRoom/index.html"]
         ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"],
-        ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
-        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
+        ["Day 115", "FocusRoom", "./public/FocusRoom/index.html"],
+        ["Day 116", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
+        ["Day 117", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
     ];
-    
-
- 
 
     // Clear existing rows
     tableBody.innerHTML = "";
@@ -340,6 +336,13 @@ function fillTable(searchTerm = "") {
     });
 }
 
+function filterProjects() {
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+        fillTable(searchInput.value);
+    }
+}
+
 // Global initialization sequence
 document.addEventListener('DOMContentLoaded', () => {
     fetchRepoStats();
@@ -347,8 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateNavbar();
     fillTable(); // Renders the complete table on page load
 
-    // Optional: Hook into search input if you have one
-    const searchInput = document.getElementById("projectSearch");
+    // Hook into search input
+    const searchInput = document.getElementById("searchInput");
     if (searchInput) {
         searchInput.addEventListener("input", (e) => {
             fillTable(e.target.value);
