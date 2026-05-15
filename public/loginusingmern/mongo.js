@@ -8,6 +8,10 @@ mongoose.connect('mongodb://localhost:27017/login')
     console.error('Error connecting to the Database');
 })
 const loginSchema = new mongoose.Schema({
+    username:{
+      type:String,
+      required:true
+    },
     email:{
         type: String,
         required: true
