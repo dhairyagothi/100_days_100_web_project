@@ -95,6 +95,7 @@ body {
     font-weight: 900;
     letter-spacing: 2px;
     background: var(--gradient-1);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -203,6 +204,7 @@ body {
     font-weight: 900;
     line-height: 1;
     background: var(--gradient-1);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 2rem;
@@ -528,6 +530,7 @@ tbody td a:hover {
     thead { display: none; }
     tbody td { padding: 1.2rem 1rem; }
 }
+/* Light theme helpers */
 .light-theme {
     background-color: #ffffff;
     color: #000000;
@@ -539,9 +542,9 @@ tbody td a:hover {
 
 .light-theme .card {
     background-color: #eaeaea;
-feature/pagination-project-list
 }
 
+/* Pagination */
 .pagination-container {
     display: flex;
     justify-content: center;
@@ -565,10 +568,65 @@ feature/pagination-project-list
     opacity: 0.5;
     cursor: not-allowed;
 }
+
 #no-projects {
     display: none;
 }
-.pagination-container button:hover {
-    opacity: 0.9
 
+.pagination-container button:hover {
+    opacity: 0.9;
+}
+
+/* ---------- Additional responsive fixes ---------- */
+@media (max-width: 992px) {
+    .navbar { padding: 1rem 1.25rem; }
+    .buttons .button { padding: 0.6rem 1rem; font-size: 0.85rem; }
+    .navbar { flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+    .navbar-brand span { font-size: 1rem; }
+}
+
+@media (max-width: 768px) {
+    /* Navbar alignment */
+    .navbar { padding: 0.9rem 1rem; }
+    .navbar { justify-content: space-between; }
+    .navbar-brand img { width: 38px; height: 38px; }
+    .buttons { gap: 0.6rem; }
+    .welcome-text { display: none; }
+
+    /* Search width and buttons on mobile */
+    .search-container { max-width: 100%; padding: 0 0.5rem; }
+    .search-wrapper { padding: 0.6rem; gap: 0.6rem; }
+    .search-input { font-size: 1rem; padding: 0 1rem; }
+    .search-btn { padding: 0.8rem 1rem; }
+    .search-input, .search-btn { flex-shrink: 0; }
+
+    /* Projects: make table rows appear as stacked cards */
+    .table-container { padding: 1rem; }
+    tbody tr { display: block; margin-bottom: 1rem; background: rgba(255,255,255,0.02); border-radius: 16px; padding: 0.8rem; transform: none; }
+    tbody td { display: block; padding: 0.5rem 0.75rem; width: 100%; }
+    tbody td:first-child { border-radius: 8px 8px 0 0; }
+    tbody td:last-child { border-radius: 0 0 8px 8px; }
+    tbody td a { display: inline-block; margin-top: 0.6rem; }
+
+    /* Stats container adjustments */
+    .stats-container { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+
+    /* Footer tweaks */
+    .footer { padding: 4rem 1rem 2rem; }
+    .footer-content { gap: 2rem; }
+    .social-btn { width: 48px; height: 48px; border-radius: 12px; font-size: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+    .hero-title { font-size: clamp(2rem, 10vw, 3.25rem); }
+    .navbar-brand span { font-size: 0.95rem; }
+    .buttons .button { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+    .search-input { font-size: 0.95rem; }
+    .table-container { padding: 0.75rem; }
+    .footer h3 { font-size: 1.35rem; }
+}
+
+/* small fixes for overlapping elements */
+@supports (display: grid) {
+    .navbar { align-items: center; }
 }
