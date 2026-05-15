@@ -76,11 +76,11 @@ The project uses local fallback arrays defined in `script.js` for:
 
 ## Screenshots
 
-![Dashboard Overview](./pic1.png)
+![Dashboard Overview](pic1.png)
 
-![Astronomy News Panel](./pic2.png)
+![Astronomy News Panel](pic2.png)
 
-![Moon Phase and Sky Tools](./pic3.png)
+![Moon Phase and Sky Tools](pic3.png)
 
 
 
