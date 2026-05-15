@@ -186,13 +186,13 @@ body {
 
 /* Hero Section */
 .hero-section {
-    min-height: 95vh;
+    min-height: unset;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 160px 20px 100px;
+    padding: 160px 20px 40px;
     position: relative;
     background: radial-gradient(circle at top center, var(--accent-glow), transparent 60%);
 }
@@ -225,7 +225,7 @@ body {
     gap: 2.5rem;
     width: 100%;
     max-width: 1100px;
-    margin-bottom: 6rem;
+    margin-bottom: 3rem;
     animation: fadeInUp 1.4s ease-out;
 }
 
@@ -287,7 +287,7 @@ body {
 .search-container {
     max-width: 750px;
     width: 100%;
-    margin-bottom: 4rem;
+    margin-bottom: 0;
     animation: fadeInUp 1.6s ease-out;
 }
 
@@ -532,7 +532,6 @@ tbody td a:hover {
 
 .light-theme .card {
     background-color: #eaeaea;
-feature/pagination-project-list
 }
 
 .pagination-container {
