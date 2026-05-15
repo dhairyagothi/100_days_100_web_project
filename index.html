@@ -65,7 +65,7 @@
     <section class="projects-section">
         <div class="table-container">
             <table>
-                
+
                 <thead>
                     <tr>
                         <th>Day</th>
@@ -84,8 +84,9 @@
         <div class="footer-content">
             <div>
                 <h3>About</h3>
-                <p>This repository contains 112 web projects from basic to intermediate using HTML, CSS, and JS.</p>
-                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
+                <p>This repository contains <span id="Count"></span> web projects from basic to intermediate using HTML, CSS, and JS.</p>
+                <p><strong> &copy; <span id="Current-year"></span> 100 Days, 100 Projects</strong> by Dhairya and
+                    Contributors.</p>
             </div>
             <div>
                 <h3>Connect With Us</h3>
@@ -120,35 +121,41 @@
 
     <script src="index.js"></script>
     <style>
-       #try-readme-button {
-    margin-top: 1rem;
-    padding: 14px 26px;
-    border-radius: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+        #try-readme-button {
+            margin-top: 1rem;
+            padding: 14px 26px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
 
-    background: linear-gradient(135deg, #7f5af0, #2cb67d);
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
+            background: linear-gradient(135deg, #7f5af0, #2cb67d);
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
 
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
-}
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
+        }
 
-#try-readme-button:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
-}
-#try-readme-button i {
-    transition: transform 0.3s ease;
-}
+        #try-readme-button:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
+        }
 
-#try-readme-button:hover i {
-    transform: rotate(-30deg) scale(1.2);
-}
+        #try-readme-button i {
+            transition: transform 0.3s ease;
+        }
+
+        #try-readme-button:hover i {
+            transform: rotate(-30deg) scale(1.2);
+        }
     </style>
+
+    <!-- For Copyright Year -->
+    <script>
+        document.getElementById("Current-year").textContent = new Date().getFullYear();
+    </script>
 </body>
 
 </html>

@@ -98,7 +98,7 @@
             <div>
                 <h3>About</h3>
                 <p>This repository contains 112 web projects from basic to intermediate using HTML, CSS, and JS.</p>
-                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
+                <p><strong>&copy; <span id="Current-year"></span> 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
             </div>
             <div>
                 <h3>Connect With Us</h3>
@@ -132,6 +132,9 @@
     <!-- Pushed JavaScript Code To Here -->
     <script src="../index.js"></script>
     <script src="contributor.js"></script>
+    <script>
+      document.getElementById("Current-year").textContent=new Date().getFullYear();
+    </script>
     
   </body>
 </html>

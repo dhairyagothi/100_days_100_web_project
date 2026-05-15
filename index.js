@@ -487,3 +487,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('tableBody')) fillTable();
     if (document.getElementById('starCount')) fetchRepoStats();
 });
+
+
+// for Count Of Project 
+const table = document.getElementById("tableBody");
+const TotalCount=table.querySelectorAll("tr").length;
+
+document.getElementById("Count").textContent= TotalCount;
