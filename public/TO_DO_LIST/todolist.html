@@ -10,36 +10,100 @@
   <body>
     <nav>
       <ul class="navbar">
+        <li class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M5 12.5 10 17 19 7" />
+            </svg>
+          </span>
+          <span>TaskFlow</span>
+        </li>
         <div class="nav-left">
-          <li ><a href="#" onclick="showHome()">Home</a></li>
+          <li><a href="#" onclick="showHome()">Home</a></li>
           <li><a href="#" onclick="showDocuments()">Documents</a></li>
         </div>
         <div class="nav-right">
-          <li><button id="colour1" onclick="c1()"></button></li>
-          <li><button id="colour2" onclick="c2()"></button></li>
-          <li><button id="colour3" onclick="c3()"></button></li>
-          <li><button id="colour4" onclick="c4()"></button></li>
-          <li><button id="colour5" onclick="c5()"></button></li>
+          <li><button id="colour1" onclick="c1()" aria-label="Apply blush theme"></button></li>
+          <li><button id="colour2" onclick="c2()" aria-label="Apply fresh theme"></button></li>
+          <li><button id="colour3" onclick="c3()" aria-label="Apply sunset theme"></button></li>
+          <li><button id="colour4" onclick="c4()" aria-label="Apply violet theme"></button></li>
+          <li><button id="colour5" onclick="c5()" aria-label="Apply ocean theme"></button></li>
         </div>
       </ul>
     </nav>
     <main class="main">
       <div id="home-tab">
         <div class="todo-panel">
-          <p class="eyebrow">Daily task board</p>
-          <div class="heading">JUST DO IT.</div>
-          <p class="subheading">Capture your tasks, organize them by type, and export the list when you are done.</p>
-          <div class="buttons">
-            <div class="task-entry">
-              <input type="text" id="task" placeholder="Enter a task" aria-label="Task name">
-              <button onclick="Add()" id="submittask">Add task</button>
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Daily task board</p>
+              <div class="heading">JUST DO IT.</div>
+              <p class="subheading">Plan the day, mark progress, and export your list when it is ready.</p>
             </div>
-
-            <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
+            <button onclick="saveAsPDF()" id="savepdf" class="icon-action">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v12" />
+                <path d="m7 10 5 5 5-5" />
+                <path d="M5 21h14" />
+              </svg>
+              Save PDF
+            </button>
           </div>
-          <div id="empty-state" class="empty-state">
-            <h2>No tasks yet</h2>
-            <p>Add your first task above to start building your list.</p>
+
+          <div class="board-grid">
+            <section class="task-column" aria-label="Task board">
+              <div class="task-entry">
+                <input type="text" id="task" placeholder="What do you need to finish?" aria-label="Task name">
+                <button onclick="Add()" id="submittask" class="icon-action">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 5v14" />
+                    <path d="M5 12h14" />
+                  </svg>
+                  Add task
+                </button>
+              </div>
+
+              <div class="stats-row">
+                <div class="stat-card">
+                  <span class="stat-label">Active</span>
+                  <strong id="active-count">0</strong>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-label">Completed</span>
+                  <strong id="completed-count">0</strong>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-label">Saved PDFs</span>
+                  <strong id="document-count">0</strong>
+                </div>
+              </div>
+
+              <div id="empty-state" class="empty-state">
+                <h2>No tasks yet</h2>
+                <p>Add your first task above and your board will start filling up here.</p>
+              </div>
+            </section>
+
+            <aside class="progress-panel" aria-label="Daily progress">
+              <div class="progress-header">
+                <span>Daily progress</span>
+                <strong id="progress-percent">0%</strong>
+              </div>
+              <div class="progress-ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-track" cx="60" cy="60" r="48"></circle>
+                  <circle class="ring-fill" id="progress-ring" cx="60" cy="60" r="48"></circle>
+                </svg>
+                <div class="ring-center">
+                  <strong id="ring-count">0/0</strong>
+                  <span>done</span>
+                </div>
+              </div>
+              <div class="progress-note">
+                <strong>Keep it realistic</strong>
+                <p>Small, finished tasks make the board useful and easy to export.</p>
+              </div>
+            </aside>
           </div>
         </div>
         <div id="notes-container"></div>
@@ -51,6 +115,15 @@
     </main>
     
     <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
+    <div id="pdfPreviewModal" class="pdf-modal" aria-hidden="true">
+      <div class="pdf-modal-content" role="dialog" aria-modal="true" aria-labelledby="pdfPreviewTitle">
+        <div class="pdf-modal-header">
+          <h2 id="pdfPreviewTitle">PDF Preview</h2>
+          <button type="button" onclick="closePDFPreview()" aria-label="Close PDF preview">Close</button>
+        </div>
+        <iframe id="pdfPreviewFrame" title="Saved PDF preview"></iframe>
+      </div>
+    </div>
 
     <script src="todolist.js"></script>
   </body>

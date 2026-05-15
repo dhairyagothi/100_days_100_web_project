@@ -3,6 +3,14 @@ let documentsList = document.querySelector(".documents-list");
 let pdfMessage = document.getElementById("pdfMessage");
 let task = document.getElementById("task");
 let emptyState = document.getElementById("empty-state");
+let activeCount = document.getElementById("active-count");
+let completedCount = document.getElementById("completed-count");
+let documentCount = document.getElementById("document-count");
+let progressPercent = document.getElementById("progress-percent");
+let progressRing = document.getElementById("progress-ring");
+let ringCount = document.getElementById("ring-count");
+let pdfPreviewModal = document.getElementById("pdfPreviewModal");
+let pdfPreviewFrame = document.getElementById("pdfPreviewFrame");
 let currentTheme = "theme1"; // Default theme
 // Task types with updated labels, values, and colors
 const taskTypes = [
@@ -52,72 +60,130 @@ function Add() {
   const tickIcon = document.createElement("button");
   tickIcon.type = "button";
   tickIcon.className = "note-check";
-  tickIcon.innerHTML = "&#10003";
+  tickIcon.innerHTML = "Mark done";
 
   const deleteBtn = document.createElement("button");
   deleteBtn.type = "button";
   deleteBtn.className = "note-delete";
   deleteBtn.innerText = "Delete";
 
+  const noteActions = document.createElement("div");
+  noteActions.className = "note-actions";
+
   tickIcon.addEventListener("click", (event) => {
     taskText.classList.toggle("completed");
-    taskText.style.textDecoration = taskText.classList.contains("completed")
-      ? "line-through"
-      : "none";
+    const isCompleted = taskText.classList.contains("completed");
+    note.classList.toggle("is-completed", isCompleted);
+    tickIcon.innerText = isCompleted ? "Undo" : "Mark done";
+    updateStats();
     event.stopPropagation();
   });
 
   deleteBtn.addEventListener("click", () => {
-    note.remove();
-    updateEmptyState();
+    note.classList.add("removing");
+    setTimeout(() => {
+      note.remove();
+      updateEmptyState();
+      updateStats();
+    }, 240);
   });
 
   noteWrapper.appendChild(taskText);
   noteWrapper.appendChild(dropdown);
-  noteWrapper.appendChild(tickIcon);
-  noteWrapper.appendChild(deleteBtn);
+  noteActions.appendChild(tickIcon);
+  noteActions.appendChild(deleteBtn);
+  noteWrapper.appendChild(noteActions);
 
   note.appendChild(noteWrapper);
   notesContainer.appendChild(note);
   task.value = "";
   updateEmptyState();
+  updateStats();
 }
 
 function updateEmptyState() {
   emptyState.classList.toggle("hidden", notesContainer.children.length > 0);
 }
 
+function updateStats() {
+  const notes = Array.from(document.querySelectorAll(".notes"));
+  const completed = notes.filter((note) =>
+    note.querySelector(".note-text").classList.contains("completed")
+  ).length;
+  const total = notes.length;
+  const percent = total ? Math.round((completed / total) * 100) : 0;
+  activeCount.innerText = notes.length - completed;
+  completedCount.innerText = completed;
+  documentCount.innerText = documentsList.children.length;
+  progressPercent.innerText = `${percent}%`;
+  ringCount.innerText = `${completed}/${total}`;
+  progressRing.style.strokeDashoffset = 302 - (302 * percent) / 100;
+}
+
 function saveAsPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   let tasks = document.querySelectorAll(".notes");
+  if (!tasks.length) {
+    doc.setFontSize(16);
+    doc.text("No tasks added yet.", 20, 20);
+  }
   tasks.forEach((task, index) => {
     const text = task.querySelector(".note-text");
+    const type = task.querySelector(".note-type");
+    const isCompleted = text.classList.contains("completed");
     const value = text ? text.textContent.trim() : "";
     if (value) {
-      doc.text(20, 10 + (10 * index), value);
+      const status = isCompleted ? "Done" : "Active";
+      const label = type && type.value ? `${type.value} - ${status}` : status;
+      doc.text(20, 20 + (14 * index), `${index + 1}. ${value}`);
+      doc.setFontSize(10);
+      doc.text(24, 26 + (14 * index), label);
+      doc.setFontSize(16);
     }
   });
   let fileName = `ToDoList_${Date.now()}.pdf`;
   let fileURL = URL.createObjectURL(doc.output("blob"));
   saveDocument(fileName, fileURL);
   showPDFMessage();
+  updateStats();
 }
 
 function saveDocument(fileName, fileURL) {
   let docItem = document.createElement("div");
   docItem.className = "document-item";
-  docItem.innerHTML = `
-        <span>${fileName}</span>
-        <button onclick="viewPDF('${fileURL}')">View</button>
-        <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
-        <button onclick="deletePDF(this)">Delete</button>
-    `;
+  const docName = document.createElement("span");
+  docName.innerText = fileName;
+  const viewButton = document.createElement("button");
+  viewButton.type = "button";
+  viewButton.innerText = "View";
+  viewButton.addEventListener("click", () => viewPDF(fileURL));
+  const downloadButton = document.createElement("button");
+  downloadButton.type = "button";
+  downloadButton.innerText = "Download";
+  downloadButton.addEventListener("click", () => downloadPDF(fileURL, fileName));
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.innerText = "Delete";
+  deleteButton.addEventListener("click", () => deletePDF(deleteButton, fileURL));
+  docItem.appendChild(docName);
+  docItem.appendChild(viewButton);
+  docItem.appendChild(downloadButton);
+  docItem.appendChild(deleteButton);
   documentsList.appendChild(docItem);
+  updateStats();
 }
 
 function viewPDF(fileURL) {
-  window.open(fileURL, "_blank");
+  pdfPreviewFrame.src = fileURL;
+  pdfPreviewModal.classList.add("show");
+  pdfPreviewModal.setAttribute("aria-hidden", "false");
+}
+
+function closePDFPreview() {
+  pdfPreviewModal.classList.remove("show");
+  pdfPreviewModal.setAttribute("aria-hidden", "true");
+  pdfPreviewFrame.src = "";
 }
 
 function downloadPDF(fileURL, fileName) {
@@ -127,8 +193,10 @@ function downloadPDF(fileURL, fileName) {
   a.click();
 }
 
-function deletePDF(button) {
+function deletePDF(button, fileURL) {
+  URL.revokeObjectURL(fileURL);
   button.parentElement.remove();
+  updateStats();
 }
 
 function showPDFMessage() {
@@ -200,3 +268,5 @@ function updateNotesTheme() {
     }
   });
 }
+
+updateStats();
