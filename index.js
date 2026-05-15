@@ -130,20 +130,6 @@ if (localStorage.getItem('theme') === 'light') {
     document.body.classList.remove('light-mode');
 }
 
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('light-mode');
-    
-    if (document.body.classList.contains('light-mode')) {
-        localStorage.setItem('theme', 'light');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-    } else {
-        localStorage.setItem('theme', 'dark');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-    }
-});
-
 // Update Navbar for Login Status
 const buttons = document.getElementsByClassName('buttons')[0];
 
@@ -188,12 +174,12 @@ function updateNavbar() {
         const currentlyLight = document.body.classList.toggle('light-mode');
         
         if (document.body.classList.contains('light-mode')) {
-            newThemeIcon.classList.remove('fa-moon');
-            newThemeIcon.classList.add('fa-sun');
+            toggleIcon.classList.remove('fa-moon');
+            toggleIcon.classList.add('fa-sun');
             localStorage.setItem('theme', 'light');
         } else {
-            newThemeIcon.classList.remove('fa-sun');
-            newThemeIcon.classList.add('fa-moon');
+            toggleIcon.classList.remove('fa-sun');
+            toggleIcon.classList.add('fa-moon');
             localStorage.setItem('theme', 'dark');
         }
     });
