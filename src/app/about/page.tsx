@@ -1,6 +1,6 @@
-import { Code2, MonitorSmartphone } from "lucide-react"
+import Link from "next/link"
+import { Code2, MonitorSmartphone, Users } from "lucide-react"
 import { Icons } from "@/components/icons"
-import { Contributors } from "@/components/sections/Contributors"
 import { FadeIn } from "@/components/animations/FadeIn"
 
 export default function About() {
@@ -26,7 +26,7 @@ export default function About() {
             <div className="bg-card p-6 rounded-[1.5rem] border border-border/50">
               <MonitorSmartphone className="h-8 w-8 text-primary mb-4" />
               <h3 className="text-lg font-semibold mb-2">Taste Standard</h3>
-              <p className="text-sm text-muted-foreground">Designed with the 'Taste Standard' — featuring minimal borders, neutral tones, and precise typography.</p>
+              <p className="text-sm text-muted-foreground">Designed with the &apos;Taste Standard&apos; — featuring minimal borders, neutral tones, and precise typography.</p>
             </div>
             <div className="bg-card p-6 rounded-[1.5rem] border border-border/50">
               <Icons.gitHub className="h-8 w-8 text-primary mb-4" />
@@ -47,8 +47,21 @@ export default function About() {
             </p>
           </div>
 
+          {/* Link to Contributors page */}
           <div className="pt-8 border-t border-border/50">
-            <Contributors />
+            <Link
+              href="/contributors"
+              className="group flex items-center justify-between rounded-2xl border border-border/40 bg-card p-6 transition-all hover:shadow-lg hover:border-primary/30"
+            >
+              <div className="flex items-center gap-4">
+                <Users className="h-8 w-8 text-primary" />
+                <div>
+                  <h3 className="text-lg font-semibold">Our Contributors</h3>
+                  <p className="text-sm text-muted-foreground">Meet the amazing people who helped build this project.</p>
+                </div>
+              </div>
+              <span className="text-muted-foreground group-hover:text-foreground transition-colors text-2xl">→</span>
+            </Link>
           </div>
         </div>
       </FadeIn>
