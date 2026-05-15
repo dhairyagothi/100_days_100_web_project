@@ -1,86 +1,404 @@
-body{
-    margin-top: 50px;
-    text-align: center;
 
-    background-image:url(stadiumimage.webp);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: fixed;
-    
-  }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-.box1{
-  background-color: black;
-  width: 50%;
-  display: inline-block;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  border-radius: 30px;
-  border: 3px solid white;
-  animation: bounceIn 2s forwards;
-  
-}
 
-@keyframes bounceIn {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.game-image{
-  align-items: center;
-}
-.box1 h1{
-  color: white;
   padding: 30px;
-  font-weight: bold;
-  font-size: 50px;
-  font-style: italic;
-  text-decoration: underline;
-  
+
+  font-family: 'Poppins', sans-serif;
+
+  background-image:
+    linear-gradient(
+      rgba(0,0,0,0.6),
+      rgba(0,0,0,0.75)
+    ),
+    url('./stadiumimage.webp');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  overflow-x: hidden;
 }
 
-.game_buttons{
- 
-height: 100px;
-width: 100px;
-border: none;
-margin: 10px;
-border-radius: 50%;
-background-color:grey;
-padding: 0;
-overflow: hidden;
+.game-container {
 
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-img{
-display: block;
-height: auto;
-border-radius: 50%;
-width: 100%;
+.box1 {
+
+  width: 90%;
+  max-width: 950px;
+
+  margin-top: 40px;
+
+  padding: 40px 35px;
+
+  border-radius: 32px;
+
+  background: rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.45),
+    0 0 40px rgba(255,255,255,0.08);
+
+  animation: fadeIn 1s ease;
 }
 
-#reset{
-color: rgb(248, 248, 248);
-background-color: red;
-border-radius: 30px;
-border: 1px solid black;
-padding: 10px 15px;
-transition: background-color 0.5s ease;
-}
-#reset:hover{
-background-color: rgb(199, 4, 4);
-}
-#reset:active{
-background-color: rgb(146, 7, 7);
+.heading-section {
+
+  text-align: center;
+
+  margin-bottom: 35px;
 }
 
+<<<<<<< HEAD
 .show{
 color: white
 }
+=======
+.box1 h1 {
+
+  color: white;
+
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+
+  font-weight: 700;
+
+  margin-bottom: 15px;
+
+  line-height: 1.2;
+
+  text-shadow:
+    0 0 12px rgba(255,255,255,0.25);
+}
+
+.subtitle {
+
+  color: rgba(255,255,255,0.75);
+
+  font-size: 1rem;
+
+  letter-spacing: 0.5px;
+}
+
+.button-container {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 25px;
+
+  margin-bottom: 40px;
+}
+
+.game_buttons {
+
+  width: 140px;
+  height: 180px;
+
+  border: none;
+
+  border-radius: 28px;
+
+  background: rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(10px);
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;
+
+  color: white;
+
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
+}
+
+.game_buttons:hover {
+
+  transform:
+    translateY(-10px)
+    scale(1.05);
+
+  background: rgba(255,255,255,0.15);
+
+  box-shadow:
+    0 0 25px rgba(255,255,255,0.25);
+}
+
+.game_buttons:active {
+
+  transform: scale(0.96);
+}
+
+.game_image {
+
+  width: 95px;
+  height: 95px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border: 3px solid rgba(255,255,255,0.15);
+
+  transition:
+    transform 0.3s ease;
+}
+
+.game_buttons:hover .game_image {
+
+  transform: rotate(5deg) scale(1.08);
+}
+
+.show {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(240px, 1fr)
+    );
+
+  gap: 22px;
+
+  margin-top: 20px;
+}
+
+.result-card {
+
+  padding: 22px;
+
+  border-radius: 24px;
+
+  background: rgba(255,255,255,0.07);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  color: white;
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,0.2);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.result-card:hover {
+
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 0 20px rgba(255,255,255,0.15);
+}
+
+.result-card h2 {
+
+  margin-bottom: 15px;
+
+  font-size: 1.4rem;
+
+  color: #ffd54f;
+}
+
+.choice-container {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.choice-container img {
+
+  width: 90px;
+  height: 90px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+}
+
+.result-text {
+
+  font-size: 1.3rem;
+
+  font-weight: 600;
+
+  color: #4ade80;
+}
+
+.score-item {
+
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 12px;
+
+  font-size: 1.05rem;
+}
+
+.total-games {
+
+  margin-top: 14px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid rgba(255,255,255,0.15);
+
+  font-weight: 600;
+}
+
+.action-buttons {
+
+  margin-top: 40px;
+
+  text-align: center;
+}
+
+#reset {
+
+  padding: 14px 32px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff4d4d,
+      #d60000
+    );
+
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+#reset:hover {
+
+  transform:
+    translateY(-3px)
+    scale(1.03);
+
+  box-shadow:
+    0 0 20px rgba(255,0,0,0.35);
+}
+
+#reset:active {
+
+  transform: scale(0.96);
+}
+
+.footer-text {
+
+  margin-top: 25px;
+
+  text-align: center;
+
+  color: rgba(255,255,255,0.6);
+
+  font-size: 0.95rem;
+}
+
+@keyframes fadeIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(30px);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .box1 {
+
+    padding: 25px 18px;
+  }
+
+  .button-container {
+
+    gap: 16px;
+  }
+
+  .game_buttons {
+
+    width: 115px;
+    height: 150px;
+  }
+
+  .game_image {
+
+    width: 78px;
+    height: 78px;
+  }
+
+  .result-card {
+
+    padding: 18px;
+  }
+
+  .box1 h1 {
+
+    font-size: 2.4rem;
+  }
+}
+>>>>>>> improve-typewriter-ui

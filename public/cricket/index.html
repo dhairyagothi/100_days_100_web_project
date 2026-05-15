@@ -1,131 +1,200 @@
+# Modernized Cricket Game HTML
+
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cricket_Game</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Interactive Ball Bat Stump Cricket Game"
+  />
+
+  <title>Ball Bat Stump Game</title>
+
+  <link
+    rel="stylesheet"
+    href="./style.css"
+  />
+
+  <link
+    rel="icon"
+    href="../../favv.png"
+    type="image/x-icon"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
 </head>
+
 <body>
-  <div class="box1">
-    <h1 >Ball Bat Stump Game</h1>
-  <button  class="game_buttons"  onclick="
-  let usermsg='Bat';
 
-  let computerchoice=computergeneratechoice();
+  <main class="game-container">
 
-  let cmpmsg=computerchoice;
+    <section class="box1">
 
+      <div class="heading-section">
 
-  let result=getresult(usermsg,computerchoice);
-  /*
-  if(computerchoice==='Bat'){
-    result='both are tie';
-  }
-  else if(computerchoice ==='Ball'){
-    result='user won';
-  }
-  else{
-    result='computer won';
-  }
-  */
+        <h1>
+          🏏 Ball Bat Stump Game
+        </h1>
 
+        <p class="subtitle">
+          Play against the computer and track your score live.
+        </p>
 
-//  alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
-showresult(usermsg,cmpmsg,result);
+      </div>
 
-  
-  
-  
-  ">
-<img src="bat.jpeg"  class="game_image" alt="Bat_button">
-</button>
+      <div class="button-container">
 
-  <button  class="game_buttons"   onclick="
-  usermsg='Ball';
-  computerchoice=computergeneratechoice();
-  cmpmsg=computerchoice;
+        <button
+          class="game_buttons"
+          aria-label="Choose Bat"
 
-  result=getresult('Ball',computerchoice);
+          onclick="
+            let usermsg = 'Bat';
 
-  /*
-  if(computerchoice==='Bat'){
-    result='computer won';
-  }
-  else if(computerchoice ==='Ball'){
-    result='its a tie';
-  }
-  else{
-    result='user won';
-  }
-  */
+            let computerchoice =
+              computergeneratechoice();
 
+            let cmpmsg = computerchoice;
 
- // alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
+            let result =
+              getresult(
+                usermsg,
+                computerchoice
+              );
 
- showresult(usermsg,cmpmsg,result);
-  
-  
-  
-  ">  <img src="ball.jpeg"  class="game_image" alt="Ball_button">  </button>
+            showresult(
+              usermsg,
+              cmpmsg,
+              result
+            );
+          "
+        >
 
-  <Button    class="game_buttons"  onclick="
-  usermsg='stump';
+          <img
+            src="./bat.jpeg"
+            class="game_image"
+            alt="Bat"
+          />
 
-  computerchoice=computergeneratechoice();
-  cmpmsg=computerchoice;
+          <span>Bat</span>
 
-  result=getresult('stump',computerchoice);
+        </button>
 
-  /*
-  if(computerchoice==='Bat'){
-    result='user won';
-  }
-  else if(computerchoice ==='Ball'){
-    result='computer won';
-  }
-  else{
-    result='tie';
-  }
-  */
+        <button
+          class="game_buttons"
+          aria-label="Choose Ball"
 
+          onclick="
+            let usermsg = 'Ball';
 
-  //alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
-  showresult(usermsg,cmpmsg,result);
-  
-  
-  
-  ">  <img src="wickets.jpeg"   class="game_image" alt="wickets_button">  </Button>
+            let computerchoice =
+              computergeneratechoice();
 
+            let cmpmsg = computerchoice;
 
+            let result =
+              getresult(
+                usermsg,
+                computerchoice
+              );
 
+            showresult(
+              usermsg,
+              cmpmsg,
+              result
+            );
+          "
+        >
 
+          <img
+            src="./ball.jpeg"
+            class="game_image"
+            alt="Ball"
+          />
 
+          <span>Ball</span>
 
-<!-- use moves and results in a heading type instead of using alert.. -->
+        </button>
 
-<div class="show">
+        <button
+          class="game_buttons"
+          aria-label="Choose Stump"
 
-<h2 id="user-move"></h2>
-<h2 id="computer-move"></h2>
-<h2 id="result"></h2>
-<h2 id="score"></h2>
+          onclick="
+            let usermsg = 'stump';
 
-</div>
+            let computerchoice =
+              computergeneratechoice();
+
+            let cmpmsg = computerchoice;
+
+            let result =
+              getresult(
+                usermsg,
+                computerchoice
+              );
+
+            showresult(
+              usermsg,
+              cmpmsg,
+              result
+            );
+          "
+        >
+
+          <img
+            src="./wickets.jpeg"
+            class="game_image"
+            alt="Wickets"
+          />
+
+          <span>Stump</span>
+
+        </button>
+
+      </div>
 
 
 
 <button   onclick="localStorage.clear()
 resetscore(); //undefind value..             //without this function ,only the values in storage location can be changed..
-                                      
+                                      //using reset function we can also so in alert notification 
 " id="reset">  RESET </button>
 
-  </div>
+      </div>
 
-  
+    </section>
 
+  </main>
+
+<!-- added script -->
 <script src="script.js"></script>  
   
 </body>
+
 </html>
