@@ -308,10 +308,8 @@ function fillTable() {
         ["Day 110", "CRYPTOSHOW", "./public/CRYPTOSHOW/index.html"],
         ["Day 111", "Whack-a-Mole Game", "./public/Whack-a-Mole Game/index.html"],
         ["Day 112", "Nykaa Clone Website", "./public/Nykaa-clone/index.html"],
-        ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"] feature/pagination-project-list
-        ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"]
-    ];
-
+        ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"], feature/pagination-project-list
+        ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"],
         ["Day 114","EchoNotes","./public/EchoNotes/idex.html"],
         ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
         ["Day 116", "AI Image Classifier", "/public/AI Image CLassifier/index.html"]];
