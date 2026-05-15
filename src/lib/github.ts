@@ -12,7 +12,7 @@ export interface Contributor {
   contributions: number;
 }
 
-const REPO_OWNER = "dhairyagothi";
+const REPO_OWNER = "shouri123";
 const REPO_NAME = "100_days_100_web_project";
 
 export async function getRepoStats(): Promise<GitHubStats> {
