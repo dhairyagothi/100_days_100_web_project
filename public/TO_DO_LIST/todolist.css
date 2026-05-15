@@ -3,23 +3,24 @@
   margin: 0;
 }
 body {
-  background: rgb(43, 48, 121);
-  background: linear-gradient(
-    90deg,
-    rgba(43, 48, 121, 1) 19%,
-    rgba(101, 78, 170, 0.9697128851540616) 73%,
-    rgba(136, 136, 168, 1) 100%
-  );
-  font-family: sans-serif;
+  background: linear-gradient(135deg, rgba(43, 48, 121, 1) 0%, rgba(101, 78, 170, 0.96) 50%, rgba(136, 136, 168, 1) 100%);
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  background-attachment: fixed;
+  transition: background 0.5s ease;
 }
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
+  padding: 15px 30px;
   list-style: none;
-  background-color: rgba(225, 225, 225, 0.5);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .nav-left,
@@ -36,17 +37,16 @@ body {
   color: white;
   text-decoration: none;
   padding: 10px 20px;
-  border-radius: 5px;
-  background-color: rgba(20, 48, 65, 0.7);
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-  
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 .navbar li a:hover {
-  background-color: rgb(0, 0, 0);
-  color: rgb(239, 239, 234);
-  
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  color: white;
 }
 #colour1,
 #colour2,
@@ -113,111 +113,87 @@ body {
   transition: 0.8s;
 }
 .main {
-  display: grid;
-  gap: 60px;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .heading {
   margin-top: 30px;
-  font-size: 60px;
-  justify-content: center;
+  font-size: 50px;
   text-align: center;
   font-weight: 700;
-  animation-timing-function: linear;
-  animation-delay: 0s;
-  animation-direction: normal;
-  animation-duration: 5s;
-  animation-iteration-count: infinite;
-  font-family: fantasy;
-  font-style: italic;  
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: 2px;
 }
 .buttons {  
-  border-radius: 9px;
-  font-size: 15px;
-  z-index: 999;
-  margin-bottom: 23px;
-  margin-top: 23px;
   display: flex;
-  gap: 1700px;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  margin: 30px auto;
+  gap: 20px;
 }
-#submittask{
-  height: 42px;
-  width: 15%;
-  text-align: center;
-  position: absolute;
-  left: 20px;
-  background-color: rgb(67, 56, 56);
+#submittask, #savepdf {
+  position: static;
+  width: auto;
+  padding: 12px 24px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: white;
-  border-radius: 9px;
   font-size: 15px;
   cursor: pointer;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
+  transition: all 0.3s ease;
 }
 
-#savepdf {
-  height: 42px;
-  width: 15%;
-  text-align: center;
-  position: absolute;
-  right: 20px;
-  background-color: rgb(67, 56, 56);
+#submittask:hover, #savepdf:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   color: white;
-  border-radius: 9px;
-  /* border:solid 2px black; */
-  font-size: 15px;
-  cursor: pointer;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-}
-#submittask:hover{
-  background-color: black;
-  color: white;
-}
-#savepdf:hover {
-  background-color: rgb(3, 0, 0);
-  color: rgb(245, 245, 244);
 }
 
 #notes-container {
-  margin-top: 50px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; 
+  justify-content: center;
+  gap: 20px; 
   width: 100%; 
-  height: calc(100% - 150px); 
-  position: absolute; 
-  padding: 0; 
-  overflow: hidden; 
-  left: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
 }
 
 .notes {
-width: 200px;
-border-radius: 15px;
-background-color: #E1BEE7;
-padding: 10px;
-margin: 10px 0;
-position: relative;
-display: inline-block;
-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-cursor: move;
-color: #000;
-font-size: 16px;
-font-family: 'Safaniah';
-overflow-wrap: break-word;
-left: 20px;
-word-wrap: break-word; 
-white-space: normal; 
-height: auto; 
-max-height: 100px; 
-overflow-x: auto; 
+  width: 260px;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  color: #1a1a1a;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  overflow-wrap: break-word;
+  word-wrap: break-word; 
+  white-space: normal; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.notes:focus {
-outline: 2px solid #a1a1a1;
+.notes:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.notes:focus-within {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
 }
 
 .completed {
@@ -228,35 +204,43 @@ text-decoration: line-through;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 .document-item {
-  margin-top: 30px;
-  width: 80%;
-  padding: 10px 8px;
-  background-color: white;
-  color: black;
-  border-radius: 15px;
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border-radius: 12px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 .document-item:hover {
-  background-color: #F0F0F0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+.document-item span {
+  font-weight: 500;
 }
 .document-item button {
   margin-left: 10px;
   cursor: pointer;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-  padding: 5px 8px;
-  border-radius: 10px;
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: none;
+  background: #2b3079;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.3s;
 }
 .document-item button:hover {
-  background-color: bl;
-  color: white;
+  background: #1a1e50;
 }
 
 .pdf-message {

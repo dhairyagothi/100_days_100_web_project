@@ -15,29 +15,6 @@ const taskTypes = [
 ];
 
 function Add() {
-
-    if (task.value == "") {
-        alert("Please enter a task");
-    } else {
-        let newelement = document.createElement("li");
-        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
-        container.appendChild(newelement);
-        task.value = "";
-        newelement.querySelector("i").addEventListener("click", remove);
-        function remove() {
-            newelement.remove();
-        }
-        newelement.querySelector("a").addEventListener("click", strike);
-        function strike() {
-           if(newelement.style.textDecoration === "line-through")
-           {
-            newelement.style.textDecoration="none";
-           }
-           else{
-            newelement.style.textDecoration="line-through";
-           }
-        }
-
   const notes = document.querySelectorAll(".notes");
 
   if (notes.length > 0) {
@@ -70,6 +47,12 @@ function Add() {
   // Dropdown menu for task type
   const dropdown = document.createElement("select");
   dropdown.style.marginLeft = "10px";
+  dropdown.style.padding = "5px";
+  dropdown.style.borderRadius = "6px";
+  dropdown.style.border = "1px solid rgba(0,0,0,0.1)";
+  dropdown.style.background = "rgba(255, 255, 255, 0.6)";
+  dropdown.style.fontFamily = "'Poppins', sans-serif";
+  dropdown.style.outline = "none";
 
   // Populate dropdown with task types
   taskTypes.forEach((taskType) => {
@@ -94,9 +77,22 @@ function Add() {
   tickIcon.style.fontSize = "20px";
   tickIcon.style.marginLeft = "10px";
 
+  const trashIcon = document.createElement("i");
+  trashIcon.className = "fa-solid fa-trash";
+  trashIcon.style.cursor = "pointer";
+  trashIcon.style.color = "black";
+  trashIcon.style.fontSize = "16px";
+  trashIcon.style.marginLeft = "10px";
+  
+  trashIcon.addEventListener("click", (event) => {
+    note.remove();
+    event.stopPropagation();
+  });
+
   noteWrapper.appendChild(taskText);
   noteWrapper.appendChild(dropdown);
   noteWrapper.appendChild(tickIcon);
+  noteWrapper.appendChild(trashIcon);
 
   note.appendChild(noteWrapper);
   notesContainer.appendChild(note);
@@ -128,9 +124,33 @@ function saveAsPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   let tasks = document.querySelectorAll(".notes");
-  tasks.forEach((task, index) => {
-    doc.text(20, 10 + (10 * index), task.textContent.trim());
+  let yPos = 20;
+  doc.setFontSize(16);
+  doc.text(20, yPos, "My To-Do List");
+  yPos += 15;
+  doc.setFontSize(12);
+
+  tasks.forEach((task) => {
+    let span = task.querySelector("span");
+    let text = span ? span.innerText.trim() : "";
+    if (text && text !== "Click here to add a task...") {
+      let isCompleted = span.classList.contains("completed") ? "[Done] " : "[ ] ";
+      let select = task.querySelector("select");
+      let type = select && select.value ? ` (${select.value})` : "";
+      
+      if (yPos > 280) {
+        doc.addPage();
+        yPos = 20;
+      }
+      doc.text(20, yPos, isCompleted + text + type);
+      yPos += 10;
+    }
   });
+
+  if (yPos === 35 && doc.internal.getNumberOfPages() === 1) {
+    doc.text(20, yPos, "No tasks added yet.");
+  }
+
   let fileName = `ToDoList_${Date.now()}.pdf`;
   let fileURL = URL.createObjectURL(doc.output("blob"));
   saveDocument(fileName, fileURL);
