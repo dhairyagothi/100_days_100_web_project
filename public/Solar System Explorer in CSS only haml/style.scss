@@ -209,11 +209,6 @@ body {
                 background: url('https://www.solarsystemscope.com/images/textures/full/2k_sun.jpg') !important;
             }
         }
-        &.sun {
-            & > .preview {
-                background: url('https://www.solarsystemscope.com/images/textures/full/2k_sun.jpg') !important;
-            }
-        }
         &.mercury {
             & > .preview {
                 background: url('https://www.solarsystemscope.com/images/textures/full/2k_makemake_fictional.jpg') !important;
@@ -291,11 +286,6 @@ body {
             }
         }
 
-        &.sun {
-            h2 .pip {
-                background: $sun;
-            }
-        }
         &.sun {
             h2 .pip {
                 background: $sun;
@@ -627,11 +617,6 @@ body {
                         color:$sun;
                     }
                 }
-                & + label.sun {
-                    & > .info h3 {
-                        color:$sun;
-                    }
-                }
                 & + label.mercury {
                     & > .info h3 {
                         color:$mercury;
@@ -765,9 +750,9 @@ body {
 
                 &.sun {
                     @include makePlanet(rgba(255, 200, 0, 0.6), rgba(255, 150, 0, 0.8), 'https://www.solarsystemscope.com/images/textures/full/2k_sun.jpg');
-                }
-                &.sun {
-                    @include makePlanet(rgba(255, 200, 0, 0.6), rgba(255, 150, 0, 0.8), 'https://www.solarsystemscope.com/images/textures/full/2k_sun.jpg');
+                    & .overlay {
+                        display: none;
+                    }
                 }
                 &.mercury {
                     @include makePlanet(rgba(188, 143, 127, 0.6), rgba(234, 205, 199, 0.6), 'https://www.solarsystemscope.com/images/textures/full/2k_makemake_fictional.jpg');
