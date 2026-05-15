@@ -1,13 +1,10 @@
 import { projects } from "@/data/projects"
 import { ProjectGrid } from "@/components/ProjectGrid"
-import { getRepoStats } from "@/lib/github"
 import { HomeWrapper } from "../components/sections/home-wrapper"
 
-export default async function Home() {
-  const stats = await getRepoStats()
-
+export default function Home() {
   return (
-    <HomeWrapper stats={stats}>
+    <HomeWrapper>
       <ProjectGrid projects={projects} />
     </HomeWrapper>
   )

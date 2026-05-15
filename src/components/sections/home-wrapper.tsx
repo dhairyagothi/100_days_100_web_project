@@ -5,10 +5,8 @@ import { HeroContent } from "./hero-content"
 import { GitHubStats } from "../../lib/github"
 
 export function HomeWrapper({ 
-  stats, 
   children 
 }: { 
-  stats: GitHubStats
   children: React.ReactNode 
 }) {
   const [showGrid, setShowGrid] = React.useState(false)
@@ -32,7 +30,6 @@ export function HomeWrapper({
         </div>
 
         <HeroContent 
-          stats={stats} 
           onExplore={handleExplore} 
           showGrid={showGrid} 
         />

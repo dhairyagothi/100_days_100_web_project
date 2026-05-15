@@ -4,15 +4,20 @@ import * as React from "react"
 import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 import { RepoStatsDisplay } from "./repo-stats-display"
-import { GitHubStats } from "../../lib/github"
+import { getRepoStats, GitHubStats } from "../../lib/github"
 
 interface HeroContentProps {
-  stats: GitHubStats
   onExplore: () => void
   showGrid: boolean
 }
 
-export function HeroContent({ stats, onExplore, showGrid }: HeroContentProps) {
+export function HeroContent({ onExplore, showGrid }: HeroContentProps) {
+  const [stats, setStats] = React.useState<GitHubStats | null>(null)
+
+  React.useEffect(() => {
+    getRepoStats().then(setStats)
+  }, [])
+
   return (
     <div className="container mx-auto max-w-5xl text-center space-y-12 py-20 relative z-10">
       <motion.div 

@@ -4,7 +4,7 @@ import { Star, GitFork, AlertCircle, GitPullRequest } from "lucide-react";
 import { motion } from "framer-motion"
 import { GitHubStats } from "../../lib/github";
 
-export function RepoStatsDisplay({ stats }: { stats: GitHubStats }) {
+export function RepoStatsDisplay({ stats }: { stats: GitHubStats | null }) {
   const statItems = [
     { label: "Stars", value: stats?.stars ?? 0, icon: Star, color: "text-yellow-500" },
     { label: "Forks", value: stats?.forks ?? 0, icon: GitFork, color: "text-blue-500" },
