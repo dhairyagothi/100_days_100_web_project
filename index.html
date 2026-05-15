@@ -1,60 +1,174 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astronomy Dashboard</title>
-    <link rel="icon" href="data:,">
-    
-    <!-- ✅ FIXED PATH -->
+    <title>100 Days 100 Web Projects</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <main class="dashboard" id="home">
-        <header class="topbar">
+    <canvas id="bgCanvas"></canvas>
+
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
+            <span>100 DAYS 100 WEB PROJECTS</span>
+        </div>
+        <div class="buttons">
+            <button id="theme-toggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn">
+                <i class="fas fa-rocket"></i>
+                <span>Generate README</span>
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <h1 class="hero-title">100 Days 100 Web Projects</h1>
+        <p class="hero-subtitle">Exploring the art of the possible through 100+ high-quality web experiments</p>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value" id="starCount">...</div>
+                <div class="stat-label">Stars</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="forkCount">...</div>
+                <div class="stat-label">Forks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="issueCount">...</div>
+                <div class="stat-label">Open Issues</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="prCount">...</div>
+                <div class="stat-label">Pull Requests</div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search 119+ projects...">
+                <button class="search-btn" onclick="filterProjects()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Category Filter Buttons | Issue #1209 | Sweksha Kakkar -->
+        <div class="filter-container">
+          <div class="filter-group">
+            <span class="filter-label">Category:</span>
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="game">🎮 Game</button>
+            <button class="filter-btn" data-category="api">🌐 API</button>
+            <button class="filter-btn" data-category="javascript">⚡ JavaScript</button>
+            <button class="filter-btn" data-category="css">🎨 CSS</button>
+            <button class="filter-btn" data-category="canvas">🖼️ Canvas</button>
+            <button class="filter-btn" data-category="todo">📝 Todo</button>
+            <button class="filter-btn" data-category="weather">🌤️ Weather</button>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Difficulty:</span>
+            <button class="filter-btn difficulty-btn" data-category="beginner">🟢 Beginner</button>
+            <button class="filter-btn difficulty-btn" data-category="intermediate">🟡 Intermediate</button>
+          </div>
+        </div>
+    </section>
+
+    <section class="projects-section">
+        <div class="table-container">
+            <table>
+                
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Project Name</th>
+                        <th>Demo Link</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+            <div id="pagination" class="pagination-container"></div>
+        </div>
+        <div id="no-projects">No Projects Found</div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
             <div>
-                <p class="eyebrow">Observatory - Live</p>
-                <h1>Astronomy Dashboard</h1>
-                <p class="subtitle">Explore the universe from your screen</p>
+                <h3>About</h3>
+                <p>This repository contains 119 web projects from basic to intermediate using HTML, CSS, and JS.</p>
+                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
             </div>
-
-            <div class="status-pills" aria-label="Live status">
-                <span class="pill live"><i></i><span id="istTime">--:--:-- IST</span></span>
-                <span class="pill" id="todayDate">Today</span>
-            </div>
-        </header>
-
-        <section class="apod-card feature-card">
-            <div class="apod-image" id="apodImage" role="img" aria-label="NASA astronomy picture of the day">
-                <img id="apodImg" src="" alt="NASA astronomy picture of the day" referrerpolicy="no-referrer" decoding="async">
-            </div>
-            <div class="apod-copy">
-                <div class="section-head">
-                    <p class="eyebrow">Picture of the Day</p>
-                    <span class="mini-pill" id="apodDate">May 15, 2026</span>
+            <div>
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
+                        class="social-btn">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
                 </div>
-                <h2 id="apodTitle">Loading NASA Picture of the Day</h2>
-                <p id="apodDescription">Fetching today's astronomy image from NASA.</p>
-                <a class="primary-action" id="apodLink" href="https://apod.nasa.gov/" target="_blank" rel="noreferrer">View HD Image</a>
-                <a class="apod-source" id="apodSource" href="https://apod.nasa.gov/" target="_blank" rel="noreferrer">Source: NASA APOD</a>
             </div>
-        </section>
-
-        <section class="fact-card feature-card">
             <div>
-                <p class="eyebrow">Daily Space Fact</p>
-                <blockquote id="spaceFact">Loading today's space fact…</blockquote>
-                <a class="fact-source" id="factSource" href="https://science.nasa.gov/" target="_blank" rel="noreferrer">Source: loading…</a>
+                <h3>Featured Project</h3>
+                <p>Generate free, stunning GitHub README profiles in minutes.</p>
+                <br />
+                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn"
+                    id="try-readme-button">
+                    <i class="fas fa-magic"></i> Try README Generator
+                </a>
             </div>
-            <button class="ghost-action" id="shuffleFact" type="button">Shuffle</button>
-        </section>
+        </div>
+    </footer>
 
-        <section class="dashboard-grid">
-            <!-- your entire existing content remains SAME -->
-        </section>
-    </main>
+    <button id="scrollBtn">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
-    <!-- ✅ FIXED PATH -->
-    <script src="script.js"></script>
+    <script src="index.js"></script>
+    <style>
+       #try-readme-button {
+    margin-top: 1rem;
+    padding: 14px 26px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    background: linear-gradient(135deg, #7f5af0, #2cb67d);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
+}
+
+#try-readme-button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
+}
+#try-readme-button i {
+    transition: transform 0.3s ease;
+}
+
+#try-readme-button:hover i {
+    transform: rotate(-30deg) scale(1.2);
+}
+    </style>
 </body>
+
 </html>
