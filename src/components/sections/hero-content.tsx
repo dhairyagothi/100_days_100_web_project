@@ -17,7 +17,10 @@ export function HeroContent({ onExplore, showGrid }: HeroContentProps) {
 
   React.useEffect(() => {
     setMounted(true)
-    getRepoStats().then(setStats)
+    getRepoStats().then(s => {
+      console.log("Stats received:", s);
+      setStats(s);
+    })
   }, [])
 
   const containerVariants: Variants = {
