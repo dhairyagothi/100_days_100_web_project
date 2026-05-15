@@ -110,31 +110,32 @@ function initCanvas() {
     });
 }
 
-// Theme Toggle Functionality
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = themeToggle.querySelector('i');
+// ── Theme Toggle ────────────────────────────────────────────────────────────
+// FIX: Centralised toggle logic used by both the initial button and the
+//      button that updateNavbar() recreates inside .buttons innerHTML.
+//      Previously, the listener attached at the top of the file was lost
+//      as soon as updateNavbar() replaced the button with innerHTML, and
+//      window.theme was used for persistence (resets on every page load).
+//      Now localStorage is used so the preference survives refresh.
 
-// Check for saved theme preference or default to dark mode
-const currentTheme = window.theme || 'dark';
-if (currentTheme === 'light') {
-    document.body.classList.add('light-mode');
-    themeIcon.classList.remove('fa-moon');
-    themeIcon.classList.add('fa-sun');
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.body.classList.add('light-mode');
+    } else {
+        document.body.classList.remove('light-mode');
+    }
+    // Sync every theme-toggle icon on the page
+    document.querySelectorAll('#themeToggle i').forEach(icon => {
+        icon.classList.toggle('fa-sun', theme === 'light');
+        icon.classList.toggle('fa-moon', theme !== 'light');
+    });
+    localStorage.setItem('theme', theme);
 }
 
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('light-mode');
-
-    if (document.body.classList.contains('light-mode')) {
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-        window.theme = 'light';
-    } else {
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-        window.theme = 'dark';
-    }
-});
+function toggleTheme() {
+    const isLight = document.body.classList.contains('light-mode');
+    applyTheme(isLight ? 'dark' : 'light');
+}
 
 // Update Navbar for Login Status
 const buttons = document.getElementsByClassName('buttons')[0];
@@ -144,9 +145,12 @@ function updateNavbar() {
     const isRoot = !window.location.pathname.includes('/contributors/');
     const basePath = isRoot ? '' : '../';
 
+    // FIX: Read current theme from body class so the icon is always correct
+    //      even before the user has toggled anything.
+    const isLight = document.body.classList.contains('light-mode');
     const themeButton = `
         <button id="themeToggle" class="button" title="Toggle Theme">
-            <i class="fas ${document.body.classList.contains('light-mode') ? 'fa-sun' : 'fa-moon'}"></i>
+            <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
         </button>
     `;
 
@@ -170,31 +174,23 @@ function updateNavbar() {
         ${themeButton}`;
     }
 
-    // Re-attach theme toggle event listener
+    // FIX: Re-attach listener to the newly created button after innerHTML swap
     const newThemeToggle = document.getElementById('themeToggle');
-    const newThemeIcon = newThemeToggle.querySelector('i');
-
-    newThemeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-
-        if (document.body.classList.contains('light-mode')) {
-            newThemeIcon.classList.remove('fa-moon');
-            newThemeIcon.classList.add('fa-sun');
-            window.theme = 'light';
-        } else {
-            newThemeIcon.classList.remove('fa-sun');
-            newThemeIcon.classList.add('fa-moon');
-            window.theme = 'dark';
-        }
-    });
+    if (newThemeToggle) {
+        newThemeToggle.addEventListener('click', toggleTheme);
+    }
 }
+
 let currentPage = 1;
 const itemsPerPage = 10;
 let projectData = [];
 
 // Populate the table with project data
-
 function fillTable() {
+    // FIX: Removed stray merge-conflict text "feature/pagination-project-list"
+    //      after Day 113 entry, and collapsed the duplicate / orphaned Day 114
+    //      entries and the extra closing ]]; that broke the array literal,
+    //      causing a syntax error that prevented the entire script from running.
     projectData = [
         ["Day 1", "To-Do List", "./public/TO_DO_LIST/todolist.html"],
         ["Day 2", "Digital Clock", "./public/digital_clock/digitalclock.html"],
@@ -308,24 +304,16 @@ function fillTable() {
         ["Day 110", "CRYPTOSHOW", "./public/CRYPTOSHOW/index.html"],
         ["Day 111", "Whack-a-Mole Game", "./public/Whack-a-Mole Game/index.html"],
         ["Day 112", "Nykaa Clone Website", "./public/Nykaa-clone/index.html"],
-        ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"] feature/pagination-project-list
-        ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"]
+        ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
+        ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"],
+        ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
+        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
     ];
 
-        ["Day 114","EchoNotes","./public/EchoNotes/idex.html"],
-        ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
-        ["Day 116", "AI Image Classifier", "/public/AI Image CLassifier/index.html"]];
-    
-
- 
-
-    const tbody = document.getElementById('tableBody');
-
-
     renderTable();
-
     createPagination();
 }
+
 function renderTable() {
     const tbody = document.getElementById('tableBody');
 
@@ -362,6 +350,7 @@ function renderTable() {
         tbody.appendChild(row);
     });
 }
+
 function createPagination() {
     const paginationContainer = document.getElementById('pagination');
 
@@ -460,6 +449,11 @@ if (scrollBtn) {
 
 // Initialize on DOM Load
 document.addEventListener('DOMContentLoaded', () => {
+    // FIX: Apply saved theme from localStorage BEFORE updateNavbar() builds
+    //      the button, so the icon is rendered correctly on first load.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+
     initCanvas();
     updateNavbar();
     if (document.getElementById('tableBody')) fillTable();
