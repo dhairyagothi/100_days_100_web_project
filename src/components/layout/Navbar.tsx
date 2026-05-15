@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation"
 
 import { CommandPalette } from "@/components/CommandPalette"
 import { Icons } from "@/components/icons"
+import { ThemeToggle } from "@/components/layout/ThemeToggle"
+import { UserNav } from "@/components/layout/UserNav"
 
 export function Navbar() {
   const pathname = usePathname()
@@ -49,7 +51,7 @@ export function Navbar() {
           <div className="w-full flex-1 md:w-auto md:flex-none">
             <CommandPalette />
           </div>
-          <nav className="flex items-center">
+          <nav className="flex items-center gap-2">
             <Link
               href="https://github.com/dhairyagothi/100_days_100_web_project"
               target="_blank"
@@ -60,6 +62,8 @@ export function Navbar() {
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
+            <ThemeToggle />
+            <UserNav />
           </nav>
         </div>
       </div>
