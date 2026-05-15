@@ -1,53 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maze</title>
-  <link rel="stylesheet" href="./style.css">
-  <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Maze Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
-  <div id="page">
+    <div id="page">
+        <header>
+            <h1>Maze Escape</h1>
+            <p id="instructions">Guide the key to the house using arrow keys or swipe!</p>
+        </header>
 
-    <div id="Message-Container">
-      <div id="message">
-        <h1>Congratulations!</h1>
-        <p>You are done.</p>
-        <p id="moves"></p>
-        <input id="okBtn" type="button" onclick="toggleVisablity('Message-Container')" value="Cool!" />
-      </div>
+        <div id="menu">
+            <div class="custom-select">
+                <select id="diffSelect">
+                    <option value="10">Easy</option>
+                    <option value="15">Medium</option>
+                    <option value="25">Hard</option>
+                    <option value="38">Extreme</option>                                      
+                </select>
+            </div>
+            <input id="startMazeBtn" type="button" onclick="makeMaze()" value="Start Game" />
+        </div>
+
+        <div id="view">
+            <div id="mazeContainer">
+                <canvas id="mazeCanvas"></canvas>
+            </div>
+        </div>
+
+        <div id="Message-Container">
+            <div id="message">
+                <h1>Victory!</h1>
+                <p id="moves"></p>
+                <!-- Play Again now calls makeMaze() and toggles visibility -->
+                <input id="okBtn" type="button" onclick="makeMaze(); toggleVisablity('Message-Container')" value="Play Again" />
+            </div>
+        </div>
     </div>
 
-    <br>
-    <div id="menu">
-      <div class="custom-select">
-        <select id="diffSelect">
-                  <option value="10">Easy</option>
-                  <option value="15">Medium</option>
-                  <option value="25">Hard</option>
-                  <option value="38">Extreme</option>                                      
-              </select>
-      </div>
-      <input id="startMazeBtn" type="button" onclick="makeMaze()" value="Start" />
-    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h3>About</h3>
+                <p>This Maze Escape challenge is part of the 100 Days 100 Web Projects collection, built with HTML5 Canvas and Vanilla JS.</p>
+                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
+            </div>
+            <div>
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3>Explore More</h3>
+                <p>Check out more high-quality web experiments in the main repository.</p>
+                <br />
+                <a href="../../index.html" class="button-link featured-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </footer>
 
-    <div id="view">
-      <div id="mazeContainer">
-        <canvas id="mazeCanvas" class="border" height="1100" width="1100"></canvas>
-      </div>
-    </div>
-
-    <p id="instructions">Use arrow keys to move the key to the house!</p>
-
-  </div>
-
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
-  
-  <script src="./script.js"></script>
+    <!-- Scripts -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
-
