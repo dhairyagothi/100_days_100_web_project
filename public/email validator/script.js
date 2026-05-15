@@ -1,4 +1,6 @@
 console.log("This is my script")
+let submitBtn = document.getElementById("submitBtn")
+let resultCont = document.getElementById("resultCont")
 let result = {
 
     "tag": "",
@@ -23,7 +25,7 @@ let result = {
 submitBtn.addEventListener("click", async (e) => {
     e.preventDefault()
     console.log("Clicked")
-    resultCont.innerHTML=`<img width="123" src="img/loading.svg" alt="">`
+    resultCont.innerHTML=`<img width="123" src="loading.svg" alt="">`
     let key = "ema_live_tkRl4T1AMrlwioPCHxe8r1HmTSKkJSLehW9Ti42B"
     let email = document.getElementById("username").value
     let url = `https://api.emailvalidation.io/v1/info?apikey=${key}&email=${email}`

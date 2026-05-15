@@ -78,6 +78,10 @@ body {
     margin-top: 2rem;
 }
 
+.hidden {
+    display: none;
+}
+
 .input-group {
     position: relative;
     margin: 40px 0 20px;
@@ -195,4 +199,36 @@ input:focus~.highlight {
         width: 0;
         background: transparent;
     }
+}
+
+.footer h2 {
+    font-size: 36px;
+    color: #be3c9e;
+    margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.footer p {
+    font-size: 18px;
+    color: #555;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 6px;
+}
+
+#calculate.hidden {
+    display: none;
+}
+
+
+#reset {
+    margin-top: 1rem;
+    width: 150px;
+    height: 50px;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background: #ec4899;
+    cursor: pointer;
 }

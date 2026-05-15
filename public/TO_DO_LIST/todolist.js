@@ -1,9 +1,8 @@
 let notesContainer = document.getElementById("notes-container");
 let documentsList = document.querySelector(".documents-list");
 let pdfMessage = document.getElementById("pdfMessage");
-
+let task = document.getElementById("task");
 let currentTheme = "theme1"; // Default theme
-
 // Task types with updated labels, values, and colors
 const taskTypes = [
   { label: "Select Type", value: "", color: "white" },
@@ -15,63 +14,26 @@ const taskTypes = [
 ];
 
 function Add() {
-
-    if (task.value == "") {
-        alert("Please enter a task");
-    } else {
-        let newelement = document.createElement("li");
-        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
-        container.appendChild(newelement);
-        task.value = "";
-        newelement.querySelector("i").addEventListener("click", remove);
-        function remove() {
-            newelement.remove();
-        }
-        newelement.querySelector("a").addEventListener("click", strike);
-        function strike() {
-           if(newelement.style.textDecoration === "line-through")
-           {
-            newelement.style.textDecoration="none";
-           }
-           else{
-            newelement.style.textDecoration="line-through";
-           }
-        }
-
-  const notes = document.querySelectorAll(".notes");
-
-  if (notes.length > 0) {
-    const lastNote = notes[notes.length - 1];
-    const taskText = lastNote.querySelector("span");
-
-    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
-      alert("Please add a task to the previous note before creating a new one!");
-      return;
-    }
+  if (!task.value.trim()) {
+    alert("Please enter a task");
+    return;
   }
 
-  // Create a note container
   const note = document.createElement("div");
-  note.classList.add("notes");
+  note.className = "notes";
   note.style.backgroundColor = "white";
 
   const noteWrapper = document.createElement("div");
-  noteWrapper.style.display = "flex";
-  noteWrapper.style.alignItems = "center";
-  noteWrapper.style.justifyContent = "space-between";
-  noteWrapper.style.width = "100%";
+  noteWrapper.className = "note-row";
 
   const taskText = document.createElement("span");
-  taskText.innerText = "Click here to add a task...";
+  taskText.className = "note-text";
+  taskText.innerText = task.value.trim();
   taskText.contentEditable = true;
-  taskText.style.flex = "1";
-  taskText.style.marginRight = "10px";
 
-  // Dropdown menu for task type
   const dropdown = document.createElement("select");
-  dropdown.style.marginLeft = "10px";
+  dropdown.className = "note-type";
 
-  // Populate dropdown with task types
   taskTypes.forEach((taskType) => {
     const option = document.createElement("option");
     option.value = taskType.value;
@@ -79,7 +41,6 @@ function Add() {
     dropdown.appendChild(option);
   });
 
-  // Update task background color based on dropdown selection
   dropdown.addEventListener("change", () => {
     const selectedType = taskTypes.find((type) => type.value === dropdown.value);
     if (selectedType) {
@@ -87,33 +48,15 @@ function Add() {
     }
   });
 
-  const tickIcon = document.createElement("a");
-  tickIcon.innerHTML = "&#10003"; // Checkmark symbol
-  tickIcon.style.cursor = "pointer";
-  tickIcon.style.color = "black";
-  tickIcon.style.fontSize = "20px";
-  tickIcon.style.marginLeft = "10px";
+  const tickIcon = document.createElement("button");
+  tickIcon.type = "button";
+  tickIcon.className = "note-check";
+  tickIcon.innerHTML = "&#10003";
 
-  noteWrapper.appendChild(taskText);
-  noteWrapper.appendChild(dropdown);
-  noteWrapper.appendChild(tickIcon);
-
-  note.appendChild(noteWrapper);
-  notesContainer.appendChild(note);
-
-  // Event listeners for task text
-  taskText.addEventListener("focus", () => {
-    if (taskText.innerText.trim() === "Click here to add a task...") {
-      taskText.innerText = "";
-    }
-  });
-
-  taskText.addEventListener("blur", () => {
-    if (taskText.innerText.trim() === "") {
-      taskText.innerText = "Click here to add a task...";
-
-    }
-  });
+  const deleteBtn = document.createElement("button");
+  deleteBtn.type = "button";
+  deleteBtn.className = "note-delete";
+  deleteBtn.innerText = "Delete";
 
   tickIcon.addEventListener("click", (event) => {
     taskText.classList.toggle("completed");
@@ -122,6 +65,19 @@ function Add() {
       : "none";
     event.stopPropagation();
   });
+
+  deleteBtn.addEventListener("click", () => {
+    note.remove();
+  });
+
+  noteWrapper.appendChild(taskText);
+  noteWrapper.appendChild(dropdown);
+  noteWrapper.appendChild(tickIcon);
+  noteWrapper.appendChild(deleteBtn);
+
+  note.appendChild(noteWrapper);
+  notesContainer.appendChild(note);
+  task.value = "";
 }
 
 function saveAsPDF() {
@@ -129,7 +85,11 @@ function saveAsPDF() {
   const doc = new jsPDF();
   let tasks = document.querySelectorAll(".notes");
   tasks.forEach((task, index) => {
-    doc.text(20, 10 + (10 * index), task.textContent.trim());
+    const text = task.querySelector(".note-text");
+    const value = text ? text.textContent.trim() : "";
+    if (value) {
+      doc.text(20, 10 + (10 * index), value);
+    }
   });
   let fileName = `ToDoList_${Date.now()}.pdf`;
   let fileURL = URL.createObjectURL(doc.output("blob"));
