@@ -13,6 +13,7 @@ const copyBtn = document.getElementById('copyBtn');
 
 const orb1 = document.querySelector('.orb1');
 const orb2 = document.querySelector('.orb2');
+const orb3 = document.querySelector('.orb3');
 
 function updateColor() {
   const hue        = hueSlider.value;
