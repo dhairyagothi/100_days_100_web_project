@@ -400,6 +400,10 @@ function createPagination() {
         currentPage--;
         renderTable();
         createPagination();
+        document.querySelector('.table-container').scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
     });
 
     paginationContainer.appendChild(prevBtn);
@@ -420,11 +424,14 @@ function createPagination() {
         currentPage++;
         renderTable();
         createPagination();
+        document.querySelector('.table-container').scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
     });
 
     paginationContainer.appendChild(nextBtn);
 }
-
 // Filter Projects
 function filterProjects() {
     const input = document.getElementById('searchInput');
