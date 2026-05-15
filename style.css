@@ -96,6 +96,7 @@ body {
     letter-spacing: 2px;
     background: var(--gradient-1);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -162,7 +163,7 @@ body {
     color: #000 !important;
 }
 
-#themeToggle {
+#theme-toggle {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     color: var(--text-primary);
@@ -177,7 +178,7 @@ body {
     transition: var(--transition);
 }
 
-#themeToggle:hover {
+#theme-toggle:hover {
     background: var(--accent-color);
     color: #000;
     
@@ -204,6 +205,7 @@ body {
     line-height: 1;
     background: var(--gradient-1);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 2rem;
     filter: drop-shadow(0 0 30px var(--accent-glow));
@@ -323,7 +325,8 @@ body {
       color: #00ff88;
       font-family: 'Courier New', monospace;
       margin-top: 8px;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: bolder;
     }
 
 .search-btn {
@@ -528,19 +531,7 @@ tbody td a:hover {
     thead { display: none; }
     tbody td { padding: 1.2rem 1rem; }
 }
-.light-theme {
-    background-color: #ffffff;
-    color: #000000;
-}
 
-.light-theme .navbar {
-    background-color: #f5f5f5;
-}
-
-.light-theme .card {
-    background-color: #eaeaea;
-feature/pagination-project-list
-}
 
 .pagination-container {
     display: flex;
@@ -571,4 +562,275 @@ feature/pagination-project-list
 .pagination-container button:hover {
     opacity: 0.9
 
+}
+
+/* ===== Light Mode UI Enhancements ===== */
+
+body.light-mode {
+    --bg-primary: #f4f7fb;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+
+    --accent-color: #2563eb;
+    --accent-glow: rgba(37, 99, 235, 0.2);
+
+    --glass-bg: rgba(255,255,255,0.72);
+    --glass-border: rgba(255,255,255,0.55);
+
+    --gradient-1: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6,
+        #60a5fa
+    );
+}
+
+/* Navbar */
+
+body.light-mode .navbar {
+    background: rgba(255,255,255,0.82);
+
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+/* Theme Toggle */
+
+#theme-toggle {
+    transition: 0.35s ease;
+
+    box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+}
+
+body.light-mode #theme-toggle:hover {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color: white;
+
+    transform: translateY(-3px) rotate(8deg);
+
+    box-shadow: 0 12px 30px rgba(37,99,235,0.22);
+}
+
+/* Hero */
+
+body.light-mode .hero-title {
+    filter: drop-shadow(0 0 18px var(--accent-glow));
+}
+
+body.light-mode .hero-section {
+    background: radial-gradient(
+        circle at top center,
+        rgba(37,99,235,0.08),
+        transparent 65%
+    );
+}
+
+/* Featured Button */
+
+body.light-mode .featured-btn {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    ) !important;
+
+    color: white !important;
+
+    box-shadow: 0 10px 24px rgba(37,99,235,0.18);
+}
+
+body.light-mode .featured-btn:hover {
+    transform: translateY(-4px) scale(1.03) !important;
+
+    box-shadow: 0 14px 35px rgba(37,99,235,0.26) !important;
+}
+
+/* Search */
+
+body.light-mode .search-wrapper:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 28px rgba(37,99,235,0.1);
+}
+
+/* stats counter */
+body.light-mode .stats-counter {
+    color: #2563eb;
+}
+
+/* Cards */
+
+body.light-mode .stat-card {
+    transition: 0.35s ease;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+body.light-mode .stat-card:hover {
+    transform: translateY(-8px) scale(1.02);
+
+    box-shadow: 0 18px 40px rgba(37,99,235,0.12);
+
+    border-color: rgba(37,99,235,0.18);
+}
+
+/* Table */
+
+body.light-mode .table-container {
+    background: rgba(255,255,255,0.75);
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+}
+
+body.light-mode tbody tr {
+    transition: 0.35s ease;
+}
+
+body.light-mode tbody tr:hover {
+    transform: translateY(-4px) scale(1.01);
+
+    background: rgba(37,99,235,0.08);
+
+    box-shadow: 0 12px 35px rgba(37,99,235,0.12);
+}
+
+body.light-mode .project-name {
+    transition: 0.3s ease;
+}
+
+body.light-mode tbody tr:hover .project-name {
+    color: var(--accent-color);
+
+    transform: translateX(4px);
+}
+
+/* Demo Buttons */
+
+body.light-mode tbody td a {
+    border: 1px solid rgba(37,99,235,0.08);
+
+    transition: 0.3s ease;
+}
+
+body.light-mode tbody td a:hover {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color: white;
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 24px rgba(37,99,235,0.22);
+}
+
+/* Pagination */
+
+body.light-mode .pagination-container button {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    transition: 0.3s ease;
+}
+
+body.light-mode .pagination-container button:hover:not(:disabled) {
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 18px rgba(37,99,235,0.22);
+}
+
+/* Footer */
+
+body.light-mode .footer {
+    background: #eef2f7;
+}
+
+body.light-mode .social-btn {
+    transition: 0.35s ease;
+}
+
+body.light-mode .social-btn:hover {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color: white;
+
+    transform: translateY(-5px) rotate(6deg);
+
+    box-shadow: 0 12px 28px rgba(37,99,235,0.22);
+}
+
+/* Scroll Button */
+
+body.light-mode #scrollBtn {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color: white;
+}
+
+body.light-mode #scrollBtn:hover {
+    transform: scale(1.08) translateY(-6px);
+
+    box-shadow: 0 14px 35px rgba(37,99,235,0.24);
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    body.light-mode .navbar {
+        padding: 1rem 1.2rem;
+    }
+
+    body.light-mode .navbar-brand span {
+        font-size: 0.75rem;
+    }
+
+    body.light-mode .hero-subtitle {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    body.light-mode .navbar {
+        flex-direction: column;
+
+        gap: 1rem;
+    }
+
+    body.light-mode .buttons {
+        width: 100%;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+    }
+
+    body.light-mode .stats-container {
+        grid-template-columns: 1fr;
+    }
+
+    body.light-mode #scrollBtn {
+        width: 55px;
+        height: 55px;
+    }
 }
