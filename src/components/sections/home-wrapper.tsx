@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { HeroContent } from "./HeroContent"
+import { HeroContent } from "./hero-content"
 import { GitHubStats } from "@/lib/github"
 
 export function HomeWrapper({ 
