@@ -15,6 +15,7 @@ body {
   line-height: 1.4;
   color: #f7f7f7;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 .main,
 .documents-list,
@@ -126,13 +127,31 @@ body {
 }
 .main {
   display: grid;
-  gap: 40px;
+  gap: 26px;
   justify-items: center;
   width: 100%;
-  padding: 20px 16px 40px;
+  padding: 52px 16px 40px;
+}
+.todo-panel {
+  width: min(100%, 720px);
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 22px 60px rgba(16, 18, 50, 0.28);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+.eyebrow {
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 .heading {
-  margin-top: 20px;
+  margin-top: 0;
   font-size: clamp(28px, 4vw, 60px);
   justify-content: center;
   text-align: center;
@@ -147,32 +166,39 @@ body {
   text-wrap: balance;
   padding: 0 10px;
 }
+.subheading {
+  max-width: 520px;
+  margin: 10px auto 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 15px;
+}
 .buttons {  
   border-radius: 9px;
   font-size: 15px;
   z-index: 999;
-  margin: 23px 0;
+  margin: 24px 0 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  gap: 20px;
-  padding: 0 10px;
+  gap: 14px;
+  padding: 0;
 }
-.buttons > div {
+.task-entry {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  flex: 1 1 420px;
 }
 #task {
-  height: 42px;
-  width: clamp(220px, 35vw, 360px);
-  padding: 0 12px;
+  height: 46px;
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: 0 14px;
   border-radius: 9px;
   border: 1px solid rgba(0, 0, 0, 0.25);
   outline: none;
@@ -189,9 +215,10 @@ body {
 }
 #submittask,
 #savepdf {
-  height: 42px;
-  min-width: 160px;
-  width: clamp(160px, 20vw, 220px);
+  height: 46px;
+  min-width: 140px;
+  width: auto;
+  padding: 0 22px;
   text-align: center;
   background-color: rgb(67, 56, 56);
   color: white;
@@ -204,6 +231,9 @@ body {
     transform 0.1s ease-in-out;
   transform-origin: center;
 }
+#submittask {
+  background-color: #143041;
+}
 #submittask:hover{
   background-color: black;
   color: white;
@@ -214,12 +244,30 @@ body {
   color: rgb(245, 245, 244);
   transform: scale(1.04);
 }
+.empty-state {
+  margin-top: 22px;
+  padding: 28px 18px;
+  border: 1px dashed rgba(255, 255, 255, 0.36);
+  border-radius: 14px;
+  background: rgba(20, 48, 65, 0.22);
+  color: rgba(255, 255, 255, 0.86);
+}
+.empty-state h2 {
+  margin-bottom: 6px;
+  font-size: 22px;
+}
+.empty-state p {
+  font-size: 15px;
+}
+.empty-state.hidden {
+  display: none;
+}
 
 #notes-container {
-  margin-top: 50px;
+  margin-top: 24px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px; 
+  gap: 16px;
   width: 100%; 
   position: relative;
   padding: 0 10px 20px; 
@@ -351,6 +399,13 @@ text-decoration: line-through;
   .heading {
     font-size: 48px;
   }
+  .main {
+    padding-top: 34px;
+  }
+
+  .todo-panel {
+    padding: 24px 18px;
+  }
 
   .navbar {
     justify-content: center;
@@ -377,7 +432,11 @@ text-decoration: line-through;
 
   .buttons {
     justify-content: center;
-    gap: 15px;
+    gap: 12px;
+  }
+
+  .task-entry {
+    flex-basis: 100%;
   }
 
   #notes-container {
@@ -435,9 +494,19 @@ text-decoration: line-through;
     gap: 15px;
   }
 
+  .task-entry {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  #task {
+    width: 100%;
+    flex-basis: auto;
+  }
+
   #submittask,
   #savepdf {
-    width: 80%;
+    width: 100%;
   }
 
   #notes-container {

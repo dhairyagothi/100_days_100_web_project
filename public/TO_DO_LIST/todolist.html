@@ -25,20 +25,22 @@
     </nav>
     <main class="main">
       <div id="home-tab">
-        <div class="heading">JUST DO IT.</div>
-        <div class="buttons"> 
-          <div>
-            <input type="text" id="task" placeholder="Enter a task">
-            <button onclick="Add()" id="submittask">Add a task!</button>
-            <!-- <select id="tasktype" >
-              <option value="task1">Work</option>
-              <option value="task2">School</option>
-              <option value="task3">Personal</option>
-              <option value="task4">Fitness</option>
-            </select> -->
-          </div> 
-          
-          <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
+        <div class="todo-panel">
+          <p class="eyebrow">Daily task board</p>
+          <div class="heading">JUST DO IT.</div>
+          <p class="subheading">Capture your tasks, organize them by type, and export the list when you are done.</p>
+          <div class="buttons">
+            <div class="task-entry">
+              <input type="text" id="task" placeholder="Enter a task" aria-label="Task name">
+              <button onclick="Add()" id="submittask">Add task</button>
+            </div>
+
+            <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
+          </div>
+          <div id="empty-state" class="empty-state">
+            <h2>No tasks yet</h2>
+            <p>Add your first task above to start building your list.</p>
+          </div>
         </div>
         <div id="notes-container"></div>
       </div>

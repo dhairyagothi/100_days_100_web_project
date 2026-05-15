@@ -2,6 +2,7 @@ let notesContainer = document.getElementById("notes-container");
 let documentsList = document.querySelector(".documents-list");
 let pdfMessage = document.getElementById("pdfMessage");
 let task = document.getElementById("task");
+let emptyState = document.getElementById("empty-state");
 let currentTheme = "theme1"; // Default theme
 // Task types with updated labels, values, and colors
 const taskTypes = [
@@ -68,6 +69,7 @@ function Add() {
 
   deleteBtn.addEventListener("click", () => {
     note.remove();
+    updateEmptyState();
   });
 
   noteWrapper.appendChild(taskText);
@@ -78,6 +80,11 @@ function Add() {
   note.appendChild(noteWrapper);
   notesContainer.appendChild(note);
   task.value = "";
+  updateEmptyState();
+}
+
+function updateEmptyState() {
+  emptyState.classList.toggle("hidden", notesContainer.children.length > 0);
 }
 
 function saveAsPDF() {
