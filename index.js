@@ -110,43 +110,29 @@ function initCanvas() {
     });
 }
 
-// Theme Toggle Functionality
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = themeToggle.querySelector('i');
+// Theme Toggle Functionality Initialize theme from storage or default to dark
+const savedTheme = localStorage.getItem('theme') || window.theme || 'dark';
+window.theme = savedTheme;
 
-// Check for saved theme preference or default to dark mode
-const currentTheme = window.theme || 'dark';
-if (currentTheme === 'light') {
+if (savedTheme === 'light') {
     document.body.classList.add('light-mode');
-    themeIcon.classList.remove('fa-moon');
-    themeIcon.classList.add('fa-sun');
+} else {
+    document.body.classList.remove('light-mode');
 }
-
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('light-mode');
-
-    if (document.body.classList.contains('light-mode')) {
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-        window.theme = 'light';
-    } else {
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-        window.theme = 'dark';
-    }
-});
 
 // Update Navbar for Login Status
 const buttons = document.getElementsByClassName('buttons')[0];
 
 function updateNavbar() {
+    if (!buttons) return;
     const username = window.username || null;
     const isRoot = !window.location.pathname.includes('/contributors/');
     const basePath = isRoot ? '' : '../';
-
+    const isLight = document.body.classList.contains('light-mode');
+    
     const themeButton = `
         <button id="themeToggle" class="button" title="Toggle Theme">
-            <i class="fas ${document.body.classList.contains('light-mode') ? 'fa-sun' : 'fa-moon'}"></i>
+            <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
         </button>
     `;
 
@@ -154,7 +140,7 @@ function updateNavbar() {
         buttons.innerHTML = `
         <span class="welcome-text">Welcome, ${username}</span>
         <button class="button logout-btn" id='logout'>Logout</button>
-        <a class="button" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub</a>
+        <a class="button" href="https://github.com/dhairyagothi" target="_blank">GitHub</a>
         <a class="button" href="${basePath}contributors/contributor.html">Contributors</a>
         ${themeButton}`;
 
@@ -181,13 +167,17 @@ function updateNavbar() {
             newThemeIcon.classList.remove('fa-moon');
             newThemeIcon.classList.add('fa-sun');
             window.theme = 'light';
+            localStorage.setItem('theme', 'light');
         } else {
-            newThemeIcon.classList.remove('fa-sun');
-            newThemeIcon.classList.add('fa-moon');
+            toggleIcon.className = 'fas fa-moon';
             window.theme = 'dark';
+            localStorage.setItem('theme', 'dark');
         }
     });
 }
+let currentPage = 1;
+const itemsPerPage = 10;
+let projectData = [];
 
 // Populate the table with project data
 function fillTable() {
@@ -204,8 +194,8 @@ function fillTable() {
         ["Day 10", "QR Code Generator", "./public/qr%20generator/qr.html"],
         ["Day 11", "Serve Website Using Express", "./public/index.html"],
         ["Day 12", "Nodemailer Contact Form", "./public/gmail_nodemailer/public/mail.html"],
-        ["Day 13", "Login Form Using MERN", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern"],
-        ["Day 14", "File Uploader", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader"],
+        ["Day 13", "Login Form Using MERN", "github.com"],
+        ["Day 14", "File Uploader", "github.com"],
         ["Day 15", "Progress Bar", "./public/progress_bar/progress_bar.html"],
         ["Day 16", "Scroll Bar CSS", "./public/index.html"],
         ["Day 17", "Slider Using Swiper API", "./public/slider%20box/index.html"],
@@ -240,7 +230,7 @@ function fillTable() {
         ["Day 46", "Palindrome Generator", "./public/Palindrome_Generator/index.html"],
         ["Day 47", "Ping Pong Game", "./public/ping/index.html"],
         ["Day 48", "TextToVoiceConverter", "./public/TextToVoiceConverter/index.html"],
-        ["Day 49", "Url Shortener", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/url_shortener"],
+        ["Day 49", "Url Shortener", "https://github.com/chandankoranga02/100_days_100_web_project/tree/Main/public/url_shortener"],
         ["Day 50", "Recipe Genie", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe-Genie"],
         ["Day 51", "Netflix Landing Page Clone", "./public/Netflix_Cloning/Index.html"],
         ["Day 52", "ClimaCode", "./public/ClimaCode%202.0/index.html"],
@@ -307,6 +297,7 @@ function fillTable() {
         ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
         ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"]
     ];
+    
 
     const tbody = document.getElementById('tableBody');
 
@@ -362,58 +353,45 @@ function filterProjects() {
     const rows = document.querySelector('tbody').querySelectorAll('tr');
     let hasResults = false;
 
-    rows.forEach(row => {
-        const projectName = row.querySelector('.project-name')?.innerText.toLowerCase();
+    // Filter projects based on the search query
+    const filteredData = data.filter(project => 
+        project[0].toLowerCase().includes(searchTerm.toLowerCase()) || 
+        project[1].toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-        if (projectName && projectName.includes(filter)) {
-            row.style.display = '';
-            hasResults = true;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    const noProjectsMessage = document.getElementById('no-projects');
-    if (hasResults) {
-        noProjectsMessage.style.display = 'none';
+    // Toggle "No Projects Found" visibility
+    if (filteredData.length === 0) {
+        if (noProjectsMessage) noProjectsMessage.style.display = "block";
+        return;
     } else {
-        noProjectsMessage.style.display = 'block';
+        if (noProjectsMessage) noProjectsMessage.style.display = "none";
     }
-}
 
-// Search on Enter key
-const searchInput = document.getElementById('searchInput');
-if (searchInput) {
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            filterProjects();
-        }
+    // Build and append table rows
+    filteredData.forEach(project => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${project[0]}</td>
+            <td>${project[1]}</td>
+            <td><a class="button" href="${project[2]}" target="_blank">Live Demo</a></td>
+        `;
+        tableBody.appendChild(row);
     });
 }
 
-// Scroll to Top Button
-const scrollBtn = document.getElementById('scrollBtn');
-if (scrollBtn) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            scrollBtn.classList.add('show');
-        } else {
-            scrollBtn.classList.remove('show');
-        }
-    });
-
-    scrollBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-}
-
-// Initialize on DOM Load
+// Global initialization sequence
 document.addEventListener('DOMContentLoaded', () => {
+    fetchRepoStats();
     initCanvas();
     updateNavbar();
-    if (document.getElementById('tableBody')) fillTable();
-    if (document.getElementById('starCount')) fetchRepoStats();
+    fillTable(); // Renders the complete table on page load
+
+    // Optional: Hook into search input if you have one
+    const searchInput = document.getElementById("projectSearch");
+    if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+            fillTable(e.target.value);
+        });
+    }
 });
+

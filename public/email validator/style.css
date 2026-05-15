@@ -6,6 +6,12 @@
     font-family: 'Baloo Bhaina 2', cursive;
     font-family: 'Poppins', sans-serif;
 }
+body{
+    background-image: url('background.jpeg');
+    background-size: 500px;
+    background-repeat: no-repeat;
+    background-position: center 250px;
+}
 nav{
     display: flex;
     align-items: center;
@@ -59,7 +65,7 @@ main{
 }
 .input[type='text']{
     min-width: 244px;
-    padding: 3px 12p;
+    padding: 3px 12px;
     border: 2px solid black;
     border-radius: 4px;
     font-size: 20px;
