@@ -1,44 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parallal-X Website</title>
-<link rel="stylesheet" href="parallal.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GO-GREEN Website</title>
+    <link rel="stylesheet" href="parallal.css">
 </head>
+
 <body>
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
     <header>
         <div class="name">GO-GREEN</div>
+
         <nav>
-                <ul>
-                    <li class="active">Home</li>
-                    <li>About</li>
-                    <li>Service</li>
-                    <li>Contact</li>
-                </ul>
+            <ul>
+                <li class="active"><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#service">Services</a></li>
+                <li><a href="#impact">Impact</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </nav>
+        <button id="theme-toggle">🌙</button>
+
+        <div class="menu-toggle" id="menu-toggle">☰</div>
     </header>
-    <section class="parallal">
-        <img src="hill1.png" id="hill1"   alt="">
-        <img src="hill2.png" id="hill2"  alt="">
-        <img src="hill3.png" id="hill3"  alt="">
-        <img src="tree.png"  id="tree" alt="">
-        <img src="hill4.png" id="hill4"  alt="">
+
+    <!-- Home Section -->
+    <section class="parallal" id="home">
+        <img src="hill1.png" id="hill1" alt="">
+        <img src="hill2.png" id="hill2" alt="">
+        <img src="hill3.png" id="hill3" alt="">
+        <img src="tree.png" id="tree" alt="">
+        <img src="hill4.png" id="hill4" alt="">
         <img src="hill5.png" id="hill5" alt="">
-        <div class="text" id="text1" >GO-GREEN</div>
+
+        <div class="hero-content">
+            <h1 class="text" id="text1">GO-GREEN</h1>
+            <p>Plant today, protect tomorrow.</p>
+            <a href="#about" class="hero-btn">Explore More</a>
+        </div>
+
         <img src="plant.png" id="plant" alt="">
         <img src="leaf.png" id="leaf" alt="">
-        
     </section>
-    <section class="content">
-        <div>GO-GREEN</div>
-        <br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div><br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div><br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div><br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div><br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div>
+
+    <!-- About Section -->
+    <section class="content reveal" id="about">
+        <h2>About GO-GREEN</h2>
+
+        <p>GO-GREEN is an eco-friendly initiative focused on spreading awareness about environmental protection.</p>
+        <p>Our mission is to encourage people to plant more trees, reduce pollution, and protect natural resources.</p>
+        <p>We believe that small eco-friendly habits can create a big positive impact on nature.</p>
+        <p>GO-GREEN motivates communities to keep their surroundings clean, green, and healthy.</p>
+        <p>We aim to inspire future generations to care for the environment and live sustainably.</p>
     </section>
+
+    <!-- Services Section -->
+    <section class="content reveal" id="service">
+        <h2>Our Services</h2>
+
+        <div class="service-box">
+            <div class="service-card">
+                <h3>🌱 Tree Plantation</h3>
+                <p>We organize plantation drives to increase greenery and improve air quality.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>♻️ Recycling Awareness</h3>
+                <p>We promote recycling habits and proper waste management in communities.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>🌍 Clean Environment</h3>
+                <p>We conduct cleanliness campaigns to keep public spaces healthy and green.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>💧 Save Water</h3>
+                <p>We spread awareness about saving water and using natural resources wisely.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="content reveal" id="impact">
+        <h2>Our Impact</h2>
+
+        <div class="impact-box">
+            <div class="impact-card">
+                <h3>10K+</h3>
+                <p>Trees Planted</p>
+            </div>
+
+            <div class="impact-card">
+                <h3>500+</h3>
+                <p>Volunteers</p>
+            </div>
+
+            <div class="impact-card">
+                <h3>100+</h3>
+                <p>Awareness Campaigns</p>
+            </div>
+
+            <div class="impact-card">
+                <h3>50+</h3>
+                <p>Cleanliness Drives</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="content reveal" id="gallery">
+        <h2>Green Gallery</h2>
+
+        <div class="gallery-box">
+            <div class="gallery-card">🌳 Tree Plantation</div>
+            <div class="gallery-card">♻️ Recycling Drive</div>
+            <div class="gallery-card">🌍 Clean Earth</div>
+            <div class="gallery-card">💧 Save Water</div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="content reveal" id="contact">
+        <h2>Contact Us</h2>
+
+        <p>Email: gogreen@gmail.com</p>
+        <p>Phone: +91 9876543210</p>
+        <p>Location: India</p>
+        <p>Instagram: @gogreen</p>
+
+        <form class="contact-form">
+            <input type="text" placeholder="Enter your name" required>
+            <input type="email" placeholder="Enter your email" required>
+            <textarea placeholder="Write your message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Back To Top Button -->
+    <button id="topBtn">↑</button>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 GO-GREEN | Save Nature, Save Future</p>
+        <p>Made with 💚 for a greener tomorrow</p>
+    </footer>
+
     <script src="parallal.js"></script>
+
 </body>
+
 </html>

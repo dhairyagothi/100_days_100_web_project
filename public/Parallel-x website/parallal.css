@@ -1,80 +1,459 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;600;700;800&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: "Roboto Condensed", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
     min-height: 100vh;
     overflow-x: hidden;
+    background: #01372d;
 }
-header{
+
+/* Loader */
+#loader {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #01372d;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner {
+    width: 70px;
+    height: 70px;
+    border: 8px solid white;
+    border-top: 8px solid #7fffd4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
     justify-content: flex-start;
-    align-items: flex-end;
+    align-items: center;
+    gap: 80px;
+    padding: 20px 55px;
+    z-index: 1000;
+}
+
+.name {
     color: #359381;
-    font-weight: 700;
-    font-size: 32px;
-    padding: 20px;
-    padding-right: 20px;
-    gap: 125px;
-    z-index: 30;
+    font-size: 36px;
+    font-weight: 800;
 }
-nav ul{
+
+/* Navbar */
+nav ul {
     display: flex;
-    flex-direction: row;
     list-style: none;
-    gap:50px;
-    padding-right: 10px;
+    gap: 20px;
 }
-.active{
-    color: white;
-    background-color: #359381;
+
+nav ul li {
+    padding: 8px 16px;
     border-radius: 30px;
-    width: 100%;
+    transition: 0.3s ease;
 }
-nav ul :hover{
+
+nav ul li a {
+    text-decoration: none;
+    color: #359381;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.active,
+nav ul li:hover {
+    background: #359381;
+}
+
+.active a,
+nav ul li:hover a {
     color: white;
-    background-color: #359381;
-    border-radius: 30px;
-    width: 100%;
 }
-nav ul li{
-    padding: 6px;
+
+.menu-toggle {
+    display: none;
+    font-size: 34px;
+    color: #359381;
+    cursor: pointer;
 }
-.parallal{
+
+/* Hero */
+.parallal {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     pointer-events: none;
-}
-.text{
-    font-size: 90px;
     position: relative;
-    color: #ffffff;
-    font-weight: bolder;
-    text-shadow: 2px -2px 8px black;
+    overflow: hidden;
 }
-img{
+
+.parallal img {
     position: absolute;
     width: 100%;
     top: 0;
-    left:0;
+    left: 0;
 }
 
-.content{
-    background: #01372d;
-    color: white;
-    font-size: 25px;
+.hero-content {
     position: relative;
-    padding: 60px;
-    height: 100dvh;
+    z-index: 10;
+    text-align: center;
+    pointer-events: auto;
+}
+
+.text {
+    font-size: 90px;
+    color: #ffffff;
+    font-weight: 800;
+    text-shadow: 2px -2px 8px black;
+}
+
+.hero-content p {
+    color: white;
+    font-size: 28px;
+    margin: 15px 0;
+    text-shadow: 1px 1px 5px black;
+}
+
+.hero-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #093a28;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+.hero-btn:hover {
+    background: white;
+    color: #01372d;
+}
+
+/* Content */
+.content {
+    background: linear-gradient(135deg, #01372d, #025c4a);
+    color: white;
+    position: relative;
+    padding: 110px 70px;
+    min-height: 100vh;
+}
+
+.content h2 {
+    font-size: 52px;
+    color: #7fffd4;
+    margin-bottom: 30px;
+}
+
+.content p {
+    font-size: 24px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+
+/* Cards */
+.service-box,
+.impact-box,
+.gallery-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 35px;
+}
+
+.service-card,
+.impact-card,
+.gallery-card {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(127, 255, 212, 0.35);
+    border-radius: 20px;
+    padding: 30px;
+    width: 280px;
+    min-height: 170px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    transition: 0.3s ease;
+}
+
+.service-card:hover,
+.impact-card:hover,
+.gallery-card:hover {
+    transform: translateY(-10px);
+    background: #359381;
+}
+
+.service-card h3,
+.impact-card h3 {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.service-card p,
+.impact-card p {
+    font-size: 20px;
+}
+
+/* Impact */
+.impact-card {
+    text-align: center;
+}
+
+.impact-card h3 {
+    font-size: 48px;
+    color: #7fffd4;
+}
+
+/* Gallery */
+.gallery-card {
+    font-size: 28px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contact */
+.contact-form {
+    margin-top: 35px;
+    max-width: 550px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    font-family: inherit;
+}
+
+.contact-form textarea {
+    min-height: 130px;
+    resize: none;
+}
+
+.contact-form button {
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #7fffd4;
+    color: #01372d;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.contact-form button:hover {
+    background: white;
+    transform: translateY(-3px);
+}
+
+/* Back To Top */
+#topBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 15px 18px;
+    border: none;
+    border-radius: 50%;
+    background: #359381;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+}
+
+/* Reveal Animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: all 1s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Footer */
+footer {
+    background: #001f19;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    font-size: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    header {
+        justify-content: space-between;
+        padding: 18px 25px;
+        background: rgba(255, 255, 255, 0.92);
+    }
+
+    .name {
+        font-size: 28px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    nav {
+        position: absolute;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        background: #01372d;
+        display: none;
+        padding: 20px;
+    }
+
+    nav.show {
+        display: block;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    nav ul li a {
+        color: white;
+    }
+
+    .text {
+        font-size: 55px;
+    }
+
+    .hero-content p {
+        font-size: 22px;
+    }
+
+    .content {
+        padding: 100px 30px;
+    }
+
+    .content h2 {
+        font-size: 40px;
+    }
+
+    .content p {
+        font-size: 20px;
+    }
+
+    .service-box,
+    .impact-box,
+    .gallery-box {
+        justify-content: center;
+    }
+
+    .service-card,
+    .impact-card,
+    .gallery-card {
+        width: 100%;
+    }
+}
+
+/* Theme Toggle Button */
+
+#theme-toggle{
+    padding: 10px 16px;
+    border: none;
+    border-radius: 30px;
+    background: #05ab85;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+#theme-toggle:hover {
+    background: #022c22;
+}
+
+/* Light Theme */
+
+.light-theme {
+    background: #ffffff;
+    color: black;
+}
+
+.light-theme .content {
+    background: #f2f2f2;
+    color: black;
+}
+
+.light-theme footer {
+    background: #d9d9d9;
+    color: black;
+}
+
+.light-theme .service-card,
+.light-theme .impact-card,
+.light-theme .gallery-card {
+    background: white;
+    color: black;
+}
+
+.light-theme nav ul li a {
+    color: black;
+}
+
+.light-theme .name {
+    color: #014d40;
+}
+
+.light-theme nav ul li:hover a,
+.light-theme .active a {
+    color: white;
+}
+
+.light-theme #theme-toggle {
+    background: #014d40;
+    color: white;
+}
+
+.light-theme .hero-btn {
+    background: #04b698;
+    color: white;
+}
+
+.light-theme .hero-btn:hover {
+    background: #022c22;
 }
