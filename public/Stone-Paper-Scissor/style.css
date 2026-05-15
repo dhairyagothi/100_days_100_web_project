@@ -3,7 +3,9 @@
 }
 body {
   background: linear-gradient(0deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
 }
 
 .container {
@@ -28,11 +30,14 @@ label, input, button {
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-radius: 13px;
   border: 8px solid #fff;
   padding: 15px;
-  width: 800px;
-  height: 120px;
+  width: 90%;
+  max-width: 800px;
+  min-height: 120px;
+  box-sizing: border-box;
 }
 .heading {
   color: #fff;
@@ -451,11 +456,10 @@ ul li::before {
   height: 60px;
 }
 .btn1 {
-  text-align: right;
-  position: absolute;
-  margin-left: 60vw;
-  margin-top: 91vh;
-  
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 #nxt {
   color: #fff;
@@ -491,10 +495,73 @@ ul li::before {
   margin-top: 3vh;
   margin-left: 3vw;
 }
-/* Add this to your existing CSS */
+
 .chart {
   margin-top: 30px;
   display: flex;
   justify-content: center;
 }
+@media (max-width: 768px) {
 
+  .display {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .scoreboard {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .game {
+    transform: scale(0.8);
+    margin-top: 20px;
+  }
+
+  .stone {
+    right: 0;
+  }
+
+  .paper {
+    left: 0;
+    margin-top: 20px;
+  }
+
+  .scissor {
+    right: 0;
+    margin-top: 20px;
+  }
+
+  .line1,
+  .line2,
+  .line3 {
+    display: none;
+  }
+
+  .btn,
+  .btn1 {
+    margin: 20px 0;
+    justify-content: center;
+  }
+
+  .box {
+    width: 85%;
+    right: 5%;
+    top: 20%;
+    height: auto;
+  }
+
+  .you-win,
+  .you-lost,
+  .tie-up {
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  .result1,
+  .result2 {
+    margin: 0;
+  }
+}

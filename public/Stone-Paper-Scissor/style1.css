@@ -1,13 +1,12 @@
 body {
   background-color: #8cc461;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .image-cup {
   margin-top: 25vh;
   margin-left: 42vw;
-  animation: bounce 1s infinite;
-
+  animation: bounceIn 2s infinite; 
 }
 
 @keyframes bounceIn {
