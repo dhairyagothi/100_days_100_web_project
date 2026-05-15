@@ -1,167 +1,104 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css" />
+    <link rel="icon" href="favv.png" type="image/x-icon" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <header class="navbar">
+      <a href="../index.html" class="nav-link">← Back to Home</a>
+    </header>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login - 100 Days 100 Web Projects</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="login.css">
-  <link rel="icon" href="favv.png" type="image/x-icon" />
-</head>
+    <!-- Main Container -->
+    <main class="container">
+      <!-- Left Animated Text Section -->
+      <section class="left">
+        <p class="subtitle">Welcome Back</p>
 
-<body>
-  <canvas id="bgCanvas"></canvas>
-  <header class="navbar">
-    <a href="../index.html" class="navbar-brand">
-      <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
-      <span>100 DAYS 100 WEB PROJECTS</span>
-    </a>
-    <div class="buttons">
-      <a href="../index.html" class="nav-link">Home</a>
-      <button id="themeToggle" title="Toggle Theme">
-        <i class="fas fa-moon"></i>
-      </button>
-    </div>
-  </header>
-  <div class="container">
-    <!-- Left Section -->
-    <div class="left-section">
-      <button class="back-button" onclick="window.location.href = '../index.html';" title="Back to Home">
-      <button class="back-button" onclick="window.location.href = '../index.html';">
-        <svg xmlns="Imagemain.png" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-      </button>
-      <h1 class="animated-heading">
-        <span id="typing-text"></span><span class="blinking-cursor">|</span>
-      </h1>
-      <p class="description">
-        Dive in to explore a user-friendly interface designed for secure and seamless access to your account.
-      </p>
-      <form id="loginForm" class="login-form">
-        <input type="text" id="username" placeholder="Username" class="input-field" required>
-        <input type="password" id="password" placeholder="Password" class="input-field" required>
-        <button type="submit" class="submit-button">Login</button>
-      </form><br>
-      <p class="already-signed-up">
-        Not signed up? <a href="./signup.html">Sign Up</a>
-      </p>
-    </div>
-  </div>
+        <h1>
+          Build Something
+          <span class="highlight">Amazing</span>
+        </h1>
+
+        <p class="description">
+          Sign in to continue your journey through
+          <strong>100 Days • 100 Web Projects</strong>. Explore creative
+          designs, animations, and real-world projects.
+        </p>
+
+        <div class="feature-list">
+          <div class="feature-card">✨ Modern UI</div>
+          <div class="feature-card">⚡ Fast Projects</div>
+          <div class="feature-card">🚀 Learn by Building</div>
+        </div>
+      </section>
+
+      <!-- Right Login Form -->
+      <section class="form-box">
+        <!-- Small Back Button -->
+        <button
+          class="back-button"
+          type="button"
+          onclick="window.location.href = '../index.html'"
+          aria-label="Back to Home"
+        >
+          ←
+        </button>
+
+        <h2>Login</h2>
+        <p class="form-subtitle">
+          Enter your credentials to access your account.
+        </p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <input type="text" id="username" placeholder="Username" required />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <!-- New User Link -->
+        <p class="signup-text">
+          New here?
+          <a href="./signup.html">Sign Up</a>
+        </p>
+      </section>
+    </main>
 
   <script>
-    // Canvas Background Animation
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Transition effect for images
+    const images = document.querySelectorAll(".transition-image");
+    let currentImageIndex = 0;
 
-    const particles = [];
-    const particleCount = 100;
-
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.size = Math.random() * 2 + 1;
-        }
-
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-        }
-
-        draw() {
-            const isDark = !document.body.classList.contains('light-mode');
-            const alpha = isDark ? Math.random() * 0.5 + 0.2 : Math.random() * 0.3 + 0.1;
-            ctx.fillStyle = `rgba(26, 188, 156, ${alpha})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
+    function showNextImage() {
+      images[currentImageIndex].style.opacity = 0;
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      images[currentImageIndex].style.opacity = 1;
     }
 
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-    }
-
-    function animate() {
-        const isDark = !document.body.classList.contains('light-mode');
-        ctx.fillStyle = isDark ? 'rgba(10, 10, 10, 0.1)' : 'rgba(245, 245, 245, 0.1)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
-
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < 100) {
-                    const alpha = isDark ? 0.2 * (1 - dist / 100) : 0.1 * (1 - dist / 100);
-                    ctx.strokeStyle = `rgba(26, 188, 156, ${alpha})`;
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
-            }
-        }
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = themeToggle.querySelector('i');
-    
-    // Load theme preference from localStorage
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.add('light-mode');
-      themeIcon.classList.remove('fa-moon');
-      themeIcon.classList.add('fa-sun');
-    }
-    
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light-mode');
-      
-      if (document.body.classList.contains('light-mode')) {
-        localStorage.setItem('theme', 'light');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-      } else {
-        localStorage.setItem('theme', 'dark');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-      }
-    });
+    setInterval(showNextImage, 3000);
 
     // Login form submission
     document.getElementById("loginForm").addEventListener("submit", function (event) {
       event.preventDefault();
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
+          const username = document.getElementById("username").value.trim();
+
+          const password = document.getElementById("password").value.trim();
 
       if (username && password) {
         localStorage.setItem("username", username);
@@ -170,38 +107,7 @@
         alert("Invalid credentials. Please try again.");
       }
     });
-
-    // Typing effect for heading
-    const text = "100 Days 100 Web Projects!";
-    const typingText = document.getElementById("typing-text");
-
-    let index = 0;
-    let deleting = false;
-
-    function typeEffect() {
-      if (!deleting) {
-        typingText.innerHTML = text.substring(0, index + 1);
-        index++;
-
-        if (index === text.length) {
-          deleting = true;
-          setTimeout(typeEffect, 1200);
-          return;
-        }
-      } else {
-        typingText.innerHTML = text.substring(0, index - 1);
-        index--;
-
-        if (index === 0) {
-          deleting = false;
-        }
-      }
-
-      setTimeout(typeEffect, deleting ? 60 : 120);
-    }
-
-    typeEffect();
   </script>
 </body>
-
 </html>
+
