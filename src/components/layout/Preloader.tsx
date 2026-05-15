@@ -9,18 +9,20 @@ export function Preloader() {
   const [percentage, setPercentage] = useState(0)
 
   useEffect(() => {
-    // Percentage counter animation
+    // Percentage counter animation - slowed down
     const interval = setInterval(() => {
       setPercentage((prev) => {
         if (prev >= 100) {
           clearInterval(interval)
           return 100
         }
-        return prev + 1
+        // Random incremental steps for a more natural feel
+        const increment = Math.random() > 0.8 ? 2 : 1
+        return Math.min(prev + increment, 100)
       })
-    }, 15)
+    }, 40)
 
-    // GSAP sequence for the exit
+    // GSAP sequence for the exit - slowed down for elegance
     const tl = gsap.timeline({
       onComplete: () => setLoading(false)
     })
@@ -28,14 +30,14 @@ export function Preloader() {
     if (percentage === 100) {
       tl.to(".preloader-content", {
         opacity: 0,
-        y: -20,
-        duration: 0.5,
-        ease: "power2.inOut"
+        y: -40,
+        duration: 0.8,
+        ease: "power3.inOut"
       })
       .to(".preloader-panel", {
         height: 0,
-        duration: 0.8,
-        stagger: 0.1,
+        duration: 1.2,
+        stagger: 0.15,
         ease: "expo.inOut"
       })
     }
