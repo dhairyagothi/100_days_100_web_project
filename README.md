@@ -193,8 +193,6 @@ The website features:
 
 ## Getting Started
 
-### Setup Instructions
-
 1. Fork the repository
 
 2. Clone your forked repository
