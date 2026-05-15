@@ -4,7 +4,7 @@ import * as React from "react"
 import { projects } from "@/data/projects"
 import { ProjectGrid } from "@/components/ProjectGrid"
 import { RepoStats } from "@/components/sections/RepoStats"
-import * as motion from "framer-motion/client"
+import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 
 export default function Home() {
