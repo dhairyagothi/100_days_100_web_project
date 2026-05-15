@@ -129,6 +129,21 @@ body {
     border-color: transparent;
 }
 
+.featured-btn {
+    background: var(--gradient-1) !important;
+    color: #000 !important;
+    border: none !important;
+    font-weight: 700 !important;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.85rem !important;
+    gap: 8px;
+}
+
+.featured-btn:hover {
+    transform: translateY(-3px) scale(1.05) !important;
+    box-shadow: 0 10px 30px var(--accent-glow) !important;
+}
+
 .welcome-text {
     font-weight: 600;
     color: var(--accent-color);
@@ -165,7 +180,7 @@ body {
 #themeToggle:hover {
     background: var(--accent-color);
     color: #000;
-    transform: translateY(-3px) rotate(15deg);
+    
     box-shadow: 0 10px 25px var(--accent-glow);
 }
 
@@ -421,8 +436,8 @@ tbody td a:hover {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 4rem;
 }
 
 .footer h3 {
@@ -505,4 +520,48 @@ tbody td a:hover {
     .table-container { padding: 1.5rem; }
     thead { display: none; }
     tbody td { padding: 1.2rem 1rem; }
+}
+.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.light-theme .navbar {
+    background-color: #f5f5f5;
+}
+
+.light-theme .card {
+    background-color: #eaeaea;
+feature/pagination-project-list
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.pagination-container button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #1abc9c;
+    color: white;
+    font-weight: 600;
+}
+
+.pagination-container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+#no-projects {
+    display: none;
+}
+.pagination-container button:hover {
+    opacity: 0.9
+
 }
