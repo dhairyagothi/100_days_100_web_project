@@ -16,8 +16,24 @@
     background: linear-gradient(135deg, #4a90e2,  #1abc9c);
   }
 
- 
+  .blinking-cursor{
+    animation: blink 1s infinite;
+  }
   
+
+  @keyframes blink{
+  0%{
+    opacity:1;
+  }
+
+  50%{
+    opacity:0;
+  }
+
+  100%{
+    opacity:1;
+  }
+}
   .container {
     margin-top: 5px;
     width: 90%;
@@ -62,15 +78,20 @@
 
   .nav-link {
     text-decoration: none;
-    color: #f39c12;
     font-size: 1.2rem;
     font-weight: bold;
     margin: 0 15px;
-    transition: color 0.3s;
+    transition: 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(135deg, #4a90e2, #1abc9c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .nav-link:hover {
-    color: #d35400;
+    transform: scale(1.05);
+    filter: brightness(1.2);
   }
   
   .animated-heading {
