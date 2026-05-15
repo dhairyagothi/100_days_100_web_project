@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text To Voice Converter</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Text To <span>Voice</span> Converter</h1>
+
+    <textarea placeholder="Write something here..." id="text"></textarea>
+
+    <select id="voiceList"></select>
+
+    <button onclick="speakText()">Listen</button>
+  </div>
+
+  <script>
+
+    let speech = new SpeechSynthesisUtterance();
+
+    let voiceList = document.getElementById("voiceList");
+
+    let voices = [];
+
+    function loadVoices(){
+
+      voices = speechSynthesis.getVoices();
+
+      voiceList.innerHTML = "";
+
+      voices.forEach((voice, index) => {
+
+        let option = document.createElement("option");
+
+        option.value = index;
+        option.innerHTML = `${voice.name} (${voice.lang})`;
+
+        voiceList.appendChild(option);
+      });
+    }
+
+    loadVoices();
+
+    speechSynthesis.onvoiceschanged = loadVoices;
+
+    function speakText(){
+
+      let text = document.getElementById("text").value;
+
+      if(text === ""){
+        alert("Please write something");
+        return;
+      }
+
+      speech.text = text;
+
+      speech.voice = voices[voiceList.value];
+
+      speechSynthesis.speak(speech);
+    }
+
+  </script>
+
+</body>
+</html>
