@@ -1,3 +1,5 @@
+document.body.classList.add('cyberpunk-mode');
+document.body.setAttribute('data-theme', 'cyberpunk');
 if (typeof REPO_OWNER === 'undefined') {
     window.REPO_OWNER = "dhairyagothi";
     window.REPO_NAME = "100_days_100_web_project";
@@ -57,10 +59,12 @@ function initCanvas() {
             if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
         }
 
-        draw() {
-            const isDark = !document.body.classList.contains('light-mode');
-            const alpha = isDark ? Math.random() * 0.5 + 0.2 : Math.random() * 0.3 + 0.1;
-            ctx.fillStyle = `rgba(26, 188, 156, ${alpha})`;
+      draw() {
+    const isDark = !document.body.classList.contains('light-mode');
+    const alpha = isDark ? Math.random() * 0.5 + 0.2 : Math.random() * 0.3 + 0.1;
+    ctx.fillStyle = document.body.classList.contains('light-mode') 
+  ? `rgba(0, 0, 0, ${alpha})`
+  : `rgba(0, 255, 255, ${alpha})`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
@@ -73,7 +77,9 @@ function initCanvas() {
 
     function animate() {
         const isDark = !document.body.classList.contains('light-mode');
-        ctx.fillStyle = isDark ? 'rgba(10, 10, 10, 0.1)' : 'rgba(245, 245, 245, 0.1)';
+       ctx.fillStyle = document.body.classList.contains('light-mode')
+  ? 'rgba(240, 240, 240, 0.3)'
+  : 'rgba(10, 10, 15, 0.15)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         particles.forEach(p => {
@@ -89,7 +95,9 @@ function initCanvas() {
 
                 if (dist < 100) {
                     const alpha = isDark ? 0.2 * (1 - dist / 100) : 0.1 * (1 - dist / 100);
-                    ctx.strokeStyle = `rgba(26, 188, 156, ${alpha})`;
+                    ctx.strokeStyle = document.body.classList.contains('light-mode')
+  ? `rgba(255, 0, 255, ${alpha})`
+  : `rgba(0, 255, 255, ${alpha})`;
                     ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
@@ -177,6 +185,7 @@ function updateNavbar() {
 let currentPage = 1;
 const itemsPerPage = 10;
 let projectData = [];
+let filteredProjectData = [];
 
 // Populate the table with project data
 
@@ -187,7 +196,7 @@ function fillTable(searchTerm = "") {
     
     if (!tableBody) return;
 
-    const data = [
+    projectData = [
         ["Day 1", "To-Do List", "./public/TO_DO_LIST/todolist.html"],
         ["Day 2", "Digital Clock", "./public/digital_clock/digitalclock.html"],
         ["Day 3", "Indian Flag", "./public/indianflag/flag.html"],
@@ -307,38 +316,117 @@ function fillTable(searchTerm = "") {
         ["Day 116", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
         ["Day 117", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
         ["Day 118", "Human Emotion Visualizer", "./public/HumanEmotionVisualizer/index.html"]
+        ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"],
+        ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
+        ["Day 116", "AI Image Classifier", "./public/AI Image CLassifier/index.html"],
+        ["Day 117", "ZEN TIMER", "./public/ZEN_TIMER/index.html"],
     ];
-    
 
- 
+    filteredProjectData = [...projectData];
+    currentPage = 1;
 
-    // Clear existing rows
-    tableBody.innerHTML = "";
+    renderTable();
+    createPagination();
+}
 
-    // Filter projects based on the search query
-    const filteredData = data.filter(project => 
-        project[0].toLowerCase().includes(searchTerm.toLowerCase()) || 
-        project[1].toLowerCase().includes(searchTerm.toLowerCase())
-    );
+function renderTable() {
+    const tbody = document.getElementById('tableBody');
 
-    // Toggle "No Projects Found" visibility
-    if (filteredData.length === 0) {
-        if (noProjectsMessage) noProjectsMessage.style.display = "block";
-        return;
-    } else {
-        if (noProjectsMessage) noProjectsMessage.style.display = "none";
-    }
+    tbody.innerHTML = '';
 
-    // Build and append table rows
-    filteredData.forEach(project => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${project[0]}</td>
-            <td>${project[1]}</td>
-            <td><a class="button" href="${project[2]}" target="_blank">Live Demo</a></td>
-        `;
-        tableBody.appendChild(row);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    const paginatedData = filteredProjectData.slice(startIndex, endIndex);
+
+    paginatedData.forEach(e => {
+        const row = document.createElement('tr');
+
+        const days = document.createElement('td');
+        const nameP = document.createElement('td');
+        const link = document.createElement('td');
+        const a = document.createElement('a');
+
+        days.innerText = e[0];
+        nameP.innerText = e[1];
+
+        a.href = e[2].trim();
+        a.innerHTML = 'View Demo <i class="fas fa-external-link-alt"></i>';
+        a.target = '_blank';
+
+        nameP.classList.add('project-name');
+
+        link.appendChild(a);
+
+        row.appendChild(days);
+        row.appendChild(nameP);
+        row.appendChild(link);
+
+        tbody.appendChild(row);
     });
+}
+function createPagination() {
+    const paginationContainer = document.getElementById('pagination');
+
+    paginationContainer.innerHTML = '';
+
+    const totalPages = Math.max(1, Math.ceil(filteredProjectData.length / itemsPerPage));
+
+    // Previous Button
+    const prevBtn = document.createElement('button');
+    prevBtn.innerText = 'Previous';
+    prevBtn.disabled = currentPage === 1;
+
+    prevBtn.addEventListener('click', () => {
+        currentPage--;
+        renderTable();
+        createPagination();
+    });
+
+    paginationContainer.appendChild(prevBtn);
+
+    // Page Indicator
+    const pageInfo = document.createElement('span');
+    pageInfo.innerText = ` Page ${currentPage} of ${totalPages} `;
+    pageInfo.style.margin = '0 10px';
+
+    paginationContainer.appendChild(pageInfo);
+
+    // Next Button
+    const nextBtn = document.createElement('button');
+    nextBtn.innerText = 'Next';
+    nextBtn.disabled = currentPage === totalPages;
+
+    nextBtn.addEventListener('click', () => {
+        currentPage++;
+        renderTable();
+        createPagination();
+    });
+
+    paginationContainer.appendChild(nextBtn);
+}
+
+// Filter Projects
+function filterProjects() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    filteredProjectData = projectData.filter(project => {
+        const day = (project[0] || '').toLowerCase();
+        const name = (project[1] || '').toLowerCase();
+        const link = (project[2] || '').toLowerCase();
+        return day.includes(filter) || name.includes(filter) || link.includes(filter);
+    });
+
+    currentPage = 1;
+    renderTable();
+    createPagination();
+
+    const noProjectsMessage = document.getElementById('no-projects');
+    if (filteredProjectData.length > 0) {
+        noProjectsMessage.style.display = 'none';
+    } else {
+        noProjectsMessage.style.display = 'block';
+    }
 }
 
 // Global initialization sequence
