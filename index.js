@@ -130,6 +130,56 @@ if (localStorage.getItem('theme') === 'light') {
     document.body.classList.remove('light-mode');
 }
 
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    
+    if (document.body.classList.contains('light-mode')) {
+        localStorage.setItem('theme', 'light');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    } else {
+        localStorage.setItem('theme', 'dark');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    }
+});
+
+// Check for saved theme preference or default to dark mode
+const currentTheme = localStorage.getItem('theme') || 'dark';
+if (currentTheme === 'light') {
+const currentTheme = window.theme || 'dark';
+if (currentTheme === 'light' && themeIcon) {
+    document.body.classList.add('light-mode');
+    themeIcon.classList.remove('fa-moon');
+    themeIcon.classList.add('fa-sun');
+}
+
+if (themeToggle && themeIcon) {
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+
+    if (document.body.classList.contains('light-mode')) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'light');
+    } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'dark');
+    }
+});
+        if (document.body.classList.contains('light-mode')) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            window.theme = 'light';
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            window.theme = 'dark';
+        }
+    });
+}
+
 // Update Navbar for Login Status
 const buttons = document.getElementsByClassName('buttons')[0];
 
@@ -191,6 +241,8 @@ let filteredProjectData = [];
 
 // Populate the table with project data
 
+function fillTable() {
+    const data = [
 // Complete fillTable implementation with search filtering
 function fillTable(searchTerm = "") {
     const tableBody = document.getElementById("tableBody"); // Ensure your <tbody> has this ID
@@ -314,6 +366,9 @@ function fillTable(searchTerm = "") {
         ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html"],
         ["Day 114", "EchoNotes", "./public/EchoNotes/index.html"],
         ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
+        ["Day 116", "AI Image Classifier", "/public/AI Image CLassifier/index.html"]
+    ];
+        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
         ["Day 116", "AI Image Classifier", "./public/AI Image CLassifier/index.html"],
         ["Day 117", "ZEN TIMER", "./public/ZEN_TIMER/index.html"],
       [ "Day 118" , "Random-Joke-Generator" , "./public/RandomJokeGenerator/index.html" ],
