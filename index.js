@@ -314,6 +314,55 @@ function fillTable(searchTerm = "") {
     renderTable();
     createPagination();
 }
+function showSuggestions() {
+    const input = document.getElementById("searchInput");
+    const suggestionsBox = document.getElementById("suggestions");
+
+    const value = input.value.toLowerCase().trim();
+
+    suggestionsBox.innerHTML = "";
+
+    if (!value) {
+        suggestionsBox.style.display = "none";
+        return;
+    }
+
+    const matches = projectData.filter(project =>
+        project[1].toLowerCase().includes(value)
+    );
+
+    if (matches.length === 0) {
+        suggestionsBox.style.display = "none";
+        return;
+    }
+
+    matches.slice(0, 8).forEach(project => {
+        const div = document.createElement("div");
+
+        div.classList.add("suggestion-item");
+
+        div.innerHTML = `
+            <strong>${project[0]}</strong> - ${project[1]}
+        `;
+
+        div.addEventListener("click", () => {
+            input.value = project[1];
+
+            filteredProjectData = [project];
+
+            currentPage = 1;
+
+            renderTable();
+            createPagination();
+
+            suggestionsBox.style.display = "none";
+        });
+
+        suggestionsBox.appendChild(div);
+    });
+
+    suggestionsBox.style.display = "block";
+}
 
 function renderTable() {
     const tbody = document.getElementById('tableBody');
@@ -423,11 +472,13 @@ document.addEventListener('DOMContentLoaded', () => {
     fillTable(); // Renders the complete table on page load
 
     // Optional: Hook into search input if you have one
-    const searchInput = document.getElementById("projectSearch");
-    if (searchInput) {
-        searchInput.addEventListener("input", (e) => {
-            fillTable(e.target.value);
-        });
-    }
+   const searchInput = document.getElementById("searchInput");
+
+if (searchInput) {
+    searchInput.addEventListener("input", () => {
+        filterProjects();
+        showSuggestions();
+    });
+}
 });
 

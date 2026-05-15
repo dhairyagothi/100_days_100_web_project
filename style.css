@@ -565,3 +565,35 @@ feature/pagination-project-list
     opacity: 0.9
 
 }
+
+.search-wrapper {
+    position: relative;
+}
+
+.suggestions-box {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 1000;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+}
+
+.suggestion-item {
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.suggestion-item:hover {
+    background: rgba(127, 90, 240, 0.2);
+    transform: translateX(4px);
+}

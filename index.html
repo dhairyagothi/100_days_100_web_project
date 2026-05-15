@@ -53,13 +53,17 @@
         </div>
 
         <div class="search-container">
-            <div class="search-wrapper">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search 112+ projects...">
-                <button class="search-btn" onclick="filterProjects()">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
+    <div class="search-wrapper">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search 112+ projects...">
+
+        <button class="search-btn" onclick="filterProjects()">
+            <i class="fas fa-search"></i>
+        </button>
+
+        <!-- Suggestions Box -->
+        <div id="suggestions" class="suggestions-box"></div>
+    </div>
+</div>
     </section>
 
     <section class="projects-section">
