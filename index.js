@@ -125,7 +125,7 @@ const PROJECT_DATA = [
     ['Day 116', 'AI Image Classifier', './public/AI Image Classifier/index.html'],
     ['Day 117', 'ZEN TIMER', './public/ZEN_TIMER/index.html'],
     ['Day 118', 'Random-Joke-Generator', './public/RandomJokeGenerator/index.html'],
-    ['Day 119', 'Astronomy Dashboard', './public/AstronomyDashboard/']
+    ['Day 119', 'Astronomy Dashboard', './public/AstronomyDashboard/index.html']
 ];
 
 async function fetchRepoStats() {
