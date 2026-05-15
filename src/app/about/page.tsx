@@ -1,7 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Code2, MonitorSmartphone } from "lucide-react"
+import { Code2, MonitorSmartphone } from "lucide-react"
+import { Icons } from "@/components/icons"
 
 export default function About() {
   return (
@@ -32,7 +33,7 @@ export default function About() {
             <p className="text-sm text-muted-foreground">Designed with the 'Taste Standard' — featuring minimal borders, neutral tones, and precise typography.</p>
           </div>
           <div className="bg-card p-6 rounded-[1.5rem] border border-border/50">
-            <Github className="h-8 w-8 text-primary mb-4" />
+            <Icons.gitHub className="h-8 w-8 text-primary mb-4" />
             <h3 className="text-lg font-semibold mb-2">Open Source</h3>
             <p className="text-sm text-muted-foreground">Maintained as an open-source project, welcoming contributions from the global developer community under GSSoC.</p>
           </div>

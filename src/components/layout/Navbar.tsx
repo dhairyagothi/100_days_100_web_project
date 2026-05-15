@@ -2,10 +2,9 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Github, Twitter } from "lucide-react"
 
 import { CommandPalette } from "@/components/CommandPalette"
-import { Button } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 
 export function Navbar() {
   const pathname = usePathname()
@@ -57,7 +56,7 @@ export function Navbar() {
               rel="noreferrer"
             >
               <div className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 w-9 px-0">
-                <Github className="h-4 w-4" />
+                <Icons.gitHub className="h-4 w-4" />
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
