@@ -5,57 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do List | 100 Days 100 Projects</title>
     <link rel="stylesheet" href="todolist.css" />
-    <script
-      src="https://kit.fontawesome.com/f30fac2c61.js"
-      crossorigin="anonymous"
-    ></script>
-    
+    <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <body>
     <nav>
+      <!-- Fixed: removed <div> inside <ul>, used proper <li> structure -->
       <ul class="navbar">
-        <div class="nav-left">
-          <li ><a href="#" onclick="showHome()">Home</a></li>
-          <li><a href="#" onclick="showDocuments()">Documents</a></li>
-        </div>
-        <div class="nav-right">
-          <li><button id="colour1" onclick="c1()"></button></li>
-          <li><button id="colour2" onclick="c2()"></button></li>
-          <li><button id="colour3" onclick="c3()"></button></li>
-          <li><button id="colour4" onclick="c4()"></button></li>
-          <li><button id="colour5" onclick="c5()"></button></li>
-        </div>
+        <li class="nav-left">
+          <a href="#" onclick="showHome()">Home</a>
+          <a href="#" onclick="showDocuments()">Documents</a>
+        </li>
+        <li class="nav-right">
+          <button id="colour1" onclick="c1()"></button>
+          <button id="colour2" onclick="c2()"></button>
+          <button id="colour3" onclick="c3()"></button>
+          <button id="colour4" onclick="c4()"></button>
+          <button id="colour5" onclick="c5()"></button>
+        </li>
       </ul>
     </nav>
+
     <main class="main">
       <div id="home-tab">
         <div class="heading">JUST DO IT.</div>
-        <div class="buttons"> 
-          <div>
-            <button onclick="Add()" id="submittask">Add a task!</button>
-            <!-- <select id="tasktype" >
-              <option value="task1">Work</option>
-              <option value="task2">School</option>
-              <option value="task3">Personal</option>
-              <option value="task4">Fitness</option>
-            </select> -->
-          </div> 
-          
+
+        <!-- Fixed: both buttons are direct children of .buttons, no extra wrapping div -->
+        <div class="buttons">
+          <button onclick="Add()" id="submittask">Add a task!</button>
           <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
         </div>
+
         <div id="notes-container"></div>
-        <div class="container">
-        </div>
+        <div class="container"></div>
       </div>
+
       <div id="documents-tab" style="display: none">
         <div class="heading">Saved Documents</div>
         <div class="documents-list"></div>
       </div>
     </main>
-    
-    <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
 
+    <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
     <script src="todolist.js"></script>
   </body>
 </html>
