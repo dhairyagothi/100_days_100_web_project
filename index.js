@@ -122,7 +122,9 @@ const DATA = [
     ["Day 111","Whack-a-Mole","./public/Whack-a-Mole Game/index.html"],
     ["Day 112","Nykaa Clone","./public/Nykaa-clone/index.html"],
     ["Day 113","CPU Scheduler","./public/CpuScheduler/index.html"],
-    ["Day 114","EchoNotes","./public/EchoNotes/index.html"]
+    ["Day 114","EchoNotes","./public/EchoNotes/index.html"],
+    ["Day 115","Event Registration System","https://event-registration-system-w10a.onrender.com/"],
+    ["Day 116","AI Image Classifier","./public/AI Image Classifier/index.html"]
 ];
 
 const CAT_MAP = { game: 'Game', clone: 'Clone', tool: 'Tool', app: 'App' };
