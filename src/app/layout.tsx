@@ -21,6 +21,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
+import { Preloader } from "@/components/layout/Preloader";
 
 export default function RootLayout({
   children,
@@ -39,6 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
+            <Preloader />
             <Navbar />
             <main className="flex-1">
               {children}

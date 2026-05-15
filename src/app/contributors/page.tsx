@@ -1,6 +1,6 @@
 import { getContributors } from "@/lib/github"
-import Image from "next/image"
 import { Users, GitCommit } from "lucide-react"
+import { ContributorGrid } from "@/components/sections/ContributorGrid"
 
 export const metadata = {
   title: "Contributors — 100 Days 100 Web Projects",
@@ -36,35 +36,7 @@ export default async function ContributorsPage() {
       </div>
 
       {/* Contributor Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-        {contributors.map((contributor) => (
-          <a
-            key={contributor.login}
-            href={contributor.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col items-center gap-3 rounded-2xl border border-border/40 bg-card p-6 transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 hover:border-primary/30"
-          >
-            <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-border transition-all group-hover:border-primary">
-              <Image
-                src={contributor.avatar_url}
-                alt={contributor.login}
-                fill
-                className="object-cover"
-                sizes="80px"
-              />
-            </div>
-            <div className="text-center space-y-1">
-              <p className="text-sm font-semibold truncate max-w-[120px]">
-                {contributor.login}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {contributor.contributions} {contributor.contributions === 1 ? "commit" : "commits"}
-              </p>
-            </div>
-          </a>
-        ))}
-      </div>
+      <ContributorGrid contributors={contributors} />
     </div>
   )
 }

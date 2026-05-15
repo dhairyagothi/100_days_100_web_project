@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Code2, MonitorSmartphone, Users } from "lucide-react"
 import { Icons } from "@/components/icons"
 import { FadeIn } from "@/components/animations/FadeIn"
+import { GSAPReveal } from "@/components/animations/GSAPReveal"
 
 export default function About() {
   return (
@@ -17,22 +18,28 @@ export default function About() {
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="bg-card p-6 rounded-[1.5rem] border border-border/50">
-              <Code2 className="h-8 w-8 text-primary mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Modern Stack</h3>
-              <p className="text-sm text-muted-foreground">Migrated to Next.js 16, React 19, and Tailwind CSS v4 to deliver a high-performance, responsive experience.</p>
-            </div>
-            <div className="bg-card p-6 rounded-[1.5rem] border border-border/50">
-              <MonitorSmartphone className="h-8 w-8 text-primary mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Taste Standard</h3>
-              <p className="text-sm text-muted-foreground">Designed with the &apos;Taste Standard&apos; — featuring minimal borders, neutral tones, and precise typography.</p>
-            </div>
-            <div className="bg-card p-6 rounded-[1.5rem] border border-border/50">
-              <Icons.gitHub className="h-8 w-8 text-primary mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Open Source</h3>
-              <p className="text-sm text-muted-foreground">Maintained as an open-source project, welcoming contributions from the global developer community under GSSoC.</p>
-            </div>
+          <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-3">
+            <GSAPReveal direction="up" delay={0.1}>
+              <div className="bg-card p-5 md:p-6 rounded-[1.5rem] border border-border/50 h-full">
+                <Code2 className="h-7 w-7 md:h-8 md:w-8 text-primary mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Modern Stack</h3>
+                <p className="text-sm text-muted-foreground">Migrated to Next.js 16, React 19, and Tailwind CSS v4 to deliver a high-performance, responsive experience.</p>
+              </div>
+            </GSAPReveal>
+            <GSAPReveal direction="up" delay={0.2}>
+              <div className="bg-card p-5 md:p-6 rounded-[1.5rem] border border-border/50 h-full">
+                <MonitorSmartphone className="h-7 w-7 md:h-8 md:w-8 text-primary mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Taste Standard</h3>
+                <p className="text-sm text-muted-foreground">Designed with the &apos;Taste Standard&apos; — featuring minimal borders, neutral tones, and precise typography.</p>
+              </div>
+            </GSAPReveal>
+            <GSAPReveal direction="up" delay={0.3}>
+              <div className="bg-card p-5 md:p-6 rounded-[1.5rem] border border-border/50 h-full">
+                <Icons.gitHub className="h-7 w-7 md:h-8 md:w-8 text-primary mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Open Source</h3>
+                <p className="text-sm text-muted-foreground">Maintained as an open-source project, welcoming contributions from the global developer community under GSSoC.</p>
+              </div>
+            </GSAPReveal>
           </div>
 
           <div className="prose prose-neutral dark:prose-invert max-w-none">
