@@ -77,7 +77,7 @@ body {
     font-weight: 900;
     letter-spacing: 2px;
     background: var(--gradient-1);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -168,7 +168,7 @@ body {
     font-size: clamp(2.5rem, 6vw, 4rem);
     font-weight: 900;
     background: var(--gradient-1);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 1.5rem;
     filter: drop-shadow(0 0 20px var(--accent-glow));
@@ -386,4 +386,4 @@ body {
     .navbar { padding: 1rem 2rem; }
     .footer-content { grid-template-columns: 1fr; }
     .stats-overview { grid-template-columns: repeat(2, 1fr); }
-}
+}
