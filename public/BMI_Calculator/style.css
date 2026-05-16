@@ -1,117 +1,412 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap');
 
-body {
+/* =========================================
+   Reset
+   ========================================= */
+*, *::before, *::after {
   margin: 0;
   padding: 0;
-  text-align: center;
-  font-family: "Montserrat";
-  /* background: rgb(34, 193, 195); */
-  background: linear-gradient(
-    0deg,
-    #cc5333 0%,
-    #23074d 100%
-    
-  );
+  box-sizing: border-box;
+}
+
+/* =========================================
+   Design tokens — Warm Clinical
+   ========================================= */
+:root {
+  --paper:        #f5f2ec;
+  --surface:      #faf8f4;
+  --card:         #fffffe;
+  --ink:          #1c1a17;
+  --ink-2:        #6b6560;
+  --ink-3:        #b0aa9f;
+  --rule:         #dedad2;
+  --rule-strong:  #c5bfb4;
+
+  --blue:   #2563b0;
+  --green:  #2d7a3a;
+  --amber:  #b45309;
+  --red1:   #b91c1c;
+  --red2:   #7f1d1d;
+  --red3:   #450a0a;
+
+  --blue-tint:  #eff4fc;
+  --green-tint: #edf6ef;
+  --amber-tint: #fef3e2;
+  --red-tint:   #fef2f2;
+
+  --f-mono:  'DM Mono', 'Courier New', monospace;
+  --f-serif: 'Instrument Serif', Georgia, serif;
+
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 10px;
+}
+
+body.dark {
+  --paper:       #111008;
+  --surface:     #181610;
+  --card:        #1e1c14;
+  --ink:         #f0ece2;
+  --ink-2:       #928e82;
+  --ink-3:       #4a4740;
+  --rule:        #2c2a22;
+  --rule-strong: #3e3b30;
+
+  --blue-tint:  #0f1e35;
+  --green-tint: #0d200f;
+  --amber-tint: #1f1200;
+  --red-tint:   #1f0808;
+}
+
+/* =========================================
+   Base
+   ========================================= */
+body {
+  font-family: var(--f-mono);
+  background: var(--paper);
+  color: var(--ink);
   min-height: 100vh;
+  padding: 56px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.25s, color 0.25s;
 }
-.bmi {
-  color: white;
-  width: 350px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  background-color: black;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  border-radius: 10px;
+
+.page {
+  width: 100%;
+  max-width: 880px;
 }
-h2 {
+
+/* =========================================
+   Layout — hairline-divided grid
+   ========================================= */
+.bmi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--rule-strong);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .bmi-grid { grid-template-columns: 1fr; }
+  body { padding: 28px 16px; }
+}
+
+.card {
+  background: var(--card);
+  padding: 36px 32px;
+}
+
+.right-card {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: var(--surface);
+}
+
+/* =========================================
+   Card header
+   ========================================= */
+.top-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.card-title {
+  font-family: var(--f-serif);
   font-size: 30px;
-  font-weight: 600;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--ink);
 }
-.text {
-  text-align: center;
-}
-#weight-unit,
-#height-unit {
-  color: black;
-  text-align: left;
-  font-size: 20px;
-  font-weight: 200;
-  outline: none;
-  border: 1px solid black;
-  border-radius: 10px;
-  width: 200px;
-  height: 35px;
-  height: 35px;
-  margin-top: 10px;
-}
-#weight:focus,
-#height:focus {
-  width: 250px;
-  transition: 0.5s;
-}
-#result {
-  color: white;
-}
-#btn {
-  font-family: inherit;
-  margin-top: 10px;
-  border: blue;
-  color: #000;
-  background: gainsboro;
-  width: 150px;
-  padding: 10px;
-  border-radius: 30px ;
-  outline: white;
+
+.theme-toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink-2);
   cursor: pointer;
-  transition: 0.5s;
-}
-#btn:hover {
-  transform: scale(1.1);
-  transition: 0.5s;
-}
-
-table {
-  width: 650px;
-  border-collapse: collapse;
-  margin: 600px auto;
-  margin-top: 700px;
-  margin-bottom: 80px;
+  font-size: 13px;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: var(--f-mono);
 }
 
-tr {
-  background: rgb(68, 38, 105);
-  color: white;
+.theme-toggle:hover {
+  border-color: var(--ink-3);
+  background: var(--surface);
 }
 
-th {
-  background: #0d0101;
-  color: #fffbfb;
-  font-weight: bold;
+/* =========================================
+   Forms
+   ========================================= */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
-td,
-th {
-  padding: 10px;
-  border: 1px solid #000;
-  text-align: center;
-  font-size: 18px;
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-#bmichart {
-  display: block;
-    box-sizing: border-box;
-    height: 759px;
-    width: 1519px;
-    margin-bottom: 80px;
-    
+.field-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
-#height, #weight {
-  height: 35px;
+select,
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  font-family: var(--f-mono);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+select:hover,
+input:hover { border-color: var(--rule-strong); }
+
+select:focus,
+input:focus {
+  border-color: var(--ink);
+  background: var(--card);
+}
+
+button#btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 14px;
+  background: var(--ink);
+  color: var(--card);
+  border: 1px solid var(--ink);
+  border-radius: var(--r-sm);
+  font-size: 10px;
+  font-family: var(--f-mono);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+button#btn:hover  { opacity: 0.8; }
+button#btn:active { transform: scale(0.997); }
+
+.error-msg {
+  font-size: 11px;
+  color: var(--red1);
   margin-top: 10px;
+  letter-spacing: 0.02em;
 }
-.footer_social{
-  color: white;
+
+.hidden { display: none !important; }
+
+/* =========================================
+   Results
+   ========================================= */
+.result-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 28px;
+  border-top: 1px solid var(--rule);
+}
+
+.metric-card {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-card + .metric-card {
+  padding-left: 20px;
+  border-left: 1px solid var(--rule);
+}
+
+.metric-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+
+.metric-value {
+  font-family: var(--f-serif);
+  font-size: 52px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.range-val {
+  font-family: var(--f-mono);
+  font-size: 22px;
+  font-style: normal;
+  padding-top: 8px;
+  letter-spacing: -0.01em;
+}
+
+.category-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 2px;
+  margin-top: 12px;
+}
+
+.tip-text {
+  font-size: 11px;
+  color: var(--ink-2);
+  margin-top: 10px;
+  line-height: 1.65;
+}
+
+/* =========================================
+   BMI Range Bar
+   ========================================= */
+.range-vis { margin-top: 28px; }
+
+.range-bar {
+  height: 3px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.range-segments {
+  display: flex;
+  height: 100%;
+}
+
+.seg { display: block; }
+.seg-blue  { background: var(--blue); }
+.seg-green { background: var(--green); }
+.seg-amber { background: var(--amber); }
+.seg-red   { background: var(--red1); }
+
+.bmi-pointer {
+  position: absolute;
+  top: -6px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--ink);
+  transform: translateX(-50%);
+  transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  left: 0%;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+/* =========================================
+   Reference Table
+   ========================================= */
+.bmi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.bmi-table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.bmi-table td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+
+.bmi-table tbody tr:last-child td { border-bottom: none; }
+
+.bmi-table td:last-child,
+.bmi-table th:last-child { text-align: right; }
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.dot-blue  { background: var(--blue); }
+.dot-green { background: var(--green); }
+.dot-amber { background: var(--amber); }
+.dot-red1  { background: var(--red1); }
+.dot-red2  { background: var(--red2); }
+.dot-red3  { background: var(--red3); }
+
+/* =========================================
+   Chart
+   ========================================= */
+.chart-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 140px;
+  border-top: 1px solid var(--rule);
+  padding-top: 20px;
+}
+
+.chart-hint {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  text-align: center;
+  margin-top: 14px;
+}
+
+* {
+  scrollbar-width: none; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
