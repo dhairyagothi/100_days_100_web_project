@@ -76,7 +76,7 @@ padding: 8px;
 
     <div class="contact">
         <h3>Subscribe to our emails</h3>
-        <form method="POST" action="/">
+        <form id="contactForm" method="POST" action="/">
             <div class="contact01">
         <label>CONTACT-FORM</label>
         <input class="email" name="name" type="text" placeholder="Enter your name " value required autocomplete="off" >
@@ -86,7 +86,16 @@ padding: 8px;
             <input class="submit" type="submit" name="submit" value="Sign Up">
             </div>
             </form>
+            <div id="successMessage" style="display:none; padding:20px; text-align:center; color:#00b6d1; font-size:18px;">
+                Thank you for subscribing! This is a demo, so no real email will be sent.
+            </div>
     </div>
- <script src="/app.js"></script>
+<script>
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    document.getElementById("contactForm").style.display = "none";
+    document.getElementById("successMessage").style.display = "block";
+});
+</script>
 </body>
 </html>
