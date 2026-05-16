@@ -3,6 +3,8 @@ const ctx = canvas.getContext("2d");
 const color = getComputedStyle(document.documentElement).getPropertyValue("--button-color");
 const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue("--sidebar-color");
 let score = 0;
+let isGameOver = false;
+let highScore = localStorage.getItem('breakoutHighScore') || 0;
 const brickRowCount = 9;
 const brickColumnCount = 5;
 const heightRatio = 0.75;
@@ -142,11 +144,20 @@ function moveBall() {
         });
     });
     if (ball.y + ball.size > canvas.height) {
-        resetGame(); //
+        handleGameOver();
     }
 }
 
-
+function handleGameOver() {
+    isGameOver = true;
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('breakoutHighScore', highScore);
+    }
+    document.getElementById("current-score-display").innerText = `Score: ${score}`;
+    document.getElementById("high-score-display").innerText = `High Score: ${highScore}`;
+    document.getElementById("game-over-container").style.display = "flex";
+}
 
 function increaseScore() {
     score++;
@@ -161,10 +172,7 @@ function showAllBricks() {
     });
 }
 
-function showGameOver() {
-    resetGame();
-    update();
-}
+
 function keyDown(e) {
     if (e.key === "Right" || e.key === "ArrowRight") paddle.dx = paddle.speed;
     else if (e.key === "Left" || e.key === "ArrowLeft") paddle.dx = -paddle.speed;
@@ -182,6 +190,7 @@ function keyUp(e) {
 }
 
 function update() {
+    if (isGameOver) return;
     movePaddle();
     moveBall();
     draw();
@@ -193,6 +202,8 @@ document.addEventListener("keyup", keyUp);
 
 function startGame() {
     document.getElementById("rules-container").style.display = "none";
+    document.getElementById("game-over-container").style.display = "none";
+    isGameOver = false;
     resetGame();
     update();
 }
@@ -213,10 +224,7 @@ function resetBricks() {
     });
 }
 
-function showGameOver() {
-    resetGame();  
-    update();  
-}
+
 
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
