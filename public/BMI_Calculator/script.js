@@ -147,6 +147,8 @@ weightUnitEl.addEventListener("change", () => {
 function showError(msg) {
     errEl.textContent = msg;
     errEl.classList.remove("hidden");
+    resultsEl.classList.add("hidden");
+    rangeVisEl.classList.add("hidden");
 }
 
 function clearError() {
@@ -205,7 +207,8 @@ btn.addEventListener("click", () => {
     // Calculates BMI
     const bmi = w / Math.pow(heightCm / 100, 2);
     const bmiRounded = Math.round(bmi * 10) / 10;
-    const cat = getCategory(bmi);
+    const cat = getCategory(bmiRounded);
+    
 
     // Displays BMI + category
     document.getElementById("bmi-val").textContent = bmiRounded.toFixed(1);
