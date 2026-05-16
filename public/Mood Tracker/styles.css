@@ -72,6 +72,28 @@ h2 {
 .mood-button:hover {
     transform: scale(1.1);
 }
+.back-home-btn {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 999;
+    padding: 12px 20px;
+    background: white;
+    color: #111;
+    text-decoration: none;
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    border: 2px solid #444;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.back-home-btn:hover {
+    background: #111;
+    color: white;
+    transform: translateY(-2px);
+}
 
 .intensity-slider {
     margin-top: 20px;
