@@ -4,20 +4,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Story</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --progress: 14%;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+            background:
+                radial-gradient(circle at 20% 18%, rgba(123, 94, 167, 0.18), transparent 36%),
+                radial-gradient(circle at 80% 30%, rgba(232, 201, 122, 0.12), transparent 40%),
+                radial-gradient(circle at 50% 65%, rgba(130, 80, 190, 0.16), transparent 52%),
+                radial-gradient(circle at 12% 80%, rgba(255, 255, 255, 0.08) 0.8px, transparent 1px),
+                radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.12) 1px, transparent 1.2px),
+                radial-gradient(circle at 55% 18%, rgba(255, 255, 255, 0.12) 0.8px, transparent 1px),
+                radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.08) 1px, transparent 1.2px),
+                radial-gradient(circle at 90% 48%, rgba(255, 255, 255, 0.1) 0.9px, transparent 1.1px),
+                #0a0a1a;
+            color: #f0ead6;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            color: #e8c97a;
+            letter-spacing: 0.4px;
+            text-shadow: 0 0 22px rgba(232, 201, 122, 0.38);
+        }
+
+        .chapter-badge {
+            display: inline-block;
+            margin: 0 auto 2px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 200, 100, 0.55);
+            background: rgba(16, 10, 24, 0.88);
+            color: #e8c97a;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        .image-frame {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 200, 100, 0.4);
+            box-shadow: 0 0 40px rgba(120, 60, 200, 0.4);
+            padding: 8px;
+            background: rgba(8, 8, 20, 0.82);
+        }
+
+        #image {
+            width: 100%;
+            display: block;
+            border-radius: 18px;
+            object-fit: cover;
+        }
+
+        .progress-wrap {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: var(--progress);
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #7b5ea7, #e8c97a);
+        }
+
+        .progress-text {
+            margin-top: 7px;
+            font-size: 12px;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        #text {
+            margin: 0 auto;
+            max-width: 520px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #f0ead6;
+            text-align: center;
+            min-height: 86px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        button:focus-visible {
+            box-shadow: 0 0 0 3px rgba(232, 201, 122, 0.34);
+        }
+
+        #play {
+            background: #e8c97a;
+            color: #1a1200;
+            font-weight: 700;
+            border: 1px solid rgba(232, 201, 122, 0.95);
+            padding: 10px 24px;
+        }
+
+        #play::before {
+            content: "▶ ";
+        }
+
+        #play:hover {
+            filter: brightness(1.1);
+            transform: scale(1.03);
+        }
+
+        #pause,
+        #next {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 18px;
+        }
+
+        #pause::before {
+            content: "⏸ ";
+        }
+
+        #next::before {
+            content: "⏭ ";
+        }
+
+        #pause:hover,
+        #next:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        #stop {
+            background: rgba(220, 60, 60, 0.12);
+            color: #f08080;
+            border: 1px solid rgba(220, 60, 60, 0.25);
+            padding: 10px 18px;
+        }
+
+        #stop::before {
+            content: "■ ";
+        }
+
+        #stop:hover {
+            background: rgba(220, 60, 60, 0.22);
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+
+        .dot.active {
+            width: 20px;
+            background: #e8c97a;
+        }
+
+        #scene-label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        @media (max-width: 480px) {
+            .wrapper {
+                gap: 20px;
+            }
+
+            #text {
+                font-size: 15px;
+            }
+        }
+    </style>
 </head>
-<body style="text-align: center;background: linear-gradient(0deg, #000046, #1CB5E0);color: white;">    
-    
-    
-    <h1 style="text-align: center;">The clever Rabbit and the Lion</h1>
-    <img id="image"  src="images/lion.webp" height="500" style="border-radius: 20px;border: 2px solid black;box-shadow: 5px 5px 5px 5px  white;">
-    <br>
-    <p id="text"></p>
-    <button id="play">Play</button>
-    <button id="pause">Pause</button>
-    <button id="next">Next</button>
-    <button id="stop">Stop</button>
+<body>
+    <main class="wrapper">
+        <h1>The clever Rabbit and the Lion</h1>
+        <span class="chapter-badge">Chapter 1 of 7</span>
+        <span id="scene-label">Scene 1</span>
+        <div class="image-frame">
+            <img id="image" src="images/lion.webp" alt="The lion in the forest">
+        </div>
+        <div class="progress-wrap">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-text">1 / 7</div>
+        </div>
+        <p id="text"></p>
+        <div class="controls">
+            <button id="play">Play</button>
+            <button id="pause">Pause</button>
+            <button id="next">Next</button>
+            <button id="stop">Stop</button>
+        </div>
+        <div class="dots" aria-hidden="true">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </main>
 <script src="script.js"></script>
 </body>
-
 </html>
