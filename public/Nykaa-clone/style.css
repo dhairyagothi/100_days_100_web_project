@@ -73,6 +73,7 @@ header .right{
     padding:0px 20px;
     margin:0;
     display: flex;
+    padding-top: 15px;
     gap: 20px;
 }
 .subNavigation ul{
