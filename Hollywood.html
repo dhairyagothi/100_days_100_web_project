@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hollywood Game 🎬</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #facc15;
+    }
+
+    .word {
+      font-size: 2rem;
+      letter-spacing: 10px;
+      margin: 20px 0;
+    }
+
+    .letters button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      background: #1e293b;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .letters button:hover {
+      background: #334155;
+    }
+
+    .letters button:disabled {
+      background: #475569;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+
+    .hollywood {
+      margin-top: 15px;
+      font-size: 1.5rem;
+      letter-spacing: 5px;
+      color: #ef4444;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #22c55e;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎬 Hollywood Game</h1>
+
+<div class="word" id="wordDisplay"></div>
+
+<div class="letters" id="letters"></div>
+
+<div class="hollywood" id="hollywood">HOLLYWOOD</div>
+
+<div class="status" id="status"></div>
+
+<button class="btn" onclick="startGame()">Restart</button>
+
+<script>
+const movies = [
+  "INCEPTION",
+  "TITANIC",
+  "AVATAR",
+  "GLADIATOR",
+  "JOKER",
+  "INTERSTELLAR",
+  "FROZEN"
+];
+
+let selectedMovie = "";
+let guessed = [];
+let wrong = 0;
+const maxWrong = 9;
+const hollywoodText = "HOLLYWOOD";
+
+function startGame() {
+  selectedMovie = movies[Math.floor(Math.random() * movies.length)];
+  guessed = [];
+  wrong = 0;
+  document.getElementById("status").textContent = "";
+  generateLetters();
+  updateDisplay();
+}
+
+function generateLetters() {
+  const lettersDiv = document.getElementById("letters");
+  lettersDiv.innerHTML = "";
+
+  for (let i = 65; i <= 90; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = String.fromCharCode(i);
+    btn.onclick = () => handleGuess(btn.textContent, btn);
+    lettersDiv.appendChild(btn);
+  }
+}
+
+function handleGuess(letter, btn) {
+  btn.disabled = true;
+
+  if (selectedMovie.includes(letter)) {
+    guessed.push(letter);
+  } else {
+    wrong++;
+  }
+
+  updateDisplay();
+  checkGame();
+}
+
+function updateDisplay() {
+  let display = "";
+
+  for (let letter of selectedMovie) {
+    if (guessed.includes(letter)) {
+      display += letter + " ";
+    } else {
+      display += "_ ";
+    }
+  }
+
+  document.getElementById("wordDisplay").textContent = display;
+
+  let remaining = hollywoodText.slice(0, maxWrong - wrong);
+  document.getElementById("hollywood").textContent = remaining;
+}
+
+function checkGame() {
+  let won = selectedMovie.split("").every(l => guessed.includes(l));
+
+  if (won) {
+    document.getElementById("status").textContent = "🎉 You Won!";
+    disableAll();
+  }
+
+  if (wrong >= maxWrong) {
+    document.getElementById("status").textContent =
+      "💀 You Lost! Movie was: " + selectedMovie;
+    disableAll();
+  }
+}
+
+function disableAll() {
+  document.querySelectorAll(".letters button").forEach(btn => {
+    btn.disabled = true;
+  });
+}
+
+startGame();
+</script>
+
+</body>
+</html>
