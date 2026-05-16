@@ -25,6 +25,9 @@ body.light-mode {
     --glass-border: rgba(0, 0, 0, 0.05);
     --glass-glow: rgba(0, 0, 0, 0.02);
 }
+html {
+    scroll-behavior: smooth;
+}
 
 * {
     margin: 0;
@@ -69,7 +72,18 @@ body {
     align-items: center;
     transition: var(--transition);
 }
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
 
+    .buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -95,7 +109,7 @@ body {
     font-weight: 900;
     letter-spacing: 2px;
     background: var(--gradient-1);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -128,7 +142,41 @@ body {
     box-shadow: 0 10px 25px var(--accent-glow);
     border-color: transparent;
 }
+button:focus,
+a:focus,
+input:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+} 
 
+    #try-readme-button {
+    margin-top: 1rem;
+    padding: 14px 26px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    background: linear-gradient(135deg, #7f5af0, #2cb67d);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
+}
+
+#try-readme-button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
+}
+#try-readme-button i {
+    transition: transform 0.3s ease;
+}
+
+#try-readme-button:hover i {
+    transform: rotate(-30deg) scale(1.2);
+}
 .featured-btn {
     background: var(--gradient-1) !important;
     color: #000 !important;
@@ -203,7 +251,7 @@ body {
     font-weight: 900;
     line-height: 1;
     background: var(--gradient-1);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 2rem;
     filter: drop-shadow(0 0 30px var(--accent-glow));
@@ -355,6 +403,7 @@ body {
 
 table {
     width: 100%;
+    min-width: 700px;
     border-collapse: separate;
     border-spacing: 0 16px;
 }
@@ -520,7 +569,6 @@ tbody td a:hover {
     .table-container { padding: 1.5rem; }
     thead { display: none; }
     tbody td { padding: 1.2rem 1rem; }
-feature/pagination-project-list
 }
 
 .pagination-container {
@@ -550,6 +598,6 @@ feature/pagination-project-list
     display: none;
 }
 .pagination-container button:hover {
-    opacity: 0.9
+    opacity: 0.9;
 
 }
