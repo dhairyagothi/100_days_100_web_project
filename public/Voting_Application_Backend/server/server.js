@@ -8,9 +8,9 @@ const PORT = process.env.PORT || 3000;
 
 // Apply CORS middleware
 app.use(cors({
-    origin: 'http://localhost:3006', // Replace with your frontend URL
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true // Allows cookies and credentials to be sent
+    credentials: true
 }));
 
 const bodyParser = require('body-parser');

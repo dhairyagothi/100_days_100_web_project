@@ -7,10 +7,7 @@ const mongoURL = process.env.MONGODB_URL_LOCAL;
 //const mongoURL = process.env.MONGODB_URL;
 
 //set up mondodb connection
-mongoose.connect(mongoURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(mongoURL)
 
 //get the default connection
 //moongose maintains a deafult connection object representing the mongose connection
