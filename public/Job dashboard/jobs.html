@@ -4,238 +4,489 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Job Dashboard</title>
-  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
+    <meta name="description" content="Find your next job with our modern Job Dashboard. Filter by title, location, salary, job type, and more." />
+    <title>Job Dashboard – Find Your Dream Job</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <link rel="stylesheet" href="jobs.css" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
   </head>
   <body>
 
-     <!-- job filter section starts -->
-    
-         <section class="job-filter">
-             <h1 class="heading">filter jobs</h1>
-             <form id="jobFilterForm" onsubmit="return filterJobs()">
-                 <div class="flex">
-                     <div class="box">
-                         <p>job title</p>
-                         <input type="text" name="title" placeholder="keyword, category or company"  maxlength="20" class="input">
-                     </div>
-                     <div class="box">
-                         <p>job location</p>
-                         <input type="text" name="location" placeholder="city, state or country" maxlength="50" class="input">
-                     </div>
-                 </div>
-                 <div class="dropdown-container">
-                     <div class="dropdown">
-                         <input type="text" readonly name="datePosted" placeholder="date posted" maxlength="20" class="output">
-                         <div class="lists">
-                             <p class="items" onclick="selectDropdown(this)">today</p>
-                             <p class="items" onclick="selectDropdown(this)">3 days ago</p>
-                             <p class="items" onclick="selectDropdown(this)">7 days ago</p>
-                             <p class="items" onclick="selectDropdown(this)">15 days ago</p>
-                             <p class="items" onclick="selectDropdown(this)">30 days ago</p>
-                         </div>
-                     </div>
-     
-                     <div class="dropdown">
-                         <input type="text" readonly name="salary" placeholder="estimated salary" maxlength="20" class="output">
-                         <div class="lists">
-                             <p class="items" onclick="selectDropdown(this)">1k or less</p>
-                             <p class="items" onclick="selectDropdown(this)">1k - 5k</p>
-                             <p class="items" onclick="selectDropdown(this)">5k - 10k</p>
-                             <p class="items" onclick="selectDropdown(this)">10k - 20k</p>
-                             <p class="items" onclick="selectDropdown(this)">20k - 30k</p>
-                             <p class="items" onclick="selectDropdown(this)">30k - 40k</p>
-                             <p class="items" onclick="selectDropdown(this)">40k - 50k</p>
-                             <p class="items" onclick="selectDropdown(this)">50k - 1 lakh</p>
-                             <p class="items" onclick="selectDropdown(this)">1 lakh - 5 lakh</p>
-                             <p class="items" onclick="selectDropdown(this)">5 lakh - 10 lakh</p>
-                             <p class="items" onclick="selectDropdown(this)">10 lakh - 20 lakh</p>
-                             <p class="items" onclick="selectDropdown(this)">20 lakh - 50 lakh</p>
-                             <p class="items" onclick="selectDropdown(this)">50 lakh - 1 crore</p>
-                         </div>
-                     </div>
-     
-                     <div class="dropdown">
-                         <input type="text" readonly name="jobType" placeholder="job type" maxlength="20" class="output">
-                         <div class="lists">
-                             <p class="items" onclick="selectDropdown(this)">full time</p>
-                             <p class="items" onclick="selectDropdown(this)">part-time</p>
-                             <p class="items" onclick="selectDropdown(this)">internship</p>
-                             <p class="items" onclick="selectDropdown(this)">contract</p>
-                             <p class="items" onclick="selectDropdown(this)">temporary</p>
-                             <p class="items" onclick="selectDropdown(this)">fresher</p>
-                         </div>
-                     </div>
-     
-                     <div class="dropdown">
-                         <input type="text" readonly name="education" placeholder="education level" maxlength="20" class="output">
-                         <div class="lists">
-                             <p class="items" onclick="selectDropdown(this)">10th pass</p>
-                             <p class="items" onclick="selectDropdown(this)">12th pass</p>
-                             <p class="items" onclick="selectDropdown(this)">bachelor's degree</p>
-                             <p class="items" onclick="selectDropdown(this)">master's degree</p>
-                             <p class="items" onclick="selectDropdown(this)">diploma</p>
-                         </div>
-                     </div>
-     
-                     <div class="dropdown">
-                         <input type="text" readonly name="shift" placeholder="work shifts" maxlength="20" class="output">
-                         <div class="lists">
-                             <p class="items" onclick="selectDropdown(this)">day shift</p>
-                             <p class="items" onclick="selectDropdown(this)">night shift</p>
-                             <p class="items" onclick="selectDropdown(this)">flexible shift</p>
-                             <p class="items" onclick="selectDropdown(this)">fixed shift</p>
-                         </div>
-                     </div>
-                 </div>
-                 <button type="submit" class="btn">Apply Filter</button>
-                 <button type="button" id="resetButton" class="btn">Reset Filters</button>
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar" id="navbar">
+      <div class="nav-brand">
+        <i class="fas fa-briefcase nav-logo-icon"></i>
+        <span class="nav-logo-text">JobBoard</span>
+      </div>
+      <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main navigation">
+        <a href="#" class="nav-link active">Home</a>
+        <a href="#jobs-section" class="nav-link">Jobs</a>
+        <a href="#" class="nav-link">Companies</a>
+        <a href="#" class="nav-link">About</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="#" class="btn-nav-login" id="loginBtn">Log In</a>
+        <a href="#" class="btn-nav-signup" id="signupBtn">Get Started</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
 
-             </form>
-         </section>
-     
-       
-        
-       <!-- job filter section ends -->
- <!-- all jobs section starts -->
- <section class="job-container">
-     <h1 class="heading">All Jobs</h1>
-     <div class="box-container">
-         <div class="box">
-             <div class="company">
-                 <img src="./image/html.webp" alt=" ">
-                 <div>
-                     <h3>IT Infosy co.</h3>
-                     <p>2 days ago</p>
-                 </div>
-             </div>
-             <h3 class="job-title">Senior Web Developer</h3>
-             <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
-             <div class="tags">
-                 <p><i class="fas fa-indian-rupee-sign"></i> <span>10k - 20k</span></p>
-                 <p><i class="fas fa-briefcase"></i> <span>Part-time</span></p>
-                 <p><i class="fas fa-clock"></i> <span>Day shift</span></p>
-             </div>
-             <div class="flex-btn">
-                 <a href="ITinfosy.html" class="btn">View details</a>
-                 <button class="far fa-heart"></button>
-             </div>
-         </div>
-         <div class="box">
-           <div class="company">
-               <img src="./image/css3-logo-png-transparent.png" alt=" ">
-               <div>
-                   <h3>All Media Ltd.</h3>
-                   <p>2 days ago</p>
-               </div>
-           </div>
-           <h3 class="job-title">Qualified Developer</h3>
-           <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
-           <div class="tags">
-               <p><i class="fas fa-indian-rupee-sign"></i> <span>9000</span></p>
-               <p><i class="fas fa-briefcase"></i> <span>full-time</span></p>
-               <p><i class="fas fa-clock"></i> <span>flexible shift</span></p>
-           </div>
-           <div class="flex-btn">
-               <a href="AllmediaLts.html" class="btn">View details</a>
-               <button class="far fa-heart"></button>
-           </div>
-       </div>
-       <div class="box">
-         <div class="company">
-             <img src="./image/java.jpg" alt=" ">
-             <div>
-                 <h3>Software Soution</h3>
-                 <p>posted today</p>
-             </div>
-         </div>
-         <h3 class="job-title">Javascript Developer</h3>
-         <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
-         <div class="tags">
-             <p><i class="fas fa-indian-rupee-sign"></i> <span>10k - 20k</span></p>
-             <p><i class="fas fa-briefcase"></i> <span>internship</span></p>
-             <p><i class="fas fa-clock"></i> <span>night shift</span></p>
-         </div>
-         <div class="flex-btn">
-             <a href="softwareSolution.html" class="btn">View details</a>
-             <button class="far fa-heart"></button>
-         </div>
-     </div>
-     <div class="box">
-       <div class="company">
-           <img src="https://static.vecteezy.com/system/resources/previews/001/198/090/non_2x/world-png.png" alt=" ">
-           <div>
-               <h3>IT World</h3>
-               <p>19 days ago</p>
-           </div>
-       </div>
-       <h3 class="job-title">Junior Front-End</h3>
-       <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
-       <div class="tags">
-           <p><i class="fas fa-indian-rupee-sign"></i> <span>40k - 50k</span></p>
-           <p><i class="fas fa-briefcase"></i> <span>contract</span></p>
-           <p><i class="fas fa-clock"></i> <span>fixed shift</span></p>
-       </div>
-       <div class="flex-btn">
-           <a href="ITWorlds.html" class="btn">View details</a>
-           <button class="far fa-heart"></button>
-       </div>
-   </div>
-   <div class="box">
-     <div class="company">
-         <img src="https://th.bing.com/th/id/OIP.iJbuiX_YdBeTqI7wYawlwwHaHa?rs=1&pid=ImgDetMain" alt=" ">
-         <div>
-             <h3>Info Statics</h3>
-             <p>2 days ago</p>
-         </div>
-     </div>
-     <h3 class="job-title">Junior Assistant</h3>
-     <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
-     <div class="tags">
-         <p><i class="fas fa-indian-rupee-sign"></i> <span>5000</span></p>
-         <p><i class="fas fa-briefcase"></i> <span>temporary</span></p>
-         <p><i class="fas fa-clock"></i> <span>flexible shift</span></p>
-     </div>
-     <div class="flex-btn">
-         <a href="InfoStatics.html" class="btn">View details</a>
-         <button class="far fa-heart"></button>
-     </div>
- </div>
- <div class="box">
-   <div class="company">
-       <img src="./image/php.jpg" alt=" ">
-       <div>
-           <h3>Mass Idea</h3>
-           <p>2 days ago</p>
-       </div>
-   </div>
-   <h3 class="job-title">PHP Developer</h3>
-   <p class="location"><i class="fas fa-map-marker-alt"></i> <span>Mumbai, India</span></p>
-   <div class="tags">
-       <p><i class="fas fa-indian-rupee-sign"></i> <span>50k - 1lakh</span></p>
-       <p><i class="fas fa-briefcase"></i> <span>fresher</span></p>
-       <p><i class="fas fa-clock"></i> <span>Day shift</span></p>
-   </div>
-   <div class="flex-btn">
-       <a href="massIdea.html" class="btn">View details</a>
-       <button class="far fa-heart"></button>
-   </div>
- </div>
- 
- 
-  </div>
- 
- </section>
- <!-- all jobs section end -->
- 
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" aria-label="Hero banner">
+      <div class="hero-bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+      <div class="hero-content">
+        <span class="hero-badge"><i class="fas fa-fire"></i> 500+ New Jobs This Week</span>
+        <h1 class="hero-title">Find Your <span class="gradient-text">Dream Job</span> Today</h1>
+        <p class="hero-subtitle">Connect with top companies and discover opportunities that match your skills and ambitions.</p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">12k+</span>
+            <span class="stat-label">Active Jobs</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">3.5k+</span>
+            <span class="stat-label">Companies</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">1M+</span>
+            <span class="stat-label">Candidates</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-   
+    <!-- ===== FILTER SECTION ===== -->
+    <section class="filter-section" aria-label="Job filter">
+      <div class="filter-card">
+        <div class="filter-header">
+          <h2 class="filter-title"><i class="fas fa-sliders-h"></i> Filter Jobs</h2>
+          <button type="button" id="resetButton" class="btn-reset" aria-label="Reset all filters">
+            <i class="fas fa-rotate-left"></i> Reset
+          </button>
+        </div>
+
+        <form id="jobFilterForm" onsubmit="return filterJobs()" novalidate>
+          <!-- Text Inputs Row -->
+          <div class="filter-inputs-row">
+            <div class="filter-input-group">
+              <label for="jobTitleInput" class="filter-label">
+                <i class="fas fa-search"></i> Job Title
+              </label>
+              <input
+                type="text"
+                id="jobTitleInput"
+                name="title"
+                placeholder="e.g. Frontend Developer"
+                maxlength="50"
+                class="filter-input"
+                autocomplete="off"
+              />
+            </div>
+            <div class="filter-input-group">
+              <label for="jobLocationInput" class="filter-label">
+                <i class="fas fa-map-marker-alt"></i> Location
+              </label>
+              <input
+                type="text"
+                id="jobLocationInput"
+                name="location"
+                placeholder="e.g. Mumbai, India"
+                maxlength="50"
+                class="filter-input"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <!-- Dropdown Row -->
+          <div class="filter-dropdowns-row">
+
+            <div class="filter-dropdown-group" id="dd-datePosted">
+              <label class="filter-label"><i class="fas fa-calendar-alt"></i> Date Posted</label>
+              <div class="custom-select" role="combobox" aria-expanded="false" aria-haspopup="listbox">
+                <input type="text" readonly name="datePosted" placeholder="Any time" class="select-display" id="sel-datePosted" />
+                <i class="fas fa-chevron-down select-arrow"></i>
+                <ul class="select-options" role="listbox" aria-label="Date posted options">
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-datePosted')" role="option">Today</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-datePosted')" role="option">3 Days Ago</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-datePosted')" role="option">7 Days Ago</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-datePosted')" role="option">15 Days Ago</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-datePosted')" role="option">30 Days Ago</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="filter-dropdown-group" id="dd-salary">
+              <label class="filter-label"><i class="fas fa-indian-rupee-sign"></i> Salary Range</label>
+              <div class="custom-select" role="combobox" aria-expanded="false" aria-haspopup="listbox">
+                <input type="text" readonly name="salary" placeholder="Any salary" class="select-display" id="sel-salary" />
+                <i class="fas fa-chevron-down select-arrow"></i>
+                <ul class="select-options" role="listbox" aria-label="Salary range options">
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">1k or less</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">1k - 5k</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">5k - 10k</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">10k - 20k</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">20k - 30k</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">30k - 40k</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">40k - 50k</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">50k - 1 lakh</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">1 lakh - 5 lakh</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">5 lakh - 10 lakh</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">10 lakh - 20 lakh</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">20 lakh - 50 lakh</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-salary')" role="option">50 lakh - 1 crore</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="filter-dropdown-group" id="dd-jobType">
+              <label class="filter-label"><i class="fas fa-briefcase"></i> Job Type</label>
+              <div class="custom-select" role="combobox" aria-expanded="false" aria-haspopup="listbox">
+                <input type="text" readonly name="jobType" placeholder="All types" class="select-display" id="sel-jobType" />
+                <i class="fas fa-chevron-down select-arrow"></i>
+                <ul class="select-options" role="listbox" aria-label="Job type options">
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-jobType')" role="option">Full Time</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-jobType')" role="option">Part-time</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-jobType')" role="option">Internship</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-jobType')" role="option">Contract</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-jobType')" role="option">Temporary</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-jobType')" role="option">Fresher</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="filter-dropdown-group" id="dd-education">
+              <label class="filter-label"><i class="fas fa-graduation-cap"></i> Education</label>
+              <div class="custom-select" role="combobox" aria-expanded="false" aria-haspopup="listbox">
+                <input type="text" readonly name="education" placeholder="Any level" class="select-display" id="sel-education" />
+                <i class="fas fa-chevron-down select-arrow"></i>
+                <ul class="select-options" role="listbox" aria-label="Education level options">
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-education')" role="option">10th Pass</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-education')" role="option">12th Pass</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-education')" role="option">Bachelor's Degree</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-education')" role="option">Master's Degree</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-education')" role="option">Diploma</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="filter-dropdown-group" id="dd-shift">
+              <label class="filter-label"><i class="fas fa-clock"></i> Work Shift</label>
+              <div class="custom-select" role="combobox" aria-expanded="false" aria-haspopup="listbox">
+                <input type="text" readonly name="shift" placeholder="Any shift" class="select-display" id="sel-shift" />
+                <i class="fas fa-chevron-down select-arrow"></i>
+                <ul class="select-options" role="listbox" aria-label="Work shift options">
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-shift')" role="option">Day Shift</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-shift')" role="option">Night Shift</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-shift')" role="option">Flexible Shift</li>
+                  <li class="select-option" onclick="selectDropdown(this, 'dd-shift')" role="option">Fixed Shift</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="filter-actions">
+            <button type="submit" class="btn-apply-filter" id="applyFilterBtn">
+              <i class="fas fa-search"></i> Apply Filters
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== JOBS SECTION ===== -->
+    <section class="jobs-section" id="jobs-section" aria-label="All job listings">
+      <div class="jobs-header">
+        <div>
+          <h2 class="jobs-title">All Jobs</h2>
+          <p class="jobs-subtitle" id="jobCount">Showing <strong>6</strong> opportunities</p>
+        </div>
+        <div class="jobs-sort">
+          <label for="sortSelect" class="sort-label"><i class="fas fa-sort"></i></label>
+          <select id="sortSelect" class="sort-select" aria-label="Sort jobs">
+            <option value="newest">Newest First</option>
+            <option value="salary-high">Salary: High to Low</option>
+            <option value="salary-low">Salary: Low to High</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- No results state -->
+      <div class="no-results" id="noResults" hidden aria-live="polite">
+        <i class="fas fa-search-minus no-results-icon"></i>
+        <h3>No Jobs Found</h3>
+        <p>Try adjusting your filters or search terms.</p>
+        <button class="btn-clear-filters" onclick="resetFilters()">Clear All Filters</button>
+      </div>
+
+      <div class="jobs-grid" id="jobsGrid" role="list">
+
+        <!-- Job Card 1 -->
+        <article class="job-card" data-job-id="1" role="listitem">
+          <div class="card-top">
+            <div class="company-info">
+              <div class="company-logo-wrap">
+                <img src="./image/html.webp" alt="IT Infosy Co. Logo" class="company-logo" loading="lazy" />
+              </div>
+              <div class="company-meta">
+                <h3 class="company-name">IT Infosy Co.</h3>
+                <span class="posted-time"><i class="far fa-clock"></i> 2 days ago</span>
+              </div>
+            </div>
+            <button class="btn-bookmark" aria-label="Save this job" data-saved="false">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+
+          <h3 class="job-title-card">Senior Web Developer</h3>
+
+          <p class="job-location"><i class="fas fa-map-marker-alt"></i> Mumbai, India</p>
+
+          <div class="job-tags">
+            <span class="tag tag-salary"><i class="fas fa-indian-rupee-sign"></i> 10k – 20k</span>
+            <span class="tag tag-type"><i class="fas fa-briefcase"></i> Part-time</span>
+            <span class="tag tag-shift"><i class="fas fa-clock"></i> Day Shift</span>
+          </div>
+
+          <div class="card-footer">
+            <a href="ITinfosy.html" class="btn-view-details" aria-label="View details for Senior Web Developer at IT Infosy Co.">
+              View Details <i class="fas fa-arrow-right"></i>
+            </a>
+            <div class="apply-badge">
+              <i class="fas fa-circle-check"></i> Easy Apply
+            </div>
+          </div>
+        </article>
+
+        <!-- Job Card 2 -->
+        <article class="job-card" data-job-id="2" role="listitem">
+          <div class="card-top">
+            <div class="company-info">
+              <div class="company-logo-wrap">
+                <img src="./image/css3-logo-png-transparent.png" alt="All Media Ltd. Logo" class="company-logo" loading="lazy" />
+              </div>
+              <div class="company-meta">
+                <h3 class="company-name">All Media Ltd.</h3>
+                <span class="posted-time"><i class="far fa-clock"></i> 2 days ago</span>
+              </div>
+            </div>
+            <button class="btn-bookmark" aria-label="Save this job" data-saved="false">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+
+          <h3 class="job-title-card">Qualified Developer</h3>
+          <p class="job-location"><i class="fas fa-map-marker-alt"></i> Mumbai, India</p>
+          <div class="job-tags">
+            <span class="tag tag-salary"><i class="fas fa-indian-rupee-sign"></i> 9,000</span>
+            <span class="tag tag-type"><i class="fas fa-briefcase"></i> Full-time</span>
+            <span class="tag tag-shift"><i class="fas fa-clock"></i> Flexible Shift</span>
+          </div>
+          <div class="card-footer">
+            <a href="AllmediaLts.html" class="btn-view-details" aria-label="View details for Qualified Developer at All Media Ltd.">
+              View Details <i class="fas fa-arrow-right"></i>
+            </a>
+            <div class="apply-badge">
+              <i class="fas fa-circle-check"></i> Easy Apply
+            </div>
+          </div>
+        </article>
+
+        <!-- Job Card 3 -->
+        <article class="job-card featured-card" data-job-id="3" role="listitem">
+          <span class="featured-badge"><i class="fas fa-star"></i> Featured</span>
+          <div class="card-top">
+            <div class="company-info">
+              <div class="company-logo-wrap">
+                <img src="./image/java.jpg" alt="Software Solution Logo" class="company-logo" loading="lazy" />
+              </div>
+              <div class="company-meta">
+                <h3 class="company-name">Software Solution</h3>
+                <span class="posted-time"><i class="far fa-clock"></i> Posted Today</span>
+              </div>
+            </div>
+            <button class="btn-bookmark" aria-label="Save this job" data-saved="false">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+
+          <h3 class="job-title-card">Javascript Developer</h3>
+          <p class="job-location"><i class="fas fa-map-marker-alt"></i> Mumbai, India</p>
+          <div class="job-tags">
+            <span class="tag tag-salary"><i class="fas fa-indian-rupee-sign"></i> 10k – 20k</span>
+            <span class="tag tag-type"><i class="fas fa-briefcase"></i> Internship</span>
+            <span class="tag tag-shift"><i class="fas fa-clock"></i> Night Shift</span>
+          </div>
+          <div class="card-footer">
+            <a href="softwareSolution.html" class="btn-view-details" aria-label="View details for Javascript Developer at Software Solution">
+              View Details <i class="fas fa-arrow-right"></i>
+            </a>
+            <div class="apply-badge">
+              <i class="fas fa-circle-check"></i> Easy Apply
+            </div>
+          </div>
+        </article>
+
+        <!-- Job Card 4 -->
+        <article class="job-card" data-job-id="4" role="listitem">
+          <div class="card-top">
+            <div class="company-info">
+              <div class="company-logo-wrap">
+                <img src="https://static.vecteezy.com/system/resources/previews/001/198/090/non_2x/world-png.png" alt="IT World Logo" class="company-logo" loading="lazy" />
+              </div>
+              <div class="company-meta">
+                <h3 class="company-name">IT World</h3>
+                <span class="posted-time"><i class="far fa-clock"></i> 19 days ago</span>
+              </div>
+            </div>
+            <button class="btn-bookmark" aria-label="Save this job" data-saved="false">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+
+          <h3 class="job-title-card">Junior Front-End Developer</h3>
+          <p class="job-location"><i class="fas fa-map-marker-alt"></i> Mumbai, India</p>
+          <div class="job-tags">
+            <span class="tag tag-salary"><i class="fas fa-indian-rupee-sign"></i> 40k – 50k</span>
+            <span class="tag tag-type"><i class="fas fa-briefcase"></i> Contract</span>
+            <span class="tag tag-shift"><i class="fas fa-clock"></i> Fixed Shift</span>
+          </div>
+          <div class="card-footer">
+            <a href="ITWorlds.html" class="btn-view-details" aria-label="View details for Junior Front-End at IT World">
+              View Details <i class="fas fa-arrow-right"></i>
+            </a>
+            <div class="apply-badge">
+              <i class="fas fa-circle-check"></i> Easy Apply
+            </div>
+          </div>
+        </article>
+
+        <!-- Job Card 5 -->
+        <article class="job-card" data-job-id="5" role="listitem">
+          <div class="card-top">
+            <div class="company-info">
+              <div class="company-logo-wrap">
+                <img src="https://th.bing.com/th/id/OIP.iJbuiX_YdBeTqI7wYawlwwHaHa?rs=1&pid=ImgDetMain" alt="Info Statics Logo" class="company-logo" loading="lazy" />
+              </div>
+              <div class="company-meta">
+                <h3 class="company-name">Info Statics</h3>
+                <span class="posted-time"><i class="far fa-clock"></i> 2 days ago</span>
+              </div>
+            </div>
+            <button class="btn-bookmark" aria-label="Save this job" data-saved="false">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+
+          <h3 class="job-title-card">Junior Assistant</h3>
+          <p class="job-location"><i class="fas fa-map-marker-alt"></i> Mumbai, India</p>
+          <div class="job-tags">
+            <span class="tag tag-salary"><i class="fas fa-indian-rupee-sign"></i> 5,000</span>
+            <span class="tag tag-type"><i class="fas fa-briefcase"></i> Temporary</span>
+            <span class="tag tag-shift"><i class="fas fa-clock"></i> Flexible Shift</span>
+          </div>
+          <div class="card-footer">
+            <a href="InfoStatics.html" class="btn-view-details" aria-label="View details for Junior Assistant at Info Statics">
+              View Details <i class="fas fa-arrow-right"></i>
+            </a>
+            <div class="apply-badge">
+              <i class="fas fa-circle-check"></i> Easy Apply
+            </div>
+          </div>
+        </article>
+
+        <!-- Job Card 6 -->
+        <article class="job-card" data-job-id="6" role="listitem">
+          <div class="card-top">
+            <div class="company-info">
+              <div class="company-logo-wrap">
+                <img src="./image/php.jpg" alt="Mass Idea Logo" class="company-logo" loading="lazy" />
+              </div>
+              <div class="company-meta">
+                <h3 class="company-name">Mass Idea</h3>
+                <span class="posted-time"><i class="far fa-clock"></i> 2 days ago</span>
+              </div>
+            </div>
+            <button class="btn-bookmark" aria-label="Save this job" data-saved="false">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+
+          <h3 class="job-title-card">PHP Developer</h3>
+          <p class="job-location"><i class="fas fa-map-marker-alt"></i> Mumbai, India</p>
+          <div class="job-tags">
+            <span class="tag tag-salary"><i class="fas fa-indian-rupee-sign"></i> 50k – 1 Lakh</span>
+            <span class="tag tag-type"><i class="fas fa-briefcase"></i> Fresher</span>
+            <span class="tag tag-shift"><i class="fas fa-clock"></i> Day Shift</span>
+          </div>
+          <div class="card-footer">
+            <a href="massIdea.html" class="btn-view-details" aria-label="View details for PHP Developer at Mass Idea">
+              View Details <i class="fas fa-arrow-right"></i>
+            </a>
+            <div class="apply-badge">
+              <i class="fas fa-circle-check"></i> Easy Apply
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <i class="fas fa-briefcase footer-logo-icon"></i>
+          <span class="footer-logo-text">JobBoard</span>
+          <p class="footer-tagline">Connecting talent with opportunity.</p>
+        </div>
+        <div class="footer-links-group">
+          <h4>For Job Seekers</h4>
+          <a href="#">Browse Jobs</a>
+          <a href="#">Career Advice</a>
+          <a href="#">Resume Builder</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>For Employers</h4>
+          <a href="#">Post a Job</a>
+          <a href="#">Search Candidates</a>
+          <a href="#">Pricing</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 JobBoard. All rights reserved.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </footer>
+
     <script src="jobs.js"></script>
-  
   </body>
 </html>
