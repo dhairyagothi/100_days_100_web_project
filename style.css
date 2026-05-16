@@ -68,6 +68,8 @@ body {
     justify-content: space-between;
     align-items: center;
     transition: var(--transition);
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .navbar-brand {
@@ -103,6 +105,7 @@ body {
     display: flex;
     gap: 1.2rem;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .buttons .button {
@@ -142,6 +145,34 @@ body {
 .featured-btn:hover {
     transform: translateY(-3px) scale(1.05) !important;
     box-shadow: 0 10px 30px var(--accent-glow) !important;
+}
+
+#try-readme-button {
+    margin-top: 1rem;
+    padding: 14px 26px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #7f5af0, #2cb67d);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
+}
+
+#try-readme-button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
+}
+
+#try-readme-button i {
+    transition: transform 0.3s ease;
+}
+
+#try-readme-button:hover i {
+    transform: rotate(-30deg) scale(1.2);
 }
 
 .welcome-text {
@@ -527,8 +558,14 @@ tbody td a:hover {
     .hero-section { padding-top: 140px; }
     .stats-container { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     .table-container { padding: 1.5rem; }
+    .search-wrapper { flex-direction: column; align-items: stretch; }
+    .search-input { padding: 1rem 1.5rem; }
+    .search-btn { width: 100%; padding: 1rem; }
     thead { display: none; }
-    tbody td { padding: 1.2rem 1rem; }
+    tbody tr { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+    tbody td { display: block; padding: 1.2rem 1rem; }
+    tbody td:first-child,
+    tbody td:last-child { border-radius: 18px; }
 }
 .light-theme {
     background-color: #ffffff;
@@ -541,7 +578,6 @@ tbody td a:hover {
 
 .light-theme .card {
     background-color: #eaeaea;
-feature/pagination-project-list
 }
 
 .pagination-container {
@@ -571,8 +607,7 @@ feature/pagination-project-list
     display: none;
 }
 .pagination-container button:hover {
-    opacity: 0.9
-
+    opacity: 0.9;
 }
 /* ============================================
    Category Filter Buttons | Issue #1209

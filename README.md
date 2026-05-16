@@ -26,7 +26,7 @@
 
 ## 🌟 About This Project
 
-Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **112+ web development projects** ranging from beginner to intermediate level. Our goal is to help developers learn and practice web development through hands-on projects using various technologies.
+Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **116+ web development projects** ranging from beginner to intermediate level. Our goal is to help developers learn and practice web development through hands-on projects using various technologies.
 
 ### 🎯 What You'll Find Here:
 - **Frontend Projects**: HTML, CSS, JavaScript, React, Vue.js
@@ -58,7 +58,9 @@ The website features:
 - Beautiful dark/light theme toggle
 - Responsive design for all devices
 
-## 📚 All Projects (112 Total)
+## 📚 Project Catalog
+
+The full project catalog is available on the live website and is kept up to date in `index.js`.
 
 <div align="center">
 
@@ -247,7 +249,7 @@ The easiest way to explore all projects is through our **live website**:
 │   ├── TO_DO_LIST/       # Day 1: Todo List
 │   ├── digital_clock/    # Day 2: Digital Clock
 │   ├── snake_game/       # Day 29: Snake Game
-│   └── ...               # 112+ projects
+│   └── ...               # 116+ projects
 ├── contributors/          # Contributors page
 ├── vercel.json           # Deployment configuration
 └── README.md             # You are here!
@@ -256,6 +258,13 @@ The easiest way to explore all projects is through our **live website**:
 ## 🤝 Contributing
 
 We welcome contributions from developers of all skill levels! Here's how you can contribute:
+
+### 🎓 GSSoC Contribution Guide
+- Look for beginner-friendly issues: `good first issue`, `documentation`, `bug fix`, or `enhancement` labels.
+- Start with docs, README improvements, or small UI fixes.
+- Fork the repo, create a feature branch, and submit a clear PR.
+- Add testing notes and update docs for any change.
+
 
 ### 🆕 Adding New Projects
 1. **Fork** the repository
