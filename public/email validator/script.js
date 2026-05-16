@@ -1,8 +1,24 @@
+console.log("This is my script");
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const errorMsg = document.getElementById("errorMsg");
+const usernameInput = document.getElementById("username");
+const submitBtn = document.getElementById("submitBtn");
+const resultCont = document.getElementById("resultCont");
+
 submitBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
     const email = usernameInput.value.trim();
 
+    // ✅ Empty check
+    if (email === "") {
+        errorMsg.textContent = "Please enter an email address!";
+        return;
+    }
+
+    // ✅ Regex validation
     if (!emailRegex.test(email)) {
         errorMsg.textContent = "Invalid email format!";
         return;
@@ -10,37 +26,28 @@ submitBtn.addEventListener("click", async (e) => {
         errorMsg.textContent = "";
     }
 
-    if (email === "") {
-        resultCont.innerHTML = `
-        <div class="error">
-            Please enter an email address.
-        </div>
-        `;
-        return;
-    }
-
+    // ✅ Loading UI
     resultCont.innerHTML = `
-    <div class="loading-container">
-        <img width="60" src="loading.svg" alt="Loading">
-        <p>Validating email... Please wait</p>
-    </div>
+        <div class="loading-container">
+            <p>Validating email... Please wait</p>
+        </div>
     `;
 
     try {
-        let key = "ema_live_tkRl4T1AMrlwioPCHxe8r1HmTSKkJSLehW9Ti42B";
-        let url = \`https://api.emailvalidation.io/v1/info?apikey=\${key}&email=\${email}\`;
+        const key = "ema_live_tkRl4T1AMrlwioPCHxe8r1HmTSKkJSLehW9Ti42B";
+        const url = `https://api.emailvalidation.io/v1/info?apikey=${key}&email=${email}`;
 
-        let res = await fetch(url);
-        let result = await res.json();
+        const res = await fetch(url);
+        const result = await res.json();
 
-        let str = ``;
+        let str = "";
 
-        for (let key of Object.keys(result)) {
-            if (result[key] !== "" && result[key] !== " ") {
+        for (let k of Object.keys(result)) {
+            if (result[k] !== "" && result[k] !== " ") {
                 str += `
-                <div class="result-item">
-                    <strong>${key}:</strong> ${result[key]}
-                </div>
+                    <div class="result-item">
+                        <strong>${k}:</strong> ${result[k]}
+                    </div>
                 `;
             }
         }
@@ -49,9 +56,9 @@ submitBtn.addEventListener("click", async (e) => {
 
     } catch (error) {
         resultCont.innerHTML = `
-        <div class="error">
-            Something went wrong while validating the email.
-        </div>
+            <div class="error">
+                Something went wrong while validating the email.
+            </div>
         `;
         console.log(error);
     }
