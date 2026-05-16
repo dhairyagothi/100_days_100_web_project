@@ -119,7 +119,7 @@ const PROJECTS = [
     ["Day 103", "Drumkit Game",                        "./public/Drumkit_Game/index.html",                                                                               ["JS","Web Audio"],        "ui"],
     ["Day 104", "Debug Website",                       "./public/Debug-Website/index.html",                                                                              ["HTML","CSS","JS"],       "tool"],
     ["Day 105", "Periodic Table",                      "./public/Periodic Table/index.html",                                                                             ["HTML","CSS","JS"],       "ui"],
-    ["Day 106", "Plants Website",                      "./public/Plants Website/index.html",                                                                             ["HTML","CSS","JS"],       "ui"],
+    ["Day 106", "Plants Website",                      "./public/Plants%20Website/index.html",                                                                             ["HTML","CSS","JS"],       "ui"],
     ["Day 107", "DocNow",                              "./public/DocNow/index.html",                                                                                     ["HTML","CSS","JS"],       "tool"],
     ["Day 108", "Expense Tracker",                     "./public/expense_Tracker/index.html",                                                                            ["HTML","CSS","JS"],       "tool"],
     ["Day 109", "Mood Tracker",                        "./public/Mood Tracker/index.html",                                                                               ["HTML","CSS","JS"],       "tool"],
