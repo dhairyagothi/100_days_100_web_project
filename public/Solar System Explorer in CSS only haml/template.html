@@ -118,12 +118,24 @@
           <h2>Planet</h2>
           <h1>Mercury</h1>
           <p>The closest planet to the sun. It circles the sun faster than all the other planets, which is why Romans named it after their swift-footed messenger god.</p>
-          <label for='readMercury'>
-            <a>
-              Read Mor
-              <span>e</span>
-            </a>
-          </label>
+
+        <a href="https://solarsystem.nasa.gov/planets/mercury/overview/"
+   target="_blank"
+   style="color:#fea082;
+          text-decoration:none;
+          border-bottom:2px solid #fea082;
+          font-family:Montserrat, sans-serif;
+          font-size:11px;
+          letter-spacing:5px;
+          text-transform:uppercase;
+          cursor:pointer;
+          display:inline-block;
+          padding-bottom:5px;
+          position:relative;
+          z-index:999999;">
+   READ MORE
+</a>
+
         </div>
         <div class='overlay'></div>
       </div>
@@ -134,12 +146,12 @@
           <h2>Planet</h2>
           <h1>Venus</h1>
           <p>Named for the Roman goddess of love and beauty. In ancient times, Venus was often thought to be two different stars, the evening star and the morning star.</p>
-          <label for='readVenus'>
-            <a>
+        
+           <a href="https://solarsystem.nasa.gov/planets/venus/overview/" target="_blank">
               Read Mor
               <span>e</span>
             </a>
-          </label>
+          
         </div>
         <div class='overlay'></div>
       </div>
@@ -156,7 +168,7 @@
           <h1>Earth</h1>
           <p>Earth, our home. It is the only planet known to have an atmosphere containing free oxygen, oceans of liquid water on its surface, and, of course, life.</p>
           <label for='readEarth'>
-            <a>
+            <a href="https://solarsystem.nasa.gov/planets/earth/overview/" target="_blank">
               Read Mor
               <span>e</span>
             </a>
@@ -181,12 +193,12 @@
           <h2>Planet</h2>
           <h1>Mars</h1>
           <p>Fourth planet from the Sun and the second smallest planet in the solar systm. Named after the Roman god of war often described as the “Red Planet”.</p>
-          <label for='readMars'>
-            <a>
+         
+            <a href="https://solarsystem.nasa.gov/planets/mars/overview/" target="_blank">
               Read Mor
               <span>e</span>
             </a>
-          </label>
+         
         </div>
         <div class='overlay'></div>
       </div>
@@ -212,12 +224,12 @@
           <h2>Planet</h2>
           <h1>Jupiter</h1>
           <p>Jupiter is the largest planet in the solar systm. Fittingly, it was named after the king of the gods in Roman mythology. </p>
-          <label for='readJupiter'>
-            <a>
+         
+            <a href="https://solarsystem.nasa.gov/planets/jupiter/overview/" target="_blank">
               Read Mor
               <span>e</span>
             </a>
-          </label>
+          
         </div>
         <div class='overlay'></div>
       </div>
@@ -243,12 +255,12 @@
           <h2>Planet</h2>
           <h1>Saturn</h1>
           <p>Saturn is the sixth planet from the sun and the second largest planet in the solar systm. Saturn was the Roman name for Cronus, the lord of the Titans.</p>
-          <label for='readSaturn'>
-            <a>
+        
+            <a href="https://solarsystem.nasa.gov/planets/saturn/overview/" target="_blank">
               Read Mor
               <span>e</span>
             </a>
-          </label>
+        
         </div>
         <div class='overlay'></div>
       </div>
@@ -274,12 +286,12 @@
           <h2>Planet</h2>
           <h1>Uranus</h1>
           <p>The first planet to be discovered by scientists. The planet is notable for its dramatic tilt, which causes its axis to point nearly directly at the sun.</p>
-          <label for='readUranus'>
-            <a>
+        
+            <a href="https://solarsystem.nasa.gov/planets/uranus/overview/" target="_blank">
               Read Mor
               <span>e</span>
             </a>
-          </label>
+          
         </div>
         <div class='overlay'></div>
       </div>
@@ -305,12 +317,12 @@
           <h2>Planet</h2>
           <h1>Neptune</h1>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</p>
-          <label for='readNeptune'>
-            <a>
+         
+            <a href="https://solarsystem.nasa.gov/planets/neptune/overview/" target="_blank">
               Read Mor
-              <span>e     </span>
+              <span>e</span>
             </a>
-          </label>
+      
         </div>
         <div class='overlay'></div>
       </div>
@@ -321,12 +333,12 @@
           <h2>Dwarf planet</h2>
           <h1>Pluto</h1>
           <p>Pluto, once considered the ninth and most distant planet from the sun, is now the largest known dwarf planet in the solar systm.</p>
-          <label for='readPluto'>
-            <a>
+       
+            <a href="https://solarsystem.nasa.gov/dwarf-planets/pluto/overview/" target="_blank">
               Read Mor
               <span>e     </span>
             </a>
-          </label>
+         
         </div>
         <div class='overlay'>               </div>
       </div>
@@ -491,6 +503,34 @@
     <h2>Pluto has five known moons.</h2>
     <p>The moons are Charon (discovered in 1978,), Hydra and Nix (both discovered in 2005), Kerberos originally P4 (discovered 2011) and Styx originally P5 (discovered 2012) official designations S/2011 (134340) 1 and  S/2012 (134340) 1.</p>
   </div>
+<script>
+window.addEventListener('load', function() {
+  var links = document.querySelectorAll('.planet_description a');
+  links.forEach(function(a) {
+    var url = a.href;
+    a.removeAttribute('href');
+    a.style.cssText = 'pointer-events:all!important;position:fixed!important;z-index:2147483647!important;cursor:pointer!important;display:inline-block!important;';
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      window.open(url, '_blank');
+    }, true);
+  });
+
+  // disable all radio ::after overlays
+  var radios = document.querySelectorAll('input[type=radio][name=planet]');
+  radios.forEach(function(r) {
+    r.style.cssText += 'pointer-events:none!important;';
+    // clone without pointer events
+    var clone = r.cloneNode(false);
+    clone.style.pointerEvents = 'none';
+    clone.addEventListener('change', function() {
+      r.checked = this.checked;
+    });
+  });
+});
+</script>
 </body>
 </html>
 

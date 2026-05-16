@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Run checkCapsules every second
-    setInterval(checkCapsules, 1000);
+            checkCapsules();
+            setInterval(checkCapsules, 1000);
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -53,5 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear input fields
         messageInput.value = '';
         timerInput.value = '';
+        checkCapsules();
     });
 });
