@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --font-cursive: cursive;
+  --color-primary: #1b4332;
+  --color-secondary: #d8f3dc;
+  --color-neutral-black: rgba(0, 0, 0, 0.6);
+
+  --animate-shap-1: shap-1 1s linear infinite alternate;
+  @keyframes shap-1 {
+    0% {
+      top: -20px;
+    }
+    100% {
+      top: 5px;
+    }
+  }
+  --animate-shap-2: shap-2 1s linear infinite alternate;
+  @keyframes shap-2 {
+    0% {
+      bottom: 0;
+    }
+    100% {
+      bottom: 25px;
+    }
+  }
+}
+
+@layer utilities {
+  .container {
+    margin: 0 auto;
+    max-width: 1280px;
+  }
+  .shape {
+    @apply absolute w-60 h-60 rounded-full z-10 blur-sm bg-primary;
+  }
+  .category-item {
+    @apply text-sm text-neutral-black  rounded-4xl min-w-25 h-7 bg-secondary flex items-center justify-center cursor-pointer font-sans;
+  }
+  .category-item--active {
+    @apply text-secondary bg-primary;
+  }
+  .product-cart {
+    @apply w-43 h-60   relative;
+  }
+  .product-cart__img {
+    @apply size-full object-cover object-center rounded-4xl overflow-hidden;
+  }
+  .product-cart__name {
+    @apply absolute text-base text-black font-cursive min-w-25.5 h-8.5 -top-4.25 flex justify-center items-center rounded-2xl bg-white shadow shadow-black/4;
+  }
+  .product-cart__price {
+    @apply absolute text-base text-black font-cursive h-8 w-9 -bottom-2 right-0  flex justify-center items-center rounded-lg bg-white shadow shadow-black/4;
+  }
+}
