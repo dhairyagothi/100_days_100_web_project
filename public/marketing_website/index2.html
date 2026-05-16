@@ -23,37 +23,37 @@
 
     <style>
         body {
-          background-image: url(".vscode\imGW.jpg");  /* Replace with your image path */
-          background-repeat: no-repeat;  /* Optional: set how the image repeats */
-          background-position: center;  /* Optional: set the position of the image */
-          background-size: cover;       /* Optional: set the size of the image */
+          background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('market.jpg');
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          background-attachment: fixed;
           font-family: 'Open Sans', sans-serif;
-          background-color:rgb(220, 220, 220);
+          background-color: #f4f7f6;
         }
 
         main {
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 100vh;
+          min-height: 100vh;
+          padding: 20px;
         }
 
         .signup {
-            background-color:#FAF9F6;
+          background-color: #ffffff;
           padding: 40px; 
-          border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          max-width: 500px; 
+          border-radius: 12px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          max-width: 450px; 
           width: 100%;
-          background-image: url(".vscode\imGW.jpg"); /* Replace with your image path */
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
         }
 
         .signup h2 {
           text-align: center;
-          margin-bottom: 20px;
+          margin-bottom: 30px;
+          color: #333;
+          font-weight: 700;
         }
 
         .signup form {
@@ -62,72 +62,127 @@
         }
 
         .signup label {
-          margin-bottom: 5px;
+          margin-bottom: 8px;
+          font-weight: 600;
+          color: #555;
         }
 
         .signup input {
-          padding: 10px;
-          margin-bottom: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
+          padding: 12px;
+          margin-bottom: 15px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          transition: border-color 0.3s ease;
         }
         
+        .signup input:focus {
+          border-color: #007bff;
+          outline: none;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+        }
 
         .signup button {
-          padding: 10px 20px;
+          padding: 12px 20px;
           border: none;
-          border-radius: 4px;
-          background: #333;
+          border-radius: 6px;
+          background: #007bff;
           color: #fff;
+          font-weight: 600;
           cursor: pointer;
-          transition: background 0.3s;
+          transition: all 0.3s ease;
+          margin-top: 10px;
         }
 
         .signup button:hover {
-          background: #555;
+          background: #0056b3;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
         }
 
         .password-info {
           font-size: 12px;
-          color: #666;
+          color: #888;
+          margin-top: -10px;
+          margin-bottom: 15px;
+        }
+
+        .signup > p {
+          text-align: center;
+          margin: 20px 0;
+          color: #777;
+          font-size: 0.9rem;
         }
 
         .social-buttons {
           display: flex;
-          justify-content: space-between;
+          gap: 10px;
         }
 
         .social-buttons a,
         .social-buttons button {
           flex: 1;
-          margin: 5px;
           padding: 10px;
           border: none;
-          border-radius: 4px;
-          background: #4285F4; /* Default to Google Blue */
+          border-radius: 6px;
+          background: #db4437; /* Google Red */
           color: #fff;
           cursor: pointer;
           text-align: center;
           text-decoration: none;
-          transition: background 0.3s;
+          transition: all 0.3s ease;
+          font-size: 0.9rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
         }
 
         .social-buttons button {
-          background: #3b5998; /* Facebook Blue */
+          background: #4267B2; /* Facebook Blue */
         }
 
-        .social-buttons a:hover,
+        .social-buttons a:hover {
+          background: #c23321;
+          transform: translateY(-2px);
+        }
+        
         .social-buttons button:hover {
-          background: #666;
+          background: #365899;
+          transform: translateY(-2px);
         }
 
         #success {
-          color: green;
+          color: #28a745;
           font-size: 14px;
           text-align: center;
-          margin-top: 10px;
+          margin-top: 15px;
+          font-weight: 600;
+        }
+
+        .back-link {
+          display: block;
+          text-align: center;
+          margin-top: 25px;
         }
         
+        .back-link a {
+          color: #666;
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+          color: #007bff;
+        }
+
+        @media (max-width: 480px) {
+          .social-buttons {
+            flex-direction: column;
+          }
+          .signup {
+            padding: 30px 20px;
+          }
+        }
     </style>
 </head>
 
@@ -151,7 +206,9 @@
         <a href="#"><i class="fab fa-google"></i> Continue with Google</a>
         <button><i class="fab fa-facebook"></i> Continue with Facebook</button>
       </div>
-      <h7><a href="index.html">back Homepage</a></h7>
+      <div class="back-link">
+        <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Homepage</a>
+      </div>
     </section>
     </main>
 
