@@ -3,14 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>To-Do List | 100 Days 100 Projects</title>
     <link rel="stylesheet" href="todolist.css" />
-    <script
-      src="https://kit.fontawesome.com/f30fac2c61.js"
-      crossorigin="anonymous"
-    ></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <body>
     <nav>
@@ -33,6 +28,7 @@
         <div class="heading">JUST DO IT.</div>
         <div class="buttons"> 
           <div>
+            <input type="text" id="task" placeholder="Enter a task">
             <button onclick="Add()" id="submittask">Add a task!</button>
             <!-- <select id="tasktype" >
               <option value="task1">Work</option>
@@ -45,8 +41,6 @@
           <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
         </div>
         <div id="notes-container"></div>
-        <div class="container">
-        </div>
       </div>
       <div id="documents-tab" style="display: none">
         <div class="heading">Saved Documents</div>
