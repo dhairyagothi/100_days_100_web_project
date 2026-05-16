@@ -116,10 +116,11 @@ window.theme = savedTheme;
 
 if (savedTheme === 'light') {
     document.body.classList.add('light-mode');
+    window.theme = 'light';
 } else {
     document.body.classList.remove('light-mode');
+    window.theme = 'dark';
 }
-
 // Update Navbar for Login Status
 const buttons = document.getElementsByClassName('buttons')[0];
 
@@ -129,7 +130,7 @@ function updateNavbar() {
     const isRoot = !window.location.pathname.includes('/contributors/');
     const basePath = isRoot ? '' : '../';
     const isLight = document.body.classList.contains('light-mode');
-    
+
     const themeButton = `
         <button id="themeToggle" class="button" title="Toggle Theme">
             <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
@@ -155,14 +156,17 @@ function updateNavbar() {
         <a class="button login-btn" href="${basePath}public/Login.html">Log in</a>
         ${themeButton}`;
     }
-    
+
     // Single, clean click controller execution
     const toggleBtn = document.getElementById('themeToggle');
+
+    if (!toggleBtn) return;
+
     const toggleIcon = toggleBtn.querySelector('i');
-    
+
     toggleBtn.addEventListener('click', () => {
         const currentlyLight = document.body.classList.toggle('light-mode');
-        
+
         if (currentlyLight) {
             toggleIcon.className = 'fas fa-sun';
             window.theme = 'light';
@@ -184,7 +188,7 @@ let projectData = [];
 function fillTable(searchTerm = "") {
     const tableBody = document.getElementById("tableBody"); // Ensure your <tbody> has this ID
     const noProjectsMessage = document.getElementById("noProjects"); // The "No Projects Found" element
-    
+
     if (!tableBody) return;
 
     const data = [
@@ -305,16 +309,16 @@ function fillTable(searchTerm = "") {
         ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
         ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html"]
     ];
-    
 
- 
+
+
 
     // Clear existing rows
     tableBody.innerHTML = "";
 
     // Filter projects based on the search query
-    const filteredData = data.filter(project => 
-        project[0].toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const filteredData = data.filter(project =>
+        project[0].toLowerCase().includes(searchTerm.toLowerCase()) ||
         project[1].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
