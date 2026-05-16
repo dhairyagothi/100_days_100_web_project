@@ -968,6 +968,8 @@ html {
     .footer-brand { grid-column: 1 / -1; }
 }
 
+.light-theme .card {
+    background-color: #eaeaea;
 @media (max-width: 768px) {
     .navbar { padding: 0 1.5rem; }
     .brand-copy strong { font-size: 0.74rem; }
@@ -1023,70 +1025,61 @@ html {
 
 }
 
-.filter-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin: 20px auto;
-  padding: 0 16px;
-  max-width: 900px;
+.navbar .nav-streak {
+  font-family: 'Orbitron', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  
+
+  padding: 10px 18px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  white-space: nowrap !important;
+
+  margin-left: auto !important;
+  margin-right: 15px !important;
+  
+  cursor: default;
+  transition: all 0.3s ease !important;
 }
 
-.filter-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  justify-content: center;
+.navbar .nav-streak:hover {
+  background: rgba(0, 255, 136, 0.06) !important;
+  border-color: rgba(0, 255, 136, 0.4) !important;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.15) !important;
 }
 
-.filter-label {
-  color: #00ff88;
-  font-size: 14px;
-  font-weight: 600;
-  margin-right: 5px;
+.navbar .nav-streak-fire {
+  font-size: 1rem !important;
+  display: inline-block !important;
+  animation: navFlamePulse 1.5s infinite alternate ease-in-out !important;
 }
 
-.filter-btn {
-  padding: 8px 18px;
-  border: 2px solid #00ff88;
-  background: transparent;
-  color: #00ff88;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 13px;
-  font-family: inherit;
-  transition: all 0.3s ease;
+.navbar #current-streak {
+  color: #00ff88 !important; 
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.5) !important;
 }
 
-.filter-btn:hover {
-  background: #00ff88;
-  color: #000;
-  transform: translateY(-2px);
+@keyframes navFlamePulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px #00ff88); }
+  100% { transform: scale(1.15); filter: drop-shadow(0 0 6px #00ff88); }
 }
 
-.filter-btn.active {
-  background: #00ff88;
-  color: #000;
-  font-weight: bold;
-}
-
-.difficulty-btn {
-  border-color: #00cfff;
-  color: #00cfff;
-}
-
-.difficulty-btn:hover,
-.difficulty-btn.active {
-  background: #00cfff;
-  color: #000;
-}
-
-@media (max-width: 600px) {
-  .filter-btn {
-    padding: 6px 12px;
-    font-size: 11px;
+@media (max-width: 900px) {
+  .navbar .nav-streak {
+    padding: 8px 12px !important;
+    font-size: 0.75rem !important;
+    margin-right: 5px !important;
   }
 }
 
