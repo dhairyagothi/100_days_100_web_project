@@ -162,6 +162,7 @@ body {
     color: #000 !important;
 }
 
+#theme-toggle,
 #themeToggle {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -177,10 +178,11 @@ body {
     transition: var(--transition);
 }
 
+#theme-toggle:hover,
 #themeToggle:hover {
     background: var(--accent-color);
     color: #000;
-    transform: translateY(-3px) rotate(15deg);
+    
     box-shadow: 0 10px 25px var(--accent-glow);
 }
 
@@ -318,6 +320,13 @@ body {
     padding: 0 2rem;
     outline: none;
 }
+
+.stats-counter {
+      color: #00ff88;
+      font-family: 'Courier New', monospace;
+      margin-top: 8px;
+      font-size: 14px;
+    }
 
 .search-btn {
     background: var(--accent-color);
@@ -520,4 +529,119 @@ tbody td a:hover {
     .table-container { padding: 1.5rem; }
     thead { display: none; }
     tbody td { padding: 1.2rem 1rem; }
+}
+.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.light-theme .navbar {
+    background-color: #f5f5f5;
+}
+
+.light-theme .card {
+    background-color: #eaeaea;
+feature/pagination-project-list
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.pagination-container button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #1abc9c;
+    color: white;
+    font-weight: 600;
+}
+
+.pagination-container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+#no-projects {
+    display: none;
+}
+.pagination-container button:hover {
+    opacity: 0.9
+
+}
+/* ============================================
+   Category Filter Buttons | Issue #1209
+   Author: Sweksha Kakkar
+   ============================================ */
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 20px auto;
+  padding: 0 16px;
+  max-width: 900px;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.filter-label {
+  color: #00ff88;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border: 2px solid #00ff88;
+  background: transparent;
+  color: #00ff88;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background: #00ff88;
+  color: #000;
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: #00ff88;
+  color: #000;
+  font-weight: bold;
+}
+
+.difficulty-btn {
+  border-color: #00cfff;
+  color: #00cfff;
+}
+
+.difficulty-btn:hover,
+.difficulty-btn.active {
+  background: #00cfff;
+  color: #000;
+}
+
+@media (max-width: 600px) {
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
 }

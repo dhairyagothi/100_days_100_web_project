@@ -54,6 +54,13 @@ addTextButton.addEventListener("click", () => {
     if (newText) {
         phrases.push(newText);
         userInput.value = '';
+        isPaused = false; 
+        isDeleting = false;
+        charIndex = 0;
+        phraseIndex = phrases.length - 1;
+        clearTimeout(typingTimeout);
+        type();
+        pauseResumeButton.textContent = "Pause";
     }
 });
 

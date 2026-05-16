@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <canvas id="bgCanvas"></canvas>
 
@@ -17,20 +20,20 @@
             <span>100 DAYS 100 WEB PROJECTS</span>
         </div>
         <div class="buttons">
+            <button id="theme-toggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
             <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn">
                 <i class="fas fa-rocket"></i>
                 <span>Generate README</span>
             </a>
-            <button id="themeToggle" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-            </button>
         </div>
     </nav>
 
     <section class="hero-section">
         <h1 class="hero-title">100 Days 100 Web Projects</h1>
         <p class="hero-subtitle">Exploring the art of the possible through 100+ high-quality web experiments</p>
-        
+
         <div class="stats-container">
             <div class="stat-card">
                 <div class="stat-value" id="starCount">...</div>
@@ -52,22 +55,44 @@
 
         <div class="search-container">
             <div class="search-wrapper">
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    id="searchInput" 
-                    placeholder="Search 112+ projects..."
-                >
+                <input type="text" class="search-input" id="searchInput" placeholder="Search 112+ projects...">
                 <button class="search-btn" onclick="filterProjects()">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
         </div>
+        <!-- Category Filter Buttons | Issue #1209 | Sweksha Kakkar -->
+        <div class="filter-container">
+          <div class="filter-group">
+            <span class="filter-label">Category:</span>
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="game">🎮 Game</button>
+            <button class="filter-btn" data-category="api">🌐 API</button>
+            <button class="filter-btn" data-category="javascript">⚡ JavaScript</button>
+            <button class="filter-btn" data-category="css">🎨 CSS</button>
+            <button class="filter-btn" data-category="canvas">🖼️ Canvas</button>
+            <button class="filter-btn" data-category="todo">📝 Todo</button>
+            <button class="filter-btn" data-category="weather">🌤️ Weather</button>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Difficulty:</span>
+            <button class="filter-btn difficulty-btn" data-category="beginner">🟢 Beginner</button>
+            <button class="filter-btn difficulty-btn" data-category="intermediate">🟡 Intermediate</button>
+          </div>
+        </div>
+
+        
+<div class="stats-counter">
+  Words: <span id="wordCount">0</span> | 
+  Letters: <span id="charCount">0</span>
+</div>
+
     </section>
 
     <section class="projects-section">
         <div class="table-container">
             <table>
+                
                 <thead>
                     <tr>
                         <th>Day</th>
@@ -77,6 +102,7 @@
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>
+            <div id="pagination" class="pagination-container"></div>
         </div>
         <div id="no-projects">No Projects Found</div>
     </section>
@@ -94,7 +120,8 @@
                     <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn">
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
+                        class="social-btn">
                         <i class="fab fa-github"></i>
                     </a>
                     <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
@@ -105,7 +132,9 @@
             <div>
                 <h3>Featured Project</h3>
                 <p>Generate free, stunning GitHub README profiles in minutes.</p>
-                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top: 1rem;">
+                <br />
+                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn"
+                    id="try-readme-button">
                     <i class="fas fa-magic"></i> Try README Generator
                 </a>
             </div>
@@ -115,7 +144,38 @@
     <button id="scrollBtn">
         <i class="fas fa-arrow-up"></i>
     </button>
-    
+
     <script src="index.js"></script>
+    <style>
+       #try-readme-button {
+    margin-top: 1rem;
+    padding: 14px 26px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    background: linear-gradient(135deg, #7f5af0, #2cb67d);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
+}
+
+#try-readme-button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
+}
+#try-readme-button i {
+    transition: transform 0.3s ease;
+}
+
+#try-readme-button:hover i {
+    transform: rotate(-30deg) scale(1.2);
+}
+    </style>
 </body>
+
 </html>
