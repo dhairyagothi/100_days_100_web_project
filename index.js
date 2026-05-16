@@ -300,7 +300,7 @@ function updateNavbar() {
     const container = document.getElementById('navButtons');
     if (!container) return;
 
-    const username = window.username || null;
+    const username = window.username || localStorage.getItem('username') || null;
     const isRoot   = !window.location.pathname.includes('/contributors/');
     const base     = isRoot ? '' : '../';
     const isDark   = !document.body.classList.contains('light-mode');
@@ -317,6 +317,7 @@ function updateNavbar() {
         `;
         document.getElementById('logoutBtn').addEventListener('click', () => {
             window.username = null;
+            localStorage.removeItem('username');
             updateNavbar();
         });
         const gen = document.getElementById('generateReadmeBtn');
