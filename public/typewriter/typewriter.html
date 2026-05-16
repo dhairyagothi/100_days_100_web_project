@@ -8,19 +8,25 @@
 </head>
 <body>
     <div class="typewriter-container" aria-live="polite" aria-label="Typewriter text">
-        <span class="text1">I am a </span>
+        <span class="text1">I am a</span>
         <span class="text"></span>
         <span class="cursor"></span>
     </div>
     <div class="controls">
-        <input type="text" id="userInput" placeholder="Enter your text here" aria-label="User input for custom text">
-        <button id="addText">Add Text</button>
-        <button id="deleteText">Delete Latest Text</button>
-        <button id="pauseResume">Pause</button>
-        <label for="speedSlider">Speed:</label>
-        <input type="range" id="speedSlider" min="50" max="300" value="100" aria-label="Adjust typing speed">
-        <button id="toggleTheme">Toggle Theme</button>
-        <!-- <button id="changeBackground">Change Background</button> -->
+        <textarea id="userInput" rows="3" maxlength="180" placeholder="Enter your text here" aria-label="User input for custom text"></textarea>
+        <div class="button-row">
+            <button id="addText" type="button">Add Text</button>
+            <button id="deleteText" type="button">Delete Latest</button>
+        </div>
+        <div class="button-row">
+            <button id="pauseResume" type="button">Pause</button>
+            <button id="toggleTheme" type="button">Toggle Theme</button>
+        </div>
+        <div class="speed-control">
+            <label for="speedSlider">Speed</label>
+            <input type="range" id="speedSlider" min="50" max="300" value="100" aria-label="Adjust typing speed">
+            <output id="speedValue" for="speedSlider" aria-live="polite">120 WPM</output>
+        </div>
     </div>
     <script src="typewriter.js"></script>
 </body>

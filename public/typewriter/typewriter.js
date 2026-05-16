@@ -4,11 +4,10 @@ const addTextButton = document.getElementById("addText");
 const deleteTextButton = document.getElementById("deleteText");
 const pauseResumeButton = document.getElementById("pauseResume");
 const speedSlider = document.getElementById("speedSlider");
+const speedValue = document.getElementById("speedValue");
 const toggleThemeButton = document.getElementById("toggleTheme");
-const changeBackgroundButton = document.getElementById("changeBackground");
 
 const defaultPhrases = ["Freelancer", "Blogger", "Developer", "Designer", "Creator"];
-let userPhrases = [];
 let phrases = [...defaultPhrases];
 let displayedPhrases = [];
 let phraseIndex = 0;
@@ -19,63 +18,134 @@ let typingSpeed = 100;
 let isPaused = false;
 let typingTimeout;
 
-function type() {
-    if (!isPaused) {
-        currentPhrase = phrases[phraseIndex];
+function normalizeText(value) {
+    return value.replace(/\s+/g, " ").trim();
+}
 
-        if (isDeleting) {
-            typewriter.textContent = currentPhrase.substring(0, charIndex--);
-        } else {
-            typewriter.textContent = currentPhrase.substring(0, charIndex++);
-        }
+function resetTyping(index = phraseIndex) {
+    phraseIndex = index % phrases.length;
+    charIndex = 0;
+    isDeleting = false;
+    clearTimeout(typingTimeout);
+}
 
-        if (!isDeleting && charIndex === currentPhrase.length) {
-            setTimeout(() => {
-                isDeleting = true;
-            }, 2000);
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            displayedPhrases.push(currentPhrase);
-            if (displayedPhrases.length === phrases.length) {
-                displayedPhrases = [];
-            }
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            while (displayedPhrases.includes(phrases[phraseIndex])) {
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-            }
-        }
-
-        typingTimeout = setTimeout(type, isDeleting ? typingSpeed / 2 : typingSpeed);
+function setPauseButtonText() {
+    if (pauseResumeButton) {
+        pauseResumeButton.textContent = isPaused ? "Resume" : "Pause";
     }
 }
 
-addTextButton.addEventListener("click", () => {
-    const newText = userInput.value.trim();
+function updateDeleteButtonState() {
+    if (deleteTextButton) {
+        deleteTextButton.disabled = phrases.length === defaultPhrases.length;
+    }
+}
+
+function updateSpeedValue() {
+    if (speedValue) {
+        const wordsPerMinute = Math.round(60000 / (typingSpeed * 5));
+        speedValue.textContent = `${wordsPerMinute} WPM`;
+    }
+}
+
+function type() {
+    if (!typewriter || phrases.length === 0) {
+        return;
+    }
+
+    if (isPaused) {
+        return;
+    }
+
+    phraseIndex %= phrases.length;
+    currentPhrase = phrases[phraseIndex] || "";
+    typewriter.textContent = currentPhrase.substring(0, charIndex);
+
+    if (!isDeleting && charIndex < currentPhrase.length) {
+        charIndex++;
+        typingTimeout = setTimeout(type, typingSpeed);
+        return;
+    }
+
+    if (!isDeleting) {
+        isDeleting = true;
+        typingTimeout = setTimeout(type, 1200);
+        return;
+    }
+
+    if (charIndex > 0) {
+        charIndex--;
+        typingTimeout = setTimeout(type, typingSpeed / 2);
+        return;
+    }
+
+    isDeleting = false;
+    displayedPhrases.push(currentPhrase);
+    if (displayedPhrases.length >= phrases.length) {
+        displayedPhrases = [];
+    }
+
+    phraseIndex = (phraseIndex + 1) % phrases.length;
+    while (displayedPhrases.includes(phrases[phraseIndex]) && displayedPhrases.length < phrases.length) {
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+    }
+
+    typingTimeout = setTimeout(type, typingSpeed);
+}
+
+function addCustomText() {
+    if (!userInput) {
+        return;
+    }
+
+    const newText = normalizeText(userInput.value);
     if (newText) {
         phrases.push(newText);
-        userInput.value = '';
-        isPaused = false; 
-        isDeleting = false;
-        charIndex = 0;
-        phraseIndex = phrases.length - 1;
-        clearTimeout(typingTimeout);
+        userInput.value = "";
+        isPaused = false;
+        resetTyping(phrases.length - 1);
+        setPauseButtonText();
+        updateDeleteButtonState();
         type();
-        pauseResumeButton.textContent = "Pause";
+    }
+}
+
+function deleteLatestText() {
+    if (phrases.length === defaultPhrases.length) {
+        return;
+    }
+
+    const deletedPhrase = phrases.pop();
+    displayedPhrases = displayedPhrases.filter((phrase) => phrase !== deletedPhrase);
+    displayedPhrases = [];
+
+    const nextIndex = phrases.length > defaultPhrases.length ? phrases.length - 1 : 0;
+    resetTyping(nextIndex);
+    updateDeleteButtonState();
+
+    if (typewriter) {
+        typewriter.textContent = "";
+    }
+
+    if (!isPaused) {
+        type();
+    }
+}
+
+addTextButton?.addEventListener("click", addCustomText);
+
+userInput?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        addCustomText();
     }
 });
 
-deleteTextButton.addEventListener("click", () => {
-    if (phrases.length > defaultPhrases.length) {
-        const lastUserPhrase = phrases.pop();
-        if (displayedPhrases.includes(lastUserPhrase)) {
-            displayedPhrases = displayedPhrases.filter(phrase => phrase !== lastUserPhrase);
-        }
-    }
-});
+deleteTextButton?.addEventListener("click", deleteLatestText);
 
-pauseResumeButton.addEventListener("click", () => {
+pauseResumeButton?.addEventListener("click", () => {
     isPaused = !isPaused;
-    pauseResumeButton.textContent = isPaused ? "Resume" : "Pause";
+    setPauseButtonText();
     if (!isPaused) {
         type();
     } else {
@@ -83,32 +153,15 @@ pauseResumeButton.addEventListener("click", () => {
     }
 });
 
-speedSlider.addEventListener("input", (e) => {
-    typingSpeed = parseInt(e.target.value);
+speedSlider?.addEventListener("input", (e) => {
+    typingSpeed = parseInt(e.target.value, 10);
+    updateSpeedValue();
 });
 
-toggleThemeButton.addEventListener("click", () => {
+toggleThemeButton?.addEventListener("click", () => {
     document.body.classList.toggle('light-theme');
 });
 
-changeBackgroundButton.addEventListener("click", () => {
-    const colors = ['#1a1a1a', '#2a2a2a', '#3a3a3a', '#4a4a4a', '#5a5a5a'];
-    const images = [
-        'url("https://via.placeholder.com/800x600")',
-        'url("https://via.placeholder.com/800x600/ff7f7f")',
-        'url("https://via.placeholder.com/800x600/7f7fff")'
-    ];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    const randomImage = images[Math.floor(Math.random() * images.length)];
-    const isImage = Math.random() > 0.5;
-
-    if (isImage) {
-        document.body.style.backgroundImage = randomImage;
-        document.body.style.backgroundColor = '';
-    } else {
-        document.body.style.backgroundColor = randomColor;
-        document.body.style.backgroundImage = '';
-    }
-});
-
+updateDeleteButtonState();
+updateSpeedValue();
 type();

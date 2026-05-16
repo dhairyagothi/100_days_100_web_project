@@ -5,14 +5,20 @@
     --container-bg-color: #2a2a2a;
     --input-bg-color: #2a2a2a;
     --button-hover-color: rgb(59, 130, 246);
+    --border-color: rgba(59, 130, 246, 0.85);
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 400;
-    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,29 +29,40 @@ body {
 }
 .typewriter-container {
     display: flex;
-    align-items: center;
-    margin-bottom: 40px;
-    border: 2px solid var(--accent-color);
-    padding: 20px;
-    border-radius: 10px;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 28px;
+    border: 2px solid var(--border-color);
+    padding: 22px;
+    border-radius: 8px;
     background-color: var(--container-bg-color);
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-    width: 600px;
-    height: 60px;
-    font-size: 50px;
+    width: min(760px, 100%);
+    min-height: 120px;
+    font-size: clamp(28px, 5vw, 48px);
+    line-height: 1.16;
+    overflow: hidden;
 }
+.text1 {
+    flex: 0 0 auto;
+}
+
 .text {
-    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
     color: var(--accent-color);
-    margin-left: 10px; 
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 
 .cursor {
+    flex: 0 0 auto;
     display: inline-block;
     background-color: var(--accent-color);
     width: 5px;
     height: 1em;
-    margin-left: 2px;
+    margin-top: 0.08em;
     animation: blink 1s infinite;
 }
 @keyframes blink {
@@ -60,26 +77,91 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    max-width: 400px;
+    max-width: 520px;
 }
-.controls input[type="text"], .controls input[type="range"], .controls button {
+.controls textarea,
+.controls input[type="range"],
+.controls button {
     width: 100%;
-    margin: 5px;
-    padding: 10px;
+    min-width: 0;
+    padding: 12px 14px;
     font-size: 16px;
-    border-radius: 5px;
-    border: 2px solid var(--accent-color);
+    border-radius: 6px;
+    border: 2px solid var(--border-color);
     background-color: var(--input-bg-color);
     color: var(--text-color);
     transition: all 0.3s ease;
 }
+
+.controls textarea {
+    min-height: 96px;
+    max-height: 180px;
+    line-height: 1.45;
+    resize: vertical;
+    overflow-wrap: anywhere;
+    font-family: inherit;
+}
+
+.controls textarea:focus,
+.controls input[type="range"]:focus,
+.controls button:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.35);
+    outline-offset: 2px;
+}
+
+.button-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.speed-control {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+}
+
+.speed-control label {
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.speed-control output {
+    min-width: 78px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.controls button {
+    min-height: 46px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
 .controls button:hover {
     background-color: var(--button-hover-color);
     color: white;
     cursor: pointer;
 }
+
+.controls button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.controls button:disabled:hover {
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+}
+
 .controls input[type="range"] {
     appearance: none;
     height: 5px;
@@ -87,6 +169,7 @@ body {
     outline: none;
     opacity: 0.7;
     transition: opacity 0.2s;
+    padding: 0;
 }
 .controls input[type="range"]:hover {
     opacity: 1;
@@ -106,4 +189,35 @@ body.light-theme {
     --container-bg-color: #f0f0f0;
     --input-bg-color: #e0e0e0;
     --button-hover-color: #1e3a8a;
+    --border-color: rgba(59, 130, 246, 0.85);
+}
+
+@media (max-width: 640px) {
+    body {
+        justify-content: flex-start;
+        padding: 18px;
+    }
+
+    .typewriter-container {
+        flex-wrap: wrap;
+        min-height: 160px;
+        padding: 18px;
+    }
+
+    .text {
+        flex-basis: 100%;
+    }
+
+    .button-row {
+        grid-template-columns: 1fr;
+    }
+
+    .speed-control {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .speed-control output {
+        text-align: left;
+    }
 }
