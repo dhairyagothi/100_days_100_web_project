@@ -205,9 +205,7 @@ function fillTable() {
         ["Day 114", "EchoNotes", "./public/EchoNotes/index.html", "todo javascript", "intermediate"],
         ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/", "api javascript", "intermediate"],
         ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html", "api javascript", "intermediate"],
-        ["Day 117", "ZEN TIMER", "./public/ZEN_TIMER/index.html", "javascript", "intermediate"],
-        ["Day 118", "Random-Joke-Generator", "./public/RandomJokeGenerator/index.html", "api javascript", "beginner"],
-        ["Day 119", "Astronomy Dashboard", "./public/AstronomyDashboard/index.html", "api javascript", "intermediate"]
+        ["Day 117", "Astronomy Dashboard", "./public/AstronomyDashboard/astro.html", "api javascript", "intermediate"]
     ];
 
     filteredData = [...projectData];
