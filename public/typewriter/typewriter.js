@@ -70,6 +70,13 @@ deleteTextButton.addEventListener("click", () => {
         if (displayedPhrases.includes(lastUserPhrase)) {
             displayedPhrases = displayedPhrases.filter(phrase => phrase !== lastUserPhrase);
         }
+        if (phraseIndex >= phrases.length) {
+            phraseIndex = phrases.length - 1;
+        }
+        clearTimeout(typingTimeout);
+        isDeleting = false;
+        charIndex = 0;
+        type();
     }
 });
 
