@@ -12,21 +12,18 @@ submitBtn.addEventListener("click", async (e) => {
 
     const email = usernameInput.value.trim();
 
-    
     if (email === "") {
         errorMsg.textContent = "Please enter an email address!";
         return;
     }
 
-    
     if (!emailRegex.test(email)) {
         errorMsg.textContent = "Invalid email format!";
         return;
-    } else {
-        errorMsg.textContent = "";
     }
 
-   
+    errorMsg.textContent = "";
+
     resultCont.innerHTML = `
         <div class="loading-container">
             <p>Validating email... Please wait</p>
