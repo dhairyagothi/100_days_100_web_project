@@ -212,7 +212,7 @@ header .right{
 
 
  .foot-panel1{
-    background-color: #37475a;
+    background-color: #8C8D94;
     height: 50px;
     color: white;
     display: flex;
@@ -222,7 +222,7 @@ header .right{
 
  }
  .foot-panel2{
-    background-color: #222f3d;
+    background-color: #8C8D94;
     color: white;
     height: 350px;
     display: flex; 
@@ -230,7 +230,7 @@ header .right{
  }
 .foot-panel3{
      height: 70px;
-    background-color: #222f3d;
+    background-color: #8C8D94;
     border-top: 0.5px solid white;
     display: flex;
     justify-content: center;
@@ -239,13 +239,15 @@ header .right{
 
  .foot-panel4
  {
+    margin-top: 20px;
     text-align: center;
     padding-top: 25px;
-    background-color: #0f1111;
+    background-color: #E80071;
     color: white;
     height: 80px;
  }
 .copyright{
+    
     font-size: 0.8rem;
  }
 .logo{
@@ -256,7 +258,7 @@ header .right{
 }
 .foot-panel2 ul a{
     display: block;
-    color: #dddddd;
+    color: white;
     font-size: 0.85rem;
     margin-top: 10px;
 }
