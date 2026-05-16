@@ -206,3 +206,45 @@ header .right{
 .hardtoresistDeals{
     background : #ffca8a;
 }
+ footer{
+     margin-top: 25px;
+ }
+
+
+ .foot-panel1{
+    background-color: #37475a;
+    height: 50px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+
+ }
+ .foot-panel2{
+    background-color: #222f3d;
+    color: white;
+    height: 350px;
+    display: flex; 
+    justify-content: space-evenly;
+ }
+.foot-panel3{
+     height: 70px;
+    background-color: #222f3d;
+    border-top: 0.5px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+
+ .foot-panel4
+ {
+    text-align: center;
+    padding-top: 25px;
+    background-color: #0f1111;
+    color: white;
+    height: 80px;
+ }
+.copyright{
+    font-size: 0.8rem;
+ }
