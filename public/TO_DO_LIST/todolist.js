@@ -16,28 +16,6 @@ const taskTypes = [
 
 function Add() {
 
-    if (task.value == "") {
-        alert("Please enter a task");
-    } else {
-        let newelement = document.createElement("li");
-        newelement.innerHTML = newtask.value + '<i class="fa-solid fa-trash"></i>' + '<a>&#10003</a>';
-        container.appendChild(newelement);
-        task.value = "";
-        newelement.querySelector("i").addEventListener("click", remove);
-        function remove() {
-            newelement.remove();
-        }
-        newelement.querySelector("a").addEventListener("click", strike);
-        function strike() {
-           if(newelement.style.textDecoration === "line-through")
-           {
-            newelement.style.textDecoration="none";
-           }
-           else{
-            newelement.style.textDecoration="line-through";
-           }
-        }
-
   const notes = document.querySelectorAll(".notes");
 
   if (notes.length > 0) {
@@ -224,12 +202,12 @@ function updateNotesTheme() {
       note.style.backgroundColor = currentTheme === "theme1"
         ? "rgba(232,221,227,1)"
         : currentTheme === "theme2"
-        ? "#e4afcb"
-        : currentTheme === "theme3"
-        ? "#39db8c"
-        : currentTheme === "theme4"
-        ? "rgb(120, 25, 105)"
-        : "#b92b27";
+          ? "#e4afcb"
+          : currentTheme === "theme3"
+            ? "#39db8c"
+            : currentTheme === "theme4"
+              ? "rgb(120, 25, 105)"
+              : "#b92b27";
     }
   });
 }
