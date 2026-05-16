@@ -399,6 +399,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             applyFilters();
+
+            const projectsSection = document.querySelector('.projects-section') || document.querySelector('#projectsTable');
+            if (projectsSection) {
+            projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
     });
 });
