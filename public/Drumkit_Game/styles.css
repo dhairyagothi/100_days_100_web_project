@@ -1,19 +1,18 @@
 body {
   text-align: center;
   /* background-color: #0fe4e4; */
-  background-image: url("images/17973908.jpg") ;
+  background-image: url("images/17973908.jpg");
 }
 
 h1 {
   font-size: 5rem;
   color: #070707;
   font-family: "Arvo", cursive;
-  text-shadow: 3px 0 #DA0463;
-
+  text-shadow: 3px 0 #da0463;
 }
 
 footer {
-  color: #DBEDF3;
+  color: #dbedf3;
   font-family: sans-serif;
 }
 
@@ -49,9 +48,27 @@ footer {
   margin: 10% auto;
 }
 
+.drum-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+.drum-label {
+  font-size: 2rem;
+  font-family: "Arvo", cursive;
+  font-weight: bold;
+  color: #da0463;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
 .pressed {
-  box-shadow: 0 3px 4px 0 #DBEDF3;
-  opacity: 0.5;
+  box-shadow: 0 0 25px #da0463;
+  transform: scale(0.92);
+  filter: brightness(1.2);
+  opacity: 0.8;
 }
 
 .red {
@@ -60,13 +77,13 @@ footer {
 
 .drum {
   outline: none;
-  border: 10px solid #404B69;
+  /* border: 10px solid #404b69; */
   font-size: 5rem;
-  font-family: 'Arvo', cursive;
+  font-family: "Arvo", cursive;
   line-height: 2;
   font-weight: 900;
-  color: #DA0463;
-  text-shadow: 3px 0 #DBEDF3;
+  color: #da0463;
+  text-shadow: 3px 0 #dbedf3;
   border-radius: 15px;
   display: inline-block;
   width: 150px;
@@ -74,4 +91,9 @@ footer {
   text-align: center;
   margin: 10px;
   background-color: white;
+  transition: all 0.1s ease;
+}
+
+.drum:hover {
+  transform: translateY(-5px);
 }

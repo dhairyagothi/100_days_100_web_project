@@ -1,30 +1,45 @@
 var numberOfDrumButtons = document.querySelectorAll(".drum").length;
 
 for (var i = 0; i < numberOfDrumButtons; i++) {
+  document.querySelectorAll(".drum")[i].addEventListener("click", function () {
+    var buttonMap = {
+      Z: "do",
+      X: "re",
+      C: "mi",
+      V: "fa",
+      B: "so",
+      N: "la",
+      M: "ti",
+    };
 
-  document.querySelectorAll(".drum")[i].addEventListener("click", function() {
+    var mappedButton = buttonMap[this.innerHTML];
 
-    var buttonInnerHTML = this.innerHTML;
+    makeSound(mappedButton);
 
-    makeSound(buttonInnerHTML);
-
-    buttonAnimation(buttonInnerHTML);
-
+    buttonAnimation(mappedButton);
   });
-
 }
 
-document.addEventListener("keypress", function(event) {
+document.addEventListener("keypress", function (event) {
+  var keyMap = {
+    z: "do",
+    x: "re",
+    c: "mi",
+    v: "fa",
+    b: "so",
+    n: "la",
+    m: "ti",
+  };
 
-  makeSound(event.key);
+  var mappedKey = keyMap[event.key.toLowerCase()];
 
-  buttonAnimation(event.key);
-
+  if (mappedKey) {
+    makeSound(mappedKey);
+    buttonAnimation(mappedKey);
+  }
 });
 
-
 function makeSound(key) {
-
   switch (key) {
     case "do":
       var tom1 = new Audio("sounds/tom-1.mp3");
@@ -37,45 +52,53 @@ function makeSound(key) {
       break;
 
     case "mi":
-      var tom3 = new Audio('sounds/tom-3.mp3');
+      var tom3 = new Audio("sounds/tom-3.mp3");
       tom3.play();
       break;
 
     case "fa":
-      var tom4 = new Audio('sounds/tom-4.mp3');
+      var tom4 = new Audio("sounds/tom-4.mp3");
       tom4.play();
       break;
 
     case "so":
-      var snare = new Audio('sounds/snare.mp3');
+      var snare = new Audio("sounds/snare.mp3");
       snare.play();
       break;
 
     case "la":
-      var crash = new Audio('sounds/crash.mp3');
+      var crash = new Audio("sounds/crash.mp3");
       crash.play();
       break;
 
     case "ti":
-      var kick = new Audio('sounds/kick-bass.mp3');
+      var kick = new Audio("sounds/kick-bass.mp3");
       kick.play();
       break;
 
-
-    default: console.log(key);
-
+    default:
+      console.log(key);
   }
 }
 
-
 function buttonAnimation(currentKey) {
+  var buttonMap = {
+    do: ".w",
+    re: ".a",
+    mi: ".s",
+    fa: ".d",
+    so: ".j",
+    la: ".k",
+    ti: ".l",
+  };
 
-  var activeButton = document.querySelector("." + currentKey);
+  var activeButton = document.querySelector(buttonMap[currentKey]);
 
-  activeButton.classList.add("pressed");
+  if (activeButton) {
+    activeButton.classList.add("pressed");
 
-  setTimeout(function() {
-    activeButton.classList.remove("pressed");
-  }, 100);
-
+    setTimeout(function () {
+      activeButton.classList.remove("pressed");
+    }, 100);
+  }
 }
