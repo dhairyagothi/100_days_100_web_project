@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="input.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
-
 <body class="bg-gray-900">
 
     <nav class="bg-gray-800 w-screen">
@@ -76,7 +75,7 @@
                                     Washing Machine</div>
                                 <div
                                     class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                    Telivision</div>
+                                    Television</div>
                                 <div
                                     class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
                                     Others</div>
@@ -219,13 +218,15 @@
 
 
     <script>
-        // JavaScript to handle dropdown toggle
+        // JavaScript to handle dropdown togglenext
         document.getElementById('appliances').addEventListener('click', function () {
             const dropdownMenu = document.getElementById('appliances-dd');
             if (dropdownMenu.style.display === 'block') {
-                dropdownMenu.style.display = 'none';
+                dropdownMenu.classList.remove('show');
+                setTimeout(() => dropdownMenu.style.display = 'none', 300);
             } else {
                 dropdownMenu.style.display = 'block';
+                setTimeout(() => dropdownMenu.classList.add('show'), 10);
             }
         });
 
