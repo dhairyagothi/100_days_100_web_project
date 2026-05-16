@@ -1,26 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress_bar</title>
-    <link rel="stylesheet" href="progress_bar.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contributor Progress Dashboard – Track your topic-wise contributions across Frontend, Backend, AI/ML and more." />
+  <title>Contributor Progress Dashboard</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <link rel="stylesheet" href="progress_bar.css" />
 </head>
-
 <body>
-    <div class="container">
-        <div class="block1">
-            <div class="block2">
-                <div class="block3">
-                    <div id="num">100%</div>
-                </div>
 
-            </div>
-
-        </div><button id="btn">Check progress</button>
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <i class="fas fa-code-branch brand-icon"></i>
+        <span class="brand-name">ContribTracker</span>
+      </div>
+      <div class="header-meta">
+        <span class="header-badge"><i class="fas fa-fire"></i> GSSoC 2026</span>
+        <div class="period-toggle" role="group" aria-label="Time period">
+          <button class="period-btn active" data-period="weekly" id="weeklyBtn">Weekly</button>
+          <button class="period-btn" data-period="monthly" id="monthlyBtn">Monthly</button>
+          <button class="period-btn" data-period="alltime" id="alltimeBtn">All Time</button>
+        </div>
+      </div>
     </div>
-    <script src="progress_bar.js"></script>
-</body>
+  </header>
 
+  <!-- ===== MAIN ===== -->
+  <main class="main-content">
+
+    <!-- ── Overall Summary ── -->
+    <section class="summary-section" aria-label="Overall summary">
+      <div class="summary-grid">
+        <div class="summary-card" id="summaryTotal">
+          <div class="summary-icon-wrap" style="--ic: #6c63ff">
+            <i class="fas fa-layer-group"></i>
+          </div>
+          <div>
+            <p class="summary-label">Total Contributions</p>
+            <p class="summary-value" data-target="148">0</p>
+          </div>
+        </div>
+        <div class="summary-card" id="summaryPRs">
+          <div class="summary-icon-wrap" style="--ic: #00d4aa">
+            <i class="fas fa-code-pull-request"></i>
+          </div>
+          <div>
+            <p class="summary-label">Pull Requests</p>
+            <p class="summary-value" data-target="34">0</p>
+          </div>
+        </div>
+        <div class="summary-card" id="summaryStreak">
+          <div class="summary-icon-wrap" style="--ic: #ff9f43">
+            <i class="fas fa-fire-flame-curved"></i>
+          </div>
+          <div>
+            <p class="summary-label">Day Streak</p>
+            <p class="summary-value" data-target="21">0</p>
+          </div>
+        </div>
+        <div class="summary-card" id="summaryBadges">
+          <div class="summary-icon-wrap" style="--ic: #ff4f6a">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div>
+            <p class="summary-label">Badges Earned</p>
+            <p class="summary-value" data-target="5">0</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Overall Progress Ring ── -->
+    <section class="overall-section" aria-label="Overall progress">
+      <div class="section-title-row">
+        <h2 class="section-title">Overall Progress</h2>
+        <span class="section-subtitle" id="overallPeriodLabel">This Week</span>
+      </div>
+      <div class="overall-card">
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 200 200" aria-hidden="true">
+            <circle class="ring-bg"   cx="100" cy="100" r="82" />
+            <circle class="ring-fill" cx="100" cy="100" r="82" id="overallRingFill" />
+          </svg>
+          <div class="ring-center">
+            <span class="ring-percent" id="overallPercent">0%</span>
+            <span class="ring-label">Complete</span>
+          </div>
+        </div>
+        <div class="overall-legend">
+          <div class="legend-item" style="--lc:#6c63ff"><span class="legend-dot"></span>Frontend <strong id="leg-frontend">0</strong></div>
+          <div class="legend-item" style="--lc:#00d4aa"><span class="legend-dot"></span>Backend <strong id="leg-backend">0</strong></div>
+          <div class="legend-item" style="--lc:#ff9f43"><span class="legend-dot"></span>AI / ML <strong id="leg-aiml">0</strong></div>
+          <div class="legend-item" style="--lc:#ff4f6a"><span class="legend-dot"></span>Documentation <strong id="leg-docs">0</strong></div>
+          <div class="legend-item" style="--lc:#54a0ff"><span class="legend-dot"></span>DevOps <strong id="leg-devops">0</strong></div>
+          <div class="legend-item" style="--lc:#a29bfe"><span class="legend-dot"></span>Design <strong id="leg-design">0</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Topic-wise Progress ── -->
+    <section class="topics-section" aria-label="Topic-wise progress">
+      <div class="section-title-row">
+        <h2 class="section-title">Topic-wise Progress</h2>
+        <p class="section-hint"><i class="fas fa-hand-pointer"></i> Click a card to view details</p>
+      </div>
+      <div class="topics-grid" id="topicsGrid">
+        <!-- Generated by JS -->
+      </div>
+    </section>
+
+    <!-- ── Weekly Activity Timeline ── -->
+    <section class="timeline-section" aria-label="Weekly activity">
+      <div class="section-title-row">
+        <h2 class="section-title">Activity This Week</h2>
+      </div>
+      <div class="timeline-card">
+        <div class="timeline-bars" id="timelineBars" aria-label="Daily contribution bars">
+          <!-- Generated by JS -->
+        </div>
+        <div class="timeline-days" id="timelineDays"></div>
+      </div>
+    </section>
+
+    <!-- ── Badges & Milestones ── -->
+    <section class="badges-section" aria-label="Badges and milestones">
+      <div class="section-title-row">
+        <h2 class="section-title">Badges &amp; Milestones</h2>
+      </div>
+      <div class="badges-grid" id="badgesGrid">
+        <!-- Generated by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== TOPIC DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose" aria-label="Close modal"><i class="fas fa-xmark"></i></button>
+      <div class="modal-header">
+        <div class="modal-icon-wrap" id="modalIcon"></div>
+        <div>
+          <h3 class="modal-title" id="modalTitle">Topic Name</h3>
+          <p class="modal-sub" id="modalSub"></p>
+        </div>
+      </div>
+      <div class="modal-progress-row">
+        <div class="modal-ring-wrap">
+          <svg class="modal-ring-svg" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="modal-ring-bg"   cx="60" cy="60" r="50" />
+            <circle class="modal-ring-fill" cx="60" cy="60" r="50" id="modalRingFill" />
+          </svg>
+          <div class="modal-ring-center">
+            <span id="modalRingPct">0%</span>
+          </div>
+        </div>
+        <div class="modal-stats">
+          <div class="modal-stat"><span class="ms-label">Contributions</span><span class="ms-value" id="mContrib">0</span></div>
+          <div class="modal-stat"><span class="ms-label">PRs Merged</span><span class="ms-value" id="mPRs">0</span></div>
+          <div class="modal-stat"><span class="ms-label">Issues Closed</span><span class="ms-value" id="mIssues">0</span></div>
+          <div class="modal-stat"><span class="ms-label">Files Changed</span><span class="ms-value" id="mFiles">0</span></div>
+        </div>
+      </div>
+      <div class="modal-tasks">
+        <h4 class="modal-tasks-title">Recent Activity</h4>
+        <ul class="modal-task-list" id="modalTaskList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="progress_bar.js"></script>
+</body>
 </html>
