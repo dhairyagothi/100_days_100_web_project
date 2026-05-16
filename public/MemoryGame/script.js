@@ -76,7 +76,28 @@ function unflipCards() {
 function updateScore() {
     matchesCount++;
     document.getElementById('score-board').innerText = `Matches: ${matchesCount}`;
+
+    if (matchesCount === colors.length) {
+        setTimeout(() => {
+            document.getElementById('winModal').style.display = 'flex';
+        }, 300);
+    }
 }
+
+// Restart the game fully
+function restartGame() {
+    matchesCount = 0;
+    firstCard = secondCard = null;
+    lockBoard = false;
+    gameContainer.innerHTML = '';
+    document.getElementById('score-board').innerText = 'Matches: 0';
+    createCards();
+}
+
+document.getElementById('newGame').addEventListener('click', () => {
+    document.getElementById('winModal').style.display = 'none';
+    restartGame();
+});
 
 // Reset variables and unlock board
 function resetBoard() {

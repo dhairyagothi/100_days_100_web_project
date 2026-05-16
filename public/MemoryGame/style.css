@@ -96,3 +96,61 @@ h1 {
         grid-template-rows: repeat(2, 80px);
     }
 }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;  /* add */
+    align-items: center;      /* add */
+}
+.modal-content {
+    background: linear-gradient(135deg, #1d3557, #457b9d);
+    padding: 40px 30px;
+    border: none;
+    width: 80%;
+    max-width: 350px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+#resultMessage {
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#newGame {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+#newGame:hover {
+    background-color: #27ae60;
+    transform: scale(1.05);
+}
+
+.close {
+    color: rgba(255,255,255,0.6);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: white;
+}
