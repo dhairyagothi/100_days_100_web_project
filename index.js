@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 100 Days 100 Web Projects - Main Script
  * Author: Dhairya Gothi & Sweksha Kakkar (Issue #1209)
  * Goal: Implemented Technology & Category Filters with Multi-select logic
@@ -225,10 +225,12 @@ function applyFilters() {
     const searchVal = document.getElementById('searchInput')?.value.toLowerCase() || "";
 
     filteredData = projectData.filter(project => {
-        if (project.length < 5) return false;
+        if (!project || project.length < 3) return false;
         const nameMatch = project[1].toLowerCase().includes(searchVal);
-        const categoryMatch = currentCategory === 'all' || project[3].toLowerCase().includes(currentCategory);
-        const difficultyMatch = currentDifficulty === 'all' || project[4].toLowerCase() === currentDifficulty;
+        const projectCategory = (project[3] || '').toString().toLowerCase();
+        const projectDifficulty = (project[4] || '').toString().toLowerCase();
+        const categoryMatch = currentCategory === 'all' || projectCategory.includes(currentCategory);
+        const difficultyMatch = currentDifficulty === 'all' || projectDifficulty === currentDifficulty;
         return nameMatch && categoryMatch && difficultyMatch;
     });
 
@@ -255,12 +257,12 @@ function renderTable() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedItems = filteredData.slice(startIndex, startIndex + itemsPerPage);
 
-    paginatedItems.forEach(e => {
+        paginatedItems.forEach(e => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${e[0]}</td>
-            <td class="project-name">${e[1]} <small style="opacity:0.5">(${e[4]})</small></td>
-            <td><a href="${e[2].trim()}" target="_blank">View Demo <i class="fas fa-external-link-alt"></i></a></td>
+            <td class="project-name">${e[1]} <small style="opacity:0.5">(${(e[4] || '')})</small></td>
+            <td><a class="button" href="${(e[2] || '').toString().trim()}" target="_blank">View Demo <i class="fas fa-external-link-alt"></i></a></td>
         `;
         tbody.appendChild(row);
     });
