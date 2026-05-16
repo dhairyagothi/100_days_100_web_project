@@ -1,189 +1,257 @@
+const candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
+const rows = 9;
+const columns = 9;
+const imageBasePath = "/public/Candy_Crush_Game/images";
 
-var candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
-var board = [];
-var rows = 9;
-var columns = 9;
-var score = 0;
+let board = [];
+let score = 0;
+let moves = 0;
+let selectedTile = null;
+let draggedTile = null;
+let droppedTile = null;
+let gameLoop;
 
-var currTile;
-var otherTile;
+const boardElement = document.getElementById("board");
+const scoreElement = document.getElementById("score");
+const movesElement = document.getElementById("moves");
+const messageElement = document.getElementById("message");
+const resetButton = document.getElementById("Reset");
 
-
-window.onload = function() {
-    startGame();
-
-    //1/10th of a second
-    window.setInterval(function(){
-        crushCandy();
-        slideCandy();
-        generateCandy();
-    }, 100);
+function candyPath(candy) {
+    return `${imageBasePath}/${candy}.png`;
 }
-    // Reset button functionality
-    document.getElementById("Reset").addEventListener("click", function() {
-        // Reset score
-        score = 0;
-        document.getElementById("score").innerText = score; // Update the score display
 
-        // Clear the board array and HTML content
-        board = [];
-        document.getElementById("board").innerHTML = ""; // Clear the board visually
-
-        // Reinitialize the game
-        startGame();
-    });
-
+function getCandyName(tile) {
+    const fileName = tile.src.split("/").pop();
+    return fileName.replace(".png", "");
+}
 
 function randomCandy() {
-    return candies[Math.floor(Math.random() * candies.length)]; //0 - 5.99
+    return candies[Math.floor(Math.random() * candies.length)];
 }
 
-function startGame() {
-    for (let r = 0; r < rows; r++) {
-        let row = [];
-        for (let c = 0; c < columns; c++) {
-            // <img id="0-0" src="./images/Red.png">
-            let tile = document.createElement("img");
-            tile.id = r.toString() + "-" + c.toString();
-            tile.src = "./images/" + randomCandy() + ".png";
+function updateStats() {
+    scoreElement.textContent = score;
+    movesElement.textContent = moves;
+}
 
-            //DRAG FUNCTIONALITY
-            tile.addEventListener("dragstart", dragStart); //click on a candy, initialize drag process
-            tile.addEventListener("dragover", dragOver);  //clicking on candy, moving mouse to drag the candy
-            tile.addEventListener("dragenter", dragEnter); //dragging candy onto another candy
-            tile.addEventListener("dragleave", dragLeave); //leave candy over another candy
-            tile.addEventListener("drop", dragDrop); //dropping a candy over another candy
-            tile.addEventListener("dragend", dragEnd); //after drag process completed, we swap candies
+function setMessage(message) {
+    messageElement.textContent = message;
+}
 
-            document.getElementById("board").append(tile);
-            row.push(tile);
-        }
-        board.push(row);
+function clearSelection() {
+    if (selectedTile) {
+        selectedTile.classList.remove("selected");
+    }
+    selectedTile = null;
+}
+
+function areAdjacent(tileA, tileB) {
+    const [rowA, columnA] = tileA.id.split("-").map(Number);
+    const [rowB, columnB] = tileB.id.split("-").map(Number);
+    const rowDistance = Math.abs(rowA - rowB);
+    const columnDistance = Math.abs(columnA - columnB);
+
+    return rowDistance + columnDistance === 1;
+}
+
+function swapTiles(tileA, tileB) {
+    const firstSource = tileA.src;
+    tileA.src = tileB.src;
+    tileB.src = firstSource;
+}
+
+function wouldCreateStartingMatch(row, column, candy) {
+    const leftMatch = column >= 2 &&
+        getCandyName(board[row][column - 1]) === candy &&
+        getCandyName(board[row][column - 2]) === candy;
+    const topMatch = row >= 2 &&
+        getCandyName(board[row - 1][column]) === candy &&
+        getCandyName(board[row - 2][column]) === candy;
+
+    return leftMatch || topMatch;
+}
+
+function getStartingCandy(row, column) {
+    let candy = randomCandy();
+
+    while (wouldCreateStartingMatch(row, column, candy)) {
+        candy = randomCandy();
     }
 
-    console.log(board);
+    return candy;
 }
 
-function dragStart() {
-    //this refers to tile that was clicked on for dragging
-    currTile = this;
+function createTile(row, column) {
+    const tile = document.createElement("img");
+    tile.id = `${row}-${column}`;
+    tile.src = candyPath(getStartingCandy(row, column));
+    tile.alt = "Candy";
+    tile.draggable = true;
+
+    tile.addEventListener("dragstart", () => {
+        draggedTile = tile;
+    });
+    tile.addEventListener("dragover", (event) => event.preventDefault());
+    tile.addEventListener("dragenter", (event) => event.preventDefault());
+    tile.addEventListener("drop", () => {
+        droppedTile = tile;
+    });
+    tile.addEventListener("dragend", handleDragEnd);
+    tile.addEventListener("click", () => handleTileClick(tile));
+
+    return tile;
 }
 
-function dragOver(e) {
-    e.preventDefault();
+function createBoard() {
+    board = [];
+    boardElement.innerHTML = "";
+
+    for (let row = 0; row < rows; row++) {
+        const boardRow = [];
+        board.push(boardRow);
+
+        for (let column = 0; column < columns; column++) {
+            const tile = createTile(row, column);
+            boardElement.appendChild(tile);
+            boardRow.push(tile);
+        }
+    }
 }
 
-function dragEnter(e) {
-    e.preventDefault();
-}
-
-function dragLeave() {
-
-}
-
-function dragDrop() {
-    //this refers to the target tile that was dropped on
-    otherTile = this;
-}
-
-function dragEnd() {
-
-    if (currTile.src.includes("blank") || otherTile.src.includes("blank")) {
+function handleTileClick(tile) {
+    if (!selectedTile) {
+        selectedTile = tile;
+        selectedTile.classList.add("selected");
+        setMessage("Now choose an adjacent candy to swap.");
         return;
     }
 
-    let currCoords = currTile.id.split("-"); // id="0-0" -> ["0", "0"]
-    let r = parseInt(currCoords[0]);
-    let c = parseInt(currCoords[1]);
-
-    let otherCoords = otherTile.id.split("-");
-    let r2 = parseInt(otherCoords[0]);
-    let c2 = parseInt(otherCoords[1]);
-
-    let moveLeft = c2 == c-1 && r == r2;
-    let moveRight = c2 == c+1 && r == r2;
-
-    let moveUp = r2 == r-1 && c == c2;
-    let moveDown = r2 == r+1 && c == c2;
-
-    let isAdjacent = moveLeft || moveRight || moveUp || moveDown;
-
-    if (isAdjacent) {
-        let currImg = currTile.src;
-        let otherImg = otherTile.src;
-        currTile.src = otherImg;
-        otherTile.src = currImg;
-
-        let validMove = checkValid();
-        if (!validMove) {
-            let currImg = currTile.src;
-            let otherImg = otherTile.src;
-            currTile.src = otherImg;
-            otherTile.src = currImg;    
-        }
+    if (selectedTile === tile) {
+        clearSelection();
+        setMessage("Selection cleared.");
+        return;
     }
+
+    tryMove(selectedTile, tile);
+    clearSelection();
+}
+
+function handleDragEnd() {
+    if (!draggedTile || !droppedTile) {
+        draggedTile = null;
+        droppedTile = null;
+        return;
+    }
+
+    tryMove(draggedTile, droppedTile);
+    draggedTile = null;
+    droppedTile = null;
+}
+
+function tryMove(tileA, tileB) {
+    if (!areAdjacent(tileA, tileB)) {
+        setMessage("Candies must be next to each other.");
+        return false;
+    }
+
+    if (getCandyName(tileA) === "blank" || getCandyName(tileB) === "blank") {
+        return false;
+    }
+
+    swapTiles(tileA, tileB);
+
+    if (!hasValidMatch()) {
+        swapTiles(tileA, tileB);
+        setMessage("No match there. Try another swap.");
+        return false;
+    }
+
+    moves++;
+    updateStats();
+    setMessage("Sweet match!");
+    crushCandy();
+    return true;
 }
 
 function crushCandy() {
-    //crushFive();
-    //crushFour();
-    crushThree();
-    document.getElementById("score").innerText = score;
+    let crushedAny = false;
+    crushedAny = crushMatches() || crushedAny;
 
+    if (crushedAny) {
+        updateStats();
+    }
+
+    return crushedAny;
 }
 
-function crushThree() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns-2; c++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r][c+1];
-            let candy3 = board[r][c+2];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
-                score += 30;
+function crushMatches() {
+    const matchedTiles = new Set();
+
+    for (let row = 0; row < rows; row++) {
+        for (let column = 0; column < columns - 2; column++) {
+            const firstCandy = getCandyName(board[row][column]);
+
+            if (
+                firstCandy !== "blank" &&
+                firstCandy === getCandyName(board[row][column + 1]) &&
+                firstCandy === getCandyName(board[row][column + 2])
+            ) {
+                matchedTiles.add(board[row][column]);
+                matchedTiles.add(board[row][column + 1]);
+                matchedTiles.add(board[row][column + 2]);
             }
         }
     }
 
-    //check columns
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows-2; r++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r+1][c];
-            let candy3 = board[r+2][c];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
-                score += 30;
+    for (let column = 0; column < columns; column++) {
+        for (let row = 0; row < rows - 2; row++) {
+            const firstCandy = getCandyName(board[row][column]);
+
+            if (
+                firstCandy !== "blank" &&
+                firstCandy === getCandyName(board[row + 1][column]) &&
+                firstCandy === getCandyName(board[row + 2][column])
+            ) {
+                matchedTiles.add(board[row][column]);
+                matchedTiles.add(board[row + 1][column]);
+                matchedTiles.add(board[row + 2][column]);
             }
         }
     }
+
+    matchedTiles.forEach((tile) => {
+        tile.src = candyPath("blank");
+    });
+
+    score += matchedTiles.size * 10;
+    return matchedTiles.size > 0;
 }
 
-function checkValid() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns-2; c++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r][c+1];
-            let candy3 = board[r][c+2];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+function hasValidMatch() {
+    for (let row = 0; row < rows; row++) {
+        for (let column = 0; column < columns - 2; column++) {
+            const candy = getCandyName(board[row][column]);
+
+            if (
+                candy !== "blank" &&
+                candy === getCandyName(board[row][column + 1]) &&
+                candy === getCandyName(board[row][column + 2])
+            ) {
                 return true;
             }
         }
     }
 
-    //check columns
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows-2; r++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r+1][c];
-            let candy3 = board[r+2][c];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+    for (let column = 0; column < columns; column++) {
+        for (let row = 0; row < rows - 2; row++) {
+            const candy = getCandyName(board[row][column]);
+
+            if (
+                candy !== "blank" &&
+                candy === getCandyName(board[row + 1][column]) &&
+                candy === getCandyName(board[row + 2][column])
+            ) {
                 return true;
             }
         }
@@ -192,27 +260,51 @@ function checkValid() {
     return false;
 }
 
-
 function slideCandy() {
-    for (let c = 0; c < columns; c++) {
-        let ind = rows - 1;
-        for (let r = columns-1; r >= 0; r--) {
-            if (!board[r][c].src.includes("blank")) {
-                board[ind][c].src = board[r][c].src;
-                ind -= 1;
+    for (let column = 0; column < columns; column++) {
+        let fillRow = rows - 1;
+
+        for (let row = rows - 1; row >= 0; row--) {
+            if (getCandyName(board[row][column]) !== "blank") {
+                board[fillRow][column].src = board[row][column].src;
+                fillRow--;
             }
         }
 
-        for (let r = ind; r >= 0; r--) {
-            board[r][c].src = "./images/blank.png";
+        for (let row = fillRow; row >= 0; row--) {
+            board[row][column].src = candyPath("blank");
         }
     }
 }
 
 function generateCandy() {
-    for (let c = 0; c < columns;  c++) {
-        if (board[0][c].src.includes("blank")) {
-            board[0][c].src = "./images/" + randomCandy() + ".png";
+    for (let column = 0; column < columns; column++) {
+        if (getCandyName(board[0][column]) === "blank") {
+            board[0][column].src = candyPath(randomCandy());
         }
     }
 }
+
+function runBoardCycle() {
+    const crushedAny = crushCandy();
+    slideCandy();
+    generateCandy();
+
+    if (crushedAny) {
+        setMessage("Candies crushed. Keep going!");
+    }
+}
+
+function resetGame() {
+    window.clearInterval(gameLoop);
+    score = 0;
+    moves = 0;
+    clearSelection();
+    createBoard();
+    updateStats();
+    setMessage("Select a candy, then choose an adjacent candy.");
+    gameLoop = window.setInterval(runBoardCycle, 140);
+}
+
+resetButton.addEventListener("click", resetGame);
+resetGame();
