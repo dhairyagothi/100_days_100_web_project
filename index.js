@@ -21,7 +21,7 @@ let filteredProjectData = [];
 let currentCategory = 'all';
 let currentDifficulty = 'all';
 
-const PROJECT_DATA = [
+const PROJECTS = [
     ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
     ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', 'javascript', 'beginner'],
     ['Day 3', 'Indian Flag', './public/indianflag/flag.html', 'css', 'beginner'],
@@ -137,7 +137,8 @@ const PROJECT_DATA = [
     ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'javascript', 'intermediate'],
     ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
     ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-    ['Day 116', 'AI Image Classifier', './public/AI Image Classifier/index.html', 'api javascript', 'intermediate']
+    ['Day 116', 'AI Image Classifier', './public/AI Image Classifier/index.html', 'api javascript', 'intermediate'],
+    ['Day 117', 'GravitySim', './public/GravitySim/index.html', 'javascript canvas', 'intermediate']
 ];
 
 // ============================================
@@ -284,7 +285,7 @@ function setupThemeToggle() {
 // 4. PROJECT DATA INITIALIZATION
 // ============================================
 function fillTable() {
-    projectData = [...PROJECT_DATA];
+    projectData = [...PROJECTS];
     filteredProjectData = [...projectData];
 
     currentPage = 1;
