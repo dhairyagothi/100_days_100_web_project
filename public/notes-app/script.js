@@ -1,189 +1,209 @@
+// Elements
+const addBox = document.querySelector(".add-box");
+const popupBox = document.querySelector(".popup-box");
+const closeBtn = document.querySelector(".close-btn");
 
-const addBox = document.querySelector(".add-box"),
-  popupBox = document.querySelector(".popup-box"),
-  popupTitle = popupBox.querySelector("header p"),
-  closeIcon = popupBox.querySelector("header i"),
-  titleTag = popupBox.querySelector("input[type='text']"),
-  descTag = popupBox.querySelector("textarea"),
-  tagsTag = popupBox.querySelector(".tags input"),
-  passwordTag = popupBox.querySelector(".password input"),
-  addBtn = popupBox.querySelector("button"),
-  searchInput = document.getElementById("search-input");
+const form = document.querySelector("form");
+const titleTag = document.getElementById("title");
+const descTag = document.getElementById("desc");
+const tagsTag = document.getElementById("tags");
+const passwordTag = document.getElementById("password");
 
-const months = ["January", "February", "March", "April", "May", "June", "July",
-  "August", "September", "October", "November", "December"];
-let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+const wrapper = document.querySelector(".wrapper");
+const searchInput = document.getElementById("search-input");
+
+// State
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
 let isUpdate = false, updateId;
 
-addBox.addEventListener("click", () => {
-  popupTitle.innerText = "Add a new Note";
-  addBtn.innerText = "Add Note";
-  popupBox.classList.add("show");
-  document.querySelector("body").style.overflow = "hidden";
-  if(window.innerWidth > 660) titleTag.focus();
-});
+// 📅 Months
+const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-closeIcon.addEventListener("click", () => {
-  isUpdate = false;
-  titleTag.value = descTag.value = tagsTag.value = passwordTag.value = "";
-  popupBox.classList.remove("show");
-  document.querySelector("body").style.overflow = "auto";
-});
 
-function showNotes(filteredNotes = notes) {
-  if(!filteredNotes) return;
-  document.querySelectorAll(".note").forEach(li => li.remove());
-  filteredNotes.forEach((note, id) => {
-    let filterDesc = note.description.replaceAll("\n", '<br/>');
-    let lockedClass = note.password ? ' locked' : '';
-    let blurStyle = note.password && !note.isUnlocked ? ' style="filter: blur(5px);" ' : '';
-    let lockSymbol = note.password && !note.isUnlocked ? '<span class="lock-symbol">🔒</span>' : '';
-    
-    let viewBtnText = note.password && note.isUnlocked ? '<i class="uil uil-eye-slash"></i>Hide' : '<i class="uil uil-eye"></i>View';
-    let viewAction = note.password && note.isUnlocked ? `hideNote(${id})` : `viewNotePrompt(${id})`;
+// 🚀 SHOW NOTES
+function showNotes(data = notes) {
+  document.querySelectorAll(".note").forEach(n => n.remove());
 
-    let liTag = `<li class="note${lockedClass}">
-                  <div class="details"${blurStyle}>
-                    <p>${note.title}</p>
-                    <span>${filterDesc}</span>
-                    ${lockSymbol}
-                  </div>
-                  <div class="tags">${note.tags.join(", ")}</div>
-                  <div class="bottom-content">
-                    <span>${note.date}</span>
-                    <div class="settings">
-                      <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
-                      <ul class="menu">
-                        ${note.password ? `<li onclick="${viewAction}">${viewBtnText}</li>` : ''}
-                        ${note.password ? `<li onclick="editOrDelete(${id}, 'edit')"><i class="uil uil-pen"></i>Edit</li>` : `<li onclick="editOrDelete(${id}, 'edit')">Edit</li>`}
-                        ${note.password ? `<li onclick="editOrDelete(${id}, 'delete')"><i class="uil uil-trash"></i>Delete</li>` : `<li onclick="editOrDelete(${id}, 'delete')">Delete</li>`}
-                      </ul>
-                    </div>
-                  </div>
-                </li>`;
-    addBox.insertAdjacentHTML("afterend", liTag);
+  data.forEach((note, id) => {
+
+    let desc = note.isUnlocked ? note.description : "🔒 Locked note";
+    let blur = note.isUnlocked ? "" : "blur";
+
+    let li = document.createElement("li");
+    li.className = "note";
+
+    li.innerHTML = `
+      <div class="details ${blur}">
+        <p>${note.title}</p>
+        <span>${desc}</span>
+      </div>
+
+      <div class="tags">${note.tags.join(", ")}</div>
+
+      <div class="bottom-content">
+        <span>${note.date}</span>
+
+        <div class="settings">
+          <i class="uil uil-ellipsis-h"></i>
+
+          <ul class="menu">
+            ${note.password ? `<li class="view">👁 View</li>` : ""}
+            <li class="edit">✏️ Edit</li>
+            <li class="delete">🗑 Delete</li>
+          </ul>
+        </div>
+      </div>
+    `;
+
+    // 👉 EVENTS (clean way instead of inline onclick)
+
+    // Menu toggle
+    const settingsIcon = li.querySelector(".settings i");
+    settingsIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeAllMenus();
+      li.querySelector(".settings").classList.toggle("show");
+    });
+
+    // View
+    li.querySelector(".view")?.addEventListener("click", () => {
+      handleView(note, id);
+    });
+
+    // Edit
+    li.querySelector(".edit").addEventListener("click", () => {
+      editNote(id);
+    });
+
+    // Delete
+    li.querySelector(".delete").addEventListener("click", () => {
+      deleteNote(id);
+    });
+
+    addBox.insertAdjacentElement("afterend", li);
   });
 }
 
-showNotes();
 
-function showMenu(elem) {
-  elem.parentElement.classList.add("show");
-  document.addEventListener("click", e => {
-    if(e.target.tagName != "I" || e.target != elem) {
-      elem.parentElement.classList.remove("show");
-    }
+// ❌ Close menus when clicking outside
+function closeAllMenus() {
+  document.querySelectorAll(".settings").forEach(menu => {
+    menu.classList.remove("show");
   });
 }
 
-function viewNotePrompt(noteId) {
-  let note = notes[noteId];
-  let enteredPassword = prompt("Please enter the password to view this note:");
-  if(enteredPassword === note.password) {
-    note.isUnlocked = true;
+document.addEventListener("click", closeAllMenus);
+
+
+// 👁 VIEW NOTE (better UX than prompt)
+function handleView(note, id) {
+  let entered = prompt("Enter password to view note:");
+
+  if (entered === note.password) {
+    notes[id].isUnlocked = true;
     localStorage.setItem("notes", JSON.stringify(notes));
     showNotes();
   } else {
-    alert("Incorrect password! Note content cannot be viewed.");
+    alert("Wrong password!");
   }
 }
 
-function hideNote(noteId) {
-  let note = notes[noteId];
-  note.isUnlocked = false;
-  localStorage.setItem("notes", JSON.stringify(notes));
-  showNotes();
-}
 
-function editOrDelete(noteId, actionType) {
-  let note = notes[noteId];
-  if(note.password) {
-    let enteredPassword = prompt("Please enter the password to proceed:");
-    if(enteredPassword === note.password) {
-      if(actionType === 'edit') {
-        editNoteContent(noteId);
-      } else if(actionType === 'delete') {
-        deleteNoteById(noteId);
-      } else {
-        alert("Invalid action. Note cannot be edited or deleted.");
-      }
-    } else {
-      alert("Incorrect password! Note cannot be edited or deleted.");
-    }
-  } else {
-    // Proceed with editing or deleting the note
-    if(actionType === 'edit') {
-      editNoteContent(noteId);
-    } else if(actionType === 'delete') {
-      deleteNoteById(noteId);
-    }
+// ✏️ EDIT
+function editNote(id) {
+  let note = notes[id];
+
+  if (note.password) {
+    let entered = prompt("Enter password to edit:");
+    if (entered !== note.password) return alert("Wrong password!");
   }
-}
 
-function editNoteContent(noteId) {
-  let note = notes[noteId];
-  popupTitle.innerText = "Edit Note";
-  addBtn.innerText = "Update Note";
+  isUpdate = true;
+  updateId = id;
+
   titleTag.value = note.title;
-  descTag.value = note.description.replaceAll('<br/>', '\n');
+  descTag.value = note.description.replaceAll("<br/>", "\n");
   tagsTag.value = note.tags.join(", ");
   passwordTag.value = note.password || "";
 
-  isUpdate = true;
-  updateId = noteId;
-
-  popupBox.classList.add("show");
-  document.querySelector("body").style.overflow = "hidden";
-  if(window.innerWidth > 660) titleTag.focus();
+  popupBox.classList.add("active");
 }
 
-function deleteNoteById(noteId) {
-  notes.splice(noteId, 1);
+
+// 🗑 DELETE
+function deleteNote(id) {
+  let note = notes[id];
+
+  if (note.password) {
+    let entered = prompt("Enter password to delete:");
+    if (entered !== note.password) return alert("Wrong password!");
+  }
+
+  notes.splice(id, 1);
   localStorage.setItem("notes", JSON.stringify(notes));
   showNotes();
 }
 
-addBtn.addEventListener("click", e => {
+
+// ➕ ADD / UPDATE NOTE
+form.addEventListener("submit", (e) => {
   e.preventDefault();
-  let title = titleTag.value.trim(),
-    description = descTag.value.trim().replaceAll('\n', '<br/>'),
-    tags = tagsTag.value.trim().split(",").map(tag => tag.trim()),
-    password = passwordTag.value.trim();
 
-  if(title || description) {
-    let currentDate = new Date(),
-      month = months[currentDate.getMonth()],
-      day = currentDate.getDate(),
-      year = currentDate.getFullYear();
+  let title = titleTag.value.trim();
+  let description = descTag.value.trim().replaceAll("\n", "<br/>");
+  let tags = tagsTag.value.split(",").map(t => t.trim());
+  let password = passwordTag.value.trim();
 
-    let noteInfo = {
-      title,
-      description,
-      tags,
-      password,
-      isUnlocked: false,
-      date: `${month} ${day}, ${year}`
-    };
+  if (!title && !description) return;
 
-    if(!isUpdate) {
-      notes.push(noteInfo);
-    } else {
-      isUpdate = false;
-      notes[updateId] = noteInfo;
-    }
+  let date = new Date();
+  let noteData = {
+    title,
+    description,
+    tags,
+    password,
+    isUnlocked: false,
+    date: `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+  };
 
-    localStorage.setItem("notes", JSON.stringify(notes));
-    showNotes();
-    closeIcon.click();
+  if (isUpdate) {
+    notes[updateId] = noteData;
+    isUpdate = false;
+  } else {
+    notes.push(noteData);
   }
+
+  localStorage.setItem("notes", JSON.stringify(notes));
+  form.reset();
+  popupBox.classList.remove("active");
+
+  showNotes();
 });
 
-searchInput.addEventListener("input", e => {
-  const searchText = e.target.value.toLowerCase();
-  const filteredNotes = notes.filter(note => 
-    note.title.toLowerCase().includes(searchText) || 
-    note.description.toLowerCase().includes(searchText) ||
-    note.tags.some(tag => tag.toLowerCase().includes(searchText))
+
+// 🔍 SEARCH
+searchInput.addEventListener("input", (e) => {
+  let text = e.target.value.toLowerCase();
+
+  let filtered = notes.filter(note =>
+    note.title.toLowerCase().includes(text) ||
+    note.description.toLowerCase().includes(text) ||
+    note.tags.some(tag => tag.toLowerCase().includes(text))
   );
-  showNotes(filteredNotes);
+
+  showNotes(filtered);
 });
+
+
+// ➕ OPEN / CLOSE POPUP
+addBox.addEventListener("click", () => {
+  popupBox.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+  popupBox.classList.remove("active");
+});
+
+
+// INIT
+showNotes();
