@@ -172,6 +172,34 @@ body {
 #t4 { background: linear-gradient(135deg, #000, #a855f7); }
 #t5 { background: linear-gradient(135deg, #001a1a, #00ffcc); }
 
+
+.sunset {
+  background: linear-gradient(135deg, #1a0533, #f5c842);
+  color: white;
+}
+
+.ocean {
+  background: linear-gradient(135deg, #0a1628, #00d4ff);
+  color: white;
+}
+
+.forest {
+  background:  linear-gradient(135deg, #0a1f0a, #7fff00);;
+  color: white;
+}
+
+.midnight {
+  background:  linear-gradient(135deg, #000, #a855f7); ;
+  color: white;
+}
+
+.aurora {
+  background: linear-gradient(135deg, #001a1a, #00ffcc);;
+  color: white;
+}
+
+
+
 /* ====== MAIN ====== */
 main {
   max-width: 860px;
@@ -408,6 +436,7 @@ main {
 }
 
 /* ====== TASK CARD ====== */
+
 .task-card {
   display: flex;
   align-items: center;

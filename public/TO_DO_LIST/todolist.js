@@ -4,6 +4,20 @@ let pdfMessage = document.getElementById("pdfMessage");
 
 let currentTheme = "theme1"; // Default theme
 
+function applyTheme(theme) {
+  document.body.classList.remove(
+    'sunset',
+    'ocean',
+    'forest',
+    'midnight',
+  'aurora'
+  );
+
+  document.body.classList.add(theme);
+
+  localStorage.setItem("theme", theme);
+}
+
 // Task types with updated labels, values, and colors
 const taskTypes = [
   { label: "Select Type", value: "", color: "white" },
@@ -13,6 +27,25 @@ const taskTypes = [
   { label: "Fitness", value: "Fitness", color: "#B1EE99" }, // Vibrant Green
   { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
 ];
+
+
+function addTask() {
+
+  let input = document.getElementById("task-input");
+  let task = input.value;
+  
+  if (task === "") return;
+//empty message when no tasks are added
+ document.getElementById("empty-state").style.display = "none";
+//tasks displayes when tasks added
+
+let taskItem = document.createElement("div");
+taskItem.className = "task-card";
+taskItem.textContent = task;
+  document.getElementById("task-list").appendChild(taskItem);
+  input.value = "";
+  console.log("clicked");
+}
 
 function Add() {
 
