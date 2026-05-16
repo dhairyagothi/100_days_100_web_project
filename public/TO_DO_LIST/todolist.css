@@ -392,6 +392,93 @@ main {
   min-height: 80px;
 }
 
+/* Task card layout helpers */
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+.task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Space Mono', monospace;
+  flex-wrap: wrap;
+}
+.struck {
+  text-decoration: line-through !important;
+  color: var(--text-muted) !important;
+}
+
+/* Delete button (matches .task-del styles) */
+.task-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  font-size: 13px;
+  line-height: 1;
+}
+.task-card:hover .task-delete { opacity: 1; }
+.task-delete:hover {
+  background: rgba(255,80,80,0.2);
+  color: #ff8080;
+}
+
+/* Documents tab items */
+.document-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  flex-wrap: wrap;
+  transition: background 0.2s;
+}
+.document-item:hover { background: var(--card-hover); }
+.document-item span {
+  flex: 1;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+  word-break: break-all;
+}
+.document-item button {
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.document-item button:hover {
+  background: var(--accent);
+  color: #111;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
 .empty-state {
   display: flex;
   flex-direction: column;

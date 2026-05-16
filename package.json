@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/dhairyagothi/100_days_100_web_project/issues"
   },
-  "homepage": "https://github.com/dhairyagothi/100_days_100_web_project#readme"
+  "homepage": "https://github.com/dhairyagothi/100_days_100_web_project#readme",
+  "devDependencies": {
+    "serve": "^14.2.6"
+  }
 }
