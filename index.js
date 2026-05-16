@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 100 Days 100 Web Projects - Main Script
  * Author: Dhairya Gothi & Sweksha Kakkar (Issue #1209)
  * Goal: Implemented Technology & Category Filters with Multi-select logic
