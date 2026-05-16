@@ -1,6 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="todolist.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">TaskFlow ✦</div>
+
+        <div class="nav-links">
+            <button class="nav-btn active" id="home-nav">Home</button>
+            <button class="nav-btn" id="docs-nav">Documents</button>
+        </div>
+
+        <div class="theme-toggle" id="theme-toggle">
+
+    <div class="toggle-circle"></div>
+
+</div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <div class="container" id="home-page">
+
+        <div class="header">
+            <h1>My Tasks</h1>
+            <p class="subtitle">Stay focused. Get things done.</p>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="todo-input" placeholder="Add a new task…" />
+            
+            <button id="add-task-btn">+ Add</button>
+        </div>
+
+        <div class="toolbar">
+
+            <!-- SAVE DOCUMENT -->
+            <button id="save-doc-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                    <polyline points="17 21 17 13 7 13 7 21"/>
+                    <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                Save Document
+            </button>
+
+            <!-- PRINT -->
+            <button id="print-btn">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="6 9 6 2 18 2 18 9"/>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                    <rect x="6" y="14" width="12" height="8"/>
+                </svg>
+                Export PDF
+            </button>
+
+        </div>
+
+        <div class="task-meta">
+            <div>Tasks</div>
+            <div><span id="task-count">0</span> remaining</div>
+        </div>
+
+        <div class="progress-section">
+
+    <div class="progress-info">
+        <span>Progress</span>
+        <span id="progress-percent">0%</span>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+</div>
+
+        <ul id="todo-list"></ul>
+
+        <div class="empty-state" id="empty-state">
+            Nothing here yet — add your first task above ✦
+        </div>
+    </div>
+
+    <!-- DOCUMENTS PAGE -->
+    <div class="documents-page hidden" id="documents-page">
+
+        <div class="documents-header">
+            <h2>Saved Documents</h2>
+            <p>Your saved task snapshots ✦</p>
+        </div>
+
+        <div id="documents-list" class="documents-list"></div>
+
+    </div>
+
+    <script src="todolist.js"></script>
+</body>
+</html>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To-Do List | 100 Days 100 Projects</title>
@@ -11,6 +111,7 @@
   <link rel="stylesheet" href="todolist.css" />
 </head>
 <body>
+
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-brand">
@@ -143,5 +244,7 @@
   <script src="todolist.js"></script>
 </body>
 </html>
+
+
   
 
