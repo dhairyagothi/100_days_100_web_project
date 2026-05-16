@@ -254,3 +254,12 @@ header .right{
     width: 100px;
     background-size: cover ;
 }
+.foot-panel2 ul a{
+    display: block;
+    color: #dddddd;
+    font-size: 0.85rem;
+    margin-top: 10px;
+}
+.foot-panel2 ul{
+    margin-top: 20px;
+}
