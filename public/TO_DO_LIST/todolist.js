@@ -73,6 +73,7 @@ function Add() {
     return;
   }
 
+  // Create a note container
   const note = document.createElement("div");
   note.className = "notes";
   note.style.backgroundColor = themeConfig[currentTheme].noteColor;
@@ -103,8 +104,9 @@ function Add() {
 
   // ── Category Dropdown ──
   const dropdown = document.createElement("select");
-  dropdown.className = "note-type";
+  dropdown.style.marginLeft = "10px";
 
+  // Populate dropdown with task types
   taskTypes.forEach((taskType) => {
     const option = document.createElement("option");
     option.value = taskType.value;
