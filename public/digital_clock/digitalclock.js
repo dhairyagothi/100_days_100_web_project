@@ -90,9 +90,6 @@ function setClockStyleAndFormat(face, format) {
 function setClockFace(face) {
   const display = document.getElementById('display');
   display.className = `relative font-mono text-4xl md:text-5xl border-4 rounded-lg p-4 mb-4 ${face}`;
-
-  const clock = document.getElementById('clock');
-  clock.className = `relative font-mono text-4xl md:text-5xl border-4 rounded-lg p-4 ${face}`;
 }
 
 function getMonthName(monthNumber) {

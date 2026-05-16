@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -60,6 +61,32 @@
                 </button>
             </div>
         </div>
+        <!-- Category Filter Buttons | Issue #1209 | Sweksha Kakkar -->
+        <div class="filter-container">
+          <div class="filter-group">
+            <span class="filter-label">Category:</span>
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="game">🎮 Game</button>
+            <button class="filter-btn" data-category="api">🌐 API</button>
+            <button class="filter-btn" data-category="javascript">⚡ JavaScript</button>
+            <button class="filter-btn" data-category="css">🎨 CSS</button>
+            <button class="filter-btn" data-category="canvas">🖼️ Canvas</button>
+            <button class="filter-btn" data-category="todo">📝 Todo</button>
+            <button class="filter-btn" data-category="weather">🌤️ Weather</button>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Difficulty:</span>
+            <button class="filter-btn difficulty-btn" data-category="beginner">🟢 Beginner</button>
+            <button class="filter-btn difficulty-btn" data-category="intermediate">🟡 Intermediate</button>
+          </div>
+        </div>
+
+        
+<div class="stats-counter">
+  Words: <span id="wordCount">0</span> | 
+  Letters: <span id="charCount">0</span>
+</div>
+
     </section>
 
     <section class="projects-section">

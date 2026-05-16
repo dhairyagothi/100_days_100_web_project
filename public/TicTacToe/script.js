@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultMessage = document.getElementById('resultMessage');
     const closeModal = document.getElementById('closeModal');
     const newGameButton = document.getElementById('newGame');
+    const restartGameButton = document.getElementById('restartGame');
     const playerXWins = document.getElementById('playerXWins');
     const playerOWins = document.getElementById('playerOWins');
     const draws = document.getElementById('draws');
@@ -84,6 +85,18 @@ document.addEventListener('DOMContentLoaded', () => {
         cells.forEach(cell => cell.textContent = '');
     }
 
+    function restartGame() {
+    boardState = Array(9).fill('');
+    currentPlayer = 'X';
+    gameActive = true;
+
+    cells.forEach(cell => {
+        cell.textContent = '';
+    });
+
+    modal.style.display = 'none';
+}
+
     function determineOverallWinner() {
         let winnerMessage;
 
@@ -113,6 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gameActive = true;
         cells.forEach(cell => cell.textContent = '');
     });
+
+    restartGameButton.addEventListener('click', restartGame);
 
     const resetScoreboardButton = document.getElementById('resetScoreboard');
     resetScoreboardButton.addEventListener('click', () => {

@@ -1,4 +1,6 @@
 console.log("This is my script")
+let submitBtn = document.getElementById("submitBtn")
+let resultCont = document.getElementById("resultCont")
 let result = {
 
     "tag": "",
@@ -18,32 +20,58 @@ let result = {
     "format_valid": true
 
 }
-
-
 submitBtn.addEventListener("click", async (e) => {
     e.preventDefault()
-    console.log("Clicked")
-    resultCont.innerHTML=`<img width="123" src="img/loading.svg" alt="">`
-    let key = "ema_live_tkRl4T1AMrlwioPCHxe8r1HmTSKkJSLehW9Ti42B"
     let email = document.getElementById("username").value
-    let url = `https://api.emailvalidation.io/v1/info?apikey=${key}&email=${email}`
-    let res = await fetch(url)
-    let result = await res.json()
-    let str = ``
-    for (key of Object.keys(result)) {
-        if(result[key] !== "" && result[key]!==" "){
-            str = str + `<div>${key}:${result[key]}</div>`
-        }
+    if(email.trim() === ""){
+        resultCont.innerHTML = `
+        <div class="error">
+            Please enter an email address.
+        </div>
+        `
+        return
     }
+    resultCont.innerHTML = `
+<div class="loading-container">
+    <img width="60" src="loading.svg" alt="Loading">
+    <p>Validating email... Please wait</p>
+</div>
+`
 
-    console.log(str)
-    resultCont.innerHTML = str
+    try{
 
+        let key = "ema_live_tkRl4T1AMrlwioPCHxe8r1HmTSKkJSLehW9Ti42B"
 
+        let url = `https://api.emailvalidation.io/v1/info?apikey=${key}&email=${email}`
 
+        let res = await fetch(url)
+
+        let result = await res.json()
+
+        let str = ``
+
+        for (let key of Object.keys(result)) {
+
+            if(result[key] !== "" && result[key] !== " ") {
+
+                str += `
+                <div class="result-item">
+                    <strong>${key}:</strong> ${result[key]}
+                </div>
+                `
+            }
+        }
+
+        resultCont.innerHTML = str
+
+    }
+    catch(error){
+
+        resultCont.innerHTML = `
+        <div class="error">
+            Something went wrong while validating the email.
+        </div>
+        `
+        console.log(error)
+    }
 })
-
-
-
-
-
