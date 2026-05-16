@@ -1,0 +1,162 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0f172a,#111827);
+  transition:0.3s;
+  color:white;
+  padding:20px;
+}
+
+body.light{
+  background:linear-gradient(135deg,#e2e8f0,#cbd5e1);
+  color:#111;
+}
+
+.container{
+  width:100%;
+  max-width:700px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:25px;
+  padding:40px;
+  text-align:center;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
+
+.logo{
+  width:120px;
+  margin-bottom:15px;
+}
+
+h1{
+  font-size:2.5rem;
+  margin-bottom:10px;
+}
+
+.subtitle{
+  opacity:0.7;
+  margin-bottom:30px;
+}
+
+.search-box{
+  display:flex;
+  gap:10px;
+  margin-bottom:30px;
+}
+
+.search-box input{
+  flex:1;
+  padding:15px;
+  border:none;
+  outline:none;
+  border-radius:12px;
+  font-size:16px;
+}
+
+.search-box button{
+  width:60px;
+  border:none;
+  border-radius:12px;
+  background:#2563eb;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.search-box button:hover{
+  transform:scale(1.05);
+}
+
+.profile-card img{
+  width:140px;
+  border-radius:50%;
+  border:4px solid white;
+  margin-bottom:15px;
+}
+
+.profile-card h2{
+  margin-bottom:5px;
+}
+
+.profile-card p{
+  margin:8px 0;
+}
+
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin:20px 0;
+  flex-wrap:wrap;
+}
+
+.stats div{
+  background:rgba(255,255,255,0.08);
+  padding:15px;
+  border-radius:15px;
+  min-width:100px;
+}
+
+.profile-card a{
+  display:inline-block;
+  margin-top:15px;
+  padding:12px 20px;
+  background:#2563eb;
+  color:white;
+  text-decoration:none;
+  border-radius:12px;
+}
+
+.error{
+  color:#ff6b6b;
+  font-size:18px;
+}
+
+
+.theme-toggle{
+  position:absolute;
+  top:20px;
+  right:20px;
+  width:50px;
+  height:50px;
+  background:white;
+  color:black;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  font-size:20px;
+}
+
+@media(max-width:600px){
+
+  .container{
+    padding:25px;
+  }
+
+  h1{
+    font-size:2rem;
+  }
+
+  .search-box{
+    flex-direction:column;
+  }
+
+  .search-box button{
+    width:100%;
+    height:55px;
+  }
+
+}

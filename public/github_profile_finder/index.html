@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>GitHub Profile Finder</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="theme-toggle" id="themeToggle">
+    <i class="fa-solid fa-moon"></i>
+  </div>
+
+  <div class="container">
+
+    <img src="Images\android-chrome-192x192.png" class="logo" alt="logo">
+
+    <h1>GitHub Profile Finder</h1>
+
+    <p class="subtitle">
+      Search any GitHub developer profile instantly
+    </p>
+
+    <div class="search-box">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter GitHub username..."
+      >
+
+      <button id="searchBtn">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </div>
+
+    <div id="profileContainer"></div>
+
+   
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
