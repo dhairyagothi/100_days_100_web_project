@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GravitySim</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 id="appTitle"><span>GravitySim</span></h1>
+    <canvas id="canvas"></canvas>
+    <button id="clearBtn">Clear All</button>
+    <div id="ui">
+      <div class="control-group">
+        <label>Color</label>
+        <div id="colorPicker">
+            <button class="color-btn selected" data-color="white" style="background: white; color: white;"></button>
+            <button class="color-btn" data-color="#ff4d4d" style="background: #ff4d4d; color: #ff4d4d;"></button>
+            <button class="color-btn" data-color="#00aaff" style="background: #00aaff; color: #00aaff;"></button>
+            <button class="color-btn" data-color="#00ffcc" style="background: #00ffcc; color: #00ffcc;"></button>
+            <button class="color-btn" data-color="#ffcc00" style="background: #ffcc00; color: #ffcc00;"></button>
+        </div>
+      </div>
+      <div class="control-group" style="flex-direction: row; align-items: center; justify-content: space-between;">
+        <label for="randVelToggle" style="cursor: pointer;">Random Velocity</label>
+        <label class="switch">
+            <input type="checkbox" id="randVelToggle">
+            <span class="slider-toggle"></span>
+        </label>
+      </div>
+      <div class="control-group">
+        <label>Radius: <span id="val">20</span></label>
+        <input id="radiusSlider" type="range" min="5" max="50" value="20">
+      </div>
+    </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
