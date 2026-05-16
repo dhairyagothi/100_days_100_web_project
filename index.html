@@ -19,6 +19,10 @@
             <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
             <span>100 DAYS 100 WEB PROJECTS</span>
         </div>
+        <div class="nav-streak" title="Your daily login streak!">
+            <span class="nav-streak-fire">🔥</span>
+            <span id="current-streak">0</span> Day Streak
+        </div>
         <div class="buttons">
             <button id="theme-toggle" title="Toggle Theme">
                 <i class="fas fa-moon"></i>
@@ -66,7 +70,7 @@
     <section class="projects-section">
         <div class="table-container">
             <table>
-                
+
                 <thead>
                     <tr>
                         <th>Day</th>
@@ -121,34 +125,35 @@
 
     <script src="index.js"></script>
     <style>
-       #try-readme-button {
-    margin-top: 1rem;
-    padding: 14px 26px;
-    border-radius: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+        #try-readme-button {
+            margin-top: 1rem;
+            padding: 14px 26px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
 
-    background: linear-gradient(135deg, #7f5af0, #2cb67d);
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
+            background: linear-gradient(135deg, #7f5af0, #2cb67d);
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
 
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
-}
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
+        }
 
-#try-readme-button:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
-}
-#try-readme-button i {
-    transition: transform 0.3s ease;
-}
+        #try-readme-button:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
+        }
 
-#try-readme-button:hover i {
-    transform: rotate(-30deg) scale(1.2);
-}
+        #try-readme-button i {
+            transition: transform 0.3s ease;
+        }
+
+        #try-readme-button:hover i {
+            transform: rotate(-30deg) scale(1.2);
+        }
     </style>
 </body>
 

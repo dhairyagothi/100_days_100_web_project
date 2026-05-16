@@ -532,7 +532,6 @@ tbody td a:hover {
 
 .light-theme .card {
     background-color: #eaeaea;
-feature/pagination-project-list
 }
 
 .pagination-container {
@@ -564,4 +563,62 @@ feature/pagination-project-list
 .pagination-container button:hover {
     opacity: 0.9
 
+}
+
+.navbar .nav-streak {
+  font-family: 'Orbitron', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  
+
+  padding: 10px 18px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  white-space: nowrap !important;
+
+  margin-left: auto !important;
+  margin-right: 15px !important;
+  
+  cursor: default;
+  transition: all 0.3s ease !important;
+}
+
+.navbar .nav-streak:hover {
+  background: rgba(0, 255, 136, 0.06) !important;
+  border-color: rgba(0, 255, 136, 0.4) !important;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.15) !important;
+}
+
+.navbar .nav-streak-fire {
+  font-size: 1rem !important;
+  display: inline-block !important;
+  animation: navFlamePulse 1.5s infinite alternate ease-in-out !important;
+}
+
+.navbar #current-streak {
+  color: #00ff88 !important; 
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.5) !important;
+}
+
+@keyframes navFlamePulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px #00ff88); }
+  100% { transform: scale(1.15); filter: drop-shadow(0 0 6px #00ff88); }
+}
+
+@media (max-width: 900px) {
+  .navbar .nav-streak {
+    padding: 8px 12px !important;
+    font-size: 0.75rem !important;
+    margin-right: 5px !important;
+  }
 }

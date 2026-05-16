@@ -439,3 +439,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+const streakKey = 'user_streak_data';
+
+function updateStreak() {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+
+    let data = JSON.parse(localStorage.getItem(streakKey)) || {
+        currentStreak: 0,
+        longestStreak: 0,
+        lastDate: null
+    };
+
+    const oneDay = 24 * 60 * 60 * 1000; 
+
+    if (data.lastDate) {
+        const lastDate = new Date(data.lastDate).getTime();
+        const diff = today - lastDate;
+
+        if (diff === oneDay) {
+            data.currentStreak++;
+        } else if (diff > oneDay) {
+            data.currentStreak = 1;
+        }
+    } else {
+        data.currentStreak = 1;
+    }
+
+    if (data.currentStreak > data.longestStreak) {
+        data.longestStreak = data.currentStreak;
+    }
+
+    data.lastDate = today;
+    localStorage.setItem(streakKey, JSON.stringify(data));
+    
+    renderStreak(data);
+}
+
+function renderStreak(data) {
+    const streakElement = document.getElementById('current-streak');
+    if (streakElement) {
+        streakElement.innerText = data.currentStreak;
+    }
+}
+
+updateStreak();
