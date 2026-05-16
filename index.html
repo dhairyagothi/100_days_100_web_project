@@ -157,7 +157,7 @@
         </div>
 
         <div class="footer-bottom">
-            <span>© 2024 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
+            <span>© <span id="currentYear"></span> 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
             <button id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
                 <i class="fas fa-moon"></i>
             </button>
@@ -171,5 +171,6 @@
 
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
+    <script>document.getElementById("currentYear").textContent = new Date().getFullYear();</script>
 </body>
 </html>
