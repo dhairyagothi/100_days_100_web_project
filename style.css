@@ -1059,3 +1059,33 @@ body.light-mode .navbar {
     font-size: 11px;
   }
 }
+
+/* Navbar responsiveness */
+
+@media (max-width:768px) {
+    .navbar{
+        padding: 0 1rem;
+        flex-wrap: wrap;
+        height: auto;
+        gap:0.8rem;
+    }
+    .brand-copy{
+        text-align: center;
+        font-size: 0.9rem;
+    }
+    .brand-kicker{
+        display: block;
+    }
+    .nav-buttons{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .nav-buttons .btn{
+        width: 100%;
+        max-width: 220px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
