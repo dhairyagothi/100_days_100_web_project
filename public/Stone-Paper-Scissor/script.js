@@ -15,6 +15,10 @@ const opt_P3 = document.getElementById("opt-P3");
 const com_score = document.getElementById("comscore");
 const your_score = document.getElementById("youscore");
 
+let currentMode = "single";
+let playerTurn = 1;
+let player1Choice = "";
+
 if (
   localStorage.getItem("clickcount") === null &&
   localStorage.getItem("clickcount2") === null
@@ -71,6 +75,25 @@ function displayscore() {
   com_score.innerHTML = localStorage.clickcount2;
 }
 displayscore();
+
+function setMode(mode){
+  currentMode = mode;
+  playerTurn = 1;
+  player1Choice = "";
+
+  document.getElementById("currentMode").innerText =
+    mode === "single"
+      ? "Current Mode: Single Player"
+      : "Current Mode: Multiplayer";
+
+  alert(
+    mode === "single"
+      ? "Single Player selected"
+      : "Multiplayer selected"
+  );
+}
+
+
 function popup() {
   getRuleBox.style.display = "block";
 }
@@ -149,49 +172,72 @@ function draw(userOutput, pcOutput) {
   while (opt_P3.firstChild) opt_P3.firstChild.remove();
   opt_P3.appendChild(cloneP);
 }
-function game(userChoice) {
+
+function game(userChoice){
+
+  if(currentMode === "multi"){
+    if(playerTurn === 1){
+      player1Choice = userChoice;
+      playerTurn = 2;
+      alert("Player 2 turn");
+      return;
+    }
+
+    let player2Choice = userChoice;
+    playerTurn = 1;
+
+    let userOutput =
+      player1Choice === "rock" ? getRock :
+      player1Choice === "paper" ? getPaper : getScissor;
+
+    let pcOutput =
+      player2Choice === "rock" ? getRock :
+      player2Choice === "paper" ? getPaper : getScissor;
+
+    switch(player1Choice + player2Choice){
+      case "paperrock":
+      case "rockscissor":
+      case "scissorpaper":
+        win(userOutput, pcOutput);
+        break;
+
+      case "rockpaper":
+      case "scissorrock":
+      case "paperscissor":
+        loses(userOutput, pcOutput);
+        break;
+
+      default:
+        draw(userOutput, pcOutput);
+    }
+
+    return;
+  }
+
   const computerChoice = getComputerChoice();
-  var computerOutput = "";
-  var userOutput = "";
 
-  if (userChoice === "rock") {
-    userOutput = getRock;
-  } else if (userChoice === "paper") {
-    userOutput = getPaper;
-  } else if (userChoice === "scissor") {
-    userOutput = getScissor;
-  }
-  console.log(userOutput);
-  if (computerChoice === "rock") {
-    computerOutput = getRock;
-  } else if (computerChoice === "paper") {
-    computerOutput = getPaper;
-  } else if (computerChoice === "scissor") {
-    computerOutput = getScissor;
-  }
+  let userOutput =
+    userChoice === "rock" ? getRock :
+    userChoice === "paper" ? getPaper : getScissor;
 
-  console.log(computerOutput);
+  let computerOutput =
+    computerChoice === "rock" ? getRock :
+    computerChoice === "paper" ? getPaper : getScissor;
 
-  switch (userChoice + computerChoice) {
+  switch(userChoice + computerChoice){
     case "paperrock":
     case "rockscissor":
     case "scissorpaper":
-      // win(userChoice, computerChoice, userOutput, computerOutput);
       win(userOutput, computerOutput);
-      console.log("user wins");
       break;
+
     case "rockpaper":
     case "scissorrock":
     case "paperscissor":
-      // loses(userChoice, computerChoice, userOutput, computerOutput);
       loses(userOutput, computerOutput);
-      console.log("computer wins");
       break;
-    case "rockrock":
-    case "scissorscissor":
-    case "paperpaper":
+
+    default:
       draw(userOutput, computerOutput);
-      console.log("draw");
-      break;
   }
 }
