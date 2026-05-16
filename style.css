@@ -162,6 +162,7 @@ body {
     color: #000 !important;
 }
 
+#theme-toggle,
 #themeToggle {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -177,6 +178,7 @@ body {
     transition: var(--transition);
 }
 
+#theme-toggle:hover,
 #themeToggle:hover {
     background: var(--accent-color);
     color: #000;
@@ -528,6 +530,7 @@ tbody td a:hover {
     thead { display: none; }
     tbody td { padding: 1.2rem 1rem; }
 }
+<<<<<<< HEAD
 .light-theme {
     background-color: #ffffff;
     color: #000000;
@@ -540,6 +543,14 @@ tbody td a:hover {
 .light-theme .card {
     background-color: #eaeaea;
 feature/pagination-project-list
+=======
+
+.stats-counter {
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    margin-top: 8px;
+    font-size: 14px;
+>>>>>>> 9d2f5581 (fix: restore deployed index.js with pagination and add Day 119 - The Last Tab)
 }
 
 .pagination-container {
@@ -565,6 +576,7 @@ feature/pagination-project-list
     opacity: 0.5;
     cursor: not-allowed;
 }
+<<<<<<< HEAD
 #no-projects {
     display: none;
 }
@@ -643,3 +655,13 @@ feature/pagination-project-list
     font-size: 11px;
   }
 }
+=======
+
+.pagination-container button:hover {
+    opacity: 0.9;
+}
+
+#no-projects {
+    display: none;
+}
+>>>>>>> 9d2f5581 (fix: restore deployed index.js with pagination and add Day 119 - The Last Tab)
