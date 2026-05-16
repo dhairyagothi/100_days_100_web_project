@@ -159,6 +159,14 @@
     font-size: 1.2em;
     color: #555;
   }
+  .instructions{
+  background-color:#f5f5f5;
+  padding:15px;
+  margin:15px auto;
+  width:60%;
+  border-radius:10px;
+  text-align:center;
+}
   
   @keyframes slideIn {
     from {

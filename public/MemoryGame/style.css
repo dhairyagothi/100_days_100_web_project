@@ -88,6 +88,11 @@ h1 {
 .card.flipped .card-inner {
     transform: rotateY(180deg);
 }
+.instructions{
+  padding:10px;
+  margin:10px;
+  text-align:center;
+}
 
 /* Responsive adjustments */
 @media (max-width: 500px) {
