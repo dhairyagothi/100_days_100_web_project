@@ -34,3 +34,19 @@ https://myechonotes.netlify.app/
 ## Author
 **Mneeha**  
 Customized with ❤️ — designed to make note-taking fun and beautiful.
+
+## Contributing
+
+Thank you for considering improvements to Echo Notes! Please follow the repository-level `CONTRIBUTING.md` for general contribution guidelines.
+
+Quick pointers specific to this project:
+
+- Run the app by opening `public/EchoNotes/index.html` (or serve via a static server).
+- When editing `script.js` or `styles.css`, keep changes small and test in multiple browsers.
+- Use the issue and pull request templates in `.github/` when filing bugs or opening PRs.
+- Before opening a PR, ensure:
+	- The feature or fix works as described
+	- No console errors appear in DevTools
+	- You reference related issues in the PR description
+
+If you are unsure where to start, check open issues or create a new issue describing your idea.

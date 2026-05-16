@@ -1,182 +1,648 @@
-
-.patrick-hand-regular {
-  font-family: "Patrick Hand", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: "Patrick Hand", cursive;
-  font-weight: 400;
-  font-style: normal;
+}
 
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  background: #e3e6e777;
-  color: #051431c0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #2d3748;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
 }
 
-/* HEADER */
+/* ============================================
+   HEADER STYLES
+   ============================================ */
+
 .header-area {
-  text-align: center;
-  margin-top: 30px;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 30px;
+  animation: slideDown 0.6s ease-out;
 }
 
-.header-area h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.logo-section {
+  text-align: center;
+  color: white;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tagline {
+  font-size: 0.95rem;
+  font-weight: 300;
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================
+   NAVIGATION STYLES
+   ============================================ */
 
 .main-nav {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.main-nav a {
-  text-decoration: none;
-  color: #64748b;
-  padding: 8px 14px;
-  border-radius: 20px;
-  transition: all 0.2s ease;
-}
-
-.main-nav a.active,
-.main-nav a:hover {
-  background: #6366f1;
+.nav-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: white;
-  box-shadow: 0 4px 10px rgba(99,102,241,0.2);
-}
-
-/* NOTE SECTION */
-.note-section {
-  margin-top: 40px;
-  width: 90%;
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* Title Input */
-#noteTitle {
-  padding: 12px 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  background: white;
-  font-size: 1rem;
-  box-shadow: 0 6px 20px rgba(12,15,40,0.05);
-  outline: none;
-
-}
-#noteContent {
-  width: 100%;
-  min-height: 380px;
-  padding: 18px 22px;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  font-size: 19px;
-  font-family: "Patrick Hand", cursive;
-  color: #000;
-  line-height: 1.6;
-  background: #fff;
-  resize: vertical;
-  outline: none;
-  box-shadow: 0 6px 20px rgba(12, 15, 40, 0.05);
-  white-space: pre-wrap;
-}
-
-
-.note-section {
-  margin-top: 40px;
-  width: 90%;
-  max-width: none;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.note-area span {
-  transition: font-size 0.2s ease;
-}
-.note-area span:hover {
-  font-size: 1.2rem;
-}
-.size-dropdown {
-  position: absolute;
-  background: white;
-  border: 1px solid #e2e8f0;
+  padding: 8px 12px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 6px;
-  display: none;
-  z-index: 1000;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  font-weight: 500;
 }
 
-.size-dropdown.visible {
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-btn:active {
+  transform: translateY(0);
+}
+
+.separator {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 4px;
+}
+
+/* ============================================
+   NOTE CONTAINER STYLES
+   ============================================ */
+
+.note-container {
+  width: 100%;
+  max-width: 900px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-paper {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 40px;
   display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ============================================
+   NOTE TITLE STYLES
+   ============================================ */
+
+.note-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2d3748;
+  border: none;
+  border-bottom: 2px solid #f0f4f8;
+  padding: 10px 0;
+  outline: none;
+  transition: border-color 0.3s ease;
+  font-family: 'Playfair Display', serif;
+}
+
+.note-title:focus {
+  border-bottom-color: #667eea;
+}
+
+.note-title::placeholder {
+  color: #cbd5e0;
+}
+
+/* ============================================
+   NOTE CONTENT STYLES
+   ============================================ */
+
+.note-area {
+  min-height: 450px;
+  padding: 15px 0;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #2d3748;
+  outline: none;
+  border: none;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  font-family: 'Poppins', sans-serif;
+  resize: vertical;
+}
+
+.note-area:focus {
+  outline: none;
+}
+
+.note-area:empty::before {
+  content: "✍️ Start writing your thoughts here...";
+  color: #cbd5e0;
+  font-style: italic;
+}
+
+/* ============================================
+   NOTE META STYLES
+   ============================================ */
+
+.note-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+  color: #718096;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.char-count,
+.word-count {
+  display: flex;
+  align-items: center;
   gap: 5px;
 }
 
-.size-dropdown button {
-  border: none;
-  background: #f1f5f9;
-  border-radius: 6px;
-  padding: 5px 8px;
+.char-count i,
+.word-count i {
+  color: #667eea;
+}
+
+.saved-indicator {
+  margin-left: auto;
+  color: #48bb78;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.saved-indicator.unsaved {
+  color: #ed8936;
+}
+
+/* ============================================
+   DROPDOWN STYLES
+   ============================================ */
+
+.color-dropdown,
+.highlight-dropdown,
+.size-dropdown,
+.shapes-dropdown,
+.shape-color-dropdown {
+  position: absolute;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  display: none;
+  z-index: 1000;
+  animation: popIn 0.2s ease-out;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.color-dropdown.visible,
+.highlight-dropdown.visible,
+.size-dropdown.visible,
+.shapes-dropdown.visible,
+.shape-color-dropdown.visible {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 250px;
+}
+
+/* Color Dropdown Buttons */
+.color-dropdown button,
+.highlight-dropdown button {
+  width: 32px;
+  height: 32px;
+  border: 2px solid transparent;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+}
+
+.color-dropdown button:hover,
+.highlight-dropdown button:hover {
+  transform: scale(1.1);
+  border-color: #2d3748;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Size Dropdown Buttons */
+.size-dropdown button {
+  border: 1px solid #e2e8f0;
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2d3748;
+  transition: all 0.2s ease;
+  min-width: 45px;
 }
 
 .size-dropdown button:hover {
-  background: #6366f1;
+  background: #667eea;
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
-.color-dropdown {
-  position: absolute;
-  background: white;
-  border: 1px solid #e2e8f0;
+
+/* Shapes Dropdown Buttons */
+.shapes-dropdown button {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #e2e8f0;
+  background: #f7fafc;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 8px;
-  display: none;
-  z-index: 1000;
-}
-
-.color-dropdown.visible {
-  display: flex;
-  gap: 8px;
-}
-
-.color-dropdown button {
-  width: 24px;
-  height: 24px;
-  border: none;
-  border-radius: 50%;
   cursor: pointer;
-  background: none;
-  font-size: 20px;
-  transition: transform 0.2s ease;
+  font-size: 1.1rem;
+  color: #2d3748;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.color-dropdown button:hover {
-  transform: scale(1.2);
-}
-.main-nav a#saveNoteBtn:hover {
-  background: #6366f1;
+.shapes-dropdown button:hover {
+  background: #667eea;
   color: white;
-  box-shadow: 0 4px 10px rgba(16,185,129,0.3);
+  border-color: #667eea;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-.note-section {
-  background: rgba(255, 255, 255, 0.8); /* white with 80% opacity */
-  padding: 20px;
-  border-radius: 10px;
-  color: #000;
-  backdrop-filter: blur(20px); /* optional: adds frosted glass effect */
+/* Shape Color Dropdown */
+.shape-color-dropdown button {
+  width: 32px;
+  height: 32px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shape-color-dropdown button:hover {
+  transform: scale(1.15);
+  border-color: #2d3748;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   SHAPE ELEMENTS STYLES
+   ============================================ */
+
+.note-shape {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 4px;
+  position: relative;
+  cursor: move;
+  user-select: none;
+  transition: all 0.2s ease;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+}
+
+.note-shape:hover {
+  filter: brightness(1.1);
+  transform: scale(1.05);
+}
+
+.note-shape.selected {
+  outline: 2px dashed #667eea;
+  outline-offset: 4px;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+}
+
+.shape-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #667eea;
+}
+
+.shape-rectangle {
+  width: 70px;
+  height: 50px;
+  background: #667eea;
+  border-radius: 4px;
+}
+
+.shape-triangle {
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 50px solid #667eea;
+}
+
+.shape-star {
+  position: relative;
+  display: inline-block;
+  font-size: 2.5rem;
+  color: #667eea;
+}
+
+.shape-heart {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin: 0;
+}
+
+.shape-heart::before,
+.shape-heart::after {
+  position: absolute;
+  top: 8px;
+  content: "";
+  width: 20px;
+  height: 35px;
+  background: inherit;
+  border-radius: 20px 20px 0 0;
+}
+
+.shape-heart::before {
+  left: 0;
+}
+
+.shape-heart::after {
+  right: 0;
+}
+
+.shape-diamond {
+  width: 50px;
+  height: 50px;
+  background: #667eea;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.shape-line {
+  width: 60px;
+  height: 3px;
+  background: #667eea;
+  border-radius: 2px;
+}
+
+.shape-arrow {
+  position: relative;
+  width: 60px;
+  height: 3px;
+  background: #667eea;
+}
+
+.shape-arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid #667eea;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+/* ============================================
+   TOAST NOTIFICATION
+   ============================================ */
+
+.toast {
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #48bb78;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  transition: bottom 0.3s ease;
+  z-index: 2000;
+}
+
+.toast.show {
+  bottom: 20px;
+}
+
+.toast.error {
+  background: #f56565;
+}
+
+.toast.warning {
+  background: #ed8936;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1.8rem;
+  }
+
+  .tagline {
+    font-size: 0.85rem;
+  }
+
+  .note-paper {
+    padding: 25px;
+  }
+
+  .note-title {
+    font-size: 1.5rem;
+  }
+
+  .note-area {
+    min-height: 350px;
+    font-size: 0.95rem;
+  }
+
+  .main-nav {
+    gap: 6px;
+    padding: 10px 12px;
+  }
+
+  .nav-btn {
+    padding: 7px 10px;
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .note-meta {
+    font-size: 0.8rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .saved-indicator {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .tagline {
+    font-size: 0.75rem;
+  }
+
+  .note-paper {
+    padding: 15px;
+  }
+
+  .note-title {
+    font-size: 1.2rem;
+  }
+
+  .note-area {
+    min-height: 300px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .main-nav {
+    gap: 5px;
+    padding: 8px 10px;
+  }
+
+  .nav-btn {
+    padding: 6px 8px;
+    min-width: 34px;
+    min-height: 34px;
+    font-size: 0.8rem;
+  }
+
+  .separator {
+    display: none;
+  }
+
+  .note-meta {
+    font-size: 0.75rem;
+  }
+}
+
+/* ============================================
+   FORMATTING STYLES
+   ============================================ */
+
+.note-area strong {
+  font-weight: 600;
+}
+
+.note-area em {
+  font-style: italic;
+}
+
+.note-area u {
+  text-decoration: underline;
+}
+
+.note-area mark {
+  background-color: #ffd666;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

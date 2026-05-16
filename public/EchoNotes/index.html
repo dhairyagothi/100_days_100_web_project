@@ -3,33 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Echo Notes☁️</title>
+  <title>Echo Notes ☁️</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </head>
 <body>
+  <!-- Header -->
   <header class="header-area">
-    <h1>Echo Notes☁️</h1>
-    <nav class="main-nav">
-      <a href="#" id="clearNoteBtn">Clear</a>
-
-      <a href="#" id="saveNoteBtn">Save Note as Pdf</a>
-      <a href="#" id="changeColorBtn">Text Color</a>
-      <a href="#" id="changeSizeBtn">Text Size</a>
-
-    </nav>
+    <div class="header-content">
+      <div class="logo-section">
+        <h1 class="logo">✨ Echo Notes</h1>
+        <p class="tagline">Your thoughts, perfectly preserved</p>
+      </div>
+      <nav class="main-nav">
+        <button class="nav-btn" id="boldBtn" title="Bold"><i class="fas fa-bold"></i></button>
+        <button class="nav-btn" id="italicBtn" title="Italic"><i class="fas fa-italic"></i></button>
+        <button class="nav-btn" id="underlineBtn" title="Underline"><i class="fas fa-underline"></i></button>
+        <div class="separator"></div>
+        <button class="nav-btn" id="changeColorBtn" title="Text Color"><i class="fas fa-palette"></i></button>
+        <button class="nav-btn" id="highlightBtn" title="Highlight"><i class="fas fa-highlighter"></i></button>
+        <button class="nav-btn" id="changeSizeBtn" title="Text Size"><i class="fas fa-text-height"></i></button>
+        <div class="separator"></div>
+        <button class="nav-btn" id="shapesBtn" title="Add Shapes"><i class="fas fa-shapes"></i></button>
+        <div class="separator"></div>
+        <button class="nav-btn" id="undoBtn" title="Undo"><i class="fas fa-undo"></i></button>
+        <button class="nav-btn" id="redoBtn" title="Redo"><i class="fas fa-redo"></i></button>
+        <div class="separator"></div>
+        <button class="nav-btn" id="saveNoteBtn" title="Save as PDF"><i class="fas fa-file-pdf"></i></button>
+        <button class="nav-btn" id="clearNoteBtn" title="Clear Note"><i class="fas fa-trash"></i></button>
+      </nav>
+    </div>
   </header>
 
-  <main class="note-section">
-    <input id="noteTitle" type="text" placeholder="Title" />
-<div id="noteContent" contenteditable="true" class="note-area" spellcheck="false">
- 
-</div>
+  <!-- Main Content -->
+  <main class="note-container">
+    <div class="note-paper">
+      <input id="noteTitle" type="text" placeholder="✍️ Add a title..." class="note-title" />
+      <div id="noteContent" contenteditable="true" class="note-area" spellcheck="true"></div>
+      <div class="note-meta">
+        <span class="char-count"><i class="fas fa-keyboard"></i> <span id="charCount">0</span> characters</span>
+        <span class="word-count"><i class="fas fa-book"></i> <span id="wordCount">0</span> words</span>
+        <span class="saved-indicator" id="savedIndicator">✓ Saved</span>
+      </div>
+    </div>
   </main>
+
+  <!-- Dropdown Menus -->
+  <div id="colorDropdown" class="color-dropdown">
+    <button data-color="black" style="background: black; color: white;" title="Black">●</button>
+    <button data-color="red" style="background: #e53e3e;"></button>
+    <button data-color="orange" style="background: #ed8936;"></button>
+    <button data-color="green" style="background: #38a169;"></button>
+    <button data-color="blue" style="background: #3182ce;"></button>
+    <button data-color="purple" style="background: #805ad5;"></button>
+    <button data-color="pink" style="background: #d53f8c;"></button>
+    <button data-color="gray" style="background: #718096;"></button>
+  </div>
+
+  <div id="highlightDropdown" class="highlight-dropdown">
+    <button data-highlight="yellow" style="background: #ffd666;" title="Yellow"></button>
+    <button data-highlight="lime" style="background: #b3f5ff;" title="Cyan"></button>
+    <button data-highlight="pink" style="background: #ffb3e6;" title="Pink"></button>
+    <button data-highlight="green" style="background: #95de64;" title="Green"></button>
+    <button data-highlight="orange" style="background: #ffa940;" title="Orange"></button>
+    <button data-highlight="none" style="background: white; border: 2px solid #ddd;" title="Clear"></button>
+  </div>
+
+  <div id="sizeDropdown" class="size-dropdown">
+    <button data-size="12px">12</button>
+    <button data-size="14px">14</button>
+    <button data-size="16px">16</button>
+    <button data-size="18px">18</button>
+    <button data-size="20px">20</button>
+    <button data-size="24px">24</button>
+    <button data-size="28px">28</button>
+    <button data-size="32px">32</button>
+  </div>
+
+  <div id="shapesDropdown" class="shapes-dropdown">
+    <button data-shape="circle" title="Circle"><i class="fas fa-circle"></i></button>
+    <button data-shape="rectangle" title="Rectangle"><i class="fas fa-rectangle-landscape"></i></button>
+    <button data-shape="triangle" title="Triangle"><i class="fas fa-play"></i></button>
+    <button data-shape="star" title="Star"><i class="fas fa-star"></i></button>
+    <button data-shape="heart" title="Heart"><i class="fas fa-heart"></i></button>
+    <button data-shape="diamond" title="Diamond"><i class="fas fa-gem"></i></button>
+    <button data-shape="line" title="Line"><i class="fas fa-minus"></i></button>
+    <button data-shape="arrow" title="Arrow"><i class="fas fa-arrow-right"></i></button>
+  </div>
+
+  <!-- Shape Color Picker -->
+  <div id="shapeColorDropdown" class="shape-color-dropdown">
+    <button data-color="black" style="background: black;"></button>
+    <button data-color="red" style="background: #e53e3e;"></button>
+    <button data-color="orange" style="background: #ed8936;"></button>
+    <button data-color="green" style="background: #38a169;"></button>
+    <button data-color="blue" style="background: #3182ce;"></button>
+    <button data-color="purple" style="background: #805ad5;"></button>
+    <button data-color="pink" style="background: #d53f8c;"></button>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
 
   <script src="script.js"></script>
 </body>
