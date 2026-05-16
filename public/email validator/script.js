@@ -1,5 +1,4 @@
 console.log("This is my script");
-
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const errorMsg = document.getElementById("errorMsg");
