@@ -162,6 +162,7 @@ body {
     color: #000 !important;
 }
 
+#theme-toggle,
 #themeToggle {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -177,6 +178,7 @@ body {
     transition: var(--transition);
 }
 
+#theme-toggle:hover,
 #themeToggle:hover {
     background: var(--accent-color);
     color: #000;
@@ -571,4 +573,75 @@ feature/pagination-project-list
 .pagination-container button:hover {
     opacity: 0.9
 
+}
+/* ============================================
+   Category Filter Buttons | Issue #1209
+   Author: Sweksha Kakkar
+   ============================================ */
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 20px auto;
+  padding: 0 16px;
+  max-width: 900px;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.filter-label {
+  color: #00ff88;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border: 2px solid #00ff88;
+  background: transparent;
+  color: #00ff88;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background: #00ff88;
+  color: #000;
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: #00ff88;
+  color: #000;
+  font-weight: bold;
+}
+
+.difficulty-btn {
+  border-color: #00cfff;
+  color: #00cfff;
+}
+
+.difficulty-btn:hover,
+.difficulty-btn.active {
+  background: #00cfff;
+  color: #000;
+}
+
+@media (max-width: 600px) {
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
 }
