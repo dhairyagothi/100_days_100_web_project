@@ -1,5 +1,5 @@
 * {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Trebuchet MS', Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -18,12 +18,13 @@ header {
     background-color: #ff4757;
 }
 
+
 .navbar {
     display: flex;
     align-items: center;
     background-color: black;
     height: 80px;
-    padding: 0 10px;
+    padding: 0 24px;
 }
 
 .website_title {
@@ -31,20 +32,23 @@ header {
     font-size: 35px;
     flex-grow: 1;
     margin-left: 40px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    }
+    font-family: 'Syne', Impact, 'Arial Narrow Bold', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
 
 .button-container {
     display: flex;
     align-items: center;
+    gap: 4px;
 }
 
 .button {
     outline: 0 !important;
     border: 0 !important;
-    width: 40px;
-    height: 40px;
-    margin-right: 20px;
+    width: 44px;
+    height: 44px;
+    margin-right: 8px;
     border-radius: 50%;
     background-color: transparent;
     display: flex;
@@ -57,9 +61,10 @@ header {
 
 .button:hover {
     transform: translateY(-3px);
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
-    /* hero section*/
+/* hero section */
 .hero {
     display: flex;
     justify-content: center;
@@ -67,6 +72,8 @@ header {
     padding: 50px 20px;
     background-color: #f4f4f4;
     min-height: 70vh;
+
+    background-image: radial-gradient(ellipse 55% 60% at 72% 55%, rgba(24, 207, 231, 0.1) 0%, transparent 70%);
 }
 
 .hero-content {
@@ -74,7 +81,8 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
+    gap: 20px;
 }
 
 .hero-text {
@@ -82,63 +90,95 @@ header {
     padding-left: 20px;
 }
 
+
 .hero-text h1 {
     font-size: 3em;
     margin-bottom: 20px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Syne', 'Trebuchet MS', Arial, sans-serif;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #111;
+}
+
+
+.hero-year {
+    color: #18cfe7;
+    font-weight: 400;
+    font-style: italic;
 }
 
 .hero-text p {
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin-bottom: 30px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    font-weight: 300;
+    color: #444;
+    line-height: 1.6;
 }
 
+.hero-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
 
 .hero-image img {
     max-width: 70%;
     height: auto;
-    margin-left: 250px;
-    margin-top:100px;
+    margin-left: 80px;
+    margin-top: 60px;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.12));
 }
 
-.button1 img{
-    width:10%;
-
-}
 
 .button1 {
-    height:50px;
-    width:200px;
+    height: 50px;
+    width: 200px;
     background-image: linear-gradient(#000000, rgb(0, 0, 0));
     border: none;
     border-radius: 50px;
     color: rgb(255, 255, 255);
     font-weight: 600;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 8px;
     cursor: pointer;
-    box-shadow: 1px 3px 0px #18cfe7;
+    box-shadow: 0px 6px 20px rgba(24, 207, 231, 0.35);
     transition-duration: 0.3s;
+    text-decoration: none;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+}
+
+.button1 img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.button1:hover {
+    box-shadow: 0px 8px 28px rgba(24, 207, 231, 0.5);
+    transform: translateY(-2px);
 }
 
 .button1:active {
     transform: translate(2px, 0px);
-    box-shadow: 0px 1px 0px rgb(0, 0, 0);
+    box-shadow: 0px 2px 8px rgba(24, 207, 231, 0.2);
     padding-bottom: 1px;
 }
 
-
-    /* nav bar cart icon- the display part before click on cart button */
+/* nav bar cart icon */
 .box {
     color: white;
     width: 30px;
     height: 30px;
     text-align: center;
     position: relative;
-    margin-right:10px;
+    margin-right: 10px;
 }
 
 .cart-count {
@@ -157,13 +197,11 @@ header {
 #cart-icon {
     font-size: 1.5rem;
     cursor: pointer;
-    margin-top:3px;
+    margin-top: 3px;
     width: 75%;
 }
 
-
-    
-    /*trending right now*/
+/* trending right now */
 .trending-section {
     text-align: center;
     margin: 50px 0;
@@ -197,7 +235,7 @@ header {
     margin-left: 10px;
 }
 
-    /* shoe-cards*/
+/* shoe cards */
 .container {
     max-width: 1200px;
     padding: 4rem;
@@ -243,11 +281,11 @@ h2.title {
     transition: 0.4s;
     aspect-ratio: 1/1;
     object-fit: cover;
-    width:100%;
+    width: 100%;
 }
 
 .shoe-title {
-    margin-top:10px;
+    margin-top: 10px;
     font-size: 1.2rem;
     font-weight: 600;
     color: #ff6348;
@@ -267,15 +305,14 @@ h2.title {
     font-size: 1.1rem;
     cursor: pointer;
     transition: 0.5s;
-    width:15%;
+    width: 15%;
 }
 
 .add-cart:hover {
     background-color: rgba(255, 0, 0, 0.786);
 }
 
-
-    /*the cart on the side ,when top cart icon is pressed*/
+/* cart sidebar */
 .cart {
     position: fixed;
     top: 0;
@@ -388,29 +425,27 @@ h2.title {
     right: 0.8rem;
     font-size: 2rem;
     cursor: pointer;
-    width:5%;
-    margin-top:15px;
+    width: 5%;
+    margin-top: 15px;
     margin-right: 20px;
 }
 
-
-
-    /* footer part of the website*/
+/* footer */
 .site-footer {
     background-color: #000000;
     color: white;
     padding: 20px 0;
-    margin-top:70px;
+    margin-top: 70px;
 }
-    
+
 .container1 {
-    margin-left:180px;
+    margin-left: 180px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 0 20px;
 }
-    
+
 .footer-about,
 .footer-links,
 .footer-contact {
@@ -419,8 +454,8 @@ h2.title {
     margin-bottom: 20px;
 }
 
-.footer-links{
-    margin-left:100px;
+.footer-links {
+    margin-left: 100px;
 }
 
 .footer-links ul {
@@ -439,20 +474,20 @@ h3 {
 
 @media (max-width: 600px) {
     .container {
-    flex-direction: column;
-    align-items: center;
+        flex-direction: column;
+        align-items: center;
     }
 
     .footer-about,
     .footer-links,
     .footer-contact {
-    min-width: 100%;
-    text-align: center;
+        min-width: 100%;
+        text-align: center;
     }
 }
 
-.copyright_part{
-    margin-top:20px;
-    display:flex;
+.copyright_part {
+    margin-top: 20px;
+    display: flex;
     justify-content: center;
 }
