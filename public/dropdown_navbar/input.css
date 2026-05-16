@@ -1,16 +1,7 @@
-<style>
-  #appliances-dd,
-  #fashion-dd,
-  #user-menu {
-    opacity: 0;
-    transform: translateY(-8px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  #appliances-dd.show,
-  #fashion-dd.show,
-  #user-menu.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-</style>
+.label {
+    height: 80vh;
+}
