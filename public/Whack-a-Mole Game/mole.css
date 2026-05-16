@@ -1,7 +1,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-    background: url("./mario-bg.jpg");
+    background: url("/public/Whack-a-Mole%20Game/mario-bg.jpg");
     background-size: cover;
 }
 
@@ -14,7 +14,7 @@ body {
     display: flex;
     flex-wrap: wrap;
 
-    background: url("./soil.png");
+    background: url("/public/Whack-a-Mole%20Game/soil.png");
     background-size: cover;
     border: 3px solid white;
     border-radius: 25px;
@@ -24,7 +24,7 @@ body {
     /* board = 540 x 540, divide into 3x3 tiles --> 180 x 180 per div */
     width: 180px; 
     height: 180px;
-    background-image: url("./pipe.png");
+    background-image: url("/public/Whack-a-Mole%20Game/pipe.png");
     background-size: cover;
 }
 
