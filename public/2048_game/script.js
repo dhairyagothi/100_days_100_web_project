@@ -193,7 +193,7 @@ function doMove (dir) {
   prevBoard = copyBoard(board);
   prevScore = score;
 
-  const rotTurns = { right: 0, down: 1, left: 2, up: 3 };
+  const rotTurns = { right: 2, down: 1, left: 0, up: 3 };
   let tmp = rotateBoard(board, rotTurns[dir]);
   let pts = 0;
   let moved = false;
