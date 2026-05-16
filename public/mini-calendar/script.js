@@ -1,7 +1,9 @@
-function generateCalendar() {
+let currentDate = new Date();
+
+function generateCalendar(date = currentDate) {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
+    const year = date.getFullYear();
+    const month = date.getMonth();
     
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'];
@@ -31,7 +33,7 @@ function generateCalendar() {
         dayDiv.className = 'day';
         dayDiv.textContent = day;
         
-        if (day === today.getDate()) {
+        if (day === today.getDate() && today.getMonth() === month && today.getFullYear() === year) {
             dayDiv.classList.add('today');
         }
         
@@ -43,4 +45,49 @@ function generateCalendar() {
         `Today: ${today.toLocaleDateString('en-US', options)}`;
 }
 
+// Dark Mode Toggle
+function initDarkMode() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const calendarCard = document.querySelector('.calendar-card');
+    
+    // Check localStorage for saved dark mode preference
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    
+    if (isDarkMode) {
+        body.classList.add('dark-mode');
+        calendarCard.classList.add('dark-mode');
+        darkModeToggle.textContent = '☀️';
+    }
+    
+    darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        calendarCard.classList.toggle('dark-mode');
+        
+        const isNowDarkMode = body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isNowDarkMode);
+        
+        darkModeToggle.textContent = isNowDarkMode ? '☀️' : '🌙';
+    });
+}
+
 generateCalendar();
+initDarkMode();
+
+// Month Navigation
+function initMonthNavigation() {
+    const prevBtn = document.getElementById('prevMonth');
+    const nextBtn = document.getElementById('nextMonth');
+    
+    prevBtn.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        generateCalendar(currentDate);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        generateCalendar(currentDate);
+    });
+}
+
+initMonthNavigation();
