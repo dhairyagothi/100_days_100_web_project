@@ -16,15 +16,40 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Newsletter form submission
+
+// Select the newsletter form
 const newsletterForm = document.querySelector('.newsletter form');
+
+// Run this when the user clicks "Subscribe"
 newsletterForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = this.querySelector('input[type="email"]').value;
+    e.preventDefault(); // Prevent page refresh on form submit
+
+    // Get email input value and remove extra spaces
+    const email = this.querySelector('input[type="email"]')
+                      .value
+                      .trim();
+
+    // Check if user left the field empty
+    if (email === "") {
+        alert("Please enter an email address.");
+        return;
+    }
+
+    // Simple email format validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Show error if email format is invalid
+    if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    // Show success message for valid subscription
     alert(`Thank you for subscribing with email: ${email}`);
+
+    // Clear input field after successful submission
     this.reset();
 });
-
 // Dynamic price update (simulation)
 function updatePrice() {
     const priceElements = document.querySelectorAll('.buy-option h3');
