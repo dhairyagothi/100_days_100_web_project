@@ -3,536 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100 Days 100 Web Projects</title>
+    <meta name="description" content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript.">
+    <title>100 Days · 100 Web Projects</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: rgba(255, 255, 255, 0.03);
-            --text-primary: #fff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --accent-color: #1abc9c;
-            --accent-hover: #16a085;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --particle-color: rgba(26, 188, 156, 0.7);
-        }
-
-        body.light-mode {
-            --bg-primary: #f5f5f5;
-            --bg-secondary: rgba(0, 0, 0, 0.03);
-            --text-primary: #2c3e50;
-            --text-secondary: rgba(0, 0, 0, 0.7);
-            --accent-color: #1abc9c;
-            --accent-hover: #16a085;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --particle-color: rgba(26, 188, 156, 0.3);
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            position: relative;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(26, 188, 156, 0.1);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            animation: slideDown 0.8s ease-out;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .navbar-brand img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(26, 188, 156, 0.6);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(26, 188, 156, 0.6);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(26, 188, 156, 1);
-            }
-        }
-
-        .navbar-brand span {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #1abc9c, #3498db, #9b59b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .buttons .button {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .buttons .button:hover {
-            background: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(26, 188, 156, 0.4);
-        }
-
-        #themeToggle {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-        }
-
-        #themeToggle:hover {
-            background: var(--accent-color);
-            transform: translateY(-2px) rotate(15deg);
-            box-shadow: 0 5px 20px rgba(26, 188, 156, 0.4);
-        }
-
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 150px 20px 80px;
-            position: relative;
-        }
-
-        .hero-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #1abc9c, #3498db, #9b59b6, #e74c3c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            animation: fadeInUp 1s ease-out 0.3s backwards;
-        }
-
-        .search-container {
-            max-width: 600px;
-            width: 100%;
-            margin: 0 auto 4rem;
-            animation: fadeInUp 1s ease-out 0.6s backwards;
-        }
-
-        .search-wrapper {
-            display: flex;
-            gap: 1rem;
-            background: var(--bg-secondary);
-            backdrop-filter: blur(20px);
-            padding: 1rem;
-            border-radius: 50px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 32px var(--shadow-color);
-            transition: all 0.3s ease;
-        }
-
-        .search-wrapper:focus-within {
-            box-shadow: 0 0 40px rgba(26, 188, 156, 0.6);
-            border-color: var(--accent-color);
-        }
-
-        .search-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.1rem;
-            padding: 0 1rem;
-            outline: none;
-        }
-
-        .search-input::placeholder {
-            color: var(--text-secondary);
-            opacity: 0.5;
-        }
-
-        .search-btn {
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
-            border: none;
-            color: #fff;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .search-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(26, 188, 156, 0.5);
-        }
-
-        .projects-section {
-            padding: 4rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .table-container {
-            background: var(--bg-secondary);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 32px var(--shadow-color);
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-        }
-
-        thead th {
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
-            color: #fff;
-            padding: 1.5rem;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: none;
-        }
-
-        tbody tr {
-            background: var(--bg-secondary);
-            transition: all 0.3s ease;
-        }
-
-        tbody tr:hover {
-            background: rgba(26, 188, 156, 0.1);
-            transform: translateX(10px);
-            box-shadow: 0 5px 20px rgba(26, 188, 156, 0.3);
-        }
-
-        tbody td {
-            padding: 1.5rem;
-            border: none;
-            color: var(--text-secondary);
-        }
-
-        tbody td:first-child {
-            font-weight: 700;
-            color: var(--accent-color);
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        tbody td a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        tbody td a:hover {
-            color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(26, 188, 156, 0.8);
-        }
-
-        tbody td a i {
-            margin-left: 0.3rem;
-        }
-
-        #scrollBtn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
-            border: none;
-            border-radius: 50%;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(26, 188, 156, 0.4);
-            display: none;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        #scrollBtn.show {
-            display: block;
-        }
-
-        #scrollBtn:hover {
-            transform: scale(1.1) translateY(-5px);
-            box-shadow: 0 15px 40px rgba(26, 188, 156, 0.6);
-        }
-
-        .footer {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(20px);
-            padding: 3rem 2rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-        }
-
-        .footer h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .footer p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.8;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-btn {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-color);
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .social-btn:hover {
-            background: var(--accent-color);
-            color: #fff;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(26, 188, 156, 0.5);
-        }
-
-        #no-projects {
-            display: none;
-            text-align: center;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            opacity: 0.5;
-            padding: 3rem;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .navbar-brand span {
-                font-size: 1rem;
-            }
-
-            tbody tr:hover {
-                transform: translateX(5px);
-            }
-
-            .table-container {
-                padding: 1rem;
-            }
-
-            thead th, tbody td {
-                padding: 1rem 0.5rem;
-                font-size: 0.9rem;
-            }
-
-            .navbar {
-                padding: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="bgCanvas"></canvas>
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+    <div class="ambient ambient-right" aria-hidden="true"></div>
+    <div class="noise-layer" aria-hidden="true"></div>
 
-    <nav class="navbar">
+    <!-- ── NAVBAR ──────────────────────────────────────────── -->
+    <nav class="navbar" id="navbar">
         <div class="navbar-brand">
-            <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
-            <span>100 DAYS 100 WEB PROJECTS</span>
+            <span class="brand-mark" aria-hidden="true">100</span>
+            <span class="brand-copy">
+                <span class="brand-kicker">Open Source Archive</span>
+                <strong>100 Days · 100 Web Projects</strong>
+            </span>
         </div>
-        <div class="buttons">
-            <button id="themeToggle" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-            </button>
+        <div class="nav-buttons" id="navButtons">
+            <!-- populated by JS -->
         </div>
     </nav>
 
-    <section class="hero-section">
-        <h1 class="hero-title">100 Days 100 Web Projects</h1>
-        <p class="hero-subtitle">A Journey Through Web Development Excellence</p>
-        
-        <div class="search-container">
-            <div class="search-wrapper">
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    id="searchInput" 
-                    placeholder="Search for amazing projects..."
-                >
-                <button class="search-btn" onclick="filterProjects()">
-                    <i class="fas fa-search"></i> Search
-                </button>
+    <!-- ── HERO ───────────────────────────────────────────── -->
+    <section class="hero" id="hero">
+        <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
+        <div class="hero-inner">
+            <p class="hero-overline">Open Source Frontend Archive · 2026</p>
+
+            <h1 class="hero-headline">
+                <span class="hero-line">100 DAYS</span>
+                <span class="hero-line hero-line-accent">100 WEB PROJECTS</span>
+            </h1>
+
+            <p class="hero-sub">
+                A curated open-source collection. Browse, fork, contribute.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
+                    Browse Projects <i class="fas fa-arrow-down"></i>
+                </a>
+                <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="btn btn-ghost" id="heroGithubBtn">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+
+            <div class="stats-strip" id="statsStrip">
+                <span class="stat-item">
+                    <strong id="projectCount">—</strong> Projects
+                </span>
+                <span class="stat-divider">·</span>
+                <span class="stat-item">
+                    <strong id="starCount">—</strong> Stars
+                </span>
+                <span class="stat-divider">·</span>
+                <span class="stat-item">
+                    <strong id="forkCount">—</strong> Forks
+                </span>
+                <span class="stat-divider">·</span>
+                <span class="stat-item">
+                    <strong id="issueCount">—</strong> Issues
+                </span>
+                <span class="stat-divider">·</span>
+                <span class="stat-item">
+                    <strong id="prCount">—</strong> PRs
+                </span>
+                <span class="stat-divider">·</span>
+                <span class="stat-item">
+                    <strong>Open</strong> Source
+                </span>
             </div>
         </div>
     </section>
 
-    <section class="projects-section">
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Project Name</th>
-                        <th>Demo Link</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
+    <!-- ── PROJECTS ───────────────────────────────────────── -->
+    <section class="projects-section" id="projects">
+        <div class="projects-inner">
+            <div class="projects-intro">
+                <p class="section-label">Archive index</p>
+                <h2 class="section-title">Every experiment, catalogued.</h2>
+            </div>
+
+            <div class="projects-header">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="search-input"
+                        placeholder="Search projects…"
+                        autocomplete="off"
+                    >
+                </div>
+                <div class="filter-chips" id="filterChips">
+                    <button class="chip active" data-filter="all" id="filterAll">All <span class="chip-count" id="allCount">Projects</span></button>
+                    <button class="chip" data-filter="game" id="filterGame">Games</button>
+                    <button class="chip" data-filter="clone" id="filterClone">Clones</button>
+                    <button class="chip" data-filter="tool" id="filterTool">Tools</button>
+                    <button class="chip" data-filter="ui" id="filterUI">UI / Animation</button>
+                    <button class="chip" data-filter="api" id="filterAPI">APIs</button>
+                </div>
+            </div>
+
+            <div class="project-grid" id="projectGrid"></div>
+
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search"></i>
+                <p>No projects match your search.</p>
+            </div>
+
         </div>
-        <div id="no-projects">No Projects Found</div>
     </section>
 
+    <!-- ── FOOTER ─────────────────────────────────────────── -->
     <footer class="footer">
-        <div class="footer-content">
-            <div>
-                <h3>About</h3>
-                <p>This repository contains 112 web projects from basic to intermediate using HTML, CSS, and JS.</p>
-                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span class="footer-logo">100 Days</span>
+                <p>An open-source frontend exploration challenge — a growing collection of HTML, CSS &amp; JavaScript experiments.</p>
             </div>
-            <div>
-                <h3>Connect With Us</h3>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn">
+
+            <div class="footer-nav">
+                <h4>Navigate</h4>
+                <ul>
+                    <li><a href="#projects">Browse Projects</a></li>
+                    <li><a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub Repo</a></li>
+                    <li><a href="./contributors/contributor.html">Contributors</a></li>
+                    <li><a href="./public/Login.html">Sign In</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-social">
+                <h4>Connect</h4>
+                <div class="social-row">
+                    <a href="https://github.com/dhairyagothi" target="_blank" class="social-icon" aria-label="GitHub" id="footerGithub">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
-                        <i class="fab fa-linkedin"></i>
+                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-icon" aria-label="LinkedIn" id="footerLinkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-icon" aria-label="Instagram" id="footerInstagram">
+                        <i class="fab fa-instagram"></i>
                     </a>
                 </div>
             </div>
         </div>
+
+        <div class="footer-bottom">
+            <span>© 2024 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
+            <button id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
     </footer>
 
-    <button id="scrollBtn">
+    <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
+    <button id="scrollBtn" aria-label="Scroll to top">
         <i class="fas fa-arrow-up"></i>
     </button>
-    
+
+    <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
 </body>
 </html>
