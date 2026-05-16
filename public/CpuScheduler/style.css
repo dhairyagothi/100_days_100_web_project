@@ -1,0 +1,113 @@
+.gantt-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.gantt-block {
+    min-height: 50px;
+    transition: all 0.3s ease;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    cursor: pointer;
+}
+.gantt-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+.gantt-time {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #64748b;
+    padding: 4px 0;
+    border-right: 1px solid #cbd5e1;
+}
+.process-color-0 { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.process-color-1 { background: linear-gradient(135deg, #10b981, #059669); }
+.process-color-2 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.process-color-3 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.process-color-4 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.process-color-5 { background: linear-gradient(135deg, #ec4899, #db2777); }
+.process-color-6 { background: linear-gradient(135deg, #6b7280, #4b5563); }
+.process-color-7 { background: linear-gradient(135deg, #14b8a6, #0d9488); }
+.process-color-8 { background: linear-gradient(135deg, #f97316, #ea580c); }
+.process-color-9 { background: linear-gradient(135deg, #84cc16, #65a30d); }
+.idle-block {
+    background: repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 8px, #e2e8f0 8px, #e2e8f0 16px);
+    color: #64748b;
+    font-style: italic;
+}
+.gantt-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.algorithm-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transition: all 0.3s ease;
+}
+.algorithm-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+.process-card {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+.process-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.results-table {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+.loading-spinner {
+    border: 3px solid #f3f4f6;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.metric-card {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
