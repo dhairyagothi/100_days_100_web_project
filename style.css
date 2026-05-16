@@ -322,7 +322,7 @@ body {
 }
 
 .stats-counter {
-      color: #00ff88;
+      color: #798186;
       font-family: 'Courier New', monospace;
       margin-top: 8px;
       font-size: 14px;
@@ -598,22 +598,23 @@ feature/pagination-project-list
 }
 
 .filter-label {
-  color: #00ff88;
-  font-size: 14px;
-  font-weight: 600;
-  margin-right: 5px;
+  color: #727b98;
+    font-size: 15px;
+    font-weight: 600;
+    margin-right: 5px;
+    font-weight: bold;
 }
 
 .filter-btn {
   padding: 8px 18px;
-  border: 2px solid #00ff88;
-  background: transparent;
-  color: #00ff88;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 13px;
-  font-family: inherit;
-  transition: all 0.3s ease;
+    border: 2px solid #757a78;
+    background: transparent;
+    color: #a08585;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all 0.3s ease;
 }
 
 .filter-btn:hover {
@@ -623,14 +624,13 @@ feature/pagination-project-list
 }
 
 .filter-btn.active {
-  background: #00ff88;
-  color: #000;
+  color: #a08585;
   font-weight: bold;
 }
 
 .difficulty-btn {
-  border-color: #00cfff;
-  color: #00cfff;
+  border: 2px solid #757a78;
+  color: #3f5156;
 }
 
 .difficulty-btn:hover,
