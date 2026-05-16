@@ -125,6 +125,7 @@ function addLogoToQRCode() {
 
 generateBtn.addEventListener('click', generateQRCode);
 qrColor.addEventListener('change', generateQRCode);
+qrColor.addEventListener('input', generateQRCode);
 qrShape.addEventListener('change', generateQRCode);
 errorCorrection.addEventListener('change', generateQRCode);
 logoUpload.addEventListener('change', generateQRCode);
