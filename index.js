@@ -129,7 +129,9 @@ const PROJECTS = [
     ["Day 113", "CPU Scheduler",                       "./public/CpuScheduler/index.html",                                                                               ["HTML","CSS","JS"],       "tool"],
     ["Day 114", "EchoNotes",                           "./public/EchoNotes/index.html",                                                                                  ["JS","SpeechAPI"],        "tool"],
     ["Day 115", "Event Registration System",           "https://event-registration-system-w10a.onrender.com/",                                                           ["Node","Express"],        "tool"],
-    ["Day 116", "AI Image Classifier",                 "./public/AI Image Classifier/index.html",                                                                        ["HTML","CSS","JS","AI"], "tool"],
+    ["Day 116", "AI Image Classifier",                 "./public/AI Image Classifier/index.html",
+                                                                        ["HTML","CSS","JS","AI"], "tool"],
+    ["Day 117", "Fireworks Click Effect", "./public/Fireworks-Click-Effect/index.html", ["HTML","CSS","JS"], "game"],
 ];
 
 const CATEGORY_LABEL = {
