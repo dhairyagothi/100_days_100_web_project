@@ -128,6 +128,10 @@ function handleFormSubmit(event) {
         alert('Please enter valid salary, description, amount, and category.');
         return;
     }
+    if ((mainSalary === 0 ? salary : remainingBudget) < amount) {
+        alert('Expense exceeds remaining budget.');
+        return;
+    }
 
     if (mainSalary === 0) {
         mainSalary = salary;
