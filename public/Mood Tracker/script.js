@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.container').insertBefore(moodMessage, document.querySelector('.intensity-slider'));
 
     let selectedMood = null;
-    const moodData = [];
+    const moodData = JSON.parse(localStorage.getItem("moodTrackerEntries")) || [];
     let moodChart;
     let moodStreak = 0;
     const achievements = {
@@ -26,6 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
         reduceStress: 0,
         increaseHappiness: 0
     };
+
+    // Render any previously saved entries from localStorage
+    moodData.forEach(entry => {
+        removeDefaultMessages();
+        addEntryToList(entry);
+        addEntryDay(entry);
+    });
+    if (moodData.length > 0) {
+        updateMoodChart();
+        updateMoodSummary();
+        updateMoodStreak();
+        checkAchievements();
+    }
 
     if ('Notification' in window) {
         Notification.requestPermission().then(permission => {
@@ -62,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const entry = { mood: selectedMood, intensity, notes, date };
         console.log('Entry Saved:', entry);
         moodData.push(entry);
+        localStorage.setItem("moodTrackerEntries", JSON.stringify(moodData));
 
         // Remove default messages if present
         removeDefaultMessages();
@@ -119,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const index = moodData.findIndex(e => e.date === entry.date && e.mood === entry.mood && e.intensity === entry.intensity && e.notes === entry.notes);
         if (index !== -1) {
             moodData.splice(index, 1);
+            localStorage.setItem("moodTrackerEntries", JSON.stringify(moodData));
         }
 
         // Remove the list item from the DOM
