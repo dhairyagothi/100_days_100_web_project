@@ -6,120 +6,11 @@
     <title>Dynamic Trip Advisor</title>
     <link rel="stylesheet" href="slider.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <style>
-        body {
-            background-size: cover;
-            background-position: center;
-            transition: background-image 0.5s ease-in-out;
-            color: white;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 20px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .navbar h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-
-        .navbar ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
-
-        .navbar ul li a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-            transition: color 0.3s;
-        }
-
-        .navbar ul li a:hover {
-            color: #00ff00;
-        }
-
-        .content {
-            text-align: center;
-            margin-top: 5%;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-        }
-
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        }
-
-        select {
-            padding: 10px;
-            font-size: 1em;
-            margin: 20px 0;
-        }
-
-        .booking {
-            background-color: black;
-            color: white;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 2px solid white;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        @media screen and (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .navbar ul {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .content {
-                margin-top: 10%;
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            p {
-                font-size: 1em;
-            }
-
-            .booking {
-                width: 80%;
-            }
-        }
-    </style>
 </head>
 <body>
 <header>
     <div class="navbar">
-        <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-style:italic;font-style:bold">TRIP ADVISOR</h1>
+        <h1>TRIP ADVISOR</h1>
         <ul>
             <li><a href="#">HOME</a></li>
             <li><a href="#">CONTACT US</a></li>
@@ -132,60 +23,114 @@
 <div class="content">
     <p id="placeDescription">Explore the beauty of glaciers and the breathtaking landscapes of Iceland.</p>
     <h1 id="placeTitle">Iceland</h1>
-    
+
     <select id="placeSelector">
         <option value="Iceland">Iceland</option>
         <option value="Switzerland">Switzerland</option>
         <option value="Scotland">Scotland</option>
         <option value="Ireland">Ireland</option>
         <option value="Germany">Germany</option>
+        <option value="Snowfields">Snowfields</option>
+        <option value="Castelmezzano">Castelmezzano</option>
+        <option value="Mountains">Mountains</option>
+        <option value="Brooke Holm">Brooke Holm</option>
+        <option value="Tobias Hagg">Tobias Hagg</option>
     </select>
     <br>
+
+    <div class="slider-controls">
+        <button class="nav-btn" id="prevBtn">&#10094;</button>
+        <div class="dots-container" id="dotsContainer"></div>
+        <button class="nav-btn" id="nextBtn">&#10095;</button>
+    </div>
+
     <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
 </div>
 
 <script>
-    const placeBackgrounds = {
-        "Iceland": "url('images/iceland.jpg')",
-        "Switzerland": "url('images/Jennifer.avif')",
-        "Scotland": "url('images/Daniel.jpeg')",
-        "Ireland": "url('images/kai.jpg')",
-        "Germany": "url('images/Hannes-Becker4.jpg')"
-    };
+    const places = [
+        { id: "Iceland", file: "iceland.jpg", desc: "Explore the beauty of glaciers and the breathtaking landscapes of Iceland." },
+        { id: "Switzerland", file: "Jennifer.avif", desc: "Experience the serene beauty of the Swiss Alps and picturesque villages." },
+        { id: "Scotland", file: "Daniel.jpeg", desc: "Discover the rich history and stunning highlands of Scotland." },
+        { id: "Ireland", file: "kai.jpg", desc: "Immerse yourself in the lush green landscapes and vibrant culture of Ireland." },
+        { id: "Germany", file: "Hannes-Becker4.jpg", desc: "Explore Germany's charming cities and stunning countryside." },
+        { id: "Snowfields", file: "snow-3193865.jpg", desc: "Dive into the serene whites of snow-covered fields." },
+        { id: "Castelmezzano", file: "castelmezzano.jpg", desc: "Discover the ancient beauty of Castelmezzano, Italy." },
+        { id: "Mountains", file: "mountains-862870.jpg", desc: "Witness the majestic grandeur of towering mountain ranges." },
+        { id: "Brooke Holm", file: "Brooke-Holm.jpeg", desc: "Iceland captured through the lens of Brooke Holm." },
+        { id: "Tobias Hagg", file: "Tobias-Hagg.jpg", desc: "Sweden's landscapes as seen by Tobias Hagg." }
+    ];
 
-    const placeDescriptions = {
-        "Iceland": "Explore the beauty of glaciers and the breathtaking landscapes of Iceland.",
-        "Switzerland": "Experience the serene beauty of the Swiss Alps and picturesque villages.",
-        "Scotland": "Discover the rich history and stunning highlands of Scotland.",
-        "Ireland": "Immerse yourself in the lush green landscapes and vibrant culture of Ireland.",
-        "Germany": "Explore Germany's charming cities and stunning countryside."
-    };
+    const placeBackgrounds = {};
+    const placeDescriptions = {};
+    places.forEach(p => {
+        placeBackgrounds[p.id] = "url('images/" + p.file + "')";
+        placeDescriptions[p.id] = p.desc;
+    });
+
+    let currentIndex = 0;
+    let autoSlideInterval;
 
     const placeSelector = document.getElementById('placeSelector');
     const bookingButton = document.getElementById('bookingButton');
     const placeTitle = document.getElementById('placeTitle');
     const placeDescription = document.getElementById('placeDescription');
+    const dotsContainer = document.getElementById('dotsContainer');
     const body = document.body;
 
-    // Function to update the UI
     function updatePlace(place) {
         body.style.backgroundImage = placeBackgrounds[place];
         placeTitle.textContent = place;
         placeDescription.textContent = placeDescriptions[place];
-        bookingButton.textContent = `Book a Trip to ${place}`;
+        bookingButton.textContent = "Book a Trip to " + place;
+        placeSelector.value = place;
+        updateDots(places.findIndex(p => p.id === place));
     }
 
-    // Event listener for place selection
-    placeSelector.addEventListener('change', function () {
-        const selectedPlace = placeSelector.value;
-        updatePlace(selectedPlace);
+    function updateDots(index) {
+        document.querySelectorAll('.dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+
+    function goToSlide(index) {
+        if (index < 0) index = places.length - 1;
+        if (index >= places.length) index = 0;
+        currentIndex = index;
+        updatePlace(places[currentIndex].id);
+        resetAutoSlide();
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000);
+    }
+
+    // Build dots
+    places.forEach((p, i) => {
+        const dot = document.createElement('span');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
     });
 
-    
+    // Event listeners
+    placeSelector.addEventListener('change', function () {
+        goToSlide(places.findIndex(p => p.id === placeSelector.value));
+    });
+
+    document.getElementById('prevBtn').onclick = () => goToSlide(currentIndex - 1);
+    document.getElementById('nextBtn').onclick = () => goToSlide(currentIndex + 1);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') goToSlide(currentIndex - 1);
+        if (e.key === 'ArrowRight') goToSlide(currentIndex + 1);
+    });
+
     window.onload = function () {
-        const defaultPlace = "Iceland";
-        updatePlace(defaultPlace);
-        placeSelector.value = defaultPlace;
+        updatePlace("Iceland");
+        placeSelector.value = "Iceland";
+        autoSlideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000);
     };
 </script>
 </body>
