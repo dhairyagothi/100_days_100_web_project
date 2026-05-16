@@ -5,6 +5,7 @@
     --container-bg-color: #2a2a2a;
     --input-bg-color: #2a2a2a;
     --button-hover-color: rgb(59, 130, 246);
+    --grid-color: rgba(59, 130, 246, 0.04);
 }
 
 body {
@@ -12,7 +13,7 @@ body {
     color: var(--text-color);
     font-size: 24px;
     font-weight: 400;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,18 +22,43 @@ body {
     padding: 20px;
     transition: background-color 0.5s, background-image 0.5s;
 }
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+}
 .typewriter-container {
     display: flex;
     align-items: center;
     margin-bottom: 40px;
     border: 2px solid var(--accent-color);
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 16px;
     background-color: var(--container-bg-color);
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
     width: 600px;
     height: 60px;
     font-size: 50px;
+    animation: slideUp 0.6s ease both;
+    position: relative;                            
+    z-index: 1; 
+}
+/*slide up animation*/
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 .text {
     position: relative;
@@ -47,6 +73,8 @@ body {
     height: 1em;
     margin-left: 2px;
     animation: blink 1s infinite;
+    box-shadow:0 0 8px var(--accent-color);
+    border-radius: 2px;
 }
 @keyframes blink {
     0%, 50% {
@@ -80,6 +108,17 @@ body {
     color: white;
     cursor: pointer;
 }
+.controls button {
+    background: linear-gradient(135deg, var(--button-hover-color), var(--input-bg-color));
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    font-family: 'Segoe UI', sans-serif;
+}
+.controls input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 10px var(--accent-color);
+}
 .controls input[type="range"] {
     appearance: none;
     height: 5px;
@@ -106,4 +145,31 @@ body.light-theme {
     --container-bg-color: #f0f0f0;
     --input-bg-color: #e0e0e0;
     --button-hover-color: #1e3a8a;
+}
+
+.btn-group {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.speed-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+/* Mobile responsive styles*/
+@media (max-width: 768px) {
+    .typewriter-container {
+        width: 100%;
+        font-size: 32px;
+        height: auto;
+        padding: 15px;
+    }
+
+    .controls {
+        width: 100%;
+        padding: 0 10px;
+    }
 }
