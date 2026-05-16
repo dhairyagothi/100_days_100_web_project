@@ -1,4 +1,4 @@
-let notesContainer = document.getElementById("notes-container");
+let notesContainer = document.getElementById("task-list");
 let documentsList = document.querySelector(".documents-list");
 let pdfMessage = document.getElementById("pdfMessage");
 
@@ -14,16 +14,16 @@ const taskTypes = [
   { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
 ];
 
-function Add() {
+function addTask() {
 
   const notes = document.querySelectorAll(".notes");
 
   if (notes.length > 0) {
     const lastNote = notes[notes.length - 1];
-    const taskText = lastNote.querySelector("span");
-
-    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
-      alert("Please add a task to the previous note before creating a new one!");
+    const lastTaskText = lastNote.querySelector("span");
+  
+    if (lastTaskText && lastTaskText.innerText.trim() === "") {
+      alert("Please complete the previous task first!");
       return;
     }
   }
@@ -39,9 +39,17 @@ function Add() {
   noteWrapper.style.justifyContent = "space-between";
   noteWrapper.style.width = "100%";
 
-  const taskText = document.createElement("span");
-  taskText.innerText = "Click here to add a task...";
-  taskText.contentEditable = true;
+  const input = document.getElementById("task-input");
+const taskValue = input.value.trim();
+
+if (!taskValue) {
+  alert("Please enter a task!");
+  return;
+}
+
+const taskText = document.createElement("span");
+taskText.innerText = taskValue;
+taskText.contentEditable = true;
   taskText.style.flex = "1";
   taskText.style.marginRight = "10px";
 
@@ -77,21 +85,13 @@ function Add() {
   noteWrapper.appendChild(tickIcon);
 
   note.appendChild(noteWrapper);
+  const emptyState = document.getElementById("empty-state");
+if (emptyState) {
+  emptyState.style.display = "none";
+}
   notesContainer.appendChild(note);
-
-  // Event listeners for task text
-  taskText.addEventListener("focus", () => {
-    if (taskText.innerText.trim() === "Click here to add a task...") {
-      taskText.innerText = "";
-    }
-  });
-
-  taskText.addEventListener("blur", () => {
-    if (taskText.innerText.trim() === "") {
-      taskText.innerText = "Click here to add a task...";
-
-    }
-  });
+  input.value = "";
+  
 
   tickIcon.addEventListener("click", (event) => {
     taskText.classList.toggle("completed");
@@ -159,55 +159,37 @@ function showDocuments() {
   document.getElementById("documents-tab").style.display = "block";
 }
 
-// Functions to apply themes
-function c1() {
-  let image = 'linear-gradient(90deg, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%)';
-  document.body.style.background = image;
-  currentTheme = "theme1";
-  updateNotesTheme();
-}
-
-function c2() {
-  let image = 'linear-gradient( 90deg, #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%)';
-  document.body.style.background = image;
-  currentTheme = "theme2";
-  updateNotesTheme();
-}
-
-function c3() {
-  let image = 'linear-gradient(90deg, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d)';
-  document.body.style.background = image;
-  currentTheme = "theme3";
-  updateNotesTheme();
-}
-
-function c4() {
-  let image = 'linear-gradient(90deg,rgb(120, 25, 105),rgb(197, 211, 201))';
-  document.body.style.background = image;
-  currentTheme = "theme4";
-  updateNotesTheme();
-}
-
-function c5() {
-  let image = 'linear-gradient(90deg, #b92b27, #1565c0)';
-  document.body.style.background = image;
-  currentTheme = "theme5";
-  updateNotesTheme();
-}
 
 function updateNotesTheme() {
   const notes = document.querySelectorAll(".notes");
+
+  const themeColors = {
+    sunset: "#f5c842",
+    ocean: "#00d4ff",
+    forest: "#7fff00",
+    midnight: "#9b59b6",
+    aurora: "#ff6b6b"
+  };
+
   notes.forEach((note) => {
-    if (note.style.backgroundColor === "white") {
-      note.style.backgroundColor = currentTheme === "theme1"
-        ? "rgba(232,221,227,1)"
-        : currentTheme === "theme2"
-          ? "#e4afcb"
-          : currentTheme === "theme3"
-            ? "#39db8c"
-            : currentTheme === "theme4"
-              ? "rgb(120, 25, 105)"
-              : "#b92b27";
-    }
+    note.style.border = `2px solid ${themeColors[currentTheme]}`;
   });
+}
+function applyTheme(theme) {
+  const gradients = {
+    sunset: 'linear-gradient(90deg, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%)',
+
+    ocean: 'linear-gradient(90deg, #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%)',
+
+    forest: 'linear-gradient(90deg, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d)',
+
+    midnight: 'linear-gradient(90deg, rgb(120, 25, 105), rgb(197, 211, 201))',
+
+    aurora: 'linear-gradient(90deg, #b92b27, #1565c0)'
+  };
+
+  document.body.style.background = gradients[theme];
+  currentTheme = theme;
+
+  updateNotesTheme();
 }
