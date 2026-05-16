@@ -21,17 +21,21 @@ h1 {
     text-align: center;
     font-size: 40px;
     font-weight: bold;
-    color: #333;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
 }
 
 /* Score Board */
 #score-board {
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: bold;
     color: #e0d8d8;
-    background-color: rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 12px 24px;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
 }
 
 /* Game grid styling */
@@ -72,16 +76,23 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
-    color: white;
+    font-size: 48px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Back side of the card */
+/* Front side (question mark side) */
+.card-front {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    transform: rotateY(0deg);
+    font-size: 48px;
+    font-weight: bold;
+}
+
+/* Back side of the card (emoji side) */
 .card-back {
-    background-color: #2ecc71;
     transform: rotateY(180deg);
+    font-size: 48px;
 }
 
 /* Flipped card styling */
@@ -92,7 +103,41 @@ h1 {
 /* Responsive adjustments */
 @media (max-width: 500px) {
     .grid {
-        grid-template-columns: repeat(2, 80px);
-        grid-template-rows: repeat(2, 80px);
+        grid-template-columns: repeat(4, 70px);
+        grid-template-rows: repeat(4, 70px);
+        gap: 8px;
     }
+    .card {
+        width: 65px;
+        height: 65px;
+    }
+    .card-front,
+    .card-back {
+        font-size: 32px;
+    }
+    h1 {
+        font-size: 24px;
+        padding: 0 10px;
+    }
+    #score-board {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+}
+
+/* Victory message animation */
+@keyframes victoryPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); text-shadow: 0 0 20px gold; }
+    100% { transform: scale(1); }
+}
+
+.victory {
+    animation: victoryPop 0.5s ease-in-out;
+}
+
+/* Hover effect on cards */
+.card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
 }

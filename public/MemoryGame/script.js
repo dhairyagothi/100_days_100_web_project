@@ -1,24 +1,30 @@
 const gameContainer = document.getElementById('game-container');
-const colors = ['#2980b9', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c', '#34495e', '#1abc9c', '#e67e22'];
+// EMOJIS instead of colors! 🎉
+const emojis = ['🐼', '🚀', '🍕', '👻', '💎', '🌟', '❤️', '🎵'];
 let cards = [];
 let firstCard, secondCard;
 let lockBoard = false;
 let matchesCount = 0;
+const totalPairs = emojis.length;
 
 // Create cards dynamically
 function createCards() {
-    const cardsArray = [...colors, ...colors];
-    cardsArray.sort(() => 0.5 - Math.random()); // Shuffle cards
+    const cardsArray = [...emojis, ...emojis];
+    // Shuffle cards
+    for (let i = cardsArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cardsArray[i], cardsArray[j]] = [cardsArray[j], cardsArray[i]];
+    }
     
-    cardsArray.forEach(color => {
+    cardsArray.forEach(emoji => {
         const cardElement = document.createElement('div');
         cardElement.classList.add('card');
         
-        // HTML structure of each card
+        // HTML structure of each card with emoji
         const innerHTML = `
             <div class="card-inner">
-                <div class="card-front"></div>
-                <div class="card-back" style="background-color:${color}"></div>
+                <div class="card-front">❓</div>
+                <div class="card-back" style="background: linear-gradient(135deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 48px;">${emoji}</div>
             </div>
         `;
         cardElement.innerHTML = innerHTML;
@@ -37,9 +43,8 @@ function flipCard(event) {
 
     if (!firstCard) {
         firstCard = clickedCard;
-    } else if (!secondCard) {
+    } else if (!secondCard && clickedCard !== firstCard) {
         secondCard = clickedCard;
-
         checkForMatch();
     }
 }
@@ -48,7 +53,10 @@ function flipCard(event) {
 function checkForMatch() {
     lockBoard = true;
 
-    if (firstCard.children[0].innerHTML === secondCard.children[0].innerHTML) {
+    const firstEmoji = firstCard.querySelector('.card-back').innerHTML;
+    const secondEmoji = secondCard.querySelector('.card-back').innerHTML;
+
+    if (firstEmoji === secondEmoji) {
         disableCards();
         updateScore();
     } else {
@@ -75,7 +83,22 @@ function unflipCards() {
 // Update the score based on matching pairs
 function updateScore() {
     matchesCount++;
-    document.getElementById('score-board').innerText = `Matches: ${matchesCount}`;
+    document.getElementById('score-board').innerHTML = `✅ Matches: ${matchesCount} / ${totalPairs}`;
+    
+    // Check for victory
+    if (matchesCount === totalPairs) {
+        setTimeout(() => {
+            const scoreBoard = document.getElementById('score-board');
+            scoreBoard.classList.add('victory');
+            alert('🎉🎊 CONGRATULATIONS! You matched all pairs! 🎊🎉');
+            scoreBoard.innerHTML = '🏆 VICTORY! 🏆 <br> ✅ Matches: ' + matchesCount + ' / ' + totalPairs;
+            
+            // Reset game after victory
+            setTimeout(() => {
+                resetGame();
+            }, 2000);
+        }, 200);
+    }
 }
 
 // Reset variables and unlock board
@@ -84,8 +107,34 @@ function resetBoard() {
     lockBoard = false;
 }
 
+// Reset entire game
+function resetGame() {
+    // Clear the container
+    gameContainer.innerHTML = '';
+    // Reset variables
+    matchesCount = 0;
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
+    // Update score display
+    document.getElementById('score-board').innerHTML = `✅ Matches: 0 / ${totalPairs}`;
+    document.getElementById('score-board').classList.remove('victory');
+    // Recreate cards
+    createCards();
+    // Reattach event listeners
+    cards.forEach(card => {
+        card.addEventListener('click', function(event) {
+            if (!card.classList.contains('flipped')) {
+                flipCard({currentTarget: card});
+            }
+        });
+    });
+}
+
 // Initialize the game
 createCards();
+
+// Event listener for clicking on cards
 gameContainer.addEventListener('click', function(event) {
     const clickedCard = event.target.closest('.card');
     if (clickedCard && !clickedCard.classList.contains('flipped')) {
