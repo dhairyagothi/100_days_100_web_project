@@ -10,9 +10,9 @@
 </head>
 
 <body>
-    <div class="flex flex-col md:flex-row justify-center gap-10 md:gap-20 p-4 md:h-screen">
+    <div class="flex flex-col md:flex-row justify-center gap-10 md:gap-20 p-6 bg-gray-50 min-h-screen">
         <!-- Main Content Section -->
-        <div class="flex flex-col justify-center w-full md:w-[900px] md:overflow-y-scroll">
+        <div class="flex flex-col justify-center w-full md:w-[900px] bg-white p-6 rounded-2xl shadow-md">
             <!-- Image -->
             <div class="relative w-full rounded-xl overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -49,7 +49,7 @@
         </div>
 
         <!-- Sidebar Section -->
-        <div class="flex flex-col justify-start w-full md:w-[300px]">
+        <div class="flex flex-col justify-start w-full md:w-[320px] bg-white p-5 rounded-2xl shadow-md h-fit">
             <div class="flex flex-row gap-10 justify-center items-center h-20 text-gray-600">
 
                 <p class="cursor-pointer hidden" id="liked"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -87,17 +87,29 @@
             </div>
 
             <div class="mt-4 md:overflow-y-scroll">
-                <h1 class="text-gray-700 text-2xl font-bold">Comments</h1>
+                <h1 class="text-gray-800 text-2xl font-bold mb-2">
+    Comments
+</h1>
 
                 <div class="mt-2">
-                    <textarea name="comment" id="comment" placeholder="Add a comment ..."
-                        class="w-full p-2 border border-emerald-300 rounded-md"></textarea>
-                    <button type="submit"
-                        class="mt-2 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-4 rounded-md"
-                        onclick="addComment()">Submit</button>
+                    <textarea 
+    name="comment" 
+    id="comment" 
+    placeholder="Add a comment ..."
+    class="w-full p-3 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400">
+</textarea>
+
+<button 
+    type="submit"
+    class="mt-2 bg-emerald-500 hover:bg-emerald-600 transition text-white py-2 px-5 rounded-xl shadow-sm"
+    onclick="addComment()">
+    Submit
+</button>
                 </div>
 
-                <div id="comments" class="mt-4 text-gray-600">No comments</div>
+                <div id="comments" class="mt-4 text-gray-600 flex flex-col gap-3">
+                    <p id="emptyMessage">No comments yet</p>
+                </div>
             </div>
         </div>
     </div>

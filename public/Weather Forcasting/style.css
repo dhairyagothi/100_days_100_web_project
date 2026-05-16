@@ -1,19 +1,20 @@
-h1,h2{
-    color:#eeebe2;
+h1,
+h2 {
+    color: #eeebe2;
     font-weight: 400;
 }
 
-.card-header py-3{
-    background-color: #0d6efd;
-    color:white
-}
-
-.w-100 btn btn-lg btn-outline-primary{
+.card-header.py-3 {
     background-color: #0d6efd;
     color: white;
 }
 
+.w-100.btn.btn-lg.btn-outline-primary {
+    background-color: #0d6efd;
+    color: white;
+}
 
-
-
-
+#errorMessage {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
