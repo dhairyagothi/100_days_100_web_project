@@ -64,15 +64,31 @@ addTextButton.addEventListener("click", () => {
     }
 });
 
+
 deleteTextButton.addEventListener("click", () => {
     if (phrases.length > defaultPhrases.length) {
         const lastUserPhrase = phrases.pop();
+
         if (displayedPhrases.includes(lastUserPhrase)) {
             displayedPhrases = displayedPhrases.filter(phrase => phrase !== lastUserPhrase);
         }
+
+        if (phraseIndex >= phrases.length) {
+            phraseIndex = 0;
+        }
+
+        charIndex = 0;
+        isDeleting = false;
+
+
+        clearTimeout(typingTimeout);
+        if (!isPaused) {
+            type();
+        } else {
+            typewriter.textContent = phrases[phraseIndex];
+        }
     }
 });
-
 pauseResumeButton.addEventListener("click", () => {
     isPaused = !isPaused;
     pauseResumeButton.textContent = isPaused ? "Resume" : "Pause";
