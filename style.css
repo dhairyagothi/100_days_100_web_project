@@ -162,6 +162,7 @@ body {
     color: #000 !important;
 }
 
+#theme-toggle,
 #themeToggle {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -177,6 +178,7 @@ body {
     transition: var(--transition);
 }
 
+#theme-toggle:hover,
 #themeToggle:hover {
     background: var(--accent-color);
     color: #000;
@@ -318,6 +320,13 @@ body {
     padding: 0 2rem;
     outline: none;
 }
+
+.stats-counter {
+      color: #00ff88;
+      font-family: 'Courier New', monospace;
+      margin-top: 8px;
+      font-size: 14px;
+    }
 
 .search-btn {
     background: var(--accent-color);

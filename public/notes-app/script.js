@@ -1,71 +1,126 @@
-
 const addBox = document.querySelector(".add-box"),
   popupBox = document.querySelector(".popup-box"),
   popupTitle = popupBox.querySelector("header p"),
   closeIcon = popupBox.querySelector("header i"),
-  titleTag = popupBox.querySelector("input[type='text']"),
+  titleTag = popupBox.querySelector(".title input"),
   descTag = popupBox.querySelector("textarea"),
   tagsTag = popupBox.querySelector(".tags input"),
+  fontTag = popupBox.querySelector(".font select"),
   passwordTag = popupBox.querySelector(".password input"),
   addBtn = popupBox.querySelector("button"),
+  clearNotesBtn = document.querySelector(".clear-notes"),
   searchInput = document.getElementById("search-input");
 
 const months = ["January", "February", "March", "April", "May", "June", "July",
   "August", "September", "October", "November", "December"];
+
 let notes = JSON.parse(localStorage.getItem("notes") || "[]");
 let isUpdate = false, updateId;
 
-addBox.addEventListener("click", () => {
-  popupTitle.innerText = "Add a new Note";
-  addBtn.innerText = "Add Note";
+function openNoteForm(title, buttonText) {
+  popupTitle.innerText = title;
+  addBtn.innerText = buttonText;
   popupBox.classList.add("show");
-  document.querySelector("body").style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
   if(window.innerWidth > 660) titleTag.focus();
-});
+}
 
-closeIcon.addEventListener("click", () => {
+function resetForm() {
   isUpdate = false;
   titleTag.value = descTag.value = tagsTag.value = passwordTag.value = "";
+  fontTag.value = "Poppins";
   popupBox.classList.remove("show");
-  document.querySelector("body").style.overflow = "auto";
-});
+  document.body.style.overflow = "auto";
+}
 
-function showNotes(filteredNotes = notes) {
-  if(!filteredNotes) return;
+function escapeHTML(value = "") {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatDescription(description = "") {
+  return escapeHTML(description)
+    .replaceAll("&lt;br/&gt;", "<br/>")
+    .replaceAll("\n", "<br/>");
+}
+
+function getVisibleNotes() {
+  const searchText = searchInput.value.trim().toLowerCase();
+
+  return notes
+    .map((note, index) => ({ note, index }))
+    .filter(({ note }) => {
+      const tags = Array.isArray(note.tags) ? note.tags : [];
+
+      return !searchText ||
+        note.title.toLowerCase().includes(searchText) ||
+        note.description.toLowerCase().includes(searchText) ||
+        tags.some(tag => tag.toLowerCase().includes(searchText));
+    });
+}
+
+function showNotes(filteredNotes = getVisibleNotes()) {
   document.querySelectorAll(".note").forEach(li => li.remove());
-  filteredNotes.forEach((note, id) => {
-    let filterDesc = note.description.replaceAll("\n", '<br/>');
-    let lockedClass = note.password ? ' locked' : '';
-    let blurStyle = note.password && !note.isUnlocked ? ' style="filter: blur(5px);" ' : '';
-    let lockSymbol = note.password && !note.isUnlocked ? '<span class="lock-symbol">🔒</span>' : '';
-    
-    let viewBtnText = note.password && note.isUnlocked ? '<i class="uil uil-eye-slash"></i>Hide' : '<i class="uil uil-eye"></i>View';
-    let viewAction = note.password && note.isUnlocked ? `hideNote(${id})` : `viewNotePrompt(${id})`;
+  clearNotesBtn.disabled = notes.length === 0;
 
-    let liTag = `<li class="note${lockedClass}">
-                  <div class="details"${blurStyle}>
-                    <p>${note.title}</p>
-                    <span>${filterDesc}</span>
-                    ${lockSymbol}
-                  </div>
-                  <div class="tags">${note.tags.join(", ")}</div>
-                  <div class="bottom-content">
-                    <span>${note.date}</span>
-                    <div class="settings">
-                      <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
-                      <ul class="menu">
-                        ${note.password ? `<li onclick="${viewAction}">${viewBtnText}</li>` : ''}
-                        ${note.password ? `<li onclick="editOrDelete(${id}, 'edit')"><i class="uil uil-pen"></i>Edit</li>` : `<li onclick="editOrDelete(${id}, 'edit')">Edit</li>`}
-                        ${note.password ? `<li onclick="editOrDelete(${id}, 'delete')"><i class="uil uil-trash"></i>Delete</li>` : `<li onclick="editOrDelete(${id}, 'delete')">Delete</li>`}
-                      </ul>
+  filteredNotes.forEach(({ note, index }) => {
+    const isLocked = note.password && !note.isUnlocked;
+    const noteFont = note.font || "Poppins";
+    const tags = Array.isArray(note.tags) ? note.tags : [];
+    const tagsMarkup = tags
+      .filter(Boolean)
+      .map(tag => `<span>${escapeHTML(tag)}</span>`)
+      .join("");
+    const viewBtnText = note.password && note.isUnlocked
+      ? '<i class="uil uil-eye-slash"></i>Hide'
+      : '<i class="uil uil-eye"></i>View';
+    const viewAction = note.password && note.isUnlocked
+      ? `hideNote(${index})`
+      : `viewNotePrompt(${index})`;
+
+    const liTag = `<li class="note${note.password ? " locked" : ""}" style="font-family: '${escapeHTML(noteFont)}', sans-serif;">
+                    <div class="details${isLocked ? " locked" : ""}">
+                      <p>${escapeHTML(note.title)}</p>
+                      <span>${formatDescription(note.description)}</span>
                     </div>
-                  </div>
-                </li>`;
+                    ${isLocked ? '<span class="lock-symbol"><i class="uil uil-lock"></i></span>' : ""}
+                    <div class="tags">${tagsMarkup}</div>
+                    <div class="bottom-content">
+                      <span>${escapeHTML(note.date)}</span>
+                      <div class="settings">
+                        <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
+                        <ul class="menu">
+                          ${note.password ? `<li onclick="${viewAction}">${viewBtnText}</li>` : ""}
+                          <li onclick="editOrDelete(${index}, 'edit')"><i class="uil uil-pen"></i>Edit</li>
+                          <li onclick="editOrDelete(${index}, 'delete')"><i class="uil uil-trash"></i>Delete</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>`;
+
     addBox.insertAdjacentHTML("afterend", liTag);
   });
 }
 
-showNotes();
+addBox.addEventListener("click", () => openNoteForm("Add a new note", "Add Note"));
+closeIcon.addEventListener("click", resetForm);
+searchInput.addEventListener("input", () => showNotes());
+clearNotesBtn.addEventListener("click", () => {
+  if(notes.length === 0) return;
+
+  const shouldClear = confirm("Delete all saved notes? This cannot be undone.");
+
+  if(shouldClear) {
+    notes = [];
+    localStorage.removeItem("notes");
+    searchInput.value = "";
+    showNotes();
+  }
+});
 
 function showMenu(elem) {
   elem.parentElement.classList.add("show");
@@ -77,8 +132,9 @@ function showMenu(elem) {
 }
 
 function viewNotePrompt(noteId) {
-  let note = notes[noteId];
-  let enteredPassword = prompt("Please enter the password to view this note:");
+  const note = notes[noteId];
+  const enteredPassword = prompt("Please enter the password to view this note:");
+
   if(enteredPassword === note.password) {
     note.isUnlocked = true;
     localStorage.setItem("notes", JSON.stringify(notes));
@@ -89,52 +145,39 @@ function viewNotePrompt(noteId) {
 }
 
 function hideNote(noteId) {
-  let note = notes[noteId];
-  note.isUnlocked = false;
+  notes[noteId].isUnlocked = false;
   localStorage.setItem("notes", JSON.stringify(notes));
   showNotes();
 }
 
 function editOrDelete(noteId, actionType) {
-  let note = notes[noteId];
+  const note = notes[noteId];
+
   if(note.password) {
-    let enteredPassword = prompt("Please enter the password to proceed:");
-    if(enteredPassword === note.password) {
-      if(actionType === 'edit') {
-        editNoteContent(noteId);
-      } else if(actionType === 'delete') {
-        deleteNoteById(noteId);
-      } else {
-        alert("Invalid action. Note cannot be edited or deleted.");
-      }
-    } else {
+    const enteredPassword = prompt("Please enter the password to proceed:");
+
+    if(enteredPassword !== note.password) {
       alert("Incorrect password! Note cannot be edited or deleted.");
-    }
-  } else {
-    // Proceed with editing or deleting the note
-    if(actionType === 'edit') {
-      editNoteContent(noteId);
-    } else if(actionType === 'delete') {
-      deleteNoteById(noteId);
+      return;
     }
   }
+
+  if(actionType === "edit") editNoteContent(noteId);
+  if(actionType === "delete") deleteNoteById(noteId);
 }
 
 function editNoteContent(noteId) {
-  let note = notes[noteId];
-  popupTitle.innerText = "Edit Note";
-  addBtn.innerText = "Update Note";
-  titleTag.value = note.title;
-  descTag.value = note.description.replaceAll('<br/>', '\n');
-  tagsTag.value = note.tags.join(", ");
-  passwordTag.value = note.password || "";
+  const note = notes[noteId];
 
+  titleTag.value = note.title;
+  descTag.value = note.description.replaceAll("<br/>", "\n");
+  tagsTag.value = Array.isArray(note.tags) ? note.tags.join(", ") : "";
+  fontTag.value = note.font || "Poppins";
+  passwordTag.value = note.password || "";
   isUpdate = true;
   updateId = noteId;
 
-  popupBox.classList.add("show");
-  document.querySelector("body").style.overflow = "hidden";
-  if(window.innerWidth > 660) titleTag.focus();
+  openNoteForm("Edit note", "Update Note");
 }
 
 function deleteNoteById(noteId) {
@@ -145,21 +188,24 @@ function deleteNoteById(noteId) {
 
 addBtn.addEventListener("click", e => {
   e.preventDefault();
-  let title = titleTag.value.trim(),
-    description = descTag.value.trim().replaceAll('\n', '<br/>'),
-    tags = tagsTag.value.trim().split(",").map(tag => tag.trim()),
+
+  const title = titleTag.value.trim(),
+    description = descTag.value.trim(),
+    tags = tagsTag.value.trim().split(",").map(tag => tag.trim()).filter(Boolean),
+    font = fontTag.value,
     password = passwordTag.value.trim();
 
   if(title || description) {
-    let currentDate = new Date(),
+    const currentDate = new Date(),
       month = months[currentDate.getMonth()],
       day = currentDate.getDate(),
       year = currentDate.getFullYear();
 
-    let noteInfo = {
+    const noteInfo = {
       title,
       description,
       tags,
+      font,
       password,
       isUnlocked: false,
       date: `${month} ${day}, ${year}`
@@ -174,16 +220,8 @@ addBtn.addEventListener("click", e => {
 
     localStorage.setItem("notes", JSON.stringify(notes));
     showNotes();
-    closeIcon.click();
+    resetForm();
   }
 });
 
-searchInput.addEventListener("input", e => {
-  const searchText = e.target.value.toLowerCase();
-  const filteredNotes = notes.filter(note => 
-    note.title.toLowerCase().includes(searchText) || 
-    note.description.toLowerCase().includes(searchText) ||
-    note.tags.some(tag => tag.toLowerCase().includes(searchText))
-  );
-  showNotes(filteredNotes);
-});
+showNotes();
