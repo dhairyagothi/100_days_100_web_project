@@ -183,6 +183,7 @@ The website features:
 | 112 | Nykaa Clone | HTML, CSS, JS | 💄 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone) |
 | 113 | CPU Scheduler | HTML, CSS, JS | ⚙️ Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler) |
 | 114 | EchoNotes | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes) |
+| 115 | NeuralSnake-3310 | React, Vite, Tailwind CSS, pathfinding algorithms | 🎮 Game | [View Demo](https://6947a2632551439028578bd1--subtle-twilight-11905d.netlify.app/) |
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 25+ interactive games and puzzles
