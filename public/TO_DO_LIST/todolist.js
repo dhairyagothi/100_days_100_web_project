@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 document.addEventListener('DOMContentLoaded', () => {
   const todoInput     = document.getElementById('todo-input');
   const addTaskBtn    = document.getElementById('add-task-btn');
@@ -240,154 +239,6 @@ function renderDocuments() {
     });
 
     documentsList.appendChild(div);
-=======
-/* ============================================
-   TaskFlow — Task Manager JS
-   Full rewrite: clean, functional, persistent
-============================================ */
-
-// ── State ──────────────────────────────────
-let tasks = JSON.parse(localStorage.getItem('TaskFlow_tasks') || '[]');
-let currentFilter = 'all';
-let currentTheme = localStorage.getItem('TaskFlow_theme') || 'sunset';
-
-// Tag colors map
-const TAG_COLORS = {
-  Work:      '#FFDE59',
-  Personal:  '#FFC0CB',
-  Urgent:    '#FF6B6B',
-  Fitness:   '#B1EE99',
-  Misc:      '#CAB9F5',
-};
-
-// ── Init ────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  applyTheme(currentTheme, false);
-  renderAll();
-
-  // Enter key to add task
-  document.getElementById('task-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') addTask();
-  });
-});
-
-// ── Persist ─────────────────────────────────
-function save() {
-  localStorage.setItem('TaskFlow_tasks', JSON.stringify(tasks));
-}
-
-// ── Add Task ────────────────────────────────
-function addTask() {
-  const input = document.getElementById('task-input');
-  const typeSelect = document.getElementById('task-type-select');
-  const text = input.value.trim();
-
-  if (!text) {
-    showToast('✏️ Please enter a task first!');
-    input.focus();
-    return;
-  }
-
-  const task = {
-    id: Date.now(),
-    text : text,
-    type: typeSelect.value || 'Misc',
-    done: false,
-    createdAt: new Date().toISOString(),
-  };
-
-  tasks.unshift(task);
-  save();
-  renderAll();
-
-  input.value = '';
-  typeSelect.value = '';
-  input.focus();
-  showToast('✅ Task added!');
-}
-
-// ── Toggle Done ─────────────────────────────
-function toggleDone(id) {
-  const t = tasks.find(t => t.id === id);
-  if (!t) return;
-  t.done = !t.done;
-  save();
-  renderAll();
-  showToast(t.done ? '🎉 Task completed!' : '↩️ Marked as pending');
-}
-
-// ── Delete Task ─────────────────────────────
-function deleteTask(id) {
-  const card = document.querySelector(`[data-id="${id}"]`);
-  if (card) {
-    card.style.animation = 'fadeOut 0.3s ease forwards';
-    setTimeout(() => {
-      tasks = tasks.filter(t => t.id !== id);
-      save();
-      renderAll();
-    }, 280);
-  }
-}
-
-// ── Edit Task (inline) ──────────────────────
-function editTask(id, newText) {
-  const t = tasks.find(t => t.id === id);
-  if (t) {
-    t.text = newText.trim() || t.text;
-    save();
-  }
-}
-
-// ── Clear Done ──────────────────────────────
-function clearDone() {
-  const count = tasks.filter(t => t.done).length;
-  if (!count) { showToast('No completed tasks to clear'); return; }
-  tasks = tasks.filter(t => !t.done);
-  save();
-  renderAll();
-  showToast(`🗑️ Cleared ${count} completed task${count > 1 ? 's' : ''}`);
-}
-
-// ── Filter ──────────────────────────────────
-function filterTasks(btn, filter) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderList();
-}
-
-// ── Render All ──────────────────────────────
-function renderAll() {
-  renderList();
-  renderStats();
-}
-
-function renderList() {
-  const container = document.getElementById('task-list');
-  const emptyState = document.getElementById('empty-state');
-
-  // Filter tasks
-  let filtered = tasks.filter(t => {
-    if (currentFilter === 'all')     return true;
-    if (currentFilter === 'done')    return t.done;
-    if (currentFilter === 'pending') return !t.done;
-    return t.type === currentFilter;
-  });
-
-  // Clear existing cards (keep empty state)
-  container.querySelectorAll('.task-card').forEach(c => c.remove());
-
-  if (filtered.length === 0) {
-    emptyState.style.display = 'flex';
-    return;
-  }
-
-  emptyState.style.display = 'none';
-
-  filtered.forEach(task => {
-    const card = buildCard(task);
-    container.appendChild(card);
-  });
 }
 
 function buildCard(task) {
@@ -494,11 +345,12 @@ function saveAsPDF() {
   }
 
   const { jsPDF } = window.jspdf;
+
   const doc = new jsPDF({
     orientation: 'p',
     unit: 'mm',
     format: 'a4'
->>>>>>> 9b7748bb (feat: enhance TaskFlow UI with themes, filtering, and PDF export improvements)
+
   });
 
   const now = new Date();
@@ -694,6 +546,8 @@ function saveAsPDF() {
     });
 
     y += 4;
+
+
   });
 
   // ── FOOTER FOR ALL PAGES ───────────────────────────────────────
