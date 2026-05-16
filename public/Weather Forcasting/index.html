@@ -1,236 +1,337 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Weather App</title>
-    <link rel="icon" href="logo.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Weather App – Get real-time weather for any city worldwide." />
+  <title>WeatherNow – Real-Time Forecast</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
+<body>
 
-<body background="nice-beach-suning-weather-hd-wallapaper.jpg">
-    
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">⛅Weather App</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About this App</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+  <!-- ═══ BACKGROUND LAYERS ═══ -->
+  <div class="bg-gradient-layer" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
 
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Delhi</a></li>
-                            <li><a class="dropdown-item" href="#">Seattle</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Bangalore</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">Usage Guide</a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input  id="city" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit" id="submit">Search</button>
-                </form>
-            </div>
+  <!-- ═══ NAVBAR ═══ -->
+  <header class="app-header" role="banner">
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="brand-icon">🌤️</span>
+        <span class="brand-name">WeatherNow</span>
+      </div>
+
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#" class="nav-link active">Home</a>
+        <a href="#cities-section" class="nav-link">Cities</a>
+        <a href="#" class="nav-link">About</a>
+      </nav>
+
+      <form class="search-form" role="search" id="searchForm" onsubmit="handleSearch(event)">
+        <div class="search-wrap">
+          <i class="fas fa-search search-icon" aria-hidden="true"></i>
+          <input
+            type="search"
+            id="city"
+            class="search-input"
+            placeholder="Search city…"
+            aria-label="Search city"
+            autocomplete="off"
+          />
+          <button type="submit" class="search-btn" id="submit" aria-label="Get weather">
+            Get Weather
+          </button>
         </div>
-    </nav>
+      </form>
 
-
-
-
-    <div class="container">
-        <h1 class="my-4 text-center">Weather for <span id="cityName"></span></h1>
-        <main>
-            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-                <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3" style="background-color:#0d6efd; color: white;">
-                            <h4 class="my-0 fw-normal">Temperatures</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title"><span id="temp2"></span><small
-                                    class="text-body-secondary fw-light"><span>&#8451;</span></small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>Temperature is <span id="temp"></span></li>
-                                <li>Min Temperature is <span id="min_temp"></span></li>
-                                <li>Max Temperature is <span id="max_temp"></span></li>
-                               
-                            </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-outline-primary" style="background-color: #0d6efd;color: white;">Temperature Info</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3" style="background-color: #0d6efd;color: white;">
-                            <h4 class="my-0 fw-normal">Humidity Info</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title"><span id="humidity2"></span><small
-                                    class="text-body-secondary fw-light"> %</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>Wind Degree is <span id="wind_degrees"></span></li>
-                                <li>Feels like <span id="feels_like"></span></li>
-                                <li>Humidity is <span id="humidity"></span></li>
-                            </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-primary">Humidity Info</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                        <div class="card-header py-3 text-bg-primary border-primary">
-                            <h4 class="my-0 fw-normal">Sun Info</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title"><span id="wind_speed2"></span><small
-                                    class="text-body-secondary fw-light"> km/hr</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                               
-                                <li>Wind Speed is <span id="wind_speed"></span></li>
-                                <li>Sunrise Time is <span id="sunrise"></span></li>
-                                <li>Sunset Time is <span id="sunset"></span></li>
-                                
-                            </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-primary">Wind Info</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h2 class="display-6 text-center mb-4">Weather of other Commom Places</h2>
-
-            <div class="table-responsive">
-                <table class="table text-center">
-                    <thead>
-                        <tr>
-                            <th style="width: 34%;"></th>
-                            <th style="width: 22%;"> Cloud_pct</th>
-                            <th style="width: 22%;">Feels_like</th>
-                            <th style="width: 22%;">Humidity</th>
-                            <th style="width: 22%;">Max_temp</th>
-                            <th style="width: 22%;">Min_temp</th>
-                            <th style="width: 22%;">Sunrise</th>
-                            <th style="width: 22%;">Sunset</th>
-                            <th style="width: 22%;">Temp</th>
-                            <th style="width: 22%;">Wind_degrees</th>
-                            <th style="width: 22%;">Wind_speed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="text-start">Bangalore</th>
-                             
-                            <td>40</td>
-                            <td>23</td>
-                            <td>23</td>
-                            <td>88</td>
-                            <td>23</td>
-                            <td>23</td>
-                            <td>5.14</td>
-                            <td>230</td>
-                            <td>1694651927</td>
-                            <td>1694695937</td>
-                             
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-start">Chennai</th>
-                            <td>75</td>
-                            <td>29</td>
-                            <td>35</td>
-                            <td>81</td>
-                            <td>27</td>
-                            <td>29</td>
-                            <td>4.12</td>
-                            <td>150</td>
-                            <td>1694651283</td>
-                            <td>1694695297</td>
-                            
-                        </tr>
-                    </tbody>
-
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="text-start">Hyderabad</th>
-                            <td> 75</td>
-                            <td> 25</td>
-                            <td> 26</td>
-                            <td> 83</td>
-                            <td> 24</td>
-                            <td> 25</td>
-                            <td> 2.06</td>
-                            <td> 280</td>
-                            <td> 1694651642</td>
-                            <td> 1694695804</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-start">Pune</th>
-                            <td> 39</td>
-                            <td> 22</td>
-                            <td> 23</td>
-                            <td> 90</td>
-                            <td> 22</td>
-                            <td> 22</td>
-                            <td> 3.31</td>
-                            <td> 255</td>
-                            <td> 1694652730</td>
-                            <td> 1694696933</td>
-                        </tr>
-                         <tr>
-                            <th scope="row" class="text-start">Noida</th>
-<td> 100</td>
-                            <td> 32</td>
-                            <td> 37</td>
-                            <td> 58</td>
-                            <td> 32</td>
-                            <td> 32</td>
-                            <td> 2.14</td>
-                            <td> 133</td>
-                            <td> 1694651697</td>
-                            <td> 1694696298</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-start">Delhi</th>
-                            <td> 40</td>
-                            <td> 32</td>
-                            <td> 39</td>
-                            <td> 70</td>
-                            <td> 32</td>
-                            <td> 32</td>
-                            <td> 2.57</td>
-                            <td> 140</td>
-                            <td> 1694651722</td>
-                            <td> 1694696327</td>
-                        </tr> 
-                    </tbody>
-                </table>
-            </div>
-        </main>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
-    <script src="script.js"></script>
-</body>
 
+    <!-- Mobile nav -->
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <a href="#" class="nav-link">Home</a>
+      <a href="#cities-section" class="nav-link">Cities</a>
+      <a href="#" class="nav-link">About</a>
+      <form class="mobile-search-form" onsubmit="handleSearch(event)">
+        <input type="search" id="cityMobile" class="search-input" placeholder="Search city…" autocomplete="off" />
+        <button type="submit" class="search-btn">Search</button>
+      </form>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="app-main" id="appMain">
+
+    <!-- Hero / Search Banner -->
+    <section class="hero-section" aria-label="Hero search">
+      <div class="hero-content">
+        <h1 class="hero-title">Real-Time <span class="gradient-text">Weather</span> Forecast</h1>
+        <p class="hero-sub">Search any city for current temperature, humidity, wind and more.</p>
+      </div>
+    </section>
+
+    <!-- ── Current City Results ── -->
+    <section class="results-section" id="resultsSection" aria-label="Current city weather" aria-live="polite">
+
+      <!-- Empty state (shown before search) -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🌍</div>
+        <p class="empty-title">Search a city to see its weather</p>
+        <p class="empty-sub">Try "Mumbai", "London" or "New York"</p>
+      </div>
+
+      <!-- Error state -->
+      <div class="error-state" id="errorState" hidden>
+        <div class="empty-icon">⚠️</div>
+        <p class="empty-title">City not found</p>
+        <p class="empty-sub">Please check the spelling and try again.</p>
+      </div>
+
+      <!-- Loading spinner -->
+      <div class="loading-state" id="loadingState" hidden aria-label="Loading weather data">
+        <div class="spinner"></div>
+        <p>Fetching weather data…</p>
+      </div>
+
+      <!-- Weather result cards -->
+      <div class="weather-result" id="weatherResult" hidden>
+        <h2 class="result-city-name">
+          <i class="fas fa-map-marker-alt"></i>
+          <span id="cityName"></span>
+        </h2>
+
+        <div class="weather-cards-grid">
+
+          <!-- Temperature card -->
+          <div class="weather-card card-temp" aria-label="Temperature information">
+            <div class="card-icon-row">
+              <span class="card-emoji">🌡️</span>
+              <span class="card-label">Temperature</span>
+            </div>
+            <div class="card-main-value">
+              <span id="temp2" class="big-value">–</span>
+              <span class="big-unit">°C</span>
+            </div>
+            <div class="card-details">
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-thermometer-half"></i> Current</span>
+                <span class="detail-value" id="temp">–</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-arrow-down"></i> Min</span>
+                <span class="detail-value" id="min_temp">–</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-arrow-up"></i> Max</span>
+                <span class="detail-value" id="max_temp">–</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Humidity card -->
+          <div class="weather-card card-humidity" aria-label="Humidity information">
+            <div class="card-icon-row">
+              <span class="card-emoji">💧</span>
+              <span class="card-label">Humidity</span>
+            </div>
+            <div class="card-main-value">
+              <span id="humidity2" class="big-value">–</span>
+              <span class="big-unit">%</span>
+            </div>
+            <div class="card-details">
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-droplet"></i> Humidity</span>
+                <span class="detail-value" id="humidity">–</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-temperature-low"></i> Feels like</span>
+                <span class="detail-value" id="feels_like">–</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-compass"></i> Wind dir</span>
+                <span class="detail-value" id="wind_degrees">–</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wind & Sun card -->
+          <div class="weather-card card-wind" aria-label="Wind and sun information">
+            <div class="card-icon-row">
+              <span class="card-emoji">💨</span>
+              <span class="card-label">Wind &amp; Sun</span>
+            </div>
+            <div class="card-main-value">
+              <span id="wind_speed2" class="big-value">–</span>
+              <span class="big-unit">km/h</span>
+            </div>
+            <div class="card-details">
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-wind"></i> Wind speed</span>
+                <span class="detail-value" id="wind_speed">–</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-sun"></i> Sunrise</span>
+                <span class="detail-value" id="sunrise">–</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-moon"></i> Sunset</span>
+                <span class="detail-value" id="sunset">–</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /weather-cards-grid -->
+      </div><!-- /weather-result -->
+
+    </section>
+
+    <!-- ── City Comparison Table ── -->
+    <section class="cities-section" id="cities-section" aria-label="Weather of common cities">
+      <div class="section-header">
+        <h2 class="section-title">Weather Across India</h2>
+        <p class="section-sub">Snapshot data for major cities</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="cities-table" aria-label="City weather comparison">
+          <thead>
+            <tr>
+              <th scope="col" class="city-col">City</th>
+              <th scope="col"><i class="fas fa-cloud" title="Cloud cover"></i> Cloud %</th>
+              <th scope="col"><i class="fas fa-temperature-low" title="Feels like"></i> Feels like</th>
+              <th scope="col"><i class="fas fa-droplet" title="Humidity"></i> Humidity</th>
+              <th scope="col"><i class="fas fa-arrow-up" title="Max temp"></i> Max °C</th>
+              <th scope="col"><i class="fas fa-arrow-down" title="Min temp"></i> Min °C</th>
+              <th scope="col"><i class="fas fa-sun" title="Sunrise"></i> Sunrise</th>
+              <th scope="col"><i class="fas fa-moon" title="Sunset"></i> Sunset</th>
+              <th scope="col"><i class="fas fa-thermometer-half" title="Temperature"></i> Temp</th>
+              <th scope="col"><i class="fas fa-compass" title="Wind direction"></i> Wind dir</th>
+              <th scope="col"><i class="fas fa-wind" title="Wind speed"></i> Wind km/h</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" class="city-name-cell">
+                <span class="city-flag">🏙️</span> Bangalore
+              </th>
+              <td><span class="pill pill-cloud">40</span></td>
+              <td>23 °C</td>
+              <td><span class="humidity-bar" style="--h:23"></span><span>23%</span></td>
+              <td class="temp-high">28 °C</td>
+              <td class="temp-low">23 °C</td>
+              <td>06:14 AM</td>
+              <td>06:29 PM</td>
+              <td>25 °C</td>
+              <td>230°</td>
+              <td>5.1</td>
+            </tr>
+            <tr>
+              <th scope="row" class="city-name-cell">
+                <span class="city-flag">🏙️</span> Chennai
+              </th>
+              <td><span class="pill pill-cloud high">75</span></td>
+              <td>29 °C</td>
+              <td><span class="humidity-bar" style="--h:35"></span><span>35%</span></td>
+              <td class="temp-high">31 °C</td>
+              <td class="temp-low">27 °C</td>
+              <td>06:15 AM</td>
+              <td>06:28 PM</td>
+              <td>29 °C</td>
+              <td>150°</td>
+              <td>4.1</td>
+            </tr>
+            <tr>
+              <th scope="row" class="city-name-cell">
+                <span class="city-flag">🏙️</span> Hyderabad
+              </th>
+              <td><span class="pill pill-cloud high">75</span></td>
+              <td>25 °C</td>
+              <td><span class="humidity-bar" style="--h:26"></span><span>26%</span></td>
+              <td class="temp-high">29 °C</td>
+              <td class="temp-low">24 °C</td>
+              <td>06:12 AM</td>
+              <td>06:27 PM</td>
+              <td>26 °C</td>
+              <td>280°</td>
+              <td>2.1</td>
+            </tr>
+            <tr>
+              <th scope="row" class="city-name-cell">
+                <span class="city-flag">🏙️</span> Pune
+              </th>
+              <td><span class="pill pill-cloud">39</span></td>
+              <td>22 °C</td>
+              <td><span class="humidity-bar" style="--h:23"></span><span>23%</span></td>
+              <td class="temp-high">26 °C</td>
+              <td class="temp-low">22 °C</td>
+              <td>06:17 AM</td>
+              <td>06:31 PM</td>
+              <td>23 °C</td>
+              <td>255°</td>
+              <td>3.3</td>
+            </tr>
+            <tr>
+              <th scope="row" class="city-name-cell">
+                <span class="city-flag">🏙️</span> Noida
+              </th>
+              <td><span class="pill pill-cloud high">100</span></td>
+              <td>32 °C</td>
+              <td><span class="humidity-bar" style="--h:37"></span><span>37%</span></td>
+              <td class="temp-high">36 °C</td>
+              <td class="temp-low">32 °C</td>
+              <td>05:52 AM</td>
+              <td>07:03 PM</td>
+              <td>33 °C</td>
+              <td>133°</td>
+              <td>2.1</td>
+            </tr>
+            <tr>
+              <th scope="row" class="city-name-cell">
+                <span class="city-flag">🏙️</span> Delhi
+              </th>
+              <td><span class="pill pill-cloud">40</span></td>
+              <td>32 °C</td>
+              <td><span class="humidity-bar" style="--h:39"></span><span>39%</span></td>
+              <td class="temp-high">35 °C</td>
+              <td class="temp-low">32 °C</td>
+              <td>05:53 AM</td>
+              <td>07:04 PM</td>
+              <td>33 °C</td>
+              <td>140°</td>
+              <td>2.6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="footer-inner">
+      <span class="footer-brand">🌤️ WeatherNow</span>
+      <p class="footer-copy">Data powered by <strong>API Ninjas</strong> · Built for GSSoC 2026</p>
+      <div class="footer-links">
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
 </html>
