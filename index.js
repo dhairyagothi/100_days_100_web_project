@@ -127,7 +127,7 @@ const PROJECT_DATA = [
     ['Day 103', 'Drumkit Game', './public/Drumkit_Game/index.html', 'game javascript', 'beginner'],
     ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
     ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
-    ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
+    ['Day 106', 'Plants Website', './public/Plants%20Website/index.html', 'css', 'beginner'],
     ['Day 107', 'DocNow', './public/DocNow/index.html', 'api javascript', 'intermediate'],
     ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
     ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
