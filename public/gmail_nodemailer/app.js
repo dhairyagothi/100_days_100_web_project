@@ -35,18 +35,13 @@ const mailOptions = {
 };
 transporter.sendMail(mailOptions, (error, info) => {
   if (error) {
-    alert("Email not sent: ", info.response);
-    console.error("Error sending email: ", error);
+    console.error("Error sending email:", error);
+    return res.status(500).send("Email failed");
   } else {
-    alert("Email sent: ", info.response);
-    console.log("Email sent: ", info.response);
+    console.log("Email sent:", info.response);
+    return res.status(200).send("Email sent successfully");
   }
 });
-req.body.button.addEventListener("click", function () { 
-  alert("Email sent: ", info.response);
-  console.log("Email sent: ", info.response);
-}
-);
 
 });
 
