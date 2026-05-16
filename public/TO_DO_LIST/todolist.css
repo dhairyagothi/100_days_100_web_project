@@ -131,21 +131,19 @@ body {
   font-family: fantasy;
   font-style: italic;  
 }
-.buttons {  
-  border-radius: 9px;
-  font-size: 15px;
-  z-index: 999;
-  margin-bottom: 23px;
-  margin-top: 23px;
+.buttons {
   display: flex;
-  gap: 1700px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
 }
 #submittask{
   height: 42px;
-  width: 15%;
+  width: auto;
   text-align: center;
-  position: absolute;
-  left: 20px;
+  padding: 10px 15px;
+width: auto;
   background-color: rgb(67, 56, 56);
   color: white;
   border-radius: 9px;
@@ -158,10 +156,10 @@ body {
 
 #savepdf {
   height: 42px;
-  width: 15%;
+  width: auto;
   text-align: center;
-  position: absolute;
-  right: 20px;
+  padding: 10px 15px;
+width: auto;
   background-color: rgb(67, 56, 56);
   color: white;
   border-radius: 9px;
@@ -187,11 +185,9 @@ body {
   flex-wrap: wrap;
   gap: 10px; 
   width: 100%; 
-  height: calc(100% - 150px); 
-  position: absolute; 
-  padding: 0; 
-  overflow: hidden; 
-  left: 20px;
+  padding: 10px;
+  justify-content: center; 
+  
 }
 
 .notes {
@@ -199,7 +195,7 @@ width: 200px;
 border-radius: 15px;
 background-color: #E1BEE7;
 padding: 10px;
-margin: 10px 0;
+margin: 10px;
 position: relative;
 display: inline-block;
 box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -208,7 +204,6 @@ color: #000;
 font-size: 16px;
 font-family: 'Safaniah';
 overflow-wrap: break-word;
-left: 20px;
 word-wrap: break-word; 
 white-space: normal; 
 height: auto; 
@@ -243,7 +238,7 @@ text-decoration: line-through;
   transition: background-color 0.3s;
 }
 .document-item:hover {
-  background-color: #F0F0F0;
+  background-color: black;
 }
 .document-item button {
   margin-left: 10px;
@@ -255,7 +250,7 @@ text-decoration: line-through;
   border-radius: 10px;
 }
 .document-item button:hover {
-  background-color: bl;
+  background-color: black;
   color: white;
 }
 
@@ -272,49 +267,13 @@ text-decoration: line-through;
   z-index: 1000;
 }
 
-@media (max-width: 768px) {
-  .container {
-    width: 650px;
-  }
+.container {
+  width: 90%;
+  max-width: 600px;
+  margin: auto;
 }
 
-@media (max-width: 710px) {
-  .container {
-    width: 550px;
-  }
-}
 
-@media (max-width: 615px) {
-  .container {
-    width: 400px;
-  }
-}
-
-@media (max-width: 485px) {
-  .container {
-    width: 100px;
-  }
-
-  .navbar li a {
-    padding: 8px 9px;
-  }
-
-  #colour1,
-  #colour2,
-  #colour3 {
-    height: 27px;
-    width: 27px;
-  }
-
-  #home-tab .heading {
-    font-size: 60px;
-  }
-
-  #submittask,
-  #savepdf {
-    width: 30%;
-  }
-}
 
 @media (max-width: 375px) {
   #home-tab .heading {
@@ -350,4 +309,24 @@ border: #000;
 .theme4{
   background-color:  #2C5364;
   border: white;
+}
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #submittask,
+  #savepdf {
+    width: 100%;
+  }
+
+  .heading {
+    font-size: 40px;
+  }
 }
