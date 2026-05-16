@@ -1,213 +1,204 @@
-let notesContainer = document.getElementById("notes-container");
-let documentsList = document.querySelector(".documents-list");
-let pdfMessage = document.getElementById("pdfMessage");
+let tasks = [];
+let currentFilter = 'all';
 
-let currentTheme = "theme1"; // Default theme
+const CATEGORY_COLORS = {
+  'Work': '#FFDE59',
+  'Personal': '#FFC0CB',
+  'Urgent': '#FF6B6B',
+  'Fitness': '#B1EE99',
+  'Misc': '#CAB9F5'
+};
 
-// Task types with updated labels, values, and colors
-const taskTypes = [
-  { label: "Select Type", value: "", color: "white" },
-  { label: "Work", value: "Work", color: "#FFDE59" }, // Bright Yellow
-  { label: "Personal", value: "Personal", color: "#FFC0CB" }, // Soft Pastel Pink
-  { label: "Professional", value: "Urgent", color: "#B0BEC5" }, // Cool Gray
-  { label: "Fitness", value: "Fitness", color: "#B1EE99" }, // Vibrant Green
-  { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
-];
-
-function Add() {
-
-  const notes = document.querySelectorAll(".notes");
-
-  if (notes.length > 0) {
-    const lastNote = notes[notes.length - 1];
-    const taskText = lastNote.querySelector("span");
-
-    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
-      alert("Please add a task to the previous note before creating a new one!");
-      return;
-    }
+function addTask() {
+  const input = document.getElementById('task-input');
+  const select = document.getElementById('task-type-select');
+  const text = input.value.trim();
+  if (!text) {
+    showToast('Please enter a task');
+    input.focus();
+    return;
   }
+  const category = select.value || 'Work';
+  const task = { id: Date.now(), text, category, done: false };
+  tasks.push(task);
+  input.value = '';
+  select.value = '';
+  renderTasks();
+  updateStats();
+  showToast('Task added');
+  input.focus();
+}
 
-  // Create a note container
-  const note = document.createElement("div");
-  note.classList.add("notes");
-  note.style.backgroundColor = "white";
+function renderTasks() {
+  const list = document.getElementById('task-list');
+  const empty = list.querySelector('.empty-state');
 
-  const noteWrapper = document.createElement("div");
-  noteWrapper.style.display = "flex";
-  noteWrapper.style.alignItems = "center";
-  noteWrapper.style.justifyContent = "space-between";
-  noteWrapper.style.width = "100%";
+  let filtered = tasks;
+  if (currentFilter === 'pending') filtered = tasks.filter(t => !t.done);
+  else if (currentFilter === 'done') filtered = tasks.filter(t => t.done);
+  else if (currentFilter !== 'all') filtered = tasks.filter(t => t.category === currentFilter);
 
-  const taskText = document.createElement("span");
-  taskText.innerText = "Click here to add a task...";
-  taskText.contentEditable = true;
-  taskText.style.flex = "1";
-  taskText.style.marginRight = "10px";
+  list.querySelectorAll('.task-card').forEach(el => el.remove());
 
-  // Dropdown menu for task type
-  const dropdown = document.createElement("select");
-  dropdown.style.marginLeft = "10px";
+  if (filtered.length === 0) {
+    if (empty) empty.style.display = 'flex';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
 
-  // Populate dropdown with task types
-  taskTypes.forEach((taskType) => {
-    const option = document.createElement("option");
-    option.value = taskType.value;
-    option.innerText = taskType.label;
-    dropdown.appendChild(option);
-  });
+  filtered.forEach(task => {
+    const card = document.createElement('div');
+    card.className = 'task-card' + (task.done ? ' done' : '');
+    card.style.setProperty('--tag-color', CATEGORY_COLORS[task.category] || '#f5c842');
+    card.dataset.taskId = task.id;
 
-  // Update task background color based on dropdown selection
-  dropdown.addEventListener("change", () => {
-    const selectedType = taskTypes.find((type) => type.value === dropdown.value);
-    if (selectedType) {
-      note.style.backgroundColor = selectedType.color;
-    }
-  });
+    const check = document.createElement('div');
+    check.className = 'task-check' + (task.done ? ' checked' : '');
+    if (task.done) check.textContent = '\u2713';
+    check.addEventListener('click', () => toggleTask(task.id));
 
-  const tickIcon = document.createElement("a");
-  tickIcon.innerHTML = "&#10003"; // Checkmark symbol
-  tickIcon.style.cursor = "pointer";
-  tickIcon.style.color = "black";
-  tickIcon.style.fontSize = "20px";
-  tickIcon.style.marginLeft = "10px";
+    const textSpan = document.createElement('span');
+    textSpan.className = 'task-text';
+    textSpan.contentEditable = true;
+    textSpan.textContent = task.text;
+    textSpan.addEventListener('blur', () => {
+      const trimmed = textSpan.textContent.trim();
+      if (trimmed) task.text = trimmed;
+      else textSpan.textContent = task.text;
+    });
 
-  noteWrapper.appendChild(taskText);
-  noteWrapper.appendChild(dropdown);
-  noteWrapper.appendChild(tickIcon);
+    const tag = document.createElement('span');
+    tag.className = 'task-tag';
+    tag.textContent = task.category;
+    tag.style.background = CATEGORY_COLORS[task.category] || '#f5c842';
 
-  note.appendChild(noteWrapper);
-  notesContainer.appendChild(note);
+    const del = document.createElement('button');
+    del.className = 'task-del';
+    del.innerHTML =
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    del.addEventListener('click', () => deleteTask(task.id));
 
-  // Event listeners for task text
-  taskText.addEventListener("focus", () => {
-    if (taskText.innerText.trim() === "Click here to add a task...") {
-      taskText.innerText = "";
-    }
-  });
-
-  taskText.addEventListener("blur", () => {
-    if (taskText.innerText.trim() === "") {
-      taskText.innerText = "Click here to add a task...";
-
-    }
-  });
-
-  tickIcon.addEventListener("click", (event) => {
-    taskText.classList.toggle("completed");
-    taskText.style.textDecoration = taskText.classList.contains("completed")
-      ? "line-through"
-      : "none";
-    event.stopPropagation();
+    card.appendChild(check);
+    card.appendChild(textSpan);
+    card.appendChild(tag);
+    card.appendChild(del);
+    list.appendChild(card);
   });
 }
 
-function saveAsPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  let tasks = document.querySelectorAll(".notes");
-  tasks.forEach((task, index) => {
-    doc.text(20, 10 + (10 * index), task.textContent.trim());
-  });
-  let fileName = `ToDoList_${Date.now()}.pdf`;
-  let fileURL = URL.createObjectURL(doc.output("blob"));
-  saveDocument(fileName, fileURL);
-  showPDFMessage();
+function toggleTask(id) {
+  const task = tasks.find(t => t.id === id);
+  if (task) {
+    task.done = !task.done;
+    renderTasks();
+    updateStats();
+  }
 }
 
-function saveDocument(fileName, fileURL) {
-  let docItem = document.createElement("div");
-  docItem.className = "document-item";
-  docItem.innerHTML = `
-        <span>${fileName}</span>
-        <button onclick="viewPDF('${fileURL}')">View</button>
-        <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
-        <button onclick="deletePDF(this)">Delete</button>
-    `;
-  documentsList.appendChild(docItem);
+function deleteTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
+  renderTasks();
+  updateStats();
+  showToast('Task deleted');
 }
 
-function viewPDF(fileURL) {
-  window.open(fileURL, "_blank");
+function updateStats() {
+  const total = tasks.length;
+  const done = tasks.filter(t => t.done).length;
+  const pending = total - done;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-pending').textContent = pending;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
 }
 
-function downloadPDF(fileURL, fileName) {
-  let a = document.createElement("a");
-  a.href = fileURL;
-  a.download = fileName;
-  a.click();
+function filterTasks(btn, filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTasks();
 }
 
-function deletePDF(button) {
-  button.parentElement.remove();
+function clearDone() {
+  const before = tasks.length;
+  tasks = tasks.filter(t => !t.done);
+  if (tasks.length < before) {
+    renderTasks();
+    updateStats();
+    showToast('Cleared completed tasks');
+  }
 }
 
-function showPDFMessage() {
-  pdfMessage.style.display = "block";
-  setTimeout(() => {
-    pdfMessage.style.display = "none";
-  }, 3000);
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function applyTheme(name) {
+  document.body.className = 'theme-' + name;
+  document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('active'));
+  const map = { sunset: 't1', ocean: 't2', forest: 't3', midnight: 't4', aurora: 't5' };
+  const el = document.getElementById(map[name]);
+  if (el) el.classList.add('active');
 }
 
 function showHome() {
-  document.getElementById("home-tab").style.display = "block";
-  document.getElementById("documents-tab").style.display = "none";
+  document.getElementById('home-tab').style.display = 'block';
+  document.getElementById('documents-tab').style.display = 'none';
+  document.getElementById('btn-home').classList.add('active');
+  document.getElementById('btn-docs').classList.remove('active');
 }
 
 function showDocuments() {
-  document.getElementById("home-tab").style.display = "none";
-  document.getElementById("documents-tab").style.display = "block";
+  document.getElementById('home-tab').style.display = 'none';
+  document.getElementById('documents-tab').style.display = 'block';
+  document.getElementById('btn-docs').classList.add('active');
+  document.getElementById('btn-home').classList.remove('active');
 }
 
-// Functions to apply themes
-function c1() {
-  let image = 'linear-gradient(90deg, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%)';
-  document.body.style.background = image;
-  currentTheme = "theme1";
-  updateNotesTheme();
-}
-
-function c2() {
-  let image = 'linear-gradient( 90deg, #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%)';
-  document.body.style.background = image;
-  currentTheme = "theme2";
-  updateNotesTheme();
-}
-
-function c3() {
-  let image = 'linear-gradient(90deg, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d)';
-  document.body.style.background = image;
-  currentTheme = "theme3";
-  updateNotesTheme();
-}
-
-function c4() {
-  let image = 'linear-gradient(90deg,rgb(120, 25, 105),rgb(197, 211, 201))';
-  document.body.style.background = image;
-  currentTheme = "theme4";
-  updateNotesTheme();
-}
-
-function c5() {
-  let image = 'linear-gradient(90deg, #b92b27, #1565c0)';
-  document.body.style.background = image;
-  currentTheme = "theme5";
-  updateNotesTheme();
-}
-
-function updateNotesTheme() {
-  const notes = document.querySelectorAll(".notes");
-  notes.forEach((note) => {
-    if (note.style.backgroundColor === "white") {
-      note.style.backgroundColor = currentTheme === "theme1"
-        ? "rgba(232,221,227,1)"
-        : currentTheme === "theme2"
-          ? "#e4afcb"
-          : currentTheme === "theme3"
-            ? "#39db8c"
-            : currentTheme === "theme4"
-              ? "rgb(120, 25, 105)"
-              : "#b92b27";
-    }
+function saveAsPDF() {
+  if (tasks.length === 0) {
+    showToast('No tasks to save');
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(18);
+  doc.text('TaskFlow - My Tasks', 20, 20);
+  doc.setFontSize(11);
+  tasks.forEach((t, i) => {
+    const status = t.done ? '[x]' : '[ ]';
+    doc.text(20, 35 + 8 * i, status + ' ' + t.text + ' (' + t.category + ')');
   });
+  const blob = doc.output('blob');
+  const url = URL.createObjectURL(blob);
+  const fileName = 'TaskFlow_' + Date.now() + '.pdf';
+  const list = document.querySelector('.documents-list');
+  const empty = list.querySelector('.empty-state');
+  if (empty) empty.remove();
+  const item = document.createElement('div');
+  item.className = 'doc-item';
+  item.innerHTML =
+    '<span class="doc-icon">📄</span>' +
+    '<span class="doc-name">' + fileName + '</span>' +
+    '<span class="doc-date">' + new Date().toLocaleDateString() + '</span>' +
+    '<div class="doc-actions">' +
+    '<button class="doc-btn" onclick="window.open(\'' + url + '\')">View</button>' +
+    '<button class="doc-btn" onclick="downloadPDF(\'' + url + "','" + fileName + '\')">Download</button>' +
+    '<button class="doc-btn del" onclick="this.closest(\'.doc-item\').remove()">Delete</button>' +
+    '</div>';
+  list.appendChild(item);
+  showToast('PDF saved');
+}
+
+function downloadPDF(url, name) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  a.click();
 }
