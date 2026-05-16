@@ -84,7 +84,7 @@ The website features:
 | 13 | MERN Login Form | MongoDB, Express, React, Node | 🔐 Full-Stack | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern) |
 | 14 | File Uploader | Node.js, Express | 📁 Utility | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader) |
 | 15 | Progress Bar | HTML, CSS, JS | 📊 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/progress_bar/progress_bar) |
-| 16 | Custom Scroll Bar | CSS | 🎨 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/) |
+| 16 | Custom Scroll Bar | CSS | 🎨 UI Component | Demo Currently Unavailable |
 | 17 | Swiper API Slider | HTML, CSS, JS | 🖼️ Slider | [View Demo](https://100-days-100-web-project.vercel.app/public/slider%20box) |
 | 18 | Carousel Solar System | HTML, CSS, JS | 🪐 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/carousal) |
 | 19 | Plant Website | HTML, CSS, JS | 🌱 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/plantwebsite/plant) |
