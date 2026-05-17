@@ -563,6 +563,6 @@ tbody td a:hover {
     display: none;
 }
 .pagination-container button:hover {
-    opacity: 0.9
+    opacity: 0.9;
 
 }
