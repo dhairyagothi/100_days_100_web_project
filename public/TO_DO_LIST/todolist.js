@@ -211,3 +211,33 @@ function updateNotesTheme() {
     }
   });
 }
+
+function applyTheme(theme) {
+
+  document.body.classList.remove(
+    "theme-ocean",
+    "theme-forest",
+    "theme-midnight",
+    "theme-aurora"
+  );
+
+  if (theme !== "sunset") {
+    document.body.classList.add(`theme-${theme}`);
+  }
+
+  document.querySelectorAll(".theme-swatch").forEach((btn) => {
+    btn.classList.remove("active");
+  });
+
+  const activeButton = {
+    sunset: "t1",
+    ocean: "t2",
+    forest: "t3",
+    midnight: "t4",
+    aurora: "t5"
+  };
+
+  document
+    .getElementById(activeButton[theme])
+    .classList.add("active");
+}
