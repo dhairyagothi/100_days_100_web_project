@@ -131,6 +131,7 @@ const PROJECTS = [
     ["Day 115", "Event Registration System",           "https://event-registration-system-w10a.onrender.com/",                                                           ["Node","Express"],        "tool"],
     ["Day 116", "AI Image Classifier",                 "./public/AI Image Classifier/index.html",                                                                        ["HTML","CSS","JS","AI"], "tool"],
     ["Day 117", "3D-Portfolio-Website",                "./public/3D-Portfolio-Website/index.html",                                                                       ["HTML","CSS","JS"],       "ui"],
+    ['Day 118', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html'],
 ];
 
 const CATEGORY_LABEL = {
