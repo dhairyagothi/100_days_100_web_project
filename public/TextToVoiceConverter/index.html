@@ -4,26 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text to Voice Converter</title>
+    <!-- used the google inter fonts so telling it to load it earlier -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="whole">
-    <div class="container">
-        <h1 class="title">Text to Voice Converter</h1>
-        <div class="input-area">
-            <textarea class="textarea1" id ="text-input" placeholder="Enter text here..."></textarea>
-            <button id="convert-btn">Convert to Speech</button>
-            <button id="stop-btn" disabled>Stop</button>
-        </div>
-    </div>
+    <!-- outer main class in which there is an intro section about the page and two articles for speech to text and text to speech-->
+    <main class="app-shell">
 
-    <div class="container2">
-        <h1 class="title">Voice to Text Converter</h1>
-        <button id="start-btn">Speak</button>
-        <button id="stop-btn">Stop</button>
-        <textarea class="textarea2" id="output" placeholder="Your speech will appear here..."></textarea>
-    </div>
-</div>
+        <!-- section  for intro -->
+        <!-- added this hero-panel for better UI -->
+        <section class="hero-panel">
+            <div class="hero-copy">
+                <p class="eyebrow">Speech Studio</p>
+                <h1>Turn thoughts into voice, and voice back into text.</h1>
+                <p class="hero-text">A polished browser speech workspace for quick narration, note capture, and hands-free drafting.</p>
+            </div>
+            <!-- animated sound wave which is handled by css -->
+            <div class="sound-wave" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+
+        <section class="tool-grid" aria-label="Speech conversion tools">
+            <!-- article for text to voice-->
+            <article class="tool-card">
+                <div class="card-header">
+                    <div>
+                        <p class="card-kicker">Write</p>
+                        <h2>Text to Voice</h2>
+                    </div>
+                    <div class="icon-badge" aria-hidden="true">A</div>
+                </div>
+
+                <label for="text-input">Text input</label>
+                <textarea class="textarea1" id="text-input" placeholder="Paste or write something you want spoken aloud..."></textarea>
+
+                <div class="button-row">
+                    <button class="primary-btn" id="convert-btn" type="button">
+                        <span aria-hidden="true"> ▶ </span>
+                        Convert
+                    </button>
+                    <button class="danger-btn" id="speech-stop-btn" type="button" disabled>
+                        <span aria-hidden="true"> ◽️ </span>
+                        Stop
+                    </button>
+                </div>
+            </article>
+
+            <!-- article for voice to text -->
+            <article class="tool-card">
+                <div class="card-header">
+                    <div>
+                        <p class="card-kicker">Speak</p>
+                        <h2>Voice to Text</h2>
+                    </div>
+                    <div class="icon-badge mic" aria-hidden="true"></div>
+                </div>
+
+                <div class="button-row">
+                    <button class="primary-btn" id="start-btn" type="button">
+                        <span aria-hidden="true"> 🔘 </span>
+                        Speak
+                    </button>
+                    <button class="danger-btn" id="recognition-stop-btn" type="button">
+                        <span aria-hidden="true"> ◽️ </span>
+                        Stop
+                    </button>
+                </div>
+
+                <label for="output">Transcript</label>
+                <textarea class="textarea2" id="output" placeholder="Your speech will appear here..."></textarea>
+            </article>
+        </section>
+    </main>
+
+    <!-- to create decorative background shapes on the page which are fixed -->
+    <div class="ambient-shape shape-one" aria-hidden="true"></div>
+    <div class="ambient-shape shape-two" aria-hidden="true"></div>
+
     <script src="script.js"></script>
 </body>
 </html>

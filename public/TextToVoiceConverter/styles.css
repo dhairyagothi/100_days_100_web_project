@@ -1,119 +1,409 @@
+/* Global design tokens used throughout the page for consistent colors, shadows, and spacing. */
+:root {
+    --ink: #101828;
+    --muted: #667085;
+    --line: rgba(16, 24, 40, 0.1);
+    --panel: rgba(255, 255, 255, 0.88);
+    --panel-strong: #ffffff;
+    --primary: #176b87;
+    --primary-dark: #0f4c5c;
+    --accent: #d97706;
+    --danger: #d92d20;
+    --danger-dark: #b42318;
+    --shadow: 0 24px 70px rgba(16, 24, 40, 0.18);
+}
+
+/* Makes element widths easier to control by including padding and borders inside the set width. */
+* {
+    box-sizing: border-box;
+}
+
+/* Page-level layout, font, and soft layered background. */
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
-    background-color: rgba(37, 41, 88);
-    background-position: center; 
+    color: var(--ink);
+    font-family: "Inter", Arial, sans-serif;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(217, 119, 6, 0.22), transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(23, 107, 135, 0.24), transparent 28%),
+        linear-gradient(135deg, #eef7f4 0%, #f9fbfd 48%, #f3f0ea 100%);
+    overflow-x: hidden;
 }
 
-.container {
-    text-align: center;
-    padding-right: 20px;
-    margin: 10px;
-    background-color:white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
-    border-radius: 12px; 
-    max-width: 500px; 
-    width: 100%;
-    position:relative;
+/* Keeps form controls using the same font as the rest of the interface. */
+button,
+textarea {
+    font: inherit;
 }
 
-.title { 
-    font-size: 2.5em; 
-    margin-bottom: 20px;
-    color: #1352c7; 
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-}
-.textarea1{
-    width: 100%;
-    height: 150px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.9);
-    resize: vertical;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+/* Main page wrapper that centers the content and keeps it above the decorative background shapes. */
+.app-shell {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 44px 0;
+    position: relative;
+    z-index: 1;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin-top: 10px;
-    cursor: pointer;
-    background-color:rgba(51, 110, 123);
+/* Top introduction section with the main title and animated audio visual. */
+.hero-panel {
+    min-height: 260px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    align-items: center;
+    gap: 28px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 28px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.66)),
+        linear-gradient(135deg, rgba(23, 107, 135, 0.12), rgba(217, 119, 6, 0.1));
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(18px);
+}
+
+/* Small uppercase labels used above headings. */
+.eyebrow,
+.card-kicker {
+    margin: 0;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* Responsive hero title sizing so it feels large on desktop but still fits on smaller screens. */
+.hero-panel h1 {
+    max-width: 820px;
+    margin: 12px 0 0;
+    font-size: clamp(2.5rem, 6vw, 5.25rem);
+    line-height: 0.95;
+    letter-spacing: 0;
+}
+
+.hero-text {
+    max-width: 650px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.65;
+}
+
+/* Decorative sound-wave container in the hero section. */
+.sound-wave {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    border-radius: 24px;
+    background:
+        linear-gradient(145deg, rgba(23, 107, 135, 0.16), rgba(217, 119, 6, 0.12)),
+        rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.74);
+}
+
+/* Individual animated bars inside the sound wave. */
+.sound-wave span {
+    width: 14px;
+    min-height: 44px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+    box-shadow: 0 12px 30px rgba(23, 107, 135, 0.28);
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+/* Creates different wave heights and animation offsets for a more natural audio effect. */
+.sound-wave span:nth-child(2) {
+    height: 104px;
+    animation-delay: 0.12s;
+}
+
+.sound-wave span:nth-child(3) {
+    height: 148px;
+    animation-delay: 0.24s;
+}
+
+.sound-wave span:nth-child(4) {
+    height: 92px;
+    animation-delay: 0.36s;
+}
+
+.sound-wave span:nth-child(5) {
+    height: 68px;
+    animation-delay: 0.48s;
+}
+
+/* Two - column layout for the text-to-voice and voice-to-text tool cards. */
+.tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* Shared card styling for each converter panel. */
+.tool-card {
+    min-height: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    border-radius: 24px;
+    background: var(--panel);
+    box-shadow: 0 18px 48px rgba(16, 24, 40, 0.12);
+    backdrop-filter: blur(16px);
+}
+
+/* Aligns each card heading with its visual icon badge. */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.card-header h2 {
+    margin: 6px 0 0;
+    font-size: clamp(1.6rem, 3vw, 2.15rem);
+    letter-spacing: 0;
+}
+
+/* Square icon badge used in the card headers. */
+.icon-badge {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border-radius: 18px;
     color: white;
-    border: none;
-    border-radius: 8px; 
-    transition: background-color 0.3s ease; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    font-size: 1.9rem;
+    font-weight: 800;
+    background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+    box-shadow: 0 12px 26px rgba(23, 107, 135, 0.28);
 }
 
-button:hover {
-    background-color: #21b029; 
+/* Builds a microphone icon using CSS shapes instead of an image asset. */
+.icon-badge.mic {
+    position: relative;
+}
+
+.icon-badge.mic::before {
+    content: "";
+    width: 18px;
+    height: 30px;
+    border-radius: 999px;
+    background: #ffffff;
+}
+
+.icon-badge.mic::after {
+    content: "";
+    position: absolute;
+    width: 28px;
+    height: 18px;
+    border: 3px solid #ffffff;
+    border-top: 0;
+    border-radius: 0 0 999px 999px;
+    bottom: 16px;
+}
+
+/* Form labels for text input and transcript areas. */
+label {
+    color: #344054;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+/* Shared textarea styling for both input and output fields. */
+textarea {
+    width: 100%;
+    min-height: 210px;
+    flex: 1;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    color: var(--ink);
+    background: var(--panel-strong);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    line-height: 1.65;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Clear keyboard focus state for accessibility. */
+textarea:focus {
+    border-color: rgba(23, 107, 135, 0.55);
+    box-shadow: 0 0 0 4px rgba(23, 107, 135, 0.12);
+}
+
+textarea::placeholder {
+    color: #98a2b3;
+}
+
+/* Keeps action buttons aligned and wraps them cleanly on small screens. */
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Base button styles shared by Convert, Speak, and Stop buttons. */
+button {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 14px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.98rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 button:disabled {
-    background-color: #ccc;
     cursor: not-allowed;
+    opacity: 0.48;
 }
 
-.whole{
-    display: flex;
-   align-content: center;
-    width: 100%;
-    background-color: rgba(11, 127, 171);
-}
-.container2 {
-    text-align: center;
-    background-color:white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position:relative;
-    margin: 10px;
-    width:100%;
+/* Primary action buttons for starting conversion or listening. */
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    box-shadow: 0 12px 24px rgba(23, 107, 135, 0.26);
 }
 
-h1 {
-    margin-bottom: 20px;
+/* Destructive/stop action buttons. */
+.danger-btn {
+    background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+    box-shadow: 0 12px 24px rgba(217, 45, 32, 0.2);
 }
 
-button {
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
+/* Soft decorative shapes placed behind the main content. */
+.ambient-shape {
+    position: fixed;
+    width: 220px;
+    height: 220px;
+    pointer-events: none;
+    opacity: 0.18;
+    filter: blur(2px);
 }
 
-#start-btn {
-    background-color:rgba(51, 110, 123);
-    color: white;
-}
-#start-btn:hover {
-    background-color: #21b029; 
-}
-
-#stop-btn {
-    background-color: #f44336;
-    color: white;
+.shape-one {
+    left: -72px;
+    bottom: 10%;
+    border: 34px solid var(--primary);
+    border-radius: 38% 62% 46% 54%;
+    transform: rotate(18deg);
 }
 
-.textarea2 {
-    width: 100%;
-    height: 150px;
-    margin-top: 20px;   
-     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: none;
+.shape-two {
+    right: -86px;
+    top: 16%;
+    border: 28px solid var(--accent);
+    border-radius: 56% 44% 64% 36%;
+    transform: rotate(-24deg);
 }
 
-textarea{
-    border-color: black;
+/* Animation used by the hero sound-wave bars. */
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scaleY(0.68);
+    }
+
+    50% {
+        transform: scaleY(1);
+    }
+}
+
+/* Respects users who prefer reduced motion by minimizing animations and transitions. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Tablet and small laptop layout: stack the hero and tool cards into one column. */
+@media (max-width: 860px) {
+    .app-shell {
+        width: min(100% - 24px, 640px);
+        padding: 24px 0;
+    }
+
+    .hero-panel,
+    .tool-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-panel {
+        padding: 28px;
+    }
+
+    .sound-wave {
+        height: 132px;
+    }
+
+    .tool-card {
+        min-height: auto;
+        padding: 22px;
+    }
+}
+
+/* Mobile refinements for tighter spacing and full-width buttons. */
+@media (max-width: 520px) {
+    .hero-panel {
+        border-radius: 22px;
+        padding: 24px 20px;
+    }
+
+    .hero-panel h1 {
+        font-size: 2.45rem;
+    }
+
+    .tool-card {
+        border-radius: 20px;
+        padding: 20px;
+    }
+
+    .card-header {
+        align-items: flex-start;
+    }
+
+    .icon-badge {
+        width: 50px;
+        height: 50px;
+        border-radius: 16px;
+        font-size: 1.45rem;
+    }
+
+    .button-row,
+    button {
+        width: 100%;
+    }
+
+    textarea {
+        min-height: 190px;
+    }
 }
