@@ -4,37 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analog Clock</title>
+    <title>Modern Analog Clock</title>
+
     <link rel="stylesheet" href="index.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="index.js"></script>
+    <link rel="icon" href="../favv.png" type="image/x-icon">
 </head>
 
 <body>
+
+    <!-- Analog Clock -->
+
     <div id="clockContainer">
+
         <div id="hour"></div>
         <div id="minute"></div>
         <div id="second"></div>
+
     </div>
+
+
+    <!-- Timer Section -->
 
     <div id="timerContainer">
+
+        <h1>Countdown Timer</h1>
+
+        <div id="digitalClock">00:00:00</div>
+
         <div id="timeInput">
-            <input type="number" id="hours" placeholder="HH" min="0" max="23" />
-            <input type="number" id="minutes" placeholder="MM" min="0" max="59" />
-            <input type="number" id="seconds" placeholder="SS" min="0" max="59" />
+
+            <input type="number" id="hours" placeholder="HH" min="0">
+
+            <input type="number" id="minutes" placeholder="MM" min="0" max="59">
+
+            <input type="number" id="seconds" placeholder="SS" min="0" max="59">
+
         </div>
-        <button onclick="startCountdown()">Start Countdown</button>
+
+
+        <!-- Preset Buttons -->
+
+        <div class="preset-buttons">
+
+            <button onclick="setPreset(1)">1 Min</button>
+
+            <button onclick="setPreset(5)">5 Min</button>
+
+            <button onclick="setPreset(10)">10 Min</button>
+
+        </div>
+
+
+        <!-- Main Buttons -->
+
+        <div class="button-container">
+
+            <button class="start-btn" onclick="startCountdown()">Start</button>
+
+            <button class="pause-btn" onclick="pauseCountdown()">Pause</button>
+
+            <button class="resume-btn" onclick="resumeCountdown()">Resume</button>
+
+            <button class="restart-btn" onclick="restartCountdown()">Restart</button>
+
+
+            
+
+        </div>
+
+
+        <!-- Countdown -->
+
         <div id="countdownDisplay">00:00:00</div>
 
-        <div id="timerUpMsg"  style="display: none;">
-            <p><b>Time's Up!</b></p>
+        <div id="timerUpMsg" style="display: none;">
+            Time's Up!
         </div>
+
     </div>
 
-    <!-- Audio Element -->
+
+    <!-- Alarm Sound -->
+
     <audio id="timerSound" src="timer.mp3"></audio>
 
-    
+    <script src="index.js"></script>
+
 </body>
 
 </html>
