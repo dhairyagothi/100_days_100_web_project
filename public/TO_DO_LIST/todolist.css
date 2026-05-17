@@ -29,6 +29,32 @@ body{
   color:#374151;
   margin-bottom:6px;
 }
+#task-type-select:focus { border-color: var(--accent); }
+#task-type-select option { background: #1a1a2e; color: #fff; }
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #111;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 22px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245,200,66,0.4);
+  filter: brightness(1.1);
+
+}
+.btn-add:active { transform: translateY(0); }
 
 .bar{
   width:100%;
