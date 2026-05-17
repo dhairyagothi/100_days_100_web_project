@@ -1,4 +1,5 @@
 const typewriter = document.querySelector(".text");
+
 const userInput = document.getElementById("userInput");
 const addTextButton = document.getElementById("addText");
 const deleteTextButton = document.getElementById("deleteText");
@@ -7,75 +8,122 @@ const speedSlider = document.getElementById("speedSlider");
 const toggleThemeButton = document.getElementById("toggleTheme");
 const changeBackgroundButton = document.getElementById("changeBackground");
 
-const defaultPhrases = ["Freelancer", "Blogger", "Developer", "Designer", "Creator"];
-let userPhrases = [];
+const defaultPhrases = [
+    "Freelancer",
+    "Blogger",
+    "Developer",
+    "Designer",
+    "Creator"
+];
+
 let phrases = [...defaultPhrases];
+
 let displayedPhrases = [];
+
 let phraseIndex = 0;
 let charIndex = 0;
-let currentPhrase = '';
+
+let currentPhrase = "";
 let isDeleting = false;
+
 let typingSpeed = 100;
+
 let isPaused = false;
+
 let typingTimeout;
 
 function type() {
-    if (!isPaused) {
-        currentPhrase = phrases[phraseIndex];
 
-        if (isDeleting) {
-            typewriter.textContent = currentPhrase.substring(0, charIndex--);
-        } else {
-            typewriter.textContent = currentPhrase.substring(0, charIndex++);
-        }
+    if (isPaused) return;
 
-        if (!isDeleting && charIndex === currentPhrase.length) {
-            setTimeout(() => {
-                isDeleting = true;
-            }, 2000);
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            displayedPhrases.push(currentPhrase);
-            if (displayedPhrases.length === phrases.length) {
-                displayedPhrases = [];
-            }
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            while (displayedPhrases.includes(phrases[phraseIndex])) {
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-            }
-        }
+    currentPhrase = phrases[phraseIndex];
 
-        typingTimeout = setTimeout(type, isDeleting ? typingSpeed / 2 : typingSpeed);
+    if (isDeleting) {
+        typewriter.textContent = currentPhrase.slice(0, charIndex--);
+    } else {
+        typewriter.textContent = currentPhrase.slice(0, charIndex++);
     }
+
+    if (!isDeleting && charIndex === currentPhrase.length + 1) {
+
+        setTimeout(() => {
+            isDeleting = true;
+        }, 1500);
+
+    } else if (isDeleting && charIndex < 0) {
+
+        isDeleting = false;
+
+        displayedPhrases.push(currentPhrase);
+
+        if (displayedPhrases.length === phrases.length) {
+            displayedPhrases = [];
+        }
+
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+
+        while (displayedPhrases.includes(phrases[phraseIndex])) {
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+    }
+
+    typingTimeout = setTimeout(
+        type,
+        isDeleting ? typingSpeed / 2 : typingSpeed
+    );
 }
 
 addTextButton.addEventListener("click", () => {
+
     const newText = userInput.value.trim();
-    if (newText) {
+
+    if (!newText) return;
+
+    if (!phrases.includes(newText)) {
+
         phrases.push(newText);
-        userInput.value = '';
-        isPaused = false; 
+
+        userInput.value = "";
+
+        isPaused = false;
         isDeleting = false;
+
         charIndex = 0;
+
         phraseIndex = phrases.length - 1;
+
         clearTimeout(typingTimeout);
+
         type();
+
         pauseResumeButton.textContent = "Pause";
     }
 });
 
 deleteTextButton.addEventListener("click", () => {
+
     if (phrases.length > defaultPhrases.length) {
-        const lastUserPhrase = phrases.pop();
-        if (displayedPhrases.includes(lastUserPhrase)) {
-            displayedPhrases = displayedPhrases.filter(phrase => phrase !== lastUserPhrase);
+
+        const lastPhrase = phrases.pop();
+
+        displayedPhrases = displayedPhrases.filter(
+            phrase => phrase !== lastPhrase
+        );
+
+        if (phraseIndex >= phrases.length) {
+            phraseIndex = 0;
         }
     }
 });
 
 pauseResumeButton.addEventListener("click", () => {
+
     isPaused = !isPaused;
-    pauseResumeButton.textContent = isPaused ? "Resume" : "Pause";
+
+    pauseResumeButton.textContent = isPaused
+        ? "Resume"
+        : "Pause";
+
     if (!isPaused) {
         type();
     } else {
@@ -88,27 +136,39 @@ speedSlider.addEventListener("input", (e) => {
 });
 
 toggleThemeButton.addEventListener("click", () => {
-    document.body.classList.toggle('light-theme');
+
+    document.body.classList.toggle("light-theme");
+
+    const currentTheme = document.body.classList.contains("light-theme")
+        ? "light"
+        : "dark";
+
+    localStorage.setItem("theme", currentTheme);
 });
 
 changeBackgroundButton.addEventListener("click", () => {
-    const colors = ['#1a1a1a', '#2a2a2a', '#3a3a3a', '#4a4a4a', '#5a5a5a'];
-    const images = [
-        'url("https://via.placeholder.com/800x600")',
-        'url("https://via.placeholder.com/800x600/ff7f7f")',
-        'url("https://via.placeholder.com/800x600/7f7fff")'
-    ];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    const randomImage = images[Math.floor(Math.random() * images.length)];
-    const isImage = Math.random() > 0.5;
 
-    if (isImage) {
-        document.body.style.backgroundImage = randomImage;
-        document.body.style.backgroundColor = '';
-    } else {
-        document.body.style.backgroundColor = randomColor;
-        document.body.style.backgroundImage = '';
-    }
+    const colors = [
+        "#1a1a1a",
+        "#2a2a2a",
+        "#3a3a3a",
+        "#4a4a4a",
+        "#5a5a5a"
+    ];
+
+    const randomColor =
+        colors[Math.floor(Math.random() * colors.length)];
+
+    document.body.style.backgroundColor = randomColor;
 });
 
-type();
+window.addEventListener("load", () => {
+
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "light") {
+        document.body.classList.add("light-theme");
+    }
+
+    type();
+});

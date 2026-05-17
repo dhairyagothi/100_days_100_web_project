@@ -6,22 +6,42 @@
 <title>Typewriter</title>
 <link rel="stylesheet" href="typewriter.css">
 </head>
+
 <body>
+
     <div class="typewriter-container" aria-live="polite" aria-label="Typewriter text">
         <span class="text1">I am a </span>
         <span class="text"></span>
         <span class="cursor"></span>
     </div>
+
     <div class="controls">
-        <input type="text" id="userInput" placeholder="Enter your text here" aria-label="User input for custom text">
+        <input 
+            type="text" 
+            id="userInput" 
+            placeholder="Enter your text here"
+            aria-label="User input for custom text"
+        >
+
         <button id="addText">Add Text</button>
         <button id="deleteText">Delete Latest Text</button>
         <button id="pauseResume">Pause</button>
+
         <label for="speedSlider">Speed:</label>
-        <input type="range" id="speedSlider" min="50" max="300" value="100" aria-label="Adjust typing speed">
+
+        <input 
+            type="range" 
+            id="speedSlider" 
+            min="50" 
+            max="300" 
+            value="100"
+            aria-label="Adjust typing speed"
+        >
+
         <button id="toggleTheme">Toggle Theme</button>
-        <!-- <button id="changeBackground">Change Background</button> -->
+        <button id="changeBackground">Change Background</button>
     </div>
-    <script src="typewriter.js"></script>
+
+<script src="typewriter.js"></script>
 </body>
 </html>
