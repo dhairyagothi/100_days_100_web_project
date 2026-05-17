@@ -197,3 +197,48 @@ footer.dark {
     background: #2c2c2c;
     border-top: 2px solid #555;
 }
+
+@media print {
+    body {
+        background: white;
+        padding: 0;
+        margin: 0;
+    }
+
+    .header,
+    .builder,
+    footer,
+    button {
+        display: none !important;
+    }
+
+    main {
+        display: block;
+          padding: 0;
+        margin: 0;
+    }
+
+    .preview {
+        width: 100%;
+        max-height: none;
+        overflow: visible;
+        border: none;
+        box-shadow: none;
+        background: white;
+        padding: 20px;
+    }
+
+    #resumePreview {
+        color: black;
+    }
+    #resumePreview h3,
+#resumePreview h4 {
+    color: black;
+}
+
+    section {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+    }
+}

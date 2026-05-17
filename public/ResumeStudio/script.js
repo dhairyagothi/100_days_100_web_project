@@ -39,17 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     };
 
-    previewBtn.addEventListener("click", updatePreview);
+   previewBtn.addEventListener("click", updatePreview);
 
-    // Download resume as PDF
-    downloadBtn.addEventListener("click", () => {
-        const element = document.createElement("a");
-        const content = resumePreview.innerHTML;
-        const blob = new Blob([content], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        element.href = url;
-        element.download = "resume.html";
-        element.click();
-        URL.revokeObjectURL(url);
-    });
+// Download resume as PDF
+downloadBtn.addEventListener("click", () => {
+    updatePreview(); // ensure latest data is shown
+    window.print();
+});
 });
