@@ -13,6 +13,18 @@ h2 {
     background-color: #0d6efd;
     color: white;
 }
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+
+
 
 #errorMessage {
     font-size: 18px;

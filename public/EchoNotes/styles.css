@@ -1,182 +1,54 @@
-
-.patrick-hand-regular {
-  font-family: "Patrick Hand", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
-
-* {
-  box-sizing: border-box;
-  font-family: "Patrick Hand", cursive;
-  font-weight: 400;
-  font-style: normal;
-
-}
-
+/* Layout */
 body {
-  margin: 0;
-  background: #e3e6e777;
-  color: #051431c0;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+/* Header */
+.header-area {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* HEADER */
-.header-area {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.header-area h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.main-nav {
+/* Button container */
+.button-container {
   display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
 }
 
-.main-nav a {
-  text-decoration: none;
-  color: #64748b;
+/* Buttons */
+.button-container button {
   padding: 8px 14px;
-  border-radius: 20px;
-  transition: all 0.2s ease;
-}
-
-.main-nav a.active,
-.main-nav a:hover {
-  background: #6366f1;
+  border: none;
+  border-radius: 8px;
+  background-color: #4CAF50;
   color: white;
-  box-shadow: 0 4px 10px rgba(99,102,241,0.2);
+  cursor: pointer;
 }
 
-/* NOTE SECTION */
-.note-section {
-  margin-top: 40px;
-  width: 90%;
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.button-container button:hover {
+  background-color: #45a049;
 }
 
-/* Title Input */
+/* Input */
 #noteTitle {
-  padding: 12px 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  background: white;
-  font-size: 1rem;
-  box-shadow: 0 6px 20px rgba(12,15,40,0.05);
-  outline: none;
-
-}
-#noteContent {
-  width: 100%;
-  min-height: 380px;
-  padding: 18px 22px;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  font-size: 19px;
-  font-family: "Patrick Hand", cursive;
-  color: #000;
-  line-height: 1.6;
-  background: #fff;
-  resize: vertical;
-  outline: none;
-  box-shadow: 0 6px 20px rgba(12, 15, 40, 0.05);
-  white-space: pre-wrap;
-}
-
-
-.note-section {
-  margin-top: 40px;
-  width: 90%;
-  max-width: none;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.note-area span {
-  transition: font-size 0.2s ease;
-}
-.note-area span:hover {
-  font-size: 1.2rem;
-}
-.size-dropdown {
-  position: absolute;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 6px;
-  display: none;
-  z-index: 1000;
-}
-
-.size-dropdown.visible {
-  display: flex;
-  gap: 5px;
-}
-
-.size-dropdown button {
-  border: none;
-  background: #f1f5f9;
-  border-radius: 6px;
-  padding: 5px 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s;
-}
-
-.size-dropdown button:hover {
-  background: #6366f1;
-  color: white;
-}
-.color-dropdown {
-  position: absolute;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-top: 15px;
   padding: 8px;
-  display: none;
-  z-index: 1000;
+  width: 250px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
-.color-dropdown.visible {
-  display: flex;
-  gap: 8px;
+/* Note area */
+.note-area {
+  margin-top: 15px;
+  min-height: 200px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
 }
 
-.color-dropdown button {
-  width: 24px;
-  height: 24px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  background: none;
-  font-size: 20px;
-  transition: transform 0.2s ease;
-}
-
-.color-dropdown button:hover {
-  transform: scale(1.2);
-}
-.main-nav a#saveNoteBtn:hover {
-  background: #6366f1;
-  color: white;
-  box-shadow: 0 4px 10px rgba(16,185,129,0.3);
-}
-
-.note-section {
-  background: rgba(255, 255, 255, 0.8); /* white with 80% opacity */
-  padding: 20px;
-  border-radius: 10px;
-  color: #000;
-  backdrop-filter: blur(20px); /* optional: adds frosted glass effect */
-}

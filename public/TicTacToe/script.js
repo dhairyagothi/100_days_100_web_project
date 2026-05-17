@@ -51,20 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
         cell.textContent = currentPlayer;
         boardState[index] = currentPlayer;
 
+        // Check for win first
         if (checkWin()) {
             gameActive = false;
-            updateScoreboard(currentPlayer); // Update scoreboard based on winner
+            updateScoreboard(currentPlayer);
             showResult(`${currentPlayer} wins!`);
             return;
         }
 
+        // Check for draw/tie AFTER checking for win
         if (boardState.every(cell => cell !== '')) {
             gameActive = false;
-            updateScoreboard('draw'); // Update scoreboard for a draw
-            showResult('Draw!');
+            updateScoreboard('draw');
+            showResult("It's a Draw!");
             return;
         }
 
+        // Switch player only if game is still active
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     }
 
