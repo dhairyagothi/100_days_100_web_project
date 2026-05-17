@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FocusRead | AI Eye Tracking Reader</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+    <!-- MediaPipe for Face/Eye Tracking -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+</head>
+
+<body>
+
+    <div class="app">
+        <!-- LEFT SIDE: READING ZONE -->
+        <div class="reader-card">
+            <div class="reader-header">
+                <h1>🌊 FocusRead · Sky Blue</h1>
+                <div class="status-area">
+                    <div class="badge">
+                        <span class="led active" id="ledLight"></span>
+                        <span id="statusMsg">📖 Reading Mode Active</span>
+                    </div>
+                    <div class="hint">💙 Look away → pause + highlight</div>
+                </div>
+            </div>
+            <div class="reading-area" id="readingText">
+                <p><strong>✨ Welcome to Sky Blue FocusRead ✨</strong><br>This calming blue-themed reader uses AI
+                    computer vision (MediaPipe FaceMesh) to track your eyes. When you look away, reading pauses and the
+                    last paragraph gets highlighted in soft sky blue.</p>
+                <p><strong>🧠 How It Works</strong><br>The AI analyzes 468 points on your face — focusing on your eyes
+                    and head position. If you turn away or look down for more than 0.4 seconds, the app automatically
+                    highlights where you left off. Look back, and the highlight vanishes!</p>
+                <p><strong>🎯 Try The Focus Challenge</strong><br>Read this entire passage without glancing away from
+                    the screen. Every time your eyes wander, you'll see a gentle blue highlight appear. It's like having
+                    a study buddy who keeps you on track.</p>
+                <p><strong>🛡️ 100% Private & Local</strong><br>All face detection runs directly in your browser. No
+                    video data is ever sent to any server. Your privacy matters — everything stays on your computer.
+                    Built with HTML, CSS, JavaScript, and MediaPipe.</p>
+                <p><strong>🎮 Controls (Right Panel)</strong><br>• <strong>Clear Highlight</strong> — removes the blue
+                    highlight manually<br>• <strong>Manual Pause</strong> — freeze reading and track manually<br>The
+                    camera shows blue tracking dots — the more dots, the better the detection!</p>
+                <p><strong>💡 Pro Tips</strong><br>Sit in a well-lit area and face the camera directly. The sky blue
+                    theme reduces eye strain during long reading sessions. Adjust your chair so your face fills most of
+                    the camera view.</p>
+                <p><strong>🌟 "Focus is the bridge between goals and achievement."</strong><br>Stay calm, read deeply,
+                    and let this gentle blue companion help you build better reading habits. Enjoy distraction-free
+                    learning! 🌊</p>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: CAMERA & AI MONITOR -->
+        <div class="ai-panel">
+            <div class="cam-box">
+                <video id="videoFeed" autoplay playsinline muted></video>
+                <canvas id="faceCanvas"></canvas>
+            </div>
+            <div class="info-box" id="aiFeedback">
+                🎥 Waiting for camera access...
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-clear" id="clearHighlightBtn">📍 Clear Highlight</button>
+                <button class="btn btn-pause" id="manualPauseBtn">⏸️ Manual Pause</button>
+            </div>
+            <div class="footnote">
+                💙 FaceMesh tracks 468 points • Blue dots = eyes tracked<br>
+                👀 Look at camera → reading continues | Look away → pause
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== JAVASCRIPT FOR EYE TRACKING ====================
+        // BLUE & SKY BLUE EYE TRACKING READER
+
+        // ----- GET ALL HTML ELEMENTS -----
+        const video = document.getElementById('videoFeed');
+        const canvas = document.getElementById('faceCanvas');
+        const ctx = canvas.getContext('2d');
+        const readingContainer = document.getElementById('readingText');
+        const ledLight = document.getElementById('ledLight');
+        const statusMsgSpan = document.getElementById('statusMsg');
+        const aiFeedbackDiv = document.getElementById('aiFeedback');
+        const clearBtn = document.getElementById('clearHighlightBtn');
+        const pauseBtn = document.getElementById('manualPauseBtn');
+
+        // ----- STATE VARIABLES (keep track of what's happening) -----
+        let isLooking = true;           // Is user looking at screen?
+        let manualMode = false;         // Is manual pause active?
+        let highlightedPara = null;     // Which paragraph is highlighted?
+        let awayTimer = null;           // Timer to avoid blink detection
+        let faceMesh = null;            // MediaPipe face detector
+
+        // ----- FUNCTION: Remove the blue highlight from text -----
+        function removeHighlight() {
+            if (highlightedPara) {
+                highlightedPara.classList.remove('highlight-last');
+                highlightedPara = null;
+            }
+        }
+
+        // ----- FUNCTION: Find which paragraph is most visible on screen -----
+        function getVisibleParagraph() {
+            const paragraphs = readingContainer.querySelectorAll('p');
+            if (paragraphs.length === 0) return null;
+
+            let bestPara = paragraphs[0];
+            let maxVisibleHeight = 0;
+            const containerRect = readingContainer.getBoundingClientRect();
+
+            for (let p of paragraphs) {
+                const rect = p.getBoundingClientRect();
+                const visibleTop = Math.max(rect.top, containerRect.top);
+                const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
+                const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+                if (visibleHeight > maxVisibleHeight) {
+                    maxVisibleHeight = visibleHeight;
+                    bestPara = p;
+                }
+            }
+            return bestPara;
+        }
+
+        // ----- FUNCTION: Highlight the current paragraph (last read position) -----
+        function highlightCurrentPosition() {
+            removeHighlight();  // remove old highlight first
+            const currentPara = getVisibleParagraph();
+            if (currentPara) {
+                currentPara.classList.add('highlight-last');
+                highlightedPara = currentPara;
+                // smooth scroll to make sure it's visible
+                currentPara.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // ----- FUNCTION: Pause reading (user looked away) -----
+        function pauseReading() {
+            if (manualMode) return;      // Don't auto-pause if manual mode is on
+            if (!isLooking) return;      // Already paused
+
+            isLooking = false;
+            // Update blue LED to inactive (grayish)
+            ledLight.classList.remove('active');
+            ledLight.classList.add('inactive');
+            statusMsgSpan.innerText = '⏸️ Paused · Look away';
+            aiFeedbackDiv.innerHTML = '💙 Look away detected! Reading paused. Last sentence highlighted. Look back to resume.';
+            highlightCurrentPosition();   // Mark where they left off
+        }
+
+        // ----- FUNCTION: Resume reading (user came back) -----
+        function resumeReading() {
+            if (manualMode) return;      // Manual pause overrides
+            if (isLooking) return;       // Already reading
+
+            isLooking = true;
+            // LED back to bright blue
+            ledLight.classList.remove('inactive');
+            ledLight.classList.add('active');
+            statusMsgSpan.innerText = '📖 Reading · Focus Active';
+            aiFeedbackDiv.innerHTML = '✅ Focus restored! Keep reading. Sky blue mode active.';
+            removeHighlight();           // Remove the highlight
+        }
+
+        // ----- CORE AI: Decide if user is looking at screen using face landmarks -----
+        function isUserLookingAtScreen(landmarks) {
+            if (!landmarks) return false;
+
+            // Important face points (MediaPipe indices)
+            const noseTip = landmarks[1];
+            const leftEyeTop = landmarks[159];
+            const leftEyeBottom = landmarks[145];
+            const rightEyeTop = landmarks[386];
+            const rightEyeBottom = landmarks[374];
+            const leftEyeCorner = landmarks[33];
+            const rightEyeCorner = landmarks[263];
+
+            if (!noseTip || !leftEyeTop) return false;
+
+            // 1. Nose should be centered (between 0.25 and 0.75 on x-axis)
+            const noseX = noseTip.x;
+            const isCentered = (noseX > 0.25 && noseX < 0.75);
+
+            // 2. Eyes should be open (measure vertical distance between top and bottom)
+            const leftEyeOpen = Math.abs(leftEyeTop.y - leftEyeBottom.y);
+            const rightEyeOpen = Math.abs(rightEyeTop.y - rightEyeBottom.y);
+            const avgEyeOpen = (leftEyeOpen + rightEyeOpen) / 2;
+            const eyesAreOpen = (avgEyeOpen > 0.007);
+
+            // 3. Face should point forward (nose relative to eye corners)
+            const faceWidth = Math.abs(rightEyeCorner.x - leftEyeCorner.x);
+            const leftNoseOffset = Math.abs(leftEyeCorner.x - noseTip.x);
+            const rightNoseOffset = Math.abs(rightEyeCorner.x - noseTip.x);
+            const facingForward = (leftNoseOffset < faceWidth * 0.45 && rightNoseOffset < faceWidth * 0.45);
+
+            return (isCentered && eyesAreOpen && facingForward);
+        }
+
+        // ----- DRAW BLUE DOTS ON CANVAS (visual feedback) -----
+        function drawBlueOverlay(landmarks) {
+            if (!ctx) return;
+            canvas.width = video.videoWidth || 400;
+            canvas.height = video.videoHeight || 300;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!landmarks) {
+                ctx.font = "14px 'Segoe UI'";
+                ctx.fillStyle = "#88ccff";
+                ctx.fillText("😕 No face detected", 20, 40);
+                return;
+            }
+
+            // Draw sky blue dots on all face landmarks
+            for (let i = 0; i < landmarks.length; i++) {
+                const x = landmarks[i].x * canvas.width;
+                const y = landmarks[i].y * canvas.height;
+                ctx.beginPath();
+                ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
+                ctx.fillStyle = "#38bdf8";
+                ctx.fill();
+                ctx.strokeStyle = "#0369a1";
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+
+            // Highlight eye areas with larger cyan circles
+            const eyePoints = [159, 145, 386, 374];
+            for (let idx of eyePoints) {
+                if (landmarks[idx]) {
+                    const x = landmarks[idx].x * canvas.width;
+                    const y = landmarks[idx].y * canvas.height;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                    ctx.fillStyle = "#00e5ff";
+                    ctx.fill();
+                    ctx.strokeStyle = "#0284c7";
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // ----- MEDIAPIPE CALLBACK - runs every frame -----
+        function onFaceMeshResults(results) {
+            if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+                const landmarks = results.multiFaceLandmarks[0];
+                drawBlueOverlay(landmarks);
+
+                const isLookingNow = isUserLookingAtScreen(landmarks);
+
+                if (awayTimer) {
+                    clearTimeout(awayTimer);
+                    awayTimer = null;
+                }
+
+                if (!manualMode) {
+                    if (isLookingNow && !isLooking) {
+                        resumeReading();
+                    }
+                    else if (!isLookingNow && isLooking) {
+                        awayTimer = setTimeout(() => {
+                            if (!manualMode && isLooking) {
+                                pauseReading();
+                            }
+                            awayTimer = null;
+                        }, 400);
+                    }
+                }
+            }
+            else {
+                drawBlueOverlay(null);
+                if (!manualMode && isLooking) {
+                    if (awayTimer) clearTimeout(awayTimer);
+                    awayTimer = setTimeout(() => {
+                        if (!manualMode && isLooking) {
+                            pauseReading();
+                        }
+                        awayTimer = null;
+                    }, 400);
+                }
+            }
+        }
+
+        // ----- SETUP WEBCAM AND FACEMESH -----
+        async function setupBlueTracker() {
+            try {
+                faceMesh = new FaceMesh({
+                    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+                });
+
+                faceMesh.setOptions({
+                    maxNumFaces: 1,
+                    refineLandmarks: true,
+                    minDetectionConfidence: 0.5,
+                    minTrackingConfidence: 0.5
+                });
+
+                faceMesh.onResults(onFaceMeshResults);
+
+                const camera = new Camera(video, {
+                    onFrame: async () => {
+                        if (faceMesh) await faceMesh.send({ image: video });
+                    },
+                    width: 640,
+                    height: 480
+                });
+                await camera.start();
+
+                aiFeedbackDiv.innerHTML = '✅ Camera active! Sky blue tracking ON. Keep eyes on screen.';
+            } catch (error) {
+                console.error(error);
+                aiFeedbackDiv.innerHTML = '❌ Camera error: Please allow webcam permission and refresh.';
+            }
+        }
+
+        // ----- HANDLE SCROLLING -----
+        function onScrollHandler() {
+            if ((!isLooking || manualMode) && !highlightedPara) {
+                highlightCurrentPosition();
+            }
+            else if ((!isLooking || manualMode) && highlightedPara) {
+                const currentTopPara = getVisibleParagraph();
+                if (currentTopPara && currentTopPara !== highlightedPara) {
+                    removeHighlight();
+                    highlightCurrentPosition();
+                }
+            }
+        }
+
+        // ----- BUTTON EVENT HANDLERS -----
+        clearBtn.addEventListener('click', () => {
+            removeHighlight();
+            aiFeedbackDiv.innerHTML = '✨ Blue highlight cleared!';
+            setTimeout(() => {
+                if (!manualMode && !isLooking) aiFeedbackDiv.innerHTML = '💙 Looking away — return to resume';
+                else if (!manualMode && isLooking) aiFeedbackDiv.innerHTML = '✅ Focus active — good job!';
+                else if (manualMode) aiFeedbackDiv.innerHTML = '🔘 Manual pause active';
+            }, 1500);
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            manualMode = !manualMode;
+
+            if (manualMode) {
+                pauseBtn.innerHTML = '▶️ Resume Reading';
+                pauseBtn.style.background = '#0e7490';
+                statusMsgSpan.innerText = '🔒 Manual Pause Mode';
+                ledLight.classList.remove('active');
+                ledLight.classList.add('inactive');
+                aiFeedbackDiv.innerHTML = '🔘 Manual pause active. Reading frozen. Click resume to continue tracking.';
+                highlightCurrentPosition();
+            } else {
+                pauseBtn.innerHTML = '⏸️ Manual Pause';
+                pauseBtn.style.background = '#0284c7';
+                isLooking = true;
+                statusMsgSpan.innerText = '📖 Reading · Focus Active';
+                ledLight.classList.remove('inactive');
+                ledLight.classList.add('active');
+                aiFeedbackDiv.innerHTML = '✅ Manual pause released. Face tracking resumed. Sky blue mode active.';
+                removeHighlight();
+            }
+        });
+
+        readingContainer.addEventListener('scroll', onScrollHandler);
+
+        // ----- START THE APPLICATION -----
+        setupBlueTracker();
+    </script>
+</body>
+
+</html>
