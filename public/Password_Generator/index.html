@@ -1,80 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Password Generator</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;600&display=swap"
-      rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;600;700&display=swap"
+        rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    
+
     <div class="container">
 
         <h1>Password Generator</h1>
 
+        <!-- DISPLAY -->
         <div class="display-container">
 
-            <input readonly placeholder="Password" class="display" data-passwordDisplay>
+            <input
+                readonly
+                placeholder="Generate Password"
+                class="display"
+                data-passwordDisplay
+            />
 
             <button class="copyBtn" data-copy>
-                <span class="tooltip" data-copyMsg></span>
-                <img src="./assets/copy.svg" alt="copy" width="23" height="23">
+
+                <span class="tooltip" data-copyMsg>
+                    copied
+                </span>
+
+                <img
+                    src="./assets/copy.svg"
+                    alt="copy"
+                    width="23"
+                    height="23"
+                />
+
             </button>
 
         </div>
 
-
+        <!-- INPUT CONTAINER -->
         <div class="input-container">
 
-            <!--password length section-->
+            <!-- PASSWORD LENGTH -->
             <div class="length-container">
+
                 <p>Password Length</p>
-                <p data-lengthNumber>0</p>
-            </div>
-            
-            <!--slider-->
-            <input type="range" min="1" max="20" class="slider" step="1" data-lengthSlider>
 
-            <!-- checkboxes-->
-            <div class="check">
-                <input type="checkbox" id="uppercase">
-                <label for="uppercase">Includes Uppercase letters</label>
+                <p data-lengthNumber>12</p>
+
             </div>
 
-            <div class="check">
-                <input type="checkbox" id="lowercase">
-                <label for="lowercase">Includes Lowercase letters</label>
-            </div>
+            <!-- SLIDER -->
+            <input
+                type="range"
+                min="6"
+                max="64"
+                class="slider"
+                step="1"
+                data-lengthSlider
+            />
 
-            <div class="check">
-                <input type="checkbox" id="numbers">
-                <label for="numbers">Includes Numbers </label>
-            </div>
+            <!-- CHECKBOXES -->
 
             <div class="check">
-                <input type="checkbox" id="symbols">
-                <label for="symbols">Includes Symbols </label>
+                <input type="checkbox" id="uppercase" checked />
+                <label for="uppercase">
+                    Include Uppercase Letters
+                </label>
             </div>
 
-            <!-- strength section-->
+            <div class="check">
+                <input type="checkbox" id="lowercase" checked />
+                <label for="lowercase">
+                    Include Lowercase Letters
+                </label>
+            </div>
+
+            <div class="check">
+                <input type="checkbox" id="numbers" checked />
+                <label for="numbers">
+                    Include Numbers
+                </label>
+            </div>
+
+            <div class="check">
+                <input type="checkbox" id="symbols" />
+                <label for="symbols">
+                    Include Symbols
+                </label>
+            </div>
+
+            <!-- STRENGTH -->
+
             <div class="strength-container">
-                <p>Strength</p>
-                <div class="indicator" data-indicator></div>
+
+                <p>Password Strength</p>
+
+                <div class="strength-box">
+
+                    <div class="indicator" data-indicator></div>
+
+                    <p class="strength-text" data-strengthText>
+                        Weak
+                    </p>
+
+                </div>
+
             </div>
 
-            <!-- generate password-->
-            <button class="generateButton">Generate Password</button>
+            <!-- GENERATE BUTTON -->
+
+            <button class="generateButton">
+                Generate Password
+            </button>
+
+            <!-- HISTORY SECTION -->
+
+            <div class="history-section">
+
+                <h2>Password History</h2>
+
+                <div class="history-container" data-history>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
+
     <script src="script.js"></script>
+
 </body>
 </html>
