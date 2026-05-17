@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap');
 
-/* ============================================================
-   DESIGN TOKENS — one accent, total restraint
-   ============================================================ */
+
 :root {
     --bg-primary:    #0b0d0f;
     --bg-elevated:   #111315;
@@ -920,9 +918,45 @@ body.light-mode .navbar {
     to { transform: translate3d(0, -8px, 0) scale(1.03); }
 }
 
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Professional scrollbar */
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00ff88, #00bdff, #7000ff);
+    border-radius: 20px;
+    border: 2px solid #050505;
+    min-height: 140px;
+    box-shadow: 0 0 14px rgba(0, 255, 136, 0.25);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #00ff88, #00d4ff, #8a2be2);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.45);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
 @keyframes noiseShift {
     from { transform: translate3d(0, 0, 0); }
     to { transform: translate3d(-2%, 1%, 0); }
+}
+
+.light-theme {
+    background-color: #ffffff;
+    color: #000000;
 }
 
 /* ============================================================
@@ -988,10 +1022,6 @@ body.light-mode .navbar {
     opacity: 0.9
 
 }
-/* ============================================
-   Category Filter Buttons | Issue #1209
-   Author: Sweksha Kakkar
-   ============================================ */
 
 .filter-container {
   display: flex;
@@ -1059,3 +1089,4 @@ body.light-mode .navbar {
     font-size: 11px;
   }
 }
+
