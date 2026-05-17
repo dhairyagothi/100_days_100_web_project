@@ -56,31 +56,3 @@ Built entirely using pure web standards (HTML5, CSS3, Vanilla JS) with zero exte
    ```bash
    http://localhost:5500/public/password%20manager/index.html
    ```
-
----
-
-## 📸 Screenshots & Visual Previews
-
-### Cyberpunk Slate Dashboard & Entries List
-*Clean high-contrast grid layouts with glowing focus inputs and list items:*
-```
-+-------------------------------------------------------------+
-|  [Shield Logo] PassX                          [Home] [About]|
-+-------------------------------------------------------------+
-|                                                             |
-|  Your Saved Logins                                          |
-|  +--------------+------------------+-------------+--------+ |
-|  | Website      | Username         | Password    | Delete | |
-|  +--------------+------------------+-------------+--------+ |
-|  | google.com   | user@domain.com  | •••••••••   | Delete | |
-|  +--------------+------------------+-------------+--------+ |
-|                                                             |
-|  Add Credentials                                            |
-|  Website:   [                   ]                           |
-|  Username:  [                   ]                           |
-|  Password:  [                   ] [Eye Toggle]              |
-|             [ = = = ] Strength: Weak                        |
-|                                                             |
-|  [ Save Credentials ]                                       |
-+-------------------------------------------------------------+
-```

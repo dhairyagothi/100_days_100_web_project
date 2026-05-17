@@ -104,6 +104,11 @@ ul > li:hover {
     color: var(--text-primary);
 }
 
+ul > li a {
+    color: inherit;
+    text-decoration: none;
+}
+
 ul > li::after {
     content: '';
     position: absolute;
