@@ -133,7 +133,8 @@ const PROJECT_DATA = [
     ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'javascript', 'intermediate'],
     ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
     ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-    ['Day 116', 'AI Image Classifier', './public/AI Image Classifier/index.html', 'api javascript', 'intermediate']
+    ['Day 116', 'AI Image Classifier', './public/AI Image Classifier/index.html', 'api javascript', 'intermediate'],
+    ['Day 117', 'DigiCafe', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/DigiCafe', 'react webrtc nodejs', 'advanced'],
 ];
 
 // Alias for consistency
