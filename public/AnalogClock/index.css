@@ -1,5 +1,5 @@
 html {
-    background: radial-gradient(circle, #ff7e5f, #feb47b); /* Gradient background */
+    background: radial-gradient(circle, #db9c8c, #7d6552); /* Gradient background */
     font-family: Arial, sans-serif;
 }
 
@@ -17,7 +17,6 @@ body {
     background: url(clock.png) no-repeat;
     background-size: 100%;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 #hour, #minute, #second{
@@ -56,11 +55,12 @@ body {
     justify-content: center;
     align-items: center;
     width: 340px;
-    border-radius: 8px;
-    padding: 20px;
-    margin-left: 5px;
-    margin-right: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Adding shadow to the timer container */
+    border-radius: 12px;
+    padding: 30px 24px;
+    margin: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    gap: 12px;
 }
 
 #timeInput {
@@ -78,24 +78,40 @@ input {
 }
 
 button {
-    padding: 10px 20px;
+      padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #ff7e5f;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
     color: white;
+    margin: 5px;
+
 }
+
+#btnStart   { background-color: #111211; }
+#btnPause   { background-color: #0d0c0a; }
+#btnResume  { background-color: #101111; }
+#btnRestart { background-color: #0c0c0c; }
+
+#btnStart:hover   { background-color: #218838; }
+#btnPause:hover   { background-color: #e0a800; }
+#btnResume:hover  { background-color: #138496; }
+#btnRestart:hover { background-color: #c82333; }
 
 button:hover {
     background-color: #feb47b;
 }
 
 #countdownDisplay {
-    font-size: 32px;
+    font-size: 42px;
     font-weight: bold;
+    letter-spacing: 4px;
+    margin: 45px 0;
+    color: #333;
+    background: rgba(255,255,255,0.4);
+    padding: 10px 20px;
+    border-radius: 8px;
 }
-
 #timerUpMsg{
     font-size: 35px;
     text-align: center;

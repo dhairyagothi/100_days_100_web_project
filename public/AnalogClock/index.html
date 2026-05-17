@@ -23,7 +23,11 @@
             <input type="number" id="minutes" placeholder="MM" min="0" max="59" />
             <input type="number" id="seconds" placeholder="SS" min="0" max="59" />
         </div>
-        <button onclick="startCountdown()">Start Countdown</button>
+        <button id="btnStart"   onclick="startCountdown()">▶ Start</button>
+        <button id="btnPause"   onclick="pauseCountdown()">⏸ Pause</button>
+        <button id="btnResume"  onclick="resumeCountdown()">⏵ Resume</button>
+        <button id="btnRestart" onclick="restartCountdown()">🔄 Restart</button>       
+        
         <div id="countdownDisplay">00:00:00</div>
 
         <div id="timerUpMsg"  style="display: none;">
