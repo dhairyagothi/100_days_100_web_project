@@ -386,6 +386,13 @@ function initScrollBtn() {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOMContentLoaded fired');
     console.log('PROJECTS:', typeof PROJECTS, PROJECTS ? PROJECTS.length : 'undefined');
+    
+    // Set current year dynamically
+    const yearEl = document.getElementById('currentYear');
+    if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+    }
+
     initTheme();
     updateNavbar();
     initFilterChips();
