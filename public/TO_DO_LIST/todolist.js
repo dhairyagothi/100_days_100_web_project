@@ -59,6 +59,34 @@ function loadTasks() {
   } catch (error) {
     console.error("Unable to load tasks:", error);
     return [];
+let notesContainer = document.getElementById("notes-container");
+let documentsList = document.querySelector(".documents-list");
+let pdfMessage = document.getElementById("pdfMessage");
+
+let currentTheme = "theme1"; // Default theme
+
+// Task types with updated labels, values, and colors
+const taskTypes = [
+  { label: "Select Type", value: "", color: "white" },
+  { label: "Work", value: "Work", color: "#FFDE59" }, // Bright Yellow
+  { label: "Personal", value: "Personal", color: "#FFC0CB" }, // Soft Pastel Pink
+  { label: "Professional", value: "Urgent", color: "#B0BEC5" }, // Cool Gray
+  { label: "Fitness", value: "Fitness", color: "#B1EE99" }, // Vibrant Green
+  { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
+];
+
+function Add() {
+
+  const notes = document.querySelectorAll(".notes");
+
+  if (notes.length > 0) {
+    const lastNote = notes[notes.length - 1];
+    const taskText = lastNote.querySelector("span");
+
+    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
+      alert("Please add a task to the previous note before creating a new one!");
+      return;
+    }
   }
 }
 
@@ -352,3 +380,25 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTasks();
   updateDocumentEmptyState();
 });
+  let image = 'linear-gradient(90deg, #b92b27, #1565c0)';
+  document.body.style.background = image;
+  currentTheme = "theme5";
+  updateNotesTheme();
+}
+
+function updateNotesTheme() {
+  const notes = document.querySelectorAll(".notes");
+  notes.forEach((note) => {
+    if (note.style.backgroundColor === "white") {
+      note.style.backgroundColor = currentTheme === "theme1"
+        ? "rgba(232,221,227,1)"
+        : currentTheme === "theme2"
+          ? "#e4afcb"
+          : currentTheme === "theme3"
+            ? "#39db8c"
+            : currentTheme === "theme4"
+              ? "rgb(120, 25, 105)"
+              : "#b92b27";
+    }
+  });
+}
