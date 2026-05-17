@@ -65,11 +65,18 @@ addTextButton.addEventListener("click", () => {
 });
 
 deleteTextButton.addEventListener("click", () => {
+
     if (phrases.length > defaultPhrases.length) {
-        const lastUserPhrase = phrases.pop();
-        if (displayedPhrases.includes(lastUserPhrase)) {
-            displayedPhrases = displayedPhrases.filter(phrase => phrase !== lastUserPhrase);
-        }
+
+        phrases.pop();
+
+        displayedPhrases = [];
+
+        phraseIndex = 0;
+
+        clearTimeout(typingTimeout);
+
+        type();
     }
 });
 
