@@ -23,3 +23,16 @@ $(document).ready(function(){
         $(this).children('span').text('-')
     });
 });
+
+/* Readmore button functioning JS Code */
+document.addEventListener("DOMContentLoaded", function () {
+    let btn = document.getElementById("readBtn");
+    let moreText = document.getElementById("moreText");
+
+    btn.addEventListener("click", function () {
+        moreText.classList.toggle("hidden");
+
+        let isHidden = moreText.classList.contains("hidden");
+        btn.innerText = isHidden ? "Read more" : "Read less";
+    });
+});
