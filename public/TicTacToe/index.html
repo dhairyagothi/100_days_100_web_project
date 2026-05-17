@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Tic Tac Toe</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>TIC-TAC-TOE</h1>
+  <h1>🎲 TIC-TAC-TOE 🎲</h1>
   <div class="container">
     <div class="game-wrapper">
       <div class="board" id="board">
@@ -21,23 +22,33 @@
         <div class="cell" data-index="7"></div>
         <div class="cell" data-index="8"></div>
       </div>
+      
       <div class="scoreboard">
-        <h2>Scoreboard</h2>
-        <p id="playerXWins">Player X Wins: 0</p>
-        <p id="playerOWins">Player O Wins: 0</p>
-        <p id="draws">Draws: 0</p>
-        <button id="resetScoreboard">Reset Scoreboard</button>
-        <button id="restartGame">Restart Game</button>
+        <h2> 🏆Scoreboard</h2>
+        <div class="turn-indicator" id="turnIndicator">✨ X's turn ✨
+        </div>
+        <input type="text" id="playerXNameInput" class="name-input" placeholder="Player X name" value="UserName(X)">
+        <input type="text" id="playerONameInput" class="name-input" placeholder="Player O name" value="UserName(O)">
+        <div class="score-text" id="playerXWins">🔥 X Wins: 0</div>
+        <div class="score-text" id="playerOWins">💧 O Wins: 0</div>
+        <div class="score-text" id="drawsCount">🤝 Draws: 0</div>
+       <button id="resetScoreBtn">⟳ Reset Scoreboard</button>
+       <button id="restartGameBtn">🔄 Restart Game</button>
       </div>
     </div>
     
   </div>
 
+  <!-- Flash card -->
+   <div class="winner-flash" id="winnerFlashcard">
+    🎉🏆<span id="flashWinnername">WINNER</span>WINS!🎉🎊
+   </div>
+
   <div class="modal" id="resultModal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
       <p id="resultMessage"></p>
-      <button id="newGame">New Game</button>
+      <button id="newGame"> 🎮 New Game</button>
     </div>
   </div>
 

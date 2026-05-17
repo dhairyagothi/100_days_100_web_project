@@ -1,144 +1,197 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const board = document.getElementById('board');
-    const cells = Array.from(document.querySelectorAll('.cell'));
-    const modal = document.getElementById('resultModal');
-    const resultMessage = document.getElementById('resultMessage');
-    const closeModal = document.getElementById('closeModal');
-    const newGameButton = document.getElementById('newGame');
-    const restartGameButton = document.getElementById('restartGame');
-    const playerXWins = document.getElementById('playerXWins');
-    const playerOWins = document.getElementById('playerOWins');
-    const draws = document.getElementById('draws');
-    let currentPlayer = 'X';
-    let gameActive = true;
-    let boardState = Array(9).fill('');
-    let playerXScore = 0;
-    let playerOScore = 0;
-    let tieCount = 0;
+  
+  const cells = document.querySelectorAll('.cell');
+  const turnIndicator = document.getElementById('turnIndicator');
+  const playerXWinsSpan = document.getElementById('playerXWins');
+  const playerOWinsSpan = document.getElementById('playerOWins');
+  const drawsSpan = document.getElementById('drawsCount');
+  const resetScoreBtn = document.getElementById('resetScoreBtn');
+  const restartBtn = document.getElementById('restartGameBtn');
+  const modal = document.getElementById('resultModal');
+  const resultMessage = document.getElementById('resultMessage'); // modal message paragraph
+  const closeModal = document.getElementById('closeModal');
+  const newGameBtn = document.getElementById('newGame');
+  const winnerFlashCard = document.getElementById('winnerFlashcard'); // note: id matches HTML
+  const flashWinnerNameSpan = document.getElementById('flashWinnername');
+  const playerXInput = document.getElementById('playerXNameInput');
+  const playerOInput = document.getElementById('playerONameInput');
 
-    const winningConditions = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
+  
+  let board = ['', '', '', '', '', '', '', '', ''];
+  let currentPlayer = 'X';
+  let gameActive = true;
+  let winsX = 0, winsO = 0, draws = 0;
+  let playerXName = "UserName(X)";
+  let playerOName = "UserName(O)";
+  let flashTimeout = null;
 
-    function updateScoreboard(winner) {
-        if (winner === 'X') {
-            playerXScore++;
-            playerXWins.textContent = `Player X Wins: ${playerXScore}`;
-        } else if (winner === 'O') {
-            playerOScore++;
-            playerOWins.textContent = `Player O Wins: ${playerOScore}`;
-        } else {
-            tieCount++;
-            draws.textContent = `Draws: ${tieCount}`;
-        }
+  const winningConditions = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
+
+  function fireBottomCornerConfetti() {
+    canvasConfetti({
+      particleCount: 140, spread: 70, origin: { x: 0, y: 1 },
+      startVelocity: 25, colors: ['#FFD966', '#FF6B6B', '#4ECDC4', '#FFB347'],
+      angle: 60, decay: 0.9
+    });
+    canvasConfetti({
+      particleCount: 140, spread: 70, origin: { x: 1, y: 1 },
+      startVelocity: 25, colors: ['#FFE484', '#FF8C9E', '#A855F7', '#6EE7B7'],
+      angle: 120, decay: 0.9
+    });
+    setTimeout(() => {
+      canvasConfetti({ particleCount: 90, spread: 55, origin: { x: 0, y: 1 }, startVelocity: 20 });
+      canvasConfetti({ particleCount: 90, spread: 55, origin: { x: 1, y: 1 }, startVelocity: 20 });
+    }, 120);
+  }
+
+  function updateUI() {
+    playerXWinsSpan.innerHTML = `🔥 ${playerXName} (X) Wins: ${winsX}`;
+    playerOWinsSpan.innerHTML = `💧 ${playerOName} (O) Wins: ${winsO}`;
+    drawsSpan.innerHTML = `🤝 Draws: ${draws}`;
+    if (gameActive) {
+      turnIndicator.innerHTML = (currentPlayer === 'X')
+        ? `🎯 ${playerXName}'s turn (X)`
+        : `🌀 ${playerOName}'s turn (O)`;
+    } else {
+      turnIndicator.innerHTML = `⏸️ Game over · Press Restart`;
     }
+  }
 
-    function handleCellClick(e) {
-        const cell = e.target;
-        const index = cell.getAttribute('data-index');
-
-        if (boardState[index] !== '' || !gameActive) {
-            return;
-        }
-
-        cell.textContent = currentPlayer;
-        boardState[index] = currentPlayer;
-
-        if (checkWin()) {
-            gameActive = false;
-            updateScoreboard(currentPlayer); // Update scoreboard based on winner
-            showResult(`${currentPlayer} wins!`);
-            return;
-        }
-
-        if (boardState.every(cell => cell !== '')) {
-            gameActive = false;
-            updateScoreboard('draw'); // Update scoreboard for a draw
-            showResult('Draw!');
-            return;
-        }
-
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  // Render board from array
+  function renderBoard() {
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].innerText = board[i];
+      if (board[i] === 'X') cells[i].setAttribute('data-mark', 'X');
+      else if (board[i] === 'O') cells[i].setAttribute('data-mark', 'O');
+      else cells[i].removeAttribute('data-mark');
     }
+  }
 
-    function checkWin() {
-        return winningConditions.some(condition => {
-            return condition.every(index => boardState[index] === currentPlayer);
-        });
+  // Winner celebration: flash card + modal + confetti
+  function showWinnerCelebration(winnerMark) {
+    const winnerName = (winnerMark === 'X') ? playerXName : playerOName;
+    // Flash card
+    flashWinnerNameSpan.innerText = winnerName;
+    winnerFlashCard.classList.add('show');
+    if (flashTimeout) clearTimeout(flashTimeout);
+    flashTimeout = setTimeout(() => winnerFlashCard.classList.remove('show'), 2600);
+    // Modal
+    resultMessage.innerText = `🏆 ${winnerName} (${winnerMark}) WINS! 🏆`;
+    modal.style.display = 'flex';
+    // Confetti
+    fireBottomCornerConfetti();
+  }
+
+  function showDrawCelebration() {
+    resultMessage.innerText = `🤝 It's a DRAW! 🤝`;
+    modal.style.display = 'flex';
+  }
+
+  // Check win/draw and update game status
+  function checkGameStatus() {
+    let winner = null;
+    for (let pattern of winningConditions) {
+      const [a, b, c] = pattern;
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        winner = board[a];
+        break;
+      }
     }
-
-    function showResult(message) {
-        resultMessage.textContent = message;
-        modal.style.display = 'block';
-
-        // Reset game state after displaying result
-        boardState = Array(9).fill('');
-        currentPlayer = 'X';
-        gameActive = true;
-        cells.forEach(cell => cell.textContent = '');
+    if (winner) {
+      gameActive = false;
+      if (winner === 'X') winsX++;
+      else winsO++;
+      updateUI();
+      showWinnerCelebration(winner);
+      return;
     }
+    const isDraw = board.every(cell => cell !== '');
+    if (isDraw) {
+      gameActive = false;
+      draws++;
+      updateUI();
+      showDrawCelebration();
+      return;
+    }
+    // Switch player
+    currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
+    updateUI();
+  }
 
-    function restartGame() {
-    boardState = Array(9).fill('');
-    currentPlayer = 'X';
+  function handleCellClick(index) {
+    if (!gameActive) return;
+    if (board[index] !== '') return;
+    board[index] = currentPlayer;
+    renderBoard();
+    checkGameStatus();
+  }
+
+  function resetBoard() {
+    board = ['', '', '', '', '', '', '', '', ''];
     gameActive = true;
+    currentPlayer = 'X';
+    renderBoard();
+    if (modal.style.display === 'flex') modal.style.display = 'none';
+    if (winnerFlashCard.classList.contains('show')) winnerFlashCard.classList.remove('show');
+    if (flashTimeout) clearTimeout(flashTimeout);
+    updateUI();
+  }
 
-    cells.forEach(cell => {
-        cell.textContent = '';
-    });
-
-    modal.style.display = 'none';
-}
-
-    function determineOverallWinner() {
-        let winnerMessage;
-
-        if (playerXScore > playerOScore) {
-            winnerMessage = 'Player X Wins Overall!';
-        } else if (playerOScore > playerXScore) {
-            winnerMessage = 'Player O Wins Overall!';
-        } else if (playerXScore === playerOScore && (playerXScore > 0 || playerOScore > 0)) {
-            winnerMessage = 'It\'s a Tie between Player X and Player O!';
-        } else {
-            winnerMessage = 'It\'s a Draw Overall!';
-        }
-
-        alert(winnerMessage); // Show pop-up message with overall winner
+  function determineOverallWinner() {
+    let winnerMessage;
+    if (winsX > winsO) {
+      winnerMessage = `🏆 ${playerXName} (X) Wins Overall! 🏆`;
+    } else if (winsO > winsX) {
+      winnerMessage = `🏆 ${playerOName} (O) Wins Overall! 🏆`;
+    } else if (winsX === winsO && (winsX > 0 || winsO > 0)) {
+      winnerMessage = `🤝 It's a Tie between ${playerXName} and ${playerOName}! 🤝`;
+    } else {
+      winnerMessage = '🤝 No wins yet — keep playing!';
     }
+    alert(winnerMessage);
+  }
 
-    // Event listeners
-    cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-    closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
+  function resetScoreboard() {
+    determineOverallWinner();
+    winsX = 0; winsO = 0; draws = 0;
+    resetBoard();
+  }
+
+  function updateNames() {
+    let newX = playerXInput.value.trim();
+    let newO = playerOInput.value.trim();
+    playerXName = newX !== "" ? newX : "UserName(X)";
+    playerOName = newO !== "" ? newO : "UserName(O)";
+    updateUI();
+  }
+
+  // ---------- EVENT LISTENERS ----------
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].addEventListener('click', (e) => {
+      const idx = parseInt(e.currentTarget.getAttribute('data-index'));
+      handleCellClick(idx);
     });
-    newGameButton.addEventListener('click', () => {
-        modal.style.display = 'none';
-        // Reset game state for a new game
-        boardState = Array(9).fill('');
-        currentPlayer = 'X';
-        gameActive = true;
-        cells.forEach(cell => cell.textContent = '');
-    });
+  }
 
-    restartGameButton.addEventListener('click', restartGame);
+  playerXInput.addEventListener('input', updateNames);
+  playerOInput.addEventListener('input', updateNames);
+  resetScoreBtn.addEventListener('click', resetScoreboard);
+  restartBtn.addEventListener('click', resetBoard);
+  closeModal.addEventListener('click', () => modal.style.display = 'none');
+  newGameBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+    resetBoard();
+  });
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) modal.style.display = 'none';
+  });
 
-    const resetScoreboardButton = document.getElementById('resetScoreboard');
-    resetScoreboardButton.addEventListener('click', () => {
-        determineOverallWinner(); // Determine and show the overall winner before resetting
-        playerXScore = 0;
-        playerOScore = 0;
-        tieCount = 0;
-
-        // Update scoreboard elements directly after clicking "Reset Scoreboard"
-        playerXWins.textContent = `Player X Wins: ${playerXScore}`;
-        playerOWins.textContent = `Player O Wins: ${playerOScore}`;
-        draws.textContent = `Draws: ${tieCount}`;
-    });
+  // Initial render
+  renderBoard();
+  updateUI();
+  updateNames();
 });
