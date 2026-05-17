@@ -14,9 +14,9 @@ const taskTypes = [
   { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
 ];
 
-function Add() {
+function addTask() {
 
-  const notes = document.querySelectorAll(".notes");
+  const notes = document.querySelectorAll(".task-card");
 
   if (notes.length > 0) {
     const lastNote = notes[notes.length - 1];
@@ -30,8 +30,8 @@ function Add() {
 
   // Create a note container
   const note = document.createElement("div");
-  note.classList.add("notes");
-  note.style.backgroundColor = "white";
+  note.classList.add("task-card");
+  // note.style.backgroundColor = "white";
 
   const noteWrapper = document.createElement("div");
   noteWrapper.style.display = "flex";
@@ -40,7 +40,7 @@ function Add() {
   noteWrapper.style.width = "100%";
 
   const taskText = document.createElement("span");
-  taskText.innerText = "Click here to add a task...";
+document.getElementById("task-input").value = "";
   taskText.contentEditable = true;
   taskText.style.flex = "1";
   taskText.style.marginRight = "10px";
@@ -196,7 +196,7 @@ function c5() {
 }
 
 function updateNotesTheme() {
-  const notes = document.querySelectorAll(".notes");
+  const notes = document.querySelectorAll(".task-card");
   notes.forEach((note) => {
     if (note.style.backgroundColor === "white") {
       note.style.backgroundColor = currentTheme === "theme1"
