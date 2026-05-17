@@ -290,6 +290,7 @@ const maxPossibleEl = document.getElementById('max-possible');
 const difficultySelect = document.getElementById('difficulty');
 const numQuestionsSelect = document.getElementById('num-questions');
 const homeBtn = document.getElementById('home-btn');
+const exitBtn = document.getElementById('exit-btn');
 
 // Quiz state
 let currentQuestion = 0;
@@ -519,10 +520,32 @@ function goHome() {
   timeEl.style.animation = '';
 }
 
+function exitQuiz() {
+    const confirmExit = confirm(
+        "Are you sure you want to exit? Your progress will be lost."
+    );
+    if (!confirmExit) return;
+    clearInterval(timer);
+    currentQuestion = 0;
+    score = 0;
+    correctAnswers = 0;
+    wrongAnswers = 0;
+    timeLeft = getTimeLimit();
+    quizScreen.classList.add('hidden');
+    startScreen.classList.remove('hidden');
+    selectedCategory = null;
+    categoryCards.forEach(card =>
+        card.classList.remove('selected')
+    );
+    progressBar.style.width = '0%';
+    timeEl.style.animation = '';
+}
+
 // Event listeners
 startBtn.addEventListener('click', startQuiz);
 restartBtn.addEventListener('click', startQuiz);
 homeBtn.addEventListener('click', goHome);
+exitBtn.addEventListener('click', exitQuiz);
 
 // Add keyboard navigation
 document.addEventListener('keydown', (e) => {
