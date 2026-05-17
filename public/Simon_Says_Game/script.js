@@ -102,7 +102,7 @@ function checkAns(idx) {
 function gameOver() {
   h2.innerHTML = `💀 Game Over! Score: <b>${level}</b><br>Press Start to play again.`;
   document.body.style.backgroundColor = "red";
-  setTimeout(() => (document.body.style.backgroundColor = "white"), 200);
+  setTimeout(() => (document.body.style.backgroundColor = ""), 200);
   updateHighScore();
   resetGame();
 }
