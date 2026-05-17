@@ -161,3 +161,153 @@ button:hover {
         font-size: 1rem;
     }
 }
+/* ------------------------------------- */
+.journey-box{
+    width: 100%;
+
+    background: white;
+
+    padding: 35px 20px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+
+    border-top: 1px solid #e8eef5;
+
+    border-bottom: 1px solid #e8eef5;
+
+    margin-bottom: 80px;
+}
+
+.journey-box h2{
+    font-size: 38px;
+
+    color: #1e293b;
+
+    margin-bottom: 12px;
+}
+
+.journey-box p{
+    font-size: 16px;
+
+    color: #64748b;
+
+    line-height: 1.6;
+
+    margin: 0;
+}
+
+
+.timeline-container{
+  position: relative;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  padding-top: 0;
+}
+
+.timeline-line {
+  position: absolute;
+  width: 4px;
+  background-color: #1a5f7a;
+
+  top: 220px;
+
+  bottom: 0;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  z-index: 1;
+}
+
+/* Individual timeline item row */
+.timeline-item {
+  position: relative;
+  width: 50%;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* Align left items to the left side */
+.timeline-item.left {
+  left: 0;
+  padding-right: 40px;
+  text-align: right;
+}
+
+/* Align right items to the right side */
+.timeline-item.right {
+  left: 50%;
+  padding-left: 40px;
+  text-align: left;
+}
+
+/* The content cards */
+.timeline-content {
+  padding: 20px 30px;
+  background-color: #0d6efd; /* Blue background like the image */
+  color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: inline-block;
+  width: 80%; /* Adjust card width as needed */
+}
+
+/* The circular nodes/dots on the center line */
+.timeline-node {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 4px solid #1a5f7a;
+  top: 50%;
+  z-index: 3;
+}
+
+/* Position the node correctly for left items */
+.timeline-item.left .timeline-node {
+  right: -10px;
+  transform: translateY(-50%);
+}
+
+/* Position the node correctly for right items */
+.timeline-item.right .timeline-node {
+  left: -10px;
+  transform: translateY(-50%);
+}
+
+/* --- Responsive design for Mobile Screens --- */
+@media screen and (max-width: 768px) {
+  /* Move the line to the far left on mobile */
+  .timeline-line {
+    left: 31px;
+  }
+
+  /* Force all items to take full width and align left */
+  .timeline-item {
+    width: 100%;
+    padding-left: 55px;
+    padding-right: 0;
+    text-align: left;
+  }
+
+  .timeline-item.right {
+    left: 0;
+  }
+
+  /* Put all nodes on the left line */
+  .timeline-item.left .timeline-node,
+  .timeline-item.right .timeline-node {
+    left: 21px;
+    right: auto;
+  }
+  
+  .timeline-content {
+    width: 100%;
+  }
+}
