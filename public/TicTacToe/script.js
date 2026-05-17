@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerXWins = document.getElementById('playerXWins');
     const playerOWins = document.getElementById('playerOWins');
     const draws = document.getElementById('draws');
+    
     let currentPlayer = 'X';
     let gameActive = true;
     let boardState = Array(9).fill('');
@@ -33,38 +34,21 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (winner === 'O') {
             playerOScore++;
             playerOWins.textContent = `Player O Wins: ${playerOScore}`;
-        } else {
+        } else if (winner === 'draw') {
             tieCount++;
             draws.textContent = `Draws: ${tieCount}`;
         }
     }
 
-    function handleCellClick(e) {
-        const cell = e.target;
-        const index = cell.getAttribute('data-index');
-
-        if (boardState[index] !== '' || !gameActive) {
-            return;
-        }
-
-        cell.textContent = currentPlayer;
-        boardState[index] = currentPlayer;
-
-        if (checkWin()) {
-            gameActive = false;
-            updateScoreboard(currentPlayer); // Update scoreboard based on winner
-            showResult(`${currentPlayer} wins!`);
-            return;
-        }
-
-        if (boardState.every(cell => cell !== '')) {
-            gameActive = false;
-            updateScoreboard('draw'); // Update scoreboard for a draw
-            showResult('Draw!');
-            return;
-        }
-
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    function resetGameBoard() {
+        boardState = Array(9).fill('');
+        currentPlayer = 'X';
+        gameActive = true;
+        cells.forEach(cell => {
+            cell.textContent = '';
+            cell.removeAttribute('data-mark');
+            cell.classList.remove('win', 'disabled');
+        });
     }
 
     function checkWin() {
@@ -76,54 +60,96 @@ document.addEventListener('DOMContentLoaded', () => {
     function showResult(message) {
         resultMessage.textContent = message;
         modal.style.display = 'block';
+    }
 
-        // Reset game state after displaying result
-        boardState = Array(9).fill('');
-        currentPlayer = 'X';
-        gameActive = true;
-        cells.forEach(cell => cell.textContent = '');
+    function handleCellClick(e) {
+        const cell = e.target;
+        const index = cell.getAttribute('data-index');
+
+        if (boardState[index] !== '' || !gameActive) {
+            return;
+        }
+
+        // Update cell
+        cell.textContent = currentPlayer;
+        cell.setAttribute('data-mark', currentPlayer);
+        boardState[index] = currentPlayer;
+
+        // Check win
+        if (checkWin()) {
+            gameActive = false;
+            updateScoreboard(currentPlayer);
+            showResult(`${currentPlayer} wins!`);
+            
+            // Optional: Highlight winning cells
+            highlightWinningCells();
+            return;
+        }
+
+        // Check draw
+        if (boardState.every(cell => cell !== '')) {
+            gameActive = false;
+            updateScoreboard('draw');
+            showResult('Draw!');
+            return;
+        }
+
+        // Switch player
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    }
+
+    function highlightWinningCells() {
+        const winningCombo = winningConditions.find(condition => {
+            return condition.every(index => boardState[index] === currentPlayer);
+        });
+        
+        if (winningCombo) {
+            winningCombo.forEach(index => {
+                cells[index].classList.add('win');
+            });
+        }
     }
 
     function determineOverallWinner() {
         let winnerMessage;
-
+        
         if (playerXScore > playerOScore) {
-            winnerMessage = 'Player X Wins Overall!';
+            winnerMessage = `🏆 Player X Wins Overall! (${playerXScore} - ${playerOScore}) 🏆`;
         } else if (playerOScore > playerXScore) {
-            winnerMessage = 'Player O Wins Overall!';
-        } else if (playerXScore === playerOScore && (playerXScore > 0 || playerOScore > 0)) {
-            winnerMessage = 'It\'s a Tie between Player X and Player O!';
+            winnerMessage = `🏆 Player O Wins Overall! (${playerOScore} - ${playerXScore}) 🏆`;
+        } else if (playerXScore === 0 && playerOScore === 0) {
+            winnerMessage = 'No games played yet!';
         } else {
-            winnerMessage = 'It\'s a Draw Overall!';
+            winnerMessage = `🤝 It's a Tie! (${playerXScore} - ${playerOScore}) 🤝`;
         }
-
-        alert(winnerMessage); // Show pop-up message with overall winner
+        
+        alert(winnerMessage);
     }
 
-    // Event listeners
+    // Event Listeners
     cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    
     closeModal.addEventListener('click', () => {
         modal.style.display = 'none';
+        resetGameBoard();
     });
+    
     newGameButton.addEventListener('click', () => {
         modal.style.display = 'none';
-        // Reset game state for a new game
-        boardState = Array(9).fill('');
-        currentPlayer = 'X';
-        gameActive = true;
-        cells.forEach(cell => cell.textContent = '');
+        resetGameBoard();
     });
-
+    
     const resetScoreboardButton = document.getElementById('resetScoreboard');
     resetScoreboardButton.addEventListener('click', () => {
-        determineOverallWinner(); // Determine and show the overall winner before resetting
+        if (playerXScore > 0 || playerOScore > 0 || tieCount > 0) {
+            determineOverallWinner();
+        }
         playerXScore = 0;
         playerOScore = 0;
         tieCount = 0;
-
-        // Update scoreboard elements directly after clicking "Reset Scoreboard"
-        playerXWins.textContent = `Player X Wins: ${playerXScore}`;
-        playerOWins.textContent = `Player O Wins: ${playerOScore}`;
-        draws.textContent = `Draws: ${tieCount}`;
+        playerXWins.textContent = `Player X Wins: 0`;
+        playerOWins.textContent = `Player O Wins: 0`;
+        draws.textContent = `Draws: 0`;
+        resetGameBoard();
     });
 });
