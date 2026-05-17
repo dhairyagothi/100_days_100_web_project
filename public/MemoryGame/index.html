@@ -10,8 +10,19 @@
 <body>
 
     <h1 id="game-title">Memory Matching Game</h1>
+    <div id="controls">
+        <div id="timer">Time: 60s</div>
+        <div id="difficulty">
+            <span>Time:</span>
+            <button onclick="setDifficulty(120)">Easy</button>
+            <button onclick="setDifficulty(60)" class="active">Moderate</button>
+            <button onclick="setDifficulty(30)">Hard</button>
+        </div>
+    </div>
     <div id="game-container" class="grid"></div>
     <p id="score-board">Matches: 0</p>
+    <button id="restart-btn">Restart</button>
+    <div id="congrats" class="hidden">Congratulations! You Won!</div>
 
     <script src="script.js"></script>
 </body>

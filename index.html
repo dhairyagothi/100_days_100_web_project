@@ -4,1225 +4,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100 Days 100 Web Projects — Explore the Developer Galaxy</title>
+
+    <title>100 Days · 100 Web Projects</title>
+
     <meta name="description"
-        content="Explore 114+ web projects across the developer galaxy. A cosmic journey through HTML, CSS, and JavaScript.">
-    <link rel="icon" href="public/favv.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
         rel="stylesheet">
 
-    <style>
-        /* ═══════════════════════════════════════════════════════════════
-           SPACE THEME — DESIGN TOKENS
-           ═══════════════════════════════════════════════════════════════ */
-        :root {
-            --space-void: #050810;
-            --space-deep: #0a0e1a;
-            --space-mid: #0f1629;
-            --space-surface: #151d35;
-            --space-elevated: #1a2340;
-
-            --nebula-purple: #7c3aed;
-            --nebula-purple-glow: rgba(124, 58, 237, 0.4);
-            --nebula-blue: #3b82f6;
-            --nebula-blue-glow: rgba(59, 130, 246, 0.3);
-            --nebula-pink: #ec4899;
-            --nebula-pink-glow: rgba(236, 72, 153, 0.3);
-            --nebula-cyan: #06b6d4;
-
-            --star-white: #e2e8f0;
-            --star-dim: #94a3b8;
-            --star-muted: #64748b;
-
-            --border-glow: rgba(124, 58, 237, 0.2);
-            --border-subtle: rgba(255, 255, 255, 0.06);
-
-            --font-main: 'Inter', system-ui, sans-serif;
-            --font-display: 'Space Grotesk', 'Inter', sans-serif;
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           RESET & BASE
-           ═══════════════════════════════════════════════════════════════ */
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            font-family: var(--font-main);
-            background: var(--space-void);
-            color: var(--star-white);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        ::selection {
-            background: var(--nebula-purple);
-            color: white;
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           STARFIELD CANVAS
-           ═══════════════════════════════════════════════════════════════ */
-        #starfield {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           NEBULA BACKGROUND LAYERS
-           ═══════════════════════════════════════════════════════════════ */
-        .nebula-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .nebula-1 {
-            background:
-                radial-gradient(ellipse 800px 600px at 20% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 70%),
-                radial-gradient(ellipse 600px 500px at 80% 60%, rgba(59, 130, 246, 0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 700px 400px at 50% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 70%);
-            animation: nebula-drift 40s ease-in-out infinite alternate;
-        }
-
-        .nebula-2 {
-            background:
-                radial-gradient(ellipse 500px 500px at 70% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 60%),
-                radial-gradient(ellipse 900px 300px at 30% 70%, rgba(124, 58, 237, 0.04) 0%, transparent 60%);
-            animation: nebula-drift 55s ease-in-out infinite alternate-reverse;
-        }
-
-        @keyframes nebula-drift {
-            0% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            50% {
-                transform: translate(30px, -20px) scale(1.05);
-            }
-
-            100% {
-                transform: translate(-20px, 15px) scale(0.98);
-            }
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           FLOATING ASTEROIDS
-           ═══════════════════════════════════════════════════════════════ */
-        .asteroid-field {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .asteroid {
-            position: absolute;
-            border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
-            background: linear-gradient(135deg, #2a2a3e, #1a1a2e, #0f0f1e);
-            box-shadow:
-                inset -3px -3px 8px rgba(0, 0, 0, 0.6),
-                inset 2px 2px 6px rgba(255, 255, 255, 0.05),
-                0 0 15px rgba(124, 58, 237, 0.1);
-            animation: asteroid-float linear infinite;
-            opacity: 0.7;
-        }
-
-        .asteroid::before {
-            content: '';
-            position: absolute;
-            width: 30%;
-            height: 25%;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            top: 15%;
-            left: 20%;
-        }
-
-        .asteroid::after {
-            content: '';
-            position: absolute;
-            width: 15%;
-            height: 15%;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 50%;
-            bottom: 25%;
-            right: 20%;
-        }
-
-        @keyframes asteroid-float {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-
-            25% {
-                transform: translate(30px, -50px) rotate(90deg);
-            }
-
-            50% {
-                transform: translate(-20px, -30px) rotate(180deg);
-            }
-
-            75% {
-                transform: translate(40px, 20px) rotate(270deg);
-            }
-
-            100% {
-                transform: translate(0, 0) rotate(360deg);
-            }
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           SHOOTING STARS
-           ═══════════════════════════════════════════════════════════════ */
-        .shooting-star {
-            position: fixed;
-            width: 100px;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
-            animation: shoot linear infinite;
-            opacity: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        @keyframes shoot {
-            0% {
-                opacity: 0;
-                transform: translateX(0) translateY(0);
-            }
-
-            5% {
-                opacity: 1;
-            }
-
-            20% {
-                opacity: 0;
-                transform: translateX(300px) translateY(150px);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateX(300px) translateY(150px);
-            }
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           NAVBAR — SPACE STATION HUD
-           ═══════════════════════════════════════════════════════════════ */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(5, 8, 16, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 14px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            background: rgba(5, 8, 16, 0.92);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 40px var(--nebula-purple-glow);
-            border-bottom-color: var(--border-glow);
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--star-white);
-        }
-
-        .nav-brand img {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            border: 1px solid var(--border-glow);
-            box-shadow: 0 0 15px var(--nebula-purple-glow);
-            transition: box-shadow 0.3s;
-        }
-
-        .nav-brand:hover img {
-            box-shadow: 0 0 25px var(--nebula-purple-glow), 0 0 50px rgba(124, 58, 237, 0.2);
-        }
-
-        .nav-brand span {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1.05rem;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            color: var(--star-dim);
-            font-family: var(--font-main);
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.25s ease;
-        }
-
-        .nav-btn:hover {
-            color: var(--star-white);
-            border-color: var(--nebula-purple);
-            background: rgba(124, 58, 237, 0.1);
-            box-shadow: 0 0 20px var(--nebula-purple-glow);
-            transform: translateY(-1px);
-        }
-
-        .nav-btn i {
-            font-size: 0.9rem;
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           HERO — COSMIC GATEWAY
-           ═══════════════════════════════════════════════════════════════ */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 24px 80px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            background: rgba(124, 58, 237, 0.12);
-            border: 1px solid rgba(124, 58, 237, 0.25);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #a78bfa;
-            margin-bottom: 32px;
-            animation: hero-fade-in 0.8s ease-out;
-        }
-
-        .hero-badge .pulse-dot {
-            width: 6px;
-            height: 6px;
-            background: #a78bfa;
-            border-radius: 50%;
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 4px #a78bfa;
-                opacity: 1;
-            }
-
-            50% {
-                box-shadow: 0 0 12px #a78bfa, 0 0 24px rgba(167, 139, 250, 0.4);
-                opacity: 0.7;
-            }
-        }
-
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: clamp(2.8rem, 7vw, 5.5rem);
-            font-weight: 800;
-            line-height: 1.05;
-            letter-spacing: -0.03em;
-            margin-bottom: 24px;
-            animation: hero-title-in 1s ease-out 0.2s backwards;
-        }
-
-        .hero-title .gradient-text {
-            background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 30%, #ec4899 60%, #f472b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 100%;
-            animation: gradient-shift 6s ease-in-out infinite;
-        }
-
-        @keyframes gradient-shift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
-        .hero-title .white-text {
-            text-shadow: 0 0 60px rgba(255, 255, 255, 0.1);
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: var(--star-muted);
-            max-width: 520px;
-            line-height: 1.7;
-            margin-bottom: 40px;
-            animation: hero-fade-in 1s ease-out 0.4s backwards;
-        }
-
-        @keyframes hero-fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes hero-title-in {
-            from {
-                opacity: 0;
-                transform: translateY(40px) scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* ── Cosmic Search Bar ── */
-        .search-container {
-            width: 100%;
-            max-width: 540px;
-            animation: hero-fade-in 1s ease-out 0.6s backwards;
-            position: relative;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(15, 22, 41, 0.8);
-            border: 1px solid var(--border-subtle);
-            border-radius: 14px;
-            padding: 6px 8px 6px 20px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .search-bar::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: 15px;
-            padding: 1px;
-            background: linear-gradient(135deg, transparent 40%, var(--nebula-purple) 50%, transparent 60%);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.4s;
-            animation: border-rotate 4s linear infinite;
-        }
-
-        @keyframes border-rotate {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .search-bar:focus-within {
-            border-color: var(--nebula-purple);
-            box-shadow: 0 0 30px var(--nebula-purple-glow), 0 0 60px rgba(124, 58, 237, 0.1);
-        }
-
-        .search-bar:focus-within::before {
-            opacity: 1;
-        }
-
-        .search-bar i {
-            color: var(--star-muted);
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-
-        .search-bar input {
-            flex: 1;
-            background: none;
-            border: none;
-            color: var(--star-white);
-            font-family: var(--font-main);
-            font-size: 0.95rem;
-            outline: none;
-            padding: 10px 0;
-        }
-
-        .search-bar input::placeholder {
-            color: var(--star-muted);
-        }
-
-        .search-bar .search-shortcut {
-            padding: 4px 10px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 6px;
-            font-size: 0.72rem;
-            color: var(--star-muted);
-            font-family: var(--font-main);
-            border: 1px solid var(--border-subtle);
-            white-space: nowrap;
-        }
-
-        /* ── Hero Stats ── */
-        .hero-stats {
-            display: flex;
-            gap: 48px;
-            margin-top: 48px;
-            animation: hero-fade-in 1s ease-out 0.8s backwards;
-        }
-
-        .stat-item {
-            text-align: center;
-            position: relative;
-        }
-
-        .stat-item::after {
-            content: '';
-            position: absolute;
-            right: -24px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1px;
-            height: 30px;
-            background: var(--border-subtle);
-        }
-
-        .stat-item:last-child::after {
-            display: none;
-        }
-
-        .stat-number {
-            font-family: var(--font-display);
-            font-size: 1.6rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--star-white), var(--nebula-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--star-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 4px;
-        }
-
-        /* ── Scroll Indicator ── */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            animation: bounce-down 2s ease-in-out infinite;
-            color: var(--star-muted);
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .scroll-indicator .chevron {
-            width: 24px;
-            height: 24px;
-            border-right: 2px solid var(--star-muted);
-            border-bottom: 2px solid var(--star-muted);
-            transform: rotate(45deg);
-            opacity: 0.5;
-        }
-
-        @keyframes bounce-down {
-
-            0%,
-            100% {
-                transform: translateX(-50%) translateY(0);
-                opacity: 0.6;
-            }
-
-            50% {
-                transform: translateX(-50%) translateY(10px);
-                opacity: 1;
-            }
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           ORBIT DIVIDER
-           ═══════════════════════════════════════════════════════════════ */
-        .orbit-divider {
-            position: relative;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            margin: 0 32px;
-        }
-
-        .orbit-line {
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-glow), var(--nebula-purple), var(--border-glow), transparent);
-        }
-
-        .orbit-dot {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--nebula-purple);
-            border-radius: 50%;
-            box-shadow: 0 0 12px var(--nebula-purple-glow), 0 0 30px rgba(124, 58, 237, 0.2);
-            animation: orbit-travel 8s linear infinite;
-        }
-
-        @keyframes orbit-travel {
-            0% {
-                left: 0%;
-            }
-
-            100% {
-                left: 100%;
-            }
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           PROJECTS — MISSION CONTROL
-           ═══════════════════════════════════════════════════════════════ */
-        .projects-section {
-            position: relative;
-            z-index: 2;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 24px 80px;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 1.4rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title .icon {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, var(--nebula-purple), var(--nebula-blue));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-        }
-
-        .results-count {
-            font-size: 0.82rem;
-            color: var(--star-muted);
-            padding: 6px 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 100px;
-            border: 1px solid var(--border-subtle);
-        }
-
-        /* ── Mission Control Table ── */
-        .table-container {
-            background: rgba(10, 14, 26, 0.6);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-
-        .table-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--nebula-purple), var(--nebula-blue), var(--nebula-pink), transparent);
-            animation: scanline 4s linear infinite;
-        }
-
-        @keyframes scanline {
-            0% {
-                background-position: -200% 0;
-            }
-
-            100% {
-                background-position: 200% 0;
-            }
-        }
-
-        .table-container table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table-container thead th {
-            text-align: left;
-            padding: 14px 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--star-muted);
-            background: rgba(255, 255, 255, 0.02);
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .table-container tbody td {
-            padding: 14px 20px;
-            font-size: 0.9rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            vertical-align: middle;
-            transition: all 0.2s;
-        }
-
-        .table-container tbody tr {
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .table-container tbody tr::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--nebula-purple);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .table-container tbody tr:hover {
-            background: rgba(124, 58, 237, 0.06);
-            box-shadow: inset 0 0 40px rgba(124, 58, 237, 0.03);
-        }
-
-        .table-container tbody tr:hover::before {
-            opacity: 1;
-            box-shadow: 0 0 10px var(--nebula-purple-glow);
-        }
-
-        .table-container tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .table-container td.day-col {
-            font-family: var(--font-display);
-            font-weight: 600;
-            color: var(--nebula-purple);
-            font-variant-numeric: tabular-nums;
-            white-space: nowrap;
-            width: 110px;
-            font-size: 0.85rem;
-        }
-
-        .table-container td.name-col {
-            font-weight: 500;
-            color: var(--star-white);
-        }
-
-        .table-container td.demo-col a {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 14px;
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            color: var(--star-dim);
-            text-decoration: none;
-            font-size: 0.78rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .table-container td.demo-col a::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--nebula-purple-glow), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .table-container td.demo-col a:hover {
-            color: white;
-            border-color: var(--nebula-purple);
-            box-shadow: 0 0 20px var(--nebula-purple-glow);
-            transform: translateX(3px);
-        }
-
-        .table-container td.demo-col a:hover::before {
-            opacity: 1;
-        }
-
-        .table-container td.demo-col a span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .table-container td.demo-col a i {
-            position: relative;
-            z-index: 1;
-            font-size: 0.7rem;
-        }
-
-        #no-projects {
-            display: none;
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--star-muted);
-        }
-
-        #no-projects i {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-            display: block;
-            color: var(--nebula-purple);
-            opacity: 0.5;
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           FOOTER — SPACE STATION
-           ═══════════════════════════════════════════════════════════════ */
-        .footer {
-            position: relative;
-            z-index: 2;
-            border-top: 1px solid var(--border-subtle);
-            padding: 60px 32px;
-            background: rgba(5, 8, 16, 0.5);
-            backdrop-filter: blur(10px);
-        }
-
-        .footer-grid {
-            max-width: 1300px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 48px;
-        }
-
-        .footer-title {
-            font-family: var(--font-display);
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--star-white);
-            margin-bottom: 12px;
-        }
-
-        .footer-text {
-            font-size: 0.85rem;
-            color: var(--star-muted);
-            line-height: 1.7;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 10px;
-            margin-top: 4px;
-        }
-
-        .social-btn {
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-subtle);
-            color: var(--star-muted);
-            font-size: 1rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-btn:hover {
-            color: var(--nebula-purple);
-            border-color: var(--nebula-purple);
-            background: rgba(124, 58, 237, 0.1);
-            box-shadow: 0 0 20px var(--nebula-purple-glow);
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
-            max-width: 1300px;
-            margin: 32px auto 0;
-            padding-top: 24px;
-            border-top: 1px solid var(--border-subtle);
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 0.75rem;
-            color: var(--star-muted);
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           SCROLL TO TOP — ROCKET
-           ═══════════════════════════════════════════════════════════════ */
-        #scrollBtn {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            width: 44px;
-            height: 44px;
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            background: rgba(10, 14, 26, 0.9);
-            backdrop-filter: blur(10px);
-            color: var(--star-dim);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            z-index: 50;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        #scrollBtn.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #scrollBtn:hover {
-            border-color: var(--nebula-purple);
-            color: var(--nebula-purple);
-            box-shadow: 0 0 25px var(--nebula-purple-glow), 0 4px 20px rgba(0, 0, 0, 0.3);
-            transform: translateY(-3px);
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           SCROLL ANIMATIONS
-           ═══════════════════════════════════════════════════════════════ */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal-delay-1 {
-            transition-delay: 0.1s;
-        }
-
-        .reveal-delay-2 {
-            transition-delay: 0.2s;
-        }
-
-        .reveal-delay-3 {
-            transition-delay: 0.3s;
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           RESPONSIVE
-           ═══════════════════════════════════════════════════════════════ */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 12px 16px;
-            }
-
-            .nav-brand span {
-                display: none;
-            }
-
-            .hero {
-                padding: 100px 16px 60px;
-            }
-
-            .hero-stats {
-                gap: 24px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .stat-item::after {
-                display: none;
-            }
-
-            .projects-section {
-                padding: 0 16px 60px;
-            }
-
-            .table-container {
-                border-radius: 12px;
-                overflow-x: auto;
-            }
-
-            .table-container table {
-                min-width: 500px;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-
-            .footer {
-                padding: 40px 16px;
-            }
-
-            .orbit-divider {
-                margin: 0 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-stats {
-                flex-direction: column;
-                gap: 16px;
-            }
-
-            .search-bar .search-shortcut {
-                display: none;
-            }
-        }
-    </style>
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- ═══ Background Layers ═══ -->
+    <!-- ═════════ BACKGROUND EFFECTS ═════════ -->
     <canvas id="starfield"></canvas>
+
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+    <div class="ambient ambient-right" aria-hidden="true"></div>
+
+    <div class="noise-layer" aria-hidden="true"></div>
+
     <div class="nebula-layer nebula-1"></div>
     <div class="nebula-layer nebula-2"></div>
 
-    <!-- ═══ Asteroid Field ═══ -->
     <div class="asteroid-field" id="asteroidField"></div>
 
-    <!-- ═══ Shooting Stars ═══ -->
     <div id="shootingStars"></div>
 
-    <!-- ═══ Navbar ═══ -->
-    <nav class="navbar" id="navbar" role="navigation">
-        <a href="/" class="nav-brand">
-            <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
-            <span>100 Days 100 Web Projects</span>
-        </a>
-        <div class="nav-actions">
-            <a href="contributors/contributor.html" class="nav-btn">
+    <!-- ═════════ NAVBAR ═════════ -->
+    <nav class="navbar" id="navbar">
+
+        <div class="navbar-brand">
+
+            <span class="brand-mark">100</span>
+
+            <span class="brand-copy">
+                <span class="brand-kicker">Open Source Archive</span>
+                <strong>100 Days · 100 Web Projects</strong>
+            </span>
+
+        </div>
+
+        <div class="nav-buttons" id="navButtons">
+
+            <a href="./contributors/contributor.html" class="nav-btn">
                 <i class="fas fa-users"></i>
-                <span class="hide-mobile">Contributors</span>
+                Contributors
             </a>
-            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener"
+
+            <a href="https://github.com/dhairyagothi/100_days_100_web_project"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="nav-btn">
+
                 <i class="fab fa-github"></i>
-                <span class="hide-mobile">GitHub</span>
+                GitHub
+
             </a>
+
         </div>
     </nav>
 
-    <!-- ═══ Hero ═══ -->
-    <section class="hero">
-        <div class="hero-badge">
-            <div class="pulse-dot"></div>
-            Open Source · 114 Projects · MIT License
-        </div>
+    <!-- ═════════ HERO ═════════ -->
+    <section class="hero" id="hero">
 
-        <h1 class="hero-title">
-            <span class="gradient-text">Explore the</span><br>
-            <span class="white-text">Developer Galaxy</span>
-        </h1>
+        <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
 
-        <p class="hero-subtitle">
-            A cosmic collection of 114+ web projects — from fundamentals to intermediate — built with HTML, CSS, and
-            JavaScript.
-        </p>
+        <div class="hero-inner">
 
-        <div class="search-container">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search the galaxy for projects..."
-                    aria-label="Search projects">
-                <span class="search-shortcut">Ctrl+K</span>
-            </div>
-        </div>
+            <p class="hero-overline">
+                Open Source Frontend Archive · 2026
+            </p>
 
-        <div class="hero-stats">
-            <div class="stat-item">
-                <div class="stat-number">114+</div>
-                <div class="stat-label">Projects</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">HTML/CSS/JS</div>
-                <div class="stat-label">Tech Stack</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">Open Source</div>
-                <div class="stat-label">MIT License</div>
-            </div>
-        </div>
+            <h1 class="hero-headline">
+                <span class="hero-line">100 DAYS</span>
+                <span class="hero-line hero-line-accent">
+                    100 WEB PROJECTS
+                </span>
+            </h1>
 
-        <div class="scroll-indicator">
-            <span>Scroll to Explore</span>
-            <div class="chevron"></div>
-        </div>
-    </section>
+            <p class="hero-sub">
+                A curated open-source collection. Browse, fork, contribute.
+            </p>
 
-    <!-- ═══ Orbit Divider ═══ -->
-    <div class="orbit-divider">
-        <div class="orbit-line"></div>
-        <div class="orbit-dot"></div>
-    </div>
+            <!-- Search -->
+            <div class="search-container">
 
-    <!-- ═══ Projects Section ═══ -->
-    <section class="projects-section">
-        <div class="section-header reveal">
-            <h2 class="section-title">
-                <span class="icon"><i class="fas fa-rocket"></i></span>
-                Mission Log
-            </h2>
-            <span class="results-count" id="resultsCount">114 missions</span>
-        </div>
+                <div class="search-bar">
 
-        <div class="table-container reveal reveal-delay-1">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Mission</th>
-                        <th>Project</th>
-                        <th>Launch</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        </div>
-        <div id="no-projects">
-            <i class="fas fa-satellite-dish"></i>
-            <p>No transmissions found in this sector.</p>
-        </div>
-    </section>
+                    <i class="fas fa-search search-icon"></i>
 
-    <!-- ═══ Footer ═══ -->
-    <footer class="footer">
-        <div class="footer-grid">
-            <div>
-                <h3 class="footer-title">About the Mission</h3>
-                <p class="footer-text">
-                    This repository contains 114+ web projects from basic to intermediate using HTML, CSS, and
-                    JavaScript.
-                    A learning resource for aspiring web developers exploring the developer galaxy.
-                </p>
-            </div>
-            <div>
-                <h3 class="footer-title">Communication Links</h3>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener" class="social-btn"
-                        aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener"
-                        class="social-btn" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener"
-                        class="social-btn" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="search-input"
+                        placeholder="Search projects..."
+                        autocomplete="off">
+
+                    <span class="search-shortcut">
+                        Ctrl + K
+                    </span>
+
                 </div>
+
             </div>
+
+            <!-- Buttons -->
+            <div class="hero-actions">
+
+                <a href="#projects"
+                    class="btn btn-primary"
+                    id="heroBrowseBtn">
+
+                    Browse Projects
+                    <i class="fas fa-arrow-down"></i>
+
+                </a>
+
+                <a href="https://github.com/dhairyagothi/100_days_100_web_project"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-ghost"
+                    id="heroGithubBtn">
+
+                    <i class="fab fa-github"></i>
+                    GitHub
+
+                </a>
+
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-strip" id="statsStrip">
+
+                <span class="stat-item">
+                    <strong id="projectCount">114+</strong>
+                    Projects
+                </span>
+
+                <span class="stat-divider">·</span>
+
+                <span class="stat-item">
+                    <strong>HTML/CSS/JS</strong>
+                    Stack
+                </span>
+
+                <span class="stat-divider">·</span>
+
+                <span class="stat-item">
+                    <strong>Open</strong>
+                    Source
+                </span>
+
+            </div>
+
         </div>
+
+    </section>
+
+    <!-- ═════════ PROJECTS ═════════ -->
+    <section class="projects-section" id="projects">
+
+        <div class="projects-inner">
+
+            <div class="projects-intro">
+
+                <p class="section-label">
+                    Archive Index
+                </p>
+
+                <h2 class="section-title">
+                    Every experiment, catalogued.
+                </h2>
+
+            </div>
+
+            <!-- Search + Filters -->
+            <div class="projects-header">
+
+                <div class="filter-chips" id="filterChips">
+
+                    <button class="chip active" data-filter="all">
+                        All
+                    </button>
+
+                    <button class="chip" data-filter="game">
+                        Games
+                    </button>
+
+                    <button class="chip" data-filter="clone">
+                        Clones
+                    </button>
+
+                    <button class="chip" data-filter="tool">
+                        Tools
+                    </button>
+
+                    <button class="chip" data-filter="ui">
+                        UI / Animation
+                    </button>
+
+                    <button class="chip" data-filter="api">
+                        APIs
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- Project Grid -->
+            <div class="project-grid" id="projectGrid"></div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults">
+
+                <i class="fas fa-search"></i>
+
+                <p>
+                    No projects match your search.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ═════════ FOOTER ═════════ -->
+    <footer class="footer">
+
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+
+                <span class="footer-logo">
+                    100 Days
+                </span>
+
+                <p>
+                    An open-source frontend exploration challenge —
+                    a growing collection of HTML, CSS & JavaScript experiments.
+                </p>
+
+            </div>
+
+            <div class="footer-nav">
+
+                <h4>Navigate</h4>
+
+                <ul>
+
+                    <li>
+                        <a href="#projects">
+                            Browse Projects
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://github.com/dhairyagothi/100_days_100_web_project"
+                            target="_blank"
+                            rel="noopener noreferrer">
+
+                            GitHub Repo
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="./contributors/contributor.html">
+                            Contributors
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="./public/Login.html">
+                            Sign In
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="footer-social">
+
+                <h4>Connect</h4>
+
+                <div class="social-row">
+
+                    <a href="https://github.com/dhairyagothi"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-icon">
+
+                        <i class="fab fa-github"></i>
+
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-icon">
+
+                        <i class="fab fa-linkedin-in"></i>
+
+                    </a>
+
+                    <a href="https://www.instagram.com/dhairyaa__31/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-icon">
+
+                        <i class="fab fa-instagram"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
         <div class="footer-bottom">
-            <p>&copy; 2024 100 Days, 100 Projects — by Dhairya and Contributors.</p>
-            <p>MIT License</p>
+
+            <span>
+                © 2024 100 Days, 100 Projects —
+                Dhairya & Contributors
+            </span>
+
+            <button id="themeToggle"
+                title="Toggle theme"
+                aria-label="Toggle theme">
+
+                <i class="fas fa-moon"></i>
+
+            </button>
+
         </div>
+
     </footer>
 
-    <!-- ═══ Scroll to Top ═══ -->
+    <!-- ═════════ SCROLL TO TOP ═════════ -->
     <button id="scrollBtn" aria-label="Scroll to top">
-        <i class="fas fa-rocket"></i>
+        <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- ═════════ SCRIPTS ═════════ -->
+    <script type="module" src="hero-terminal.js"></script>
+
+    <script src="index.js"></script>
+
     <script src="space.js"></script>
+
 </body>
 
 </html>
