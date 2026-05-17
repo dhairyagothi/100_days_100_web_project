@@ -5,56 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do List | 100 Days 100 Projects</title>
     <link rel="stylesheet" href="todolist.css" />
-    <script
-      src="https://kit.fontawesome.com/f30fac2c61.js"
-      crossorigin="anonymous"
-    ></script>
-    
+    <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <body>
-    <nav>
-      <ul class="navbar">
-        <div class="nav-left">
-          <li ><a href="#" onclick="showHome()">Home</a></li>
-          <li><a href="#" onclick="showDocuments()">Documents</a></li>
-        </div>
-        <div class="nav-right">
-          <li><button id="colour1" onclick="c1()"></button></li>
-          <li><button id="colour2" onclick="c2()"></button></li>
-          <li><button id="colour3" onclick="c3()"></button></li>
-          <li><button id="colour4" onclick="c4()"></button></li>
-          <li><button id="colour5" onclick="c5()"></button></li>
-        </div>
-      </ul>
+    <nav class="app-nav" aria-label="Primary navigation">
+      <a class="brand" href="../../index.html" aria-label="Back to projects">
+        <span class="brand-mark"><i class="fa-solid fa-check"></i></span>
+        <span>ToDo</span>
+      </a>
+
+      <div class="nav-actions">
+        <button class="nav-link active" type="button" data-tab="home">Home</button>
+        <button class="nav-link" type="button" data-tab="documents">Documents</button>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode">
+          <span id="themeIcon" aria-hidden="true">☾</span>
+        </button>
+      </div>
     </nav>
-    <main class="main">
-      <div id="home-tab">
-        <div class="heading">JUST DO IT.</div>
-        <div class="buttons"> 
-          <div>
-            <button onclick="Add()" id="submittask">Add a task!</button>
-            <!-- <select id="tasktype" >
-              <option value="task1">Work</option>
-              <option value="task2">School</option>
-              <option value="task3">Personal</option>
-              <option value="task4">Fitness</option>
-            </select> -->
-          </div> 
-          
-          <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
+
+    <main class="app-shell">
+      <section class="hero-panel">
+        <div>
+          <p class="eyebrow">Plan the day</p>
+          <h1>Just do it.</h1>
+          <p class="hero-copy">Capture tasks, sort priorities, and keep your list ready when you come back.</p>
         </div>
-        <div id="notes-container"></div>
-        <div class="container">
+
+        <div class="theme-swatches" aria-label="Theme color choices">
+          <button id="colour1" class="swatch" type="button" onclick="c1()" aria-label="Rose theme"></button>
+          <button id="colour2" class="swatch" type="button" onclick="c2()" aria-label="Fresh theme"></button>
+          <button id="colour3" class="swatch" type="button" onclick="c3()" aria-label="Sunset theme"></button>
+          <button id="colour4" class="swatch" type="button" onclick="c4()" aria-label="Plum theme"></button>
+          <button id="colour5" class="swatch" type="button" onclick="c5()" aria-label="Ocean theme"></button>
         </div>
-      </div>
-      <div id="documents-tab" style="display: none">
-        <div class="heading">Saved Documents</div>
+      </section>
+
+      <section id="home-tab" class="tab-panel">
+        <form class="task-form" id="taskForm">
+          <label class="input-group" for="taskInput">
+            <span>Task</span>
+            <input id="taskInput" type="text" placeholder="Add a focused task..." autocomplete="off" required />
+          </label>
+
+          <label class="input-group" for="categoryInput">
+            <span>Category</span>
+            <select id="categoryInput">
+              <option value="Work">Work</option>
+              <option value="Personal">Personal</option>
+              <option value="Study">Study</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Miscellaneous">Miscellaneous</option>
+            </select>
+          </label>
+
+          <label class="input-group" for="priorityInput">
+            <span>Priority</span>
+            <select id="priorityInput">
+              <option value="High">High</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </label>
+
+          <button class="primary-btn" id="submittask" type="submit">
+            <i class="fa-solid fa-plus"></i>
+            Add Task
+          </button>
+        </form>
+
+        <div class="toolbar">
+          <div class="filter-group" aria-label="Task filters">
+            <button class="filter-btn active" type="button" data-filter="all">All</button>
+            <button class="filter-btn" type="button" data-filter="active">Active</button>
+            <button class="filter-btn" type="button" data-filter="completed">Completed</button>
+            <button class="filter-btn" type="button" data-filter="high">High Priority</button>
+          </div>
+
+          <button class="secondary-btn" id="savepdf" type="button" onclick="saveAsPDF()">
+            <i class="fa-solid fa-file-pdf"></i>
+            Save PDF
+          </button>
+        </div>
+
+        <div class="summary-grid" aria-label="Task summary">
+          <article>
+            <strong id="totalCount">0</strong>
+            <span>Total</span>
+          </article>
+          <article>
+            <strong id="activeCount">0</strong>
+            <span>Active</span>
+          </article>
+          <article>
+            <strong id="completedCount">0</strong>
+            <span>Done</span>
+          </article>
+        </div>
+
+        <section id="notes-container" class="task-list" aria-live="polite"></section>
+        <p id="emptyState" class="empty-state">No tasks here yet. Add one above to get moving.</p>
+      </section>
+
+      <section id="documents-tab" class="tab-panel" hidden>
+        <div class="section-header">
+          <p class="eyebrow">Exports</p>
+          <h2>Saved Documents</h2>
+        </div>
         <div class="documents-list"></div>
-      </div>
+        <p id="emptyDocs" class="empty-state">Saved PDFs will appear here during this session.</p>
+      </section>
     </main>
-    
-    <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
+
+    <div id="pdfMessage" class="pdf-message" role="status">PDF created successfully.</div>
 
     <script src="todolist.js"></script>
   </body>

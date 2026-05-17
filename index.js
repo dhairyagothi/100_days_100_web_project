@@ -286,7 +286,7 @@ function fillTable() {
         ["Day 92", "Slide puzzle Game", "./public/Slide puzzle Game/index.html"],
         ["Day 93", "TextUtils", "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils"],
         ["Day 94", "Hangman Game", "./public/HangmanGame/index.html"],
-        ["Day 95", "TodoList in React TS Tailwind", "./public/TodoList-React-TS-Tailwind/index.html"],
+        ["Day 95", "To-Do List", "./public/TO_DO_LIST/todolist.html"],
         ["Day 96", "HCL Color Generator", "./public/HCL Color Generator/index.html"],
         ["Day 97", "Time Capsule", "./public/Time-Capsule/index.html"],
         ["Day 98", "Virtual Piano", "./public/Virtual Piano/index.html"],
