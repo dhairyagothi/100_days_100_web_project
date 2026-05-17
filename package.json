@@ -1,7 +1,7 @@
 {
   "name": "100-days-100-web-projects",
   "version": "1.0.0",
-  "description": "A repository containing 112+ web projects from basic to intermediate using HTML, CSS, and JavaScript",
+  "description": "A repository containing a growing collection of web projects from basic to intermediate using HTML, CSS, and JavaScript",
   "main": "index.html",
   "scripts": {
     "dev": "serve .",
@@ -28,4 +28,5 @@
   "devDependencies": {
     "serve": "^14.2.6"
   }
+  "dependencies": {}
 }
