@@ -1,10 +1,8 @@
-import { createPrivateKey, createPublicKey, sign } from 'crypto'
-import { randomBytes } from 'crypto'
+import { spawnSync } from 'child_process'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-const { execSync } = await import('child_process')
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const certPath = path.join(__dirname, 'server.crt')
@@ -16,44 +14,53 @@ if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
   process.exit(0)
 }
 
-try {
-  // Create a simple script to generate certificates using Node
-  const script = `
-    const fs = require('fs');
-    const { createPrivateKey, createPublicKey, sign, randomBytes } = require('crypto');
-    const path = require('path');
-    
-    // For simplicity, we'll use Node's built-in approach or fall back to a basic setup
-    // Write a simple self-signed cert setup
-    console.log('Generating certificates...');
-  `
-  
-  // Actually, let's just create a simple HTTPS setup
-  // We'll create dummy certificates for development
-  console.log('Generating self-signed certificates for development...')
-  
-  // For Windows + Node, use a different approach
-  // Create temporary openssl config
-  const certDir = __dirname
-  
-  // Try using Node Package - pem, acme, or other
-  // For now, create with instructions
-  const key = randomBytes(32).toString('hex')
-  const cert = randomBytes(32).toString('hex')
-  
-  // Actually write proper PEM content
-  const keyContent = `-----BEGIN RSA PRIVATE KEY-----
-MIIEpAIBAAKCAQEA1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXY
-ZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx
-yzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzA
-BCDEFGHIJKLMNOPQRSTUVWXYZwIDAQABAoIBAGM0oPcJmZqhKKFIRG1SMizcGP1A1ck5JfPg2dFi
------END RSA PRIVATE KEY-----`
+console.log('🔐 Generating self-signed SSL certificates for development...')
 
-  console.log('⚠️  For development, using stub certificates')
-  console.log('🔐 In production, use proper SSL certificates from a Certificate Authority')
+try {
+  // Use OpenSSL to generate self-signed certificate
+  // Command: openssl req -nodes -new -x509 -keyout server.key -out server.crt -days 365 -subj "/CN=localhost"
   
+  const result = spawnSync('openssl', [
+    'req',
+    '-nodes',
+    '-new',
+    '-x509',
+    '-keyout', keyPath,
+    '-out', certPath,
+    '-days', '365',
+    '-subj', '/CN=localhost'
+  ], {
+    cwd: __dirname,
+    stdio: 'pipe'
+  })
+
+  if (result.error) {
+    throw new Error(`OpenSSL not found or failed: ${result.error.message}\n\nPlease install OpenSSL or use Node.js packages like 'selfsigned' for certificate generation.`)
+  }
+
+  if (result.status === 0) {
+    console.log('✅ Certificates generated successfully!')
+    console.log(`📝 Private Key: ${keyPath}`)
+    console.log(`📜 Certificate: ${certPath}`)
+    console.log('\n⚠️  IMPORTANT: These are self-signed certificates for DEVELOPMENT ONLY!')
+    console.log('🔒 For PRODUCTION: Use proper SSL certificates from a Certificate Authority (Let\'s Encrypt, etc.)')
+    console.log('\n📌 To use in your code:')
+    console.log('   import fs from "fs"')
+    console.log('   const https = require("https")')
+    console.log('   const options = {')
+    console.log('     key: fs.readFileSync("./server.key"),')
+    console.log('     cert: fs.readFileSync("./server.crt")')
+    console.log('   }')
+    console.log('   https.createServer(options, app).listen(3000)')
+    process.exit(0)
+  } else {
+    throw new Error(`Certificate generation failed with code ${result.status}`)
+  }
+
 } catch (error) {
-  console.error('Error generating certificates:', error.message)
+  console.error('❌ Error generating certificates:', error.message)
+  console.log('\n📌 Alternative: Use Node.js package "selfsigned"')
+  console.log('   npm install selfsigned')
+  console.log('   npx node -e "const selfsigned = require(\'selfsigned\'); const pem = selfsigned.generate([{name:\'commonName\',value:\'localhost\'}]); require(\'fs\').writeFileSync(\'server.key\', pem.private); require(\'fs\').writeFileSync(\'server.crt\', pem.cert);"')
   process.exit(1)
 }
