@@ -1,113 +1,156 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
-    <link rel="stylesheet" href="login.css" />
-    <link rel="icon" href="favv.png" type="image/x-icon" />
-  </head>
-  <body>
-    <!-- Navigation -->
-    <header class="navbar">
-      <a href="../index.html" class="nav-link">← Back to Home</a>
-    </header>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 
-    <!-- Main Container -->
-    <main class="container">
-      <!-- Left Animated Text Section -->
-      <section class="left">
-        <p class="subtitle">Welcome Back</p>
-
-        <h1>
-          Build Something
-          <span class="highlight">Amazing</span>
-        </h1>
-
-        <p class="description">
-          Sign in to continue your journey through
-          <strong>100 Days • 100 Web Projects</strong>. Explore creative
-          designs, animations, and real-world projects.
-        </p>
-
-        <div class="feature-list">
-          <div class="feature-card">✨ Modern UI</div>
-          <div class="feature-card">⚡ Fast Projects</div>
-          <div class="feature-card">🚀 Learn by Building</div>
-        </div>
-      </section>
-
-      <!-- Right Login Form -->
-      <section class="form-box">
-        <!-- Small Back Button -->
-        <button
-          class="back-button"
-          type="button"
-          onclick="window.location.href = '../index.html'"
-          aria-label="Back to Home"
-        >
-          ←
-        </button>
-
-        <h2>Login</h2>
-        <p class="form-subtitle">
-          Enter your credentials to access your account.
-        </p>
-
-        <form id="loginForm">
-          <div class="form-group">
-            <input type="text" id="username" placeholder="Username" required />
-          </div>
-
-          <div class="form-group">
-            <input
-              type="password"
-              id="password"
-              placeholder="Password"
-              required
-            />
-          </div>
-
-          <button type="submit" class="login-btn">Login</button>
-        </form>
-
-        <!-- New User Link -->
-        <p class="signup-text">
-          New here?
-          <a href="./signup.html">Sign Up</a>
-        </p>
-      </section>
-    </main>
-
-  <script>
-    // Transition effect for images
-    const images = document.querySelectorAll(".transition-image");
-    let currentImageIndex = 0;
-
-    function showNextImage() {
-      images[currentImageIndex].style.opacity = 0;
-      currentImageIndex = (currentImageIndex + 1) % images.length;
-      images[currentImageIndex].style.opacity = 1;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — 100 Days 100 Web Projects</title>
+  <meta name="description" content="Log in to access 100 Days 100 Web Projects">
+  <link rel="icon" href="favv.png" type="image/png">
+  <link rel="stylesheet" href="../design-system.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--ds-space-6);
     }
 
-    setInterval(showNextImage, 3000);
+    .auth-card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--ds-bg-surface);
+      border: 1px solid var(--ds-border-default);
+      border-radius: var(--ds-radius-xl);
+      padding: var(--ds-space-8);
+      box-shadow: var(--ds-shadow-lg);
+      animation: ds-slide-up 0.4s ease-out;
+    }
 
-    // Login form submission
-    document.getElementById("loginForm").addEventListener("submit", function (event) {
-      event.preventDefault();
+    .auth-header {
+      text-align: center;
+      margin-bottom: var(--ds-space-8);
+    }
 
-          const username = document.getElementById("username").value.trim();
+    .auth-header h1 {
+      font-size: var(--ds-font-size-2xl);
+      font-weight: var(--ds-font-weight-semibold);
+      color: var(--ds-text-primary);
+      margin-bottom: var(--ds-space-2);
+    }
 
-          const password = document.getElementById("password").value.trim();
+    .auth-header p {
+      font-size: var(--ds-font-size-sm);
+      color: var(--ds-text-muted);
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ds-space-4);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ds-space-2);
+    }
+
+    .form-group label {
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-medium);
+      color: var(--ds-text-primary);
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: var(--ds-space-6);
+      font-size: var(--ds-font-size-sm);
+      color: var(--ds-text-muted);
+    }
+
+    .auth-footer a {
+      color: var(--ds-accent-primary);
+      text-decoration: none;
+      font-weight: var(--ds-font-weight-medium);
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ds-space-2);
+      color: var(--ds-text-muted);
+      text-decoration: none;
+      font-size: var(--ds-font-size-sm);
+      margin-bottom: var(--ds-space-6);
+      transition: color var(--ds-transition-base);
+    }
+
+    .back-link:hover {
+      color: var(--ds-text-primary);
+    }
+  </style>
+</head>
+
+<body class="dark-mode">
+  <div>
+    <a href="../index.html" class="back-link">
+      &larr; Back to Home
+    </a>
+
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1>Welcome back</h1>
+        <p>Sign in to your account</p>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" class="ds-input" placeholder="Enter your username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="ds-input" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="ds-btn ds-btn-primary ds-btn-lg ds-w-full" style="margin-top: var(--ds-space-2);">
+          Sign in
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Don't have an account? <a href="./signup.html">Sign up</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme initialization
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved ? saved === 'dark' : prefersDark;
+    document.body.classList.toggle('dark-mode', isDark);
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+
+    // Login handler
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
 
       if (username && password) {
-        localStorage.setItem("username", username);
-        window.location.pathname = "/index.html";
-      } else {
-        alert("Invalid credentials. Please try again.");
+        localStorage.setItem('username', username);
+        window.location.pathname = '/index.html';
       }
     });
   </script>
 </body>
-</html>
 
+</html>
