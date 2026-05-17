@@ -30,7 +30,7 @@ const PROJECT_DATA = [
     ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
     ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
     ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
-    ['Day 13', 'Login Form Using MERN', 'https://loginusingmern.onrender.com', 'api javascript', 'intermediate'],
+   ['Day 13', 'Login Form Using MERN', 'https://loginusingmern.onrender.com', 'api javascript', 'advanced'],
     ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', 'javascript', 'intermediate'],
     ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'css javascript', 'beginner'],
     ['Day 16', 'Scroll Bar CSS', './public/Scroll Game Dark Run/index.html', 'css', 'beginner'],
@@ -40,8 +40,8 @@ const PROJECT_DATA = [
     ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
     ['Day 21', 'Video BG Slider Using React', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website', 'javascript', 'intermediate'],
     ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'css', 'beginner'],
-    ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
-    ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'intermediate'],
+    ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'advanced'],
+    ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'advanced'],
     ['Day 25', 'Tic-Tac-Toe', './public/TicTacToe/index.html', 'game javascript', 'beginner'],
     ['Day 26', 'Maze Game', './public/Maze-Game-main/index.html', 'game javascript', 'intermediate'],
     ['Day 27', 'Memory Game', './public/MemoryGame/index.html', 'game javascript', 'beginner'],
@@ -143,7 +143,8 @@ console.log('PROJECTS defined:', PROJECTS.length, 'items');
 // Category labels mapping
 const CATEGORY_LABEL = {
     'beginner': 'Beginner',
-    'intermediate': 'Intermediate'
+    'intermediate': 'Intermediate',
+    'advanced': 'Advanced'
 };
 console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
