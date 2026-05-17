@@ -5,6 +5,8 @@
     box-sizing: border-box;
 }
 
+
+
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
@@ -196,6 +198,31 @@ body.dark .preview {
 footer.dark {
     background: #2c2c2c;
     border-top: 2px solid #555;
+}
+input:invalid,
+textarea:invalid {
+    border: 2px solid #ff4d4d;
+}
+
+input:valid,
+textarea:valid {
+    border: 2px solid #28a745;
+}
+input:required:focus,
+textarea:required:focus {
+    box-shadow: 0 0 5px rgba(0, 119, 182, 0.5);
+}
+.error {
+    border: 2px solid #ff4d4d !important;
+    background-color: #fff0f0 !important;
+    animation: shake 0.3s ease;
+}
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
 }
 
 @media print {
