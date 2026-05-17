@@ -1,217 +1,144 @@
 let value = document.querySelector('#num');
 let progress = document.querySelector('.block2');
 
-let startBtn = document.querySelector('#startBtn');
-let pauseBtn = document.querySelector('#pauseBtn');
+let value = document.querySelector('#num');
+let progress = document.querySelector('.block2');
+let button = document.querySelector('#btn');
 let stopBtn = document.querySelector('#stopBtn');
-
-let durationInput = document.querySelector('#duration');
-
-let popup = document.querySelector('#popup');
-let closeBtn = document.querySelector('.close-btn');
-let popupCloseBtn = document.querySelector('#popupCloseBtn');
-
-let statusDiv = document.querySelector('#status');
+let resetBtn = document.querySelector('#resetBtn');
 
 let currentProgress = 0;
-let end = 100;
-
+let targetProgress = 90;
+let speed = 80; // Milliseconds between increments for smoother animation
 let timer = null;
-let isRunning = false;
-let speed = 1000;
+let isAnimating = false;
 
-let targetMilestones = [25, 50, 75, 100];
-let completedMilestones = new Set();
-
-
-// Show Popup
-function showPopup(percentage){
-
-    let message = '';
-    let subtext = '';
-
-    switch(percentage){
-
-        case 25:
-            message = '🎯 25% Complete!';
-            subtext = 'Great Start!';
-            break;
-
-        case 50:
-            message = '⭐ 50% Complete!';
-            subtext = 'Halfway There!';
-            break;
-
-        case 75:
-            message = '🚀 75% Complete!';
-            subtext = 'Almost Done!';
-            break;
-
-        case 100:
-            message = '🏆 100% Complete!';
-            subtext = 'Congratulations!';
-            break;
-
-        default:
-            message = `${percentage}% Completed`;
-            subtext = 'Keep Going!';
-    }
-
-    document.querySelector('#popupMessage').innerHTML = message;
-    document.querySelector('#popupSubtext').innerHTML = subtext;
-
-    popup.classList.remove('hidden');
-
-    setTimeout(() => {
-
-        if(!popup.classList.contains('hidden')){
-            popup.classList.add('hidden');
-        }
-
-    },3000);
+// Easing function for smooth animation (cubic-bezier equivalent)
+function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
 }
 
-
-// Update Progress
-function updateProgress(){
-
-    if(currentProgress >= end){
-
-// Function to update progress
+/**
+ * Update the progress bar with smooth animation
+ */
 function updateProgress() {
-    progress.style.background = `conic-gradient(#52c234 ${start * 3.6}deg, white 0deg)`;
-    value.textContent = `${start}%`;
-    
-    if (start >= end) { 
-        clearInterval(timer); 
-        isRunning = false; 
-        start = 0; 
-        return; 
+    if (currentProgress < targetProgress) {
+        currentProgress += 1;
+        updateCircle();
+        
+        // Continue animation
+        timer = setTimeout(updateProgress, speed);
+    } else if (currentProgress === targetProgress) {
+        // Animation complete
+        isAnimating = false;
+        button.disabled = false;
+        button.textContent = 'Complete!';
+        updateStopButtonState();
+        
+        // Add completion visual feedback
+        progress.classList.add('completed');
+        value.classList.add('completing');
+        
+        // Reset button text after a short delay
+        setTimeout(() => {
+            button.textContent = 'Start Progress';
+            button.disabled = false;
+        }, 1500);
     }
-    
-    start++;
 }
 
-
-// Calculate Speed
-
-function calculateSpeed(duration){
-    return (duration * 1000) / end;
+/**
+ * Update the circle visualization
+ */
+function updateCircle() {
+    const degrees = currentProgress * 3.6;
+    progress.style.background = `conic-gradient(#52c234 ${degrees}deg, white 0deg)`;
+    value.textContent = `${currentProgress}%`;
 }
 
-
-// Start Button
-
-startBtn.addEventListener('click', function(){
-
-    let duration = parseInt(durationInput.value);
-
-    if(isNaN(duration) || duration <= 0){
-
-        alert('Please enter valid duration');
-
-        return;
+/**
+ * Stop the animation and pause progress
+ */
+function stopProgress() {
+    if (isAnimating) {
+        clearTimeout(timer);
+        isAnimating = false;
+        button.disabled = false;
+        button.textContent = 'Resume';
+        progress.classList.remove('animating');
     }
+}
 
-    if(duration > 300){
-
-        alert('Maximum duration is 300 seconds');
-
-        return;
-    }
-
-    // Reset everything
-
-    clearInterval(timer);
-
+/**
+ * Reset progress to zero
+ */
+function resetProgress() {
+    // Stop any ongoing animation
+    clearTimeout(timer);
+    isAnimating = false;
+    
+    // Reset values
     currentProgress = 0;
+    value.textContent = '0%';
+    
+    // Reset visual states
+    progress.style.background = `conic-gradient(#52c234 0deg, white 0deg)`;
+    progress.classList.remove('completed', 'animating');
+    value.classList.remove('completing');
+    
+    // Reset button state
+    button.disabled = false;
+    button.textContent = 'Start Progress';
+}
 
-    completedMilestones.clear();
-
-    progress.style.background =
-        `conic-gradient(#52c234 0deg,#061700 0deg)`;
-
-    value.innerHTML = '0%';
-
-    speed = calculateSpeed(duration);
-
-    isRunning = true;
-
-    pauseBtn.innerHTML = '⏸ Pause';
-
-    timer = setInterval(updateProgress, speed);
-
-    statusDiv.innerHTML =
-        `▶ Started! Target ${duration} seconds`;
-
-    statusDiv.style.background = '#d4edda';
-    statusDiv.style.color = '#155724';
-});
-
-
-// Pause / Resume Button
-
-pauseBtn.addEventListener('click', function(){
-
-    // Pause
-
-    if(isRunning){
-
-        clearInterval(timer);
-
-        timer = null;
-
-        isRunning = false;
-
-        pauseBtn.innerHTML = '▶ Resume';
-
-        statusDiv.innerHTML =
-            `⏸ Paused at ${currentProgress}%`;
-
-        statusDiv.style.background = '#fff3cd';
-        statusDiv.style.color = '#856404';
+/**
+ * Start the progress animation
+ */
+function startProgress() {
+    if (!isAnimating) {
+        isAnimating = true;
+        button.disabled = true;
+        button.textContent = 'In Progress...';
+        progress.classList.add('animating');
+        updateStopButtonState();
+        
+        // Start the animation
+        timer = setTimeout(updateProgress, speed);
     }
+}
 
-    // Resume
+// Event listeners
+button.addEventListener('click', startProgress);
 
-    else{
+stopBtn.addEventListener('click', stopProgress);
+stopBtn.disabled = true; // Disable stop button initially
+stopBtn.style.opacity = '0.7';
+stopBtn.style.cursor = 'not-allowed';
 
-        // Prevent resume before start
+resetBtn.addEventListener('click', resetProgress);
 
-        if(currentProgress === 0){
+// Update stop button state
+function updateStopButtonState() {
+    if (isAnimating) {
+        stopBtn.disabled = false;
+        stopBtn.style.opacity = '1';
+        stopBtn.style.cursor = 'pointer';
+    } else {
+        stopBtn.disabled = true;
+        stopBtn.style.opacity = '0.7';
+        stopBtn.style.cursor = 'not-allowed';
+    }
+}
 
-            statusDiv.innerHTML =
-                '⚠ Please click Start first';
-
-            statusDiv.style.background = '#f8d7da';
-            statusDiv.style.color = '#721c24';
-
-            return;
-        }
-
-        // Prevent resume after complete
-
-        if(currentProgress >= end){
-
-            statusDiv.innerHTML =
-                '✅ Already Completed';
-
-            return;
-        }
-
-        isRunning = true;
-
-        pauseBtn.innerHTML = '⏸ Pause';
-
-        timer = setInterval(updateProgress, speed);
-
-        statusDiv.innerHTML =
-            `▶ Resumed from ${currentProgress}%`;
-
-        statusDiv.style.background = '#d4edda';
-        statusDiv.style.color = '#155724';
+// Prevent button clicks during animation with visual feedback
+button.addEventListener('click', function (e) {
+    if (isAnimating) {
+        e.preventDefault();
     }
 });
+
+// Initialize display
+updateCircle();
 
 
 // Stop Button

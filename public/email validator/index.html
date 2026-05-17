@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Validator</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Email Validator</h1>
+      <p class="subtitle">
+        Validate email addresses and check deliverability information.
+      </p>
+
+      <div class="input-group">
+        <input type="text" id="username" placeholder="Enter email address" />
+
+        <button id="submitBtn" class="btn">Validate Email</button>
+      </div>
+
+      <div id="resultCont"></div>
+    </div>
+
+    <script>
+      const submitBtn = document.getElementById("submitBtn");
+      const resultCont = document.getElementById("resultCont");
+    </script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
