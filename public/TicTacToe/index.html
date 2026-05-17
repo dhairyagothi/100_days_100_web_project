@@ -3,11 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic Tac Toe</title>
+  <title>Tic Tac Toe - Enhanced</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>TIC-TAC-TOE</h1>
+  <div class="theme-toggle">
+    <button id="themeToggle" title="Toggle Dark Mode">🌙</button>
+  </div>
+
+  <h1>🎮 TIC-TAC-TOE</h1>
+  
+  <div class="game-mode-selector">
+    <button class="mode-btn active" data-mode="pvp">Player vs Player</button>
+    <button class="mode-btn" data-mode="easy">vs AI (Easy)</button>
+    <button class="mode-btn" data-mode="hard">vs AI (Hard)</button>
+  </div>
+
   <div class="container">
     <div class="game-wrapper">
       <div class="board" id="board">
@@ -22,7 +33,7 @@
         <div class="cell" data-index="8"></div>
       </div>
       <div class="scoreboard">
-        <h2>Scoreboard</h2>
+        <h2>📊 Scoreboard</h2>
         <p id="playerXWins">Player X Wins: 0</p>
         <p id="playerOWins">Player O Wins: 0</p>
         <p id="draws">Draws: 0</p>
@@ -30,7 +41,6 @@
         <button id="restartGame">Restart Game</button>
       </div>
     </div>
-    
   </div>
 
   <div class="modal" id="resultModal">
@@ -40,6 +50,13 @@
       <button id="newGame">New Game</button>
     </div>
   </div>
+
+  <audio id="moveSound" preload="auto">
+    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj==" type="audio/wav">
+  </audio>
+  <audio id="winSound" preload="auto">
+    <source src="data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQIAAAAAAA==" type="audio/wav">
+  </audio>
 
   <script src="script.js"></script>
 </body>
