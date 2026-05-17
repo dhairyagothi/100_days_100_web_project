@@ -135,11 +135,13 @@ body {
   cursor: pointer;
   transition: all 0.2s;
 }
-.tab-btn.active, .tab-btn:hover {
+.tab-btn.active {
   background: var(--accent);
   color: #111;
   font-weight: 700;
-
+}
+.tab-btn:hover {
+  background: rgba(255,255,255,0.1);
 }
 
 .nav-themes {
