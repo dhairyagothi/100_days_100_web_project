@@ -271,6 +271,27 @@ path {
     transition: 0.3s;
 }
 
+.back-home-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+    padding: 10px 18px;
+    background: #111;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    transition: 0.3s ease;
+    border: 1px solid #333;
+}
+
+.back-home-btn:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+
 .volume-wrapper>* {
     position: absolute;
     width: 100%;
