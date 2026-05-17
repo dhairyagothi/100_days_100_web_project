@@ -1,33 +1,53 @@
-# Animated Custom Cursor
+# Animated Cursor
 
 ## Description
-A creative implementation of a custom animated cursor that follows the mouse movement with smooth inertia and visual effects. This project enhances web interactivity by replacing the default system cursor with a dynamic alternative.
+Animated Cursor is a creative frontend project that replaces the default mouse pointer with a smooth, glowing custom cursor. It includes cursor design options, theme switching, animated particles, glittery star effects, reactive background movement, and click burst animations for a more immersive UI experience.
+
+## Features
+- Smooth animated custom cursor with motion interpolation
+- Multiple cursor designs: Glowing Orb, Neon Ring, Crystal Diamond, and Crosshair
+- Theme selector with Galaxy, Aurora, Neon, and Firefly themes
+- Glittery star background with twinkling canvas particles
+- Comet-like cursor trail with glowing sparkles
+- Click burst effect with radial particle animation
+- Responsive layout for smaller screens
+- Pure HTML, CSS, and JavaScript implementation
 
 ## Technologies Used
 - HTML5
 - CSS3
-- JavaScript (Vanilla)
+- JavaScript ES6
 
-## Features
-- **Dynamic Tracking**: The custom cursor follows the mouse pointer accurately.
-- **Smooth Animation**: Utilizes JavaScript for fluid movement and CSS for styling.
-- **Interactive States**: Can be further customized to react to hovering over links or buttons.
-- **Modern Aesthetic**: Adds a unique touch to any modern web application.
+## Installation/Setup
+1. Clone or download this project.
+2. Open the project folder.
+3. Make sure the following files are in the same directory:
+   - `animated-cursor.html`
+   - `animated-cursor.css`
+   - `animated-cursor.js`
+4. Open `animated-cursor.html` in any modern web browser.
 
-## Setup Instructions
+## Usage
+Move your mouse around the page to see the animated cursor and glowing particle trail. Use the cursor design dropdown to switch between different cursor shapes. Use the theme dropdown to change the visual style of the background, cursor, stars, and particles. Click anywhere on the page to trigger the burst animation.
 
-1. Clone the repository
-2. Navigate to the project folder: `public/Animated-cursor/`
-3. Open `animated-cursor.html` in your web browser.
+## Screenshots
+<img width="1919" height="958" alt="image" src="https://github.com/user-attachments/assets/99db1552-8bd9-41a7-b262-6b554acacffb" />
 
-## Folder Structure
+<img width="1919" height="957" alt="image" src="https://github.com/user-attachments/assets/e7db9011-5bf7-428c-b06c-8f59efa91116" />
 
-```text
-Animated-cursor/
- ├── animated-cursor.css
- ├── animated-cursor.html
- └── animated-cursor.js
-```
+
+
+## Contributing
+Contributions are welcome. To contribute:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes.
+4. Test the project in a browser.
+5. Submit a pull request with a clear description of your changes.
+
+## License
+MIT License
 
 ## Author
-[Mithil](https://github.com/mithilP007)
+Created by Indrayani

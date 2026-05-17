@@ -3,9 +3,12 @@ body {
     font-size: 16px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start;
+    min-height: 100vh;
+    height: auto;
     margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
     background: linear-gradient(to bottom, #a8edea, #fed6e3);
     transition: background 0.5s;
 }
@@ -20,10 +23,10 @@ body.dark-theme {
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
+    width: 100%;
     max-width: 600px;
-    overflow-y: auto;
-    max-height: 90vh;
+    box-sizing: border-box;
+    position: relative;
     transition: background-color 0.5s, color 0.5s;
 }
 
@@ -33,9 +36,14 @@ body.dark-theme .container {
 }
 
 .theme-toggle {
-    position: absolute;
+    position: fixed;
     top: 10px;
     right: 10px;
+    z-index: 1000;
+}
+
+.theme-toggle:hover {
+    opacity: 1;
 }
 
 h1 {
@@ -55,13 +63,21 @@ h2 {
     color: #555;
 }
 
+body.dark-theme .welcome-message {
+    color: #ccc;
+}
+
 .mood-buttons {
     margin: 20px 0;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 5px;
 }
 
 .mood-button {
-    font-size: 24px;
-    margin: 5px;
+    font-size: 18px;  
+    margin: 2px;
     padding: 0;
     border: none;
     background: none;
@@ -72,13 +88,81 @@ h2 {
 .mood-button:hover {
     transform: scale(1.1);
 }
+.back-home-btn {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 999;
+    padding: 12px 20px;
+    background: white;
+    color: #111;
+    text-decoration: none;
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    border: 2px solid #444;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.back-home-btn:hover {
+    background: #111;
+    color: white;
+    transform: translateY(-2px);
+}
 
 .intensity-slider {
     margin-top: 20px;
 }
 
+.intensity-slider input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+}
+
 .notes-section {
     margin-top: 20px;
+}
+
+.notes-section textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    resize: vertical;
+    min-height: 80px;
+    background-color: #fafafa;
+    color: #333;
+}
+
+body.dark-theme .notes-section textarea {
+    background-color: #444;
+    color: #fff;
+    border-color: #666;
+}
+
+#save-entry {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 12px 30px !important;
+    font-size: 1em !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    background-color: #26a69a !important;
+    color: white !important;
+    border: none !important;
+    transition: background-color 0.3s;
+    text-align: center !important;
+    letter-spacing: 1px;
+    line-height: normal !important;
+    height: auto !important;
+}
+
+#save-entry:hover {
+    background-color: #1e8a7e;
 }
 
 .entries-section, .entry-days-section, .graph-section, .summary-section {
@@ -119,4 +203,92 @@ h2 {
     padding: 15px;
     border-radius: 5px;
     color: #333;
+}
+
+body.dark-theme #recommendations-content {
+    background-color: #444;
+    color: #fff;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        align-items: flex-start;
+        background: linear-gradient(to bottom, #a8edea, #fed6e3);
+    }
+
+    .theme-toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        border-radius: 10px;
+        padding: 20px 15px;
+        position: relative;
+    }
+    body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.7em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .mood-button {
+        font-size: 20px;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+    .theme-toggle {
+        opacity: 0;
+    }
+    
+    .theme-toggle:active {
+        opacity: 1;
+    }
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+    }
+
+    h2 {
+        font-size: 1.1em;
+    }
+
+    .container {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .mood-button {
+        font-size: 18px;
+        margin: 3px;
+    }
+
+    .welcome-message {
+        font-size: 0.95em;
+    }
+
+    #save-entry {
+        font-size: 0.95em;
+        padding: 10px;
+    }
 }
