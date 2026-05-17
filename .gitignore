@@ -18,13 +18,15 @@ out/
 .serverless/
 .fusebox/
 
-# Environment variables
+# Environment variables (but allow .env.example files)
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 .env.build
+!.env.example
+!public/**/.env.example
 
 # IDE and editor files
 .vscode/
@@ -47,6 +49,58 @@ out/
 ehthumbs.db
 Thumbs.db
 Desktop.ini
+
+# Allow all source files and configurations in public folder
+# Only ignore build artifacts and dependencies
+public/**/node_modules/
+public/**/dist/
+public/**/build/
+public/**/.next/
+public/**/.nuxt/
+public/**/out/
+public/**/package-lock.json
+public/**/yarn.lock
+public/**/.cache/
+public/**/.vercelignore
+
+# But allow ALL project source files and configs
+!public/**/
+!public/**/*.html
+!public/**/*.css
+!public/**/*.scss
+!public/**/*.sass
+!public/**/*.js
+!public/**/*.jsx
+!public/**/*.ts
+!public/**/*.tsx
+!public/**/*.json
+!public/**/*.md
+!public/**/*.mjs
+!public/**/*.cjs
+!public/**/vite.config.js
+!public/**/vite.config.ts
+!public/**/tsconfig.json
+!public/**/eslintrc*
+!public/**/.prettierrc*
+!public/**/vercel.json
+!public/**/render.yaml
+!public/**/.gitignore
+!public/**/src/
+!public/**/server/
+!public/**/client/
+!public/**/api/
+!public/**/public/
+!public/**/components/
+!public/**/pages/
+!public/**/routes/
+!public/**/utils/
+!public/**/services/
+!public/**/styles/
+!public/**/assets/
+!public/**/config/
+!public/**/images/
+!public/**/fonts/
+!public/**/icons/
 
 # Logs
 logs/
