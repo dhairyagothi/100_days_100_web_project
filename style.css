@@ -546,22 +546,23 @@ body.light-mode .navbar {
     line-height: 1;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    background: transparent;
-    color: var(--text-muted);
+    background: #ffffff;
+    color: #0056b3;
+    border-color: #007bff;
     cursor: pointer;
     transition: var(--t);
 }
 
 .chip:hover {
-    border-color: var(--border-hover);
-    color: var(--text-secondary);
-    background: rgba(255,255,255,0.01);
+    border-color: #007bff;
+    color: #ffffff;
+    background: #007bff;
 }
 
 .chip.active {
-    background: var(--accent-dim);
-    border-color: var(--border-accent);
-    color: var(--accent);
+    background: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
     box-shadow: 0 4px 14px rgba(59,130,246,0.06);
     text-shadow: 0 0 6px rgba(59,130,246,0.06);
 }
