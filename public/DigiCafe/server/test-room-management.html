@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebRTC Step 5 - Room Management Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1a2e; color: #fff; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    h1 { margin-bottom: 20px; color: #00d4ff; }
+    .test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .client { background: #16213e; border: 2px solid #0f3460; border-radius: 8px; padding: 20px; }
+    .client h2 { color: #00d4ff; margin-bottom: 15px; font-size: 18px; }
+    .status { padding: 10px; border-radius: 4px; margin-bottom: 15px; }
+    .status.connected { background: #28a745; }
+    .status.disconnected { background: #dc3545; }
+    .status.connecting { background: #ffc107; color: #000; }
+    
+    .controls { margin: 15px 0; }
+    input { 
+      width: 100%; 
+      padding: 8px; 
+      margin: 8px 0; 
+      background: #0f3460; 
+      border: 1px solid #533483; 
+      color: #fff;
+      border-radius: 4px;
+    }
+    input::placeholder { color: #888; }
+    
+    button { 
+      width: 100%; 
+      padding: 10px; 
+      margin: 5px 0;
+      background: #00d4ff; 
+      color: #000; 
+      border: none; 
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    button:hover { background: #00a8cc; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .logs { 
+      background: #0f3460; 
+      border: 1px solid #533483;
+      border-radius: 4px; 
+      padding: 10px; 
+      max-height: 200px; 
+      overflow-y: auto;
+      font-size: 12px;
+      font-family: monospace;
+    }
+    .log-entry { padding: 3px 0; }
+    .log-entry.send { color: #00d4ff; }
+    .log-entry.receive { color: #90ee90; }
+    .log-entry.error { color: #ff6b6b; }
+    .log-entry.info { color: #ffcc00; }
+    
+    .room-info { 
+      background: #0f3460; 
+      border-left: 4px solid #00d4ff;
+      padding: 10px; 
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    
+    .instructions {
+      background: #16213e;
+      border: 1px solid #533483;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+    .instructions h3 { color: #00d4ff; margin-bottom: 10px; }
+    .instructions ol { margin-left: 20px; }
+    .instructions li { margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 WebRTC Step 5 Test - Room Management</h1>
+    
+    <div class="instructions">
+      <h3>How to Test:</h3>
+      <ol>
+        <li>Open this page in two browser tabs</li>
+        <li>In Tab 1: Click "Create Room"</li>
+        <li>Copy the Room ID</li>
+        <li>In Tab 2: Paste Room ID and click "Join Room"</li>
+        <li>Watch logs for peer join notifications</li>
+      </ol>
+    </div>
+
+    <div class="test-grid">
+      <!-- Client 1 -->
+      <div class="client">
+        <h2>Client 1</h2>
+        <div class="status disconnected" id="status1">Disconnected</div>
+        
+        <div class="controls">
+          <button onclick="createRoom1()">🏠 Create Room</button>
+          <button onclick="disconnectClient1()">❌ Disconnect</button>
+        </div>
+
+        <div class="room-info" id="roomInfo1" style="display: none;">
+          Room ID: <strong id="roomId1"></strong>
+          <button onclick="copyRoomId1()" style="width: auto; margin: 5px 0 0 0; padding: 5px 10px;">📋 Copy</button>
+        </div>
+
+        <div class="logs" id="logs1"></div>
+      </div>
+
+      <!-- Client 2 -->
+      <div class="client">
+        <h2>Client 2</h2>
+        <div class="status disconnected" id="status2">Disconnected</div>
+        
+        <div class="controls">
+          <input type="text" id="roomIdInput2" placeholder="Enter Room ID..." />
+          <button onclick="joinRoom2()">👥 Join Room</button>
+          <button onclick="disconnectClient2()">❌ Disconnect</button>
+        </div>
+
+        <div class="room-info" id="roomInfo2" style="display: none;">
+          Room ID: <strong id="roomId2"></strong>
+          Clients: <strong id="clientCount2">1</strong>
+        </div>
+
+        <div class="logs" id="logs2"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SERVER_URL = 'ws://localhost:3000'
+    let ws1 = null, ws2 = null
+    let room1Id = null, room2Id = null
+
+    function log(clientNum, message, type = 'info') {
+      const logsDiv = document.getElementById(`logs${clientNum}`)
+      const entry = document.createElement('div')
+      entry.className = `log-entry ${type}`
+      entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`
+      logsDiv.appendChild(entry)
+      logsDiv.scrollTop = logsDiv.scrollHeight
+    }
+
+    function updateStatus(clientNum, status) {
+      const statusDiv = document.getElementById(`status${clientNum}`)
+      statusDiv.className = `status ${status}`
+      statusDiv.textContent = status.charAt(0).toUpperCase() + status.slice(1)
+    }
+
+    function connectClient(clientNum) {
+      const wsVar = clientNum === 1 ? ws1 : ws2
+      if (wsVar) return
+
+      const ws = new WebSocket(SERVER_URL)
+      
+      ws.onopen = () => {
+        log(clientNum, '✓ Connected to server', 'info')
+        updateStatus(clientNum, 'connected')
+        if (clientNum === 1) ws1 = ws
+        else ws2 = ws
+      }
+
+      ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data)
+        log(clientNum, `← ${msg.type}: ${JSON.stringify(msg.payload)}`, 'receive')
+
+        if (msg.type === 'room_created' && clientNum === 1) {
+          room1Id = msg.payload.roomId
+          document.getElementById('roomId1').textContent = room1Id
+          document.getElementById('roomInfo1').style.display = 'block'
+        }
+
+        if (msg.type === 'join_confirmed' && clientNum === 2) {
+          room2Id = msg.payload.roomId
+          document.getElementById('roomId2').textContent = room2Id
+          document.getElementById('clientCount2').textContent = msg.payload.clientCount
+          document.getElementById('roomInfo2').style.display = 'block'
+        }
+
+        if (msg.type === 'peer_joined') {
+          log(clientNum, `🎉 Peer joined! (${msg.payload.clientCount} total)`, 'receive')
+        }
+
+        if (msg.type === 'peer_left') {
+          log(clientNum, `👋 Peer left (${msg.payload.clientCount} remaining)`, 'receive')
+        }
+      }
+
+      ws.onerror = (error) => {
+        log(clientNum, `✗ Error: ${error}`, 'error')
+      }
+
+      ws.onclose = () => {
+        log(clientNum, '✗ Disconnected', 'error')
+        updateStatus(clientNum, 'disconnected')
+        if (clientNum === 1) ws1 = null
+        else ws2 = null
+      }
+    }
+
+    function createRoom1() {
+      if (!ws1) connectClient(1)
+      setTimeout(() => {
+        log(1, '→ Sending: create', 'send')
+        ws1.send(JSON.stringify({ type: 'create', payload: {} }))
+      }, 100)
+    }
+
+    function joinRoom2() {
+      if (!ws2) connectClient(2)
+      
+      const roomId = document.getElementById('roomIdInput2').value.trim()
+      if (!roomId) {
+        log(2, '✗ Please enter a room ID', 'error')
+        return
+      }
+
+      setTimeout(() => {
+        log(2, `→ Sending: join (${roomId})`, 'send')
+        ws2.send(JSON.stringify({ type: 'join', payload: { roomId } }))
+      }, 100)
+    }
+
+    function copyRoomId1() {
+      navigator.clipboard.writeText(room1Id || '')
+      alert('Room ID copied!')
+    }
+
+    function disconnectClient1() {
+      if (ws1) {
+        ws1.close()
+        ws1 = null
+      }
+    }
+
+    function disconnectClient2() {
+      if (ws2) {
+        ws2.close()
+        ws2 = null
+      }
+    }
+
+    // Auto-connect on load
+    window.onload = () => {
+      log(1, 'Page loaded. Click "Create Room" to start.', 'info')
+      log(2, 'Page loaded. Paste Room ID and click "Join".', 'info')
+    }
+  </script>
+</body>
+</html>
