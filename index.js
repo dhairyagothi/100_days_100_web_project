@@ -176,6 +176,18 @@ async function fetchRepoStats() {
 // NOTE (difficulty): Generating content client-side must sanitize URLs and
 // avoid heavy sync work; large project lists may block the main thread.
 
+function normalizeTags(tags) {
+    if (Array.isArray(tags)) {
+        return tags.map(tag => String(tag).trim()).filter(Boolean);
+    }
+
+    if (typeof tags === 'string') {
+        return tags.split(/\s+/).filter(Boolean);
+    }
+
+    return [];
+}
+
 function generateReadme() {
     try {
         const lines = [];
@@ -185,7 +197,7 @@ function generateReadme() {
         lines.push('## Projects');
         PROJECTS.forEach(([day, name, url, tags, cat]) => {
             const safeUrl = url || '';
-            const tagList = (tags || []).join(', ');
+            const tagList = normalizeTags(tags).join(', ');
             lines.push(`- **${day} — ${name}** — ${safeUrl} — _${cat}_ — ${tagList}`);
         });
 
@@ -236,7 +248,7 @@ function renderGrid() {
         const card = document.createElement('div');
         card.className = 'project-card';
 
-        const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : tags;
+        const tagsArray = normalizeTags(tags);
         const tagsHTML = tagsArray.map(t => `<span class="tag">${t}</span>`).join('');
 
         card.innerHTML = `
