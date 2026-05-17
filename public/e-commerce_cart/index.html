@@ -1,172 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>AeroStride</title>
-  <link rel="stylesheet" href="index.css">
-  <script type="module" src="index.js"></script>
+
+  <link rel="stylesheet" href="index.css" />
   <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+  <style>
+    .search-container{
+      display:flex;
+      align-items:center;
+      background:white;
+      padding:6px 12px;
+      border-radius:25px;
+      gap:8px;
+    }
+
+    #search-input{
+      border:none;
+      outline:none;
+      font-size:14px;
+      width:160px;
+    }
+
+    .search-icon{
+      cursor:pointer;
+    }
+
+    #clear-search{
+      border:none;
+      background:none;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:bold;
+    }
+
+    #no-results{
+      text-align:center;
+      margin-top:20px;
+      font-size:20px;
+      font-weight:bold;
+      display:none;
+    }
+  </style>
 </head>
+
 <body>
 
-  <!-- Nav bar and the cart window-->
+  <!-- Nav bar and cart -->
   <header>
+
     <div class="navbar">
+
       <div class="website_title">AeroStride</div>
+
       <div class="button-container">
+
         <button class="button">
           <img src="images_used/home_icon.png" width="17px"/>
         </button>
-        <button class="button">
-          <img src="images_used/search_icon.png" width="17px"/>
-        </button>
+
+        <!-- SEARCH BAR -->
+        <div class="search-container">
+
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search shoes..."
+          />
+
+          <img
+            src="images_used/search_icon.png"
+            class="search-icon"
+            width="17px"
+          />
+
+          <button id="clear-search">X</button>
+
+        </div>
+
         <button class="button">
           <img src="images_used/profile_icon.png" width="19px"/>
         </button>
+
         <div class="box">
           <div class="cart-count">0</div>
           <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
         </div>
+
       </div>
+
     </div>
 
+    <!-- Cart -->
     <div class="nav">
+
       <div class="cart">
+
         <div class="cart-title">Cart Items</div>
+
         <div class="cart-content">
-          <!-- Cart items will be dynamically inserted here -->
+          <!-- Cart items dynamically inserted -->
         </div>
+
         <div class="total">
           <div class="total-title">Total</div>
           <div class="total-price">Rs.0</div>
         </div>
+
         <button class="btn-buy">Place Order</button>
+
         <img src="images_used/cross.png" name="close" id="cart-close"/>
+
       </div>
+
     </div>
+
   </header>
 
-
-  <!-- hero section of the website-->
+  <!-- Hero Section -->
   <div class="hero" id="hero">
+
     <div class="hero-content">
+
       <div class="hero-text">
+
         <h1>Exclusive Collections 2024</h1>
-        <p>Discover our latest range of stylish and comfortable footwear, designed for every occasion.</p>
+
+        <p>
+          Discover our latest range of stylish and comfortable footwear,
+          designed for every occasion.
+        </p>
+
         <a class="button1" href="#trending-section">
           Shop now
           <img src="images_used/cart_icon.png"/>
         </a>
+
       </div>
+
       <div class="hero-image">
         <img src="images_used/hero_shoe.png" alt="Shoe" width="70%">
       </div>
+
     </div>
+
   </div>
 
-  <!-- Trending Right Now section-->
+  <!-- Trending -->
   <div class="trending-section" id="trending-section">
-    <div class="trending-line"></div>
-    <div class="trending-text">
-        <span>Trending Right Now</span>
-    </div>
-    <div class="trending-line"></div>
-</div>
 
-  <!--Shoe cards (contains same code repeated 8 times)-->
-  <div class="container">
-    <div class="shop-content">
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/messi shoes 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">GOAT</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">CR7</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">The Greek Freak</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Sewy</h2>
-        <span class="shoe-price">Rs.1500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Black Mamba</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Jordan X</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
-        <h2 class="shoe-title">KING</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Mr.360</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
+    <div class="trending-line"></div>
+
+    <div class="trending-text">
+      <span>Trending Right Now</span>
     </div>
+
+    <div class="trending-line"></div>
+
   </div>
 
-  <!--footer section of the website-->
-  <footer class="site-footer">
-    <div class="container1">
-      <div class="footer-about">
-        <h3>About Us</h3>
-        <p style="margin-top:15px;">At AeroStride, we blend innovative design with exceptional comfort
-          to create stylish, high-performance footwear. Our mission is to 
-          support your every step with shoes that fit seamlessly into your 
-          dynamic lifestyle. Discover the perfect balance of style and 
-          functionality with AeroStride.
-        </p>
+  <!-- Products -->
+  <div class="container">
+
+    <div class="shop-content">
+
+      <!-- Product 1 -->
+      <div class="shoe-box">
+        <div class="pic">
+          <img src="images_used/messi shoes 0.png" class="shoe-img">
+        </div>
+
+        <h2 class="shoe-title">GOAT</h2>
+
+        <span class="shoe-price">Rs.5000</span>
+
+        <img src="images_used/cart_icon.png" class="add-cart">
+
+        <img src="images_used/cross.png" width="0px" class="remove_icon"/>
       </div>
-      <div class="footer-links">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="#hero" style="margin-left:15px;font-size:18px;">Home</a></li>
-          <li><a href="#trending-section" style="margin-left:15px;font-size:18px;">Shoes</a></li>
-        </ul>
+
+      <!-- Product 2 -->
+      <div class="shoe-box">
+        <div class="pic">
+          <img src="images_used/cristiano ronal 1.png" class="shoe-img">
+        </div>
+
+        <h2 class="shoe-title">CR7</h2>
+
+        <span class="shoe-price">Rs.3000</span>
+
+        <img src="images_used/cart_icon.png" class="add-cart">
+
+        <img src="images_used/cross.png" width="0px" class="remove_icon"/>
       </div>
-      <div class="footer-contact" id="footer">
-        <h3>Contact Us</h3>
-        <p style="margin-top:15px;">Email: info@example.com</p>
-        <p>Phone: +123 456 7890</p>
+
+      <!-- Product 3 -->
+      <div class="shoe-box">
+        <div class="pic">
+          <img src="images_used/giannis antetok 1.png" class="shoe-img">
+        </div>
+
+        <h2 class="shoe-title">The Greek Freak</h2>
+
+        <span class="shoe-price">Rs.2500</span>
+
+        <img src="images_used/cart_icon.png" class="add-cart">
+
+        <img src="images_used/cross.png" width="0px" class="remove_icon"/>
       </div>
+
+      <!-- Product 4 -->
+      <div class="shoe-box">
+        <div class="pic">
+          <img src="images_used/ishowspeed shoe 1.png" class="shoe-img">
+        </div>
+
+        <h2 class="shoe-title">Sewy</h2>
+
+        <span class="shoe-price">Rs.1500</span>
+
+        <img src="images_used/cart_icon.png" class="add-cart">
+
+        <img src="images_used/cross.png" width="0px" class="remove_icon"/>
+      </div>
+
+      <!-- Product 5 -->
+      <div class="shoe-box">
+        <div class="pic">
+          <img src="images_used/kobe bryant sho 0.png" class="shoe-img">
+        </div>
+
+        <h2 class="shoe-title">Black Mamba</h2>
+
+        <span class="shoe-price">Rs.3000</span>
+
+        <img src="images_used/cart_icon.png" class="add-cart">
+
+        <img src="images_used/cross.png" width="0px" class="remove_icon"/>
+      </div>
+
+      <!-- Product 6 -->
+      <div class="shoe-box">
+        <div class="pic">
+          <img src="images_used/nike jordans 0.png" class="shoe-img">
+        </div>
+
+        <h2 class="shoe-title">Jordan X</h2>
+
+        <span class="shoe-price">Rs.2500</span>
+
+        <img src="images_used/cart_icon.png" class="add-cart">
+
+        <img src="images_used/cross.png" width="0px" class="remove_icon"/>
+      </div>
+
+      <!-- Product 7 -->
+      <div class="shoe-box">
+        <div class="pic">
+          <img src="images_used/virat_kohli.png" class="shoe-img">
+        </div>
+
+        <h2 class="shoe-title">KING</h2>
+
+        <span class="shoe-price">Rs.5000</span>
+
+        <img src="images_used/cart_icon.png" class="add-cart">
+
+        <img src="images_used/cross.png" width="0px" class="remove_icon"/>
+      </div>
+
+      <!-- Product 8 -->
+      <div class="shoe-box">
+        <div class="pic">
+          <img src="images_used/abd.png" class="shoe-img">
+        </div>
+
+        <h2 class="shoe-title">Mr.360</h2>
+
+        <span class="shoe-price">Rs.5000</span>
+
+        <img src="images_used/cart_icon.png" class="add-cart">
+
+        <img src="images_used/cross.png" width="0px" class="remove_icon"/>
+      </div>
+
     </div>
-    <div class="copyright_part"><span style="margin-right:10px;">&copy;</span>AeroStride 2024</div>
+
+    <!-- NO RESULTS -->
+    <p id="no-results">
+      No products found.
+    </p>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+
+    <div class="container1">
+
+      <div class="footer-about">
+
+        <h3>About Us</h3>
+
+        <p style="margin-top:15px;">
+          At AeroStride, we blend innovative design with exceptional comfort
+          to create stylish, high-performance footwear.
+        </p>
+
+      </div>
+
+      <div class="footer-links">
+
+        <h3>Quick Links</h3>
+
+        <ul>
+          <li>
+            <a href="#hero" style="margin-left:15px;font-size:18px;">
+              Home
+            </a>
+          </li>
+
+          <li>
+            <a href="#trending-section" style="margin-left:15px;font-size:18px;">
+              Shoes
+            </a>
+          </li>
+        </ul>
+
+      </div>
+
+      <div class="footer-contact">
+
+        <h3>Contact Us</h3>
+
+        <p style="margin-top:15px;">Email: info@example.com</p>
+
+        <p>Phone: +123 456 7890</p>
+
+      </div>
+
+    </div>
+
+    <div class="copyright_part">
+      <span style="margin-right:10px;">&copy;</span>
+      AeroStride 2024
+    </div>
+
   </footer>
 
-  
+  <!-- SEARCH FUNCTIONALITY -->
+  <script>
 
-  <script src="js/script.js"></script>
+    const searchInput = document.getElementById("search-input");
+
+    const clearBtn = document.getElementById("clear-search");
+
+    const noResults = document.getElementById("no-results");
+
+    function filterProducts(){
+
+      const searchValue = searchInput.value.toLowerCase().trim();
+
+      const products = document.querySelectorAll(".shoe-box");
+
+      let matchFound = false;
+
+      products.forEach((product)=>{
+
+        const productName = product
+          .querySelector(".shoe-title")
+          .textContent
+          .toLowerCase();
+
+        if(productName.includes(searchValue)){
+
+          product.style.display = "block";
+
+          matchFound = true;
+
+        }else{
+
+          product.style.display = "none";
+
+        }
+
+      });
+
+      if(matchFound){
+
+        noResults.style.display = "none";
+
+      }else{
+
+        noResults.style.display = "block";
+
+      }
+
+    }
+
+    searchInput.addEventListener("keyup", filterProducts);
+
+    clearBtn.addEventListener("click", ()=>{
+
+      searchInput.value = "";
+
+      const products = document.querySelectorAll(".shoe-box");
+
+      products.forEach((product)=>{
+        product.style.display = "block";
+      });
+
+      noResults.style.display = "none";
+
+    });
+
+  </script>
+
 </body>
 </html>
