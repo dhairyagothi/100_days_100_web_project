@@ -5,7 +5,8 @@ body{
     margin:0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    overflow-x: none;
+    overflow-x: hidden;
+    background-color: #f9f9fb;
 }
 a{
     color:inherit;
@@ -17,6 +18,8 @@ header{
     border-bottom: 1px solid #e2e2e2;
     min-height: 60px;
     width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 .header-content{
     display: flex;
@@ -30,6 +33,11 @@ header .right{
     align-items: center;
     gap: 30px;
 }
+.icons-section {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
 .nav ul{
     padding:0;
     list-style: none;
@@ -40,6 +48,7 @@ header .right{
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
+    transition: color 0.2s ease;
 }
 .nav ul li:hover{
     color:#ee356c;
@@ -48,16 +57,17 @@ header .right{
 
 .inputSearch{
     background:#f5f5f9;
-    padding: 7px 10px;
+    padding: 7px 15px;
     display: flex;
     align-items: center;
+    border-radius: 25px;
 }
 .inputSearch input{
     background: transparent;
     border:none;
     outline: none;
     padding: 5px;
-    min-width: 300px;
+    min-width: unset;
     width: 100%;
     max-width: 700px;
 }
@@ -66,6 +76,11 @@ header .right{
     align-items: center;
     gap: 7px;
     font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.accountLink:hover {
+    color:#ee356c;
 }
 
 .subNavigation{
@@ -133,9 +148,26 @@ header .right{
     color:#ee356c;
 }
 .categorySection{
-    width: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 1400px;
     margin: auto;
     margin-top: 20px;
+    padding: 0 10px;
+}
+
+.categorySection img {
+    max-width: 135px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.categorySection img:hover {
+    transform: scale(1.05);
 }
 
 .imageFull img{
@@ -156,17 +188,29 @@ header .right{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    pointer-events: none;
+    z-index: 10;
 }
 .btn_container button{
+    pointer-events: auto;
+    cursor: pointer;
     border:none;
     outline: none;
     background: white;
+    color: #333;
     font-size: 20px;
-    border-radius: 100px;
-    padding:10px;
-    width: 60px;
-    height: 60px;
-
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.btn_container button:hover {
+    transform: scale(1.1);
+    background-color: #fafafa;
 }
 .slideCategory-Image img{
     min-width: 100px;
@@ -174,7 +218,13 @@ header .right{
 .slideCategory-Image{
     display: flex;
     width: 100%;
-    overflow:hidden
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.slideCategory-Image::-webkit-scrollbar {
+    display: none;
 }
 .listofProduct,
 .brandTopproduct,
@@ -183,7 +233,8 @@ header .right{
     flex-wrap: wrap;
     gap: 10px;
     margin: auto;
-    width: 1250px;
+    width: 100%;
+    max-width: 1250px;
     justify-content: center;
     align-items: center;
 }
@@ -203,6 +254,180 @@ header .right{
     align-items: center;
     margin:30px auto;
 }
+.autoCenter img {
+    max-width: 100%;
+    height: auto;
+}
 .hardtoresistDeals{
     background : #ffca8a;
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 0;
+    }
+    .header-content {
+        flex-direction: column;
+        gap: 0;
+    }
+    header .left {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+        padding: 15px 20px;
+        border-bottom: 1px solid #e2e2e2;
+    }
+    header .right {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+        padding: 0;
+        background-color: #ffffff;
+    }
+    .search-section {
+        background-color: #ffffff;
+        width: 100%;
+        padding: 10px 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .inputSearch {
+        width: 100%;
+        background-color: #f3f4f5;
+        border-radius: 8px;
+        margin-bottom: 0;
+    }
+    .inputSearch input {
+        background: transparent;
+    }
+    .icons-section {
+        background-color: #ffffff;
+        width: 100%;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+        flex-wrap: wrap;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .subNavigation {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 15px 20px;
+        border-top: none;
+        background-color: #ffffff;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .subNavigation ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .btn_container {
+        display: none;
+    }
+    .categorySection img {
+        max-width: 90px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    header .left, header .right {
+        gap: 10px;
+    }
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #3f414d;
+    color: #fff;
+    padding: 60px 20px 20px;
+    margin-top: 50px;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1250px;
+    margin: auto;
+    gap: 30px;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-col h4 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+    color: #b9b9b9;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+    color: #fc2779;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1250px;
+    margin: 40px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid #5a5c66;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.footer-bottom p {
+    font-size: 13px;
+    color: #b9b9b9;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links i {
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.social-links i:hover {
+    color: #fc2779;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
 }
