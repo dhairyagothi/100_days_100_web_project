@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Profile Finder</title>
+    
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/x-icon" href="Images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
+    <link rel="manifest" href="Images/site.webmanifest">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="Images/company-icon.svg" alt="GitHub" class="logo">
+            <h1>GitHub Profile Finder</h1>
+        </div>
+        
+        <div class="search-box">
+            <img src="Images/search-icon.svg" alt="Search" class="search-icon">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Enter GitHub username..."
+                autocomplete="off"
+            >
+            <button id="searchBtn">Search</button>
+        </div>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

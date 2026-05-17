@@ -1,31 +1,56 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Advanced Snake Game</title>
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-    <script src="script.js" defer></script>
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="game-details">
-        <span class="score">Score: 0</span>
-        <span class="high-score">High Score: 0</span>
-        <span class="level">Level: 1</span>
-      </div>
-      <div class="play-board"></div>
-      <div class="controls">
-        <i data-key="ArrowLeft" class="fa-solid fa-arrow-left-long"></i>
-        <i data-key="ArrowUp" class="fa-solid fa-arrow-up-long"></i>
-        <i data-key="ArrowRight" class="fa-solid fa-arrow-right-long"></i>
-        <i data-key="ArrowDown" class="fa-solid fa-arrow-down-long"></i>
-      </div>
-      <div class="button-container">
-        <button class="new-game-button">New Game</button>
-        <button class="restart-game-button">Restart Game</button>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNAKE</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="title">SNAKE</div>
+
+  <div class="hud">
+    <div class="stat-box">
+      <span class="stat-label">Score</span>
+      <div class="stat-value" id="score">0</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">High Score</span>
+      <div class="stat-value" id="highscore">0</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Level</span>
+      <div class="stat-value" id="level">1</div>
+    </div>
+  </div>
+
+  <div class="canvas-wrapper">
+    <canvas id="gameCanvas"></canvas>
+    <div id="scanline"></div>
+
+    
+    <div class="overlay" id="startOverlay">
+      <div class="overlay-title">READY</div>
+      <div class="overlay-sub">GUIDE THE SNAKE<br>CONSUME. GROW. SURVIVE.</div>
+      <button class="btn" id="startBtn"><span>START GAME</span></button>
+      <div class="controls-hint">
+        <div class="key"><span class="key-symbol">W</span>UP</div>
+        <div class="key"><span class="key-symbol">A</span>LEFT</div>
+        <div class="key"><span class="key-symbol">S</span>DOWN</div>
+        <div class="key"><span class="key-symbol">D</span>RIGHT</div>
+        <div class="key"><span class="key-symbol">↑↓←→</span>ARROWS</div>
       </div>
     </div>
-  </body>
+
+  
+    <div class="overlay hidden" id="gameOverOverlay">
+      <div class="overlay-title">GAME OVER</div>
+      <div class="game-over-score" id="finalScore"></div>
+      <button class="btn" id="restartBtn"><span>PLAY AGAIN</span></button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
