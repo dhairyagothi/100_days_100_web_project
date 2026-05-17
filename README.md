@@ -363,9 +363,8 @@ Thanks to all these amazing people who have contributed to this project:
 
 <div align="center">
 
-<a href="https://github.com/dhairyagothi/100_days_100_web_project/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=dhairyagothi/100_days_100_web_project" />
-</a>
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
 
 </div>
 
