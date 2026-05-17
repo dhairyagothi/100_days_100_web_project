@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixel Art Creator | 100 Days 100 Web Projects</title>
+  <meta name="description" content="Create stunning pixel art in your browser! Choose colors, draw on a grid, and download your masterpiece." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">
+          <span class="logo-icon">🎨</span>
+          <span class="logo-text">PixelCraft</span>
+        </div>
+        <span class="tagline">Create • Color • Craft</span>
+      </div>
+      <div class="header-right">
+        <button id="btn-new" class="header-btn" title="New Canvas">🗒️ New</button>
+        <button id="btn-download" class="header-btn accent" title="Download PNG">⬇️ Download</button>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="main-layout">
+
+      <!-- Left Toolbar -->
+      <aside class="toolbar" id="toolbar">
+        <div class="tool-section">
+          <h3 class="section-title">Tools</h3>
+          <div class="tools-grid">
+            <button class="tool-btn active" id="tool-draw" data-tool="draw" title="Draw (D)">
+              <span class="tool-icon">✏️</span>
+              <span class="tool-label">Draw</span>
+            </button>
+            <button class="tool-btn" id="tool-fill" data-tool="fill" title="Fill (F)">
+              <span class="tool-icon">🪣</span>
+              <span class="tool-label">Fill</span>
+            </button>
+            <button class="tool-btn" id="tool-erase" data-tool="erase" title="Erase (E)">
+              <span class="tool-icon">🧹</span>
+              <span class="tool-label">Erase</span>
+            </button>
+            <button class="tool-btn" id="tool-eyedrop" data-tool="eyedrop" title="Eyedropper (I)">
+              <span class="tool-icon">💉</span>
+              <span class="tool-label">Pick</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="tool-section">
+          <h3 class="section-title">Color</h3>
+          <div class="color-preview-wrapper">
+            <div class="color-preview" id="color-preview"></div>
+            <input type="color" id="color-picker" value="#7c3aed" title="Pick any color" />
+          </div>
+          <div class="palette-grid" id="palette-grid"></div>
+          <button class="add-color-btn" id="btn-add-color">+ Add Color</button>
+        </div>
+
+        <div class="tool-section">
+          <h3 class="section-title">Grid Size</h3>
+          <div class="grid-size-btns">
+            <button class="size-btn" data-size="8">8×8</button>
+            <button class="size-btn active" data-size="16">16×16</button>
+            <button class="size-btn" data-size="32">32×32</button>
+            <button class="size-btn" data-size="48">48×48</button>
+          </div>
+        </div>
+
+        <div class="tool-section">
+          <h3 class="section-title">Actions</h3>
+          <div class="action-btns">
+            <button class="action-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
+            <button class="action-btn" id="btn-redo" title="Redo (Ctrl+Y)">↪ Redo</button>
+            <button class="action-btn" id="btn-clear" title="Clear Canvas">🗑 Clear</button>
+            <button class="action-btn" id="btn-toggle-grid" title="Toggle Grid Lines">⊞ Grid</button>
+          </div>
+        </div>
+
+        <div class="tool-section">
+          <h3 class="section-title">Brush Size</h3>
+          <div class="brush-size-row">
+            <input type="range" id="brush-size" min="1" max="5" value="1" />
+            <span id="brush-size-label">1px</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Canvas Area -->
+      <section class="canvas-area">
+        <div class="canvas-wrapper" id="canvas-wrapper">
+          <canvas id="pixel-canvas"></canvas>
+          <canvas id="grid-canvas"></canvas>
+          <canvas id="hover-canvas"></canvas>
+        </div>
+        <div class="canvas-info">
+          <span id="info-coords">x: — y: —</span>
+          <span id="info-color">Color: —</span>
+          <span id="info-size">16 × 16</span>
+        </div>
+      </section>
+
+      <!-- Right Panel: Recent Colors + Preview -->
+      <aside class="right-panel">
+        <div class="tool-section">
+          <h3 class="section-title">Mini Preview</h3>
+          <canvas id="preview-canvas" class="preview-canvas"></canvas>
+        </div>
+        <div class="tool-section">
+          <h3 class="section-title">Recent Colors</h3>
+          <div class="recent-colors" id="recent-colors"></div>
+        </div>
+        <div class="tool-section">
+          <h3 class="section-title">Templates</h3>
+          <div class="templates-grid">
+            <button class="template-btn" data-template="heart" title="Heart">❤️</button>
+            <button class="template-btn" data-template="star" title="Star">⭐</button>
+            <button class="template-btn" data-template="smiley" title="Smiley">😊</button>
+            <button class="template-btn" data-template="rainbow" title="Rainbow">🌈</button>
+          </div>
+        </div>
+        <div class="tool-section">
+          <h3 class="section-title">Stats</h3>
+          <div class="stats">
+            <div class="stat-item">
+              <span class="stat-label">Pixels Drawn</span>
+              <span class="stat-value" id="stat-drawn">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Colors Used</span>
+              <span class="stat-value" id="stat-colors">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Undo Steps</span>
+              <span class="stat-value" id="stat-undo">0</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+  </div>
+
+  <!-- New Canvas Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <h2>New Canvas</h2>
+      <p>This will clear your current work. Are you sure?</p>
+      <div class="modal-btns">
+        <button id="modal-cancel" class="modal-btn cancel">Cancel</button>
+        <button id="modal-confirm" class="modal-btn confirm">Yes, Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
