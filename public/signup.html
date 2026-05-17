@@ -107,19 +107,17 @@
             />
           </div>
 
+          <button type="submit" class="login-btn">Sign Up</button>
+        </form>
+
+        <p class="signup-text">
+          Already have an account?
+          <a href="./Login.html">Login</a>
+        </p>
+      </section>
+    </main>
 
     <script>
-        const images = document.querySelectorAll('.transition-image');
-        let currentImageIndex = 0;
-
-        function showNextImage() {
-            images[currentImageIndex].style.opacity = 0;
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            images[currentImageIndex].style.opacity = 1;
-        }
-
-        setInterval(showNextImage, 3000);
-
         document.getElementById('signupForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
@@ -133,7 +131,7 @@
             localStorage.setItem("username", username);
 
             // Redirect to login page after successful signup
-            window.location.href = "./login.html";
+            window.location.href = "./Login.html";
           } else {
             alert("Please fill in all fields.");
           }

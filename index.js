@@ -306,14 +306,17 @@ function updateNavbar() {
     const container = document.getElementById('navButtons');
     if (!container) return;
 
-    const username = window.username || null;
+    window.username = localStorage.getItem('username') || null;
+    const username = window.username;
+
     const isRoot   = !window.location.pathname.includes('/contributors/');
     const base     = isRoot ? '' : '../';
     const isDark   = !document.body.classList.contains('light-mode');
 
     if (username) {
+        const safeUsername = username.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         container.innerHTML = `
-            <span class="welcome-text">Hi, ${username}</span>
+            <span class="welcome-text">Hi, ${safeUsername}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
             <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
@@ -322,6 +325,7 @@ function updateNavbar() {
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
         `;
         document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('username');
             window.username = null;
             updateNavbar();
         });
