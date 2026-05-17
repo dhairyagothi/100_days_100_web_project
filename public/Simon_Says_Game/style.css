@@ -102,3 +102,6 @@ body.dark .btn.red { background-color: #ff6666; }
 body.dark .btn.yellow { background-color: #ffe066; }
 body.dark .btn.green { background-color: #66ff66; }
 body.dark .btn.purple { background-color: #b366ff; }
+body.dark .slider{background-color:#555;}
+body.dark h3 {color: #aaa;}
+body.dark #start-btn {background-color: #444;color: #f7f7f7;border: 1px solid #888;}
