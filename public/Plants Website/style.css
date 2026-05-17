@@ -9,6 +9,11 @@
      --wight: #fff;
  }
 
+/* updated css for readmore view */
+.hidden {
+    display: none;
+}
+
  /* custom css  */
  * {
      font-family: "Poppins", sans-serif;
