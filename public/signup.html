@@ -1,143 +1,1165 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="login.css" />
-    <link rel="icon" href="favv.png" type="image/x-icon" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
 
-  <body>
-    <!-- Navigation -->
-    <header class="navbar">
-      <a href="../index.html" class="nav-link">← Back to Home</a>
-    </header>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-    <!-- Main Container -->
-    <main class="container">
-      <!-- Left Animated Section -->
-      <section class="left">
-        <p class="subtitle">Join the Journey</p>
+  <title>Modern Signup Page</title>
 
-        <h1>
-          Create Your
-          <span class="highlight">Account</span>
-        </h1>
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-        <p class="description">
-          Thank you for joining us on this exciting journey of creativity and
-          learning. Over the next 100 days, we will build 100 unique web
-          projects together. Whether you're a beginner or an experienced
-          developer, there is something here for everyone to explore, learn, and
-          create.
-        </p>
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
 
-        <div class="feature-list">
-          <div class="feature-card">🎨 Creative Projects</div>
-          <div class="feature-card">📚 Learn Daily</div>
-          <div class="feature-card">🚀 Build Your Skills</div>
+  <style>
+
+    /* =========================================
+       RESET
+    ========================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg:#070b1a;
+      --card:rgba(255,255,255,0.08);
+
+      --primary:#7c3aed;
+      --secondary:#06b6d4;
+      --accent:#3b82f6;
+
+      --text:#ffffff;
+      --muted:#94a3b8;
+
+      --border:rgba(255,255,255,0.12);
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    body{
+      font-family:"Inter",sans-serif;
+      min-height:100vh;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      overflow:hidden;
+
+      background:
+        radial-gradient(circle at top left,
+        rgba(124,58,237,0.35),
+        transparent 30%),
+
+        radial-gradient(circle at bottom right,
+        rgba(6,182,212,0.25),
+        transparent 30%),
+
+        linear-gradient(
+          135deg,
+          #050816,
+          #0f172a,
+          #111827
+        );
+
+      color:var(--text);
+
+      position:relative;
+    }
+
+    /* =========================================
+       GRID BACKGROUND
+    ========================================== */
+
+    .bg-grid{
+      position:absolute;
+      inset:0;
+
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+
+      background-size:40px 40px;
+
+      z-index:-3;
+    }
+
+    /* =========================================
+       ORBS
+    ========================================== */
+
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(80px);
+      opacity:0.5;
+      z-index:-2;
+      animation:float 12s ease-in-out infinite;
+    }
+
+    .orb1{
+      width:320px;
+      height:320px;
+      background:#7c3aed;
+      top:-100px;
+      left:-100px;
+    }
+
+    .orb2{
+      width:260px;
+      height:260px;
+      background:#06b6d4;
+      bottom:-100px;
+      right:-80px;
+      animation-delay:2s;
+    }
+
+    .orb3{
+      width:220px;
+      height:220px;
+      background:#3b82f6;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      animation-delay:4s;
+    }
+
+    /* =========================================
+       PARTICLES
+    ========================================== */
+
+    .particles span{
+      position:absolute;
+      width:8px;
+      height:8px;
+
+      border-radius:50%;
+
+      background:white;
+
+      opacity:0.5;
+
+      animation:particle 10s linear infinite;
+    }
+
+    .particles span:nth-child(1){
+      top:10%;
+      left:20%;
+    }
+
+    .particles span:nth-child(2){
+      top:70%;
+      left:80%;
+      animation-delay:2s;
+    }
+
+    .particles span:nth-child(3){
+      top:50%;
+      left:40%;
+      animation-delay:4s;
+    }
+
+    .particles span:nth-child(4){
+      top:80%;
+      left:10%;
+      animation-delay:6s;
+    }
+
+    .particles span:nth-child(5){
+      top:30%;
+      left:90%;
+      animation-delay:3s;
+    }
+
+    /* =========================================
+       MAIN CONTAINER
+    ========================================== */
+
+    .container{
+      width:92%;
+      max-width:1350px;
+      min-height:90vh;
+
+      display:flex;
+
+      overflow:hidden;
+
+      border-radius:30px;
+
+      background:rgba(255,255,255,0.05);
+
+      border:1px solid var(--border);
+
+      backdrop-filter:blur(18px);
+
+      box-shadow:var(--shadow);
+
+      position:relative;
+    }
+
+    /* =========================================
+       LEFT SECTION
+    ========================================== */
+
+    .left-section{
+      flex:1;
+
+      padding:70px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+
+      position:relative;
+    }
+
+    .subtitle{
+      color:#7dd3fc;
+      font-size:1rem;
+      margin-bottom:18px;
+      letter-spacing:1px;
+    }
+
+    .title{
+      font-size:4rem;
+      line-height:1.1;
+      font-weight:800;
+
+      margin-bottom:25px;
+    }
+
+    .gradient-text{
+      background:
+        linear-gradient(
+          90deg,
+          #7c3aed,
+          #06b6d4,
+          #3b82f6
+        );
+
+      background-size:200% auto;
+
+      background-clip:text;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+
+      animation:gradientMove 6s linear infinite;
+    }
+
+    .description{
+      color:var(--muted);
+
+      font-size:1.05rem;
+
+      line-height:1.8;
+
+      max-width:580px;
+
+      margin-bottom:40px;
+    }
+
+    /* =========================================
+       FEATURES
+    ========================================== */
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+
+      margin-bottom:40px;
+    }
+
+    .feature-card{
+      background:rgba(255,255,255,0.06);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      padding:20px;
+
+      border-radius:20px;
+
+      display:flex;
+      align-items:center;
+      gap:15px;
+
+      transition:0.4s ease;
+
+      backdrop-filter:blur(10px);
+    }
+
+    .feature-card:hover{
+      transform:
+        translateY(-8px)
+        scale(1.03);
+
+      background:rgba(255,255,255,0.09);
+
+      box-shadow:
+        0 10px 30px rgba(124,58,237,0.25);
+    }
+
+    .feature-card i{
+      font-size:1.2rem;
+      color:#7dd3fc;
+    }
+
+    /* =========================================
+       STATS
+    ========================================== */
+
+    .stats{
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .stat-box{
+      flex:1;
+
+      min-width:140px;
+
+      background:rgba(255,255,255,0.06);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      padding:25px;
+
+      border-radius:20px;
+
+      text-align:center;
+
+      transition:0.4s ease;
+    }
+
+    .stat-box:hover{
+      transform:translateY(-10px);
+    }
+
+    .stat-box h2{
+      font-size:2rem;
+      margin-bottom:10px;
+
+      color:#7dd3fc;
+    }
+
+    .stat-box p{
+      color:var(--muted);
+    }
+
+    /* =========================================
+       RIGHT SECTION
+    ========================================== */
+
+    .right-section{
+      width:500px;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      padding:40px;
+
+      position:relative;
+    }
+
+    /* =========================================
+       SIGNUP CARD
+    ========================================== */
+
+    .signup-card{
+      width:100%;
+
+      padding:45px;
+
+      border-radius:28px;
+
+      background:rgba(255,255,255,0.08);
+
+      border:1px solid rgba(255,255,255,0.12);
+
+      backdrop-filter:blur(18px);
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:0.4s ease;
+    }
+
+    .signup-card:hover{
+      transform:
+        translateY(-8px)
+        rotateX(3deg)
+        rotateY(-3deg);
+    }
+
+    .signup-card::before{
+      content:"";
+
+      position:absolute;
+
+      inset:0;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.08),
+          transparent
+        );
+
+      pointer-events:none;
+    }
+
+    /* =========================================
+       BACK BUTTON
+    ========================================== */
+
+    .back-btn{
+      position:absolute;
+
+      top:20px;
+      left:20px;
+
+      width:42px;
+      height:42px;
+
+      border:none;
+
+      border-radius:50%;
+
+      background:rgba(255,255,255,0.08);
+
+      color:white;
+
+      cursor:pointer;
+
+      transition:0.3s ease;
+    }
+
+    .back-btn:hover{
+      transform:scale(1.1);
+      background:#7c3aed;
+    }
+
+    /* =========================================
+       FORM TEXT
+    ========================================== */
+
+    .signup-card h2{
+      font-size:2.3rem;
+      margin-bottom:10px;
+    }
+
+    .form-subtitle{
+      color:var(--muted);
+
+      margin-bottom:35px;
+
+      line-height:1.6;
+    }
+
+    /* =========================================
+       INPUTS
+    ========================================== */
+
+    .input-box{
+      position:relative;
+      margin-bottom:22px;
+    }
+
+    .input-box i{
+      position:absolute;
+
+      top:50%;
+      left:18px;
+
+      transform:translateY(-50%);
+
+      color:#94a3b8;
+    }
+
+    .input-box input{
+      width:100%;
+
+      padding:16px 18px 16px 52px;
+
+      border:none;
+      outline:none;
+
+      border-radius:18px;
+
+      background:rgba(255,255,255,0.06);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      color:white;
+
+      font-size:1rem;
+
+      transition:0.35s ease;
+    }
+
+    .input-box input:focus{
+      border-color:#7c3aed;
+
+      transform:translateY(-2px);
+
+      box-shadow:
+        0 0 25px rgba(124,58,237,0.25);
+    }
+
+    .input-box input::placeholder{
+      color:#94a3b8;
+    }
+
+    /* =========================================
+       PASSWORD TOGGLE
+    ========================================== */
+
+    .toggle-password{
+      position:absolute;
+
+      top:50%;
+      right:18px;
+
+      transform:translateY(-50%);
+
+      cursor:pointer;
+
+      color:#94a3b8;
+    }
+
+    /* =========================================
+       TERMS
+    ========================================== */
+
+    .terms{
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      margin-bottom:25px;
+
+      color:var(--muted);
+
+      font-size:0.95rem;
+    }
+
+    .terms input{
+      accent-color:#7c3aed;
+    }
+
+    /* =========================================
+       BUTTON
+    ========================================== */
+
+    .signup-btn{
+      width:100%;
+
+      padding:16px;
+
+      border:none;
+
+      border-radius:18px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #06b6d4
+        );
+
+      color:white;
+
+      font-size:1rem;
+      font-weight:700;
+
+      cursor:pointer;
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:0.4s ease;
+    }
+
+    .signup-btn:hover{
+      transform:
+        translateY(-4px)
+        scale(1.02);
+
+      box-shadow:
+        0 15px 35px rgba(124,58,237,0.35);
+    }
+
+    .signup-btn::before{
+      content:"";
+
+      position:absolute;
+
+      top:0;
+      left:-100%;
+
+      width:100%;
+      height:100%;
+
+      background:
+        linear-gradient(
+          120deg,
+          transparent,
+          rgba(255,255,255,0.4),
+          transparent
+        );
+
+      transition:0.8s ease;
+    }
+
+    .signup-btn:hover::before{
+      left:100%;
+    }
+
+    /* =========================================
+       DIVIDER
+    ========================================== */
+
+    .divider{
+      margin:30px 0;
+
+      text-align:center;
+
+      position:relative;
+
+      color:var(--muted);
+    }
+
+    .divider::before{
+      content:"";
+
+      position:absolute;
+
+      top:50%;
+      left:0;
+
+      width:40%;
+      height:1px;
+
+      background:rgba(255,255,255,0.12);
+    }
+
+    .divider::after{
+      content:"";
+
+      position:absolute;
+
+      top:50%;
+      right:0;
+
+      width:40%;
+      height:1px;
+
+      background:rgba(255,255,255,0.12);
+    }
+
+    /* =========================================
+       SOCIAL
+    ========================================== */
+
+    .social-login{
+      display:flex;
+      justify-content:center;
+      gap:16px;
+
+      margin-bottom:30px;
+    }
+
+    .social-btn{
+      width:52px;
+      height:52px;
+
+      border:none;
+
+      border-radius:16px;
+
+      background:rgba(255,255,255,0.08);
+
+      color:white;
+
+      font-size:1.1rem;
+
+      cursor:pointer;
+
+      transition:0.35s ease;
+    }
+
+    .social-btn:hover{
+      transform:
+        translateY(-6px)
+        rotate(6deg);
+
+      background:#7c3aed;
+    }
+
+    /* =========================================
+       LOGIN LINK
+    ========================================== */
+
+    .login-link{
+      text-align:center;
+
+      color:var(--muted);
+    }
+
+    .login-link a{
+      color:#7dd3fc;
+
+      text-decoration:none;
+
+      font-weight:600;
+    }
+
+    .login-link a:hover{
+      color:#ffffff;
+    }
+
+    /* =========================================
+       ANIMATIONS
+    ========================================== */
+
+    @keyframes float{
+
+      0%,100%{
+        transform:
+          translateY(0)
+          translateX(0);
+      }
+
+      50%{
+        transform:
+          translateY(-30px)
+          translateX(20px);
+      }
+    }
+
+    @keyframes particle{
+
+      0%{
+        transform:
+          translateY(0)
+          scale(1);
+
+        opacity:0;
+      }
+
+      50%{
+        opacity:0.6;
+      }
+
+      100%{
+        transform:
+          translateY(-120px)
+          scale(1.8);
+
+        opacity:0;
+      }
+    }
+
+    @keyframes gradientMove{
+
+      0%{
+        background-position:0% center;
+      }
+
+      100%{
+        background-position:200% center;
+      }
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media(max-width:1100px){
+
+      .container{
+        flex-direction:column;
+      }
+
+      .right-section{
+        width:100%;
+      }
+
+      .left-section{
+        padding:50px 30px;
+      }
+
+      .title{
+        font-size:3rem;
+      }
+    }
+
+    @media(max-width:700px){
+
+      .features{
+        grid-template-columns:1fr;
+      }
+
+      .stats{
+        flex-direction:column;
+      }
+
+      .signup-card{
+        padding:30px 24px;
+      }
+
+      .title{
+        font-size:2.4rem;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- GRID -->
+  <div class="bg-grid"></div>
+
+  <!-- ORBS -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- PARTICLES -->
+  <div class="particles">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <!-- LEFT -->
+    <section class="left-section">
+
+      <p class="subtitle">
+        🚀 Welcome To WebVerse
+      </p>
+
+      <h1 class="title">
+        Build Your
+        <span class="gradient-text">
+          Future Today
+        </span>
+      </h1>
+
+      <p class="description">
+        Join thousands of developers creating modern
+        websites, 3D portfolios, AI interfaces,
+        animations, and powerful web applications.
+      </p>
+
+      <!-- FEATURES -->
+
+      <div class="features">
+
+        <div class="feature-card">
+          <i class="fa-solid fa-code"></i>
+          <span>Modern Coding</span>
         </div>
-      </section>
 
-      <!-- Right Sign Up Form -->
-      <section class="form-box">
-        <!-- Small Back Button -->
+        <div class="feature-card">
+          <i class="fa-solid fa-palette"></i>
+          <span>Creative UI</span>
+        </div>
+
+        <div class="feature-card">
+          <i class="fa-solid fa-rocket"></i>
+          <span>Fast Learning</span>
+        </div>
+
+        <div class="feature-card">
+          <i class="fa-solid fa-brain"></i>
+          <span>AI Inspired</span>
+        </div>
+
+      </div>
+
+      <!-- STATS -->
+
+      <div class="stats">
+
+        <div class="stat-box">
+          <h2>10K+</h2>
+          <p>Developers</p>
+        </div>
+
+        <div class="stat-box">
+          <h2>150+</h2>
+          <p>Projects</p>
+        </div>
+
+        <div class="stat-box">
+          <h2>24/7</h2>
+          <p>Support</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- RIGHT -->
+    <section class="right-section">
+
+      <div class="signup-card">
+
+        <!-- BACK -->
         <button
-          type="button"
-          class="back-button"
-          onclick="window.location.href = '../index.html'"
-          aria-label="Back to Home"
+          class="back-btn"
+          onclick="window.location.href='../index.html'"
         >
-          ←
+          <i class="fa-solid fa-arrow-left"></i>
         </button>
 
-        <h2>Sign Up</h2>
+        <h2>Create Account</h2>
+
         <p class="form-subtitle">
-          Create your account to start building amazing web projects.
+          Start your coding journey with beautiful UI experiences.
         </p>
 
+        <!-- FORM -->
+
         <form id="signupForm">
-          <!-- Name -->
-          <div class="form-group">
+
+          <div class="input-box">
+
+            <i class="fa-solid fa-user"></i>
+
             <input
               type="text"
               id="name"
-              name="name"
               placeholder="Full Name"
-              autocomplete="name"
               required
             />
+
           </div>
 
-          <!-- Username -->
-          <div class="form-group">
+          <div class="input-box">
+
+            <i class="fa-solid fa-at"></i>
+
             <input
               type="text"
               id="username"
-              name="username"
               placeholder="Username"
-              autocomplete="username"
               required
             />
+
           </div>
 
-          <!-- Email -->
-          <div class="form-group">
+          <div class="input-box">
+
+            <i class="fa-solid fa-envelope"></i>
+
             <input
               type="email"
               id="email"
-              name="email"
               placeholder="Email Address"
-              autocomplete="email"
               required
             />
+
           </div>
 
-          <!-- Password -->
-          <div class="form-group">
+          <div class="input-box">
+
+            <i class="fa-solid fa-lock"></i>
+
             <input
               type="password"
               id="password"
-              name="password"
               placeholder="Password"
-              autocomplete="new-password"
               required
             />
+
+            <span
+              class="toggle-password"
+              onclick="togglePassword()"
+            >
+              <i
+                class="fa-solid fa-eye"
+                id="eyeIcon"
+              ></i>
+            </span>
+
           </div>
 
+          <div class="terms">
 
-    <script>
-        const images = document.querySelectorAll('.transition-image');
-        let currentImageIndex = 0;
+            <input
+              type="checkbox"
+              required
+            />
 
-        function showNextImage() {
-            images[currentImageIndex].style.opacity = 0;
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            images[currentImageIndex].style.opacity = 1;
-        }
+            <label>
+              I agree to Terms & Conditions
+            </label>
 
-        setInterval(showNextImage, 3000);
+          </div>
 
-        document.getElementById('signupForm').addEventListener('submit', function (event) {
-            event.preventDefault();
+          <button
+            type="submit"
+            class="signup-btn"
+          >
+            Create Account
+          </button>
 
-          const name = document.getElementById("name").value.trim();
-          const username = document.getElementById("username").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value.trim();
+        </form>
 
-          if (name && username && email && password) {
-            // Save username in localStorage
-            localStorage.setItem("username", username);
+        <!-- DIVIDER -->
 
-            // Redirect to login page after successful signup
-            window.location.href = "./login.html";
-          } else {
-            alert("Please fill in all fields.");
-          }
-        });
-    </script>
-  </body>
+        <div class="divider">
+          OR CONTINUE WITH
+        </div>
+
+        <!-- SOCIAL -->
+
+        <div class="social-login">
+
+          <button class="social-btn">
+            <i class="fa-brands fa-google"></i>
+          </button>
+
+          <button class="social-btn">
+            <i class="fa-brands fa-github"></i>
+          </button>
+
+          <button class="social-btn">
+            <i class="fa-brands fa-linkedin"></i>
+          </button>
+
+        </div>
+
+        <!-- LOGIN -->
+
+        <p class="login-link">
+
+          Already have an account?
+
+          <a href="./login.html">
+            Login
+          </a>
+
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+
+    // PASSWORD TOGGLE
+
+    function togglePassword(){
+
+      const password =
+        document.getElementById("password");
+
+      const eyeIcon =
+        document.getElementById("eyeIcon");
+
+      if(password.type === "password"){
+
+        password.type = "text";
+
+        eyeIcon.classList.replace(
+          "fa-eye",
+          "fa-eye-slash"
+        );
+
+      } else {
+
+        password.type = "password";
+
+        eyeIcon.classList.replace(
+          "fa-eye-slash",
+          "fa-eye"
+        );
+      }
+    }
+
+    // FORM SUBMIT
+
+    document
+      .getElementById("signupForm")
+      .addEventListener("submit", function(e){
+
+        e.preventDefault();
+
+        const username =
+          document.getElementById("username").value;
+
+        localStorage.setItem(
+          "username",
+          username
+        );
+
+        const button =
+          document.querySelector(".signup-btn");
+
+        button.innerHTML =
+          "✔ Account Created";
+
+        button.style.background =
+          "linear-gradient(135deg,#06b6d4,#7c3aed)";
+
+        setTimeout(()=>{
+
+          window.location.href =
+            "./login.html";
+
+        },1500);
+
+      });
+
+    // 3D CARD EFFECT
+
+    const card =
+      document.querySelector(".signup-card");
+
+    document.addEventListener("mousemove",(e)=>{
+
+      const x =
+        (window.innerWidth / 2 - e.pageX) / 35;
+
+      const y =
+        (window.innerHeight / 2 - e.pageY) / 35;
+
+      card.style.transform =
+        `rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
+
+  </script>
+
+</body>
 </html>

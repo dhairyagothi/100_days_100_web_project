@@ -1,70 +1,1071 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Assistant</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>NeuroBot AI Assistant</title>
+
+  <!-- FONT AWESOME -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <!-- GOOGLE FONT -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+
+    /* =========================================
+       RESET
+    ========================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+
+      --bg:#050816;
+      --card:rgba(255,255,255,0.06);
+
+      --primary:#7c3aed;
+      --secondary:#06b6d4;
+      --accent:#ec4899;
+
+      --text:#ffffff;
+      --muted:#94a3b8;
+
+      --border:rgba(255,255,255,0.1);
+
+      --gradient:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #06b6d4,
+          #ec4899
+        );
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    body{
+
+      min-height:100vh;
+
+      overflow:hidden;
+
+      font-family:"Inter",sans-serif;
+
+      background:
+        radial-gradient(circle at top left,
+        rgba(124,58,237,.35),
+        transparent 30%),
+
+        radial-gradient(circle at bottom right,
+        rgba(6,182,212,.25),
+        transparent 30%),
+
+        linear-gradient(
+          135deg,
+          #020617,
+          #0f172a,
+          #111827
+        );
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      color:white;
+
+      position:relative;
+    }
+
+    /* =========================================
+       GRID
+    ========================================== */
+
+    .grid{
+
+      position:absolute;
+      inset:0;
+
+      background-image:
+        linear-gradient(
+          rgba(255,255,255,0.04) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,0.04) 1px,
+          transparent 1px
+        );
+
+      background-size:45px 45px;
+
+      mask-image:
+        radial-gradient(circle,
+        rgba(255,255,255,1),
+        transparent 80%);
+
+      z-index:-2;
+    }
+
+    /* =========================================
+       ORBS
+    ========================================== */
+
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(100px);
+      z-index:-1;
+    }
+
+    .orb1{
+      width:350px;
+      height:350px;
+      background:#7c3aed;
+      top:-120px;
+      left:-100px;
+      opacity:.35;
+      animation:float1 12s ease-in-out infinite;
+    }
+
+    .orb2{
+      width:280px;
+      height:280px;
+      background:#06b6d4;
+      bottom:-100px;
+      right:-80px;
+      opacity:.3;
+      animation:float2 10s ease-in-out infinite;
+    }
+
+    .orb3{
+      width:220px;
+      height:220px;
+      background:#ec4899;
+      top:50%;
+      left:50%;
+      opacity:.18;
+      animation:pulse 6s infinite;
+    }
+
+    /* =========================================
+       CHAT CONTAINER
+    ========================================== */
+
+    .chat-container{
+
+      width:95%;
+      max-width:1400px;
+
+      height:92vh;
+
+      border-radius:30px;
+
+      overflow:hidden;
+
+      display:flex;
+      flex-direction:column;
+
+      background:rgba(255,255,255,0.05);
+
+      border:1px solid var(--border);
+
+      backdrop-filter:blur(20px);
+
+      box-shadow:var(--shadow);
+
+      position:relative;
+    }
+
+    /* =========================================
+       HEADER
+    ========================================== */
+
+    .chat-header{
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      padding:22px 28px;
+
+      border-bottom:1px solid rgba(255,255,255,0.08);
+
+      background:rgba(255,255,255,0.04);
+
+      backdrop-filter:blur(20px);
+    }
+
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .bot-avatar{
+
+      width:58px;
+      height:58px;
+
+      border-radius:20px;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      font-size:1.5rem;
+
+      background:var(--gradient);
+
+      animation:gradientMove 5s linear infinite;
+
+      box-shadow:
+        0 0 30px rgba(124,58,237,.4);
+    }
+
+    .header-text h2{
+      font-size:1.4rem;
+      margin-bottom:4px;
+    }
+
+    .status{
+      color:#7dd3fc;
+      font-size:.9rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#00ff88;
+      animation:blink 1.5s infinite;
+    }
+
+    .settings-btn{
+
+      width:52px;
+      height:52px;
+
+      border:none;
+
+      border-radius:18px;
+
+      cursor:pointer;
+
+      background:rgba(255,255,255,0.06);
+
+      border:1px solid rgba(255,255,255,.08);
+
+      color:white;
+
+      font-size:1.1rem;
+
+      transition:.35s ease;
+    }
+
+    .settings-btn:hover{
+
+      transform:
+        rotate(90deg)
+        scale(1.08);
+
+      background:rgba(255,255,255,0.12);
+    }
+
+    /* =========================================
+       CHAT AREA
+    ========================================== */
+
+    .chat-messages{
+
+      flex:1;
+
+      overflow-y:auto;
+
+      padding:35px;
+
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+
+      scroll-behavior:smooth;
+    }
+
+    .chat-messages::-webkit-scrollbar{
+      width:6px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb{
+      background:#7c3aed;
+      border-radius:20px;
+    }
+
+    /* =========================================
+       MESSAGE
+    ========================================== */
+
+    .message{
+      display:flex;
+      gap:16px;
+
+      animation:fadeUp .5s ease;
+    }
+
+    .message.user{
+      flex-direction:row-reverse;
+    }
+
+    .message-avatar{
+
+      width:48px;
+      height:48px;
+
+      border-radius:16px;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      flex-shrink:0;
+
+      font-size:1.1rem;
+    }
+
+    .bot-avatar-msg{
+      background:var(--gradient);
+    }
+
+    .user-avatar-msg{
+      background:
+        linear-gradient(
+          135deg,
+          #0ea5e9,
+          #6366f1
+        );
+    }
+
+    .message-content{
+
+      max-width:75%;
+
+      padding:18px 22px;
+
+      border-radius:24px;
+
+      line-height:1.8;
+
+      position:relative;
+
+      backdrop-filter:blur(15px);
+
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .bot .message-content{
+
+      background:rgba(255,255,255,.06);
+
+      border-top-left-radius:8px;
+    }
+
+    .user .message-content{
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(124,58,237,.9),
+          rgba(6,182,212,.9)
+        );
+
+      border-top-right-radius:8px;
+    }
+
+    .timestamp{
+
+      margin-top:8px;
+
+      font-size:.75rem;
+
+      color:#94a3b8;
+    }
+
+    /* =========================================
+       INPUT AREA
+    ========================================== */
+
+    .chat-input-area{
+
+      padding:24px 28px;
+
+      border-top:1px solid rgba(255,255,255,0.08);
+
+      background:rgba(255,255,255,0.04);
+
+      backdrop-filter:blur(20px);
+    }
+
+    .input-wrapper{
+
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .input-wrapper input{
+
+      flex:1;
+
+      padding:18px 24px;
+
+      border:none;
+      outline:none;
+
+      border-radius:22px;
+
+      background:rgba(255,255,255,.06);
+
+      border:1px solid rgba(255,255,255,.08);
+
+      color:white;
+
+      font-size:1rem;
+
+      transition:.35s ease;
+    }
+
+    .input-wrapper input::placeholder{
+      color:#94a3b8;
+    }
+
+    .input-wrapper input:focus{
+
+      border-color:#7c3aed;
+
+      box-shadow:
+        0 0 0 4px rgba(124,58,237,.15),
+        0 0 25px rgba(6,182,212,.15);
+
+      transform:translateY(-2px);
+    }
+
+    .send-btn{
+
+      width:62px;
+      height:62px;
+
+      border:none;
+
+      border-radius:22px;
+
+      cursor:pointer;
+
+      color:white;
+
+      font-size:1.2rem;
+
+      background:var(--gradient);
+
+      background-size:300% 300%;
+
+      animation:gradientMove 6s linear infinite;
+
+      transition:.35s ease;
+    }
+
+    .send-btn:hover{
+
+      transform:
+        translateY(-5px)
+        scale(1.06)
+        rotate(8deg);
+
+      box-shadow:
+        0 15px 40px rgba(124,58,237,.4);
+    }
+
+    .branding{
+
+      margin-top:16px;
+
+      text-align:center;
+
+      color:#94a3b8;
+
+      font-size:.85rem;
+
+      letter-spacing:1px;
+    }
+
+    /* =========================================
+       MODAL
+    ========================================== */
+
+    .modal-overlay{
+
+      position:fixed;
+      inset:0;
+
+      background:rgba(0,0,0,.6);
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      backdrop-filter:blur(10px);
+
+      z-index:999;
+    }
+
+    .modal{
+
+      width:92%;
+      max-width:480px;
+
+      padding:40px;
+
+      border-radius:30px;
+
+      background:rgba(255,255,255,.08);
+
+      border:1px solid rgba(255,255,255,.1);
+
+      backdrop-filter:blur(20px);
+
+      text-align:center;
+
+      animation:fadeUp .6s ease;
+    }
+
+    .modal-icon{
+
+      width:80px;
+      height:80px;
+
+      border-radius:24px;
+
+      margin:auto auto 25px;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      font-size:2rem;
+
+      background:var(--gradient);
+
+      animation:pulse 4s infinite;
+    }
+
+    .modal h2{
+      margin-bottom:12px;
+      font-size:2rem;
+    }
+
+    .modal p{
+
+      color:#cbd5e1;
+
+      line-height:1.8;
+
+      margin-bottom:25px;
+    }
+
+    .modal input{
+
+      width:100%;
+
+      padding:18px;
+
+      border:none;
+      outline:none;
+
+      border-radius:18px;
+
+      background:rgba(255,255,255,.06);
+
+      border:1px solid rgba(255,255,255,.08);
+
+      color:white;
+
+      margin-bottom:20px;
+    }
+
+    .modal button{
+
+      width:100%;
+
+      padding:18px;
+
+      border:none;
+
+      border-radius:18px;
+
+      cursor:pointer;
+
+      color:white;
+
+      font-weight:700;
+
+      background:var(--gradient);
+
+      transition:.35s ease;
+    }
+
+    .modal button:hover{
+      transform:translateY(-4px);
+    }
+
+    .modal-footer{
+
+      margin-top:20px;
+
+      color:#94a3b8;
+
+      font-size:.9rem;
+    }
+
+    .modal-footer a{
+
+      color:#7dd3fc;
+
+      text-decoration:none;
+    }
+
+    /* =========================================
+       ANIMATIONS
+    ========================================== */
+
+    @keyframes fadeUp{
+
+      from{
+        opacity:0;
+        transform:translateY(40px);
+      }
+
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @keyframes gradientMove{
+
+      0%{
+        background-position:0% 50%;
+      }
+
+      100%{
+        background-position:100% 50%;
+      }
+    }
+
+    @keyframes pulse{
+
+      0%,100%{
+        transform:scale(1);
+      }
+
+      50%{
+        transform:scale(1.12);
+      }
+    }
+
+    @keyframes blink{
+
+      0%,100%{
+        opacity:1;
+      }
+
+      50%{
+        opacity:.4;
+      }
+    }
+
+    @keyframes float1{
+
+      0%,100%{
+        transform:translate(0,0);
+      }
+
+      50%{
+        transform:translate(40px,-30px);
+      }
+    }
+
+    @keyframes float2{
+
+      0%,100%{
+        transform:translate(0,0);
+      }
+
+      50%{
+        transform:translate(-30px,30px);
+      }
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media(max-width:900px){
+
+      .chat-container{
+        width:100%;
+        height:100vh;
+        border-radius:0;
+      }
+
+      .message-content{
+        max-width:90%;
+      }
+    }
+
+    @media(max-width:600px){
+
+      .chat-header{
+        padding:18px;
+      }
+
+      .chat-messages{
+        padding:20px;
+      }
+
+      .chat-input-area{
+        padding:18px;
+      }
+
+      .header-text h2{
+        font-size:1.1rem;
+      }
+
+      .input-wrapper input{
+        padding:16px;
+      }
+
+      .send-btn{
+        width:55px;
+        height:55px;
+      }
+    }
+
+  </style>
+
 </head>
+
 <body>
-    <div id="api-key-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-icon">
-                <i class="fa-solid fa-key"></i>
-            </div>
-            <h2>Enter Gemini API Key</h2>
-            <p>To use this chatbot, please enter your Google Gemini API key. It is only stored locally in your current browser session.</p>
-            <input type="password" id="api-key-input" placeholder="AIzaSy..." autocomplete="off">
-            <button id="save-key-btn">Save & Start Chatting</button>
-            <div class="modal-footer">
-                Don't have one? <a href="https://aistudio.google.com/" target="_blank">Get it here</a>
-            </div>
-        </div>
+
+  <!-- GRID -->
+  <div class="grid"></div>
+
+  <!-- ORBS -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- API MODAL -->
+  <div id="api-key-modal" class="modal-overlay">
+
+    <div class="modal">
+
+      <div class="modal-icon">
+        <i class="fa-solid fa-key"></i>
+      </div>
+
+      <h2>Enter Gemini API Key</h2>
+
+      <p>
+        Securely connect your Google Gemini API key
+        to unlock futuristic AI conversations.
+      </p>
+
+      <input
+        type="password"
+        id="api-key-input"
+        placeholder="AIzaSy..."
+      />
+
+      <button id="save-key-btn">
+        Save & Start Chatting
+      </button>
+
+      <div class="modal-footer">
+        Don't have one?
+        <a
+          href="https://aistudio.google.com/"
+          target="_blank"
+        >
+          Get API Key
+        </a>
+      </div>
+
     </div>
 
-    <div class="chat-container">
-        <div class="chat-header">
-            <div class="header-info">
-                <div class="bot-avatar-header">
-                    <i class="fa-solid fa-robot"></i>
-                    <span class="status-dot"></span>
-                </div>
-                <div class="header-text">
-                    <h2>AI Assistant</h2>
-                    <span class="status-text">Online</span>
-                </div>
-            </div>
-            <button id="settings-btn" title="Update API Key" class="icon-btn">
-                <i class="fa-solid fa-gear"></i>
-            </button>
-        </div>
-        
-        <div class="chat-messages" id="chat-messages">
-            <div class="message bot">
-                <div class="avatar"><i class="fa-solid fa-robot"></i></div>
-                <div class="message-wrapper">
-                    <div class="message-content">
-                        <p>Hello! I'm your AI assistant. How can I help you today?</p>
-                    </div>
-                    <span class="timestamp">Just now</span>
-                </div>
-            </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-container">
+
+    <!-- HEADER -->
+    <div class="chat-header">
+
+      <div class="header-left">
+
+        <div class="bot-avatar">
+          <i class="fa-solid fa-robot"></i>
         </div>
 
-        <div class="chat-input-area">
-            <div class="input-wrapper">
-                <input type="text" id="user-input" placeholder="Message AI..." autocomplete="off">
-                <button id="send-btn" class="send-btn" title="Send message">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </div>
-            <div class="branding-footer">
-                Powered by Google Gemini
-            </div>
+        <div class="header-text">
+
+          <h2>NeuroBot AI</h2>
+
+          <div class="status">
+            <span class="dot"></span>
+            Online & Ready
+          </div>
+
         </div>
+
+      </div>
+
+      <button class="settings-btn">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+
     </div>
 
-    <script src="script.js"></script>
+    <!-- MESSAGES -->
+    <div class="chat-messages" id="chat-messages">
+
+      <!-- BOT MESSAGE -->
+      <div class="message bot">
+
+        <div class="message-avatar bot-avatar-msg">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+
+        <div>
+
+          <div class="message-content">
+            Hello 👋 <br><br>
+            I'm your futuristic AI Assistant.
+            Ask me anything about coding,
+            AI, web development, animations,
+            cybersecurity, or modern UI design.
+          </div>
+
+          <div class="timestamp">
+            Just now
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- INPUT -->
+    <div class="chat-input-area">
+
+      <div class="input-wrapper">
+
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Type your message..."
+        />
+
+        <button
+          class="send-btn"
+          id="send-btn"
+        >
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+
+      </div>
+
+      <div class="branding">
+        Powered by Google Gemini AI
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    // =========================================
+    // ELEMENTS
+    // =========================================
+
+    const input =
+      document.getElementById("user-input");
+
+    const sendBtn =
+      document.getElementById("send-btn");
+
+    const messages =
+      document.getElementById("chat-messages");
+
+    const modal =
+      document.getElementById("api-key-modal");
+
+    const saveBtn =
+      document.getElementById("save-key-btn");
+
+    // =========================================
+    // SAVE API KEY
+    // =========================================
+
+    saveBtn.addEventListener("click",()=>{
+
+      const apiKey =
+        document
+        .getElementById("api-key-input")
+        .value;
+
+      if(apiKey.trim() !== ""){
+
+        modal.style.display = "none";
+
+      } else {
+
+        alert("Please enter API Key");
+      }
+
+    });
+
+    // =========================================
+    // SEND MESSAGE
+    // =========================================
+
+    function sendMessage(){
+
+      const text =
+        input.value.trim();
+
+      if(text === "") return;
+
+      // USER MESSAGE
+
+      const userMessage = `
+
+        <div class="message user">
+
+          <div class="message-avatar user-avatar-msg">
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div>
+
+            <div class="message-content">
+              ${text}
+            </div>
+
+            <div class="timestamp">
+              Just now
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+      messages.innerHTML += userMessage;
+
+      input.value = "";
+
+      scrollBottom();
+
+      // BOT THINKING
+
+      setTimeout(()=>{
+
+        const botMessage = `
+
+          <div class="message bot">
+
+            <div class="message-avatar bot-avatar-msg">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+
+            <div>
+
+              <div class="message-content">
+                🤖 AI Response:<br><br>
+                You said:
+                "<b>${text}</b>"
+              </div>
+
+              <div class="timestamp">
+                Just now
+              </div>
+
+            </div>
+
+          </div>
+
+        `;
+
+        messages.innerHTML += botMessage;
+
+        scrollBottom();
+
+      },1000);
+
+    }
+
+    // =========================================
+    // SCROLL
+    // =========================================
+
+    function scrollBottom(){
+
+      messages.scrollTop =
+        messages.scrollHeight;
+    }
+
+    // =========================================
+    // EVENTS
+    // =========================================
+
+    sendBtn.addEventListener(
+      "click",
+      sendMessage
+    );
+
+    input.addEventListener(
+      "keypress",
+      (e)=>{
+
+        if(e.key === "Enter"){
+          sendMessage();
+        }
+
+      }
+    );
+
+  </script>
+
 </body>
 </html>

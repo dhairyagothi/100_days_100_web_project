@@ -1,113 +1,1157 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
-    <link rel="stylesheet" href="login.css" />
-    <link rel="icon" href="favv.png" type="image/x-icon" />
-  </head>
-  <body>
-    <!-- Navigation -->
-    <header class="navbar">
-      <a href="../index.html" class="nav-link">← Back to Home</a>
-    </header>
+<head>
 
-    <!-- Main Container -->
-    <main class="container">
-      <!-- Left Animated Text Section -->
-      <section class="left">
-        <p class="subtitle">Welcome Back</p>
+  <meta charset="UTF-8" />
 
-        <h1>
-          Build Something
-          <span class="highlight">Amazing</span>
-        </h1>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-        <p class="description">
-          Sign in to continue your journey through
-          <strong>100 Days • 100 Web Projects</strong>. Explore creative
-          designs, animations, and real-world projects.
-        </p>
+  <title>WebVerse Login</title>
 
-        <div class="feature-list">
-          <div class="feature-card">✨ Modern UI</div>
-          <div class="feature-card">⚡ Fast Projects</div>
-          <div class="feature-card">🚀 Learn by Building</div>
+  <!-- GOOGLE FONT -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- FONT AWESOME -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <style>
+
+    /* =========================================
+       RESET
+    ========================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+
+      --bg:#050816;
+
+      --primary:#7c3aed;
+      --secondary:#06b6d4;
+      --accent:#ec4899;
+
+      --text:#ffffff;
+      --muted:#94a3b8;
+
+      --border:rgba(255,255,255,0.1);
+
+      --glass:rgba(255,255,255,0.06);
+
+      --gradient:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #06b6d4,
+          #ec4899
+        );
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    body{
+
+      font-family:"Inter",sans-serif;
+
+      min-height:100vh;
+
+      overflow:hidden;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(124,58,237,0.35),
+          transparent 30%
+        ),
+
+        radial-gradient(
+          circle at bottom right,
+          rgba(6,182,212,0.25),
+          transparent 30%
+        ),
+
+        linear-gradient(
+          135deg,
+          #020617,
+          #0f172a,
+          #111827
+        );
+
+      color:white;
+
+      position:relative;
+    }
+
+    /* =========================================
+       GRID
+    ========================================== */
+
+    .grid{
+
+      position:absolute;
+      inset:0;
+
+      background-image:
+        linear-gradient(
+          rgba(255,255,255,0.04) 1px,
+          transparent 1px
+        ),
+
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,0.04) 1px,
+          transparent 1px
+        );
+
+      background-size:50px 50px;
+
+      mask-image:
+        radial-gradient(
+          circle,
+          rgba(255,255,255,1),
+          transparent 80%
+        );
+
+      z-index:-3;
+    }
+
+    /* =========================================
+       ORBS
+    ========================================== */
+
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(90px);
+      z-index:-2;
+    }
+
+    .orb1{
+      width:350px;
+      height:350px;
+      background:#7c3aed;
+      top:-100px;
+      left:-100px;
+      opacity:0.35;
+      animation:float1 10s ease-in-out infinite;
+    }
+
+    .orb2{
+      width:300px;
+      height:300px;
+      background:#06b6d4;
+      bottom:-100px;
+      right:-100px;
+      opacity:0.3;
+      animation:float2 12s ease-in-out infinite;
+    }
+
+    .orb3{
+      width:200px;
+      height:200px;
+      background:#ec4899;
+      top:40%;
+      left:50%;
+      opacity:0.2;
+      animation:pulse 6s infinite;
+    }
+
+    /* =========================================
+       PARTICLES
+    ========================================== */
+
+    .particles span{
+
+      position:absolute;
+
+      width:8px;
+      height:8px;
+
+      border-radius:50%;
+
+      background:white;
+
+      opacity:0.4;
+
+      animation:particles 10s linear infinite;
+    }
+
+    .particles span:nth-child(1){
+      top:10%;
+      left:20%;
+    }
+
+    .particles span:nth-child(2){
+      top:70%;
+      left:80%;
+      animation-delay:2s;
+    }
+
+    .particles span:nth-child(3){
+      top:40%;
+      left:60%;
+      animation-delay:4s;
+    }
+
+    .particles span:nth-child(4){
+      top:80%;
+      left:15%;
+      animation-delay:6s;
+    }
+
+    .particles span:nth-child(5){
+      top:25%;
+      left:90%;
+      animation-delay:3s;
+    }
+
+    /* =========================================
+       CONTAINER
+    ========================================== */
+
+    .container{
+
+      width:92%;
+      max-width:1350px;
+
+      min-height:90vh;
+
+      display:flex;
+
+      overflow:hidden;
+
+      border-radius:30px;
+
+      background:rgba(255,255,255,0.05);
+
+      border:1px solid var(--border);
+
+      backdrop-filter:blur(20px);
+
+      box-shadow:var(--shadow);
+    }
+
+    /* =========================================
+       LEFT SIDE
+    ========================================== */
+
+    .left{
+
+      flex:1;
+
+      padding:70px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .badge{
+
+      width:max-content;
+
+      padding:12px 20px;
+
+      border-radius:999px;
+
+      background:rgba(255,255,255,0.08);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      margin-bottom:25px;
+
+      color:#7dd3fc;
+
+      font-size:0.9rem;
+    }
+
+    .title{
+
+      font-size:4rem;
+
+      line-height:1.1;
+
+      font-weight:800;
+
+      margin-bottom:25px;
+    }
+
+    .gradient{
+
+      background:var(--gradient);
+
+      background-size:300% 300%;
+
+      background-clip:text;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+
+      animation:gradientMove 6s linear infinite;
+    }
+
+    .description{
+
+      color:var(--muted);
+
+      line-height:1.9;
+
+      font-size:1.05rem;
+
+      max-width:580px;
+
+      margin-bottom:40px;
+    }
+
+    /* =========================================
+       FEATURES
+    ========================================== */
+
+    .features{
+
+      display:grid;
+
+      grid-template-columns:repeat(2,1fr);
+
+      gap:18px;
+    }
+
+    .feature{
+
+      background:rgba(255,255,255,0.06);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      padding:20px;
+
+      border-radius:20px;
+
+      display:flex;
+      align-items:center;
+      gap:14px;
+
+      transition:0.4s ease;
+
+      backdrop-filter:blur(12px);
+    }
+
+    .feature:hover{
+
+      transform:
+        translateY(-8px)
+        scale(1.03);
+
+      background:rgba(255,255,255,0.1);
+
+      box-shadow:
+        0 10px 30px rgba(124,58,237,0.25);
+    }
+
+    .feature i{
+
+      color:#7dd3fc;
+
+      font-size:1.2rem;
+    }
+
+    /* =========================================
+       RIGHT SIDE
+    ========================================== */
+
+    .right{
+
+      width:500px;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      padding:40px;
+    }
+
+    /* =========================================
+       LOGIN CARD
+    ========================================== */
+
+    .login-card{
+
+      width:100%;
+
+      padding:45px;
+
+      border-radius:28px;
+
+      background:rgba(255,255,255,0.08);
+
+      border:1px solid rgba(255,255,255,0.12);
+
+      backdrop-filter:blur(20px);
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:0.4s ease;
+    }
+
+    .login-card::before{
+
+      content:"";
+
+      position:absolute;
+
+      inset:0;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.08),
+          transparent
+        );
+
+      pointer-events:none;
+    }
+
+    .login-card h2{
+
+      font-size:2.4rem;
+
+      margin-bottom:10px;
+    }
+
+    .login-card p{
+
+      color:var(--muted);
+
+      margin-bottom:35px;
+
+      line-height:1.7;
+    }
+
+    /* =========================================
+       INPUTS
+    ========================================== */
+
+    .input-box{
+
+      position:relative;
+
+      margin-bottom:22px;
+    }
+
+    .input-box i{
+
+      position:absolute;
+
+      top:50%;
+      left:18px;
+
+      transform:translateY(-50%);
+
+      color:#94a3b8;
+    }
+
+    .input-box input{
+
+      width:100%;
+
+      padding:17px 52px;
+
+      border:none;
+      outline:none;
+
+      border-radius:18px;
+
+      background:rgba(255,255,255,0.06);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      color:white;
+
+      font-size:1rem;
+
+      transition:0.35s ease;
+    }
+
+    .input-box input::placeholder{
+      color:#94a3b8;
+    }
+
+    .input-box input:focus{
+
+      border-color:#7c3aed;
+
+      transform:translateY(-2px);
+
+      box-shadow:
+        0 0 20px rgba(124,58,237,0.25);
+    }
+
+    .toggle{
+
+      position:absolute;
+
+      top:50%;
+      right:18px;
+
+      transform:translateY(-50%);
+
+      cursor:pointer;
+
+      color:#94a3b8;
+    }
+
+    /* =========================================
+       OPTIONS
+    ========================================== */
+
+    .options{
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      margin-bottom:25px;
+
+      color:var(--muted);
+
+      font-size:0.95rem;
+    }
+
+    .options label{
+
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .options input{
+      accent-color:#7c3aed;
+    }
+
+    .options a{
+
+      color:#7dd3fc;
+
+      text-decoration:none;
+    }
+
+    .options a:hover{
+      color:white;
+    }
+
+    /* =========================================
+       BUTTON
+    ========================================== */
+
+    .btn{
+
+      width:100%;
+
+      padding:16px;
+
+      border:none;
+
+      border-radius:18px;
+
+      background:var(--gradient);
+
+      background-size:300% 300%;
+
+      animation:gradientMove 6s linear infinite;
+
+      color:white;
+
+      font-size:1rem;
+      font-weight:700;
+
+      cursor:pointer;
+
+      transition:0.4s ease;
+
+      position:relative;
+
+      overflow:hidden;
+    }
+
+    .btn:hover{
+
+      transform:
+        translateY(-4px)
+        scale(1.02);
+
+      box-shadow:
+        0 15px 35px rgba(124,58,237,0.35);
+    }
+
+    .btn::before{
+
+      content:"";
+
+      position:absolute;
+
+      top:0;
+      left:-100%;
+
+      width:100%;
+      height:100%;
+
+      background:
+        linear-gradient(
+          120deg,
+          transparent,
+          rgba(255,255,255,0.35),
+          transparent
+        );
+
+      transition:0.8s;
+    }
+
+    .btn:hover::before{
+      left:100%;
+    }
+
+    /* =========================================
+       DIVIDER
+    ========================================== */
+
+    .divider{
+
+      margin:30px 0;
+
+      display:flex;
+      align-items:center;
+
+      gap:12px;
+    }
+
+    .divider::before,
+    .divider::after{
+
+      content:"";
+
+      flex:1;
+
+      height:1px;
+
+      background:rgba(255,255,255,0.1);
+    }
+
+    .divider span{
+
+      color:var(--muted);
+
+      font-size:0.8rem;
+
+      letter-spacing:2px;
+    }
+
+    /* =========================================
+       SOCIALS
+    ========================================== */
+
+    .socials{
+
+      display:flex;
+      justify-content:center;
+      gap:16px;
+    }
+
+    .social{
+
+      width:54px;
+      height:54px;
+
+      border:none;
+
+      border-radius:16px;
+
+      background:rgba(255,255,255,0.06);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      color:white;
+
+      font-size:1.1rem;
+
+      cursor:pointer;
+
+      transition:0.35s ease;
+    }
+
+    .social:hover{
+
+      transform:
+        translateY(-6px)
+        rotate(6deg);
+
+      background:#7c3aed;
+    }
+
+    /* =========================================
+       SIGNUP LINK
+    ========================================== */
+
+    .signup{
+
+      text-align:center;
+
+      margin-top:28px;
+
+      color:var(--muted);
+    }
+
+    .signup a{
+
+      color:#7dd3fc;
+
+      text-decoration:none;
+
+      font-weight:600;
+    }
+
+    .signup a:hover{
+      color:white;
+    }
+
+    /* =========================================
+       ANIMATIONS
+    ========================================== */
+
+    @keyframes float1{
+
+      0%,100%{
+        transform:translate(0,0);
+      }
+
+      50%{
+        transform:translate(40px,-30px);
+      }
+    }
+
+    @keyframes float2{
+
+      0%,100%{
+        transform:translate(0,0);
+      }
+
+      50%{
+        transform:translate(-30px,30px);
+      }
+    }
+
+    @keyframes pulse{
+
+      0%,100%{
+        transform:scale(1);
+      }
+
+      50%{
+        transform:scale(1.15);
+      }
+    }
+
+    @keyframes gradientMove{
+
+      0%{
+        background-position:0% 50%;
+      }
+
+      100%{
+        background-position:100% 50%;
+      }
+    }
+
+    @keyframes particles{
+
+      0%{
+        transform:translateY(0);
+        opacity:0;
+      }
+
+      50%{
+        opacity:0.6;
+      }
+
+      100%{
+        transform:translateY(-120px);
+        opacity:0;
+      }
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media(max-width:1100px){
+
+      .container{
+        flex-direction:column;
+      }
+
+      .right{
+        width:100%;
+      }
+
+      .left{
+        padding:40px;
+      }
+
+      .title{
+        font-size:3rem;
+      }
+    }
+
+    @media(max-width:700px){
+
+      body{
+        overflow:auto;
+      }
+
+      .container{
+        width:95%;
+      }
+
+      .left{
+        padding:30px;
+      }
+
+      .right{
+        padding:20px;
+      }
+
+      .title{
+        font-size:2.4rem;
+      }
+
+      .features{
+        grid-template-columns:1fr;
+      }
+
+      .login-card{
+        padding:30px 24px;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- GRID -->
+  <div class="grid"></div>
+
+  <!-- ORBS -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- PARTICLES -->
+  <div class="particles">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="container">
+
+    <!-- LEFT -->
+    <section class="left">
+
+      <div class="badge">
+        ✨ AI Powered Developer Space
+      </div>
+
+      <h1 class="title">
+        Welcome To
+        <span class="gradient">
+          WebVerse
+        </span>
+      </h1>
+
+      <p class="description">
+        Login and continue creating modern websites,
+        futuristic dashboards, animations,
+        AI interfaces, and immersive web experiences.
+      </p>
+
+      <div class="features">
+
+        <div class="feature">
+          <i class="fa-solid fa-code"></i>
+          <span>Modern Coding</span>
         </div>
-      </section>
 
-      <!-- Right Login Form -->
-      <section class="form-box">
-        <!-- Small Back Button -->
-        <button
-          class="back-button"
-          type="button"
-          onclick="window.location.href = '../index.html'"
-          aria-label="Back to Home"
-        >
-          ←
-        </button>
+        <div class="feature">
+          <i class="fa-solid fa-cube"></i>
+          <span>3D Effects</span>
+        </div>
 
-        <h2>Login</h2>
-        <p class="form-subtitle">
-          Enter your credentials to access your account.
+        <div class="feature">
+          <i class="fa-solid fa-brain"></i>
+          <span>AI Inspired</span>
+        </div>
+
+        <div class="feature">
+          <i class="fa-solid fa-rocket"></i>
+          <span>Fast Performance</span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- RIGHT -->
+    <section class="right">
+
+      <div class="login-card" id="card">
+
+        <h2>Welcome Back</h2>
+
+        <p>
+          Login to continue your creative journey.
         </p>
 
+        <!-- FORM -->
         <form id="loginForm">
-          <div class="form-group">
-            <input type="text" id="username" placeholder="Username" required />
+
+          <!-- USERNAME -->
+          <div class="input-box">
+
+            <i class="fa-solid fa-user"></i>
+
+            <input
+              type="text"
+              id="username"
+              placeholder="Username"
+              required
+            />
+
           </div>
 
-          <div class="form-group">
+          <!-- PASSWORD -->
+          <div class="input-box">
+
+            <i class="fa-solid fa-lock"></i>
+
             <input
               type="password"
               id="password"
               placeholder="Password"
               required
             />
+
+            <span
+              class="toggle"
+              onclick="togglePassword()"
+            >
+              <i
+                class="fa-solid fa-eye"
+                id="eyeIcon"
+              ></i>
+            </span>
+
           </div>
 
-          <button type="submit" class="login-btn">Login</button>
+          <!-- OPTIONS -->
+          <div class="options">
+
+            <label>
+              <input type="checkbox" />
+              Remember Me
+            </label>
+
+            <a href="#">
+              Forgot Password?
+            </a>
+
+          </div>
+
+          <!-- BUTTON -->
+          <button
+            type="submit"
+            class="btn"
+          >
+            Login Now
+          </button>
+
         </form>
 
-        <!-- New User Link -->
-        <p class="signup-text">
-          New here?
-          <a href="./signup.html">Sign Up</a>
-        </p>
-      </section>
-    </main>
+        <!-- DIVIDER -->
+        <div class="divider">
+          <span>CONTINUE WITH</span>
+        </div>
+
+        <!-- SOCIAL -->
+        <div class="socials">
+
+          <button class="social">
+            <i class="fa-brands fa-google"></i>
+          </button>
+
+          <button class="social">
+            <i class="fa-brands fa-github"></i>
+          </button>
+
+          <button class="social">
+            <i class="fa-brands fa-linkedin"></i>
+          </button>
+
+        </div>
+
+        <!-- SIGNUP -->
+        <div class="signup">
+
+          Don't have an account?
+
+          <a href="./signup.html">
+            Create Account
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
 
   <script>
-    // Transition effect for images
-    const images = document.querySelectorAll(".transition-image");
-    let currentImageIndex = 0;
 
-    function showNextImage() {
-      images[currentImageIndex].style.opacity = 0;
-      currentImageIndex = (currentImageIndex + 1) % images.length;
-      images[currentImageIndex].style.opacity = 1;
+    // =========================================
+    // PASSWORD TOGGLE
+    // =========================================
+
+    function togglePassword(){
+
+      const password =
+        document.getElementById("password");
+
+      const eyeIcon =
+        document.getElementById("eyeIcon");
+
+      if(password.type === "password"){
+
+        password.type = "text";
+
+        eyeIcon.classList.replace(
+          "fa-eye",
+          "fa-eye-slash"
+        );
+
+      } else {
+
+        password.type = "password";
+
+        eyeIcon.classList.replace(
+          "fa-eye-slash",
+          "fa-eye"
+        );
+      }
     }
 
-    setInterval(showNextImage, 3000);
+    // =========================================
+    // LOGIN SYSTEM
+    // CONNECTED WITH signup.html
+    // =========================================
 
-    // Login form submission
-    document.getElementById("loginForm").addEventListener("submit", function (event) {
-      event.preventDefault();
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", function(e){
 
-          const username = document.getElementById("username").value.trim();
+        e.preventDefault();
 
-          const password = document.getElementById("password").value.trim();
+        const username =
+          document.getElementById("username")
+          .value
+          .trim();
 
-      if (username && password) {
-        localStorage.setItem("username", username);
-        window.location.pathname = "/index.html";
-      } else {
-        alert("Invalid credentials. Please try again.");
-      }
+        const password =
+          document.getElementById("password")
+          .value
+          .trim();
+
+        // GET DATA FROM SIGNUP PAGE
+
+        const storedUsername =
+          localStorage.getItem("username");
+
+        const storedPassword =
+          localStorage.getItem("password");
+
+        // VALIDATION
+
+        if(
+          username === storedUsername &&
+          password === storedPassword
+        ){
+
+          const btn =
+            document.querySelector(".btn");
+
+          btn.innerHTML =
+            "✔ Login Successful";
+
+          btn.style.background =
+            "linear-gradient(135deg,#06b6d4,#7c3aed)";
+
+          setTimeout(()=>{
+
+            window.location.href =
+              "../index.html";
+
+          },1500);
+
+        } else {
+
+          alert(
+            "Invalid Username or Password"
+          );
+        }
+
+      });
+
+    // =========================================
+    // 3D CARD EFFECT
+    // =========================================
+
+    const card =
+      document.getElementById("card");
+
+    document.addEventListener("mousemove",(e)=>{
+
+      const x =
+        (window.innerWidth / 2 - e.pageX) / 35;
+
+      const y =
+        (window.innerHeight / 2 - e.pageY) / 35;
+
+      card.style.transform =
+        `rotateY(${x}deg) rotateX(${-y}deg)`;
+
     });
+
   </script>
+
 </body>
 </html>
-
