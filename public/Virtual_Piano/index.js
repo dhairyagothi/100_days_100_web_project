@@ -1,3 +1,4 @@
+
 var numOfKeys = $(".key").length;
 
 for(var i=0; i<numOfKeys; i++) {
