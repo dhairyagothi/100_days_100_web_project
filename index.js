@@ -29,7 +29,7 @@ const PROJECTS = [
     ["Day 13",  "Login Form — MERN",                   "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern",                     ["React","MongoDB","Node"],"tool"],
     ["Day 14",  "File Uploader",                       "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader",                      ["Node","Multer"],         "tool"],
     ["Day 15",  "Progress Bar",                        "./public/progress_bar/progress_bar.html",                                                                        ["HTML","CSS","JS"],       "ui"],
-    ["Day 16",  "Custom Scrollbar CSS",                "./public/index.html",                                                                                            ["CSS"],                   "ui"],
+    ["Day 16",  "Custom Scrollbar CSS",                "#",                                                                                            ["CSS"],                   "ui"],
     ["Day 17",  "Slider — Swiper API",                 "./public/slider%20box/index.html",                                                                              ["JS","Swiper"],           "ui"],
     ["Day 18",  "Carousel Solar System",               "./public/carousal/index.html",                                                                                   ["HTML","CSS","JS"],       "ui"],
     ["Day 19",  "Planto — Plant Website",              "./public/plantwebsite/plant.html",                                                                               ["HTML","CSS","JS"],       "ui"],
