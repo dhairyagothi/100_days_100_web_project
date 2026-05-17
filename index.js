@@ -210,16 +210,23 @@ let activeFilter = 'all';
 let searchQuery  = '';
 
 function renderGrid() {
-    const grid = document.getElementById('projectGrid');
-    const noResults = document.getElementById('noResults');
-    if (!grid) return;
-
     const filtered = PROJECTS.filter(([day, name, , , cat]) => {
-        const matchesFilter = activeFilter === 'all' || cat === activeFilter;
-        const q = searchQuery.toLowerCase();
-        const matchesSearch = !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
-        return matchesFilter && matchesSearch;
-    });
+
+    const matchesCategory =
+        activeFilter === 'all' || cat === activeFilter;
+
+    const matchesDifficulty =
+        currentDifficulty === 'all' || cat === currentDifficulty;
+
+    const q = searchQuery.toLowerCase();
+
+    const matchesSearch =
+        !q ||
+        name.toLowerCase().includes(q) ||
+        day.toLowerCase().includes(q);
+
+    return matchesCategory && matchesDifficulty && matchesSearch;
+});
 
     grid.innerHTML = '';
 
