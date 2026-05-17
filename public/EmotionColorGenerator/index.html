@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emotion Color Generator</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- TITLE -->
+    <h1>🧠 Emotion Color Generator</h1>
+    <p class="subtitle">Turn emotions into colors & visual vibes</p>
+
+    <!-- INPUT -->
+    <input 
+      id="emotionInput" 
+      type="text" 
+      placeholder="Type emotion or color: happy, blue, calm..."
+      autocomplete="off"
+    />
+
+    <!-- BUTTONS -->
+    <div class="buttons">
+      <button onclick="generateColors()">Generate</button>
+      <button onclick="resetAll()">Reset</button>
+    </div>
+
+    <!-- RESULT BOX -->
+    <div id="result" class="result hidden">
+
+      <h2 id="emotionTitle"></h2>
+      <p id="emotionText"></p>
+
+      <!-- COLOR PALETTE -->
+      <div id="palette" class="palette"></div>
+
+      <!-- COPY BUTTON -->
+      <button class="copy-btn" onclick="copyPalette()">
+        Copy Colors
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- JS -->
+  <script src="script.js"></script>
+
+</body>
+</html>

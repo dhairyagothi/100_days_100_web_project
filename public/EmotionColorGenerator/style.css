@@ -1,0 +1,121 @@
+/* =========================
+   BASE LAYOUT
+========================= */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(120deg, #000, #333);
+  transition: background 0.6s ease;
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 30px;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  width: 360px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================
+   TEXT STYLES
+========================= */
+
+.subtitle {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* =========================
+   INPUT
+========================= */
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.buttons {
+  margin-top: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* =========================
+   RESULT SECTION
+========================= */
+
+.result {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* =========================
+   COLOR PALETTE
+========================= */
+
+.palette {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.color-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+
+.color-box:hover {
+  transform: scale(1.2);
+}
+
+/* =========================
+   COPY BUTTON
+========================= */
+
+.copy-btn {
+  margin-top: 10px;
+  background: white;
+  color: black;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
