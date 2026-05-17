@@ -3,6 +3,8 @@ const ctx = canvas.getContext("2d");
 const color = getComputedStyle(document.documentElement).getPropertyValue("--button-color");
 const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue("--sidebar-color");
 let score = 0;
+let highScore = localStorage.getItem("highScore") || 0;
+let gameRunning = false;
 const brickRowCount = 9;
 const brickColumnCount = 5;
 const heightRatio = 0.75;
@@ -109,9 +111,11 @@ function moveBall() {
     if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
         ball.dx *= -1;
     }
+
     if (ball.y - ball.size < 0) {
         ball.dy *= -1;
     }
+
     if (
         ball.x - ball.size > paddle.x &&
         ball.x + ball.size < paddle.x + paddle.w &&
@@ -119,19 +123,24 @@ function moveBall() {
     ) {
         ball.dy = -ball.speed;
     }
+
     bricks.forEach((column) => {
         column.forEach((brick) => {
             if (brick.visible) {
                 if (
-                    ball.x - ball.size > brick.x && 
-                    ball.x + ball.size < brick.x + brick.w && 
-                    ball.y + ball.size > brick.y && 
-                    ball.y - ball.size < brick.y + brick.h 
+                    ball.x - ball.size > brick.x &&
+                    ball.x + ball.size < brick.x + brick.w &&
+                    ball.y + ball.size > brick.y &&
+                    ball.y - ball.size < brick.y + brick.h
                 ) {
-                    ball.dy *= -1; 
+                    ball.dy *= -1;
                     brick.visible = false;
+
                     increaseScore();
-                    currentBrickColor = getRandomColor(); 
+                    checkWin();
+
+                    currentBrickColor = getRandomColor();
+
                     bricks.forEach((col) => {
                         col.forEach((b) => {
                             b.color = currentBrickColor;
@@ -141,8 +150,9 @@ function moveBall() {
             }
         });
     });
+
     if (ball.y + ball.size > canvas.height) {
-        resetGame(); //
+        showGameOver();
     }
 }
 
@@ -161,10 +171,35 @@ function showAllBricks() {
     });
 }
 
-function showGameOver() {
-    resetGame();
-    update();
+function checkWin() {
+    const allBricksBroken = bricks.every((column) =>
+        column.every((brick) => !brick.visible)
+    );
+
+    if (allBricksBroken) {
+        gameRunning = false;
+
+        document
+            .getElementById("game-over-container")
+            .classList.remove("hidden");
+
+        document.querySelector(
+            ".game-over-content h2"
+        ).innerText = "You Win! 🎉";
+
+        document.getElementById("final-score").innerText = score;
+
+        if (score > highScore) {
+            highScore = score;
+
+            localStorage.setItem("highScore", highScore);
+        }
+
+        document.getElementById("high-score").innerText =
+            highScore;
+    }
 }
+
 function keyDown(e) {
     if (e.key === "Right" || e.key === "ArrowRight") paddle.dx = paddle.speed;
     else if (e.key === "Left" || e.key === "ArrowLeft") paddle.dx = -paddle.speed;
@@ -185,7 +220,9 @@ function update() {
     movePaddle();
     moveBall();
     draw();
+    if (gameRunning) {
     requestAnimationFrame(update);
+}
 }
 
 document.addEventListener("keydown", keyDown);
@@ -193,18 +230,40 @@ document.addEventListener("keyup", keyUp);
 
 function startGame() {
     document.getElementById("rules-container").style.display = "none";
+
+    document
+        .getElementById("game-over-container")
+        .classList.add("hidden");
+
+    document.querySelector(".game-over-content h2").innerText = "Game Over";
+
     resetGame();
-    update();
+
+    document.getElementById("high-score").innerText = highScore;
+
+    if (!gameRunning) {
+        startCountdown();
+    }
 }
 
 function resetGame() {
     score = 0;
+
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
-    ball.speed = initialBallSpeed; 
+
+    ball.speed = initialBallSpeed;
+
     ball.dx = ball.speed;
-    ball.dy = -ball.speed; 
+    ball.dy = -ball.speed;
+
+    paddle.x = canvas.width / 2 - 40;
+
     resetBricks();
+
+    document.getElementById("final-score").innerText = 0;
+
+    draw();
 }
 
 function resetBricks() {
@@ -214,8 +273,20 @@ function resetBricks() {
 }
 
 function showGameOver() {
-    resetGame();  
-    update();  
+    gameRunning = false;
+
+    document
+        .getElementById("game-over-container")
+        .classList.remove("hidden");
+
+    document.getElementById("final-score").innerText = score;
+
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("highScore", highScore);
+    }
+
+    document.getElementById("high-score").innerText = highScore;
 }
 
 function getRandomColor() {
@@ -229,3 +300,31 @@ function getRandomColor() {
 
 document.getElementById("start-btn").addEventListener("click", startGame);
 document.getElementById("restart-btn").addEventListener("click", startGame);
+
+function startCountdown() {
+    const countdownEl = document.getElementById("countdown");
+
+    countdownEl.classList.remove("hidden");
+
+    let count = 3;
+
+    countdownEl.innerText = count;
+
+    const timer = setInterval(() => {
+        count--;
+
+        if (count > 0) {
+            countdownEl.innerText = count;
+        } else if (count === 0) {
+            countdownEl.innerText = "GO!";
+        } else {
+            clearInterval(timer);
+
+            countdownEl.classList.add("hidden");
+
+            gameRunning = true;
+
+            update();
+        }
+    }, 1000);
+}

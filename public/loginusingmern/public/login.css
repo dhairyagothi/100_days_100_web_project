@@ -2,51 +2,106 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    display: flex;
-    justify-content: space-evenly;
     min-height: 100vh;
-    background-color: #fff;
-    gap: 20px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    flex-direction: row;
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    padding: 20px;
 }
-.image{
+
+/* layout wrapper */
+.container, form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* form card */
+form {
+    width: 380px;
+    padding: 30px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+/* heading */
+form h1, form h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* input fields */
+input {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+    text-align: left;
+}
+
+input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 8px rgba(74,144,226,0.3);
+}
+
+/* labels */
+label {
+    font-size: 14px;
+    text-align: left;
+    color: #555;
+}
+
+/* button */
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #4a90e2;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #357bd8;
+    transform: translateY(-2px);
+}
+
+/* links */
+a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* login animation/image section */
+.image iframe {
+    width: 300px;
+    height: 300px;
     border: none;
 }
-form{
-    justify-self: center;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    width: auto;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 25px;
-    text-align: center;
-    gap: 10px;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #fff;
-    border: 1px solid #000;
-    box-shadow: 0 0 10px 0 #444;
 
-}
-input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    font-size: 20px;
-    text-align: center;
-}
-button {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    font-size: 20px;
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 0 10px 0 #444;
-    cursor: pointer;
+/* responsive */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    form {
+        width: 100%;
+        max-width: 350px;
+    }
 }

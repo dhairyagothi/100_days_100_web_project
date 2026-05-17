@@ -176,7 +176,6 @@ function fillTable() {
     tableBody.appendChild(fragment);
     updateResultsCount(projectData.length);
 }
-
 // ── Search / Filter ───────────────────────────────────────────────────────
 function filterProjects() {
     const query = searchInput.value.toLowerCase().trim();
@@ -216,4 +215,38 @@ scrollBtn.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     fillTable();
+});
+
+let currentPage = 1;
+const itemsPerPage = 10;
+let projectData = [];
+
+/* ============================================================
+   SCROLL TO TOP
+   ============================================================ */
+function initScrollBtn() {
+    const btn = document.getElementById('scrollBtn');
+    if (!btn) return;
+
+    window.addEventListener('scroll', () => {
+        btn.classList.toggle('show', window.scrollY > 400);
+    });
+
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    updateNavbar();
+    initFilterChips();
+    initSearch();
+    syncProjectCounts();
+    renderGrid();
+    fetchRepoStats();
+    initScrollBtn();
 });

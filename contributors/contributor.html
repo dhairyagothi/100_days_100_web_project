@@ -16,211 +16,12 @@
     <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Bulma StyleSheet -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <link rel="stylesheet" href="contributor.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script
-      src="https://kit.fontawesome.com/a076d05399.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="contributor.css">
+</head>
   
-  <style type="text/css">
-    :root {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: rgba(255, 255, 255, 0.03);
-      --text-primary: #fff;
-      --text-secondary: rgba(255, 255, 255, 0.8);
-      --accent-color: #1abc9c;
-      --accent-hover: #16a085;
-      --border-color: rgba(255, 255, 255, 0.1);
-      --shadow-color: rgba(0, 0, 0, 0.3);
-      --particle-color: rgba(26, 188, 156, 0.7);
-    }
-
-    body.light-mode {
-      --bg-primary: #f5f5f5;
-      --bg-secondary: rgba(0, 0, 0, 0.03);
-      --text-primary: #2c3e50;
-      --text-secondary: rgba(0, 0, 0, 0.7);
-      --accent-color: #1abc9c;
-      --accent-hover: #16a085;
-      --border-color: rgba(0, 0, 0, 0.1);
-      --shadow-color: rgba(0, 0, 0, 0.1);
-      --particle-color: rgba(26, 188, 156, 0.3);
-    }
-
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      background: rgba(26, 188, 156, 0.1);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-color);
-      padding: 1rem 2rem;
-      box-shadow: 0 8px 32px var(--shadow-color);
-      animation: slideDown 0.8s ease-out;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    @keyframes slideDown {
-      from {
-        transform: translateY(-100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    .navbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .navbar-brand img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(26, 188, 156, 0.6);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        box-shadow: 0 0 20px rgba(26, 188, 156, 0.6);
-      }
-      50% {
-        box-shadow: 0 0 40px rgba(26, 188, 156, 1);
-      }
-    }
-
-    .navbar-brand span {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #1abc9c, #3498db, #9b59b6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .buttons .button {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .buttons .button:hover {
-      background: var(--accent-color);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(26, 188, 156, 0.4);
-    }
-
-    #themeToggle {
-      background: rgba(26, 188, 156, 0.2);
-      border: none;
-      color: var(--accent-color);
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 1.1rem;
-    }
-
-    #themeToggle:hover {
-      background: var(--accent-color);
-      color: #fff;
-      transform: rotate(180deg);
-    }
-
-     #scrollBtn {
-       position: fixed;
-       bottom: 20px; /* Place closer to the bottom */
-       right: 20px; /* Place closer to the right */
-       display: none; /* Initially hidden */
-       background-color: #1abc9c;
-       color: rgb(247, 242, 242);
-       border: none;
-       border-radius: 50%;
-       padding: 15px;
-       font-size: 18px;
-       cursor: pointer;
-       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-       z-index: 1000; /* Ensure visibility above other elements */
-       transition: background-color 0.3s ease, transform 0.3s ease;
-     }
-
-     #scrollBtn:hover {
-       background-color: #000; /* Change color on hover */
-       transform: scale(1.2); /* Slightly enlarge */
-     }
-
-     #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-    @media (max-width: 768px) {
-      .navbar-brand span {
-        font-size: 1rem;
-      }
-      
-      .navbar {
-        padding: 1rem;
-      }
-      
-      .buttons .button {
-        font-size: 0.9rem;
-        padding: 0.5rem 1rem;
-      }
-    }
-  </style>
 
   <body>
-    <canvas id="bgCanvas"></canvas>
     
     <!-- Navbar -->
     <nav class="navbar">
@@ -231,6 +32,10 @@
         <div class="buttons">
             <a class="button" href="../index.html">
               Home
+            </a>
+            <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn">
+                <i class="fas fa-rocket"></i>
+                <span>Generate README</span>
             </a>
             <a class="button" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
               GitHub
@@ -244,96 +49,79 @@
     
 
     <div class="container">
-      <h1>Contributors of 100_Days_100_Projects </h1>
+      <div class="contributor-header">
+        <h1>Project Contributors</h1>
+        <p class="subtitle">Highlighting the brilliant minds behind this journey</p>
+      </div>
+      
+      <div class="stats-overview">
+        <div class="stat-item">
+          <div class="value" id="starCount">...</div>
+          <label>Stars</label>
+        </div>
+        <div class="stat-item">
+          <div class="value" id="forkCount">...</div>
+          <label>Forks</label>
+        </div>
+        <div class="stat-item">
+          <div class="value" id="issueCount">...</div>
+          <label>Open Issues</label>
+        </div>
+        <div class="stat-item">
+          <div class="value" id="prCount">...</div>
+          <label>Pull Requests</label>
+        </div>
+        <div class="stat-item">
+          <div class="value" id="totalCommits">...</div>
+          <label>Total Commits</label>
+        </div>
+        <div class="stat-item">
+          <div class="value" id="contributorCount">...</div>
+          <label>Contributors</label>
+        </div>
+      </div>
+
       <div id="contributors" class="contributors-grid"></div>
+
+      <div class="contributor-header" style="margin-top: 5rem;">
+        <h1>Project Stargazers</h1>
+        <p class="subtitle">The community supporting our growth</p>
+      </div>
+      <div id="stargazers" class="stargazers-grid"></div>
     </div>
 
     
     
 
     <footer class="footer">
-      <div class="content">
-        <div class="columns is-vcentered">
-          <!-- Left Side -->
-          <div class="column has-text-left">
-            <div class="heading">
-              <h2 class="is-size-4">About</h2>
-              <p>
-                This repository contains 100 web projects from basic to
-                intermediate using HTML, CSS, and JS.
-              </p>
-              <p>
-                <strong>
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  100 Days, 100 Projects
-                </strong>
-                by <a href="#">Dhairya</a> and <a href="#">Contributors</a>.
-              </p>
+        <div class="footer-content">
+            <div>
+                <h3>About</h3>
+              <p>This repository contains a growing collection of web projects from basic to intermediate using HTML, CSS, and JS.</p>
+                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
             </div>
-          </div>
-
-          <!-- Right Side -->
-          <div class="column ms-4">
-            <div class="heading">
-              <h2 class="is-size-4">Important Links</h2>
-              <!-- Social Media Icons -->
-              <div class="buttons">
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://www.instagram.com/dhairyaa__31/"
-                  target="_blank"
-                  aria-label="Instagram"
-                >
-                  <span class="icon">
-                    <i class="fab fa-instagram"></i>
-                  </span>
-                </a>
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://github.com/dhairyagothi/100_days_100_web_project"
-                  target="_blank"
-                  aria-label="GitHub"
-                >
-                  <span class="icon">
-                    <i class="fab fa-github"></i>
-                  </span>
-                </a>
-                <a
-                  class="button is-dark is-rounded"
-                  href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
-                  target="_blank"
-                  aria-label="LinkedIn"
-                >
-                  <span class="icon">
-                    <i class="fab fa-linkedin"></i>
-                  </span>
-                </a>
-              </div>
-              <!-- Navigation Links -->
-              <div class="buttons ms-5">
-                <a class="button is-primary is-rounded" href="#">
-                  <span class="icon">
-                    <i class="fas fa-home"></i>
-                  </span>
-                  <span>Home</span>
-                </a>
-                <a
-                  class="button is-link is-rounded"
-                  href="contributors/contributor.html"
-                >
-                  <span class="icon">
-                    <i class="fas fa-users"></i>
-                  </span>
-                  <span>Contributors</span>
-                </a>
-              </div>
+            <div>
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
             </div>
-          </div>
+            <div>
+                <h3>Featured Project</h3>
+                <p>Generate free, stunning GitHub README profiles in minutes.</p>
+                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top: 1rem;">
+                    <i class="fas fa-magic"></i> Try README Generator
+                </a>
+            </div>
         </div>
-      </div>
     </footer>
 
     <!-- Top scroll button -->
@@ -342,32 +130,7 @@
     </button>
 
     <!-- Pushed JavaScript Code To Here -->
-    <script src="index.js"></script>
-
-    <script>
-      // Get the button element
-      const scrollBtn = document.getElementById("scrollBtn");
-
-      // Show the button when the user scrolls down 100px from the top
-      window.onscroll = function () {
-        if (
-          document.body.scrollTop > 100 ||
-          document.documentElement.scrollTop > 100
-        ) {
-          scrollBtn.style.display = "block";
-        } else {
-          scrollBtn.style.display = "none";
-        }
-      };
-
-      // Scroll to the top of the page when the button is clicked
-      scrollBtn.onclick = function () {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      };
-    </script>
+    <script src="../index.js"></script>
     <script src="contributor.js"></script>
     
   </body>
