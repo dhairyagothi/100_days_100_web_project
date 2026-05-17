@@ -8,6 +8,8 @@ if (typeof REPO_OWNER === 'undefined') {
 window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
 window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
+
+
 let currentPage = 1;
 const itemsPerPage = 10;
 let projectData = [];
@@ -28,8 +30,8 @@ const PROJECT_DATA = [
     ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
     ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
     ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
-    ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
-    ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
+    ['Day 13', 'Login Form Using MERN', 'https://loginusingmern.onrender.com', 'api javascript', 'intermediate'],
+    ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', 'javascript', 'intermediate'],
     ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'css javascript', 'beginner'],
     ['Day 16', 'Scroll Bar CSS', './public/Scroll Game Dark Run/index.html', 'css', 'beginner'],
     ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],

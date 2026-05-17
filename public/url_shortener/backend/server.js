@@ -29,7 +29,7 @@ app.get("/health", (req, res) => {
 
 app.use('/login', Login_route)
 app.use('/signup', SignUp_route)
-app.use('/api/shortern/', API_shortner)
+app.use('/api/shorten/', API_shortner)
 app.use('/', Redirect_route)
 app.use('/api/', Logged_user)
 

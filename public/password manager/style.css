@@ -62,6 +62,22 @@ nav {
     z-index: 100;
 }
 
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #00adb5;
+}
+
 .logo {
     font-family: var(--font-heading);
     font-weight: 700;
