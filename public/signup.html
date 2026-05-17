@@ -13,9 +13,10 @@
 <body>
     <header class="navbar">
         <a href="../index.html" class="nav-link">Back to Home</a>
-      </header>
+    </header>
+
     <div class="container">
-        
+
         <div class="left-section">
             <button class="back-button" onclick="window.location.href='Login.html'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -32,30 +33,45 @@
                 seasoned developer or just starting out, there's something here for everyone to explore, learn, and
                 build.
             </p>
+
             <form id="signupForm" class="login-form">
                 <input type="text" id="name" placeholder="Name" class="input-field">
                 <input type="text" id="username" placeholder="Username" class="input-field">
                 <input type="email" id="email" placeholder="Email" class="input-field">
                 <input type="password" id="password" placeholder="Password" class="input-field">
+
+                   <span id="password-error" style="display: none;
+                    color: red;
+                    font-size: 13px;
+                    margin-top: -8px;
+                    margin-bottom: 6px;
+                 "></span>
+
+                <small style="color: #888; font-size: 12px; margin-bottom: 8px; display: block;">
+                    Min 8 chars · Uppercase · Lowercase · Number · Special char · No spaces
+                </small>
+
                 <button type="submit" class="submit-button">Sign up</button>
             </form>
+
             <p class="already-signed-up" style="margin-top: 10px;">
                 already signed up? <a href="login.html">Login</a>
             </p>
         </div>
-    
+
         <div class="right-section">
             <img src="https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,h_1080,q_100,w_1080/v1/gcs/platform-data-dsc/events/web_ilY3NoA.jpeg" alt="Image 1" class="transition-image">
-      <img src="https://d1yn1kh78jj1rr.cloudfront.net/image/preview/rDtN98Qoishumwih/website-project_zkO6fFr__PM.jpg" alt="Image 2" class="transition-image">
-      <img src="https://www.socialbullets.com/wp-content/uploads/2020/03/SEO-Marketing-Plan-1024x819-1.png" alt="Image 3" class="transition-image">
-      <img src="https://static.vecteezy.com/system/resources/previews/011/153/366/original/3d-web-developer-working-on-project-illustration-png.png" alt="Image 4" class="transition-image">
-      <img src="https://labs.sogeti.com/wp-content/uploads/sites/2/2024/01/case-studies-illustration-digital-services-a.png" alt="Image 5" class="transition-image">
-          </div>
-    </section>
+            <img src="https://d1yn1kh78jj1rr.cloudfront.net/image/preview/rDtN98Qoishumwih/website-project_zkO6fFr__PM.jpg" alt="Image 2" class="transition-image">
+            <img src="https://www.socialbullets.com/wp-content/uploads/2020/03/SEO-Marketing-Plan-1024x819-1.png" alt="Image 3" class="transition-image">
+            <img src="https://static.vecteezy.com/system/resources/previews/011/153/366/original/3d-web-developer-working-on-project-illustration-png.png" alt="Image 4" class="transition-image">
+            <img src="https://labs.sogeti.com/wp-content/uploads/sites/2/2024/01/case-studies-illustration-digital-services-a.png" alt="Image 5" class="transition-image">
         </div>
 
+    </div>
 
     <script>
+
+        
         const images = document.querySelectorAll('.transition-image');
         let currentImageIndex = 0;
 
@@ -67,6 +83,32 @@
 
         setInterval(showNextImage, 3000);
 
+
+        
+        function validatePassword(password) {
+            if (/\s/.test(password)) {
+                return { valid: false, message: "✗ Password must not contain spaces." };
+            }
+            if (!/[A-Z]/.test(password)) {
+                return { valid: false, message: "✗ Add at least one uppercase letter (A-Z)." };
+            }
+            if (!/[a-z]/.test(password)) {
+                return { valid: false, message: "✗ Add at least one lowercase letter (a-z)." };
+            }
+            if (!/[0-9]/.test(password)) {
+                return { valid: false, message: "✗ Add at least one number (0-9)." };
+            }
+            if (!/[!@#$%^&*(),.?":{}|<>_\-+=\[\]]/.test(password)) {
+                return { valid: false, message: "✗ Add at least one special character (@, #, !, etc)." };
+            }
+            if (password.length < 8) {
+                return { valid: false, message: "✗ Password must be at least 8 characters long." };
+            }
+            return { valid: true, message: "✓ Strong password!" };
+        }
+
+
+        
         document.getElementById('signupForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
@@ -74,18 +116,43 @@
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('password-error');
 
-            // Replace this with actual validation and signup logic
-            if (name && username && email && password) {
-                // Store username in localStorage
-                localStorage.setItem("username", username);
-
-                // Assume the registration is successful
-                window.location.href = 'Login.html';
-            } else {
+            
+            if (!name || !username || !email || !password) {
                 alert('Please fill in all fields.');
+                return;
             }
+
+            
+            const result = validatePassword(password);
+            if (!result.valid) {
+                errorEl.textContent = result.message;
+                errorEl.style.color = 'red';
+                errorEl.style.display = 'block';
+                document.getElementById('password').focus();
+                return;
+            }
+
+        
+            errorEl.style.display = 'none';
+            localStorage.setItem("username", username);
+            window.location.href = 'Login.html';
         });
+
+
+        document.getElementById('password').addEventListener('input', function () {
+            const errorEl = document.getElementById('password-error');
+            if (!this.value) {
+                errorEl.style.display = 'none';
+                return;
+            }
+            const result = validatePassword(this.value);
+            errorEl.textContent = result.message;
+            errorEl.style.color = result.valid ? 'green' : 'red';
+            errorEl.style.display = 'block';
+        });
+
     </script>
 </body>
 
