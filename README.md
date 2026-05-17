@@ -26,7 +26,7 @@
 
 ## 🌟 About This Project
 
-Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **112+ web development projects** ranging from beginner to intermediate level. Our goal is to help developers learn and practice web development through hands-on projects using various technologies.
+Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **114+ web development projects** ranging from beginner to intermediate level. Our goal is to help developers learn and practice web development through hands-on projects using various technologies.
 
 ### 🎯 What You'll Find Here:
 - **Frontend Projects**: HTML, CSS, JavaScript, React, Vue.js
@@ -58,7 +58,7 @@ The website features:
 - Beautiful dark/light theme toggle
 - Responsive design for all devices
 
-## 📚 All Projects (112 Total)
+## 📚 All Projects (114 Total)
 
 <div align="center">
 
