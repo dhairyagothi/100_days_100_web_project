@@ -158,7 +158,8 @@ dist/
 
 # Gatsby files
 .cache/
-public/
+# Note: Removed blanket public/ ignore to allow project source files
+# Use specific ignores for build artifacts instead
 
 # Storybook build outputs
 .out

@@ -1,0 +1,19 @@
+{
+  "name": "webrtc-file-sharing",
+  "private": true,
+  "version": "0.1.0",
+  "description": "WebRTC file sharing application",
+  "scripts": {
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "dev": "npm run dev:client & npm run dev:server",
+    "build:client": "npm run build --workspace=client",
+    "build:server": "npm run build --workspace=server",
+    "start:server": "npm start --workspace=server",
+    "install-all": "npm install && npm install --workspace=client && npm install --workspace=server"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ]
+}
