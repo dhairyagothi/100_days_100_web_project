@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Email Validator</title>
-
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -16,20 +15,30 @@
       </p>
 
       <div class="input-group">
-        <input type="text" id="username" placeholder="Enter email address" />
-
-        <button id="submitBtn" class="btn">Validate Email</button>
+        <input
+          type="email"
+          id="username"
+          placeholder="Enter email address"
+          autocomplete="email"
+          aria-label="Email address"
+        />
+        <button type="button" id="submitBtn" class="btn">Validate Email</button>
       </div>
 
-      <div id="resultCont"></div>
-    </div>
+      <details class="api-key-details">
+        <summary>Optional: API key for deliverability checks</summary>
+        <input
+          type="password"
+          id="apiKeyInput"
+          placeholder="Paste API key from emailvalidation.io"
+          autocomplete="off"
+          aria-label="API key"
+        />
+      </details>
 
-    <script>
-      const submitBtn = document.getElementById("submitBtn");
-      const resultCont = document.getElementById("resultCont");
-    </script>
+      <div id="resultCont" aria-live="polite"></div>
+    </div>
 
     <script src="script.js"></script>
   </body>
 </html>
-

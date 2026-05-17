@@ -120,3 +120,67 @@ h1{
     color:#cbd5e1;
     font-size:15px;
 }
+
+.btn:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+}
+
+.api-key-details{
+    margin-bottom:20px;
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+.api-key-details summary{
+    cursor:pointer;
+    margin-bottom:8px;
+}
+
+.api-key-details input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:14px;
+    margin-top:8px;
+}
+
+.result-card{
+    padding:20px;
+    border-radius:12px;
+    margin-top:4px;
+}
+
+.result-card.valid{
+    background:#14532d;
+    border-left:4px solid #22c55e;
+}
+
+.result-card.invalid{
+    background:#7f1d1d;
+    border-left:4px solid #ef4444;
+}
+
+.status-badge{
+    font-size:1.15rem;
+    font-weight:600;
+    margin-bottom:12px;
+}
+
+.result-email{
+    font-size:1rem;
+    margin-bottom:8px;
+    word-break:break-word;
+}
+
+.result-note{
+    color:#cbd5e1;
+    font-size:14px;
+    margin-top:8px;
+}
+
+.error strong{
+    display:block;
+    margin-bottom:6px;
+}
