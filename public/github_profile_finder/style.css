@@ -1,0 +1,179 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    align-items: center;
+    padding: 0 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+.search-box:focus-within {
+    border-color: #667eea;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    font-size: 16px;
+}
+
+#searchInput:focus {
+    outline: none;
+}
+
+#searchBtn {
+    padding: 12px 30px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#searchBtn:hover {
+    background: #764ba2;
+}
+
+.result {
+    min-height: 100px;
+}
+
+.profile {
+    text-align: center;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 4px solid #667eea;
+}
+
+.profile-info {
+    margin-bottom: 15px;
+}
+
+.profile-info h2 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.profile-info p {
+    color: #666;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.profile-info p img {
+    width: 18px;
+    height: 18px;
+}
+
+.profile-info a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.profile-info a:hover {
+    text-decoration: underline;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat h3 {
+    color: #667eea;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.stat p {
+    color: #666;
+    font-size: 14px;
+}
+
+.error {
+    color: #e74c3c;
+    text-align: center;
+    padding: 20px;
+    background: #fadbd8;
+    border-radius: 5px;
+}
+
+.loading {
+    text-align: center;
+    color: #667eea;
+    font-weight: bold;
+}

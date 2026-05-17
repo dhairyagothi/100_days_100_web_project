@@ -1,20 +1,58 @@
-let notesContainer = document.getElementById("notes-container");
-let documentsList = document.querySelector(".documents-list");
-let pdfMessage = document.getElementById("pdfMessage");
+// ─── DOM References ────────────────────────────────────────────────────────────
+const notesContainer = document.getElementById("notes-container");
+const documentsList  = document.querySelector(".documents-list");
+const pdfMessage     = document.getElementById("pdfMessage");
+const taskInput      = document.getElementById("task-input");
+const taskTypeSelect = document.getElementById("task-type");
 
-let currentTheme = "theme1"; // Default theme
+// ─── Theme State ───────────────────────────────────────────────────────────────
+// Maps theme id → gradient for body + card fallback colour for default cards
+const THEMES = {
+  theme1: {
+    body: "linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)",
+    card: "rgba(232, 221, 227, 1)",
+  },
+  theme2: {
+    body: "linear-gradient(135deg, #e4afcb 0%, #e2c58b 50%, #7edbdc 100%)",
+    card: "#e4afcb",
+  },
+  theme3: {
+    body: "linear-gradient(135deg, #39db8c 0%, #a0c559 30%, #d1ab51 55%, #e6936b 80%, #df868d 100%)",
+    card: "#df868d",
+  },
+  theme4: {
+    body: "linear-gradient(135deg, rgb(120,25,105) 0%, rgb(197,211,201) 100%)",
+    card: "rgb(197, 211, 201)",
+  },
+  theme5: {
+    body: "linear-gradient(135deg, #b92b27 0%, #1565c0 100%)",
+    card: "#c0cfe8",
+  },
+};
 
-// Task types with updated labels, values, and colors
-const taskTypes = [
-  { label: "Select Type", value: "", color: "white" },
-  { label: "Work", value: "Work", color: "#FFDE59" }, // Bright Yellow
-  { label: "Personal", value: "Personal", color: "#FFC0CB" }, // Soft Pastel Pink
-  { label: "Professional", value: "Urgent", color: "#B0BEC5" }, // Cool Gray
-  { label: "Fitness", value: "Fitness", color: "#B1EE99" }, // Vibrant Green
-  { label: "Miscellaneous", value: "Miscellaneous", color: "#CAB9F5" }, // Vibrant Green
-];
+let currentTheme = "theme1"; // default
 
+// ─── Task Type colour map ──────────────────────────────────────────────────────
+// Keeps track of user-chosen type colours so they survive theme switches
+const TYPE_COLORS = {
+  "":              null,           // → use theme colour
+  "Work":          "#FFDE59",
+  "Personal":      "#FFC0CB",
+  "Professional":  "#B0BEC5",
+  "Fitness":       "#B1EE99",
+  "Miscellaneous": "#CAB9F5",
+};
+
+// ─── Add Task ──────────────────────────────────────────────────────────────────
 function Add() {
+  const text = taskInput.value.trim();
+
+  if (text === "") {
+    taskInput.focus();
+    taskInput.style.borderColor = "rgba(255, 80, 80, 0.8)";
+    setTimeout(() => { taskInput.style.borderColor = ""; }, 1200);
+    return;
+  }
 
   const notes = document.querySelectorAll(".notes");
 
@@ -28,186 +66,184 @@ function Add() {
     }
   }
 
-  // Create a note container
+  const selectedType  = taskTypeSelect.value;
+  const typeColor     = TYPE_COLORS[selectedType] ?? null;
+  const isDefaultCard = !typeColor; // no type selected → follows theme
+
+  // Card container
   const note = document.createElement("div");
   note.classList.add("notes");
-  note.style.backgroundColor = "white";
+  note.dataset.defaultCard = isDefaultCard ? "true" : "false";
 
+  // Apply colour
+  note.style.backgroundColor = isDefaultCard
+    ? THEMES[currentTheme].card
+    : typeColor;
+
+  // Inner layout
   const noteWrapper = document.createElement("div");
-  noteWrapper.style.display = "flex";
-  noteWrapper.style.alignItems = "center";
-  noteWrapper.style.justifyContent = "space-between";
-  noteWrapper.style.width = "100%";
+  noteWrapper.style.cssText = "display:flex; align-items:flex-start; justify-content:space-between; width:100%; gap:8px;";
 
+  // Task text
   const taskText = document.createElement("span");
-  taskText.innerText = "Click here to add a task...";
-  taskText.contentEditable = true;
-  taskText.style.flex = "1";
-  taskText.style.marginRight = "10px";
+  taskText.className = "task-text";
+  taskText.innerText = text;
+  taskText.style.cssText = "flex:1; line-height:1.4; word-break:break-word;";
 
-  // Dropdown menu for task type
-  const dropdown = document.createElement("select");
-  dropdown.style.marginLeft = "10px";
+  // Actions column
+  const actions = document.createElement("div");
+  actions.style.cssText = "display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0;";
 
-  // Populate dropdown with task types
-  taskTypes.forEach((taskType) => {
-    const option = document.createElement("option");
-    option.value = taskType.value;
-    option.innerText = taskType.label;
-    dropdown.appendChild(option);
+  // Tick / complete toggle
+  const tickBtn = document.createElement("button");
+  tickBtn.innerHTML = "&#10003;";
+  tickBtn.title = "Mark complete";
+  tickBtn.style.cssText = [
+    "background:none", "border:1.5px solid #555", "border-radius:50%",
+    "width:26px", "height:26px", "cursor:pointer", "font-size:14px",
+    "display:flex", "align-items:center", "justify-content:center",
+    "transition:background 0.2s, color 0.2s", "color:#333",
+  ].join(";");
+
+  tickBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    taskText.classList.toggle("completed");
+    tickBtn.style.background = taskText.classList.contains("completed") ? "#4caf50" : "none";
+    tickBtn.style.color      = taskText.classList.contains("completed") ? "white"   : "#333";
+    tickBtn.style.borderColor= taskText.classList.contains("completed") ? "#4caf50" : "#555";
   });
 
-  // Update task background color based on dropdown selection
-  dropdown.addEventListener("change", () => {
-    const selectedType = taskTypes.find((type) => type.value === dropdown.value);
-    if (selectedType) {
-      note.style.backgroundColor = selectedType.color;
-    }
+  // Delete button
+  const delBtn = document.createElement("button");
+  delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+  delBtn.title = "Delete task";
+  delBtn.style.cssText = [
+    "background:none", "border:none", "cursor:pointer",
+    "font-size:13px", "color:#c0392b", "padding:2px",
+    "transition:transform 0.2s",
+  ].join(";");
+  delBtn.addEventListener("mouseenter", () => { delBtn.style.transform = "scale(1.25)"; });
+  delBtn.addEventListener("mouseleave", () => { delBtn.style.transform = "scale(1)"; });
+  delBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    note.style.animation = "none";
+    note.style.transition = "opacity 0.25s, transform 0.25s";
+    note.style.opacity = "0";
+    note.style.transform = "scale(0.92)";
+    setTimeout(() => note.remove(), 250);
   });
 
-  const tickIcon = document.createElement("a");
-  tickIcon.innerHTML = "&#10003"; // Checkmark symbol
-  tickIcon.style.cursor = "pointer";
-  tickIcon.style.color = "black";
-  tickIcon.style.fontSize = "20px";
-  tickIcon.style.marginLeft = "10px";
+  // Type badge (only if type was selected)
+  if (selectedType) {
+    const badge = document.createElement("span");
+    badge.innerText = selectedType;
+    badge.style.cssText = [
+      "font-size:10px", "font-weight:700", "padding:2px 7px",
+      "border-radius:20px", "background:rgba(0,0,0,0.12)",
+      "color:#333", "white-space:nowrap", "margin-top:4px",
+      "align-self:flex-end",
+    ].join(";");
+    note.appendChild(badge);
+  }
 
+  actions.appendChild(tickBtn);
+  actions.appendChild(delBtn);
   noteWrapper.appendChild(taskText);
-  noteWrapper.appendChild(dropdown);
-  noteWrapper.appendChild(tickIcon);
-
-  note.appendChild(noteWrapper);
+  noteWrapper.appendChild(actions);
+  note.insertBefore(noteWrapper, note.firstChild);
   notesContainer.appendChild(note);
 
-  // Event listeners for task text
-  taskText.addEventListener("focus", () => {
-    if (taskText.innerText.trim() === "Click here to add a task...") {
-      taskText.innerText = "";
-    }
-  });
+  // Reset inputs
+  taskInput.value = "";
+  taskTypeSelect.value = "";
+  taskInput.focus();
+}
 
-  taskText.addEventListener("blur", () => {
-    if (taskText.innerText.trim() === "") {
-      taskText.innerText = "Click here to add a task...";
+// Allow pressing Enter in the input to add a task
+taskInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") Add();
+});
 
-    }
-  });
+// ─── Theme Switching ───────────────────────────────────────────────────────────
+function applyTheme(themeKey) {
+  const theme = THEMES[themeKey];
+  document.body.style.background = theme.body;
+  currentTheme = themeKey;
 
-  tickIcon.addEventListener("click", (event) => {
-    taskText.classList.toggle("completed");
-    taskText.style.textDecoration = taskText.classList.contains("completed")
-      ? "line-through"
-      : "none";
-    event.stopPropagation();
+  // Update CSS custom property → auto-updates all default cards via var()
+  document.documentElement.style.setProperty("--theme-card-bg", theme.card);
+
+  // Also imperatively update existing default cards
+  const cards = document.querySelectorAll(".notes[data-default-card='true']");
+  cards.forEach((card) => {
+    card.style.backgroundColor = theme.card;
   });
 }
 
+function c1() { applyTheme("theme1"); }
+function c2() { applyTheme("theme2"); }
+function c3() { applyTheme("theme3"); }
+function c4() { applyTheme("theme4"); }
+function c5() { applyTheme("theme5"); }
+
+// ─── PDF Export ────────────────────────────────────────────────────────────────
 function saveAsPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  let tasks = document.querySelectorAll(".notes");
-  tasks.forEach((task, index) => {
-    doc.text(20, 10 + (10 * index), task.textContent.trim());
+  const doc  = new jsPDF();
+  const cards = document.querySelectorAll(".notes");
+
+  doc.setFontSize(18);
+  doc.text("My To-Do List", 20, 18);
+  doc.setFontSize(12);
+
+  let y = 30;
+  cards.forEach((card, i) => {
+    const textNode = card.querySelector(".task-text");
+    const text = textNode ? textNode.innerText.trim() : card.innerText.trim();
+    if (text) {
+      doc.text(`${i + 1}. ${text}`, 20, y);
+      y += 10;
+      if (y > 270) { doc.addPage(); y = 20; }
+    }
   });
-  let fileName = `ToDoList_${Date.now()}.pdf`;
-  let fileURL = URL.createObjectURL(doc.output("blob"));
+
+  const fileName = `ToDoList_${Date.now()}.pdf`;
+  const fileURL  = URL.createObjectURL(doc.output("blob"));
   saveDocument(fileName, fileURL);
   showPDFMessage();
 }
 
 function saveDocument(fileName, fileURL) {
-  let docItem = document.createElement("div");
+  const docItem = document.createElement("div");
   docItem.className = "document-item";
   docItem.innerHTML = `
-        <span>${fileName}</span>
-        <button onclick="viewPDF('${fileURL}')">View</button>
-        <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
-        <button onclick="deletePDF(this)">Delete</button>
-    `;
+    <span>${fileName}</span>
+    <button onclick="viewPDF('${fileURL}')">View</button>
+    <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
+    <button onclick="deletePDF(this)">Delete</button>
+  `;
   documentsList.appendChild(docItem);
 }
 
-function viewPDF(fileURL) {
-  window.open(fileURL, "_blank");
+function viewPDF(fileURL)                  { window.open(fileURL, "_blank"); }
+function downloadPDF(fileURL, fileName)    {
+  const a = document.createElement("a");
+  a.href = fileURL; a.download = fileName; a.click();
 }
-
-function downloadPDF(fileURL, fileName) {
-  let a = document.createElement("a");
-  a.href = fileURL;
-  a.download = fileName;
-  a.click();
-}
-
-function deletePDF(button) {
-  button.parentElement.remove();
-}
+function deletePDF(button)                 { button.parentElement.remove(); }
 
 function showPDFMessage() {
-  pdfMessage.style.display = "block";
-  setTimeout(() => {
-    pdfMessage.style.display = "none";
-  }, 3000);
+  pdfMessage.style.display = "flex";
+  setTimeout(() => { pdfMessage.style.display = "none"; }, 3000);
 }
 
+// ─── Tab Navigation ────────────────────────────────────────────────────────────
 function showHome() {
-  document.getElementById("home-tab").style.display = "block";
+  document.getElementById("home-tab").style.display      = "block";
   document.getElementById("documents-tab").style.display = "none";
 }
 
 function showDocuments() {
-  document.getElementById("home-tab").style.display = "none";
+  document.getElementById("home-tab").style.display      = "none";
   document.getElementById("documents-tab").style.display = "block";
-}
-
-// Functions to apply themes
-function c1() {
-  let image = 'linear-gradient(90deg, rgba(232,221,227,1) 33%, rgba(219,185,200,1) 100%, rgba(227,230,235,1) 100%)';
-  document.body.style.background = image;
-  currentTheme = "theme1";
-  updateNotesTheme();
-}
-
-function c2() {
-  let image = 'linear-gradient( 90deg, #e4afcb 0%, #b8cbb8 0%, #b8cbb8 0%, #e2c58b 30%, #c2ce9c 64%, #7edbdc 100%)';
-  document.body.style.background = image;
-  currentTheme = "theme2";
-  updateNotesTheme();
-}
-
-function c3() {
-  let image = 'linear-gradient(90deg, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d)';
-  document.body.style.background = image;
-  currentTheme = "theme3";
-  updateNotesTheme();
-}
-
-function c4() {
-  let image = 'linear-gradient(90deg,rgb(120, 25, 105),rgb(197, 211, 201))';
-  document.body.style.background = image;
-  currentTheme = "theme4";
-  updateNotesTheme();
-}
-
-function c5() {
-  let image = 'linear-gradient(90deg, #b92b27, #1565c0)';
-  document.body.style.background = image;
-  currentTheme = "theme5";
-  updateNotesTheme();
-}
-
-function updateNotesTheme() {
-  const notes = document.querySelectorAll(".notes");
-  notes.forEach((note) => {
-    if (note.style.backgroundColor === "white") {
-      note.style.backgroundColor = currentTheme === "theme1"
-        ? "rgba(232,221,227,1)"
-        : currentTheme === "theme2"
-          ? "#e4afcb"
-          : currentTheme === "theme3"
-            ? "#39db8c"
-            : currentTheme === "theme4"
-              ? "rgb(120, 25, 105)"
-              : "#b92b27";
-    }
-  });
 }
