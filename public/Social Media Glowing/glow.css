@@ -1,126 +1,193 @@
 /* author: https://codepen.io/Sammy2400/pen/pogXVzy
-sam
- */
+   Enhanced & Refactored Version
+*/
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
-html,body{
+
+html,
+body{
   display: grid;
-  height: 100%;
   place-items: center;
+  min-height: 100vh;
   background: #000;
 }
 
+/* =========================
+   CONTAINER
+========================= */
+
 .social-container{
-  padding: 90px 90px;
+  padding: 90px;
   background: #111;
 
-  border: 1px solid rgba(255,255,255,0.08);
+  min-width: 750px;
+  overflow: visible;
 
   border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(10px);
 
   box-shadow:
     0 0 25px rgba(255,255,255,0.05),
     0 0 60px rgba(0,0,0,0.8);
 
-  min-width: 750px;
-  backdrop-filter: blur(10px);
-  overflow: visible;
   transition:
-  transform 0.4s ease,
-  padding 0.4s ease,
-  box-shadow 0.4s ease;
-
+    transform 0.4s ease,
+    padding 0.4s ease,
+    box-shadow 0.4s ease;
 }
+
+/* =========================
+   ICON WRAPPER
+========================= */
 
 .icons{
   display: inline-flex;
-  gap: 50px;
-  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 50px;
 }
 
+/* =========================
+   EACH ICON LINK
+========================= */
+
 .icons a{
+  position: relative;
+  display: block;
+
   text-decoration: none;
   color: #fff;
-  display: block;
-  position: relative;
+
   cursor: pointer;
+
   transition: transform 0.3s ease;
 }
 
 .icons a:hover{
-  transform: translateY(-12px);
+  transform: translateY(-12px) scale(1.1);
 }
 
+/* =========================
+   ICON LAYERS
+========================= */
+
 .icons a .layer{
+  position: relative;
+
   width: 72px;
   height: 72px;
-  position: relative;
+
   will-change: transform;
-  
-  transition: transform 0.3s;
+
   transform: translateY(-5px);
+
+  transition: transform 0.3s ease;
 }
 
 .icons a:hover .layer{
   transform: rotate(-35deg) skew(20deg);
 }
 
+/* =========================
+   LAYER SPANS
+========================= */
+
 .icons a .layer span{
   position: absolute;
   inset: 0;
-  height: 100%;
+
   width: 100%;
+  height: 100%;
+
   border: 1.5px solid #fff;
   border-radius: 5px;
-  transition:
-  transform 0.3s ease,
-  opacity 0.3s ease,
-  background-color 0.3s ease,
-  color 0.3s ease,
-  box-shadow 0.3s ease;
+
   background: transparent;
-  backface-visibility: hidden;
   background-clip: padding-box;
+
+  backface-visibility: hidden;
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
+/* =========================
+   FONT AWESOME ICON
+========================= */
+
 .icons a .layer span.fab{
+  position: relative;
+  z-index: 10;
+
   font-size: 36px;
   line-height: 72px;
   text-align: center;
 }
 
+/* =========================
+   STACKED LAYER ANIMATION
+========================= */
 
 .icons a:hover .layer span:nth-child(1){
   opacity: 0.2;
 }
+
 .icons a:hover .layer span:nth-child(2){
   opacity: 0.4;
   transform: translate(5px, -5px) scale(1.02);
 }
+
 .icons a:hover .layer span:nth-child(3){
   opacity: 0.6;
   transform: translate(10px, -10px) scale(1.02);
 }
+
 .icons a:hover .layer span:nth-child(4){
   opacity: 0.8;
   transform: translate(15px, -15px) scale(1.02);
 }
+
 .icons a:hover .layer span:nth-child(5){
   opacity: 1;
   transform: translate(24px, -24px) scale(1.02);
 }
+
+/* =========================
+   FILLED BACKGROUND EFFECT
+========================= */
+
+.icons a:hover .layer span:not(.fab){
+  background: currentColor;
+}
+
+.icons a:hover .layer span.fab{
+  color: #fff;
+}
+
+/* =========================
+   BRAND COLORS
+========================= */
+
 .icons a:nth-child(1) .layer span,
 .icons a:nth-child(1) .text{
   color: #4267B2;
   border-color: #4267B2;
 }
+
 .icons a:nth-child(2) .layer span,
 .icons a:nth-child(2) .text{
   color: #1DA1F2;
@@ -145,63 +212,61 @@ html,body{
   border-color: #ff0000;
 }
 
+/* =========================
+   GLOW EFFECTS
+========================= */
+
 .icons a:hover:nth-child(1) .layer span{
-  box-shadow: -1px 1px 3px #4267B2;
+  box-shadow: -1px 1px 6px #4267B2;
 }
 
 .icons a:hover:nth-child(2) .layer span{
-  box-shadow: -1px 1px 3px #1DA1F2;
+  box-shadow: -1px 1px 6px #1DA1F2;
 }
 
 .icons a:hover:nth-child(3) .layer span{
-  box-shadow: -1px 1px 3px #E1306C;
+  box-shadow: -1px 1px 6px #E1306C;
 }
 
 .icons a:hover:nth-child(4) .layer span{
-  box-shadow: -1px 1px 3px #2867B2;
+  box-shadow: -1px 1px 6px #2867B2;
 }
 
 .icons a:hover:nth-child(5) .layer span{
-  box-shadow: -1px 1px 3px #ff0000;
+  box-shadow: -1px 1px 6px #ff0000;
 }
 
-.icons a:hover .layer span:not(.fab){
-  background: currentColor;
-}
-
-.icons a .layer span.fab{
-  z-index: 10;
-  position: relative;
-}
-
-.icons a:hover .layer span.fab{
-  color: #fff;
-}
+/* =========================
+   TOOLTIP TEXT
+========================= */
 
 .icons a .text{
   position: absolute;
+
   left: 50%;
-  margin-bottom:-10px;
+  bottom: -20px;
+
   transform: translateX(-50%);
 
-  color: #fff;
+  padding: 4px 12px;
 
   font-size: 17px;
   font-weight: 500;
   letter-spacing: 0.5px;
 
+  white-space: nowrap;
+
   opacity: 0;
+  pointer-events: none;
 
-  padding: 4px 10px;
+  color: #fff;
 
-  border: 1px solid rgba(255,255,255,0.25);
   border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.25);
 
   background: rgba(255,255,255,0.04);
 
   backdrop-filter: blur(4px);
-
-  white-space: nowrap;
 
   transition:
     opacity 0.3s ease,
