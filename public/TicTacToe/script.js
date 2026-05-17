@@ -30,8 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     [2,4,6]
   ];
 
+  // =========================
   // THEME MODE
- 
+  // =========================
 
   if (localStorage.getItem('theme') === 'light') {
     document.body.classList.add('light-mode');
@@ -50,8 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // =========================
   // UPDATE SCOREBOARD
-  
+  // =========================
 
   function updateScoreboard(winner) {
 
@@ -72,8 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // =========================
   // CELL CLICK
- 
+  // =========================
 
   function handleCellClick(e) {
 
@@ -148,8 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
       currentPlayer === 'X' ? 'O' : 'X';
   }
 
+  // =========================
   // CHECK WIN
- 
+  // =========================
 
   function checkWin() {
 
@@ -164,8 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // =========================
   // HIGHLIGHT WINNING CELLS
- 
+  // =========================
 
   function highlightWinningCells() {
 
@@ -192,8 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // =========================
   // SHOW RESULT
- 
+  // =========================
 
   function showResult(message) {
 
@@ -202,8 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.style.display = 'block';
   }
 
+  // =========================
   // RESET GAME
- 
+  // =========================
 
   function restartGame() {
 
@@ -233,8 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.style.display = 'none';
   }
 
+  // =========================
   // OVERALL WINNER
- 
+  // =========================
 
   function determineOverallWinner() {
 
@@ -267,8 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
     alert(winnerMessage);
   }
 
+  // =========================
   // EVENT LISTENERS
- 
+  // =========================
 
   cells.forEach(cell => {
 
@@ -295,8 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
     restartGame
   );
 
+  // =========================
   // RESET SCOREBOARD
- 
+  // =========================
 
   const resetScoreboardButton =
     document.getElementById(

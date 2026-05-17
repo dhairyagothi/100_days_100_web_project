@@ -1,5 +1,4 @@
-
-  * {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -38,6 +37,7 @@ h1 {
   letter-spacing: 3px;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
+
 /* THEME BUTTON */
 
 .theme-btn {
