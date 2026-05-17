@@ -2,67 +2,274 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PassX-Personal Password Manager</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PassX - Personal Password Manager</title>
+
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <nav>
-        <div class="logo">PassX</div>
-        <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>Contact</li>
 
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+            PassX
+        </div>
+
+        <div class="menu-toggle" id="menuToggle">
+            ☰
+        </div>
+
+        <ul id="navLinks">
+
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="about.html">
+                    About
+                </a>
+            </li>
+
+            <li>
+                <a href="contact.html">
+                    Contact
+                </a>
+            </li>
+
+            <li>
+                <button id="themeToggle">
+                    🌙
+                </button>
+            </li>
 
         </ul>
+
     </nav>
+
+    <!-- MAIN CONTAINER -->
+
     <div class="container">
-        <h1>Password Manager</h1>
-        <p>We're thrilled to have you here, and we're committed to making your online security a top priority. Your
-            digital world is full of passwords and sensitive information, and we're here to help you keep it safe and
-            organized.</p>
-        <h2>Your Password <span id="alert">(Copied)</span></h2>
-        <p>Your password has been copied</p>
-        <table>
-            <tr>
-                <th>Website</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Delete</th>
-            </tr>
 
+        <h1>
+            Password Manager
+        </h1>
 
-        </table>
+        <p class="hero-text">
 
-        <h2>Add a password</h2>
-        <form action="/submit" method="post">
-            <!-- Text input for Website -->
-            <label for="Website">Website:</label>
-            <input type="text" id="Website" name="Website" required>
-            <br><br>
-            <!-- Text input for username -->
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <br><br>
+            We're thrilled to have you here, and we're committed
+            to making your online security a top priority.
 
-            <!-- Password input -->
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
+            Your digital world is full of passwords and sensitive
+            information, and we're here to help you keep it safe,
+            secure, and organized.
 
+        </p>
 
-            <!-- Submit button -->
-            <button class="btn" type="submit">Submit</button>
-           
-              
+        <!-- COPY ALERT -->
+
+        <h2>
+            Your Passwords
+            <span id="alert">
+                (Copied Successfully)
+            </span>
+        </h2>
+
+        <p>
+            Store, manage, edit, and organize all your passwords safely.
+        </p>
+
+        <!-- SEARCH BAR -->
+
+        <div class="search-container">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search website or username..."
+            />
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrapper">
+
+            <table id="passwordTable">
+
+                <tr>
+
+                    <th>
+                        Website
+                    </th>
+
+                    <th>
+                        Username
+                    </th>
+
+                    <th>
+                        Password
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+        <!-- EMPTY STATE -->
+
+        <div class="empty-state" id="emptyState">
+
+            <h3>
+                No Passwords Saved Yet 🔐
+            </h3>
+
+            <p>
+                Add your first password to start managing credentials securely.
+            </p>
+
+        </div>
+
+        <!-- FORM -->
+
+        <h2>
+            Add / Edit Password
+        </h2>
+
+        <form id="passwordForm">
+
+            <!-- WEBSITE -->
+
+            <label for="Website">
+                Website
+            </label>
+
+            <input
+                type="text"
+                id="Website"
+                name="Website"
+                placeholder="Enter website URL"
+                required
+            />
+
+            <!-- USERNAME -->
+
+            <label for="username">
+                Username / Email
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter username or email"
+                required
+            />
+
+            <!-- PASSWORD -->
+
+            <label for="password">
+                Password
+            </label>
+
+            <div class="password-input-wrapper">
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter secure password"
+                    required
+                />
+
+                <button
+                    type="button"
+                    class="toggle-main-password"
+                    id="toggleMainPassword"
+                >
+                    👁
+                </button>
+
+            </div>
+
+            <!-- BUTTONS -->
+
+            <div class="form-buttons">
+
+                <button
+                    class="btn"
+                    type="submit"
+                    id="saveBtn"
+                >
+                    Save Password
+                </button>
+
+                <button
+                    class="btn cancel-btn"
+                    type="button"
+                    id="cancelEdit"
+                >
+                    Cancel Edit
+                </button>
+
+            </div>
+
         </form>
+
     </div>
-    
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <h3>
+                PassX 🔐
+            </h3>
+
+            <p>
+                Secure • Responsive • Modern Password Management
+            </p>
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+            <p class="credit">
+                Made with ❤️ for GSSoC'26
+            </p>
+
+        </div>
+
+    </footer>
 
     <script src="script.js"></script>
+
 </body>
 
 </html>
