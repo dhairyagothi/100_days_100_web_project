@@ -130,7 +130,8 @@ const PROJECTS = [
     ["Day 114", "EchoNotes",                           "./public/EchoNotes/index.html",                                                                                  ["JS","SpeechAPI"],        "tool"],
     ["Day 115", "Event Registration System",           "https://event-registration-system-w10a.onrender.com/",                                                           ["Node","Express"],        "tool"],
     ["Day 116", "AI Image Classifier",                 "./public/AI Image Classifier/index.html",                                                                        ["HTML","CSS","JS","AI"], "tool"],
-    ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html'],
+    ["Day 117", "Habit Tracker Web App",              "./public/Habit-Tracker-Web-App/index.html",                                                                      ["HTML","CSS","JS"],       "tool"],
+    ["Day 118", "Sudoku Game",                        "./public/Sudoku/index.html",                                                                                     ["HTML","CSS","JS"],       "game"],
 ];
 
 const CATEGORY_LABEL = {

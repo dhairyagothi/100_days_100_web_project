@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="game-panel" aria-labelledby="game-title">
+            <div class="topbar">
+                <div>
+                    <p class="eyebrow">Logic Puzzle</p>
+                    <h1 id="game-title">Sudoku</h1>
+                </div>
+
+                <div class="stats" aria-label="Game stats">
+                    <div>
+                        <span>Time</span>
+                        <strong id="timer">00:00</strong>
+                    </div>
+                    <div>
+                        <span>Mistakes</span>
+                        <strong><span id="mistakes">0</span>/3</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toolbar" aria-label="Game controls">
+                <label class="select-wrap">
+                    <span>Difficulty</span>
+                    <select id="difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </label>
+                <button id="newGame" type="button">New Game</button>
+                <button id="resetGame" type="button">Reset</button>
+                <button id="hintButton" type="button">Hint</button>
+                <button id="notesButton" type="button" aria-pressed="false">Notes</button>
+            </div>
+
+            <p id="message" class="message" role="status" aria-live="polite">Select a blank cell and fill the board.</p>
+
+            <div class="board-wrap">
+                <div id="board" class="board" role="grid" aria-label="Sudoku board"></div>
+            </div>
+
+            <div id="numberPad" class="number-pad" aria-label="Number pad"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
