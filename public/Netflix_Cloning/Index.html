@@ -1,67 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Netflix Clone</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="main">
-    <div class="box"></div>
-    <nav>
-      <img src="img/logo.svg" alt="Netflix Logo" />
-      <button class="btn btn-red">Sign In</button>
-    </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netflix Clone</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="main">
+      
+      <!-- Background Overlay -->
+      <div class="box"></div>
 
-    <section class="hero">
-      <div>Unlimited movies, TV shows, and more.</div>
-      <div>Watch anywhere. Cancel anytime.</div>
-      <div>Ready to watch? Enter your email to create or restart your membership.</div>
-      <div class="hero-buttons">
-        <input type="email" placeholder="Email address" aria-label="Email address" />
-        <button class="btn btn-red">Get Started</button>
+      <!-- Navigation Bar -->
+      <nav>
+        <img src="img/logo.svg" alt="Netflix Logo" />
+        <button class="btn btn-red">Sign In</button>
+      </nav>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div>Unlimited movies, TV shows, and more.</div>
+        <div>Watch anywhere. Cancel anytime.</div>
+        <div>
+          Ready to watch? Enter your email to create or restart your membership.
+        </div>
+        <div class="hero-buttons">
+          <input
+            type="email"
+            placeholder="Email address"
+            aria-label="Email address"
+          />
+          <button class="btn btn-red">Get Started</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Section Divider -->
+    <div class="separation"></div>
+
+    <!-- TV Feature Section -->
+    <section class="first">
+      <div>
+        <div>Enjoy on your TV.</div>
+        <div>
+          Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray
+          players, and more.
+        </div>
+      </div>
+
+      <div class="secImg">
+        <img src="img/image2.png" alt="Netflix on TV" />
+        <video src="Video/video1.m4v" autoplay muted loop playsinline></video>
       </div>
     </section>
-  </div>
 
-  <div class="separation"></div>
+    <!-- FAQ Section -->
+    <section class="faq">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faqbox">
+        <span>What is Netflix?</span>
+        <span>+</span>
+      </div>
+      <div class="faqbox">
+        <span>How much does Netflix cost?</span>
+        <span>+</span>
+      </div>
+      <div class="faqbox">
+        <span>Where can I watch?</span>
+        <span>+</span>
+      </div>
+    </section>
 
-  <section class="first">
-    <div>
-      <div>Enjoy on your TV.</div>
-      <div>Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.</div>
-    </div>
-    <div class="secImg">
-      <img src="img/image2.png" alt="Netflix on TV" />
-      <video src="Video/video1.m4v" autoplay muted loop playsinline></video>
-    </div>
-  </section>
-
-  <section class="faq">
-    <h2>Frequently Asked Questions</h2>
-    <div class="faqbox">
-      <span>What is Netflix?</span>
-      <span>+</span>
-    </div>
-    <div class="faqbox">
-      <span>How much does Netflix cost?</span>
-      <span>+</span>
-    </div>
-    <div class="faqbox">
-      <span>Where can I watch?</span>
-      <span>+</span>
-    </div>
-  </section>
-
-  <footer>
-    <div class="questions">Questions? Call 000-800-040-1843</div>
-    <div class="footer">
-      <div>FAQ</div>
-      <div>Help Center</div>
-      <div>Terms of Use</div>
-      <div>Privacy</div>
-    </div>
-  </footer>
-</body>
+    <!-- Footer -->
+    <footer>
+      <div class="questions">Questions? Call 000-800-040-1843</div>
+      <div class="footer">
+        <div>FAQ</div>
+        <div>Help Center</div>
+        <div>Terms of Use</div>
+        <div>Privacy</div>
+      </div>
+    </footer>
+  </body>
 </html>
