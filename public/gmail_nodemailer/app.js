@@ -1,50 +1,78 @@
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser');
-const path = require("path");
-const port = 5500
-const nodemailer = require("nodemailer");
+const express = require('express');
+const path = require('path');
+const nodemailer = require('nodemailer');
 
+require('dotenv').config({ quiet: true });
 
-app.use(bodyParser.urlencoded({ extended: true })); 
+const app = express();
+const port = process.env.PORT || 5500;
+
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname , 'public/mail.html'));
-})
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/', function(req, res) {
-    
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: "dhairyag31@gmail.com",
-    pass: "pwrxkjklvbddvsqa",
-  },
+const requiredMailConfig = ['SMTP_USER', 'SMTP_PASS', 'MAIL_TO'];
+
+function getMissingMailConfig() {
+  return requiredMailConfig.filter((key) => !process.env[key]);
+}
+
+function createTransporter() {
+  const missingConfig = getMissingMailConfig();
+
+  if (missingConfig.length) {
+    throw new Error(`Missing email configuration: ${missingConfig.join(', ')}`);
+  }
+
+  return nodemailer.createTransport({
+    service: process.env.SMTP_SERVICE || 'Gmail',
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: Number(process.env.SMTP_PORT) || 465,
+    secure: process.env.SMTP_SECURE !== 'false',
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/mail.html'));
 });
-const mailOptions = {
-  from: "dhairyag31@gmail.com",
-  to: req.body.emailid ,
-  subject: "Feedback form response",
-  text: "Thankyou"+req.body.name+" for your feedback. We will get back to you soon.  Chechout Git hub repo :- https://github.com/dhairyagothi/50_days_50_web_project    Regards  Dhairya  +919424065768   dhairyag31@gmail.com",
-};
-transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    console.error("Error sending email:", error);
-    return res.status(500).send("Email failed");
-  } else {
-    console.log("Email sent:", info.response);
-    return res.status(200).send("Email sent successfully");
+
+app.post('/', async function(req, res) {
+  const { name, emailid } = req.body;
+
+  if (!name || !emailid) {
+    return res.status(400).send('Name and email are required');
+  }
+
+  if (!isValidEmail(emailid)) {
+    return res.status(400).send('Enter a valid email address');
+  }
+
+  try {
+    const transporter = createTransporter();
+    const mailOptions = {
+      from: process.env.MAIL_FROM || process.env.SMTP_USER,
+      to: process.env.MAIL_TO,
+      replyTo: emailid,
+      subject: 'Feedback form response',
+      text: `New contact form submission from ${name} <${emailid}>.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    return res.status(200).send('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error.message);
+    return res.status(500).send('Email service is not configured or failed');
   }
 });
 
+app.listen(port, () => {
+  console.log(`Nodemailer app listening on port ${port}`);
 });
-
-
-
-
