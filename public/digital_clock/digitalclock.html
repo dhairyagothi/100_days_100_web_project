@@ -14,10 +14,12 @@
       <div
         id="display"
         class="relative font-mono text-4xl md:text-5xl text-white border-4 border-green-500 rounded-lg p-4 mb-4"
+        style="transition: opacity 0.3s ease;"
       ></div>
       <div
         id="clock"
         class="relative font-mono text-4xl md:text-5xl text-green-500 border-4 border-green-500 rounded-lg p-4"
+        style="transition: opacity 0.3s ease;"
       ></div>
     </div>
     <div class="mt-10 flex space-x-4">
@@ -64,6 +66,7 @@
         type="time"
         id="alarm-time"
         class="hidden mt-4 px-4 py-2 border-2 border-yellow-500 text-yellow-500 rounded-lg"
+        style="transition: all 0.3s ease;"
       />
       <button
         class="clock-face-btn hidden mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
@@ -75,6 +78,7 @@
     <div
       id="alarm-popup"
       class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-yellow-500 border-4 border-yellow-500 rounded-lg p-4"
+      style="will-change: transform, opacity;"
     >
       <p>Alarm is ringing!</p>
       <button

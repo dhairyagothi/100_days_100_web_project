@@ -61,6 +61,17 @@
             }
         }, 1000);
 
+        const textInput = document.getElementById('text-input');
+        const textDisplay = document.getElementById('text-display');
+
+        textInput.addEventListener('input', () => {
+            if (textInput.value.trim() === textDisplay.textContent.trim()) {
+                clearInterval(interval);
+                textInput.disabled = true;
+                timerElement.textContent = `Completed with ${timeLeft} seconds remaining`;
+            }
+        });
+
         document.getElementById('restart').addEventListener('click', function () {
             window.location.href = 'main.html';
         });

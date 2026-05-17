@@ -1,7 +1,6 @@
 {
   "buildCommand": null,
   "outputDirectory": ".",
-  "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
     {
@@ -24,6 +23,7 @@
           "value": "1; mode=block"
         }
       ]
+<<<<<<< HEAD
     },
     {
       "source": "/public/(.*)",
@@ -51,6 +51,8 @@
           "value": "application/javascript"
         }
       ]
+=======
+>>>>>>> upstream/Main
     }
   ]
 }
