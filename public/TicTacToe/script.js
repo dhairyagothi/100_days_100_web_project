@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultMessage = document.getElementById('resultMessage');
     const closeModal = document.getElementById('closeModal');
     const newGameButton = document.getElementById('newGame');
+    const restartGameButton = document.getElementById('restartGame');
     const playerXWins = document.getElementById('playerXWins');
     const playerOWins = document.getElementById('playerOWins');
     const draws = document.getElementById('draws');
@@ -50,20 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
         cell.textContent = currentPlayer;
         boardState[index] = currentPlayer;
 
+        // Check for win first
         if (checkWin()) {
             gameActive = false;
-            updateScoreboard(currentPlayer); // Update scoreboard based on winner
+            updateScoreboard(currentPlayer);
             showResult(`${currentPlayer} wins!`);
             return;
         }
 
+        // Check for draw/tie AFTER checking for win
         if (boardState.every(cell => cell !== '')) {
             gameActive = false;
-            updateScoreboard('draw'); // Update scoreboard for a draw
-            showResult('Draw!');
+            updateScoreboard('draw');
+            showResult("It's a Draw!");
             return;
         }
 
+        // Switch player only if game is still active
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     }
 
@@ -83,6 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
         gameActive = true;
         cells.forEach(cell => cell.textContent = '');
     }
+
+    function restartGame() {
+    boardState = Array(9).fill('');
+    currentPlayer = 'X';
+    gameActive = true;
+
+    cells.forEach(cell => {
+        cell.textContent = '';
+    });
+
+    modal.style.display = 'none';
+}
 
     function determineOverallWinner() {
         let winnerMessage;
@@ -113,6 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gameActive = true;
         cells.forEach(cell => cell.textContent = '');
     });
+
+    restartGameButton.addEventListener('click', restartGame);
 
     const resetScoreboardButton = document.getElementById('resetScoreboard');
     resetScoreboardButton.addEventListener('click', () => {
