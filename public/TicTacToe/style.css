@@ -7,13 +7,18 @@
   
   body {
     display: flex;
-    justify-content: ceer;
+    justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: #000435;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     font-size: 18px;
     flex-direction: column;
-    padding: 0 20px;
+    padding: 20px;
+    transition: background 0.3s ease;
+  }
+
+  body.dark-mode {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
   }
   
   .container {
@@ -65,7 +70,27 @@
   
   .cell:hover {
     background-color: #FDFDFD;
-    transform: scale(1.1);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(138, 0, 196, 0.6);
+  }
+
+  .cell.placing {
+    animation: pop 0.3s ease;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.5); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  body.dark-mode .cell {
+    background-color: #2a2a4e;
+    border-color: #8A00C4;
+  }
+
+  body.dark-mode .cell:hover {
+    background-color: #3a3a6e;
   }
   
   button {
@@ -146,6 +171,18 @@
     top: 50%;
     left: 20px;
     transform: translateY(-50%);
+    transition: all 0.3s ease;
+  }
+
+  body.dark-mode .scoreboard {
+    background-color: #1a1a2e;
+    color: white;
+    box-shadow: 0 0 15px rgba(138, 0, 196, 0.3);
+  }
+
+  body.dark-mode .scoreboard h2,
+  body.dark-mode .scoreboard p {
+    color: #e0e0e0;
   }
   
   .scoreboard h2 {
