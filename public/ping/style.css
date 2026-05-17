@@ -32,7 +32,6 @@
   
   .header img {
     width: 60px;
-    animation: spin 5s linear infinite;
   }
   
   @keyframes spin {
