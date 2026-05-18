@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ML Feature Impact Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🧠 ML Feature Impact Visualizer</h1>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Input Features</h2>
+
+    <div class="feature">
+      <label>Age</label>
+      <input type="range" min="18" max="70" value="30" id="age">
+      <span id="ageVal">30</span>
+    </div>
+
+    <div class="feature">
+      <label>Income ($k)</label>
+      <input type="range" min="10" max="200" value="50" id="income">
+      <span id="incomeVal">50</span>
+    </div>
+
+    <div class="feature">
+      <label>Experience (years)</label>
+      <input type="range" min="0" max="40" value="5" id="experience">
+      <span id="expVal">5</span>
+    </div>
+
+    <div class="feature">
+      <label>Credit Score</label>
+      <input type="range" min="300" max="850" value="650" id="credit">
+      <span id="creditVal">650</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Prediction</h2>
+    <div class="prediction" id="predictionValue">0</div>
+    <canvas id="impactChart" width="350" height="250"></canvas>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

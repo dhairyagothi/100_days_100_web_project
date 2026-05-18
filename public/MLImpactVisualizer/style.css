@@ -1,0 +1,52 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f0f9ff, #e0e7ff);
+  padding: 30px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  width: 350px;
+  border-radius: 14px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.feature {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 14px;
+  display: block;
+}
+
+input[type=range] {
+  width: 100%;
+}
+
+.prediction {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 20px 0;
+  color: #3b82f6;
+  text-align: center;
+}
+
+canvas {
+  background: #f8fafc;
+  border-radius: 10px;
+}
