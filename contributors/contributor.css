@@ -336,6 +336,28 @@ body {
 .footer p {
     color: var(--text-secondary);
 }
+.footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.footer-link {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: var(--transition);
+    width: fit-content;
+}
+
+.footer-link:hover {
+    color: #00ffff; 
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    transform: translateX(8px);
+}
 
 .social-links {
     display: flex;

@@ -132,6 +132,8 @@ const PROJECTS = [
     ["Day 116", "AI Image Classifier",                 "./public/AI Image Classifier/index.html",                                                                        ["HTML","CSS","JS","AI"], "tool"],
     ["Day 117", "3D-Portfolio-Website",                "./public/3D-Portfolio-Website/index.html",                                                                       ["HTML","CSS","JS"],       "ui"],
     ['Day 118', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html'],
+
+
 let currentPage = 1;
 const itemsPerPage = 10;
 let projectData = [];
@@ -152,8 +154,8 @@ const PROJECT_DATA = [
     ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
     ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
     ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
-    ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
-    ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
+    ['Day 13', 'Login Form Using MERN', 'https://loginusingmern.onrender.com', 'api javascript', 'intermediate'],
+    ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', 'javascript', 'intermediate'],
     ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'css javascript', 'beginner'],
     ['Day 16', 'Scroll Bar CSS', './public/Scroll Game Dark Run/index.html', 'css', 'beginner'],
     ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
@@ -237,7 +239,7 @@ const PROJECT_DATA = [
     ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', 'todo javascript', 'intermediate'],
     ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', 'css javascript', 'beginner'],
     ['Day 97', 'Time Capsule', './public/Time-Capsule/index.html', 'javascript', 'intermediate'],
-    ['Day 98', 'Virtual Piano', './public/Virtual Piano/index.html', 'css javascript', 'intermediate'],
+    ['Day 98', 'Virtual Piano', './public/Virtual_Piano/index.html', 'css javascript', 'intermediate'],
     ['Day 99', 'NASA-APOD Extension', './public/NASA-APOD/popup.html', 'api javascript', 'intermediate'],
     ['Day 100', 'Text Saver Extension', './public/Text_Saver_Ext/popup.html', 'todo javascript', 'intermediate'],
     ['Day 101', 'Personal Finance Tracker', './public/FinanceTracker/index.html', 'todo javascript', 'intermediate'],
@@ -518,4 +520,21 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGrid();
     fetchRepoStats();
     initScrollBtn();
+});
+
+const backToTopButton = document.getElementById("backToTop");
+
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 200) {
+        backToTopButton.style.display = "block";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+});
+
+backToTopButton.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 });

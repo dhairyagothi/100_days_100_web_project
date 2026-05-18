@@ -92,3 +92,68 @@ button:hover {
     flex-direction: column;
   }
 }
+/* THEME TOGGLE BUTTON */
+
+#theme-toggle {
+  padding: 12px 18px;
+  margin: 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+/* LIGHT MODE (DEFAULT) */
+
+body {
+  background: #f4f7fb;
+  color: #222;
+  transition: all 0.3s ease;
+}
+
+.container {
+  background: white;
+  color: #222;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+li {
+  background: #f1f1f1;
+  color: #222;
+}
+
+input {
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+}
+
+/* DARK MODE */
+
+body.dark-mode {
+  background: #121212;
+  color: white;
+}
+
+body.dark-mode .container {
+  background: #1e1e1e;
+  color: white;
+  box-shadow: none;
+}
+
+body.dark-mode li {
+  background: #2a2a2a;
+  color: white;
+}
+
+body.dark-mode input {
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+body.dark-mode button {
+  color: white;
+}
