@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | TaskFlow</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Dashboard Specific Styles */
+    .dashboard-container {
+      max-width: 900px;
+      margin: 100px auto 50px;
+      padding: 0 5%;
+    }
+
+    .dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+    }
+
+    .huge-title {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      line-height: 1;
+      color: var(--text-main);
+    }
+    .subtitle { color: var(--text-muted); font-size: 1.1rem; margin-top: 5px; }
+
+    /* Stats Board */
+    .stats-board {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item { flex: 1; min-width: 120px; text-align: center; }
+    .stat-item h3 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--primary-color); }
+    .stat-item p { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 700; }
+    .stat-div { width: 2px; background: rgba(0,0,0,0.05); }
+
+    .progress-box { flex: 2; min-width: 200px; display: flex; align-items: center; gap: 15px; }
+    .progress-track { flex: 1; height: 10px; background: #dfe6e9; border-radius: 20px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
+    .progress-text { font-weight: 700; color: var(--primary-color); }
+
+    /* Add Task Section */
+    .add-task-bar {
+      display: flex;
+      gap: 15px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .add-task-bar input, .add-task-bar select {
+      flex: 1; min-width: 180px;
+      padding: 12px 15px;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.9);
+      font-family: var(--font-main);
+      font-size: 1rem;
+      outline: none;
+      transition: 0.3s;
+    }
+    .add-task-bar input:focus, .add-task-bar select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.2);
+    }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .filter-tabs { display: flex; gap: 10px; }
+    .filter-btn {
+      background: white; border: 1px solid #dfe6e9; padding: 6px 16px;
+      border-radius: 20px; color: var(--text-muted); cursor: pointer;
+      font-weight: 600; transition: 0.3s;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+    
+    .btn-danger {
+      background: rgba(255, 107, 107, 0.1); color: var(--accent-red);
+      border: 1px solid rgba(255, 107, 107, 0.3); padding: 6px 16px;
+      border-radius: 20px; font-weight: 600; cursor: pointer; transition: 0.3s;
+    }
+    .btn-danger:hover { background: var(--accent-red); color: white; }
+
+    /* Task List */
+    .task-list { display: flex; flex-direction: column; gap: 15px; }
+    .task-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 1.5rem; background: white; border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03);
+      transition: 0.3s;
+    }
+    .task-item:hover { transform: translateX(5px); box-shadow: 0 8px 25px rgba(0,0,0,0.06); border-color: var(--primary-color); }
+    
+    .task-content { display: flex; align-items: center; gap: 15px; flex: 1; }
+    
+    .checkbox {
+      width: 24px; height: 24px; border: 2px solid #b2bec3; border-radius: 6px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: 0.2s; flex-shrink: 0;
+    }
+    .task-item.done .checkbox { background: var(--accent-green); border-color: var(--accent-green); }
+    .task-item.done .checkbox::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: white; font-size: 12px; }
+    
+    .task-text { font-size: 1.1rem; color: var(--text-main); transition: 0.2s; word-break: break-word; }
+    .task-item.done .task-text { text-decoration: line-through; color: #b2bec3; }
+
+    .tag { font-size: 0.75rem; padding: 4px 10px; border-radius: 8px; font-weight: 700; text-transform: uppercase; }
+    .tag.Work { background: rgba(84, 160, 255, 0.15); color: #54a0ff; }
+    .tag.Personal { background: rgba(255, 159, 243, 0.15); color: #ff9ff3; }
+    .tag.Urgent { background: rgba(255, 107, 107, 0.15); color: #ff6b6b; }
+    .tag.Fitness { background: rgba(29, 209, 161, 0.15); color: #1dd1a1; }
+
+    .del-btn { background: none; border: none; color: #b2bec3; font-size: 1.2rem; cursor: pointer; transition: 0.2s; }
+    .del-btn:hover { color: var(--accent-red); transform: scale(1.1); }
+
+    .empty-state { text-align: center; padding: 40px; color: #b2bec3; }
+    .empty-state i { font-size: 3rem; margin-bottom: 15px; color: #dfe6e9; }
+
+    @media (max-width: 600px) {
+      .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+      .add-task-bar { flex-direction: column; }
+      .filters { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="glass-nav">
+    <a href="#" class="nav-brand">
+      <i class="fa-solid fa-layer-group"></i>
+      <span class="brand-text">TaskFlow</span>
+    </a>
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <button class="btn-icon theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="feedback.html" class="btn-ghost" style="padding: 6px 16px; font-size: 0.9rem;"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
+      <div style="font-weight: 700; color: var(--primary-color);">
+        <i class="fa-solid fa-circle-user"></i> <span id="user-display">User</span>
+      </div>
+      <button class="btn-danger" onclick="logout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+    </div>
+  </nav>
+
+  <main class="dashboard-container">
+    <header class="dash-header animate-up">
+      <div>
+        <h1 class="huge-title">Dashboard.</h1>
+        <p class="subtitle">Here's what you need to do today.</p>
+      </div>
+      <button class="btn-ghost" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Export List</button>
+    </header>
+
+    <div class="stats-board glass-panel animate-up" style="animation-delay: 0.1s;">
+      <div class="stat-item">
+        <h3 id="stat-total">0</h3>
+        <p>Total Tasks</p>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat-item">
+        <h3 id="stat-done" style="color: var(--accent-green)">0</h3>
+        <p>Completed</p>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat-item">
+        <h3 id="stat-pend" style="color: var(--accent-red)">0</h3>
+        <p>Pending</p>
+      </div>
+      <div class="progress-box">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">0%</div>
+      </div>
+    </div>
+
+    <div class="add-task-bar glass-panel animate-up" style="animation-delay: 0.2s;">
+      <input type="text" id="task-input" placeholder="What needs to be done?" autocomplete="off" />
+      <select id="task-category">
+        <option value="">No Category</option>
+        <option value="Work">💼 Work</option>
+        <option value="Personal">🌸 Personal</option>
+        <option value="Urgent">🔥 Urgent</option>
+        <option value="Fitness">💪 Fitness</option>
+      </select>
+      <button class="btn-primary" onclick="addTask()"><i class="fa-solid fa-plus"></i> Add Task</button>
+    </div>
+
+    <div class="filters animate-up" style="animation-delay: 0.3s;">
+      <div class="filter-tabs">
+        <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+        <button class="filter-btn" onclick="setFilter('active', this)">Active</button>
+        <button class="filter-btn" onclick="setFilter('done', this)">Completed</button>
+      </div>
+      <button class="btn-danger" onclick="clearCompleted()"><i class="fa-solid fa-trash-can"></i> Clear Completed</button>
+    </div>
+
+    <div class="task-list animate-up" style="animation-delay: 0.4s;" id="task-list">
+      <!-- Tasks injected via JS -->
+    </div>
+  </main>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="../js/theme.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow | Modern Task Manager</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Landing Specific Styles */
+    .hero-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+      padding: 0 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 80px;
+    }
+
+    .hero-text { flex: 1; padding-right: 50px; }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(79, 172, 254, 0.15);
+      color: var(--primary-color);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      border: 1px solid rgba(79, 172, 254, 0.3);
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(4rem, 8vw, 6.5rem);
+      line-height: 1;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+    .hero-title span {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 10px rgba(79,172,254,0.3));
+    }
+
+    .hero-desc {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 500px;
+    }
+
+    .hero-image {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .hero-image img {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 30px 40px rgba(0,0,0,0.1));
+      box-shadow: 0 0 0 10px rgba(255,255,255,0.2);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Auth Modal / Section */
+    .auth-section {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+    }
+    .auth-section.active { display: flex; animation: fadeInUp 0.4s ease; }
+    
+    .auth-card {
+      background: white;
+      padding: 40px;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: none; border: none;
+      font-size: 1.5rem; color: #b2bec3;
+      cursor: pointer; transition: 0.3s;
+    }
+    .close-btn:hover { color: var(--accent-red); transform: rotate(90deg); }
+
+    .auth-card h2 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 5px; color: var(--text-main); }
+    .auth-card p { color: var(--text-muted); margin-bottom: 30px; }
+    
+    .input-group { position: relative; margin-bottom: 20px; }
+    .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #b2bec3; }
+    .input-group input {
+      width: 100%; padding: 14px 15px 14px 45px;
+      border: 2px solid #ecf0f1; border-radius: 12px;
+      font-family: var(--font-main); font-size: 1rem;
+      transition: 0.3s;
+    }
+    .input-group input:focus { border-color: var(--primary-color); outline: none; }
+    
+    .auth-btn { width: 100%; justify-content: center; padding: 14px; font-size: 1.1rem; }
+
+    @media (max-width: 900px) {
+      .hero-container { flex-direction: column; text-align: center; padding-top: 120px; }
+      .hero-text { padding-right: 0; }
+      .hero-desc { margin: 0 auto 30px; }
+      .hero-image { margin-top: 40px; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="three-canvas"></canvas>
+
+  <nav class="glass-nav">
+    <a href="#" class="nav-brand">
+      <i class="fa-solid fa-layer-group"></i>
+      <span class="brand-text">TaskFlow</span>
+    </a>
+    <div class="nav-actions" style="display: flex; gap: 10px; align-items: center;">
+      <button class="btn-icon theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button class="btn-ghost" onclick="toggleAuth()">Log In</button>
+      <button class="btn-primary" onclick="toggleAuth()">Get Started <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </nav>
+
+  <main class="hero-container">
+    <div class="hero-text animate-up">
+      <div class="badge"><i class="fa-solid fa-bolt"></i> Boost your workflow</div>
+      <h1 class="hero-title">Organize Life.<br><span>Achieve More.</span></h1>
+      <p class="hero-desc">The most beautifully designed, intuitive task manager. Plan your day, track your progress, and get things done effortlessly.</p>
+      <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <button class="btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;" onclick="toggleAuth()">Start for free</button>
+        <button class="btn-ghost" style="padding: 1rem 2.5rem; font-size: 1.1rem;" onclick="toggleAuth()">View Demo</button>
+      </div>
+    </div>
+    
+    <div class="hero-image animate-up" style="animation-delay: 0.2s;">
+      <img src="images/light_hero.png" alt="Light Workspace 3D" />
+    </div>
+  </main>
+
+  <!-- Login Modal -->
+  <div class="auth-section" id="auth-modal">
+    <div class="auth-card animate-up">
+      <button class="close-btn" onclick="toggleAuth()"><i class="fa-solid fa-xmark"></i></button>
+      <h2>Welcome Back</h2>
+      <p>Enter your details to access your dashboard.</p>
+      
+      <form onsubmit="handleLogin(event)">
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="email" placeholder="Email Address" required />
+        </div>
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="password" placeholder="Password" required />
+        </div>
+        <button type="submit" class="btn-primary auth-btn">Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+      </form>
+      
+      <div style="text-align: center; margin: 20px 0; color: #b2bec3;">- OR -</div>
+      
+      <button class="btn-ghost auth-btn" style="border-color: #e74c3c; color: #e74c3c;" onclick="demoLogin()">
+        <i class="fa-brands fa-google"></i> Continue with Google
+      </button>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
