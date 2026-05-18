@@ -3,7 +3,9 @@
 }
 body {
   background: linear-gradient(0deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
-  overflow: hidden;
+  overflow-x: hidden;
+  min-height: 100vh;
+  margin: 0;
 }
 
 .container {
@@ -28,11 +30,16 @@ label, input, button {
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-radius: 13px;
   border: 8px solid #fff;
   padding: 15px;
-  width: 800px;
-  height: 120px;
+  width: 90%;
+  max-width: 800px;
+  min-height: 120px;
+  box-sizing: border-box;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 .heading {
   color: #fff;
@@ -70,7 +77,9 @@ label, input, button {
 }
 .game {
   margin-top: 5vh;
+  
 }
+
 .export {
   display: none;
 }
@@ -244,13 +253,15 @@ ul li::before {
   background: none;
 }
 .you-win {
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
-  margin-right: 7%;
-  margin-bottom: -80px;
-  gap: 80px;
-  display: none;
+  flex-wrap: wrap;
+  gap: 40px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
 }
 .you-lost {
   display: flex;
@@ -363,7 +374,7 @@ ul li::before {
   margin-top: 35px;
 }
 .result1 {
-  margin-left: -140px;
+  margin: 0;
   background: none;
   z-index: 1;
 }
@@ -394,7 +405,7 @@ ul li::before {
   margin-left: 155px;
 }
 .result2 {
-  margin-right: -150px;
+  margin: 0;
   background: none;
   z-index: 1;
 }
@@ -419,6 +430,8 @@ ul li::before {
   margin-left: 30px;
   margin-top: 30px;
 }
+
+
 .next {
   border: 2px solid white;
   color: white;
@@ -431,11 +444,10 @@ ul li::before {
   font-weight: bold;
 }
 .btn {
-  text-align: right;
-  
-  margin-left: 85vw;
-  margin-bottom: 20vh;
-  
+  position: fixed;
+  bottom: 20px;
+  right: 140px;
+  z-index: 100;
 }
 .rules {
   border: 2px solid white;
@@ -451,11 +463,10 @@ ul li::before {
   height: 60px;
 }
 .btn1 {
-  text-align: right;
-  position: absolute;
-  margin-left: 60vw;
-  margin-top: 91vh;
-  
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
 }
 #nxt {
   color: #fff;
@@ -498,3 +509,70 @@ ul li::before {
   justify-content: center;
 }
 
+@media screen and (max-width: 768px) {
+
+  .display {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: auto;
+  }
+
+  .scoreboard {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .score {
+    width: 110px;
+    height: 100px;
+  }
+
+  .game {
+    transform: scale(0.75);
+    margin-top: -30px;
+  }
+
+  .you-win,
+  .you-lost,
+  .tie-up {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .result h2 {
+    font-size: 28px;
+  }
+
+  .result h3 {
+    font-size: 18px;
+  }
+
+  .result button {
+    width: 150px;
+    height: 40px;
+  }
+
+  .box {
+    width: 85%;
+    height: auto;
+    right: 5%;
+    top: 20%;
+    padding-bottom: 20px;
+  }
+
+  .btn,
+  .btn1 {
+    position: fixed;
+    bottom: 10px;
+  }
+
+  .btn {
+    right: 120px;
+  }
+
+  .btn1 {
+    right: 10px;
+  }
+}

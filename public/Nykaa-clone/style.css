@@ -5,7 +5,7 @@ body{
     margin:0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    overflow-x: none;
+    overflow-x: hidden;
 }
 a{
     color:inherit;
@@ -44,8 +44,6 @@ header .right{
 .nav ul li:hover{
     color:#ee356c;
 }
-
-
 .inputSearch{
     background:#f5f5f9;
     padding: 7px 10px;
@@ -57,7 +55,7 @@ header .right{
     border:none;
     outline: none;
     padding: 5px;
-    min-width: 300px;
+    min-width: unset;
     width: 100%;
     max-width: 700px;
 }
@@ -67,7 +65,6 @@ header .right{
     gap: 7px;
     font-weight: 500;
 }
-
 .subNavigation{
     font-size: 13px;
     padding:0px 20px;
@@ -92,15 +89,12 @@ header .right{
 .sub-navigatin-nav ul li{
     position: relative;
 }
-
-
 .sub-navigatin-nav{
     position: absolute;
     background-color: white;
     padding:10px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.03);
     border:0.1px solid #ebebeb;
-    /* display: flex; */
     gap: 10px;
     width: auto;
     display: none;
@@ -118,7 +112,6 @@ header .right{
 .sub-navigatin-nav .imageWrap{
     gap:20px ;
 }
-
 .subNavigation li:hover .sub-navigatin-nav{
     display: flex;
 }
@@ -132,8 +125,11 @@ header .right{
 .sub-navigatin-nav .col a:first-child{
     color:#ee356c;
 }
+
 .categorySection{
-    width: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin: auto;
     margin-top: 20px;
 }
@@ -144,7 +140,6 @@ header .right{
 .slideCategory{
     padding: 20px;
     position: relative;
-    /* overflow: hidden; */
 }
 .bgpink{
     background-color: #fdd5b7;
@@ -166,7 +161,6 @@ header .right{
     padding:10px;
     width: 60px;
     height: 60px;
-
 }
 .slideCategory-Image img{
     min-width: 100px;
@@ -174,7 +168,13 @@ header .right{
 .slideCategory-Image{
     display: flex;
     width: 100%;
-    overflow:hidden
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.slideCategory-Image::-webkit-scrollbar{
+    display: none;
 }
 .listofProduct,
 .brandTopproduct,
@@ -183,7 +183,9 @@ header .right{
     flex-wrap: wrap;
     gap: 10px;
     margin: auto;
-    width: 1250px;
+    width: 100%;
+    max-width: 1250px;
+    padding: 0 15px;
     justify-content: center;
     align-items: center;
 }
@@ -205,4 +207,65 @@ header .right{
 }
 .hardtoresistDeals{
     background : #ffca8a;
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .left {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .nav {
+        display: none;
+    }
+    .right {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .inputSearch {
+        flex: 1;
+    }
+    .subNavigation {
+        overflow-x: auto;
+        padding: 5px 10px;
+    }
+    .subNavigation ul {
+        gap: 10px;
+    }
+    .btn_container {
+        width: 100%;
+        padding: 0 5px;
+    }
+    .imageFull img,
+    .autoCenter img {
+        width: 100%;
+        height: auto;
+    }
+    .listofProduct a,
+    .brandTopproduct a,
+    .hardToResistDeals_image a {
+        flex: 1 1 calc(50% - 10px);
+        max-width: calc(50% - 10px);
+    }
+    .listofProduct a img,
+    .brandTopproduct a img,
+    .hardToResistDeals_image a img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .accountLink p {
+        display: none;
+    }
+    .listofProduct a,
+    .brandTopproduct a {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
 }

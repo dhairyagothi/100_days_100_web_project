@@ -4,7 +4,7 @@
     font-family: "Poppins", "sans-serif";
     box-sizing: border-box;
 }
-bosy{
+body{
     background: #FFFDD0;
     color: black;
 }
@@ -47,10 +47,10 @@ form button{
     cursor: pointer;
 }
 ::placeholder{
-    color: whgite
+    color: white;
     font-size: 18px;
 }
-#show-more-btn{
+#show-more-button{
     background: #ff3929;
     color: white;
     border: 0;

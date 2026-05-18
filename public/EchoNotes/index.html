@@ -3,34 +3,135 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Echo Notes☁️</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
+  <title>Echo Notes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
+
 <body>
-  <header class="header-area">
-    <h1>Echo Notes☁️</h1>
-    <nav class="main-nav">
-      <a href="#" id="clearNoteBtn">Clear</a>
 
-      <a href="#" id="saveNoteBtn">Save Note as Pdf</a>
-      <a href="#" id="changeColorBtn">Text Color</a>
-      <a href="#" id="changeSizeBtn">Text Size</a>
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">📝</div>
+    <span class="logo-text">Echo <span>Notes</span></span>
+  </div>
+  <div class="header-right">
+    <button class="theme-btn" id="themeBtn" title="Toggle Theme">🌙</button>
+    <button class="new-note-btn" onclick="createNewNote()">
+      <span>+</span> New Note
+    </button>
+  </div>
+</header>
 
-    </nav>
-  </header>
+<!-- BODY -->
+<div class="app-body">
 
-  <main class="note-section">
-    <input id="noteTitle" type="text" placeholder="Title" />
-<div id="noteContent" contenteditable="true" class="note-area" spellcheck="false">
- 
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search notes…" oninput="filterNotes(this.value)" />
+      </div>
+    </div>
+    <div class="sidebar-stats" id="sidebarStats">0 notes</div>
+    <div class="notes-list" id="notesList">
+      <div class="empty-notes">
+        <div class="empty-icon">🗒️</div>
+        <p>No notes yet.<br/>Click <strong>+ New Note</strong> to start!</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- EDITOR -->
+  <div class="editor-area" id="editorArea">
+
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+      <div class="welcome-icon">✨</div>
+      <h2>Welcome to Echo Notes</h2>
+      <p>Create beautiful, organized notes with text formatting, color, and PDF export.</p>
+    </div>
+
+    <!-- Editor (hidden until note selected) -->
+    <div id="editorWrapper" style="display:none; flex-direction:column; flex:1;">
+
+      <!-- Title Bar -->
+      <div class="editor-topbar">
+        <input type="text" class="editor-title-input" id="noteTitleInput" placeholder="Note title…" oninput="markUnsaved()" />
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-group">
+          <button class="tool-btn success" onclick="saveNote()" title="Save">
+            <span class="tool-icon">💾</span> Save
+          </button>
+          <button class="tool-btn primary" onclick="exportPDF()" title="Export PDF">
+            <span class="tool-icon">📄</span> PDF
+          </button>
+        </div>
+        <div class="toolbar-group">
+          <label class="toolbar-label">Color</label>
+          <div class="color-picker-wrap">
+            <input type="color" class="color-input" id="textColorInput" value="#2a2118" oninput="applyTextColor(this.value)" title="Text Color"/>
+          </div>
+        </div>
+        <div class="toolbar-group">
+          <label class="toolbar-label">Size</label>
+          <select class="size-select" id="fontSizeSelect" onchange="applyFontSize(this.value)" title="Font Size">
+            <option value="13">Small</option>
+            <option value="16" selected>Normal</option>
+            <option value="19">Large</option>
+            <option value="23">XL</option>
+            <option value="28">XXL</option>
+          </select>
+        </div>
+        <div class="toolbar-group">
+          <button class="tool-btn danger" onclick="confirmClear()" title="Clear">
+            <span class="tool-icon">🗑️</span> Clear
+          </button>
+        </div>
+      </div>
+
+      <!-- Editor Main -->
+      <div class="editor-main">
+        <textarea id="note-content" placeholder="Start writing your note here… ✨" oninput="markUnsaved(); updateWordCount();"></textarea>
+      </div>
+
+      <!-- Footer -->
+      <div class="editor-footer">
+        <span class="word-count" id="wordCount">0 words · 0 chars</span>
+        <span class="save-status">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="saveStatusText">Not saved</span>
+        </span>
+      </div>
+
+    </div>
+  </div>
 </div>
-  </main>
 
-  <script src="script.js"></script>
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon"></span>
+  <span id="toastMsg"></span>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Are you sure?</h3>
+    <p id="modalMsg">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" id="modalConfirmBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

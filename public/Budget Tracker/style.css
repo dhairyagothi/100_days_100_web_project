@@ -1,109 +1,385 @@
+/* =========================================================
+   RESET
+========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================================================
+   CSS VARIABLES — LIGHT THEME
+========================================================= */
+:root {
+  /* Backgrounds */
+  --bg: #f2f6ff;
+  --card: #ffffff;
+  --card-soft: #eef2ff;
+
+  /* Text */
+  --text: #1e293b;
+  --muted: #64748b;
+
+  /* Borders & depth */
+  --border: #dbeafe;
+  --shadow: 0 10px 25px rgba(79, 70, 229, 0.12);
+
+  /* Accents */
+  --primary: #6366f1;
+  --income: #22c55e;
+  --expense: #ef4444;
+}
+
+/* =========================================================
+   BODY
+========================================================= */
 body {
-    font-family: Arial, sans-serif;
-    background-image: url(./budget.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  background: linear-gradient(135deg, #f2f6ff, #eef2ff);
+  color: var(--text);
+  padding: 20px;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-.main-container {
-    margin-bottom: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 80%;
-    max-width: 1200px;
-    height: 90vh;
+/* =========================================================
+   HEADER
+========================================================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
-.container {
-    margin-left: 30px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 48%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.main-heading {
+  font-size: 28px;
 }
 
-h1 {
-    text-align: center;
-    font-size: 53px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.budget-summary {
-    margin-bottom: 20px;
-    text-align: center;
+/* =========================================================
+   TOGGLE BAR
+========================================================= */
+.mode {
+  appearance: none;
+  width: 44px;
+  height: 24px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.budget-summary h3 {
-    margin: 5px 0;
+.mode::before {
+  content: "☀️";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  transition: transform 0.3s ease;
 }
 
-.expense-table {
-    margin-top: 20px;
-    overflow: auto; /* Scrollbar for the table */
-    max-height: 300px; /* Adjust the height as needed */
-    width: 97%;
+.mode:checked {
+  background: var(--primary);
 }
 
+.mode:checked::before {
+  content: "🌙";
+  transform: translateX(20px);
+  box-shadow: 0 0 6px rgba(148, 163, 184, 0.6);
+}
+
+/* =========================================================
+   RESET BUTTON
+========================================================= */
+#resetBtn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+#resetBtn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* =========================================================
+   CARD BASE
+========================================================= */
+.add-data,
+.summary,
+.recent-activity {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* =========================================================
+   ADD TRANSACTION
+========================================================= */
+.add-data h3 {
+  margin-bottom: 15px;
+}
+
+.add-transaction {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.add-transaction input,
+.add-transaction select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  background: #eef2ff;
+  color: var(--text);
+  transition: 0.3s;
+}
+
+.add-transaction input:focus,
+.add-transaction select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.add-transaction input[type="submit"] {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.add-transaction input[type="submit"]:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.acc-balance,
+.income,
+.expense,
+.monthly-budget,
+.category-breakdown {
+  background: var(--card-soft);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.acc-balance {
+  text-align: center;
+  background: linear-gradient(135deg, #eef2ff, #ffffff);
+}
+
+.income {
+  background: #ecfdf5;
+}
+
+.expense {
+  background: #fef2f2;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.amount {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.income .amount {
+  color: var(--income);
+}
+
+.expense .amount {
+  color: var(--expense);
+}
+
+/* =========================================================
+   SUMMARY BODY
+========================================================= */
+.summary-body {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.summary-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.income-expense {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* =========================================================
+   BUDGET
+========================================================= */
+.budget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#budgetInput {
+  width: 120px;
+  border: none;
+  background: transparent;
+  outline: none;
+  text-align: right;
+  color: var(--text);
+}
+
+#budgetInput:focus {
+  border-bottom: 1px solid var(--muted);
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  transition: width 0.4s ease;
+}
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+.category-breakdown p {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.category-breakdown p:last-child {
+  border-bottom: none;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-table th, table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
 }
 
-table th {
-    background-color: #3498db;
-    color: #fff;
+th {
+  color: var(--muted);
 }
 
-table tbody tr:hover {
-    background-color: #f9f9f9;
+/* =========================================================
+   DARK MODE (UNCHANGED)
+========================================================= */
+body.dark {
+  --bg: #0b1220;
+  --card: #020617;
+  --card-soft: #020617;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --border: #1e293b;
 }
 
-input[type="number"], input[type="text"], select, button {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+body.dark {
+  background: var(--bg);
 }
 
-button {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    
+body.dark .add-data,
+body.dark .summary,
+body.dark .recent-activity,
+body.dark .acc-balance,
+body.dark .income,
+body.dark .expense,
+body.dark .monthly-budget,
+body.dark .category-breakdown {
+  background: #020617;
+  color: #e5e7eb;
+  box-shadow: none;
 }
 
-button:hover {
-    background-color: #2980b9;
+body.dark .mode {
+  background: #1e293b;
 }
 
-.charts {
-    margin-top: 20px;
-    text-align: center;
-    overflow: auto; /* Add scrollbar */
-    max-height: calc(90vh - 80px); /* Adjust height as needed, considering margins and other container heights */
+body.dark .add-transaction input,
+body.dark .add-transaction select,
+body.dark #budgetInput {
+  background: #020617;
+  color: #e5e7eb;
+  border: 1px solid #1e293b;
+}
+
+body.dark .add-transaction input::placeholder {
+  color: #94a3b8;
+}
+
+body.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+body.dark .progress-bar {
+  background: #1e293b;
+}
+
+body.dark #resetBtn {
+  border-color: #334155;
 }
