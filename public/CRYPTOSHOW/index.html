@@ -1,17 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/src/assets/favicon-32x32.png" />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-
-    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CryptoShow</title>
-    
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">₿</span>
+          <span class="logo-text">Crypto<span class="accent">Show</span></span>
+        </div>
+        <div class="header-right">
+          <span class="live-badge">● LIVE</span>
+          <input class="search-box" type="text" id="searchInput" placeholder="Search coin..." />
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO TICKER -->
+    <div class="ticker-wrapper">
+      <div class="ticker" id="ticker">
+        <span class="ticker-loading">Loading market data…</span>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- STATS BAR -->
+      <section class="stats-bar" id="statsBar">
+        <div class="stat-card">
+          <span class="stat-label">Market Cap</span>
+          <span class="stat-value" id="totalMarketCap">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">24h Volume</span>
+          <span class="stat-value" id="totalVolume">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">BTC Dominance</span>
+          <span class="stat-value" id="btcDominance">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Active Coins</span>
+          <span class="stat-value" id="activeCoins">—</span>
+        </div>
+      </section>
+
+      <!-- FILTERS -->
+      <div class="filters">
+        <button class="filter-btn active" data-sort="market_cap_rank">Rank</button>
+        <button class="filter-btn" data-sort="current_price">Price</button>
+        <button class="filter-btn" data-sort="price_change_percentage_24h">24h %</button>
+        <button class="filter-btn" data-sort="total_volume">Volume</button>
+        <button class="filter-btn" data-sort="market_cap">Market Cap</button>
+      </div>
+
+      <!-- COIN GRID -->
+      <div class="coin-grid" id="coinGrid">
+        <!-- skeleton cards -->
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+
+      <!-- LOAD MORE -->
+      <div class="load-more-wrapper">
+        <button class="load-more-btn" id="loadMoreBtn">Load More</button>
+      </div>
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal" id="modal">
+        <button class="modal-close" id="modalClose">✕</button>
+        <div class="modal-content" id="modalContent"></div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>Data from <a href="https://www.coingecko.com" target="_blank">CoinGecko</a> · CryptoShow · Day 110</p>
+    </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>
