@@ -37,6 +37,8 @@ body {
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
   padding: 42px 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-header {
@@ -51,7 +53,6 @@ body {
   color: var(--accent);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -91,9 +92,12 @@ form :where(input, textarea, select) {
   color: var(--text);
   background: rgba(18, 24, 33, 0.84);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .search-bar input {
@@ -125,12 +129,16 @@ form :where(input, textarea, select):focus {
   color: #fecdd3;
   background: rgba(251, 113, 133, 0.08);
   border: 1px solid rgba(251, 113, 133, 0.28);
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font: inherit;
   font-size: 14px;
   font-weight: 800;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .clear-notes:hover:not(:disabled) {
@@ -144,22 +152,38 @@ form :where(input, textarea, select):focus {
   opacity: 0.42;
 }
 
+/* =========================
+   NOTES GRID FIX
+========================= */
+
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
-  gap: 18px;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  align-items: stretch;
   list-style: none;
 }
 
 .wrapper li {
-  min-height: 250px;
+  width: 100%;
+  min-height: 260px;
+  height: 100%;
+  display: flex;
   list-style: none;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(23, 32, 43, 0.94), rgba(15, 21, 30, 0.94));
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(23, 32, 43, 0.94),
+    rgba(15, 21, 30, 0.94)
+  );
   box-shadow: var(--shadow);
   animation: riseIn 0.4s ease both;
-  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
 }
 
 .wrapper li:hover {
@@ -195,7 +219,9 @@ header,
   justify-content: center;
   border: 1px solid rgba(79, 209, 197, 0.45);
   background: rgba(79, 209, 197, 0.08);
-  transition: transform 0.25s ease, background 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
 }
 
 .add-box:hover .icon {
@@ -209,19 +235,25 @@ header,
   margin-top: 18px;
 }
 
+/* =========================
+   NOTE CARD FIX
+========================= */
+
 .note {
+  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  overflow: visible;
-  padding: 18px;
+  overflow: hidden;
+  padding: 20px;
 }
 
 .note .details {
-  max-height: 164px;
+  flex: 1;
   overflow-y: auto;
-  padding-right: 2px;
+  padding-right: 4px;
 }
 
 .note .details::-webkit-scrollbar,
@@ -234,11 +266,6 @@ header,
   width: 5px;
 }
 
-.note .details:hover::-webkit-scrollbar-track,
-.popup textarea:hover::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .note .details:hover::-webkit-scrollbar-thumb,
 .popup textarea:hover::-webkit-scrollbar-thumb {
   background: rgba(148, 163, 184, 0.55);
@@ -248,15 +275,17 @@ header,
 .note p {
   font-size: 22px;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.3;
+  word-break: break-word;
 }
 
 .note span {
   display: block;
   color: #cbd5e1;
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.7;
   margin-top: 10px;
+  word-break: break-word;
 }
 
 .note .tags {
@@ -300,7 +329,9 @@ header,
   font-size: 20px;
   padding: 4px;
   border-radius: 50%;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
 }
 
 .bottom-content .settings > i:hover {
@@ -323,7 +354,9 @@ header,
   opacity: 0;
   pointer-events: none;
   box-shadow: var(--shadow);
-  transition: transform 0.18s ease, opacity 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease;
 }
 
 .settings.show .menu {
@@ -334,7 +367,6 @@ header,
 
 .settings .menu li {
   min-height: 34px;
-  height: auto;
   color: #dbe6f3;
   font-size: 14px;
   padding: 8px 10px;
@@ -348,7 +380,6 @@ header,
 
 .menu li:hover {
   background: rgba(255, 255, 255, 0.08);
-  transform: none;
 }
 
 .menu li i {
@@ -359,8 +390,6 @@ header,
   position: fixed;
   inset: 0;
   z-index: 10;
-  height: 100%;
-  width: 100%;
   background: rgba(3, 7, 12, 0.72);
   backdrop-filter: blur(12px);
 }
@@ -369,7 +398,6 @@ header,
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 11;
   width: min(460px, calc(100% - 28px));
   justify-content: center;
   transform: translate(-50%, -48%) scale(0.96);
@@ -379,7 +407,9 @@ header,
 .popup {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.24s ease, transform 0.24s ease;
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease;
 }
 
 .popup-box.show,
@@ -394,7 +424,7 @@ header,
 
 .popup .content {
   width: 100%;
-  border-radius: 8px;
+  border-radius: 12px;
   background: #111821;
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
@@ -414,7 +444,9 @@ header,
   color: var(--muted);
   cursor: pointer;
   font-size: 24px;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .content header i:hover {
@@ -465,9 +497,15 @@ form button {
   cursor: pointer;
   font-size: 16px;
   font-weight: 800;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    var(--accent-strong)
+  );
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 form button:hover {
@@ -501,6 +539,10 @@ form button:hover {
   }
 }
 
+/* =========================
+   RESPONSIVE FIXES
+========================= */
+
 @media (max-width: 760px) {
   .app-shell {
     width: min(100% - 24px, 1180px);
@@ -524,9 +566,14 @@ form button:hover {
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
   .wrapper {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .note {
+    padding: 16px;
   }
 
   .wrapper li {

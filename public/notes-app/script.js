@@ -102,7 +102,8 @@ function showNotes(filteredNotes = getVisibleNotes()) {
                     </div>
                   </li>`;
 
-    addBox.insertAdjacentHTML("afterend", liTag);
+    document.querySelector(".wrapper")
+  .insertAdjacentHTML("beforeend", liTag);
   });
 }
 
