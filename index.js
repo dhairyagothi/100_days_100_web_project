@@ -383,6 +383,39 @@ function initScrollBtn() {
 }
 
 /* ============================================================
+   NAVBAR UI LOGIC
+   ============================================================ */
+function initNavbarUI() {
+    const navbar = document.getElementById('navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navButtons = document.getElementById('navButtons');
+    
+    if (mobileMenuBtn && navButtons) {
+        mobileMenuBtn.addEventListener('click', () => {
+            navButtons.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if(navButtons.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    }
+}
+
+/* ============================================================
    INIT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
@@ -390,6 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('PROJECTS:', typeof PROJECTS, PROJECTS ? PROJECTS.length : 'undefined');
     initTheme();
     updateNavbar();
+    initNavbarUI();
     initFilterChips();
     initSearch();
     syncProjectCounts();
