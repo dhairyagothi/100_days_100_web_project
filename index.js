@@ -806,6 +806,14 @@ const PROJECT_DATA = [
     'api javascript',
     'intermediate',
   ],
+  [
+    'Day 117',
+    'Reaction Time Tester',
+    './public/ReactionTimeTester/index.html',
+    'game javascript',
+    'beginner',
+],
+
 ];
 
 // Alias for consistency
