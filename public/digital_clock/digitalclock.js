@@ -1,7 +1,52 @@
 let alarmTriggered = false;
+const populateTimezones = () => {
+  try {
+    const timezoneSelect =
+      document.getElementById('timezone');
 
+    // Add Local Time option first
+    const localOption =
+      document.createElement('option');
+
+    localOption.value = 'local';
+    localOption.textContent = 'Local Time';
+
+    timezoneSelect.appendChild(localOption);
+
+    // Get all supported timezones
+    const timezones =
+      Intl.supportedValuesOf('timeZone');
+
+    timezones.forEach((zone) => {
+      const option =
+        document.createElement('option');
+
+      option.value = zone;
+      option.textContent = zone.replaceAll('_', ' ');
+
+      timezoneSelect.appendChild(option);
+    });
+
+    // Auto select user's timezone
+    const userTimezone =
+      Intl.DateTimeFormat()
+        .resolvedOptions()
+        .timeZone;
+
+    if ([...timezoneSelect.options]
+      .some(option => option.value === userTimezone)) {
+
+      timezoneSelect.value = userTimezone;
+    }
+
+  } catch (error) {
+    console.error(
+      'Failed to load timezones:',
+      error
+    );
+  }
+};
 // Start clock
-setInterval(updateClock, 1000);
 
 function updateClock() {
   const format = localStorage.getItem('clockFormat') || 'format1';
@@ -331,6 +376,7 @@ function stopAlarm() {
 
   alarmTriggered = false;
 }
-
+populateTimezones();
 // Initial load
 updateClock();
+setInterval(updateClock, 1000);
