@@ -1,0 +1,63 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+header {
+  text-align: center;
+  padding: 15px;
+  background: #111827;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.builder, .preview {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+input, select, button, textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  box-sizing: border-box;
+}
+
+button {
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.form-field {
+  background: #334155;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.delete-btn {
+  background: #dc2626;
+  margin-top: 6px;
+}
+
+.output {
+  padding: 20px;
+}
+
+textarea {
+  height: 220px;
+  background: #111827;
+  color: #00ff88;
+  font-family: monospace;
+}
