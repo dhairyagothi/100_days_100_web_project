@@ -1,31 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript.">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript."
+    />
     <title>100 Days · 100 Web Projects</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
 
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
     <nav class="navbar" id="navbar">
-        <div class="navbar-brand">
+        <a class="navbar-brand" href="index.html" style="text-decoration:none;">
             <span class="brand-mark" aria-hidden="true">100</span>
             <span class="brand-copy">
                 <span class="brand-kicker">Open Source Archive</span>
                 <strong>100 Days · 100 Web Projects</strong>
             </span>
-        </div>
+        </a>
         <div class="nav-buttons" id="navButtons">
             <!-- populated by JS -->
         </div>
@@ -33,143 +42,223 @@
 
     <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
-        <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
-        <div class="hero-inner">
-            <p class="hero-overline">Open Source Frontend Archive · 2026</p>
+      <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="hero-overline">Open Source Frontend Archive · 2026</p>
 
-            <h1 class="hero-headline">
-                <span class="hero-line">100 DAYS</span>
-                <span class="hero-line hero-line-accent">100 WEB PROJECTS</span>
-            </h1>
+        <h1 class="hero-headline">
+          <span class="hero-line">100 DAYS</span>
+          <span class="hero-line hero-line-accent">100 WEB PROJECTS</span>
+        </h1>
 
-            <p class="hero-sub">
-                A curated open-source collection. Browse, fork, contribute.
-            </p>
+        <p class="hero-sub">
+          A curated open-source collection. Browse, fork, contribute.
+        </p>
 
-            <div class="hero-actions">
-                <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
-                    Browse Projects <i class="fas fa-arrow-down"></i>
-                </a>
-                <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="btn btn-ghost" id="heroGithubBtn">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-            </div>
-
-            <div class="stats-strip" id="statsStrip">
-                <span class="stat-item">
-                    <strong id="projectCount">—</strong> Projects
-                </span>
-                <span class="stat-divider">·</span>
-                <span class="stat-item">
-                    <strong id="starCount">—</strong> Stars
-                </span>
-                <span class="stat-divider">·</span>
-                <span class="stat-item">
-                    <strong id="forkCount">—</strong> Forks
-                </span>
-                <span class="stat-divider">·</span>
-                <span class="stat-item">
-                    <strong id="issueCount">—</strong> Issues
-                </span>
-                <span class="stat-divider">·</span>
-                <span class="stat-item">
-                    <strong id="prCount">—</strong> PRs
-                </span>
-                <span class="stat-divider">·</span>
-                <span class="stat-item">
-                    <strong>Open</strong> Source
-                </span>
-            </div>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
+            Browse Projects <i class="fas fa-arrow-down"></i>
+          </a>
+          <a
+            href="https://github.com/dhairyagothi/100_days_100_web_project"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-ghost"
+            id="heroGithubBtn"
+          >
+            <i class="fab fa-github"></i> GitHub
+          </a>
         </div>
+
+        <div class="stats-strip" id="statsStrip">
+          <span class="stat-item">
+            <strong id="projectCount">—</strong> Projects
+          </span>
+          <span class="stat-divider">·</span>
+          <span class="stat-item">
+            <strong id="starCount">—</strong> Stars
+          </span>
+          <span class="stat-divider">·</span>
+          <span class="stat-item">
+            <strong id="forkCount">—</strong> Forks
+          </span>
+          <span class="stat-divider">·</span>
+          <span class="stat-item">
+            <strong id="issueCount">—</strong> Issues
+          </span>
+          <span class="stat-divider">·</span>
+          <span class="stat-item"> <strong id="prCount">—</strong> PRs </span>
+          <span class="stat-divider">·</span>
+          <span class="stat-item"> <strong>Open</strong> Source </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects-section">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Continue Exploring</p>
+
+          <div class="section-heading-row">
+            <h2 class="section-title">Recently Viewed</h2>
+
+            <button class="view-all-btn" id="recentToggleBtn">View All</button>
+          </div>
+        </div>
+
+        <div class="project-grid" id="recentGrid"></div>
+      </div>
+    </section>
+
+    <section class="projects-section">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Saved Collection</p>
+
+          <div class="section-heading-row">
+            <h2 class="section-title">Bookmarked Projects</h2>
+
+            <button class="view-all-btn" id="bookmarkToggleBtn">
+              View All
+            </button>
+          </div>
+        </div>
+
+        <div class="project-grid" id="bookmarkGrid"></div>
+      </div>
     </section>
 
     <!-- ── PROJECTS ───────────────────────────────────────── -->
     <section class="projects-section" id="projects">
-        <div class="projects-inner">
-            <div class="projects-intro">
-                <p class="section-label">Archive index</p>
-                <h2 class="section-title">Every experiment, catalogued.</h2>
-            </div>
-
-            <div class="projects-header">
-                <div class="search-bar">
-                    <i class="fas fa-search search-icon"></i>
-                    <input
-                        type="text"
-                        id="searchInput"
-                        class="search-input"
-                        placeholder="Search projects…"
-                        autocomplete="off"
-                    >
-                </div>
-                <div class="filter-chips" id="filterChips">
-                    <button class="chip active" data-filter="all" id="filterAll">All <span class="chip-count" id="allCount">Projects</span></button>
-                    <button class="chip" data-filter="game" id="filterGame">Games</button>
-                    <button class="chip" data-filter="clone" id="filterClone">Clones</button>
-                    <button class="chip" data-filter="tool" id="filterTool">Tools</button>
-                    <button class="chip" data-filter="ui" id="filterUI">UI / Animation</button>
-                    <button class="chip" data-filter="api" id="filterAPI">APIs</button>
-                </div>
-            </div>
-
-            <div class="project-grid" id="projectGrid"></div>
-
-            <div class="no-results" id="noResults">
-                <i class="fas fa-search"></i>
-                <p>No projects match your search.</p>
-            </div>
-
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Archive index</p>
+          <h2 class="section-title">Every experiment, catalogued.</h2>
         </div>
+
+        <div class="projects-header">
+          <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search projects…"
+              autocomplete="off"
+            />
+          </div>
+          <div class="filter-chips" id="filterChips">
+            <button class="chip active" data-filter="all" id="filterAll">
+              All <span class="chip-count" id="allCount">Projects</span>
+            </button>
+            <button class="chip" data-filter="game" id="filterGame">
+              Games
+            </button>
+            <button class="chip" data-filter="clone" id="filterClone">
+              Clones
+            </button>
+            <button class="chip" data-filter="tool" id="filterTool">
+              Tools
+            </button>
+            <button class="chip" data-filter="ui" id="filterUI">
+              UI / Animation
+            </button>
+            <button class="chip" data-filter="api" id="filterAPI">APIs</button>
+          </div>
+        </div>
+
+        <div class="project-grid" id="projectGrid"></div>
+
+        <div class="no-results" id="noResults">
+          <i class="fas fa-search"></i>
+          <p>No projects match your search.</p>
+        </div>
+      </div>
     </section>
 
     <!-- ── FOOTER ─────────────────────────────────────────── -->
     <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-brand">
-                <span class="footer-logo">100 Days</span>
-                <p>An open-source frontend exploration challenge — a growing collection of HTML, CSS &amp; JavaScript experiments.</p>
-            </div>
-
-            <div class="footer-nav">
-                <h4>Navigate</h4>
-                <ul>
-                    <li><a href="#projects">Browse Projects</a></li>
-                    <li><a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub Repo</a></li>
-                    <li><a href="./contributors/contributor.html">Contributors</a></li>
-                    <li><a href="./public/Login.html">Sign In</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-social">
-                <h4>Connect</h4>
-                <div class="social-row">
-                    <a href="https://github.com/dhairyagothi" target="_blank" class="social-icon" aria-label="GitHub" id="footerGithub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-icon" aria-label="LinkedIn" id="footerLinkedin">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-icon" aria-label="Instagram" id="footerInstagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-logo">100 Days</span>
+          <p>
+            An open-source frontend exploration challenge — a growing collection
+            of HTML, CSS &amp; JavaScript experiments.
+          </p>
         </div>
 
-        <div class="footer-bottom">
-            <span>© 2024 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
-            <button id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-                <i class="fas fa-moon"></i>
-            </button>
+        <div class="footer-nav">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#projects">Browse Projects</a></li>
+            <li>
+              <a
+                href="https://github.com/dhairyagothi/100_days_100_web_project"
+                target="_blank"
+                rel="noopener noreferrer"
+                >GitHub Repo</a
+              >
+            </li>
+            <li><a href="./contributors/contributor.html">Contributors</a></li>
+            <li><a href="./public/Login.html">Sign In</a></li>
+          </ul>
         </div>
+
+        <div class="footer-social">
+          <h4>Connect</h4>
+          <div class="social-row">
+            <a
+              href="https://github.com/dhairyagothi"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-icon"
+              aria-label="GitHub"
+              id="footerGithub"
+            >
+              <i class="fab fa-github"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-icon"
+              aria-label="LinkedIn"
+              id="footerLinkedin"
+            >
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/dhairyaa__31/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-icon"
+              aria-label="Instagram"
+              id="footerInstagram"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2024 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
+        <button id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
     </footer>
 
     <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
     <button id="scrollBtn" aria-label="Scroll to top">
-        <i class="fas fa-arrow-up"></i>
+      <i class="fas fa-arrow-up"></i>
     </button>
 
+    <div class="toast" id="toast"></div>
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
+
+    <!----- ADD BACK-TO-TOP BUTTON --------------------------- -->
+    <button id="backToTop">↑</button>
 </body>
 </html>
