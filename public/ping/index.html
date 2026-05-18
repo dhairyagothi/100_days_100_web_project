@@ -15,10 +15,21 @@
    <button class="pause-btn">Pause</button>
    <button class="restart-btn">Restart</button>
   </div>
+  <div class="difficulty-buttons">
+   <button class="difficulty-btn easy" data-difficulty="easy">Easy</button>
+   <button class="difficulty-btn medium" data-difficulty="medium">Medium</button>
+   <button class="difficulty-btn hard" data-difficulty="hard">Hard</button>
+  </div>
  </div>
 
  <div class="pong-wrapper">
   <canvas id="ping-pong" width="600px" height="400px"></canvas>
+  <div class="game-over-overlay" id="gameOverOverlay">
+   <div class="game-over-content">
+    <h2 id="winnerText">Player Wins!</h2>
+    <button class="play-again-btn">Play Again</button>
+   </div>
+  </div>
  </div>
 </body>
 </html>

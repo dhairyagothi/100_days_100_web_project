@@ -4,9 +4,23 @@ const context = canvas.getContext("2d");
 const startBtn = document.querySelector(".start-btn");
 const pauseBtn = document.querySelector(".pause-btn");
 const restartBtn = document.querySelector(".restart-btn");
+const difficultyBtns = document.querySelectorAll(".difficulty-btn");
+const gameOverOverlay = document.getElementById("gameOverOverlay");
+const winnerText = document.getElementById("winnerText");
+const playAgainBtn = document.querySelector(".play-again-btn");
 
 let gameRunning = false;
 let animationId;
+let currentDifficulty = "medium";
+const winningScore = 5;
+let gameOver = false;
+
+// Difficulty settings
+const difficultySettings = {
+  easy: { ballSpeed: 4, computerLevel: 0.05 },
+  medium: { ballSpeed: 6, computerLevel: 0.1 },
+  hard: { ballSpeed: 9, computerLevel: 0.15 }
+};
 
 // CREATE USER PADDLE
 const user = {
@@ -33,9 +47,9 @@ const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   radius: 10,
-  speed: 5,
-  velocityX: 5,
-  velocityY: 5,
+  speed: difficultySettings[currentDifficulty].ballSpeed,
+  velocityX: difficultySettings[currentDifficulty].ballSpeed,
+  velocityY: difficultySettings[currentDifficulty].ballSpeed,
   color: "white"
 };
 
@@ -51,6 +65,35 @@ const net = {
 restartBtn.addEventListener("click", () => {
   document.location.reload();
 });
+
+// Difficulty button event listeners
+difficultyBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (gameRunning) return; // Don't allow changing difficulty during game
+    
+    // Remove selected class from all buttons
+    difficultyBtns.forEach(b => b.classList.remove("selected"));
+    
+    // Add selected class to clicked button
+    btn.classList.add("selected");
+    
+    // Set current difficulty
+    currentDifficulty = btn.dataset.difficulty;
+    
+    // Reset ball speed based on difficulty
+    ball.speed = difficultySettings[currentDifficulty].ballSpeed;
+    ball.velocityX = difficultySettings[currentDifficulty].ballSpeed;
+    ball.velocityY = difficultySettings[currentDifficulty].ballSpeed;
+  });
+});
+
+// Play again button event listener
+playAgainBtn.addEventListener("click", () => {
+  resetGame();
+});
+
+// Set medium as default selected difficulty
+document.querySelector(".difficulty-btn.medium").classList.add("selected");
 
 window.addEventListener("load", () => {
   render();
@@ -138,17 +181,40 @@ function collision(b, p) {
 function resetBall() {
   ball.x = canvas.width / 2;
   ball.y = canvas.height / 2;
-  ball.speed = 5;
+  ball.speed = difficultySettings[currentDifficulty].ballSpeed;
   ball.velocityX = -ball.velocityX;
+}
+
+// RESET GAME FUNCTION
+function resetGame() {
+  user.score = 0;
+  computer.score = 0;
+  gameOver = false;
+  gameRunning = false;
+  
+  // Reset ball
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height / 2;
+  ball.speed = difficultySettings[currentDifficulty].ballSpeed;
+  ball.velocityX = difficultySettings[currentDifficulty].ballSpeed;
+  ball.velocityY = difficultySettings[currentDifficulty].ballSpeed;
+  
+  // Hide game over overlay
+  gameOverOverlay.classList.remove("show");
+  
+  // Render initial state
+  render();
 }
 
 // UPDATE FUNCTION
 function update() {
+  if (gameOver) return; // Don't update if game is over
+  
   ball.x += ball.velocityX;
   ball.y += ball.velocityY;
 
   // SIMPLE AI TO CONTROL THE COMPUTER PADDLE
-  let computerLevel = 0.1;
+  let computerLevel = difficultySettings[currentDifficulty].computerLevel;
   computer.y += (ball.y - (computer.y + computer.height / 2)) * computerLevel;
 
   // BALL COLLISION WITH TOP AND BOTTOM BORDERS
@@ -185,10 +251,29 @@ function update() {
     // THE COMPUTER GAINS 1 POINT
     computer.score++;
     resetBall();
+    checkWinner();
   } else if (ball.x + ball.radius > canvas.width) {
     // THE USER GAINS 1 POINT
     user.score++;
     resetBall();
+    checkWinner();
+  }
+}
+
+// CHECK WINNER FUNCTION
+function checkWinner() {
+  if (user.score >= winningScore) {
+    gameOver = true;
+    gameRunning = false;
+    winnerText.textContent = "You Win!";
+    winnerText.style.color = "#27ae60";
+    gameOverOverlay.classList.add("show");
+  } else if (computer.score >= winningScore) {
+    gameOver = true;
+    gameRunning = false;
+    winnerText.textContent = "Computer Wins!";
+    winnerText.style.color = "#e74c3c";
+    gameOverOverlay.classList.add("show");
   }
 }
 
