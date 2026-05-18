@@ -906,8 +906,10 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, , , cat]) => {
-    const matchesFilter = activeFilter === 'all' || cat === activeFilter;
+  const filtered = PROJECTS.filter(([day, name, , tags, cat]) => {
+    const matchesFilter = activeFilter === 'all' || 
+                          cat === activeFilter || 
+                          (typeof tags === 'string' && tags.split(/\s+/).includes(activeFilter));
     const q = searchQuery.toLowerCase();
     const matchesSearch =
       !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
