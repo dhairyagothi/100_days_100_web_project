@@ -104,4 +104,34 @@ topBtn.addEventListener("click", () => {
     });
 });
 
+// --- Dark Mode State Management Integration ---
+const themeToggle = document.getElementById("themeToggle");
+const themeLabel = document.getElementById("themeLabel");
+
+if (themeToggle && themeLabel) {
+    const savedTheme = localStorage.getItem("theme") || "light";
+
+    if (savedTheme === "dark") {
+        document.documentElement.setAttribute("data-bs-theme", "dark");
+        themeToggle.checked = true;
+        themeLabel.innerText = "☀️ Light Mode";
+    } else {
+        document.documentElement.setAttribute("data-bs-theme", "light");
+        themeToggle.checked = false;
+        themeLabel.innerText = "🌙 Dark Mode";
+    }
+
+    themeToggle.addEventListener("change", () => {
+        if (themeToggle.checked) {
+            document.documentElement.setAttribute("data-bs-theme", "dark");
+            localStorage.setItem("theme", "dark");
+            themeLabel.innerText = "☀️ Light Mode";
+        } else {
+            document.documentElement.setAttribute("data-bs-theme", "light");
+            localStorage.setItem("theme", "light");
+            themeLabel.innerText = "🌙 Dark Mode";
+        }
+    });
+}
+
 getWeather("Mumbai");

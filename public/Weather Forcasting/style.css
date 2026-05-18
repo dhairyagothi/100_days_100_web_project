@@ -1,3 +1,20 @@
+/* --- 1. THEME SWITCHER VARIABLES --- */
+:root {
+  --bg-table: rgba(255, 255, 255, 0.9);
+  --text-table: #212529;
+}
+
+[data-bs-theme="dark"] {
+  --bg-table: rgba(33, 37, 41, 0.95);
+  --text-table: #f8f9fa;
+}
+
+/* --- Smooth Transitions Across Themes --- */
+body, .card, table, .navbar, input, .info-card {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* --- ORIGINAL CODE BASE (UNALTERED STRUCTURE) --- */
 * {
   margin: 0;
   padding: 0;
@@ -34,7 +51,6 @@ h2 {
 }
 
 .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 15px;
   overflow: hidden;
   border: none;
@@ -74,8 +90,10 @@ input {
   border-radius: 10px !important;
 }
 
+/* --- 2. DYNAMIC THEMING ASSIGNMENTS --- */
 table {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-table);
+  color: var(--text-table);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -88,8 +106,10 @@ table {
 .table td,
 .table th {
   vertical-align: middle;
+  color: inherit; /* Ensures text updates properly inside bootstrap structures */
 }
 
+/* --- REST OF ORIGINAL CODE --- */
 .info-section {
   padding: 60px 20px;
   display: flex;
