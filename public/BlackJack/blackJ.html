@@ -13,7 +13,25 @@
     <title>Black Jack</title>
 </head>
 <body>
+    <div class="title-container">
     <h1 class="title">BLACK JACK</h1>
+
+    <button class="btn btn-info" id="rules-btn">
+        Rules
+    </button>
+</div>
+
+<div id="rules-box" style="display:none;">
+    <h3>How To Play</h3>
+
+    <ul>
+        <li>Reach 21 without exceeding it</li>
+        <li>Hit → Draw another card</li>
+        <li>Stand → Stop drawing cards</li>
+        <li>Dealer plays after Stand</li>
+        <li>Closest to 21 wins</li>
+    </ul>
+</div>
     <div class="main">
         <h2><span id="command">Let's Play</span></h2>
         <div class="row1">
@@ -45,6 +63,23 @@
                     <td><span id="draws">0</span></td>
                 </tr>
             </table>
+            <div class="score-buttons">
+
+<button class="btn btn-success"
+id="play-again">
+
+Play Again
+
+</button>
+
+<button class="btn btn-secondary"
+id="reset-score">
+
+Reset Scoreboard
+
+</button>
+
+</div>
         </div>
     </div>
 
