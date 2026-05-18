@@ -12,6 +12,16 @@
     --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+body.light-mode {
+    --bg-primary: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --accent-color: #059669;
+    --accent-glow: rgba(5, 150, 105, 0.2);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.05);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -19,11 +29,12 @@
 }
 
 html, body {
-    background: #050505 !important;
+    background: var(--bg-primary) !important;
     color: var(--text-primary);
     margin: 0;
     padding: 0;
     width: 100%;
+    transition: background 0.6s ease, color 0.6s ease;
 }
 
 body {
@@ -46,7 +57,7 @@ body {
     top: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(5, 5, 5, 0.8) !important;
+    background: var(--glass-bg) !important;
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border-bottom: 1px solid var(--glass-border);
@@ -287,7 +298,7 @@ body {
 
 .github-btn {
     background: var(--text-primary);
-    color: #000;
+    color: var(--bg-primary);
     padding: 0.8rem 1.6rem;
     border-radius: 14px;
     text-decoration: none;
@@ -303,7 +314,7 @@ body {
 
 /* Footer */
 .footer {
-    background: #000 !important;
+    background: var(--bg-primary) !important;
     padding: 6rem 2rem 4rem;
     border-top: 1px solid var(--glass-border);
 }
@@ -324,6 +335,28 @@ body {
 
 .footer p {
     color: var(--text-secondary);
+}
+.footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.footer-link {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: var(--transition);
+    width: fit-content;
+}
+
+.footer-link:hover {
+    color: #00ffff; 
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    transform: translateX(8px);
 }
 
 .social-links {
@@ -386,4 +419,4 @@ body {
     .navbar { padding: 1rem 2rem; }
     .footer-content { grid-template-columns: 1fr; }
     .stats-overview { grid-template-columns: repeat(2, 1fr); }
-}
+}
