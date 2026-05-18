@@ -32,4 +32,4 @@ Debug-Website/
 ```
 
 ## Author
-[Debarati Seal](https://github.com/mithilP007) (Contributed to the 100 Days 100 Projects collection)
+[Debarati Seal](https://github.com/dfordebarati) (Contributed to the 100 Days 100 Projects collection)

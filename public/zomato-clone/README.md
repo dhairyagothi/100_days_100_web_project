@@ -16,7 +16,7 @@ A responsive web project named Zomato Clone. This project demonstrates modern we
 ## Setup Instructions
 1. Clone the repository.
 2. Navigate to the project folder: `public/zomato-clone/`
-3. Open `index.html` in your web browser.
+3. Open `zomato.html` in your web browser.
 
 ## Folder Structure
 ```text

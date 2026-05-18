@@ -1,7 +1,7 @@
-# Github Profile Finder
+# GitHub Profile Finder
 
 ## Description
-A responsive web project named Github Profile Finder. This project demonstrates modern web development techniques and interactive user interface design.
+A responsive web project named GitHub Profile Finder. This project demonstrates modern web development techniques and interactive user interface design.
 
 ## Technologies Used
 - HTML5

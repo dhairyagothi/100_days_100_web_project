@@ -7,7 +7,7 @@ An educational quiz game that challenges players' knowledge of world capitals. B
 - Node.js
 - Express.js
 - EJS (Embedded JavaScript)
-- PostgreSQL / MySQL (Requires "worlds" database)
+- PostgreSQL (Requires "worlds" database)
 - CSV (for data import)
 
 ## Features
@@ -18,9 +18,14 @@ An educational quiz game that challenges players' knowledge of world capitals. B
 
 ## Setup Instructions
 1. Navigate to the project folder: `public/Country Quiz Game/`
-2. Create a database named `worlds` in your preferred RDBMS.
-3. Import the provided `capitals.csv` file into a table within the database.
-4. Update database credentials in `index.js` (if necessary).
+2. Create a PostgreSQL database named `worlds`.
+3. Import the provided `capitals.csv` file into a table named `capitals` within the database.
+4. Set the following environment variables (e.g. in your system or in a `.env` file):
+   - `PG_USER`: your PostgreSQL username
+   - `PG_HOST`: database host (e.g., `localhost`)
+   - `PG_DATABASE`: `worlds`
+   - `PG_PASSWORD`: your PostgreSQL password
+   - `PG_PORT`: database port (e.g., `5432`)
 5. Install dependencies:
    ```bash
    npm install
@@ -29,7 +34,7 @@ An educational quiz game that challenges players' knowledge of world capitals. B
    ```bash
    node index.js
    ```
-7. Open `http://localhost:3000` (or specified port) in your browser.
+7. Open `http://localhost:3000` in your web browser.
 
 ## Folder Structure
 ```text

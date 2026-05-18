@@ -20,7 +20,7 @@ A powerful and intuitive image search engine that allows users to discover high-
 1. Clone the repository.
 2. Navigate to the project folder: `public/Image Search Engine/`
 3. Get a free API key from [Unsplash Developers](https://unsplash.com/developers).
-4. Update the `accessKey` in `script.js` with your own key.
+4. Update the `accessKey` constant at the top of `script.js` with your own key.
 5. Open `index.html` in your web browser.
 
 ## Folder Structure

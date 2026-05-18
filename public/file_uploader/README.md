@@ -25,7 +25,7 @@ A server-side web application built with Node.js and Express that allows users t
    ```bash
    node index.js
    ```
-4. Open `http://localhost:3000` (or specified port) in your browser.
+4. Open `http://localhost:3000/file` in your web browser.
 
 ## Folder Structure
 ```text

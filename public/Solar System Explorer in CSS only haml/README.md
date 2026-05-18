@@ -15,7 +15,7 @@ A responsive web project named Solar System Explorer In Css Only Haml. This proj
 ## Setup Instructions
 1. Clone the repository.
 2. Navigate to the project folder: `public/Solar System Explorer in CSS only haml/`
-3. Open `index.html` in your web browser.
+3. Open `template.html` in your web browser.
 
 ## Folder Structure
 ```text

@@ -1,7 +1,7 @@
-# Weather Forcasting
+# Weather Forecasting
 
 ## Description
-A responsive web project named Weather Forcasting. This project demonstrates modern web development techniques and interactive user interface design.
+A responsive web project named Weather Forecasting. This project demonstrates modern web development techniques and interactive user interface design.
 
 ## Technologies Used
 - HTML5

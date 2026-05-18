@@ -1,27 +1,26 @@
-const searchform = document.getElementById("searchaform");
+const accessKey = "wAj8QISZk2cxBAnO3v0hIMMdWnjEbk5Lf4f61S8q7PE"; // Replace with your own Unsplash Access Key
+const searchform = document.getElementById("search-form");
 const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
-const showMoreBtn = document.getElementById("show-more-btn");
+const showMoreBtn = document.getElementById("show-more-button");
 
-
-let keyword="";
+let keyword = "";
 let page = 1;
 
-async function searchImages(){
+async function searchImages() {
     keyword = searchBox.value;
-    const url = https://api.unsplash.com/search/photos?page=1&query=office%3E&client_id=wAj8QISZk2cxBAnO3v0hIMMdWnjEbk5Lf4f61S8q7PE
-    {keyword}&client_id=${accesKey}&per_page=12;
+    const url = `https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${accessKey}&per_page=12`;
 
     const response = await fetch(url);
     const data = await response.json();
 
-    if(page === 1){
+    if (page === 1) {
         searchResult.innerHTML = "";
     }
 
-    const results = data.results
+    const results = data.results;
 
-    results.map((result) =>{
+    results.map((result) => {
         const image = document.createElement("img");
         image.src = result.urls.small;
         const imageLink = document.createElement("a");
@@ -30,17 +29,17 @@ async function searchImages(){
 
         imageLink.appendChild(image);
         searchResult.appendChild(imageLink);
-    })
-    showMoreBtn.style.display = "block"
+    });
+    showMoreBtn.style.display = "block";
 }
 
 searchform.addEventListener("submit", (e) => {
     e.preventDefault();
     page = 1;
     searchImages();
-})
+});
 
-showMoreBtn.addEventListener("click", () =>{
+showMoreBtn.addEventListener("click", () => {
     page++;
     searchImages();
-})
+});

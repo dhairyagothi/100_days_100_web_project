@@ -10,10 +10,10 @@ A full-stack authentication system built using the MERN (MongoDB, Express, React
 - EJS (Embedded JavaScript templates)
 
 ## Features
-- **User Registration**: Create new accounts with encrypted passwords (if implemented).
-- **Secure Login**: Authenticate users against stored credentials.
-- **Session Management**: Maintain user state across requests.
-- **Dynamic Views**: Uses EJS to render personalized content based on authentication status.
+- **User Registration**: Create new accounts with secure, hashed passwords utilizing `bcrypt`.
+- **Password Validation**: Validates password strength via the `validator` library.
+- **Authentication**: Authenticate users against stored credentials in a MongoDB database.
+- **Dynamic Templates**: Uses EJS templates for simple Login and Sign Up views.
 
 ## Setup Instructions
 1. Navigate to the project folder: `public/loginusingmern/`

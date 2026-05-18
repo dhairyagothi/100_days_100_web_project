@@ -16,7 +16,7 @@ A responsive web project named Typewriter. This project demonstrates modern web 
 ## Setup Instructions
 1. Clone the repository.
 2. Navigate to the project folder: `public/typewriter/`
-3. Open `index.html` in your web browser.
+3. Open `typewriter.html` in your web browser.
 
 ## Folder Structure
 ```text

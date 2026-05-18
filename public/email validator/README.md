@@ -23,6 +23,7 @@ A responsive web project named Email Validator. This project demonstrates modern
 email validator/
  ├── background.jpeg
  ├── email.svg
+ ├── index.html
  ├── loading.svg
  ├── script.js
  └── style.css
