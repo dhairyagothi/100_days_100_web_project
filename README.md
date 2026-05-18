@@ -342,6 +342,10 @@ Challenging projects for experienced developers:
 
 <div align="center">
 
+![GitHub stars](https://img.shields.io/github/stars/dhairyagothi/100_days_100_web_project?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/dhairyagothi/100_days_100_web_project?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/dhairyagothi/100_days_100_web_project?style=for-the-badge)
+
 ![GitHub repo size](https://img.shields.io/github/repo-size/dhairyagothi/100_days_100_web_project?style=for-the-badge)
 ![GitHub language count](https://img.shields.io/github/languages/count/dhairyagothi/100_days_100_web_project?style=for-the-badge)
 ![GitHub top language](https://img.shields.io/github/languages/top/dhairyagothi/100_days_100_web_project?style=for-the-badge)
