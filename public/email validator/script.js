@@ -43,24 +43,50 @@ submitBtn.addEventListener("click", async (e) => {
         let key = "ema_live_tkRl4T1AMrlwioPCHxe8r1HmTSKkJSLehW9Ti42B"
 
         let url = `https://api.emailvalidation.io/v1/info?apikey=${key}&email=${email}`
-
+        
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Validating...";
+        
         let res = await fetch(url)
 
-        let result = await res.json()
-
-        let str = ``
-
-        for (let key of Object.keys(result)) {
-
-            if(result[key] !== "" && result[key] !== " ") {
-
-                str += `
-                <div class="result-item">
-                    <strong>${key}:</strong> ${result[key]}
-                </div>
-                `
-            }
+        if(!res.ok){
+            throw new Error("API request failed");
         }
+
+        let result = await res.json()
+        
+        let str = `
+            <div class="result-item">
+                <strong>Email:</strong> ${result.email}
+            </div>
+
+            <div class="result-item">
+                <strong>Status:</strong>
+                ${result.state === "deliverable"
+                    ? "Valid ✅"
+                    : "Invalid ❌"}
+            </div>
+
+            <div class="result-item">
+                <strong>Domain:</strong>
+                ${result.domain}
+            </div>
+
+            <div class="result-item">
+                <strong>SMTP Check:</strong>
+                ${result.smtp_check ? "Passed ✅" : "Failed ❌"}
+            </div>
+
+            <div class="result-item">
+                <strong>Disposable:</strong>
+                ${result.disposable ? "Yes" : "No"}
+            </div>
+
+            <div class="result-item">
+                <strong>Reason:</strong>
+                ${result.reason}
+            </div>
+            `;
 
         resultCont.innerHTML = str
 
@@ -73,5 +99,9 @@ submitBtn.addEventListener("click", async (e) => {
         </div>
         `
         console.log(error)
+    }
+    finally{
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Validate Email";
     }
 })

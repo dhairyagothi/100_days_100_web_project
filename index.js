@@ -359,7 +359,14 @@ const PROJECT_DATA = [
     "Netflix Landing Page Clone",
     "./public/Netflix_Cloning/Index.html",
     "css",
-    "beginner",
+    "beginner"
+  ],
+  [
+    'Day 50',
+    'Recipe Genie',
+    'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe%20Genie',
+    'api javascript',
+    'intermediate',
   ],
   [
     "Day 52",
@@ -809,6 +816,18 @@ const PROJECT_DATA = [
     "Currency Converter",
     "/public/CurrencyConverter-webapp/index.html",
   ],
+  [
+    'Day 117', 
+    'Image To Particle Engine', 
+    './public/image-particle-engine/index.html', 
+    'javascript', 
+    'intermediate'
+  ],
+    'Day 118',
+    'Connect4 Game',
+    './public/Connect4/index.html',
+    'javascript game',
+    'intermediate'
 ];
 
 // Alias for consistency
