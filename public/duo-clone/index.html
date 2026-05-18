@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LinguaBird — Learn Languages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">🦜 LinguaBird</div>
+    <nav class="nav">
+      <a href="#" class="nav-item active" data-page="learn">
+        <span class="nav-icon">🏠</span><span>Learn</span>
+      </a>
+      <a href="#" class="nav-item" data-page="leaderboard">
+        <span class="nav-icon">🏆</span><span>Leaderboard</span>
+      </a>
+      <a href="#" class="nav-item" data-page="profile">
+        <span class="nav-icon">👤</span><span>Profile</span>
+      </a>
+    </nav>
+    <div class="streak-box">
+      <div class="streak-fire">🔥</div>
+      <div class="streak-count" id="streakCount">7</div>
+      <div class="streak-label">Day Streak</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- LEARN PAGE -->
+    <div id="page-learn" class="page active">
+      <div class="top-bar">
+        <div class="xp-bar-wrap">
+          <span>⚡ <span id="xpDisplay">120</span> XP</span>
+          <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:40%"></div></div>
+        </div>
+        <div class="hearts">❤️ <span id="heartsDisplay">5</span></div>
+      </div>
+
+      <h1 class="section-title">Choose a Lesson</h1>
+
+      <div class="unit-path">
+
+        <div class="unit" data-unit="1">
+          <div class="unit-header">🇪🇸 Spanish — Basics</div>
+          <div class="lessons-row">
+            <button class="lesson-btn done" onclick="startLesson(1)">⭐</button>
+            <button class="lesson-btn done" onclick="startLesson(2)">⭐</button>
+            <button class="lesson-btn active-lesson" onclick="startLesson(3)">🦜</button>
+            <button class="lesson-btn locked">🔒</button>
+            <button class="lesson-btn locked">🔒</button>
+          </div>
+        </div>
+
+        <div class="unit" data-unit="2">
+          <div class="unit-header">🇫🇷 French — Greetings</div>
+          <div class="lessons-row">
+            <button class="lesson-btn locked">🔒</button>
+            <button class="lesson-btn locked">🔒</button>
+            <button class="lesson-btn locked">🔒</button>
+          </div>
+        </div>
+
+        <div class="unit" data-unit="3">
+          <div class="unit-header">🇯🇵 Japanese — Hiragana</div>
+          <div class="lessons-row">
+            <button class="lesson-btn locked">🔒</button>
+            <button class="lesson-btn locked">🔒</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- QUIZ PAGE -->
+    <div id="page-quiz" class="page">
+      <div class="quiz-wrap">
+        <div class="quiz-top">
+          <button class="close-btn" onclick="closePage('quiz')">✕</button>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="quizProgress"></div>
+          </div>
+          <div class="hearts">❤️ <span id="quizHearts">5</span></div>
+        </div>
+
+        <div class="question-area">
+          <p class="question-label">Translate this sentence</p>
+          <h2 class="question-text" id="questionText"></h2>
+        </div>
+
+        <div class="options-grid" id="optionsGrid"></div>
+
+        <div class="answer-feedback" id="answerFeedback"></div>
+        <button class="check-btn" id="checkBtn" onclick="checkAnswer()" disabled>CHECK</button>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD PAGE -->
+    <div id="page-leaderboard" class="page">
+      <h1 class="section-title">🏆 Leaderboard</h1>
+      <div class="leaderboard-list" id="leaderboardList"></div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div id="page-profile" class="page">
+      <div class="profile-card">
+        <div class="avatar">🦜</div>
+        <h2 class="profile-name">LinguaBird User</h2>
+        <div class="profile-stats">
+          <div class="stat"><div class="stat-val" id="profileXP">120</div><div class="stat-label">Total XP</div></div>
+          <div class="stat"><div class="stat-val">7</div><div class="stat-label">Day Streak</div></div>
+          <div class="stat"><div class="stat-val">3</div><div class="stat-label">Lessons Done</div></div>
+        </div>
+        <div class="badges">
+          <span class="badge">🔥 Week Warrior</span>
+          <span class="badge">⭐ First Lesson</span>
+          <span class="badge">🎯 Sharpshooter</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RESULT MODAL -->
+  <div class="modal-overlay" id="resultModal">
+    <div class="modal">
+      <div class="modal-icon" id="modalIcon">🎉</div>
+      <h2 id="modalTitle">Lesson Complete!</h2>
+      <p id="modalMsg">You earned <strong>+10 XP</strong>!</p>
+      <button class="modal-btn" onclick="closeModal()">Continue</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
