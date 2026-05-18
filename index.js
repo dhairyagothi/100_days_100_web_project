@@ -8,8 +8,6 @@ if (typeof REPO_OWNER === 'undefined') {
 window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
 window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
-
-
 let currentPage = 1;
 const itemsPerPage = 10;
 let projectData = [];
@@ -804,6 +802,20 @@ const PROJECT_DATA = [
     'AI Image Classifier',
     './public/AI Image Classifier/index.html',
     'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 117',
+    'Simple Counter',
+    './public/simple_counter/index.html',
+    'html css javascript',
+    'beginner',
+  ],
+  [
+    'Day 118',
+    'Retro Neon Snake',
+    './public/neon_snake/index.html',
+    'html css canvas javascript',
     'intermediate',
   ],
 ];

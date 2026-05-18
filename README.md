@@ -58,7 +58,7 @@ The website features:
 - Beautiful dark/light theme toggle
 - Responsive design for all devices
 
-## 📚 All Projects (112 Total)
+## 📚 All Projects (117 Total)
 
 <div align="center">
 
@@ -183,6 +183,9 @@ The website features:
 | 112 | Nykaa Clone | HTML, CSS, JS | 💄 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone) |
 | 113 | CPU Scheduler | HTML, CSS, JS | ⚙️ Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler) |
 | 114 | EchoNotes | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes) |
+| 115 | Event Registration System | Node, Express | 🛠️ Tool | [GitHub](https://event-registration-system-w10a.onrender.com/) |
+| 116 | AI Image Classifier | HTML, CSS, JS, AI | 🛠️ Tool | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20Image%20Classifier/index.html) |
+| 117 | Simple Counter | HTML, CSS, JS | 🎨 UI | [View Demo](https://100-days-100-web-project.vercel.app/public/simple_counter/index.html) |
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 25+ interactive games and puzzles

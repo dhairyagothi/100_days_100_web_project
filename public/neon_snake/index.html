@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Neon Snake — 100 Days 100 Web Projects</title>
+    <meta name="description" content="A premium retro-futuristic Neon Snake Game with vaporwave arcade aesthetics, custom synthesizer sounds, particle effects, and power-ups.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cyber-overlay"></div>
+    <div class="arcade-cabinet">
+        <header class="arcade-header">
+            <div class="neon-title" data-text="NEON SNAKE">NEON SNAKE</div>
+            <div class="arcade-tagline">RETRO CYBERPUNK ARCADE</div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Left Side: Controls & Modes -->
+            <aside class="sidebar left-sidebar">
+                <div class="glass-panel panel-modes">
+                    <h3><i class="fa-solid fa-gamepad"></i> Game Mode</h3>
+                    <div class="mode-buttons">
+                        <button class="btn-mode active" data-mode="classic">
+                            <span class="mode-name">Classic</span>
+                            <span class="mode-desc">Standard retro snake</span>
+                        </button>
+                        <button class="btn-mode" data-mode="obstacles">
+                            <span class="mode-name">Obstacles</span>
+                            <span class="mode-desc">Avoid lethal pylons</span>
+                        </button>
+                        <button class="btn-mode" data-mode="speedrun">
+                            <span class="mode-name">Speed Run</span>
+                            <span class="mode-desc">Constant speed escalation</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-panel panel-settings">
+                    <h3><i class="fa-solid fa-sliders"></i> Systems</h3>
+                    <div class="toggle-control">
+                        <span>Audio Engine</span>
+                        <button id="btnSound" class="btn-toggle active" title="Toggle Synthesizer Sound">
+                            <i class="fa-solid fa-volume-high"></i> ON
+                        </button>
+                    </div>
+                    <div class="toggle-control">
+                        <span>Color Theme</span>
+                        <button id="btnTheme" class="btn-toggle" title="Switch Theme">
+                            <i class="fa-solid fa-palette"></i> NEON
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center: Game Board -->
+            <main class="game-container">
+                <!-- Status Display -->
+                <div class="hud-bar">
+                    <div class="hud-item score-container">
+                        <span class="hud-label">SCORE</span>
+                        <span id="scoreVal" class="hud-value neon-glow-text">0000</span>
+                    </div>
+                    <div class="hud-item highscore-container">
+                        <span class="hud-label">HI-SCORE</span>
+                        <span id="highScoreVal" class="hud-value neon-glow-text">0000</span>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper" id="canvasWrapper">
+                    <canvas id="gameCanvas" width="400" height="400"></canvas>
+                    
+                    <!-- Screens overlay -->
+                    <div class="game-screen" id="startScreen">
+                        <div class="pulse-icon"><i class="fa-solid fa-play"></i></div>
+                        <h2>Insert Coin to Play</h2>
+                        <p class="blink">Press SPACEBAR or TAP HERE to Start</p>
+                    </div>
+
+                    <div class="game-screen hidden" id="gameOverScreen">
+                        <h2 class="neon-glow-red">SYSTEM FAILURE</h2>
+                        <div class="game-stats">
+                            <p>Final Score: <span id="finalScore" class="stat-highlight">0</span></p>
+                            <p>New High Score! <span id="newHighAlert" class="hidden">🔥</span></p>
+                        </div>
+                        <p class="blink">Press SPACEBAR or TAP HERE to Reboot</p>
+                    </div>
+                    
+                    <div class="powerup-alert hidden" id="powerupAlert">
+                        <span id="powerupText">DOUBLE SCORE!</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Controllers -->
+                <div class="mobile-controls">
+                    <div class="control-row">
+                        <button class="ctrl-btn" id="btnUp"><i class="fa-solid fa-chevron-up"></i></button>
+                    </div>
+                    <div class="control-row">
+                        <button class="ctrl-btn" id="btnLeft"><i class="fa-solid fa-chevron-left"></i></button>
+                        <div class="ctrl-center"></div>
+                        <button class="ctrl-btn" id="btnRight"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <div class="control-row">
+                        <button class="ctrl-btn" id="btnDown"><i class="fa-solid fa-chevron-down"></i></button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Side: Instructions & Legend -->
+            <aside class="sidebar right-sidebar">
+                <div class="glass-panel panel-instructions">
+                    <h3><i class="fa-solid fa-circle-info"></i> Directives</h3>
+                    <ul class="directives-list">
+                        <li><span class="key">▲ ▼ ◄ ►</span> Use arrows to guide</li>
+                        <li><span class="key">Space</span> Pause / Resume</li>
+                        <li>Eat core points to grow</li>
+                        <li>Walls are lethal in speed mode</li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel panel-legend">
+                    <h3><i class="fa-solid fa-bolt"></i> Power-ups</h3>
+                    <div class="legend-grid">
+                        <div class="legend-item">
+                            <span class="legend-dot color-score"></span>
+                            <div>
+                                <strong>Double Core</strong>
+                                <span class="legend-desc">2x multiplier points</span>
+                            </div>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot color-shield"></span>
+                            <div>
+                                <strong>Decelerator</strong>
+                                <span class="legend-desc">Slows speed slightly</span>
+                            </div>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot color-ghost"></span>
+                            <div>
+                                <strong>Phase Core</strong>
+                                <span class="legend-desc">Can pass through walls</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <footer class="arcade-footer">
+            <a href="../../index.html" class="back-home-btn"><i class="fa-solid fa-arrow-left-long"></i> BACK TO DASHBOARD</a>
+            <span class="version-tag">SYSTEM v1.0.8</span>
+        </footer>
+    </div>
+</body>
+</html>
