@@ -1285,6 +1285,42 @@ function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
 
+/* ============================================================
+   LIVE SEARCH
+   ============================================================ */
+function initSearch() {
+  const input = document.getElementById('searchInput');
+  if (!input) return;
+  input.addEventListener('input', () => {
+    searchQuery = input.value.trim();
+    renderGrid();
+  });
+}
+
+function syncProjectCounts() {
+  const total = PROJECTS.length.toLocaleString();
+  const countNodes = [
+    document.getElementById('projectCount'),
+    document.getElementById('allCount'),
+  ];
+
+  countNodes.forEach((node) => {
+    if (node) node.textContent = total;
+  });
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.placeholder = `Search ${total} projects…`;
+  }
+}
+
+/* ============================================================
+   NAVBAR — dynamic based on login state
+   ============================================================ */
+function updateNavbar() {
+  const container = document.getElementById('navButtons');
+  if (!container) return;
+  
   const username = window.username || null;
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
@@ -1397,3 +1433,6 @@ backToTopButton.addEventListener("click", () => {
         behavior: "smooth"
     });
 });
+
+});
+
