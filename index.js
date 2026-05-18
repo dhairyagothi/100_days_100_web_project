@@ -147,6 +147,9 @@ const CATEGORY_LABEL = {
 };
 console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
+// Add advanced mapping for difficulty labels
+CATEGORY_LABEL['advanced'] = 'Advanced';
+
 // ============================================
 // 2. GITHUB REPO STATS
 // ============================================
@@ -214,11 +217,13 @@ function renderGrid() {
     const noResults = document.getElementById('noResults');
     if (!grid) return;
 
-    const filtered = PROJECTS.filter(([day, name, , , cat]) => {
-        const matchesFilter = activeFilter === 'all' || cat === activeFilter;
+    const filtered = PROJECTS.filter(([day, name, , tags, difficulty]) => {
+        const tagList = typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : (Array.isArray(tags) ? tags : []);
+        const matchesCategory = activeFilter === 'all' || tagList.includes(activeFilter);
+        const matchesDifficulty = currentDifficulty === 'all' || (difficulty || '') === currentDifficulty;
         const q = searchQuery.toLowerCase();
-        const matchesSearch = !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
-        return matchesFilter && matchesSearch;
+        const matchesSearch = !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q) || tagList.join(' ').toLowerCase().includes(q);
+        return matchesCategory && matchesDifficulty && matchesSearch;
     });
 
     grid.innerHTML = '';
@@ -232,7 +237,7 @@ function renderGrid() {
     grid.style.display = 'grid';
     noResults.style.display = 'none';
 
-    filtered.forEach(([day, name, url, tags, cat]) => {
+    filtered.forEach(([day, name, url, tags, difficulty]) => {
         const card = document.createElement('div');
         card.className = 'project-card';
 
@@ -242,7 +247,7 @@ function renderGrid() {
         card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat] || cat}</span>
+                <span class="card-category">${CATEGORY_LABEL[difficulty] || difficulty || 'Unknown'}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -281,6 +286,27 @@ function initSearch() {
     input.addEventListener('input', () => {
         searchQuery = input.value.trim();
         renderGrid();
+    });
+}
+
+/* ============================================================
+   DIFFICULTY FILTER
+   ============================================================ */
+function initDifficultyFilter() {
+    const container = document.getElementById('difficultyContainer');
+    if (!container) return;
+    const buttons = container.querySelectorAll('[data-difficulty]');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            buttons.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
+            currentDifficulty = btn.dataset.difficulty;
+            renderGrid();
+        });
     });
 }
 
@@ -391,6 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     updateNavbar();
     initFilterChips();
+    initDifficultyFilter();
     initSearch();
     syncProjectCounts();
     renderGrid();

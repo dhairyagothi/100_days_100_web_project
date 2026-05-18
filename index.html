@@ -110,6 +110,15 @@
                     <button class="chip" data-filter="ui" id="filterUI">UI / Animation</button>
                     <button class="chip" data-filter="api" id="filterAPI">APIs</button>
                 </div>
+                <!-- Difficulty filter: All / Beginner / Intermediate / Advanced -->
+                <div class="filter-container" id="difficultyContainer" aria-label="Difficulty filters">
+                    <div class="filter-group" role="tablist" aria-label="Difficulty">
+                        <button class="filter-btn difficulty-btn active" data-difficulty="all" aria-pressed="true">All</button>
+                        <button class="filter-btn difficulty-btn" data-difficulty="beginner" aria-pressed="false">Beginner</button>
+                        <button class="filter-btn difficulty-btn" data-difficulty="intermediate" aria-pressed="false">Intermediate</button>
+                        <button class="filter-btn difficulty-btn" data-difficulty="advanced" aria-pressed="false">Advanced</button>
+                    </div>
+                </div>
             </div>
 
             <div class="project-grid" id="projectGrid"></div>
