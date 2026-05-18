@@ -76,8 +76,8 @@ body {
   border: 2.5px solid var(--border-light);
   border-radius: var(--radius-card);
   padding: 22px 18px;
-  min-width: 175px;
-  max-width: 190px;
+  min-width: 450px;
+  max-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -346,4 +346,93 @@ body {
   #sidebar { max-width: 100%; min-width: 0; width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
   #sb-title { width: 100%; }
   #win-text { font-size: 30px; }
+}
+
+/* Player names */
+#player-x-name, #player-o-name{
+  padding:14px;
+  margin: 6px;
+  border:none;
+  outline:none;
+  border-radius:12px;
+  background:#edf3ff;
+  font-size:16px;
+  font-family:var(--font);
+  font-weight:700;
+  width: 100%;
+}
+
+#player-x-name:focus,#player-o-name:focus{
+  box-shadow:0 0 0 3px rgba(0,119,204,.15);
+}
+
+/* Save Name button */
+#save-names{
+  width:100%;
+  padding:11px 0;
+  border:none;
+  border-radius:var(--radius-btn);
+  background:var(--o-color);
+  color:white;
+  font-family:var(--font);
+  font-weight:900;
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  cursor:pointer;
+  transition: filter .15s, transform .1s;
+}
+
+#save-names:hover{
+  filter:brightness(1.12);
+}
+
+#save-names:active{
+  transform:scale(.96);
+}
+
+/* Mute button */
+/* Default = Sound ON */
+#mute-btn{
+  width:100%;
+  padding:11px 0;
+  border:none;
+  border-radius:var(--radius-btn);
+  font-family:var(--font);
+  font-weight:900;
+  font-size:14px;
+  cursor:pointer;
+  transition:.2s;
+  /* ON style */
+  background:white;
+  color:var(--o-color);
+  border:2px solid var(--o-color);
+}
+
+/* OFF style */
+#mute-btn.muted{
+  background:var(--x-color);
+  color:white;
+  border:none;
+}
+
+#mute-btn:hover{
+  filter:brightness(1.05);
+}
+
+/* Winning line */
+#board-container{
+  position:relative;
+}
+
+#winning-line{
+  position:absolute;
+  display:none;
+  background:#000;
+  height:6px;
+  border-radius:20px;
+  transition:.3s ease;
+  z-index:100;
+  box-shadow:
+  0 2px 10px rgba(0,0,0,.25);
 }

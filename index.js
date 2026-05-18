@@ -352,7 +352,7 @@ const PROJECT_DATA = [
   [
     'Day 50',
     'Recipe Genie',
-    'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe-Genie',
+    'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe%20Genie',
     'api javascript',
     'intermediate',
   ],
@@ -808,11 +808,18 @@ const PROJECT_DATA = [
   ],
   [
     'Day 117',
+
     'AI Resume Analyzer',
     './public/Ai-Resume-Analyzer/client/index.html',
     'api javascript',
     'intermediate',
-  ]
+  ],
+  [
+    'Connect4 Game',
+    './public/Connect4/index.html',
+    'javascript game',
+    'intermediate'
+
 ];
 
 // Alias for consistency
