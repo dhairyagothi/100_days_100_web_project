@@ -806,6 +806,13 @@ const PROJECT_DATA = [
     'api javascript',
     'intermediate',
   ],
+  [
+    'Day 117',
+    'AI Resume Analyzer',
+    './public/Ai-Resume-Analyzer/client/index.html',
+    'api javascript',
+    'intermediate',
+  ]
 ];
 
 // Alias for consistency
