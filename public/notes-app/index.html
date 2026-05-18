@@ -1,78 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="utf-8">  
+  <meta charset="UTF-8">
   <title>Notes App</title>
-  <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-</head>
-<body>
-  <main class="app-shell">
-    <section class="app-header">
-      <div>
-        <p class="eyebrow">Private workspace</p>
-        <h1>Notes App</h1>
-      </div>
-      <div class="header-actions">
-        <div class="search-bar">
-          <i class="uil uil-search"></i>
-          <input type="text" id="search-input" placeholder="Search notes, tags, ideas...">
-        </div>
-        <button class="clear-notes" type="button" aria-label="Delete all saved notes">
-          <i class="uil uil-trash-alt"></i>
-          <span>Clear notes</span>
-        </button>
-      </div>
-    </section>
-  
-    <div class="popup-box">
-      <div class="popup">
-        <div class="content">
-          <header>
-            <p></p>
-            <i class="uil uil-times"></i>
-          </header>
-          <form action="#">
-            <div class="row title">
-              <label>Title</label>
-              <input type="text" spellcheck="false">
-            </div>
-            <div class="row description">
-              <label>Description</label>
-              <textarea spellcheck="false"></textarea>
-            </div>
-            <div class="row tags">
-              <label>Tags</label>
-              <input type="text" spellcheck="false" placeholder="Enter tags separated by commas">
-            </div>
-            <div class="row font">
-              <label>Note font</label>
-              <select>
-                <option value="Poppins">Poppins</option>
-                <option value="Inter">Inter</option>
-                <option value="Georgia">Georgia</option>
-                <option value="Courier New">Courier New</option>
-                <option value="Trebuchet MS">Trebuchet MS</option>
-              </select>
-            </div>
-            <div class="row password">
-              <label>Password</label>
-              <input type="password" spellcheck="false">
-            </div>
-            <button></button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <ul class="wrapper">
-      <li class="add-box">
-        <div class="icon"><i class="uil uil-plus"></i></div>
-        <p>Add new note</p>
-      </li>
-    </ul>
-  </main>
 
-  <script src="script.js"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <h1><i class="uil uil-notes"></i> Notes App</h1>
+
+  <!-- SEARCH -->
+  <div class="search-bar">
+    <i class="uil uil-search"></i>
+    <input type="text" placeholder="Search notes...">
+  </div>
+
+  <!-- ADD BUTTON -->
+  <div class="add-box" onclick="openPopup()">
+    <i class="uil uil-plus"></i>
+    <p>Add new note</p>
+  </div>
+
+</div>
+
+<!-- POPUP -->
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <div class="popup-header">
+      <h2>Add New Note</h2>
+      <span onclick="closePopup()">×</span>
+    </div>
+
+    <input type="text" placeholder="Title">
+    <textarea placeholder="Write your note..."></textarea>
+    <input type="text" placeholder="Tags (comma separated)">
+
+    <div class="password-box">
+      <input type="password" placeholder="Password (optional)">
+      <i class="uil uil-eye"></i>
+    </div>
+
+    <button>+ Add Note</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
