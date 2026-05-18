@@ -247,17 +247,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calculate new head position
         const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
         
-        // Wall Collision handling
+        // Wall Collision handling (Hit border = Game Over)
         if (head.x < 0 || head.x >= TILE_COUNT || head.y < 0 || head.y >= TILE_COUNT) {
-            if (powerups.phase.active) {
-                // Warp around screen
-                head.x = (head.x + TILE_COUNT) % TILE_COUNT;
-                head.y = (head.y + TILE_COUNT) % TILE_COUNT;
-                playSound('phase');
-            } else {
-                triggerGameOver();
-                return;
-            }
+            triggerGameOver();
+            return;
         }
         
         // Self Collision Check
@@ -528,8 +521,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
         
-        if (key === ' ' || key === 'spacebar') {
+        // Prevent default scrolling for game control keys
+        if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' ', 'spacebar', 'w', 'a', 's', 'd'].includes(key)) {
             e.preventDefault();
+        }
+
+        // Spacebar handles Play/Pause/Reboot
+        if (key === ' ' || key === 'spacebar') {
             if (isGameOver) {
                 initGame();
             } else if (!isGameRunning) {
@@ -548,10 +546,23 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (e.key === 'ArrowUp' || key === 'w') handleDirectionInput(0, -1);
-        else if (e.key === 'ArrowDown' || key === 's') handleDirectionInput(0, 1);
-        else if (e.key === 'ArrowLeft' || key === 'a') handleDirectionInput(-1, 0);
-        else if (e.key === 'ArrowRight' || key === 'd') handleDirectionInput(1, 0);
+        // Pressing an arrow or WASD key auto-starts the game if it is not running
+        if (!isGameRunning && !isGameOver && ['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(key)) {
+            initGame();
+            return;
+        }
+
+        // Pressing an arrow or WASD key unpauses the game if it is currently paused
+        if (isPaused && ['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(key)) {
+            isPaused = false;
+            document.getElementById('startScreen').classList.add('hidden');
+        }
+
+        // Handle game movement input
+        if (key === 'arrowup' || key === 'w') handleDirectionInput(0, -1);
+        else if (key === 'arrowdown' || key === 's') handleDirectionInput(0, 1);
+        else if (key === 'arrowleft' || key === 'a') handleDirectionInput(-1, 0);
+        else if (key === 'arrowright' || key === 'd') handleDirectionInput(1, 0);
     });
 
     // Mobile Virtual controls click bindings
