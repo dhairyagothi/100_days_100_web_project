@@ -120,29 +120,89 @@ const elements = [
 ];
 
 const container = document.querySelector(".table-container");
+const searchInput = document.getElementById("search-input");
+const modalOverlay = document.getElementById("modal-overlay");
+const modalClose = document.getElementById("modal-close");
 
-const totalGroups = 18; // Total groups (columns) in the periodic table
-const totalPeriods = 7; // Total periods (rows) in the periodic table
+// Add missing data programmatically
+const getCategory = (num) => {
+    if ([1, 6, 7, 8, 15, 16, 34].includes(num)) return "nonmetal";
+    if ([2, 10, 18, 36, 54, 86, 118].includes(num)) return "noble-gas";
+    if ([3, 11, 19, 37, 55, 87].includes(num)) return "alkali";
+    if ([4, 12, 20, 38, 56, 88].includes(num)) return "alkaline-earth";
+    if ([5, 14, 32, 33, 51, 52].includes(num)) return "metalloid";
+    if ([9, 17, 35, 53, 85, 117].includes(num)) return "halogen";
+    if ([13, 31, 49, 50, 81, 82, 83, 84, 113, 114, 115, 116].includes(num)) return "metal";
+    if (num >= 57 && num <= 71) return "lanthanide";
+    if (num >= 89 && num <= 103) return "actinide";
+    return "transition";
+};
 
-// Create a grid structure for the periodic table
-for (let period = 1; period <= totalPeriods; period++) {
-    for (let group = 1; group <= totalGroups; group++) {
-        const cell = document.createElement("div");
-        cell.className = "empty"; // Default empty cell
+const getGridPosition = (num, group, period) => {
+    if (num >= 57 && num <= 71) return { r: 9, c: num - 57 + 4 };
+    if (num >= 89 && num <= 103) return { r: 10, c: num - 89 + 4 };
+    return { r: period, c: group };
+};
 
-        // Find an element matching the group and period
-        const element = elements.find((el) => el.group === group && el.period === period);
+// Render elements
+elements.forEach((el, index) => {
+    const category = getCategory(el.number);
+    const pos = getGridPosition(el.number, el.group, el.period);
+    el.category = category; // save for search
 
-        if (element) {
-            cell.className = "element";
-            cell.innerHTML = `
-                <div class="element-number">${element.number}</div>
-                <div class="element-symbol">${element.symbol}</div>
-                <div class="element-name">${element.name}</div>
-                <div class="tooltip">Atomic Mass: ${element.mass}</div>
-            `;
+    const cell = document.createElement("div");
+    cell.className = `element ${category}`;
+    cell.style.gridColumn = pos.c;
+    cell.style.gridRow = pos.r;
+    cell.style.setProperty("--i", index);
+
+    cell.innerHTML = `
+        <div class="element-number">${el.number}</div>
+        <div class="element-symbol">${el.symbol}</div>
+        <div class="element-name">${el.name}</div>
+        <div class="tooltip">${el.name} (${el.mass})</div>
+    `;
+
+    // Click handler for modal
+    cell.addEventListener("click", () => {
+        document.getElementById("modal-symbol").textContent = el.symbol;
+        document.getElementById("modal-element-name").textContent = el.name;
+        document.getElementById("modal-category").textContent = category.replace("-", " ");
+        document.getElementById("modal-number").textContent = el.number;
+        document.getElementById("modal-mass").textContent = el.mass;
+        document.getElementById("modal-period").textContent = el.period;
+        document.getElementById("modal-group").textContent = el.group;
+        document.getElementById("modal-config").textContent = "N/A"; // Could add real data
+        document.getElementById("modal-state").textContent = "Solid"; // Defaulting for visual
+        document.getElementById("modal-uses").textContent = `Used in various applications relevant to ${category}s.`;
+        document.getElementById("modal-fact").textContent = `${el.name} has an atomic mass of ${el.mass}.`;
+        
+        modalOverlay.classList.add("active");
+    });
+
+    container.appendChild(cell);
+});
+
+// Search functionality
+searchInput.addEventListener("input", (e) => {
+    const term = e.target.value.toLowerCase();
+    const allCells = document.querySelectorAll(".element");
+    
+    allCells.forEach(cell => {
+        const symbol = cell.querySelector(".element-symbol").textContent.toLowerCase();
+        const name = cell.querySelector(".element-name").textContent.toLowerCase();
+        const num = cell.querySelector(".element-number").textContent;
+        
+        if (symbol.includes(term) || name.includes(term) || num.includes(term)) {
+            cell.classList.remove("dimmed");
+        } else {
+            cell.classList.add("dimmed");
         }
+    });
+});
 
-        container.appendChild(cell);
-    }
-}
+// Close modal
+modalClose.addEventListener("click", () => modalOverlay.classList.remove("active"));
+modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) modalOverlay.classList.remove("active");
+});

@@ -4,12 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Periodic Table</title>
+    <meta name="description" content="An interactive, educational periodic table with element details, search, and category color-coding.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="table-container">
-        <!-- Elements will be dynamically added here by the script -->
+    <header class="page-header">
+        <h1>Interactive Periodic Table</h1>
+        <p class="subtitle">Click any element to explore detailed information</p>
+        <div class="search-bar">
+            <input
+                type="text"
+                id="search-input"
+                placeholder="Search by name, symbol, or atomic number…"
+                aria-label="Search elements"
+                autocomplete="off"
+            >
+        </div>
+        <div class="legend">
+            <span class="legend-item alkali">Alkali Metal</span>
+            <span class="legend-item alkaline-earth">Alkaline Earth</span>
+            <span class="legend-item transition">Transition Metal</span>
+            <span class="legend-item metal">Post-transition Metal</span>
+            <span class="legend-item metalloid">Metalloid</span>
+            <span class="legend-item nonmetal">Nonmetal</span>
+            <span class="legend-item halogen">Halogen</span>
+            <span class="legend-item noble-gas">Noble Gas</span>
+            <span class="legend-item lanthanide">Lanthanide</span>
+            <span class="legend-item actinide">Actinide</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="table-wrapper">
+            <div class="table-container" id="periodic-table">
+                <!-- Elements injected by script.js -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Element detail modal -->
+    <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-element-name">
+        <div class="modal">
+            <button class="modal-close" id="modal-close" aria-label="Close">&#x2715;</button>
+            <div class="modal-header" id="modal-header">
+                <div class="modal-symbol" id="modal-symbol"></div>
+                <div class="modal-title-info">
+                    <h2 id="modal-element-name"></h2>
+                    <span class="modal-category" id="modal-category"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-grid">
+                    <div class="modal-field">
+                        <span class="field-label">Atomic Number</span>
+                        <span class="field-value" id="modal-number"></span>
+                    </div>
+                    <div class="modal-field">
+                        <span class="field-label">Atomic Mass</span>
+                        <span class="field-value" id="modal-mass"></span>
+                    </div>
+                    <div class="modal-field">
+                        <span class="field-label">Period</span>
+                        <span class="field-value" id="modal-period"></span>
+                    </div>
+                    <div class="modal-field">
+                        <span class="field-label">Group</span>
+                        <span class="field-value" id="modal-group"></span>
+                    </div>
+                    <div class="modal-field">
+                        <span class="field-label">Electron Config</span>
+                        <span class="field-value" id="modal-config"></span>
+                    </div>
+                    <div class="modal-field">
+                        <span class="field-label">State at Room Temp</span>
+                        <span class="field-value" id="modal-state"></span>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <h3>Common Uses</h3>
+                    <p id="modal-uses"></p>
+                </div>
+                <div class="modal-section">
+                    <h3>Interesting Fact</h3>
+                    <p id="modal-fact"></p>
+                </div>
+            </div>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
