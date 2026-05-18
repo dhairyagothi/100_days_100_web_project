@@ -806,6 +806,13 @@ const PROJECT_DATA = [
     'api javascript',
     'intermediate',
   ],
+  [
+    'Day 117',
+    'Retro Highway Racer',
+    './public/RetroHighwayRacer/index.html',
+    'game javascript',
+    'intermediate',
+  ],
 ];
 
 // Alias for consistency
