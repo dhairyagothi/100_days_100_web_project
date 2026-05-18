@@ -1,143 +1,257 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="login.css" />
+    <title>Sign Up - 100 Days 100 Web Projects</title>
+    <link rel="stylesheet" href="signup.css" />
     <link rel="icon" href="favv.png" type="image/x-icon" />
   </head>
 
   <body>
     <!-- Navigation -->
     <header class="navbar">
-      <a href="../index.html" class="nav-link">← Back to Home</a>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-icon">←</span>
+        <span class="nav-text">Back to Home</span>
+      </a>
     </header>
 
     <!-- Main Container -->
     <main class="container">
-      <!-- Left Animated Section -->
-      <section class="left">
-        <p class="subtitle">Join the Journey</p>
+      <!-- Left Content Section -->
+      <section class="left-section">
+        <div class="left-content">
+          <p class="subtitle">Join the Journey</p>
 
-        <h1>
-          Create Your
-          <span class="highlight">Account</span>
-        </h1>
+          <h1 class="main-heading">
+            Create Your
+            <span class="highlight">Account</span>
+          </h1>
 
-        <p class="description">
-          Thank you for joining us on this exciting journey of creativity and
-          learning. Over the next 100 days, we will build 100 unique web
-          projects together. Whether you're a beginner or an experienced
-          developer, there is something here for everyone to explore, learn, and
-          create.
-        </p>
+          <p class="description">
+            Thank you for joining us on this exciting journey of creativity and
+            learning. Over the next 100 days, we will build 100 unique web
+            projects together. Whether you're a beginner or an experienced
+            developer, there is something here for everyone to explore, learn,
+            and create.
+          </p>
 
-        <div class="feature-list">
-          <div class="feature-card">🎨 Creative Projects</div>
-          <div class="feature-card">📚 Learn Daily</div>
-          <div class="feature-card">🚀 Build Your Skills</div>
+          <div class="feature-list">
+            <div class="feature-card">
+              <span class="feature-icon">🎨</span>
+              <span>Creative Projects</span>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">📚</span>
+              <span>Learn Daily</span>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">🚀</span>
+              <span>Build Your Skills</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- Right Sign Up Form -->
-      <section class="form-box">
-        <!-- Small Back Button -->
-        <button
-          type="button"
-          class="back-button"
-          onclick="window.location.href = '../index.html'"
-          aria-label="Back to Home"
-        >
-          ←
-        </button>
-
-        <h2>Sign Up</h2>
-        <p class="form-subtitle">
-          Create your account to start building amazing web projects.
-        </p>
-
-        <form id="signupForm">
-          <!-- Name -->
-          <div class="form-group">
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Full Name"
-              autocomplete="name"
-              required
-            />
+      <!-- Right Form Section -->
+      <section class="right-section">
+        <div class="form-wrapper">
+          <div class="form-header">
+            <h2 class="form-title">Sign Up</h2>
+            <p class="form-subtitle">
+              Create your account to start building amazing web projects.
+            </p>
           </div>
 
-          <!-- Username -->
-          <div class="form-group">
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Username"
-              autocomplete="username"
-              required
-            />
-          </div>
+          <form id="signupForm" class="signup-form" novalidate>
+            <!-- Full Name Field -->
+            <div class="form-group">
+              <label for="name" class="form-label">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="form-input"
+                placeholder="Enter your full name"
+                autocomplete="name"
+                required
+              />
+              <span class="error-message" id="name-error"></span>
+            </div>
 
-          <!-- Email -->
-          <div class="form-group">
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email Address"
-              autocomplete="email"
-              required
-            />
-          </div>
+            <!-- Username Field -->
+            <div class="form-group">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-input"
+                placeholder="Choose a username"
+                autocomplete="username"
+                required
+              />
+              <span class="error-message" id="username-error"></span>
+            </div>
 
-          <!-- Password -->
-          <div class="form-group">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
-              autocomplete="new-password"
-              required
-            />
-          </div>
+            <!-- Email Field -->
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+              />
+              <span class="error-message" id="email-error"></span>
+            </div>
 
+            <!-- Password Field -->
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-input"
+                placeholder="Create a strong password"
+                autocomplete="new-password"
+                required
+              />
+              <span class="error-message" id="password-error"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">
+              <span class="btn-text">Create Account</span>
+              <span class="btn-icon">→</span>
+            </button>
+
+            <!-- Login Link -->
+            <p class="login-link">
+              Already have an account?
+              <a href="./Login.html" class="link">Sign In</a>
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
 
     <script>
-        const images = document.querySelectorAll('.transition-image');
-        let currentImageIndex = 0;
+      // Form handling and validation
+      const signupForm = document.getElementById('signupForm');
+      const nameInput = document.getElementById('name');
+      const usernameInput = document.getElementById('username');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
 
-        function showNextImage() {
-            images[currentImageIndex].style.opacity = 0;
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            images[currentImageIndex].style.opacity = 1;
+      // Real-time validation
+      nameInput.addEventListener('blur', validateName);
+      usernameInput.addEventListener('blur', validateUsername);
+      emailInput.addEventListener('blur', validateEmail);
+      passwordInput.addEventListener('blur', validatePassword);
+
+      function validateName() {
+        const name = nameInput.value.trim();
+        const error = document.getElementById('name-error');
+        if (!name) {
+          error.textContent = 'Full name is required';
+          nameInput.classList.add('error');
+          return false;
+        } else if (name.length < 2) {
+          error.textContent = 'Name must be at least 2 characters';
+          nameInput.classList.add('error');
+          return false;
         }
+        error.textContent = '';
+        nameInput.classList.remove('error');
+        return true;
+      }
 
-        setInterval(showNextImage, 3000);
+      function validateUsername() {
+        const username = usernameInput.value.trim();
+        const error = document.getElementById('username-error');
+        if (!username) {
+          error.textContent = 'Username is required';
+          usernameInput.classList.add('error');
+          return false;
+        } else if (username.length < 3) {
+          error.textContent = 'Username must be at least 3 characters';
+          usernameInput.classList.add('error');
+          return false;
+        } else if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+          error.textContent = 'Username can only contain letters, numbers, _, and -';
+          usernameInput.classList.add('error');
+          return false;
+        }
+        error.textContent = '';
+        usernameInput.classList.remove('error');
+        return true;
+      }
 
-        document.getElementById('signupForm').addEventListener('submit', function (event) {
-            event.preventDefault();
+      function validateEmail() {
+        const email = emailInput.value.trim();
+        const error = document.getElementById('email-error');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+          error.textContent = 'Email is required';
+          emailInput.classList.add('error');
+          return false;
+        } else if (!emailRegex.test(email)) {
+          error.textContent = 'Please enter a valid email address';
+          emailInput.classList.add('error');
+          return false;
+        }
+        error.textContent = '';
+        emailInput.classList.remove('error');
+        return true;
+      }
 
-          const name = document.getElementById("name").value.trim();
-          const username = document.getElementById("username").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value.trim();
+      function validatePassword() {
+        const password = passwordInput.value.trim();
+        const error = document.getElementById('password-error');
+        if (!password) {
+          error.textContent = 'Password is required';
+          passwordInput.classList.add('error');
+          return false;
+        } else if (password.length < 6) {
+          error.textContent = 'Password must be at least 6 characters';
+          passwordInput.classList.add('error');
+          return false;
+        }
+        error.textContent = '';
+        passwordInput.classList.remove('error');
+        return true;
+      }
 
-          if (name && username && email && password) {
-            // Save username in localStorage
-            localStorage.setItem("username", username);
+      // Form submission
+      signupForm.addEventListener('submit', function (event) {
+        event.preventDefault();
 
-            // Redirect to login page after successful signup
-            window.location.href = "./login.html";
-          } else {
-            alert("Please fill in all fields.");
-          }
+        const isNameValid = validateName();
+        const isUsernameValid = validateUsername();
+        const isEmailValid = validateEmail();
+        const isPasswordValid = validatePassword();
+
+        if (isNameValid && isUsernameValid && isEmailValid && isPasswordValid) {
+          localStorage.setItem('username', usernameInput.value.trim());
+          window.location.href = './Login.html';
+        }
+      });
+
+      // Clear error on input
+      [nameInput, usernameInput, emailInput, passwordInput].forEach((input) => {
+        input.addEventListener('input', function () {
+          const errorId = this.id + '-error';
+          document.getElementById(errorId).textContent = '';
+          this.classList.remove('error');
         });
+      });
     </script>
   </body>
 </html>

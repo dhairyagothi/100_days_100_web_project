@@ -16,3 +16,20 @@ body{
     justify-content: center;
     gap: 10px;
 }
+.drag-drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.drag-drop-area.dragover {
+  background-color: #f0f8ff;
+  border-color: #00f;
+}
+.drag-drop-area.error {
+  background-color: #ffe6e6;
+  border-color: #f00;
+}
