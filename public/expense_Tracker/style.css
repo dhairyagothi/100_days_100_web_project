@@ -77,3 +77,109 @@ body{
     color: white;
     text-align: center;
 }
+/* Transaction History */
+.history {
+    background-color: black;
+    border-radius: 10px;
+    color: white;
+    padding: 16px;
+    margin-top: 10px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.history-header h2 {
+    background: linear-gradient(90deg, #FC5C7D, #6A82FB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#clear-all-btn {
+    background: transparent;
+    border: 1px solid #FC5C7D;
+    color: #FC5C7D;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+#clear-all-btn:hover {
+    background: #FC5C7D;
+    color: white;
+}
+
+#transaction-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+}
+
+.txn-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border-left: 4px solid;
+}
+
+.txn-item.income  { border-color: #4ade80; }
+.txn-item.expense { border-color: #FC5C7D; }
+
+.txn-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.txn-title { font-size: 0.95rem; font-weight: 500; }
+.txn-date  { font-size: 0.72rem; color: #888; }
+
+.txn-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.txn-amount { font-weight: 700; font-size: 1rem; }
+.plus  { color: #4ade80; }
+.minus { color: #FC5C7D; }
+
+.del-btn {
+    background: transparent;
+    border: none;
+    color: #555;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.del-btn:hover { color: #FC5C7D; }
+
+.empty-msg {
+    text-align: center;
+    color: #555;
+    font-size: 0.88rem;
+    margin-top: 8px;
+}
+
+.submit-button {
+    padding: 10px 24px;
+    background: linear-gradient(90deg, #FC5C7D, #6A82FB);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}

@@ -19,11 +19,10 @@
 
     <div class="main" id="main">
         <div class="left" style="color: white;">
-            <h2 style="text-align: center; text-decoration: dotted;">Expense Categories</h2>
+            <h2 style="text-align: center;">Expense Categories</h2>
             <a href="#">Income</a>
             <a href="#" id="spending-link">Spending</a>
         </div>
-
         <div class="right">
             <div class="income">
                 <h2>Income</h2>
@@ -40,90 +39,16 @@
         <p style="font-weight: bold;">Money Spent:</p><p id="spent">₹0.00</p>
         <p style="font-weight: bold;">Money Left:</p><p id="moneyleft">₹0.00</p>
     </div>
-    <script>
-        
-let totalincome = 0;
-let totalSpent = 0; 
 
+    <!-- Transaction History Section -->
+    <div class="history">
+        <div class="history-header">
+            <h2>Transaction History</h2>
+            <button id="clear-all-btn" onclick="clearAll()">🗑 Clear All</button>
+        </div>
+        <ul id="transaction-list"></ul>
+        <p id="empty-msg" class="empty-msg">No transactions yet!</p>
+    </div>
 
-function formatmoney(amount) {
-    return '₹' + amount.toFixed(2);
-}
-
-
-function updatethemoney() {
-    const incomeInput = document.getElementById('income').value;
-    const income = parseFloat(incomeInput) || 0;
-
-    totalincome += income;
-    document.getElementById('total').textContent = formatmoney(totalincome);
-    document.getElementById('moneyleft').textContent = formatmoney(totalincome);
-
-    
-    document.getElementById('income').value = '';
-}
-
-
-function updateSpending() {
-    const spendingInput = document.getElementById('spending').value;
-    const spending = parseFloat(spendingInput) || 0;
-
-    
-    totalSpent += spending;
-
-    
-    totalincome -= spending;
-
-    
-    document.getElementById('spent').textContent = formatmoney(totalSpent);
-    document.getElementById('moneyleft').textContent = formatmoney(totalincome);
-
-    
-    document.getElementById('spending').value = '';
-}
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const spendingLink = document.getElementById('spending-link');
-    const mainContent = document.getElementById('main');
-
-    spendingLink.addEventListener('click', function (event) {
-        event.preventDefault();
-
-        
-        mainContent.innerHTML = `
-            <div class="left" style="color: white;">
-                <h2 style="text-align: center;text-decoration:dotted;">Expense Categories</h2>
-                <a href="index.html">Income</a>
-                <a href="#">Travel Expense</a>
-                <a href="#">Food</a>
-                <a href="#">Transport</a>
-                <a href="#">Utilities</a>
-                <a href="#">Personal</a>
-                <a href="#">EMI</a>
-                <a href="#">Credit Card</a>
-                <a href="#">Entertainment</a>
-                <a href="#">Health</a>
-                <a href="#">Miscellaneous</a>
-            </div>
-            <div class="right">
-                <div class="income">
-                    <h2>Money Spent</h2>
-                    <br>
-                    <input type="text" id="spending" placeholder="Money Spent" style="width: 100%; padding: 10px;">
-                    <br><br>
-                    <button id="submit-spending" class="submit-button">Submit</button>
-                </div>
-            </div>
-        `;
-
-        
-        const submitSpendingButton = document.getElementById('submit-spending');
-        submitSpendingButton.addEventListener('click', updateSpending);
-    });
-});
-
-
-    </script>
 </body>
 </html>
