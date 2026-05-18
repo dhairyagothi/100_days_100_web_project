@@ -181,6 +181,17 @@
         updatePlace(selectedPlace);
     });
 
+    // Booking button functionality
+bookingButton.addEventListener('click', function () {
+    const selectedPlace = placeSelector.value;
+
+    alert(`Your trip to ${selectedPlace} has been booked successfully!`);
+
+    bookingButton.textContent = `Trip Booked to ${selectedPlace} ✓`;
+
+    bookingButton.classList.add("booked");
+});
+
     
     window.onload = function () {
         const defaultPlace = "Iceland";

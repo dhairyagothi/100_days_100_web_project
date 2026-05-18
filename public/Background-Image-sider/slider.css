@@ -7,7 +7,7 @@
 body{
     background: black;
     color: white;
-    background-image:placebackground;
+  /*  background-image:placebackground;*/
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -66,6 +66,42 @@ ul li:hover::after{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.booking:hover{
+  background-color: white;
+  color: black;
+  transition: 0.3s ease;
+  transform: scale(1.05);
+}
+
+.booking:active{
+  transform: scale(0.98);
+}
+
+.booking.booked{
+  background-color: green;
+  color: white;
+  border: 2px solid white;
+}
+
+.booking{
+  transition: 0.3s ease;
+}
+
+.booking:hover{
+  background-color: white;
+  color: black;
+  transform: scale(1.05);
+}
+
+.booking:active{
+  transform: scale(0.98);
+}
+
+.booking.booked{
+  background-color: green;
+  color: white;
+  border: 2px solid white;
 }
 
 /* @keyframes bg-change {
