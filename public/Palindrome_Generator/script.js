@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (isPal) {
                     result = inputValue; // Input is a palindrome
                 } else {
-                    result = `${inputValue}${inputValue.split('').reverse().join('')}`; // Input + reversed input
+                    result = `${inputValue}${inputValue.slice(0, -1).split('').reverse().join('')}`; // added .slice(0, -1) to remove the ending character in the string
                 }
 
                 // Display result
