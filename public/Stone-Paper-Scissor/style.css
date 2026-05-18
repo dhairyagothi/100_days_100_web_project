@@ -498,3 +498,43 @@ ul li::before {
   justify-content: center;
 }
 
+/* mode selector */
+.mode-select{
+  text-align:center;
+  color:white;
+  margin-top:20px;
+}
+
+.mode-select button{
+  background:#6a11cb;
+  color:white;
+  border:none;
+  padding:12px 25px;
+  margin:10px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:18px;
+  transition:0.3s;
+}
+
+.mode-select button:hover{
+  transform:scale(1.08);
+  background:#2575fc;
+}
+
+/* responsive */
+@media(max-width:768px){
+  .display{
+    width:95%;
+    flex-direction:column;
+    height:auto;
+  }
+
+  .scoreboard{
+    margin-top:20px;
+  }
+
+  .heading{
+    font-size:20px;
+  }
+}
