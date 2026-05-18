@@ -21,7 +21,7 @@ const PROJECT_DATA = [
     ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
     ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', 'javascript', 'beginner'],
     ['Day 3', 'Indian Flag', './public/indianflag/flag.html', 'css', 'beginner'],
-    ['Day 4', 'Dropdown Nav Bar', './public/dropdown_navbar/index.html', 'css', 'beginner'],
+    ['Day 4', 'Dropdown Navbar', './public/dropdown_navbar/index.html', 'css', 'beginner'],
     ['Day 5', 'Animated Cursor', './public/Animated-cursor/animated-cursor.html', 'javascript css', 'beginner'],
     ['Day 6', 'Auto Background Image Slider', './public/Background-Image-sider/slider.html', 'javascript', 'beginner'],
     ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'javascript', 'beginner'],
