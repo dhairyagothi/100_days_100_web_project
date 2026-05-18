@@ -1,0 +1,226 @@
+/* ============================================================
+   TASKFLOW — Global Styles (Light Theme Neo-Brutalism/Glass)
+   ============================================================ */
+
+:root {
+  --primary-color: #4facfe;
+  --primary-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  --secondary-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  
+  --bg-color: #f7f9fc;
+  --text-main: #2d3436;
+  --text-muted: #636e72;
+  
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  --shadow-hover: 0 15px 40px rgba(31, 38, 135, 0.2);
+  
+  --accent-pink: #ff9ff3;
+  --accent-blue: #54a0ff;
+  --accent-green: #1dd1a1;
+  --accent-red: #ff6b6b;
+  
+  --font-main: 'DM Sans', sans-serif;
+  --font-heading: 'Bebas Neue', sans-serif;
+  
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --radius: 16px;
+}
+
+[data-theme="dark"] {
+  --primary-color: #8ec5fc;
+  --primary-gradient: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  --secondary-gradient: linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%);
+  
+  --bg-color: #1a1a1a;
+  --text-main: #f5f6fa;
+  --text-muted: #dcdde1;
+  
+  --glass-bg: rgba(45, 52, 54, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-color);
+  background-image: var(--secondary-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.5s ease, color 0.5s ease;
+  animation: pageFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#three-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Common UI Elements */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.glass-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 4rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  transition: var(--transition);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+}
+
+.nav-brand i {
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  filter: drop-shadow(0 4px 6px rgba(79, 172, 254, 0.4));
+}
+
+.brand-text {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  letter-spacing: 1px;
+  color: var(--text-main);
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  color: white;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.8rem 1.8rem;
+  border: 2px solid #dfe6e9;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-ghost:hover {
+  background: #f1f2f6;
+  border-color: #b2bec3;
+  transform: translateY(-2px);
+}
+
+.btn-icon {
+  background: var(--glass-bg);
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1.3rem;
+  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.2);
+}
+
+.btn-icon:hover {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 8px 25px rgba(79, 172, 254, 0.5);
+  transform: rotate(15deg) scale(1.1);
+  border-color: transparent;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1000;
+}
+
+.toast {
+  background: var(--glass-bg);
+  color: var(--text-main);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  border-left: 5px solid var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+}
+
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .glass-nav { padding: 1rem 1.5rem; }
+  .btn-ghost { display: none; } /* Hide secondary buttons on mobile nav */
+}
