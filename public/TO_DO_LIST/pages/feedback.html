@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback | TaskFlow</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .feedback-container {
+      max-width: 1000px;
+      margin: 100px auto 50px;
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      min-height: calc(100vh - 150px);
+    }
+    
+    .feedback-image { flex: 1; display: flex; justify-content: center; }
+    .feedback-image img { width: 100%; max-width: 400px; animation: float 6s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+    .feedback-form-wrapper { flex: 1; padding: 40px; }
+    .feedback-form-wrapper h1 { font-family: var(--font-heading); font-size: 3.5rem; color: var(--text-main); margin-bottom: 10px; line-height: 1; }
+    .feedback-form-wrapper p { color: var(--text-muted); margin-bottom: 30px; font-size: 1.1rem; }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-main); }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 14px 15px; border: 2px solid #dfe6e9; border-radius: 12px;
+      font-family: var(--font-main); font-size: 1rem; transition: 0.3s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--primary-color); outline: none; }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .rating { display: flex; gap: 10px; margin-bottom: 25px; flex-direction: row-reverse; justify-content: flex-end; }
+    .rating input { display: none; }
+    .rating label { font-size: 2rem; color: #dfe6e9; cursor: pointer; transition: 0.2s; }
+    .rating label:hover, .rating label:hover ~ label, .rating input:checked ~ label { color: #f1c40f; }
+
+    .success-msg { display: none; text-align: center; color: var(--accent-green); font-weight: 700; font-size: 1.2rem; margin-top: 20px; }
+    
+    @media (max-width: 800px) {
+      .feedback-container { flex-direction: column; padding-top: 50px; text-align: center; }
+      .rating { justify-content: center; }
+      .feedback-form-wrapper { padding: 20px; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="glass-nav">
+    <a href="dashboard.html" class="nav-brand">
+      <i class="fa-solid fa-layer-group"></i>
+      <span class="brand-text">TaskFlow</span>
+    </a>
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <button class="btn-icon theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="dashboard.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Back to App</a>
+    </div>
+  </nav>
+
+  <main class="feedback-container animate-up">
+    <div class="feedback-image">
+      <img src="../images/feedback.png" alt="Feedback Illustration" />
+    </div>
+    
+    <div class="feedback-form-wrapper glass-panel">
+      <h1>We'd love to hear from you!</h1>
+      <p>Your feedback helps us improve TaskFlow.</p>
+      
+      <form id="feedbackForm" onsubmit="submitFeedback(event)">
+        <div class="form-group">
+          <label>How would you rate your experience?</label>
+          <div class="rating">
+            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"><i class="fa-solid fa-star"></i></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>What could we improve?</label>
+          <textarea id="feedbackText" placeholder="Tell us your thoughts..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;"><i class="fa-solid fa-paper-plane"></i> Submit Feedback</button>
+      </form>
+      
+      <div class="success-msg" id="successMsg">
+        <i class="fa-solid fa-circle-check"></i> Thank you! Your feedback has been sent.
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function submitFeedback(e) {
+      e.preventDefault();
+      
+      // Simulate sending data
+      const btn = e.target.querySelector('button');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        document.getElementById('feedbackForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      }, 1500);
+    }
+  </script>
+  <script src="../js/theme.js"></script>
+</body>
+</html>
