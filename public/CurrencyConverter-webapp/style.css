@@ -1,0 +1,98 @@
+* {
+    margin : 0;
+    padding :0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    min-height : 100vh;
+    /* background-color:rgb(54, 80, 126); */
+    background: linear-gradient(135deg, #4b6cb7, #182848);
+}
+
+.container {
+    background-color: rgb(112, 144, 201);
+    padding : 2rem; /* box me chaaro sides pe margin gap aa jaegi of 2rem */
+    border : 5px solid rgb(9, 5, 5);
+    /* border: 5px solid rgba(255, 255, 255, 0.097); */
+    border-radius: 2rem;
+    width : 20rem;
+    /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); */
+    box-shadow: 
+            0 15px 40px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(79, 70, 229, 0.4);
+}
+.container:hover {
+    transform: scale(1.02);
+    transition: 0.5s;
+}
+form {
+    margin : 2rem 0 2rem 0; /*top right bottom left*/
+}
+form select,input,button {
+    width : 100%;
+    border : none;
+    outline: none;
+    border-radius: 0.25rem;
+}
+form input {
+    border : 1.5px solid black;
+    font-size: 1rem;
+    height : 2rem;
+    padding-left: 0.5rem;
+}
+.dropdown {
+    display : flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+}
+.dropdown i {
+    font-size: 1.90rem;
+    justify-content : center;
+}
+.select-container img {
+    max-width : 2rem;
+}
+.select-container {
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    width : 6rem;
+    border : 1.5px solid black;
+    border-radius: 0.25rem;
+}
+.select-container select {
+    font-size: 1rem;
+    width : auto;
+}
+.msg {
+    margin : 2rem 0 2rem 0;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: bold;
+}
+form button {
+    height : 2rem;
+    width : auto;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.15rem;
+    padding : 0 1rem 0 1rem;
+    background-color: rgb(58, 83, 124);
+    color : white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background: #3730a3;
+    transform: scale(1.05);
+}    
+p {
+    font-size: 20px;
+
+}
