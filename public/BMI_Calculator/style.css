@@ -414,6 +414,10 @@ input:focus::placeholder {
   opacity: 0;
   transition: 0.2s ease;
 }
+
+body{
+   overflow-x: hidden;
+}
 @media (max-width: 768px) {
 
   body{
@@ -454,7 +458,4 @@ input:focus::placeholder {
     width: 100%;
     overflow-x: auto;
   }
-}
-body{
-   overflow-x: hidden;
 }
