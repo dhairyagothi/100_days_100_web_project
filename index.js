@@ -811,6 +811,13 @@ const PROJECT_DATA = [
     'html css javascript',
     'beginner',
   ],
+  [
+    'Day 118',
+    'Retro Neon Snake',
+    './public/neon_snake/index.html',
+    'html css canvas javascript',
+    'intermediate',
+  ],
 ];
 
 // Alias for consistency
