@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: webrtc-bifrost-backend
+    env: node
+    region: oregon
+    plan: starter
+    rootDir: server
+    
+    # Build command - install from repo root (workspaces mode)
+    buildCommand: npm install
+    
+    # Start command - runs from server directory due to rootDir
+    startCommand: node src/index.js
+    
+    # Environment variables (set these in Render dashboard)
+    envVars:
+      - key: DATABASE_URL
+        scope: build
+      - key: JWT_SECRET
+        scope: build
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        scope: build
+      - key: PORT
+        value: "3000"
+    
+    # Auto-deploy on push
+    autoDeploy: true
+
+  - type: static_site
+    name: webrtc-bifrost-frontend
+    env: node
+    region: oregon
+    plan: free
+    
+    # Build command
+    buildCommand: cd client && npm install && npm run build
+    
+    # Static publish path
+    staticPublishPath: client/dist
+    
+    # Environment variables
+    envVars:
+      - key: VITE_BACKEND_URL
+        scope: build
+    
+    # Auto-deploy on push
+    autoDeploy: true
