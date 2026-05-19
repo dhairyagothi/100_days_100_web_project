@@ -410,10 +410,6 @@ body.dark .logo {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(4, var(--tile-size));
-  grid-template-rows: repeat(4, var(--tile-size));
-  gap: var(--tile-gap);
-  padding: var(--board-pad);
   border-radius: var(--radius-board);
   transition: background 0.3s;
   position: relative;
@@ -796,6 +792,32 @@ body.dark .stats-modal {
   border-radius: 16px;
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.stats-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  justify-content: center;
+}
+
+.stats-tab {
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 800;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stats-tab.active {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .stats-title {

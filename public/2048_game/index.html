@@ -105,29 +105,31 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="hint-arrow" id="hint-arrow"></div>
 
-  <!-- Stats modal -->
-  <div class="stats-modal" id="stats-modal" role="dialog" aria-modal="true" aria-label="Your Statistics">
-    <div class="stats-inner">
-      <h2 class="stats-title">Your Stats</h2>
+        <!-- Stats modal -->
+        <div class="stats-modal" id="stats-modal" role="dialog" aria-modal="true" aria-label="Your Statistics">
+          <div class="stats-inner">
+            <h2 class="stats-title">Your Stats</h2>
+            <div class="stats-tabs">
+              <button class="stats-tab active" data-mode="classic">Classic</button>
+              <button class="stats-tab" data-mode="timed">⏱ 60s</button>
+              <button class="stats-tab" data-mode="zen">Zen 5×5</button>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-card"><div class="lbl">Best Score</div><div class="val" id="st-best">0</div></div>
+              <div class="stat-card"><div class="lbl">Games Played</div><div class="val" id="st-games">0</div></div>
+              <div class="stat-card"><div class="lbl">Wins</div><div class="val" id="st-wins">0</div></div>
+              <div class="stat-card"><div class="lbl">Best Tile</div><div class="val" id="st-tile">2</div></div>
+            </div>
+            <div class="ach-list">
+              <div class="ach-list-title">Achievements</div>
+              <div id="ach-badges"></div>
+            </div>
+            <button class="btn" id="close-stats">Close</button>
+          </div>
+        </div>
+      </div><!-- /.wrap -->
 
-      <div class="stats-grid">
-        <div class="stat-card"><div class="lbl">Best Score</div><div class="val" id="st-best">0</div></div>
-        <div class="stat-card"><div class="lbl">Games Played</div><div class="val" id="st-games">0</div></div>
-        <div class="stat-card"><div class="lbl">Wins</div><div class="val" id="st-wins">0</div></div>
-        <div class="stat-card"><div class="lbl">Best Tile</div><div class="val" id="st-tile">2</div></div>
-      </div>
-
-      <div class="ach-list">
-        <div class="ach-list-title">Achievements</div>
-        <div id="ach-badges"></div>
-      </div>
-
-      <button class="btn" id="close-stats">Close</button>
-    </div>
-  </div>
-
-</div><!-- /.wrap -->
-
+      <p class="hint">Arrow keys · WASD · Drag or Swipe to play</p>
     </div><!-- /#inner -->
   </div><!-- /#g -->
 
