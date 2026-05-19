@@ -36,7 +36,8 @@
 
 ## 📸 Screenshots
 
-*(Add screenshots of your LevelUp Life dashboard here)*
+<img width="959" height="539" alt="image" src="https://github.com/user-attachments/assets/8eb5edf7-5a00-4349-978e-36a9fb70427d" />
+
 
 ---
 
