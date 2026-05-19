@@ -1,4 +1,4 @@
-name: Auto Assign and Label Issue
+name: Auto Assign with Duplicate Check
 
 on:
   issues:
@@ -6,34 +6,107 @@ on:
 
 permissions:
   issues: write
+  contents: read
 
 jobs:
-  assign-and-label:
+  duplicate-check-and-assign:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Assign issue to creator
+      - name: Check for duplicates and assign
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const item = context.payload.issue;
+            const itemNumber = item.number;
+            const itemTitle = item.title.toLowerCase().trim();
+            const itemBody = (item.body || '').toLowerCase().trim();
+            const itemCreator = item.user.login;
+
+            const existingIssues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                per_page: 100,
+              }
+            );
+
+            const normalize = (str) =>
+              str.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+
+            const normalizedNew = normalize(itemTitle);
+            let duplicateOf = null;
+
+            for (const existing of existingIssues) {
+              if (existing.number === itemNumber) continue;
+
+              const titleMatch = normalize(existing.title) === normalizedNew;
+              const bodyRef = itemBody.match(/duplicate of\s*#(\d+)/);
+              const bodyMatch = bodyRef && parseInt(bodyRef[1]) === existing.number;
+
+              if (titleMatch || bodyMatch) {
+                duplicateOf = existing;
+                break;
+              }
+            }
+
+            if (duplicateOf) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: itemNumber,
+                  labels: ['duplicate'],
+                });
+              } catch (e) {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: 'duplicate',
+                  color: 'cfd3d7',
+                  description: 'This issue or PR already exists',
+                });
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: itemNumber,
+                  labels: ['duplicate'],
+                });
+              }
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: itemNumber,
+                body: `👋 Thanks for raising this @${itemCreator}!\n\nThis appears to be a duplicate of #${duplicateOf.number} — **"${duplicateOf.title}"**.\n\nAuto-assignment has been skipped and this issue has been closed. Please continue the discussion in the original thread. If you believe this is a separate issue, let a maintainer know. 😊`,
+              });
+
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: itemNumber,
+                state: 'closed',
+              });
+
+              return;
+            }
+
             await github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              assignees: [context.payload.issue.user.login]
+              issue_number: itemNumber,
+              assignees: [itemCreator],
             });
 
-      - name: Add gssoc labels
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const labels = ["gssoc", "Gssoc'26"];
-            for (const label of labels) {
+            const gssocLabels = ["gssoc", "Gssoc'26"];
+            for (const label of gssocLabels) {
               try {
                 await github.rest.issues.getLabel({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  name: label
+                  name: label,
                 });
               } catch (e) {
                 if (e.status === 404) {
@@ -41,16 +114,15 @@ jobs:
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     name: label,
-                    color: "e4e669"
+                    color: 'e4e669',
                   });
-                } else {
-                  core.warning(`Unexpected error checking label "${label}": ${e.message}`);
                 }
               }
             }
+
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              labels: labels
+              issue_number: itemNumber,
+              labels: gssocLabels,
             });
