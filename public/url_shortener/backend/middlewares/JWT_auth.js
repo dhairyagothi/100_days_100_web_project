@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const FormData = require('../models/FormData');
+const { AppError } = require('./errorHandler');
 
 
 
@@ -10,7 +11,7 @@ exports.verifyToken = async (req, res, next) => {
     const Token = req.cookies.token;
     
     if (!Token) {
-        return res.status(401).json({ msg: "User not logged in" })
+        throw new AppError("User not logged in", 401)
     }
 
     const decoded = jwt.verify(Token, process.env.JWT_SECRET_KEY);
@@ -18,7 +19,7 @@ exports.verifyToken = async (req, res, next) => {
 
 
     if (!user) {
-        return res.status(401).json({ msg: "User not found" });
+        throw new AppError("User not found", 401);
     }
 
     req.user = user;
@@ -26,8 +27,8 @@ exports.verifyToken = async (req, res, next) => {
     next();
 
     } catch (err) {
-    return res.status(401).json({ msg: "Invalid or expired token" });
+    next(err);
     
 }
 
-} 
+}

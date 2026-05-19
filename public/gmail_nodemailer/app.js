@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer");
 
 
 app.use(bodyParser.urlencoded({ extended: true })); 
-
+app.use(express.json());
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
