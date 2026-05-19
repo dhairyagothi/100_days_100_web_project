@@ -8,6 +8,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="input.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+    <style>
+    .dropdown-transition {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-transition.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    </style>
+
 </head>
 
 <body class="bg-gray-900">
@@ -63,7 +79,8 @@
 
 
                             <div role="menu" aria-orientation="vertical" aria-labelledby="appliances" tabindex="-1"
-                                class="hidden absolute top-20 left-48 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none rounded-md"
+                                class="dropdown-transition
+                                absolute top-20 left-48 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none rounded-md"
                                 id="appliances-dd">
                                 <div
                                     class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
@@ -76,7 +93,7 @@
                                     Washing Machine</div>
                                 <div
                                     class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                    Telivision</div>
+                                    Television</div>
                                 <div
                                     class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
                                     Others</div>
@@ -221,13 +238,9 @@
     <script>
         // JavaScript to handle dropdown toggle
         document.getElementById('appliances').addEventListener('click', function () {
-            const dropdownMenu = document.getElementById('appliances-dd');
-            if (dropdownMenu.style.display === 'block') {
-                dropdownMenu.style.display = 'none';
-            } else {
-                dropdownMenu.style.display = 'block';
-            }
-        });
+    const dropdownMenu = document.getElementById('appliances-dd');
+    dropdownMenu.classList.toggle('show');
+});
 
         document.getElementById('fashion').addEventListener('click', function () {
             const dropdownMenu = document.getElementById('fashion-dd');
@@ -261,7 +274,7 @@
             const dropdownButton = document.getElementById('appliances');
             const dropdownMenu = document.getElementById('appliances-dd');
             if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.style.display = 'none';
+                dropdownMenu.classList.remove('show');
                 dropdownButton.classList.remove('bg-gray-900')
             }
         });
