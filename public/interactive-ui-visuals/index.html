@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+
+        Frontend State Visualizer
+
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+
+    <!-- PLATFORM CONTAINER -->
+
+
+    <div class="platform-container">
+
+
+        <!-- LANDING SECTION -->
+
+
+        <section class="landing-section">
+
+
+            <!-- HERO CONTENT -->
+
+
+            <div class="hero-content">
+
+
+                <div class="hero-badge">
+
+                    Interactive Frontend Runtime Education Platform
+
+                </div>
+
+
+                <h1>
+
+                    Ever Wondered
+                    How Websites React
+                    Behind The Screen?
+
+                </h1>
+
+
+                <p>
+
+                    Every time you click a button,
+                    switch dark mode,
+                    type in a search bar,
+                    or send a request,
+                    frontend systems instantly react behind the scenes.
+
+                    This platform helps you visualize
+                    how modern websites internally respond
+                    to user interactions in real time.
+
+                </p>
+
+
+                <div class="hero-mini-flow">
+
+                    Click →
+                    State Changes →
+                    Browser Updates →
+                    UI Rerenders
+
+                </div>
+
+
+                <!-- HERO BUTTON -->
+
+
+                <div class="hero-action-buttons">
+
+                    <button
+                        id="exploreBtn"
+                        class="secondary-btn">
+
+                        Start Exploring
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- FLOW VISUALIZATION -->
+
+
+            <div class="flow-visualization">
+
+
+                <div class="flow-card">
+
+                    <h3>
+
+                        User Interaction
+
+                    </h3>
+
+                    <p>
+
+                        Users click buttons,
+                        type inside forms,
+                        search content,
+                        or toggle themes.
+
+                    </p>
+
+                </div>
+
+
+                <div class="flow-arrow">
+
+                    →
+
+                </div>
+
+
+                <div class="flow-card">
+
+                    <h3>
+
+                        Frontend State Changes
+
+                    </h3>
+
+                    <p>
+
+                        The application internally updates
+                        values and interaction states.
+
+                    </p>
+
+                </div>
+
+
+                <div class="flow-arrow">
+
+                    →
+
+                </div>
+
+
+                <div class="flow-card">
+
+                    <h3>
+
+                        Browser Updates UI
+
+                    </h3>
+
+                    <p>
+
+                        The browser updates webpage structure
+                        and visually rerenders the interface.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SIMULATION SECTION -->
+
+
+        <section
+            class="simulation-section"
+            id="simulationSection"
+        >
+
+
+            <div class="section-title">
+
+                <h2>
+
+                    Frontend Runtime Simulation Labs
+
+                </h2>
+
+                <p>
+
+                    Explore how frontend systems react internally
+                    after real website interactions happen.
+
+                </p>
+
+            </div>
+
+
+            <div class="simulation-grid">
+
+
+                <div
+                    class="simulation-card active-simulation"
+                    id="themeLab"
+                >
+
+                    <h3>
+
+                        Theme Runtime Lab
+
+                    </h3>
+
+                    <p>
+
+                        Understand how websites instantly
+                        switch themes and synchronize UI rendering.
+
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="simulation-card"
+                    id="searchLab"
+                >
+
+                    <h3>
+
+                        Search State Lab
+
+                    </h3>
+
+                    <p>
+
+                        Visualize how frontend search systems
+                        filter and rerender content dynamically.
+
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="simulation-card"
+                    id="asyncLab"
+                >
+
+                    <h3>
+
+                        Async Runtime Lab
+
+                    </h3>
+
+                    <p>
+
+                        Explore loading states,
+                        async behavior,
+                        and delayed UI rendering systems.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MAIN RUNTIME LAB -->
+
+
+        <section
+            class="runtime-lab-container"
+            id="runtimeLab"
+        >
+
+
+            <!-- LEFT PANEL -->
+
+
+            <section class="workspace-panel">
+
+
+                <!-- NAVBAR -->
+
+
+                <nav
+                    class="top-navbar render-target"
+                    id="navbarComponent"
+                >
+
+
+                    <div class="logo-section">
+
+                        <h2>
+
+                            StateFlow Runtime
+
+                        </h2>
+
+                    </div>
+
+
+                    <div class="nav-actions">
+
+
+                        <!-- SEARCH INPUT -->
+
+
+                        <input
+                            type="text"
+                            placeholder="Search frontend concepts..."
+                            class="search-input"
+                            id="searchInput"
+                        >
+
+
+                        <!-- ACCESSIBILITY CONTROLS -->
+
+
+                        <div class="accessibility-controls">
+
+
+                            <button
+                                id="decreaseFontBtn"
+                                class="font-btn"
+                            >
+
+                                A-
+
+                            </button>
+
+
+                            <button
+                                id="increaseFontBtn"
+                                class="font-btn"
+                            >
+
+                                A+
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- THEME TOGGLE -->
+
+
+                        <button id="themeToggleBtn">
+
+                            Light Mode
+
+                        </button>
+
+                    </div>
+
+                </nav>
+
+
+                <!-- STATS -->
+
+
+                <div class="stats-grid">
+
+
+                    <div class="stat-card">
+
+                        <h3>
+
+                            Interactions
+
+                        </h3>
+
+                        <p id="interactionCount">
+
+                            0
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <h3>
+
+                            Render Cycles
+
+                        </h3>
+
+                        <p id="renderCount">
+
+                            0
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <h3>
+
+                            DOM Updates
+
+                        </h3>
+
+                        <p id="domCount">
+
+                            0
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAIN INTERACTION CARD -->
+
+
+                <div
+                    class="component-card render-target"
+                    id="mainCard"
+                >
+
+
+                    <div class="section-heading">
+
+                        <h2>
+
+                            Modern Frontend Interaction Demo
+
+                        </h2>
+
+                        <p>
+
+                            Interact with realistic website systems
+                            and observe how frontend runtime reacts internally.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="button-group">
+
+
+                        <button id="processBtn">
+
+                            Process Request
+
+                        </button>
+
+
+                        <button id="notificationBtn">
+
+                            Trigger Notification
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NOTIFICATION -->
+
+
+                <div
+                    class="notification-card render-target"
+                    id="notificationCard"
+                >
+
+
+                    <h3>
+
+                        System Notification
+
+                    </h3>
+
+
+                    <p id="notificationText">
+
+                        Frontend runtime initialized successfully.
+
+                    </p>
+
+                </div>
+
+
+                <!-- WEBSITE PREVIEW -->
+
+
+                <div
+                    class="website-preview render-target"
+                    id="websitePreview"
+                >
+
+
+                    <!-- PREVIEW NAVBAR -->
+
+
+                    <div
+                        class="preview-navbar render-target"
+                        id="previewNavbar"
+                    >
+
+
+                        <h3 id="previewTitle">
+
+                            Frontend Learning Hub
+
+                        </h3>
+
+
+                        <div
+                            class="live-badge"
+                            id="liveBadge"
+                        >
+
+                            LIVE
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ARTICLE CARD -->
+
+
+                    <div
+                        class="article-card render-target"
+                        id="articleCard"
+                    >
+
+
+                        <div class="article-meta">
+
+
+                            <span id="articleCategory">
+
+                                Frontend Systems
+
+                            </span>
+
+
+                            <span id="activeUsers">
+
+                                0 Events • 0 DOM Updates
+
+                            </span>
+
+                        </div>
+
+
+                        <h2 id="articleHeading">
+
+                            Understanding Frontend Rendering
+
+                        </h2>
+
+
+                        <p id="articleText">
+
+                            Frontend rendering is the process where browsers visually update the UI after application state changes.
+
+                        </p>
+
+
+                        <div class="article-actions">
+
+
+                            <button id="likeBtn">
+
+                                Like Article
+
+                            </button>
+
+
+                            <button id="shareBtn">
+
+                                Share Article
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LIVE EFFECTS -->
+
+
+                    <div class="runtime-effects-grid">
+
+
+                        <div
+                            class="effect-card render-target"
+                            id="stateEffectCard"
+                        >
+
+                            <h4>
+
+                                Active Frontend State
+
+                            </h4>
+
+                            <p id="activeStateLabel">
+
+                                Theme: Dark
+
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="effect-card render-target"
+                            id="domEffectCard"
+                        >
+
+                            <h4>
+
+                                DOM Synchronization
+
+                            </h4>
+
+                            <p id="domStatus">
+
+                                Waiting for interaction...
+
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="effect-card render-target"
+                            id="renderEffectCard"
+                        >
+
+                            <h4>
+
+                                Render Status
+
+                            </h4>
+
+                            <p id="renderStatusText">
+
+                                UI Stable
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SEARCH RESULTS -->
+
+
+                <div
+                    class="results-container render-target"
+                    id="resultsContainer"
+                >
+
+
+                    <div class="result-card">
+
+                        React Runtime
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        DOM Synchronization
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        Render Lifecycle
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        Frontend State
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVITY FEED -->
+
+
+                <div class="activity-feed render-target">
+
+
+                    <div class="section-heading">
+
+                        <h3>
+
+                            Runtime Timeline
+
+                        </h3>
+
+                        <p>
+
+                            Observe frontend lifecycle updates
+                            as user interactions happen.
+
+                        </p>
+
+                    </div>
+
+
+                    <ul id="activityList">
+
+                        <li>
+
+                            [SYSTEM] Frontend runtime initialized successfully
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </section>
+
+
+            <!-- RIGHT PANEL -->
+
+
+            <section class="inspector-panel">
+
+
+                <!-- INSPECTOR HEADER -->
+
+
+                <div class="inspector-header">
+
+                    <h2>
+
+                        Frontend Runtime Inspector
+
+                    </h2>
+
+                    <p>
+
+                        Visualize how websites internally react
+                        after users interact with the UI.
+
+                    </p>
+
+                </div>
+
+
+                <!-- LEARNING INTRO -->
+
+
+                <div class="learning-intro">
+
+                    <h3>
+
+                        How Frontend Systems React
+
+                    </h3>
+
+                    <p>
+
+                        Every interaction follows a frontend lifecycle.
+                        Click something on the left side and observe
+                        how websites internally react step-by-step.
+
+                    </p>
+
+                </div>
+
+
+                <!-- RUNTIME FLOW -->
+
+
+                <div class="runtime-flow-container">
+
+
+                    <div
+                        class="runtime-node"
+                        id="node-event"
+                    >
+
+                        <span>
+
+                            Event
+
+                        </span>
+
+                        <small>
+
+                            User action detected
+
+                        </small>
+
+                    </div>
+
+
+                    <div class="runtime-line"></div>
+
+
+                    <div
+                        class="runtime-node"
+                        id="node-state"
+                    >
+
+                        <span>
+
+                            State
+
+                        </span>
+
+                        <small>
+
+                            Internal memory updated
+
+                        </small>
+
+                    </div>
+
+
+                    <div class="runtime-line"></div>
+
+
+                    <div
+                        class="runtime-node"
+                        id="node-dom"
+                    >
+
+                        <span>
+
+                            DOM
+
+                        </span>
+
+                        <small>
+
+                            Webpage structure updated
+
+                        </small>
+
+                    </div>
+
+
+                    <div class="runtime-line"></div>
+
+
+                    <div
+                        class="runtime-node"
+                        id="node-render"
+                    >
+
+                        <span>
+
+                            Render
+
+                        </span>
+
+                        <small>
+
+                            Browser redraws UI
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+
+                <div class="runtime-status">
+
+                    <span class="status-dot"></span>
+
+                    Runtime Active
+
+                </div>
+
+
+                <!-- STATE DIFFERENCE -->
+
+
+                <div class="state-diff">
+
+
+                    <div class="diff-box">
+
+                        <h4>
+
+                            Previous State
+
+                        </h4>
+
+                        <p id="previousStateView">
+
+                            None
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="diff-box">
+
+                        <h4>
+
+                            Next State
+
+                        </h4>
+
+                        <p id="nextStateView">
+
+                            theme = dark
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INSPECTOR OUTPUT -->
+
+
+                <pre id="state-output">
+
+Ever wondered
+how websites instantly react
+when you click something?
+Interact with the platform
+and visualize frontend state changes
+happening behind the scenes.
+
+                </pre>
+
+            </section>
+
+        </section>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer-section">
+
+
+        <h3>
+
+            Frontend State Visualizer
+
+        </h3>
+
+
+        <p>
+
+            Visualizing frontend runtime flow:
+            Event → State → DOM → Render
+
+        </p>
+
+        <span>
+
+            Educational frontend architecture simulation project.
+
+        </span>
+
+    </footer>
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
