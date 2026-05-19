@@ -1,9 +1,9 @@
-const searchform = document.getElementById("search-form");
+const searchForm = document.getElementById("search-form");
 const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
 const showMoreBtn = document.getElementById("show-more-btn");
 
-const accesskey="ar6rWtpubFwwz_z0EZ5yeHdtXVqqXvxADWB5-7bFM3Q"
+const accessKey="ar6rWtpubFwwz_z0EZ5yeHdtXVqqXvxADWB5-7bFM3Q"
 
 
 let keyword="";
@@ -35,7 +35,7 @@ async function searchImages(){
     showMoreBtn.style.display = "block"
 }
 
-searchform.addEventListener("submit", (e) => {
+searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     page = 1;
     searchImages();
