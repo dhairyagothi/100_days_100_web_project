@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .label {
     height: 80vh;
 }
