@@ -35,6 +35,9 @@
                 <strong>100 Days · 100 Web Projects</strong>
             </span>
         </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="nav-buttons" id="navButtons">
             <!-- populated by JS -->
         </div>
@@ -242,7 +245,7 @@
       </div>
 
       <div class="footer-bottom">
-        <span>© 2024 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
+        <span>© <span id="copyrightYear"></span> 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
         <button id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
           <i class="fas fa-moon"></i>
         </button>
@@ -258,7 +261,6 @@
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
 
-    <!-- ── BACK TO TOP BUTTON ────────────────────────────────── -->
-    <button id="backToTop">↑</button>
+
   </body>
 </html>

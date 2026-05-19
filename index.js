@@ -149,7 +149,7 @@ const PROJECT_DATA = [
 
 // Alias for consistency
 const PROJECTS = PROJECT_DATA;
-console.log('PROJECTS defined:', PROJECTS.length, 'items');
+
 
 
 /* ============================================================
@@ -183,8 +183,8 @@ const INITIAL_VISIBLE_ITEMS = 3;
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
-console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
 /* ============================================================
    GITHUB REPO STATS
@@ -833,31 +833,30 @@ function initScrollBtn() {
   });
 }
 
-/* ============================================================
-   BACK TO TOP BUTTON
-   ============================================================ */
-const backToTopButton = document.getElementById('backToTop');
 
-if (backToTopButton) {
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) {
-      backToTopButton.style.display = 'block';
-    } else {
-      backToTopButton.style.display = 'none';
-    }
-  });
-
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
 
 /* ============================================================
    INIT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired');
-  console.log('PROJECTS:', typeof PROJECTS, PROJECTS ? PROJECTS.length : 'undefined');
+  // Set copyright year dynamically
+  const yearEl = document.getElementById('copyrightYear');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Hamburger menu toggle for mobile
+  const menuToggle = document.getElementById('menuToggle');
+  const navButtons = document.getElementById('navButtons');
+  if (menuToggle && navButtons) {
+    menuToggle.addEventListener('click', () => {
+      navButtons.classList.toggle('active');
+      const icon = menuToggle.querySelector('i');
+      if (icon) {
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-xmark');
+      }
+    });
+  }
+
   initTheme();
   updateNavbar();
   initFilterChips();
