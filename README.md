@@ -180,7 +180,7 @@ The website features:
 | 112 | Nykaa Clone | HTML, CSS, JS | 💄 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone) |
 | 113 | CPU Scheduler | HTML, CSS, JS | ⚙️ Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler) |
 | 114 | EchoNotes | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes) |
-| 115 | Note Flow | MERN | Website | [View Demo](https://100-days-100-web-project.vercel.app/public/Note-Flow) |
+| 115 | Note Flow | MERN | Website | [View Demo](https://100days100webproject-note-flow.vercel.app/) |
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 25+ interactive games and puzzles
