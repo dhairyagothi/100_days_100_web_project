@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Capsule</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
-        <h1>Time Capsule</h1>
+        <h1> My Time Capsule</h1>
         <form id="capsuleForm">
             <textarea id="message" placeholder="Write a letter to your future self..." required></textarea>
             <label for="timer">Reveal in (seconds):</label>
             <input type="number" id="timer" min="5" max="300" required>
             <button type="submit">Seal the Capsule</button>
         </form>
-        
+
         <div id="capsuleReveal" class="hidden">
             <h2>🔒 Capsule Sealed</h2>
             <p id="revealTime"></p>
@@ -27,4 +29,5 @@
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
