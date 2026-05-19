@@ -8,8 +8,9 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: read
+  issues: write
   pull-requests: write
+  contents: read
 
 jobs:
   label-merge-conflicts:
