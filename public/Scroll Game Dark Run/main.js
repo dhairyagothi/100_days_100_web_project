@@ -305,3 +305,13 @@ $(document).ready(function () {
     }
 });
 
+document.addEventListener("wheel", function(e) {
+    if (e.ctrlKey) e.preventDefault();
+}, { passive: false });
+
+// Prevent Ctrl +/- keyboard zoom
+$(document).on("keydown", function(e) {
+    if (e.ctrlKey && (e.key === "+" || e.key === "-" || e.key === "=")) {
+        e.preventDefault();
+    }
+});
