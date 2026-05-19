@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (boardState[index] !== '' || !gameActive) {
       return;
     }
+  }
 
     boardState[index] = currentPlayer;
     cell.textContent = currentPlayer;
@@ -110,6 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
       cell.style.color = '#ff4df0';
       cell.style.textShadow = '0 0 15px #ff4df0';
     }
+    return null;
+  }
 
     // CHECK WINNER
 

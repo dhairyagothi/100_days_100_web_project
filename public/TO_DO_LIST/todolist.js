@@ -1,277 +1,249 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const todoInput     = document.getElementById('todo-input');
-  const addTaskBtn    = document.getElementById('add-task-btn');
-  const printBtn      = document.getElementById('print-btn');
-  const todoList      = document.getElementById('todo-list');
-  const taskCountEl   = document.getElementById('task-count');
-  const emptyState    = document.getElementById('empty-state');
-  const saveDocBtn   = document.getElementById('save-doc-btn');
-  const homeNav      = document.getElementById('home-nav');
-  const docsNav      = document.getElementById('docs-nav');
-  const homePage     = document.getElementById('home-page');
-  const docsPage     = document.getElementById('documents-page');
-  const documentsList = document.getElementById('documents-list');
-  const progressFill = document.getElementById('progress-fill');
-  const progressPercent =document.getElementById('progress-percent');
-  const themeToggle = document.getElementById('theme-toggle');
+// ─── DOM References ────────────────────────────────────────────────────────────
+const notesContainer = document.getElementById("notes-container");
+const documentsList  = document.querySelector(".documents-list");
+const pdfMessage     = document.getElementById("pdfMessage");
+const taskInput      = document.getElementById("task-input");
+const taskTypeSelect = document.getElementById("task-type");
 
+// ─── Theme State ───────────────────────────────────────────────────────────────
+// Maps theme id → gradient for body + card fallback colour for default cards
+const THEMES = {
+  theme1: {
+    body: "linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)",
+    card: "rgba(232, 221, 227, 1)",
+  },
+  theme2: {
+    body: "linear-gradient(135deg, #e4afcb 0%, #e2c58b 50%, #7edbdc 100%)",
+    card: "#e4afcb",
+  },
+  theme3: {
+    body: "linear-gradient(135deg, #39db8c 0%, #a0c559 30%, #d1ab51 55%, #e6936b 80%, #df868d 100%)",
+    card: "#df868d",
+  },
+  theme4: {
+    body: "linear-gradient(135deg, rgb(120,25,105) 0%, rgb(197,211,201) 100%)",
+    card: "rgb(197, 211, 201)",
+  },
+  theme5: {
+    body: "linear-gradient(135deg, #b92b27 0%, #1565c0 100%)",
+    card: "#c0cfe8",
+  },
+};
 
+let currentTheme = "theme1"; // default
 
-  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+// ─── Task Type colour map ──────────────────────────────────────────────────────
+// Keeps track of user-chosen type colours so they survive theme switches
+const TYPE_COLORS = {
+  "":              null,           // → use theme colour
+  "Work":          "#FFDE59",
+  "Personal":      "#FFC0CB",
+  "Professional":  "#B0BEC5",
+  "Fitness":       "#B1EE99",
+  "Miscellaneous": "#CAB9F5",
+};
 
-  // ── Init ──────────────────────────────────────────────
-  tasks.forEach(task => renderTask(task));
-  updateMeta();
+// ─── Add Task ──────────────────────────────────────────────────────────────────
+function Add() {
+  const text = taskInput.value.trim();
 
-  // ── Add task ──────────────────────────────────────────
-  addTaskBtn.addEventListener('click', addTask);
-  todoInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') addTask();
-  });
-
-  function addTask() {
-    const text = todoInput.value.trim();
-    if (!text) {
-      todoInput.style.borderColor = 'rgba(255,77,109,0.6)';
-      setTimeout(() => todoInput.style.borderColor = '', 600);
-      return;
-    }
-    const newTask = { id: Date.now(), text, completed: false };
-    tasks.push(newTask);
-    renderTask(newTask);
-    saveTasks();
-    updateMeta();
-    todoInput.value = '';
-    todoInput.focus();
-  }
-
-  // ── Render ────────────────────────────────────────────
-  function renderTask(task) {
-    const li = document.createElement('li');
-    li.setAttribute('data-id', task.id);
-    if (task.completed) li.classList.add('completed');
-
-    li.innerHTML = `
-      <div class="task-checkbox"></div>
-      <span class="task-text">${escapeHtml(task.text)}</span>
-      <button class="delete-btn" title="Delete task">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    `;
-
-    // Toggle complete
-    li.addEventListener('click', e => {
-      if (e.target.closest('.delete-btn')) return;
-      task.completed = !task.completed;
-      li.classList.toggle('completed');
-      saveTasks();
-      updateMeta();
-    });
-
-    // Delete
-    li.querySelector('.delete-btn').addEventListener('click', e => {
-      e.stopPropagation();
-      li.style.transition = 'all 0.28s ease';
-      li.style.opacity = '0';
-      li.style.transform = 'translateX(20px)';
-      setTimeout(() => {
-        tasks = tasks.filter(t => t.id !== task.id);
-        li.remove();
-        saveTasks();
-        updateMeta();
-      }, 280);
-    });
-
-    todoList.appendChild(li);
-  }
-
-  // ── Meta ──────────────────────────────────────────────
-  function updateMeta() {
-    const remaining = tasks.filter(t => !t.completed).length;
-    taskCountEl.textContent = remaining;
-    emptyState.classList.toggle('visible', tasks.length === 0);
-    // Progress calculation
-
-const completed =
-  tasks.filter(t => t.completed).length;
-
-const percent =
-  tasks.length === 0
-    ? 0
-    : Math.round((completed / tasks.length) * 100);
-
-progressFill.style.width = `${percent}%`;
-
-progressPercent.textContent = `${percent}%`;
-  }
-
-  // ── Save ──────────────────────────────────────────────
-  function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }
-
-  // ── Print / PDF ───────────────────────────────────────
-  printBtn.addEventListener('click', () => {
-    window.print();
-  });
-  // ───────────────── SAVE DOCUMENT ─────────────────
-
-saveDocBtn.addEventListener('click', () => {
-
-  if (tasks.length === 0) return;
-
-  const documents =
-    JSON.parse(localStorage.getItem('documents')) || [];
-
-  const snapshot = {
-    id: Date.now(),
-    date: new Date().toLocaleString(),
-    tasks: [...tasks]
-  };
-
-  documents.unshift(snapshot);
-
-  localStorage.setItem(
-    'documents',
-    JSON.stringify(documents)
-  );
-
-  renderDocuments();
-
-  saveDocBtn.innerHTML = "✓ Saved";
-
-  setTimeout(() => {
-    saveDocBtn.innerHTML = `
-      <svg viewBox="0 0 24 24">
-          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-          <polyline points="17 21 17 13 7 13 7 21"/>
-          <polyline points="7 3 7 8 15 8"/>
-      </svg>
-      Save Document
-    `;
-  }, 1500);
-});
-
-
-// ───────────────── NAVIGATION ─────────────────
-
-homeNav.addEventListener('click', () => {
-
-  homePage.classList.remove('hidden');
-  docsPage.classList.add('hidden');
-
-  homeNav.classList.add('active');
-  docsNav.classList.remove('active');
-});
-
-docsNav.addEventListener('click', () => {
-
-  docsPage.classList.remove('hidden');
-  homePage.classList.add('hidden');
-
-  docsNav.classList.add('active');
-  homeNav.classList.remove('active');
-
-  renderDocuments();
-});
-
-
-// ───────────────── DOCUMENT RENDER ─────────────────
-
-function renderDocuments() {
-
-  const documents =
-    JSON.parse(localStorage.getItem('documents')) || [];
-
-  documentsList.innerHTML = '';
-
-  if (documents.length === 0) {
-
-    documentsList.innerHTML = `
-      <div class="empty-state visible">
-        No saved documents yet ✦
-      </div>
-    `;
-
+  if (text === "") {
+    taskInput.focus();
+    taskInput.style.borderColor = "rgba(255, 80, 80, 0.8)";
+    setTimeout(() => { taskInput.style.borderColor = ""; }, 1200);
     return;
   }
 
-  documents.forEach(doc => {
+  const notes = document.querySelectorAll(".notes");
 
-    const div = document.createElement('div');
+  if (notes.length > 0) {
+    const lastNote = notes[notes.length - 1];
+    const taskText = lastNote.querySelector("span");
 
-    div.className = 'document-card';
-
-    div.innerHTML = `
-      <div class="doc-top">
-        <div>
-          <h3>Task Snapshot</h3>
-          <p>${doc.date}</p>
-        </div>
-
-        <button class="view-doc-btn">
-          View
-        </button>
-      </div>
-
-      <div class="doc-preview hidden">
-        ${
-          doc.tasks.map(task => `
-            <div class="preview-task">
-              ${task.completed ? '✓' : '○'} ${task.text}
-            </div>
-          `).join('')
-        }
-      </div>
-    `;
-
-    const viewBtn = div.querySelector('.view-doc-btn');
-    const preview = div.querySelector('.doc-preview');
-
-    viewBtn.addEventListener('click', () => {
-
-      preview.classList.toggle('hidden');
-
-      viewBtn.textContent =
-        preview.classList.contains('hidden')
-          ? 'View'
-          : 'Hide';
-    });
-
-    documentsList.appendChild(div);
-  });
-}
-  // ── Util ──────────────────────────────────────────────
-  function escapeHtml(str) {
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
+      alert("Please add a task to the previous note before creating a new one!");
+      return;
+    }
   }
 
-  // ───────── THEME TOGGLE ─────────
+  const selectedType  = taskTypeSelect.value;
+  const typeColor     = TYPE_COLORS[selectedType] ?? null;
+  const isDefaultCard = !typeColor; // no type selected → follows theme
 
-const savedTheme =
-  localStorage.getItem('theme');
+  // Card container
+  const note = document.createElement("div");
+  note.classList.add("notes");
+  note.dataset.defaultCard = isDefaultCard ? "true" : "false";
 
-if (savedTheme === 'light') {
-  document.body.classList.add('light-mode');
+  // Apply colour
+  note.style.backgroundColor = isDefaultCard
+    ? THEMES[currentTheme].card
+    : typeColor;
+
+  // Inner layout
+  const noteWrapper = document.createElement("div");
+  noteWrapper.style.cssText = "display:flex; align-items:flex-start; justify-content:space-between; width:100%; gap:8px;";
+
+  // Task text
+  const taskText = document.createElement("span");
+  taskText.className = "task-text";
+  taskText.innerText = text;
+  taskText.style.cssText = "flex:1; line-height:1.4; word-break:break-word;";
+
+  // Actions column
+  const actions = document.createElement("div");
+  actions.style.cssText = "display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0;";
+
+  // Tick / complete toggle
+  const tickBtn = document.createElement("button");
+  tickBtn.innerHTML = "&#10003;";
+  tickBtn.title = "Mark complete";
+  tickBtn.style.cssText = [
+    "background:none", "border:1.5px solid #555", "border-radius:50%",
+    "width:26px", "height:26px", "cursor:pointer", "font-size:14px",
+    "display:flex", "align-items:center", "justify-content:center",
+    "transition:background 0.2s, color 0.2s", "color:#333",
+  ].join(";");
+
+  tickBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    taskText.classList.toggle("completed");
+    tickBtn.style.background = taskText.classList.contains("completed") ? "#4caf50" : "none";
+    tickBtn.style.color      = taskText.classList.contains("completed") ? "white"   : "#333";
+    tickBtn.style.borderColor= taskText.classList.contains("completed") ? "#4caf50" : "#555";
+  });
+
+  // Delete button
+  const delBtn = document.createElement("button");
+  delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+  delBtn.title = "Delete task";
+  delBtn.style.cssText = [
+    "background:none", "border:none", "cursor:pointer",
+    "font-size:13px", "color:#c0392b", "padding:2px",
+    "transition:transform 0.2s",
+  ].join(";");
+  delBtn.addEventListener("mouseenter", () => { delBtn.style.transform = "scale(1.25)"; });
+  delBtn.addEventListener("mouseleave", () => { delBtn.style.transform = "scale(1)"; });
+  delBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    note.style.animation = "none";
+    note.style.transition = "opacity 0.25s, transform 0.25s";
+    note.style.opacity = "0";
+    note.style.transform = "scale(0.92)";
+    setTimeout(() => note.remove(), 250);
+  });
+
+  // Type badge (only if type was selected)
+  if (selectedType) {
+    const badge = document.createElement("span");
+    badge.innerText = selectedType;
+    badge.style.cssText = [
+      "font-size:10px", "font-weight:700", "padding:2px 7px",
+      "border-radius:20px", "background:rgba(0,0,0,0.12)",
+      "color:#333", "white-space:nowrap", "margin-top:4px",
+      "align-self:flex-end",
+    ].join(";");
+    note.appendChild(badge);
+  }
+
+  actions.appendChild(tickBtn);
+  actions.appendChild(delBtn);
+  noteWrapper.appendChild(taskText);
+  noteWrapper.appendChild(actions);
+  note.insertBefore(noteWrapper, note.firstChild);
+  notesContainer.appendChild(note);
+
+  // Reset inputs
+  taskInput.value = "";
+  taskTypeSelect.value = "";
+  taskInput.focus();
 }
 
-themeToggle.addEventListener('click', () => {
-
-  document.body.classList.toggle('light-mode');
-
-  const currentTheme =
-    document.body.classList.contains('light-mode')
-      ? 'light'
-      : 'dark';
-
-  localStorage.setItem(
-    'theme',
-    currentTheme
-  );
-});
+// Allow pressing Enter in the input to add a task
+taskInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") Add();
 });
 
+// ─── Theme Switching ───────────────────────────────────────────────────────────
+function applyTheme(themeKey) {
+  const theme = THEMES[themeKey];
+  document.body.style.background = theme.body;
+  currentTheme = themeKey;
+
+  // Update CSS custom property → auto-updates all default cards via var()
+  document.documentElement.style.setProperty("--theme-card-bg", theme.card);
+
+  // Also imperatively update existing default cards
+  const cards = document.querySelectorAll(".notes[data-default-card='true']");
+  cards.forEach((card) => {
+    card.style.backgroundColor = theme.card;
+  });
+}
+
+function c1() { applyTheme("theme1"); }
+function c2() { applyTheme("theme2"); }
+function c3() { applyTheme("theme3"); }
+function c4() { applyTheme("theme4"); }
+function c5() { applyTheme("theme5"); }
+
+// ─── PDF Export ────────────────────────────────────────────────────────────────
+function saveAsPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc  = new jsPDF();
+  const cards = document.querySelectorAll(".notes");
+
+  doc.setFontSize(18);
+  doc.text("My To-Do List", 20, 18);
+  doc.setFontSize(12);
+
+  let y = 30;
+  cards.forEach((card, i) => {
+    const textNode = card.querySelector(".task-text");
+    const text = textNode ? textNode.innerText.trim() : card.innerText.trim();
+    if (text) {
+      doc.text(`${i + 1}. ${text}`, 20, y);
+      y += 10;
+      if (y > 270) { doc.addPage(); y = 20; }
+    }
+  });
+
+  const fileName = `ToDoList_${Date.now()}.pdf`;
+  const fileURL  = URL.createObjectURL(doc.output("blob"));
+  saveDocument(fileName, fileURL);
+  showPDFMessage();
+}
+
+function saveDocument(fileName, fileURL) {
+  const docItem = document.createElement("div");
+  docItem.className = "document-item";
+  docItem.innerHTML = `
+    <span>${fileName}</span>
+    <button onclick="viewPDF('${fileURL}')">View</button>
+    <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
+    <button onclick="deletePDF(this)">Delete</button>
+  `;
+  documentsList.appendChild(docItem);
+}
+
+function viewPDF(fileURL)                  { window.open(fileURL, "_blank"); }
+function downloadPDF(fileURL, fileName)    {
+  const a = document.createElement("a");
+  a.href = fileURL; a.download = fileName; a.click();
+}
+function deletePDF(button)                 { button.parentElement.remove(); }
+
+function showPDFMessage() {
+  pdfMessage.style.display = "flex";
+  setTimeout(() => { pdfMessage.style.display = "none"; }, 3000);
+}
+
+// ─── Tab Navigation ────────────────────────────────────────────────────────────
+function showHome() {
+  document.getElementById("home-tab").style.display      = "block";
+  document.getElementById("documents-tab").style.display = "none";
+}
+
+function showDocuments() {
+  document.getElementById("home-tab").style.display      = "none";
+  document.getElementById("documents-tab").style.display = "block";
+}
