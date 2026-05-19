@@ -4,7 +4,7 @@ let cards = [];
 let firstCard, secondCard;
 let lockBoard = false;
 let matchesCount = 0;
-
+const restartBtn = document.getElementById('restart-btn');
 // Create cards dynamically
 function createCards() {
     const cardsArray = [...colors, ...colors];
@@ -92,3 +92,18 @@ gameContainer.addEventListener('click', function(event) {
         flipCard({currentTarget: clickedCard});
     }
 });
+
+restartBtn.addEventListener('click', restartGame);
+
+//Restart the game
+function restartGame() {
+    gameContainer.innerHTML = '';
+
+    matchesCount = 0;
+    document.getElementById('score-board').innerText = 'Matches: 0';
+
+    [firstCard, secondCard] = [null, null];
+    lockBoard = false;
+
+    createCards();
+}
