@@ -24,8 +24,14 @@ body{
     box-shadow: 0px 0px 10px 13px #dcdcdc;
     border-radius: 50%;
     padding: 20px;
-    transition: background 0.3s ease;
-    
+    transition: background 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: conic-gradient(#52c234 0deg, white 0deg);
+}
+.block2.animating{
+    box-shadow: 0px 0px 20px 13px rgba(82, 194, 52, 0.4);
+}
+.block2.completed{
+    box-shadow: 0px 0px 15px 13px rgba(82, 194, 52, 0.6);
 }
 .block3{
     width: 120px;
@@ -42,11 +48,24 @@ body{
 }
 #num{
     font-weight: bolder;
+    font-size: 28px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    color: #52c234;
+}
+#num.completing{
+    animation: pulse 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+@keyframes pulse {
+    0% { transform: scale(1); color: #52c234; }
+    50% { transform: scale(1.1); color: #1d6802; }
+    100% { transform: scale(1); color: #52c234; }
 }
 .container{
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
-
+    align-items: center;
+    justify-content: center;
 }
 #btn{
     padding: 10px 20px;
@@ -55,13 +74,97 @@ body{
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     font-size: medium;
-    
+    box-shadow: 0px 4px 6px rgba(82, 194, 52, 0.3);
 }
-#btn:hover{
+#btn:hover:not(:disabled){
+    background-color: #1d6802;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(82, 194, 52, 0.5);
+}
+#btn:active:not(:disabled){
+    transform: translateY(0px);
+}
+#btn:disabled{
+    background-color: #999999;
+    cursor: not-allowed;
+    box-shadow: 0px 2px 4px rgba(153, 153, 153, 0.3);
+    opacity: 0.7;
+}
+#stopBtn{
+    padding: 10px 20px;
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    font-size: medium;
+    box-shadow: 0px 4px 6px rgba(243, 156, 18, 0.3);
+}
+#stopBtn:hover:not(:disabled){
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(243, 156, 18, 0.5);
+}
+#stopBtn:active:not(:disabled){
+    transform: translateY(0px);
+}
+#stopBtn:disabled{
+    background-color: #999999;
+    cursor: not-allowed;
+    box-shadow: 0px 2px 4px rgba(153, 153, 153, 0.3);
+    opacity: 0.6;
+}
+#resetBtn{
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-size: medium;
+    box-shadow: 0px 4px 6px rgba(231, 76, 60, 0.3);
+}
+#resetBtn:hover{
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(231, 76, 60, 0.5);
+}
+#resetBtn:active{
+    transform: translateY(0px);
+}
+.button-container{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#btn.pause {
+    background-color: #e74c3c;
+}
+
+#btn.pause:hover {
+    background-color: #c0392b;
+}
+
+#btn.resume {
+    background-color: #52c234;
+}
+
+#btn.resume:hover {
     background-color: #1d6802;
 }
 
+#btn.restart {
+    background-color: #3498db;
+}
+
+#btn.restart:hover {
+    background-color: #2980b9;
+}
 
 
