@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI ChatBot - Gemini</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Code+Pro&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="chat-container">
+        <header>
+            <h1>Gemini AI</h1>
+            <div class="api-settings">
+                <input type="password" id="api-key-input" placeholder="Enter Gemini API Key">
+                <button id="save-key-btn">Save</button>
+            </div>
+        </header>
+
+        <div id="output-container">
+            <div class="ai-message chat-message">
+                Hello! I am your AI assistant powered by Gemini. Please enter your API key above to start chatting!
+            </div>
+        </div>
+
+        <div id="image-preview-container">
+            <img id="preview-img" class="image-preview" src="#" alt="Preview">
+        </div>
+
+        <div class="input-group">
+            <label for="image-input" class="input-group-text" title="Upload Image">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            </label>
+            <input type="file" id="image-input" accept="image/*">
+            <input type="text" id="prompt-input" placeholder="Type your message here...">
+            <button id="send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

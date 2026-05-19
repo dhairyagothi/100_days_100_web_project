@@ -1,141 +1,172 @@
-setInterval(updateClock, 1000);
+/**
+ * digitalclock.js
+ * Fixes:
+ * 1. DOM errors — guard element existence before use
+ * 2. Alarm repeated intervals — clear before setting new
+ * 3. UI feedback non-blocking — use status div, not alert()
+ * 4. Accessibility — aria updates on time change
+ */
 
+// ── State ────────────────────────────────────────────────
+let clockInterval = null;
+let alarmTime = null;
+let alarmTriggered = false;
+
+// ── DOM refs (guarded) ───────────────────────────────────
+function getEl(id) {
+  const el = document.getElementById(id);
+  if (!el) console.warn(`[DigitalClock] Element #${id} not found`);
+  return el;
+}
+
+// ── Clock ────────────────────────────────────────────────
 function updateClock() {
-  const format = localStorage.getItem('clockFormat') || 'format1';
-  const timezone = document.getElementById('timezone').value;
-  const now = getCurrentTimeAndDate(timezone);
+  const clockEl = getEl("clock");
+  const dateEl = getEl("date-display");
+  if (!clockEl) return;
 
-  switch (format) {
-    case 'format1':
-      showTimeFirst(now);
-      break;
-    case 'format2':
-      showDateFirstModern(now);
-      break;
-    case 'format3':
-      showDayFirst(now);
-      break;
-    default:
-      showTimeFirst(now);
-      break;
-  }
-  checkAlarm(now.time);
-}
+  const now = new Date();
 
-function showTimeFirst(now) {
-  const time = now.time;
-  const date = now.date;
-  document.getElementById('display').innerHTML = `${time}<br><span class="date-size">${date}</span>`;
-}
+  // Time string HH:MM:SS
+  const hh = String(now.getHours()).padStart(2, "0");
+  const mm = String(now.getMinutes()).padStart(2, "0");
+  const ss = String(now.getSeconds()).padStart(2, "0");
+  const timeStr = `${hh}:${mm}:${ss}`;
 
-function showDateFirstModern(now) {
-  const time = now.time;
-  const dateParts = now.date.split('/');
-  const day = dateParts[0];
-  const month = getMonthName(dateParts[1]);
-  const year = dateParts[2];
-  const formattedDate = `${day} ${month} ${year}`;
-  document.getElementById('display').innerHTML = `<span class="date-size">${formattedDate}</span><br>${time}`;
-}
-
-function showDayFirst(now) {
-  const time = now.time;
-  const date = now.date;
-  const day = now.day;
-  document.getElementById('display').innerHTML = `<b>${day}</b><br><span class="date-size">${date}</span><br>${time}`;
-}
-
-function getCurrentTimeAndDate(timezone) {
-  let time = new Date();
-
-  if (timezone !== 'local') {
-    time = new Date(time.toLocaleString('en-US', { timeZone: timezone }));
+  clockEl.textContent = timeStr;
+  // Update aria-label for screen readers (update every minute to avoid spam)
+  if (ss === "00" || clockEl.getAttribute("aria-label") === "Current time") {
+    clockEl.setAttribute("aria-label", `Current time: ${timeStr}`);
   }
 
-  let hour = time.getHours();
-  let minutes = time.getMinutes();
-  let seconds = time.getSeconds();
-  let am_pm = "AM";
-
-  if (hour >= 12) {
-    hour -= 12;
-    am_pm = "PM";
-  } else if (hour == 0) {
-    hour = 12;
-    am_pm = "AM";
+  // Date string
+  if (dateEl) {
+    dateEl.textContent = now.toLocaleDateString(undefined, {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   }
 
-  if (hour < 10) hour = "0" + hour;
-  if (minutes < 10) minutes = "0" + minutes;
-  if (seconds < 10) seconds = "0" + seconds;
-
-  const currentTime = `${hour}:${minutes}:${seconds} ${am_pm}`;
-  const currentDate = `${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear()}`;
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const currentDay = days[time.getDay()];
-
-  return {
-    time: currentTime,
-    date: currentDate,
-    day: currentDay
-  };
+  // Check alarm
+  checkAlarm(hh, mm, ss);
 }
 
-function setClockStyleAndFormat(face, format) {
-  localStorage.setItem('clockFormat', format);
-  setClockFace(face);
-  updateClock();
+function startClock() {
+  // FIX: clear existing interval before starting new one
+  if (clockInterval !== null) {
+    clearInterval(clockInterval);
+    clockInterval = null;
+  }
+  updateClock(); // immediate first tick
+  clockInterval = setInterval(updateClock, 1000);
 }
 
-function setClockFace(face) {
-  const display = document.getElementById('display');
-  display.className = `relative font-mono text-4xl md:text-5xl border-4 rounded-lg p-4 mb-4 ${face}`;
-
-  const clock = document.getElementById('clock');
-  clock.className = `relative font-mono text-4xl md:text-5xl border-4 rounded-lg p-4 ${face}`;
-}
-
-function getMonthName(monthNumber) {
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-  return monthNames[monthNumber - 1];
-}
-
-function toggleAlarmMode() {
-  const alarmInput = document.getElementById('alarm-time');
-  const confirmButton = document.querySelector('#alarm-container button:nth-child(3)');
-  alarmInput.classList.toggle('hidden');
-  confirmButton.classList.toggle('hidden');
-}
-
+// ── Alarm ────────────────────────────────────────────────
 function setAlarm() {
-  const alarmTime = document.getElementById('alarm-time').value;
-  localStorage.setItem('alarmTime', alarmTime);
-  alert(`Alarm set for ${alarmTime}`);
+  const inputEl = getEl("alarm-time");
+  const statusEl = getEl("alarm-status");
+  const cancelBtn = getEl("cancel-alarm-btn");
+
+  if (!inputEl) return;
+
+  const val = inputEl.value; // "HH:MM"
+  if (!val) {
+    showStatus("Please select a valid alarm time.", "error");
+    return;
+  }
+
+  alarmTime = val;
+  alarmTriggered = false;
+
+  if (statusEl) {
+    showStatus(`Alarm set for ${val} ✓`, "success");
+  }
+  if (cancelBtn) cancelBtn.disabled = false;
 }
 
-function checkAlarm(currentTime) {
-  const alarmTime = localStorage.getItem('alarmTime');
-  if (alarmTime && currentTime.includes(alarmTime)) {
+function cancelAlarm() {
+  alarmTime = null;
+  alarmTriggered = false;
+  showStatus("Alarm cancelled.", "info");
+
+  const cancelBtn = getEl("cancel-alarm-btn");
+  if (cancelBtn) cancelBtn.disabled = true;
+
+  hideAlarmRing();
+}
+
+function checkAlarm(hh, mm, ss) {
+  if (!alarmTime || alarmTriggered) return;
+
+  const currentHHMM = `${hh}:${mm}`;
+  if (currentHHMM === alarmTime && ss === "00") {
+    alarmTriggered = true; // prevent repeated triggers
     triggerAlarm();
   }
 }
 
 function triggerAlarm() {
-  const alarmSound = document.getElementById('alarm-sound');
-  const alarmPopup = document.getElementById('alarm-popup');
-  alarmSound.play();
-  alarmPopup.classList.remove('hidden');
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  function beep() {
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(880, ctx.currentTime);
+    gainNode.gain.setValueAtTime(1, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.8);
+  }
+
+  // beep every second until stopped
+  beep();
+  window.alarmSound = setInterval(beep, 1000);
+
+  // existing code below stays same
+  const ringEl = getEl("alarm-ring");
+  if (ringEl) {
+    ringEl.classList.remove("hidden");
+    ringEl.focus();
+  }
+  showStatus("⏰ Alarm is ringing!", "ringing");
 }
 
 function stopAlarm() {
-  const alarmSound = document.getElementById('alarm-sound');
-  const alarmPopup = document.getElementById('alarm-popup');
-  alarmSound.pause();
-  alarmSound.currentTime = 0;
-  alarmPopup.classList.add('hidden');
-  localStorage.removeItem('alarmTime');
+  // ADD THIS
+  if (window.alarmSound) {
+    clearInterval(window.alarmSound);
+    window.alarmSound = null;
+  }
+
+  alarmTime = null;
+  alarmTriggered = false;
+  hideAlarmRing();
+  showStatus("Alarm stopped.", "info");
+
+  const cancelBtn = getEl("cancel-alarm-btn");
+  if (cancelBtn) cancelBtn.disabled = true;
 }
 
-// Initial call to set the format and style
-updateClock();
+function hideAlarmRing() {
+  const ringEl = getEl("alarm-ring");
+  if (ringEl) ringEl.classList.add("hidden");
+}
+
+// ── UI Feedback (non-blocking) ───────────────────────────
+function showStatus(message, type = "info") {
+  const statusEl = getEl("alarm-status");
+  if (!statusEl) return;
+
+  statusEl.textContent = message;
+  statusEl.className = `alarm-status status-${type}`;
+}
+
+// ── Init ─────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  startClock();
+});

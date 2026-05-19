@@ -1,89 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Digital Clock</title>
-    <link rel="stylesheet" href="digitalclock.css" />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="digitalclock.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-black flex flex-col items-center justify-center h-screen">
-    <div class="text-center">
-      <div
-        id="display"
-        class="relative font-mono text-4xl md:text-5xl text-white border-4 border-green-500 rounded-lg p-4 mb-4"
-      ></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Clock</title>
+  <link rel="stylesheet" href="digitalclock.css" />
+</head>
+<body>
+  <main class="clock-container" role="main">
+    <h1 class="sr-only">Digital Clock</h1>
+
+    <!-- Clock Display -->
+    <section aria-label="Current time display">
       <div
         id="clock"
-        class="relative font-mono text-4xl md:text-5xl text-green-500 border-4 border-green-500 rounded-lg p-4"
+        class="clock-display"
+        role="timer"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-label="Current time"
+      >
+        00:00:00
+      </div>
+      <div id="date-display" class="date-display" aria-label="Current date"></div>
+    </section>
+
+    <!-- Alarm Section -->
+    <section class="alarm-section" aria-label="Alarm settings">
+      <h2 class="section-title">Set Alarm</h2>
+
+      <div class="alarm-controls">
+        <label for="alarm-time" class="sr-only">Set alarm time</label>
+        <input
+          type="time"
+          id="alarm-time"
+          class="alarm-input"
+          aria-label="Alarm time"
+        />
+
+        <button
+          id="set-alarm-btn"
+          class="btn btn-primary"
+          aria-label="Set alarm"
+          onclick="setAlarm()"
+        >
+          Set Alarm
+        </button>
+
+        <button
+          id="cancel-alarm-btn"
+          class="btn btn-secondary"
+          aria-label="Cancel alarm"
+          onclick="cancelAlarm()"
+          disabled
+        >
+          Cancel Alarm
+        </button>
+      </div>
+
+      <!-- Alarm Status -->
+      <div
+        id="alarm-status"
+        class="alarm-status"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
       ></div>
-    </div>
-    <div class="mt-10 flex space-x-4">
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-green-700 hover:text-white border-2 border-green-500 text-green-500 rounded-lg"
-        onclick="setClockStyleAndFormat('classic', 'format1')"
+
+      <!-- Alarm Ring UI -->
+      <div
+        id="alarm-ring"
+        class="alarm-ring hidden"
+        role="alert"
+        aria-live="assertive"
       >
-        Classic
-      </button>
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-blue-700 border-2 border-blue-500 text-blue-500 rounded-lg hover:text-white"
-        onclick="setClockStyleAndFormat('modern', 'format2')"
-      >
-        Modern
-      </button>
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-red-700 border-2 border-red-500 text-red-500 rounded-lg hover:text-white"
-        onclick="setClockStyleAndFormat('futuristic', 'format3')"
-      >
-        Futuristic
-      </button>
-    </div>
-    <div class="mt-10">
-      <select
-        id="timezone"
-        class="px-3 hover:bg-green-700 hover:text-white py-2 border-2 border-green-500 text-green-500 rounded-lg"
-        onchange="updateClock()"
-      >
-        <option value="local">Local Time</option>
-        <option value="UTC">UTC</option>
-        <option value="America/New_York">New York (USA)</option>
-        <option value="Europe/London">London (UK)</option>
-        <option value="Asia/Kolkata">Kolkata (India)</option>
-      </select>
-    </div>
-    <div id="alarm-container" class="mt-10 flex flex-col items-center">
-      <button
-        class="hover:text-white clock-face-btn px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="toggleAlarmMode()"
-      >
-        Set Alarm
-      </button>
-      <input
-        type="time"
-        id="alarm-time"
-        class="hidden mt-4 px-4 py-2 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-      />
-      <button
-        class="clock-face-btn hidden mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="setAlarm()"
-      >
-        Confirm Alarm
-      </button>
-    </div>
-    <div
-      id="alarm-popup"
-      class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-yellow-500 border-4 border-yellow-500 rounded-lg p-4"
-    >
-      <p>Alarm is ringing!</p>
-      <button
-        class="mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="stopAlarm()"
-      >
-        Stop Alarm
-      </button>
-    </div>
-    <audio id="alarm-sound" src="alarm.mp3" class="hidden"></audio>
-  </body>
+        <p>⏰ Alarm Ringing!</p>
+        <button
+          class="btn btn-stop"
+          aria-label="Stop alarm"
+          onclick="stopAlarm()"
+        >
+          Stop Alarm
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Visually hidden utility class -->
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+
+  <script src="digitalclock.js"></script>
+</body>
 </html>

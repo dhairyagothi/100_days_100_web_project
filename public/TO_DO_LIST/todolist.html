@@ -1,60 +1,154 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta
+      name="description"
+      content="A clean, responsive To-Do List app with theme switching and PDF export — part of the 100 Days 100 Projects challenge."
+    />
+    <title>To-Do List | 100 Days 100 Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="todolist.css" />
     <script
       src="https://kit.fontawesome.com/f30fac2c61.js"
       crossorigin="anonymous"
     ></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <body>
-    <nav>
-      <ul class="navbar">
-        <div class="nav-left">
-          <li ><a href="#" onclick="showHome()">Home</a></li>
-          <li><a href="#" onclick="showDocuments()">Documents</a></li>
-        </div>
-        <div class="nav-right">
-          <li><button id="colour1" onclick="c1()"></button></li>
-          <li><button id="colour2" onclick="c2()"></button></li>
-          <li><button id="colour3" onclick="c3()"></button></li>
-          <li><button id="colour4" onclick="c4()"></button></li>
-          <li><button id="colour5" onclick="c5()"></button></li>
-        </div>
-      </ul>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-brand">
+        <span class="brand-dot"></span>
+        <span class="brand-name">TaskFlow</span>
+      </div>
+
+      <div class="nav-tabs">
+        <button class="tab-btn active" id="btn-home" onclick="showHome()">
+          Home
+        </button>
+
+        <button class="tab-btn" id="btn-docs" onclick="showDocuments()">
+          Saved Docs
+        </button>
+      </div>
+
+      <div class="nav-themes">
+        <button class="theme-swatch" onclick="applyTheme('theme1')"></button>
+        <button
+          class="theme-swatch ocean"
+          onclick="applyTheme('theme2')"
+        ></button>
+        <button
+          class="theme-swatch forest"
+          onclick="applyTheme('theme3')"
+        ></button>
+        <button
+          class="theme-swatch midnight"
+          onclick="applyTheme('theme4')"
+        ></button>
+        <button
+          class="theme-swatch aurora"
+          onclick="applyTheme('theme5')"
+        ></button>
+      </div>
     </nav>
-    <main class="main">
-      <div id="home-tab">
-        <div class="heading">JUST DO IT.</div>
-        <div class="buttons"> 
-          <div>
-            <button onclick="Add()" id="submittask">Add a task!</button>
-            <!-- <select id="tasktype" >
-              <option value="task1">Work</option>
-              <option value="task2">School</option>
-              <option value="task3">Personal</option>
-              <option value="task4">Fitness</option>
-            </select> -->
-          </div> 
-          
-          <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
+
+    <main class="main-container">
+      <!-- HOME TAB -->
+      <section id="home-tab">
+        <div class="hero-section">
+          <h1 class="main-heading">JUST DO IT.</h1>
+
+          <p class="sub-heading">Organize your work beautifully.</p>
         </div>
-        <div id="notes-container"></div>
-        <div class="container">
+
+        <div class="task-panel">
+          <!-- INPUT -->
+          <div class="input-row">
+            <input
+              type="text"
+              id="task-input"
+              placeholder="Add your next task..."
+            />
+
+            <select id="task-type">
+              <option value="">Category</option>
+
+              <option value="Work">💼 Work</option>
+
+              <option value="Personal">🌸 Personal</option>
+
+              <option value="Professional">📚 Professional</option>
+
+              <option value="Fitness">💪 Fitness</option>
+
+              <option value="Miscellaneous">✨ Misc</option>
+            </select>
+
+            <button id="submittask" onclick="Add()">Add Task</button>
+          </div>
+
+          <!-- STATS -->
+          <div class="stats-bar">
+            <div class="stat-box">
+              <span id="totalTasks">0</span>
+              <p>Total</p>
+            </div>
+
+            <div class="stat-box">
+              <span id="completedTasks">0</span>
+              <p>Completed</p>
+            </div>
+
+            <div class="stat-box">
+              <span id="pendingTasks">0</span>
+              <p>Pending</p>
+            </div>
+          </div>
+
+          <!-- PROGRESS -->
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div id="progressFill"></div>
+            </div>
+          </div>
+
+          <!-- TASKS -->
+          <div id="notes-container"></div>
+
+          <!-- PDF -->
+          <button id="savepdf" onclick="saveAsPDF()">Save PDF</button>
         </div>
-      </div>
-      <div id="documents-tab" style="display: none">
-        <div class="heading">Saved Documents</div>
-        <div class="documents-list"></div>
-      </div>
+      </section>
+
+      <!-- DOCUMENTS TAB -->
+      <section id="documents-tab" style="display: none">
+        <div class="hero-section">
+          <h1 class="main-heading">SAVED DOCS.</h1>
+
+          <p class="sub-heading">Your exported PDFs appear here.</p>
+        </div>
+
+        <div class="documents-wrapper">
+          <div class="documents-list">
+            <div class="empty-docs">
+              <div class="empty-icon">📂</div>
+
+              <p>No documents exported yet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
-    
-    <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
+
+    <div id="toast" class="toast"></div>
 
     <script src="todolist.js"></script>
   </body>

@@ -82,3 +82,69 @@ function takeCommand(message) {
         speak(finalText);
     }
 }
+
+particlesJS("particles-js", {
+
+    particles: {
+
+        number: {
+            value: 45,
+            density: {
+                enable: true,
+                value_area: 800
+            }
+        },
+
+        color: {
+            value: "#00bcd4"
+        },
+
+        shape: {
+            type: "circle"
+        },
+
+        opacity: {
+            value: 0.25
+        },
+
+        size: {
+            value: 2
+        },
+
+        line_linked: {
+
+            enable: true,
+
+            distance: 140,
+
+            color: "#00bcd4",
+
+            opacity: 0.08,
+
+            width: 1
+        },
+
+        move: {
+
+            enable: true,
+
+            speed: 0.4
+        }
+    },
+
+    interactivity: {
+
+        detect_on: "canvas",
+
+        events: {
+
+            onhover: {
+                enable: false
+            },
+
+            resize: true
+        }
+    },
+
+    retina_detect: true
+});
