@@ -8,8 +8,6 @@ const {jwtAuthMiddleware, generateToken} = require('./../jwt');
 router.post('/signup', async(req, res)=>{
     try{
         const data = req.body //Assuming the request body conatins the User data
-        .then(User =>res.join(User))
-        .catch(err => console.log(err))
         // Check if there is already an admin user
         const adminUser = await User.findOne({ role: 'admin' });
         if (data.role === 'admin' && adminUser) {
@@ -41,9 +39,7 @@ router.post('/signup', async(req, res)=>{
         const token = generateToken(payload);
         console.log("Token is : ",token);
 
-        User.create(req.body)
-        .then(user => res.join(user))
-        .catch(err => console.log(err))
+        res.status(201).json({token: token});
 
     }catch(err) {
         console.log(err);
@@ -67,7 +63,7 @@ router.post('/login', async(req, res)=> {
 
         //generate token
         const payload = {
-            id: response.id
+            id: user.id
         }
         const token = generateToken(payload);
 
@@ -83,7 +79,7 @@ router.get('/profile', jwtAuthMiddleware, async(req,res)=>{
     try{
       const userData = req.user;
       const userId = userData.id;
-      const user = await Person.findById(userId);
+      const user = await User.findById(userId);
       res.status(200).json({user});
     }catch(err) {
         console.log(err);
@@ -91,7 +87,7 @@ router.get('/profile', jwtAuthMiddleware, async(req,res)=>{
     }
 })
 
-router.put('/profile/password', async (req, res)=>{
+router.put('/profile/password', jwtAuthMiddleware, async (req, res)=>{
     try{
         const userId = req.user.id; //extract the id from the token
         const {currentPassword, newPassword} = req.body // extract the current and new password from the body
@@ -109,7 +105,7 @@ router.put('/profile/password', async (req, res)=>{
         await  user.save();
 
         console.log('data updated');
-        res.status(200).json(response);
+        res.status(200).json({message: 'Password updated successfully'});
     }catch(err){
         console.log(err)
         res.status(500).json({error:'Internal server error'});
