@@ -180,8 +180,18 @@ The website features:
 | 112 | Nykaa Clone | HTML, CSS, JS | 💄 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone) |
 | 113 | CPU Scheduler | HTML, CSS, JS | ⚙️ Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler) |
 | 114 | EchoNotes | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes) |
+| 115 | Event Registration System | HTML, CSS, JS | 📝 App | [View Demo](https://event-registration-system-w10a.onrender.com/) |
+| 116 | AI Image Classifier | HTML, CSS, JS | 🤖 AI | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20Image%20Classifier/index.html) |
+| 117 |Habit Tracker Web App | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/Habit-Tracker-Web-App/index.html) |
+| 118 | Particle Effect | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/particle-effect/index.html) |
+| 119 | Virtual Playground | HTML, CSS, JS |🧩 Game| [View Demo](https://100-days-100-web-project.vercel.app/playground.html) |
 | 120 | Typing Speed Test | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/typing_test/index.html) |
+| 121 | InterviewSimulator | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/InterviewSimulator/index.html) |
 | 122 | Pomodoro Timer | HTML, CSS, JS | 🍅 Productivity Tool | [View Demo](https://100-days-100-web-project.vercel.app/public/Pomodoro_Timer/index.html) |
+| 123 | AstronomyDashboard | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/AstronomyDashboard/astro.html) |
+| 124 | Hurdle Highway 2D | HTML, CSS, JS | 🎮 Game  | [View Demo](https://100-days-100-web-project.vercel.app/public/Hurdle_Highway_2D/index.html) |
+| 125 | Snakeladder | HTML, CSS, JS | 🎮 Game  | [View Demo](https://100-days-100-web-project.vercel.app/public/Snakeladder/index.html) |
+| 126 | Temperature Converter | HTML, CSS, JS | 💱 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/TemperatureConverter/) |
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 25+ interactive games and puzzles
@@ -364,8 +374,8 @@ Thanks to all these amazing people who have contributed to this project:
 
 <!-- readme: contributors -start -->
 <table>
-	<tbody>
-		<tr>
+    <tbody>
+        <tr>
             <td align="center">
                 <a href="https://github.com/dhairyagothi">
                     <img src="https://avatars.githubusercontent.com/u/142989448?v=4" width="96;" alt="dhairyagothi"/>
@@ -401,8 +411,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>bhagwan8815</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Peehu1308">
                     <img src="https://avatars.githubusercontent.com/u/145141126?v=4" width="96;" alt="Peehu1308"/>
@@ -438,8 +448,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>k0msenapati</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/avnisinngh">
                     <img src="https://avatars.githubusercontent.com/u/150375257?v=4" width="96;" alt="avnisinngh"/>
@@ -475,8 +485,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>mansi066</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/hirdeshds">
                     <img src="https://avatars.githubusercontent.com/u/182250925?v=4" width="96;" alt="hirdeshds"/>
@@ -512,8 +522,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>SameerGera</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/VAIBHAVBABELE">
                     <img src="https://avatars.githubusercontent.com/u/144267863?v=4" width="96;" alt="VAIBHAVBABELE"/>
@@ -549,8 +559,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Khushi-bhaskar01</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Kaustav2410">
                     <img src="https://avatars.githubusercontent.com/u/94297897?v=4" width="96;" alt="Kaustav2410"/>
@@ -586,8 +596,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Ash-Misty</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/RamanKumar-Dev">
                     <img src="https://avatars.githubusercontent.com/u/181658453?v=4" width="96;" alt="RamanKumar-Dev"/>
@@ -623,8 +633,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>shivenyadavs</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Meetjain1">
                     <img src="https://avatars.githubusercontent.com/u/133582566?v=4" width="96;" alt="Meetjain1"/>
@@ -660,8 +670,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>chandankoranga02</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/vasudhaagrawal2024-byte">
                     <img src="https://avatars.githubusercontent.com/u/249964032?v=4" width="96;" alt="vasudhaagrawal2024-byte"/>
@@ -697,8 +707,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>niyatisharma100307-crypto</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/NishantRana07">
                     <img src="https://avatars.githubusercontent.com/u/126577697?v=4" width="96;" alt="NishantRana07"/>
@@ -734,8 +744,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Dharshan-Gangadhar</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/deepesh611">
                     <img src="https://avatars.githubusercontent.com/u/123585104?v=4" width="96;" alt="deepesh611"/>
@@ -771,8 +781,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>SuhainaFathimaM</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/DavidMarcosJ">
                     <img src="https://avatars.githubusercontent.com/u/163770734?v=4" width="96;" alt="DavidMarcosJ"/>
@@ -808,8 +818,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>meghaaguleriaa</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Kratik87864">
                     <img src="https://avatars.githubusercontent.com/u/115693237?v=4" width="96;" alt="Kratik87864"/>
@@ -845,8 +855,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Sanyogita45</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/prakshithamalla-art">
                     <img src="https://avatars.githubusercontent.com/u/232501512?v=4" width="96;" alt="prakshithamalla-art"/>
@@ -882,8 +892,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>0mneeha93</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/CodeMaster11000">
                     <img src="https://avatars.githubusercontent.com/u/194816478?v=4" width="96;" alt="CodeMaster11000"/>
@@ -919,8 +929,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>LoneWolf4713</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Abfa41">
                     <img src="https://avatars.githubusercontent.com/u/157041964?v=4" width="96;" alt="Abfa41"/>
@@ -956,8 +966,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>29akeshvimt</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/govindaa-sharma">
                     <img src="https://avatars.githubusercontent.com/u/177419466?v=4" width="96;" alt="govindaa-sharma"/>
@@ -993,8 +1003,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>ppalakk</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Shivakumarjagadam">
                     <img src="https://avatars.githubusercontent.com/u/154302898?v=4" width="96;" alt="Shivakumarjagadam"/>
@@ -1030,8 +1040,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>bhavyanjain3004</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Shivangi1515">
                     <img src="https://avatars.githubusercontent.com/u/200270924?v=4" width="96;" alt="Shivangi1515"/>
@@ -1067,8 +1077,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>ThePrabhu</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/prakc7">
                     <img src="https://avatars.githubusercontent.com/u/195454775?v=4" width="96;" alt="prakc7"/>
@@ -1104,8 +1114,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Ayush277</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/BhavyaAgrawal14">
                     <img src="https://avatars.githubusercontent.com/u/197904375?v=4" width="96;" alt="BhavyaAgrawal14"/>
@@ -1141,8 +1151,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>adityaaman-2120</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/poorvajaa-04">
                     <img src="https://avatars.githubusercontent.com/u/250113960?v=4" width="96;" alt="poorvajaa-04"/>
@@ -1178,8 +1188,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Sancharidey2</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/shivamm-verma">
                     <img src="https://avatars.githubusercontent.com/u/98605616?v=4" width="96;" alt="shivamm-verma"/>
@@ -1215,8 +1225,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Sparshjoshi-iit</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/StarDustNova-57">
                     <img src="https://avatars.githubusercontent.com/u/173454745?v=4" width="96;" alt="StarDustNova-57"/>
@@ -1252,8 +1262,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>kumudasrip</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/rishikareddy771">
                     <img src="https://avatars.githubusercontent.com/u/244212477?v=4" width="96;" alt="rishikareddy771"/>
@@ -1289,8 +1299,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Madhu0-2</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/ch-ushasree">
                     <img src="https://avatars.githubusercontent.com/u/243200258?v=4" width="96;" alt="ch-ushasree"/>
@@ -1326,8 +1336,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Priyanshi-untitled</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Ras0105">
                     <img src="https://avatars.githubusercontent.com/u/199514158?v=4" width="96;" alt="Ras0105"/>
@@ -1363,8 +1373,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>divyaa-pal</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/krish-gupta21">
                     <img src="https://avatars.githubusercontent.com/u/170424151?v=4" width="96;" alt="krish-gupta21"/>
@@ -1400,8 +1410,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>raj-mistry-01</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Itz-Sidra">
                     <img src="https://avatars.githubusercontent.com/u/182225159?v=4" width="96;" alt="Itz-Sidra"/>
@@ -1437,8 +1447,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>savniagrawal1701</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/SARTHAKJINDAL1">
                     <img src="https://avatars.githubusercontent.com/u/245673893?v=4" width="96;" alt="SARTHAKJINDAL1"/>
@@ -1474,8 +1484,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Ritika-gupta13</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/RiyanshiTomar">
                     <img src="https://avatars.githubusercontent.com/u/189696797?v=4" width="96;" alt="RiyanshiTomar"/>
@@ -1511,8 +1521,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>5uhani</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Shreedevi07">
                     <img src="https://avatars.githubusercontent.com/u/214257295?v=4" width="96;" alt="Shreedevi07"/>
@@ -1548,8 +1558,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>lavanyachoukiker8</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Thanujasoma">
                     <img src="https://avatars.githubusercontent.com/u/122363793?v=4" width="96;" alt="Thanujasoma"/>
@@ -1585,8 +1595,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>vasudhaagrawal-12</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/suhasiniChoudhari">
                     <img src="https://avatars.githubusercontent.com/u/155429235?v=4" width="96;" alt="suhasiniChoudhari"/>
@@ -1622,8 +1632,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>riddhimagupta2</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/rasmirajesh">
                     <img src="https://avatars.githubusercontent.com/u/163630194?v=4" width="96;" alt="rasmirajesh"/>
@@ -1659,8 +1669,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>nazrinthazz</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/mdudhe2007">
                     <img src="https://avatars.githubusercontent.com/u/246958141?v=4" width="96;" alt="mdudhe2007"/>
@@ -1696,8 +1706,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>harshitha1106</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/dhairyagothi31">
                     <img src="https://avatars.githubusercontent.com/u/235689602?v=4" width="96;" alt="dhairyagothi31"/>
@@ -1733,8 +1743,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>harrshita123</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Gyanam09">
                     <img src="https://avatars.githubusercontent.com/u/119296036?v=4" width="96;" alt="Gyanam09"/>
@@ -1770,8 +1780,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>yeyecherlyyy</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Ashitosh0302">
                     <img src="https://avatars.githubusercontent.com/u/224451926?v=4" width="96;" alt="Ashitosh0302"/>
@@ -1807,8 +1817,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>aditirajsingh15365-hub</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/abhirajadhikary06">
                     <img src="https://avatars.githubusercontent.com/u/171187625?v=4" width="96;" alt="abhirajadhikary06"/>
@@ -1844,8 +1854,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>Praharshitha07</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/PojashriJM">
                     <img src="https://avatars.githubusercontent.com/u/217706978?v=4" width="96;" alt="PojashriJM"/>
@@ -1881,8 +1891,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>PARVATHI-PR</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Codingcodercodes">
                     <img src="https://avatars.githubusercontent.com/u/163008537?v=4" width="96;" alt="Codingcodercodes"/>
@@ -1918,8 +1928,8 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>nikhilkumar011</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
+        </tr>
+        <tr>
             <td align="center">
                 <a href="https://github.com/Nandini-1811">
                     <img src="https://avatars.githubusercontent.com/u/191849631?v=4" width="96;" alt="Nandini-1811"/>
@@ -1948,8 +1958,15 @@ Thanks to all these amazing people who have contributed to this project:
                     <sub><b>manroop04</b></sub>
                 </a>
             </td>
-		</tr>
-	<tbody>
+             <td align="center">
+                <a href="https://github.com/PRIT-G">
+                    <img src="https://avatars.githubusercontent.com/u/177934332?v=4" width="96;" alt="pritgadhiya"/>
+                    <br />
+                    <sub><b>PRIT GADHIYA</b></sub>
+                </a>
+            </td>
+        </tr>
+    <tbody>
 </table>
 <!-- readme: contributors -end -->
 
