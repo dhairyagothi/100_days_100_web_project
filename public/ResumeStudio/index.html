@@ -11,9 +11,6 @@
         <div class="header-left"></div>
         <h1>Resume Studio</h1>
         <div class="header-right">
-            <button id="themeSwitcher" title="Switch Theme" aria-label="Switch to dark mode">
-                <span id="themeIcon">&#9790;</span>
-            </button>
         </div>
     </header>
     <main>
@@ -64,20 +61,40 @@
                     <textarea id="experience" placeholder="Describe your past experiences" maxlength="400"></textarea>
                     <span class="char-count" id="experienceCount">0/400</span>
                 </div>
-                <p class="error-msg" id="errorMsg">&#9888; Please fill in all fields before previewing.</p>
+                <p class="error-msg" id="errorMsg" style="display:none;">&#9888; Please fill in all fields before previewing.</p>
                 <div class="btn-row">
                     <button type="button" id="previewBtn">Live Preview</button>
-                    <button type="button" id="downloadBtn">Download PDF</button>
                 </div>
             </form>
         </section>
+
         <section class="preview-section">
             <h2>Live Preview</h2>
             <div id="resumePreview">
                 <p class="placeholder">Fill the form to see live preview...</p>
             </div>
+            <div class="template-buttons">
+                <button type="button" id="templateBtn1">Template 1</button>
+                <button type="button" id="templateBtn2">Template 2</button>
+                <button type="button" id="templateBtn3">Template 3</button>
+                <button type="button" id="templateBtn4">Template 4</button>
+                <button type="button" id="templateBtn5">Template 5</button>
+                <button type="button" id="templateBtn6">Template 6</button>
+            </div>
+            <div class="d-template-buttons">
+                <button type="button" id="dTemplateBtn1">Download 1</button>
+                <button type="button" id="dTemplateBtn2">Download 2</button>
+                <button type="button" id="dTemplateBtn3">Download 3</button>
+                <button type="button" id="dTemplateBtn4">Download 4</button>
+                <button type="button" id="dTemplateBtn5">Download 5</button>
+                <button type="button" id="dTemplateBtn6">Download 6</button>
+            </div>
         </section>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html>
