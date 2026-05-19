@@ -4,61 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PassX-Personal Password Manager</title>
+    <title>PassX — Modern Personal Password Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Navigation Bar -->
     <nav>
-        <div class="logo">PassX</div>
+        <div class="logo">
+            <!-- Shield key logo icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="24" height="24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+            Pass<span>X</span>
+        </div>
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="mailto:support@passx.com">Contact</a></li>
         </ul>
     </nav>
-    <div class="container">
-        <h1>Password Manager</h1>
-        <p>We're thrilled to have you here, and we're committed to making your online security a top priority. Your
-            digital world is full of passwords and sensitive information, and we're here to help you keep it safe and
-            organized.</p>
-        <h2>Your Password <span id="alert">(Copied)</span></h2>
-        <p>Your password has been copied</p>
-        <table>
-            <tr>
-                <th>Website</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Delete</th>
-            </tr>
 
+    <!-- Main Container -->
+    <main class="container">
+        <h1>Sleek & Secure Password Manager</h1>
+        <p class="subtitle">Welcome to PassX. Keep your digital world organized, secure, and fully encrypted locally. Your passwords never leave your browser.</p>
 
-        </table>
-
-        <h2>Add a password</h2>
-        <form action="/submit" method="post">
-            <!-- Text input for Website -->
-            <label for="Website">Website:</label>
-            <input type="text" id="Website" name="Website" required>
-            <br><br>
-            <!-- Text input for username -->
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <br><br>
-
-            <!-- Password input -->
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-
-
-            <!-- Submit button -->
-            <button class="btn" type="submit">Submit</button>
-              
-        </form>
-
+        <!-- Saved Passwords Section -->
+        <h2>Your Saved Logins <span id="alert">(Copied)</span></h2>
         
-    </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Website</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- JS will dynamically populate table rows here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add Password Section -->
+        <h2>Add Credentials</h2>
+        
+        <form id="passwordForm" action="/submit" method="post">
+            <!-- Website Input -->
+            <div class="form-group">
+                <label for="Website">Website Link / Name</label>
+                <input type="text" id="Website" name="Website" placeholder="e.g. google.com" required>
+            </div>
+            
+            <!-- Username Input -->
+            <div class="form-group">
+                <label for="username">Username / Email</label>
+                <input type="text" id="username" name="username" placeholder="e.g. user@domain.com" required>
+            </div>
+
+            <!-- Password Input with Toggle -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+                    <button type="button" class="toggle-btn" id="togglePasswordInput" title="Toggle password visibility">
+                        <!-- Eye Icon (default visible state) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Password Strength Meter -->
+                <div class="strength-container" id="strengthContainer">
+                    <div class="strength-bar-wrapper">
+                        <div class="strength-segment"></div>
+                        <div class="strength-segment"></div>
+                        <div class="strength-segment"></div>
+                    </div>
+                    <span class="strength-text" id="strengthText">Strength: Empty</span>
+               </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="btn" type="submit">Save Credentials</button>
+        </form>
+    </main>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
 
     <script src="script.js"></script>
 </body>

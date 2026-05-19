@@ -1,26 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-dark: #080b11;
+    --bg-card: rgba(15, 23, 42, 0.7);
+    --bg-nav: rgba(10, 16, 30, 0.8);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-focus: #10b981;
+    
+    --accent-emerald: #10b981;
+    --accent-glow: rgba(16, 185, 129, 0.15);
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --strength-weak: #ef4444;
+    --strength-medium: #f59e0b;
+    --strength-strong: #10b981;
+    
+    --btn-delete: #f43f5e;
+    --btn-delete-hover: #e11d48;
+    
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-main: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 25px rgba(16, 185, 129, 0.1);
+}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    background-color: rgb(108, 60, 60);
-    color: #333;
+    background-color: var(--bg-dark);
+    background-image: 
+        radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+        radial-gradient(at 90% 90%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    font-family: var(--font-body);
     line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 60px;
 }
 
+/* Navbar */
 nav {
-    background-color: #572b2b;
-    color: rgb(236, 231, 207);
-    padding: 15px 25px;
+    background-color: var(--bg-nav);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 18px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 nav ul {
@@ -40,32 +79,50 @@ nav ul li a:hover {
 }
 
 .logo {
-    font-weight: 800;
-    font-size: 30px;
-    letter-spacing: 1px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
     cursor: pointer;
-    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.logo span {
+    color: var(--accent-emerald);
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
 }
 
 .logo:hover {
-    color: #000000;
+    transform: translateY(-1px);
 }
 
 ul {
     display: flex;
     list-style: none;
+    gap: 30px;
 }
 
 ul > li {
-    margin: 0 20px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
-    font-weight: 600;
     position: relative;
-    transition: color 0.3s;
+    padding: 4px 0;
+    transition: var(--transition);
 }
 
 ul > li:hover {
-    color: #000000;
+    color: var(--text-primary);
+}
+
+ul > li a {
+    color: inherit;
+    text-decoration: none;
 }
 
 ul > li::after {
@@ -73,12 +130,12 @@ ul > li::after {
     position: absolute;
     width: 100%;
     height: 2px;
-    background-color: #000000;
-    bottom: -5px;
+    background-color: var(--accent-emerald);
+    bottom: 0;
     left: 0;
     transform: scaleX(0);
     transform-origin: bottom right;
-    transition: transform 0.3s ease-out;
+    transition: transform 0.25s ease-out;
 }
 
 ul > li:hover::after {
@@ -86,156 +143,424 @@ ul > li:hover::after {
     transform-origin: bottom left;
 }
 
+/* Container & Layout */
 .container {
-    max-width: 90vw;
+    max-width: 900px;
+    width: 90%;
     margin: 40px auto;
-    padding: 25px;
-    background-color:rgb(236, 231, 207);
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    padding: 40px;
+    background-color: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    box-shadow: var(--shadow-main), var(--shadow-glow);
+    text-align: left;
+    transition: var(--transition);
 }
 
-h1, h2 {
-    margin: 20px 0;
-    font-size: 28px;
-    color: #4e2626;
+h1 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 35px;
+    max-width: 700px;
 }
 
 h2 {
-    font-size: 24px;
-    color: #632a2a;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 22px;
+    margin: 40px 0 20px 0;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-p {
-    font-size: 16px;
-    color: #000000;
-    margin-bottom: 20px;
-}
-
+/* Alert Indicator in Heading (legacy, hidden/replaced by Toast but kept for structure) */
 #alert {
-    font-weight: bold;
-    color: green;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-emerald);
+    background-color: rgba(16, 185, 129, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
     display: none;
-}
-
-table {
-    width: 100%;
-    margin-top: 20px;
-    border: 1px solid #602a2a;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-table th, table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #532424;
-}
-
-table th {
-    background-color: #bbba9c;
-    font-weight: bold;
-}
-
-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-button {
-    padding: 8px 18px;
-    background-color: #5e2929;
-    color: white;
-    font-weight: 600;
-    border: 2px solid #000000;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #258907;
-}
-
-input[type="text"], input[type="password"] {
-    padding: 10px;
-    margin: 10px 0 20px 0;
-    width: 100%;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-}
-
-input[type="text"]:focus, input[type="password"]:focus {
-    border-color: #ff6347;
-    outline: none;
-}
-
-.btnsm {
-    padding: 6px 12px;
-    background-color: #333;
-    color: white;
-    font-weight: 600;
-    border: 2px solid #555;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btnsm:hover {
-    background-color: #a70d0d;
-}
-
-img {
-    cursor: pointer;
     margin-left: 10px;
-    transition: transform 0.3s;
 }
 
-img:hover {
-    transform: scale(1.1);
-}
-
+/* Add Password Form */
 form {
-    margin-top: 20px;
-    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 form label {
     font-weight: 600;
-    margin-bottom: 5px;
-    display: block;
+    font-size: 14px;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-form input {
-    margin-bottom: 20px;
+/* Password Input and Toggle Group */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    background-color: rgba(10, 15, 30, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    transition: var(--transition);
+}
+
+.input-wrapper input {
+    padding-right: 48px; /* Room for the show/hide icon */
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+    background-color: rgba(10, 15, 30, 0.85);
+}
+
+/* Toggle Visibility Button (Input) */
+.toggle-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.toggle-btn:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.toggle-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Password Strength Indicator */
+.strength-container {
+    margin-top: -8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.strength-bar-wrapper {
+    display: flex;
+    gap: 4px;
+    height: 4px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-segment {
+    flex: 1;
+    height: 100%;
+    background-color: transparent;
+    border-radius: 2px;
+    transition: background-color 0.4s ease;
+}
+
+.strength-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+/* Strength States */
+.strength-weak .strength-segment:nth-child(1) { background-color: var(--strength-weak); }
+.strength-weak .strength-text { color: var(--strength-weak); }
+
+.strength-medium .strength-segment:nth-child(1),
+.strength-medium .strength-segment:nth-child(2) { background-color: var(--strength-medium); }
+.strength-medium .strength-text { color: var(--strength-medium); }
+
+.strength-strong .strength-segment:nth-child(1),
+.strength-strong .strength-segment:nth-child(2),
+.strength-strong .strength-segment:nth-child(3) { background-color: var(--strength-strong); }
+.strength-strong .strength-text { color: var(--strength-strong); }
+
+/* Submit Button */
+.btn {
+    width: fit-content;
+    min-width: 150px;
+    padding: 14px 28px;
+    background-color: var(--accent-emerald);
+    color: #080b11;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    transition: var(--transition);
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background-color: #059669;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Password List Section & Responsive Table */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background-color: rgba(10, 15, 30, 0.3);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+table th {
+    background-color: rgba(15, 23, 42, 0.9);
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+table tr {
+    transition: background-color 0.2s ease;
+}
+
+table tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Custom Table Cell Data with Inline Icons */
+.cell-data {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    word-break: break-all;
+}
+
+.cell-password {
+    font-family: monospace;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+}
+
+/* Action Icon Buttons */
+.action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.action-icon:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: scale(1.08);
+}
+
+.action-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Delete Sm Button */
+.btnsm {
+    padding: 8px 16px;
+    background-color: rgba(244, 63, 94, 0.1);
+    color: var(--btn-delete);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 13px;
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btnsm:hover {
+    background-color: var(--btn-delete);
+    color: #fff;
+    border-color: var(--btn-delete);
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+}
+
+/* Empty State Styling */
+.no-data {
+    padding: 40px;
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 15px;
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.toast {
+    background-color: #0f172a;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--accent-emerald);
+    padding: 14px 20px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideIn 0.3s forwards cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+}
+
+.toast.toast-delete {
+    border-left-color: var(--btn-delete);
+}
+
+.toast.toast-copy {
+    border-left-color: #6366f1; /* Indigo Copy color */
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+.toast-icon.emerald { color: var(--accent-emerald); }
+.toast-icon.delete { color: var(--btn-delete); }
+.toast-icon.indigo { color: #818cf8; }
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .container {
-        width: 95%;
+    body {
+        padding-bottom: 40px;
     }
 
     nav {
-        flex-direction: column;
-        align-items: flex-start;
+        padding: 16px 20px;
     }
 
-    ul {
-        flex-direction: column;
-        margin-top: 10px;
+    .container {
+        padding: 24px 20px;
+        margin: 20px auto;
+        border-radius: 16px;
     }
 
-    ul > li {
-        margin-bottom: 10px;
-    }
-
-    h1, h2 {
+    h1 {
         font-size: 26px;
     }
-}
 
+    .subtitle {
+        margin-bottom: 24px;
+    }
+
+    h2 {
+        font-size: 18px;
+        margin: 30px 0 15px 0;
+    }
+
+    table th, table td {
+        padding: 12px 14px;
+        font-size: 13px;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
