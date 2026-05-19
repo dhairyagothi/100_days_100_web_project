@@ -102,3 +102,7 @@ body.dark .btn.red { background-color: #ff6666; }
 body.dark .btn.yellow { background-color: #ffe066; }
 body.dark .btn.green { background-color: #66ff66; }
 body.dark .btn.purple { background-color: #b366ff; }
+
+.game-over {
+  background: #ff4d4d !important;
+}

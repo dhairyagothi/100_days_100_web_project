@@ -16,6 +16,22 @@ const themeToggle = document.getElementById("theme-toggle");
 const startBtn = document.getElementById("start-btn");
 const allBtns = document.querySelectorAll(".btn");
 
+let sounds = {
+  red: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
+  yellow: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"),
+  green: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"),
+  purple: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"),
+  wrong: new Audio("https://s3.amazonaws.com/adam-recvlohe-sounds/error.wav")
+};
+
+function playSound(color) {
+  const sound = sounds[color];
+
+  sound.pause();
+  sound.currentTime = 0;
+  sound.play();
+}
+
 let highScore = localStorage.getItem("highScore") || 0;
 highScoreText.innerText = `High Score: ${highScore}`;
 
@@ -65,6 +81,7 @@ function playSequence() {
     const color = gameSeq[i];
     const btn = document.getElementById(color);
     gameFlash(btn);
+    playSound(color);
     i++;
     if (i >= gameSeq.length) {
       clearInterval(interval);
@@ -100,9 +117,14 @@ function checkAns(idx) {
 }
 
 function gameOver() {
+  playSound("wrong");
   h2.innerHTML = `💀 Game Over! Score: <b>${level}</b><br>Press Start to play again.`;
   document.body.style.backgroundColor = "red";
-  setTimeout(() => (document.body.style.backgroundColor = "white"), 200);
+  document.body.classList.add("game-over");
+
+setTimeout(() => {
+  document.body.classList.remove("game-over");
+}, 200);
   updateHighScore();
   resetGame();
 }
@@ -119,6 +141,7 @@ function btnPress() {
   if (!started || !clickable) return;
   const btn = this;
   userFlash(btn);
+  playSound(btn.id);
 
   let userColor = btn.getAttribute("id");
   userSeq.push(userColor);
