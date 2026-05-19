@@ -1,112 +1,4 @@
-
 name: Label Merge Conflicts
-
-on:
-  schedule:
-    - cron: "*/30 * * * *"
-  workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
-
-permissions:
-  issues: write
-  pull-requests: write
-  contents: read
-
-jobs:
-  label-merge-conflicts:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Label PRs with merge conflicts
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const labelName = 'merge-conflicts';
-
-            try {
-              await github.rest.issues.getLabel({
-                owner,
-                repo,
-                name: labelName,
-              });
-            } catch (error) {
-              if (error.status !== 404) {
-                throw error;
-              }
-
-              await github.rest.issues.createLabel({
-                owner,
-                repo,
-                name: labelName,
-                color: 'd73a4a',
-                description: 'Pull request has merge conflicts',
-              });
-            }
-
-            const openPulls = await github.paginate(github.rest.pulls.list, {
-              owner,
-              repo,
-              state: 'open',
-              per_page: 100,
-            });
-
-            for (const pr of openPulls) {
-              const hasLabel = pr.labels.some((label) => label.name === labelName);
-
-              let mergeableState;
-              try {
-                const detailedPr = await github.rest.pulls.get({
-                  owner,
-                  repo,
-                  pull_number: pr.number,
-                });
-                mergeableState = detailedPr.data.mergeable_state;
-              } catch (error) {
-                if (error.status === 403) {
-                  core.warning(`Skipped PR #${pr.number} due to API rate limiting.`);
-                  continue;
-                }
-                throw error;
-              }
-
-              if (!mergeableState || mergeableState === 'unknown') {
-                core.info(`Skipped PR #${pr.number} because mergeability is still being calculated.`);
-                continue;
-              }
-
-              const hasConflicts = mergeableState === 'dirty';
-
-              if (hasConflicts && !hasLabel) {
-                await github.rest.issues.addLabels({
-                  owner,
-                  repo,
-                  issue_number: pr.number,
-                  labels: [labelName],
-                });
-                core.info(`Added '${labelName}' to PR #${pr.number}`);
-              }
-
-              if (!hasConflicts && hasLabel) {
-                try {
-                  await github.rest.issues.removeLabel({
-                    owner,
-                    repo,
-                    issue_number: pr.number,
-                    name: labelName,
-                  });
-                  core.info(`Removed '${labelName}' from PR #${pr.number}`);
-                } catch (error) {
-                  if (error.status !== 404) {
-                    throw error;
-                  }
-                }
-              }
-            }
-name: Label Merge Conflicts
-
 on:
   schedule:
     - cron: "*/30 * * * *"
@@ -117,7 +9,7 @@ on:
 permissions:
   contents: read
   issues: write
-  pull-requests: read
+  pull-requests: write
 
 jobs:
   label-merge-conflicts:
@@ -133,16 +25,9 @@ jobs:
             const labelName = 'merge-conflicts';
 
             try {
-              await github.rest.issues.getLabel({
-                owner,
-                repo,
-                name: labelName,
-              });
+              await github.rest.issues.getLabel({ owner, repo, name: labelName });
             } catch (error) {
-              if (error.status !== 404) {
-                throw error;
-              }
-
+              if (error.status !== 404) throw error;
               await github.rest.issues.createLabel({
                 owner,
                 repo,
@@ -205,9 +90,7 @@ jobs:
                   });
                   core.info(`Removed '${labelName}' from PR #${pr.number}`);
                 } catch (error) {
-                  if (error.status !== 404) {
-                    throw error;
-                  }
+                  if (error.status !== 404) throw error;
                 }
               }
             }
