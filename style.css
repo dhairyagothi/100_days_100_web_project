@@ -1588,3 +1588,28 @@ body.light-mode .brand-mark {
     border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+.copy-code-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font-size: 14px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    opacity: 0.5;
+    transition: all 0.2s ease;
+}
+
+.copy-code-btn:hover {
+    opacity: 1;
+    background: rgba(255,255,255,0.08);
+}
+
+.copy-code-btn.copied {
+    color: #22c55e;
+    opacity: 1;
+}
+
+.copy-code-btn:disabled {
+    cursor: not-allowed;
+}

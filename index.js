@@ -342,6 +342,9 @@ function renderGrid() {
                     <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
                         <i class="fab fa-github"></i> Code
                     </a>
+                    <button class="copy-code-btn" data-url="${url}" data-name="${name}" title="Copy Code">
+                        <i class="fas fa-copy"></i> 
+                    </button>
                 </div>
                 <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
@@ -571,6 +574,9 @@ function renderBookmarks() {
                     <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
                         <i class="fab fa-github"></i> Code
                     </a>
+                    <button class="card-link copy-code-btn" data-url="${sourceUrl}" data-name="${name}">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
                 </div>
                 <button class="bookmark-btn active" data-id="${day}">
                     <i class="fa-solid fa-bookmark"></i>
@@ -852,6 +858,7 @@ if (backToTopButton) {
   });
 }
 
+
 /* ============================================================
    INIT
    ============================================================ */
@@ -870,6 +877,55 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollBtn();
 });
 
+document.addEventListener('click', async function (e) {
+    const btn = e.target.closest('.copy-code-btn');
+    if (!btn) return;
+
+    const projectUrl = btn.dataset.url;
+    let fetchUrl = '';
+
+    if (projectUrl.startsWith('http') && projectUrl.includes('github.com')) {
+        fetchUrl = projectUrl
+            .replace('github.com', 'raw.githubusercontent.com')
+            .replace('/tree/', '/');
+        if (!fetchUrl.includes('.html')) {
+            fetchUrl = fetchUrl.endsWith('/')
+                ? `${fetchUrl}index.html`
+                : `${fetchUrl}/index.html`;
+        }
+    } else if (projectUrl.startsWith('http')) {
+        btn.innerHTML = '<i class="fas fa-times"></i> Not Available';
+        setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
+        return;
+    } else {
+        const cleanPath = projectUrl.replace('./', '');
+        fetchUrl = `https://raw.githubusercontent.com/dhairyagothi/100_days_100_web_project/Main/${cleanPath}`;
+    }
+
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Copying...';
+        btn.disabled = true;
+
+        const response = await fetch(fetchUrl);
+        if (!response.ok) throw new Error('Fetch failed');
+
+        const code = await response.text();
+        await navigator.clipboard.writeText(code);
+
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        btn.classList.add('copied');
+
+    } catch (err) {
+        btn.innerHTML = '<i class="fas fa-times"></i> Failed';
+        console.error('Copy failed:', fetchUrl, err);
+    } finally {
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            btn.classList.remove('copied');
+            btn.disabled = false;
+        }, 2000);
+    }
+});
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
   renderGrid();
