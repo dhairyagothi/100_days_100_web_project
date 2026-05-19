@@ -138,6 +138,22 @@ userInput?.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
         event.preventDefault();
         addCustomText();
+deleteTextButton.addEventListener("click", () => {
+    if (phrases.length > defaultPhrases.length) {
+        const lastUserPhrase = phrases.pop();
+        
+        if (displayedPhrases.includes(lastUserPhrase)) {
+            displayedPhrases = displayedPhrases.filter(phrase => phrase !== lastUserPhrase);
+        }
+        if (phraseIndex >= phrases.length) {
+            clearTimeout(typingTimeout);
+            phraseIndex = 0;
+            charIndex = 0;
+            isDeleting = false;
+            if (!isPaused) {
+                type();
+            }
+        }
     }
 });
 

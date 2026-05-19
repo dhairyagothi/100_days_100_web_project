@@ -25,6 +25,11 @@ function getCandyName(tile) {
     const fileName = tile.src.split("/").pop();
     return fileName.replace(".png", "");
 }
+var candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
+var board = [];
+var rows = 9;
+var columns = 9;
+var score =0;
 
 function randomCandy() {
     return candies[Math.floor(Math.random() * candies.length)];
@@ -45,6 +50,13 @@ function clearSelection() {
     }
     selectedTile = null;
 }
+window.onload = function() {
+    startGame();
+     // Reset button functionality
+    document.getElementById("Reset").addEventListener("click", function() {
+        score=0
+        // Reset score
+        document.getElementById("score1").innerText = score; // Update the score display
 
 function areAdjacent(tileA, tileB) {
     const [rowA, columnA] = tileA.id.split("-").map(Number);
@@ -54,6 +66,17 @@ function areAdjacent(tileA, tileB) {
 
     return rowDistance + columnDistance === 1;
 }
+        // Reinitialize the game
+        startGame();
+    });
+    //1/10th of a second
+    window.setInterval(function(){
+        crushCandy();
+        slideCandy();
+        generateCandy();
+    }, 100);
+}
+    
 
 function swapTiles(tileA, tileB) {
     const firstSource = tileA.src;
@@ -68,6 +91,45 @@ function wouldCreateStartingMatch(row, column, candy) {
     const topMatch = row >= 2 &&
         getCandyName(board[row - 1][column]) === candy &&
         getCandyName(board[row - 2][column]) === candy;
+function randomCandy() {
+    return candies[Math.floor(Math.random() * candies.length)]; //0 - 5.99
+}
+
+function startGame() {
+    score=0;
+    document.getElementById("score1").innerText=score;
+    for (let r = 0; r < rows; r++) {
+        let row = [];
+        for (let c = 0; c < columns; c++) {
+            // <img id="0-0" src="./images/Red.png">
+            let candy;
+            // keep picking until it doesn’t form a 3-in-a-row
+            do {
+                candy = randomCandy();
+            } while (
+                (c >= 2 && row[c-1].src.includes(candy) && row[c-2].src.includes(candy)) ||
+                (r >= 2 && board[r-1][c].src.includes(candy) && board[r-2][c].src.includes(candy))
+            );
+             let tile = document.createElement("img");
+            tile.id = r + "-" + c;
+            tile.src = "./images/" + candy + ".png";
+            // let tile = document.createElement("img");
+            // tile.id = r.toString() + "-" + c.toString();
+            // tile.src = "./images/" + randomCandy() + ".png";
+
+            //DRAG FUNCTIONALITY
+            tile.addEventListener("dragstart", dragStart); //click on a candy, initialize drag process
+            tile.addEventListener("dragover", dragOver);  //clicking on candy, moving mouse to drag the candy
+            tile.addEventListener("dragenter", dragEnter); //dragging candy onto another candy
+            tile.addEventListener("dragleave", dragLeave); //leave candy over another candy
+            tile.addEventListener("drop", dragDrop); //dropping a candy over another candy
+            tile.addEventListener("dragend", dragEnd); //after drag process completed, we swap candies
+
+            document.getElementById("board").append(tile);
+            row.push(tile);
+        }
+        board.push(row);
+    }
 
     return leftMatch || topMatch;
 }
@@ -200,6 +262,25 @@ function crushMatches() {
                 matchedTiles.add(board[row][column]);
                 matchedTiles.add(board[row][column + 1]);
                 matchedTiles.add(board[row][column + 2]);
+    //crushFive();
+    //crushFour();
+    crushThree();
+    document.getElementById("score1").innerText = score;
+
+}
+
+function crushThree() {
+    //check rows
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns-2; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                score += 30;
             }
         }
     }
