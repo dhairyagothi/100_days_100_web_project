@@ -38,22 +38,13 @@ function resetscore() {
 
 const resetButton = document.createElement("button");
 resetButton.innerText = "Reset Score";
-
-
-resetButton.style.marginLeft = "150px";
-
-
-resetButton.style.backgroundColor = "purple";
-resetButton.style.color = "white";
-resetButton.style.border = "2px solid white";
-resetButton.style.fontSize = "20px";
-resetButton.style.padding = "5px 20px";
-resetButton.style.cursor = "pointer";
-resetButton.style.borderRadius = "5px";
-
-
-resetButton.style.display = "inline-block";
-
+resetButton.className = "reset_button";
+resetButton.id = "resetButton";
+resetButton.style.position = "fixed";
+resetButton.style.bottom = "24px";
+resetButton.style.left = "24px";
+resetButton.style.zIndex = "50";
+resetButton.style.margin = "0";
 resetButton.onclick = resetscore;
 document.body.appendChild(resetButton);
 
