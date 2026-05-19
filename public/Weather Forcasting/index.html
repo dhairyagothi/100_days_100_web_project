@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,7 +15,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
+  <body background="nice-beach-suning-weather-hd-wallapaper.jpg">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">⛅Weather App</a>
@@ -37,6 +38,17 @@
             <li class="nav-item">
               <a class="nav-link" href="#about">About this App</a>
             </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Cities
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Delhi</a></li>
+                <li><a class="dropdown-item" href="#">Seattle</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Bangalore</a></li>
+              </ul>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="#guide">Usage Guide</a>
             </li>
@@ -54,6 +66,7 @@
               type="search"
               placeholder="Search"
               aria-label="Search"
+              required
             />
             <button class="btn btn-outline-success" type="submit" id="submit">
               Search
@@ -62,6 +75,11 @@
         </div>
       </div>
     </nav>
+
+    <div id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading weather data...</p>
+    </div>
 
     <div class="container py-5" id="home">
       <h1 class="my-4 text-center">Weather for <span id="cityName"></span></h1>

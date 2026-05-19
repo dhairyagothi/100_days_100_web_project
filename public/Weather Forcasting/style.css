@@ -33,21 +33,25 @@ html {
   scroll-behavior: smooth;
 }
 
-h1,
-h2 {
-  color: #eeebe2;
-  font-weight: 500;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ccc;
+    border-top: 5px solid #0d6efd;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
 }
 
-.navbar {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+#loading {
+    text-align: center;
+    margin: 20px 0;
 }
 
-.container {
-  backdrop-filter: blur(5px);
-  padding: 20px;
-  border-radius: 20px;
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .card {

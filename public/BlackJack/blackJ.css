@@ -131,6 +131,151 @@ table{
     margin-bottom: 5rem;
 }
 
+/* title container */
+
+.title-container{
+    position: relative;
+}
+
+
+/* rules button */
+
+#rules-btn{
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+
+    font-size: 2rem;
+    font-family: 'Lobster', cursive;
+    font-weight: 700;
+
+    padding: .6rem 2rem;
+}
+
+
+/* rules popup */
+
+#rules-box{
+
+    position:absolute;
+
+    top:8rem;
+    right:2rem;
+
+    width:32rem;
+
+    background:rgba(0,0,0,0.92);
+
+    color:white;
+
+    padding:2rem;
+
+    border:2px solid gold;
+
+    border-radius:1rem;
+
+    box-shadow:
+    0px 0px 15px rgba(255,215,0,0.5);
+
+    font-size:1.8rem;
+
+    z-index:1000;
+
+    animation:fadeIn .25s ease;
+}
+
+
+
+/* heading */
+
+#rules-box h3{
+
+    color:gold;
+
+    font-family:'Lobster', cursive;
+
+    text-align:center;
+
+    margin-bottom:1.5rem;
+
+    font-size:3rem;
+}
+
+
+
+/* list */
+
+#rules-box ul{
+
+    padding-left:2rem;
+
+    line-height:2.8rem;
+}
+
+
+
+/* hover glow */
+
+#rules-box:hover{
+
+    box-shadow:
+    0px 0px 20px rgba(255,215,0,.7);
+}
+
+
+
+/* smooth appearance */
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+transform:translateY(-10px);
+
+}
+
+to{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
+
+/* scoreboard buttons */
+
+.score-buttons{
+    display:flex;
+    justify-content:center;
+
+    gap:1.5rem;
+
+    margin-top:2rem;
+    margin-bottom:3rem;
+}
+
+
+/* play again + reset buttons */
+
+.score-buttons button{
+
+    font-size: 2rem;
+    font-family: 'Lobster', cursive;
+    font-weight: 700;
+
+    padding: .6rem 2rem;
+
+    border-radius: .5rem;
+}
+
+
+.score-buttons button:hover{
+    box-shadow:black 0px 0px 5px 2px;
+}
+
 @media screen and (max-width:740px){
     html{
         font-size: 40%;
