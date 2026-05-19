@@ -336,6 +336,7 @@ body {
 .footer p {
     color: var(--text-secondary);
 }
+
 .footer-nav {
     display: flex;
     flex-direction: column;
@@ -354,7 +355,7 @@ body {
 }
 
 .footer-link:hover {
-    color: #00ffff; 
+    color: #00ffff;
     text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
     transform: translateX(8px);
 }
@@ -415,8 +416,265 @@ body {
     height: 100%;
 }
 
+/* ===== Contributor Profile Popup ===== */
+
+.modal-overlay {
+
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.7);
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 2000;
+}
+
+
+.modal-content {
+
+    background: var(--glass-bg);
+
+    border: 1px solid var(--glass-border);
+
+    backdrop-filter: blur(20px);
+
+    border-radius: 35px;
+
+    padding: 2rem;
+
+    width: 90%;
+    max-width: 500px;
+
+    color: var(--text-primary);
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+
+#closeModal {
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--text-primary);
+
+    font-size: 2rem;
+
+    cursor: pointer;
+
+    position: absolute;
+
+    top: 15px;
+    right: 20px;
+}
+
+
+.modal-content img {
+
+    width: 100px;
+
+    border-radius: 20px;
+
+    border: 2px solid var(--glass-border);
+}
+
+
+.popup-btn-container {
+
+    margin-top: 16px;
+}
+.contributor-links{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+gap:12px;
+
+margin-top:10px;
+
+}
+
+
+.details-btn{
+
+padding:.8rem 1.4rem;
+
+border:none;
+
+border-radius:14px;
+
+cursor:pointer;
+
+font-weight:700;
+
+background:
+var(--accent-color);
+
+color:black;
+
+transition:
+var(--transition);
+
+}
+
+
+.details-btn:hover{
+
+opacity:.9;
+
+}
+.modal-content h2{
+    margin-top:10px;
+}
+
+.modal-content p{
+    line-height:1.6;
+}
+
+.popup-btn-container{
+    margin-top:20px;
+}
+
+
+@media(max-width:768px){
+
+.modal-content{
+
+width:95%;
+
+padding:1.5rem;
+
+}
+
+}
+
+@media (max-width: 1024px) {
+    body {
+        padding-top: 170px;
+    }
+
+    .navbar {
+        padding: 1rem 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .navbar-brand {
+        min-width: 0;
+        flex: 1 1 280px;
+    }
+
+    .navbar-brand span {
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+    }
+
+    .buttons {
+        flex: 1 1 100%;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .buttons .button {
+        padding: 0.65rem 1rem;
+        font-size: 0.82rem;
+        min-height: 42px;
+    }
+}
+
 @media (max-width: 768px) {
-    .navbar { padding: 1rem 2rem; }
+    body {
+        padding-top: 210px;
+    }
+
+    .navbar {
+        padding: 0.9rem 1.25rem;
+        align-items: flex-start;
+    }
+
+    .navbar-brand {
+        flex-basis: 100%;
+    }
+
+    .navbar-brand img {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+
+    .navbar-brand span {
+        font-size: 0.82rem;
+        line-height: 1.3;
+        word-break: break-word;
+    }
+
+    .buttons {
+        justify-content: flex-start;
+        gap: 0.65rem;
+    }
+
+    .buttons .button,
+    .featured-btn {
+        flex: 1 1 calc(50% - 0.65rem);
+        padding: 0.7rem 0.8rem !important;
+        min-width: 135px;
+    }
+
+    #themeToggle {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+    }
+
     .footer-content { grid-template-columns: 1fr; }
     .stats-overview { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 250px;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .navbar {
+        padding: 0.85rem 1rem;
+    }
+
+    .buttons .button,
+    .featured-btn {
+        flex-basis: 100%;
+        width: 100%;
+        min-width: 0;
+    }
+
+    #themeToggle {
+        margin-left: auto;
+    }
+
+    .stats-overview {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Playground - 100 Days 100 Web Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="playground-style.css">
+</head>
+<body>
+    <div class="playground-container">
+        <!-- Header -->
+        <header class="playground-header">
+            <div class="header-left">
+                <a href="index.html" class="back-btn" title="Back to home">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="header-title">
+                    <h1>Virtual Playground</h1>
+                    <p>Edit & run code live</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <select id="projectSelect" class="project-select">
+                    <option value="">Select a project...</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="playground-main">
+            <!-- Editor Panel -->
+            <div class="editor-panel">
+                <div class="editor-tabs">
+                    <button class="tab-btn active" data-lang="html">
+                        <i class="fas fa-code"></i> HTML
+                    </button>
+                    <button class="tab-btn" data-lang="css">
+                        <i class="fas fa-palette"></i> CSS
+                    </button>
+                    <button class="tab-btn" data-lang="js">
+                        <i class="fas fa-cube"></i> JavaScript
+                    </button>
+                </div>
+
+                <div class="editor-wrapper">
+                    <textarea id="htmlEditor" class="code-editor active" placeholder="Enter HTML..."></textarea>
+                    <textarea id="cssEditor" class="code-editor" placeholder="Enter CSS..."></textarea>
+                    <textarea id="jsEditor" class="code-editor" placeholder="Enter JavaScript..."></textarea>
+                    
+                    <div class="line-numbers" id="lineNumbers"></div>
+                </div>
+
+                <div class="editor-controls">
+                    <button id="runBtn" class="btn-control btn-run">
+                        <i class="fas fa-play"></i> Run
+                    </button>
+                    <button id="resetBtn" class="btn-control btn-reset">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button id="copyBtn" class="btn-control btn-copy">
+                        <i class="fas fa-copy"></i> Copy Code
+                    </button>
+                    <button id="shareBtn" class="btn-control btn-share">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h3>Live Preview</h3>
+                    <div class="preview-actions">
+                        <button id="fullscreenBtn" class="preview-btn" title="Fullscreen">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button id="refreshBtn" class="preview-btn" title="Refresh">
+                            <i class="fas fa-sync"></i>
+                        </button>
+                    </div>
+                </div>
+                <iframe id="previewFrame" class="preview-frame" title="Live preview"></iframe>
+            </div>
+        </div>
+
+        <!-- Mobile Toggle (for responsive) -->
+        <div class="mobile-panel-toggle">
+            <button id="toggleEditorBtn" class="toggle-btn active">Editor</button>
+            <button id="togglePreviewBtn" class="toggle-btn">Preview</button>
+        </div>
+    </div>
+
+    <!-- Fullscreen Modal -->
+    <div id="fullscreenModal" class="fullscreen-modal">
+        <div class="fullscreen-header">
+            <button id="exitFullscreen" class="exit-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <iframe id="fullscreenFrame" class="fullscreen-frame" title="Fullscreen preview"></iframe>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="playground.js"></script>
+</body>
+</html>

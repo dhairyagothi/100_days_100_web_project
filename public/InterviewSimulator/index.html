@@ -1,0 +1,64 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interview Simulator</title>
+  <link rel="stylesheet" href="/public/InterviewSimulator/style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="top-bar">
+      <h1>INTERVIEW SIMULATOR</h1>
+
+      <div class="stats">
+        <div class="card">
+          <span>Question</span>
+          <h2 id="question-count">1/5</h2>
+        </div>
+
+        <div class="card">
+          <span>Stress Level</span>
+          <h2 id="stress-level">0%</h2>
+        </div>
+
+        <div class="card">
+          <span>Timer</span>
+          <h2 id="timer">30</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="interview-box">
+
+      <div class="interviewer">
+        <div class="avatar"></div>
+
+        <div class="dialogue">
+          <h3>AI Interviewer</h3>
+          <p id="question">
+            Loading question...
+          </p>
+        </div>
+      </div>
+
+      <textarea 
+        id="answer"
+        placeholder="Type your answer here..."
+      ></textarea>
+
+      <div class="buttons">
+        <button id="next-btn">Next Question</button>
+        <button id="restart-btn">Restart</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="/public/InterviewSimulator/app.js"></script>
+</body>
+</html>
