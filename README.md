@@ -72,7 +72,7 @@ The website features:
 | 4 | Dropdown Nav Bar | HTML, CSS, JS | 🧭 Navigation | [View Demo](https://100-days-100-web-project.vercel.app/public/dropdown_navbar) |
 | 5 | Animated Cursor | HTML, CSS, JS | ✨ Effect | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated-cursor/animated-cursor) |
 | 6 | Background Image Slider | HTML, CSS, JS | 🖼️ Slider | [View Demo](https://100-days-100-web-project.vercel.app/public/Background-Image-sider/slider) |
-| 7 | Typewriter Effect | HTML, CSS, JS | ⌨️ Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/typewriter/typewriter) |
+| 7 | Typewriter | HTML, CSS, JS | ⌨️ Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/typewriter/typewriter) |
 | 8 | Parallel-X Website | HTML, CSS, JS | 🌐 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/Parallel-x%20website/parallal) |
 | 9 | Captcha Generator | HTML, CSS, JS | 🔐 Security | [View Demo](https://100-days-100-web-project.vercel.app/public/captcha/captcha) |
 | 10 | QR Code Generator | HTML, CSS, JS | 📱 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/qr%20generator/qr) |
