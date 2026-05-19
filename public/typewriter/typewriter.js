@@ -54,14 +54,31 @@ addTextButton.addEventListener("click", () => {
     if (newText) {
         phrases.push(newText);
         userInput.value = '';
+        isPaused = false; 
+        isDeleting = false;
+        charIndex = 0;
+        phraseIndex = phrases.length - 1;
+        clearTimeout(typingTimeout);
+        type();
+        pauseResumeButton.textContent = "Pause";
     }
 });
 
 deleteTextButton.addEventListener("click", () => {
     if (phrases.length > defaultPhrases.length) {
         const lastUserPhrase = phrases.pop();
+        
         if (displayedPhrases.includes(lastUserPhrase)) {
             displayedPhrases = displayedPhrases.filter(phrase => phrase !== lastUserPhrase);
+        }
+        if (phraseIndex >= phrases.length) {
+            clearTimeout(typingTimeout);
+            phraseIndex = 0;
+            charIndex = 0;
+            isDeleting = false;
+            if (!isPaused) {
+                type();
+            }
         }
     }
 });

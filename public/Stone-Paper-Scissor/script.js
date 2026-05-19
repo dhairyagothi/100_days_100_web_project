@@ -61,14 +61,14 @@ document.body.appendChild(resetButton);
 
 function displayscore() {
   if (
-    localStorage.clickcount === "undefined" &&
-    localStorage.clickcount2 === "undefined"
+    localStorage.getItem("clickcount") === null &&
+    localStorage.getItem("clickcount2") === null
   ) {
     your_score.innerHTML = 0;
     com_score.innerHTML = 0;
   }
-  your_score.innerHTML = localStorage.clickcount;
-  com_score.innerHTML = localStorage.clickcount2;
+  your_score.textContent = localStorage.getItem("clickcount");
+  com_score.textContent = localStorage.getItem("clickcount2");
 }
 displayscore();
 function popup() {
@@ -95,13 +95,13 @@ function loses(userOutput, pcOutput) {
   getLoseBox.style.display = "flex";
   getGameBox.style.display = "none";
   console.log(getLoseBox);
-  if (typeof Storage !== 0) {
-    if (localStorage.clickcount2) {
-      localStorage.clickcount2 = Number(localStorage.clickcount2) + 1;
+  if (typeof Storage !== "undefined") {
+    if (localStorage.getItem("clickcount2")) {
+      localStorage.setItem("clickcount2", Number(localStorage.getItem("clickcount2")) + 1);
     } else {
-      localStorage.clickcount2 = 1;
+      localStorage.setItem("clickcount2", 1);
     }
-    com_score.innerHTML = localStorage.clickcount2;
+    com_score.textContent = localStorage.getItem("clickcount2");
   } else {
     com_score.innerHTML = 0;
   }
@@ -119,13 +119,12 @@ function win(userOutput, pcOutput) {
   console.log(getWinBox);
 
   if (typeof Storage !== "undefined") {
-    if (localStorage.clickcount) {
-      localStorage.clickcount = Number(localStorage.clickcount) + 1;
+    if (localStorage.getItem("clickcount")) {
+      localStorage.setItem("clickcount", Number(localStorage.getItem("clickcount")) + 1);
     } else {
-      localStorage.clickcount = 1;
+      localStorage.setItem("clickcount", 1);
     }
-
-    your_score.innerHTML = localStorage.clickcount;
+    your_score.textContent = localStorage.getItem("clickcount");
   } else {
     your_score.innerHTML = 0;
   }
