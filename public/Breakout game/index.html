@@ -11,6 +11,9 @@
 <body>
     <h1>Breakout Game</h1>
     <canvas id="canvas"></canvas>
+    <div id="countdown" class="countdown hidden">
+      3
+    </div>
     <div id="rules-container" class="rules-container">
         <div class="rules-content">
             <h2>Game Rules</h2>
@@ -21,6 +24,18 @@
             <button id="start-btn" class="btn">Start Game</button>
         </div>
     </div>
+
+    <div id="game-over-container" class="game-over-container hidden">
+    <div class="game-over-content">
+        <h2>Game Over</h2>
+
+        <p>Your Score: <span id="final-score">0</span></p>
+
+        <p>Highest Score: <span id="high-score">0</span></p>
+
+        <button id="restart-btn" class="btn">Restart Game</button>
+    </div>
+</div>
 
 </body>
 </html>

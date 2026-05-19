@@ -101,3 +101,9 @@ button:hover {
     text-align: center;
     color: rgb(98, 0, 255);
 }
+#timerControls{
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    gap: 11px;
+}

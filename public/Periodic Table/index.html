@@ -6,10 +6,39 @@
     <title>Interactive Periodic Table</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="table-container">
-        <!-- Elements will be dynamically added here by the script -->
+
+ <body>
+
+<button id="theme-toggle">🌙 Dark Mode</button>
+
+<div class="table-container">
+
+    <!-- existing periodic table elements stay here -->
+
+</div>
+
+<!-- Element Info Modal -->
+<div id="element-modal" class="modal">
+    <div class="modal-content">
+
+        <span class="close-btn">&times;</span>
+
+        <h2 id="modal-name"></h2>
+
+        <div class="modal-details">
+            <p><strong>Symbol:</strong> <span id="modal-symbol"></span></p>
+            <p><strong>Atomic Number:</strong> <span id="modal-number"></span></p>
+            <p><strong>Atomic Mass:</strong> <span id="modal-mass"></span></p>
+            <p><strong>Group:</strong> <span id="modal-group"></span></p>
+            <p><strong>Period:</strong> <span id="modal-period"></span></p>
+            <p><strong>Category:</strong><span id="modal-category" class="category-badge"></span></p>
+            <p><strong>Interesting Fact:</strong></p><p id="modal-fact" class="fact-text"></p>
+
+        </div>
+
     </div>
-    <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
