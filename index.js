@@ -143,7 +143,8 @@ const PROJECT_DATA = [
   ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
   ['Day 125', 'Snakeladder',   './public/Snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
-  ['Day 127', 'AI Voice Assistant UI', './public/AI_Voice_Assistant_UI/index.html', 'html css js', 'intermediate']
+  ['Day 127', 'AI Voice Assistant UI', './public/AI_Voice_Assistant_UI/index.html', 'html css js', 'intermediate'],
+  ['Day 128', 'Achievement Milestones', './public/Achievement_Milestones/index.html', 'html css js dashboard', 'advanced']
 ];
 
 // Alias for consistency

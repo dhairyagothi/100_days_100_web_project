@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement Milestones Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Profile -->
+        <aside class="profile-card glass">
+            <div class="profile-header">
+                <div class="avatar-ring">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" alt="User Avatar" class="avatar">
+                </div>
+                <h2>Alex Developer</h2>
+                <p class="title">Open Source Contributor</p>
+            </div>
+            
+            <div class="level-info">
+                <div class="level-header">
+                    <span>Level 42</span>
+                    <span>1,250 / 2,000 XP</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="xp-bar"></div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <i class="ph ph-git-pull-request"></i>
+                    <span class="stat-val">128</span>
+                    <span class="stat-label">PRs Merged</span>
+                </div>
+                <div class="stat-box">
+                    <i class="ph ph-star"></i>
+                    <span class="stat-val">4.9k</span>
+                    <span class="stat-label">Stars</span>
+                </div>
+                <div class="stat-box">
+                    <i class="ph ph-fire"></i>
+                    <span class="stat-val">14</span>
+                    <span class="stat-label">Day Streak</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <header class="glass top-header">
+                <div class="header-titles">
+                    <h1>Achievement Milestones</h1>
+                    <p>Track your open-source journey and unlock rewards.</p>
+                </div>
+                <button class="claim-btn" id="claim-reward-btn">
+                    <i class="ph ph-gift"></i> Claim Daily Reward
+                </button>
+            </header>
+
+            <section class="badges-section">
+                <div class="section-title">
+                    <h3>Unlocked Badges</h3>
+                    <span class="badge-count">6/15</span>
+                </div>
+                
+                <div class="badges-grid" id="badges-container">
+                    <!-- Badges injected via JS -->
+                </div>
+            </section>
+
+            <section class="recent-activity glass">
+                <h3>Recent Milestones</h3>
+                <ul class="activity-list" id="activity-list">
+                    <!-- Activity injected via JS -->
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <i class="ph ph-check-circle toast-icon"></i>
+        <div class="toast-content">
+            <h4 id="toast-title">Success</h4>
+            <p id="toast-message">Action completed.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
