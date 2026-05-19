@@ -10,7 +10,20 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="game" class="turn-x">
+  <div id="start-screen">
+  <div class="neon-bg"></div>
+
+  <h1 class="game-title">
+    <span class="tic">TIC</span>
+    <span class="tac">TAC</span>
+    <span class="toe">TOE</span>
+  </h1>
+
+  <p class="tag-line">PLAY • THINK • WIN</p>
+
+  <button id="start-btn">START GAME</button>
+</div>
+  <div id="game" class="turn-x hidden">
     <canvas id="confetti-canvas"></canvas>
 
     <div id="win-overlay">
@@ -20,39 +33,13 @@
     </div>
 
     <div id="sidebar">
-  
-    <!-- Customize Player Name -->
-    <div id="player-inputs">
-        <input
-        type="text"
-        id="player-x-name"
-        placeholder="Player X name">
-
-        <input
-        type="text"
-        id="player-o-name"
-        placeholder="Player O name">
-        <button id="save-names">Save Names</button>
-    </div>
-  
-    <div id="sb-title">Scoreboard</div>
-      <div class="sb-row">
-        <span id="label-x">Player X Wins</span>
-        <br>
-        <span class="sb-val val-x" id="score-x">0</span>
-    </div>
-    <div class="sb-row">
-      <span id="label-o">Player O Wins</span>
-      <br>
-      <span class="sb-val val-o" id="score-o">0</span>
-    </div>
+      <div id="sb-title">Scoreboard</div>
+      <div class="sb-row">Player X Wins<br><span class="sb-val val-x" id="score-x">0</span></div>
+      <div class="sb-row">Player O Wins<br><span class="sb-val val-o" id="score-o">0</span></div>
       <div class="sb-row">Draws<br><span class="sb-val val-d" id="score-d">0</span></div>
       <button class="sb-btn btn-x" id="btn-reset">Reset Scoreboard</button>
       <button class="sb-btn btn-o" id="btn-restart">Restart Game</button>
       <div id="status-bar" class="sx">X's turn!</div>
-
-      <!-- Added Sound Feature -->
-      <button id="mute-btn">🔊 Sound ON</button>
     </div>
 
     <div id="board-wrap">
@@ -61,11 +48,7 @@
         <span class="vs-sep">VS</span>
         <span class="turn-pill o-pill" id="pill-o">&#9675; O</span>
       </div>
-      <div id="board-container">
       <div id="board"></div>
-      <!-- NEW -->
-      <div id="winning-line"></div>
-      </div>
     </div>
   </div>
 
