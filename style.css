@@ -1495,6 +1495,19 @@ body.light-mode .pagination-controls button.page-num.active {
     padding: 6px 12px;
     font-size: 11px;
   }
+
+  /* Stacks pagination elements vertically and centers them cleanly on mobile screens */
+  .pagination-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1rem;
+  }
+
+  .pagination-info {
+    text-align: center;
+    font-size: 0.8rem;
+  }
 }
 
 #backToTop {

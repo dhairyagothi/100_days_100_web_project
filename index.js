@@ -10,7 +10,7 @@ window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
 let currentPage = 1;
 //for the number of visible projects in one page.
-const itemsPerPage = 9;
+let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
 let currentCategory = 'all';
@@ -231,6 +231,16 @@ function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
+
+  // Dynamically set items per page based on viewport width to match CSS column layouts synchronously
+  const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
+  if (width <= 768) {
+    itemsPerPage = 6; // Mobile (1 column x 6 rows = 6 total)
+  } else if (width <= 1024) {
+    itemsPerPage = 6; // Tablet (2 columns x 3 rows = 6 total, no hanging cards!)
+  } else {
+    itemsPerPage = 9; // Laptop & Desktop (3 columns x 3 rows = 9 total)
+  }
 
   // Filter projects by matching category chip and multi-term keyword search query
   const filtered = PROJECTS.filter(([day, name, url, tags, cat]) => {
@@ -801,4 +811,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRecentProjects();
   fetchRepoStats();
   initScrollBtn();
+});
+// Re-render the grid when the browser window is resized to adapt pagination density instantly
+window.addEventListener('resize', () => {
+  renderGrid();
 });
