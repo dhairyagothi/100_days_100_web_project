@@ -9,7 +9,8 @@ window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
 window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
 let currentPage = 1;
-const itemsPerPage = 10;
+//for the number of visible projects in one page.
+const itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
 let currentCategory = 'all';
@@ -231,25 +232,67 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, ,tags, cat]) => {
-    const matchesFilter = activeFilter === 'all' || tags.toLowerCase().includes(activeFilter.toLowerCase());
-    const q = searchQuery.toLowerCase();
-    const matchesSearch = !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
+  // Filter projects by matching category chip and multi-term keyword search query
+  const filtered = PROJECTS.filter(([day, name, url, tags, cat]) => {
+    const matchesFilter = activeFilter === 'all' || (() => {
+      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
+      const nameStr = name.toLowerCase();
+      const urlStr = url.toLowerCase();
+
+      if (activeFilter === 'game') {
+        return tagStr.includes('game') || tagStr.includes('canvas');
+      }
+      if (activeFilter === 'clone') {
+        return nameStr.includes('clone') || urlStr.includes('clone') || urlStr.includes('cloning');
+      }
+      if (activeFilter === 'tool') {
+        return tagStr.includes('tool') || tagStr.includes('todo') || tagStr.includes('calculator') || tagStr.includes('weather') || nameStr.includes('tracker') || nameStr.includes('generator') || nameStr.includes('converter') || nameStr.includes('validator') || nameStr.includes('saver') || nameStr.includes('utils');
+      }
+      if (activeFilter === 'ui') {
+        return tagStr.includes('css') || tagStr.includes('canvas') || tagStr.includes('animation') || nameStr.includes('animation') || nameStr.includes('cursor') || nameStr.includes('effect') || nameStr.includes('slider');
+      }
+      if (activeFilter === 'api') {
+        return tagStr.includes('api') || tagStr.includes('weather') || nameStr.includes('api') || nameStr.includes('fetch');
+      }
+      return false;
+    })();
+
+    // Split search query by spaces to support multi-term criteria (e.g. "day 1 todo")
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch = !q || q.split(/\s+/).every(term => 
+      name.toLowerCase().includes(term) || 
+      day.toLowerCase().includes(term) || 
+      (typeof tags === 'string' && tags.toLowerCase().includes(term))
+    );
+
     return matchesFilter && matchesSearch;
   });
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+  // If a filter chip shrinks the results, reset current page index to avoid out-of-bounds
+  if (currentPage > totalPages) {
+    currentPage = Math.max(1, totalPages);
+  }
 
   grid.innerHTML = '';
 
   if (filtered.length === 0) {
     grid.style.display = 'none';
     noResults.style.display = 'block';
+    const container = document.getElementById('paginationContainer');
+    if (container) container.innerHTML = '';
     return;
   }
 
   grid.style.display = 'grid';
   noResults.style.display = 'none';
 
-  filtered.forEach(([day, name, url, tags, cat]) => {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const pageItems = filtered.slice(startIndex, endIndex);
+
+  pageItems.forEach(([day, name, url, tags, cat]) => {
     const card = document.createElement('div');
     card.className = 'project-card';
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -275,6 +318,155 @@ function renderGrid() {
 
     grid.appendChild(card);
   });
+
+  renderPagination(filtered.length, totalPages);
+}
+
+function renderPagination(totalItems, totalPages) {
+  const grid = document.getElementById('projectGrid');
+  if (!grid) return;
+
+  let container = document.getElementById('paginationContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'paginationContainer';
+    container.className = 'pagination-container';
+  }
+
+  container.innerHTML = '';
+
+  // If there is only 1 page of results, hide and detach the pagination block
+  if (totalPages <= 1) {
+    if (container.parentElement === grid) {
+      grid.removeChild(container);
+    }
+    return;
+  }
+
+  // Render showing info range (e.g. "Showing 1 to 9 of 100")
+  const infoDiv = document.createElement('div');
+  infoDiv.className = 'pagination-info';
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+  infoDiv.innerHTML = `Showing <strong>${startItem}</strong> to <strong>${endItem}</strong> of <strong>${totalItems}</strong> projects`;
+  container.appendChild(infoDiv);
+
+  const controlsDiv = document.createElement('div');
+  controlsDiv.className = 'pagination-controls';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'prev-btn';
+  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.setAttribute('aria-label', 'Previous Page');
+  prevBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage > 1) {
+      currentPage--;
+      renderGrid();
+      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
+      setTimeout(() => {
+        scrollToProjectSection();
+      }, 50);
+    }
+  });
+  controlsDiv.appendChild(prevBtn);
+
+  // Initialize bounds for numeric pagination window (displays maximum of 4 page buttons)
+  let startPage = 1;
+  let endPage = totalPages;
+  const maxVisible = 4;
+
+  // Sliding window pagination logic centering the active page
+  if (totalPages > maxVisible) {
+    if (currentPage <= 2) {
+      startPage = 1;
+      endPage = 4;
+    } else if (currentPage >= totalPages - 1) {
+      startPage = totalPages - 3;
+      endPage = totalPages;
+    } else {
+      startPage = currentPage - 1;
+      endPage = currentPage + 2;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    const pageBtn = document.createElement('button');
+    pageBtn.className = `page-num ${currentPage === i ? 'active' : ''}`;
+    pageBtn.textContent = i;
+    pageBtn.setAttribute('aria-label', `Page ${i}`);
+    pageBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      currentPage = i;
+      renderGrid();
+      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
+      setTimeout(() => {
+        scrollToProjectSection();
+      }, 50);
+    });
+    controlsDiv.appendChild(pageBtn);
+  }
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'next-btn';
+  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.setAttribute('aria-label', 'Next Page');
+  nextBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderGrid();
+      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
+      setTimeout(() => {
+        scrollToProjectSection();
+      }, 50);
+    }
+  });
+  controlsDiv.appendChild(nextBtn);
+
+  container.appendChild(controlsDiv);
+  
+  // Append container dynamically inside the projectGrid element to keep it attached
+  grid.appendChild(container);
+}
+
+function scrollToProjectSection() {
+  const header = document.querySelector('.projects-header');
+  if (!header) return;
+
+  const navbar = document.querySelector('.navbar');
+  // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
+  const offset = navbar ? navbar.offsetHeight - 50 : 30;
+  const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
+  const startY = window.pageYOffset;
+  const distance = targetY - startY;
+  
+  // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
+  const duration = 100; 
+  let startTime = null;
+
+  function animation(currentTime) {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    // Cap scroll position math exactly to distance to avoid landing slightly off target
+    const run = easeInOutQuad(Math.min(timeElapsed, duration), startY, distance, duration);
+    window.scrollTo(0, run);
+    if (timeElapsed < duration) {
+      requestAnimationFrame(animation);
+    }
+  }
+
+  // Mathematical Quadratic Ease-In-Out formula for momentum-like deceleration
+  function easeInOutQuad(t, b, c, d) {
+    t /= d / 2;
+    if (t < 1) return (c / 2) * t * t + b;
+    t--;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
+  }
+
+  requestAnimationFrame(animation);
 }
 
 function toggleBookmark(project) {
@@ -461,6 +653,7 @@ function initFilterChips() {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
       activeFilter = chip.dataset.filter;
+      currentPage = 1;
       renderGrid();
     });
   });
@@ -474,6 +667,7 @@ function initSearch() {
   if (!input) return;
   input.addEventListener('input', () => {
     searchQuery = input.value.trim();
+    currentPage = 1;
     renderGrid();
   });
 }
