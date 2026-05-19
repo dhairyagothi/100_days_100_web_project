@@ -80,29 +80,16 @@
     </main>
 
   <script>
-    // Transition effect for images
-    const images = document.querySelectorAll(".transition-image");
-    let currentImageIndex = 0;
-
-    function showNextImage() {
-      images[currentImageIndex].style.opacity = 0;
-      currentImageIndex = (currentImageIndex + 1) % images.length;
-      images[currentImageIndex].style.opacity = 1;
-    }
-
-    setInterval(showNextImage, 3000);
-
     // Login form submission
     document.getElementById("loginForm").addEventListener("submit", function (event) {
       event.preventDefault();
 
-          const username = document.getElementById("username").value.trim();
-
-          const password = document.getElementById("password").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
 
       if (username && password) {
         localStorage.setItem("username", username);
-        window.location.pathname = "/index.html";
+        window.location.href = "../index.html";
       } else {
         alert("Invalid credentials. Please try again.");
       }
