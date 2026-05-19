@@ -39,11 +39,14 @@
         <p style="font-weight: bold;">Total Money:</p><p id="total">₹0.00</p>
         <p style="font-weight: bold;">Money Spent:</p><p id="spent">₹0.00</p>
         <p style="font-weight: bold;">Money Left:</p><p id="moneyleft">₹0.00</p>
+        <h3 style="margin-top:20px;">Expense History</h3>
+<div id="expense-history"></div>
     </div>
     <script>
         
 let totalincome = 0;
 let totalSpent = 0; 
+let selectedCategory = "";
 
 
 function formatmoney(amount) {
@@ -70,6 +73,15 @@ function updateSpending() {
 
     
     totalSpent += spending;
+    const expenseHistory = document.getElementById('expense-history');
+
+    const entry = document.createElement('p');
+
+    entry.textContent = `${selectedCategory || "Uncategorized"} : ${formatmoney(spending)}`;
+
+    expenseHistory.appendChild(entry);
+
+    selectedCategory = "";
 
     
     totalincome -= spending;
@@ -95,16 +107,16 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="left" style="color: white;">
                 <h2 style="text-align: center;text-decoration:dotted;">Expense Categories</h2>
                 <a href="index.html">Income</a>
-                <a href="#">Travel Expense</a>
-                <a href="#">Food</a>
-                <a href="#">Transport</a>
-                <a href="#">Utilities</a>
-                <a href="#">Personal</a>
-                <a href="#">EMI</a>
-                <a href="#">Credit Card</a>
-                <a href="#">Entertainment</a>
-                <a href="#">Health</a>
-                <a href="#">Miscellaneous</a>
+                <a href="#" class="expense-category">Travel Expense</a>
+<a href="#" class="expense-category">Food</a>
+<a href="#" class="expense-category">Transport</a>
+<a href="#" class="expense-category">Utilities</a>
+<a href="#" class="expense-category">Personal</a>
+<a href="#" class="expense-category">EMI</a>
+<a href="#" class="expense-category">Credit Card</a>
+<a href="#" class="expense-category">Entertainment</a>
+<a href="#" class="expense-category">Health</a>
+<a href="#" class="expense-category">Miscellaneous</a>
             </div>
             <div class="right">
                 <div class="income">
@@ -120,7 +132,21 @@ document.addEventListener('DOMContentLoaded', function () {
         
         const submitSpendingButton = document.getElementById('submit-spending');
         submitSpendingButton.addEventListener('click', updateSpending);
+        const categories = document.querySelectorAll('.expense-category');
+
+categories.forEach(category => {
+    category.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        selectedCategory = this.textContent;
+
+        categories.forEach(c => c.style.color = "white");
+
+        this.style.color = "yellow";
     });
+});
+    });
+
 });
 
 
