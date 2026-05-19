@@ -134,7 +134,7 @@ The website features:
 | 66 | Flask Auth App | Python, Flask | 🔐 Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app) |
 | 67 | Blog Website | HTML, CSS, JS | 📝 Blog | [View Demo](https://100-days-100-web-project.vercel.app/public/blog/main) |
 | 68 | 3D Rotating Card | HTML, CSS | 🎲 3D Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20cards) |
-| 69 | Spotify Clone | HTML, CSS, JS | 🎵 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/spotify-clone%20-project) |
+| 69 | Spotify Clone | HTML, CSS, JS | 🎵 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/spotify-clone-project/) |
 | 70 | Insect Catch Game | HTML, CSS, JS | 🐛 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Insect-Catch-Game) |
 | 71 | Quotely Laughs | HTML, CSS, JS | 😂 Entertainment | [View Demo](https://100-days-100-web-project.vercel.app/public/Quotely-Laughs) |
 | 72 | Contact Book | Node.js, Express | 📞 Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book) |
