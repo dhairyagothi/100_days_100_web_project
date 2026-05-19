@@ -119,30 +119,172 @@ const elements = [
     { number: 118, symbol: "Og", name: "Oganesson", mass: "295", group: 18, period: 7 }
 ];
 
-const container = document.querySelector(".table-container");
+// Find Category for each element
+elements.forEach(el => {
+    if (!el.category) {
+        if (el.group === 1) el.category = "alkali";
+        else if (el.group === 2) el.category = "alkaline-earth";
+        else if (el.group >= 3 && el.group <= 12) el.category = "transition";
+        else if ([13, 14].includes(el.group)) el.category = "metalloid";
+        else if (el.group === 15 || el.group === 16) el.category = "nonmetal";
+        else if (el.group === 17) el.category = "halogen";
+        else if (el.group === 18) el.category = "noble-gas";
+    }
+    // Lanthanides
+    if (el.number >= 57 && el.number <= 71) {
+        el.category = "lanthanide";
+    }
+    // Actinides
+    if (el.number >= 89 && el.number <= 103) {
+        el.category = "actinide";
+    }
+});
 
-const totalGroups = 18; // Total groups (columns) in the periodic table
-const totalPeriods = 7; // Total periods (rows) in the periodic table
+const container = document.querySelector(".table-container");
+const totalGroups = 18; 
+const totalPeriods = 7; 
 
 // Create a grid structure for the periodic table
 for (let period = 1; period <= totalPeriods; period++) {
     for (let group = 1; group <= totalGroups; group++) {
         const cell = document.createElement("div");
-        cell.className = "empty"; // Default empty cell
-
+        cell.className = "empty"; 
         // Find an element matching the group and period
         const element = elements.find((el) => el.group === group && el.period === period);
-
         if (element) {
-            cell.className = "element";
+            cell.className = `element ${element.category}`;
             cell.innerHTML = `
                 <div class="element-number">${element.number}</div>
                 <div class="element-symbol">${element.symbol}</div>
                 <div class="element-name">${element.name}</div>
-                <div class="tooltip">Atomic Mass: ${element.mass}</div>
+                <div class="tooltip">${element.name}<br/>Category: ${element.category} <br/>Atomic Mass: ${element.mass}</div>
             `;
         }
-
         container.appendChild(cell);
     }
 }
+
+//---------------Add Lanthanoids----------------
+const lanContainer = document.createElement("div");
+lanContainer.style.display = "flex";
+lanContainer.style.alignItems = "center";
+lanContainer.style.marginTop = "20px";
+
+// Label + arrow
+const lanLabel = document.createElement("div");
+lanLabel.innerHTML = "<b>Lanthanoids →</b>";
+lanLabel.style.width = "140px";
+lanLabel.style.fontSize = "16px";
+
+// Row
+const lanRow = document.createElement("div");
+lanRow.style.display = "grid";
+lanRow.style.gridTemplateColumns = "repeat(15, 65px)";
+lanRow.style.gap = "5px";
+
+elements
+    .filter(el => el.number >= 57 && el.number <= 71)
+    .forEach(el => {
+        const div = document.createElement("div");
+        div.className = `element ${el.category}`;
+        div.innerHTML = `
+        <div class="element-number">${el.number}</div>
+        <div class="element-symbol">${el.symbol}</div>
+        <div class="element-name">${el.name}</div>
+        <div class="tooltip">
+            ${el.name}<br/>
+            Category: ${el.category} <br/>
+            Atomic Mass: ${el.mass}
+        </div>
+    `;
+        lanRow.appendChild(div);
+    });
+
+lanContainer.appendChild(lanLabel);
+lanContainer.appendChild(lanRow);
+document.querySelector(".main-container").appendChild(lanContainer);
+
+
+//--------------Add Actinides------------------
+const actContainer = document.createElement("div");
+actContainer.style.display = "flex";
+actContainer.style.alignItems = "center";
+actContainer.style.marginTop = "10px";
+
+// Label + arrow
+const actLabel = document.createElement("div");
+actLabel.innerHTML = "<b>Actinides →</b>";
+actLabel.style.width = "140px";
+actLabel.style.fontSize = "16px";
+
+// Row
+const actRow = document.createElement("div");
+actRow.style.display = "grid";
+actRow.style.gridTemplateColumns = "repeat(15, 65px)";
+actRow.style.gap = "5px";
+
+elements
+    .filter(el => el.number >= 89 && el.number <= 103)
+    .forEach(el => {
+        const div = document.createElement("div");
+        div.className = `element ${el.category}`;
+        div.innerHTML = `
+            <div class="element-number">${el.number}</div>
+            <div class="element-symbol">${el.symbol}</div>
+            <div class="element-name">${el.name}</div>
+            <div class="tooltip">
+            ${el.name}<br/>
+            Category: ${el.category} <br/>
+            Atomic Mass: ${el.mass}
+        </div>
+    `;
+        actRow.appendChild(div);
+    });
+
+actContainer.appendChild(actLabel);
+actContainer.appendChild(actRow);
+document.querySelector(".main-container").appendChild(actContainer);
+
+
+// Filter categories from Dropdown List
+const filter = document.getElementById("categoryFilter");
+filter.addEventListener("change", () => {
+    const selected = filter.value;
+    document.querySelectorAll(".element").forEach(el => {
+        if (selected === "all" || el.classList.contains(selected)) {
+            el.style.opacity = "1";
+            el.style.pointerEvents = "auto";
+        } else {
+            el.style.opacity = "0.2";
+            el.style.pointerEvents = "none";
+        }
+    });
+});
+
+// All Categories
+const categories = {
+    alkali: "Alkali Metals",
+    "alkaline-earth": "Alkaline Earth",
+    transition: "Transition Metals",
+    metalloid: "Metalloids",
+    nonmetal: "Non-metals",
+    halogen: "Halogens",
+    "noble-gas": "Noble Gases",
+    lanthanide: "Lanthanoids",
+    actinide: "Actinides"
+};
+
+
+const legendContainer = document.querySelector(".legend");
+
+Object.keys(categories).forEach(cat => {
+    const item = document.createElement("div");
+    item.classList.add("legend-item");
+    const colorBox = document.createElement("div");
+    colorBox.classList.add("color-box", cat);
+    const label = document.createElement("span");
+    label.innerText = categories[cat];
+    item.appendChild(colorBox);
+    item.appendChild(label);
+    legendContainer.appendChild(item);
+});

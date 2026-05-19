@@ -1,7 +1,8 @@
 {
   "buildCommand": null,
   "outputDirectory": ".",
-  "trailingSlash": false,
+  "cleanUrls": true,
+  "trailingSlash": true,
   "headers": [
     {
       "source": "/(.*)",

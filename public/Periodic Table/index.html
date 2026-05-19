@@ -7,8 +7,31 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="table-container">
-        <!-- Elements will be dynamically added here by the script -->
+    <div class="main-container">
+        <!-- Filter Dropdown -->
+        <div class="controls">
+            <select id="categoryFilter">
+                <option value="all">All</option>
+                <option value="alkali">Alkali Metals</option>
+                <option value="alkaline-earth">Alkaline Earth</option>
+                <option value="transition">Transition Metals</option>
+                <option value="metalloid">Metalloids</option>
+                <option value="nonmetal">Non-metals</option>
+                <option value="halogen">Halogens</option>
+                <option value="noble-gas">Noble Gases</option>
+                <option value="lanthanide">Lanthanoids</option>
+                <option value="actinide">Actinides</option>
+            </select>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend"></div>
+
+        <!-- Periodic Table -->
+        <div class="table-container">
+            <!-- Elements will be dynamically added here -->
+        </div>
+
     </div>
     <script src="script.js"></script>
 </body>

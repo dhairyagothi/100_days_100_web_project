@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,8 +65,13 @@
         }
 
         @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         header h1 {
@@ -83,7 +89,9 @@
             flex-wrap: wrap;
         }
 
-        .balance, .income, .expense {
+        .balance,
+        .income,
+        .expense {
             flex: 1;
             min-width: 250px;
             background: var(--card-background);
@@ -94,29 +102,43 @@
             transition: all 0.3s ease;
         }
 
-        .balance:hover, .income:hover, .expense:hover {
+        .balance:hover,
+        .income:hover,
+        .expense:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .balance { border-bottom: 5px solid var(--primary-color); }
-        .income { border-bottom: 5px solid #2ecc71; }
-        .expense { border-bottom: 5px solid var(--accent-color); }
+        .balance {
+            border-bottom: 5px solid var(--primary-color);
+        }
 
-        h2 { 
+        .income {
+            border-bottom: 5px solid #2ecc71;
+        }
+
+        .expense {
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        h2 {
             margin-top: 0;
             font-size: 1.2em;
             color: #7f8c8d;
         }
 
-        #balance, #income, #expense {
+        #balance,
+        #income,
+        #expense {
             font-size: 2em;
             font-weight: bold;
             margin-top: 10px;
             transition: all 0.3s ease;
         }
 
-        #balance:hover, #income:hover, #expense:hover {
+        #balance:hover,
+        #income:hover,
+        #expense:hover {
             transform: scale(1.05);
         }
 
@@ -133,7 +155,9 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
-        input[type="text"], input[type="number"], select {
+        input[type="text"],
+        input[type="number"],
+        select {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
@@ -143,13 +167,16 @@
             transition: all 0.3s ease;
         }
 
-        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
         }
 
-        input[type="submit"], button {
+        input[type="submit"],
+        button {
             display: block;
             width: 100%;
             padding: 12px;
@@ -162,7 +189,8 @@
             transition: all 0.3s ease;
         }
 
-        input[type="submit"]:hover, button:hover {
+        input[type="submit"]:hover,
+        button:hover {
             background: var(--secondary-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -182,7 +210,8 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             text-align: left;
             padding: 15px;
         }
@@ -205,8 +234,13 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .income-row { background-color: rgba(46, 204, 113, 0.1); }
-        .expense-row { background-color: rgba(253, 121, 168, 0.1); }
+        .income-row {
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+
+        .expense-row {
+            background-color: rgba(253, 121, 168, 0.1);
+        }
 
         #chart-container {
             width: 100%;
@@ -232,11 +266,21 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .dashboard > div, form, #transactions, #chart-container {
+        .dashboard>div,
+        form,
+        #transactions,
+        #chart-container {
             animation: fadeIn 0.5s ease-out forwards;
         }
 
@@ -244,7 +288,10 @@
             .dashboard {
                 flex-direction: column;
             }
-            .balance, .income, .expense {
+
+            .balance,
+            .income,
+            .expense {
                 width: 100%;
                 margin: 10px 0;
             }
@@ -259,7 +306,7 @@
             border-radius: 50%;
             padding: 8px;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             transition: all 0.3s ease;
             width: 40px;
@@ -295,11 +342,22 @@
         #clear-storage:hover {
             background-color: #c0392b;
         }
+
+        #empty-message {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
+
 <body>
     <button id="theme-toggle" aria-label="Toggle dark mode">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
     </button>
     <header>
         <div class="container">
@@ -359,6 +417,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            <p id="empty-message">No transactions added yet.</p>
         </div>
 
         <div id="chart-container">
@@ -374,6 +433,7 @@
         const expenseEl = document.getElementById('expense');
         const form = document.getElementById('transaction-form');
         const transactionsTable = document.getElementById('transactions-table').getElementsByTagName('tbody')[0];
+        const emptyMessage = document.getElementById('empty-message');
         const chartContainer = document.getElementById('chart-container');
         const clearStorageBtn = document.getElementById('clear-storage');
 
@@ -434,6 +494,11 @@
 
         function displayTransactions() {
             transactionsTable.innerHTML = '';
+            if (transactions.length === 0) {
+                emptyMessage.style.display = 'block';
+            } else {
+                emptyMessage.style.display = 'none';
+            }
 
             transactions.slice().reverse().forEach((transaction, index) => {
                 const row = transactionsTable.insertRow();
@@ -476,7 +541,7 @@
             }
 
             const isDarkMode = document.body.classList.contains('dark-mode');
-            const chartColors = isDarkMode 
+            const chartColors = isDarkMode
                 ? ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40']
                 : ['#ff9ff3', '#54a0ff', '#5f27cd', '#48dbfb', '#ff6b6b', '#10ac84'];
 
@@ -552,5 +617,5 @@
         updateChart();
     </script>
 </body>
-</html>
 
+</html>

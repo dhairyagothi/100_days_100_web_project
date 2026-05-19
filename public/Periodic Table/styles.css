@@ -9,7 +9,7 @@ body {
     min-height: 100vh;
     color: #333;
 }
-
+ 
 .table-container {
     display: grid;
     grid-template-columns: repeat(18, 65px);
@@ -170,4 +170,106 @@ body {
         grid-template-columns: repeat(6, 65px);
         transform: scale(0.8);
     }
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+    justify-content: center;
+}
+
+/* NEW categories Added in the Table*/
+.halogen {
+    background: linear-gradient(145deg, #ffe082, #ffd54f);
+}
+
+.lanthanide {
+    background-color: #ffb3b3;
+}
+
+.actinide {
+    background-color: #ffcc99;
+}
+
+/* Legend Styling */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    background: rgba(255,255,255,0.8);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.color-box {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+#categoryFilter {
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 10px 40px 10px 15px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.controls {
+    position: relative;
+}
+
+.controls::after {
+    content: "▼";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 12px;
+    color: #555;
+}
+
+#categoryFilter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+#categoryFilter:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #90caf9, 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+#categoryFilter option {
+    background: #fff;
+    color: #333;
+}
+
+.label-arrow {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
 }
