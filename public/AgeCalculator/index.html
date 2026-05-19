@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Age Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>🗓️ Age Calculator</h1>
+        <p class="subtitle">GSSoC Open Source Project</p>
+
+        <div class="input-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required>
+        </div>
+
+        <div class="input-group">
+            <label for="current-date">Age at the Date of:</label>
+            <input type="date" id="current-date">
+        </div>
+
+        <button id="calculate-btn">Calculate Age</button>
+
+        <div id="results" class="results-container hidden">
+            <div class="result-card primary">
+                <h3>Exact Age</h3>
+                <p id="exact-age">--</p>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Next Birthday Countdown</h4>
+                    <p id="birthday-countdown">--</p>
+                </div>
+                <div class="result-card">
+                    <h4>Zodiac Sign</h4>
+                    <p id="zodiac-sign">--</p>
+                </div>
+                <div class="result-card">
+                    <h4>Age in Weeks & Hours</h4>
+                    <p id="extra-stats">--</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
