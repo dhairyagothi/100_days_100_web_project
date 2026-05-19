@@ -4,6 +4,57 @@ let cards = [];
 let firstCard, secondCard;
 let lockBoard = false;
 let matchesCount = 0;
+let timerInterval;
+let timeLeft = 60;
+
+function setDifficulty(seconds) {
+    timeLeft = seconds;
+    document.getElementById('timer').innerText = `Time: ${timeLeft}s`;
+    document.querySelectorAll('#difficulty button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function startTimer() {
+    clearInterval(timerInterval);
+    document.getElementById('timer').innerText = `Time: ${timeLeft}s`;
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').innerText = `Time: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            alert('Time is up! Game Over');
+            restartGame();
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function restartGame() {
+    stopTimer();
+    // Reset timer according to selected difficulty
+    const activeButton =
+        document.querySelector('#difficulty button.active');
+    if (activeButton.textContent === 'Easy') {
+        timeLeft = 120;
+    }
+    else if (activeButton.textContent === 'Hard') {
+        timeLeft = 30;
+    }
+    else {
+        timeLeft = 60; // Moderate
+    }
+    gameContainer.innerHTML = '';
+    matchesCount = 0;
+    document.getElementById('score-board').innerText =
+        `Matches: 0`;
+    document.getElementById('congrats')
+        .classList.add('hidden');
+    createCards();
+    startTimer();
+}
 
 // Create cards dynamically
 function createCards() {
@@ -76,6 +127,10 @@ function unflipCards() {
 function updateScore() {
     matchesCount++;
     document.getElementById('score-board').innerText = `Matches: ${matchesCount}`;
+    if (matchesCount === 8) {
+        stopTimer();
+        document.getElementById('congrats').classList.remove('hidden');
+    }
 }
 
 // Reset variables and unlock board
@@ -86,6 +141,8 @@ function resetBoard() {
 
 // Initialize the game
 createCards();
+startTimer();
+document.getElementById('restart-btn').addEventListener('click', restartGame);
 gameContainer.addEventListener('click', function(event) {
     const clickedCard = event.target.closest('.card');
     if (clickedCard && !clickedCard.classList.contains('flipped')) {

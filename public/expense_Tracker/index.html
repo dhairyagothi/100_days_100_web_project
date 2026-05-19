@@ -6,124 +6,146 @@
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="expense.js" defer></script>
 </head>
 <body>
-    <div class="Header">
+    <!-- Header Section -->
+    <header class="header">
         <h1>Expense Tracker</h1>
-        <div class="taskbar">
-            <a href="index.html" style="text-decoration: none;">Home</a>
-            <a href="#" style="text-decoration: none;" id="profile">Profile</a>
-        </div>
-    </div>
+    </header>
 
-    <div class="main" id="main">
-        <div class="left" style="color: white;">
-            <h2 style="text-align: center; text-decoration: dotted;">Expense Categories</h2>
-            <a href="#">Income</a>
-            <a href="#" id="spending-link">Spending</a>
-        </div>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Dashboard Panel -->
+        <aside class="dashboard">
+            <div class="dashboard-content">
+                <!-- Account Balance Card -->
+                <div class="card card-large">
+                    <div class="card-label">Account Balance</div>
+                    <div class="card-amount" id="accountBalance">₹0.00</div>
+                </div>
 
-        <div class="right">
-            <div class="income">
-                <h2>Income</h2>
-                <input type="text" id="income" placeholder="Enter your income" style="width: 100%; padding: 10px;">
-                <br><br>
-                <button id="submit-income" onclick="updatethemoney();">Submit</button>
-            </div>
-        </div>
-    </div>
+                <!-- Two-column cards -->
+                <div class="cards-row">
+                    <div class="card card-small">
+                        <div class="card-label">Total Income</div>
+                        <div class="card-amount income-text" id="totalIncome">₹0.00</div>
+                    </div>
+                    <div class="card card-small">
+                        <div class="card-label">Total Expense</div>
+                        <div class="card-amount expense-text" id="totalExpense">₹0.00</div>
+                    </div>
+                </div>
 
-    <div class="money">
-        <h2 style="text-align: center;">Budget Overview</h2>
-        <p style="font-weight: bold;">Total Money:</p><p id="total">₹0.00</p>
-        <p style="font-weight: bold;">Money Spent:</p><p id="spent">₹0.00</p>
-        <p style="font-weight: bold;">Money Left:</p><p id="moneyleft">₹0.00</p>
-    </div>
-    <script>
-        
-let totalincome = 0;
-let totalSpent = 0; 
-
-
-function formatmoney(amount) {
-    return '₹' + amount.toFixed(2);
-}
-
-
-function updatethemoney() {
-    const incomeInput = document.getElementById('income').value;
-    const income = parseFloat(incomeInput) || 0;
-
-    totalincome += income;
-    document.getElementById('total').textContent = formatmoney(totalincome);
-    document.getElementById('moneyleft').textContent = formatmoney(totalincome);
-
-    
-    document.getElementById('income').value = '';
-}
-
-
-function updateSpending() {
-    const spendingInput = document.getElementById('spending').value;
-    const spending = parseFloat(spendingInput) || 0;
-
-    
-    totalSpent += spending;
-
-    
-    totalincome -= spending;
-
-    
-    document.getElementById('spent').textContent = formatmoney(totalSpent);
-    document.getElementById('moneyleft').textContent = formatmoney(totalincome);
-
-    
-    document.getElementById('spending').value = '';
-}
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const spendingLink = document.getElementById('spending-link');
-    const mainContent = document.getElementById('main');
-
-    spendingLink.addEventListener('click', function (event) {
-        event.preventDefault();
-
-        
-        mainContent.innerHTML = `
-            <div class="left" style="color: white;">
-                <h2 style="text-align: center;text-decoration:dotted;">Expense Categories</h2>
-                <a href="index.html">Income</a>
-                <a href="#">Travel Expense</a>
-                <a href="#">Food</a>
-                <a href="#">Transport</a>
-                <a href="#">Utilities</a>
-                <a href="#">Personal</a>
-                <a href="#">EMI</a>
-                <a href="#">Credit Card</a>
-                <a href="#">Entertainment</a>
-                <a href="#">Health</a>
-                <a href="#">Miscellaneous</a>
-            </div>
-            <div class="right">
-                <div class="income">
-                    <h2>Money Spent</h2>
-                    <br>
-                    <input type="text" id="spending" placeholder="Money Spent" style="width: 100%; padding: 10px;">
-                    <br><br>
-                    <button id="submit-spending" class="submit-button">Submit</button>
+                <!-- Category Breakdown -->
+                <div class="category-section">
+                    <h3>Category Breakdown</h3>
+                    <div class="categories-list" id="categoriesList">
+                        <div class="category-item">
+                            <span class="category-name">Food</span>
+                            <span class="category-amount" id="cat-Food">₹0.00</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Travel</span>
+                            <span class="category-amount" id="cat-Travel">₹0.00</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Shopping</span>
+                            <span class="category-amount" id="cat-Shopping">₹0.00</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Utilities</span>
+                            <span class="category-amount" id="cat-Utilities">₹0.00</span>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Others</span>
+                            <span class="category-amount" id="cat-Others">₹0.00</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        `;
+        </aside>
 
-        
-        const submitSpendingButton = document.getElementById('submit-spending');
-        submitSpendingButton.addEventListener('click', updateSpending);
-    });
-});
+        <!-- Right Transaction Form Panel -->
+        <section class="form-section">
+            <div class="form-container">
+                <h2>Add Transaction</h2>
+                <form id="transactionForm" class="transaction-form">
+                    <div class="form-group">
+                        <label for="amount">Amount *</label>
+                        <input type="number" id="amount" placeholder="0.00" step="0.01" min="0" required>
+                        <span class="error-message" id="amountError"></span>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <input type="text" id="description" placeholder="Enter description" required>
+                        <span class="error-message" id="descriptionError"></span>
+                    </div>
 
-    </script>
+                    <div class="form-group">
+                        <label for="type">Type *</label>
+                        <div class="type-selector">
+                            <input type="radio" id="type-income" name="type" value="Income" required>
+                            <label for="type-income" class="type-label">Income</label>
+                            
+                            <input type="radio" id="type-expense" name="type" value="Expense" required>
+                            <label for="type-expense" class="type-label">Expense</label>
+                        </div>
+                        <span class="error-message" id="typeError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category *</label>
+                        <select id="category" required>
+                            <option value="">Select a category</option>
+                            <option value="Food">Food</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <span class="error-message" id="categoryError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Date *</label>
+                        <input type="date" id="date" required>
+                        <span class="error-message" id="dateError"></span>
+                        <span class="helper-message" id="dateHelper"></span>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Add Transaction</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- Recent Transactions Panel -->
+    <section class="transactions-section">
+        <div class="transactions-container">
+            <h2>Recent Transactions</h2>
+            <div class="table-wrapper">
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsBody">
+                        <!-- Transactions will be inserted here -->
+                    </tbody>
+                </table>
+                <div id="noTransactionsMessage" class="no-transactions">
+                    No transactions yet. Add one to get started!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="expense.js" defer></script>
 </body>
 </html>
