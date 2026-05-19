@@ -3,6 +3,7 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -11,10 +12,13 @@
     --dark-bg: #141414;
     --light-dark: #221f1f;
     --text-primary: #ffffff;
+    --content-max-width: 1200px;
+    --section-padding-x: clamp(1rem, 5vw, 4rem);
 }
 
 html {
     scroll-behavior: smooth;
+    font-size: 100%; /* 16px base — all rem values scale from this */
 }
 
 body {
@@ -31,10 +35,10 @@ body {
         rgba(0, 0, 0, 0)
     );
 
-    padding: 20px 40px;   /* equal spacing from left & right */
-    
+    padding: 1.25rem var(--section-padding-x);
+
     display: flex;
-    justify-content: space-between; /* pushes items to extreme ends */
+    justify-content: space-between;
     align-items: center;
 
     position: fixed;
@@ -44,8 +48,6 @@ body {
 
     z-index: 1000;
     transition: background 0.3s ease;
-
-    box-sizing: border-box; /* prevents overflow */
 }
 
 .navbar.navbar-scrolled {
@@ -54,7 +56,7 @@ body {
 }
 
 .logo {
-    width: 120px;
+    width: clamp(5rem, 8vw, 10rem);
     height: auto;
     cursor: pointer;
 }
@@ -63,12 +65,13 @@ body {
     background: var(--netflix-red);
     color: white;
     border: none;
-    padding: 8px 20px;
-    border-radius: 4px;
-    font-size: 14px;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .signin-btn:hover {
@@ -84,41 +87,45 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     color: white;
-    padding: 100px 50px 50px;
-    margin-top: 0;
+    padding: 6rem var(--section-padding-x) 3rem;
 }
 
 .hero h1 {
-    font-size: 68px;
+    font-size: clamp(2rem, 4vw, 4rem);
     font-weight: 700;
-    margin-bottom: 20px;
-    max-width: 600px;
+    margin-bottom: 1.25rem;
+    max-width: 50rem;
     line-height: 1.1;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .hero > p {
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: clamp(1rem, 2vw, 1.75rem);
+    margin-bottom: 0.625rem;
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .hero-form {
     display: flex;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 0.9375rem;
+    margin-top: 1.875rem;
     flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 40rem;
 }
 
 .hero-form input {
-    padding: 12px 20px;
+    padding: 0.75rem 1.25rem;
     border: none;
-    border-radius: 4px;
-    width: 300px;
-    font-size: 16px;
+    border-radius: 0.25rem;
+    flex: 1 1 18rem;
+    min-width: 0;
+    font-size: 1rem;
     background: rgba(255, 255, 255, 0.8);
 }
 
@@ -127,15 +134,16 @@ body {
 }
 
 .hero-form button {
-    padding: 12px 30px;
+    padding: 0.75rem 1.875rem;
     background: var(--netflix-red);
     color: white;
     border: none;
-    border-radius: 4px;
-    font-size: 18px;
+    border-radius: 0.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .hero-form button:hover {
@@ -149,68 +157,77 @@ body {
 
 /* ============= SEPARATION ============= */
 .separation {
-    height: 8px;
+    height: 0.5rem;
     background: linear-gradient(to bottom, #2f2f2f, #141414);
 }
 
 /* ============= FEATURES SECTION ============= */
 .feature {
     background: var(--dark-bg);
-    padding: 80px 50px;
+    padding: clamp(2.5rem, 5vw, 5rem) var(--section-padding-x);
     display: flex;
     align-items: center;
-    gap: 60px;
+    justify-content: center;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
 }
 
 .feature:nth-child(even) {
     flex-direction: row-reverse;
 }
 
+.feature .text {
+    flex: 1 1 45%;
+    min-width: 0;
+}
+
 .feature .text h2 {
-    font-size: 48px;
-    margin-bottom: 20px;
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: 1.25rem;
     line-height: 1.2;
     font-weight: 700;
 }
 
 .feature .text p {
-    font-size: 24px;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.5;
 }
 
 .feature img {
-    max-width: 100%;
+    flex: 1 1 45%;
+    max-width: 50%;
     height: auto;
+    object-fit: contain;
 }
 
 /* ============= FAQ SECTION ============= */
 .faq {
     background: var(--dark-bg);
     color: white;
-    padding: 80px 50px;
-    max-width: 100%;
+    padding: clamp(2.5rem, 5vw, 5rem) var(--section-padding-x);
 }
 
 .faq h2 {
     text-align: center;
-    font-size: 48px;
-    margin-bottom: 60px;
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: clamp(1.875rem, 4vw, 3.75rem);
     font-weight: 700;
 }
 
 .faq-container {
-    max-width: 800px;
+    max-width: 50rem;
     margin: 0 auto;
 }
 
 .faq-question {
     background: #2d2d2d;
-    padding: 24px;
-    margin-bottom: 10px;
+    padding: 1.5rem;
+    margin-bottom: 0.625rem;
     border: none;
     color: white;
-    font-size: 20px;
+    font-size: clamp(0.875rem, 1.2vw, 1.25rem);
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -223,7 +240,6 @@ body {
 
 .faq-question:hover {
     background: #3d3d3d;
-    padding: 24px;
 }
 
 .faq-question.active {
@@ -232,8 +248,10 @@ body {
 
 .faq-question::after {
     content: '+';
-    font-size: 32px;
+    font-size: 2rem;
     transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 1rem;
 }
 
 .faq-question.active::after {
@@ -242,9 +260,9 @@ body {
 
 .faq-answer {
     background: #2d2d2d;
-    padding: 0 24px 24px;
+    padding: 0 1.5rem 1.5rem;
     color: rgba(255, 255, 255, 0.8);
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.6;
     display: none;
     border-bottom: 1px solid #1a1a1a;
@@ -270,31 +288,36 @@ body {
 footer {
     background: var(--dark-bg);
     color: rgba(255, 255, 255, 0.7);
-    padding: 80px 50px;
+    padding: clamp(2.5rem, 5vw, 5rem) var(--section-padding-x);
 }
 
 .questions {
-    padding: 30px 0;
-    font-size: 14px;
+    padding: 1.875rem 0;
+    font-size: 0.875rem;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
 }
 
 .footer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
-    margin-top: 30px;
+    gap: 2.5rem;
+    margin-top: 1.875rem;
+    max-width: var(--content-max-width);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .footer-item {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 0.9375rem;
 }
 
 .footer-item a {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
-    font-size: 13px;
+    font-size: 0.8125rem;
     transition: color 0.3s ease;
 }
 
@@ -303,204 +326,94 @@ footer {
 }
 
 /* ============= RESPONSIVE DESIGN ============= */
-@media screen and (max-width: 1024px) {
-    .navbar {
-        padding: 20px 30px;
-    }
 
-    .logo {
-        width: 100px;
-    }
-
-    .hero {
-        padding: 100px 30px 50px;
-    }
-
+/* Large screens — keep content from stretching too wide */
+@media screen and (min-width: 1440px) {
     .hero h1 {
-        font-size: 48px;
-        max-width: 100%;
+        font-size: 4rem;
     }
 
     .hero > p {
-        font-size: 20px;
+        font-size: 1.75rem;
     }
 
+    .feature .text h2 {
+        font-size: 3rem;
+    }
+
+    .feature .text p {
+        font-size: 1.5rem;
+    }
+
+    .faq h2 {
+        font-size: 3rem;
+    }
+}
+
+@media screen and (max-width: 1024px) {
     .hero-form {
         flex-direction: column;
+        align-items: stretch;
     }
 
     .hero-form input,
     .hero-form button {
+        flex: 1 1 auto;
         width: 100%;
     }
 
     .feature {
-        padding: 60px 30px;
-        gap: 30px;
-    }
-
-    .feature .text h2 {
-        font-size: 36px;
-    }
-
-    .feature .text p {
-        font-size: 18px;
-    }
-
-    .faq {
-        padding: 60px 30px;
-    }
-
-    .faq h2 {
-        font-size: 36px;
-        margin-bottom: 40px;
-    }
-
-    .faq-question {
-        font-size: 16px;
-    }
-
-    footer {
-        padding: 60px 30px;
+        gap: 1.875rem;
     }
 
     .footer {
         grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+        gap: 1.875rem;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .navbar {
-        padding: 15px 20px;
-    }
-
     .logo {
-        width: 80px;
+        width: 5rem;
     }
 
     .hero {
-        padding: 80px 20px 50px;
-        min-height: calc(100vh - 60px);
-    }
-
-    .hero h1 {
-        font-size: 36px;
-    }
-
-    .hero > p {
-        font-size: 18px;
+        min-height: calc(100vh - 3.75rem);
+        padding-top: 5rem;
     }
 
     .feature {
-        padding: 40px 20px;
         flex-direction: column !important;
-        gap: 20px;
+        gap: 1.25rem;
     }
 
-    .feature .text h2 {
-        font-size: 28px;
+    .feature img {
+        max-width: 80%;
+        flex: 0 0 auto;
     }
 
-    .feature .text p {
-        font-size: 16px;
-    }
-
-    .faq {
-        padding: 40px 20px;
-    }
-
-    .faq h2 {
-        font-size: 28px;
-        margin-bottom: 30px;
-    }
-
-    .faq-question {
-        font-size: 14px;
-        padding: 16px;
+    .feature .text {
+        text-align: center;
     }
 
     .footer {
         grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    footer {
-        padding: 40px 20px;
+        gap: 1.25rem;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .navbar {
-        padding: 12px 15px;
-    }
-
-    .logo {
-        width: 60px;
-    }
-
     .signin-btn {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
     }
 
     .hero {
-        padding: 70px 15px 40px;
-    }
-
-    .hero h1 {
-        font-size: 28px;
-        margin-bottom: 15px;
-    }
-
-    .hero > p {
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-
-    .hero-form {
-        margin-top: 20px;
-    }
-
-    .hero-form input {
-        width: 100%;
-        padding: 10px 15px;
-        font-size: 14px;
-    }
-
-    .hero-form button {
-        width: 100%;
-        padding: 10px 20px;
-        font-size: 14px;
-    }
-
-    .feature {
-        padding: 30px 15px;
-    }
-
-    .feature .text h2 {
-        font-size: 22px;
-    }
-
-    .feature .text p {
-        font-size: 14px;
-    }
-
-    .faq h2 {
-        font-size: 22px;
-    }
-
-    .faq-question {
-        font-size: 13px;
-        padding: 12px;
+        padding-top: 4.375rem;
     }
 
     .faq-answer {
-        font-size: 12px;
-        padding: 0 12px 12px;
+        font-size: 0.75rem;
+        padding: 0 0.75rem 0.75rem;
     }
 }
-
-
-
-
