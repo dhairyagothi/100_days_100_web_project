@@ -132,10 +132,15 @@ function resetGame() {
   userSeq = [];
   level = 0;
   clickable = true;
+
+  h2.innerText = "Press Any Key to Start 🎉";
+
+  enableStartListeners();
 }
 
 // ---------------- Event Listeners ----------------
-startBtn.addEventListener("click", startGame);
+enableStartListeners();
+
 strictToggle.addEventListener("change", (e) => {
   strictMode = e.target.checked;
 });
@@ -143,3 +148,15 @@ themeToggle.addEventListener("change", () => {
   document.body.classList.toggle("dark");
 });
 allBtns.forEach((btn) => btn.addEventListener("click", btnPress));
+
+
+function enableStartListeners() {
+
+  document.addEventListener("keypress", startGameOnce, { once: true });
+
+  document.addEventListener("touchstart", startGameOnce, { once: true });
+}
+
+function startGameOnce() {
+  startGame();
+}

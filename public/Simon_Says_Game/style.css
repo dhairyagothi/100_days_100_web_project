@@ -8,8 +8,14 @@ body {
 }
 
 h1 { font-size: 3rem; margin-top: 20px; }
-h2 { font-size: 1.5rem; margin-top: 10px; }
+h2 { font-size: 1.5rem; margin-top: 10px; letter-spacing: 0.5px; animation: pulseText 1.5s infinite;}
 h3 { margin-top: 5px; color: #555; }
+
+@keyframes pulseText {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
 
 /* ----- Buttons ----- */
 .btn-container {
