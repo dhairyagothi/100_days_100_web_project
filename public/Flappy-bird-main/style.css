@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    padding: 20px;
+    background: #000;
+    color: white;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.canvas-container {
+    max-width: 100%;
+    overflow: auto;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid cyan;
+}
