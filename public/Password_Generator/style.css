@@ -303,3 +303,14 @@ h1 {
     background-color: var(--dk-violet);
     box-shadow: 0px 0px 25px 5px rgba(255, 229, 61, 0.80);
   } */
+.strength-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.strength-text {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+}
