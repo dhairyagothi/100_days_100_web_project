@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap");
 
 :root {
   --bg-primary: #0b0d0f;
@@ -56,7 +56,7 @@ html {
 
 body {
   font-family:
-    'Inter Tight',
+    "Inter Tight",
     system-ui,
     -apple-system,
     sans-serif;
@@ -74,7 +74,7 @@ body {
 
 body::before,
 body::after {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -126,7 +126,7 @@ body::after {
 }
 
 .ambient::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -10%;
   border-radius: 999px;
@@ -231,7 +231,7 @@ body.light-mode .navbar {
   box-shadow:
     0 0 0 1px rgba(59, 130, 246, 0.08),
     0 12px 40px rgba(59, 130, 246, 0.12);
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   color: var(--text-primary);
@@ -244,7 +244,7 @@ body.light-mode .navbar {
 }
 
 .brand-kicker {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -272,7 +272,7 @@ body.light-mode .navbar {
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 1rem;
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 0.8125rem;
   font-weight: 500;
   border-radius: var(--radius-md);
@@ -434,7 +434,7 @@ body.light-mode .navbar {
 }
 
 .hero-terminal::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background-image:
@@ -471,7 +471,7 @@ body.light-mode .navbar {
 
 .hero-overline {
   font-size: 0.75rem;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -504,7 +504,7 @@ body.light-mode .navbar {
 }
 
 .hero-line-accent::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   right: 0;
@@ -547,6 +547,21 @@ body.light-mode .navbar {
   font-size: 0.875rem;
 }
 
+#heroGithubBtn {
+  background: rgba(59, 130, 246, 0.05);
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  border-width: 1.5px;
+}
+
+#heroGithubBtn:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.35);
+  transform: translateY(-2px);
+}
+
 /* Stats strip — inline, elegant, one row */
 .stats-strip {
   display: inline-flex;
@@ -573,7 +588,7 @@ body.light-mode .navbar {
 }
 
 .stat-item strong {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 600;
   color: var(--text-primary);
   font-size: 0.86rem;
@@ -607,7 +622,7 @@ body.light-mode .navbar {
 }
 
 .section-label {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -685,7 +700,7 @@ body.light-mode .navbar {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   color: var(--text-primary);
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 0.875rem;
   padding: 0.625rem 1rem 0.625rem 2.5rem;
   outline: none;
@@ -715,8 +730,8 @@ body.light-mode .navbar {
   gap: 0.25rem;
   padding: 0.22rem 0.6rem;
   font-family:
-    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
-    'Courier New', monospace;
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    "Courier New", monospace;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -790,7 +805,7 @@ body.light-mode .navbar {
 }
 
 .project-card::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -803,7 +818,7 @@ body.light-mode .navbar {
 }
 
 .project-card::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background:
@@ -841,7 +856,7 @@ body.light-mode .navbar {
 }
 
 .card-day {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.67rem;
   font-weight: 500;
   color: var(--text-muted);
@@ -850,7 +865,7 @@ body.light-mode .navbar {
 }
 
 .card-category {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -863,7 +878,7 @@ body.light-mode .navbar {
 }
 
 .card-name {
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 1.02rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -885,7 +900,7 @@ body.light-mode .navbar {
   border: 1px solid rgba(255, 255, 255, 0.05);
   padding: 0.1rem 0.45rem;
   border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .card-footer {
@@ -1426,24 +1441,23 @@ html {
 }
 
 #backToTop {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: none;
-    background-color: #000;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 1000;
-    transition: all 0.3s ease;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 #backToTop:hover {
-    background-color: #333;
-    transform: scale(1.1);
+  background-color: #333;
+  transform: scale(1.1);
 }
-
