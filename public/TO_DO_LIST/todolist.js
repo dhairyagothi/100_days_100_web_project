@@ -1,249 +1,356 @@
-// ─── DOM References ────────────────────────────────────────────────────────────
-const notesContainer = document.getElementById("notes-container");
-const documentsList  = document.querySelector(".documents-list");
-const pdfMessage     = document.getElementById("pdfMessage");
-const taskInput      = document.getElementById("task-input");
-const taskTypeSelect = document.getElementById("task-type");
+const taskInput = document.getElementById("task-input");
+const taskType = document.getElementById("task-type-select");
+const taskList = document.getElementById("task-list");
 
-// ─── Theme State ───────────────────────────────────────────────────────────────
-// Maps theme id → gradient for body + card fallback colour for default cards
-const THEMES = {
-  theme1: {
-    body: "linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)",
-    card: "rgba(232, 221, 227, 1)",
-  },
-  theme2: {
-    body: "linear-gradient(135deg, #e4afcb 0%, #e2c58b 50%, #7edbdc 100%)",
-    card: "#e4afcb",
-  },
-  theme3: {
-    body: "linear-gradient(135deg, #39db8c 0%, #a0c559 30%, #d1ab51 55%, #e6936b 80%, #df868d 100%)",
-    card: "#df868d",
-  },
-  theme4: {
-    body: "linear-gradient(135deg, rgb(120,25,105) 0%, rgb(197,211,201) 100%)",
-    card: "rgb(197, 211, 201)",
-  },
-  theme5: {
-    body: "linear-gradient(135deg, #b92b27 0%, #1565c0 100%)",
-    card: "#c0cfe8",
-  },
-};
+const totalTasks = document.getElementById("stat-total");
+const doneTasks = document.getElementById("stat-done");
+const pendingTasks = document.getElementById("stat-pending");
 
-let currentTheme = "theme1"; // default
+const progressFill = document.getElementById("progress-fill");
+const progressPct = document.getElementById("progress-pct");
 
-// ─── Task Type colour map ──────────────────────────────────────────────────────
-// Keeps track of user-chosen type colours so they survive theme switches
-const TYPE_COLORS = {
-  "":              null,           // → use theme colour
-  "Work":          "#FFDE59",
-  "Personal":      "#FFC0CB",
-  "Professional":  "#B0BEC5",
-  "Fitness":       "#B1EE99",
-  "Miscellaneous": "#CAB9F5",
-};
+const documentsList = document.getElementById("documents-list");
+const toast = document.getElementById("toast");
 
-// ─── Add Task ──────────────────────────────────────────────────────────────────
-function Add() {
+let tasks = [];
+let currentFilter = "all";
+
+function saveTasksToLocalStorage() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasksFromLocalStorage() {
+
+  const storedTasks =
+    localStorage.getItem("tasks");
+
+  if (storedTasks) {
+    tasks = JSON.parse(storedTasks);
+
+    renderTasks();
+    updateStats();
+  }
+}
+
+function addTask() {
+
   const text = taskInput.value.trim();
+  const category = taskType.value;
 
   if (text === "") {
     taskInput.focus();
-    taskInput.style.borderColor = "rgba(255, 80, 80, 0.8)";
-    setTimeout(() => { taskInput.style.borderColor = ""; }, 1200);
     return;
   }
 
-  const notes = document.querySelectorAll(".notes");
+  const selectedOption =
+    taskType.options[taskType.selectedIndex];
 
-  if (notes.length > 0) {
-    const lastNote = notes[notes.length - 1];
-    const taskText = lastNote.querySelector("span");
+  const color =
+    selectedOption.getAttribute("data-color") || "#f5c842";
 
-    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
-      alert("Please add a task to the previous note before creating a new one!");
-      return;
-    }
-  }
+  const task = {
+    id: Date.now(),
+    text,
+    category,
+    color,
+    done: false,
+  };
 
-  const selectedType  = taskTypeSelect.value;
-  const typeColor     = TYPE_COLORS[selectedType] ?? null;
-  const isDefaultCard = !typeColor; // no type selected → follows theme
+  tasks.push(task);
 
-  // Card container
-  const note = document.createElement("div");
-  note.classList.add("notes");
-  note.dataset.defaultCard = isDefaultCard ? "true" : "false";
+  saveTasksToLocalStorage();
 
-  // Apply colour
-  note.style.backgroundColor = isDefaultCard
-    ? THEMES[currentTheme].card
-    : typeColor;
-
-  // Inner layout
-  const noteWrapper = document.createElement("div");
-  noteWrapper.style.cssText = "display:flex; align-items:flex-start; justify-content:space-between; width:100%; gap:8px;";
-
-  // Task text
-  const taskText = document.createElement("span");
-  taskText.className = "task-text";
-  taskText.innerText = text;
-  taskText.style.cssText = "flex:1; line-height:1.4; word-break:break-word;";
-
-  // Actions column
-  const actions = document.createElement("div");
-  actions.style.cssText = "display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0;";
-
-  // Tick / complete toggle
-  const tickBtn = document.createElement("button");
-  tickBtn.innerHTML = "&#10003;";
-  tickBtn.title = "Mark complete";
-  tickBtn.style.cssText = [
-    "background:none", "border:1.5px solid #555", "border-radius:50%",
-    "width:26px", "height:26px", "cursor:pointer", "font-size:14px",
-    "display:flex", "align-items:center", "justify-content:center",
-    "transition:background 0.2s, color 0.2s", "color:#333",
-  ].join(";");
-
-  tickBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    taskText.classList.toggle("completed");
-    tickBtn.style.background = taskText.classList.contains("completed") ? "#4caf50" : "none";
-    tickBtn.style.color      = taskText.classList.contains("completed") ? "white"   : "#333";
-    tickBtn.style.borderColor= taskText.classList.contains("completed") ? "#4caf50" : "#555";
-  });
-
-  // Delete button
-  const delBtn = document.createElement("button");
-  delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-  delBtn.title = "Delete task";
-  delBtn.style.cssText = [
-    "background:none", "border:none", "cursor:pointer",
-    "font-size:13px", "color:#c0392b", "padding:2px",
-    "transition:transform 0.2s",
-  ].join(";");
-  delBtn.addEventListener("mouseenter", () => { delBtn.style.transform = "scale(1.25)"; });
-  delBtn.addEventListener("mouseleave", () => { delBtn.style.transform = "scale(1)"; });
-  delBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    note.style.animation = "none";
-    note.style.transition = "opacity 0.25s, transform 0.25s";
-    note.style.opacity = "0";
-    note.style.transform = "scale(0.92)";
-    setTimeout(() => note.remove(), 250);
-  });
-
-  // Type badge (only if type was selected)
-  if (selectedType) {
-    const badge = document.createElement("span");
-    badge.innerText = selectedType;
-    badge.style.cssText = [
-      "font-size:10px", "font-weight:700", "padding:2px 7px",
-      "border-radius:20px", "background:rgba(0,0,0,0.12)",
-      "color:#333", "white-space:nowrap", "margin-top:4px",
-      "align-self:flex-end",
-    ].join(";");
-    note.appendChild(badge);
-  }
-
-  actions.appendChild(tickBtn);
-  actions.appendChild(delBtn);
-  noteWrapper.appendChild(taskText);
-  noteWrapper.appendChild(actions);
-  note.insertBefore(noteWrapper, note.firstChild);
-  notesContainer.appendChild(note);
-
-  // Reset inputs
   taskInput.value = "";
-  taskTypeSelect.value = "";
-  taskInput.focus();
+  taskType.value = "";
+
+  renderTasks();
+  updateStats();
 }
 
-// Allow pressing Enter in the input to add a task
-taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") Add();
+taskInput.addEventListener("keydown", function (e) {
+
+  if (e.key === "Enter") {
+    addTask();
+  }
 });
 
-// ─── Theme Switching ───────────────────────────────────────────────────────────
-function applyTheme(themeKey) {
-  const theme = THEMES[themeKey];
-  document.body.style.background = theme.body;
-  currentTheme = themeKey;
+function renderTasks() {
 
-  // Update CSS custom property → auto-updates all default cards via var()
-  document.documentElement.style.setProperty("--theme-card-bg", theme.card);
+  taskList.innerHTML = "";
 
-  // Also imperatively update existing default cards
-  const cards = document.querySelectorAll(".notes[data-default-card='true']");
-  cards.forEach((card) => {
-    card.style.backgroundColor = theme.card;
-  });
-}
+  let filteredTasks = tasks;
 
-function c1() { applyTheme("theme1"); }
-function c2() { applyTheme("theme2"); }
-function c3() { applyTheme("theme3"); }
-function c4() { applyTheme("theme4"); }
-function c5() { applyTheme("theme5"); }
+  if (currentFilter === "done") {
 
-// ─── PDF Export ────────────────────────────────────────────────────────────────
-function saveAsPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc  = new jsPDF();
-  const cards = document.querySelectorAll(".notes");
+    filteredTasks =
+      tasks.filter(task => task.done);
 
-  doc.setFontSize(18);
-  doc.text("My To-Do List", 20, 18);
-  doc.setFontSize(12);
+  } else if (currentFilter === "pending") {
 
-  let y = 30;
-  cards.forEach((card, i) => {
-    const textNode = card.querySelector(".task-text");
-    const text = textNode ? textNode.innerText.trim() : card.innerText.trim();
-    if (text) {
-      doc.text(`${i + 1}. ${text}`, 20, y);
-      y += 10;
-      if (y > 270) { doc.addPage(); y = 20; }
+    filteredTasks =
+      tasks.filter(task => !task.done);
+
+  } else if (currentFilter !== "all") {
+
+    filteredTasks =
+      tasks.filter(task =>
+        task.category === currentFilter
+      );
+  }
+
+  if (filteredTasks.length === 0) {
+
+    taskList.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <p>No tasks found.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  filteredTasks.forEach(task => {
+
+    const card = document.createElement("div");
+
+    card.className = "task-card";
+
+    if (task.done) {
+      card.classList.add("done");
     }
+
+    card.innerHTML = `
+      <button class="task-check ${task.done ? "checked" : ""}"
+        onclick="toggleTask(${task.id})">
+        ✓
+      </button>
+
+      <div class="task-text">
+        ${task.text}
+      </div>
+
+      <span class="task-tag"
+        style="background:${task.color}">
+        ${task.category || "Misc"}
+      </span>
+
+      <button class="task-del"
+        onclick="deleteTask(${task.id})">
+        🗑
+      </button>
+    `;
+
+    taskList.appendChild(card);
+  });
+}
+
+function toggleTask(id) {
+
+  tasks = tasks.map(task => {
+
+    if (task.id === id) {
+      task.done = !task.done;
+    }
+
+    return task;
   });
 
-  const fileName = `ToDoList_${Date.now()}.pdf`;
-  const fileURL  = URL.createObjectURL(doc.output("blob"));
-  saveDocument(fileName, fileURL);
-  showPDFMessage();
+  saveTasksToLocalStorage();
+
+  renderTasks();
+  updateStats();
 }
 
-function saveDocument(fileName, fileURL) {
-  const docItem = document.createElement("div");
-  docItem.className = "document-item";
-  docItem.innerHTML = `
-    <span>${fileName}</span>
-    <button onclick="viewPDF('${fileURL}')">View</button>
-    <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
-    <button onclick="deletePDF(this)">Delete</button>
-  `;
-  documentsList.appendChild(docItem);
+function deleteTask(id) {
+
+  tasks =
+    tasks.filter(task => task.id !== id);
+
+  saveTasksToLocalStorage();
+
+  renderTasks();
+  updateStats();
 }
 
-function viewPDF(fileURL)                  { window.open(fileURL, "_blank"); }
-function downloadPDF(fileURL, fileName)    {
-  const a = document.createElement("a");
-  a.href = fileURL; a.download = fileName; a.click();
-}
-function deletePDF(button)                 { button.parentElement.remove(); }
+function clearDone() {
 
-function showPDFMessage() {
-  pdfMessage.style.display = "flex";
-  setTimeout(() => { pdfMessage.style.display = "none"; }, 3000);
+  tasks =
+    tasks.filter(task => !task.done);
+
+  saveTasksToLocalStorage();
+
+  renderTasks();
+  updateStats();
 }
 
-// ─── Tab Navigation ────────────────────────────────────────────────────────────
+function filterTasks(button, filter) {
+
+  currentFilter = filter;
+
+  document
+    .querySelectorAll(".filter-btn")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+  button.classList.add("active");
+
+  renderTasks();
+}
+
+function updateStats() {
+
+  const total = tasks.length;
+
+  const done =
+    tasks.filter(task => task.done).length;
+
+  const pending = total - done;
+
+  totalTasks.textContent = total;
+  doneTasks.textContent = done;
+  pendingTasks.textContent = pending;
+
+  const percentage =
+    total === 0
+      ? 0
+      : Math.round((done / total) * 100);
+
+  progressFill.style.width =
+    `${percentage}%`;
+
+  progressPct.textContent =
+    `${percentage}%`;
+}
+
+function applyTheme(theme) {
+
+  document.body.className = "";
+
+  document.body.classList.add(`theme-${theme}`);
+}
 function showHome() {
-  document.getElementById("home-tab").style.display      = "block";
+
+  document.getElementById("home-tab").style.display = "block";
+
   document.getElementById("documents-tab").style.display = "none";
+
+  document
+    .getElementById("btn-home")
+    .classList.add("active");
+
+  document
+    .getElementById("btn-docs")
+    .classList.remove("active");
 }
 
 function showDocuments() {
-  document.getElementById("home-tab").style.display      = "none";
+
+  document.getElementById("home-tab").style.display = "none";
+
   document.getElementById("documents-tab").style.display = "block";
+
+  document
+    .getElementById("btn-docs")
+    .classList.add("active");
+
+  document
+    .getElementById("btn-home")
+    .classList.remove("active");
 }
+
+function saveAsPDF() {
+
+  if (tasks.length === 0) {
+    showToast("No tasks available");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+
+  const doc = new jsPDF();
+
+  doc.setFontSize(20);
+
+  doc.text("TaskFlow To-Do List", 20, 20);
+
+  doc.setFontSize(12);
+
+  let y = 40;
+
+  tasks.forEach((task, index) => {
+
+    const status =
+      task.done ? "[Done]" : "[Pending]";
+
+    doc.text(
+      `${index + 1}. ${task.text} (${task.category}) ${status}`,
+      20,
+      y
+    );
+
+    y += 10;
+
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
+  });
+
+  const fileName =
+    `TaskFlow_${Date.now()}.pdf`;
+
+  doc.save(fileName);
+
+  saveDocument(fileName);
+
+  showToast("PDF Downloaded Successfully");
+}
+
+function saveDocument(fileName) {
+
+  const item = document.createElement("div");
+
+  item.className = "doc-item";
+
+  item.innerHTML = `
+    <div class="doc-icon">📄</div>
+
+    <div class="doc-name">
+      ${fileName}
+    </div>
+
+    <div class="doc-date">
+      ${new Date().toLocaleString()}
+    </div>
+
+    <div class="doc-actions">
+
+      <button class="doc-btn">
+        Saved
+      </button>
+
+      <button class="doc-btn del"
+        onclick="this.parentElement.parentElement.remove()">
+        Delete
+      </button>
+
+    </div>
+  `;
+
+  documentsList.appendChild(item);
+}
+
+function showToast(message) {
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
+}
+
+loadTasksFromLocalStorage();
