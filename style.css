@@ -1588,3 +1588,175 @@ body.light-mode .brand-mark {
     border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+.arena-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+@media (max-width: 1024px) {
+  .arena-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .arena-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.frontend-arena {
+  padding-bottom: 6rem;
+}
+
+.arena-grid {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.arena-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+}
+
+.arena-modal-content {
+  background: #0f1729;
+  border: 1px solid rgba(124,156,255,0.2);
+  width: 90%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: 24px;
+  color: white;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.arena-start-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 12px;
+  background: #7c9cff;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.arena-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 2rem;
+}
+
+.arena-modal-content {
+  width: 100%;
+  max-width: 650px;
+  background: #0b1020;
+  border: 1px solid rgba(124,156,255,0.15);
+  border-radius: 28px;
+  padding: 2rem;
+  color: white;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.arena-status {
+  color: #7c9cff;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.arena-description {
+  margin-top: 1rem;
+  color: #b7c0d8;
+  line-height: 1.7;
+}
+
+.arena-progress-section {
+  margin-top: 2rem;
+}
+
+.arena-progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+
+.arena-progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.arena-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #7c9cff;
+  transition: 0.3s ease;
+}
+
+.arena-objectives-box {
+  margin-top: 2rem;
+}
+
+.objective-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  color: #d7def2;
+}
+
+.objective-check {
+  accent-color: #7c9cff;
+}
+
+.arena-footer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arena-complete-btn {
+  background: #7c9cff;
+  border: none;
+  padding: 0.9rem 1.4rem;
+  border-radius: 14px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}

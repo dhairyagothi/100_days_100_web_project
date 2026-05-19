@@ -874,3 +874,38 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('resize', () => {
   renderGrid();
 });
+
+const arenaBtn = document.querySelector(".open-arena");
+const arenaModal = document.getElementById("arenaModal");
+const closeArena = document.getElementById("closeModal");
+
+arenaBtn.addEventListener("click", () => {
+  arenaModal.style.display = "flex";
+});
+
+closeArena.addEventListener("click", () => {
+  arenaModal.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === arenaModal) {
+    arenaModal.style.display = "none";
+  }
+});
+
+const checks = document.querySelectorAll(".objective-check");
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
+
+checks.forEach(check => {
+  check.addEventListener("change", () => {
+
+    const checked = document.querySelectorAll(".objective-check:checked").length;
+    const total = checks.length;
+
+    const progress = (checked / total) * 100;
+
+    progressFill.style.width = `${progress}%`;
+    progressText.textContent = `${Math.round(progress)}%`;
+  });
+});
