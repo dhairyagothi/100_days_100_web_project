@@ -110,3 +110,7 @@ This project is licensed under the MIT License.
 ## Author
 
 Developed and enhanced by Indrayani Verulkar ✨
+
+## Additional Contributions
+
+- UI enhancements and menu interaction improvements by Vennela Gajula.
