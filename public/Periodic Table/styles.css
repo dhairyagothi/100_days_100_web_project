@@ -171,3 +171,35 @@ body {
         transform: scale(0.8);
     }
 }
+#theme-toggle{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+}
+
+.dark-mode{
+    background-color: #121212;
+    color: white;
+}
+
+
+body.dark-mode .element {
+    background: #222;
+    color: white;
+}
+#theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}

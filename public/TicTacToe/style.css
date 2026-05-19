@@ -1,4 +1,7 @@
-
+/* =============================================
+   Tic-Tac-Toe — Clean Color Theme
+   X = Orange  |  O = Blue
+   ============================================= */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -53,7 +56,7 @@ body {
   padding: 2rem 1rem;
 }
 
-/*Game wrapper */
+/* ── Game wrapper ─────────────────────────── */
 #game {
   display: flex;
   gap: 24px;
@@ -70,7 +73,7 @@ body {
 #game.turn-x { background: var(--bg-x-page); }
 #game.turn-o { background: var(--bg-o-page); }
 
-/*Sidebar */
+/* ── Sidebar ─────────────────────────────── */
 #sidebar {
   background: var(--bg-card);
   border: 2.5px solid var(--border-light);
@@ -111,7 +114,7 @@ body {
 .val-o { color: var(--o-color); }
 .val-d { color: var(--text-dark); }
 
-/* Sidebar buttons */
+/* ── Sidebar buttons ─────────────────────── */
 .sb-btn {
   width: 100%;
   padding: 11px 0;
@@ -134,7 +137,7 @@ body {
 .btn-o { background: var(--o-color); }
 .btn-o:hover { filter: brightness(1.12); }
 
-/*Status bar*/
+/* ── Status bar ──────────────────────────── */
 #status-bar {
   font-size: 16px;
   font-weight: 900;
@@ -145,7 +148,7 @@ body {
 #status-bar.sx { color: var(--x-color); }
 #status-bar.so { color: var(--o-color); }
 
-/* Board wrap  */
+/* ── Board wrap ──────────────────────────── */
 #board-wrap {
   display: flex;
   flex-direction: column;
@@ -153,7 +156,7 @@ body {
   gap: 14px;
 }
 
-/* Turn pills  */
+/* ── Turn pills ──────────────────────────── */
 #turn-bar {
   display: flex;
   gap: 12px;
@@ -191,7 +194,7 @@ body {
   border-color: var(--o-color);
 }
 
-/* Board grid  */
+/* ── Board grid ──────────────────────────── */
 #board {
   display: grid;
   grid-template-columns: repeat(3, var(--cell-size));
@@ -199,7 +202,7 @@ body {
   gap: var(--board-gap);
 }
 
-/*Cells  */
+/* ── Cells ───────────────────────────────── */
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
@@ -255,7 +258,7 @@ body {
 .cell.win-cell.x-mark { color: var(--x-color); }
 .cell.win-cell.o-mark { color: var(--o-color); }
 
-/* Animations*/
+/* ── Animations ──────────────────────────── */
 @keyframes pop {
   from { transform: scale(0.3);  opacity: 0; }
   to   { transform: scale(1);    opacity: 1; }
@@ -273,7 +276,7 @@ body {
   to   { transform: scale(1);    opacity: 1; }
 }
 
-/*  Win overlay */
+/* ── Win overlay ─────────────────────────── */
 #win-overlay {
   display: none;
   position: absolute;
@@ -328,7 +331,7 @@ body {
 #win-btn.btn-d { background: var(--text-mid); }
 #win-btn:hover { filter: brightness(1.12); }
 
-/* Confetti canvas*/
+/* ── Confetti canvas ─────────────────────── */
 #confetti-canvas {
   position: absolute;
   inset: 0;
@@ -339,7 +342,7 @@ body {
   z-index: 9;
 }
 
-/*  Responsive */
+/* ── Responsive ──────────────────────────── */
 @media (max-width: 600px) {
   :root { --cell-size: 95px; }
   #game { flex-direction: column; align-items: center; padding: 18px 12px; }

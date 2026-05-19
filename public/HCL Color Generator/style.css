@@ -108,6 +108,10 @@ span {
   border-radius: 16px;
   border: 2px solid rgba(255,255,255,0.15);
   transition: background-color 0.1s ease, box-shadow 0.3s ease;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #rgbText, #hexText {
@@ -132,3 +136,14 @@ span {
 }
 #copyBtn:hover  { opacity: 0.85; transform: translateY(-2px); }
 #copyBtn:active { transform: translateY(0); }
+
+#colorValue {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-align: center;
+}
