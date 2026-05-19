@@ -33,6 +33,10 @@ function flipCard(event) {
     if (lockBoard) return;
 
     const clickedCard = event.currentTarget;
+
+    if (clickedCard === firstCard) return;
+
+    
     clickedCard.classList.add('flipped');
 
     if (!firstCard) {
@@ -75,7 +79,14 @@ function unflipCards() {
 // Update the score based on matching pairs
 function updateScore() {
     matchesCount++;
+
     document.getElementById('score-board').innerText = `Matches: ${matchesCount}`;
+
+    if (matchesCount === colors.length) {
+    setTimeout(() => {
+        alert('🎉 Congratulations! You matched all cards!');
+    }, 300);
+   }
 }
 
 // Reset variables and unlock board
