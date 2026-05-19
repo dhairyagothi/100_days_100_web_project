@@ -631,8 +631,14 @@ main {
 #task-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-height: 80px;
+  gap: 12px;
+  min-height: auto;
+  margin-top: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  backdrop-filter: blur(10px);
 }
 
 .empty-state {
@@ -640,9 +646,11 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 50px 20px;
+  padding: 20px;
   color: var(--text-muted);
   gap: 12px;
+  min-height: 120px;
+  text-align: center;
 }
 .empty-icon {
   font-size: 40px;
@@ -1158,4 +1166,50 @@ main {
   #submittask {
     width: 100%;
   }
+}
+/* ------------------------------
+   KANBAN STATUS SECTIONS
+--------------------------------*/
+
+.status-section {
+  margin-bottom: 24px;
+}
+
+.status-section h3 {
+  color: var(--accent);
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.drop-zone {
+  min-height: 120px;
+  padding: 12px;
+  border: 2px dashed var(--card-border);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.drop-zone:hover {
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Better drag cursor */
+.task-card {
+  cursor: grab;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+/* Empty state spacing fix */
+#empty-state {
+  margin-top: 20px;
 }

@@ -441,3 +441,148 @@ function showDocuments() {
   document.getElementById('home-tab').style.display = 'none';
   document.getElementById('documents-tab').style.display = 'block';
 }
+
+function c3() {
+  let image = 'linear-gradient(90deg, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d)';
+  document.body.style.background = image;
+  currentTheme = "theme3";
+  updateNotesTheme();
+}
+
+function c4() {
+  let image = 'linear-gradient(90deg,rgb(120, 25, 105),rgb(197, 211, 201))';
+  document.body.style.background = image;
+  currentTheme = "theme4";
+  updateNotesTheme();
+}
+
+function c5() {
+  let image = 'linear-gradient(90deg, #b92b27, #1565c0)';
+  document.body.style.background = image;
+  currentTheme = "theme5";
+  updateNotesTheme();
+}
+
+function updateNotesTheme() {
+  const notes = document.querySelectorAll(".notes");
+  notes.forEach((note) => {
+    if (note.style.backgroundColor === "white") {
+      note.style.backgroundColor = currentTheme === "theme1"
+        ? "rgba(232,221,227,1)"
+        : currentTheme === "theme2"
+          ? "#e4afcb"
+          : currentTheme === "theme3"
+            ? "#39db8c"
+            : currentTheme === "theme4"
+              ? "rgb(120, 25, 105)"
+              : "#b92b27";
+    }
+  });
+}
+/* =========================
+   KANBAN DRAG DROP FEATURE
+   (Append below existing code)
+
+// Make all newly created notes draggable
+function enableDragForNotes() {
+  const notes = document.querySelectorAll(".notes");
+
+  notes.forEach((note, index) => {
+    note.setAttribute("draggable", true);
+    note.dataset.id = index;
+
+    note.addEventListener("dragstart", function (e) {
+      e.dataTransfer.setData("text/plain", note.dataset.id);
+    });
+  });
+}
+
+// Override existing Add() behavior slightly
+const originalAdd = Add;
+
+Add = function () {
+  originalAdd();
+  enableDragForNotes();
+  saveTaskState();
+};
+
+// Save task positions/status
+function saveTaskState() {
+  const pendingTasks = [];
+  const progressTasks = [];
+  const completedTasks = [];
+
+  document.querySelectorAll("#pending-list .notes").forEach(task => {
+    pendingTasks.push(task.outerHTML);
+  });
+
+  document.querySelectorAll("#progress-list .notes").forEach(task => {
+    progressTasks.push(task.outerHTML);
+  });
+
+  document.querySelectorAll("#completed-list .notes").forEach(task => {
+    completedTasks.push(task.outerHTML);
+  });
+
+  localStorage.setItem("pendingTasks", JSON.stringify(pendingTasks));
+  localStorage.setItem("progressTasks", JSON.stringify(progressTasks));
+  localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+}
+
+// Drag events
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+function dropTask(event, sectionId) {
+  event.preventDefault();
+
+  const draggedId = event.dataTransfer.getData("text/plain");
+  const draggedTask = document.querySelector(
+    `.notes[data-id="${draggedId}"]`
+  );
+
+  if (draggedTask) {
+    document.getElementById(sectionId).appendChild(draggedTask);
+    saveTaskState();
+  }
+}
+
+// Restore tasks after refresh
+function loadTaskState() {
+  const sections = [
+    "pending-list",
+    "progress-list",
+    "completed-list"
+  ];
+
+  sections.forEach(section => {
+    const savedTasks = JSON.parse(
+      localStorage.getItem(
+        section === "pending-list"
+          ? "pendingTasks"
+          : section === "progress-list"
+          ? "progressTasks"
+          : "completedTasks"
+      )
+    ) || [];
+
+    const container = document.getElementById(section);
+
+    if (container) {
+      container.innerHTML = "";
+
+      savedTasks.forEach(taskHTML => {
+        container.innerHTML += taskHTML;
+      });
+    }
+  });
+
+  enableDragForNotes();
+}
+
+// Run when page loads
+window.onload = function () {
+  loadTaskState();
+  enableDragForNotes();
+};
