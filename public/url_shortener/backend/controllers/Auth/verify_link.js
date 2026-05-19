@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const Links_data = require('../../models/LinksData')
 const ClicksLogs = require('../../models/CicksLogs')
+const { AppError } = require('../../middlewares/errorHandler')
 
 
 
@@ -12,7 +13,7 @@ exports.verified_password = async (req, res) => {
 
     const link = await Links_data.findOne({ randomId: shortcode });
     if (!link) {
-        return res.status(404).json({ msg: "Link not found" });
+        throw new AppError("Link not found", 404);
     }
 
 
@@ -36,7 +37,7 @@ exports.verified_password = async (req, res) => {
     }
 
     else {
-        res.status(404).json({ msg: "Password dont not match , TRY again " })
+        throw new AppError("Password dont not match , TRY again ", 401)
 
     }
 

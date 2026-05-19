@@ -143,5 +143,28 @@ body{
     align-items: center;
 }
 
+#btn.pause {
+    background-color: #e74c3c;
+}
+
+#btn.pause:hover {
+    background-color: #c0392b;
+}
+
+#btn.resume {
+    background-color: #52c234;
+}
+
+#btn.resume:hover {
+    background-color: #1d6802;
+}
+
+#btn.restart {
+    background-color: #3498db;
+}
+
+#btn.restart:hover {
+    background-color: #2980b9;
+}
 
 
