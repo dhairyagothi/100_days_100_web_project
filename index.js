@@ -143,7 +143,7 @@ const PROJECT_DATA = [
   ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
   ['Day 125', 'Snakeladder',   './public/Snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
-
+  ['Day 127', 'AI Voice Assistant UI', './public/AI_Voice_Assistant_UI/index.html', 'html css js', 'intermediate']
 ];
 
 // Alias for consistency
@@ -166,6 +166,7 @@ const INITIAL_VISIBLE_ITEMS = 3;
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
 console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
