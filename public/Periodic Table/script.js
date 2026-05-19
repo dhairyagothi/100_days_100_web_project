@@ -119,6 +119,173 @@ const elements = [
     { number: 118, symbol: "Og", name: "Oganesson", mass: "295", group: 18, period: 7 }
 ];
 
+const categories = {
+    H: "Nonmetal",
+    He: "Noble Gas",
+    Li: "Alkali Metal",
+    Be: "Alkaline Earth Metal",
+    B: "Metalloid",
+    C: "Nonmetal",
+    N: "Nonmetal",
+    O: "Nonmetal",
+    F: "Halogen",
+    Ne: "Noble Gas",
+    Na: "Alkali Metal",
+    Mg: "Alkaline Earth Metal",
+    Al: "Post-Transition Metal",
+    Si: "Metalloid",
+    P: "Nonmetal",
+    S: "Nonmetal",
+    Cl: "Halogen",
+    Ar: "Noble Gas",
+    K: "Alkali Metal",
+    Ca: "Alkaline Earth Metal",
+    Sc: "Transition Metal",
+    Ti: "Transition Metal",
+    V: "Transition Metal",
+    Cr: "Transition Metal",
+    Mn: "Transition Metal",
+    Fe: "Transition Metal",
+    Co: "Transition Metal",
+    Ni: "Transition Metal",
+    Cu: "Transition Metal",
+    Zn: "Transition Metal",
+    Br: "Halogen",
+    Kr: "Noble Gas",
+    Ag: "Transition Metal",
+    Au: "Transition Metal",
+    Hg: "Transition Metal",
+    I: "Halogen",
+    Xe: "Noble Gas",
+    Rn: "Noble Gas"
+};
+
+elements.forEach(element => {
+    element.category = categories[element.symbol] || "Unknown";
+});
+
+const elementFacts = {
+  H: "🚀 Hydrogen is the lightest and most abundant element in the universe.",
+  He: "🎈 Helium is lighter than air and used in balloons.",
+  Li: "🔋 Lithium is widely used in rechargeable batteries.",
+  Be: "🛰️ Beryllium is used in aerospace materials because it is lightweight.",
+  B: "🔥 Boron is used in heat-resistant glass and detergents.",
+  C: "💎 Carbon exists as diamond and graphite.",
+  N: "🌱 Nitrogen makes up about 78% of Earth’s atmosphere.",
+  O: "🫁 Oxygen is essential for human respiration.",
+  F: "🦷 Fluorine is commonly found in toothpaste.",
+  Ne: "💡 Neon is used in colorful advertising signs.",
+  Na: "🧂 Sodium is a major component of table salt.",
+  Mg: "📸 Magnesium burns with a bright white flame.",
+  Al: "✈️ Aluminium is lightweight and used in aircraft.",
+  Si: "💻 Silicon is the foundation of computer chips.",
+  P: "⚡ Phosphorus glows faintly in the dark.",
+  S: "🌋 Sulfur is commonly found near volcanoes.",
+  Cl: "🏊 Chlorine is used to disinfect swimming pools.",
+  Ar: "💡 Argon is used inside electric light bulbs.",
+  K: "🍌 Potassium is important for muscle function.",
+  Ca: "🦴 Calcium strengthens bones and teeth.",
+  Sc: "🏌️ Scandium is used in sports equipment and aerospace alloys.",
+  Ti: "🛩️ Titanium is strong, lightweight, and corrosion-resistant.",
+  V: "🔩 Vanadium strengthens steel alloys.",
+  Cr: "✨ Chromium gives stainless steel its shine.",
+  Mn: "🔋 Manganese is important in battery production.",
+  Fe: "🧲 Iron is the main component of steel.",
+  Co: "🎨 Cobalt gives blue color to glass and ceramics.",
+  Ni: "🪙 Nickel is commonly used in coins.",
+  Cu: "⚡ Copper is an excellent conductor of electricity.",
+  Zn: "🛡️ Zinc protects iron from rusting.",
+  Ga: "🌡️ Gallium can melt in your hand.",
+  Ge: "📡 Germanium is used in semiconductors.",
+  As: "☠️ Arsenic is toxic but used in electronics.",
+  Se: "📷 Selenium is used in photocells and electronics.",
+  Br: "🌊 Bromine is one of the few liquid elements.",
+  Kr: "💡 Krypton is used in high-performance lighting.",
+  Rb: "⚛️ Rubidium is highly reactive with water.",
+  Sr: "🎆 Strontium produces red fireworks.",
+  Y: "📺 Yttrium is used in LED and display technology.",
+  Zr: "⚙️ Zirconium resists corrosion and is used in reactors.",
+  Nb: "🧲 Niobium is used in superconducting magnets.",
+  Mo: "🔥 Molybdenum helps steel withstand high temperatures.",
+  Tc: "☢️ Technetium was the first artificially produced element.",
+  Ru: "💍 Ruthenium is used in durable jewelry coatings.",
+  Rh: "🚗 Rhodium is used in catalytic converters.",
+  Pd: "🚘 Palladium is important in car exhaust systems.",
+  Ag: "🥈 Silver has the highest electrical conductivity.",
+  Cd: "🔋 Cadmium is used in rechargeable batteries.",
+  In: "📱 Indium is used in touchscreens.",
+  Sn: "🥫 Tin is used to coat food cans.",
+  Sb: "🔥 Antimony improves flame resistance.",
+  Te: "☀️ Tellurium is used in solar panels.",
+  I: "🩺 Iodine is essential for thyroid health.",
+  Xe: "🚘 Xenon is used in bright car headlights.",
+  Cs: "⏰ Cesium is used in atomic clocks.",
+  Ba: "🏥 Barium compounds are used in medical imaging.",
+  La: "📷 Lanthanum is used in camera lenses.",
+  Ce: "🔥 Cerium is used in lighter flints.",
+  Pr: "🟢 Praseodymium gives glass a green color.",
+  Nd: "🧲 Neodymium magnets are extremely powerful.",
+  Pm: "☢️ Promethium is radioactive.",
+  Sm: "🎧 Samarium is used in strong magnets.",
+  Eu: "💡 Europium creates red colors in TV screens.",
+  Gd: "🏥 Gadolinium is used in MRI scans.",
+  Tb: "💚 Terbium produces green phosphors.",
+  Dy: "🧲 Dysprosium improves magnet performance.",
+  Ho: "⚡ Holmium has one of the strongest magnetic properties.",
+  Er: "🌐 Erbium is used in fiber optic cables.",
+  Tm: "📡 Thulium is used in portable X-ray devices.",
+  Yb: "🔬 Ytterbium is used in atomic clocks and lasers.",
+  Lu: "🧪 Lutetium is one of the rarest rare-earth elements.",
+  Hf: "🚀 Hafnium is used in nuclear control rods.",
+  Ta: "📱 Tantalum is used in mobile phone capacitors.",
+  W: "💡 Tungsten has the highest melting point of all metals.",
+  Re: "🛩️ Rhenium is used in jet engines.",
+  Os: "⚖️ Osmium is one of the densest elements.",
+  Ir: "🌋 Iridium is highly resistant to corrosion.",
+  Pt: "💍 Platinum is used in fine jewelry.",
+  Au: "👑 Gold does not rust or tarnish.",
+  Hg: "🌡️ Mercury is liquid at room temperature.",
+  Tl: "☠️ Thallium is highly toxic.",
+  Pb: "🔋 Lead is widely used in car batteries.",
+  Bi: "💄 Bismuth is used in cosmetics and medicines.",
+  Po: "☢️ Polonium is extremely radioactive.",
+  At: "🔬 Astatine is one of the rarest elements on Earth.",
+  Rn: "☢️ Radon is a radioactive gas.",
+  Fr: "⚡ Francium is extremely reactive.",
+  Ra: "☢️ Radium glows because of radioactivity.",
+  Ac: "🔬 Actinium is used in scientific research.",
+  Th: "⚛️ Thorium can be used as nuclear fuel.",
+  Pa: "☢️ Protactinium is rare and radioactive.",
+  U: "⚛️ Uranium is used in nuclear power plants.",
+  Np: "☢️ Neptunium is radioactive and synthetic.",
+  Pu: "⚛️ Plutonium is used in nuclear weapons and reactors.",
+  Am: "🚨 Americium is used in smoke detectors.",
+  Cm: "🔬 Curium is used in space research.",
+  Bk: "🧪 Berkelium is mainly used for research.",
+  Cf: "🔍 Californium is used in neutron detectors.",
+  Es: "⚛️ Einsteinium was discovered in nuclear explosion debris.",
+  Fm: "🔬 Fermium is a synthetic radioactive element.",
+  Md: "🧪 Mendelevium is named after Dmitri Mendeleev.",
+  No: "⚛️ Nobelium is named after Alfred Nobel.",
+  Lr: "🔬 Lawrencium is named after Ernest Lawrence.",
+  Rf: "⚛️ Rutherfordium honors Ernest Rutherford.",
+  Db: "🔬 Dubnium is named after Dubna, Russia.",
+  Sg: "🧪 Seaborgium is named after Glenn Seaborg.",
+  Bh: "⚛️ Bohrium is named after Niels Bohr.",
+  Hs: "🔬 Hassium is named after the German state of Hesse.",
+  Mt: "🧪 Meitnerium honors physicist Lise Meitner.",
+  Ds: "⚛️ Darmstadtium is named after Darmstadt, Germany.",
+  Rg: "🪙 Roentgenium honors Wilhelm Röntgen.",
+  Cn: "🔬 Copernicium is named after Nicolaus Copernicus.",
+  Nh: "🇯🇵 Nihonium is named after Japan.",
+  Fl: "⚛️ Flerovium honors the Flerov Laboratory.",
+  Mc: "🧪 Moscovium is named after Moscow region.",
+  Lv: "🔬 Livermorium honors Lawrence Livermore Laboratory.",
+  Ts: "⚛️ Tennessine is named after Tennessee.",
+  Og: "🌌 Oganesson is named after physicist Yuri Oganessian."
+};
+
+
 const container = document.querySelector(".table-container");
 
 const totalGroups = 18; // Total groups (columns) in the periodic table
@@ -135,12 +302,21 @@ for (let period = 1; period <= totalPeriods; period++) {
 
         if (element) {
             cell.className = "element";
-            cell.innerHTML = `
-                <div class="element-number">${element.number}</div>
-                <div class="element-symbol">${element.symbol}</div>
-                <div class="element-name">${element.name}</div>
-                <div class="tooltip">Atomic Mass: ${element.mass}</div>
-            `;
+           cell.innerHTML = `
+    <div class="element-number">${element.number}</div>
+    <div class="element-symbol">${element.symbol}</div>
+    <div class="element-name">${element.name}</div>
+    <div class="tooltip">Atomic Mass: ${element.mass}</div>
+`;
+
+cell.dataset.name = element.name;
+cell.dataset.symbol = element.symbol;
+cell.dataset.number = element.number;
+cell.dataset.mass = element.mass;
+cell.dataset.group = element.group;
+cell.dataset.period = element.period;
+cell.dataset.category = element.category;
+            
         }
 
         container.appendChild(cell);
@@ -157,3 +333,78 @@ toggleBtn.addEventListener("click", () => {
         toggleBtn.textContent = "🌙 Dark Mode";
     }
 });
+
+/* Modal Elements */
+const modal = document.getElementById("element-modal");
+const closeBtn = document.querySelector(".close-btn");
+
+/* Modal Data Fields */
+const modalName = document.getElementById("modal-name");
+const modalSymbol = document.getElementById("modal-symbol");
+const modalNumber = document.getElementById("modal-number");
+const modalMass = document.getElementById("modal-mass");
+const modalGroup = document.getElementById("modal-group");
+const modalPeriod = document.getElementById("modal-period");
+const modalCategory = document.getElementById("modal-category");
+const modalFact = document.getElementById("modal-fact");
+
+/* Open Modal on Element Click */
+document.querySelectorAll(".element").forEach((elementCard) => {
+
+    elementCard.addEventListener("click", () => {
+
+        modalName.textContent = elementCard.dataset.name;
+        modalSymbol.textContent = elementCard.dataset.symbol;
+        modalNumber.textContent = elementCard.dataset.number;
+        modalMass.textContent = elementCard.dataset.mass;
+        modalGroup.textContent = elementCard.dataset.group;
+        modalPeriod.textContent = elementCard.dataset.period;
+        modalCategory.textContent = elementCard.dataset.category;
+        modalFact.textContent = elementFacts[elementCard.dataset.symbol];
+
+        const category = elementCard.dataset.category;
+
+if (category === "Nonmetal") {
+    modalCategory.style.background = "#43a047";
+}
+else if (category === "Noble Gas") {
+    modalCategory.style.background = "#1e88e5";
+}
+else if (category === "Alkali Metal") {
+    modalCategory.style.background = "#e53935";
+}
+else if (category === "Transition Metal") {
+    modalCategory.style.background = "#f9a825";
+}
+else if (category === "Metalloid") {
+    modalCategory.style.background = "#8e24aa";
+}
+else {
+    modalCategory.style.background = "#546e7a";
+}
+
+
+        modal.style.display = "flex";
+    });
+});
+
+
+/* Close Modal */
+closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+/* Close when clicking outside */
+window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+});
+
+/* ESC key support */
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        modal.style.display = "none";
+    }
+});
+
