@@ -252,8 +252,9 @@ body.light-mode .navbar {
 
 .btn-ghost {
     background: transparent;
-    color: var(--text-secondary);
+    color: var(--bg-elevated);
     border-color: var(--border);
+    background-color: var(--text-primary);
 }
 
 .btn-ghost:hover {
@@ -538,7 +539,7 @@ body.light-mode .navbar {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    padding: 0.22rem 0.6rem;
+    padding: 1rem 0.6rem;
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Courier New', monospace;
     font-size: 0.68rem;
     font-weight: 600;
