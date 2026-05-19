@@ -251,3 +251,125 @@ const addComment = () => {
 // =======================
 
 renderComments();
+
+// --------------xyz--------------------
+
+const blogContainer =
+    document.getElementById("blogCards");
+
+blogs.forEach(blog => {
+
+    blogContainer.innerHTML += `
+        <div class="blog-card">
+
+            <img src="${blog.image}">
+
+            <div class="card-content">
+
+                <span>${blog.category}</span>
+
+                <h2>${blog.title}</h2>
+
+                <p>${blog.desc}</p>
+
+                <button>
+                    Read More
+                </button>
+
+            </div>
+
+        </div>
+    `;
+});
+
+// =========================
+// DARK MODE TOGGLE
+// =========================
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+// Load saved theme
+const savedTheme =
+    localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+
+    document.body.classList.add("dark-mode");
+
+    themeToggle.textContent = "🌙";
+
+} else {
+
+    themeToggle.textContent = "☀️";
+}
+
+// Toggle Theme
+themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    // Check current theme
+    const isDark =
+        document.body.classList.contains("dark-mode");
+
+    if (isDark) {
+
+        localStorage.setItem("theme", "dark");
+
+        themeToggle.textContent = "🌙";
+
+    } else {
+
+        localStorage.setItem("theme", "light");
+
+        themeToggle.textContent = "☀️";
+    }
+});
+
+function searchBlogs() {
+
+    // input value
+    const searchValue = document
+        .getElementById("sidebarSearch")
+        .value
+        .toLowerCase();
+
+    // saare blog cards
+    const blogCards = document.querySelectorAll(".blog-card");
+
+    blogCards.forEach((card) => {
+
+        // title + description text
+        const title = card
+            .querySelector(".blog-title")
+            .innerText
+            .toLowerCase();
+
+        const description = card
+            .querySelector(".blog-description")
+            .innerText
+            .toLowerCase();
+
+        // match check
+        if (
+            title.includes(searchValue) ||
+            description.includes(searchValue)
+        ) {
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+
+    });
+
+}
+document
+    .getElementById("sidebarSearch")
+    .addEventListener("keyup", function(event) {
+
+        if (event.key === "Enter") {
+            searchBlogs();
+        }
+
+});
