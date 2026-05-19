@@ -19,17 +19,6 @@ const weatherFields = {
 };
 
 const cityInput = document.getElementById('city');
-const searchButton = document.getElementById('submit');
-const loading = document.getElementById('loading');
-const cityName = document.getElementById('cityName');
-const statusMessage = document.getElementById('statusMessage');
-const presetCityLinks = document.querySelectorAll('.dropdown-item[data-city]');
-const commonCityRows = Array.from(document.querySelectorAll('tbody tr')).filter((row) => {
-  const rowHeader = row.querySelector('th[scope="row"]');
-  return rowHeader && COMMON_CITIES.includes(rowHeader.textContent.trim());
-});
-
-function normalizeCity(value) {
   return String(value || '').trim().replace(/\s+/g, ' ');
 }
 
