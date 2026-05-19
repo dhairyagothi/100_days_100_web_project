@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +12,12 @@
 
 <body>
     <canvas id="bgCanvas"></canvas>
-
     <nav class="navbar">
         <div class="navbar-brand">
             <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
             <span>100 DAYS 100 WEB PROJECTS</span>
         </div>
+    </nav>
         <div class="buttons">
             <button id="theme-toggle" title="Toggle Theme">
                 <i class="fas fa-moon"></i>
@@ -33,7 +32,6 @@
     <section class="hero-section">
         <h1 class="hero-title">100 Days 100 Web Projects</h1>
         <p class="hero-subtitle">Exploring the art of the possible through 100+ high-quality web experiments</p>
-
         <div class="stats-container">
             <div class="stat-card">
                 <div class="stat-value" id="starCount">...</div>
@@ -52,7 +50,6 @@
                 <div class="stat-label">Pull Requests</div>
             </div>
         </div>
-
         <div class="search-container">
             <div class="search-wrapper">
                 <input type="text" class="search-input" id="searchInput" placeholder="Search 112+ projects...">
@@ -61,15 +58,12 @@
                 </button>
             </div>
         </div>
-
         
 <div class="stats-counter">
   Words: <span id="wordCount">0</span> | 
   Letters: <span id="charCount">0</span>
 </div>
-
     </section>
-
     <section class="projects-section">
         <div class="table-container">
             <table>
@@ -87,7 +81,6 @@
         </div>
         <div id="no-projects">No Projects Found</div>
     </section>
-
     <footer class="footer">
         <div class="footer-content">
             <div>
@@ -121,11 +114,10 @@
             </div>
         </div>
     </footer>
-
     <button id="scrollBtn">
         <i class="fas fa-arrow-up"></i>
     </button>
-    
+
     <script src="./index.js"></script>
 
     <style>
@@ -136,16 +128,13 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-
     background: linear-gradient(135deg, #7f5af0, #2cb67d);
     color: white;
     font-weight: 600;
     text-decoration: none;
-
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(127, 90, 240, 0.4);
 }
-
 #try-readme-button:hover {
     transform: translateY(-4px) scale(1.03);
     box-shadow: 0 8px 22px rgba(127, 90, 240, 0.6);
@@ -153,7 +142,6 @@
 #try-readme-button i {
     transition: transform 0.3s ease;
 }
-
 #try-readme-button:hover i {
     transform: rotate(-30deg) scale(1.2);
 }
