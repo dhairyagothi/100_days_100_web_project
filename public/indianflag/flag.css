@@ -169,3 +169,22 @@ body {
 .quote-nav button:hover {
   background-color: #046A38;
 }
+
+.fixed-quote-card{
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.quote{
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.quote-nav{
+  margin-top: auto;
+}
