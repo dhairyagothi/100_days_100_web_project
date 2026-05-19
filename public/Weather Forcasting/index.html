@@ -60,6 +60,17 @@
 
     <div class="container">
         <h1 class="my-4 text-center">Weather for <span id="cityName"></span></h1>
+        
+        <div id="loading" class="text-center d-none my-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        
+        <div id="error-message" class="alert alert-danger d-none text-center my-4" role="alert">
+            City not found or API request failed. Please try again.
+        </div>
+
         <main>
             <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
                 <div class="col">
