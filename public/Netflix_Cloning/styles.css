@@ -160,6 +160,10 @@ body {
     display: flex;
     align-items: center;
     gap: 60px;
+    max-width: 1200px;        
+    margin: 0 auto;           
+    width: 100%;              
+    box-sizing: border-box;
 }
 
 .feature:nth-child(even) {
@@ -178,10 +182,19 @@ body {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.5;
 }
+.feature .text {
+    flex: 1;                 
+    min-width: 0;
+}
 
 .feature img {
-    max-width: 100%;
+    max-width: 45%;
     height: auto;
+    flex-shrink: 0;
+}
+section.feature {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* ============= FAQ SECTION ============= */
