@@ -1180,6 +1180,33 @@ body.light-mode .navbar {
   transform: translateY(-2px);
 }
 
+#scrollDownBtn {
+    position: fixed;
+    bottom: 5rem;
+    right: 2rem;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: var(--t);
+    z-index: 50;
+}
+
+#scrollDownBtn.show { display: flex; }
+
+#scrollDownBtn:hover {
+    border-color: var(--border-accent);
+    color: var(--accent);
+    transform: translateY(2px);
+}
+
 /* ============================================================
    ANIMATIONS
    ============================================================ */

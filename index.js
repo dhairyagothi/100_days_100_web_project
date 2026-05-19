@@ -563,33 +563,48 @@ function initScrollBtn() {
   const btn = document.getElementById('scrollBtn');
   if (!btn) return;
 
-  window.addEventListener('scroll', () => {
-    btn.classList.toggle('show', window.scrollY > 400);
-  });
-
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
 
-/* ============================================================
-   BACK TO TOP BUTTON
-   ============================================================ */
-const backToTopButton = document.getElementById('backToTop');
+function initScrollDownBtn() {
+    const btn = document.getElementById('scrollDownBtn');
+    if (!btn) return;
 
-if (backToTopButton) {
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) {
-      backToTopButton.style.display = 'block';
-    } else {
-      backToTopButton.style.display = 'none';
-    }
-  });
-
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+    });
 }
+
+// Consolidated scroll event handler for all scroll-triggered elements
+function handleScroll() {
+    // Scroll-to-top button (#scrollBtn)
+    const scrollBtn = document.getElementById('scrollBtn');
+    if (scrollBtn) {
+        scrollBtn.classList.toggle('show', window.scrollY > 400);
+    }
+
+    // Scroll-to-down button (#scrollDownBtn)
+    const scrollDownBtn = document.getElementById('scrollDownBtn');
+    if (scrollDownBtn) {
+        const isNearBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 400);
+        scrollDownBtn.classList.toggle('show', !isNearBottom && window.scrollY > 400);
+    }
+
+    // Back-to-top button (legacy)
+    const backToTopButton = document.getElementById("backToTop");
+    if (backToTopButton) {
+        if (window.scrollY > 200) {
+            backToTopButton.style.display = "block";
+        } else {
+            backToTopButton.style.display = "none";
+        }
+    }
+}
+
+// Single scroll event listener for all elements
+window.addEventListener('scroll', handleScroll);
 
 /* ============================================================
    INIT
@@ -607,4 +622,16 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRecentProjects();
   fetchRepoStats();
   initScrollBtn();
+  initScrollDownBtn();
+
+  // Back-to-top button click handler (legacy)
+  const backToTopButton = document.getElementById("backToTop");
+  if (backToTopButton) {
+    backToTopButton.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
 });
