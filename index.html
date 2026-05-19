@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript.">
+    <meta name="description"
+        content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript.">
     <title>100 Days · 100 Web Projects</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
@@ -50,14 +55,15 @@
                 <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
                     Browse Projects <i class="fas fa-arrow-down"></i>
                 </a>
-                <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="btn btn-ghost" id="heroGithubBtn">
+                <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="btn btn-ghost"
+                    id="heroGithubBtn">
                     <i class="fab fa-github"></i> GitHub
                 </a>
             </div>
 
             <div class="stats-strip" id="statsStrip">
                 <span class="stat-item">
-                    <strong id="projectCount">—</strong> Projects
+                        <strong id="projectCount" >—</strong> Projects
                 </span>
                 <span class="stat-divider">·</span>
                 <span class="stat-item">
@@ -94,16 +100,12 @@
             <div class="projects-header">
                 <div class="search-bar">
                     <i class="fas fa-search search-icon"></i>
-                    <input
-                        type="text"
-                        id="searchInput"
-                        class="search-input"
-                        placeholder="Search projects…"
-                        autocomplete="off"
-                    >
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search projects…"
+                        autocomplete="off">
                 </div>
                 <div class="filter-chips" id="filterChips">
-                    <button class="chip active" data-filter="all" id="filterAll">All <span class="chip-count" id="allCount">Projects</span></button>
+                    <button class="chip active" data-filter="all" id="filterAll">All <span class="chip-count"
+                            id="allCount">Projects</span></button>
                     <button class="chip" data-filter="game" id="filterGame">Games</button>
                     <button class="chip" data-filter="clone" id="filterClone">Clones</button>
                     <button class="chip" data-filter="tool" id="filterTool">Tools</button>
@@ -127,14 +129,16 @@
         <div class="footer-inner">
             <div class="footer-brand">
                 <span class="footer-logo">100 Days</span>
-                <p>An open-source frontend exploration challenge — a growing collection of HTML, CSS &amp; JavaScript experiments.</p>
+                <p>An open-source frontend exploration challenge — a growing collection of HTML, CSS &amp; JavaScript
+                    experiments.</p>
             </div>
 
             <div class="footer-nav">
                 <h4>Navigate</h4>
                 <ul>
                     <li><a href="#projects">Browse Projects</a></li>
-                    <li><a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub Repo</a></li>
+                    <li><a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub
+                            Repo</a></li>
                     <li><a href="./contributors/contributor.html">Contributors</a></li>
                     <li><a href="./public/Login.html">Sign In</a></li>
                 </ul>
@@ -143,13 +147,16 @@
             <div class="footer-social">
                 <h4>Connect</h4>
                 <div class="social-row">
-                    <a href="https://github.com/dhairyagothi" target="_blank" class="social-icon" aria-label="GitHub" id="footerGithub">
+                    <a href="https://github.com/dhairyagothi" target="_blank" class="social-icon" aria-label="GitHub"
+                        id="footerGithub">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-icon" aria-label="LinkedIn" id="footerLinkedin">
+                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-icon"
+                        aria-label="LinkedIn" id="footerLinkedin">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-icon" aria-label="Instagram" id="footerInstagram">
+                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-icon"
+                        aria-label="Instagram" id="footerInstagram">
                         <i class="fab fa-instagram"></i>
                     </a>
                 </div>
@@ -171,8 +178,9 @@
 
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
-  <script>
-    document.getElementById("Current-year").textContent=new Date().getFullYear();
-  </script>
+    <script>
+        document.getElementById("Current-year").textContent = new Date().getFullYear();
+    </script>
 </body>
+
 </html>
