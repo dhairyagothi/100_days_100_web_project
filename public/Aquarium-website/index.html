@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Azure Aquarium</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body{
+      background:#e8f9ff;
+      color:#033b4a;
+    }
+
+    header{
+      background:#05052f;
+      color:white;
+      padding:20px;
+      text-align:center;
+    }
+
+    nav{
+      background:#0077b6;
+      padding:12px;
+      text-align:center;
+    }
+
+    nav a{
+      color:white;
+      text-decoration:none;
+      margin:0 15px;
+      font-weight:bold;
+    }
+
+    .hero{
+      height:300px;
+      background:url('https://images.unsplash.com/photo-1520301255226-bf5f144451c1?q=80&w=1200') center/cover;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+      text-shadow:2px 2px 5px black;
+      font-size:40px;
+      font-weight:bold;
+    }
+
+    .container{
+      padding:40px;
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:30px;
+      font-size:32px;
+    }
+
+    .products{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+      gap:20px;
+    }
+
+    .card{
+      background:white;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      transition:0.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+    }
+
+    .card img{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+    }
+
+    .card-content{
+      padding:15px;
+    }
+
+    .card h3{
+      margin-bottom:10px;
+    }
+
+    .price{
+      color:#0077b6;
+      font-weight:bold;
+      margin-top:10px;
+    }
+
+    footer{
+      background:#023e8a;
+      color:white;
+      text-align:center;
+      padding:20px;
+      margin-top:40px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Azure Aquarium</h1>
+    <p>Beautiful Fish • Healthy Aquariums • Premium Accessories</p>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Fish</a>
+    <a href="#">Aquariums</a>
+    <a href="#">Accessories</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <section class="hero">
+    Welcome to Azure Aquarium
+  </section>
+
+  <div class="container">
+
+    <h2 class="section-title">Popular Products</h2>
+
+    <div class="products">
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1524704654690-b56c05c78a00?q=80&w=800" alt="">
+        <div class="card-content">
+          <h3>Fish display</h3>
+          <p>Healthy and colorful aquarium fishes on sale.</p>
+          
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=800" alt="">
+        <div class="card-content">
+          <h3>Deep water  exploration tank</h3>
+          <p>Experience the wonders of the deep sea in this immersive tank.</p>
+          
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=800" alt="">
+        <div class="card-content">
+          <h3>Aquarium Plants</h3>
+          <p>Natural plants for a fresh underwater look.</p>
+          
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2026 Azure Aquarium | All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>
