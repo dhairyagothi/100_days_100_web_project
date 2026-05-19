@@ -1,210 +1,191 @@
-/* Soft glow pulse animation for clock display */
-@keyframes glowPulse {
-    0%, 100% {
-        box-shadow: 0 0 10px rgba(34, 197, 94, 0.5),
-                    inset 0 0 10px rgba(34, 197, 94, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(34, 197, 94, 0.8),
-                    inset 0 0 15px rgba(34, 197, 94, 0.5);
-    }
+/* digitalclock.css */
+/* Mobile-first, accessible, responsive */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Modern glow pulse for modern theme */
-@keyframes glowPulseModern {
-    0%, 100% {
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5),
-                    inset 0 0 10px rgba(59, 130, 246, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.8),
-                    inset 0 0 15px rgba(59, 130, 246, 0.5);
-    }
-}
-
-/* Futuristic glow pulse for futuristic theme */
-@keyframes glowPulseFuturistic {
-    0%, 100% {
-        box-shadow: 0 0 10px rgba(239, 68, 68, 0.5),
-                    inset 0 0 10px rgba(239, 68, 68, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.8),
-                    inset 0 0 15px rgba(239, 68, 68, 0.5);
-    }
-}
-
-/* Button hover scale animation */
-@keyframes buttonHoverScale {
-    to {
-        transform: scale(1.05);
-    }
-}
-
-/* Success pulse animation for alarm confirmation */
-@keyframes successPulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* Smooth slide-down animation for dropdown */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        max-height: 0;
-        overflow: hidden;
-    }
-    to {
-        opacity: 1;
-        max-height: 300px;
-    }
-}
-
-/* Alarm popup entrance animation */
-@keyframes alarmEntrance {
-    0% {
-        transform: translate(-50%, -50%) scale(0.5);
-        opacity: 0;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-}
-
-/* Alarm popup shake animation */
-@keyframes alarmShake {
-    0%, 100% { transform: translate(-50%, -50%); }
-    25% { transform: translate(-50%, -50%) translateX(-5px); }
-    75% { transform: translate(-50%, -50%) translateX(5px); }
+:root {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --accent: #00e5ff;
+  --text: #f0f0f0;
+  --muted: #888;
+  --success: #4caf50;
+  --error: #f44336;
+  --info: #2196f3;
+  --ringing: #ff9800;
+  --border-radius: 12px;
+  --font-clock: 'Courier New', Courier, monospace;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Courier New', Courier, monospace;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
-#clock-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.clock-container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-#display {
-    font-family: 'Courier New', Courier, monospace;
-    animation: glowPulse 3s ease-in-out infinite;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+/* ── Clock Display ── */
+.clock-display {
+  font-family: var(--font-clock);
+  font-size: clamp(3rem, 15vw, 6rem); /* responsive font */
+  color: var(--accent);
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
 }
 
-#clock {
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+.date-display {
+  text-align: center;
+  color: var(--muted);
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  margin-top: 0.5rem;
 }
 
-.classic, .modern, .futuristic {
-    padding: 1rem;
-    font-size: 4rem;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+/* ── Alarm Section ── */
+.alarm-section {
+  background: var(--surface);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.classic {
-    color: white;
-    border-color: green;
-    animation: glowPulse 3s ease-in-out infinite;
+.section-title {
+  font-size: 1rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
-.classic #display {
-    animation: glowPulse 3s ease-in-out infinite;
+.alarm-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-.modern {
-    color: white;
-    border-color: blue;
-    animation: glowPulseModern 3s ease-in-out infinite;
+.alarm-input {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.6rem 0.8rem;
+  background: #2a2a2a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  /* mobile tap target */
+  min-height: 44px;
 }
 
-.modern #display {
-    animation: glowPulseModern 3s ease-in-out infinite;
+.alarm-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-.futuristic {
-    color: white;
-    border-color: red;
-    animation: glowPulseFuturistic 3s ease-in-out infinite;
+/* ── Buttons ── */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  min-height: 44px; /* mobile tap target */
+  min-width: 44px;
+  transition: opacity 0.2s, transform 0.1s;
+  font-weight: 600;
 }
 
-.futuristic #display {
-    animation: glowPulseFuturistic 3s ease-in-out infinite;
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-select {
-    background-color: black;
-    color: green;
-    transition: all 0.3s ease;
+.btn:active {
+  transform: scale(0.97);
 }
 
-select:focus {
-    outline: none;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.6);
-    animation: slideDown 0.3s ease-out;
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.date-size {
-    font-size: 1.5rem;
+.btn-primary {
+  background: var(--accent);
+  color: #000;
 }
 
-.clock-face-btn {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+.btn-secondary {
+  background: #333;
+  color: var(--text);
 }
 
-.clock-face-btn:hover {
-    cursor: pointer;
-    animation: buttonHoverScale 0.3s ease-out forwards;
-    transform: scale(1.05);
+.btn-stop {
+  background: var(--error);
+  color: #fff;
+  margin-top: 0.5rem;
 }
 
-.clock-face-btn:active {
-    transform: scale(0.98);
+/* ── Status Messages (non-blocking) ── */
+.alarm-status {
+  font-size: 0.9rem;
+  padding: 0.4rem 0;
+  min-height: 1.4rem;
+  transition: color 0.2s;
+}
+
+.status-success { color: var(--success); }
+.status-error   { color: var(--error); }
+.status-info    { color: var(--info); }
+.status-ringing { color: var(--ringing); font-weight: bold; }
+
+/* ── Alarm Ring ── */
+.alarm-ring {
+  background: #2a1a00;
+  border: 2px solid var(--ringing);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  text-align: center;
+  animation: pulse 1s infinite;
+}
+
+.alarm-ring p {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
 }
 
 .hidden {
-    display: none;
+  display: none !important;
 }
 
-#alarm-container input {
-    background-color: black;
-    color: yellow;
-    transition: all 0.3s ease;
-    border-radius: 8px;
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(255, 152, 0, 0); }
 }
 
-#alarm-container input:focus {
-    outline: none;
-    box-shadow: 0 0 15px rgba(234, 179, 8, 0.6);
-}
-
-#alarm-popup {
-    z-index: 1000;
-    padding: 1rem;
-    font-size: 1.5rem;
-    animation: alarmEntrance 0.4s ease-out, alarmShake 0.5s ease-in-out 0.4s;
-    border-radius: 16px;
-    box-shadow: 0 0 30px rgba(234, 179, 8, 0.8);
-}
-
-/* Success notification for alarm setting */
-.success-animation {
-    animation: successPulse 0.6s ease-in-out;
+/* ── Mobile ── */
+@media (max-width: 400px) {
+  .alarm-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn, .alarm-input {
+    width: 100%;
+  }
 }
