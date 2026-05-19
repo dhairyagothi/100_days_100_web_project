@@ -138,6 +138,7 @@ const PROJECT_DATA = [
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
   ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
   ['Day 122', 'Frontend State Visualiser', './public/frontend_state_visualiser_v2.0/index.html', 'html css js','beginner']
+
 ];
 
 // Alias for consistency
@@ -587,9 +588,299 @@ if (backToTopButton) {
 }
 
 /* ============================================================
+=======
+}
+
+const bookmarkGrid = document.getElementById('bookmarkGrid');
+
+function renderBookmarks() {
+  if (!bookmarkGrid) return;
+
+  bookmarkGrid.innerHTML = '';
+
+  if (bookmarkedProjects.length === 0) {
+    bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
+    return;
+  }
+
+  const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+  if (bookmarkToggleBtn) {
+    bookmarkToggleBtn.style.display = bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+  }
+
+  const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+
+  visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                    View Demo <i class="fas fa-arrow-right"></i>
+                </a>
+                <button class="bookmark-btn active" data-id="${day}">
+                    <i class="fa-solid fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+
+    bookmarkGrid.appendChild(card);
+  });
+}
+
+const recentGrid = document.getElementById('recentGrid');
+
+function renderRecentProjects() {
+  if (!recentGrid) return;
+
+  recentGrid.innerHTML = '';
+
+  if (recentProjects.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+    return;
+  }
+
+  const recentToggleBtn = document.getElementById('recentToggleBtn');
+  if (recentToggleBtn) {
+    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+  }
+
+  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+
+  visibleRecent.forEach(([day, name, url, tags, cat]) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                    View Demo <i class="fas fa-arrow-right"></i>
+                </a>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+
+    recentGrid.appendChild(card);
+  });
+}
+
+/* ============================================================
+   VIEW ALL TOGGLE
+   ============================================================ */
+
+const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+const recentToggleBtn = document.getElementById('recentToggleBtn');
+
+if (bookmarkToggleBtn) {
+  bookmarkToggleBtn.addEventListener('click', () => {
+    showAllBookmarks = !showAllBookmarks;
+    bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
+    renderBookmarks();
+  });
+}
+
+if (recentToggleBtn) {
+  recentToggleBtn.addEventListener('click', () => {
+    showAllRecent = !showAllRecent;
+    recentToggleBtn.textContent = showAllRecent ? 'Show Less' : 'View All';
+    renderRecentProjects();
+  });
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+document.addEventListener('click', (e) => {
+  const bookmarkBtn = e.target.closest('.bookmark-btn');
+  if (!bookmarkBtn) return;
+
+  e.preventDefault();
+  const projectDay = bookmarkBtn.dataset.id;
+  const project = PROJECTS.find((item) => item[0] === projectDay);
+  toggleBookmark(project);
+});
+
+document.addEventListener('click', (e) => {
+  const projectLink = e.target.closest('.open-project');
+  if (!projectLink) return;
+
+  const projectDay = projectLink.dataset.id;
+  const project = PROJECTS.find((item) => item[0] === projectDay);
+  if (!project) return;
+
+  trackRecentProject(project);
+});
+
+/* ============================================================
+   FILTER CHIPS
+   ============================================================ */
+function initFilterChips() {
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.filter;
+      renderGrid();
+    });
+  });
+}
+
+/* ============================================================
+   LIVE SEARCH
+   ============================================================ */
+function initSearch() {
+  const input = document.getElementById('searchInput');
+  if (!input) return;
+  input.addEventListener('input', () => {
+    searchQuery = input.value.trim();
+    renderGrid();
+  });
+}
+
+function syncProjectCounts() {
+  const total = PROJECTS.length.toLocaleString();
+  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
+
+  countNodes.forEach((node) => {
+    if (node) node.textContent = total;
+  });
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.placeholder = `Search ${total} projects…`;
+  }
+}
+
+/* ============================================================
+   NAVBAR — dynamic based on login state
+   ============================================================ */
+function updateNavbar() {
+  const container = document.getElementById('navButtons');
+  if (!container) return;
+
+  const username = window.username || null;
+  const isRoot = !window.location.pathname.includes('/contributors/');
+  const base = isRoot ? '' : '../';
+
+  if (username) {
+    container.innerHTML = `
+            <span class="welcome-text">Hi, ${username}</span>
+            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+        `;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.username = null;
+      updateNavbar();
+    });
+    const gen = document.getElementById('generateReadmeBtn');
+    if (gen) gen.addEventListener('click', generateReadme);
+  } else {
+    container.innerHTML = `
+            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
+        `;
+    const gen2 = document.getElementById('generateReadmeBtn');
+    if (gen2) gen2.addEventListener('click', generateReadme);
+  }
+}
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+function initTheme() {
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+
+  const icon = btn.querySelector('i');
+  const saved = localStorage.getItem('theme') || 'dark';
+
+  if (saved === 'light') {
+    document.body.classList.add('light-mode');
+    if (icon) icon.className = 'fas fa-sun';
+  }
+
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    if (icon) icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+}
+
+/* ============================================================
+   SCROLL TO TOP
+   ============================================================ */
+function initScrollBtn() {
+  const btn = document.getElementById('scrollBtn');
+  if (!btn) return;
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('show', window.scrollY > 400);
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+/* ============================================================
+   BACK TO TOP BUTTON
+   ============================================================ */
+const backToTopButton = document.getElementById('backToTop');
+
+if (backToTopButton) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+      backToTopButton.style.display = 'block';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  });
+
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+/* ============================================================
+>>>>>>> Main
    INIT
    ============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded'), () => {
   console.log('DOMContentLoaded fired');
   console.log('PROJECTS:', typeof PROJECTS, PROJECTS ? PROJECTS.length : 'undefined');
   initTheme();
@@ -602,4 +893,4 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRecentProjects();
   fetchRepoStats();
   initScrollBtn();
-});
+}
