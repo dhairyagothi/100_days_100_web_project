@@ -1,249 +1,415 @@
-// ─── DOM References ────────────────────────────────────────────────────────────
-const notesContainer = document.getElementById("notes-container");
-const documentsList  = document.querySelector(".documents-list");
-const pdfMessage     = document.getElementById("pdfMessage");
-const taskInput      = document.getElementById("task-input");
-const taskTypeSelect = document.getElementById("task-type");
+// ─────────────────────────────────────────────────────────────
+// DOM REFERENCES
+// ─────────────────────────────────────────────────────────────
 
-// ─── Theme State ───────────────────────────────────────────────────────────────
-// Maps theme id → gradient for body + card fallback colour for default cards
+const taskList = document.getElementById("task-list");
+const documentsList = document.getElementById("documents-list");
+const taskInput = document.getElementById("task-input");
+const taskTypeSelect = document.getElementById("task-type-select");
+const toast = document.getElementById("toast");
+
+const statTotal = document.getElementById("stat-total");
+const statDone = document.getElementById("stat-done");
+const statPending = document.getElementById("stat-pending");
+const progressFill = document.getElementById("progress-fill");
+const progressPct = document.getElementById("progress-pct");
+
+// ─────────────────────────────────────────────────────────────
+// THEME SYSTEM
+// ─────────────────────────────────────────────────────────────
+
 const THEMES = {
-  theme1: {
-    body: "linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)",
-    card: "rgba(232, 221, 227, 1)",
-  },
-  theme2: {
+  sunset: {
     body: "linear-gradient(135deg, #e4afcb 0%, #e2c58b 50%, #7edbdc 100%)",
-    card: "#e4afcb",
+    card: "#ffffff",
   },
-  theme3: {
-    body: "linear-gradient(135deg, #39db8c 0%, #a0c559 30%, #d1ab51 55%, #e6936b 80%, #df868d 100%)",
-    card: "#df868d",
+
+  ocean: {
+    body: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
+    card: "#d9e8ff",
   },
-  theme4: {
-    body: "linear-gradient(135deg, rgb(120,25,105) 0%, rgb(197,211,201) 100%)",
-    card: "rgb(197, 211, 201)",
+
+  forest: {
+    body: "linear-gradient(135deg, #134e5e 0%, #71b280 100%)",
+    card: "#d8ffe2",
   },
-  theme5: {
-    body: "linear-gradient(135deg, #b92b27 0%, #1565c0 100%)",
-    card: "#c0cfe8",
+
+  midnight: {
+    body: "linear-gradient(135deg, #232526 0%, #414345 100%)",
+    card: "#eeeeee",
+  },
+
+  aurora: {
+    body: "linear-gradient(135deg, #654ea3 0%, #eaafc8 100%)",
+    card: "#ffe8ff",
   },
 };
 
-let currentTheme = "theme1"; // default
+let currentTheme = "sunset";
 
-// ─── Task Type colour map ──────────────────────────────────────────────────────
-// Keeps track of user-chosen type colours so they survive theme switches
-const TYPE_COLORS = {
-  "":              null,           // → use theme colour
-  "Work":          "#FFDE59",
-  "Personal":      "#FFC0CB",
-  "Professional":  "#B0BEC5",
-  "Fitness":       "#B1EE99",
-  "Miscellaneous": "#CAB9F5",
-};
+// ─────────────────────────────────────────────────────────────
+// TASK STORAGE
+// ─────────────────────────────────────────────────────────────
 
-// ─── Add Task ──────────────────────────────────────────────────────────────────
-function Add() {
+let tasks = [];
+let currentFilter = "all";
+
+// ─────────────────────────────────────────────────────────────
+// ADD TASK
+// ─────────────────────────────────────────────────────────────
+
+function addTask() {
   const text = taskInput.value.trim();
+  const type = taskTypeSelect.value;
 
-  if (text === "") {
+  if (!text) {
+    showToast("Please enter a task");
     taskInput.focus();
-    taskInput.style.borderColor = "rgba(255, 80, 80, 0.8)";
-    setTimeout(() => { taskInput.style.borderColor = ""; }, 1200);
     return;
   }
 
-  const notes = document.querySelectorAll(".notes");
+  const task = {
+    id: Date.now(),
+    text,
+    type,
+    completed: false,
+  };
 
-  if (notes.length > 0) {
-    const lastNote = notes[notes.length - 1];
-    const taskText = lastNote.querySelector("span");
+  tasks.push(task);
 
-    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
-      alert("Please add a task to the previous note before creating a new one!");
-      return;
-    }
-  }
-
-  const selectedType  = taskTypeSelect.value;
-  const typeColor     = TYPE_COLORS[selectedType] ?? null;
-  const isDefaultCard = !typeColor; // no type selected → follows theme
-
-  // Card container
-  const note = document.createElement("div");
-  note.classList.add("notes");
-  note.dataset.defaultCard = isDefaultCard ? "true" : "false";
-
-  // Apply colour
-  note.style.backgroundColor = isDefaultCard
-    ? THEMES[currentTheme].card
-    : typeColor;
-
-  // Inner layout
-  const noteWrapper = document.createElement("div");
-  noteWrapper.style.cssText = "display:flex; align-items:flex-start; justify-content:space-between; width:100%; gap:8px;";
-
-  // Task text
-  const taskText = document.createElement("span");
-  taskText.className = "task-text";
-  taskText.innerText = text;
-  taskText.style.cssText = "flex:1; line-height:1.4; word-break:break-word;";
-
-  // Actions column
-  const actions = document.createElement("div");
-  actions.style.cssText = "display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0;";
-
-  // Tick / complete toggle
-  const tickBtn = document.createElement("button");
-  tickBtn.innerHTML = "&#10003;";
-  tickBtn.title = "Mark complete";
-  tickBtn.style.cssText = [
-    "background:none", "border:1.5px solid #555", "border-radius:50%",
-    "width:26px", "height:26px", "cursor:pointer", "font-size:14px",
-    "display:flex", "align-items:center", "justify-content:center",
-    "transition:background 0.2s, color 0.2s", "color:#333",
-  ].join(";");
-
-  tickBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    taskText.classList.toggle("completed");
-    tickBtn.style.background = taskText.classList.contains("completed") ? "#4caf50" : "none";
-    tickBtn.style.color      = taskText.classList.contains("completed") ? "white"   : "#333";
-    tickBtn.style.borderColor= taskText.classList.contains("completed") ? "#4caf50" : "#555";
-  });
-
-  // Delete button
-  const delBtn = document.createElement("button");
-  delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-  delBtn.title = "Delete task";
-  delBtn.style.cssText = [
-    "background:none", "border:none", "cursor:pointer",
-    "font-size:13px", "color:#c0392b", "padding:2px",
-    "transition:transform 0.2s",
-  ].join(";");
-  delBtn.addEventListener("mouseenter", () => { delBtn.style.transform = "scale(1.25)"; });
-  delBtn.addEventListener("mouseleave", () => { delBtn.style.transform = "scale(1)"; });
-  delBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    note.style.animation = "none";
-    note.style.transition = "opacity 0.25s, transform 0.25s";
-    note.style.opacity = "0";
-    note.style.transform = "scale(0.92)";
-    setTimeout(() => note.remove(), 250);
-  });
-
-  // Type badge (only if type was selected)
-  if (selectedType) {
-    const badge = document.createElement("span");
-    badge.innerText = selectedType;
-    badge.style.cssText = [
-      "font-size:10px", "font-weight:700", "padding:2px 7px",
-      "border-radius:20px", "background:rgba(0,0,0,0.12)",
-      "color:#333", "white-space:nowrap", "margin-top:4px",
-      "align-self:flex-end",
-    ].join(";");
-    note.appendChild(badge);
-  }
-
-  actions.appendChild(tickBtn);
-  actions.appendChild(delBtn);
-  noteWrapper.appendChild(taskText);
-  noteWrapper.appendChild(actions);
-  note.insertBefore(noteWrapper, note.firstChild);
-  notesContainer.appendChild(note);
-
-  // Reset inputs
   taskInput.value = "";
   taskTypeSelect.value = "";
-  taskInput.focus();
+
+  renderTasks();
+  updateStats();
+
+  showToast("Task added successfully");
 }
 
-// Allow pressing Enter in the input to add a task
+// ENTER KEY SUPPORT
+
 taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") Add();
+  if (e.key === "Enter") {
+    addTask();
+  }
 });
 
-// ─── Theme Switching ───────────────────────────────────────────────────────────
-function applyTheme(themeKey) {
-  const theme = THEMES[themeKey];
-  document.body.style.background = theme.body;
-  currentTheme = themeKey;
+// ─────────────────────────────────────────────────────────────
+// RENDER TASKS
+// ─────────────────────────────────────────────────────────────
 
-  // Update CSS custom property → auto-updates all default cards via var()
-  document.documentElement.style.setProperty("--theme-card-bg", theme.card);
+function renderTasks() {
+  taskList.innerHTML = "";
 
-  // Also imperatively update existing default cards
-  const cards = document.querySelectorAll(".notes[data-default-card='true']");
-  cards.forEach((card) => {
-    card.style.backgroundColor = theme.card;
+  let filteredTasks = tasks;
+
+  if (currentFilter === "pending") {
+    filteredTasks = tasks.filter((t) => !t.completed);
+  }
+
+  else if (currentFilter === "done") {
+    filteredTasks = tasks.filter((t) => t.completed);
+  }
+
+  else if (currentFilter !== "all") {
+    filteredTasks = tasks.filter((t) => t.type === currentFilter);
+  }
+
+  if (filteredTasks.length === 0) {
+    taskList.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <p>No tasks found.</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredTasks.forEach((task) => {
+
+    const card = document.createElement("div");
+    card.className = "task-card";
+
+    card.style.background = THEMES[currentTheme].card;
+
+    card.innerHTML = `
+      <div class="task-content">
+
+        <div class="task-info">
+
+          <p class="task-text ${task.completed ? "completed" : ""}">
+            ${task.text}
+          </p>
+
+          ${
+            task.type
+              ? `<span class="task-badge">${task.type}</span>`
+              : ""
+          }
+
+        </div>
+
+        <div class="task-actions">
+
+          <button class="task-btn complete-btn">
+            ${task.completed ? "✓" : "○"}
+          </button>
+
+          <button class="task-btn delete-btn">
+            🗑
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+    // COMPLETE BUTTON
+
+    card
+      .querySelector(".complete-btn")
+      .addEventListener("click", () => {
+        toggleTask(task.id);
+      });
+
+    // DELETE BUTTON
+
+    card
+      .querySelector(".delete-btn")
+      .addEventListener("click", () => {
+        deleteTask(task.id);
+      });
+
+    taskList.appendChild(card);
   });
 }
 
-function c1() { applyTheme("theme1"); }
-function c2() { applyTheme("theme2"); }
-function c3() { applyTheme("theme3"); }
-function c4() { applyTheme("theme4"); }
-function c5() { applyTheme("theme5"); }
+// ─────────────────────────────────────────────────────────────
+// TOGGLE TASK
+// ─────────────────────────────────────────────────────────────
 
-// ─── PDF Export ────────────────────────────────────────────────────────────────
+function toggleTask(id) {
+  tasks = tasks.map((task) => {
+    if (task.id === id) {
+      return {
+        ...task,
+        completed: !task.completed,
+      };
+    }
+    return task;
+  });
+
+  renderTasks();
+  updateStats();
+}
+
+// ─────────────────────────────────────────────────────────────
+// DELETE TASK
+// ─────────────────────────────────────────────────────────────
+
+function deleteTask(id) {
+  tasks = tasks.filter((task) => task.id !== id);
+
+  renderTasks();
+  updateStats();
+
+  showToast("Task deleted");
+}
+
+// ─────────────────────────────────────────────────────────────
+// FILTER TASKS
+// ─────────────────────────────────────────────────────────────
+
+function filterTasks(button, filter) {
+
+  currentFilter = filter;
+
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  renderTasks();
+}
+
+// ─────────────────────────────────────────────────────────────
+// CLEAR COMPLETED
+// ─────────────────────────────────────────────────────────────
+
+function clearDone() {
+  tasks = tasks.filter((task) => !task.completed);
+
+  renderTasks();
+  updateStats();
+
+  showToast("Completed tasks cleared");
+}
+
+// ─────────────────────────────────────────────────────────────
+// UPDATE STATS
+// ─────────────────────────────────────────────────────────────
+
+function updateStats() {
+
+  const total = tasks.length;
+
+  const done = tasks.filter((t) => t.completed).length;
+
+  const pending = total - done;
+
+  const percentage =
+    total === 0
+      ? 0
+      : Math.round((done / total) * 100);
+
+  statTotal.innerText = total;
+  statDone.innerText = done;
+  statPending.innerText = pending;
+
+  progressFill.style.width = `${percentage}%`;
+  progressPct.innerText = `${percentage}%`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// THEME SWITCHING
+// ─────────────────────────────────────────────────────────────
+
+function applyTheme(themeName) {
+
+  currentTheme = themeName;
+
+  document.body.style.background =
+    THEMES[themeName].body;
+
+  renderTasks();
+}
+
+// DEFAULT THEME
+
+applyTheme("sunset");
+
+// ─────────────────────────────────────────────────────────────
+// PDF EXPORT
+// ─────────────────────────────────────────────────────────────
+
 function saveAsPDF() {
+
+  if (tasks.length === 0) {
+    showToast("No tasks to export");
+    return;
+  }
+
   const { jsPDF } = window.jspdf;
-  const doc  = new jsPDF();
-  const cards = document.querySelectorAll(".notes");
+
+  const doc = new jsPDF();
 
   doc.setFontSize(18);
-  doc.text("My To-Do List", 20, 18);
+
+  doc.text("My To-Do List", 20, 20);
+
   doc.setFontSize(12);
 
-  let y = 30;
-  cards.forEach((card, i) => {
-    const textNode = card.querySelector(".task-text");
-    const text = textNode ? textNode.innerText.trim() : card.innerText.trim();
-    if (text) {
-      doc.text(`${i + 1}. ${text}`, 20, y);
-      y += 10;
-      if (y > 270) { doc.addPage(); y = 20; }
+  let y = 40;
+
+  tasks.forEach((task, index) => {
+
+    const status = task.completed
+      ? "[Done]"
+      : "[Pending]";
+
+    doc.text(
+      `${index + 1}. ${task.text} ${status}`,
+      20,
+      y
+    );
+
+    y += 10;
+
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
     }
   });
 
-  const fileName = `ToDoList_${Date.now()}.pdf`;
-  const fileURL  = URL.createObjectURL(doc.output("blob"));
-  saveDocument(fileName, fileURL);
-  showPDFMessage();
+  const fileName = `TaskFlow_${Date.now()}.pdf`;
+
+  doc.save(fileName);
+
+  addDocument(fileName);
+
+  showToast("PDF exported successfully");
 }
 
-function saveDocument(fileName, fileURL) {
-  const docItem = document.createElement("div");
-  docItem.className = "document-item";
-  docItem.innerHTML = `
+// ─────────────────────────────────────────────────────────────
+// DOCUMENTS SECTION
+// ─────────────────────────────────────────────────────────────
+
+function addDocument(fileName) {
+
+  const item = document.createElement("div");
+
+  item.className = "document-item";
+
+  item.innerHTML = `
     <span>${fileName}</span>
-    <button onclick="viewPDF('${fileURL}')">View</button>
-    <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
-    <button onclick="deletePDF(this)">Delete</button>
+    <button class="delete-doc-btn">Delete</button>
   `;
-  documentsList.appendChild(docItem);
+
+  item
+    .querySelector(".delete-doc-btn")
+    .addEventListener("click", () => {
+      item.remove();
+    });
+
+  documentsList.appendChild(item);
 }
 
-function viewPDF(fileURL)                  { window.open(fileURL, "_blank"); }
-function downloadPDF(fileURL, fileName)    {
-  const a = document.createElement("a");
-  a.href = fileURL; a.download = fileName; a.click();
-}
-function deletePDF(button)                 { button.parentElement.remove(); }
+// ─────────────────────────────────────────────────────────────
+// TAB SWITCHING
+// ─────────────────────────────────────────────────────────────
 
-function showPDFMessage() {
-  pdfMessage.style.display = "flex";
-  setTimeout(() => { pdfMessage.style.display = "none"; }, 3000);
-}
-
-// ─── Tab Navigation ────────────────────────────────────────────────────────────
 function showHome() {
-  document.getElementById("home-tab").style.display      = "block";
+
+  document.getElementById("home-tab").style.display = "block";
+
   document.getElementById("documents-tab").style.display = "none";
+
+  document
+    .getElementById("btn-home")
+    .classList.add("active");
+
+  document
+    .getElementById("btn-docs")
+    .classList.remove("active");
 }
 
 function showDocuments() {
-  document.getElementById("home-tab").style.display      = "none";
+
+  document.getElementById("home-tab").style.display = "none";
+
   document.getElementById("documents-tab").style.display = "block";
+
+  document
+    .getElementById("btn-home")
+    .classList.remove("active");
+
+  document
+    .getElementById("btn-docs")
+    .classList.add("active");
+}
+
+// ─────────────────────────────────────────────────────────────
+// TOAST MESSAGE
+// ─────────────────────────────────────────────────────────────
+
+function showToast(message) {
+
+  toast.innerText = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
 }
