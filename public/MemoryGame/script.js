@@ -34,10 +34,24 @@ function stopTimer() {
 
 function restartGame() {
     stopTimer();
+    // Reset timer according to selected difficulty
+    const activeButton =
+        document.querySelector('#difficulty button.active');
+    if (activeButton.textContent === 'Easy') {
+        timeLeft = 120;
+    }
+    else if (activeButton.textContent === 'Hard') {
+        timeLeft = 30;
+    }
+    else {
+        timeLeft = 60; // Moderate
+    }
     gameContainer.innerHTML = '';
     matchesCount = 0;
-    document.getElementById('score-board').innerText = `Matches: 0`;
-    document.getElementById('congrats').classList.add('hidden');
+    document.getElementById('score-board').innerText =
+        `Matches: 0`;
+    document.getElementById('congrats')
+        .classList.add('hidden');
     createCards();
     startTimer();
 }
