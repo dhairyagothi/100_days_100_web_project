@@ -23,7 +23,8 @@ body {
 
   background: radial-gradient(circle at top, #111827, #000000);
 
-  overflow: hidden;
+   overflow-y: auto;
+   overflow-x: hidden;
 
   font-family: 'Poppins', sans-serif;
   color: white;
