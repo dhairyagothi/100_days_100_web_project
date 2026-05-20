@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.container').insertBefore(moodMessage, document.querySelector('.intensity-slider'));
 
     let selectedMood = null;
-    const moodData = [];
+    let moodData = JSON.parse(localStorage.getItem('moodData')) || [];
     let moodChart;
     let moodStreak = 0;
     const achievements = {
@@ -26,6 +26,17 @@ document.addEventListener('DOMContentLoaded', () => {
         reduceStress: 0,
         increaseHappiness: 0
     };
+    if (moodData.length > 0) {
+    removeDefaultMessages();
+
+    moodData.forEach(entry => {
+        addEntryToList(entry);
+        addEntryDay(entry);
+    });
+
+    updateMoodChart();
+    updateMoodSummary();
+}
 
     if ('Notification' in window) {
         Notification.requestPermission().then(permission => {
@@ -62,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const entry = { mood: selectedMood, intensity, notes, date };
         console.log('Entry Saved:', entry);
         moodData.push(entry);
+        saveMoodData();
 
         // Remove default messages if present
         removeDefaultMessages();
@@ -320,5 +332,8 @@ document.addEventListener('DOMContentLoaded', () => {
             moodGoals.increaseHappiness = happyDays;
             alert("Awesome! You've increased your happy days!");
         }
+    }
+    function saveMoodData() {
+    localStorage.setItem('moodData', JSON.stringify(moodData));
     }
 });

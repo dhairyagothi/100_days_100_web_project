@@ -99,7 +99,7 @@ button {
     background-color: #21b029; 
 }
 
-#stop-btn {
+#stop-btn-text, #stop-btn-voice {
     background-color: #f44336;
     color: white;
 }
@@ -116,4 +116,13 @@ button {
 
 textarea{
     border-color: black;
+}
+
+#language {
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
 }
