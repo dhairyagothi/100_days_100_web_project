@@ -870,13 +870,12 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchRepoStats();
   initScrollBtn();
 });
-<<<<<<< HEAD
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
   renderGrid();
 });
-=======
 
+<<<<<<< HEAD
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
   renderGrid();
@@ -885,3 +884,5 @@ window.addEventListener('resize', () => {
 >>>>>>> origin/Main
 =======
 >>>>>>> origin/Main
+=======
+>>>>>>> 75acb055e2ac6946cb6a651bd0d0beac7773d06f
