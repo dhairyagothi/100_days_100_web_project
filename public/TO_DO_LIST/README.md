@@ -16,7 +16,11 @@
 - 🔔 Toast notifications for user actions
 - 📄 Export tasks as styled PDF using jsPDF
 - 📁 Document history for exported files
-
+- 🧩 Drag and Drop Kanban Workflow  
+  - Pending  
+  - In Progress  
+  - Completed
+  
 ---
 
 ## 🛠️ Technologies Used
