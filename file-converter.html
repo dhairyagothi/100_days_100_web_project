@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Converter – GSoC Org Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root, [data-theme="light"] {
+      --bg: #FAFAFA; --white: #FFFFFF;
+      --orange: #F46B0E; --orange-deep: #D45800; --orange-pale: #FFF4EC;
+      --orange-mid: #FFE0C8; --orange-border: #FECBA0;
+      --ink: #1C1008; --ink2: #3A2010; --ink3: #7A5030; --muted: #B07850;
+      --border: #EAD8C8; --border2: #F2E5D8;
+      --green: #00875A; --red: #C53030; --blue: #1A56DB;
+      --shadow: 0 1px 4px rgba(28,16,8,.07), 0 6px 20px rgba(28,16,8,.05);
+      --shadow-lg: 0 12px 40px rgba(28,16,8,.13);
+      --card-bg: #FFFFFF; --nav-bg: rgba(250,250,250,.93);
+      --toggle-bg: #EAD8C8; --toggle-knob: #FFFFFF;
+      --input-bg: #FAFAFA;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0F0A05; --white: #1A1108;
+      --orange: #F97316; --orange-deep: #FB923C;
+      --orange-pale: #1C0F05; --orange-mid: #2A1508; --orange-border: #7C3A0A;
+      --ink: #F5E6D3; --ink2: #E0C9A8; --ink3: #C4A07A; --muted: #8A6A45;
+      --border: #2E1E0A; --border2: #241608;
+      --green: #34D399; --red: #FC8181; --blue: #60A5FA;
+      --shadow: 0 1px 4px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,.5);
+      --card-bg: #1A1108; --nav-bg: rgba(15,10,5,.93);
+      --toggle-bg: #2E1E0A; --toggle-knob: #F97316;
+      --input-bg: #1A1108;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh; overflow-x: hidden;
+      transition: background .3s, color .3s;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 60;
+      background: var(--nav-bg); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s, border-color .3s;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; gap: 8px;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .gsoc-logo {
+      width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #FBBC04, var(--orange)); border-radius: 8px;
+      font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900;
+      color: white; letter-spacing: -0.04em; box-shadow: 0 2px 8px rgba(244,107,14,.3);
+    }
+    .nav-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+    .nav-title em { font-style: italic; color: var(--orange); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--border);
+      background: transparent; color: var(--ink3); font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: inherit; text-decoration: none;
+      transition: all .18s;
+    }
+    .back-btn:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-pale); }
+    .theme-toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 9px; border-radius: 8px; border: 1.5px solid var(--border);
+      background: transparent; cursor: pointer; font-family: inherit; transition: all .18s;
+    }
+    .theme-toggle:hover { border-color: var(--orange); background: var(--orange-pale); }
+    .toggle-track {
+      width: 32px; height: 18px; border-radius: 100px; background: var(--toggle-bg);
+      position: relative; transition: background .3s; border: 1.5px solid var(--border); flex-shrink: 0;
+    }
+    .toggle-knob {
+      width: 12px; height: 12px; border-radius: 50%; background: var(--toggle-knob);
+      position: absolute; top: 1px; left: 1px; transition: transform .3s;
+    }
+    [data-theme="dark"] .toggle-knob { transform: translateX(14px); }
+    .toggle-label { font-size: 11px; font-weight: 700; color: var(--ink3); }
+    [data-theme="light"] .moon-icon { display: none; }
+    [data-theme="dark"] .sun-icon { display: none; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--orange-pale), var(--orange-mid));
+      border-bottom: 1px solid var(--orange-border);
+      padding: 48px 24px 40px; text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--orange); color: white;
+      padding: 4px 12px; border-radius: 100px;
+      font-size: 11px; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 5vw, 42px); font-weight: 900;
+      color: var(--ink); line-height: 1.15; margin-bottom: 10px;
+    }
+    .hero h1 em { font-style: italic; color: var(--orange); }
+    .hero p { font-size: 15px; color: var(--ink3); max-width: 520px; margin: 0 auto; }
+
+    /* ── MAIN ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 14px; padding: 8px; margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .tab-btn {
+      flex: 1; min-width: 130px; padding: 10px 16px;
+      border-radius: 10px; border: 1.5px solid transparent;
+      background: transparent; color: var(--ink3);
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all .18s; text-align: center;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .tab-btn:hover { background: var(--orange-pale); color: var(--orange); border-color: var(--orange-border); }
+    .tab-btn.active {
+      background: var(--orange); color: white;
+      border-color: var(--orange-deep);
+      box-shadow: 0 4px 12px rgba(244,107,14,.3);
+    }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-size: 16px; font-weight: 700; color: var(--ink2);
+      margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+    }
+    .card-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+    /* ── DROP ZONE ── */
+    .drop-zone {
+      border: 2px dashed var(--orange-border); border-radius: 12px;
+      background: var(--orange-pale); padding: 40px 24px;
+      text-align: center; cursor: pointer; transition: all .2s;
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--orange); background: var(--orange-mid);
+    }
+    .drop-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-icon { font-size: 36px; margin-bottom: 10px; }
+    .drop-label { font-size: 14px; font-weight: 700; color: var(--ink2); margin-bottom: 4px; }
+    .drop-sub { font-size: 12px; color: var(--muted); }
+    .drop-btn {
+      display: inline-block; margin-top: 12px;
+      padding: 8px 20px; border-radius: 8px;
+      background: var(--orange); color: white;
+      font-size: 12px; font-weight: 700; font-family: inherit;
+      border: none; cursor: pointer; transition: background .18s;
+    }
+    .drop-btn:hover { background: var(--orange-deep); }
+
+    /* ── FILE PREVIEW ── */
+    .file-preview {
+      display: none; margin-top: 16px;
+      background: var(--input-bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px;
+      display: none; align-items: center; gap: 12px;
+    }
+    .file-preview.show { display: flex; }
+    .file-icon { font-size: 24px; flex-shrink: 0; }
+    .file-info { flex: 1; min-width: 0; }
+    .file-name { font-size: 13px; font-weight: 600; color: var(--ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-size { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .file-remove {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 18px; transition: color .18s; flex-shrink: 0;
+    }
+    .file-remove:hover { color: var(--red); }
+
+    /* ── OPTIONS ── */
+    .options-row {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 20px; align-items: flex-end;
+    }
+    .opt-group { display: flex; flex-direction: column; gap: 5px; }
+    .opt-label { font-size: 11px; font-weight: 700; color: var(--ink3); text-transform: uppercase; letter-spacing: .04em; }
+    .opt-select, .opt-input {
+      padding: 8px 12px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: var(--input-bg);
+      color: var(--ink); font-size: 13px; font-family: inherit;
+      transition: border-color .18s; outline: none; min-width: 130px;
+    }
+    .opt-select:focus, .opt-input:focus { border-color: var(--orange); }
+
+    /* ── CONVERT BTN ── */
+    .convert-btn {
+      padding: 10px 28px; border-radius: 10px;
+      background: var(--orange); color: white;
+      font-size: 14px; font-weight: 700; font-family: inherit;
+      border: none; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(244,107,14,.3);
+      transition: all .18s; display: flex; align-items: center; gap: 8px;
+      margin-top: 24px;
+    }
+    .convert-btn:hover { background: var(--orange-deep); transform: translateY(-1px); }
+    .convert-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    /* ── RESULT ── */
+    .result-area {
+      display: none; margin-top: 20px;
+      border-radius: 12px; padding: 18px;
+      border: 1.5px solid var(--green);
+      background: rgba(0,135,90,.07);
+    }
+    .result-area.show { display: block; }
+    .result-area.error { border-color: var(--red); background: rgba(197,48,48,.07); }
+    .result-title { font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .result-area.error .result-title { color: var(--red); }
+    .result-msg { font-size: 13px; color: var(--ink3); }
+    .download-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      margin-top: 14px; padding: 9px 22px;
+      border-radius: 9px; background: var(--green); color: white;
+      font-size: 13px; font-weight: 700; font-family: inherit;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: opacity .18s;
+    }
+    .download-btn:hover { opacity: .88; }
+
+    /* ── TEXT TOOL ── */
+    .text-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 640px) { .text-grid { grid-template-columns: 1fr; } }
+    .text-area-wrap { display: flex; flex-direction: column; gap: 8px; }
+    .text-area-label { font-size: 12px; font-weight: 700; color: var(--ink3); }
+    .text-area {
+      width: 100%; height: 200px; padding: 12px;
+      border-radius: 10px; border: 1.5px solid var(--border);
+      background: var(--input-bg); color: var(--ink);
+      font-size: 13px; font-family: 'Plus Jakarta Sans', monospace;
+      resize: vertical; outline: none; transition: border-color .18s;
+    }
+    .text-area:focus { border-color: var(--orange); }
+    .text-tools-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tool-chip {
+      padding: 6px 14px; border-radius: 100px;
+      border: 1.5px solid var(--border); background: var(--card-bg);
+      color: var(--ink3); font-size: 12px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all .18s;
+    }
+    .tool-chip:hover, .tool-chip.active { border-color: var(--orange); color: var(--orange); background: var(--orange-pale); }
+    .copy-btn {
+      padding: 7px 14px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: var(--card-bg);
+      color: var(--ink3); font-size: 12px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all .18s;
+    }
+    .copy-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── STATS ── */
+    .stats-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .stat-chip {
+      padding: 6px 12px; border-radius: 8px;
+      background: var(--orange-pale); border: 1px solid var(--orange-border);
+      font-size: 11px; font-weight: 700; color: var(--orange-deep);
+    }
+
+    /* ── PROGRESS ── */
+    .progress-wrap { margin-top: 16px; display: none; }
+    .progress-wrap.show { display: block; }
+    .progress-bar-bg {
+      height: 6px; border-radius: 100px;
+      background: var(--border); overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%; border-radius: 100px;
+      background: linear-gradient(90deg, var(--orange), var(--orange-deep));
+      width: 0%; transition: width .4s;
+    }
+    .progress-label { font-size: 11px; color: var(--muted); margin-top: 5px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .options-row { flex-direction: column; }
+      .opt-select, .opt-input { min-width: unset; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <div class="gsoc-logo">G</div>
+      <span class="nav-title">GSoC <em>Org Finder</em></span>
+    </a>
+    <div class="nav-right">
+      <a class="back-btn" href="index.html">← Back to Finder</a>
+      <button class="theme-toggle" id="themeToggle">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+        <div class="toggle-track"><div class="toggle-knob"></div></div>
+        <span class="toggle-label" id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🔄 Utility Tool</div>
+  <h1>File <em>Converter</em></h1>
+  <p>Convert images, documents, and text right in your browser — no uploads to servers, all client-side.</p>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="img-pdf">🖼️ Image → PDF</button>
+    <button class="tab-btn" data-tab="img-convert">🔁 JPG ↔ PNG</button>
+    <button class="tab-btn" data-tab="text-tool">📝 Text Tools</button>
+    <button class="tab-btn" data-tab="csv-json">📊 CSV → JSON</button>
+  </div>
+
+  <!-- ── PANEL: IMAGE → PDF ── -->
+  <div class="panel active" id="panel-img-pdf">
+    <div class="card">
+      <div class="card-title">🖼️ Image to PDF</div>
+      <div class="card-desc">Select one or more images (JPG, PNG, WebP) to combine into a single PDF.</div>
+
+      <div class="drop-zone" id="dropImgPdf">
+        <input type="file" id="inputImgPdf" accept="image/*" multiple />
+        <div class="drop-icon">📎</div>
+        <div class="drop-label">Drop images here</div>
+        <div class="drop-sub">JPG, PNG, WebP supported</div>
+        <button class="drop-btn" type="button">Browse Files</button>
+      </div>
+
+      <div id="fileListImgPdf" style="margin-top:14px; display:flex; flex-direction:column; gap:8px;"></div>
+
+      <div class="options-row">
+        <div class="opt-group">
+          <span class="opt-label">Page Size</span>
+          <select class="opt-select" id="pdfPageSize">
+            <option value="a4">A4</option>
+            <option value="letter">Letter</option>
+            <option value="a3">A3</option>
+          </select>
+        </div>
+        <div class="opt-group">
+          <span class="opt-label">Orientation</span>
+          <select class="opt-select" id="pdfOrientation">
+            <option value="portrait">Portrait</option>
+            <option value="landscape">Landscape</option>
+          </select>
+        </div>
+        <div class="opt-group">
+          <span class="opt-label">Filename</span>
+          <input type="text" class="opt-input" id="pdfFilename" value="converted" placeholder="output" />
+        </div>
+      </div>
+
+      <div class="progress-wrap" id="progressImgPdf">
+        <div class="progress-bar-bg"><div class="progress-bar" id="progressBarImgPdf"></div></div>
+        <div class="progress-label" id="progressLabelImgPdf">Processing…</div>
+      </div>
+
+      <button class="convert-btn" id="btnImgToPdf">⚡ Convert to PDF</button>
+
+      <div class="result-area" id="resultImgPdf">
+        <div class="result-title" id="resultTitleImgPdf">✅ Conversion complete!</div>
+        <div class="result-msg" id="resultMsgImgPdf"></div>
+        <a class="download-btn" id="dlImgPdf" href="#" download>⬇ Download PDF</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: JPG ↔ PNG ── -->
+  <div class="panel" id="panel-img-convert">
+    <div class="card">
+      <div class="card-title">🔁 JPG ↔ PNG Converter</div>
+      <div class="card-desc">Convert JPG images to PNG or PNG images to JPG instantly.</div>
+
+      <div class="drop-zone" id="dropImgConvert">
+        <input type="file" id="inputImgConvert" accept="image/jpeg,image/png,image/webp" />
+        <div class="drop-icon">🖼️</div>
+        <div class="drop-label">Drop an image here</div>
+        <div class="drop-sub">JPG, PNG, or WebP</div>
+        <button class="drop-btn" type="button">Browse File</button>
+      </div>
+
+      <div class="file-preview" id="previewImgConvert">
+        <div class="file-icon" id="previewIconConvert">🖼️</div>
+        <div class="file-info">
+          <div class="file-name" id="previewNameConvert">–</div>
+          <div class="file-size" id="previewSizeConvert">–</div>
+        </div>
+        <button class="file-remove" id="removeImgConvert">✕</button>
+      </div>
+
+      <div class="options-row">
+        <div class="opt-group">
+          <span class="opt-label">Output Format</span>
+          <select class="opt-select" id="imgConvertFormat">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+        <div class="opt-group">
+          <span class="opt-label">Quality (JPG/WebP)</span>
+          <input type="number" class="opt-input" id="imgQuality" value="92" min="1" max="100" style="width:90px" />
+        </div>
+        <div class="opt-group">
+          <span class="opt-label">Filename</span>
+          <input type="text" class="opt-input" id="imgConvertFilename" value="converted" placeholder="output" />
+        </div>
+      </div>
+
+      <button class="convert-btn" id="btnImgConvert">⚡ Convert Image</button>
+
+      <div class="result-area" id="resultImgConvert">
+        <div class="result-title">✅ Converted!</div>
+        <div class="result-msg" id="resultMsgConvert"></div>
+        <a class="download-btn" id="dlImgConvert" href="#" download>⬇ Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: TEXT TOOLS ── -->
+  <div class="panel" id="panel-text-tool">
+    <div class="card">
+      <div class="card-title">📝 Text Formatting Tools</div>
+      <div class="card-desc">Transform text case, remove whitespace, encode/decode, and more.</div>
+
+      <div class="text-tools-row">
+        <button class="tool-chip" data-fn="upper">UPPERCASE</button>
+        <button class="tool-chip" data-fn="lower">lowercase</button>
+        <button class="tool-chip" data-fn="title">Title Case</button>
+        <button class="tool-chip" data-fn="sentence">Sentence case</button>
+        <button class="tool-chip" data-fn="camel">camelCase</button>
+        <button class="tool-chip" data-fn="snake">snake_case</button>
+        <button class="tool-chip" data-fn="kebab">kebab-case</button>
+        <button class="tool-chip" data-fn="trim">Trim Whitespace</button>
+        <button class="tool-chip" data-fn="reverse">Reverse</button>
+        <button class="tool-chip" data-fn="encode64">Base64 Encode</button>
+        <button class="tool-chip" data-fn="decode64">Base64 Decode</button>
+        <button class="tool-chip" data-fn="encodeUrl">URL Encode</button>
+        <button class="tool-chip" data-fn="decodeUrl">URL Decode</button>
+        <button class="tool-chip" data-fn="stripHtml">Strip HTML</button>
+        <button class="tool-chip" data-fn="lineCount">Count Lines</button>
+        <button class="tool-chip" data-fn="wordCount">Word Count</button>
+      </div>
+
+      <div class="text-grid">
+        <div class="text-area-wrap">
+          <div class="text-area-label">Input Text</div>
+          <textarea class="text-area" id="textInput" placeholder="Paste or type your text here…"></textarea>
+        </div>
+        <div class="text-area-wrap">
+          <div class="text-area-label" style="display:flex;justify-content:space-between;align-items:center;">
+            Output
+            <button class="copy-btn" id="copyOutput">📋 Copy</button>
+          </div>
+          <textarea class="text-area" id="textOutput" placeholder="Result will appear here…" readonly></textarea>
+        </div>
+      </div>
+
+      <div class="stats-row" id="textStats"></div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: CSV → JSON ── -->
+  <div class="panel" id="panel-csv-json">
+    <div class="card">
+      <div class="card-title">📊 CSV to JSON</div>
+      <div class="card-desc">Paste CSV data or upload a .csv file and get formatted JSON output.</div>
+
+      <div class="drop-zone" id="dropCsv">
+        <input type="file" id="inputCsv" accept=".csv,text/csv" />
+        <div class="drop-icon">📂</div>
+        <div class="drop-label">Drop a CSV file here</div>
+        <div class="drop-sub">or paste data below</div>
+        <button class="drop-btn" type="button">Browse CSV</button>
+      </div>
+
+      <div style="margin-top:16px;">
+        <div class="opt-label" style="margin-bottom:6px;">Or paste CSV directly</div>
+        <textarea class="text-area" id="csvInput" style="height:150px" placeholder="name,age,city&#10;Alice,30,Lahore&#10;Bob,25,Karachi"></textarea>
+      </div>
+
+      <div class="options-row">
+        <div class="opt-group">
+          <span class="opt-label">Delimiter</span>
+          <select class="opt-select" id="csvDelimiter" style="min-width:90px">
+            <option value=",">Comma (,)</option>
+            <option value=";">Semicolon (;)</option>
+            <option value="\t">Tab</option>
+            <option value="|">Pipe (|)</option>
+          </select>
+        </div>
+        <div class="opt-group">
+          <span class="opt-label">Output</span>
+          <select class="opt-select" id="csvOutputMode" style="min-width:130px">
+            <option value="array">Array of objects</option>
+            <option value="pretty">Pretty-printed</option>
+            <option value="minified">Minified</option>
+          </select>
+        </div>
+        <div class="opt-group">
+          <span class="opt-label">Filename</span>
+          <input type="text" class="opt-input" id="csvFilename" value="data" placeholder="output" />
+        </div>
+      </div>
+
+      <button class="convert-btn" id="btnCsvToJson">⚡ Convert to JSON</button>
+
+      <div class="result-area" id="resultCsv">
+        <div class="result-title">✅ Converted!</div>
+        <div class="result-msg" id="resultMsgCsv"></div>
+        <textarea class="text-area" id="jsonOutput" style="height:180px;margin-top:12px" readonly placeholder="JSON will appear here…"></textarea>
+        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+          <button class="copy-btn" id="copyCsvJson">📋 Copy JSON</button>
+          <a class="download-btn" id="dlCsvJson" href="#" download style="padding:7px 18px;font-size:12px;">⬇ Download JSON</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ── THEME ──
+const html = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+
+function applyTheme(dark) {
+  html.dataset.theme = dark ? 'dark' : 'light';
+  themeLabel.textContent = dark ? 'Light' : 'Dark';
+}
+
+const saved = localStorage.getItem('fc-theme');
+applyTheme(saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+themeToggle.addEventListener('click', () => {
+  const isDark = html.dataset.theme === 'dark';
+  applyTheme(!isDark);
+  localStorage.setItem('fc-theme', isDark ? 'light' : 'dark');
+});
+
+// ── TABS ──
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── DRAG & DROP ──
+function setupDrop(zone, input) {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    if (e.dataTransfer.files.length) {
+      const dt = new DataTransfer();
+      Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+      input.files = dt.files;
+      input.dispatchEvent(new Event('change'));
+    }
+  });
+}
+
+function fmtBytes(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+
+// ── PANEL 1: Image → PDF ──
+const inputImgPdf = document.getElementById('inputImgPdf');
+const dropImgPdf = document.getElementById('dropImgPdf');
+const fileListDiv = document.getElementById('fileListImgPdf');
+const btnImgToPdf = document.getElementById('btnImgToPdf');
+const resultImgPdf = document.getElementById('resultImgPdf');
+const progressWrap = document.getElementById('progressImgPdf');
+const progressBar = document.getElementById('progressBarImgPdf');
+const progressLbl = document.getElementById('progressLabelImgPdf');
+
+let imgPdfFiles = [];
+setupDrop(dropImgPdf, inputImgPdf);
+
+inputImgPdf.addEventListener('change', () => {
+  imgPdfFiles = Array.from(inputImgPdf.files);
+  renderFileList();
+  resultImgPdf.classList.remove('show', 'error');
+});
+
+function renderFileList() {
+  fileListDiv.innerHTML = '';
+  imgPdfFiles.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'file-preview show';
+    div.innerHTML = `
+      <div class="file-icon">🖼️</div>
+      <div class="file-info">
+        <div class="file-name">${f.name}</div>
+        <div class="file-size">${fmtBytes(f.size)}</div>
+      </div>
+      <button class="file-remove" data-i="${i}">✕</button>`;
+    fileListDiv.appendChild(div);
+  });
+  fileListDiv.querySelectorAll('.file-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      imgPdfFiles.splice(+btn.dataset.i, 1);
+      renderFileList();
+    });
+  });
+}
+
+btnImgToPdf.addEventListener('click', async () => {
+  if (!imgPdfFiles.length) { alert('Please select at least one image.'); return; }
+  if (typeof window.jspdf === 'undefined') { alert('jsPDF library not loaded. Check your connection.'); return; }
+
+  btnImgToPdf.disabled = true;
+  progressWrap.classList.add('show');
+  resultImgPdf.classList.remove('show', 'error');
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const pageSize = document.getElementById('pdfPageSize').value;
+    const orientation = document.getElementById('pdfOrientation').value;
+    const filename = (document.getElementById('pdfFilename').value.trim() || 'converted') + '.pdf';
+
+    const doc = new jsPDF({ orientation, unit: 'mm', format: pageSize });
+    const pgW = doc.internal.pageSize.getWidth();
+    const pgH = doc.internal.pageSize.getHeight();
+
+    for (let i = 0; i < imgPdfFiles.length; i++) {
+      progressBar.style.width = ((i / imgPdfFiles.length) * 90) + '%';
+      progressLbl.textContent = `Processing image ${i+1} of ${imgPdfFiles.length}…`;
+
+      await new Promise((res, rej) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = new Image();
+          img.onload = () => {
+            if (i > 0) doc.addPage();
+            const margin = 10;
+            const maxW = pgW - margin * 2;
+            const maxH = pgH - margin * 2;
+            let w = img.width, h = img.height;
+            const scale = Math.min(maxW / w, maxH / h);
+            w *= scale; h *= scale;
+            const x = (pgW - w) / 2;
+            const y = (pgH - h) / 2;
+            const fmt = imgPdfFiles[i].type === 'image/png' ? 'PNG' : 'JPEG';
+            doc.addImage(e.target.result, fmt, x, y, w, h);
+            res();
+          };
+          img.onerror = rej;
+          img.src = e.target.result;
+        };
+        reader.onerror = rej;
+        reader.readAsDataURL(imgPdfFiles[i]);
+      });
+    }
+
+    progressBar.style.width = '100%';
+    progressLbl.textContent = 'Generating PDF…';
+
+    const blob = doc.output('blob');
+    const url = URL.createObjectURL(blob);
+    document.getElementById('dlImgPdf').href = url;
+    document.getElementById('dlImgPdf').download = filename;
+    document.getElementById('resultMsgImgPdf').textContent =
+      `${imgPdfFiles.length} image(s) → ${filename} (${fmtBytes(blob.size)})`;
+    resultImgPdf.classList.add('show');
+  } catch(err) {
+    resultImgPdf.classList.add('show', 'error');
+    document.getElementById('resultTitleImgPdf').textContent = '❌ Error';
+    document.getElementById('resultMsgImgPdf').textContent = err.message;
+  }
+
+  btnImgToPdf.disabled = false;
+  setTimeout(() => progressWrap.classList.remove('show'), 1200);
+});
+
+// ── PANEL 2: JPG ↔ PNG ──
+const inputImgConvert = document.getElementById('inputImgConvert');
+const dropImgConvert = document.getElementById('dropImgConvert');
+const previewImgConvert = document.getElementById('previewImgConvert');
+const btnImgConvert = document.getElementById('btnImgConvert');
+const resultImgConvert = document.getElementById('resultImgConvert');
+let imgConvertFile = null;
+
+setupDrop(dropImgConvert, inputImgConvert);
+
+inputImgConvert.addEventListener('change', () => {
+  imgConvertFile = inputImgConvert.files[0] || null;
+  if (imgConvertFile) {
+    document.getElementById('previewNameConvert').textContent = imgConvertFile.name;
+    document.getElementById('previewSizeConvert').textContent = fmtBytes(imgConvertFile.size) + ' · ' + imgConvertFile.type;
+    previewImgConvert.classList.add('show');
+    resultImgConvert.classList.remove('show', 'error');
+    // auto-suggest opposite format
+    if (imgConvertFile.type === 'image/jpeg') document.getElementById('imgConvertFormat').value = 'image/png';
+    else if (imgConvertFile.type === 'image/png') document.getElementById('imgConvertFormat').value = 'image/jpeg';
+    // default filename
+    document.getElementById('imgConvertFilename').value = imgConvertFile.name.replace(/\.[^.]+$/, '');
+  }
+});
+
+document.getElementById('removeImgConvert').addEventListener('click', () => {
+  imgConvertFile = null;
+  inputImgConvert.value = '';
+  previewImgConvert.classList.remove('show');
+  resultImgConvert.classList.remove('show', 'error');
+});
+
+btnImgConvert.addEventListener('click', () => {
+  if (!imgConvertFile) { alert('Please select an image first.'); return; }
+
+  const format = document.getElementById('imgConvertFormat').value;
+  const quality = Math.min(100, Math.max(1, +document.getElementById('imgQuality').value)) / 100;
+  const ext = format === 'image/png' ? '.png' : format === 'image/webp' ? '.webp' : '.jpg';
+  const filename = (document.getElementById('imgConvertFilename').value.trim() || 'converted') + ext;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width; canvas.height = img.height;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        document.getElementById('dlImgConvert').href = url;
+        document.getElementById('dlImgConvert').download = filename;
+        document.getElementById('resultMsgConvert').textContent =
+          `${imgConvertFile.name} → ${filename} (${fmtBytes(blob.size)})`;
+        resultImgConvert.classList.add('show');
+      }, format, quality);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(imgConvertFile);
+});
+
+// ── PANEL 3: TEXT TOOLS ──
+const textInput = document.getElementById('textInput');
+const textOutput = document.getElementById('textOutput');
+const textStats = document.getElementById('textStats');
+
+function updateStats(txt) {
+  const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  const chars = txt.length;
+  const lines = txt.trim() ? txt.split('\n').length : 0;
+  textStats.innerHTML = `
+    <span class="stat-chip">📝 ${words} words</span>
+    <span class="stat-chip">🔤 ${chars} chars</span>
+    <span class="stat-chip">📄 ${lines} lines</span>`;
+}
+
+textInput.addEventListener('input', () => updateStats(textInput.value));
+
+const textFns = {
+  upper: t => t.toUpperCase(),
+  lower: t => t.toLowerCase(),
+  title: t => t.replace(/\b\w/g, c => c.toUpperCase()),
+  sentence: t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase(),
+  camel: t => t.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()),
+  snake: t => t.trim().toLowerCase().replace(/[\s\-]+/g, '_').replace(/[^a-z0-9_]/g, ''),
+  kebab: t => t.trim().toLowerCase().replace(/[\s_]+/g, '-').replace(/[^a-z0-9\-]/g, ''),
+  trim: t => t.split('\n').map(l => l.trim()).join('\n').replace(/\n{3,}/g, '\n\n'),
+  reverse: t => t.split('').reverse().join(''),
+  encode64: t => { try { return btoa(unescape(encodeURIComponent(t))); } catch { return 'Error: invalid input'; } },
+  decode64: t => { try { return decodeURIComponent(escape(atob(t.trim()))); } catch { return 'Error: invalid Base64'; } },
+  encodeUrl: t => encodeURIComponent(t),
+  decodeUrl: t => { try { return decodeURIComponent(t); } catch { return 'Error: invalid URL encoding'; } },
+  stripHtml: t => t.replace(/<[^>]*>/g, ''),
+  lineCount: t => String(t.trim() ? t.split('\n').length : 0) + ' lines',
+  wordCount: t => String(t.trim() ? t.trim().split(/\s+/).length : 0) + ' words',
+};
+
+document.querySelectorAll('.tool-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const fn = textFns[chip.dataset.fn];
+    if (!fn) return;
+    textOutput.value = fn(textInput.value);
+    updateStats(textInput.value);
+  });
+});
+
+document.getElementById('copyOutput').addEventListener('click', () => {
+  if (!textOutput.value) return;
+  navigator.clipboard.writeText(textOutput.value).then(() => {
+    const btn = document.getElementById('copyOutput');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 1500);
+  });
+});
+
+// ── PANEL 4: CSV → JSON ──
+const inputCsv = document.getElementById('inputCsv');
+const dropCsv = document.getElementById('dropCsv');
+const csvInput = document.getElementById('csvInput');
+const btnCsvToJson = document.getElementById('btnCsvToJson');
+const resultCsv = document.getElementById('resultCsv');
+const jsonOutput = document.getElementById('jsonOutput');
+
+setupDrop(dropCsv, document.getElementById('inputCsv'));
+
+document.getElementById('inputCsv').addEventListener('change', () => {
+  const f = document.getElementById('inputCsv').files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = e => { csvInput.value = e.target.result; };
+  reader.readAsText(f);
+});
+
+function parseCsv(text, delim) {
+  const lines = text.trim().split('\n').map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return [];
+  const sep = delim === '\\t' ? '\t' : delim;
+  const headers = lines[0].split(sep).map(h => h.trim().replace(/^"|"$/g, ''));
+  return lines.slice(1).map(line => {
+    const vals = line.split(sep).map(v => v.trim().replace(/^"|"$/g, ''));
+    const obj = {};
+    headers.forEach((h, i) => {
+      const v = vals[i] !== undefined ? vals[i] : '';
+      obj[h] = isNaN(v) || v === '' ? v : Number(v);
+    });
+    return obj;
+  });
+}
+
+btnCsvToJson.addEventListener('click', () => {
+  const raw = csvInput.value.trim();
+  if (!raw) { alert('Please paste CSV data or upload a file.'); return; }
+
+  try {
+    const delim = document.getElementById('csvDelimiter').value;
+    const mode = document.getElementById('csvOutputMode').value;
+    const filename = (document.getElementById('csvFilename').value.trim() || 'data') + '.json';
+
+    const data = parseCsv(raw, delim);
+    let jsonStr;
+    if (mode === 'minified') jsonStr = JSON.stringify(data);
+    else jsonStr = JSON.stringify(data, null, 2);
+
+    jsonOutput.value = jsonStr;
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    document.getElementById('dlCsvJson').href = url;
+    document.getElementById('dlCsvJson').download = filename;
+    document.getElementById('resultMsgCsv').textContent =
+      `${data.length} rows converted → ${filename} (${fmtBytes(blob.size)})`;
+    resultCsv.classList.add('show');
+  } catch(err) {
+    resultCsv.classList.add('show', 'error');
+    document.getElementById('resultMsgCsv').textContent = 'Parse error: ' + err.message;
+  }
+});
+
+document.getElementById('copyCsvJson').addEventListener('click', () => {
+  if (!jsonOutput.value) return;
+  navigator.clipboard.writeText(jsonOutput.value).then(() => {
+    const btn = document.getElementById('copyCsvJson');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy JSON', 1500);
+  });
+});
+</script>
+</body>
+</html>
