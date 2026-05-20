@@ -1,70 +1,45 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="A clean, responsive To-Do List app with theme switching and PDF export — part of the 100 Days 100 Projects challenge."
-    />
-    <title>To-Do List | 100 Days 100 Projects</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="todolist.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  </head>
-  <body>
-    <!-- NAVBAR -->
-    <nav class="navbar">
-      <div class="nav-brand">
-        <span class="brand-dot"></span>
-        <span class="brand-name">TaskFlow</span>
-      </div>
+  
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List | 100 Days 100 Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="todolist.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">TaskFlow</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" id="btn-home" onclick="showHome()">Home</button>
+      <button class="tab-btn" id="btn-docs" onclick="showDocuments()">Documents</button>
+    </div>
+    <div class="nav-themes">
+      <span class="theme-label">THEME</span>
+      <button class="theme-swatch" id="t1" onclick="applyTheme('sunset')" title="Sunset"></button>
+      <button class="theme-swatch" id="t2" onclick="applyTheme('ocean')" title="Ocean"></button>
+      <button class="theme-swatch" id="t3" onclick="applyTheme('forest')" title="Forest"></button>
+      <button class="theme-swatch" id="t4" onclick="applyTheme('midnight')" title="Midnight"></button>
+      <button class="theme-swatch" id="t5" onclick="applyTheme('aurora')" title="Aurora"></button>
+    </div>
+  </nav>
+  <main class="main-container">
 
-      <div class="nav-tabs">
-        <button class="tab-btn active" id="btn-home" onclick="showHome()">
-          Home
-        </button>
+  <!-- HOME TAB -->
+  <section id="home-tab">
 
-        <button class="tab-btn" id="btn-docs" onclick="showDocuments()">
-          Saved Docs
-        </button>
-      </div>
+    <div class="hero-section">
+      <h1 class="main-heading">JUST DO IT.</h1>
+      <p class="sub-heading">Organize your work beautifully.</p>
 
-      <div class="nav-themes">
-        <button class="theme-swatch" onclick="applyTheme('theme1')"></button>
-        <button
-          class="theme-swatch ocean"
-          onclick="applyTheme('theme2')"
-        ></button>
-        <button
-          class="theme-swatch forest"
-          onclick="applyTheme('theme3')"
-        ></button>
-        <button
-          class="theme-swatch midnight"
-          onclick="applyTheme('theme4')"
-        ></button>
-        <button
-          class="theme-swatch aurora"
-          onclick="applyTheme('theme5')"
-        ></button>
-      </div>
-    </nav>
-
-    <main class="main-container">
-      <!-- HOME TAB -->
-      <section id="home-tab">
-        <div class="hero-section">
-          <h1 class="main-heading">JUST DO IT.</h1>
 
       <!-- TASK LIST -->
       <div id="task-list">
@@ -103,14 +78,12 @@
   </div>
 
 </div>
-</div>
 
 <div class="empty-state" id="empty-state">
   <div class="empty-icon">📋</div>
   <p>No tasks yet. Add one above!</p>
 </div>
-          <p class="sub-heading">Organize your work beautifully.</p>
-        </div>
+        
 
         <div class="task-panel">
           <!-- INPUT -->

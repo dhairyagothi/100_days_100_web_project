@@ -130,6 +130,27 @@ body {
     transform: translateX(-50%) scale(1);
 }
 
+.element.search-active .tooltip{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:
+    translateX(-50%)
+    scale(1);
+
+}
+
+.element.search-active{
+
+    transform:
+    translateY(-10px)
+    scale(1.1);
+
+    z-index:100;
+}
+
 .empty {
     background-color: transparent;
     border: none;
@@ -206,8 +227,11 @@ body {
 
 /* Controls Styling */
 .controls {
-    margin-bottom: 20px;
-    position: relative;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:20px;
+    position:relative;
 }
 
 .controls::after {
@@ -236,6 +260,29 @@ body {
     backdrop-filter: blur(10px);
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+#searchInput{
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    font-size:14px;
+
+    background:rgba(255,255,255,.9);
+
+    box-shadow:
+    0 4px 10px rgba(0,0,0,.15);
+
+    outline:none;
+    width:240px;
+
+    transition:.3s;
+}
+
+#searchInput:focus{
+    box-shadow:
+    0 0 0 2px #90caf9,
+    0 8px 15px rgba(0,0,0,.2);
 }
 
 #categoryFilter:hover {
