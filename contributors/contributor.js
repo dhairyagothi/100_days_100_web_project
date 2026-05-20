@@ -494,6 +494,7 @@ card.className =
 
 card.innerHTML = `
 
+
 <img
 src="${contributor.avatar_url}"
 alt="${contributor.login}"
@@ -506,6 +507,89 @@ ${contributor.login}
 <div class="rank-badge ${badge.className}">
 ${badge.text}
 </div>
+
+  data.forEach(
+
+(contributor)=> {
+    const card = document.createElement('div');
+
+    const globalRank =
+
+allContributors.findIndex(
+
+c =>
+
+c.login ===
+contributor.login
+
+) + 1;
+
+
+let badge='';
+
+
+if(globalRank===1){
+
+badge=
+'assets/badges/diamond.png';
+
+}
+
+else if(
+
+globalRank>=2 &&
+globalRank<=3
+
+){
+
+badge=
+'assets/badges/gold.png';
+
+}
+
+else if(
+
+globalRank>=4 &&
+globalRank<=6
+
+){
+
+badge=
+'assets/badges/silver.png';
+
+}
+
+else if(
+
+globalRank>=7 &&
+globalRank<=10
+
+){
+
+badge=
+'assets/badges/bronze.png';
+
+}
+
+    card.className = 'contributor-card';
+
+    card.innerHTML = `
+
+${badge
+?
+`<img
+src="${badge}"
+class="rank-badge"
+>`
+:
+''
+}
+
+<img
+src="${contributor.avatar_url}"
+
+alt="${contributor.login}">
+
 
 <div class="contributor-rank">
 Rank #${rank}
@@ -564,6 +648,7 @@ if(detailsButton){
 
 detailsButton.addEventListener(
 
+
 "click",
 
 ()=>{
@@ -599,6 +684,20 @@ contributorsContainer.innerHTML =
 }
 
 }
+
+        () => {
+          openProfile(
+
+contributor.login,
+
+contributor.contributions
+
+);
+        }
+      );
+    }
+  });
+
 
 }
 

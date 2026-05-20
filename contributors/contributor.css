@@ -163,7 +163,6 @@ body{
     text-align:center;
     margin-bottom:5rem;
 }
-
 .contributor-header h1{
     font-family:'Orbitron',sans-serif;
     font-size:clamp(2.5rem,6vw,4rem);
@@ -172,6 +171,18 @@ body{
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
     margin-bottom:1.5rem;
+.contributor-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 35px;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .contributor-header .subtitle{
@@ -548,9 +559,25 @@ body{
         padding:1rem;
     }
 
+
     .buttons{
         justify-content:flex-start;
     }
+
+
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem 2rem;
+  }
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+  .stats-overview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .contributors-controls {
+    flex-direction: column;
 
     .buttons .button,
     .featured-btn{
@@ -585,7 +612,46 @@ body{
         grid-template-columns:1fr;
     }
 
+
     .contributor-card{
         padding:2rem 1.2rem;
     }
 }
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+.rank-badge{
+
+position:absolute !important;
+
+top:4px !important;
+
+right:4px !important;
+
+width:52px !important;
+
+height:52px !important;
+
+max-width:52px !important;
+
+max-height:52px !important;
+
+object-fit:contain;
+
+z-index:10;
+
+padding:0;
+
+margin:0;
+
+}
+.rank-badge:hover{
+
+transform:
+scale(1.1);
+
+}
+
+
