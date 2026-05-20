@@ -390,6 +390,11 @@ cell.dataset.category = element.category;
             
 =======
             cell.className = `element ${element.category}`;
+            cell.dataset.name =
+element.name.toLowerCase();
+
+cell.dataset.symbol =
+element.symbol.toLowerCase();
             cell.style.setProperty("--i", element.number);
             cell.innerHTML = `
                 <div class="element-number">${element.number}</div>
@@ -838,6 +843,11 @@ elements
     .forEach(el => {
         const div = document.createElement("div");
         div.className = `element ${el.category}`;
+        div.dataset.name =
+el.name.toLowerCase();
+
+div.dataset.symbol =
+el.symbol.toLowerCase();
         div.innerHTML = `
         <div class="element-number">${el.number}</div>
         <div class="element-symbol">${el.symbol}</div>
@@ -880,6 +890,11 @@ elements
     .forEach(el => {
         const div = document.createElement("div");
         div.className = `element ${el.category}`;
+        div.dataset.name =
+el.name.toLowerCase();
+
+div.dataset.symbol =
+el.symbol.toLowerCase();
         div.innerHTML = `
             <div class="element-number">${el.number}</div>
             <div class="element-symbol">${el.symbol}</div>
@@ -940,5 +955,69 @@ Object.keys(categories).forEach(cat => {
     item.appendChild(colorBox);
     item.appendChild(label);
     legendContainer.appendChild(item);
+});
+<<<<<<< HEAD
+>>>>>>> origin/Main
+=======
+// =============================
+// REAL-TIME ELEMENT SEARCH
+// =============================
+
+const searchInput =
+document.getElementById(
+"searchInput"
+);
+
+searchInput.addEventListener(
+"input",
+
+function(){
+
+const query =
+this.value
+.trim()
+.toLowerCase();
+
+document
+.querySelectorAll(".element")
+
+.forEach(el=>{
+
+// Remove previous search state
+el.classList.remove(
+"search-active"
+);
+
+// Empty search → no popup
+if(query===""){
+return;
+}
+
+const name =
+el.dataset.name || "";
+
+const symbol =
+el.dataset.symbol || "";
+
+const match =
+
+name.startsWith(query)
+
+||
+
+symbol === query;
+
+
+// If matched → show popup
+if(match){
+
+el.classList.add(
+"search-active"
+);
+
+}
+
+});
+
 });
 >>>>>>> origin/Main
