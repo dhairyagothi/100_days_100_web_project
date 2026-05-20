@@ -399,6 +399,34 @@ header {
   transform: scale(1);
 }
 
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.modal-close:hover,
+.modal-close:focus-visible {
+  background: rgba(124,58,237,0.18);
+  border-color: var(--accent);
+  color: var(--text);
+  outline: none;
+  transform: scale(1.05);
+}
+
 .modal::before {
   content: '';
   position: absolute;

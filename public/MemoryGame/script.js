@@ -29,6 +29,7 @@ const bestEl     = document.getElementById('bestVal');
 const progressEl = document.getElementById('progressBar');
 const winModal   = document.getElementById('winModal');
 const toastEl    = document.getElementById('toast');
+const closeWinModalBtn = document.getElementById('closeWinModal');
 
 // ── Event Listeners ───────────────────────────────────────
 document.querySelectorAll('.diff-btn').forEach(btn => {
@@ -45,6 +46,15 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('hintBtn').addEventListener('click', useHint);
 document.getElementById('playAgainBtn').addEventListener('click', startGame);
+closeWinModalBtn.addEventListener('click', hideWinModal);
+winModal.addEventListener('click', (event) => {
+  if (event.target === winModal) hideWinModal();
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && winModal.classList.contains('visible')) {
+    hideWinModal();
+  }
+});
 
 // ── Utility Helpers ───────────────────────────────────────
 
@@ -91,6 +101,14 @@ function showToast(msg, dur = 1800) {
   toastEl.textContent = msg;
   toastEl.classList.add('show');
   setTimeout(() => toastEl.classList.remove('show'), dur);
+}
+
+/**
+ * Hide the win modal without resetting the completed board.
+ */
+function hideWinModal() {
+  winModal.classList.remove('visible');
+  document.getElementById('confettiContainer').innerHTML = '';
 }
 
 // ── Timer ─────────────────────────────────────────────────
