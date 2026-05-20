@@ -174,7 +174,7 @@ generateBtn.addEventListener('click', () => {
 
     //let's put the stuff mentioned by checkboxes
 
-    // if(uppercaseCheck.checked) {
+     {
     //     password += generateUpperCase();
     // }
 

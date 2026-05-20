@@ -196,7 +196,10 @@ The website features:
 
 ## Getting Started
 
-<!-- ⚠️ new update: Read carefully👉 https://github.com/100_days_100_web_project/discussions/1028 -->
+> ⚠️ **Important Update:**  
+> Please read the latest contribution discussion before getting started:  
+> [Project Discussion #1028](https://github.com/dhairyagothi/100_days_100_web_project/discussions/1028)
+
 
 ## 🚀 Quick Start
 
