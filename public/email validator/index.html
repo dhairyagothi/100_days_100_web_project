@@ -16,20 +16,15 @@
       </p>
 
       <div class="input-group">
-        <input type="text" id="username" placeholder="Enter email address" />
+        <input type="email" id="username" placeholder="Enter email address" autocomplete="email" required />
 
         <button id="submitBtn" class="btn">Validate Email</button>
       </div>
 
-      <div id="resultCont"></div>
+      <!-- It Will now help in result rendering, error messages and loading messages -->
+      <div id="resultCont" class="result-container" aria-live="polite"></div>
     </div>
-
-    <script>
-      const submitBtn = document.getElementById("submitBtn");
-      const resultCont = document.getElementById("resultCont");
-    </script>
 
     <script src="script.js"></script>
   </body>
 </html>
-

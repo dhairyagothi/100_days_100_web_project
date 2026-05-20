@@ -1,8 +1,13 @@
 .footer {
-    text-align: center;
-    margin: auto;
-    max-width: 80%;
-    border-top: 1px solid #989898;
-    padding: 15px 0px;
-    font-size: 13px;
+  text-align: center;
+  padding: 28px 48px;
+  border-top: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+}
+
+.footer span {
+  color: var(--accent);
 }
