@@ -115,10 +115,12 @@
         /* ---- Paper ---- */
         .paper-sheet {
             width: 100%;
-            min-height: 280px;
+            height: 70vh;
+            overflow-y: auto;
             background: var(--paper-bg);
             color: var(--paper-text);
             padding: 28px 30px;
+            padding-bottom: 320px;
             border-radius: 8px 8px 0 0;
             box-shadow: 0 0 32px rgba(59,130,246,0.18);
             font-family: 'Courier Prime', monospace;
@@ -130,21 +132,6 @@
             position: relative;
             transition: background 0.4s ease, color 0.4s ease;
             text-align: left;
-        }
-
-        .paper-sheet::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(
-                to bottom,
-                transparent,
-                transparent 31px,
-                var(--paper-line) 31px,
-                var(--paper-line) 32px
-            );
-            pointer-events: none;
-            border-radius: 8px 8px 0 0;
         }
 
         #typewriterText { position: relative; z-index: 2; white-space: pre-wrap; }
@@ -177,6 +164,9 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
+            position: sticky;
+            bottom: 0;
+            z-index: 5;
         }
 
         /* ---- Input ---- */
@@ -434,9 +424,19 @@
 
         let paperContent = '';
 
+        function scrollPaperToBottom() {
+    const paperSheet = document.querySelector('.paper-sheet');
+
+    paperSheet.scrollTo({
+        top: paperSheet.scrollHeight,
+        behavior: "smooth"
+    });
+}
+
         function addCharToPaper(ch) {
             paperContent += ch;
             typewriterText.textContent = paperContent;
+            scrollPaperToBottom();
             if (ch === ' ') playSpaceClick();
             else            playKeyClick();
             if (ch !== '\n') flashKey(ch.toUpperCase());
@@ -446,6 +446,7 @@
             if (paperContent.length === 0) return;
             paperContent = paperContent.slice(0, -1);
             typewriterText.textContent = paperContent;
+            scrollPaperToBottom();
             playBackspace();
         }
 
@@ -474,6 +475,7 @@
                 e.preventDefault();
                 paperContent += '\n';
                 typewriterText.textContent = paperContent;
+                scrollPaperToBottom();
                 playReturn();
                 flashKey('ENTER');
                 return;
@@ -493,6 +495,8 @@
                 if (ch === 'ENTER')     {
                     paperContent += '\n';
                     typewriterText.textContent = paperContent;
+                    scrollPaperToBottom();
+                    scrollPaperToBottom();
                     playReturn();
                     return;
                 }
