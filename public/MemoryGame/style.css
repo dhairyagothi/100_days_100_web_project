@@ -96,3 +96,12 @@ h1 {
         grid-template-rows: repeat(2, 80px);
     }
 }
+
+#restart-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
