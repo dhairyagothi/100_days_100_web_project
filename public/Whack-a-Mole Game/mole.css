@@ -39,3 +39,50 @@ body {
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+
+#restart-btn {
+    padding: 16px 34px;
+    font-size: 26px;
+    font-weight: bold;
+
+    background: linear-gradient(to bottom, #ffe066, #ffcc00);
+    color: #3b2f00;
+
+    border: 3px solid #fff3b0;
+    border-radius: 18px;
+
+    cursor: pointer;
+    display: none;
+
+    position: fixed;
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    box-shadow:
+        0 0 20px rgba(255, 204, 0, 0.6),
+        0 8px 20px rgba(0,0,0,0.35);
+
+    transition: all 0.25s ease;
+
+    z-index: 1000;
+}
+
+#restart-btn:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    background: linear-gradient(to bottom, #fff08a, #ffd633);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    pointer-events: none;
+    opacity: 0;
+    transition: 0.3s ease;
+}
+
+body.game-over::after {
+    opacity: 1;
+}
