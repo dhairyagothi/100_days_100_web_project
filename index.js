@@ -147,6 +147,7 @@ const PROJECT_DATA = [
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
   ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
   ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
+  ['Day 131', 'Lie Detector Game', './public/lie_detector_game/index.html', 'game javascript animation ai', 'intermediate'],
 
    
 ];
