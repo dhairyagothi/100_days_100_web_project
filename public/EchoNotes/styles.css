@@ -68,6 +68,8 @@ header {
   top: 0;
   z-index: 100;
   box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .logo {
@@ -141,12 +143,16 @@ header {
   gap: 6px;
   transition: all var(--transition);
   box-shadow: 0 2px 8px rgba(192, 98, 42, 0.3);
+  
 }
 
 .new-note-btn:hover {
   background: var(--accent2);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(192, 98, 42, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(192, 98, 42, 0.4);
+}
+.new-note-btn:active {
+  transform: scale(0.96);
 }
 
 /* ── LAYOUT ── */
@@ -165,6 +171,9 @@ header {
   height: calc(100vh - 64px);
   position: sticky;
   top: 64px;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .sidebar-top {
@@ -222,12 +231,17 @@ header {
   border-radius: var(--radius-sm);
   cursor: pointer;
   border: 1.5px solid transparent;
-  transition: all var(--transition);
+  transition: all var(--transition), background 0.2s ease;
   margin-bottom: 6px;
   position: relative;
 }
 
-.note-card:hover { background: var(--surface); border-color: var(--border); }
+.note-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+  background: var(--surface);
+}
 .note-card.active { background: var(--accent-light); border-color: var(--accent); }
 
 .note-card-title {
