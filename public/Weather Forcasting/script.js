@@ -1,107 +1,123 @@
-const errorMessage = document.getElementById("errorMessage");
-const topBtn = document.getElementById("topBtn");
+const apiKey = "YOUR_REAL_API_KEY";
+const getWeather = (city) => {
+    cityName.innerHTML = city
+    loading.style.display = "block";
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+        .then(response => response.json())
+        .then((response) => {
+            console.log(response)
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 800);
+            // cloud_pct.innerHTML = response.main.maincloud_pct
+            temp.innerHTML = response.main.temp
+            temp2.innerHTML = response.main.temp
+            feels_like.innerHTML = response.main.feels_like
+            humidity.innerHTML = response.main.humidity
+            humidity2.innerHTML = response.main.humidity
+            min_temp.innerHTML = response.main.temp_min
+            max_temp.innerHTML = response.main.temp_max
+            wind_speed.innerHTML = response.wind.speed
+            wind_speed2.innerHTML = response.wind.speed
+            wind_degrees.innerHTML = response.wind.deg
+            sunrise.innerHTML = new Date(response.sys.sunrise * 1000).toLocaleTimeString();
+            sunset.innerHTML = new Date(response.sys.sunset * 1000).toLocaleTimeString();
 
-const getWeather = async (city) => {
-    if (city.trim() === "") {
-        errorMessage.innerHTML = "Please enter a city name!";
-        return;
-    }
 
-    errorMessage.innerHTML = "";
+        })
+        .catch(err => {
 
-    try {
-        cityName.innerHTML = city;
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 800);
 
-        const geoResponse = await fetch(
-            `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`
-        );
 
-        const geoData = await geoResponse.json();
+            console.error(err);
+        });
 
-        if (!geoData.results || geoData.results.length === 0) {
-            errorMessage.innerHTML = "City not found!";
-            clearWeatherData();
-            return;
+        if (!targetRow) continue;
+
+        const cells = targetRow.querySelectorAll('td');
+        cells.forEach(td => td.innerHTML = '...');
+
+        try {
+            const location = await geocodeCity(cityName);
+            if (!location) {
+                cells.forEach(td => td.innerHTML = '—');
+                continue;
+            }
+
+            const weatherData = await fetchWeatherByCoords(location.lat, location.lon);
+            const c = weatherData.current;
+            const d = weatherData.daily;
+
+            cells[0].innerHTML = c.cloud_cover;                            // Cloud_pct
+            cells[1].innerHTML = Math.round(c.apparent_temperature);       // Feels_like
+            cells[2].innerHTML = c.relative_humidity_2m;                   // Humidity
+            cells[3].innerHTML = Math.round(d.temperature_2m_max[0]);      // Max_temp
+            cells[4].innerHTML = Math.round(d.temperature_2m_min[0]);      // Min_temp
+            cells[5].innerHTML = isoToTime(d.sunrise[0]);                  // Sunrise
+            cells[6].innerHTML = isoToTime(d.sunset[0]);                   // Sunset
+            cells[7].innerHTML = Math.round(c.temperature_2m);             // Temp
+            cells[8].innerHTML = c.wind_direction_10m;                     // Wind_degrees
+            cells[9].innerHTML = c.wind_speed_10m;                         // Wind_speed
+
+        } catch (err) {
+            console.error(`Failed to load weather for ${cityName}:`, err);
+            cells.forEach(td => td.innerHTML = '—');
         }
-
-        const latitude = geoData.results[0].latitude;
-        const longitude = geoData.results[0].longitude;
-
-        const weatherResponse = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
-        );
-
-        const weatherData = await weatherResponse.json();
-
-        const weather = weatherData.current;
-        const daily = weatherData.daily;
-
-        temp.innerHTML = weather.temperature_2m;
-        temp2.innerHTML = weather.temperature_2m;
-
-        feels_like.innerHTML = weather.apparent_temperature;
-
-        humidity.innerHTML = weather.relative_humidity_2m;
-        humidity2.innerHTML = weather.relative_humidity_2m;
-
-        min_temp.innerHTML = daily.temperature_2m_min[0];
-        max_temp.innerHTML = daily.temperature_2m_max[0];
-
-        wind_speed.innerHTML = weather.wind_speed_10m;
-        wind_speed2.innerHTML = weather.wind_speed_10m;
-
-        wind_degrees.innerHTML = weather.wind_direction_10m;
-
-        sunrise.innerHTML = new Date(daily.sunrise[0]).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-
-        sunset.innerHTML = new Date(daily.sunset[0]).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-
-    } catch (error) {
-        console.error("Error fetching weather data:", error);
-        errorMessage.innerHTML = "Failed to fetch weather data. Please try again.";
-        clearWeatherData();
     }
 };
+const getWeather = (city) => {
+    cityName.innerHTML = city
+    loading.style.display = "block";
+    fetch('https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=' + city, options)
+        .then(response => response.json())
+        .then((response) => {
+            console.log(response)
+            loading.style.display = "none";
+            // cloud_pct.innerHTML = response.cloud_pct
+            temp.innerHTML = response.temp
+            temp2.innerHTML = response.temp
+            feels_like.innerHTML = response.feels_like
+            humidity.innerHTML = response.humidity
+            humidity2.innerHTML = response.humidity
+            min_temp.innerHTML = response.min_temp
+            max_temp.innerHTML = response.max_temp
+            wind_speed.innerHTML = response.wind_speed
+            wind_speed2.innerHTML = response.wind_speed
+            wind_degrees.innerHTML = response.wind_degrees
+            sunrise.innerHTML = response.sunrise
+            sunset.innerHTML = response.sunset
+            
 
-const clearWeatherData = () => {
-    temp.innerHTML = "--";
-    temp2.innerHTML = "--";
-    feels_like.innerHTML = "--";
-    humidity.innerHTML = "--";
-    humidity2.innerHTML = "--";
-    min_temp.innerHTML = "--";
-    max_temp.innerHTML = "--";
-    wind_speed.innerHTML = "--";
-    wind_speed2.innerHTML = "--";
-    wind_degrees.innerHTML = "--";
-    sunrise.innerHTML = "--";
-    sunset.innerHTML = "--";
-};
+        })
+          .catch(err => {
 
+            // HIDE spinner if error occurs
+            loading.style.display = "none";
+
+            console.error(err);
+        });
+
+}
+
+//  Search button click
 submit.addEventListener("click", (e) => {
-    e.preventDefault();
-    getWeather(city.value);
-});
+    e.preventDefault()
+    getWeather(city.value)
+})
 
-window.onscroll = function () {
-    if (document.documentElement.scrollTop > 200) {
-        topBtn.style.display = "block";
-    } else {
-        topBtn.style.display = "none";
+// ⌨ Enter key triggers search
+city.addEventListener("keydown", (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault()
+        getWeather(city.value)
     }
-};
+})
 
-topBtn.addEventListener("click", () => {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-});
-
-getWeather("Mumbai");
+//  On page load: fetch Delhi for cards + all table cities
+window.addEventListener('DOMContentLoaded', () => {
+    getWeather('Delhi');
+    loadTableCities();
+})

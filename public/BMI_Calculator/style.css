@@ -410,3 +410,126 @@ button#btn:active { transform: scale(0.997); }
   width: 0;
   height: 0;
 }
+
+
+
+@media (max-width: 768px) {
+
+  /* =========================
+     Page spacing fix
+  ========================= */
+  body {
+    padding: 16px 10px;
+  }
+
+  .page {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .bmi-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-radius: 10px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .right-card {
+    gap: 18px;
+  }
+
+  .top-bar {
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 22px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  select,
+  input {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  button#btn {
+    font-size: 11px;
+    padding: 14px;
+  }
+
+  .result-row {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card + .metric-card {
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    padding-left: 0;
+    margin-top: 16px;
+  }
+
+  .metric-value {
+    font-size: 34px;
+  }
+
+  .range-val {
+    font-size: 18px;
+  }
+
+  .range-vis {
+    margin-top: 18px;
+  }
+
+  .range-labels {
+    font-size: 10px;
+  }
+
+  /* =========================
+     TABLE scroll fix
+  ========================= */
+  .bmi-table {
+    font-size: 11px;
+  }
+
+  .bmi-table td {
+    padding: 8px 0;
+  }
+
+
+  .chart-wrap {
+    min-height: 180px;
+    padding-top: 12px;
+  }
+
+  .chart-wrap canvas {
+    width: 100% !important;
+    height: 160px !important;
+  }
+
+  .chart-hint {
+    font-size: 10px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
+
+input::placeholder {
+  opacity: 1;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+  transform: translateX(6px);
+}

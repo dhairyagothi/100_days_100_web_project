@@ -6,19 +6,25 @@
 }
 
 body {
-  background: #121212;
-  color: white;
+  background: #f4f7fb;
+  color: #222;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
   padding: 40px;
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
 }
 
 .container {
   width: 100%;
   max-width: 500px;
-  background: #1f1f1f;
+  background: white;
   padding: 20px;
   border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 h1 {
@@ -34,8 +40,12 @@ h1 {
 input {
   flex: 1;
   padding: 10px;
-  border: none;
   border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  background: white;
+  color: black;
+  transition: 0.3s ease;
 }
 
 button {
@@ -45,6 +55,7 @@ button {
   color: white;
   border-radius: 5px;
   cursor: pointer;
+  transition: 0.3s ease;
 }
 
 button:hover {
@@ -60,13 +71,14 @@ button:hover {
 }
 
 .habit-item {
-  background: #2c2c2c;
+  background: #f1f1f1;
   padding: 12px;
   margin-bottom: 10px;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: 0.3s ease;
 }
 
 .actions {
@@ -78,8 +90,16 @@ button:hover {
   background: #2962ff;
 }
 
+.complete-btn:hover {
+  background: #448aff;
+}
+
 .delete-btn {
   background: #d50000;
+}
+
+.delete-btn:hover {
+  background: #ff1744;
 }
 
 .completed {
@@ -87,47 +107,16 @@ button:hover {
   opacity: 0.7;
 }
 
-@media (max-width: 500px) {
-  .input-section {
-    flex-direction: column;
-  }
-}
 /* THEME TOGGLE BUTTON */
 
 #theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   padding: 12px 18px;
-  margin: 20px;
-  border: none;
   border-radius: 12px;
-  cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
-  transition: 0.3s ease;
-}
-
-/* LIGHT MODE (DEFAULT) */
-
-body {
-  background: #f4f7fb;
-  color: #222;
-  transition: all 0.3s ease;
-}
-
-.container {
-  background: white;
-  color: #222;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-li {
-  background: #f1f1f1;
-  color: #222;
-}
-
-input {
-  background: white;
-  color: black;
-  border: 1px solid #ccc;
 }
 
 /* DARK MODE */
@@ -143,7 +132,7 @@ body.dark-mode .container {
   box-shadow: none;
 }
 
-body.dark-mode li {
+body.dark-mode .habit-item {
   background: #2a2a2a;
   color: white;
 }
@@ -154,6 +143,26 @@ body.dark-mode input {
   border: 1px solid #555;
 }
 
-body.dark-mode button {
-  color: white;
+body.dark-mode input::placeholder {
+  color: #ccc;
+}
+
+body.dark-mode #theme-toggle {
+  background: #444;
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 20px;
+  }
+
+  .input-section {
+    flex-direction: column;
+  }
+
+  #theme-toggle {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }

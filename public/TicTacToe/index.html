@@ -10,7 +10,20 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="game" class="turn-x">
+  <div id="start-screen">
+  <div class="neon-bg"></div>
+
+  <h1 class="game-title">
+    <span class="tic">TIC</span>
+    <span class="tac">TAC</span>
+    <span class="toe">TOE</span>
+  </h1>
+
+  <p class="tag-line">PLAY • THINK • WIN</p>
+
+  <button id="start-btn">START GAME</button>
+</div>
+  <div id="game" class="turn-x hidden">
     <canvas id="confetti-canvas"></canvas>
 
     <div id="win-overlay">

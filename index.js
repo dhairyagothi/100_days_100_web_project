@@ -9,6 +9,7 @@ window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
 window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
 
+
 let currentPage = 1;
 const itemsPerPage = 10;
 let projectData = [];
@@ -114,7 +115,7 @@ const PROJECT_DATA = [
     ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', 'todo javascript', 'intermediate'],
     ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', 'css javascript', 'beginner'],
     ['Day 97', 'Time Capsule', './public/Time-Capsule/index.html', 'javascript', 'intermediate'],
-    ['Day 98', 'Virtual Piano', './public/Virtual_Piano/index.html', 'css javascript', 'intermediate'],
+    ['Day 98', 'Virtual Piano', './public/Virtual Piano/index.html', 'css javascript', 'intermediate'],
     ['Day 99', 'NASA-APOD Extension', './public/NASA-APOD/popup.html', 'api javascript', 'intermediate'],
     ['Day 100', 'Text Saver Extension', './public/Text_Saver_Ext/popup.html', 'todo javascript', 'intermediate'],
     ['Day 101', 'Personal Finance Tracker', './public/FinanceTracker/index.html', 'todo javascript', 'intermediate'],
