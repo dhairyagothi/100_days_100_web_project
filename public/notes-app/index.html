@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Notes App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
+  <meta charset="utf-8">  
+  <title>Midnight Notes | GSSoC '26</title>
   <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
-
 <body>
-
-<div class="container">
-
-  <!-- HEADER -->
-  <h1><i class="uil uil-notes"></i> Notes App</h1>
-
-  <!-- SEARCH -->
-  <div class="search-bar">
-    <i class="uil uil-search"></i>
-    <input type="text" placeholder="Search notes...">
-  </div>
-
-  <!-- ADD BUTTON -->
-  <div class="add-box" onclick="openPopup()">
-    <i class="uil uil-plus"></i>
-    <p>Add new note</p>
-  </div>
-
-</div>
-
-<!-- POPUP -->
-<div class="overlay" id="overlay">
-  <div class="popup">
-    <div class="popup-header">
-      <h2>Add New Note</h2>
-      <span onclick="closePopup()">×</span>
+  <div class="header-container">
+    <h1 class="main-title">Notes Archive</h1>
+    <div class="search-bar">
+      <i class="uil uil-search"></i>
+      <input type="text" id="search-input" placeholder="Search your digital brain...">
     </div>
-
-    <input type="text" placeholder="Title">
-    <textarea placeholder="Write your note..."></textarea>
-    <input type="text" placeholder="Tags (comma separated)">
-
-    <div class="password-box">
-      <input type="password" placeholder="Password (optional)">
-      <i class="uil uil-eye"></i>
-    </div>
-
-    <button>+ Add Note</button>
   </div>
-</div>
+  
+  <div class="popup-box">
+    <div class="popup">
+      <div class="content">
+        <header>
+          <p id="modalTitleText" style="color: #00f2fe;"></p>
+          <i class="uil uil-times" id="closePopup"></i>
+        </header>
+        <div class="form-container">
+          <div class="row">
+            <label>Title</label>
+            <input type="text" id="titleInput" placeholder="Give it a name...">
+          </div>
+          <div class="row main-desc-row">
+            <label>Description</label>
+            <textarea id="descInput" placeholder="Deep dive into your thoughts here..."></textarea>
+          </div>
+          <div class="row" id="passRow">
+            <label>Security Pin</label>
+            <input type="password" id="passInput" placeholder="Secret Pin (Optional)">
+          </div>
+          <div class="footer-buttons">
+            <button id="deleteBtn" class="danger-btn">Discard</button>
+            <button id="editToggleBtn" class="secondary-btn">Unlock Edit</button>
+            <button id="submitBtn" class="primary-btn">Save Memory</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<script src="script.js"></script>
+  <div class="wrapper">
+    <li class="add-box">
+      <div class="icon"><i class="uil uil-plus"></i></div>
+      <p>New Note</p>
+    </li>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

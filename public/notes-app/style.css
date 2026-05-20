@@ -1,138 +1,104 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
 body {
-  font-family: sans-serif;
-  background: #f2f3f8;
+  background: radial-gradient(circle at top, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #e9ecef;
+  min-height: 100vh;
 }
 
-/* MAIN */
-.container {
-  text-align: center;
-  margin-top: 40px;
+.header-container { padding: 60px 20px; text-align: center; }
+.main-title { 
+  font-size: 50px; 
+  font-weight: 700; 
+  background: linear-gradient(to right, #00f2fe, #4facfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 25px;
 }
 
-/* HEADER */
-h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-/* SEARCH */
-.search-bar {
-  position: relative;
-  width: 300px;
-  margin: 0 auto 30px;
-}
-
+.search-bar { position: relative; max-width: 650px; margin: 0 auto; }
 .search-bar input {
-  width: 100%;
-  padding: 10px 10px 10px 35px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  width: 100%; padding: 18px 60px; border-radius: 15px; border: none;
+  background: rgba(255, 255, 255, 0.05); color: #fff; outline: none;
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  backdrop-filter: blur(5px); transition: 0.3s;
+}
+.search-bar input:focus { border-color: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.2); }
+.search-bar i { position: absolute; left: 25px; top: 50%; transform: translateY(-50%); color: #00f2fe; font-size: 20px; }
+
+.wrapper {
+  margin: 30px auto; padding: 0 50px;
+  display: grid; gap: 30px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
-.search-bar i {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+.wrapper li {
+  height: 260px; border-radius: 20px; padding: 25px;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative; overflow: hidden; transition: 0.3s; cursor: pointer;
+}
+.wrapper li:hover { 
+  transform: translateY(-8px); 
+  background: rgba(255, 255, 255, 0.07); 
+  border-color: rgba(0, 242, 254, 0.5);
 }
 
-/* ADD BOX */
-.add-box {
-  width: 180px;
-  height: 100px;
-  margin-left: 50px;
-  border-radius: 10px;
-  background: #eee;
+.add-box { border: 2px dashed #00f2fe !important; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.add-box .icon { font-size: 45px; color: #00f2fe; margin-bottom: 10px; }
+.add-box p { font-weight: 500; color: #00f2fe; }
+
+.note .details { height: 160px; overflow: hidden; }
+.note p { font-size: 22px; font-weight: 600; color: #00f2fe; margin-bottom: 10px; }
+.note span { color: #b8c1ec; font-size: 15px; line-height: 1.6; word-wrap: break-word; }
+
+.popup-box {
+  position: fixed; top: 0; left: 0; height: 100%; width: 100%;
+  background: rgba(10, 10, 25, 0.9); backdrop-filter: blur(12px);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: 0.3s;
+}
+.popup-box.show { opacity: 1; pointer-events: auto; }
+
+/* Perfect Square Popup Styling */
+.popup .content {
+  background: #16213e; 
+  width: 90%;
+  max-width: 600px; 
+  height: 600px;    
+  border-radius: 25px; 
+  padding: 35px; 
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
 }
 
-.add-box i {
-  font-size: 25px;
-  color: #6c5ce7;
-}
+.form-container { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-.add-box p {
-  margin-top: 8px;
-}
+header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0, 242, 254, 0.1); padding-bottom: 15px; }
+header i { font-size: 30px; cursor: pointer; color: #ff4d4d; }
 
-/* OVERLAY */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.2);
-  display: none;
-  justify-content: center;
-  align-items: center;
+.form-container .row { margin-top: 15px; display: flex; flex-direction: column; }
+.row label { font-size: 13px; color: #00f2fe; margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+.row :where(input, textarea) {
+  padding: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2); color: #fff; outline: none; font-size: 16px; transition: 0.3s;
 }
+.row :where(input, textarea):focus { border-color: #00f2fe; background: rgba(0, 0, 0, 0.3); }
 
-/* POPUP */
-.popup {
-  background: white;
-  padding: 20px;
-  width: 320px;
-  border-radius: 12px;
-}
+/* Description expands to fill square */
+.main-desc-row { flex: 1; display: flex; flex-direction: column; }
+.row textarea { flex: 1; resize: none; line-height: 1.6; min-height: 150px; }
 
-/* POPUP HEADER */
-.popup-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
+.read-only :where(input, textarea) { border-color: transparent !important; background: transparent !important; pointer-events: none; }
 
-.popup-header span {
-  cursor: pointer;
-  font-size: 20px;
-}
+.footer-buttons { margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end; }
+button { padding: 12px 24px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 14px; }
 
-/* INPUTS */
-.popup input,
-.popup textarea {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
+.primary-btn { background: linear-gradient(to right, #00f2fe, #4facfe); color: #16213e; }
+.secondary-btn { background: transparent; border: 1.5px solid #00f2fe; color: #00f2fe; }
+.danger-btn { background: rgba(255, 77, 77, 0.1); border: 1.5px solid #ff4d4d; color: #ff4d4d; }
 
-textarea {
-  resize: none;
-  height: 80px;
-}
-
-/* PASSWORD */
-.password-box {
-  position: relative;
-}
-
-.password-box i {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-/* BUTTON */
-.popup button {
-  width: 100%;
-  padding: 10px;
-  background: #6c5ce7;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
+.locked-blur { filter: blur(15px); pointer-events: none; }
+.lock-icon { position: absolute; top: 45%; left: 45%; font-size: 45px; color: #00f2fe; }

@@ -52,7 +52,11 @@
         </h1>
 
         <p class="hero-sub">
-          A curated open-source collection. Browse, fork, contribute.
+          A comprehensive collection of 112+ web development projects ranging from beginner to intermediate level, designed to help developers learn and practice through hands-on experience.
+        </p>
+
+        <p class="hero-extra">
+          Frontend • Backend • Full-Stack • Games • UI Components • Tools
         </p>
 
         <div class="hero-actions">
@@ -250,15 +254,39 @@
     </footer>
 
     <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
-    <button id="scrollBtn" aria-label="Scroll to top">
-      <i class="fas fa-arrow-up"></i>
-    </button>
-
+   <button id="scrollBtn" aria-label="Back to top">
+    <svg class="progress-ring" viewBox="0 0 48 48">
+        <circle class="ring-track" cx="24" cy="24" r="22"/>
+        <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22"/>
+    </svg>
+    <i class="fas fa-arrow-up scroll-arrow"></i>
+    <span class="scroll-tooltip">Back to top</span>
+</button>
     <div class="toast" id="toast"></div>
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
 
     <!-- ── BACK TO TOP BUTTON ────────────────────────────────── -->
     <button id="backToTop">↑</button>
+    <button id="scrollToTopBtn" title="Go to top">▲</button>
+
+    <script>
+      const scrollBtn = document.getElementById("scrollToTopBtn");
+
+      window.onscroll = function() {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+          scrollBtn.style.display = "block";
+        } else {
+          scrollBtn.style.display = "none";
+        }
+      };
+
+      scrollBtn.addEventListener("click", function() {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      });
+    </script>
   </body>
 </html>

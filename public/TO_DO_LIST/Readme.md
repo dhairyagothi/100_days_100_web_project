@@ -1,85 +1,81 @@
-# TaskFlow:  Modern To-Do List Web Application
+# 🚀 TaskFlow — Task Manager
 
-## Description
+**TaskFlow** is a modern, fully client-side task management web application built using HTML, CSS, and JavaScript. It provides a clean and interactive UI for managing daily tasks with features like filtering, themes, local storage, and PDF export.
 
-TaskFlow is a modern and responsive To-Do List web application designed to help users manage daily tasks efficiently with a clean and premium user interface. The project focuses on productivity, simplicity, and enhanced user experience through modern frontend design and interactive features.
+---
 
-## Features
+## 📌 Features
 
-* Add, complete, and delete tasks
-* Dynamic animated progress bar
-* Save task snapshots as documents
-* Dedicated Documents section with previews
-* Dark/Light theme toggle
-* Responsive modern UI
-* Glassmorphism-inspired design
-* LocalStorage support for persistent data
-* Smooth animations and interactions
+- ➕ Add, edit, complete, and delete tasks
+- 🎯 Filter tasks by status and category
+- 🌈 5 Beautiful UI themes (Sunset, Ocean, Forest, Midnight, Aurora)
+- 💾 Local storage support (data persists after refresh)
+- 📊 Live statistics (total, completed, pending tasks)
+- 📱 Fully responsive design (mobile + desktop)
+- ✨ Smooth animations and transitions
+- 🔔 Toast notifications for user actions
+- 📄 Export tasks as styled PDF using jsPDF
+- 📁 Document history for exported files
+- 🧩 Drag and Drop Kanban Workflow  
+  - Pending  
+  - In Progress  
+  - Completed
+  
+---
 
-## Technologies Used
+## 🛠️ Technologies Used
 
-* HTML5
-* CSS3
-* JavaScript ES6
-* LocalStorage API
+- HTML5
+- CSS3 (Custom Properties, Animations, Glassmorphism)
+- JavaScript (Vanilla JS)
+- jsPDF (PDF generation)
+- Google Fonts
 
-## Installation/Setup
+---
 
-1. Clone the repository:
+## ▶️ How to Run
 
-```bash id="xkzix7"
-git clone <repository-link>
-```
+1. Clone the repository  
+  - git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+2. Open project folder  
+  - cd 100_days_100_web_project
+3. Simply Run `todolist.html` in any browser  
+4. Start managing your tasks
 
-2. Open the project folder:
+---
 
-```bash id="0fwb55"
-cd TaskFlow
-```
+## 📂 Project Structure
 
-3. Run the project:
+- `todolist.html` → UI structure  
+- `todolist.css` → Styling + themes  
+- `todolist.js` → Application logic  
 
-* Open `index.html` in your browser
+---
 
-## Usage
+## 🚀 Future Improvements
 
-* Add tasks using the input field
-* Mark tasks as completed
-* Delete unwanted tasks
-* Track completion progress using the progress bar
-* Save task snapshots in the Documents section
-* Toggle between Dark and Light themes
+- Drag & drop task reordering  
+- Due dates & reminders  
+- Priority levels (Low / Medium / High)  
+- Cloud sync support  
+- Dark mode auto detection  
 
-## Screenshots
+---
 
-### Home Page UI
-![Home Page](homepage.png)
+## 🤝 Contributing
 
-### Documents Section
-![Documents Section](documents.png)
+1. Fork the repository  
+2. Create a new branch (`git checkout -b feature-name`)  
+3. Make changes and test  
+4. Push and create a Pull Request  
 
-### Progress Tracking
-![Progress Tracking](progressbar.png)
+---
 
-### Dark/Light Theme Interface
-![Theme Interface](lightmode.png)
+## 👨‍💻 Author
 
-## Contributing
+Gopal Wagh
+- Github - https://github.com/gopalwagh
 
-Contributions are welcome.
+---
 
-To contribute:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push the branch
-5. Open a Pull Request
-
-## License
-
-MIT License
-
-## Author
-
-Indrayani Verulkar
+⭐ If you like this project, give it a star!
