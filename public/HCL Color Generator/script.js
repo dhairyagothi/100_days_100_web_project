@@ -4,6 +4,7 @@ const saturationSlider = document.getElementById('saturation');
 const lightnessSlider  = document.getElementById('lightness');
 
 const colorDisplay = document.getElementById('customColorDisplay');
+const colorValue = document.getElementById('colorValue');
 
 const hueValue        = document.getElementById('hueValue');
 const saturationValue = document.getElementById('saturationValue');
@@ -27,6 +28,7 @@ function updateColor() {
   const hsl = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
   colorDisplay.style.backgroundColor = hsl;
+  colorValue.textContent = hsl;
   colorDisplay.style.boxShadow = `0 8px 40px hsl(${hue}, ${saturation}%, ${lightness}%, 0.5)`;
 
   orb1.style.background = hsl;
