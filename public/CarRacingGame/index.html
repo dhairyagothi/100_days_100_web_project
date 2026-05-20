@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Car Racing Game</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>2D Car Racing Game</h1>
+
+    <div id="score">Score: 0</div>
+    <p class="instructions">
+Use ← and → arrow keys to move the car
+</p>
+
+    <div class="gameArea">
+
+        <div class="roadLine line1"></div>
+        <div class="roadLine line2"></div>
+        <div class="roadLine line3"></div>
+
+        <div id="player"></div>
+
+        <div id="obstacle"></div>
+
+    </div>
+
+    <button onclick="restartGame()">Restart Game</button>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

@@ -4,7 +4,8 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .background-video {
@@ -26,67 +27,105 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-size: cover;
+  filter: blur(2px) brightness(0.7);
 }
+
+.background-video::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* ================= MAIN LAYOUT ================= */
 
 .wrapper {
   display: flex;
-  position: relative;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100dvh; 
+  padding: 40px;
+  gap: 60px;
+  box-sizing: border-box;
 }
+
+/* Flex assembly ties pole and flag side-by-side */
+.flag-assembly {
+  position: relative;
+  width: 480px;  
+  height: 480px; 
+  display: block
+}
+
+/* ================= FLAG POLE ================= */
 
 .bar {
-  margin-left: 140px;
-  height: 650px;
-  width: 10px;
+  height: 100%;
+  width: 12px;
   background: #222;
   border-left: 2px solid rgb(167, 167, 167);
-  box-shadow: 10px 10px 20px #959595;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
   border-radius: 10px 10px 0px 0px;
+  position: relative;
+  z-index: 2;
+  margin-top: 0;
 }
 
-.bar div{ 
+/* Anchoring the steps cleanly to the bottom using absolute positions */
+.bar div {
   background-color: #222;
   height: 20px;
-  width: 130px;
-  left: -62px;
-  position: relative;
-  top: 92%;
+  position: absolute;
   border: 1px solid white;
 }
 
-.bar .bar-1{
-  width: 65px;
-  left: -27px;
-}
+.bar .bar-1 { width: 60px; left: -24px; bottom: 40px; }
+.bar .bar-2 { width: 100px; left: -44px; bottom: 20px; }
+.bar .bar-3 { width: 140px; left: -64px; bottom: 0px; }
 
-.bar .bar-2{
-  width: 101px;
-  left: -44px;
-}
-
-.bar .bar-3{
-  width: 134px;
-  left: -62px;
-
-}
+/* ================= FLAG ================= */
 
 .flag {
-  margin-top: -400px;
-  position: relative;
+  height: 300px;
+  width: 450px;
+  position: relative; /* Kept from Main */
+  margin-top: -400px; /* Kept from Main */
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+  transform-origin: left center;
+  animation: wave 2.5s infinite ease-in-out;
+  z-index: 1;
 }
 
-.top {
-  height: 100px;
-  width: 100%;
-  background-color: #FF671F;
+@keyframes wave {
+  0% { transform: skewY(0deg) translateX(0px); }
+  25% { transform: skewY(1.5deg) translateX(1px); }
+  50% { transform: skewY(0deg) translateX(0px); }
+  75% { transform: skewY(-1.5deg) translateX(-1px); }
+  100% { transform: skewY(0deg) translateX(0px); }
 }
+
+.flag::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.15),
+    rgba(0, 0, 0, 0.08)
+  );
+}
+
+.top { height: 33.33%; background-color: #FF671F; }
+.bottom { height: 33.33%; background-color: #046A38; }
 
 .middle {
-  height: 100px;
-  width: 100%;
+  height: 33.33%;
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -94,78 +133,152 @@ body {
 }
 
 .middle img {
-  width: 80px;
-  animation: rotate 4s linear infinite;
-}
-
-.bottom {
-  height: 100px;
-  width: 100%;
-  background-color: #046A38;
+  height: 80%;
+  width: auto;
+  animation: rotate 12s linear infinite;
 }
 
 @keyframes rotate {
-  from {
-      transform: rotate(0deg);
-  }
-
-  to {
-      transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
+/* ================= QUOTE ================= */
+
 .quote-container {
-  margin-left: 20px; /* Adjust margin for spacing */
-  padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
   text-align: center;
-  width: 450px; /* Adjust width as needed */
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 190px; /* Adjust right position as needed */
+  width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Rounded frame container for patriot portraits */
+.image-wrapper {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #FF671F;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: #eee;
+}
+
+#patriot-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Prevents squishing images */
 }
 
 .quote {
-  font-size: 1.5em;
+  font-size: 1.3em;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-  transition: color 0.3s ease;
+  color: #222;
+  font-style: italic;
+  line-height: 1.4;
+  min-height: 70px; /* Keeps card height stable when text changes */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .author {
-  font-size: 1.2em;
-  color: #555;
-  transition: color 0.3s ease;
-}
-
-.quote:hover {
-  color: #FF671F;
-}
-
-.quote:hover .author {
+  font-size: 1.1em;
   color: #046A38;
+  font-weight: 600;
 }
 
 .quote-nav {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .quote-nav button {
   background-color: #FF671F;
   color: #fff;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 8px 16px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-weight: bold;
+  transition: background 0.2s;
 }
 
 .quote-nav button:hover {
-  background-color: #046A38;
+  background-color: #e05310;
+}
+
+/* ================= MUSIC ================= */
+
+.music-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* ================= RESPONSIVE MOBILE VIEW ================= */
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 35px;
+    padding: 30px 15px;
+  }
+
+  /* Structural flagpole mobile overrides */
+  .bar {
+    height: 45vh;
+    width: 8px;
+    margin-top: -40px;
+  }
+
+  .bar .bar-1 { width: 40px; left: -16px; bottom: 24px; height: 12px; }
+  .bar .bar-2 { width: 64px; left: -28px; bottom: 12px; height: 12px; }
+  .bar .bar-3 { width: 88px; left: -40px; bottom: 0px; height: 12px; }
+
+  /* Perfectly balances the 3:2 flag size aspect ratio on small screens */
+  .flag {
+    width: 210px;
+    height: 140px; 
+    margin-top: 4px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .quote-container {
+    width: 100%;
+    max-width: 320px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .image-wrapper {
+    width: 110px;
+    height: 110px;
+  }
+
+  .quote {
+    font-size: 1.1em;
+    min-height: 60px;
+  }
+
+  .music-controls {
+    position: static;
+    margin: 10px auto;
+    width: fit-content;
+  }
 }

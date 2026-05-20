@@ -1,0 +1,97 @@
+body{
+    margin:0;
+    padding:0;
+    background:black;
+    color:white;
+    text-align:center;
+    font-family:Arial, sans-serif;
+}
+
+h1{
+    margin-top:20px;
+}
+
+#score{
+    font-size:30px;
+    margin:10px;
+}
+
+.gameArea{
+    width:350px;
+    height:600px;
+    background:#333;
+    margin:20px auto;
+    position:relative;
+    overflow:hidden;
+    border:5px solid white;
+}
+
+#player{
+    width:50px;
+    height:100px;
+    background:red;
+    position:absolute;
+    bottom:20px;
+    left:150px;
+    border-radius:10px;
+}
+
+#obstacle{
+    width:50px;
+    height:100px;
+    background:yellow;
+    position:absolute;
+    top:-120px;
+    left:150px;
+    border-radius:10px;
+}
+
+button{
+    padding:12px 25px;
+    font-size:20px;
+    background:red;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:darkred;
+}
+
+.roadLine{
+    width:10px;
+    height:100px;
+    background:white;
+    position:absolute;
+    left:170px;
+    animation:moveRoad 1s linear infinite;
+}
+
+.line1{
+    top:-100px;
+}
+
+.line2{
+    top:200px;
+}
+
+.line3{
+    top:500px;
+}
+
+@keyframes moveRoad{
+    from{
+        transform:translateY(-600px);
+    }
+
+    to{
+        transform:translateY(600px);
+    }
+}
+.instructions{
+    font-size:18px;
+    margin-bottom:10px;
+    color:white;
+}
