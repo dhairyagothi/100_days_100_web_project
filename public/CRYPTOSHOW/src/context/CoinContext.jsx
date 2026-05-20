@@ -10,8 +10,8 @@ const CoinContextProvider = (props) => {
   });
 
   // Use the API key from environment variables
-  const apiKey = process.env.REACT_APP_CG_API_KEY;
-
+  // const apiKey = process.env.REACT_APP_CG_API_KEY;
+  const apiKey = import.meta.env.VITE_CG_API_KEY;
   const fetchAllCoins = async () => {
     const options = {
       method: "GET",

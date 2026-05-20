@@ -3,12 +3,17 @@ const addHabitBtn = document.getElementById("addHabitBtn");
 const habitList = document.getElementById("habitList");
 const totalHabits = document.getElementById("totalHabits");
 const completedHabits = document.getElementById("completedHabits");
+const themeToggle = document.getElementById("theme-toggle");
 
 let habits = JSON.parse(localStorage.getItem("habits")) || [];
+
+/* SAVE HABITS */
 
 function saveHabits() {
   localStorage.setItem("habits", JSON.stringify(habits));
 }
+
+/* RENDER HABITS */
 
 function renderHabits() {
   habitList.innerHTML = "";
@@ -61,6 +66,8 @@ function renderHabits() {
   completedHabits.textContent = completedCount;
 }
 
+/* ADD HABIT */
+
 addHabitBtn.addEventListener("click", () => {
   const habitName = habitInput.value.trim();
 
@@ -79,5 +86,29 @@ addHabitBtn.addEventListener("click", () => {
 
   habitInput.value = "";
 });
+
+/* THEME HANDLING */
+
+function setTheme(theme) {
+  if (theme === "dark") {
+    document.body.classList.add("dark-mode");
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.body.classList.remove("dark-mode");
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
+
+  localStorage.setItem("theme", theme);
+}
+
+const savedTheme = localStorage.getItem("theme") || "light";
+setTheme(savedTheme);
+
+themeToggle.addEventListener("click", () => {
+  const isDark = document.body.classList.contains("dark-mode");
+  setTheme(isDark ? "light" : "dark");
+});
+
+/* INITIAL RENDER */
 
 renderHabits();
