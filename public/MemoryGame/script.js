@@ -136,6 +136,9 @@ function startGame() {
   stopTimer();
   winModal.classList.remove('visible');
   hintUsed = false;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = false;
+hintBtn.textContent = 'Hint';
 
   // Reset all state
   cards     = [];
@@ -257,6 +260,9 @@ function useHint() {
     return;
   }
   hintUsed = true;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = true;
+hintBtn.textContent = 'Hint Used';
 
   // Collect unmatched, unflipped cards
   const unmatched = cards.filter(
