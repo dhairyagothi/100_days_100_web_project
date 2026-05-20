@@ -144,7 +144,8 @@ const PROJECT_DATA = [
   ['Day 125', 'Snakeladder',   './public/Snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
   ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
-  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate']
+  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
+  ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner']
 ];
 
 // Alias for consistency
@@ -880,4 +881,7 @@ window.addEventListener('resize', () => {
 window.addEventListener('resize', () => {
   renderGrid();
 });
+<<<<<<< HEAD
+>>>>>>> origin/Main
+=======
 >>>>>>> origin/Main
