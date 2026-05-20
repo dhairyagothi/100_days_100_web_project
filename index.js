@@ -123,7 +123,7 @@ const PROJECT_DATA = [
   ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
   ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
   ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-  ['Day 107', 'DocNow', './public/DocNow/index.html', 'api javascript', 'intermediate'],
+['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
   ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
@@ -150,7 +150,9 @@ const PROJECT_DATA = [
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
   ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
   ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
-  ['Day 131', 'Coffee Menu', './public/coffee-menu/public/start.html', 'html tailwindcss css js', 'intermediate'],
+  ["Day 131", "Retro Highway Racer", "/public/RetroHighwayRacer/index.html",'game javascript','intermediate'],
+  ['Day 132', 'Coffee Menu', './public/coffee-menu/public/start.html', 'html tailwindcss css js', 'intermediate'],
+
    
 ];
 

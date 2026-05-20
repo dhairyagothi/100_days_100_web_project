@@ -800,9 +800,7 @@ input[type="time"] {
 
   letter-spacing: 4px;
 
-  font-family:
-    'Orbitron',
-    sans-serif;
+   font-family: "Orbitron", sans-serif;
 }
 
 .classic-theme,
@@ -897,6 +895,9 @@ input[type="time"] {
 .classic-clock .clock-time,
 .modern-clock .clock-time,
 .future-clock .clock-time {
+
+
+  font-family: "Orbitron", sans-serif;
 
   margin-top: 35px;
 

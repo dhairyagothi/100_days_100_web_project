@@ -482,6 +482,31 @@ button:active {
         max-width: 100%;
     }
 
+.fas {
+    margin-right: 5px;
+}
+input:focus, select:focus {
+    outline: none;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+button {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.container {
+    animation: fadeIn 0.6s ease-in-out;
+}
+#message {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #4a90e2;
+}
+
+#copy-btn {
+    margin-top: 10px;
     #qrcode {
         width: 180px;
         height: 180px;
