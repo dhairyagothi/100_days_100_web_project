@@ -1,3 +1,51 @@
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+let darkMode =
+    JSON.parse(localStorage.getItem("darkMode")) || false;
+
+const updateTheme = () => {
+    if (darkMode) {
+        document.documentElement.classList.add("dark");
+
+        themeIcon.innerHTML = `
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 3v1.5m0 15V21m8.485-8.485H19M5 12H3m14.485
+                6.364-1.06-1.06M7.575 7.575 6.515 6.515m10.97
+                0-1.06 1.06M7.575 16.425l-1.06 1.06M15 12a3
+                3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
+        `;
+    } else {
+        document.documentElement.classList.remove("dark");
+
+        themeIcon.innerHTML = `
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21.752 15.002A9.718 9.718 0 0 1 18 15.75c-5.385
+                0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.752-3.752A9.753
+                9.753 0 1 0 21.752 15.002Z"
+            />
+        `;
+    }
+};
+
+updateTheme();
+
+themeToggle.addEventListener("click", () => {
+    darkMode = !darkMode;
+
+    localStorage.setItem(
+        "darkMode",
+        JSON.stringify(darkMode)
+    );
+
+    updateTheme();
+});
+
 const commentsElement = document.querySelector("#comments");
 const commentTextarea = document.querySelector("#comment");
 
@@ -135,16 +183,16 @@ const renderComments = () => {
         const commentElement = document.createElement("div");
 
         commentElement.className =
-            "bg-gray-100 rounded-xl p-4 shadow-sm";
+    "bg-gray-100 dark:bg-gray-700 rounded-xl p-4 shadow-sm transition duration-300";
 
         commentElement.innerHTML = `
             <div class="flex justify-between items-start gap-2">
                 <div>
-                    <p class="text-gray-700 break-words">
+                    <p class="text-gray-700 dark:text-gray-200 break-words">
                         ${commentObj.text}
                     </p>
 
-                    <p class="text-sm text-gray-500 mt-2">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
                         ${commentObj.time}
                     </p>
                 </div>

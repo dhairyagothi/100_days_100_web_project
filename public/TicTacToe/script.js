@@ -13,26 +13,6 @@
   var scores    = { X: 0, O: 0, D: 0 };
   var particles = [];
   var animFrame = null;
-  /* Sound */
-
-  var muted = false;
-
-  var audioCtx =
-  new (
-  window.AudioContext ||
-  window.webkitAudioContext
-  )();
-
-  var muteBtn =
-  document.getElementById(
-  "mute-btn"
-  );
-
-  /* Custom player names */
-  var playerNames = {
-  X: "Player X",
-  O: "Player O"
-  };
 
   var boardEl  = document.getElementById("board");
   var gameEl   = document.getElementById("game");
@@ -48,82 +28,8 @@
   var winBtn   = document.getElementById("win-btn");
   var canvas   = document.getElementById("confetti-canvas");
   var ctx      = canvas.getContext("2d");
-  var winningLine =
-  document.getElementById(
-  "winning-line"
-  );
-  
-  var saveNamesBtn =
-  document.getElementById(
-  "save-names"
-  );
-
-  var playerXInput =
-  document.getElementById(
-  "player-x-name"
-  );
-
-  var playerOInput =
-  document.getElementById(
-  "player-o-name"
-  );
-
-  var labelX =
-  document.getElementById(
-  "label-x"
-  );
-
-  var labelO =
-  document.getElementById(
-  "label-o"
-  );
-
-  /* ── Save custom names ───────────────── */
-  saveNamesBtn.addEventListener("click",function(){
-  playerNames.X = playerXInput.value.trim() || playerNames.X;
-  playerNames.O = playerOInput.value.trim() || playerNames.O;
-
-  /* Update turn text immediately */
-  statusEl.textContent = playerNames[current] + "'s turn!";
-
-  /* Update scoreboard labels */
-  labelX.textContent = playerNames.X + " Wins";
-  labelO.textContent = playerNames.O + " Wins";
-  }
-);
-
-
-  /* ── Play sound ───────────────── */
-  function playSound(type){
-    if(muted) return;
-    var osc =
-    audioCtx.createOscillator();
-    var gain =
-    audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(
-    audioCtx.destination
-  );
-
-  /* Different sounds */
-  if(type==="click"){
-  osc.frequency.value =350;
-  gain.gain.value =0.05;
-  }
-
-  if(type==="win"){
-  osc.frequency.value =700;
-  gain.gain.value =0.08;
-  }
-  
-  if(type==="draw"){
-  osc.frequency.value =200;
-  gain.gain.value =0.06;
-  }
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.12);
-  }
+  var startScreen = document.getElementById("start-screen");
+  var startBtn = document.getElementById("start-btn");
 
   /* ── Build board ──────────────────────── */
   function buildBoard() {
@@ -144,36 +50,17 @@
   function handleClick(i) {
     if (gameOver || board[i]) return;
     board[i] = current;
-    playSound("click");
     buildBoard();
 
     var win = checkWin();
     if (win) {
       highlightWin(win);
-      playSound("win");
-      drawWinningLine(win);
       scores[current]++;
       updateScores();
+      setTimeout(function () { showWinOverlay(current); }, 320);
       gameOver = true;
-
-    /* Show winning line briefly */
-      setTimeout(function(){
-      winningLine.style.display = "none";
-      winningLine.style.transform ="none";
-
-    /* Remove green highlighted cells too */
-      var cells = boardEl.querySelectorAll(".cell");
-      cells.forEach(function(cell){
-      cell.classList.remove("win-cell");
-    });
-
-    /* NOW show popup */
-      showWinOverlay(current);
-    },800);
-
     } else if (board.every(Boolean)) {
       scores.D++;
-      playSound("draw");
       updateScores();
       setTimeout(showDrawOverlay, 200);
       gameOver = true;
@@ -200,94 +87,13 @@
     line.forEach(function (i) { cells[i].classList.add("win-cell"); });
   }
 
-/* ── Draw winning line ───────────────── */
-  function drawWinningLine(line){
-  winningLine.style.display = "block";
-
-  /* Rows */
-  if(line.toString()==="0,1,2"){
-  winningLine.style.width="100%";
-  winningLine.style.height="6px";
-  winningLine.style.top="16%";
-  winningLine.style.left="0";
-  winningLine.style.transform="none";
-  }
-
-  else if(line.toString()==="3,4,5"){
-  winningLine.style.width="100%";
-  winningLine.style.height="6px";
-  winningLine.style.top="50%";
-  winningLine.style.left="0";
-  winningLine.style.transform="none";
-  }
-
-  else if(line.toString()==="6,7,8"){
-  winningLine.style.width="100%";
-  winningLine.style.height="6px";
-  winningLine.style.top="84%";
-  winningLine.style.left="0";
-  winningLine.style.transform="none";
-  }
-
-  /* Columns */
-  else if(line.toString()==="0,3,6"){
-  winningLine.style.width="6px";
-  winningLine.style.height="100%";
-  winningLine.style.left="16%";
-  winningLine.style.top="0";
-  }
-  else if(line.toString()==="1,4,7"){
-  winningLine.style.width="6px";
-  winningLine.style.height="100%";
-  winningLine.style.left="50%";
-  winningLine.style.top="0";
-  }
-
-  else if(line.toString()==="2,5,8"){
-  winningLine.style.width="6px";
-  winningLine.style.height="100%";
-  winningLine.style.left="84%";
-  winningLine.style.top="0";
-  }
-
-  /* Diagonal */
-  else if(line.toString()==="0,4,8"){
-  winningLine.style.width="140%";
-  winningLine.style.height="6px";
-  winningLine.style.left="-20%";
-  winningLine.style.top="50%";
-  winningLine.style.transform="rotate(45deg)";
-  }
-
-  else if(line.toString()==="2,4,6"){
-  winningLine.style.width="140%";
-  winningLine.style.height="6px";
-  winningLine.style.left="-20%";
-  winningLine.style.top="50%";
-  winningLine.style.transform="rotate(-45deg)";}
-  }
-
-  /* Sound toggle */
-  muteBtn.addEventListener("click",function(){
-  muted = !muted;
-  if(muted){
-    muteBtn.innerText = "🔇 Sound OFF";
-    muteBtn.classList.add("muted");
-  }
-
-  else{
-    muteBtn.innerText ="🔊 Sound ON";
-    muteBtn.classList.remove("muted");
-  }
-});
-
   /* ── Update turn UI + background ─────── */
   function setUI(player) {
     pillX.classList.toggle("active", player === "X");
     pillO.classList.toggle("active", player === "O");
     gameEl.className = player === "X" ? "turn-x" : "turn-o";
     statusEl.className = player === "X" ? "sx" : "so";
-    statusEl.textContent = playerNames[player] + "'s turn!";
+    statusEl.textContent = player ? player + "'s turn!" : "";
   }
 
   /* ── Update scoreboard ────────────────── */
@@ -301,7 +107,7 @@
   function showWinOverlay(player) {
     winText.className  = player === "X" ? "col-x" : "col-o";
     winText.textContent = "CONGRATULATIONS!";
-    winSub.textContent  = playerNames[player] + " wins the round!";
+    winSub.textContent  = "Player " + player + " wins the round!";
     winBtn.className   = player === "X" ? "btn-x" : "btn-o";
     overlay.className  = "show " + (player === "X" ? "ov-x" : "ov-o");
     launchConfetti(player);
@@ -321,8 +127,6 @@
     board    = Array(9).fill(null);
     current  = "X";
     gameOver = false;
-    winningLine.style.display="none";
-    winningLine.style.transform="none";
     buildBoard();
     setUI("X");
     overlay.className = "";
@@ -400,6 +204,15 @@
   document.getElementById("win-btn").addEventListener("click", nextRound);
 
   /* ── Init ─────────────────────────────── */
+  startBtn.addEventListener("click", function () {
+    startScreen.classList.add("hide-screen");
+
+    setTimeout(function () {
+       startScreen.style.display = "none";
+       gameEl.classList.remove("hidden");
+      gameEl.classList.add("show-game");
+    }, 600);
+  });
   buildBoard();
   setUI("X");
 
