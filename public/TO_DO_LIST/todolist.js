@@ -118,10 +118,7 @@ function Add() {
     ? THEMES[currentTheme].card
     : typeColor;
 
-  const isLightTheme =
-    currentTheme === 'theme1' ||
-    currentTheme === 'theme2' ||
-    currentTheme === 'theme3';
+  const isLightTheme = true; // All current card themes are light-colored
 
   note.style.color = isLightTheme ? '#1a1a1a' : '#ffffff';
 
@@ -141,22 +138,8 @@ function Add() {
   word-break:break-word;
   font-size:15px;
   font-weight:500;
-  color:${isLightTheme ? '#111' : '#fff'};
+  color:#111;
 `;
-
-  taskText.addEventListener('dblclick', () => {
-    taskText.setAttribute('contenteditable', 'true');
-    taskText.focus();
-
-    note.classList.add('editing');
-
-    const range = document.createRange();
-    range.selectNodeContents(taskText);
-
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  });
 
   function saveTaskEdit() {
     const updatedText = taskText.innerText.trim();
@@ -188,7 +171,7 @@ function Add() {
   // Actions column
   const actions = document.createElement('div');
   actions.style.cssText =
-    'display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0;';
+    'display:flex; flex-direction:row; align-items:center; gap:8px; flex-shrink:0;';
 
   // Tick / complete toggle
   const tickBtn = document.createElement('button');
@@ -197,68 +180,119 @@ function Add() {
   tickBtn.style.cssText = [
     'background:none',
     'border:1.5px solid #555',
-    'border-radius:50%',
-    'width:26px',
-    'height:26px',
+    'border-radius:8px',
+    'width:32px',
+    'height:32px',
     'cursor:pointer',
     'font-size:14px',
     'display:flex',
     'align-items:center',
     'justify-content:center',
-    'transition:background 0.2s, color 0.2s',
-    `color:${isLightTheme ? '#111' : '#fff'}`,
+    'transition:all 0.2s ease',
+    'color:#111',
   ].join(';');
 
   tickBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     taskText.classList.toggle('completed');
-    tickBtn.style.background = taskText.classList.contains('completed')
-      ? '#4caf50'
-      : 'none';
-    tickBtn.style.color = taskText.classList.contains('completed')
-      ? 'white'
-      : '#333';
-    tickBtn.style.borderColor = taskText.classList.contains('completed')
-      ? '#4caf50'
-      : '#555';
+    const isCompleted = taskText.classList.contains('completed');
+    tickBtn.style.background = isCompleted ? '#4caf50' : 'none';
+    tickBtn.style.color = isCompleted ? 'white' : '#111';
+    tickBtn.style.borderColor = isCompleted ? '#4caf50' : '#555';
     updateStats();
+  });
+
+  tickBtn.addEventListener('mouseenter', () => {
+    if (!taskText.classList.contains('completed')) {
+      tickBtn.style.background = 'rgba(76, 175, 80, 0.15)';
+      tickBtn.style.borderColor = '#4caf50';
+      tickBtn.style.color = '#4caf50';
+    }
+  });
+
+  tickBtn.addEventListener('mouseleave', () => {
+    if (!taskText.classList.contains('completed')) {
+      tickBtn.style.background = 'none';
+      tickBtn.style.borderColor = '#555';
+      tickBtn.style.color = '#111';
+    }
+  });
+
+  // Edit button
+  const editBtn = document.createElement('button');
+  editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
+  editBtn.title = 'Edit task';
+  editBtn.style.cssText = [
+    'background:none',
+    'border:1.5px solid #555',
+    'border-radius:8px',
+    'width:32px',
+    'height:32px',
+    'cursor:pointer',
+    'font-size:14px',
+    'display:flex',
+    'align-items:center',
+    'justify-content:center',
+    'transition:all 0.2s ease',
+    'color:#111',
+  ].join(';');
+
+  editBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    taskText.setAttribute('contenteditable', 'true');
+    taskText.focus();
+    note.classList.add('editing');
+    const range = document.createRange();
+    range.selectNodeContents(taskText);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  });
+
+  editBtn.addEventListener('mouseenter', () => {
+    editBtn.style.background = 'rgba(245, 200, 66, 0.2)';
+    editBtn.style.borderColor = '#f5c842';
+    editBtn.style.color = '#f5c842';
+  });
+
+  editBtn.addEventListener('mouseleave', () => {
+    editBtn.style.background = 'none';
+    editBtn.style.borderColor = '#555';
+    editBtn.style.color = '#111';
   });
 
   // Delete button
   const delBtn = document.createElement('button');
-
   delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-
   delBtn.title = 'Delete task';
-
   delBtn.classList.add('delete-btn');
-
   delBtn.style.cssText = [
-    'background:linear-gradient(135deg,#ff4d4d,#d90429)',
-    'border:none',
-    'width:38px',
-    'height:38px',
-    'border-radius:12px',
+    'background:rgba(255, 77, 77, 0.1)',
+    'border:1.5px solid #ff4d4d',
+    'width:32px',
+    'height:32px',
+    'border-radius:8px',
     'cursor:pointer',
     'display:flex',
     'align-items:center',
     'justify-content:center',
-    'color:white',
-    'font-size:15px',
-    'box-shadow:0 6px 16px rgba(255,77,77,0.35)',
+    'color:#ff4d4d',
+    'font-size:14px',
     'transition:all 0.25s ease',
   ].join(';');
 
   delBtn.addEventListener('mouseenter', () => {
-    delBtn.style.transform = 'translateY(-2px) scale(1.08)';
-
-    delBtn.style.boxShadow = '0 10px 24px rgba(255,77,77,0.5)';
+    delBtn.style.background = '#ff4d4d';
+    delBtn.style.color = 'white';
+    delBtn.style.transform = 'translateY(-2px) scale(1.05)';
+    delBtn.style.boxShadow = '0 4px 12px rgba(255,77,77,0.4)';
   });
 
   delBtn.addEventListener('mouseleave', () => {
+    delBtn.style.background = 'rgba(255, 77, 77, 0.1)';
+    delBtn.style.color = '#ff4d4d';
     delBtn.style.transform = 'translateY(0) scale(1)';
-
-    delBtn.style.boxShadow = '0 6px 16px rgba(255,77,77,0.35)';
+    delBtn.style.boxShadow = 'none';
   });
 
   delBtn.addEventListener('click', (e) => {
@@ -286,7 +320,7 @@ function Add() {
       'padding:2px 7px',
       'border-radius:20px',
       'background:rgba(0,0,0,0.12)',
-      `color:${isLightTheme ? '#111' : '#fff'}`,
+      'color:#111',
       'white-space:nowrap',
       'margin-top:4px',
       'align-self:flex-end',
@@ -295,6 +329,7 @@ function Add() {
   }
 
   actions.appendChild(tickBtn);
+  actions.appendChild(editBtn);
   actions.appendChild(delBtn);
   noteWrapper.appendChild(taskText);
   noteWrapper.appendChild(actions);
@@ -329,6 +364,19 @@ function applyTheme(themeKey) {
   const cards = document.querySelectorAll(".notes[data-default-card='true']");
   cards.forEach((card) => {
     card.style.backgroundColor = theme.card;
+    card.style.color = '#1a1a1a'; // Ensure dark text on light cards
+    
+    // Update task text color
+    const text = card.querySelector('.task-text');
+    if (text) text.style.color = '#111';
+    
+    // Update button colors
+    const btns = card.querySelectorAll('button');
+    btns.forEach(btn => {
+      if (!btn.classList.contains('delete-btn')) {
+        btn.style.color = '#111';
+      }
+    });
   });
 }
 
@@ -441,3 +489,148 @@ function showDocuments() {
   document.getElementById('home-tab').style.display = 'none';
   document.getElementById('documents-tab').style.display = 'block';
 }
+
+function c3() {
+  let image = 'linear-gradient(90deg, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d)';
+  document.body.style.background = image;
+  currentTheme = "theme3";
+  updateNotesTheme();
+}
+
+function c4() {
+  let image = 'linear-gradient(90deg,rgb(120, 25, 105),rgb(197, 211, 201))';
+  document.body.style.background = image;
+  currentTheme = "theme4";
+  updateNotesTheme();
+}
+
+function c5() {
+  let image = 'linear-gradient(90deg, #b92b27, #1565c0)';
+  document.body.style.background = image;
+  currentTheme = "theme5";
+  updateNotesTheme();
+}
+
+function updateNotesTheme() {
+  const notes = document.querySelectorAll(".notes");
+  notes.forEach((note) => {
+    if (note.style.backgroundColor === "white") {
+      note.style.backgroundColor = currentTheme === "theme1"
+        ? "rgba(232,221,227,1)"
+        : currentTheme === "theme2"
+          ? "#e4afcb"
+          : currentTheme === "theme3"
+            ? "#39db8c"
+            : currentTheme === "theme4"
+              ? "rgb(120, 25, 105)"
+              : "#b92b27";
+    }
+  });
+}
+/* =========================
+   KANBAN DRAG DROP FEATURE
+   (Append below existing code)
+
+// Make all newly created notes draggable
+function enableDragForNotes() {
+  const notes = document.querySelectorAll(".notes");
+
+  notes.forEach((note, index) => {
+    note.setAttribute("draggable", true);
+    note.dataset.id = index;
+
+    note.addEventListener("dragstart", function (e) {
+      e.dataTransfer.setData("text/plain", note.dataset.id);
+    });
+  });
+}
+
+// Override existing Add() behavior slightly
+const originalAdd = Add;
+
+Add = function () {
+  originalAdd();
+  enableDragForNotes();
+  saveTaskState();
+};
+
+// Save task positions/status
+function saveTaskState() {
+  const pendingTasks = [];
+  const progressTasks = [];
+  const completedTasks = [];
+
+  document.querySelectorAll("#pending-list .notes").forEach(task => {
+    pendingTasks.push(task.outerHTML);
+  });
+
+  document.querySelectorAll("#progress-list .notes").forEach(task => {
+    progressTasks.push(task.outerHTML);
+  });
+
+  document.querySelectorAll("#completed-list .notes").forEach(task => {
+    completedTasks.push(task.outerHTML);
+  });
+
+  localStorage.setItem("pendingTasks", JSON.stringify(pendingTasks));
+  localStorage.setItem("progressTasks", JSON.stringify(progressTasks));
+  localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+}
+
+// Drag events
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+function dropTask(event, sectionId) {
+  event.preventDefault();
+
+  const draggedId = event.dataTransfer.getData("text/plain");
+  const draggedTask = document.querySelector(
+    `.notes[data-id="${draggedId}"]`
+  );
+
+  if (draggedTask) {
+    document.getElementById(sectionId).appendChild(draggedTask);
+    saveTaskState();
+  }
+}
+
+// Restore tasks after refresh
+function loadTaskState() {
+  const sections = [
+    "pending-list",
+    "progress-list",
+    "completed-list"
+  ];
+
+  sections.forEach(section => {
+    const savedTasks = JSON.parse(
+      localStorage.getItem(
+        section === "pending-list"
+          ? "pendingTasks"
+          : section === "progress-list"
+          ? "progressTasks"
+          : "completedTasks"
+      )
+    ) || [];
+
+    const container = document.getElementById(section);
+
+    if (container) {
+      container.innerHTML = "";
+
+      savedTasks.forEach(taskHTML => {
+        container.innerHTML += taskHTML;
+      });
+    }
+  });
+
+  enableDragForNotes();
+}
+
+// Run when page loads
+window.onload = function () {
+  loadTaskState();
+  enableDragForNotes();
+};
