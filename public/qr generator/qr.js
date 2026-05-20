@@ -1,3 +1,22 @@
+const copyBtn = document.getElementById('copy-btn');
+const message = document.getElementById('message');
+const qrType = document.getElementById('qr-type');
+const inputText = document.getElementById('inputtext');
+const wifiInputs = document.getElementById('wifi-inputs');
+const vcardInputs = document.getElementById('vcard-inputs');
+const qrColor = document.getElementById('qr-color');
+const qrShape = document.getElementById('qr-shape');
+const errorCorrection = document.getElementById('error-correction');
+const logoUpload = document.getElementById('logo-upload');
+const generateBtn = document.querySelector('.submit');
+const qrcodeDiv = document.getElementById('qrcode');
+const downloadBtn = document.getElementById('download-qr');
+const scanBtn = document.getElementById('scan-qr');
+const qrReader = document.getElementById('qr-reader');
+const qrReaderResults = document.getElementById('qr-reader-results');
+const toggleThemeBtn = document.getElementById('toggle-theme');
+
+let qrcode = null;
 const qrType = document.getElementById("qr-type");
 const themeBtns = document.querySelectorAll(".theme-btn");
 const inputText = document.getElementById("inputtext");
@@ -54,6 +73,36 @@ function updateInputFields() {
     wifiInputs.style.display = showWifi ? "block" : "none";
     vcardInputs.style.display = showVcard ? "block" : "none";
 
+function generateQRCode() {
+    qrcodeDiv.innerHTML = '';
+    if (!inputText.value) {
+    message.innerText = "Please enter valid input ❌";
+    return;
+}
+message.innerText = "QR Code Generated Successfully ✅";
+    // 🛑 INPUT VALIDATION 
+if (
+    (qrType.value === 'text' || qrType.value === 'url') &&
+    inputText.value.trim() === ''
+) {
+    return;
+}
+
+if (qrType.value === 'wifi') {
+    const ssid = document.getElementById('wifi-ssid').value;
+    if (ssid.trim() === '') {
+        alert("Please enter WiFi SSID");
+        return;
+    }
+}
+
+if (qrType.value === 'vcard') {
+    const name = document.getElementById('vcard-name').value;
+    if (name.trim() === '') {
+        alert("Please enter name for vCard");
+        return;
+    }
+}
     if (selectedType === "url") {
         inputLabel.textContent = "Enter URL";
         inputText.placeholder = "https://example.com";
@@ -334,6 +383,15 @@ scanBtn.addEventListener("click", () => {
     setStatus("QR content is visible below.");
 });
 
+updateInputFields();
+copyBtn.addEventListener('click', () => {
+    if (!inputText.value) {
+        message.innerText = "Please enter valid input ❌";
+        return;
+    }
+    navigator.clipboard.writeText(inputText.value);
+    message.innerText = "Copied to clipboard ✅";
+});
 window.addEventListener("DOMContentLoaded", () => {
     setTheme(currentTheme);
     qrColor.value = themeColors[currentTheme];
