@@ -1,101 +1,216 @@
 const habitInput = document.getElementById("habitInput");
 const addHabitBtn = document.getElementById("addHabitBtn");
 const habitList = document.getElementById("habitList");
+
 const totalHabits = document.getElementById("totalHabits");
 const completedHabits = document.getElementById("completedHabits");
 
-let habits = JSON.parse(localStorage.getItem("habits")) || [];
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
 
-function saveHabits() {
-  localStorage.setItem("habits", JSON.stringify(habits));
-}
+const totalStreak = document.getElementById("totalStreak");
 
-function renderHabits() {
-  habitList.innerHTML = "";
+const themeToggle = document.getElementById("theme-toggle");
 
-  let completedCount = 0;
+let habits = [];
 
-  habits.forEach((habit, index) => {
-    const li = document.createElement("li");
-    li.className = "habit-item";
 
-    if (habit.completed) {
-      completedCount++;
-    }
+/* Quotes */
 
-    li.innerHTML = `
-      <span class="${habit.completed ? "completed" : ""}">
-        ${habit.name}
-      </span>
+const quotes = [
+  "Small daily improvements lead to success.",
+  "Consistency is more important than perfection.",
+  "Your future is built by your habits.",
+  "Discipline creates freedom.",
+  "Stay focused and never give up."
+];
 
-      <div class="actions">
-        <button class="complete-btn">
-          ${habit.completed ? "Undo" : "Done"}
-        </button>
+document.getElementById("dailyQuote").innerText =
+  quotes[Math.floor(Math.random() * quotes.length)];
 
-        <button class="delete-btn">
-          Delete
-        </button>
-      </div>
-    `;
 
-    const completeBtn = li.querySelector(".complete-btn");
-    const deleteBtn = li.querySelector(".delete-btn");
-
-    completeBtn.addEventListener("click", () => {
-      habits[index].completed = !habits[index].completed;
-      saveHabits();
-      renderHabits();
-    });
-
-    deleteBtn.addEventListener("click", () => {
-      habits.splice(index, 1);
-      saveHabits();
-      renderHabits();
-    });
-
-    habitList.appendChild(li);
-  });
-
-  totalHabits.textContent = habits.length;
-  completedHabits.textContent = completedCount;
-}
+/* Add Habit */
 
 addHabitBtn.addEventListener("click", () => {
-  const habitName = habitInput.value.trim();
 
-  if (habitName === "") {
+  const habitText = habitInput.value.trim();
+
+  if (habitText === "") {
     alert("Please enter a habit");
     return;
   }
 
   habits.push({
-    name: habitName,
-    completed: false
+    name: habitText,
+    completed: false,
+    streak: 0
   });
 
-  saveHabits();
-  renderHabits();
-
   habitInput.value = "";
+
+  renderHabits();
 });
 
-renderHabits();
-const themeToggle = document.getElementById("theme-toggle");
 
-if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-mode");
-    themeToggle.textContent = "☀️ Light Mode";
+/* Enter Key */
+
+habitInput.addEventListener("keypress", (e) => {
+
+  if (e.key === "Enter") {
+    addHabitBtn.click();
+  }
+});
+
+
+/* Render Habits */
+
+function renderHabits() {
+
+  habitList.innerHTML = "";
+
+  habits.forEach((habit, index) => {
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <div class="habit-left">
+
+        <input type="checkbox"
+          ${habit.completed ? "checked" : ""}
+        >
+
+        <div>
+
+          <span class="${
+            habit.completed ? "completed" : ""
+          }">
+            ${habit.name}
+          </span>
+
+          <p class="streak">
+            🔥 Streak: ${habit.streak} days
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="habit-actions">
+
+        <button class="edit-btn">
+          Edit
+        </button>
+
+        <button class="delete-btn">
+          Delete
+        </button>
+
+      </div>
+    `;
+
+    const checkbox = li.querySelector("input");
+    const deleteBtn = li.querySelector(".delete-btn");
+    const editBtn = li.querySelector(".edit-btn");
+
+
+    /* Complete Habit */
+
+    checkbox.addEventListener("change", () => {
+
+      habits[index].completed = checkbox.checked;
+
+      if (checkbox.checked) {
+        habits[index].streak++;
+      }
+
+      renderHabits();
+    });
+
+
+    /* Delete Habit */
+
+    deleteBtn.addEventListener("click", () => {
+
+      habits.splice(index, 1);
+
+      renderHabits();
+    });
+
+
+    /* Edit Habit */
+
+    editBtn.addEventListener("click", () => {
+
+      const newHabit = prompt(
+        "Edit your habit:",
+        habit.name
+      );
+
+      if (
+        newHabit !== null &&
+        newHabit.trim() !== ""
+      ) {
+        habits[index].name = newHabit;
+
+        renderHabits();
+      }
+    });
+
+    habitList.appendChild(li);
+  });
+
+  updateStats();
 }
 
-themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
 
-    if (document.body.classList.contains("dark-mode")) {
-        localStorage.setItem("theme", "dark");
-        themeToggle.textContent = "☀️ Light Mode";
-    } else {
-        localStorage.setItem("theme", "light");
-        themeToggle.textContent = "🌙 Dark Mode";
-    }
+/* Update Stats */
+
+function updateStats() {
+
+  totalHabits.innerText = habits.length;
+
+  const completed =
+    habits.filter(habit => habit.completed).length;
+
+  completedHabits.innerText = completed;
+
+
+  /* Progress */
+
+  const progress =
+    habits.length === 0
+      ? 0
+      : (completed / habits.length) * 100;
+
+  progressFill.style.width =
+    `${progress}%`;
+
+  progressText.innerText =
+    `${Math.round(progress)}%`;
+
+
+  /* Total Streak */
+
+  const streakTotal = habits.reduce(
+    (total, habit) => total + habit.streak,
+    0
+  );
+
+  totalStreak.innerText = streakTotal;
+}
+
+
+/* Theme Toggle */
+
+themeToggle.addEventListener("click", () => {
+
+  document.body.classList.toggle("light");
+
+  if (
+    document.body.classList.contains("light")
+  ) {
+    themeToggle.innerHTML = "☀️";
+  } else {
+    themeToggle.innerHTML = "🌙";
+  }
 });

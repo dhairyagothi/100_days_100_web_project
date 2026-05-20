@@ -3,28 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Habit Tracker</title>
+
+  <title>Professional Habit Tracker</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <button id="theme-toggle">🌙 Dark Mode</button>
 
-  <div class="container">
-    <h1>Habit Tracker</h1>
+  <div class="background-glow"></div>
 
-    <div class="input-section">
-      <input type="text" id="habitInput" placeholder="Enter a habit">
-      <button id="addHabitBtn">Add Habit</button>
+  <div class="app-container">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+
+      <div>
+        <h1>Habit Tracker</h1>
+
+        <p class="subtitle">
+          Build better routines every day
+        </p>
+      </div>
+
+      <div class="top-right">
+
+        <!-- Total Streak -->
+        <div class="streak-box">
+          🔥 <span id="totalStreak">0</span>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="theme-btn">
+          🌙
+        </button>
+
+      </div>
+
     </div>
 
-    <div id="stats">
-      <p>Total Habits: <span id="totalHabits">0</span></p>
-      <p>Completed Today: <span id="completedHabits">0</span></p>
+
+    <!-- Daily Quote -->
+    <div class="quote-card">
+
+      <p id="dailyQuote">
+        “Small daily improvements lead to massive success.”
+      </p>
+
     </div>
 
-    <ul id="habitList"></ul>
+
+    <!-- Input Section -->
+    <div class="card input-card">
+
+      <input
+        type="text"
+        id="habitInput"
+        placeholder="Enter a new habit..."
+      >
+
+      <button id="addHabitBtn">
+        + Add Habit
+      </button>
+
+    </div>
+
+
+    <!-- Stats -->
+    <div class="stats-grid">
+
+      <div class="card stat-card">
+
+        <h2 id="totalHabits">0</h2>
+
+        <p>Total Habits</p>
+
+      </div>
+
+      <div class="card stat-card success">
+
+        <h2 id="completedHabits">0</h2>
+
+        <p>Completed Today</p>
+
+      </div>
+
+    </div>
+
+
+    <!-- Progress Bar -->
+    <div class="card progress-section">
+
+      <div class="progress-info">
+
+        <span>Daily Progress</span>
+
+        <span id="progressText">0%</span>
+
+      </div>
+
+      <div class="progress-bar">
+
+        <div
+          class="progress-fill"
+          id="progressFill"
+        ></div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Habit List -->
+    <div class="card list-card">
+
+      <div class="list-header">
+
+        <h3>Your Habits</h3>
+
+      </div>
+
+      <ul id="habitList"></ul>
+
+    </div>
+
   </div>
 
   <script src="script.js"></script>
+
 </body>
 </html>
