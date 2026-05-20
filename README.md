@@ -163,7 +163,7 @@ The website features:
 | 95 | TodoList React TS | React, TypeScript, Tailwind | 📝 React App | [View Demo](https://100-days-100-web-project.vercel.app/public/TodoList-React-TS-Tailwind) |
 | 96 | HCL Color Generator | HTML, CSS, JS | 🎨 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/HCL%20Color%20Generator) |
 | 97 | Time Capsule | HTML, CSS, JS | ⏰ Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Time-Capsule) |
-| 98 | Virtual Piano | HTML, CSS, JS | 🎹 Music | [View Demo](https://100-days-100-web-project.vercel.app/public/Virtual%20Piano) |
+| 98 | Virtual Piano | HTML, CSS, JS | 🎹 Music | [View Demo](https://100-days-100-web-project-virtualpiano.netlify.app/) |
 | 99 | NASA APOD Extension | HTML, CSS, JS | 🚀 Extension | [View Demo](https://100-days-100-web-project.vercel.app/public/NASA-APOD/popup) |
 | 100 | Text Saver Extension | HTML, CSS, JS | 💾 Extension | [View Demo](https://100-days-100-web-project.vercel.app/public/Text_Saver_Ext/popup) |
 | 101 | Finance Tracker | HTML, CSS, JS | 💰 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/FinanceTracker) |
