@@ -1,19 +1,112 @@
-h1,h2{
-    color:#eeebe2;
-    font-weight: 400;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.card-header py-3{
-    background-color: #0d6efd;
-    color:white
+/* ===== Weather App UI Fix ===== */
+
+/* Card styling improvement */
+.card {
+    border-radius: 15px;
+    transition: all 0.3s ease;
 }
 
-.w-100 btn btn-lg btn-outline-primary{
-    background-color: #0d6efd;
-    color: white;
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
+/* Fix Bootstrap card header */
+.card-header {
+    background-color: #0d6efd !important;
+    color: white !important;
+    font-weight: 600;
+}
 
+/* Fix buttons */
+.btn-outline-primary {
+    background-color: #0d6efd !important;
+    color: white !important;
+    border: none !important;
+    transition: all 0.3s ease;
+}
 
+.btn-outline-primary:hover {
+    background-color: #0b5ed7 !important;
+    transform: scale(1.05);
+}
 
+/* Improve table styling */
+.table {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    overflow: hidden;
+}
 
+/* Responsive fix */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0b5ed7 !important;
+    transform: scale(1.05);
+}
+
+/* Improve table styling */
+.table {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Responsive fix */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+  .table-responsive {
+    font-size: 12px;
+  }
+
+  .navbar-brand {
+    font-size: 18px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+}

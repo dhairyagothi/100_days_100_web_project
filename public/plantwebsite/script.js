@@ -20,8 +20,29 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const newsletterForm = document.querySelector('.newsletter form');
 newsletterForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    const email = this.querySelector('input[type="email"]').value;
+
+    const email =
+        this.querySelector('input[type="email"]')
+        .value
+        .trim();
+
+    // Empty field validation
+    if (email === "") {
+        alert("Please enter a valid email address");
+        return;
+    }
+
+    // Email format validation
+    const emailPattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        alert("Please enter a valid email format");
+        return;
+    }
+
     alert(`Thank you for subscribing with email: ${email}`);
+
     this.reset();
 });
 

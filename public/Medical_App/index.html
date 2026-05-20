@@ -5,64 +5,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedConsult</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="icon" href="../favv.png" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <br>
-        <br>
+    <header class="site-header">
         <h1>MedConsult</h1>
-        <p>Connecting Local Doctors with Specialists</p>
+        <p>Connecting local doctors with trusted specialists</p>
     </header>
-    <main>
-        <section id="consultation-form">
-            <h2 >Request a Consultation</h2>
+
+    <main class="app-shell">
+        <section class="panel" id="consultation-form">
+            <h2>Request a Consultation</h2>
+
             <form id="requestForm">
-                <label for="doctorName">Doctor's Name:</label>
-                <input type="text" id="doctorName" name="doctorName" required placeholder="Doctor's Name">
+                <label for="doctorName">Doctor's Name</label>
+                <input type="text" id="doctorName" name="doctorName" placeholder="Dr. Sharma" required>
 
-                <label for="patientCondition">Patient's Condition:</label>
-                <textarea id="patientCondition" name="patientCondition"  placeholder="Condition" required></textarea>
+                <label for="patientCondition">Patient's Condition</label>
+                <textarea id="patientCondition" name="patientCondition" placeholder="Describe symptoms, duration, and urgency" required></textarea>
 
-                <label for="specialistType">Specialist Needed:</label>
-                <input type="text" id="specialistSearch" placeholder="Search Specialist...">
+                <label for="specialistSearch">Search Specialist</label>
+                <input type="text" id="specialistSearch" placeholder="Search by specialist type">
+
+                <label for="specialistType">Specialist Needed</label>
                 <select id="specialistType" name="specialistType" required></select>
 
-                <button type="submit">Submit</button>
+                <p class="error-message" id="formError" aria-live="polite"></p>
+
+                <button type="submit">Submit Consultation</button>
             </form>
         </section>
-        <section id="consultation-status">
+
+        <section class="panel quick-link-panel">
+    <h2>Need Temporary Help?</h2>
+    <p>View basic first-aid and self-care tips while waiting for specialist guidance.</p>
+    <a href="remedies.html" class="page-link">Open Basic Remedies</a>
+</section> =
+
+        <section class="panel" id="consultation-status">
             <h2>Consultation Status</h2>
-            <div id="statusMessage"></div>
-            <div id="loading" style="display:none;">Loading...</div>
+            <div id="statusMessage" aria-live="polite"></div>
+            <div id="loading" hidden>Loading...</div>
         </section>
-        <section id="specialist-response" style="display:none;">
-            <h2>Provide Your Suggestion</h2>
-            <form id="responseForm">
-                <label for="consultationId">Consultation ID:</label>
-                <input type="text" id="consultationId" name="consultationId" required>
 
-                <label for="suggestion">Your Suggestion:</label>
-                <textarea id="suggestion" name="suggestion" required></textarea>
+        <section class="panel" id="specialist-response">
+    <h2>Provide Specialist Suggestion</h2>
 
-                <button type="submit">Submit Suggestion</button>
-            </form>
-        </section>
-        <section id="consultation-history">
-            <h2>Consultation History</h2>
+    <form id="responseForm">
+        <label for="consultationId">Consultation ID</label>
+        <input type="text" id="consultationId" name="consultationId" placeholder="Example: CONS-123456" required>
+
+        <label for="urgencyLevel">Urgency Level</label>
+        <select id="urgencyLevel" name="urgencyLevel" required>
+            <option value="">Select urgency</option>
+            <option value="Routine">Routine</option>
+            <option value="Priority">Priority</option>
+            <option value="Emergency">Emergency</option>
+        </select>
+
+        <label for="suggestion">Specialist Suggestion</label>
+        <textarea id="suggestion" name="suggestion" placeholder="Enter advice, next steps, or referral notes" required></textarea>
+
+        <label for="recommendedTests">Recommended Tests</label>
+        <textarea id="recommendedTests" name="recommendedTests" placeholder="Example: CBC, ECG, X-ray, blood sugar test"></textarea>
+
+        <label for="followUpDate">Follow-up Date</label>
+        <input type="date" id="followUpDate" name="followUpDate">
+
+        <p class="error-message" id="responseError" aria-live="polite"></p>
+
+        <button type="submit">Submit Suggestion</button>
+    </form>
+</section>
+
+        <section class="panel" id="consultation-history">
+            <div class="section-heading">
+                <h2>Consultation History</h2>
+
+                <select id="statusFilter" aria-label="Filter consultation history">
+                    <option value="All">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+
             <ul id="historyList"></ul>
         </section>
-        <section id="feedback">
-            
-            <!-- <form id="feedbackForm">
-                <label for="feedbackMessage">Your Feedback:</label>
-                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
+
+        <section class="panel" id="feedback">
+            <h2>Feedback</h2>
+
+            <form id="feedbackForm">
+                <label for="feedbackMessage">Your Feedback</label>
+                <textarea id="feedbackMessage" name="feedbackMessage" placeholder="Share your feedback" required></textarea>
+
+                <label for="rating">Rating</label>
+                <select id="rating" name="rating" required>
+                    <option value="">Select rating</option>
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Good</option>
+                    <option value="3">3 - Average</option>
+                    <option value="2">2 - Needs Improvement</option>
+                    <option value="1">1 - Poor</option>
+                </select>
+
                 <button type="submit">Submit Feedback</button>
-            </form> -->
-            <a href="feedback.html" class="feed" ><button>Give Feedback</button></a>
+            </form>
         </section>
     </main>
+
     <script src="script.js"></script>
 </body>
 </html>
-<!-- 🧘🏼‍♀️🧘🏼‍♀️ 👨🏼‍⚕️👨🏼‍⚕️ -->

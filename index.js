@@ -1,10 +1,20 @@
+/* ============================================================
+   CONFIGURATION
+   ============================================================ */
+if (typeof REPO_OWNER === 'undefined') {
+  window.REPO_OWNER = 'dhairyagothi';
+  window.REPO_NAME = '100_days_100_web_project';
+}
 window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
 window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
 let currentPage = 1;
-const itemsPerPage = 10;
+//for the number of visible projects in one page.
+let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
+let currentCategory = 'all';
+let currentDifficulty = 'all';
 
 const PROJECT_DATA = [
     ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html'],
@@ -128,310 +138,741 @@ const PROJECT_DATA = [
     ["Day 119", "Interactive Calendar", "/public/CalendarApp/calendar/index.html"],
 ];
 
-async function fetchRepoStats() {
-    try {
-        const [repoRes, prRes] = await Promise.all([
-            fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-            fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
-        ]);
+// Alias for consistency
+const PROJECTS = PROJECT_DATA;
+console.log('PROJECTS defined:', PROJECTS.length, 'items');
 
-        if (!repoRes.ok || !prRes.ok) {
-            return;
-        }
 
-        const repoData = await repoRes.json();
-        const prData = await prRes.json();
-
-        const starEl = document.getElementById('starCount');
-        const forkEl = document.getElementById('forkCount');
-        const issueEl = document.getElementById('issueCount');
-        const prEl = document.getElementById('prCount');
-
-        if (starEl) starEl.textContent = (repoData.stargazers_count || 0).toLocaleString();
-        if (forkEl) forkEl.textContent = (repoData.forks_count || 0).toLocaleString();
-        if (issueEl) issueEl.textContent = Math.max(0, (repoData.open_issues_count || 0) - (prData.total_count || 0)).toLocaleString();
-        if (prEl) prEl.textContent = (prData.total_count || 0).toLocaleString();
-    } catch (error) {
-        console.error('Error fetching repo stats:', error);
-    }
+/* ============================================================
+   SOURCE CODE URL GENERATOR
+   ============================================================ */
+function getSourceUrl(url) {
+  const trimmed = url.trim();
+  if (trimmed.startsWith('http')) return trimmed; // Already a full GitHub link
+  if (trimmed.startsWith('./')) {
+    // Converts "./public/folder/index.html" to "public/folder"
+    const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
+  }
+  return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
 
-function initCanvas() {
-    const canvas = document.getElementById('bgCanvas');
-    if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+/* ============================================================
+   BOOKMARK + RECENT SYSTEM
+============================================================ */
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
+let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
 
-    const particles = [];
-    const particleCount = 100;
+let showAllBookmarks = false;
+let showAllRecent = false;
 
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.size = Math.random() * 2 + 1;
-        }
+const INITIAL_VISIBLE_ITEMS = 3;
 
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-        }
+// Category labels mapping
+const CATEGORY_LABEL = {
+  beginner: 'Beginner',
+  intermediate: 'Intermediate',
+};
+console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
-        draw() {
-            const isLight = document.body.classList.contains('light-mode');
-            const alpha = isLight ? Math.random() * 0.3 + 0.1 : Math.random() * 0.5 + 0.2;
-            ctx.fillStyle = isLight ? `rgba(0, 0, 0, ${alpha})` : `rgba(0, 255, 255, ${alpha})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
+/* ============================================================
+   GITHUB REPO STATS
+   ============================================================ */
+async function fetchRepoStats() {
+  try {
+    const [repoRes, prRes] = await Promise.all([
+      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`),
+    ]);
+    if (!repoRes.ok || !prRes.ok) throw new Error('Stats fetch failed');
+    const repo = await repoRes.json();
+    const prs = await prRes.json();
+
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = Number(val).toLocaleString();
+    };
+    set('starCount', repo.stargazers_count);
+    set('forkCount', repo.forks_count);
+    set('issueCount', repo.open_issues_count - prs.total_count);
+    set('prCount', prs.total_count);
+  } catch (e) {
+    console.warn('GitHub stats unavailable:', e.message);
+  }
+}
+
+function generateReadme() {
+  try {
+    const lines = [];
+    lines.push('# 100 Days · 100 Web Projects');
+    lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
+    lines.push('');
+    lines.push('## Projects');
+    PROJECTS.forEach(([day, name, url, tags, cat]) => {
+      const safeUrl = url || '';
+      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${cat}_`);
+    });
+
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'README.md';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+  } catch (e) {
+    console.error('Failed to generate README:', e);
+    alert('Could not generate README. See console for details.');
+  }
+}
+
+/* ============================================================
+   RENDER PROJECT GRID
+   ============================================================ */
+let activeFilter = 'all';
+let searchQuery = '';
+
+function renderGrid() {
+  const grid = document.getElementById('projectGrid');
+  const noResults = document.getElementById('noResults');
+  if (!grid) return;
+
+  // Dynamically set items per page based on viewport width to match CSS column layouts synchronously
+  const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
+  if (width <= 768) {
+    itemsPerPage = 6; // Mobile (1 column x 6 rows = 6 total)
+  } else if (width <= 1024) {
+    itemsPerPage = 6; // Tablet (2 columns x 3 rows = 6 total, no hanging cards!)
+  } else {
+    itemsPerPage = 9; // Laptop & Desktop (3 columns x 3 rows = 9 total)
+  }
+
+  // Filter projects by matching category chip and multi-term keyword search query
+  const filtered = PROJECTS.filter(([day, name, url, tags, cat]) => {
+    const matchesFilter = activeFilter === 'all' || (() => {
+      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
+      const nameStr = name.toLowerCase();
+      const urlStr = url.toLowerCase();
+
+      if (activeFilter === 'game') {
+        return tagStr.includes('game') || tagStr.includes('canvas');
+      }
+      if (activeFilter === 'clone') {
+        return nameStr.includes('clone') || urlStr.includes('clone') || urlStr.includes('cloning');
+      }
+      if (activeFilter === 'tool') {
+        return tagStr.includes('tool') || tagStr.includes('todo') || tagStr.includes('calculator') || tagStr.includes('weather') || nameStr.includes('tracker') || nameStr.includes('generator') || nameStr.includes('converter') || nameStr.includes('validator') || nameStr.includes('saver') || nameStr.includes('utils');
+      }
+      if (activeFilter === 'ui') {
+        return tagStr.includes('css') || tagStr.includes('canvas') || tagStr.includes('animation') || nameStr.includes('animation') || nameStr.includes('cursor') || nameStr.includes('effect') || nameStr.includes('slider');
+      }
+      if (activeFilter === 'api') {
+        return tagStr.includes('api') || tagStr.includes('weather') || nameStr.includes('api') || nameStr.includes('fetch');
+      }
+      return false;
+    })();
+
+    // Split search query by spaces to support multi-term criteria (e.g. "day 1 todo")
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch = !q || q.split(/\s+/).every(term => 
+      name.toLowerCase().includes(term) || 
+      day.toLowerCase().includes(term) || 
+      (typeof tags === 'string' && tags.toLowerCase().includes(term))
+    );
+
+    return matchesFilter && matchesSearch;
+  });
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+  // If a filter chip shrinks the results, reset current page index to avoid out-of-bounds
+  if (currentPage > totalPages) {
+    currentPage = Math.max(1, totalPages);
+  }
+
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    noResults.style.display = 'block';
+    const container = document.getElementById('paginationContainer');
+    if (container) container.innerHTML = '';
+    return;
+  }
+
+  grid.style.display = 'grid';
+  noResults.style.display = 'none';
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const pageItems = filtered.slice(startIndex, endIndex);
+
+  pageItems.forEach(([day, name, url, tags, cat]) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
+    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+    const sourceUrl = getSourceUrl(url);
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category ${cat}">${CATEGORY_LABEL[cat] || cat}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+
+    grid.appendChild(card);
+  });
+
+  renderPagination(filtered.length, totalPages);
+}
+
+function renderPagination(totalItems, totalPages) {
+  const grid = document.getElementById('projectGrid');
+  if (!grid) return;
+
+  let container = document.getElementById('paginationContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'paginationContainer';
+    container.className = 'pagination-container';
+  }
+
+  container.innerHTML = '';
+
+  // If there is only 1 page of results, hide and detach the pagination block
+  if (totalPages <= 1) {
+    if (container.parentElement === grid) {
+      grid.removeChild(container);
     }
+    return;
+  }
 
-    for (let i = 0; i < particleCount; i += 1) {
-        particles.push(new Particle());
+  // Render showing info range (e.g. "Showing 1 to 9 of 100")
+  const infoDiv = document.createElement('div');
+  infoDiv.className = 'pagination-info';
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+  infoDiv.innerHTML = `Showing <strong>${startItem}</strong> to <strong>${endItem}</strong> of <strong>${totalItems}</strong> projects`;
+  container.appendChild(infoDiv);
+
+  const controlsDiv = document.createElement('div');
+  controlsDiv.className = 'pagination-controls';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'prev-btn';
+  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.setAttribute('aria-label', 'Previous Page');
+  prevBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage > 1) {
+      currentPage--;
+      renderGrid();
+      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
+      setTimeout(() => {
+        scrollToProjectSection();
+      }, 50);
     }
+  });
+  controlsDiv.appendChild(prevBtn);
 
-    const animate = () => {
-        const isLight = document.body.classList.contains('light-mode');
-        ctx.fillStyle = isLight ? 'rgba(240, 240, 240, 0.3)' : 'rgba(10, 10, 15, 0.15)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Initialize bounds for numeric pagination window (displays maximum of 4 page buttons)
+  let startPage = 1;
+  let endPage = totalPages;
+  const maxVisible = 4;
 
-        particles.forEach((particle) => {
-            particle.update();
-            particle.draw();
+  // Sliding window pagination logic centering the active page
+  if (totalPages > maxVisible) {
+    if (currentPage <= 2) {
+      startPage = 1;
+      endPage = 4;
+    } else if (currentPage >= totalPages - 1) {
+      startPage = totalPages - 3;
+      endPage = totalPages;
+    } else {
+      startPage = currentPage - 1;
+      endPage = currentPage + 2;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    const pageBtn = document.createElement('button');
+    pageBtn.className = `page-num ${currentPage === i ? 'active' : ''}`;
+    pageBtn.textContent = i;
+    pageBtn.setAttribute('aria-label', `Page ${i}`);
+    pageBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      currentPage = i;
+      renderGrid();
+      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
+      setTimeout(() => {
+        scrollToProjectSection();
+      }, 50);
+    });
+    controlsDiv.appendChild(pageBtn);
+  }
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'next-btn';
+  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.setAttribute('aria-label', 'Next Page');
+  nextBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderGrid();
+      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
+      setTimeout(() => {
+        scrollToProjectSection();
+      }, 50);
+    }
+  });
+  controlsDiv.appendChild(nextBtn);
+
+  container.appendChild(controlsDiv);
+  
+  // Append container dynamically inside the projectGrid element to keep it attached
+  grid.appendChild(container);
+}
+
+function scrollToProjectSection() {
+  const header = document.querySelector('.projects-header');
+  if (!header) return;
+
+  const navbar = document.querySelector('.navbar');
+  // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
+  const offset = navbar ? navbar.offsetHeight - 50 : 30;
+  const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
+  const startY = window.pageYOffset;
+  const distance = targetY - startY;
+  
+  // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
+  const duration = 100; 
+  let startTime = null;
+
+  function animation(currentTime) {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    // Cap scroll position math exactly to distance to avoid landing slightly off target
+    const run = easeInOutQuad(Math.min(timeElapsed, duration), startY, distance, duration);
+    window.scrollTo(0, run);
+    if (timeElapsed < duration) {
+      requestAnimationFrame(animation);
+    }
+  }
+
+  // Mathematical Quadratic Ease-In-Out formula for momentum-like deceleration
+  function easeInOutQuad(t, b, c, d) {
+    t /= d / 2;
+    if (t < 1) return (c / 2) * t * t + b;
+    t--;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
+  }
+
+  requestAnimationFrame(animation);
+}
+
+function toggleBookmark(project) {
+  const exists = bookmarkedProjects.find((item) => item[0] === project[0]);
+
+  if (exists) {
+    bookmarkedProjects = bookmarkedProjects.filter((item) => item[0] !== project[0]);
+    showToast('Bookmark removed');
+  } else {
+    bookmarkedProjects.push(project);
+    showToast('Project bookmarked');
+  }
+
+  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  renderBookmarks();
+  renderGrid();
+  renderRecentProjects();
+}
+
+function trackRecentProject(project) {
+  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
+  recentProjects.unshift(project);
+
+  if (recentProjects.length > 10) {
+    recentProjects.pop();
+  }
+
+  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  renderRecentProjects();
+}
+
+const bookmarkGrid = document.getElementById('bookmarkGrid');
+
+function renderBookmarks() {
+  if (!bookmarkGrid) return;
+
+  bookmarkGrid.innerHTML = '';
+
+  if (bookmarkedProjects.length === 0) {
+    bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
+    return;
+  }
+
+  const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+  if (bookmarkToggleBtn) {
+    bookmarkToggleBtn.style.display = bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+  }
+
+  const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+
+  visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const sourceUrl = getSourceUrl(url);
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn active" data-id="${day}">
+                    <i class="fa-solid fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+
+    bookmarkGrid.appendChild(card);
+  });
+}
+
+const recentGrid = document.getElementById('recentGrid');
+
+function renderRecentProjects() {
+  if (!recentGrid) return;
+
+  recentGrid.innerHTML = '';
+
+  if (recentProjects.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+    return;
+  }
+
+  const recentToggleBtn = document.getElementById('recentToggleBtn');
+  if (recentToggleBtn) {
+    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+  }
+
+  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+
+  visibleRecent.forEach(([day, name, url, tags, cat]) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const sourceUrl = getSourceUrl(url);
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+
+    recentGrid.appendChild(card);
+  });
+}
+
+/* ============================================================
+   VIEW ALL TOGGLE
+   ============================================================ */
+
+const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+const recentToggleBtn = document.getElementById('recentToggleBtn');
+
+if (bookmarkToggleBtn) {
+  bookmarkToggleBtn.addEventListener('click', () => {
+    showAllBookmarks = !showAllBookmarks;
+    bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
+    renderBookmarks();
+  });
+}
+
+if (recentToggleBtn) {
+  recentToggleBtn.addEventListener('click', () => {
+    showAllRecent = !showAllRecent;
+    recentToggleBtn.textContent = showAllRecent ? 'Show Less' : 'View All';
+    renderRecentProjects();
+  });
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+document.addEventListener('click', (e) => {
+  const bookmarkBtn = e.target.closest('.bookmark-btn');
+  if (!bookmarkBtn) return;
+
+  e.preventDefault();
+  const projectDay = bookmarkBtn.dataset.id;
+  const project = PROJECTS.find((item) => item[0] === projectDay);
+  toggleBookmark(project);
+});
+
+document.addEventListener('click', (e) => {
+  const projectLink = e.target.closest('.open-project');
+  if (!projectLink) return;
+
+  const projectDay = projectLink.dataset.id;
+  const project = PROJECTS.find((item) => item[0] === projectDay);
+  if (!project) return;
+
+  trackRecentProject(project);
+});
+
+/* ============================================================
+   FILTER CHIPS
+   ============================================================ */
+function initFilterChips() {
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.filter;
+      currentPage = 1;
+      renderGrid();
+    });
+  });
+}
+
+/* ============================================================
+   LIVE SEARCH
+   ============================================================ */
+function initSearch() {
+  const input = document.getElementById('searchInput');
+  if (!input) return;
+  input.addEventListener('input', () => {
+    searchQuery = input.value.trim();
+    currentPage = 1;
+    renderGrid();
+  });
+}
+
+function syncProjectCounts() {
+  const total = PROJECTS.length.toLocaleString();
+  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
+
+  countNodes.forEach((node) => {
+    if (node) node.textContent = total;
+  });
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.placeholder = `Search ${total} projects…`;
+  }
+}
+
+/* ============================================================
+   NAVBAR — dynamic based on login state
+   ============================================================ */
+function updateNavbar() {
+  const container = document.getElementById('navButtons');
+  if (!container) return;
+
+    const username = window.username || null;
+    const isRoot   = !window.location.pathname.includes('/contributors/');
+    const base     = isRoot ? '' : '../';
+    const isLight  = document.body.classList.contains('light-mode');
+    const themeButton = `
+            <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+                <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
+            </button>
+        `;
+
+    if (username) {
+        container.innerHTML = `
+            ${themeButton}
+            <span class="welcome-text">Hi, ${username}</span>
+            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            window.username = null;
+            updateNavbar();
         });
+        const gen = document.getElementById('generateReadmeBtn');
+        if (gen) gen.addEventListener('click', generateReadme);
+    } else {
+        container.innerHTML = `
+            ${themeButton}
+            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
+        `;
+    const gen2 = document.getElementById('generateReadmeBtn');
+    if (gen2) gen2.addEventListener('click', generateReadme);
+  }
+}
 
-        for (let i = 0; i < particles.length; i += 1) {
-            for (let j = i + 1; j < particles.length; j += 1) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+function initTheme() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    let transitionTimer = null;
 
-                if (dist < 100) {
-                    const alpha = isLight ? 0.1 * (1 - dist / 100) : 0.2 * (1 - dist / 100);
-                    ctx.strokeStyle = isLight ? `rgba(255, 0, 255, ${alpha})` : `rgba(0, 255, 255, ${alpha})`;
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
-            }
-        }
-
-        requestAnimationFrame(animate);
+    const syncThemeIcons = () => {
+        const isLight = document.body.classList.contains('light-mode');
+        const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
+        document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
+            icon.className = iconClass;
+        });
     };
 
-    animate();
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-}
-
-function applySavedTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
-
-    if (savedTheme === 'light') {
+    if (saved === 'light') {
         document.body.classList.add('light-mode');
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
-    } else {
-        document.body.classList.remove('light-mode');
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-        }
     }
-}
+    syncThemeIcons();
 
-function setupThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
-    if (!themeToggle || !themeIcon) return;
+    document.body.addEventListener('click', (e) => {
+        const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
+        if (!target) return;
 
-    themeToggle.addEventListener('click', () => {
-        const isLight = document.body.classList.toggle('light-mode');
+        document.body.classList.toggle('light-mode');
+        const isLight = document.body.classList.contains('light-mode');
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        syncThemeIcons();
 
-        if (isLight) {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        } else {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-        }
+        document.body.classList.add('theme-transitioning');
+        if (transitionTimer) clearTimeout(transitionTimer);
+        transitionTimer = setTimeout(() => {
+            document.body.classList.remove('theme-transitioning');
+        }, 400);
     });
 }
 
-function fillTable() {
-    projectData = [...PROJECT_DATA];
-    filteredProjectData = [...projectData];
-    currentPage = 1;
-    renderTable();
-    createPagination();
-}
+/* ============================================================
+   SCROLL TO TOP
+   ============================================================ */
+function initScrollBtn() {
+    const btn = document.getElementById('scrollBtn');
+    const ring = document.getElementById('ringFill');
+    if (!btn) return;
 
-function renderTable() {
-    const tbody = document.getElementById('tableBody');
-    if (!tbody) return;
-
-    tbody.innerHTML = '';
-
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedData = filteredProjectData.slice(startIndex, endIndex);
-
-    paginatedData.forEach((entry) => {
-        const row = document.createElement('tr');
-
-        const dayCell = document.createElement('td');
-        const nameCell = document.createElement('td');
-        const linkCell = document.createElement('td');
-        const anchor = document.createElement('a');
-
-        dayCell.innerText = entry[0];
-        nameCell.innerText = entry[1];
-        nameCell.classList.add('project-name');
-
-        anchor.href = entry[2].trim();
-        anchor.innerHTML = 'View Demo <i class="fas fa-external-link-alt"></i>';
-        anchor.target = '_blank';
-
-        linkCell.appendChild(anchor);
-        row.appendChild(dayCell);
-        row.appendChild(nameCell);
-        row.appendChild(linkCell);
-        tbody.appendChild(row);
-    });
-
-    const noProjectsMessage = document.getElementById('no-projects');
-    if (noProjectsMessage) {
-        noProjectsMessage.style.display = filteredProjectData.length > 0 ? 'none' : 'block';
-    }
-}
-
-function createPagination() {
-    const paginationContainer = document.getElementById('pagination');
-    if (!paginationContainer) return;
-
-    paginationContainer.innerHTML = '';
-
-    const totalPages = Math.max(1, Math.ceil(filteredProjectData.length / itemsPerPage));
-
-    const prevBtn = document.createElement('button');
-    prevBtn.innerText = 'Previous';
-    prevBtn.disabled = currentPage === 1;
-    prevBtn.addEventListener('click', () => {
-        currentPage -= 1;
-        renderTable();
-        createPagination();
-    });
-
-    const pageInfo = document.createElement('span');
-    pageInfo.innerText = ` Page ${currentPage} of ${totalPages} `;
-    pageInfo.style.margin = '0 10px';
-
-    const nextBtn = document.createElement('button');
-    nextBtn.innerText = 'Next';
-    nextBtn.disabled = currentPage === totalPages;
-    nextBtn.addEventListener('click', () => {
-        currentPage += 1;
-        renderTable();
-        createPagination();
-    });
-
-    paginationContainer.appendChild(prevBtn);
-    paginationContainer.appendChild(pageInfo);
-    paginationContainer.appendChild(nextBtn);
-}
-
-function filterProjects() {
-    const input = document.getElementById('searchInput');
-    if (!input) return;
-
-    const filter = input.value.toLowerCase();
-    filteredProjectData = projectData.filter((project) => {
-        const day = (project[0] || '').toLowerCase();
-        const name = (project[1] || '').toLowerCase();
-        const link = (project[2] || '').toLowerCase();
-        return day.includes(filter) || name.includes(filter) || link.includes(filter);
-    });
-
-    currentPage = 1;
-    renderTable();
-    createPagination();
-}
-
-window.filterProjects = filterProjects;
-
-function initSearchHelpers() {
-    const searchInput = document.getElementById('searchInput');
-    const wordDisplay = document.getElementById('wordCount');
-    const charDisplay = document.getElementById('charCount');
-
-    if (!searchInput) return;
-
-    searchInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            filterProjects();
-        }
-    });
-
-    searchInput.addEventListener('input', () => {
-        const value = searchInput.value.trim();
-
-        if (charDisplay) {
-            charDisplay.innerText = value.length;
-        }
-
-        if (wordDisplay) {
-            const words = value ? value.split(/\s+/).length : 0;
-            wordDisplay.innerText = words;
-        }
-    });
-}
-
-function setupScrollButton() {
-    const scrollBtn = document.getElementById('scrollBtn');
-    if (!scrollBtn) return;
+    const circumference = 2 * Math.PI * 22;
 
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            scrollBtn.classList.add('show');
-        } else {
-            scrollBtn.classList.remove('show');
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+        btn.classList.toggle('show', scrollTop > 400);
+
+        if (ring) {
+            ring.style.strokeDashoffset = circumference * (1 - progress);
         }
     });
 
-    scrollBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
+/* ============================================================
+   BACK TO TOP BUTTON
+   ============================================================ */
+const backToTopButton = document.getElementById('backToTop');
+
+if (backToTopButton) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+      backToTopButton.style.display = 'block';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  });
+
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('cyberpunk-mode');
-    applySavedTheme();
-    setupThemeToggle();
-    fetchRepoStats();
-    initCanvas();
-    fillTable();
-    initSearchHelpers();
-    setupScrollButton();
+  console.log('DOMContentLoaded fired');
+  console.log('PROJECTS:', typeof PROJECTS, PROJECTS ? PROJECTS.length : 'undefined');
+  initTheme();
+  updateNavbar();
+  initFilterChips();
+  initSearch();
+  syncProjectCounts();
+  renderGrid();
+  renderBookmarks();
+  renderRecentProjects();
+  fetchRepoStats();
+  initScrollBtn();
+});
+
+// Re-render the grid when the browser window is resized to adapt pagination density instantly
+window.addEventListener('resize', () => {
+  renderGrid();
 });
