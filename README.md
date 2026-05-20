@@ -145,7 +145,7 @@ The website features:
 | 74 | Stock Profit Calculator | HTML, CSS, JS | 📈 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/Stock-Profit-Calculator) |
 | 75 | Code Jump Space Game | HTML, CSS, JS | 🚀 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/code-jump-space-game) |
 | 76 | Animated Searchbar | HTML, CSS, JS | 🔍 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated%20Searchbar) |
-| 77 | Rock Paper Scissors | HTML, CSS, JS | ✂️ Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Stone-Paper-Scissor) |
+| 77 | Rock Paper Scissors | HTML, CSS, JS | ✂️ Game | [View Demo](https://100-days-100-web-project.vercel.app/public/rock-paper-scissors) |
 | 78 | NPM Package Search | HTML, CSS, JS | 📦 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/NPM%20Package%20Search) |
 | 79 | LinkedIn Clone | HTML, CSS, JS | 💼 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Linkedin-Clone) |
 | 80 | Resume Studio | HTML, CSS, JS | 📄 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/ResumeStudio) |

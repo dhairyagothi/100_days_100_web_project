@@ -529,7 +529,7 @@ const PROJECT_DATA = [
   [
     'Day 77',
     'Rock-Paper-Scissor-game project',
-    './public/Stone-Paper-Scissor/index.html',
+    './public/rock-paper-scissors/rps.html',
     'game javascript',
     'beginner',
   ],
