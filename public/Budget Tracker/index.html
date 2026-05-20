@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Expense Tracker</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -31,7 +32,6 @@
           <input type="number" id="amt" placeholder="Amount" required />
           <input type="text" id="desc" placeholder="Description" required />
 
-          <!-- values MUST be lowercase -->
           <select id="cat" required>
             <option value="">Select Category</option>
             <option value="food">Food</option>
@@ -43,6 +43,7 @@
 
           <input type="date" id="date" required />
           <input type="submit" value="Add Transaction" />
+          <button type="button" id="cancelEditBtn" class="cancel-edit" hidden>Cancel Edit</button>
         </form>
       </section>
 
@@ -52,7 +53,7 @@
         <!-- ACCOUNT BALANCE -->
         <div class="acc-balance">
           <p class="label">Account Balance</p>
-          <p class="amount" id="curramt">₹0</p>
+          <p class="amount" id="curramt">Rs.0</p>
         </div>
 
         <div class="summary-body">
@@ -64,12 +65,12 @@
             <div class="income-expense">
               <div class="income">
                 <p class="label">Total Income</p>
-                <p class="amount" id="income">₹0</p>
+                <p class="amount" id="income">Rs.0</p>
               </div>
 
               <div class="expense">
                 <p class="label">Total Expenses</p>
-                <p class="amount" id="expense">₹0</p>
+                <p class="amount" id="expense">Rs.0</p>
               </div>
             </div>
 
@@ -80,7 +81,7 @@
                 <input type="number" id="budgetInput" placeholder="Set Budget" />
               </div>
 
-              <p class="amount" id="budget">₹0 / ₹0</p>
+              <p class="amount" id="budget">Rs.0 / Rs.0</p>
 
               <div class="progress-bar">
                 <div class="progress-fill"></div>
@@ -91,10 +92,10 @@
           <!-- CATEGORY BREAKDOWN -->
           <div class="category-breakdown">
             <h3>Category Breakdown</h3>
-            <p>Food <span data-cat="food">₹0</span></p>
-            <p>Travel <span data-cat="travel">₹0</span></p>
-            <p>Shopping <span data-cat="shopping">₹0</span></p>
-            <p>Others <span data-cat="other">₹0</span></p>
+            <p>Food <span data-cat="food">Rs.0</span></p>
+            <p>Travel <span data-cat="travel">Rs.0</span></p>
+            <p>Shopping <span data-cat="shopping">Rs.0</span></p>
+            <p>Others <span data-cat="other">Rs.0</span></p>
           </div>
 
         </div>
@@ -121,6 +122,5 @@
 
   </div>
 
-  <script src="script.js"></script>
 </body>
 </html>
