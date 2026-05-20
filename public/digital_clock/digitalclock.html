@@ -3,104 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Clock</title>
+
+  <title>Neon Digital Clock</title>
+
   <link rel="stylesheet" href="digitalclock.css" />
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
 </head>
+
 <body>
-  <main class="clock-container" role="main">
-    <h1 class="sr-only">Digital Clock</h1>
 
-    <!-- Clock Display -->
-    <section aria-label="Current time display">
-      <div
-        id="clock"
-        class="clock-display"
-        role="timer"
-        aria-live="polite"
-        aria-atomic="true"
-        aria-label="Current time"
-      >
-        00:00:00
+  <div class="background-glow"></div>
+
+  <main class="clock-app">
+
+    <div class="top-bar">
+      <div class="live-dot"></div>
+      <p>LIVE DIGITAL CLOCK</p>
+    </div>
+
+    <div class="clock-card">
+
+      <div class="theme-badge" id="theme-label">
+        CLASSIC MODE
       </div>
-      <div id="date-display" class="date-display" aria-label="Current date"></div>
-    </section>
 
-    <!-- Alarm Section -->
-    <section class="alarm-section" aria-label="Alarm settings">
-      <h2 class="section-title">Set Alarm</h2>
+      <h1 id="day-name">Tuesday</h1>
 
-      <div class="alarm-controls">
-        <label for="alarm-time" class="sr-only">Set alarm time</label>
-        <input
-          type="time"
-          id="alarm-time"
-          class="alarm-input"
-          aria-label="Alarm time"
-        />
+      <p id="full-date">19 May 2026</p>
+
+      <div class="clock-time">
+        <span id="hours">12</span>
+        <span class="colon">:</span>
+
+        <span id="minutes">00</span>
+        <span class="colon">:</span>
+
+        <span id="seconds">00</span>
+
+        <span id="ampm" class="ampm">PM</span>
+      </div>
+
+      <div class="bottom-info">
+
+        <div class="info-box">
+          <span class="info-title">Timezone</span>
+          <span id="timezone-label">Local Time</span>
+        </div>
+
+        <div class="info-box">
+          <span class="info-title">Alarm</span>
+          <span id="alarm-status">Not Set</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="controls-container">
+
+      <div class="theme-buttons">
 
         <button
-          id="set-alarm-btn"
-          class="btn btn-primary"
-          aria-label="Set alarm"
-          onclick="setAlarm()"
+          class="theme-btn active classic-btn"
+          onclick="setTheme('classic')"
         >
-          Set Alarm
+          Classic
         </button>
 
         <button
-          id="cancel-alarm-btn"
-          class="btn btn-secondary"
-          aria-label="Cancel alarm"
-          onclick="cancelAlarm()"
-          disabled
+          class="theme-btn modern-btn"
+          onclick="setTheme('modern')"
         >
-          Cancel Alarm
+          Modern
         </button>
-      </div>
 
-      <!-- Alarm Status -->
-      <div
-        id="alarm-status"
-        class="alarm-status"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      ></div>
-
-      <!-- Alarm Ring UI -->
-      <div
-        id="alarm-ring"
-        class="alarm-ring hidden"
-        role="alert"
-        aria-live="assertive"
-      >
-        <p>⏰ Alarm Ringing!</p>
         <button
-          class="btn btn-stop"
-          aria-label="Stop alarm"
-          onclick="stopAlarm()"
+          class="theme-btn futuristic-btn"
+          onclick="setTheme('futuristic')"
         >
-          Stop Alarm
+          Futuristic
         </button>
+
       </div>
-    </section>
+
+      <div class="select-group">
+
+        <label>Select Timezone</label>
+
+        <select id="timezone" onchange="updateClock()">
+
+          <option value="local">Local Time</option>
+          <option value="UTC">UTC</option>
+          <option value="America/New_York">New York</option>
+          <option value="Europe/London">London</option>
+          <option value="Asia/Kolkata">India</option>
+
+        </select>
+
+      </div>
+
+      <div class="alarm-section">
+
+        <button class="alarm-toggle-btn" onclick="toggleAlarmSection()">
+          <b>Set Alarm</b>
+        </button>
+
+        <div class="alarm-controls hidden" id="alarm-controls">
+
+          <input type="time" id="alarm-time" />
+
+          <div class="alarm-actions">
+
+            <button onclick="setAlarm()" class="confirm-btn">
+              Confirm
+            </button>
+
+            <button onclick="clearAlarm()" class="clear-btn">
+              Clear
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </main>
 
-  <!-- Visually hidden utility class -->
-  <style>
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-  </style>
+  <div id="toast" class="toast">
+    Alarm Set Successfully
+  </div>
+
+  <div id="alarm-popup" class="alarm-popup hidden">
+
+    <div class="popup-card">
+
+      <h2>⏰ Alarm Ringing!</h2>
+
+      <p>Wake up! Your alarm time has arrived.</p>
+
+      <button onclick="stopAlarm()">
+        Stop Alarm
+      </button>
+
+    </div>
+
+  </div>
+
+  <audio id="alarm-sound" src="alarm.mp3"></audio>
 
   <script src="digitalclock.js"></script>
+
 </body>
 </html>

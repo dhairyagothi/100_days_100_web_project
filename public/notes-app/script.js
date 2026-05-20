@@ -109,5 +109,7 @@ searchInput.addEventListener("keyup", e => {
     showNotes(notes.filter(n => n.title.toLowerCase().includes(val) || n.description.toLowerCase().includes(val)));
 });
 
-/* ---------- INIT ---------- */
-renderNotes();
+searchInput.addEventListener("keyup", e => {
+    let val = e.target.value.toLowerCase();
+    showNotes(notes.filter(n => n.title.toLowerCase().includes(val) || n.description.toLowerCase().includes(val)));
+});

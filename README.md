@@ -182,6 +182,7 @@ The website features:
 | 114 | EchoNotes | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes) |
 | 120 | Typing Speed Test | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/typing_test/index.html) |
 | 122 | Pomodoro Timer | HTML, CSS, JS | 🍅 Productivity Tool | [View Demo](https://100-days-100-web-project.vercel.app/public/Pomodoro_Timer/index.html) |
+| 127 | Reaction Time Test | HTML, CSS, JS | ⚙️ Simulator  | [View Demo](https://100-days-100-web-project.vercel.app/public/reaction-time-tester/main.html) |
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 25+ interactive games and puzzles
@@ -286,7 +287,53 @@ We welcome contributions from developers of all skill levels! Here's how you can
 
 **📖 For detailed guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)**
 
-## 🎯 Learning Path
+## � Browser Compatibility
+Most projects in this repository are designed to work across modern web browsers. Since rendering and feature support may vary slightly between browsers, contributors are encouraged to test projects across multiple environments.
+
+### ✅ Recommended Browsers
+For the best development and testing experience, use the latest versions of:
+- Google Chrome
+- Mozilla Firefox
+- Microsoft Edge
+- Safari
+
+### 📱 Responsive Testing Suggestions
+Before submitting a contribution, test your project on:
+- Desktop screens
+- Tablets
+- Mobile devices
+
+Recommended tools:
+- Chrome DevTools Device Toolbar
+- Firefox Responsive Design Mode
+- BrowserStack or similar browser testing platforms
+
+### 🛠 Common Browser-Related Issues
+Some projects may behave differently because of:
+- Cached CSS or JavaScript files
+- Browser-specific rendering differences
+- Unsupported browser APIs
+- Disabled JavaScript settings
+- Extension conflicts
+
+### 🔍 Troubleshooting Tips
+If a project is not working correctly:
+1. Perform a hard refresh (`Ctrl + Shift + R`)
+2. Clear browser cache
+3. Test in Incognito/Private mode
+4. Disable conflicting browser extensions
+5. Check the browser console for errors
+6. Compare behavior across multiple browsers
+
+### ✅ Suggested Testing Checklist
+Before creating a pull request, verify that:
+- The project loads without errors
+- Layouts remain responsive on different screen sizes
+- Buttons, forms, and navigation work properly
+- Animations and interactions function correctly
+- No major browser-specific UI issues are present
+
+## �🎯 Learning Path
 
 ### 🌱 Beginner Projects (Days 1-30)
 Perfect for those just starting with web development:

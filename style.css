@@ -909,6 +909,21 @@ body.light-mode .navbar {
     transform 0.18s ease;
 }
 
+.card-actions-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.view-code-link {
+  color: var(--text-secondary);
+}
+
+.view-code-link:hover {
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
 .bookmark-btn {
   width: 38px;
   height: 38px;
@@ -1329,33 +1344,105 @@ html {
 }
 
 .pagination-container {
+  grid-column: 1 / -1;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  margin: 20px 0;
+  width: 100%;
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-elevated);
+  box-sizing: border-box;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
   flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
-.pagination-container button {
-  padding: 8px 16px;
+.pagination-info {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 500;
+}
+
+.pagination-info strong {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Base style for all pagination buttons */
+.pagination-controls button {
+  background: transparent;
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: #1abc9c;
-  color: white;
+  color: var(--text-secondary);
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 0.9rem;
   font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--t);
+  user-select: none;
+  padding: 0;
 }
 
-.pagination-container button:disabled {
-  opacity: 0.5;
+/* Numeric page buttons */
+.pagination-controls button.page-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.pagination-controls button.page-num:hover:not(.active):not(:disabled) {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}
+
+/* Active page button has a colored block background */
+.pagination-controls button.page-num.active {
+  background: var(--accent);
+  color: #ffffff !important; /* Ensure high-contrast readable text */
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+body.light-mode .pagination-controls button.page-num.active {
+  color: #ffffff !important;
+  background: var(--accent);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* Prev/Next buttons (chevron icons) */
+.pagination-controls button.prev-btn,
+.pagination-controls button.next-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  color: var(--text-muted);
+}
+
+.pagination-controls button.prev-btn:hover:not(:disabled),
+.pagination-controls button.next-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.25;
   cursor: not-allowed;
 }
+
 #no-projects {
   display: none;
-}
-.pagination-container button:hover {
-  opacity: 0.9;
 }
 
 .filter-container {
@@ -1423,6 +1510,19 @@ html {
     padding: 6px 12px;
     font-size: 11px;
   }
+
+  /* Stacks pagination elements vertically and centers them cleanly on mobile screens */
+  .pagination-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1rem;
+  }
+
+  .pagination-info {
+    text-align: center;
+    font-size: 0.8rem;
+  }
 }
 
 #backToTop {
@@ -1445,5 +1545,46 @@ html {
 #backToTop:hover {
     background-color: #333;
     transform: scale(1.1);
+}
+
+/* ============================================================
+   THEME TRANSITION REPAINT GUARD
+   ============================================================ */
+body.theme-transitioning,
+body.theme-transitioning * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition-duration: 0.2s !important;
+}
+
+/* ============================================================
+   LIGHT-MODE OVERRIDES
+   Applied only when body.light-mode is active to replace hard
+   dark-mode gradients/backgrounds with light-friendly variants.
+   ============================================================ */
+body.light-mode .hero-terminal {
+    filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.9);
+    opacity: 0.6;
+    mix-blend-mode: multiply;
+    background: transparent;
+}
+
+body.light-mode::before,
+body.light-mode::after,
+body.light-mode .ambient-left::before,
+body.light-mode .ambient-right::before,
+body.light-mode .noise-layer {
+    mix-blend-mode: multiply;
+    opacity: 0.15;
+}
+
+body.light-mode .stats-strip {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 18px 60px rgba(0, 0, 0, 0.02);
+}
+
+body.light-mode .brand-mark {
+    background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(255, 255, 255, 0.9));
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
