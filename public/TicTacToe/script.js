@@ -28,6 +28,8 @@
   var winBtn   = document.getElementById("win-btn");
   var canvas   = document.getElementById("confetti-canvas");
   var ctx      = canvas.getContext("2d");
+  var startScreen = document.getElementById("start-screen");
+  var startBtn = document.getElementById("start-btn");
 
   /* ── Build board ──────────────────────── */
   function buildBoard() {
@@ -202,6 +204,15 @@
   document.getElementById("win-btn").addEventListener("click", nextRound);
 
   /* ── Init ─────────────────────────────── */
+  startBtn.addEventListener("click", function () {
+    startScreen.classList.add("hide-screen");
+
+    setTimeout(function () {
+       startScreen.style.display = "none";
+       gameEl.classList.remove("hidden");
+      gameEl.classList.add("show-game");
+    }, 600);
+  });
   buildBoard();
   setUI("X");
 
