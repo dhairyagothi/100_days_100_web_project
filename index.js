@@ -806,6 +806,11 @@ const PROJECT_DATA = [
     'api javascript',
     'intermediate',
   ],
+  [
+    'Day 117',
+    'temperature-converter',
+    './public/temperature-converter/index.html',
+  ]
 ];
 
 // Alias for consistency
