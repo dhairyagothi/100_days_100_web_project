@@ -1,6 +1,7 @@
 const btnCart=document.querySelector('#cart-icon');
 const cart=document.querySelector('.cart');
 const btnClose=document.querySelector('#cart-close');
+const themeToggle = document.getElementById("theme-toggle");
 
 btnCart.addEventListener('click',()=>{
   cart.classList.add('cart-active');
@@ -142,4 +143,29 @@ function updateTotal()
 
 
 }
+
+
+//Toggle theme
+
+
+// Load saved theme
+if(localStorage.getItem("theme") === "dark"){
+    document.body.classList.add("dark-mode");
+    themeToggle.innerHTML = `<i class="fa-regular fa-sun"></i>`;
+}
+
+// Toggle theme
+themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    if(document.body.classList.contains("dark-mode")){
+        localStorage.setItem("theme", "dark");
+         themeToggle.innerHTML = `<i class="fa-regular fa-sun"></i>`;
+    } else {
+        localStorage.setItem("theme", "light");
+        themeToggle.innerHTML = `<i class="fa-regular fa-moon"></i>`;
+    }
+
+});
 

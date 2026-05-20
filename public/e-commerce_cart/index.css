@@ -1,3 +1,42 @@
+:root{
+    --bg-primary: #ffffff;
+    --bg-secondary: #f4f4f4;
+    --bg-card: #ffffff;
+
+    --text-primary: #111111;
+    --text-secondary: #444444;
+
+    --navbar-bg: #000000;
+    --footer-bg: #f1f1f1;
+
+    --accent: #ff4757;
+    --accent-secondary: #2ed573;
+
+    --border-color: rgba(0,0,0,0.1);
+
+    --shadow: rgba(40, 37, 37, 0.1);
+}
+
+body.dark-mode{
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --bg-card: #242b38;
+
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+
+    --navbar-bg: #000000;
+    --footer-bg: #111827;
+
+    --accent: #ff6b81;
+    --accent-secondary: #2ed573;
+
+    --border-color: rgba(255,255,255,0.1);
+
+    --shadow: rgba(0,0,0,0.4);
+}
+
+
 * {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin: 0;
@@ -6,7 +45,8 @@
 }
 
 body {
-    background-color: #ffffff;
+      background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 header {
@@ -21,7 +61,7 @@ header {
 .navbar {
     display: flex;
     align-items: center;
-    background-color: black;
+     background-color: var(--navbar-bg);
     height: 80px;
     padding: 0 10px;
 }
@@ -65,7 +105,7 @@ header {
     justify-content: center;
     align-items: center;
     padding: 50px 20px;
-    background-color: #f4f4f4;
+     background-color: var(--bg-secondary);
     min-height: 70vh;
 }
 
@@ -183,7 +223,7 @@ header {
     top: 50%;
     width: 100px;
     height: 2px;
-    background-color: #000;
+   background-color: var(--text-primary);
     transform: translateY(-50%);
 }
 
@@ -222,7 +262,8 @@ h2.title {
 
 .shoe-box {
     position: relative;
-    background-color: #fff;
+    background-color: var(--bg-card);
+    color: var(--text-primary);
     padding: 10px;
     box-shadow: 0 1px 4px rgba(40, 37, 37, 0.1);
     border-radius: 3px;
@@ -397,8 +438,8 @@ h2.title {
 
     /* footer part of the website*/
 .site-footer {
-    background-color: #000000;
-    color: white;
+     background-color: var(--footer-bg);
+    color: var(--text-primary);
     padding: 20px 0;
     margin-top:70px;
 }
@@ -429,7 +470,7 @@ h2.title {
 }
 
 .footer-links ul li a {
-    color: #fff;
+      color: var(--text-primary);
     text-decoration: none;
 }
 
