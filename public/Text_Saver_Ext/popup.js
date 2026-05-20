@@ -6,7 +6,7 @@ function countWords(text) {
 
 // Display saved texts
 function displaySavedTexts() {
-  chrome.storage.local.get("savedTexts", (result) => {
+   chrome.storage.local.get("savedTexts", (result) => {
     const textList = result.savedTexts || [];
     const textListDiv = document.getElementById("textList");
     const emptyState = document.getElementById("emptyState");

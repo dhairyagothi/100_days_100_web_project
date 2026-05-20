@@ -6,17 +6,112 @@
     <title>Interactive Periodic Table</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+<body>
+    <div class="main-container">
+        <!-- Filter Dropdown -->
+        <div class="controls">
+             <input
+        type="text"
+        id="searchInput"
+        placeholder="Search element..."
+    >
 
- <body>
+    <select id="categoryFilter">
+        <option value="all">All</option>
+        <option value="alkali">Alkali Metals</option>
+        <option value="alkaline-earth">Alkaline Earth</option>
+        <option value="transition">Transition Metals</option>
+        <option value="metal">Post-transition Metals</option>
+        <option value="metalloid">Metalloids</option>
+        <option value="nonmetal">Non-metals</option>
+        <option value="halogen">Halogens</option>
+        <option value="noble-gas">Noble Gases</option>
+        <option value="lanthanide">Lanthanoids</option>
+        <option value="actinide">Actinides</option>
+    </select>
+        </div>
 
-<button id="theme-toggle">🌙 Dark Mode</button>
+        <!-- Legend -->
+        <div class="legend"></div>
 
-<div class="table-container">
+        <!-- Periodic Table -->
+        <div class="table-container">
+            <!-- Elements will be dynamically added here -->
+        </div>
 
-    <!-- existing periodic table elements stay here -->
+    </div>
 
-</div>
+    <!-- Interactive Electron Shell Modal -->
+    <div id="element-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal-btn">&times;</span>
+            <div class="modal-body">
+                <div class="element-details-panel">
+                    <div class="element-header">
+                        <div id="modal-number" class="modal-number"></div>
+                        <h1 id="modal-symbol" class="modal-symbol"></h1>
+                        <h2 id="modal-name" class="modal-name"></h2>
+                        <span id="modal-category" class="modal-category-badge"></span>
+                    </div>
+                    
+                    <div class="element-stats">
+                        <div class="stat-title">Atomic Properties</div>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Atomic Mass</span>
+                                <span id="modal-mass" class="stat-value"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Protons</span>
+                                <span id="modal-protons" class="stat-value text-proton"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Neutrons</span>
+                                <span id="modal-neutrons" class="stat-value text-neutron"></span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Electrons</span>
+                                <span id="modal-electrons" class="stat-value text-electron"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="shell-configuration">
+                        <div class="stat-title">Electron Configuration</div>
+                        <div class="shell-summary" id="shell-summary-text"></div>
+                        <div id="shells-list" class="shells-list">
+                            <!-- Dynamically populated shell badges -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="visualization-panel">
+                    <div class="canvas-container">
+                        <canvas id="atomic-canvas"></canvas>
+                        <div class="canvas-overlay-text" id="canvas-overlay-text">BOHR MODEL</div>
+                    </div>
+                    
+                    <div class="control-panel">
+                        <button id="play-pause-btn" class="ctrl-btn" title="Play/Pause Animation">
+                            <svg viewBox="0 0 24 24" width="20" height="20" class="btn-icon">
+                                <path fill="currentColor" id="play-icon" d="M8 5v14l11-7z" style="display: none;" />
+                                <path fill="currentColor" id="pause-icon" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                            </svg>
+                        </button>
+                        
+                        <div class="slider-container">
+                            <span class="slider-label">Speed</span>
+                            <input type="range" id="speed-slider" min="0.1" max="3" step="0.1" value="1">
+                        </div>
+                        
+                        <button id="toggle-orbits-btn" class="ctrl-btn active" title="Toggle Orbits">Orbits</button>
+                        <button id="toggle-trails-btn" class="ctrl-btn active" title="Toggle Electron Trails">Trails</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

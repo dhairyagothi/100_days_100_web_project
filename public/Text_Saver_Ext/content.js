@@ -23,8 +23,7 @@ document.addEventListener("keydown", (event) => {
   if (event.altKey && event.key.toLowerCase() === "s") {
     event.preventDefault();
     sendSelection();
-  }
-});
+  });
 
 // Trigger 2: Double click selection (IMPORTANT FIX)
 document.addEventListener("dblclick", () => {
