@@ -1,0 +1,168 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f4f7fb;
+  color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px;
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-section {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  background: white;
+  color: black;
+  transition: 0.3s ease;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  background: #00c853;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background: #00e676;
+}
+
+#stats {
+  margin: 20px 0;
+}
+
+#habitList {
+  list-style: none;
+}
+
+.habit-item {
+  background: #f1f1f1;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s ease;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.complete-btn {
+  background: #2962ff;
+}
+
+.complete-btn:hover {
+  background: #448aff;
+}
+
+.delete-btn {
+  background: #d50000;
+}
+
+.delete-btn:hover {
+  background: #ff1744;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* THEME TOGGLE BUTTON */
+
+#theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* DARK MODE */
+
+body.dark-mode {
+  background: #121212;
+  color: white;
+}
+
+body.dark-mode .container {
+  background: #1e1e1e;
+  color: white;
+  box-shadow: none;
+}
+
+body.dark-mode .habit-item {
+  background: #2a2a2a;
+  color: white;
+}
+
+body.dark-mode input {
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+body.dark-mode input::placeholder {
+  color: #ccc;
+}
+
+body.dark-mode #theme-toggle {
+  background: #444;
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 20px;
+  }
+
+  .input-section {
+    flex-direction: column;
+  }
+
+  #theme-toggle {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

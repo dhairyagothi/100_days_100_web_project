@@ -185,3 +185,48 @@ function BJstand(){
         }, 800); 
     }
 }
+// Rules button
+
+document.querySelector('#rules-btn')
+.addEventListener('click', ()=>{
+
+let box =
+document.querySelector('#rules-box');
+
+if(box.style.display==="none"){
+box.style.display="block";
+}
+
+else{
+box.style.display="none";
+}
+
+});
+
+
+
+
+// Reset scoreboard
+
+document.querySelector('#reset-score')
+.addEventListener('click', ()=>{
+
+BJgame['wins']=0;
+BJgame['losses']=0;
+BJgame['draws']=0;
+
+scoreboard();
+
+});
+
+
+
+
+// Play Again
+
+document.querySelector('#play-again')
+.addEventListener('click', ()=>{
+
+BJdeal();
+
+});

@@ -1,89 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Digital Clock</title>
-    <link rel="stylesheet" href="digitalclock.css" />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="digitalclock.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-black flex flex-col items-center justify-center h-screen">
-    <div class="text-center">
-      <div
-        id="display"
-        class="relative font-mono text-4xl md:text-5xl text-white border-4 border-green-500 rounded-lg p-4 mb-4"
-      ></div>
-      <div
-        id="clock"
-        class="relative font-mono text-4xl md:text-5xl text-green-500 border-4 border-green-500 rounded-lg p-4"
-      ></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Neon Digital Clock</title>
+
+  <link rel="stylesheet" href="digitalclock.css" />
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+</head>
+
+<body>
+
+  <div class="background-glow"></div>
+
+  <main class="clock-app">
+
+    <div class="top-bar">
+      <div class="live-dot"></div>
+      <p>LIVE DIGITAL CLOCK</p>
     </div>
-    <div class="mt-10 flex space-x-4">
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-green-700 hover:text-white border-2 border-green-500 text-green-500 rounded-lg"
-        onclick="setClockStyleAndFormat('classic', 'format1')"
-      >
-        Classic
-      </button>
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-blue-700 border-2 border-blue-500 text-blue-500 rounded-lg hover:text-white"
-        onclick="setClockStyleAndFormat('modern', 'format2')"
-      >
-        Modern
-      </button>
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-red-700 border-2 border-red-500 text-red-500 rounded-lg hover:text-white"
-        onclick="setClockStyleAndFormat('futuristic', 'format3')"
-      >
-        Futuristic
-      </button>
+
+    <div class="clock-card">
+
+      <div class="theme-badge" id="theme-label">
+        CLASSIC MODE
+      </div>
+
+      <h1 id="day-name">Tuesday</h1>
+
+      <p id="full-date">19 May 2026</p>
+
+      <div class="clock-time">
+        <span id="hours">12</span>
+        <span class="colon">:</span>
+
+        <span id="minutes">00</span>
+        <span class="colon">:</span>
+
+        <span id="seconds">00</span>
+
+        <span id="ampm" class="ampm">PM</span>
+      </div>
+
+      <div class="bottom-info">
+
+        <div class="info-box">
+          <span class="info-title">Timezone</span>
+          <span id="timezone-label">Local Time</span>
+        </div>
+
+        <div class="info-box">
+          <span class="info-title">Alarm</span>
+          <span id="alarm-status">Not Set</span>
+        </div>
+
+      </div>
     </div>
-    <div class="mt-10">
-      <select
-        id="timezone"
-        class="px-3 hover:bg-green-700 hover:text-white py-2 border-2 border-green-500 text-green-500 rounded-lg"
-        onchange="updateClock()"
-      >
-        <option value="local">Local Time</option>
-        <option value="UTC">UTC</option>
-        <option value="America/New_York">New York (USA)</option>
-        <option value="Europe/London">London (UK)</option>
-        <option value="Asia/Kolkata">Kolkata (India)</option>
-      </select>
+
+    <div class="controls-container">
+
+      <div class="theme-buttons">
+
+        <button
+          class="theme-btn active classic-btn"
+          onclick="setTheme('classic')"
+        >
+          Classic
+        </button>
+
+        <button
+          class="theme-btn modern-btn"
+          onclick="setTheme('modern')"
+        >
+          Modern
+        </button>
+
+        <button
+          class="theme-btn futuristic-btn"
+          onclick="setTheme('futuristic')"
+        >
+          Futuristic
+        </button>
+
+      </div>
+
+      <div class="select-group">
+
+        <label>Select Timezone</label>
+
+        <select id="timezone" onchange="updateClock()">
+
+          <option value="local">Local Time</option>
+          <option value="UTC">UTC</option>
+          <option value="America/New_York">New York</option>
+          <option value="Europe/London">London</option>
+          <option value="Asia/Kolkata">India</option>
+
+        </select>
+
+      </div>
+
+      <div class="alarm-section">
+
+        <button class="alarm-toggle-btn" onclick="toggleAlarmSection()">
+          <b>Set Alarm</b>
+        </button>
+
+        <div class="alarm-controls hidden" id="alarm-controls">
+
+          <input type="time" id="alarm-time" />
+
+          <div class="alarm-actions">
+
+            <button onclick="setAlarm()" class="confirm-btn">
+              Confirm
+            </button>
+
+            <button onclick="clearAlarm()" class="clear-btn">
+              Clear
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
-    <div id="alarm-container" class="mt-10 flex flex-col items-center">
-      <button
-        class="hover:text-white clock-face-btn px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="toggleAlarmMode()"
-      >
-        Set Alarm
-      </button>
-      <input
-        type="time"
-        id="alarm-time"
-        class="hidden mt-4 px-4 py-2 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-      />
-      <button
-        class="clock-face-btn hidden mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="setAlarm()"
-      >
-        Confirm Alarm
-      </button>
-    </div>
-    <div
-      id="alarm-popup"
-      class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-yellow-500 border-4 border-yellow-500 rounded-lg p-4"
-    >
-      <p>Alarm is ringing!</p>
-      <button
-        class="mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="stopAlarm()"
-      >
+
+  </main>
+
+  <div id="toast" class="toast">
+    Alarm Set Successfully
+  </div>
+
+  <div id="alarm-popup" class="alarm-popup hidden">
+
+    <div class="popup-card">
+
+      <h2>⏰ Alarm Ringing!</h2>
+
+      <p>Wake up! Your alarm time has arrived.</p>
+
+      <button onclick="stopAlarm()">
         Stop Alarm
       </button>
+
     </div>
-    <audio id="alarm-sound" src="alarm.mp3" class="hidden"></audio>
-  </body>
+
+  </div>
+
+  <audio id="alarm-sound" src="alarm.mp3"></audio>
+
+  <script src="digitalclock.js"></script>
+
+</body>
 </html>

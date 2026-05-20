@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jay Hind</title>
+
     <link href="../indianflag/flag.css" rel="stylesheet" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
   </head>
@@ -21,23 +22,39 @@
     </div>
 
     <div class="wrapper">
-      <div class="bar">
-        <div class="bar-1"></div>
-        <div class="bar-2"></div>
-        <div class="bar-3"></div>
-      </div>
-      <div class="flag">
-        <div class="top"></div>
-        <div class="middle">
-          <img src="../indianflag/img/ashokchakr.gif" alt="" width="80px" />
+
+      <div class="flag-assembly">
+        <div class="bar">
+          <div class="bar-1"></div>
+          <div class="bar-2"></div>
+          <div class="bar-3"></div>
         </div>
-        <div class="bottom"></div>
+
+        <div class="flag">
+          <div class="top"></div>
+
+          <div class="middle">
+            <img
+              src="../indianflag/img/ashokchakr.gif"
+              alt="Ashoka Chakra"
+            />
+          </div>
+
+          <div class="bottom"></div>
+        </div>
       </div>
 
       <div class="quote-container">
-        <img id="patriot-image" src="" alt="Patriot Image" width="150px" />
-        <div class="quote">"Give me blood and I will give you freedom."</div>
+        <div class="image-wrapper">
+          <img id="patriot-image" src="" alt="Patriot Image" />
+        </div>
+
+        <div class="quote">
+          "Give me blood and I will give you freedom."
+        </div>
+
         <div class="author">- Subhas Chandra Bose</div>
+
         <div class="quote-nav">
           <button id="prev-quote">&#8592;</button>
           <button id="next-quote">&#8594;</button>
@@ -45,8 +62,14 @@
       </div>
     </div>
 
+    <div class="music-controls">
+      <audio id="bgMusic" controls autoplay loop>
+        <source src="vande_mataram.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+
     <script>
-      // JavaScript for quote navigation
+      // Quotes data
       const quotes = [
         {
           text: '"Give me blood and I will give you freedom."',
@@ -79,7 +102,8 @@
           image: "./img/ram_prasad.png",
         },
         {
-          text: '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
+          text:
+            '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
           author: "- Chandrashekhar Azad",
           image: "./img/azad.png",
         },
@@ -99,6 +123,7 @@
           image: "./img/gandhi.png",
         },
       ];
+
       let currentQuoteIndex = 0;
 
       const quoteText = document.querySelector(".quote");
@@ -114,6 +139,11 @@
 
       displayQuote();
 
+      setInterval(() => {
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        displayQuote();
+      }, 5000);
+
       document.getElementById("prev-quote").addEventListener("click", () => {
         currentQuoteIndex =
           (currentQuoteIndex - 1 + quotes.length) % quotes.length;
@@ -121,8 +151,17 @@
       });
 
       document.getElementById("next-quote").addEventListener("click", () => {
-        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        currentQuoteIndex =
+          (currentQuoteIndex + 1) % quotes.length;
         displayQuote();
+      });
+
+      const music = document.getElementById("bgMusic");
+
+      window.addEventListener("load", () => {
+        music.play().catch(() => {
+          console.log("Autoplay blocked by browser");
+        });
       });
     </script>
   </body>

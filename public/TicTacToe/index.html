@@ -1,42 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic Tac Toe</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic-Tac-Toe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>TIC-TAC-TOE</h1>
-  <div class="container">
-    <div class="game-wrapper">
-      <div class="board" id="board">
-        <div class="cell" data-index="0"></div>
-        <div class="cell" data-index="1"></div>
-        <div class="cell" data-index="2"></div>
-        <div class="cell" data-index="3"></div>
-        <div class="cell" data-index="4"></div>
-        <div class="cell" data-index="5"></div>
-        <div class="cell" data-index="6"></div>
-        <div class="cell" data-index="7"></div>
-        <div class="cell" data-index="8"></div>
-      </div>
-      <div class="scoreboard">
-        <h2>Scoreboard</h2>
-        <p id="playerXWins">Player X Wins: 0</p>
-        <p id="playerOWins">Player O Wins: 0</p>
-        <p id="draws">Draws: 0</p>
-        <button id="resetScoreboard">Reset Scoreboard</button>
-      </div>
-    </div>
-    
-  </div>
+  <div id="start-screen">
+  <div class="neon-bg"></div>
 
-  <div class="modal" id="resultModal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <p id="resultMessage"></p>
-      <button id="newGame">New Game</button>
+  <h1 class="game-title">
+    <span class="tic">TIC</span>
+    <span class="tac">TAC</span>
+    <span class="toe">TOE</span>
+  </h1>
+
+  <p class="tag-line">PLAY • THINK • WIN</p>
+
+  <button id="start-btn">START GAME</button>
+</div>
+  <div id="game" class="turn-x hidden">
+    <canvas id="confetti-canvas"></canvas>
+
+    <div id="win-overlay">
+      <div id="win-text"></div>
+      <div id="win-sub"></div>
+      <button id="win-btn">Play Again</button>
+    </div>
+
+    <div id="sidebar">
+      <div id="sb-title">Scoreboard</div>
+      <div class="sb-row">Player X Wins<br><span class="sb-val val-x" id="score-x">0</span></div>
+      <div class="sb-row">Player O Wins<br><span class="sb-val val-o" id="score-o">0</span></div>
+      <div class="sb-row">Draws<br><span class="sb-val val-d" id="score-d">0</span></div>
+      <button class="sb-btn btn-x" id="btn-reset">Reset Scoreboard</button>
+      <button class="sb-btn btn-o" id="btn-restart">Restart Game</button>
+      <div id="status-bar" class="sx">X's turn!</div>
+    </div>
+
+    <div id="board-wrap">
+      <div id="turn-bar">
+        <span class="turn-pill x-pill active" id="pill-x">&#10005; X</span>
+        <span class="vs-sep">VS</span>
+        <span class="turn-pill o-pill" id="pill-o">&#9675; O</span>
+      </div>
+      <div id="board"></div>
     </div>
   </div>
 

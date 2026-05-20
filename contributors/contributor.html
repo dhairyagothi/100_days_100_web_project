@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link
+href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap"
+rel="stylesheet">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>100 Days 100 Web Projects</title>
@@ -97,7 +100,7 @@
         <div class="footer-content">
             <div>
                 <h3>About</h3>
-                <p>This repository contains 112 web projects from basic to intermediate using HTML, CSS, and JS.</p>
+              <p>This repository contains a growing collection of web projects from basic to intermediate using HTML, CSS, and JS.</p>
                 <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
             </div>
             <div>
@@ -113,25 +116,71 @@
                         <i class="fab fa-linkedin"></i>
                     </a>
                 </div>
+                <nav class="footer-nav">
+                    <a href="../index.html" class="footer-link">Home</a>
+                    <a href="contributor.html" class="footer-link">Contributors</a>
+                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="footer-link">GitHub Repo</a>
+                </nav>
             </div>
             <div>
                 <h3>Featured Project</h3>
                 <p>Generate free, stunning GitHub README profiles in minutes.</p>
-                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top: 1rem;">
+                <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top: 2rem; display: inline-flex; border-radius: 14px;">
                     <i class="fas fa-magic"></i> Try README Generator
                 </a>
             </div>
         </div>
     </footer>
+<div id="profileModal" class="modal-overlay">
 
-    <!-- Top scroll button -->
-    <button id="scrollBtn" title="Go to top">
-      <i class="fa-solid fa-arrow-up fa-lg"></i>
-    </button>
+    <div class="modal-content">
 
-    <!-- Pushed JavaScript Code To Here -->
-    <script src="../index.js"></script>
-    <script src="contributor.js"></script>
+        <button id="closeModal">
+            &times;
+        </button>
+
+        <div id="modalBody">
+
+            Loading...
+
+        </div>
+
+    </div>
+
+</div>
+<div
+id="certificateModal"
+class="modal-overlay">
+
+    <div
+    class="modal-content">
+
+        <button
+        id="closeCertificate">
+
+            &times;
+
+        </button>
+
+
+        <div
+        id="certificateBody">
+
+            Loading Certificate...
+
+        </div>
+
+    </div>
+
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="
+https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+</script>
+
+<script src="../index.js"></script>
+
+<script src="contributor.js"></script>
     
   </body>
 </html>

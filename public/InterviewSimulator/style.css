@@ -1,0 +1,159 @@
+/* style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#0d1117;
+  color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.container{
+  width:100%;
+  max-width:1000px;
+}
+
+.top-bar{
+  margin-bottom:25px;
+}
+
+.top-bar h1{
+  font-size:40px;
+  margin-bottom:20px;
+  color:#58a6ff;
+  letter-spacing:2px;
+}
+
+.stats{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.card{
+  background:#161b22;
+  padding:18px;
+  border-radius:14px;
+  flex:1;
+  min-width:180px;
+  border:1px solid #30363d;
+}
+
+.card span{
+  color:#8b949e;
+  font-size:14px;
+}
+
+.card h2{
+  margin-top:10px;
+  font-size:28px;
+}
+
+.interview-box{
+  background:#161b22;
+  border-radius:20px;
+  padding:30px;
+  border:1px solid #30363d;
+}
+
+.interviewer{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  margin-bottom:25px;
+}
+
+.avatar{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#58a6ff,#1f6feb);
+}
+
+.dialogue{
+  flex:1;
+}
+
+.dialogue h3{
+  margin-bottom:10px;
+  color:#58a6ff;
+}
+
+.dialogue p{
+  line-height:1.7;
+  color:#c9d1d9;
+}
+
+textarea{
+  width:100%;
+  height:180px;
+  background:#0d1117;
+  border:1px solid #30363d;
+  border-radius:14px;
+  padding:18px;
+  color:white;
+  resize:none;
+  outline:none;
+  font-size:15px;
+  margin-bottom:20px;
+}
+
+textarea:focus{
+  border-color:#58a6ff;
+}
+
+.buttons{
+  display:flex;
+  gap:15px;
+}
+
+button{
+  padding:14px 22px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:600;
+  transition:0.3s;
+}
+
+#next-btn{
+  background:#238636;
+  color:white;
+}
+
+#next-btn:hover{
+  transform:translateY(-2px);
+}
+
+#restart-btn{
+  background:#da3633;
+  color:white;
+}
+
+#restart-btn:hover{
+  transform:translateY(-2px);
+}
+
+@media(max-width:768px){
+
+  .top-bar h1{
+    font-size:28px;
+  }
+
+  .interviewer{
+    flex-direction:column;
+  }
+
+}
