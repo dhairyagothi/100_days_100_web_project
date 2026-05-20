@@ -52,11 +52,16 @@
                     <button class="btn btn-outline-success" type="submit" id="submit">Search</button>
                 </form>
             </div>
+          </div>
         </div>
-    </nav>
 
-    <div class="container">
-        <h1 class="my-4 text-center">Weather for <span id="cityName"></span></h1>
+
+    <!-- Loading Spinner -->
+    <div id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading weather data...</p>
+    </div>
+
         <main>
             <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
                 <div class="col">

@@ -124,21 +124,23 @@
             background: var(--paper-bg);
             color: var(--paper-text);
     
-        }
-
-        .paper-sheet::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(
-                to bottom,
-                transparent,
-                transparent 31px,
-                var(--paper-line) 31px,
-                var(--paper-line) 32px
-            );
-            pointer-events: none;
+            height: 70vh;
+            overflow-y: auto;
+            background: var(--paper-bg);
+            color: var(--paper-text);
+            padding: 28px 30px;
+            padding-bottom: 320px;
             border-radius: 8px 8px 0 0;
+            box-shadow: 0 0 32px rgba(59,130,246,0.18);
+            font-family: 'Courier Prime', monospace;
+            font-size: clamp(1.2rem, 1.8vw, 1.9rem);
+            line-height: 2.05;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            letter-spacing: 0.04em;
+            position: relative;
+            transition: background 0.4s ease, color 0.4s ease;
+            text-align: left;
         }
 
         #typewriterText { position: relative; z-index: 2; white-space: pre-wrap; }
@@ -169,6 +171,13 @@
             background: linear-gradient(135deg, var(--body-grad-a) 0%, var(--body-grad-b) 50%, var(--body-grad-c) 100%);
             padding: 44px 36px 40px;
             border-radius: 0 0 18px 18px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.45), inset 0 2px 5px rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            position: sticky;
+            bottom: 0;
+            z-index: 5;
         }
 
         /* ---- Input ---- */
@@ -426,9 +435,19 @@
 
         let paperContent = '';
 
+        function scrollPaperToBottom() {
+    const paperSheet = document.querySelector('.paper-sheet');
+
+    paperSheet.scrollTo({
+        top: paperSheet.scrollHeight,
+        behavior: "smooth"
+    });
+}
+
         function addCharToPaper(ch) {
             paperContent += ch;
             typewriterText.textContent = paperContent;
+            scrollPaperToBottom();
             if (ch === ' ') playSpaceClick();
             else            playKeyClick();
             if (ch !== '\n') flashKey(ch.toUpperCase());
@@ -438,6 +457,7 @@
             if (paperContent.length === 0) return;
             paperContent = paperContent.slice(0, -1);
             typewriterText.textContent = paperContent;
+            scrollPaperToBottom();
             playBackspace();
         }
 
@@ -466,6 +486,7 @@
                 e.preventDefault();
                 paperContent += '\n';
                 typewriterText.textContent = paperContent;
+                scrollPaperToBottom();
                 playReturn();
                 flashKey('ENTER');
                 return;
@@ -485,6 +506,8 @@
                 if (ch === 'ENTER')     {
                     paperContent += '\n';
                     typewriterText.textContent = paperContent;
+                    scrollPaperToBottom();
+                    scrollPaperToBottom();
                     playReturn();
                     return;
                 }
