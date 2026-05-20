@@ -1,347 +1,485 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DropDown Menu</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="input.css">
+
+    <link rel="stylesheet" href="input.css" />
+
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-</head>
+  </head>
 
-<body class="bg-gray-900">
+  <body class="bg-gradient-to-b from-gray-950 to-slate-900 min-h-screen">
+    <nav
+      class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-lg border-b border-gray-700 w-screen sticky top-0 z-50"
+    >
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="relative flex items-center justify-between h-16">
+          <!-- Mobile Menu Button -->
+          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <button
+              type="button"
+              class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-expanded="false"
+              aria-haspopup="false"
+              id="mobile-menu"
+            >
+              <svg
+                class="block h-6 w-6 transition-transform duration-300 hover:scale-110"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
 
-    <nav class="bg-gray-800 w-screen">
-        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-            <div class="relative flex items-center justify-between h-16">
-                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                    <!-- Mobile menu button-->
-                    <button type="button"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                        aria-expanded="false" aria-haspopup="false" id="mobile-menu">
-
-
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-
-                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                    <!-- Logo -->
-                    <div class="flex-shrink-0 flex items-center">
-                        <svg class="block h-8 w-auto" fill="#55bbdd" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg" xml:space="preserve" stroke="#55bbdd">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z">
-                                </path>
-                            </g>
-                        </svg>
-                    </div>
-                    <div class="hidden sm:block sm:ml-6">
-
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                                aria-current="page">Grocery</a>
-
-                            <a href="#"
-                                class="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Mobile</a>
-
-                            <a href="#" class="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                                id="appliances" aria-expanded="false" aria-haspopup="false">Appliances</a>
-
-
-                            <div role="menu" aria-orientation="vertical" aria-labelledby="appliances" tabindex="-1"
-                                class="hidden absolute top-20 left-48 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none rounded-md"
-                                id="appliances-dd">
-                                <div
-                                    class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                    Refrigerator</div>
-                                <div
-                                    class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                    Air Conditioner</div>
-                                <div
-                                    class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                    Washing Machine</div>
-                                <div
-                                    class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                    Telivision</div>
-                                <div
-                                    class="block px-4 py-2 rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                    Others</div>
-                            </div>
-
-                            <a href="#"
-                                class="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Vehicle</a>
-
-
-                            <a href="#"
-                                class="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Travel</a>
-
-                            <div class="relative">
-                                <button class="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                                    id="fashion">
-                                    Fashion
-                                </button>
-
-                                <div role="menu"
-                                    class="hidden absolute left-1/2 transform -translate-x-1/2 mt-8 w-48 bg-white ring-1 ring-black ring-opacity-5 rounded-md z-50"
-                                    id="fashion-dd">
-
-                                    <div
-                                        class="block px-4 py-2 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                        Men's Fashion
-                                    </div>
-
-                                    <div
-                                        class="block px-4 py-2 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                        Women's Fashion
-                                    </div>
-
-                                    <div
-                                        class="block px-4 py-2 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-100">
-                                        Kid's Fashion
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                    <button
-                        class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                    </button>
-
-                    <!-- Profile dropdown -->
-                    <div class="ml-3 relative">
-                        <div>
-                            <button type="button"
-                                class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                                id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <img class="h-8 w-8 rounded-full" src="./img/pic.jpg" alt="">
-                            </button>
-                        </div>
-
-                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"
-                            id="user-menu">
-
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-                                role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-                                role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-                                role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
-                        </div>
-                    </div>
-                </div>
+          <div
+            class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
+          >
+            <!-- Logo -->
+            <div class="flex-shrink-0 flex items-center">
+              <svg
+                class="block h-8 w-auto transition-transform duration-300 hover:scale-110"
+                fill="#55bbdd"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                xml:space="preserve"
+                stroke="#55bbdd"
+              >
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"
+                  ></path>
+                </g>
+              </svg>
             </div>
-        </div>
+            <!-- Desktop Navbar -->
+            <div class="hidden sm:block sm:ml-6">
+              <div class="flex space-x-6">
+                <a
+                  href="#"
+                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Grocery
+                </a>
 
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="sm:hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1 hidden" role="menu" aria-orientation="vertical"
-                aria-labelledby="mobile-menu" tabindex="-1" id="mobile-menu-dd">
+                <a
+                  href="#"
+                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Mobile
+                </a>
 
-                <a href="#" class="text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
-                    aria-current="page">Grocery</a>
+                <!-- Appliances Dropdown -->
+                <div class="relative">
+                  <button
+                    id="appliances"
+                    class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Appliances
+                  </button>
 
-                <a href="#"
-                    class=" hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium">Mobile</a>
-
-                <div>
-                    <button id="mobile-appliances-btn"
-                        class="w-full text-left hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium">
-                        Appliances
-                    </button>
-
-                    <div id="mobile-appliances-dd" class="hidden pl-4">
-                        <div class="text-gray-300 py-1">Refrigerator</div>
-                        <div class="text-gray-300 py-1">Air Conditioner</div>
-                        <div class="text-gray-300 py-1">Washing Machine</div>
+                  <div
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="appliances"
+                    tabindex="-1"
+                    id="appliances-dd"
+                    class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                  >
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Refrigerator
                     </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Air Conditioner
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Washing Machine
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Television
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Others
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                    <button id="mobile-fashion-btn"
-                        class="w-full text-left hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium">
-                        Fashion
-                    </button>
+                <a
+                  href="#"
+                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Vehicle
+                </a>
 
-                    <div id="mobile-fashion-dd" class="hidden pl-4">
-                        <div class="text-gray-300 py-1 cursor-pointer hover:text-white">
-                            Men's Fashion
-                        </div>
+                <a
+                  href="#"
+                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Travel
+                </a>
 
-                        <div class="text-gray-300 py-1 cursor-pointer hover:text-white">
-                            Women's Fashion
-                        </div>
+                <!-- Fashion Dropdown -->
+                <div class="relative">
+                  <button
+                    id="fashion"
+                    class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Fashion
+                  </button>
 
-                        <div class="text-gray-300 py-1 cursor-pointer hover:text-white">
-                            Kid's Fashion
-                        </div>
+                  <div
+                    role="menu"
+                    id="fashion-dd"
+                    class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute left-1/2 transform -translate-x-1/2 top-full mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                  >
+                    <div
+                      class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                    >
+                      Men's Fashion
                     </div>
+
+                    <div
+                      class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                    >
+                      Women's Fashion
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                    >
+                      Kid's Fashion
+                    </div>
+                  </div>
                 </div>
-                <a href="#"
-                    class=" hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium">Travel</a>
-                <a href="#"
-                    class=" hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium">Vehicle</a>
+              </div>
             </div>
+          </div>
+
+          <!-- Right Side -->
+          <div
+            class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+          >
+            <!-- Notification -->
+            <button
+              class="bg-gray-800 p-2 rounded-full text-gray-400 hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+            >
+              <svg
+                class="h-6 w-6 transition-transform duration-300 hover:scale-110"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+            </button>
+
+            <!-- Profile Dropdown -->
+            <div class="ml-3 relative">
+              <button
+                type="button"
+                class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                id="user-menu-button"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                <img
+                  class="h-9 w-9 rounded-full border-2 border-cyan-400"
+                  src="./img/pic.jpg"
+                  alt=""
+                />
+              </button>
+
+              <div
+                class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 origin-top-right absolute right-0 top-full mt-1 w-52 rounded-xl shadow-2xl py-2 bg-gray-800 ring-1 ring-gray-700 focus:outline-none z-50"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="user-menu-button"
+                tabindex="-1"
+                id="user-menu"
+              >
+                <a
+                  href="#"
+                  class="block px-4 py-3 text-sm text-gray-200 cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                >
+                  Your Profile
+                </a>
+
+                <a
+                  href="#"
+                  class="block px-4 py-3 text-sm text-gray-200 cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                >
+                  Settings
+                </a>
+
+                <a
+                  href="#"
+                  class="block px-4 py-3 text-sm text-gray-200 cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                >
+                  Sign out
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div class="sm:hidden">
+        <div
+          class="px-2 pt-2 pb-3 space-y-2 hidden bg-gray-900 border-t border-gray-700"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="mobile-menu"
+          tabindex="-1"
+          id="mobile-menu-dd"
+        >
+          <a
+            href="#"
+            class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Grocery
+          </a>
+
+          <a
+            href="#"
+            class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Mobile
+          </a>
+
+          <!-- Mobile Appliances -->
+          <div>
+            <button
+              id="mobile-appliances-btn"
+              class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+            >
+              Appliances
+            </button>
+
+            <div id="mobile-appliances-dd" class="hidden pl-4 space-y-1">
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Refrigerator
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Air Conditioner
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Washing Machine
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Fashion -->
+          <div>
+            <button
+              id="mobile-fashion-btn"
+              class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+            >
+              Fashion
+            </button>
+
+            <div id="mobile-fashion-dd" class="hidden pl-4 space-y-1">
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Men's Fashion
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Women's Fashion
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Kid's Fashion
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
 
-    <div class="label flex justify-center items-center flex-wrap">
-        <div class="text-white text-base px-5 py-5">DropDown is Present under Appliances, Fashion and Account Tab</div>
+    <!-- Center Text -->
+    <!-- Main Content -->
+    <div
+      class="flex flex-col justify-center items-center text-center min-h-[80vh] px-4"
+    >
+      <div
+        class="text-gray-200 text-2xl md:text-4xl font-semibold tracking-wide max-w-5xl leading-relaxed"
+      >
+        Dropdown Menus Available Under Appliances, Fashion & Profile Tabs
+      </div>
     </div>
 
-
-    <footer id="footer" class="text-white text-base py-5 absolute bottom-0 left-2">
-        <div>This Project is created by <b>~Vansh Kashyap</b></div>
+    <!-- Footer -->
+    <footer
+      class="fixed bottom-0 left-0 w-full py-3 text-center text-gray-400 text-sm"
+    >
+      Crafted with ❤️ by
+      <b class="text-cyan-400">Vansh Kashyap</b>
     </footer>
 
-
     <script>
-        // JavaScript to handle dropdown toggle
-        document.getElementById('appliances').addEventListener('click', function () {
-            const dropdownMenu = document.getElementById('appliances-dd');
-            if (dropdownMenu.style.display === 'block') {
-                dropdownMenu.style.display = 'none';
-            } else {
-                dropdownMenu.style.display = 'block';
-            }
+      const dropdowns = [
+        {
+          button: "appliances",
+          menu: "appliances-dd",
+        },
+        {
+          button: "fashion",
+          menu: "fashion-dd",
+        },
+        {
+          button: "user-menu-button",
+          menu: "user-menu",
+        },
+      ];
+
+      function closeAllDropdowns() {
+        dropdowns.forEach(({ menu, button }) => {
+          const dropdown = document.getElementById(menu);
+          const btn = document.getElementById(button);
+
+          dropdown.classList.add(
+            "hidden",
+            "opacity-0",
+            "scale-95",
+            "pointer-events-none",
+          );
+
+          if (btn) {
+            btn.classList.remove("bg-gray-700");
+            btn.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      dropdowns.forEach(({ button, menu }) => {
+        const btn = document.getElementById(button);
+        const dropdown = document.getElementById(menu);
+
+        // Prevent closing when clicking inside dropdown
+        dropdown.addEventListener("click", function (e) {
+          e.stopPropagation();
         });
 
-        document.getElementById('fashion').addEventListener('click', function () {
-            const dropdownMenu = document.getElementById('fashion-dd');
-            if (dropdownMenu.style.display === 'block') {
-                dropdownMenu.style.display = 'none';
-            } else {
-                dropdownMenu.style.display = 'block';
-            }
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const isHidden = dropdown.classList.contains("hidden");
+
+          closeAllDropdowns();
+
+          if (isHidden) {
+            dropdown.classList.remove("hidden");
+
+            setTimeout(() => {
+              dropdown.classList.remove(
+                "opacity-0",
+                "scale-95",
+                "pointer-events-none",
+              );
+            }, 10);
+
+            btn.classList.add("bg-gray-700");
+            btn.setAttribute("aria-expanded", "true");
+          }
         });
+      });
 
-        document.getElementById('user-menu-button').addEventListener('click', function () {
-            const dropdownMenu = document.getElementById('user-menu');
-            if (dropdownMenu.style.display === 'block') {
-                dropdownMenu.style.display = 'none';
-            } else {
-                dropdownMenu.style.display = 'block';
-            }
-        });
+      // Close dropdowns when clicking outside
+      document.addEventListener("click", function (e) {
+        const clickedInsideDropdown = e.target.closest(
+          "#appliances-dd, #fashion-dd, #user-menu",
+        );
 
-        document.getElementById('mobile-menu').addEventListener('click', function () {
-            const dropdownMenu = document.getElementById('mobile-menu-dd');
-            if (dropdownMenu.style.display === 'block') {
-                dropdownMenu.style.display = 'none';
-            } else {
-                dropdownMenu.style.display = 'block';
-            }
-        });
+        const clickedButton = e.target.closest(
+          "#appliances, #fashion, #user-menu-button",
+        );
 
-        // Close the dropdown when clicking outside of it
-        document.addEventListener('click', function (event) {
-            const dropdownButton = document.getElementById('appliances');
-            const dropdownMenu = document.getElementById('appliances-dd');
-            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.style.display = 'none';
-                dropdownButton.classList.remove('bg-gray-900')
-            }
-        });
-
-        document.addEventListener('click', function (event) {
-            const dropdownButton = document.getElementById('fashion');
-            const dropdownMenu = document.getElementById('fashion-dd');
-            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.style.display = 'none';
-                dropdownButton.classList.remove('bg-gray-900');
-            }
-        });
-
-        document.addEventListener('click', function (event) {
-            const dropdownButton = document.getElementById('user-menu-button');
-            const dropdownMenu = document.getElementById('user-menu');
-            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.style.display = 'none';
-
-            }
-        });
-
-        document.addEventListener('click', function (event) {
-            const dropdownButton = document.getElementById('mobile-menu');
-            const dropdownMenu = document.getElementById('mobile-menu-dd');
-            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.style.display = 'none';
-
-            }
-        });
-
-        // changing background when selected
-        const element = document.getElementById('appliances');
-
-        if (element) {
-            // Add event listener to the element
-            element.addEventListener('click', function () {
-                // Toggle the specified class on the clicked element
-                element.classList.toggle('bg-gray-900');
-            });
-        } else {
-            console.error(`Element with given ID not found.`);
+        if (!clickedInsideDropdown && !clickedButton) {
+          closeAllDropdowns();
         }
+      });
 
-        const e = document.getElementById('fashion');
+      // Mobile Menu Toggle
+      document
+        .getElementById("mobile-menu")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
 
-        if (e) {
-            // Add event listener to the element
-            e.addEventListener('click', function () {
-                // Toggle the specified class on the clicked element
-                e.classList.toggle('bg-gray-900');
-            });
-        } else {
-            console.error(`Element with given ID not found.`);
-        }
+          document.getElementById("mobile-menu-dd").classList.toggle("hidden");
+        });
 
+      // Mobile Appliances Toggle
+      document
+        .getElementById("mobile-appliances-btn")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
 
-        document.getElementById('mobile-appliances-btn')
-            .addEventListener('click', function () {
-                document
-                    .getElementById('mobile-appliances-dd')
-                    .classList.toggle('hidden');
-            });
+          document
+            .getElementById("mobile-appliances-dd")
+            .classList.toggle("hidden");
+        });
 
-        document.getElementById('fashion')
-            .addEventListener('click', function () {
-                document
-                    .getElementById('fashion-dd')
-                    .classList.toggle('hidden');
-            });
+      // Mobile Fashion Toggle
+      document
+        .getElementById("mobile-fashion-btn")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
 
-        document.getElementById('mobile-fashion-btn')
-            .addEventListener('click', function () {
-                document
-                    .getElementById('mobile-fashion-dd')
-                    .classList.toggle('hidden');
-            });
-
+          document
+            .getElementById("mobile-fashion-dd")
+            .classList.toggle("hidden");
+        });
     </script>
-
-</body>
-
+  </body>
 </html>

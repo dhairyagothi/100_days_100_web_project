@@ -1,348 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="index.css" />
   <link rel="icon" href="../favv.png" type="image/x-icon" />
-  <title>Solar System Carousel</title>
+
+  <title>3D-COUROSAL</title>
 </head>
+
 <body>
-  <div class="slider-container">
-    <nav class="navbar">
-      <div class="logo">CELESTIAL</div>
-      <div class="nav-right">
-        <div class="hamburger-container">
-          <div class="hamburger-icon">
-            <div class="line long"></div>
-            <div class="line medium"></div>
-            <div class="line short"></div>
-          </div>
+  <div class="center">
+    <div class="top">SOLAR SYSTEM </div>
+    <div class="carousal">
+      <div class="left">
+        <div class="item-left active">
+        <div class="text">SUN</div>
+        <div class="detail">The Sun is a massive star at the center of our Solar System, containing 99.86% of its total mass. Its core reaches 15 million°C, powering life on Earth through nuclear fusion.</div>
+        </div>
+        <div class="item-left">
+        <div class="text">MERCURY</div>
+        <div class="detail">Mercury is the smallest planet and closest to the Sun. It has no atmosphere, causing extreme temperature swings — scorching hot by day and freezing cold at night.</div>
+        </div>  
+        <div class="item-left">
+        <div class="text">VENUS</div>
+        <div class="detail">Venus is the hottest planet, with surface temperatures reaching 465°C due to its thick CO₂ atmosphere. It rotates backwards, making the Sun rise in the west.</div>
+        </div>
+        <div class="item-left">
 
-          <div class="planet-mini-list">
-            <img src="./images/sun-image.png" alt="Sun" class="mini-planet" data-index="0">
-            <img src="./images/mercury-image.png" alt="Mercury" class="mini-planet" data-index="1">
-            <img src="./images/venus-image.png" alt="Venus" class="mini-planet" data-index="2">
-            <img src="./images/earth-image.png" alt="Earth" class="mini-planet" data-index="3">
-            <img src="./images/mars-image.png" alt="Mars" class="mini-planet" data-index="4">
-            <img src="./images/jupiter-image.png" alt="Jupiter" class="mini-planet" data-index="5">
-            <img src="./images/saturn-image.png" alt="Saturn" class="mini-planet" data-index="6">
-            <img src="./images/Uranus.png" alt="Uranus" class="mini-planet" data-index="7">
-            <img src="./images/Neptune.png" alt="Neptune" class="mini-planet" data-index="8">
+        <div class="text">EARTH</div>
+        <div class="detail">Earth is the only known planet to harbor life. Liquid water, a protective atmosphere, and a magnetic field make it uniquely suited for complex organisms.</div>
+        </div>
+        <div class="item-left">
+        <div class="text">MOON</div>
+        <div class="detail">Earth's only natural satellite, the Moon stabilizes our planet's axial tilt and drives ocean tides. It is the only celestial body beyond Earth visited by humans.</div>
+        </div>
+        <div class="item-left">
+        <div class="text">MARS</div>
+        <div class="detail">Known as the Red Planet due to iron oxide on its surface, Mars has the tallest volcano in the Solar System — Olympus Mons — and is actively explored for signs of past life.</div>
+        </div>
+        <div class="item-left">
+        <div class="text">JUPITER</div>
+        <div class="detail">Jupiter is the largest planet, so massive it could fit all others inside it. Its Great Red Spot is a storm that has raged for over 350 years.</div>
+        </div>
+        <div class="item-left">
+        <div class="text">SATURN</div>
+        <div class="detail">Saturn is famous for its stunning rings made of ice and rock. Despite being the second largest planet, it is so low in density that it would float on water.</div>
+        </div>
+        <div class="item-left">
+        <div class="text">URANUS</div>
+        <div class="detail">Uranus rotates on its side with a 98° axial tilt, making its seasons extreme. It appears blue-green due to methane and is the coldest planet in the Solar System.</div>
+        </div>
+        <div class="item-left">
+        <div class="text">NEPTUNE</div>
+        <div class="detail">Neptune is the farthest and windiest planet, with speeds reaching 2,100 km/h. Its largest moon Triton uniquely orbits in the opposite direction of the planet's rotation.</div>
+      </div>
+      </div>
+        <div class="right">
+        <div class="item active">
+          <img src="images/sun-image.png" alt="Sun" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>0 km (It is the Sun)</td></tr>
+              <tr><td>Surface Temperature</td><td>5,500°C (core: 15M°C)</td></tr>
+              <tr><td>Rotation Period</td><td>25–35 days</td></tr>
+              <tr><td>Diameter</td><td>1,392,700 km</td></tr>
+              <tr><td>Planets Orbiting</td><td>8</td></tr>
+            </table>
+            <p class="extra-desc">The Sun is a G-type main-sequence star burning for 4.6 billion years. It generates energy through nuclear fusion, fusing hydrogen into helium and releasing light and heat that power all life on Earth. It accounts for 99.86% of the Solar System's total mass.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/mercury-image.png" alt="Mercury" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>57.9 million km</td></tr>
+              <tr><td>Surface Temperature</td><td>-180°C to 430°C</td></tr>
+              <tr><td>Orbital Period</td><td>88 days</td></tr>
+              <tr><td>Diameter</td><td>4,879 km</td></tr>
+              <tr><td>Number of Moons</td><td>0</td></tr>
+            </table>
+            <p class="extra-desc">Mercury is a heavily cratered world resembling Earth's Moon. Despite being the closest planet to the Sun, it is not the hottest due to its lack of atmosphere to retain heat. A single day on Mercury lasts 59 Earth days.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/venus-image.png" alt="Venus" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>108.2 million km</td></tr>
+              <tr><td>Surface Temperature</td><td>465°C (avg)</td></tr>
+              <tr><td>Orbital Period</td><td>225 days</td></tr>
+              <tr><td>Diameter</td><td>12,104 km</td></tr>
+              <tr><td>Number of Moons</td><td>0</td></tr>
+            </table>
+            <p class="extra-desc">Often called Earth's twin due to its similar size, Venus has a runaway greenhouse effect caused by its thick CO₂ atmosphere. Its dense clouds of sulfuric acid make it permanently overcast, and atmospheric pressure on its surface is 90 times that of Earth.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/earth-image.png" alt="Earth" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>149.6 million km</td></tr>
+              <tr><td>Surface Temperature</td><td>-88°C to 58°C</td></tr>
+              <tr><td>Orbital Period</td><td>365.25 days</td></tr>
+              <tr><td>Diameter</td><td>12,742 km</td></tr>
+              <tr><td>Number of Moons</td><td>1</td></tr>
+            </table>
+            <p class="extra-desc">Earth is the densest planet in the Solar System and the only one with active plate tectonics. Its large Moon stabilizes its axial tilt, contributing to the stable climate that allowed life to flourish over billions of years. Over 70% of its surface is covered by water.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/moon-image.png" alt="Moon" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>149.6 million km</td></tr>
+              <tr><td>Surface Temperature</td><td>-173°C to 127°C</td></tr>
+              <tr><td>Orbital Period</td><td>27.3 days (around Earth)</td></tr>
+              <tr><td>Diameter</td><td>3,474 km</td></tr>
+              <tr><td>Number of Moons</td><td>0</td></tr>
+            </table>
+            <p class="extra-desc">The Moon formed 4.5 billion years ago from debris after a Mars-sized body collided with early Earth. Its surface is covered in craters, vast plains called maria, and highlands. The Moon is gradually moving away from Earth at 3.8 cm per year and was last visited by humans in 1972.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/mars-image.png" alt="Mars" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>227.9 million km</td></tr>
+              <tr><td>Surface Temperature</td><td>-125°C to 20°C</td></tr>
+              <tr><td>Orbital Period</td><td>687 days</td></tr>
+              <tr><td>Diameter</td><td>6,779 km</td></tr>
+              <tr><td>Number of Moons</td><td>2 (Phobos, Deimos)</td></tr>
+            </table>
+            <p class="extra-desc">Mars hosts the largest dust storms in the Solar System, capable of covering the entire planet for months. Its thin atmosphere is 95% CO₂. NASA's Perseverance rover is actively exploring Mars, drilling rock samples and searching for signs of ancient microbial life.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/jupiter-image.png" alt="Jupiter" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>778.5 million km</td></tr>
+              <tr><td>Surface Temperature</td><td>-110°C (cloud tops)</td></tr>
+              <tr><td>Orbital Period</td><td>11.9 years</td></tr>
+              <tr><td>Diameter</td><td>139,820 km</td></tr>
+              <tr><td>Number of Moons</td><td>95</td></tr>
+            </table>
+            <p class="extra-desc">Jupiter acts as a cosmic shield, its massive gravity pulling in asteroids that might otherwise hit inner planets. Its moon Europa holds a subsurface ocean beneath its icy crust and is one of the most promising places in the Solar System to search for extraterrestrial life.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/saturn-image.png" alt="Saturn" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>1.43 billion km</td></tr>
+              <tr><td>Surface Temperature</td><td>-178°C (avg)</td></tr>
+              <tr><td>Orbital Period</td><td>29.5 years</td></tr>
+              <tr><td>Diameter</td><td>116,460 km</td></tr>
+              <tr><td>Number of Moons</td><td>146</td></tr>
+            </table>
+            <p class="extra-desc">Saturn's rings consist of billions of ice and rock fragments ranging from tiny grains to chunks as large as houses. Despite its massive size, Saturn's rapid rotation (10.7 hours) causes it to bulge at the equator. Its moon Titan has a thick atmosphere and liquid methane lakes.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/Uranus.png" alt="Uranus" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>2.87 billion km</td></tr>
+              <tr><td>Surface Temperature</td><td>-224°C (avg)</td></tr>
+              <tr><td>Orbital Period</td><td>84 years</td></tr>
+              <tr><td>Diameter</td><td>50,724 km</td></tr>
+              <tr><td>Number of Moons</td><td>28</td></tr>
+            </table>
+            <p class="extra-desc">Uranus is an ice giant composed of water, methane, and ammonia ices. It was the first planet discovered with a telescope, by William Herschel in 1781. Unlike other giant planets, Uranus emits almost no internal heat, making its atmosphere the coldest in the Solar System.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/Neptune.png" alt="Neptune" srcset="">
+          <button type="button">View More</button>
+          <div class="planet-info">
+            <table class="stats-table">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Distance from Sun</td><td>4.5 billion km</td></tr>
+              <tr><td>Surface Temperature</td><td>-214°C (avg)</td></tr>
+              <tr><td>Orbital Period</td><td>164.8 years</td></tr>
+              <tr><td>Diameter</td><td>49,244 km</td></tr>
+              <tr><td>Number of Moons</td><td>16</td></tr>
+            </table>
+            <p class="extra-desc">Neptune was discovered in 1846 through mathematical prediction before direct observation. Its largest moon Triton is geologically active with nitrogen geysers and orbits opposite to Neptune's rotation. Voyager 2 remains the only spacecraft to have visited Neptune, in 1989.</p>
           </div>
         </div>
       </div>
-    </nav>
-
-    <div class="slider">
-      <section class="slide active" data-planet="sun">
-        <!-- <div class="bg-layer" style="background-image: url('./images/sun-image.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">1 / 9</span>
-            <h2 class="planet-title">SUN</h2>
-            <p class="description">
-              The Sun is the star at the heart of our solar system. Its gravity holds the solar system together, keeping everything from the biggest planets to the smallest bits of debris in its orbit.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/sun/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/sun-image.png" alt="Sun" class="planet-img" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">STAR TYPE</span>
-              <span class="value">Yellow Dwarf</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">5,505 °C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="slide" data-planet="mercury">
-        <!-- <div class="bg-layer" style="background-image: url('./images/mercury-image.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">2 / 9</span>
-            <h2 class="planet-title">MERCURY</h2>
-            <p class="description">
-              Mercury is the closest planet to the Sun, and the smallest planet in our solar system. It's only slightly larger than Earth's Moon.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/mercury/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/mercury-image.png" alt="Mercury" class="planet-img" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">PLANET TYPE</span>
-              <span class="value">Terrestrial</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">430°C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="slide" data-planet="venus">
-        <!-- <div class="bg-layer" style="background-image: url('./images/venus-image.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">3 / 9</span>
-            <h2 class="planet-title">VENUS</h2>
-            <p class="description">
-              Venus is the second planet from the Sun and the hottest planet in our solar system.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/venus/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/venus-image.png" alt="Venus" class="planet-img" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">PLANET TYPE</span>
-              <span class="value">Terrestrial</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">471°C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="slide" data-planet="earth">
-        <!-- <div class="bg-layer" style="background-image: url('./images/earth-image.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">4 / 9</span>
-            <h2 class="planet-title">EARTH</h2>
-            <p class="description">
-              Earth is the third planet from the Sun and the only astronomical object known to harbor life.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/earth/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/earth-image.png" alt="Earth" class="planet-img blue-glow" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">PLANET TYPE</span>
-              <span class="value">Terrestrial</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">15°C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="slide" data-planet="mars">
-        <!-- <div class="bg-layer" style="background-image: url('./images/mars-image.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">5 / 9</span>
-            <h2 class="planet-title">MARS</h2>
-            <p class="description">
-              Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System. It’s the only planet we know of inhabited entirely by robots.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/mars/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/mars-image.png" alt="Mars" class="planet-img" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">PLANET TYPE</span>
-              <span class="value">Terrestrial</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">-63°C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="slide" data-planet="jupiter">
-        <!-- <div class="bg-layer" style="background-image: url('./images/jupiter-image.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">6 / 9</span>
-            <h2 class="planet-title">JUPITER</h2>
-            <p class="description">
-              Jupiter is the fifth planet from the Sun and the largest in the Solar System. More than twice as massive as the other planets combined.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/jupiter/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/jupiter-image.png" alt="Jupiter" class="planet-img" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">PLANET TYPE</span>
-              <span class="value">Gas Giant</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">-108°C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="slide" data-planet="saturn">
-        <!-- <div class="bg-layer" style="background-image: url('./images/saturn-image.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">7 / 9</span>
-            <h2 class="planet-title">SATURN</h2>
-            <p class="description">
-              Saturn is the sixth planet from the Sun and the second-largest in the Solar System.It’s surrounded by beautiful rings.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/saturn/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/saturn-image.png" alt="Saturn" class="planet-img planet-large" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">PLANET TYPE</span>
-              <span class="value">Gas Giant</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">-180°C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="slide" data-planet="Uranus">
-        <!-- <div class="bg-layer" style="background-image: url('./images/Uranus.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">8 / 9</span>
-            <h2 class="planet-title">URANUS</h2>
-            <p class="description">
-              Uranus is the seventh planet from the Sun and the third-largest in the Solar System.  It appears to spin sideways.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/uranus/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/Uranus.png" alt="Uranus" class="planet-img blue-glow planet-large" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">PLANET TYPE</span>
-              <span class="value">Ice Giant</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">-224°C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <section class="slide" data-planet="neptune">
-        <!-- <div class="bg-layer" style="background-image: url('./images/Neptune.png');"></div> -->
-        
-        <div class="content-wrapper">
-          <div class="left-col">
-            <span class="slide-number">9 / 9</span>
-            <h2 class="planet-title">NEPTUNE</h2>
-            <p class="description">
-              Neptune is the eighth and farthest-known Solar planet from the Sun. It’s the fourth-largest, and the first planet discovered with mathematics.
-            </p>
-            <button class="learn-more" onclick="window.open('https://science.nasa.gov/neptune/', '_blank')">LEARN MORE</button>
-          </div>
-
-          <div class="center-col">
-            <img src="./images/Neptune.png" alt="Sun" class="planet-img blue-glow planet-large" />
-          </div>
-
-          <div class="right-col">
-            <div class="stat">
-              <span class="label">AGE</span>
-              <span class="value">4.5 Billion Years</span>
-            </div>
-            <div class="stat">
-              <span class="label">PLANET TYPE</span>
-              <span class="value">Ice Giant</span>
-            </div>
-            <div class="stat">
-              <span class="label">TEMPERATURE</span>
-              <span class="value">-218°C</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
       </div>
-
-    <div class="controls">
-      <button id="prev" class="control-btn">PREV</button>
-      <div class="scroll-indicator">SCROLL</div>
-      <button id="next" class="control-btn">NEXT</button>
     </div>
-  </div>
-
-  <script src="./script.js"></script>
+    <script src="index.js"></script>
 </body>
+
 </html>
