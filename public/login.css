@@ -1,20 +1,198 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-  }
-  
-  body {
-    font-family: 'Cosmic Sans MS', cursive, sans-serif;
-    color: #fff;
-    display: flex;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  color: #fff;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4a90e2, #1abc9c);
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  padding: 15px 30px;
+  background-color: #1c2833;
+  border-bottom: 2px solid #34495e;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #f39c12;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #d35400;
+}
+
+/* Main Container */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  min-height: 85vh;
+  margin: 30px auto;
+  display: flex;
+  background: #f0f0f0;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Section */
+.left {
+  flex: 1;
+  background: #f0f0f0;
+  color: #000;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1abc9c;
+  margin-bottom: 15px;
+}
+
+.left h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  color: #1abc9c;
+}
+
+.description {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.feature-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.feature-card {
+  background: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Right Form Section */
+.form-box {
+  flex: 1;
+  background: #111;
+  color: white;
+  padding: 60px 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-box h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.form-subtitle {
+  color: #bbb;
+  margin-bottom: 30px;
+}
+
+/* Form */
+#loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.form-group input:focus {
+  border: 2px solid #1abc9c;
+}
+
+/* Login Button */
+.login-btn {
+  background: #1abc9c;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-btn:hover {
+  background: #16a085;
+  transform: translateY(-2px);
+}
+
+/* Sign Up Text */
+.signup-text {
+  margin-top: 20px;
+  color: #ccc;
+}
+
+.signup-text a {
+  color: #1abc9c;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
+
+/* Back Button */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.back-button:hover {
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .container {
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #4a90e2,  #1abc9c);
   }
+
+  .left,
+  .form-box {
 
 
   @keyframes blink{
@@ -71,10 +249,13 @@
     padding: 15px;
     background-color: #1c2833;
     border-bottom: 2px solid #34495e;
+
     width: 100%;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+  }
+
+
+  .left h1 {
+    font-size: 2.2rem;
   }
 
   .nav-link {
@@ -230,4 +411,5 @@
     color: #4a90e2; 
     text-underline-offset: 5px;
     text-decoration: underline;
+
 }
