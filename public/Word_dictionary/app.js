@@ -1,8 +1,8 @@
 
 let input = document.querySelector('#input');
 let searchBtn = document.querySelector('#search');
-let startSpeakBtn = document.querySelector('#startSpeak');
-let stopSpeakBtn = document.querySelector('#stopSpeak');
+let startSpeakBtn = document.querySelector('#start-btn');
+let stopSpeakBtn = document.querySelector('#stop-btn');
 let apiKey = 'put API key Here';
 let notFound = document.querySelector('.not__found');
 let defBox = document.querySelector('.def');

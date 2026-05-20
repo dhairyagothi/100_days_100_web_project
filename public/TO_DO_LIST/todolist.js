@@ -8,6 +8,35 @@ const taskTypeSelect = document.getElementById('task-type');
 // ─── Theme State ───────────────────────────────────────────────────────────────
 // Maps theme id → gradient for body + card fallback colour for default cards
 const THEMES = {
+<<<<<<< HEAD
+  sunset: {
+    body: "linear-gradient(135deg, #3b0764, #6b21a8)",
+    card: "#8b5fbf",
+  },
+
+  ocean: {
+    body: "linear-gradient(135deg, #021b79, #0575e6)",
+    card: "#4d8df7",
+  },
+
+  forest: {
+    body: "linear-gradient(135deg, #134e5e, #71b280)",
+    card: "#65a88f",
+  },
+
+  midnight: {
+    body: "linear-gradient(135deg, #232526, #414345)",
+    card: "#5c5f61",
+  },
+
+  aurora: {
+    body: "linear-gradient(135deg, #00c9a7, #845ec2)",
+    card: "#57c5b6",
+  },
+};
+
+let currentTheme = "sunset"; // default
+=======
   theme1: {
     body: 'linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)',
     card: 'rgba(232, 221, 227, 1)',
@@ -49,6 +78,7 @@ function updateStats() {
 
   document.getElementById('progressFill').style.width = `${progress}%`;
 }
+>>>>>>> upstream/main
 
 // ─── Task Type colour map ──────────────────────────────────────────────────────
 // Keeps track of user-chosen type colours so they survive theme switches
@@ -380,6 +410,9 @@ function applyTheme(themeKey) {
   });
 }
 
+<<<<<<< HEAD
+
+=======
 function c1() {
   applyTheme('theme1');
 }
@@ -395,6 +428,7 @@ function c4() {
 function c5() {
   applyTheme('theme5');
 }
+>>>>>>> upstream/main
 
 // ─── PDF Export ────────────────────────────────────────────────────────────────
 function saveAsPDF() {
