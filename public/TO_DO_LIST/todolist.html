@@ -1,37 +1,230 @@
 <!doctype html>
 <html lang="en">
-  
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>To-Do List | 100 Days 100 Projects</title>
+
+  <title>TaskFlow To-Do App</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="todolist.css">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <link rel="stylesheet" href="todolist.css" />
 </head>
+
 <body>
-  <!-- NAVBAR -->
+
   <nav class="navbar">
+
     <div class="nav-brand">
       <span class="brand-dot"></span>
-      <span class="brand-name">TaskFlow</span>
+      <span class="brand-name">TASKFLOW</span>
     </div>
+
     <div class="nav-tabs">
-      <button class="tab-btn active" id="btn-home" onclick="showHome()">Home</button>
-      <button class="tab-btn" id="btn-docs" onclick="showDocuments()">Documents</button>
+      <button class="tab-btn active"
+        id="btn-home"
+        onclick="showHome()">
+        Home
+      </button>
+
+      <button class="tab-btn"
+        id="btn-docs"
+        onclick="showDocuments()">
+        Documents
+      </button>
     </div>
+
     <div class="nav-themes">
+
       <span class="theme-label">THEME</span>
-      <button class="theme-swatch" id="t1" onclick="applyTheme('sunset')" title="Sunset"></button>
-      <button class="theme-swatch" id="t2" onclick="applyTheme('ocean')" title="Ocean"></button>
-      <button class="theme-swatch" id="t3" onclick="applyTheme('forest')" title="Forest"></button>
-      <button class="theme-swatch" id="t4" onclick="applyTheme('midnight')" title="Midnight"></button>
-      <button class="theme-swatch" id="t5" onclick="applyTheme('aurora')" title="Aurora"></button>
+
+      <button class="theme-swatch"
+        id="t1"
+        onclick="applyTheme('sunset')">
+      </button>
+
+      <button class="theme-swatch"
+        id="t2"
+        onclick="applyTheme('ocean')">
+      </button>
+
+      <button class="theme-swatch"
+        id="t3"
+        onclick="applyTheme('forest')">
+      </button>
+
+      <button class="theme-swatch"
+        id="t4"
+        onclick="applyTheme('midnight')">
+      </button>
+
+      <button class="theme-swatch"
+        id="t5"
+        onclick="applyTheme('aurora')">
+      </button>
+
     </div>
+
   </nav>
   <main class="main-container">
+
+
+  <main>
+
+    <section id="home-tab">
+
+      <header class="page-header">
+
+        <h1 class="main-heading">
+          JUST DO IT.
+        </h1>
+
+        <p class="sub-heading">
+          Track what matters. Crush what's next.
+        </p>
+
+      </header>
+
+      <div class="add-task-bar">
+
+        <div class="input-row">
+
+          <input
+            type="text"
+            id="task-input"
+            placeholder="What needs to be done?"
+            autocomplete="off"
+          >
+
+          <select id="task-type-select">
+
+            <option value="" data-color="#ffffff">
+              Category
+            </option>
+
+            <option value="Work" data-color="#FFDE59">
+              💼 Work
+            </option>
+
+            <option value="Personal" data-color="#FFC0CB">
+              🌸 Personal
+            </option>
+
+            <option value="Urgent" data-color="#FF6B6B">
+              🔥 Urgent
+            </option>
+
+            <option value="Fitness" data-color="#B1EE99">
+              💪 Fitness
+            </option>
+
+            <option value="Misc" data-color="#CAB9F5">
+              ✨ Misc
+            </option>
+
+          </select>
+
+          <button class="btn-add"
+            onclick="addTask()">
+            + Add Task
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="stats-bar">
+
+        <div class="stat">
+          <span class="stat-num" id="stat-total">0</span>
+          <span class="stat-lbl">Total</span>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat">
+          <span class="stat-num" id="stat-done">0</span>
+          <span class="stat-lbl">Done</span>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat">
+          <span class="stat-num" id="stat-pending">0</span>
+          <span class="stat-lbl">Pending</span>
+        </div>
+
+        <div class="progress-wrap">
+
+          <div class="progress-bar">
+            <div class="progress-fill"
+              id="progress-fill">
+            </div>
+          </div>
+
+          <span class="progress-pct"
+            id="progress-pct">
+            0%
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="filter-bar">
+
+        <button class="filter-btn active"
+          onclick="filterTasks(this, 'all')">
+          All
+        </button>
+
+        <button class="filter-btn"
+          onclick="filterTasks(this, 'pending')">
+          Pending
+        </button>
+
+        <button class="filter-btn"
+          onclick="filterTasks(this, 'done')">
+          Done
+        </button>
+
+        <button class="filter-btn"
+          onclick="filterTasks(this, 'Work')">
+          💼 Work
+        </button>
+
+        <button class="filter-btn"
+          onclick="filterTasks(this, 'Personal')">
+          🌸 Personal
+        </button>
+
+        <button class="filter-btn"
+          onclick="filterTasks(this, 'Urgent')">
+          🔥 Urgent
+        </button>
+
+        <button class="filter-btn"
+          onclick="filterTasks(this, 'Fitness')">
+          💪 Fitness
+        </button>
+
+        <button class="filter-btn"
+          onclick="filterTasks(this, 'Misc')">
+          ✨ Misc
+        </button>
+
+        <button class="btn-clear-done"
+          onclick="clearDone()">
+          Clear Done
+        </button>
+
+      </div>
 
   <!-- HOME TAB -->
   <section id="home-tab">
@@ -41,8 +234,68 @@
       <p class="sub-heading">Organize your work beautifully.</p>
 
 
-      <!-- TASK LIST -->
+
       <div id="task-list">
+
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            📋
+          </div>
+
+          <p>
+            No tasks yet. Add one above!
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="action-row">
+
+        <button class="btn-pdf"
+          onclick="saveAsPDF()">
+          Save as PDF
+        </button>
+
+      </div>
+
+    </section>
+
+    <section id="documents-tab"
+      style="display:none">
+
+      <header class="page-header">
+
+        <h1 class="main-heading">
+          SAVED DOCS.
+        </h1>
+
+        <p class="sub-heading">
+          Your exported task lists live here.
+        </p>
+
+      </header>
+
+      <div class="documents-list"
+        id="documents-list">
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            🗂️
+          </div>
+
+          <p>
+            No documents saved yet.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
 
   <!-- Pending Column -->
   <div class="status-section">
@@ -152,10 +405,19 @@
           <p class="sub-heading">Your exported PDFs appear here.</p>
         </div>
 
+
         <div class="documents-wrapper">
           <div class="documents-list">
             <div class="empty-docs">
               <div class="empty-icon">📂</div>
+
+
+  <div id="toast" class="toast"></div>
+
+  <script src="todolist.js"></script>
+
+</body>
+</html>
 
               <p>No documents exported yet.</p>
             </div>
@@ -169,3 +431,4 @@
     <script src="todolist.js?v=2"></script>
   </body>
 </html>
+
