@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Scout | The Embodied AI Rover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #050507;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --accent-primary: #4facfe;
+            --accent-secondary: #00f2fe;
+            --accent-purple: #a18cd1;
+            --gemini-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #a18cd1 100%);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --font-main: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Ambient Background Effects --- */
+        .ambient-glow {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.08) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            top: -300px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+            animation: pulse-glow 10s infinite alternate;
+            pointer-events: none;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(161, 140, 209, 0.05) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            bottom: -200px;
+            right: -100px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            100% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* --- Typography --- */
+        h1, h2, h3 {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: var(--gemini-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Navigation --- */
+        header {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 7, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo i { color: var(--accent-secondary); }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover { color: var(--text-main); }
+
+        .mobile-menu-btn {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- Buttons --- */
+        .cta-button {
+            padding: 12px 30px;
+            background: var(--gemini-gradient);
+            color: #000;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .cta-button.secondary:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            z-index: 2;
+        }
+
+        .hero-badge {
+            background: rgba(79, 172, 254, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            color: var(--accent-primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* --- Video Showcase Section --- */
+        .video-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            max-width: 900px;
+            margin: 40px auto 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            border: 1px solid var(--card-border);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- Terminal / Logic Core --- */
+        .simulation {
+            padding: 100px 0;
+            background: linear-gradient(180deg, transparent, rgba(79, 172, 254, 0.02), transparent);
+        }
+
+        .terminal-window {
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            max-width: 800px;
+            margin: 40px auto;
+            position: relative;
+        }
+        
+        .terminal-header {
+            background: #151519;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .window-controls { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+
+        .terminal-title {
+            flex-grow: 1;
+            text-align: center;
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .terminal-body {
+            padding: 25px;
+            color: #d4d4d4;
+            height: 350px;
+            overflow-y: auto;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+        }
+
+        .log-entry { 
+            margin-bottom: 12px; 
+            padding-left: 12px;
+            border-left: 2px solid transparent; 
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+        
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .log-entry.gemini { border-left-color: var(--accent-primary); color: #a5d6ff; }
+        .log-entry.rover { border-left-color: #27c93f; color: #a5ffaa; }
+        .timestamp { color: #555; margin-right: 12px; font-size: 0.8rem; }
+
+        /* --- Gallery Section --- */
+        .gallery {
+            padding: 100px 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            height: 250px;
+            border: 1px solid var(--card-border);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover { transform: scale(1.03); z-index: 10; border-color: var(--accent-primary); }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* --- Documentation / PDF --- */
+        .docs-section {
+            padding: 80px 0;
+            background: rgba(255,255,255,0.02);
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .doc-card {
+            background: #111;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 800px;
+            margin: 0 auto;
+            transition: border-color 0.3s;
+        }
+
+        .doc-card:hover { border-color: var(--accent-purple); }
+
+        .doc-info { display: flex; gap: 20px; align-items: center; }
+        .doc-icon { font-size: 2.5rem; color: #ff5f56; } 
+
+        /* --- Tech Stack --- */
+        .tech-stack {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .tech-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .tech-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .tech-item i { font-size: 2.5rem; color: white; transition: color 0.3s; }
+        .tech-item:hover i { color: var(--accent-secondary); }
+
+        /* --- Footer --- */
+        footer {
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-muted);
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .hero-actions { flex-direction: column; width: 100%; }
+            .cta-button { width: 100%; justify-content: center; }
+            
+            .nav-links {
+                display: none; /* Hide by default */
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: #0d0d10;
+                flex-direction: column;
+                padding: 20px;
+                border-bottom: 1px solid var(--card-border);
+            }
+            
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+
+            .doc-card { flex-direction: column; text-align: center; gap: 20px; }
+            .doc-info { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+    <div class="ambient-glow-2"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fa-solid fa-robot"></i> GEMINI SCOUT
+                </a>
+                <div class="mobile-menu-btn" onclick="toggleMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <div class="nav-links" id="navLinks">
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#demo">Live Demo</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#docs">Docs</a>
+                    <a href="https://github.com/vikrantkulkarni07/Physical-World-Gemini-Scout" target="_blank" class="cta-button" style="padding: 8px 20px; font-size: 0.85rem; color: white; background: rgba(255,255,255,0.1);">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-badge">Gemini 3 Hackathon </div>
+            <h1>We Gave <span class="gradient-text">Gemini</span><br>A Physical Body.</h1>
+            <p>An autonomous rover powered entirely by <strong>Gemini 3 Flash</strong>. No custom models. No LIDAR. Just pure multimodal reasoning.</p>
+            
+            <div class="hero-actions">
+                <a href="#video-showcase" class="cta-button">
+                    <i class="fa-solid fa-play"></i> Watch Trailer
+                </a>
+                <a href="#docs" class="cta-button secondary">
+                    <i class="fa-solid fa-file-pdf"></i> Read Paper
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="video-showcase" class="video-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>See It In Action</h2>
+                <p style="color: var(--text-muted); margin-top: 10px;">Full autonomous navigation demo.</p>
+            </div>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/V6BLKGZTML0?si=YourParamsHere" title="Gemini Scout Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="simulation" id="demo">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2><span class="gradient-text">The Reasoning Core</span></h2>
+                <p style="color: var(--text-muted);">A simulation of the rover's real-time thought process.</p>
+            </div>
+            
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="window-controls">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                    </div>
+                    <div class="terminal-title">ssh root@gemini-scout-rover</div>
+                </div>
+                <div class="terminal-body" id="terminal-logs">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 10px;">Project Gallery</h2>
+            <p style="text-align: center; color: var(--text-muted);">Protoype Projection.</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="1.jpeg" alt="Gemini Scout Rover"></div>
+                <div class="gallery-item"><img src="2.jpeg" alt="Rover Obstacle Avoidance"></div>
+                <div class="gallery-item"><img src="3.jpeg" alt="Vision Pipeline"></div>
+                <div class="gallery-item"><img src="4.jpeg" alt="Hardware Wiring"></div>
+                <div class="gallery-item"><img src="5.jpeg" alt="System Architecture"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="docs-section" id="docs">
+        <div class="container">
+            <div class="doc-card">
+                <div class="doc-info">
+                    <div class="doc-icon"><i class="fa-regular fa-file-pdf"></i></div>
+                    <div>
+                        <h3>Project Documentation</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Detailed technical breakdown, wiring diagrams, and code explanation.</p>
+                    </div>
+                </div>
+                <a href="Gemini Scout.pdf" download class="cta-button secondary" style="border: 1px solid rgba(255,255,255,0.2);">
+                    Download PDF <i class="fa-solid fa-download" style="margin-left: 8px;"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-stack" id="tech">
+        <div class="container">
+            <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.7;">Powered By</p>
+            <div class="tech-grid">
+                <div class="tech-item"><i class="fab fa-python"></i><span>Python</span></div>
+                <div class="tech-item"><i class="fab fa-google"></i><span>Gemini 3 API</span></div>
+                <div class="tech-item"><i class="fas fa-microchip"></i><span>ESP32</span></div>
+                <div class="tech-item"><i class="fas fa-video"></i><span>OpenCV</span></div>
+                <div class="tech-item"><i class="fas fa-cloud"></i><span>Google Cloud</span></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Made for the <strong>Devpost Gemini 3 Hackathon 2026</strong></p>
+            <p style="font-size: 0.85rem; margin-top: 10px; opacity: 0.6;">Vikrant Kulkarni & Team</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            nav.classList.toggle('active');
+        }
+
+        // --- Simulated Terminal Logic ---
+        const logsContainer = document.getElementById('terminal-logs');
+        const logData = [
+            { type: 'sys', text: 'Initializing Video Stream [192.168.1.100]... OK' },
+            { type: 'sys', text: 'Handshake with Gemini 3 Flash API... ESTABLISHED' },
+            { type: 'sys', text: 'Engaging Autonomous Mode...' },
+            { type: 'gemini', text: 'Reasoning: "I see a messy room. Power cable detected (Trip Hazard) on left. Carpet is clear on right."' },
+            { type: 'rover', text: 'Command: RIGHT | Speed: 180' },
+            { type: 'sys', text: 'Processing Frame #1024...' },
+            { type: 'gemini', text: 'Reasoning: "Obstacle Ahead: Cat (Dynamic). Unpredictable movement. Halting."' },
+            { type: 'rover', text: 'Command: STOP | Speed: 0' },
+            { type: 'gemini', text: 'Reasoning: "Cat moved. Path clear. Proceeding forward."' },
+            { type: 'rover', text: 'Command: FORWARD | Speed: 150' },
+            { type: 'sys', text: 'System Check: Battery at 84%...' }
+        ];
+
+        let index = 0;
+
+        function addLog() {
+            if (index >= logData.length) {
+                index = 0; 
+                logsContainer.innerHTML = ''; // Reset for loop
+            }
+
+            const entry = logData[index];
+            const div = document.createElement('div');
+            div.className = `log-entry ${entry.type}`;
+            
+            const now = new Date();
+            const timeString = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            
+            div.innerHTML = `<span class="timestamp">[${timeString}]</span> ${entry.text}`;
+            logsContainer.appendChild(div);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+
+            index++;
+            setTimeout(addLog, Math.random() * 1200 + 800);
+        }
+
+        setTimeout(addLog, 1000);
+    </script>
+</body>
+</html>
