@@ -4,19 +4,120 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saved Texts</title>
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 10px; width: 300px; }
-    .text-entry { margin-bottom: 10px; padding: 5px; border-bottom: 1px solid #ccc; }
-    .url { color: blue; font-size: 0.9em; }
-    #clearButton, #downloadButton { margin-top: 10px; padding: 5px; cursor: pointer; background-color: #4CAF50; color: white; border: none; width: 100%; }
-    #clearButton { background-color: #f44336; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+      padding: 16px;
+      width: 350px;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    /* SCROLLABLE LIST */
+    #textList {
+      max-height: 260px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+      padding-right: 4px;
+    }
+
+    /* CARD */
+    .text-entry {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #eef2f5;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: 0.2s;
+    }
+
+    .text-entry:hover {
+      transform: translateY(-2px);
+    }
+
+    .saved-content {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .url {
+      font-size: 0.8rem;
+      color: #2563eb;
+      text-decoration: none;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 30px 10px;
+      color: #777;
+    }
+
+    /* BUTTONS */
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    #downloadButton {
+      background: #2563eb;
+      color: white;
+    }
+
+    #clearButton {
+      background: #ef4444;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
   </style>
 </head>
+
 <body>
-  <h2>Saved Texts</h2>
+
+  <h2> Saved Texts</h2>
+
+  
+  <div id="emptyState" class="empty-state" style="display:none;">
+     No saved texts yet
+  </div>
+
   <div id="textList"></div>
-  <button id="downloadButton">Download as File</button>
-  <button id="clearButton">Clear Saved Texts</button>
+
+  <div class="action-buttons">
+    <button id="downloadButton" aria-label="Download saved texts"> Download</button>
+    <button id="clearButton" aria-label="Clear all saved texts">Clear All</button>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
