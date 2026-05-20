@@ -523,7 +523,17 @@ body.light-mode .navbar {
 }
 
 .hero-sub {
-  font-size: 1.02rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease) 0.3s forwards;
+}
+
+.hero-extra {
+  font-size: 1.2rem;
   color: var(--text-secondary);
   font-weight: 400;
   line-height: 1.65;

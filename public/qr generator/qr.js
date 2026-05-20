@@ -85,6 +85,7 @@ if (
     (qrType.value === 'text' || qrType.value === 'url') &&
     inputText.value.trim() === ''
 ) {
+    alert("Please enter some text or URL");
     return;
 }
 
