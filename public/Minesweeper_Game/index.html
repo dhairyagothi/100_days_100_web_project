@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minesweeper Game</title>
+
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="container">
+
+    <h1 class="title">💣 Minesweeper</h1>
+
+    <div class="top-controls">
+
+      <button id="restart-btn" class="btn restart-btn">
+        🔄 Restart
+      </button>
+
+      <div class="difficulty-buttons">
+        <button class="difficulty-btn active" data-level="easy">
+          Easy
+        </button>
+
+        <button class="difficulty-btn" data-level="medium">
+          Medium
+        </button>
+
+        <button class="difficulty-btn" data-level="hard">
+          Hard
+        </button>
+      </div>
+
+      <button id="toggle-help" class="btn help-btn">
+        ❓ How To Play
+      </button>
+
+    </div>
+
+    <div class="stats-container">
+
+      <div class="stat-box">
+        💣 Mines:
+        <span id="mine-count">10</span>
+      </div>
+
+      <div class="stat-box">
+        ⏱ Time:
+        <span id="timer">0</span>
+      </div>
+
+    </div>
+
+    <div id="game-board"></div>
+
+    <div id="help-panel" class="help-panel hidden">
+
+      <h2>🎮 How To Play</h2>
+
+      <ul>
+        <li>Left click to reveal a cell.</li>
+        <li>Right click to place/remove a flag.</li>
+        <li>Numbers show nearby mines.</li>
+        <li>Avoid all mines to win.</li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
