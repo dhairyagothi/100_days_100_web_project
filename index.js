@@ -574,9 +574,7 @@ function renderBookmarks() {
                     <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
                         <i class="fab fa-github"></i> Code
                     </a>
-                    <button class="card-link copy-code-btn" data-url="${sourceUrl}" data-name="${name}">
-                        <i class="fas fa-copy"></i> Copy
-                    </button>
+                     
                 </div>
                 <button class="bookmark-btn active" data-id="${day}">
                     <i class="fa-solid fa-bookmark"></i>
