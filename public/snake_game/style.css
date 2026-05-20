@@ -118,22 +118,15 @@ body::before {
   font-weight: 700;
   color: var(--accent);
   text-shadow: 0 0 10px var(--accent);
-  transition: transform 0.1s;
+  transition: transform 0.15s ease, color 0.15s ease;
 }
 
 
-.play-board .obstacle {
-  background: #ff6b6b;
-
-.play-board .obstacle {
-  background: #ff6b6b;
 .stat-value.bump {
   transform: scale(1.3);
   color: #fff;
   text-shadow: 0 0 15px #fff;
-
 }
-
 
 .canvas-wrapper {
   position: relative;
