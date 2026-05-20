@@ -1,20 +1,51 @@
-h1,
-h2 {
-    color: #eeebe2;
-    font-weight: 400;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.card-header.py-3 {
-    background-color: #0d6efd;
-    color: white;
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
 }
 
-.w-100.btn.btn-lg.btn-outline-primary {
-    background-color: #0d6efd;
-    color: white;
+html {
+  scroll-behavior: smooth;
 }
 
-#errorMessage {
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ccc;
+    border-top: 5px solid #0d6efd;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+#loading {
+    text-align: center;
+    margin: 20px 0;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+  .table-responsive {
+    font-size: 12px;
+  }
+
+  .navbar-brand {
     font-size: 18px;
-    margin-bottom: 15px;
+  }
+
+  .container {
+    padding: 10px;
+  }
 }
