@@ -42,7 +42,7 @@ function setMole() {
     }
 
     let mole = document.createElement("img");
-    mole.src = "./monty-mole.png";
+    mole.src = "/public/Whack-a-Mole%20Game/monty-mole.png";
 
     let num = getRandomTile();
 
@@ -66,7 +66,7 @@ function setPlant() {
     }
 
     let plant = document.createElement("img");
-    plant.src = "./piranha-plant.png";
+    plant.src = "/public/Whack-a-Mole%20Game/piranha-plant.png";
 
     let num = getRandomTile();
 
