@@ -1,77 +1,46 @@
-const modal =
-document.getElementById("profileModal");
+const modal = document.getElementById('profileModal');
 
-const modalBody =
-document.getElementById("modalBody");
+const modalBody = document.getElementById('modalBody');
 
-const closeModal =
-document.getElementById("closeModal");
+const closeModal = document.getElementById('closeModal');
 
-const certificateModal =
-document.getElementById(
-"certificateModal"
-);
+const certificateModal = document.getElementById('certificateModal');
 
-const certificateBody =
-document.getElementById(
-"certificateBody"
-);
+const certificateBody = document.getElementById('certificateBody');
 
-const closeCertificate =
-document.getElementById(
-"closeCertificate"
-);
-
+const closeCertificate = document.getElementById('closeCertificate');
 
 closeModal?.addEventListener(
-"click",
+  'click',
 
-()=>{
-
-modal.style.display =
-"none";
-
-});
-
+  () => {
+    modal.style.display = 'none';
+  }
+);
 
 window.addEventListener(
-"click",
+  'click',
 
-(e)=>{
+  (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+    }
+  }
+);
 
-if(e.target===modal){
+async function openProfile(username, commits) {
+  modal.style.display = 'flex';
 
-modal.style.display=
-"none";
-
-}
-
-});
-
-async function openProfile(
-username,
-commits
-) {
-
-    modal.style.display = "flex";
-
-    modalBody.innerHTML = `
+  modalBody.innerHTML = `
         <p>Loading profile...</p>
     `;
 
+  try {
+    const response = await fetch(`https://api.github.com/users/${username}`);
 
+    const user = await response.json();
 
-    try {
-
-        const response =
-        await fetch(
-            `https://api.github.com/users/${username}`
-        );
-
-        const user =
-        await response.json();
-
-        modalBody.innerHTML = `
+    modalBody.innerHTML = `
 
             <img
             src="${user.avatar_url}"
@@ -82,7 +51,7 @@ commits
             </h2>
 
             <p>
-            ${user.bio || "This contributor has not added a bio yet."}
+            ${user.bio || 'This contributor has not added a bio yet.'}
             </p>
 
             <p>
@@ -97,14 +66,12 @@ commits
 
             <p>
             Location:
-            ${user.location || "Not available"}
+            ${user.location || 'Not available'}
             </p>
 
             <p>
             Joined:
-            ${new Date(
-                user.created_at
-            ).toLocaleDateString()}
+            ${new Date(user.created_at).toLocaleDateString()}
             </p>
 
            <div class="popup-btn-container">
@@ -132,36 +99,24 @@ commits
 </div>
 
         `;
-       
-const certificateBtn =
-document.getElementById(
-"downloadCertificate"
-);
 
-closeCertificate?.addEventListener(
+    const certificateBtn = document.getElementById('downloadCertificate');
 
-"click",
+    closeCertificate?.addEventListener(
+      'click',
 
-()=>{
+      () => {
+        certificateModal.style.display = 'none';
+      }
+    );
 
-certificateModal.style.display =
-"none";
+    certificateBtn?.addEventListener(
+      'click',
 
-}
+      () => {
+        certificateModal.style.display = 'flex';
 
-);
-
-certificateBtn?.addEventListener(
-
-"click",
-
-()=>{
-
-certificateModal.style.display =
-"flex";
-
-
-certificateBody.innerHTML = `
+        certificateBody.innerHTML = `
 
 <div style="
 position:relative;
@@ -295,241 +250,243 @@ Download PDF
 </div>
 
 `;
-const downloadBtn =
-document.getElementById(
-"downloadPdfBtn"
-);
+        const downloadBtn = document.getElementById('downloadPdfBtn');
 
+        downloadBtn?.addEventListener(
+          'click',
 
+          async () => {
+            const certificate = certificateBody.querySelector('div');
 
+            const canvas = await html2canvas(
+              certificate,
 
-downloadBtn?.addEventListener(
+              {
+                scale: 3,
 
-"click",
+                useCORS: true,
+              }
+            );
 
-async ()=>{
+            const image = canvas.toDataURL('image/png');
 
-const certificate =
+            const { jsPDF } = window.jspdf;
 
-certificateBody.querySelector(
-"div"
-);
+            const pdf = new jsPDF(
+              'landscape',
 
+              'px',
 
-const canvas =
+              [canvas.width, canvas.height]
+            );
 
-await html2canvas(
+            pdf.addImage(
+              image,
 
-certificate,
+              'PNG',
 
-{
+              0,
 
-scale:3,
+              0,
 
-useCORS:true
+              canvas.width,
 
+              canvas.height
+            );
+
+            pdf.save(`${user.login}-certificate.pdf`);
+          }
+        );
+      }
+    );
+  } catch (error) {
+    modalBody.innerHTML = '<p>Failed to load profile</p>';
+
+    console.error(error);
+  }
 }
 
-);
-
-
-const image =
-
-canvas.toDataURL(
-"image/png"
-);
-
-
-const {
-
-jsPDF
-
-}=window.jspdf;
-
-
-const pdf =
-
-new jsPDF(
-
-'landscape',
-
-'px',
-
-[
-
-canvas.width,
-
-canvas.height
-
-]
-
-);
-
-
-pdf.addImage(
-
-image,
-
-'PNG',
-
-0,
-
-0,
-
-canvas.width,
-
-canvas.height
-
-);
-
-
-pdf.save(
-
-`${user.login}-certificate.pdf`
-
-);
-
-}
-
-);
-
-}
-
-);
-    }
-
-    catch(error){
-
-        modalBody.innerHTML =
-        "<p>Failed to load profile</p>";
-
-        console.error(error);
-
-    }
-
-}
 // Use global REPO_OWNER and REPO_NAME defined in index.js
 
+let allContributors = [];
+let filteredContributors = [];
+
 async function fetchContributors() {
-    const contributorsContainer = document.getElementById("contributors");
-    const contributorCountSpan = document.getElementById("contributorCount");
+  const contributorsContainer = document.getElementById('contributors');
+  const contributorCountSpan = document.getElementById('contributorCount');
 
-    try {
-        const response = await fetch(
-            `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
-        );
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
+    );
 
-        if (!response.ok) throw new Error("Failed to fetch contributors");
+    if (!response.ok) throw new Error('Failed to fetch contributors');
 
-        const contributors = await response.json();
-        contributorCountSpan.textContent = contributors.length;
+    const contributors = await response.json();
+    contributorCountSpan.textContent = contributors.length;
 
-        // Calculate total commits
-        const totalCommits = contributors.reduce((sum, c) => sum + c.contributions, 0);
-        const totalCommitsEl = document.getElementById('totalCommits');
-        if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
+    // Calculate total commits
+    const totalCommits = contributors.reduce(
+      (sum, c) => sum + c.contributions,
+      0
+    );
+    const totalCommitsEl = document.getElementById('totalCommits');
+    if (totalCommitsEl)
+      totalCommitsEl.textContent = totalCommits.toLocaleString();
 
-        contributorsContainer.innerHTML = ""; 
+    contributorsContainer.innerHTML = '';
 
-        contributors.forEach((contributor) => {
-            const card = document.createElement("div");
-            card.className = "contributor-card";
+    allContributors = contributors;
 
-            card.innerHTML = `
-                <img src="${contributor.avatar_url}" alt="${contributor.login}">
-                <h3>${contributor.login}</h3>
-                <div class="contributor-stats">
-                    <div class="stat">
-                        <span class="value">${contributor.contributions}</span>
-                        <span class="label">Commits</span>
-                    </div>
+    filteredContributors = [...contributors];
+
+    renderContributors(filteredContributors);
+  } catch (error) {
+    console.error('Error fetching contributors:', error);
+    if (contributorsContainer)
+      contributorsContainer.innerHTML =
+        "<p style='color: #ff4444;'>Failed to load contributors.</p>";
+  }
+}
+
+function renderContributors(data) {
+  const contributorsContainer = document.getElementById('contributors');
+
+  const emptyState = document.getElementById('emptyState');
+
+  contributorsContainer.innerHTML = '';
+
+  if (data.length === 0) {
+    emptyState.style.display = 'block';
+
+    return;
+  }
+
+  emptyState.style.display = 'none';
+
+  const fragment = document.createDocumentFragment();
+
+  data.forEach((contributor) => {
+    const card = document.createElement('div');
+
+    card.className = 'contributor-card';
+
+    card.innerHTML = `
+            <img src="${contributor.avatar_url}" alt="${contributor.login}">
+
+            <h3>${contributor.login}</h3>
+
+            <div class="contributor-stats">
+
+                <div class="stat">
+
+                    <span class="value">
+                        ${contributor.contributions}
+                    </span>
+
+                    <span class="label">
+                        Commits
+                    </span>
+
                 </div>
-               <div class="contributor-links">
+
+            </div>
+
+           <div class="contributor-links">
 
     <button
-    class="details-btn"
-    data-user="${contributor.login}"
+        class="details-btn"
+        data-user="${contributor.login}"
     >
 
-    View Details
+        View Details
 
     </button>
 
-
     <a
-    href="${contributor.html_url}"
-    target="_blank"
-    class="github-btn"
+        href="${contributor.html_url}"
+        target="_blank"
+        class="github-btn"
     >
 
-    <i class="fab fa-github"></i>
-    Profile
+        <i class="fab fa-github"></i>
+        Profile
 
     </a>
 
 </div>
-            `;
-            contributorsContainer.appendChild(card);
-            const detailsButton =
-card.querySelector(
-".details-btn"
-);
+        `;
 
-if(detailsButton){
+    fragment.appendChild(card);
+    const detailsButton = card.querySelector('.details-btn');
 
-detailsButton.addEventListener(
+    if (detailsButton) {
+      detailsButton.addEventListener(
+        'click',
 
-"click",
-
-()=>{
-
-openProfile(
-
-contributor.login,
-
-contributor.contributions
-
-);
-
-});
-
-}
-        });
-    } catch (error) {
-        console.error("Error fetching contributors:", error);
-        if (contributorsContainer) contributorsContainer.innerHTML = "<p style='color: #ff4444;'>Failed to load contributors.</p>";
+        () => {
+          openProfile(contributor.login);
+        }
+      );
     }
+  });
+
+  contributorsContainer.appendChild(fragment);
 }
 
 async function fetchStargazers() {
-    const stargazersContainer = document.getElementById("stargazers");
+  const stargazersContainer = document.getElementById('stargazers');
 
-    try {
-        const response = await fetch(
-            `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`
-        );
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`
+    );
 
-        if (!response.ok) throw new Error("Failed to fetch stargazers");
+    if (!response.ok) throw new Error('Failed to fetch stargazers');
 
-        const stargazers = await response.json();
-        if (stargazersContainer) stargazersContainer.innerHTML = "";
+    const stargazers = await response.json();
+    if (stargazersContainer) stargazersContainer.innerHTML = '';
 
-        stargazers.forEach((stargazer) => {
-            const starItem = document.createElement("a");
-            starItem.href = stargazer.html_url;
-            starItem.target = "_blank";
-            starItem.className = "stargazer-item";
-            starItem.title = stargazer.login;
-            starItem.innerHTML = `<img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
-            if (stargazersContainer) stargazersContainer.appendChild(starItem);
-        });
-    } catch (error) {
-        console.error("Error fetching stargazers:", error);
-    }
+    stargazers.forEach((stargazer) => {
+      const starItem = document.createElement('a');
+      starItem.href = stargazer.html_url;
+      starItem.target = '_blank';
+      starItem.className = 'stargazer-item';
+      starItem.title = stargazer.login;
+      starItem.innerHTML = `<img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
+      if (stargazersContainer) stargazersContainer.appendChild(starItem);
+    });
+  } catch (error) {
+    console.error('Error fetching stargazers:', error);
+  }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Repo stats are now handled by index.js
-    fetchContributors();
-    fetchStargazers();
+document.addEventListener('DOMContentLoaded', () => {
+  // Repo stats are now handled by index.js
+  fetchContributors();
+  fetchStargazers();
+  const searchInput = document.getElementById('contributorSearch');
+
+  const sortSelect = document.getElementById('sortContributors');
+  searchInput.addEventListener('input', (e) => {
+    const value = e.target.value.toLowerCase();
+
+    filteredContributors = allContributors.filter((c) =>
+      c.login.toLowerCase().includes(value)
+    );
+
+    renderContributors(filteredContributors);
+  });
+
+  sortSelect.addEventListener('change', (e) => {
+    const order = e.target.value;
+
+    filteredContributors.sort((a, b) => {
+      return order === 'asc'
+        ? a.contributions - b.contributions
+        : b.contributions - a.contributions;
+    });
+
+    renderContributors(filteredContributors);
+  });
 });

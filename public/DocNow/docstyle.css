@@ -81,7 +81,7 @@ body {
     height: 100vh;
 }
 
-.landingtext.h1 {
+.landingtext h1 {
     font-size: 6vw;
     margin: 0 !important;
 }
@@ -157,7 +157,7 @@ ol li {
 }
 
 li p {
-    font: 16px;
+    font-size: 16px;
     color: #000;
     padding-left: 60px;
     line-height: 30px;

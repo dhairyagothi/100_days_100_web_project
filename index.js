@@ -123,7 +123,7 @@ const PROJECT_DATA = [
   ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
   ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
   ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-  ['Day 107', 'DocNow', './public/DocNow/index.html', 'api javascript', 'intermediate'],
+['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
   ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
@@ -144,7 +144,11 @@ const PROJECT_DATA = [
   ['Day 125', 'Snakeladder',   './public/Snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
   ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
-  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate']
+  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
+  ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
+  ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
+
+   
 ];
 
 // Alias for consistency
@@ -330,7 +334,7 @@ function renderGrid() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat] || cat}</span>
+                <span class="card-category ${cat}">${CATEGORY_LABEL[cat] || cat}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -875,37 +879,3 @@ window.addEventListener('resize', () => {
   renderGrid();
 });
 
-const arenaBtn = document.querySelector(".open-arena");
-const arenaModal = document.getElementById("arenaModal");
-const closeArena = document.getElementById("closeModal");
-
-arenaBtn.addEventListener("click", () => {
-  arenaModal.style.display = "flex";
-});
-
-closeArena.addEventListener("click", () => {
-  arenaModal.style.display = "none";
-});
-
-window.addEventListener("click", (e) => {
-  if (e.target === arenaModal) {
-    arenaModal.style.display = "none";
-  }
-});
-
-const checks = document.querySelectorAll(".objective-check");
-const progressFill = document.getElementById("progressFill");
-const progressText = document.getElementById("progressText");
-
-checks.forEach(check => {
-  check.addEventListener("change", () => {
-
-    const checked = document.querySelectorAll(".objective-check:checked").length;
-    const total = checks.length;
-
-    const progress = (checked / total) * 100;
-
-    progressFill.style.width = `${progress}%`;
-    progressText.textContent = `${Math.round(progress)}%`;
-  });
-});
