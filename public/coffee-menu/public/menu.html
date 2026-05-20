@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sefr Menu</title>
+    <link href="../src/output.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../img/Group 1.svg" type="image/x-icon" />
+  </head>
+  <body>
+    <header>
+      <!-- header wrp -->
+      <div class="container flex justify-between items-center px-7.5 py-9">
+        <svg
+          width="49"
+          height="26"
+          viewBox="0 0 49 26"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M27 2H47"
+            stroke="#324A35"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+          <path
+            d="M2 13H47"
+            stroke="#324A35"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+          <path
+            d="M2 24H22"
+            stroke="#324A35"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+        </svg>
+        <h2 class="font-cursive text-4xl text-primary select-none">
+          sefr coffee
+        </h2>
+        <img src="../img/Group 2.svg" alt="coffee box" />
+      </div>
+    </header>
+
+    <main>
+      <!-- categories -->
+      <section>
+        <!-- category wrp -->
+        <div
+          class="container flex flex-nowrap items-center overflow-x-auto gap-x-5 pt-8 category-wrp"
+        ></div>
+      </section>
+
+      <!-- products -->
+      <section>
+        <!-- products wrp -->
+        <div
+          class="container py-10 px-9 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center items-center gap-y-10 product-wrp"
+        ></div>
+      </section>
+      <div class="container flex justify-center mt-10 gap-2 pagination"></div>
+    </main>
+
+    <script src="../js/menu.js"></script>
+  </body>
+</html>
