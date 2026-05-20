@@ -15,6 +15,11 @@ let projectData = [];
 let filteredProjectData = [];
 let currentCategory = 'all';
 let currentDifficulty = 'all';
+const filterState = {
+  difficulty: new Set(),
+  technology: new Set(),
+  category: new Set(),
+};
 
 const PROJECT_DATA = [
   ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
@@ -184,8 +189,161 @@ const INITIAL_VISIBLE_ITEMS = 3;
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
 console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
+
+const FILTER_GROUP_LABELS = {
+  difficulty: 'Difficulty',
+  technology: 'Technology',
+  category: 'Category',
+};
+
+const DIFFICULTY_OPTIONS = [
+  { value: 'beginner', label: 'Beginner' },
+  { value: 'intermediate', label: 'Intermediate' },
+  { value: 'advanced', label: 'Advanced' },
+];
+
+const TECHNOLOGY_RULES = [
+  { value: 'html', label: 'HTML', tokens: ['html'] },
+  { value: 'css', label: 'CSS', tokens: ['css'] },
+  { value: 'javascript', label: 'JavaScript', tokens: ['javascript', ' js ', 'js'] },
+  { value: 'react', label: 'React', tokens: ['react'] },
+  { value: 'tailwind', label: 'Tailwind', tokens: ['tailwind'] },
+  { value: 'node', label: 'Node.js', tokens: ['node', 'express', 'mern', 'nodemailer'] },
+  { value: 'canvas', label: 'Canvas', tokens: ['canvas'] },
+  { value: 'api', label: 'API', tokens: ['api', 'weather', 'github', 'nasa'] },
+  { value: 'svelte', label: 'Svelte', tokens: ['svelte'] },
+  { value: 'flask', label: 'Flask', tokens: ['flask'] },
+];
+
+const CATEGORY_RULES = [
+  { value: 'games', label: 'Games', tokens: ['game', 'puzzle', 'wordle', 'black jack', 'tic-tac-toe', 'snake', 'quiz', 'piano'] },
+  { value: 'ui-ux', label: 'UI/UX', tokens: ['ui', 'animation', 'cursor', 'slider', 'card', 'button', 'portfolio', 'hologram', 'effect', 'color'] },
+  { value: 'productivity', label: 'Productivity', tokens: ['todo', 'notes', 'tracker', 'timer', 'pomodoro', 'calendar', 'resume', 'budget', 'finance', 'job dashboard'] },
+  { value: 'clone', label: 'Clone', tokens: ['clone', 'cloning', 'amazon', 'netflix', 'spotify', 'youtube', 'linkedin', 'zomato', 'nykaa'] },
+  { value: 'ai', label: 'AI', tokens: ['ai', 'chatbot', 'jarvis', 'classifier', 'assistant'] },
+  { value: 'portfolio', label: 'Portfolio', tokens: ['portfolio', 'profile card', 'resume'] },
+  { value: 'tools', label: 'Tools', tokens: ['tool', 'calculator', 'generator', 'converter', 'validator', 'search', 'uploader', 'shortener', 'dictionary', 'utils'] },
+  { value: 'apis', label: 'APIs', tokens: ['api', 'weather', 'nasa', 'github', 'currency', 'crypto'] },
+];
+
+const OPTION_LABELS = {
+  difficulty: Object.fromEntries(DIFFICULTY_OPTIONS.map((option) => [option.value, option.label])),
+  technology: Object.fromEntries(TECHNOLOGY_RULES.map((option) => [option.value, option.label])),
+  category: Object.fromEntries(CATEGORY_RULES.map((option) => [option.value, option.label])),
+};
+
+function normalizeText(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9.+#-]+/g, ' ').trim();
+}
+
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[char]);
+}
+
+function includesAny(haystack, tokens) {
+  return tokens.some((token) => haystack.includes(normalizeText(token)));
+}
+
+function getProjectMeta(project) {
+  const [day, name, url, tags, difficulty] = project;
+  const tagText = normalizeText(tags);
+  const searchableText = normalizeText(`${day} ${name} ${url} ${tags} ${difficulty}`);
+  const difficultyValue = normalizeText(difficulty) || 'beginner';
+  const technologies = TECHNOLOGY_RULES.filter((rule) => includesAny(searchableText, rule.tokens)).map((rule) => rule.value);
+  const categories = CATEGORY_RULES.filter((rule) => includesAny(searchableText, rule.tokens)).map((rule) => rule.value);
+
+  if (!technologies.length && tagText) technologies.push('javascript');
+  if (!categories.length) categories.push('tools');
+
+  return {
+    difficulty: difficultyValue,
+    technologies: [...new Set(technologies)],
+    categories: [...new Set(categories)],
+    searchableText,
+  };
+}
+
+function getActiveFilterCount() {
+  return Object.values(filterState).reduce((total, group) => total + group.size, 0);
+}
+
+function hasActiveFilters() {
+  return getActiveFilterCount() > 0 || Boolean(searchQuery.trim());
+}
+
+function getFilteredProjects() {
+  const terms = normalizeText(searchQuery).split(/\s+/).filter(Boolean);
+
+  return PROJECTS.filter((project) => {
+    const meta = getProjectMeta(project);
+    const matchesSearch = !terms.length || terms.every((term) => meta.searchableText.includes(term));
+    const matchesDifficulty = !filterState.difficulty.size || filterState.difficulty.has(meta.difficulty);
+    const matchesTechnology = !filterState.technology.size || meta.technologies.some((tech) => filterState.technology.has(tech));
+    const matchesCategory = !filterState.category.size || meta.categories.some((category) => filterState.category.has(category));
+
+    return matchesSearch && matchesDifficulty && matchesTechnology && matchesCategory;
+  });
+}
+
+function updateFilterSummary(count) {
+  const countNode = document.getElementById('filteredCount');
+  const labelNode = document.getElementById('filteredCountLabel');
+  if (countNode) countNode.textContent = count.toLocaleString();
+  if (labelNode) labelNode.textContent = count === 1 ? 'project found' : 'projects found';
+
+  const resetBtn = document.getElementById('resetFiltersBtn');
+  const emptyResetBtn = document.getElementById('emptyResetFiltersBtn');
+  const canReset = hasActiveFilters();
+  if (resetBtn) resetBtn.disabled = !canReset;
+  if (emptyResetBtn) emptyResetBtn.disabled = !canReset;
+  syncFilterTriggers();
+}
+
+function syncFilterTriggers() {
+  document.querySelectorAll('.filter-trigger[data-dropdown]').forEach((trigger) => {
+    const group = trigger.dataset.dropdown;
+    const selectedCount = filterState[group] ? filterState[group].size : 0;
+    trigger.classList.toggle('has-selection', selectedCount > 0);
+    trigger.setAttribute('data-selected-count', selectedCount ? String(selectedCount) : '');
+  });
+}
+
+function renderActiveFilters() {
+  const container = document.getElementById('activeFilters');
+  if (!container) return;
+
+  const chips = [];
+  Object.entries(filterState).forEach(([group, values]) => {
+    values.forEach((value) => {
+      chips.push(`
+        <button class="active-filter-chip" type="button" data-filter-group="${group}" data-filter-value="${value}">
+          <span>${FILTER_GROUP_LABELS[group]}: ${OPTION_LABELS[group][value] || value}</span>
+          <i class="fas fa-xmark" aria-hidden="true"></i>
+        </button>
+      `);
+    });
+  });
+
+  if (searchQuery.trim()) {
+    chips.unshift(`
+      <button class="active-filter-chip" type="button" data-filter-group="search">
+        <span>Search: ${escapeHtml(searchQuery.trim())}</span>
+        <i class="fas fa-xmark" aria-hidden="true"></i>
+      </button>
+    `);
+  }
+
+  container.innerHTML = chips.length ? chips.join('') : '<span class="active-filters-empty">All projects are visible</span>';
+}
 
 /* ============================================================
    GITHUB REPO STATS
@@ -242,8 +400,12 @@ function generateReadme() {
 /* ============================================================
    RENDER PROJECT GRID
    ============================================================ */
-let activeFilter = 'all';
 let searchQuery = '';
+
+function getDifficultyLabel(value) {
+  const key = normalizeText(value);
+  return CATEGORY_LABEL[key] || value || 'Project';
+}
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
@@ -260,41 +422,9 @@ function renderGrid() {
     itemsPerPage = 9; // Laptop & Desktop (3 columns x 3 rows = 9 total)
   }
 
-  // Filter projects by matching category chip and multi-term keyword search query
-  const filtered = PROJECTS.filter(([day, name, url, tags, cat]) => {
-    const matchesFilter = activeFilter === 'all' || (() => {
-      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
-      const nameStr = name.toLowerCase();
-      const urlStr = url.toLowerCase();
-
-      if (activeFilter === 'game') {
-        return tagStr.includes('game') || tagStr.includes('canvas');
-      }
-      if (activeFilter === 'clone') {
-        return nameStr.includes('clone') || urlStr.includes('clone') || urlStr.includes('cloning');
-      }
-      if (activeFilter === 'tool') {
-        return tagStr.includes('tool') || tagStr.includes('todo') || tagStr.includes('calculator') || tagStr.includes('weather') || nameStr.includes('tracker') || nameStr.includes('generator') || nameStr.includes('converter') || nameStr.includes('validator') || nameStr.includes('saver') || nameStr.includes('utils');
-      }
-      if (activeFilter === 'ui') {
-        return tagStr.includes('css') || tagStr.includes('canvas') || tagStr.includes('animation') || nameStr.includes('animation') || nameStr.includes('cursor') || nameStr.includes('effect') || nameStr.includes('slider');
-      }
-      if (activeFilter === 'api') {
-        return tagStr.includes('api') || tagStr.includes('weather') || nameStr.includes('api') || nameStr.includes('fetch');
-      }
-      return false;
-    })();
-
-    // Split search query by spaces to support multi-term criteria (e.g. "day 1 todo")
-    const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term => 
-      name.toLowerCase().includes(term) || 
-      day.toLowerCase().includes(term) || 
-      (typeof tags === 'string' && tags.toLowerCase().includes(term))
-    );
-
-    return matchesFilter && matchesSearch;
-  });
+  const filtered = getFilteredProjects();
+  updateFilterSummary(filtered.length);
+  renderActiveFilters();
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
@@ -322,7 +452,7 @@ function renderGrid() {
 
   pageItems.forEach(([day, name, url, tags, cat]) => {
     const card = document.createElement('div');
-    card.className = 'project-card';
+    card.className = 'project-card filtering-enter';
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
@@ -331,7 +461,7 @@ function renderGrid() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat] || cat}</span>
+                <span class="card-category">${getDifficultyLabel(cat)}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -560,7 +690,7 @@ function renderBookmarks() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+                <span class="card-category">${getDifficultyLabel(cat)}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -612,7 +742,7 @@ function renderRecentProjects() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+                <span class="card-category">${getDifficultyLabel(cat)}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -690,19 +820,119 @@ document.addEventListener('click', (e) => {
 });
 
 /* ============================================================
-   FILTER CHIPS
+   ADVANCED FILTERS
    ============================================================ */
 function initFilterChips() {
-  const chips = document.querySelectorAll('.chip[data-filter]');
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
-      activeFilter = chip.dataset.filter;
-      currentPage = 1;
-      renderGrid();
+  renderFilterMenus();
+  initFilterDropdowns();
+  initFilterActions();
+}
+
+function renderFilterMenus() {
+  const menuConfig = {
+    difficulty: DIFFICULTY_OPTIONS,
+    technology: TECHNOLOGY_RULES,
+    category: CATEGORY_RULES,
+  };
+
+  Object.entries(menuConfig).forEach(([group, options]) => {
+    const menu = document.querySelector(`[data-menu="${group}"]`);
+    if (!menu) return;
+
+    menu.innerHTML = options.map((option) => `
+      <label class="filter-option">
+        <input type="checkbox" value="${option.value}" data-filter-group="${group}" />
+        <span class="filter-option-check"><i class="fas fa-check"></i></span>
+        <span>${option.label}</span>
+      </label>
+    `).join('');
+  });
+}
+
+function initFilterDropdowns() {
+  const triggers = document.querySelectorAll('.filter-trigger[data-dropdown]');
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const dropdown = trigger.closest('.filter-dropdown');
+      const isOpen = dropdown.classList.contains('open');
+
+      document.querySelectorAll('.filter-dropdown.open').forEach((item) => {
+        item.classList.remove('open');
+        const button = item.querySelector('.filter-trigger');
+        if (button) button.setAttribute('aria-expanded', 'false');
+      });
+
+      dropdown.classList.toggle('open', !isOpen);
+      trigger.setAttribute('aria-expanded', String(!isOpen));
     });
   });
+
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('.filter-dropdown')) return;
+    document.querySelectorAll('.filter-dropdown.open').forEach((dropdown) => {
+      dropdown.classList.remove('open');
+      const trigger = dropdown.querySelector('.filter-trigger');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+function initFilterActions() {
+  document.addEventListener('change', (event) => {
+    const input = event.target.closest('input[data-filter-group]');
+    if (!input) return;
+
+    const group = input.dataset.filterGroup;
+    if (!filterState[group]) return;
+
+    if (input.checked) {
+      filterState[group].add(input.value);
+    } else {
+      filterState[group].delete(input.value);
+    }
+
+    currentPage = 1;
+    renderGrid();
+  });
+
+  document.addEventListener('click', (event) => {
+    const chip = event.target.closest('.active-filter-chip');
+    if (!chip) return;
+
+    const group = chip.dataset.filterGroup;
+    const value = chip.dataset.filterValue;
+
+    if (group === 'search') {
+      searchQuery = '';
+      const input = document.getElementById('searchInput');
+      if (input) input.value = '';
+    } else if (filterState[group]) {
+      filterState[group].delete(value);
+      const input = document.querySelector(`input[data-filter-group="${group}"][value="${value}"]`);
+      if (input) input.checked = false;
+    }
+
+    currentPage = 1;
+    renderGrid();
+  });
+
+  [document.getElementById('resetFiltersBtn'), document.getElementById('emptyResetFiltersBtn')].forEach((button) => {
+    if (!button) return;
+    button.addEventListener('click', resetFilters);
+  });
+}
+
+function resetFilters() {
+  Object.values(filterState).forEach((group) => group.clear());
+  document.querySelectorAll('input[data-filter-group]').forEach((input) => {
+    input.checked = false;
+  });
+  searchQuery = '';
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  currentPage = 1;
+  renderGrid();
 }
 
 /* ============================================================
@@ -720,7 +950,7 @@ function initSearch() {
 
 function syncProjectCounts() {
   const total = PROJECTS.length.toLocaleString();
-  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
+  const countNodes = [document.getElementById('projectCount')];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;

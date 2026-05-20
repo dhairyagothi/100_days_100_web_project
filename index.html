@@ -136,42 +136,84 @@
           <h2 class="section-title">Every experiment, catalogued.</h2>
         </div>
 
-        <div class="projects-header">
-          <div class="search-bar">
-            <i class="fas fa-search search-icon"></i>
-            <input
-              type="text"
-              id="searchInput"
-              class="search-input"
-              placeholder="Search projects…"
-              autocomplete="off"
-            />
+        <div class="projects-header" aria-label="Project filters">
+          <div class="projects-tools-row">
+            <div class="search-bar">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search projects..."
+                autocomplete="off"
+              />
+            </div>
+            <div class="filter-summary" aria-live="polite">
+              <strong id="filteredCount">0</strong>
+              <span id="filteredCountLabel">projects found</span>
+            </div>
           </div>
-          <div class="filter-chips" id="filterChips">
-            <button class="chip active" data-filter="all" id="filterAll">
-              All <span class="chip-count" id="allCount">Projects</span>
+
+          <div class="filter-bar" id="filterBar">
+            <div class="filter-dropdown">
+              <button
+                class="filter-trigger"
+                type="button"
+                data-dropdown="difficulty"
+                aria-expanded="false"
+                aria-controls="difficultyMenu"
+              >
+                <span><i class="fas fa-signal"></i> Difficulty</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="filter-menu" id="difficultyMenu" data-menu="difficulty"></div>
+            </div>
+
+            <div class="filter-dropdown">
+              <button
+                class="filter-trigger"
+                type="button"
+                data-dropdown="technology"
+                aria-expanded="false"
+                aria-controls="technologyMenu"
+              >
+                <span><i class="fas fa-code"></i> Technology</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="filter-menu" id="technologyMenu" data-menu="technology"></div>
+            </div>
+
+            <div class="filter-dropdown">
+              <button
+                class="filter-trigger"
+                type="button"
+                data-dropdown="category"
+                aria-expanded="false"
+                aria-controls="categoryMenu"
+              >
+                <span><i class="fas fa-layer-group"></i> Category</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="filter-menu" id="categoryMenu" data-menu="category"></div>
+            </div>
+
+            <button class="reset-filters-btn" id="resetFiltersBtn" type="button" disabled>
+              <i class="fas fa-rotate-left"></i>
+              Reset Filters
             </button>
-            <button class="chip" data-filter="game" id="filterGame">
-              Games
-            </button>
-            <button class="chip" data-filter="clone" id="filterClone">
-              Clones
-            </button>
-            <button class="chip" data-filter="tool" id="filterTool">
-              Tools
-            </button>
-            <button class="chip" data-filter="ui" id="filterUI">
-              UI / Animation
-            </button>
-            <button class="chip" data-filter="api" id="filterAPI">APIs</button>
           </div>
+
+          <div class="active-filters" id="activeFilters" aria-live="polite"></div>
         </div>
 
         <div class="project-grid" id="projectGrid"></div>
 
         <div class="no-results" id="noResults">
-          <i class="fas fa-search"></i>
-          <p>No projects match your search.</p>
+          <i class="fas fa-filter"></i>
+          <p>No projects match your search and filters.</p>
+          <button class="reset-filters-btn" id="emptyResetFiltersBtn" type="button">
+            Clear Filters
+          </button>
         </div>
       </div>
     </section>
