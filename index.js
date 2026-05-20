@@ -135,6 +135,7 @@ const PROJECT_DATA = [
   ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'html css js', 'intermediate'],
   ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'html css js canvas', 'intermediate'],
   ['Day 119', 'Virtual Playground', './playground.html', 'html css js', 'intermediate'],
+  ['Day 120', 'Coffee Menu', './public/coffee-menu/public/start.html', 'html tailwindcss css js', 'intermediate'],
 ];
 
 // Alias for consistency
