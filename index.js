@@ -152,6 +152,7 @@ const PROJECT_DATA = [
   ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
   ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
   ['Day 135', 'Password Strength Checker', './public/Password Strength Checker/index.html', 'tool api javascript', 'intermediate'],
+  ['Day 136', 'Commit Message Generator', './public/Commit Message Generator/index.html', 'tool javascript', 'intermediate'],
 ];
 
 // Alias for consistency

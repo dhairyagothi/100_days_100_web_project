@@ -1,8 +1,4 @@
-/* ═══════════════════════════════════════════════════
-   DESIGN TOKENS
-   ═══════════════════════════════════════════════════ */
 :root {
-  /* Palette — Dark */
   --bg:          #020617;
   --bg-card:     #0b1a2e;
   --bg-card-alt: #091e35;
@@ -30,7 +26,6 @@
   --font:        'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* Light mode overrides */
 [data-theme="light"] {
   --bg:          #f0f4f8;
   --bg-card:     #ffffff;
@@ -47,9 +42,6 @@
   --shadow:      0 2px 12px rgba(0,0,0,.06);
 }
 
-/* ═══════════════════════════════════════════════════
-   RESET & BASE
-   ═══════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
@@ -70,9 +62,6 @@ body {
   position: relative;
 }
 
-/* ═══════════════════════════════════════════════════
-   AMBIENT BLOBS (subtle, no glow)
-   ═══════════════════════════════════════════════════ */
 .bg-blob {
   position: fixed;
   border-radius: 50%;
@@ -94,9 +83,6 @@ body {
   100% { transform: translate(-14px, 10px) scale(.97); }
 }
 
-/* ═══════════════════════════════════════════════════
-   PAGE HERO — Professional Heading & Logo
-   ═══════════════════════════════════════════════════ */
 .page-hero {
   display: flex;
   align-items: center;
@@ -114,7 +100,6 @@ body {
   gap: 1rem;
 }
 
-/* ── Logo Icon ── */
 .logo-icon {
   color: var(--accent);
   flex-shrink: 0;
@@ -127,7 +112,6 @@ body {
   filter: drop-shadow(0 0 10px rgba(59,130,246,.45));
 }
 
-/* ── Title Typography ── */
 .page-hero__text {
   display: flex;
   flex-direction: column;
@@ -163,7 +147,6 @@ body {
   50%      { background-position: 100% 50%; }
 }
 
-/* ── Tagline & Badge ── */
 .page-hero__tagline {
   display: flex;
   align-items: center;
@@ -209,14 +192,10 @@ body {
 
 .page-hero__actions { display: flex; gap: .5rem; }
 
-/* Theme toggle icon swap */
 [data-theme="light"] .icon-sun  { display: none; }
 [data-theme="dark"]  .icon-moon,
 :root:not([data-theme]) .icon-moon { display: none; }
 
-/* ═══════════════════════════════════════════════════
-   BUTTONS
-   ═══════════════════════════════════════════════════ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -237,7 +216,6 @@ body {
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 .btn--sm { font-size: .72rem; padding: .32rem .6rem; }
 
-/* Primary */
 .btn--primary {
   background: linear-gradient(135deg, var(--accent), #6366f1);
   color: #fff;
@@ -248,7 +226,6 @@ body {
 }
 .btn--primary:active:not(:disabled) { transform: translateY(0); }
 
-/* Accent (green) */
 .btn--accent {
   background: linear-gradient(135deg, var(--green), #16a34a);
   color: #fff;
@@ -262,7 +239,6 @@ body {
 .btn--accent.copied .icon-check { display: inline; }
 .btn--accent.copied .icon-copy  { display: none; }
 
-/* Ghost */
 .btn--ghost {
   background: transparent;
   color: var(--text-muted);
@@ -270,17 +246,12 @@ body {
 }
 .btn--ghost:hover:not(:disabled) { background: var(--bg-hover); color: var(--text); border-color: var(--text-dim); }
 
-/* Danger */
 .btn--danger { color: var(--red); }
 .btn--danger:hover:not(:disabled) { background: rgba(239,68,68,.12); color: var(--red); border-color: var(--red); }
 
-/* Icon-only */
 .btn--icon { padding: .4rem; border-radius: var(--radius-xs); background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
 .btn--icon:hover { background: var(--bg-hover); color: var(--text); }
 
-/* ═══════════════════════════════════════════════════
-   LAYOUT
-   ═══════════════════════════════════════════════════ */
 .main { position: relative; z-index: 1; padding: 1.5rem 0 2.5rem; }
 .container { max-width: 960px; margin: 0 auto; padding: 0 1.25rem; }
 
@@ -292,9 +263,6 @@ body {
 }
 .right-col { display: flex; flex-direction: column; gap: 1.25rem; }
 
-/* ═══════════════════════════════════════════════════
-   CARDS
-   ═══════════════════════════════════════════════════ */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -333,9 +301,6 @@ body {
 }
 .card__heading-row .card__heading { margin-bottom: 0; }
 
-/* ═══════════════════════════════════════════════════
-   FORM FIELDS
-   ═══════════════════════════════════════════════════ */
 .field { margin-bottom: .9rem; }
 .field__label {
   display: block;
@@ -369,7 +334,6 @@ body {
 }
 .field__input.error { border-color: var(--red); }
 
-/* Select wrapper */
 .select-wrapper { position: relative; }
 .select-wrapper .field__select {
   appearance: none;
@@ -387,7 +351,6 @@ body {
   display: flex;
 }
 
-/* Meta row */
 .field__meta {
   display: flex;
   align-items: center;
@@ -406,9 +369,6 @@ body {
   transition: all var(--transition);
 }
 
-/* ═══════════════════════════════════════════════════
-   ACTIONS ROW
-   ═══════════════════════════════════════════════════ */
 .actions {
   display: flex;
   gap: .5rem;
@@ -433,9 +393,6 @@ body {
   line-height: 1.4;
 }
 
-/* ═══════════════════════════════════════════════════
-   TERMINAL PREVIEW
-   ═══════════════════════════════════════════════════ */
 .terminal {
   border-radius: var(--radius-sm);
   overflow: hidden;
@@ -482,9 +439,6 @@ body {
   100% { opacity: 1;  transform: translateX(0); }
 }
 
-/* ═══════════════════════════════════════════════════
-   HISTORY
-   ═══════════════════════════════════════════════════ */
 .history-actions { display: flex; gap: .4rem; }
 .history-list {
   list-style: none;
@@ -536,7 +490,6 @@ body {
   letter-spacing: .04em;
 }
 
-/* Type color badges */
 .type-feat     { background: rgba(59,130,246,.15);  color: #60a5fa; }
 .type-fix      { background: rgba(239,68,68,.15);   color: #f87171; }
 .type-docs     { background: rgba(168,85,247,.15);  color: #c084fc; }
@@ -558,9 +511,6 @@ body {
 }
 .history-item__copy:hover { color: var(--accent); background: var(--bg-input); }
 
-/* ═══════════════════════════════════════════════════
-   TOAST
-   ═══════════════════════════════════════════════════ */
 .toast {
   position: fixed;
   bottom: 1.5rem;
@@ -588,9 +538,6 @@ body {
   pointer-events: auto;
 }
 
-/* ═══════════════════════════════════════════════════
-   FOOTER
-   ═══════════════════════════════════════════════════ */
 .footer {
   position: relative;
   z-index: 1;
@@ -620,9 +567,6 @@ body {
   45%      { transform: scale(1.15); }
 }
 
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════════════ */
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; }
   .page-hero__subtitle { display: none; }

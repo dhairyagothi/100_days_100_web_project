@@ -1,11 +1,6 @@
-/* ═══════════════════════════════════════════════════
-   COMMIT MESSAGE GENERATOR — script.js
-   ═══════════════════════════════════════════════════ */
-
 (() => {
   'use strict';
 
-  // ── Type descriptions ──────────────────────────────
   const TYPE_INFO = {
     feat:     'A new feature',
     fix:      'Bug fix',
@@ -16,7 +11,6 @@
     chore:    'Maintenance tasks',
   };
 
-  // ── Random commit examples ─────────────────────────
   const RANDOM_COMMITS = [
     { type: 'feat',     desc: 'add dark mode support' },
     { type: 'feat',     desc: 'add responsive navbar' },
@@ -51,7 +45,6 @@
     { type: 'chore',    desc: 'add pre-commit linting hook' },
   ];
 
-  // ── DOM refs ───────────────────────────────────────
   const $ = (sel) => document.querySelector(sel);
 
   const commitType        = $('#commit-type');
@@ -74,25 +67,21 @@
   const historyList       = $('#history-list');
   const historyEmpty      = $('#history-empty');
 
-  // ── State ──────────────────────────────────────────
   const STORAGE_KEY = 'cmg_history';
   const THEME_KEY   = 'cmg_theme';
   let history       = loadHistory();
   let toastTimer    = null;
   let currentMessage = '';
 
-  // ── Init ───────────────────────────────────────────
   function init() {
     applyTheme(loadTheme());
     renderHistory();
     updatePreview();
 
-    // Live events
     commitType.addEventListener('change', onTypeChange);
     commitScope.addEventListener('input', updatePreview);
     commitDescription.addEventListener('input', onDescriptionInput);
 
-    // Buttons
     btnGenerate.addEventListener('click', generate);
     btnCopy.addEventListener('click', copyToClipboard);
     btnRandom.addEventListener('click', randomCommit);
@@ -100,11 +89,9 @@
     btnClearHistory.addEventListener('click', clearHistory);
     themeToggle.addEventListener('click', toggleTheme);
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', handleShortcuts);
   }
 
-  // ── Theme ──────────────────────────────────────────
   function loadTheme() {
     return localStorage.getItem(THEME_KEY) || 'dark';
   }
@@ -119,29 +106,24 @@
     applyTheme(next);
   }
 
-  // ── Type change ────────────────────────────────────
   function onTypeChange() {
     const val = commitType.value;
     typeHelper.textContent = `${val} → ${TYPE_INFO[val]}`;
     updatePreview();
   }
 
-  // ── Description input ──────────────────────────────
   function onDescriptionInput() {
     const len = commitDescription.value.length;
     charCount.textContent = len;
 
-    // Clear error state when user starts typing
     if (len > 0) {
       hideError();
     }
 
-    // Color warning on count
     charCount.style.color = len > 60 ? 'var(--orange)' : len > 50 ? 'var(--yellow)' : '';
     updatePreview();
   }
 
-  // ── Preview ────────────────────────────────────────
   function buildMessage() {
     const type  = commitType.value;
     const scope = commitScope.value.trim();
@@ -157,13 +139,11 @@
     if (previewMessage.textContent !== display) {
       previewMessage.textContent = display;
       previewMessage.classList.remove('flash');
-      // Trigger reflow so the animation re-plays
       void previewMessage.offsetWidth;
       previewMessage.classList.add('flash');
     }
   }
 
-  // ── Generate ───────────────────────────────────────
   function generate() {
     const desc = commitDescription.value.trim();
 
@@ -180,12 +160,10 @@
     currentMessage = buildMessage();
     btnCopy.disabled = false;
 
-    // Add to history
     addToHistory(currentMessage, commitType.value);
     showToast('Commit message generated!');
   }
 
-  // ── Validation ─────────────────────────────────────
   function showError() {
     descError.hidden = false;
   }
@@ -194,7 +172,6 @@
     commitDescription.classList.remove('error');
   }
 
-  // ── Copy ───────────────────────────────────────────
   async function copyToClipboard() {
     if (!currentMessage) return;
 
@@ -203,7 +180,6 @@
       showToast('Commit message copied!');
       animateCopyButton();
     } catch {
-      // Fallback
       fallbackCopy(currentMessage);
     }
   }
@@ -232,7 +208,6 @@
     }, 1800);
   }
 
-  // ── Copy from history ──────────────────────────────
   async function copyHistoryItem(msg) {
     try {
       await navigator.clipboard.writeText(msg);
@@ -243,7 +218,6 @@
     showToast('Commit message copied!');
   }
 
-  // ── Random ─────────────────────────────────────────
   function randomCommit() {
     const pick = RANDOM_COMMITS[Math.floor(Math.random() * RANDOM_COMMITS.length)];
     commitType.value = pick.type;
@@ -251,11 +225,9 @@
     commitDescription.value = pick.desc;
     onDescriptionInput();
 
-    // Auto-generate
     generate();
   }
 
-  // ── History ────────────────────────────────────────
   function loadHistory() {
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -269,23 +241,20 @@
   }
 
   function addToHistory(msg, type) {
-    // Prevent consecutive duplicate
     if (history.length && history[0].msg === msg) return;
 
     history.unshift({ msg, type, ts: Date.now() });
-    if (history.length > 50) history.pop(); // cap at 50
+    if (history.length > 50) history.pop();
     saveHistory();
     renderHistory();
   }
 
   function renderHistory() {
-    // Toggle empty state
     const hasItems = history.length > 0;
     historyEmpty.hidden = hasItems;
     btnDownload.disabled = !hasItems;
     btnClearHistory.disabled = !hasItems;
 
-    // Remove old items (but keep the empty placeholder)
     historyList.querySelectorAll('.history-item').forEach(el => el.remove());
 
     history.forEach((item, i) => {
@@ -314,7 +283,6 @@
     showToast('History cleared');
   }
 
-  // ── Download ───────────────────────────────────────
   function downloadHistory() {
     if (!history.length) return;
 
@@ -332,12 +300,10 @@
     showToast('History downloaded!');
   }
 
-  // ── Toast ──────────────────────────────────────────
   function showToast(msg) {
     toastMsg.textContent = msg;
     toast.hidden = false;
 
-    // Force reflow then add class
     void toast.offsetWidth;
     toast.classList.add('visible');
 
@@ -348,34 +314,28 @@
     }, 2200);
   }
 
-  // ── Keyboard shortcuts ─────────────────────────────
   function handleShortcuts(e) {
-    // Ctrl+Enter → Generate
     if (e.ctrlKey && e.key === 'Enter') {
       e.preventDefault();
       generate();
     }
 
-    // Ctrl+Shift+C → Copy
     if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) {
       e.preventDefault();
       copyToClipboard();
     }
 
-    // Ctrl+R → Random (but not browser refresh if focus is in our app)
     if (e.ctrlKey && !e.shiftKey && (e.key === 'r' || e.key === 'R') && document.activeElement.closest('.card')) {
       e.preventDefault();
       randomCommit();
     }
   }
 
-  // ── Helpers ────────────────────────────────────────
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
 
-  // ── Boot ───────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', init);
 })();
