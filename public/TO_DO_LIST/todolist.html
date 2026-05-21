@@ -1,171 +1,254 @@
 <!doctype html>
 <html lang="en">
-  
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="description"
+    content="A clean, responsive To-Do List app with theme switching and PDF export — part of the 100 Days 100 Projects challenge."
+  />
+
   <title>To-Do List | 100 Days 100 Projects</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <link rel="stylesheet" href="todolist.css" />
 </head>
+
 <body>
+
   <!-- NAVBAR -->
   <nav class="navbar">
+
     <div class="nav-brand">
       <span class="brand-dot"></span>
       <span class="brand-name">TaskFlow</span>
     </div>
+
     <div class="nav-tabs">
       <button class="tab-btn active" id="btn-home" onclick="showHome()">Home</button>
+
       <button class="tab-btn" id="btn-docs" onclick="showDocuments()">Documents</button>
     </div>
+
     <div class="nav-themes">
+
       <span class="theme-label">THEME</span>
-      <button class="theme-swatch" id="t1" onclick="applyTheme('sunset')" title="Sunset"></button>
-      <button class="theme-swatch" id="t2" onclick="applyTheme('ocean')" title="Ocean"></button>
-      <button class="theme-swatch" id="t3" onclick="applyTheme('forest')" title="Forest"></button>
-      <button class="theme-swatch" id="t4" onclick="applyTheme('midnight')" title="Midnight"></button>
-      <button class="theme-swatch" id="t5" onclick="applyTheme('aurora')" title="Aurora"></button>
+
+      <button
+        class="theme-swatch"
+        id="t1"
+        aria-label="Apply sunset theme"
+        onclick="applyTheme('sunset')"
+        title="Sunset">
+      </button>
+
+      <button
+        class="theme-swatch"
+        id="t2"
+        aria-label="Apply ocean theme"
+        onclick="applyTheme('ocean')"
+        title="Ocean">
+      </button>
+
+      <button
+        class="theme-swatch"
+        id="t3"
+        aria-label="Apply forest theme"
+        onclick="applyTheme('forest')"
+        title="Forest">
+      </button>
+
+      <button
+        class="theme-swatch"
+        id="t4"
+        aria-label="Apply midnight theme"
+        onclick="applyTheme('midnight')"
+        title="Midnight">
+      </button>
+
+      <button
+        class="theme-swatch"
+        id="t5"
+        aria-label="Apply aurora theme"
+        onclick="applyTheme('aurora')"
+        title="Aurora">
+      </button>
+
     </div>
   </nav>
+
   <main class="main-container">
 
-  <!-- HOME TAB -->
-  <section id="home-tab">
+    <!-- HOME TAB -->
+    <section id="home-tab">
 
-    <div class="hero-section">
-      <h1 class="main-heading">JUST DO IT.</h1>
-      <p class="sub-heading">Organize your work beautifully.</p>
+      <div class="hero-section">
+        <h1 class="main-heading">JUST DO IT.</h1>
 
+        <p class="sub-heading">Organize your work beautifully.</p>
 
-      <!-- TASK LIST -->
-      <div id="task-list">
+        <!-- TASK LIST -->
+        <div id="task-list">
 
-  <!-- Pending Column -->
-  <div class="status-section">
-    <h3>📌 Pending</h3>
-    <div 
-      id="pending-list"
-      class="drop-zone"
-      ondrop="dropTask(event,'pending-list')"
-      ondragover="allowDrop(event)">
-    </div>
-  </div>
+          <!-- Pending Column -->
+          <div class="status-section">
+            <h3>📌 Pending</h3>
 
-  <!-- In Progress Column -->
-  <div class="status-section">
-    <h3>⚡ In Progress</h3>
-    <div 
-      id="progress-list"
-      class="drop-zone"
-      ondrop="dropTask(event,'progress-list')"
-      ondragover="allowDrop(event)">
-    </div>
-  </div>
-
-  <!-- Completed Column -->
-  <div class="status-section">
-    <h3>✅ Completed</h3>
-    <div 
-      id="completed-list"
-      class="drop-zone"
-      ondrop="dropTask(event,'completed-list')"
-      ondragover="allowDrop(event)">
-    </div>
-  </div>
-
-</div>
-
-<div class="empty-state" id="empty-state">
-  <div class="empty-icon">📋</div>
-  <p>No tasks yet. Add one above!</p>
-</div>
-        
-
-        <div class="task-panel">
-          <!-- INPUT -->
-          <div class="input-row">
-            <input
-              type="text"
-              id="task-input"
-              placeholder="Add your next task..."
-            />
-
-            <select id="task-type">
-              <option value="">Category</option>
-
-              <option value="Work">💼 Work</option>
-
-              <option value="Personal">🌸 Personal</option>
-
-              <option value="Professional">📚 Professional</option>
-
-              <option value="Fitness">💪 Fitness</option>
-
-              <option value="Miscellaneous">✨ Misc</option>
-            </select>
-
-            <button id="submittask" onclick="Add()">Add Task</button>
-          </div>
-
-          <!-- STATS -->
-          <div class="stats-bar">
-            <div class="stat-box">
-              <span id="totalTasks">0</span>
-              <p>Total</p>
-            </div>
-
-            <div class="stat-box">
-              <span id="completedTasks">0</span>
-              <p>Completed</p>
-            </div>
-
-            <div class="stat-box">
-              <span id="pendingTasks">0</span>
-              <p>Pending</p>
+            <div
+              id="pending-list"
+              class="drop-zone"
+              ondrop="dropTask(event,'pending-list')"
+              ondragover="allowDrop(event)">
             </div>
           </div>
 
-          <!-- PROGRESS -->
-          <div class="progress-container">
-            <div class="progress-bar">
-              <div id="progressFill"></div>
+          <!-- In Progress Column -->
+          <div class="status-section">
+            <h3>⚡ In Progress</h3>
+
+            <div
+              id="progress-list"
+              class="drop-zone"
+              ondrop="dropTask(event,'progress-list')"
+              ondragover="allowDrop(event)">
             </div>
           </div>
 
-          <!-- TASKS -->
-          <div id="notes-container"></div>
+          <!-- Completed Column -->
+          <div class="status-section">
+            <h3>✅ Completed</h3>
 
-          <!-- PDF -->
-          <button id="savepdf" onclick="saveAsPDF()">Save PDF</button>
-        </div>
-      </section>
+            <div
+              id="completed-list"
+              class="drop-zone"
+              ondrop="dropTask(event,'completed-list')"
+              ondragover="allowDrop(event)">
+            </div>
+          </div>
 
-      <!-- DOCUMENTS TAB -->
-      <section id="documents-tab" style="display: none">
-        <div class="hero-section">
-          <h1 class="main-heading">SAVED DOCS.</h1>
-
-          <p class="sub-heading">Your exported PDFs appear here.</p>
         </div>
 
-        <div class="documents-wrapper">
-          <div class="documents-list">
-            <div class="empty-docs">
-              <div class="empty-icon">📂</div>
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">📋</div>
 
-              <p>No documents exported yet.</p>
-            </div>
-          </div>
+          <p>No tasks yet. Add one above!</p>
         </div>
-      </section>
-    </main>
 
-    <div id="toast" class="toast"></div>
+      </div>
 
-    <script src="todolist.js?v=2"></script>
-  </body>
+      <div class="task-panel">
+
+        <!-- INPUT -->
+        <div class="input-row">
+
+          <input
+            type="text"
+            id="task-input"
+            placeholder="Add your next task..."
+          />
+
+          <select id="task-type">
+
+            <option value="">Category</option>
+
+            <option value="Work">💼 Work</option>
+
+            <option value="Personal">🌸 Personal</option>
+
+            <option value="Professional">📚 Professional</option>
+
+            <option value="Fitness">💪 Fitness</option>
+
+            <option value="Miscellaneous">✨ Misc</option>
+
+          </select>
+
+          <button id="submittask" onclick="Add()">Add Task</button>
+
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-bar">
+
+          <div class="stat-box">
+            <span id="totalTasks">0</span>
+            <p>Total</p>
+          </div>
+
+          <div class="stat-box">
+            <span id="completedTasks">0</span>
+            <p>Completed</p>
+          </div>
+
+          <div class="stat-box">
+            <span id="pendingTasks">0</span>
+            <p>Pending</p>
+          </div>
+
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="progress-container">
+
+          <div class="progress-bar">
+            <div id="progressFill"></div>
+          </div>
+
+        </div>
+
+        <!-- TASKS -->
+        <div id="notes-container"></div>
+
+        <!-- PDF -->
+        <button id="savepdf" onclick="saveAsPDF()">Save PDF</button>
+
+      </div>
+
+    </section>
+
+    <!-- DOCUMENTS TAB -->
+    <section id="documents-tab" style="display: none">
+
+      <div class="hero-section">
+
+        <h1 class="main-heading">SAVED DOCS.</h1>
+
+        <p class="sub-heading">Your exported PDFs appear here.</p>
+
+      </div>
+
+      <div class="documents-wrapper">
+
+        <div class="documents-list">
+
+          <div class="empty-docs">
+
+            <div class="empty-icon">📂</div>
+
+            <p>No documents exported yet.</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="todolist.js?v=2"></script>
+
+</body>
+
 </html>

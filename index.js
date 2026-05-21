@@ -16,6 +16,25 @@ let filteredProjectData = [];
 let currentCategory = 'all';
 let currentDifficulty = 'all';
 
+/* ============================================================
+   TECHNOLOGY STACK FILTERING VARIABLES
+   ============================================================ */
+let techStackFilters = []; // Array of active tech filters
+let techSearchQuery = ''; // Current tech search input
+
+// Technology normalization map (handles common variations)
+// Maps user input → actual tags in dataset
+const TECH_ALIASES = {
+  'js': 'javascript',
+  'react': 'javascript', // React projects are tagged as 'javascript'
+  'node': 'javascript',  // Node projects are tagged as 'javascript'
+  'vue': 'javascript',
+  'python': 'api',       // Python/Flask projects are tagged as 'api javascript'
+  'flask': 'api',
+  'game': 'game',
+  'games': 'game',
+};
+
 const PROJECT_DATA = [
   ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
   ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', 'javascript', 'beginner'],
@@ -26,13 +45,13 @@ const PROJECT_DATA = [
   ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'html css javascript', 'advanced'],
   ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', 'css', 'intermediate'],
   ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', 'javascript', 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
+  ['Day 10', 'QR Code Generator', './public/qr_generator/qr.html', 'api javascript', 'intermediate'],
   ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
   ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
   ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
   ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
   ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
-  ['Day 16', 'Scroll Bar CSS', './public/Scroll Game Dark Run/index.html', 'css', 'beginner'],
+  ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
   ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
   ['Day 18', 'Carousel Solar System', './public/carousal/index.html', 'css canvas', 'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
@@ -93,7 +112,7 @@ const PROJECT_DATA = [
   ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', 'tool javascript', 'beginner'],
   ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', 'game canvas', 'intermediate'],
   ['Day 76', 'Animated Searchbar', './public/Animated%20Searchbar/index.html', 'ui css javascript', 'beginner'],
-  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', 'game javascript', 'beginner'],
+  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', 'game javascript', 'intermediate'],
   ['Day 78', 'NPM Package Search', './public/NPM%20Package%20Search/index.html', 'tool api javascript', 'intermediate'],
   ['Day 79', 'Linkedin Homepage Clone', './public/Linkedin-Clone/index.html', 'clone css', 'intermediate'],
   ['Day 80', 'Resume Studio', './public/ResumeStudio/index.html', 'tool javascript', 'intermediate'],
@@ -123,7 +142,7 @@ const PROJECT_DATA = [
   ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
   ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
   ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
+  ['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
   ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
@@ -132,7 +151,7 @@ const PROJECT_DATA = [
   ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'tool javascript', 'intermediate'],
   ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
   ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-  ['Day 116', 'AI Image Classifier', './public/AI Image Classifier/index.html', 'api javascript', 'intermediate'],
+  ['Day 116', 'AI Image Classifier', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AI Image Classifier/', 'api javascript', 'intermediate'],
   ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'ui tool html css js', 'intermediate'],
   ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
@@ -141,16 +160,26 @@ const PROJECT_DATA = [
   ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
   ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
-  ['Day 125', 'Snakeladder',   './public/Snakeladder/index.html', 'game', 'intermediate'],
+  ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
   ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
   ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
   ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
+  ["Day 131", "Retro Highway Racer", "/public/RetroHighwayRacer/index.html", 'game javascript', 'intermediate'],
+  ['Day 132', 'Pokedex', './public/Pokedex/index.html', 'utility', 'intermediate'],
+  ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
+  ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
+  ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
+  ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', 'game javascript', 'intermediate'],
+  ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
+  ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
+  ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
+  ['Day 140', 'Big Sales Prediction',
+ 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
+  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
 
-   
 ];
-
 // Alias for consistency
 const PROJECTS = PROJECT_DATA;
 console.log('PROJECTS defined:', PROJECTS.length, 'items');
@@ -170,6 +199,127 @@ function getSourceUrl(url) {
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
 
+
+/* ============================================================
+   TECHNOLOGY STACK FILTERING FUNCTIONS
+   ============================================================ */
+
+/**
+ * Normalize technology name for consistent matching
+ * SIMPLIFIED: Just lowercase, no complex aliases needed
+ * @param {string} tech - Technology name to normalize
+ * @returns {string} Normalized technology name
+ */
+function normalizeTech(tech) {
+  const lower = tech.toLowerCase().trim();
+  // Only handle common variations
+  return TECH_ALIASES[lower] || lower;
+}
+
+/**
+ * Check if project matches the active tech stack filters
+ * EFFICIENT APPROACH: Direct string matching without complex transformations
+ * @param {string|array} projectTags - Project tags (space-separated string or array)
+ * @returns {boolean} True if project matches all active filters
+ */
+function matchesTechStack(projectTags) {
+  // No filters = show all projects
+  if (techStackFilters.length === 0) return true;
+  
+  // Handle empty or missing tags
+  if (!projectTags) return false;
+  
+  // Convert to single lowercase string for efficient matching
+  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  
+  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
+  // Uses simple includes() - O(n*m) where n=filters, m=tag length
+  return techStackFilters.every(filter => tagsLower.includes(filter));
+}
+
+
+/**
+ * Remove a specific technology filter
+ * @param {string} tech - Technology to remove from filters
+ */
+function removeTechFilter(tech) {
+  techStackFilters = techStackFilters.filter(t => t !== tech);
+  updateTechFilterDisplay();
+  renderGrid();
+}
+
+/**
+ * Clear all technology filters
+ */
+function clearAllTechFilters() {
+  techStackFilters = [];
+  techSearchQuery = '';
+  
+  const input = document.getElementById('techStackSearch');
+  if (input) input.value = '';
+  
+  updateTechFilterDisplay();
+  renderGrid();
+}
+
+/**
+ * Update the visual display of active tech filters
+ */
+function updateTechFilterDisplay() {
+  const container = document.getElementById('activeTechFilters');
+  const tagsContainer = document.getElementById('techFilterTags');
+  const clearBtn = document.getElementById('clearTechFilter');
+  
+  if (!container || !tagsContainer) return;
+  
+  // Show/hide clear button in search input
+  if (clearBtn) {
+    clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
+  }
+  
+  // Show/hide active filters container
+  if (techStackFilters.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.style.display = 'flex';
+  
+  // Render filter tags with remove buttons
+  tagsContainer.innerHTML = techStackFilters.map(tech => `
+    <span class="tech-filter-tag">
+      ${tech}
+      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
+        <i class="fas fa-times"></i>
+      </button>
+    </span>
+  `).join('');
+}
+
+/**
+ * Get all unique technologies from projects (optional utility)
+ * EFFICIENT: Uses Set for O(1) lookups
+ * @returns {array} Sorted array of unique technologies
+ */
+function getAllTechnologies() {
+  const techSet = new Set();
+  
+  PROJECTS.forEach(([, , , tags]) => {
+    if (tags) {
+      const tagArray = typeof tags === 'string' 
+        ? tags.split(/\s+/).filter(t => t) 
+        : tags;
+      
+      tagArray.forEach(tag => {
+        techSet.add(tag.toLowerCase());
+      });
+    }
+  });
+  
+  const techs = Array.from(techSet).sort();
+  console.log('Available technologies:', techs); // Debug: show available techs
+  return techs;
+}
 
 /* ============================================================
    BOOKMARK + RECENT SYSTEM
@@ -253,58 +403,23 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  // Dynamically set items per page based on viewport width to match CSS column layouts synchronously
-  const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
-  if (width <= 768) {
-    itemsPerPage = 6; // Mobile (1 column x 6 rows = 6 total)
-  } else if (width <= 1024) {
-    itemsPerPage = 6; // Tablet (2 columns x 3 rows = 6 total, no hanging cards!)
-  } else {
-    itemsPerPage = 9; // Laptop & Desktop (3 columns x 3 rows = 9 total)
-  }
-
-  // Filter projects by matching category chip and multi-term keyword search query
-  const filtered = PROJECTS.filter(([day, name, url, tags, cat]) => {
-    const matchesFilter = activeFilter === 'all' || (() => {
-      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
-      const nameStr = name.toLowerCase();
-      const urlStr = url.toLowerCase();
-
-      if (activeFilter === 'game') {
-        return tagStr.includes('game') || tagStr.includes('canvas');
-      }
-      if (activeFilter === 'clone') {
-        return nameStr.includes('clone') || urlStr.includes('clone') || urlStr.includes('cloning');
-      }
-      if (activeFilter === 'tool') {
-        return tagStr.includes('tool') || tagStr.includes('todo') || tagStr.includes('calculator') || tagStr.includes('weather') || nameStr.includes('tracker') || nameStr.includes('generator') || nameStr.includes('converter') || nameStr.includes('validator') || nameStr.includes('saver') || nameStr.includes('utils');
-      }
-      if (activeFilter === 'ui') {
-        return tagStr.includes('css') || tagStr.includes('canvas') || tagStr.includes('animation') || nameStr.includes('animation') || nameStr.includes('cursor') || nameStr.includes('effect') || nameStr.includes('slider');
-      }
-      if (activeFilter === 'api') {
-        return tagStr.includes('api') || tagStr.includes('weather') || nameStr.includes('api') || nameStr.includes('fetch');
-      }
-      return false;
-    })();
-
-    // Split search query by spaces to support multi-term criteria (e.g. "day 1 todo")
-    const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term => 
-      name.toLowerCase().includes(term) || 
-      day.toLowerCase().includes(term) || 
-      (typeof tags === 'string' && tags.toLowerCase().includes(term))
-    );
-
-    return matchesFilter && matchesSearch;
+  const filtered = PROJECTS.filter(([day, name, , tags, cat]) => {
+    // 1. Category filter (beginner/intermediate)
+    const matchesFilter = activeFilter === 'all' || cat === activeFilter;
+    
+    // 2. Name/Day search
+    const q = searchQuery.toLowerCase();
+    const matchesSearch =
+      !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
+    
+    // 3. Technology stack filter (NEW)
+    const matchesTech = matchesTechStack(tags);
+    
+    // Combine all three filters
+    return matchesFilter && matchesSearch && matchesTech;
   });
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-
-  // If a filter chip shrinks the results, reset current page index to avoid out-of-bounds
-  if (currentPage > totalPages) {
-    currentPage = Math.max(1, totalPages);
-  }
+  console.log('Filtered projects:', filtered.length, 'out of', PROJECTS.length); // Debug log
 
   grid.innerHTML = '';
 
@@ -318,6 +433,14 @@ function renderGrid() {
 
   grid.style.display = 'grid';
   noResults.style.display = 'none';
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
+  if (currentPage < 1) {
+    currentPage = 1;
+  }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -714,6 +837,7 @@ function initFilterChips() {
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
+
   input.addEventListener('input', () => {
     searchQuery = input.value.trim();
     currentPage = 1;
@@ -721,19 +845,103 @@ function initSearch() {
   });
 }
 
+/* ============================================================
+   TECH STACK SEARCH INITIALIZATION
+   ============================================================ */
+function initTechStackSearch() {
+  const input = document.getElementById('techStackSearch');
+  const clearBtn = document.getElementById('clearTechFilter');
+  
+  if (!input) return;
+  
+  // Debounce timer for performance
+  let debounceTimer;
+  
+  // Listen for input changes
+  input.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    
+    // Debounce: wait 300ms after user stops typing
+    debounceTimer = setTimeout(() => {
+      const value = e.target.value.trim().toLowerCase();
+      
+      if (value) {
+        // Split by comma or space to support multiple technologies
+        // More efficient: direct lowercase conversion
+        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+        
+        // Update filters array (already lowercase, no need to normalize yet)
+        techStackFilters = [...new Set(techs)]; // Remove duplicates efficiently
+        
+        console.log('Tech filters active:', techStackFilters); // Debug log
+        
+        updateTechFilterDisplay();
+        renderGrid();
+      } else {
+        // Empty input = clear all filters
+        clearAllTechFilters();
+      }
+    }, 300); // 300ms debounce delay
+  });
+  
+  // Clear button functionality
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      clearAllTechFilters();
+    });
+  }
+  
+  // Optional: Add Enter key support
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      input.blur(); // Trigger the debounced input event
+    }
+  });
+}
+
+/* ============================================================
+   SEARCH CONTROLS
+   ============================================================ */
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearSearch');
+
 function syncProjectCounts() {
   const total = PROJECTS.length.toLocaleString();
-  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
+
+  const countNodes = [
+    document.getElementById('projectCount'),
+    document.getElementById('allCount')
+  ];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
   });
 
-  const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.placeholder = `Search ${total} projects…`;
   }
 }
+
+// Clear button functionality
+if (searchInput && clearBtn) {
+  clearBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    searchInput.dispatchEvent(new Event("input"));
+    searchInput.focus();
+  });
+
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      searchInput.value = "";
+      searchInput.dispatchEvent(new Event("input"));
+      searchInput.focus();
+    }
+  });
+}
+
+// initialize
+syncProjectCounts();
 
 /* ============================================================
    NAVBAR — dynamic based on login state
@@ -825,35 +1033,27 @@ function initTheme() {
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-  const btn = document.getElementById('scrollBtn');
-  if (!btn) return;
+    const btn = document.getElementById('scrollBtn');
+    const ring = document.getElementById('ringFill');
+    if (!btn) return;
 
-  window.addEventListener('scroll', () => {
-    btn.classList.toggle('show', window.scrollY > 400);
-  });
+    const circumference = 2 * Math.PI * 22;
 
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-/* ============================================================
-   BACK TO TOP BUTTON
-   ============================================================ */
-const backToTopButton = document.getElementById('backToTop');
+        btn.classList.toggle('show', scrollTop > 400);
 
-if (backToTopButton) {
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) {
-      backToTopButton.style.display = 'block';
-    } else {
-      backToTopButton.style.display = 'none';
-    }
-  });
+        if (ring) {
+            ring.style.strokeDashoffset = circumference * (1 - progress);
+        }
+    });
 
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 }
 
 /* ============================================================
@@ -861,11 +1061,20 @@ if (backToTopButton) {
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOMContentLoaded fired');
-  console.log('PROJECTS:', typeof PROJECTS, PROJECTS ? PROJECTS.length : 'undefined');
+  console.log(
+    'PROJECTS:',
+    typeof PROJECTS,
+    PROJECTS ? PROJECTS.length : 'undefined'
+  );
+  
+  // Show available technologies for debugging
+  getAllTechnologies();
+  
   initTheme();
   updateNavbar();
   initFilterChips();
   initSearch();
+  initTechStackSearch(); // Initialize tech stack search
   syncProjectCounts();
   renderGrid();
   renderBookmarks();
