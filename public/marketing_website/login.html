@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — SEO Agency</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+</head>
+
+<body class="login-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Service List</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Styleguide</a></li>
+                <li class="nav-item"><a class="nav-link nav-login active-login" href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <main class="login-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <h2>Welcome back</h2>
+                            <p>Sign in to your SEO Agency account</p>
+                        </div>
+
+                        <form id="loginForm" novalidate>
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email"
+                                    placeholder="you@example.com" autocomplete="email" required />
+                                <div class="invalid-msg" id="emailError"></div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <div class="pw-wrap">
+                                    <input type="password" class="form-control" id="password"
+                                        placeholder="Enter your password" autocomplete="current-password"
+                                        minlength="6" required />
+                                    <button type="button" class="pw-toggle" id="togglePw"
+                                            aria-label="Show password">Show</button>
+                                </div>
+                                <div class="invalid-msg" id="passwordError"></div>
+                            </div>
+
+                            <!-- Remember + Forgot -->
+                            <div class="login-row">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="remember">
+                                    <label class="custom-control-label" for="remember">Remember me</label>
+                                </div>
+                                <a href="#" class="forgot-link">Forgot password?</a>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block login-btn">
+                                Sign In
+                            </button>
+
+                            <div class="success-msg" id="successMsg" style="display:none;">
+                                <i class="fas fa-check-circle mr-2"></i>Logged in successfully (demo).
+                            </div>
+                        </form>
+
+                        <div class="login-footer">
+                            Don't have an account? <a href="register.html">Create one</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>

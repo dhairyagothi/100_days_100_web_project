@@ -235,3 +235,78 @@ html {
     gap: 16px;
     justify-content: center;
 }
+
+.nav-login {
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    padding: 6px 14px !important;
+    margin-left: 8px;
+}
+.nav-login:hover {
+    background: #4361ee;
+    border-color: #4361ee;
+}
+
+/* ============================================
+   RESPONSIVE MEDIA QUERIES
+   ============================================ */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 70px 0;
+    }
+
+    .hero-section h1 {
+        font-size: 1.9rem;
+    }
+
+    .hero-section p {
+        font-size: 0.95rem;
+    }
+
+    .hero-section .btn-primary,
+    .hero-section .btn-secondary {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+        text-align: center;
+    }
+
+    .services-section {
+        padding: 48px 0;
+    }
+
+    .service-box {
+        margin-bottom: 16px;
+    }
+
+    .footer-section .col-md-4 {
+        margin-bottom: 28px;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 50px 0;
+    }
+
+    .hero-section h1 {
+        font-size: 1.5rem;
+        letter-spacing: 0;
+    }
+
+    .services-section h2 {
+        font-size: 1.4rem;
+    }
+
+    .navbar-brand {
+        font-size: 0.85rem;
+    }
+}
