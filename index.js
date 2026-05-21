@@ -950,54 +950,111 @@ if (searchInput && clearBtn) {
 syncProjectCounts();
 
 /* ============================================================
+   HAMBURGER MENU TOGGLE
+   ============================================================ */
+function initHamburgerMenu() {
+  const menuToggle = document.getElementById('menuToggle');
+  const navButtons = document.getElementById('navButtons');
+  
+  if (!menuToggle || !navButtons) return;
+  
+  // Toggle menu when hamburger is clicked
+  menuToggle.addEventListener('click', (event) => {
+    event.stopPropagation();
+    menuToggle.classList.toggle('active');
+    navButtons.classList.toggle('active');
+  });
+  
+  // Close menu when a link is clicked
+  navButtons.querySelectorAll('a, button').forEach(element => {
+    element.addEventListener('click', (e) => {
+      // Don't close if it's the theme toggle or logout button (they handle themselves)
+      if (element.id === 'themeToggleNav' || element.id === 'logoutBtn' || element.id === 'generateReadmeBtn') {
+        return;
+      }
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+    });
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    // Check if click is outside navbar
+    if (!e.target.closest('.navbar')) {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+    }
+  });
+}
+
+/* ============================================================
    NAVBAR — dynamic based on login state
+   ============================================================ */
+/* ============================================================
+   NAVBAR — dynamic based on login state (SIGN IN REMOVED)
+   ============================================================ */
+/* ============================================================
+   NAVBAR — dynamic based on login state (SIGN IN REMOVED + BLUE README BUTTON)
    ============================================================ */
 function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
 
-    const username = window.username || null;
-    const isRoot   = !window.location.pathname.includes('/contributors/');
-    const base     = isRoot ? '' : '../';
-    const isLight  = document.body.classList.contains('light-mode');
-    const themeButton = `
-            <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-                <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
-            </button>
-        `;
+  const username = window.username || null;
+  const isRoot   = !window.location.pathname.includes('/contributors/');
+  const base     = isRoot ? '' : '../';
+  const isLight  = document.body.classList.contains('light-mode');
+  const themeButton = `
+    <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+      <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
+    </button>
+  `;
 
-    if (username) {
-        container.innerHTML = `
-            ${themeButton}
-            <span class="welcome-text">Hi, ${username}</span>
-            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-        `;
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            window.username = null;
-            updateNavbar();
-        });
-        const gen = document.getElementById('generateReadmeBtn');
-        if (gen) gen.addEventListener('click', generateReadme);
-    } else {
-        container.innerHTML = `
-            ${themeButton}
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
-            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
-        `;
-    const gen2 = document.getElementById('generateReadmeBtn');
-    if (gen2) gen2.addEventListener('click', generateReadme);
+  if (username) {
+    container.innerHTML = `
+      ${themeButton}
+      <span class="welcome-text">Hi, ${username}</span>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+      <button class="btn btn-primary btn-sm" id="generateReadmeBtn" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; color: white; font-weight: 600;">
+        <i class="fas fa-magic"></i> Generate README
+      </button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+    `;
+    
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        window.username = null;
+        updateNavbar();
+      });
+    }
+    
+    const genBtn = document.getElementById('generateReadmeBtn');
+    if (genBtn) genBtn.addEventListener('click', generateReadme);
+    
+  } else {
+    // SIGN IN BUTTON REMOVED - Generate README button is BLUE
+    container.innerHTML = `
+      ${themeButton}
+      <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <button class="btn btn-primary btn-sm" id="generateReadmeBtn" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; color: white; font-weight: 600;">
+        <i class="fas fa-magic"></i> Generate README
+      </button>
+    `;
+    
+    const genBtn = document.getElementById('generateReadmeBtn');
+    if (genBtn) genBtn.addEventListener('click', generateReadme);
   }
+  
+  // Re-initialize hamburger menu after navbar update
+  initHamburgerMenu();
 }
-
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
@@ -1065,8 +1122,8 @@ function initScrollBtn() {
 /* ============================================================
    INIT
    ============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired');
+function initializeApp() {
+  console.log('initializeApp fired');
   console.log(
     'PROJECTS:',
     typeof PROJECTS,
@@ -1078,6 +1135,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   initTheme();
   updateNavbar();
+  initHamburgerMenu();
   initFilterChips();
   initSearch();
   initTechStackSearch(); // Initialize tech stack search
@@ -1087,7 +1145,13 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRecentProjects();
   fetchRepoStats();
   initScrollBtn();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
+}
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {

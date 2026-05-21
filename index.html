@@ -44,16 +44,46 @@
 
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
     <nav class="navbar" id="navbar">
-        <a class="navbar-brand" href="index.html" style="text-decoration:none;">
-            <span class="brand-mark" aria-hidden="true">100</span>
-            <span class="brand-copy">
-                <span class="brand-kicker">Open Source Archive</span>
-                <strong>100 Days · 100 Web Projects</strong>
-            </span>
+      <a class="navbar-brand" href="index.html" style="text-decoration:none;">
+        <span class="brand-mark" aria-hidden="true">100</span>
+        <span class="brand-copy">
+          <span class="brand-kicker">Open Source Archive</span>
+          <strong>100 Days · 100 Web Projects</strong>
+        </span>
+      </a>
+      <div class="nav-buttons" id="navButtons">
+        <a href="#projects" class="nav-link" id="browseBtn">
+          <i class="fas fa-code"></i> Projects
         </a>
-        <div class="nav-buttons" id="navButtons">
-            <!-- populated by JS -->
-        </div>
+        <a
+          href="https://www.github-readme.tech"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-link featured"
+          id="readmeBtn"
+        >
+          <i class="fas fa-magic"></i> Generate README
+        </a>
+        <a
+          href="https://github.com/dhairyagothi/100_days_100_web_project"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-link"
+          id="githubNavBtn"
+        >
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="./contributors/contributor.html" class="nav-link" id="contributorsNavBtn">
+          <i class="fas fa-users"></i> Contributors
+        </a>
+        <button id="themeToggleNav" class="nav-link" style="background: transparent;">
+          <i class="fas fa-moon"></i> Theme
+        </button>
+      </div>
+      <button type="button" class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+        <i class="fas fa-times" style="display: none;"></i>
+      </button>
     </nav>
 
     <!-- ── HERO ───────────────────────────────────────────── -->
@@ -159,7 +189,6 @@
         <div class="projects-header">
           <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
-
             <input
               type="text"
               id="searchInput"
@@ -167,8 +196,6 @@
               placeholder="Search projects…"
               autocomplete="off"
             />
-
-            <!-- ADD THIS BUTTON -->
             <button
               id="clearSearch"
               class="clear-btn"
@@ -253,7 +280,6 @@
               >
             </li>
             <li><a href="./contributors/contributor.html">Contributors</a></li>
-            <li><a href="./public/Login.html">Sign In</a></li>
           </ul>
         </div>
 
@@ -303,17 +329,150 @@
     </footer>
 
     <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
-   <button id="scrollBtn" aria-label="Back to top">
-    <svg class="progress-ring" viewBox="0 0 48 48">
+    <button id="scrollBtn" aria-label="Back to top">
+      <svg class="progress-ring" viewBox="0 0 48 48">
         <circle class="ring-track" cx="24" cy="24" r="22"/>
         <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22"/>
-    </svg>
-    <i class="fas fa-arrow-up scroll-arrow"></i>
-    <span class="scroll-tooltip">Back to top</span>
-</button>
+      </svg>
+      <i class="fas fa-arrow-up scroll-arrow"></i>
+      <span class="scroll-tooltip">Back to top</span>
+    </button>
     <div class="toast" id="toast"></div>
+    
+    <script>
+      // ============================================
+      // HAMBURGER MENU JAVASCRIPT
+      // ============================================
+      (function() {
+        const menuToggle = document.getElementById('menuToggle');
+        const navButtons = document.getElementById('navButtons');
+        const openIcon = menuToggle?.querySelector('.fa-bars');
+        const closeIcon = menuToggle?.querySelector('.fa-times');
+        
+        function toggleMenu() {
+          if (!navButtons || !menuToggle) return;
+          
+          navButtons.classList.toggle('active');
+          menuToggle.classList.toggle('active');
+          
+          if (openIcon && closeIcon) {
+            if (navButtons.classList.contains('active')) {
+              openIcon.style.display = 'none';
+              closeIcon.style.display = 'inline-block';
+            } else {
+              openIcon.style.display = 'inline-block';
+              closeIcon.style.display = 'none';
+            }
+          }
+        }
+        
+        if (menuToggle) {
+          menuToggle.addEventListener('click', toggleMenu);
+        }
+        
+        // Close menu when clicking on a nav link (mobile only)
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 900 && navButtons?.classList.contains('active')) {
+              toggleMenu();
+            }
+          });
+        });
+        
+        // Close menu when clicking outside (optional)
+        document.addEventListener('click', (e) => {
+          if (window.innerWidth <= 900 && navButtons?.classList.contains('active')) {
+            if (!navButtons.contains(e.target) && !menuToggle?.contains(e.target)) {
+              toggleMenu();
+            }
+          }
+        });
+      })();
+      
+      // ============================================
+      // THEME TOGGLE FUNCTIONALITY
+      // ============================================
+      (function() {
+        const themeToggleBtn = document.getElementById('themeToggleNav');
+        const themeToggleFooter = document.getElementById('themeToggle');
+        
+        function setTheme(isLight) {
+          if (isLight) {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+          } else {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+          }
+        }
+        
+        function toggleTheme() {
+          const isLight = document.body.classList.contains('light-mode');
+          setTheme(!isLight);
+        }
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.body.classList.add('light-mode');
+        }
+        
+        if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+        if (themeToggleFooter) themeToggleFooter.addEventListener('click', toggleTheme);
+      })();
+      
+      // ============================================
+      // SCROLL TO TOP BUTTON
+      // ============================================
+      (function() {
+        const scrollBtn = document.getElementById('scrollBtn');
+        const ringFill = document.getElementById('ringFill');
+        
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 300) {
+            scrollBtn?.classList.add('show');
+          } else {
+            scrollBtn?.classList.remove('show');
+          }
+          
+          // Update progress ring
+          if (ringFill) {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            const circumference = 2 * Math.PI * 22;
+            const dashoffset = circumference - (scrollPercent / 100) * circumference;
+            ringFill.style.strokeDasharray = `${circumference}`;
+            ringFill.style.strokeDashoffset = dashoffset;
+          }
+        });
+        
+        scrollBtn?.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      })();
+      
+      // ============================================
+      // NAVBAR SCROLL EFFECT
+      // ============================================
+      (function() {
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 50) {
+            navbar?.classList.add('scrolled');
+          } else {
+            navbar?.classList.remove('scrolled');
+          }
+        });
+      })();
+      
+      // ============================================
+      // HERO TERMINAL ANIMATION (placeholder)
+      // ============================================
+      console.log('Homepage loaded - Hamburger menu working');
+    </script>
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
-
   </body>
 </html>

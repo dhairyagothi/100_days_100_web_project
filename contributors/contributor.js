@@ -1,3 +1,30 @@
+// Hamburger Menu Toggle
+const hamburgerMenu = document.getElementById('hamburgerMenu');
+const navbarMenu = document.getElementById('navbarMenu');
+
+if (hamburgerMenu) {
+  hamburgerMenu.addEventListener('click', () => {
+    hamburgerMenu.classList.toggle('active');
+    navbarMenu.classList.toggle('active');
+  });
+
+  // Close menu when a link is clicked
+  navbarMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburgerMenu.classList.remove('active');
+      navbarMenu.classList.remove('active');
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.navbar')) {
+      hamburgerMenu.classList.remove('active');
+      navbarMenu.classList.remove('active');
+    }
+  });
+}
+
 const modal = document.getElementById('profileModal');
 
 const modalBody = document.getElementById('modalBody');
