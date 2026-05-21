@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typewriter</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --bg-color: #000000;
@@ -277,6 +278,41 @@
     z-index: 1000;
 }
 
+.menu-btn {
+
+    width: 100%;
+
+    padding: 10px 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: rgba(255,255,255,0.12);
+
+    color: white;
+
+    font-family: 'Courier Prime', monospace;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.menu-btn:hover {
+
+    background: rgba(255,255,255,0.2);
+
+    transform: translateY(-2px);
+}
+
+.settings-menu hr {
+
+    border: none;
+
+    border-top: 1px solid rgba(255,255,255,0.15);
+}
+
 
 /* ===== SETTINGS ===== */
 
@@ -348,17 +384,31 @@
 /* ===== VOLUME ===== */
 
 .volume-controls {
+
     display: flex;
-    align-items: center;
-    gap: 10px;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+    width: 100%;
 }
 
+.settings-menu {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+}
 #soundToggle {
 
-    width: 38px;
-    height: 38px;
+    width: 100%;
 
-    border-radius: 50%;
+    height: 42px;
+
+    border-radius: 10px;
 
     border: none;
 
@@ -367,6 +417,17 @@
     color: white;
 
     cursor: pointer;
+
+    font-size: 16px;
+
+    transition: 0.3s ease;
+}
+
+#soundToggle:hover {
+
+    background: rgba(255,255,255,0.2);
+
+    transform: translateY(-2px);
 }
 
 #volumeControl {
@@ -418,6 +479,12 @@
                     step="0.1"
                     value="0.55"
                 >
+
+                <hr>
+
+<button id="exportPdfBtn" class="menu-btn">
+    Export as PDF
+</button>
 
             </div>
 
@@ -499,6 +566,7 @@
 const settingsMenu = document.getElementById("settingsMenu");
         const soundToggle = document.getElementById("soundToggle");
 const volumeControl = document.getElementById("volumeControl");
+const exportPdfBtn = document.getElementById("exportPdfBtn");
 
         // ---- Audio ----
         let audioCtx;
@@ -707,6 +775,48 @@ if (savedVolume !== null) {
 
     volumeControl.value = soundVolume;
 }
+
+// ---- Export PDF ----
+
+exportPdfBtn.addEventListener("click", () => {
+
+    if (paperContent.trim() === "") {
+
+        alert("Nothing to export!");
+
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF({
+
+        orientation: "portrait",
+
+        unit: "pt",
+
+        format: "a4"
+    });
+
+    doc.setFont("courier");
+
+    doc.setFontSize(14);
+
+    const margin = 40;
+
+    const pageWidth = doc.internal.pageSize.width;
+
+    const wrappedText = doc.splitTextToSize(
+
+        paperContent,
+
+        pageWidth - margin * 2
+    );
+
+    doc.text(wrappedText, margin, 50);
+
+    doc.save("typewriter-document.pdf");
+});
 
 
         // ---- Theme toggle ----
