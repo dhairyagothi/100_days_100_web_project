@@ -220,6 +220,26 @@ button#btn {
 button#btn:hover  { opacity: 0.8; }
 button#btn:active { transform: scale(0.997); }
 
+button#reset-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 14px;
+  background: var(--ink);
+  color: var(--card);
+  border: 1px solid var(--ink);
+  border-radius: var(--r-sm);
+  font-size: 10px;
+  font-family: var(--f-mono);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+button#reset-btn:hover  { opacity: 0.8; }
+button#reset-btn:active { transform: scale(0.997); }
+
 .error-msg {
   font-size: 11px;
   color: var(--red1);
@@ -462,6 +482,11 @@ button#btn:active { transform: scale(0.997); }
   }
 
   button#btn {
+    font-size: 11px;
+    padding: 14px;
+  }
+
+  button#reset-btn {
     font-size: 11px;
     padding: 14px;
   }
