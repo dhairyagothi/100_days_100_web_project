@@ -64,3 +64,10 @@
         color: green;
         font-weight: bold;
     }
+
+    .exchange-rate{
+        text-align: center;
+        margin-top: 15px;
+        font-size: 20px;
+        margin-bottom: -30px;
+    }

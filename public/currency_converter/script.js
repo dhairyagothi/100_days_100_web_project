@@ -6,6 +6,8 @@ const api = "https://api.exchangerate-api.com/v4/latest/USD";
         let toCurrency = document.querySelector('.to');
         let finalValue = document.querySelector('.finalValue');
         let finalAmount = document.querySelector('#finalAmount');
+        let exchange_rate=document.getElementById('exchange-rate');
+        let rate=document.getElementById("rate");
         let resultFrom, resultTo, searchValue;
 
         fromCurrency.addEventListener('change', (event) => {
@@ -31,12 +33,19 @@ const api = "https://api.exchangerate-api.com/v4/latest/USD";
 
         function displayResults(currency) {
             let fromRate = currency.rates[resultFrom];
-            let toRate = currency.rates[resultTo];
+            let toRate = currency.rates[resultTo]; 
             finalValue.innerHTML = ((toRate / fromRate) * searchValue).toFixed(5);
             finalAmount.style.display = "block";
+            let exchangeRate = (toRate / fromRate).toFixed(5);
+            rate.innerText="1 " + fromCurrency.value + " = " + exchangeRate + " " + toCurrency.value;
+
         }
 
+        
         function clearVal() {
             window.location.reload();
             document.querySelector('.finalValue').innerHTML = "";
+
+
         };
+
