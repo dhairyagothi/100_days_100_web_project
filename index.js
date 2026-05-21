@@ -339,9 +339,7 @@ function renderGrid() {
                     <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
+                     
                     <a class="card-link view-code-link" data-url="${url}" rel="noopener noreferrer" style="cursor:pointer">
                        <i class="fab fa-github"></i> Code
                     </a>
