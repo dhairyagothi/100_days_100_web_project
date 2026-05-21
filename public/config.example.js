@@ -1,0 +1,4 @@
+window.ENV_CONFIG = {
+  SUPABASE_URL: "",
+  SUPABASE_ANON_KEY: ""
+};

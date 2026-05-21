@@ -8,6 +8,16 @@ if (typeof REPO_OWNER === 'undefined') {
 window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
 window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
+const SUPABASE_CONFIG = window.ENV_CONFIG || {};
+const hasSupabaseConfig = Boolean(SUPABASE_CONFIG.SUPABASE_URL && SUPABASE_CONFIG.SUPABASE_ANON_KEY);
+const hasSupabaseClient = Boolean(window.supabase && window.supabase.createClient);
+const supabaseClient = hasSupabaseConfig && hasSupabaseClient
+  ? window.supabase.createClient(SUPABASE_CONFIG.SUPABASE_URL, SUPABASE_CONFIG.SUPABASE_ANON_KEY)
+  : null;
+
+let currentSupabaseSession = null;
+let currentUserEmail = null;
+
 let currentPage = 1;
 //for the number of visible projects in one page.
 let itemsPerPage = 9;
@@ -382,6 +392,64 @@ const CATEGORY_LABEL = {
   advanced: 'Advanced',
 };
 
+function loadGuestCollections() {
+  // Strictly empty these arrays for guests so previous local data doesn't leak
+  bookmarkedProjects = [];
+  recentProjects = [];
+}
+
+async function persistUserCollections() {
+  if (!supabaseClient || !currentSupabaseSession) return;
+
+  const payload = {
+    bookmarks: bookmarkedProjects,
+    recent_projects: recentProjects,
+    email: currentUserEmail || currentSupabaseSession.user.email,
+  };
+
+  const { error } = await supabaseClient
+    .from('user_profiles')
+    .update(payload)
+    .eq('id', currentSupabaseSession.user.id);
+
+  if (error) {
+    console.warn('Failed to sync user collections:', error.message);
+  }
+}
+
+async function loadUserCollections() {
+  if (!supabaseClient) {
+    loadGuestCollections();
+    return;
+  }
+
+  const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+  if (sessionError) {
+    console.warn('Supabase session lookup failed:', sessionError.message);
+  }
+
+  currentSupabaseSession = sessionData?.session || null;
+  currentUserEmail = currentSupabaseSession?.user?.email || null;
+
+  if (!currentSupabaseSession) {
+    loadGuestCollections();
+    return;
+  }
+
+  const { data: profile, error: profileError } = await supabaseClient
+    .from('user_profiles')
+    .select('bookmarks, recent_projects')
+    .eq('id', currentSupabaseSession.user.id)
+    .maybeSingle();
+
+  if (profileError) {
+    console.warn('Failed to load user profile collections:', profileError.message);
+  }
+
+  bookmarkedProjects = Array.isArray(profile?.bookmarks) ? profile.bookmarks : [];
+  recentProjects = Array.isArray(profile?.recent_projects) ? profile.recent_projects : [];
+}
+
 /* ============================================================
    GITHUB REPO STATS
    ============================================================ */
@@ -432,6 +500,7 @@ async function fetchRepoStats() {
         setFallback();
     }
 }
+
 function generateReadme() {
   try {
     const lines = [];
@@ -732,7 +801,11 @@ function toggleBookmark(project) {
     showToast('Project bookmarked');
   }
 
-  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  if (currentSupabaseSession) {
+    void persistUserCollections();
+  } else {
+    localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
@@ -746,7 +819,11 @@ function trackRecentProject(project) {
     recentProjects.pop();
   }
 
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  if (currentSupabaseSession) {
+    void persistUserCollections();
+  } else {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  }
   renderRecentProjects();
 }
 
@@ -895,6 +972,13 @@ document.addEventListener('click', (e) => {
   if (!bookmarkBtn) return;
 
   e.preventDefault();
+  
+  // Ensure user is logged in before allowing them to bookmark
+  if (!currentSupabaseSession) {
+    alert('Please sign in or create an account to bookmark projects.');
+    return;
+  }
+
   const projectDay = bookmarkBtn.dataset.id;
   const project = PROJECTS.find((item) => item[0] === projectDay);
   if (!project) return;
@@ -1055,7 +1139,7 @@ function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
 
-  const username = window.username || null;
+  const email = currentUserEmail || window.username || null;
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
   const isLight = document.body.classList.contains('light-mode');
@@ -1065,20 +1149,24 @@ function updateNavbar() {
             </button>
         `;
 
-  if (username) {
+  if (email) {
     container.innerHTML = `
             ${themeButton}
-            <span class="welcome-text">Hi, ${username}</span>
-            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        <span class="welcome-text">Welcome, ${email}</span>
+        <button class="btn btn-ghost btn-sm" id="logoutBtn">Logout</button>
             <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
         `;
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      window.username = null;
-      updateNavbar();
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      const btn = e.currentTarget;
+      btn.innerHTML = 'Logging out...';
+      btn.style.opacity = '0.5';
+      btn.style.pointerEvents = 'none';
+      await handleSignOut();
     });
     const gen = document.getElementById('generateReadmeBtn');
     if (gen) gen.addEventListener('click', generateReadme);
@@ -1095,6 +1183,28 @@ function updateNavbar() {
     const gen2 = document.getElementById('generateReadmeBtn');
     if (gen2) gen2.addEventListener('click', generateReadme);
   }
+}
+
+async function handleSignOut() {
+  // 1. Set a global flag to block background UI updates during logout
+  window.isLoggingOut = true; 
+  
+  try {
+    if (supabaseClient) {
+      await supabaseClient.auth.signOut();
+    }
+  } catch (error) {
+    console.warn('Sign out network error (ignored):', error);
+  }
+
+  // 2. Clear out local state
+  currentSupabaseSession = null;
+  currentUserEmail = null;
+  window.username = null;
+  loadGuestCollections();
+  
+  // 3. Force the page to hard-reset to the pristine guest view
+  window.location.replace(window.location.pathname);
 }
 
 /* ============================================================
@@ -1168,18 +1278,25 @@ function hasProjectGrid() {
   return Boolean(document.getElementById('projectGrid'));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('DOMContentLoaded fired');
+  console.log(
+    'PROJECTS:',
+    typeof PROJECTS,
+    PROJECTS ? PROJECTS.length : 'undefined'
+  );
+  
+  getAllTechnologies();
+  await loadUserCollections();
   initTheme();
   updateNavbar();
-
-  initFilterChips();
-  initSearch();
   initSorting();
-  initTechStackSearch();
-
   syncProjectCounts();
   fetchRepoStats();
   initScrollBtn();
+  
+  // Initial check on page load
+  updateGuestUI();
 
   if (hasProjectGrid()) {
     initFilterChips();
@@ -1189,46 +1306,49 @@ document.addEventListener('DOMContentLoaded', () => {
     renderBookmarks();
     renderRecentProjects();
   }
+
+  if (supabaseClient) {
+    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+      // 🛑 The safety check: Stop running if the user is logging out!
+      if (window.isLoggingOut) return; 
+
+      currentSupabaseSession = session || null;
+      currentUserEmail = currentSupabaseSession?.user?.email || null;
+
+      await loadUserCollections();
+      updateNavbar();
+      updateGuestUI(); // Trigger UI check on login/logout
+      if (hasProjectGrid()) {
+        renderBookmarks();
+        renderRecentProjects();
+      }
+    });
+  }
 });
 
-
-
-(() => {
-    const initDirectMobileMenu = () => {
-        const menuToggle = document.getElementById('menuToggle');
-        const navButtons = document.getElementById('navButtons');
-
-        if (!menuToggle || !navButtons) return;
-
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            menuToggle.classList.toggle('active');
-            navButtons.classList.toggle('active');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-                menuToggle.classList.remove('active');
-                navButtons.classList.remove('active');
-            }
-        });
-
-        navButtons.addEventListener('click', (e) => {
-            if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-                menuToggle.classList.remove('active');
-                navButtons.classList.remove('active');
-            }
-        });
-    };
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
-    } else {
-        initDirectMobileMenu();
+/* ============================================================
+   GUEST UI HELPER
+   ============================================================ */
+function updateGuestUI() {
+  const recentGrid = document.getElementById('recentGrid');
+  const bookmarkGrid = document.getElementById('bookmarkGrid');
+  
+  // Hide or show the Recently Viewed section
+  if (recentGrid) {
+    const recentSection = recentGrid.closest('.projects-section');
+    if (recentSection) {
+      recentSection.style.display = currentSupabaseSession ? 'block' : 'none';
     }
-})();
-
-
+  }
+  
+  // Hide or show the Bookmarked Projects section
+  if (bookmarkGrid) {
+    const bookmarkSection = bookmarkGrid.closest('.projects-section');
+    if (bookmarkSection) {
+      bookmarkSection.style.display = currentSupabaseSession ? 'block' : 'none';
+    }
+  }
+}
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
@@ -1236,6 +1356,42 @@ window.addEventListener('resize', () => {
     renderGrid();
   }
 });
+
+// Mobile Drawer Self-Contained Controller
+(() => {
+  const initDirectMobileMenu = () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const navButtons = document.getElementById('navButtons');
+
+    if (!menuToggle || !navButtons) return;
+
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menuToggle.classList.toggle('active');
+      navButtons.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+        menuToggle.classList.remove('active');
+        navButtons.classList.remove('active');
+      }
+    });
+
+    navButtons.addEventListener('click', (e) => {
+      if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+        menuToggle.classList.remove('active');
+        navButtons.classList.remove('active');
+      }
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+  } else {
+    initDirectMobileMenu();
+  }
+})();
 
 /* ============================================================
    EXPOSE FUNCTIONS TO GLOBAL SCOPE
