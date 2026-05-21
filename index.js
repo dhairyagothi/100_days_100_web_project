@@ -1182,25 +1182,32 @@ function updateNavbar() {
 }
 
 async function handleSignOut() {
-  // 1. Set a global flag to block background UI updates during logout
   window.isLoggingOut = true; 
   
+  // Show the loader immediately so the screen doesn't glitch while waiting
+  const loader = document.getElementById('globalLoader');
+  if (loader) loader.classList.remove('hidden');
+
+  const safetyTimer = setTimeout(() => {
+    window.location.replace(window.location.pathname);
+  }, 1500);
+
   try {
     if (supabaseClient) {
-      await supabaseClient.auth.signOut();
+      // 🌟 Fix: Force local storage to wipe even if the network is dead
+      await supabaseClient.auth.signOut({ scope: 'local' });
     }
   } catch (error) {
     console.warn('Sign out network error (ignored):', error);
+  } finally {
+    clearTimeout(safetyTimer);
+    currentSupabaseSession = null;
+    currentUserEmail = null;
+    window.username = null;
+    loadGuestCollections();
+    
+    window.location.replace(window.location.pathname);
   }
-
-  // 2. Clear out local state
-  currentSupabaseSession = null;
-  currentUserEmail = null;
-  window.username = null;
-  loadGuestCollections();
-  
-  // 3. Force the page to hard-reset to the pristine guest view
-  window.location.replace(window.location.pathname);
 }
 
 /* ============================================================
@@ -1302,10 +1309,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderBookmarks();
     renderRecentProjects();
   }
-
-  if (supabaseClient) {
+if (supabaseClient) {
     supabaseClient.auth.onAuthStateChange(async (_event, session) => {
-      // 🛑 The safety check: Stop running if the user is logging out!
       if (window.isLoggingOut) return; 
 
       currentSupabaseSession = session || null;
@@ -1320,6 +1325,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+
+  // 🌟 Hide the loader only AFTER everything is painted on the screen
+  setTimeout(() => {
+    const loader = document.getElementById('globalLoader');
+    if (loader) loader.classList.add('hidden');
+  }, 400); // 400ms buffer guarantees the grid is fully drawn
 });
 
 /* ============================================================
