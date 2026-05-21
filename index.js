@@ -1083,23 +1083,15 @@ window.addEventListener('resize', () => {
   renderGrid();
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
   renderGrid();
 });
-<<<<<<< HEAD
->>>>>>> origin/Main
-=======
->>>>>>> origin/Main
-=======
->>>>>>> 75acb055e2ac6946cb6a651bd0d0beac7773d06f
-=======
+
 /* ============================================================
    EXPOSE FUNCTIONS TO GLOBAL SCOPE
    (Required for HTML onclick handlers)
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
->>>>>>> origin/Main
+
