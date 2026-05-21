@@ -1171,6 +1171,90 @@ description:
 }
 
 };
+
+const trendLinks={
+
+electronegativity:
+"https://en.wikipedia.org/wiki/Electronegativity",
+
+atomicRadius:
+"https://en.wikipedia.org/wiki/Atomic_radius",
+
+ionizationEnergy:
+"https://en.wikipedia.org/wiki/Ionization_energy",
+
+mass:
+"https://en.wikipedia.org/wiki/Atomic_mass"
+
+};
+
+const trendAnalysis={
+
+electronegativity:{
+
+period:
+"↑ Increases across periods",
+
+group:
+"↓ Decreases down groups",
+
+reason:
+"Effective nuclear charge increases causing stronger electron attraction.",
+
+example:
+"F > O > N"
+
+},
+
+atomicRadius:{
+
+period:
+"↓ Decreases across periods",
+
+group:
+"↑ Increases down groups",
+
+reason:
+"Extra shells enlarge atoms down groups.",
+
+example:
+"Cs > K > Na"
+
+},
+
+ionizationEnergy:{
+
+period:
+"↑ Increases across periods",
+
+group:
+"↓ Decreases down groups",
+
+reason:
+"Smaller atoms hold electrons more strongly.",
+
+example:
+"Ne > F > O"
+
+},
+
+mass:{
+
+period:
+"Generally increases",
+
+group:
+"Generally increases",
+
+reason:
+"More protons + neutrons",
+
+example:
+"H < Fe < Au"
+
+}
+
+};
 const trendFilter =
 document.getElementById(
 "trendFilter"
@@ -1194,6 +1278,16 @@ document.getElementById(
 const trendExtremes =
 document.getElementById(
 "trendExtremes"
+);
+
+const trendPopupContainer =
+document.getElementById(
+"trendPopupContainer"
+);
+
+const analysisContent =
+document.getElementById(
+"analysisContent"
 );
 
 
@@ -1226,31 +1320,34 @@ document.querySelectorAll(
 
 
 /* RESET */
-
 if(property==="none"){
 
-trendInfo.classList.add(
-"hidden"
-);
+
+trendPopupContainer.style.display =
+"none";
+
 
 cards.forEach(card=>{
 
 card.style.background="";
+
 card.style.border="none";
-card.style.boxShadow="none";
+
+card.style.boxShadow="";
 
 });
 
+
 return;
+
 }
 
 
 
-/* SHOW INFO */
 
-trendInfo.classList.remove(
-"hidden"
-);
+
+trendPopupContainer.style.display =
+"flex";
 
 
 
@@ -1263,6 +1360,81 @@ trendDescription.innerText =
 trendDefinitions[
 property
 ].description;
+
+document
+.getElementById(
+"wikiLink"
+)
+
+.href =
+
+trendLinks[property];
+
+analysisContent.innerHTML=
+
+`
+<div class="analysis-section">
+
+<div class="analysis-heading">
+
+Across Periods
+
+</div>
+
+<div class="analysis-up">
+
+${trendAnalysis[property].period}
+
+</div>
+
+</div>
+
+
+
+<div class="analysis-section">
+
+<div class="analysis-heading">
+
+Down Groups
+
+</div>
+
+<div class="analysis-down">
+
+${trendAnalysis[property].group}
+
+</div>
+
+</div>
+
+
+
+<div class="analysis-section">
+
+<div class="analysis-heading">
+
+Reason
+
+</div>
+
+${trendAnalysis[property].reason}
+
+</div>
+
+
+
+<div class="analysis-section">
+
+<div class="analysis-heading">
+
+Example
+
+</div>
+
+${trendAnalysis[property].example}
+
+</div>
+`;
 
 
 
@@ -1492,11 +1664,8 @@ ${element[actualProperty]}
 
 });
 document
-
 .getElementById(
-
 "closeTrendInfo"
-
 )
 
 .addEventListener(
@@ -1505,12 +1674,26 @@ document
 
 ()=>{
 
+trendPopupContainer.style.display =
+"none";
+
 trendInfo.classList.add(
-
 "hidden"
-
 );
 
-});
+document
+.getElementById(
+"trendAnalysis"
+)
 
+<<<<<<< HEAD
+>>>>>>> origin/Main
+=======
+.classList.add(
+"hidden"
+);
+
+trendFilter.value="none";
+
+});
 >>>>>>> origin/Main
