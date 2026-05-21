@@ -464,34 +464,28 @@
         }
 
         // ---- Physical keyboard → paper ----
-document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace') {
+                e.preventDefault();
+                deleteCharFromPaper();
+                flashKey('BACKSPACE');
+                return;
+            }
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                paperContent += '\n';
+                typewriterText.textContent = paperContent;
+                scrollPaperToBottom();
+                playReturn();
+                flashKey('ENTER');
+                return;
+            }
+            if (e.key.length === 1) {
+                e.preventDefault();
+                addCharToPaper(e.key.toUpperCase());
+            }
+        });
 
-    // Prevent typing directly inside input field
-    e.preventDefault();
-
-    if (e.key === 'Backspace') {
-        deleteCharFromPaper();
-        flashKey('BACKSPACE');
-        return;
-    }
-
-    if (e.key === 'Enter') {
-        paperContent += '\n';
-        typewriterText.textContent = paperContent;
-        scrollPaperToBottom();
-        playReturn();
-        flashKey('ENTER');
-        return;
-    }
-
-    // Allow both uppercase and lowercase typing
-    if (e.key.length === 1) {
-        addCharToPaper(e.key);
-
-        // Highlight matching virtual key
-        flashKey(e.key.toUpperCase());
-    }
-});
         // ---- On-screen keys → paper ----
         document.querySelectorAll('.key').forEach(key => {
             key.addEventListener('mousedown', (e) => {

@@ -70,10 +70,20 @@ const generateCaptcha = () => {
                 </div>
             `;
             captchaContainer.querySelectorAll('.image-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    textInput.value = images.find(img => img.emoji === option.textContent).name;
-                });
-            });
+    option.addEventListener('click', () => {
+        captchaContainer.querySelectorAll('.image-option').forEach(img => {
+            img.classList.remove('selected');
+        });
+
+        option.classList.add('selected');
+
+        const selectedAnimal = images.find(
+            img => img.emoji === option.textContent
+        ).name;
+
+        option.dataset.selected = selectedAnimal;
+    });
+});
             break;
             case 'audio':
             currentCaptcha = generateTextCaptcha();
@@ -130,7 +140,16 @@ const verifyCaptcha = () => {
       return;
   }
 
-  const userInput = textInput.value.trim().toLowerCase();
+  let userInput;
+
+if (captchaTypeSelect.value === 'image') {
+    const selectedOption = document.querySelector('.image-option.selected');
+    userInput = selectedOption
+        ? selectedOption.dataset.selected.toLowerCase()
+        : "";
+} else {
+    userInput = textInput.value.trim().toLowerCase();
+}
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
   
   if (isCorrect) {
