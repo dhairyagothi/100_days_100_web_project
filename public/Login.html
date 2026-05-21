@@ -1,421 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
-    <link rel="icon" href="favv.png" type="image/x-icon" />
-    
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-
-      body {
-        color: #fff;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #4a90e2, #1abc9c);
-      }
-
-      /* Navbar */
-      .navbar {
-        width: 100%;
-        padding: 15px 30px;
-        background-color: #1c2833;
-        border-bottom: 2px solid #34495e;
-      }
-
-      .nav-link {
-        text-decoration: none;
-        color: #f39c12;
-        font-size: 1rem;
-        font-weight: bold;
-        transition: color 0.3s;
-      }
-
-      .nav-link:hover {
-        color: #d35400;
-      }
-
-      /* Main Container */
-      .container {
-        width: 90%;
-        max-width: 1200px;
-        min-height: 85vh;
-        margin: 30px auto;
-        display: flex;
-        background: #f0f0f0;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      }
-
-      /* Left Section */
-      .left {
-        flex: 1;
-        background: #f0f0f0;
-        color: #000;
-        padding: 60px 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .subtitle {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #1abc9c;
-        margin-bottom: 15px;
-      }
-
-      .left h1 {
-        font-size: 3rem;
-        line-height: 1.2;
-        margin-bottom: 20px;
-      }
-
-      .highlight {
-        color: #1abc9c;
-      }
-
-      .description {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 30px;
-      }
-
-      .feature-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-      }
-
-      .feature-card {
-        background: white;
-        padding: 12px 18px;
-        border-radius: 12px;
-        font-weight: 500;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Right Form Section */
-      .form-box {
-        flex: 1;
-        background: #111;
-        color: white;
-        padding: 40px 40px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .form-box h2 {
-        font-size: 2rem;
-        margin-bottom: 5px;
-      }
-
-      .form-subtitle {
-        color: #bbb;
-        margin-bottom: 20px;
-      }
-
-      /* Form Styles & Input Spacing Fixes */
-      #signupForm {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-      }
-
-      .form-group {
-        width: 100%;
-      }
-
-      .form-group input {
-        width: 100%;
-        padding: 12px 18px;
-        border: 1px solid transparent;
-        border-radius: 10px;
-        font-size: 1rem;
-        outline: none;
-        background-color: #fff;
-        color: #000;
-      }
-
-      .form-group input:focus {
-        border: 2px solid #1abc9c;
-      }
-
-      /* Action Button */
-      .login-btn {
-        background: #1abc9c;
-        color: white;
-        border: none;
-        padding: 14px;
-        border-radius: 10px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: 0.3s ease;
-        width: 100%;
-        margin-top: 5px;
-        font-weight: 600;
-      }
-
-      .login-btn:hover {
-        background: #16a085;
-        transform: translateY(-2px);
-      }
-
-      /* Toggle Link Text */
-      .signup-text {
-        margin-top: 20px;
-        color: #ccc;
-        text-align: center;
-      }
-
-      .signup-text a {
-        color: #1abc9c;
-        text-decoration: none;
-        font-weight: 600;
-      }
-
-      .signup-text a:hover {
-        text-decoration: underline;
-      }
-
-      /* Back Button */
-      .back-button {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: transform 0.3s;
-      }
-
-      .back-button:hover {
-        transform: scale(1.2);
-      }
-
-      /* Responsive Breakpoint */
-      @media (max-width: 900px) {
-        .container {
-          flex-direction: column;
-          margin: 15px auto;
-        }
-
-        .left,
-        .form-box {
-          width: 100%;
-          padding: 40px 20px;
-        }
-
-        .left h1 {
-          font-size: 2.2rem;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <header class="navbar">
-      <a href="../index.html" class="nav-link">← Back to Home</a>
-    </header>
-
-    <main class="container">
-      <section class="left">
-        <p class="subtitle">Join the Journey</p>
-
-        <h1>
-          Create Your
-          <span class="highlight">Account</span>
-        </h1>
-
-        <p class="description">
-          Thank you for joining us on this exciting journey of creativity and
-          learning. Over the next 100 days, we will build 100 unique web
-          projects together. Whether you're a beginner or an experienced
-          developer, there is something here for everyone to explore, learn, and
-          create.
-        </p>
-
-        <div class="feature-list">
-          <div class="feature-card">🎨 Creative Projects</div>
-          <div class="feature-card">📚 Learn Daily</div>
-          <div class="feature-card">🚀 Build Your Skills</div>
-        </div>
-      </section>
-
-      <section class="form-box">
-        <button
-          type="button"
-          class="back-button"
-          onclick="window.location.href = '../index.html'"
-          aria-label="Back to Home"
-        >
-          ←
-        </button>
-
-        <h2>Sign Up</h2>
-        <p class="form-subtitle">
-          Create your account to start building amazing web projects.
-        </p>
-
-        <form id="signupForm">
-          <div class="form-group">
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Full Name"
-              autocomplete="name"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Username"
-              autocomplete="username"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email Address"
-              autocomplete="email"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
-              autocomplete="new-password"
-              required
-            />
-          </div>
-
-          <button type="submit" class="login-btn">Sign Up</button>
-        </form>
-
-        <p class="signup-text">
-          Already have an account?
-          <a href="./login.html">Login</a>
-        </p>
-      </section>
-    </main>
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="login.css">
+
   <link rel="icon" href="favv.png" type="image/x-icon" />
+  <link rel="stylesheet" href="login.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 </head>
+
 <body>
   <header class="navbar">
-    <a href="../index.html" class="nav-link">Back to Home</a>
+    <a href="../index.html" class="nav-link">← Back to Home</a>
   </header>
+
   <div class="container">
+
+    <!-- Left Section -->
     <div class="left-section">
-      <button class="back-button" onclick="window.location.href = '../index.html';">
-        <svg xmlns="Imagemain.png" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
+
+      <button
+        class="back-button"
+        onclick="window.location.href='../index.html'"
+      >
+        ←
       </button>
+
       <h1 class="animated-heading">
-        100 Days 100 Web Projects! <span class="blinking-cursor">|</span>
+        100 Days 100 Web Projects!
       </h1>
+
       <p class="description">
         Dive in to explore a user-friendly interface designed for secure and seamless access to your account.
       </p>
+
       <form id="loginForm" class="login-form">
-        <input type="text" id="username" placeholder="Username" class="input-field" required>
-        <input type="password" id="password" placeholder="Password" class="input-field" required>
-        <button type="submit" class="submit-button">Login</button>
-      </form><br>
+
+        <input
+          type="text"
+          id="username"
+          placeholder="Username"
+          class="input-field"
+          required
+        />
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          class="input-field"
+          required
+        />
+
+        <button type="submit" class="submit-button">
+          Login
+        </button>
+
+      </form>
+
       <p class="already-signed-up">
-        Not signed up? <a href="./signup.html">Sign Up</a>
+        Not signed up?
+        <a href="./signup.html">Sign Up</a>
       </p>
+
     </div>
 
     <!-- Right Section -->
     <div class="right-section">
-      <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop" alt="Image 1" class="transition-image">
-      <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop" alt="Image 2" class="transition-image">
-      <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop" alt="Image 3" class="transition-image">
-      <img src="https://static.vecteezy.com/system/resources/previews/011/153/366/original/3d-web-developer-working-on-project-illustration-png.png" alt="Image 4" class="transition-image">
-      <img src="https://labs.sogeti.com/wp-content/uploads/sites/2/2024/01/case-studies-illustration-digital-services-a.png" alt="Image 5" class="transition-image">
+
+      <img
+        src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop"
+        alt="Coding"
+        class="transition-image"
+      />
+
     </div>
+
   </div>
 
-
-    <script>
-      document.getElementById('signupForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const name = document.getElementById("name").value.trim();
-        const username = document.getElementById("username").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        if (name && username && email && password) {
-          // Save username in localStorage
-          localStorage.setItem("username", username);
-
-
-          // Redirect to login page or dashboard after successful signup
-          window.location.href = "./login.html";
-        } else {
-          alert("Please fill in all fields.");
-        }
-      });
-    </script>
-  </body>
-</html>
-
-    // Login form submission
+  <script>
     document.getElementById("loginForm").addEventListener("submit", function (event) {
       event.preventDefault();
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
 
       if (username && password) {
         localStorage.setItem("username", username);
-        window.location.pathname = "/index.html";
+        window.location.href = "../index.html";
       } else {
-        alert("Invalid credentials. Please try again.");
+        alert("Please fill in all fields.");
       }
     });
   </script>
+
 </body>
 </html>
-
