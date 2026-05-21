@@ -260,6 +260,7 @@ The website features:
 | 122 | AstronomyDashboard | HTML, CSS, JS | 📗Education | [View Demo](https://100-days-100-web-project-m2op.vercel.app/index.html) |
 | 123 | Pomodoro Timer | HTML, CSS, JS | 🍅 Productivity Tool | [View Demo](https://100-days-100-web-project.vercel.app/public/Pomodoro_Timer/index.html) |
 | 127 | Reaction Time Test | HTML, CSS, JS | ⚙️ Simulator  | [View Demo](https://100-days-100-web-project.vercel.app/public/reaction-time-tester/main.html) |
+| 128 | Minesweeper Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Minesweeper_Game) |
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 25+ interactive games and puzzles
