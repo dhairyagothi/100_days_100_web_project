@@ -1,14 +1,11 @@
-// ─── DOM References ────────────────────────────────────────────────────────────
+
 const notesContainer = document.getElementById('notes-container');
 const documentsList = document.querySelector('.documents-list');
 const pdfMessage = document.getElementById('pdfMessage');
 const taskInput = document.getElementById('task-input');
 const taskTypeSelect = document.getElementById('task-type');
 
-// ─── Theme State ───────────────────────────────────────────────────────────────
-// Maps theme id → gradient for body + card fallback colour for default cards
 const THEMES = {
-<<<<<<< HEAD
   sunset: {
     body: "linear-gradient(135deg, #3b0764, #6b21a8)",
     card: "#8b5fbf",
@@ -35,50 +32,23 @@ const THEMES = {
   },
 };
 
-let currentTheme = "sunset"; // default
-=======
-  theme1: {
-    body: 'linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)',
-    card: 'rgba(232, 221, 227, 1)',
-  },
-  theme2: {
-    body: 'linear-gradient(135deg, #e4afcb 0%, #e2c58b 50%, #7edbdc 100%)',
-    card: '#e4afcb',
-  },
-  theme3: {
-    body: 'linear-gradient(135deg, #39db8c 0%, #a0c559 30%, #d1ab51 55%, #e6936b 80%, #df868d 100%)',
-    card: '#df868d',
-  },
-  theme4: {
-    body: 'linear-gradient(135deg, rgb(120,25,105) 0%, rgb(197,211,201) 100%)',
-    card: 'rgb(197, 211, 201)',
-  },
-  theme5: {
-    body: 'linear-gradient(135deg, #b92b27 0%, #1565c0 100%)',
-    card: '#c0cfe8',
-  },
-};
-
-let currentTheme = 'theme1'; // default
+let currentTheme = "sunset"; 
 
 function updateStats() {
-  const total = document.querySelectorAll('.notes').length;
+  const allTasks = document.querySelectorAll('.notes');
+  const completedTasks = document.querySelectorAll('.task-text.completed');
 
-  const completed = document.querySelectorAll('.completed').length;
-
+  const total = allTasks.length;
+  const completed = completedTasks.length;
   const pending = total - completed;
 
   document.getElementById('totalTasks').innerText = total;
-
   document.getElementById('completedTasks').innerText = completed;
-
   document.getElementById('pendingTasks').innerText = pending;
 
   const progress = total === 0 ? 0 : (completed / total) * 100;
-
   document.getElementById('progressFill').style.width = `${progress}%`;
 }
->>>>>>> upstream/main
 
 // ─── Task Type colour map ──────────────────────────────────────────────────────
 // Keeps track of user-chosen type colours so they survive theme switches
@@ -326,19 +296,22 @@ function Add() {
   });
 
   delBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    note.style.animation = 'none';
-    note.style.transition = 'opacity 0.25s, transform 0.25s';
-    note.style.opacity = '0';
-    note.style.transform = 'scale(0.92)';
-    setTimeout(() => {
-      note.remove();
+  e.stopPropagation();
 
-      updateStats();
+  note.style.animation = 'none';
+  note.style.transition = 'opacity 0.25s, transform 0.25s';
+  note.style.opacity = '0';
+  note.style.transform = 'scale(0.92)';
 
-      showToast('Task Deleted');
-    }, 250);
-  });
+  setTimeout(() => {
+    note.remove();
+
+    updateStats();        // ✅ update numbers
+    saveTaskState();      // ✅ update localStorage (VERY IMPORTANT)
+
+    showToast('Task Deleted');
+  }, 250);
+});
 
   // Type badge (only if type was selected)
   if (selectedType) {
@@ -364,7 +337,7 @@ function Add() {
   noteWrapper.appendChild(taskText);
   noteWrapper.appendChild(actions);
   note.insertBefore(noteWrapper, note.firstChild);
-  notesContainer.appendChild(note);
+  document.getElementById('pending-list').appendChild(note);
 
   updateStats();
 
@@ -410,25 +383,6 @@ function applyTheme(themeKey) {
   });
 }
 
-<<<<<<< HEAD
-
-=======
-function c1() {
-  applyTheme('theme1');
-}
-function c2() {
-  applyTheme('theme2');
-}
-function c3() {
-  applyTheme('theme3');
-}
-function c4() {
-  applyTheme('theme4');
-}
-function c5() {
-  applyTheme('theme5');
-}
->>>>>>> upstream/main
 
 // ─── PDF Export ────────────────────────────────────────────────────────────────
 function saveAsPDF() {
@@ -507,6 +461,9 @@ function deletePDF(button) {
 }
 
 function showPDFMessage() {
+  const pdfMessage = document.getElementById('pdfMessage');
+  if (!pdfMessage) return;
+
   pdfMessage.style.display = 'flex';
   setTimeout(() => {
     pdfMessage.style.display = 'none';
@@ -524,46 +481,7 @@ function showDocuments() {
   document.getElementById('documents-tab').style.display = 'block';
 }
 
-function c3() {
-  let image = 'linear-gradient(90deg, #39db8c, #a0c559, #d1ab51, #e6936b, #df868d)';
-  document.body.style.background = image;
-  currentTheme = "theme3";
-  updateNotesTheme();
-}
-
-function c4() {
-  let image = 'linear-gradient(90deg,rgb(120, 25, 105),rgb(197, 211, 201))';
-  document.body.style.background = image;
-  currentTheme = "theme4";
-  updateNotesTheme();
-}
-
-function c5() {
-  let image = 'linear-gradient(90deg, #b92b27, #1565c0)';
-  document.body.style.background = image;
-  currentTheme = "theme5";
-  updateNotesTheme();
-}
-
-function updateNotesTheme() {
-  const notes = document.querySelectorAll(".notes");
-  notes.forEach((note) => {
-    if (note.style.backgroundColor === "white") {
-      note.style.backgroundColor = currentTheme === "theme1"
-        ? "rgba(232,221,227,1)"
-        : currentTheme === "theme2"
-          ? "#e4afcb"
-          : currentTheme === "theme3"
-            ? "#39db8c"
-            : currentTheme === "theme4"
-              ? "rgb(120, 25, 105)"
-              : "#b92b27";
-    }
-  });
-}
-/* =========================
-   KANBAN DRAG DROP FEATURE
-   (Append below existing code)
+  
 
 // Make all newly created notes draggable
 function enableDragForNotes() {
@@ -626,6 +544,23 @@ function dropTask(event, sectionId) {
 
   if (draggedTask) {
     document.getElementById(sectionId).appendChild(draggedTask);
+
+    const taskText = draggedTask.querySelector('.task-text');
+    const tickBtn = draggedTask.querySelector('button:first-child'); // ✅ FIXED
+
+    if (sectionId === 'completed-list') {
+      taskText.classList.add('completed');
+      tickBtn.style.background = '#4caf50';
+      tickBtn.style.color = 'white';
+      tickBtn.style.borderColor = '#4caf50';
+    } else {
+      taskText.classList.remove('completed');
+      tickBtn.style.background = 'none';
+      tickBtn.style.color = '#111';
+      tickBtn.style.borderColor = '#555';
+    }
+
+    updateStats();
     saveTaskState();
   }
 }
@@ -655,10 +590,12 @@ function loadTaskState() {
       container.innerHTML = "";
 
       savedTasks.forEach(taskHTML => {
-        container.innerHTML += taskHTML;
-      });
+  container.innerHTML += taskHTML;
+});   
     }
   });
+  reattachEvents();   
+  updateStats();   
 
   enableDragForNotes();
 }
@@ -668,3 +605,61 @@ window.onload = function () {
   loadTaskState();
   enableDragForNotes();
 };
+
+function reattachEvents() {
+  const notes = document.querySelectorAll('.notes');
+
+  notes.forEach((note) => {
+    const delBtn = note.querySelector('.delete-btn');
+    const tickBtn = note.querySelector('button:first-child');
+    const taskText = note.querySelector('.task-text');
+
+    // ✅ FIX: Sync UI based on column
+    const parentId = note.parentElement.id;
+    if (parentId === 'completed-list') {
+      taskText.classList.add('completed');
+      tickBtn.style.background = '#4caf50';
+      tickBtn.style.color = 'white';
+      tickBtn.style.borderColor = '#4caf50';
+    } else {
+      taskText.classList.remove('completed');
+      tickBtn.style.background = 'none';
+      tickBtn.style.color = '#111';
+      tickBtn.style.borderColor = '#555';
+    }
+
+    // DELETE BUTTON
+    if (delBtn) {
+      delBtn.onclick = function (e) {
+        e.stopPropagation();
+
+        note.style.opacity = '0';
+        note.style.transform = 'scale(0.92)';
+
+        setTimeout(() => {
+          note.remove();
+          updateStats();
+          saveTaskState();
+          showToast('Task Deleted');
+        }, 250);
+      };
+    }
+
+    // TICK BUTTON
+    if (tickBtn && taskText) {
+      tickBtn.onclick = function (e) {
+        e.stopPropagation();
+
+        taskText.classList.toggle('completed');
+        const isCompleted = taskText.classList.contains('completed');
+
+        tickBtn.style.background = isCompleted ? '#4caf50' : 'none';
+        tickBtn.style.color = isCompleted ? 'white' : '#111';
+        tickBtn.style.borderColor = isCompleted ? '#4caf50' : '#555';
+
+        updateStats();
+        saveTaskState();
+      };
+    }
+  });
+}
