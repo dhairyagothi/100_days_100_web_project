@@ -14,35 +14,38 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar">
-        <a class="navbar-brand" href="#">WEB TEMPLATE</a>
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Service List</a></li>
+            <ul class="navbar-nav ml-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#services">Service List</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Case Study</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Styleguide</a></li>
+                <li class="nav-item nav-auth-divider"></li>
+                <li class="nav-item"><a class="nav-link nav-signin-link" href="login.html">Sign In</a></li>
+                <li class="nav-item"><a class="nav-link nav-signup-btn" href="signup.html">Sign Up</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="hero-section">
+    <header class="hero-section" id="home">
         <div class="container text-center">
             <h1>Best Way to Grow Your Brand</h1>
             <p>Save time and increase your search rank on Google.</p>
-            <a href="#" class="btn btn-primary">More About Us</a>
-            <a href="#" class="btn btn-secondary">View Services</a>
+            <a href="#services" class="btn btn-primary">More About Us</a>
+            <a href="#services" class="btn btn-secondary">View Services</a>
         </div>
     </header>
 
     <!-- Services Section -->
-    <section class="services-section py-5">
+    <section class="services-section py-5" id="services">
         <div class="container text-center">
             <h2>Services We Provide</h2>
             <p>Get your website on the first page of Google and attract thousands of your customers.</p>
@@ -82,7 +85,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer-section">
+    <footer class="footer-section" id="contact">
         <div class="container text-center">
             <div class="row">
                 <div class="col-md-4">
