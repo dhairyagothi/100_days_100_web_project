@@ -230,7 +230,7 @@ function matchesTechStack(projectTags) {
   
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  return techStackFilters.every(filter => tagsLower.includes(normalizeTech(filter)));
 }
 
 
@@ -392,6 +392,7 @@ function generateReadme() {
    RENDER PROJECT GRID
    ============================================================ */
 let activeFilter = 'all';
+let activeDifficulty = 'all';
 let searchQuery = '';
 
 function renderGrid() {
@@ -400,19 +401,22 @@ function renderGrid() {
   if (!grid) return;
 
   const filtered = PROJECTS.filter(([day, name, , tags, cat]) => {
-    // 1. Category filter (beginner/intermediate)
-    const matchesFilter = activeFilter === 'all' || cat === activeFilter;
-    
-    // 2. Name/Day search
+    // 1. Category filter (game, clone, tool, ui, api)
+    const matchesFilter = activeFilter === 'all' || tags?.includes(activeFilter);
+
+    // 2. Difficulty filter (beginner, intermediate, advanced)
+    const matchesDifficulty =
+      activeDifficulty === 'all' || cat?.toLowerCase() === activeDifficulty;
+
+    // 3. Name/Day search
     const q = searchQuery.toLowerCase();
     const matchesSearch =
       !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
-    
-    // 3. Technology stack filter (NEW)
+
+    // 4. Technology stack filter
     const matchesTech = matchesTechStack(tags);
-    
-    // Combine all three filters
-    return matchesFilter && matchesSearch && matchesTech;
+
+    return matchesFilter && matchesDifficulty && matchesSearch && matchesTech;
   });
 
   console.log('Filtered projects:', filtered.length, 'out of', PROJECTS.length); // Debug log
@@ -815,12 +819,21 @@ document.addEventListener('click', (e) => {
    FILTER CHIPS
    ============================================================ */
 function initFilterChips() {
-  const chips = document.querySelectorAll('.chip[data-filter]');
-  chips.forEach((chip) => {
+  document.querySelectorAll('.chip[data-filter]').forEach((chip) => {
     chip.addEventListener('click', () => {
-      chips.forEach((c) => c.classList.remove('active'));
+      document.querySelectorAll('.chip[data-filter]').forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
       activeFilter = chip.dataset.filter;
+      currentPage = 1;
+      renderGrid();
+    });
+  });
+
+  document.querySelectorAll('.chip[data-difficulty]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-difficulty]').forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeDifficulty = chip.dataset.difficulty;
       currentPage = 1;
       renderGrid();
     });
@@ -867,7 +880,7 @@ function initTechStackSearch() {
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
         
         // Update filters array (already lowercase, no need to normalize yet)
-        techStackFilters = [...new Set(techs)]; // Remove duplicates efficiently
+        techStackFilters = [...new Set(techs.map(t => normalizeTech(t)))];
         
         console.log('Tech filters active:', techStackFilters); // Debug log
         
@@ -921,15 +934,23 @@ function syncProjectCounts() {
 
 // Clear button functionality
 if (searchInput && clearBtn) {
+  const toggleClearBtn = () => {
+    clearBtn.classList.toggle('visible', searchInput.value.length > 0);
+  };
+
   clearBtn.addEventListener("click", () => {
     searchInput.value = "";
+    toggleClearBtn();
     searchInput.dispatchEvent(new Event("input"));
     searchInput.focus();
   });
 
+  searchInput.addEventListener("input", toggleClearBtn);
+
   searchInput.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       searchInput.value = "";
+      toggleClearBtn();
       searchInput.dispatchEvent(new Event("input"));
       searchInput.focus();
     }

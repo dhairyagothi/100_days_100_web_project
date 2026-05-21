@@ -748,6 +748,34 @@ body.light-mode .navbar {
   background: var(--accent-dim);
 }
 
+.clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 1.125rem;
+  line-height: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s var(--ease);
+  z-index: 10;
+  border-radius: 4px;
+}
+
+.clear-btn:hover {
+  color: var(--text-primary);
+}
+
+.clear-btn.visible {
+  display: flex;
+}
+
 /* Active tech filters display */
 .active-tech-filters {
   display: flex;
@@ -900,6 +928,10 @@ body.light-mode .navbar {
   color: var(--accent);
   box-shadow: 0 4px 14px rgba(59, 130, 246, 0.06);
   text-shadow: 0 0 6px rgba(59, 130, 246, 0.06);
+}
+
+.difficulty-chips {
+  margin-top: 0.75rem;
 }
 
 .chip-count {
