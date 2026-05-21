@@ -5,15 +5,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Weather App</title>
-    <link rel="icon" href="logo.png">
+    <script>
+        (function () {
+            var path = window.location.pathname;
+            if (/\/index\.html?(\?|#|$)/i.test(path)) {
+                path = path.replace(/index\.html?(\?|#|$)/i, '');
+            }
+            if (!path.endsWith('/')) {
+                path += '/';
+            }
+
+            var baseHref = new URL(path, window.location.href).href;
+            document.write('<link rel="stylesheet" href="' + baseHref + 'style.css">');
+        }());
+    </script>
+    <link rel="icon" href="nice-beach-suning-weather-hd-wallapaper.jpg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
 </head>
 
-<body background="nice-beach-suning-weather-hd-wallapaper.jpg">
+<body background="weather.jpg">
     
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">⛅Weather App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -31,16 +44,11 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-
-                        </a>
+                            aria-expanded="false">Cities</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Delhi</a></li>
-                            <li><a class="dropdown-item" href="#">Seattle</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Bangalore</a></li>
+                            <li><a class="dropdown-item" href="#" data-city="Delhi">Delhi</a></li>
+                            <li><a class="dropdown-item" href="#" data-city="Seattle">Seattle</a></li>
+                            <li><a class="dropdown-item" href="#" data-city="Bengaluru">Bangalore</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -49,24 +57,31 @@
                 </ul>
                 <form class="d-flex" role="search">
                     <input  id="city" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required>
-                    <button class="btn btn-outline-success" type="submit" id="submit">Search</button>
+                    <button class="btn btn-outline-light" type="submit" id="submit">Search</button>
                 </form>
             </div>
           </div>
+                </div>
+        </nav>
+
+    <section class="hero container weather-status-wrap">
+        <div class="weather-status" id="statusMessage" aria-live="polite"></div>
+        <div class="weather-city" aria-live="polite">
+            <p class="weather-city-label">Weather for</p>
+            <h1 id="pageTitle" class="weather-page-title">
+                <span id="cityName">Search for a city</span>
+            </h1>
+            <p class="weather-subtitle">
+                Search for a city to get the latest temperature, humidity, wind, and sunrise details.
+            </p>
         </div>
+    </section>
 
-
-    <!-- Loading Spinner -->
-    <div id="loading" style="display: none;">
-        <div class="spinner"></div>
-        <p>Loading weather data...</p>
-    </div>
-
-        <main>
+        <main class="container py-4">
             <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
                 <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3" style="background-color:#0d6efd; color: white;">
+                    <div class="card mb-4 rounded-3 shadow-sm border-dark">
+                        <div class="card-header py-3 text-bg-dark border-dark">
                             <h4 class="my-0 fw-normal">Temperatures</h4>
                         </div>
                         <div class="card-body">
@@ -78,13 +93,13 @@
                                 <li>Max Temperature is <span id="max_temp"></span></li>
                                
                             </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-outline-primary" style="background-color: #0d6efd;color: white;">Temperature Info</button>
+                            <button type="button" class="w-100 btn btn-lg btn-dark">Temperature Info</button>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3" style="background-color: #0d6efd;color: white;">
+                    <div class="card mb-4 rounded-3 shadow-sm border-dark">
+                        <div class="card-header py-3 text-bg-dark border-dark">
                             <h4 class="my-0 fw-normal">Humidity Info</h4>
                         </div>
                         <div class="card-body">
@@ -95,13 +110,13 @@
                                 <li>Feels like <span id="feels_like"></span></li>
                                 <li>Humidity is <span id="humidity"></span></li>
                             </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-primary">Humidity Info</button>
+                            <button type="button" class="w-100 btn btn-lg btn-dark">Humidity Info</button>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                        <div class="card-header py-3 text-bg-primary border-primary">
+                    <div class="card mb-4 rounded-3 shadow-sm border-dark">
+                        <div class="card-header py-3 text-bg-dark border-dark">
                             <h4 class="my-0 fw-normal">Sun Info</h4>
                         </div>
                         <div class="card-body">
@@ -114,16 +129,16 @@
                                 <li>Sunset Time is <span id="sunset"></span></li>
                                 
                             </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-primary">Wind Info</button>
+                            <button type="button" class="w-100 btn btn-lg btn-dark">Wind Info</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <h2 class="display-6 text-center mb-4">Weather of other Commom Places</h2>
+            <h2 class="display-6 text-center mb-4" style="color: white;">Weather of other Common Places</h2>
 
             <div class="table-responsive">
-                <table class="table text-center">
+                <table class="table text-center table-dark">
                     <thead>
                         <tr>
                             <th style="width: 34%;"></th>
@@ -141,7 +156,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row" class="text-start">Bangalore</th>
+                            <th scope="row" class="text-start">Bengaluru</th>
                              
                             <td>40</td>
                             <td>23</td>
@@ -232,7 +247,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+    <script>
+        (function () {
+            var path = window.location.pathname;
+            if (/\/index\.html?(\?|#|$)/i.test(path)) {
+                path = path.replace(/index\.html?(\?|#|$)/i, '');
+            }
+            if (!path.endsWith('/')) {
+                path += '/';
+            }
+
+            var baseHref = new URL(path, window.location.href).href;
+            var script = document.createElement('script');
+            script.src = baseHref + 'script.js';
+            document.body.appendChild(script);
+        }());
+    </script>
 </body>
 
 </html>
