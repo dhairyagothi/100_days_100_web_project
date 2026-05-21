@@ -1,20 +1,24 @@
 /* ============================================================
    CONFIGURATION
    ============================================================ */
-if (typeof REPO_OWNER === 'undefined') {
-  window.REPO_OWNER = 'dhairyagothi';
-  window.REPO_NAME = '100_days_100_web_project';
-}
-window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
-window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
+
+// Repo configuration (safe fallback)
+window.REPO_OWNER = window.REPO_OWNER?.trim() || 'dhairyagothi';
+window.REPO_NAME = window.REPO_NAME?.trim() || '100_days_100_web_project';
+
+/* ============================================================
+   APP STATE
+   ============================================================ */
 
 let currentPage = 1;
-//for the number of visible projects in one page.
+
+// number of projects per page (updated dynamically later)
 let itemsPerPage = 9;
-let projectData = [];
-let filteredProjectData = [];
-let currentCategory = 'all';
-let currentDifficulty = 'all';
+
+// UI state (used in filtering/search)
+let activeFilter = 'all';
+let searchQuery = '';
+
 
 const PROJECT_DATA = [
   ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
@@ -123,7 +127,7 @@ const PROJECT_DATA = [
   ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
   ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
   ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
+  ['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
   ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
@@ -197,45 +201,66 @@ async function fetchRepoStats() {
   try {
     const [repoRes, prRes] = await Promise.all([
       fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
     ]);
-    if (!repoRes.ok || !prRes.ok) throw new Error('Stats fetch failed');
+
+    if (!repoRes.ok || !prRes.ok) throw new Error('API failed');
+
     const repo = await repoRes.json();
     const prs = await prRes.json();
 
     const set = (id, val) => {
       const el = document.getElementById(id);
-      if (el) el.textContent = Number(val).toLocaleString();
+      if (el) el.textContent = Number(val || 0).toLocaleString();
     };
-    set('starCount', repo.stargazers_count);
-    set('forkCount', repo.forks_count);
-    set('issueCount', repo.open_issues_count - prs.total_count);
-    set('prCount', prs.total_count);
+
+    set('starCount', repo.stargazers_count || 0);
+    set('forkCount', repo.forks_count|| 0);
+
+    const openIssues = repo.open_issues_count || 0;
+    const prCount = prs.total_count ?? 0;
+
+    set('issueCount', Math.max(0, openIssues - prCount));
+    set('prCount', prCount);
+
   } catch (e) {
     console.warn('GitHub stats unavailable:', e.message);
+
+    ['starCount', 'forkCount', 'issueCount', 'prCount'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '—';
+    });
   }
 }
 
 function generateReadme() {
+  if (!Array.isArray(PROJECTS)) {
+  console.error('PROJECTS is not defined correctly');
+  return;
+}
   try {
     const lines = [];
     lines.push('# 100 Days · 100 Web Projects');
     lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
     lines.push('');
     lines.push('## Projects');
-    PROJECTS.forEach(([day, name, url, tags, cat]) => {
-      const safeUrl = url || '';
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${cat}_`);
-    });
+PROJECTS.forEach(([day, name, url, tags, cat]) => {
+  const safeUrl = (url && url.trim()) ? url : 'No link available';
+  const safeCat = cat || 'unknown';
+
+  lines.push(`- **${day} — ${name}** — ${safeUrl} — _${safeCat}_`);
+});
 
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
+    a.href = url;
     a.download = 'README.md';
     document.body.appendChild(a);
     a.click();
     a.remove();
-    URL.revokeObjectURL(a.href);
+    URL.revokeObjectURL(url);
+   
   } catch (e) {
     console.error('Failed to generate README:', e);
     alert('Could not generate README. See console for details.');
@@ -245,8 +270,7 @@ function generateReadme() {
 /* ============================================================
    RENDER PROJECT GRID
    ============================================================ */
-let activeFilter = 'all';
-let searchQuery = '';
+
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
@@ -539,7 +563,7 @@ const bookmarkGrid = document.getElementById('bookmarkGrid');
 
 function renderBookmarks() {
   if (!bookmarkGrid) return;
-
+  
   bookmarkGrid.innerHTML = '';
 
   if (bookmarkedProjects.length === 0) {
@@ -557,7 +581,19 @@ function renderBookmarks() {
   visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+  
+const safeTags =
+  typeof tags === 'string'
+    ? tags
+    : Array.isArray(tags)
+    ? tags.join(' ')
+    : '';
+
+const tagsHTML = (safeTags || '')
+  .split(' ')
+  .filter(Boolean)
+  .map((tag) => `<span class="tag">${tag}</span>`)
+  .join('');
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
@@ -608,7 +644,18 @@ function renderRecentProjects() {
   visibleRecent.forEach(([day, name, url, tags, cat]) => {
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+const safeTags =
+  typeof tags === 'string'
+    ? tags
+    : Array.isArray(tags)
+    ? tags.join(' ')
+    : '';
+
+const tagsHTML = (safeTags || '')
+  .split(' ')
+  .filter(Boolean)
+  .map(tag => `<span class="tag">${tag}</span>`)
+  .join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const sourceUrl = getSourceUrl(url);
 
