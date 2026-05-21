@@ -1,11 +1,11 @@
-/* =========================
+/* ==========================================================================
    GOOGLE FONT
-========================= */
+   ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap');
 
-/* =========================
+/* ==========================================================================
    RESET
-========================= */
+   ========================================================================== */
 *{
   margin:0;
   padding:0;
@@ -25,9 +25,9 @@ body{
   color:white;
 }
 
-/* =========================
+/* ==========================================================================
    MAIN CONTAINER
-========================= */
+   ========================================================================== */
 .slider-container{
   width:100%;
   min-height:100vh;
@@ -65,9 +65,9 @@ body{
   }
 }
 
-/* =========================
+/* ==========================================================================
    NAVBAR
-========================= */
+   ========================================================================== */
 .navbar{
   width:100%;
   padding:25px 7%;
@@ -86,13 +86,14 @@ body{
   letter-spacing:4px;
 
   background:linear-gradient(to right,#ffffff,#7aa7ff);
+  background-clip:text;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
 
-/* =========================
+/* ==========================================================================
    HAMBURGER
-========================= */
+   ========================================================================== */
 .hamburger-container{
   position:relative;
 }
@@ -133,9 +134,9 @@ body{
   width:100%;
 }
 
-/* =========================
+/* ==========================================================================
    MINI PLANETS MENU
-========================= */
+   ========================================================================== */
 .planet-mini-list{
   position:absolute;
   top:70px;
@@ -179,18 +180,18 @@ body{
   transform:scale(1.2) rotate(10deg);
   filter:drop-shadow(0 0 12px white);
 }
-
-/* =========================
-   SLIDER
-========================= */
+.mini-planet.active{
+  transform:scale(1.25) rotate(15deg);
+  filter:drop-shadow(0 0 18px #6fa7ff);
+}
+/* ==========================================================================
+   SLIDER / SLIDE
+   ========================================================================== */
 .slider{
   width:100%;
   position:relative;
 }
 
-/* =========================
-   SLIDE
-========================= */
 .slide{
   width:100%;
   min-height:100vh;
@@ -221,9 +222,9 @@ body{
   }
 }
 
-/* =========================
-   CONTENT WRAPPER
-========================= */
+/* ==========================================================================
+   CONTENT WRAPPER & COLUMNS
+   ========================================================================== */
 .content-wrapper{
   width:100%;
 
@@ -233,9 +234,6 @@ body{
   gap:40px;
 }
 
-/* =========================
-   LEFT CONTENT
-========================= */
 .left-col{
   display:flex;
   flex-direction:column;
@@ -266,9 +264,6 @@ body{
   max-width:500px;
 }
 
-/* =========================
-   BUTTON
-========================= */
 .learn-more{
   width:fit-content;
   padding:15px 34px;
@@ -288,46 +283,86 @@ body{
 
 .learn-more:hover{
   transform:translateY(-4px) scale(1.03);
-
-  box-shadow:
-    0 12px 30px rgba(111,167,255,0.4);
+  box-shadow:0 12px 30px rgba(111,167,255,0.4);
 }
 
-/* =========================
-   CENTER PLANET
-========================= */
 .center-col{
   display:flex;
   justify-content:center;
   align-items:center;
 }
 
+/* ==========================================================================
+   PLANET IMAGES & COMBINED ANIMATION LOGIC
+   ========================================================================== */
 .planet-img{
   width:100%;
   max-width:420px;
-
   object-fit:contain;
-
-  animation:floatPlanet 5s ease-in-out infinite;
   filter:drop-shadow(0 0 30px rgba(255,255,255,0.18));
-
-  transition:0.5s;
+  transition:transform 0.5s, filter 0.5s;
+  will-change:transform;
 }
 
-.planet-img:hover{
-  transform:scale(1.05) rotate(6deg);
+/* Combined Keyframes: Vertical Floating + Prograde Rotation */
+@keyframes floatAndRotatePrograde {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(-180deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(-360deg);
+  }
 }
 
-@keyframes floatPlanet{
-  0%{
-    transform:translateY(0px);
+/* Combined Keyframes: Vertical Floating + Retrograde Rotation */
+@keyframes floatAndRotateRetrograde {
+  0% {
+    transform: translateY(0px) rotate(0deg);
   }
-  50%{
-    transform:translateY(-18px);
+  50% {
+    transform: translateY(-18px) rotate(180deg);
   }
-  100%{
-    transform:translateY(0px);
+  100% {
+    transform: translateY(0px) rotate(360deg);
   }
+}
+
+/* Apply specific rotation rates based on user dataset targeted attributes */
+[data-planet="sun"] .planet-img {
+  animation: floatAndRotatePrograde 45s linear infinite;
+}
+[data-planet="mercury"] .planet-img {
+  animation: floatAndRotatePrograde 30s linear infinite;
+}
+[data-planet="venus"] .planet-img {
+  animation: floatAndRotateRetrograde 35s linear infinite; /* Clockwise rotation */
+}
+[data-planet="earth"] .planet-img {
+  animation: floatAndRotatePrograde 25s linear infinite;
+}
+[data-planet="mars"] .planet-img {
+  animation: floatAndRotatePrograde 22s linear infinite;
+}
+[data-planet="jupiter"] .planet-img {
+  animation: floatAndRotatePrograde 12s linear infinite; /* Higher spin velocity */
+}
+[data-planet="saturn"] .planet-img {
+  animation: floatAndRotatePrograde 16s linear infinite;
+}
+[data-planet="neptune"] .planet-img {
+  animation: floatAndRotatePrograde 20s linear infinite;
+}
+
+/* Uranus static ~98-degree physical axial tilt wrapper layout */
+.uranus-tilt-wrapper {
+  transform: rotate(98deg);
+  display: inline-block;
+}
+[data-planet="Uranus"] .planet-img {
+  animation: floatAndRotatePrograde 20s linear infinite;
 }
 
 .planet-large{
@@ -340,9 +375,9 @@ body{
     drop-shadow(0 0 40px #245fff);
 }
 
-/* =========================
-   RIGHT CONTENT
-========================= */
+/* ==========================================================================
+   RIGHT CONTENT & STATS
+   ========================================================================== */
 .right-col{
   display:flex;
   flex-direction:column;
@@ -363,16 +398,13 @@ body{
 
 .stat:hover{
   transform:translateX(8px);
-
   background:rgba(255,255,255,0.1);
 }
 
 .label{
   display:block;
-
   color:#8ca8ff;
   margin-bottom:8px;
-
   font-size:0.85rem;
   letter-spacing:2px;
 }
@@ -382,12 +414,11 @@ body{
   font-weight:600;
 }
 
-/* =========================
+/* ==========================================================================
    CONTROLS
-========================= */
+   ========================================================================== */
 .controls{
   width:100%;
-
   padding:25px 7%;
 
   position:absolute;
@@ -418,7 +449,6 @@ body{
 .control-btn:hover{
   background:white;
   color:#020412;
-
   transform:translateY(-3px);
 }
 
@@ -426,7 +456,6 @@ body{
   letter-spacing:4px;
   color:#9eb8ff;
   font-size:0.9rem;
-
   animation:scrollBlink 1.8s infinite;
 }
 
@@ -439,11 +468,10 @@ body{
   }
 }
 
-/* =========================
-   TABLET
-========================= */
+/* ==========================================================================
+   RESPONSIVE DESIGN: TABLET (max-width: 1024px)
+   ========================================================================== */
 @media(max-width:1024px){
-
   .content-wrapper{
     grid-template-columns:1fr;
     text-align:center;
@@ -482,11 +510,10 @@ body{
   }
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* ==========================================================================
+   RESPONSIVE DESIGN: MOBILE (max-width: 768px)
+   ========================================================================== */
 @media(max-width:768px){
-
   .navbar{
     padding:20px 5%;
   }
@@ -546,11 +573,10 @@ body{
   }
 }
 
-/* =========================
-   SMALL MOBILE
-========================= */
+/* ==========================================================================
+   RESPONSIVE DESIGN: SMALL MOBILE (max-width: 480px)
+   ========================================================================== */
 @media(max-width:480px){
-
   .planet-title{
     font-size:2.2rem;
   }
