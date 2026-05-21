@@ -133,6 +133,7 @@ body {
 ========================================================= */
 .add-data,
 .summary,
+.insights,
 .recent-activity {
   background: var(--card);
   padding: 20px;
@@ -193,6 +194,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  grid-row: span 2;
 }
 
 .acc-balance,
@@ -309,6 +311,73 @@ body {
 }
 
 /* =========================================================
+   INSIGHTS
+========================================================= */
+.insights {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.insights h3 {
+  margin-bottom: 5px;
+}
+
+.insights-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.insight-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: var(--card-soft);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.insight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+}
+
+.insight-icon {
+  font-size: 24px;
+  background: #ffffff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.insight-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.insight-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.insight-value {
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+/* =========================================================
    TABLE
 ========================================================= */
 table {
@@ -345,6 +414,7 @@ body.dark {
 
 body.dark .add-data,
 body.dark .summary,
+body.dark .insights,
 body.dark .recent-activity,
 body.dark .acc-balance,
 body.dark .income,
@@ -354,6 +424,10 @@ body.dark .category-breakdown {
   background: #020617;
   color: #e5e7eb;
   box-shadow: none;
+}
+
+body.dark .insight-icon {
+  background: #1e293b;
 }
 
 body.dark .mode {
