@@ -9,10 +9,10 @@
   <meta content="A collection of 100 web projects from basic to intermediate using html css and js." property="og:description" />
   <meta content="/" property="og:url" />
   <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
-  <meta content="#c2a3d6" name="theme-color" />
+  <meta content="#050505" name="theme-color" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <style>
-    /* ----- GLOBAL RESET & VARIABLES (merged from original + fixes) ----- */
+    /* ----- GLOBAL RESET & VARIABLES ----- */
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
 
     * {
@@ -53,7 +53,7 @@
     body {
       font-family: 'Poppins', sans-serif;
       min-height: 100vh;
-      padding-top: 95px;   /* adjusted for fixed navbar */
+      padding-top: 95px;
       overflow-x: hidden;
       line-height: 1.5;
     }
@@ -64,7 +64,7 @@
       padding: 0 2rem;
     }
 
-    /* ========== FIXED NAVBAR (enhanced visibility & contrast) ========== */
+    /* ========== FIXED NAVBAR ========== */
     .navbar {
       position: fixed;
       top: 0;
@@ -170,7 +170,7 @@
       font-size: 0.9rem;
     }
 
-    /* HAMBURGER MENU (VISIBLE & CLEAN) */
+    /* HAMBURGER MENU */
     .hamburger-menu {
       display: none;
       background: rgba(20, 20, 30, 0.85);
@@ -203,7 +203,7 @@
       color: #000;
     }
 
-    /* ========== MOBILE MENU OVERLAY ========== */
+    /* MOBILE MENU OVERLAY */
     @media (max-width: 860px) {
       body {
         padding-top: 80px;
@@ -261,7 +261,6 @@
       }
     }
 
-    /* small devices: even tighter */
     @media (max-width: 480px) {
       .navbar-brand span {
         display: inline-block;
@@ -284,7 +283,7 @@
       }
     }
 
-    /* ========== ORIGINAL COMPONENTS (no visual regressions) ========== */
+    /* CONTRIBUTORS PAGE STYLES */
     .contributor-header {
       text-align: center;
       margin-bottom: 3rem;
@@ -299,6 +298,12 @@
       -webkit-text-fill-color: transparent;
       margin-bottom: 1rem;
     }
+    .contributor-header .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+    }
     .stats-overview {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -312,17 +317,28 @@
       padding: 1.5rem;
       border-radius: 28px;
       text-align: center;
-      transition: 0.2s;
+      transition: var(--transition);
     }
     .stat-item:hover {
       transform: translateY(-6px);
       border-color: var(--accent-color);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     }
     .stat-item .value {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.8rem;
       font-weight: 900;
       color: var(--accent-color);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+    .stat-item label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      display: block;
     }
     .contributors-controls {
       display: flex;
@@ -333,6 +349,7 @@
       padding: 1.2rem 1.8rem;
       border-radius: 32px;
       border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
     }
     #contributorSearch, #sortContributors {
       flex: 1;
@@ -342,11 +359,28 @@
       border-radius: 24px;
       color: var(--text-primary);
       font-family: inherit;
+      font-size: 0.95rem;
       outline: none;
+      transition: var(--transition);
     }
     body.light-mode #contributorSearch,
     body.light-mode #sortContributors {
       background: rgba(0,0,0,0.02);
+    }
+    #contributorSearch:focus,
+    #sortContributors:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    #sortContributors {
+      cursor: pointer;
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, var(--text-primary) 50%),
+        linear-gradient(135deg, var(--text-primary) 50%, transparent 50%);
+      background-position: calc(100% - 18px) calc(50% - 3px), calc(100% - 12px) calc(50% - 3px);
+      background-size: 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 3rem;
     }
     .contributors-grid {
       display: grid;
@@ -361,8 +395,16 @@
       border-radius: 32px;
       padding: 2rem 1.5rem;
       text-align: center;
-      transition: 0.2s;
+      transition: var(--transition);
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .contributor-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--accent-color);
+      background: rgba(255, 255, 255, 0.05);
     }
     .contributor-card img {
       width: 100px;
@@ -370,6 +412,30 @@
       border-radius: 28px;
       object-fit: cover;
       border: 2px solid var(--glass-border);
+      margin-bottom: 1rem;
+    }
+    .contributor-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .contributor-stats {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 0.7rem 0;
+    }
+    .contributor-stats .value {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: var(--accent-color);
+    }
+    .contributor-stats .label {
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     .rank-badge {
       position: absolute;
@@ -378,6 +444,7 @@
       width: 44px;
       height: 44px;
       object-fit: contain;
+      z-index: 2;
     }
     .github-btn, .details-btn {
       display: inline-block;
@@ -387,15 +454,18 @@
       text-decoration: none;
       font-weight: 600;
       font-size: 0.8rem;
-      transition: 0.2s;
+      transition: var(--transition);
       background: rgba(255,255,255,0.05);
       border: 1px solid var(--glass-border);
       color: var(--text-primary);
+      cursor: pointer;
+      font-family: inherit;
     }
     .github-btn:hover, .details-btn:hover {
       background: var(--accent-color);
       color: #000;
       transform: translateY(-2px);
+      border-color: transparent;
     }
     .stargazers-grid {
       display: flex;
@@ -405,6 +475,7 @@
       padding: 2rem;
       background: var(--glass-bg);
       border-radius: 38px;
+      border: 1px solid var(--glass-border);
       margin-bottom: 4rem;
     }
     .stargazer-item {
@@ -412,7 +483,11 @@
       height: 48px;
       border-radius: 18px;
       overflow: hidden;
-      transition: 0.2s;
+      transition: var(--transition);
+    }
+    .stargazer-item:hover {
+      transform: scale(1.2) translateY(-5px);
+      z-index: 2;
     }
     .stargazer-item img {
       width: 100%;
@@ -431,6 +506,40 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 2rem;
     }
+    .footer h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--text-primary);
+      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+    }
+    .footer p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      color: var(--text-secondary);
+      font-size: 1.3rem;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .social-btn:hover {
+      background: var(--accent-color);
+      color: #000;
+      transform: translateY(-5px);
+    }
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -440,15 +549,28 @@
       align-items: center;
       justify-content: center;
       z-index: 3000;
+      padding: 1rem;
     }
     .modal-content {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
       border-radius: 32px;
       max-width: 480px;
       width: 90%;
       padding: 2rem;
       position: relative;
+      animation: modalFade 0.3s ease;
+    }
+    @keyframes modalFade {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
     #closeModal, #closeCertificate {
       position: absolute;
@@ -462,17 +584,51 @@
       height: 36px;
       border-radius: 50%;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    #closeModal:hover, #closeCertificate:hover {
+      background: #ff4444;
+      color: white;
+      transform: scale(1.05);
+    }
+    #modalBody, #certificateBody {
+      text-align: center;
+    }
+    #modalBody img {
+      width: 110px;
+      height: 110px;
+      border-radius: 28px;
+      margin-bottom: 1rem;
+      object-fit: cover;
+    }
+    #modalBody h2 {
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 0.8rem;
+    }
+    #modalBody p {
+      color: var(--text-secondary);
+      margin-bottom: 0.6rem;
+    }
+    .popup-btn-container {
+      margin-top: 1.5rem;
     }
     .empty-state {
       text-align: center;
       display: none;
       padding: 2rem;
       color: var(--text-secondary);
+      border: 1px dashed var(--glass-border);
+      border-radius: 28px;
+      margin-bottom: 2rem;
     }
     .loading-state {
       text-align: center;
       padding: 2rem;
       color: var(--text-secondary);
+      font-size: 1rem;
     }
     .api-error {
       text-align: center;
@@ -480,8 +636,98 @@
       background: rgba(220,38,38,0.1);
       border-radius: 28px;
       margin: 1rem 0;
+      border: 1px solid rgba(220,38,38,0.3);
     }
-    .hidden { display: none !important; }
+    .api-error p {
+      color: #ff6b6b;
+      margin-bottom: 1rem;
+    }
+    .api-error button {
+      background: #ff4444;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .api-error button:hover {
+      transform: translateY(-2px);
+      background: #ff2222;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .certificate-btn {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-top: 12px;
+      transition: 0.3s;
+    }
+    .certificate-btn:hover {
+      background: #15803d;
+      transform: scale(1.03);
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1.2rem;
+      }
+      .stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .contributors-controls {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      #contributorSearch, #sortContributors {
+        width: 100%;
+      }
+      .contributors-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1.5rem;
+      }
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .social-links {
+        justify-content: center;
+      }
+    }
+    @media (max-width: 480px) {
+      .stats-overview {
+        grid-template-columns: 1fr;
+      }
+      .stat-item {
+        padding: 1rem;
+      }
+      .stat-item .value {
+        font-size: 1.5rem;
+      }
+      .contributor-card {
+        padding: 1.5rem;
+      }
+      .contributor-card img {
+        width: 80px;
+        height: 80px;
+      }
+      .stargazers-grid {
+        padding: 1rem;
+        gap: 0.5rem;
+      }
+      .stargazer-item {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -501,8 +747,7 @@
       <button id="themeToggle" class="button"><i class="fas fa-moon"></i> <span>Theme</span></button>
     </div>
     <button class="hamburger-menu" id="hamburgerMenu" aria-label="Menu">
-      <i class="fas fa-bars" id="hamburgerOpenIcon"></i>
-      <i class="fas fa-times" id="hamburgerCloseIcon" style="display: none;"></i>
+      <i class="fas fa-bars"></i>
     </button>
   </nav>
 
@@ -545,9 +790,9 @@
   <footer class="footer">
     <div class="footer-content">
       <div><h3>About</h3><p>Collection of 100 web projects from basic to intermediate.</p><p><strong>© 2024 100 Days, 100 Projects</strong> by Dhairya & Contributors.</p></div>
-      <div><h3>Connect</h3><div class="social-links" style="display:flex;gap:1rem;"><a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--glass-bg);border-radius:16px;"><i class="fab fa-instagram"></i></a>
-      <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--glass-bg);border-radius:16px;"><i class="fab fa-github"></i></a>
-      <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--glass-bg);border-radius:16px;"><i class="fab fa-linkedin"></i></a></div></div>
+      <div><h3>Connect</h3><div class="social-links"><a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+      <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn"><i class="fab fa-linkedin"></i></a></div></div>
       <div><h3>Featured Project</h3><p>Generate free, stunning GitHub README profiles.</p><a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top:1rem;display:inline-block;"><i class="fas fa-magic"></i> Try README Generator</a></div>
     </div>
   </footer>
@@ -556,80 +801,128 @@
   <div id="certificateModal" class="modal-overlay"><div class="modal-content"><button id="closeCertificate">&times;</button><div id="certificateBody"></div></div></div>
 
   <script>
-    // ---------- NAVBAR INTERACTION & THEME + HAMBURGER FIX ----------
-    const hamburgerBtn = document.getElementById('hamburgerMenu');
-    const navbarMenu = document.getElementById('navbarMenu');
-    const openIcon = document.getElementById('hamburgerOpenIcon');
-    const closeIcon = document.getElementById('hamburgerCloseIcon');
-
-    function toggleMenu() {
-      if (!navbarMenu) return;
-      const isActive = navbarMenu.classList.toggle('active');
-      if (openIcon && closeIcon) {
-        if (isActive) {
-          openIcon.style.display = 'none';
-          closeIcon.style.display = 'inline-block';
-        } else {
-          openIcon.style.display = 'inline-block';
-          closeIcon.style.display = 'none';
-        }
+    // ============================================
+    // HAMBURGER MENU JAVASCRIPT - FIXED
+    // ============================================
+    (function() {
+      const hamburgerBtn = document.getElementById('hamburgerMenu');
+      const navbarMenu = document.getElementById('navbarMenu');
+      
+      if (hamburgerBtn && navbarMenu) {
+        // Toggle menu when hamburger is clicked
+        hamburgerBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          navbarMenu.classList.toggle('active');
+          
+          // Change icon based on menu state
+          const icon = hamburgerBtn.querySelector('i');
+          if (navbarMenu.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+        
+        // Close menu when clicking on any nav link
+        const navLinks = navbarMenu.querySelectorAll('a, button');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            navbarMenu.classList.remove('active');
+            const icon = hamburgerBtn.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!navbarMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            navbarMenu.classList.remove('active');
+            const icon = hamburgerBtn.querySelector('i');
+            if (icon) {
+              icon.classList.remove('fa-times');
+              icon.classList.add('fa-bars');
+            }
+          }
+        });
       }
-    }
-    if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleMenu);
-    // close mobile menu on any link click inside menu
-    document.querySelectorAll('.buttons .button, .buttons #themeToggle').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (window.innerWidth <= 860 && navbarMenu.classList.contains('active')) toggleMenu();
-      });
-    });
-    // theme handling
-    const themeBtn = document.getElementById('themeToggle');
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'light') document.body.classList.add('light-mode');
-    if (themeBtn) {
-      themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-      });
-    }
-    // --------------------------------------------------------------
-    // MOCK DATA FETCH (fake but functional for UI demo, actual API would call GitHub)
-    // but to demonstrate fully functional stats + contributors display we use realistic mock data for demo
-    // (since original file doesn't provide external fetch, we produce demo data for UI test)
+    })();
+
+    // ============================================
+    // THEME TOGGLE
+    // ============================================
+    (function() {
+      const themeBtn = document.getElementById('themeToggle');
+      const currentTheme = localStorage.getItem('theme');
+      if (currentTheme === 'light') document.body.classList.add('light-mode');
+      
+      if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+          document.body.classList.toggle('light-mode');
+          const isLight = document.body.classList.contains('light-mode');
+          localStorage.setItem('theme', isLight ? 'light' : 'dark');
+          
+          // Update theme icon
+          const icon = themeBtn.querySelector('i');
+          if (icon) {
+            icon.classList.remove(isLight ? 'fa-moon' : 'fa-sun');
+            icon.classList.add(isLight ? 'fa-sun' : 'fa-moon');
+          }
+        });
+      }
+    })();
+
+    // ============================================
+    // MOCK DATA FOR DEMO
+    // ============================================
     function updateStatsUI(stats) {
-      document.getElementById('starCount').innerText = stats.stars || '1.2k';
-      document.getElementById('forkCount').innerText = stats.forks || '340';
-      document.getElementById('issueCount').innerText = stats.issues || '12';
-      document.getElementById('prCount').innerText = stats.prs || '28';
-      document.getElementById('totalCommits').innerText = stats.commits || '1,240';
-      document.getElementById('contributorCount').innerText = stats.contributors || '24';
+      const starEl = document.getElementById('starCount');
+      const forkEl = document.getElementById('forkCount');
+      const issueEl = document.getElementById('issueCount');
+      const prEl = document.getElementById('prCount');
+      const commitEl = document.getElementById('totalCommits');
+      const contribEl = document.getElementById('contributorCount');
+      
+      if (starEl) starEl.innerText = stats.stars || '1.2k';
+      if (forkEl) forkEl.innerText = stats.forks || '340';
+      if (issueEl) issueEl.innerText = stats.issues || '12';
+      if (prEl) prEl.innerText = stats.prs || '28';
+      if (commitEl) commitEl.innerText = stats.commits || '1,240';
+      if (contribEl) contribEl.innerText = stats.contributors || '24';
     }
+    
     const mockContributors = [
       { login: "dhairyagothi", html_url: "https://github.com/dhairyagothi", avatar_url: "https://avatars.githubusercontent.com/u/100000000?v=4", contributions: 325, name: "Dhairya Gothi", bio: "Project lead" },
       { login: "techstar", html_url: "https://github.com/techstar", avatar_url: "https://avatars.githubusercontent.com/u/1?v=4", contributions: 187, name: "Alex Rivera", bio: "Fullstack dev" },
       { login: "webwizard", html_url: "https://github.com/webwizard", avatar_url: "https://avatars.githubusercontent.com/u/2?v=4", contributions: 93, name: "Jamie Chen", bio: "UI specialist" },
       { login: "codemaster", html_url: "https://github.com/codemaster", avatar_url: "https://avatars.githubusercontent.com/u/3?v=4", contributions: 44, name: "Morgan Freeman", bio: "Bug hunter" },
     ];
+    
     const mockStargazers = [
       { login: "star1", avatar_url: "https://avatars.githubusercontent.com/u/101?v=4" },
       { login: "star2", avatar_url: "https://avatars.githubusercontent.com/u/102?v=4" },
       { login: "star3", avatar_url: "https://avatars.githubusercontent.com/u/103?v=4" },
     ];
+    
     function renderContributors(list) {
       const container = document.getElementById('contributors');
       if (!container) return;
+      const emptyState = document.getElementById('emptyState');
+      
       if (list.length === 0) {
-        document.getElementById('emptyState').style.display = 'block';
+        if (emptyState) emptyState.style.display = 'block';
         container.innerHTML = '';
         return;
       }
-      document.getElementById('emptyState').style.display = 'none';
+      if (emptyState) emptyState.style.display = 'none';
+      
       container.innerHTML = list.map(c => `
         <div class="contributor-card">
           <img src="${c.avatar_url}" alt="${c.login}" loading="lazy">
           <h3>${c.name || c.login}</h3>
-          <div class="contributor-stats" style="display:flex; gap:1rem; justify-content:center; margin:0.7rem 0;">
+          <div class="contributor-stats">
             <div><span class="value">${c.contributions}</span><div class="label">COMMITS</div></div>
           </div>
           <div style="display:flex; gap:0.6rem; flex-wrap:wrap; justify-content:center;">
@@ -638,52 +931,74 @@
           </div>
         </div>
       `).join('');
+      
       document.querySelectorAll('.details-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', () => {
           const login = btn.getAttribute('data-login');
           const name = btn.getAttribute('data-name');
           const bio = btn.getAttribute('data-bio');
           const avatar = btn.getAttribute('data-avatar');
           const modal = document.getElementById('profileModal');
           const modalBody = document.getElementById('modalBody');
-          modalBody.innerHTML = `<img src="${avatar}" style="width:110px;border-radius:28px;"><h2>${name}</h2><p>${bio}</p><p><strong>GitHub:</strong> ${login}</p><div class="popup-btn-container"><a href="https://github.com/${login}" target="_blank" class="github-btn" style="background:#00ff88;color:#000;">View Profile</a></div>`;
-          modal.style.display = 'flex';
+          if (modalBody) {
+            modalBody.innerHTML = `<img src="${avatar}"><h2>${name}</h2><p>${bio}</p><p><strong>GitHub:</strong> ${login}</p><div class="popup-btn-container"><a href="https://github.com/${login}" target="_blank" class="github-btn" style="background:#00ff88;color:#000;">View Profile</a></div>`;
+          }
+          if (modal) modal.style.display = 'flex';
         });
       });
     }
+    
     function renderStargazers(list) {
       const container = document.getElementById('stargazers');
       if(!container) return;
       if(list.length === 0) container.innerHTML = '<p class="empty-state" style="display:block;">No stargazers found</p>';
       else container.innerHTML = list.map(s => `<div class="stargazer-item"><img src="${s.avatar_url}" alt="${s.login}"></div>`).join('');
     }
-    function simulateDataLoad() {
-      document.getElementById('contributorsLoading').classList.add('hidden');
+    
+    // Load data
+    const loadingEl = document.getElementById('contributorsLoading');
+    const stargazersLoading = document.getElementById('stargazersLoading');
+    if (loadingEl) loadingEl.classList.remove('hidden');
+    if (stargazersLoading) stargazersLoading.classList.remove('hidden');
+    
+    setTimeout(() => {
       updateStatsUI({ stars: '1.6k', forks: '456', issues: '8', prs: '42', commits: '1,842', contributors: mockContributors.length });
       renderContributors(mockContributors);
       renderStargazers(mockStargazers);
-      document.getElementById('stargazersLoading').classList.add('hidden');
-    }
-    document.getElementById('contributorsLoading').classList.remove('hidden');
-    document.getElementById('stargazersLoading').classList.remove('hidden');
-    setTimeout(simulateDataLoad, 400);
-    // search + sort logic
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (stargazersLoading) stargazersLoading.classList.add('hidden');
+    }, 400);
+    
+    // Search and sort
     const searchInput = document.getElementById('contributorSearch');
     const sortSelect = document.getElementById('sortContributors');
     let currentContributors = [...mockContributors];
+    
     function filterAndSort() {
-      let filtered = currentContributors.filter(c => c.login.toLowerCase().includes(searchInput.value.toLowerCase()) || (c.name && c.name.toLowerCase().includes(searchInput.value.toLowerCase())));
+      let filtered = currentContributors.filter(c => 
+        c.login.toLowerCase().includes(searchInput.value.toLowerCase()) || 
+        (c.name && c.name.toLowerCase().includes(searchInput.value.toLowerCase()))
+      );
       const sortOrder = sortSelect.value;
       filtered.sort((a,b) => sortOrder === 'desc' ? b.contributions - a.contributions : a.contributions - b.contributions);
       renderContributors(filtered);
     }
-    searchInput.addEventListener('input', filterAndSort);
-    sortSelect.addEventListener('change', filterAndSort);
-    // modals close
-    const modals = document.querySelectorAll('.modal-overlay');
-    document.getElementById('closeModal')?.addEventListener('click', () => document.getElementById('profileModal').style.display = 'none');
-    document.getElementById('closeCertificate')?.addEventListener('click', () => document.getElementById('certificateModal').style.display = 'none');
-    window.addEventListener('click', (e) => { if(e.target.classList.contains('modal-overlay')) e.target.style.display = 'none'; });
+    
+    if (searchInput) searchInput.addEventListener('input', filterAndSort);
+    if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
+    
+    // Close modals
+    const closeModal = document.getElementById('closeModal');
+    const closeCert = document.getElementById('closeCertificate');
+    const profileModal = document.getElementById('profileModal');
+    const certModal = document.getElementById('certificateModal');
+    
+    if (closeModal) closeModal.addEventListener('click', () => { if (profileModal) profileModal.style.display = 'none'; });
+    if (closeCert) closeCert.addEventListener('click', () => { if (certModal) certModal.style.display = 'none'; });
+    
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) e.target.style.display = 'none';
+    });
   </script>
 </body>
 </html>
