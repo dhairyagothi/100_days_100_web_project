@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password – SEO Agency</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+</head>
+<body class="auth-body">
+
+    <nav class="navbar navbar-expand-lg sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item nav-auth-divider"></li>
+                <li class="nav-item"><a class="nav-link nav-signin-link" href="login.html">Sign In</a></li>
+                <li class="nav-item"><a class="nav-link nav-signup-btn" href="signup.html">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <div class="auth-card-header">
+                <div class="auth-logo">WEB TEMPLATE</div>
+                <h2>Forgot Password?</h2>
+                <p>Enter your email and we'll send you a reset link.</p>
+            </div>
+            <form id="forgotForm" novalidate>
+                <div class="auth-field">
+                    <label for="forgotEmail">Email Address</label>
+                    <input type="email" id="forgotEmail" placeholder="name@email.com">
+                    <span class="field-error" id="forgotErr"></span>
+                </div>
+                <button type="submit" class="auth-submit-btn">Send Reset Link</button>
+                <div id="forgotSuccess" class="auth-success" style="display:none;"></div>
+            </form>
+            <p class="auth-switch"><a href="login.html"><i class="fas fa-arrow-left mr-1"></i>Back to Sign In</a></p>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('forgotForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value.trim();
+            document.getElementById('forgotErr').textContent = '';
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('forgotErr').textContent = 'Please enter a valid email address.';
+                return;
+            }
+            const btn = this.querySelector('.auth-submit-btn');
+            btn.textContent = 'Sending…';
+            btn.disabled = true;
+            setTimeout(() => {
+                document.getElementById('forgotSuccess').style.display = 'block';
+                document.getElementById('forgotSuccess').textContent = '✅ Reset link sent! Check your inbox.';
+                btn.textContent = 'Send Reset Link';
+                btn.disabled = false;
+                this.reset();
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
