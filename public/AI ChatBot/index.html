@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nebula AI</title>
+
+    <!-- CSS -->
+
+    <link rel="stylesheet"
+          href="style.css">
+
+    <!-- MARKED JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- HIGHLIGHT JS -->
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div class="logo">
+                ✨ Nebula AI
+            </div>
+
+            <div class="top-actions">
+
+                <button id="theme-toggle">
+                    🌙
+                </button>
+
+                <button id="clear-chat-btn">
+                    🗑
+                </button>
+
+                <button id="export-btn">
+                    📥
+                </button>
+
+                <button id="retry-btn">
+                    🔄
+                </button>
+
+                <button id="mic-btn">
+                    🎤
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- API SECTION -->
+
+        <div class="api-section">
+
+            <input
+                type="password"
+                id="api-key-input"
+                placeholder="Enter Gemini API Key"
+            >
+
+            <button id="save-key-btn">
+                Save Key
+            </button>
+
+        </div>
+
+
+        <!-- CHAT AREA -->
+
+        <div id="output-container"></div>
+
+
+        <!-- IMAGE PREVIEW -->
+
+        <img
+            id="preview-img"
+            style="display:none;"
+        >
+
+
+        <!-- INPUT AREA -->
+
+        <div class="input-area">
+
+            <div class="input-wrapper">
+
+                <textarea
+                    id="prompt-input"
+                    placeholder="Ask Nebula AI anything..."
+                ></textarea>
+
+
+                <input
+                    type="file"
+                    id="image-input"
+                    accept="image/*"
+                >
+
+
+                <button id="send-btn">
+                    Send
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOAST -->
+
+        <div id="toast"></div>
+
+    </div>
+
+
+    <!-- SCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
