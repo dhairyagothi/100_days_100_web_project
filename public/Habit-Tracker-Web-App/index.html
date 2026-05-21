@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habit Tracker</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <button id="theme-toggle">🌙 Dark Mode</button>
 
   <div class="container">
     <h1>Habit Tracker</h1>
 
     <div class="input-section">
-      <input type="text" id="habitInput" placeholder="Enter a habit">
+      <input type="text" id="habitInput" placeholder="Enter a habit" />
       <button id="addHabitBtn">Add Habit</button>
     </div>
 
@@ -22,6 +24,45 @@
     </div>
 
     <ul id="habitList"></ul>
+
+    <div id="achievements-section" class="card-section">
+      <h3>🏆 Achievements</h3>
+      <div class="achievements-grid">
+        <div class="achievement-badge locked" id="badge-3">
+          <span class="badge-icon">🥉</span>
+          <div class="badge-info">
+            <span class="badge-name">3-Day Streak</span>
+            <span class="badge-desc">Complete a habit for 3 consecutive days</span>
+          </div>
+        </div>
+        <div class="achievement-badge locked" id="badge-7">
+          <span class="badge-icon">🥈</span>
+          <div class="badge-info">
+            <span class="badge-name">7-Day Streak</span>
+            <span class="badge-desc">Complete a habit for 7 consecutive days</span>
+          </div>
+        </div>
+        <div class="achievement-badge locked" id="badge-30">
+          <span class="badge-icon">🥇</span>
+          <div class="badge-info">
+            <span class="badge-name">30-Day Streak</span>
+            <span class="badge-desc">Complete a habit for 30 consecutive days</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="milestone-modal" class="modal-overlay">
+    <div class="modal-card">
+      <span class="modal-close" id="close-modal-btn">&times;</span>
+      <div class="modal-content">
+        <div class="modal-badge-icon">🎉</div>
+        <h2>Milestone Unlocked!</h2>
+        <p id="milestone-message">You achieved a 3-Day streak on "Reading"!</p>
+        <button id="milestone-btn">Awesome!</button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

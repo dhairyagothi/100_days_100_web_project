@@ -6,6 +6,7 @@ TaskFlow is a modern and responsive To-Do List web application designed to help 
 
 ## Features
 
+
 * Add, complete, and delete tasks
 * Dynamic animated progress bar
 * Save task snapshots as documents
@@ -17,6 +18,23 @@ TaskFlow is a modern and responsive To-Do List web application designed to help 
 * Smooth animations and interactions
 
 ## Technologies Used
+- ➕ Add, edit, complete, and delete tasks
+- 🎯 Filter tasks by status and category
+- 🌈 5 Beautiful UI themes (Sunset, Ocean, Forest, Midnight, Aurora)
+- 💾 Local storage support (data persists after refresh)
+- 📊 Live statistics (total, completed, pending tasks)
+- 📱 Fully responsive design (mobile + desktop)
+- ✨ Smooth animations and transitions
+- 🔔 Toast notifications for user actions
+- 📄 Export tasks as styled PDF using jsPDF
+- 📁 Document history for exported files
+- 🧩 Drag and Drop Kanban Workflow  
+  - Pending  
+  - In Progress  
+  - Completed
+  
+---
+
 
 * HTML5
 * CSS3

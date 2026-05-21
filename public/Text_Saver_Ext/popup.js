@@ -5,6 +5,8 @@ function displaySavedTexts() {
       const textListDiv = document.getElementById("textList");
       textListDiv.innerHTML = "";
   
+      document.getElementById("itemCount").textContent = `${textList.length} item${textList.length !== 1 ? "s" : ""}`;
+
       if (textList.length === 0) {
         textListDiv.innerHTML = "<p>No saved texts found.</p>";
         return;
@@ -32,10 +34,11 @@ function displaySavedTexts() {
   
   // Function to clear saved texts
   function clearSavedTexts() {
-    chrome.storage.local.clear(() => {
+    chrome.storage.local.remove("savedTexts", () => {
       alert("All saved texts have been cleared.");
-      displaySavedTexts(); // Refresh the display to show no saved texts
-    });
+      displaySavedTexts();
+    }
+    );
   }
   
   // Function to download saved texts as a file
@@ -75,5 +78,5 @@ function displaySavedTexts() {
   document.getElementById("clearButton").addEventListener("click", clearSavedTexts);
   
   // Run when popup opens
-  document.addEventListener("DOMContentLoaded", displaySavedTexts);
+  displaySavedTexts();
   
