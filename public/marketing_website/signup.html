@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up – SEO Agency</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+</head>
+<body class="auth-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#services">Service List</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact Us</a></li>
+                <li class="nav-item nav-auth-divider"></li>
+                <li class="nav-item"><a class="nav-link nav-signin-link" href="login.html">Sign In</a></li>
+                <li class="nav-item"><a class="nav-link nav-signup-btn active-signup" href="signup.html">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <div class="auth-card-header">
+                <div class="auth-logo">WEB TEMPLATE</div>
+                <h2>Create an account</h2>
+                <p>Join thousands of businesses growing online</p>
+            </div>
+
+            <div class="auth-social-row">
+                <button class="auth-social-btn" onclick="socialLogin('Google')">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                <button class="auth-social-btn auth-social-fb" onclick="socialLogin('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Continue with Facebook
+                </button>
+            </div>
+
+            <div class="auth-divider"><span>or register with email</span></div>
+
+            <form id="signupForm" novalidate>
+                <div class="auth-field">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" autocomplete="name">
+                    <span class="field-error" id="nameErr"></span>
+                </div>
+                <div class="auth-field">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="name@email.com" autocomplete="email">
+                    <span class="field-error" id="emailErr"></span>
+                </div>
+                <div class="auth-field">
+                    <label for="signupPassword">Password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="signupPassword" placeholder="Create a password (min 8 chars)" autocomplete="new-password" oninput="checkStrength(this.value)">
+                        <button type="button" class="toggle-pw" onclick="togglePw('signupPassword', this)" tabindex="-1">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="strength-bar-wrap">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <span class="strength-label" id="strengthLabel"></span>
+                    <span class="field-error" id="pwErr"></span>
+                </div>
+                <div class="auth-field">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password">
+                        <button type="button" class="toggle-pw" onclick="togglePw('confirmPassword', this)" tabindex="-1">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="field-error" id="confirmErr"></span>
+                </div>
+                <div class="auth-field terms-row">
+                    <label class="remember-me">
+                        <input type="checkbox" id="terms"> I agree to the <a href="#">Terms & Conditions</a>
+                    </label>
+                    <span class="field-error" id="termsErr"></span>
+                </div>
+                <button type="submit" class="auth-submit-btn">Create Account</button>
+                <div id="signupSuccess" class="auth-success" style="display:none;"></div>
+            </form>
+
+            <p class="auth-switch">Already have an account? <a href="login.html">Sign In</a></p>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function togglePw(id, btn) {
+            const input = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function checkStrength(val) {
+            const bar = document.getElementById('strengthBar');
+            const label = document.getElementById('strengthLabel');
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+            const levels = [
+                { w: '0%', color: 'transparent', text: '' },
+                { w: '25%', color: '#e74c3c', text: 'Weak' },
+                { w: '50%', color: '#f39c12', text: 'Fair' },
+                { w: '75%', color: '#3498db', text: 'Good' },
+                { w: '100%', color: '#27ae60', text: 'Strong' },
+            ];
+            bar.style.width = levels[score].w;
+            bar.style.background = levels[score].color;
+            label.textContent = levels[score].text;
+            label.style.color = levels[score].color;
+        }
+
+        function socialLogin(provider) {
+            alert('Continuing with ' + provider + ' (integration placeholder)');
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let valid = true;
+            const name = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const pw = document.getElementById('signupPassword').value;
+            const cpw = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            ['nameErr','emailErr','pwErr','confirmErr','termsErr'].forEach(id => document.getElementById(id).textContent = '');
+
+            if (!name || name.length < 2) { document.getElementById('nameErr').textContent = 'Please enter your full name.'; valid = false; }
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('emailErr').textContent = 'Please enter a valid email.'; valid = false; }
+            if (!pw || pw.length < 8) { document.getElementById('pwErr').textContent = 'Password must be at least 8 characters.'; valid = false; }
+            if (pw !== cpw) { document.getElementById('confirmErr').textContent = 'Passwords do not match.'; valid = false; }
+            if (!terms) { document.getElementById('termsErr').textContent = 'You must agree to the Terms & Conditions.'; valid = false; }
+
+            if (valid) {
+                const btn = this.querySelector('.auth-submit-btn');
+                btn.textContent = 'Creating account…';
+                btn.disabled = true;
+                setTimeout(() => {
+                    document.getElementById('signupSuccess').style.display = 'block';
+                    document.getElementById('signupSuccess').textContent = '✅ Account created! Redirecting to sign in…';
+                    setTimeout(() => window.location.href = 'login.html', 1800);
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
