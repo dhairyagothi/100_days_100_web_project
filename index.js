@@ -1088,9 +1088,3 @@ window.addEventListener('resize', () => {
   renderGrid();
 });
 
-/* ============================================================
-   EXPOSE FUNCTIONS TO GLOBAL SCOPE
-   (Required for HTML onclick handlers)
-   ============================================================ */
-window.removeTechFilter = removeTechFilter;
-window.clearAllTechFilters = clearAllTechFilters;
