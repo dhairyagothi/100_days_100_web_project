@@ -37,6 +37,9 @@ body {
     font-weight: 400;
     min-height: 100vh;
     margin: 0;
+    font-size: 24px;
+    font-weight: 400;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -136,6 +139,7 @@ body::after {
         0 0 20px rgba(59, 130, 246, 0.35),
         0 0 60px rgba(59, 130, 246, 0.12);
     overflow: hidden;
+    overflow: visible;
 }
 
 .typewriter-container::before {
@@ -176,6 +180,8 @@ body::after {
     overflow-wrap: anywhere;
     word-break: break-word;
     white-space: pre-wrap;
+    position: relative;
+    color: var(--accent-color);
     font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 600;
     line-height: 1.4;
@@ -451,4 +457,10 @@ body.light-theme {
         font-size: 15px;
         padding: 12px;
     }
+}
+.text1 {
+    color: var(--text-color);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1.4;
 }
