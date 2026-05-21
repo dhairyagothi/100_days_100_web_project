@@ -342,9 +342,9 @@ function renderGrid() {
                     <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
                         <i class="fab fa-github"></i> Code
                     </a>
-                    <button class="copy-code-btn" data-url="${url}" data-name="${name}" title="Copy Code">
-                        <i class="fas fa-copy"></i> 
-                    </button>
+                    <a class="card-link view-code-link" data-url="${url}" rel="noopener noreferrer" style="cursor:pointer">
+                       <i class="fab fa-github"></i> Code
+                    </a>
                 </div>
                 <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
@@ -876,7 +876,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('click', async function (e) {
-    const btn = e.target.closest('.copy-code-btn');
+    const btn = e.target.closest('.view-code-link');
     if (!btn) return;
 
     const projectUrl = btn.dataset.url;
