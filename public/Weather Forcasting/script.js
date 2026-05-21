@@ -305,11 +305,20 @@ function bindPresetCityLinks() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+let appInitialized = false;
+
+async function initializeApp() {
+  if (appInitialized) return;
+
+  appInitialized = true;
+
   bindSearchForm();
   bindPresetCityLinks();
   resetWeatherSummary();
+
   setStatus('Search for a city to load live weather data.', 'info');
 
   await loadCityWeather('Delhi', { updateTable: false });
-});
+}
+
+initializeApp();
