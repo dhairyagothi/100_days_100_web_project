@@ -1,384 +1,405 @@
-let intro2 = document.getElementById("intro2");
-let playbutton = document.getElementById("playbtn");
-let gameStarted = false;
-let mainMenu = document.getElementById("mainMenu");
-let gametimer = document.getElementById("gametimer");
-let gametimercont = document.getElementById("gametimercont");
-let timecount = 3;
-let timeraud = document.getElementById("timeraud");
-let carmoveaud = document.getElementById("carmoveaud");
-let hornaud = document.getElementById("hornaud");
-let crashaud = document.getElementById("crashaud");
+const intro2 = document.getElementById("intro2");
+const playbutton = document.getElementById("playbtn");
+const mainMenu = document.getElementById("mainMenu");
+const gametimer = document.getElementById("gametimer");
+const gametimercont = document.getElementById("gametimercont");
+const timeraud = document.getElementById("timeraud");
+const carmoveaud = document.getElementById("carmoveaud");
+const hornaud = document.getElementById("hornaud");
+const crashaud = document.getElementById("crashaud");
+const mainMenubtn = document.getElementById("mainMenubtn");
+const playagain = document.getElementById("playagain");
+const scoreb = document.getElementById("scorepara1");
+const speedb = document.getElementById("scorepara2");
+const scoreg = document.getElementById("scorepara");
+const gameover = document.getElementById("gameover");
+const car = document.getElementById("car");
+const stage = document.getElementById("gameStage");
+const difficultyButtons = document.querySelectorAll(".difficulty-btn");
 
-document.addEventListener("DOMContentLoaded", function introsound() {
+const BASE_WIDTH = 1200;
+const BASE_HEIGHT = 700;
+const LANE_COUNT = 5;
+const difficultySettings = {
+  easy: {
+    baseSpeed: 190,
+    speedOffsetMin: -10,
+    speedOffsetMax: 20,
+    maxActiveObstacles: 5,
+    minSpawnGap: 260,
+    moveCooldown: 0.1,
+  },
+  medium: {
+    baseSpeed: 220,
+    speedOffsetMin: -15,
+    speedOffsetMax: 30,
+    maxActiveObstacles: 6,
+    minSpawnGap: 220,
+    moveCooldown: 0.12,
+  },
+  hard: {
+    baseSpeed: 300,
+    speedOffsetMin: -30,
+    speedOffsetMax: 60,
+    maxActiveObstacles: 8,
+    minSpawnGap: 160,
+    moveCooldown: 0.16,
+  },
+};
+
+let currentDifficulty = "medium";
+let baseSpeed = difficultySettings[currentDifficulty].baseSpeed;
+let speedOffsetMin = difficultySettings[currentDifficulty].speedOffsetMin;
+let speedOffsetMax = difficultySettings[currentDifficulty].speedOffsetMax;
+let maxActiveObstacles = difficultySettings[currentDifficulty].maxActiveObstacles;
+let minSpawnGap = difficultySettings[currentDifficulty].minSpawnGap;
+let moveCooldown = difficultySettings[currentDifficulty].moveCooldown;
+
+let laneCenters = [];
+let gameStarted = false;
+let countdownRunning = false;
+let timecount = 3;
+let lastTime = 0;
+let score = 0;
+let scoreTimer = 0;
+let speedTimer = 0;
+let spawnCursor = -200;
+
+const keys = { left: false, right: false };
+const carState = {
+  lane: 2,
+  targetLane: 2,
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+  moveCooldown: 0,
+};
+
+const obstacles = Array.from(document.querySelectorAll(".obstacle")).map(
+  (el) => ({
+    el,
+    width: 0,
+    height: 0,
+    lane: 0,
+    y: 0,
+    speed: baseSpeed,
+    active: true,
+  })
+);
+
+document.addEventListener("DOMContentLoaded", () => {
   intro2.play();
 });
 
-playbutton.addEventListener("click", function maingame() {
-  gameStarted = true;
-  mainMenu.style.visibility = "hidden";
-  timerf();
-  setTimeout(newgame, 3000);
-  intro2.pause();
+window.addEventListener("load", () => {
+  stage.style.setProperty("--stage-width", `${BASE_WIDTH}px`);
+  stage.style.setProperty("--stage-height", `${BASE_HEIGHT}px`);
+  updateScale();
+  computeLanes();
+  measureSprites();
+  applyDifficulty(currentDifficulty);
+  resetAllObstacles();
+  placeCarInstant();
+  requestAnimationFrame(gameLoop);
 });
 
-let timerf = function timer() {
-  timeraud.play();
-  gametimercont.style.visibility = "visible";
-  let cleartimer = setInterval(() => {
-    timecount--;
-    gametimer.innerHTML = timecount;
-    if (timecount == 3) {
-      gametimercont.style.backgroundColor = "#E53935";
+window.addEventListener("resize", () => {
+  updateScale();
+});
+
+playbutton.addEventListener("click", () => {
+  if (countdownRunning) {
+    return;
+  }
+  countdownRunning = true;
+  mainMenu.style.visibility = "hidden";
+  intro2.pause();
+  applyDifficulty(currentDifficulty);
+  startCountdown();
+});
+
+mainMenubtn.addEventListener("click", () => {
+  location.reload();
+});
+
+playagain.addEventListener("click", () => {
+  location.reload();
+});
+
+difficultyButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const level = button.dataset.difficulty;
+    if (!difficultySettings[level]) {
+      return;
     }
-    if (timecount == 2) {
+    currentDifficulty = level;
+    applyDifficulty(currentDifficulty);
+  });
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.code === "KeyH") {
+    hornaud.play();
+  }
+  if (e.code === "ArrowLeft") {
+    keys.left = true;
+  }
+  if (e.code === "ArrowRight") {
+    keys.right = true;
+  }
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.code === "ArrowLeft") {
+    keys.left = false;
+  }
+  if (e.code === "ArrowRight") {
+    keys.right = false;
+  }
+});
+
+function updateScale() {
+  const scale = Math.min(
+    window.innerWidth / BASE_WIDTH,
+    window.innerHeight / BASE_HEIGHT
+  );
+  stage.style.setProperty("--game-scale", scale.toFixed(3));
+}
+
+function computeLanes() {
+  const roadPadding = BASE_WIDTH * 0.22;
+  const usableWidth = BASE_WIDTH - roadPadding * 2;
+  const gap = usableWidth / (LANE_COUNT - 1);
+  laneCenters = Array.from({ length: LANE_COUNT }, (_, i) => {
+    return roadPadding + gap * i;
+  });
+}
+
+function measureSprites() {
+  carState.width = car.offsetWidth;
+  carState.height = car.offsetHeight;
+  obstacles.forEach((obs) => {
+    obs.width = obs.el.offsetWidth;
+    obs.height = obs.el.offsetHeight;
+  });
+}
+
+function placeCarInstant() {
+  carState.y = BASE_HEIGHT - carState.height - 20;
+  carState.lane = 2;
+  carState.targetLane = 2;
+  carState.x = laneCenters[carState.targetLane] - carState.width / 2;
+  car.style.left = `${carState.x}px`;
+  car.style.top = `${carState.y}px`;
+}
+
+function startCountdown() {
+  timecount = 3;
+  timeraud.play();
+  gametimer.textContent = timecount;
+  gametimercont.style.visibility = "visible";
+  gametimercont.style.backgroundColor = "#E53935";
+
+  const countdownInterval = setInterval(() => {
+    timecount -= 1;
+    gametimer.textContent = timecount;
+    if (timecount === 2) {
       gametimercont.style.backgroundColor = "#FBC02D";
     }
-
-    if (timecount == 1) {
+    if (timecount === 1) {
       gametimercont.style.backgroundColor = "#43A047";
     }
-    if (timecount == 0) {
+    if (timecount === 0) {
+      clearInterval(countdownInterval);
       gametimercont.style.visibility = "hidden";
-      timerf = null;
-      clearInterval(cleartimer);
+      beginGame();
     }
   }, 1000);
-};
+}
 
-let newgame = function startgame() {
-  document.addEventListener("keydown", function horn(e) {
-    if (e.keyCode == 72) {
-      hornaud.play();
-    }
-  });
+function beginGame() {
+  countdownRunning = false;
+  gameStarted = true;
+  gameover.style.visibility = "hidden";
+  keys.left = false;
+  keys.right = false;
+  score = 0;
+  scoreTimer = 0;
+  speedTimer = 0;
+  scoreb.textContent = "SCORE - 0";
+  carmoveaud.currentTime = 0;
   carmoveaud.play();
-  let car = document.getElementById("car");
-  let margin = 70;
-  let Lpos = 520;
+  resetAllObstacles();
+  placeCarInstant();
+}
 
-  function move(e) {
-    // console.log(e.keyCode);
-    if (e.keyCode == 37) {
-      Lpos -= margin;
-    } else if (e.keyCode == 39) {
-      Lpos += margin;
+function resetAllObstacles() {
+  spawnCursor = -200;
+  let lastLane = carState.lane;
+  obstacles.forEach((obs, index) => {
+    obs.active = index < maxActiveObstacles;
+    obs.el.style.visibility = obs.active ? "visible" : "hidden";
+    if (!obs.active) {
+      return;
     }
-    if (Lpos < 260) {
-      Lpos = 260;
-    }
-    if (Lpos > 788) {
-      Lpos = 788;
-    }
-    // car.style.position = 'absolute';
-    car.style.left = Lpos + "px";
-    car.style.bottom = "0px";
-    // setInterval(move,100);
+    obs.lane = pickLane(lastLane);
+    lastLane = obs.lane;
+    obs.speed = baseSpeed + randomInRange(speedOffsetMin, speedOffsetMax);
+    obs.y = spawnCursor - randomInRange(0, 80);
+    spawnCursor -= minSpawnGap;
+    obs.el.style.top = `${obs.y}px`;
+    obs.el.style.left = `${laneCenters[obs.lane] - obs.width / 2}px`;
+  });
+}
+
+function pickLane(excludeLane) {
+  let lane = Math.floor(Math.random() * LANE_COUNT);
+  if (lane === excludeLane) {
+    lane = (lane + 1) % LANE_COUNT;
   }
-  document.addEventListener("keydown", move);
-
-  //scoring logic
-
-  let score = 0;
-  let scoreb = document.getElementById("scorepara1");
-
-  let scoref = () => {
-    score++;
-    console.log(score);
-    scoreb.innerHTML = "SCORE - " + score;
-  };
-  let clearScore = setInterval(scoref, 1000);
-
-  //Variable speed logic
-
-  let speedb = document.getElementById("scorepara2");
-  let scoreg = document.getElementById("scorepara");
-  let gameover = document.getElementById("gameover");
-
-  let speed1 = () => {
-    speedb.innerHTML = "SPEED - 160 KM/H";
-  };
-  let clearspeed1 = setInterval(speed1, 1900);
-
-  let speed2 = () => {
-    speedb.innerHTML = "SPEED - 120 KM/H";
-  };
-  let clearspeed2 = setInterval(speed2, 5000);
-
-  let speed3 = () => {
-    speedb.innerHTML = "SPEED - 140 KM/H";
-  };
-  let clearspeed3 = setInterval(speed3, 3200);
-
-  let speed4 = () => {
-    speedb.innerHTML = "SPEED - 150 KM/H";
-  };
-  let clearspeed4 = setInterval(speed4, 1500);
-
-  let speed5 = () => {
-    speedb.innerHTML = "SPEED - 110 KM/H";
-  };
-  let clearspeed5 = setInterval(speed5, 5500);
-
-  //animations start here
-
-  let obs1 = document.getElementById("obs1");
-  
-  //animation for obs1
-
-  let f1 = function obsanimate1() {
-    obs1.classList.remove("animateobs1");
-
-    setTimeout(() => {
-      obs1.classList.add("animateobs1");
-    }, 1500);
-  };
-
-  //animation for obs2
-
-  let obs2 = document.getElementById("obs2");
-
-  let f2 = function obsanimate2() {
-    obs2.classList.remove("animateobs2");
-
-    setTimeout(() => {
-      obs2.classList.add("animateobs2");
-    }, 3500);
-  };
-
-  //animation for obs3
-
-  let obs3 = document.getElementById("obs3");
-
-  let f3 = function obsanimate3() {
-    obs3.classList.remove("animateobs3");
-
-    setTimeout(() => {
-      obs3.classList.add("animateobs3");
-    }, 5500);
-  };
-
-  //animation for obs4
-
-  let obs4 = document.getElementById("obs4");
-
-  let f4 = function obsanimate4() {
-    obs4.classList.remove("animateobs4");
-
-    setTimeout(() => {
-      obs4.classList.add("animateobs4");
-    }, 2500);
-  };
-
-  //animation for obs5
-
-  let obs5 = document.getElementById("obs5");
-
-  let f5 = function obsanimate5() {
-    obs5.classList.remove("animateobs5");
-
-    setTimeout(() => {
-      obs5.classList.add("animateobs5");
-    }, 3000);
-  };
-
-  //animation for obs6
-
-  let obs6 = document.getElementById("obs6");
-  let f6 = function obsanimate6() {
-    obs6.classList.remove("animateobs6");
-    setTimeout(() => {
-      obs6.classList.add("animateobs6");
-    }, 1500);
-  };
-
-  //animation for obs7
-
-  let obs7 = document.getElementById("obs7");
-
-  let f7 = function obsanimate7() {
-    obs7.classList.remove("animateobs7");
-
-    setTimeout(() => {
-      obs7.classList.add("animateobs7");
-    }, 5000);
-  };
-
-  //animation for obs8
-
-  let obs8 = document.getElementById("obs8");
-  let f8 = function obsanimate8() {
-    obs8.classList.remove("animateobs8");
-    setTimeout(() => {
-      obs8.classList.add("animateobs8");
-    }, 1500);
-  };
-
-  // animation for obs 9
-
-  let obs9 = document.getElementById("obs9");
-
-  let f9 = function obsanimate9() {
-    obs9.classList.remove("animateobs9");
-
-    setTimeout(() => {
-      obs9.classList.add("animateobs9");
-    }, 5500);
-  };
-
-  // animations
-  obs1;
-  f1();
-
-  let clear1 = setInterval(() => {
-    f1();
-  }, 5000);
-
-  // //obs2
-  f2();
-
-  let clear2 = setInterval(f2, 7000);
-
-  // //obs3
-  f3();
-
-  let clear3 = setInterval(f3, 9000);
-
-  // //obs4
-  f4();
-
-  let clear4 = setInterval(f4, 6000);
-
-  // //obs5
-  f5();
-
-  let clear5 = setInterval(f5, 7000);
-
-  //obs6
-
-  f6();
-  let clear6 = setInterval(f6, 3500);
-
-  // //obs7
-  f7();
-
-  let clear7 = setInterval(f7, 9000);
-
-  //obs8
-
-  f8();
-  let clear8 = setInterval(f8, 3500);
-
-  // //obs9
-
-  f9();
-
-  let clear9 = setInterval(f9, 9500);
-
-  //CAR CRASH LOGIC
-  // crash function
-
-  //obs1
-
-  function crash(car, obs, func, clearInt, xThreshold = 60, yThreshold = 10) {
-    let carY = parseInt(car.getBoundingClientRect().top);
-    let obsY = Math.abs(parseInt(obs.getBoundingClientRect().top));
-    let carX = parseInt(car.getBoundingClientRect().left);
-    let obsX = parseInt(obs.getBoundingClientRect().left);
-    let offsetY = Math.abs(obsY - carY);
-    let offsetX = Math.abs(obsX - carX);
-    if (offsetY < yThreshold && offsetX <= xThreshold) {
-      carmoveaud.pause();
-      crashaud.play();
-      document.removeEventListener("keydown", move);
-      func = null;
-      f1 = null;
-      f2 = null;
-      f3 = null;
-      f4 = null;
-      f5 = null;
-      f6 = null;
-      f7 = null;
-      f8 = null;
-      f9 = null;
-      clearInterval(clear1);
-      clearInterval(clear2);
-      clearInterval(clear3);
-      clearInterval(clear4);
-      clearInterval(clear5);
-      clearInterval(clear6);
-      clearInterval(clear7);
-      clearInterval(clear8);
-      clearInterval(clear9);
-      clearInterval(clearInt);
-      // Clear crash-checking intervals
-      clearInterval(crashInterval1);
-      clearInterval(crashInterval2);
-      clearInterval(crashInterval3);
-      clearInterval(crashInterval4);
-      clearInterval(crashInterval5);
-      clearInterval(crashInterval7);
-      clearInterval(crashInterval9);
-      obs.style.top = carY + "px";
-      gameover.style.visibility = "visible";
-      scoref = null;
-      clearInterval(clearScore);
-      scoreg.innerHTML = "YOUR SCORE - " + score;
-      clearInterval(clearspeed1);
-      clearInterval(clearspeed2);
-      clearInterval(clearspeed3);
-      clearInterval(clearspeed4);
-      clearInterval(clearspeed5);
-    }
+  return lane;
+}
+
+function randomInRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function gameLoop(timestamp) {
+  if (!lastTime) {
+    lastTime = timestamp;
+  }
+  const dt = Math.min((timestamp - lastTime) / 1000, 0.033);
+  lastTime = timestamp;
+
+  if (gameStarted) {
+    updateCar(dt);
+    updateObstacles(dt);
+    updateScoreAndSpeed(timestamp, dt);
+    checkCollisions();
   }
 
-  // Crash-checking intervals for each obstacle
-  let crashInterval1 = setInterval(() => {
-    crash(car, obs1, f1, clear1);
-  }, 50);
+  requestAnimationFrame(gameLoop);
+}
 
-  let crashInterval2 = setInterval(() => {
-    crash(car, obs2, f2, clear2);
-  }, 50);
+function updateCar(dt) {
+  if (carState.moveCooldown > 0) {
+    carState.moveCooldown -= dt;
+  }
 
-  let crashInterval3 = setInterval(() => {
-    crash(car, obs3, f3, clear3);
-  }, 50);
+  if (keys.left && carState.moveCooldown <= 0) {
+    carState.targetLane = Math.max(0, carState.targetLane - 1);
+    carState.moveCooldown = moveCooldown;
+  }
 
-  let crashInterval4 = setInterval(() => {
-    crash(car, obs4, f4, clear4);
-  }, 50);
+  if (keys.right && carState.moveCooldown <= 0) {
+    carState.targetLane = Math.min(LANE_COUNT - 1, carState.targetLane + 1);
+    carState.moveCooldown = moveCooldown;
+  }
 
-  let crashInterval5 = setInterval(() => {
-    crash(car, obs5, f5, clear5);
-  }, 50);
+  const targetX = laneCenters[carState.targetLane] - carState.width / 2;
+  carState.x += (targetX - carState.x) * Math.min(1, dt * 12);
+  car.style.left = `${carState.x}px`;
+}
 
-  let crashInterval7 = setInterval(() => {
-    crash(car, obs7, f7, clear7);
-  }, 50);
+function updateObstacles(dt) {
+  obstacles.forEach((obs) => {
+    if (!obs.active) {
+      return;
+    }
+    obs.y += obs.speed * dt;
+    if (obs.y > BASE_HEIGHT + 150) {
+      obs.lane = pickLane(obs.lane);
+      obs.speed = baseSpeed + randomInRange(speedOffsetMin, speedOffsetMax);
+      obs.y = spawnCursor - randomInRange(0, 80);
+      spawnCursor -= minSpawnGap;
+    }
+    obs.el.style.top = `${obs.y}px`;
+    obs.el.style.left = `${laneCenters[obs.lane] - obs.width / 2}px`;
+  });
+}
 
-  let crashInterval9 = setInterval(() => {
-    crash(car, obs9, f9, clear9);
-  }, 50);
-};
+function applyDifficulty(level) {
+  const settings = difficultySettings[level];
+  if (!settings) {
+    return;
+  }
+  baseSpeed = settings.baseSpeed;
+  speedOffsetMin = settings.speedOffsetMin;
+  speedOffsetMax = settings.speedOffsetMax;
+  maxActiveObstacles = settings.maxActiveObstacles;
+  minSpawnGap = settings.minSpawnGap;
+  moveCooldown = settings.moveCooldown;
 
-//logic for Main Menu btn
+  difficultyButtons.forEach((button) => {
+    button.classList.toggle(
+      "active",
+      button.dataset.difficulty === level
+    );
+  });
+}
 
-let mainMenubtn = document.getElementById("mainMenubtn");
-mainMenubtn.addEventListener("click", function remenu() {
-  // newgame=null;
-  location.reload();
-  gameover.style.visibility = "hidden";
-  mainMenu.style.visibility = "visible";
-  intro2.play();
-});
-// newgame();
+function updateScoreAndSpeed(timestamp, dt) {
+  score += dt;
+  scoreTimer += dt;
+  speedTimer += dt;
 
-// logic for Play Again
-let playagain = document.getElementById("playagain");
-playagain.addEventListener("click", function regame() {
-  gameover.style.visibility = "hidden";
-  mainMenu.style.visibility = "hidden";
-  location.reload();
-  intro2.play();
-});
+  if (scoreTimer >= 0.2) {
+    scoreb.textContent = `SCORE - ${Math.floor(score)}`;
+    scoreTimer = 0;
+  }
+
+  if (speedTimer >= 0.25) {
+    const speedWave = Math.abs(Math.sin(timestamp / 900));
+    const speedValue = Math.round(110 + speedWave * 50);
+    speedb.textContent = `SPEED - ${speedValue} KM/H`;
+    speedTimer = 0;
+  }
+}
+
+function checkCollisions() {
+  const carRect = {
+    x: carState.x + carState.width * 0.12,
+    y: carState.y + carState.height * 0.12,
+    w: carState.width * 0.76,
+    h: carState.height * 0.76,
+  };
+
+  for (const obs of obstacles) {
+    if (!obs.active) {
+      continue;
+    }
+    const obsRect = {
+      x: laneCenters[obs.lane] - obs.width / 2 + obs.width * 0.15,
+      y: obs.y + obs.height * 0.1,
+      w: obs.width * 0.7,
+      h: obs.height * 0.8,
+    };
+
+    if (rectsOverlap(carRect, obsRect)) {
+      triggerCrash();
+      break;
+    }
+  }
+}
+
+function rectsOverlap(a, b) {
+  return (
+    a.x < b.x + b.w &&
+    a.x + a.w > b.x &&
+    a.y < b.y + b.h &&
+    a.y + a.h > b.y
+  );
+}
+
+function triggerCrash() {
+  if (!gameStarted) {
+    return;
+  }
+  gameStarted = false;
+  carmoveaud.pause();
+  crashaud.currentTime = 0;
+  crashaud.play();
+  gameover.style.visibility = "visible";
+  scoreg.textContent = `YOUR SCORE - ${Math.floor(score)}`;
+}

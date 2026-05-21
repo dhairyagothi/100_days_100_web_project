@@ -4,246 +4,52 @@
   box-sizing: border-box;
 }
 
+:root {
+  --stage-width: 1200px;
+  --stage-height: 700px;
+  --game-scale: 1;
+}
+
 body {
-  background: url("media/bg2.jpg");
-  background-repeat: no-repeat;
-  background-size: 50%;
-  background-position: 300px 15px;
+  background: #0b1116;
   overflow: hidden;
+  font-family: "BBH Bogle", sans-serif;
+}
+
+.game-shell {
+  position: fixed;
+  inset: 0;
+}
+
+.game-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--stage-width);
+  height: var(--stage-height);
+  transform: translate(-50%, -50%) scale(var(--game-scale));
+  transform-origin: center;
+  background: url("media/bg2.jpg") no-repeat center/cover;
+  overflow: hidden;
+}
+
+.car-container,
+.obstackle-conatiner {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 #car {
   position: absolute;
-  bottom: 0px;
-  left: 520px;
+  left: 0;
+  top: 0;
 }
 
-#obs1 {
+.obstacle {
   position: absolute;
+  left: 0;
   top: -200px;
-  left: 315px;
-  overflow: hidden;
-}
-
-.animateobs1 {
-  animation: updown 2s linear;
-}
-
-@keyframes updown {
-  from {
-    position: absolute;
-    top: -200px;
-    left: 315px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    left: 315px;
-  }
-}
-
-#obs2 {
-  transform: rotateX(20deg);
-  position: absolute;
-  top: -200px;
-  right: 390px;
-  overflow: hidden;
-}
-
-.animateobs2 {
-  animation: updown2 2s linear;
-}
-
-@keyframes updown2 {
-  from {
-    position: absolute;
-    top: -200px;
-    right: 390px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    right: 390px;
-  }
-}
-
-#obs3 {
-  position: absolute;
-  top: -200px;
-  right: 550px;
-  overflow: hidden;
-}
-
-.animateobs3 {
-  animation: updown3 2s linear;
-}
-
-@keyframes updown3 {
-  from {
-    position: absolute;
-    top: -200px;
-    right: 550px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    right: 550px;
-  }
-}
-
-#obs4 {
-  position: absolute;
-  top: -200px;
-  right: 520px;
-  overflow: hidden;
-}
-
-.animateobs4 {
-  animation: updown4 2s linear;
-}
-
-@keyframes updown4 {
-  from {
-    position: absolute;
-    top: -200px;
-    right: 520px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    right: 520px;
-  }
-}
-
-#obs5 {
-  position: absolute;
-  top: -200px;
-  left: 400px;
-  overflow: hidden;
-}
-
-.animateobs5 {
-  animation: updown4 2s linear;
-}
-
-@keyframes updown5 {
-  from {
-    position: absolute;
-    top: -200px;
-    left: 400px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    left: 400px;
-  }
-}
-
-#obs7 {
-  position: absolute;
-  top: -200px;
-  right: 700px;
-  overflow: hidden;
-}
-
-.animateobs7 {
-  animation: updown4 2s linear;
-}
-
-@keyframes updown7 {
-  from {
-    position: absolute;
-    top: -200px;
-    right: 700px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    right: 700px;
-  }
-}
-
-#obs6 {
-  position: absolute;
-  top: -200px;
-  right: 901px;
-  transition: all 2 ease;
-  overflow: hidden;
-}
-
-.animateobs6 {
-  animation: updown6 2s linear;
-}
-
-@keyframes updown6 {
-  from {
-    position: absolute;
-    top: -200px;
-    right: 901px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    right: 901px;
-  }
-}
-
-#obs8 {
-  position: absolute;
-  top: -200px;
-  right: 290px;
-  transition: all 2s ease;
-  overflow: hidden;
-}
-
-.animateobs8 {
-  animation: updown8 2s linear;
-}
-
-@keyframes updown8 {
-  from {
-    position: absolute;
-    top: -200px;
-    right: 290px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    right: 290px;
-  }
-}
-
-#obs9 {
-  position: absolute;
-  top: -200px;
-  right: 630px;
-  overflow: hidden;
-}
-
-.animateobs9 {
-  animation: updown9 2s linear;
-}
-
-@keyframes updown9 {
-  from {
-    position: absolute;
-    top: -200px;
-    right: 630px;
-  }
-
-  to {
-    position: absolute;
-    top: 550px;
-    right: 630px;
-  }
 }
 
 .titleContainer {
@@ -253,8 +59,6 @@ body {
   align-items: center;
   border: 2px solid black;
   border-radius: 30px;
-  position: relative;
-  bottom: 40px;
   height: 200px;
   width: 300px;
   font-size: 54px;
@@ -281,8 +85,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  top: 30px;
   height: 150px;
   width: 300px;
   font-size: 54px;
@@ -314,6 +116,9 @@ body {
   border: 2px solid #00ffff;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
   font-weight: 600;
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 
 #scorepara1 {
@@ -343,9 +148,10 @@ body {
   height: 500px;
   width: 400px;
   position: absolute;
-  top: 35px;
-  left: 420px;
-  background-image: url("../media/gameover.png");
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url("media/gameover.png");
   background-repeat: no-repeat;
   background-position: center top;
   background-size: 100% 55%;
@@ -373,18 +179,22 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 18px;
   border: 2px solid black;
   border-radius: 15px;
-  height: 500px;
+  min-height: 560px;
+  padding: 24px 0;
   width: 400px;
   position: absolute;
-  top: 35px;
-  left: 420px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: #203a43;
   border: 3px solid #00ffff;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
   z-index: 11;
 }
+
 #playbtn {
   display: flex;
   flex-direction: row;
@@ -457,9 +267,53 @@ body {
   border: 2px solid black;
   border-radius: 1000px;
   position: absolute;
-  top: 120px;
-  left: 570px;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 20;
   background-color: red;
 }
 
+#difficulty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #e6f4ff;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+#difficultyTitle {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.difficulty-options {
+  display: flex;
+  gap: 10px;
+}
+
+.difficulty-btn {
+  height: 38px;
+  min-width: 90px;
+  border-radius: 8px;
+  border: 2px solid #00ffff;
+  background-color: #0f2531;
+  color: #ffffff;
+  font-family: "BBH Bogle", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.difficulty-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 255, 255, 0.35);
+}
+
+.difficulty-btn.active {
+  background-color: #00bcd4;
+  color: #081c24;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.7);
+}

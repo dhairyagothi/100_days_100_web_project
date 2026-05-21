@@ -1,161 +1,315 @@
-// WEATHER APP — Using Open-Meteo
-// Step 1: Convert city name → latitude/longitude (Geocoding API)
-// Step 2: Use coordinates → fetch weather (Open-Meteo Forecast API)
+const GEOCODING_API = 'https://geocoding-api.open-meteo.com/v1/search';
+const WEATHER_API = 'https://api.open-meteo.com/v1/forecast';
 
-function isoToTime(isoString) {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString('en-IN', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
+const COMMON_CITIES = ['Bangalore', 'Chennai', 'Hyderabad', 'Pune', 'Noida', 'Delhi'];
+
+const weatherFields = {
+  temp: document.getElementById('temp'),
+  temp2: document.getElementById('temp2'),
+  feels_like: document.getElementById('feels_like'),
+  humidity: document.getElementById('humidity'),
+  humidity2: document.getElementById('humidity2'),
+  min_temp: document.getElementById('min_temp'),
+  max_temp: document.getElementById('max_temp'),
+  wind_speed: document.getElementById('wind_speed'),
+  wind_speed2: document.getElementById('wind_speed2'),
+  wind_degrees: document.getElementById('wind_degrees'),
+  sunrise: document.getElementById('sunrise'),
+  sunset: document.getElementById('sunset')
+};
+
+const cityInput = document.getElementById('city');
+const searchButton = document.getElementById('submit');
+const loading = document.getElementById('loading');
+const cityName = document.getElementById('cityName');
+const statusMessage = document.getElementById('statusMessage');
+const presetCityLinks = document.querySelectorAll('.dropdown-item[data-city]');
+const commonCityRows = Array.from(document.querySelectorAll('tbody tr')).filter((row) => {
+  const rowHeader = row.querySelector('th[scope="row"]');
+  return rowHeader && COMMON_CITIES.includes(rowHeader.textContent.trim());
+});
+
+function normalizeCity(value) {
+  return String(value || '').trim().replace(/\s+/g, ' ');
+}
+
+function setStatus(message, tone = 'info') {
+  if (!statusMessage) return;
+
+  statusMessage.textContent = message;
+  statusMessage.dataset.tone = tone;
+  statusMessage.hidden = !message;
+  statusMessage.style.display = message ? 'block' : 'none';
+}
+
+function setLoading(isLoading) {
+  if (loading) {
+    loading.style.display = isLoading ? 'block' : 'none';
+  }
+
+  if (searchButton) {
+    searchButton.disabled = isLoading;
+  }
+
+  if (cityInput) {
+    cityInput.disabled = isLoading;
+  }
+}
+
+function setText(node, value) {
+  if (!node) return;
+  node.textContent = value;
+}
+
+function setWeatherSummary(summary) {
+  setText(weatherFields.temp, summary.temperatureLabel);
+  setText(weatherFields.temp2, summary.temperatureValue);
+  setText(weatherFields.feels_like, summary.feelsLike);
+  setText(weatherFields.humidity, summary.humidityLabel);
+  setText(weatherFields.humidity2, summary.humidityValue);
+  setText(weatherFields.min_temp, summary.minTemperature);
+  setText(weatherFields.max_temp, summary.maxTemperature);
+  setText(weatherFields.wind_speed, summary.windSpeedLabel);
+  setText(weatherFields.wind_speed2, summary.windSpeedValue);
+  setText(weatherFields.wind_degrees, summary.windDirection);
+  setText(weatherFields.sunrise, summary.sunrise);
+  setText(weatherFields.sunset, summary.sunset);
+}
+
+function resetWeatherSummary() {
+  setWeatherSummary({
+    temperatureValue: '—',
+    temperatureLabel: '—',
+    feelsLike: '—',
+    humidityValue: '—',
+    humidityLabel: '—',
+    minTemperature: '—',
+    maxTemperature: '—',
+    windSpeedValue: '—',
+    windSpeedLabel: '—',
+    windDirection: '—',
+    sunrise: '—',
+    sunset: '—'
+  });
+}
+
+function formatTime(isoDateTime) {
+  if (!isoDateTime) return '—';
+
+  return new Intl.DateTimeFormat('en-IN', {
+    hour: 'numeric',
+    minute: '2-digit'
+  }).format(new Date(isoDateTime));
+}
+
+function formatCityLabel(location, originalQuery) {
+  const parts = [location.name, location.admin1, location.country].filter(Boolean);
+  return parts.length ? parts.join(', ') : originalQuery;
+}
+
+async function geocodeCity(city) {
+  const url = new URL(GEOCODING_API);
+  url.search = new URLSearchParams({
+    name: city,
+    count: '1',
+    language: 'en',
+    format: 'json'
+  });
+
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    throw new Error(`Geocoding request failed (${response.status})`);
+  }
+
+  const data = await response.json();
+  const location = data?.results?.[0];
+
+  if (!location) {
+    return null;
+  }
+
+  return location;
+}
+
+async function fetchWeather(latitude, longitude) {
+  const url = new URL(WEATHER_API);
+  url.search = new URLSearchParams({
+    latitude: String(latitude),
+    longitude: String(longitude),
+    current: 'temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,wind_speed_10m,wind_direction_10m',
+    daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset',
+    timezone: 'auto'
+  });
+
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    throw new Error(`Weather request failed (${response.status})`);
+  }
+
+  return response.json();
+}
+
+function buildWeatherSummary(data) {
+  const current = data?.current || {};
+  const daily = data?.daily || {};
+
+  return {
+    temperatureValue: Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}` : '—',
+    temperatureLabel: Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}°C` : '—',
+    feelsLike: Number.isFinite(current.apparent_temperature) ? `${Math.round(current.apparent_temperature)}°C` : '—',
+    humidityValue: Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}` : '—',
+    humidityLabel: Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—',
+    minTemperature: Number.isFinite(daily.temperature_2m_min?.[0]) ? `${Math.round(daily.temperature_2m_min[0])}°C` : '—',
+    maxTemperature: Number.isFinite(daily.temperature_2m_max?.[0]) ? `${Math.round(daily.temperature_2m_max[0])}°C` : '—',
+    windSpeedValue: Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)}` : '—',
+    windSpeedLabel: Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—',
+    windDirection: Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—',
+    sunrise: formatTime(daily.sunrise?.[0]),
+    sunset: formatTime(daily.sunset?.[0])
+  };
+}
+
+function updateWeatherCard(cityLabel, summary) {
+  if (cityName) {
+    cityName.textContent = cityLabel;
+  }
+
+  setWeatherSummary(summary);
+}
+
+function setRowMessage(row, message) {
+  row.querySelectorAll('td').forEach((cell) => {
+    cell.textContent = message;
+  });
+}
+
+function renderRowWeather(row, data) {
+  const current = data?.current || {};
+  const daily = data?.daily || {};
+  const cells = row.querySelectorAll('td');
+
+  if (cells.length < 10) return;
+
+  cells[0].textContent = Number.isFinite(current.cloud_cover) ? `${Math.round(current.cloud_cover)}%` : '—';
+  cells[1].textContent = Number.isFinite(current.apparent_temperature) ? `${Math.round(current.apparent_temperature)}°C` : '—';
+  cells[2].textContent = Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—';
+  cells[3].textContent = Number.isFinite(daily.temperature_2m_max?.[0]) ? `${Math.round(daily.temperature_2m_max[0])}°C` : '—';
+  cells[4].textContent = Number.isFinite(daily.temperature_2m_min?.[0]) ? `${Math.round(daily.temperature_2m_min[0])}°C` : '—';
+  cells[5].textContent = formatTime(daily.sunrise?.[0]);
+  cells[6].textContent = formatTime(daily.sunset?.[0]);
+  cells[7].textContent = Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}°C` : '—';
+  cells[8].textContent = Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—';
+  cells[9].textContent = Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—';
+}
+
+async function loadCityWeather(city, options = {}) {
+  const { updateTable = false } = options;
+  const normalizedCity = normalizeCity(city);
+
+  if (!normalizedCity) {
+    resetWeatherSummary();
+    setStatus('Type a city name to fetch weather data.', 'info');
+    if (cityName) {
+      cityName.textContent = 'Search for a city';
+    }
+    return;
+  }
+
+  setLoading(true);
+  setStatus(`Searching weather for ${normalizedCity}...`, 'info');
+
+  try {
+    const location = await geocodeCity(normalizedCity);
+
+    if (!location) {
+      throw new Error(`No city found for "${normalizedCity}".`);
+    }
+
+    const weatherData = await fetchWeather(location.latitude, location.longitude);
+    const summary = buildWeatherSummary(weatherData);
+    const label = formatCityLabel(location, normalizedCity);
+
+    updateWeatherCard(label, summary);
+    setStatus(updateTable ? `Updated ${label} and the comparison table.` : `Showing weather for ${label}.`, 'success');
+
+    return { location, weatherData };
+  } catch (error) {
+    console.error('Weather lookup failed:', error);
+    resetWeatherSummary();
+    if (cityName) {
+      cityName.textContent = 'Search for a city';
+    }
+    setStatus(error.message || 'Unable to load weather data right now.', 'error');
+    return null;
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function updateComparisonTable() {
+  const results = await Promise.allSettled(
+    commonCityRows.map(async (row) => {
+      const city = row.querySelector('th[scope="row"]')?.textContent.trim();
+      if (!city) return;
+
+      setRowMessage(row, 'Loading...');
+
+      const location = await geocodeCity(city);
+      if (!location) {
+        setRowMessage(row, '—');
+        return;
+      }
+
+      const weatherData = await fetchWeather(location.latitude, location.longitude);
+      renderRowWeather(row, weatherData);
+    })
+  );
+
+  results.forEach((result) => {
+    if (result.status === 'rejected') {
+      console.error('Comparison table update failed:', result.reason);
+    }
+  });
+}
+
+function bindSearchForm() {
+  const searchForm = cityInput?.form;
+
+  if (!searchForm || !cityInput) return;
+
+  searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    loadCityWeather(cityInput.value);
+  });
+
+  cityInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      loadCityWeather(cityInput.value);
+    }
+  });
+}
+
+function bindPresetCityLinks() {
+  presetCityLinks.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const presetCity = link.dataset.city;
+
+      if (cityInput) {
+        cityInput.value = presetCity;
+      }
+
+      loadCityWeather(presetCity);
     });
+  });
 }
 
-function showLoading() {
-    const ids = ['temp', 'temp2', 'feels_like', 'humidity', 'humidity2',
-                 'min_temp', 'max_temp', 'wind_speed', 'wind_speed2',
-                 'wind_degrees', 'sunrise', 'sunset'];
-    ids.forEach(id => document.getElementById(id).innerHTML = '...');
-    cityName.innerHTML = 'Loading...';
-}
+document.addEventListener('DOMContentLoaded', async () => {
+  bindSearchForm();
+  bindPresetCityLinks();
+  resetWeatherSummary();
+  setStatus('Search for a city to load live weather data.', 'info');
 
-function showError(message) {
-    const ids = ['temp', 'feels_like', 'humidity', 'min_temp', 'max_temp',
-                 'wind_speed', 'wind_degrees', 'sunrise', 'sunset'];
-    ids.forEach(id => document.getElementById(id).innerHTML = '—');
-    temp2.innerHTML = '?';
-    humidity2.innerHTML = '?';
-    wind_speed2.innerHTML = '?';
-    cityName.innerHTML = '—';
-    alert('❌ ' + message);
-}
-
-async function geocodeCity(cityName) {
-    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Geocoding failed');
-    const data = await response.json();
-    if (!data.results || data.results.length === 0) return null;
-    const r = data.results[0];
-    return { lat: r.latitude, lon: r.longitude, name: r.name, country: r.country };
-}
-
-async function fetchWeatherByCoords(lat, lon) {
-    const url = `https://api.open-meteo.com/v1/forecast`
-        + `?latitude=${lat}&longitude=${lon}`
-        + `&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,cloud_cover`
-        + `&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset`
-        + `&timezone=auto&forecast_days=1`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Weather fetch failed');
-    return await response.json();
-}
-
-const getWeather = async (cityInput) => {
-    const city = cityInput.trim();
-    if (!city) { alert('Please enter a city name.'); return; }
-
-    showLoading();
-
-    try {
-        const location = await geocodeCity(city);
-        if (!location) {
-            showError(`City "${city}" not found. Check spelling and try again.`);
-            return;
-        }
-
-        const weatherData = await fetchWeatherByCoords(location.lat, location.lon);
-        const current = weatherData.current;
-        const daily = weatherData.daily;
-
-        cityName.innerHTML = location.name + ', ' + location.country;
-
-        temp.innerHTML     = Math.round(current.temperature_2m);
-        temp2.innerHTML    = Math.round(current.temperature_2m);
-        min_temp.innerHTML = Math.round(daily.temperature_2m_min[0]);
-        max_temp.innerHTML = Math.round(daily.temperature_2m_max[0]);
-
-        humidity.innerHTML   = current.relative_humidity_2m;
-        humidity2.innerHTML  = current.relative_humidity_2m;
-        feels_like.innerHTML = Math.round(current.apparent_temperature);
-        wind_degrees.innerHTML = current.wind_direction_10m;
-
-        wind_speed.innerHTML  = current.wind_speed_10m;
-        wind_speed2.innerHTML = current.wind_speed_10m;
-        sunrise.innerHTML = isoToTime(daily.sunrise[0]);
-        sunset.innerHTML  = isoToTime(daily.sunset[0]);
-
-    } catch (error) {
-        console.error('Weather error:', error);
-        showError('Could not fetch weather data. Check your internet connection.');
-    }
-}
-
-//  TABLE: List of common cities to show in the table
-const TABLE_CITIES = ['Bangalore', 'Chennai', 'Hyderabad', 'Pune', 'Noida', 'Delhi'];
-
-async function loadTableCities() {
-    for (const cityName of TABLE_CITIES) {
-        // Find the <tr> whose first <th> text matches the city name
-        const rows = document.querySelectorAll('tbody tr');
-        let targetRow = null;
-        rows.forEach(row => {
-            const th = row.querySelector('th');
-            if (th && th.textContent.trim() === cityName) {
-                targetRow = row;
-            }
-        });
-
-        if (!targetRow) continue;
-
-        const cells = targetRow.querySelectorAll('td');
-        cells.forEach(td => td.innerHTML = '...');
-
-        try {
-            const location = await geocodeCity(cityName);
-            if (!location) {
-                cells.forEach(td => td.innerHTML = '—');
-                continue;
-            }
-
-            const weatherData = await fetchWeatherByCoords(location.lat, location.lon);
-            const c = weatherData.current;
-            const d = weatherData.daily;
-
-            cells[0].innerHTML = c.cloud_cover;                            // Cloud_pct
-            cells[1].innerHTML = Math.round(c.apparent_temperature);       // Feels_like
-            cells[2].innerHTML = c.relative_humidity_2m;                   // Humidity
-            cells[3].innerHTML = Math.round(d.temperature_2m_max[0]);      // Max_temp
-            cells[4].innerHTML = Math.round(d.temperature_2m_min[0]);      // Min_temp
-            cells[5].innerHTML = isoToTime(d.sunrise[0]);                  // Sunrise
-            cells[6].innerHTML = isoToTime(d.sunset[0]);                   // Sunset
-            cells[7].innerHTML = Math.round(c.temperature_2m);             // Temp
-            cells[8].innerHTML = c.wind_direction_10m;                     // Wind_degrees
-            cells[9].innerHTML = c.wind_speed_10m;                         // Wind_speed
-
-        } catch (err) {
-            console.error(`Failed to load weather for ${cityName}:`, err);
-            cells.forEach(td => td.innerHTML = '—');
-        }
-    }
-}
-
-//  Search button click
-submit.addEventListener("click", (e) => {
-    e.preventDefault()
-    getWeather(city.value)
-})
-
-// ⌨ Enter key triggers search
-city.addEventListener("keydown", (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault()
-        getWeather(city.value)
-    }
-})
-
-//  On page load: fetch Delhi for cards + all table cities
-window.addEventListener('DOMContentLoaded', () => {
-    getWeather('Delhi');
-    loadTableCities();
-})
+  await loadCityWeather('Delhi', { updateTable: false });
+});

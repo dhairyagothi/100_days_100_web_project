@@ -1,0 +1,574 @@
+/* =========================
+   GOOGLE FONT
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+/* =========================
+   RESET
+========================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  overflow-x:hidden;
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:#020412;
+  color:white;
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+.slider-container{
+  width:100%;
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+
+  background:
+    radial-gradient(circle at top,#13203b 0%,#050816 40%,#010104 100%);
+}
+
+/* animated stars */
+.slider-container::before{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+
+  background-size:80px 80px,120px 120px;
+  background-position:0 0,40px 40px;
+
+  opacity:0.18;
+  animation:starsMove 60s linear infinite;
+  z-index:0;
+}
+
+@keyframes starsMove{
+  from{
+    transform:translateY(0);
+  }
+  to{
+    transform:translateY(-100px);
+  }
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar{
+  width:100%;
+  padding:25px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  position:relative;
+  z-index:10;
+}
+
+.logo{
+  font-size:2rem;
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  letter-spacing:4px;
+
+  background:linear-gradient(to right,#ffffff,#7aa7ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* =========================
+   HAMBURGER
+========================= */
+.hamburger-container{
+  position:relative;
+}
+
+.hamburger-icon{
+  width:45px;
+  cursor:pointer;
+
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.line{
+  height:3px;
+  background:white;
+  border-radius:20px;
+  transition:0.4s;
+}
+
+.long{
+  width:100%;
+}
+
+.medium{
+  width:75%;
+}
+
+.short{
+  width:50%;
+}
+
+.hamburger-icon:hover .medium{
+  width:100%;
+}
+
+.hamburger-icon:hover .short{
+  width:100%;
+}
+
+/* =========================
+   MINI PLANETS MENU
+========================= */
+.planet-mini-list{
+  position:absolute;
+  top:70px;
+  right:0;
+
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+
+  padding:18px;
+
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px;
+
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(15px);
+
+  transition:0.4s;
+}
+
+.hamburger-container:hover .planet-mini-list{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+}
+
+.mini-planet{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  cursor:pointer;
+
+  transition:0.35s;
+}
+
+.mini-planet:hover{
+  transform:scale(1.2) rotate(10deg);
+  filter:drop-shadow(0 0 12px white);
+}
+
+/* =========================
+   SLIDER
+========================= */
+.slider{
+  width:100%;
+  position:relative;
+}
+
+/* =========================
+   SLIDE
+========================= */
+.slide{
+  width:100%;
+  min-height:100vh;
+
+  padding:40px 7% 120px;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  position:relative;
+  z-index:2;
+}
+
+.slide.active{
+  display:flex;
+  animation:fadeSlide 0.8s ease;
+}
+
+@keyframes fadeSlide{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================
+   CONTENT WRAPPER
+========================= */
+.content-wrapper{
+  width:100%;
+
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  align-items:center;
+  gap:40px;
+}
+
+/* =========================
+   LEFT CONTENT
+========================= */
+.left-col{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+.slide-number{
+  color:#8ca8ff;
+  font-size:0.95rem;
+  letter-spacing:2px;
+}
+
+.planet-title{
+  font-size:5rem;
+  font-family:'Orbitron',sans-serif;
+  line-height:1;
+  letter-spacing:4px;
+
+  text-shadow:
+    0 0 20px rgba(255,255,255,0.4),
+    0 0 40px rgba(98,146,255,0.3);
+}
+
+.description{
+  color:#d5d8e6;
+  line-height:1.9;
+  font-size:1rem;
+  max-width:500px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+.learn-more{
+  width:fit-content;
+  padding:15px 34px;
+
+  border:none;
+  border-radius:50px;
+
+  background:linear-gradient(135deg,#6fa7ff,#8b5cff);
+  color:white;
+
+  font-weight:600;
+  letter-spacing:1px;
+
+  cursor:pointer;
+  transition:0.4s;
+}
+
+.learn-more:hover{
+  transform:translateY(-4px) scale(1.03);
+
+  box-shadow:
+    0 12px 30px rgba(111,167,255,0.4);
+}
+
+/* =========================
+   CENTER PLANET
+========================= */
+.center-col{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.planet-img{
+  width:100%;
+  max-width:420px;
+
+  object-fit:contain;
+
+  animation:floatPlanet 5s ease-in-out infinite;
+  filter:drop-shadow(0 0 30px rgba(255,255,255,0.18));
+
+  transition:0.5s;
+}
+
+.planet-img:hover{
+  transform:scale(1.05) rotate(6deg);
+}
+
+@keyframes floatPlanet{
+  0%{
+    transform:translateY(0px);
+  }
+  50%{
+    transform:translateY(-18px);
+  }
+  100%{
+    transform:translateY(0px);
+  }
+}
+
+.planet-large{
+  max-width:520px;
+}
+
+.blue-glow{
+  filter:
+    drop-shadow(0 0 18px #55b8ff)
+    drop-shadow(0 0 40px #245fff);
+}
+
+/* =========================
+   RIGHT CONTENT
+========================= */
+.right-col{
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
+
+.stat{
+  padding:22px;
+
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);
+
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px;
+
+  transition:0.35s;
+}
+
+.stat:hover{
+  transform:translateX(8px);
+
+  background:rgba(255,255,255,0.1);
+}
+
+.label{
+  display:block;
+
+  color:#8ca8ff;
+  margin-bottom:8px;
+
+  font-size:0.85rem;
+  letter-spacing:2px;
+}
+
+.value{
+  font-size:1.15rem;
+  font-weight:600;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+.controls{
+  width:100%;
+
+  padding:25px 7%;
+
+  position:absolute;
+  bottom:0;
+  left:0;
+  z-index:20;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.control-btn{
+  padding:14px 28px;
+
+  border:none;
+  border-radius:50px;
+
+  background:rgba(255,255,255,0.08);
+  color:white;
+
+  backdrop-filter:blur(12px);
+
+  cursor:pointer;
+  transition:0.35s;
+}
+
+.control-btn:hover{
+  background:white;
+  color:#020412;
+
+  transform:translateY(-3px);
+}
+
+.scroll-indicator{
+  letter-spacing:4px;
+  color:#9eb8ff;
+  font-size:0.9rem;
+
+  animation:scrollBlink 1.8s infinite;
+}
+
+@keyframes scrollBlink{
+  0%,100%{
+    opacity:0.4;
+  }
+  50%{
+    opacity:1;
+  }
+}
+
+/* =========================
+   TABLET
+========================= */
+@media(max-width:1024px){
+
+  .content-wrapper{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+
+  .left-col{
+    align-items:center;
+    order:1;
+  }
+
+  .center-col{
+    order:2;
+  }
+
+  .right-col{
+    order:3;
+  }
+
+  .planet-title{
+    font-size:4rem;
+  }
+
+  .description{
+    max-width:700px;
+  }
+
+  .right-col{
+    width:100%;
+    flex-direction:row;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .stat{
+    min-width:220px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media(max-width:768px){
+
+  .navbar{
+    padding:20px 5%;
+  }
+
+  .slide{
+    padding:20px 5% 120px;
+  }
+
+  .logo{
+    font-size:1.4rem;
+  }
+
+  .planet-title{
+    font-size:2.8rem;
+  }
+
+  .planet-img{
+    max-width:280px;
+  }
+
+  .planet-large{
+    max-width:330px;
+  }
+
+  .description{
+    font-size:0.95rem;
+    line-height:1.7;
+  }
+
+  .controls{
+    padding:18px 5%;
+  }
+
+  .control-btn{
+    padding:12px 20px;
+    font-size:0.85rem;
+  }
+
+  .scroll-indicator{
+    font-size:0.75rem;
+    letter-spacing:2px;
+  }
+
+  .right-col{
+    flex-direction:column;
+  }
+
+  .stat{
+    width:100%;
+  }
+
+  .planet-mini-list{
+    flex-direction:row;
+    flex-wrap:wrap;
+    width:240px;
+    justify-content:center;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+@media(max-width:480px){
+
+  .planet-title{
+    font-size:2.2rem;
+  }
+
+  .planet-img{
+    max-width:230px;
+  }
+
+  .learn-more{
+    padding:12px 24px;
+    font-size:0.85rem;
+  }
+
+  .controls{
+    gap:10px;
+  }
+
+  .control-btn{
+    width:110px;
+  }
+}

@@ -52,7 +52,11 @@
         </h1>
 
         <p class="hero-sub">
-          A curated open-source collection. Browse, fork, contribute.
+          A comprehensive collection of 112+ web development projects ranging from beginner to intermediate level, designed to help developers learn and practice through hands-on experience.
+        </p>
+
+        <p class="hero-extra">
+          Frontend • Backend • Full-Stack • Games • UI Components • Tools
         </p>
 
         <div class="hero-actions">
@@ -139,6 +143,7 @@
         <div class="projects-header">
           <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
+
             <input
               type="text"
               id="searchInput"
@@ -146,7 +151,39 @@
               placeholder="Search projects…"
               autocomplete="off"
             />
+
+            <!-- ADD THIS BUTTON -->
+            <button
+              id="clearSearch"
+              class="clear-btn"
+              aria-label="Clear search"
+              type="button"
+            >
+              &times;
+            </button>
           </div>
+
+          <!-- Technology Stack Search -->
+          <div class="search-bar tech-search-bar">
+            <i class="fas fa-code search-icon"></i>
+            <input
+              type="text"
+              id="techStackSearch"
+              class="search-input"
+              placeholder="Filter by tech stack (React, Node.js, Python...)"
+              autocomplete="off"
+            />
+            <button id="clearTechFilter" class="clear-filter-btn" style="display: none;" aria-label="Clear tech filters">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <!-- Active Tech Filters Display -->
+          <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
+            <span class="filter-label">Active filters:</span>
+            <div id="techFilterTags"></div>
+          </div>
+
           <div class="filter-chips" id="filterChips">
             <button class="chip active" data-filter="all" id="filterAll">
               All <span class="chip-count" id="allCount">Projects</span>
@@ -250,15 +287,17 @@
     </footer>
 
     <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
-    <button id="scrollBtn" aria-label="Scroll to top">
-      <i class="fas fa-arrow-up"></i>
-    </button>
-
+   <button id="scrollBtn" aria-label="Back to top">
+    <svg class="progress-ring" viewBox="0 0 48 48">
+        <circle class="ring-track" cx="24" cy="24" r="22"/>
+        <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22"/>
+    </svg>
+    <i class="fas fa-arrow-up scroll-arrow"></i>
+    <span class="scroll-tooltip">Back to top</span>
+</button>
     <div class="toast" id="toast"></div>
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
 
-    <!-- ── BACK TO TOP BUTTON ────────────────────────────────── -->
-    <button id="backToTop">↑</button>
   </body>
 </html>

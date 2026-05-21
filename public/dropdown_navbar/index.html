@@ -70,19 +70,96 @@
             <!-- Desktop Navbar -->
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-6">
-                <a
-                  href="#"
+                <div class="relative">
+                  <!-- Dropdown For Grocery -->
+                  <button
+                  id="grocery"
                   class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                >
+                  >
                   Grocery
-                </a>
-
-                <a
-                  href="#"
+                </button>
+                <div 
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="grocery"
+                  tabindex="-1"
+                  id="grocery-dd"
+                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                  >
+                  <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Fruits & Vegetables
+                    </div>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Dairy Products
+                    </div>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Rice & Grains
+                    </div>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Snacks
+                    </div>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Others
+                    </div>
+                </div>
+              </div>
+              <!-- Dropdown for Mobile -->
+                <div class="relative">
+                  <button
+                  id="mobile"
                   class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                >
+                  >
                   Mobile
-                </a>
+                </button>
+                <div
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="mobile"
+                tabindex="-1"
+                id="mobile-dd"
+                class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                >
+                <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Android Phones
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      iPhones
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      5G Phones
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Phone Cases
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Others
+                    </div>
+                </div>
+              </div>
 
                 <!-- Appliances Dropdown -->
                 <div class="relative">
@@ -133,19 +210,101 @@
                   </div>
                 </div>
 
-                <a
-                  href="#"
+                <!-- Vehicle DropDown -->
+                <div class="relative">
+                  <button
+                  id="vehicle"
                   class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                >
+                  >
                   Vehicle
-                </a>
+                </button>
+                  <div
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="vehicle"
+                  tabindex="-1"
+                  id="vehicle-dd"
+                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                  >
+                  <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Cars
+                    </div>
 
-                <a
-                  href="#"
-                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Travel
-                </a>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Bikes
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Scooters
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Electric Vehicels
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Others
+                    </div>
+                  </div>
+              </div>
+
+                <!-- Travel Dropdown -->
+                 <div class="relative">
+                   <button
+                   id="travel"
+                   class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                   >
+                   Travel
+                  </button>
+                  <div
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="travel"
+                  tabindex="-1"
+                  id="travel-dd"
+                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                  >
+                  <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Flight
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Hotel
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Bus
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Train
+                    </div>
+
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Others
+                    </div>
+                  </div>
+                </div>
 
                 <!-- Fashion Dropdown -->
                 <div class="relative">
@@ -269,19 +428,65 @@
           tabindex="-1"
           id="mobile-menu-dd"
         >
-          <a
-            href="#"
-            class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Grocery
-          </a>
+          <!-- Grocery Appliances -->
+          <div>
+            <button
+              id="mobile-grocery-btn"
+              class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+            >
+              Grocery
+            </button>
 
-          <a
-            href="#"
-            class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Mobile
-          </a>
+            <div id="mobile-grocery-dd" class="hidden pl-4 space-y-1">
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Fruits & Vegetables
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Dairy Products
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Rice & Grains
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Appliances -->
+          <div>
+            <button
+              id="mobile-mobile-btn"
+              class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+            >
+              Mobile
+            </button>
+
+            <div id="mobile-mobile-dd" class="hidden pl-4 space-y-1">
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Android Phone
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                iPhone
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                5G Phone
+              </div>
+            </div>
+          </div>
 
           <!-- Mobile Appliances -->
           <div>
@@ -309,6 +514,66 @@
                 class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
               >
                 Washing Machine
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Vehicle -->
+          <div>
+            <button
+              id="mobile-vehicle-btn"
+              class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+            >
+              Vehicle
+            </button>
+
+            <div id="mobile-vehicle-dd" class="hidden pl-4 space-y-1">
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Cars
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Bikes
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Scooters
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Travel -->
+          <div>
+            <button
+              id="mobile-travel-btn"
+              class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+            >
+              Travel
+            </button>
+
+            <div id="mobile-travel-dd" class="hidden pl-4 space-y-1">
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Flight
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Hotel
+              </div>
+
+              <div
+                class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                Train
               </div>
             </div>
           </div>
@@ -354,7 +619,7 @@
       <div
         class="text-gray-200 text-2xl md:text-4xl font-semibold tracking-wide max-w-5xl leading-relaxed"
       >
-        Dropdown Menus Available Under Appliances, Fashion & Profile Tabs
+        Dropdown Menus Available Under Grocery, Mobile, Appliances, Vehicle, Travel, Fashion & Profile Tabs
       </div>
     </div>
 
@@ -369,9 +634,25 @@
     <script>
       const dropdowns = [
         {
+          button: "grocery",
+          menu: "grocery-dd",
+        },        
+        {
+          button: "mobile",
+          menu: "mobile-dd",
+        },        
+        {
           button: "appliances",
           menu: "appliances-dd",
         },
+        {
+          button: "vehicle",
+          menu: "vehicle-dd",
+        },        
+        {
+          button: "travel",
+          menu: "travel-dd",
+        },        
         {
           button: "fashion",
           menu: "fashion-dd",
@@ -459,6 +740,26 @@
           document.getElementById("mobile-menu-dd").classList.toggle("hidden");
         });
 
+      // Mobile Grocery Toggle
+      document
+        .getElementById("mobile-grocery-btn")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          document
+            .getElementById("mobile-grocery-dd")
+            .classList.toggle("hidden");
+        });
+      // Mobile mobile Toggle
+      document
+        .getElementById("mobile-mobile-btn")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          document
+            .getElementById("mobile-mobile-dd")
+            .classList.toggle("hidden");
+        });
       // Mobile Appliances Toggle
       document
         .getElementById("mobile-appliances-btn")
@@ -470,6 +771,26 @@
             .classList.toggle("hidden");
         });
 
+      // Mobile Vehicle Toggle
+      document
+        .getElementById("mobile-vehicle-btn")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          document
+            .getElementById("mobile-vehicle-dd")
+            .classList.toggle("hidden");
+        });
+      // Mobile Travel Toggle
+      document
+        .getElementById("mobile-travel-btn")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          document
+            .getElementById("mobile-travel-dd")
+            .classList.toggle("hidden");
+        });
       // Mobile Fashion Toggle
       document
         .getElementById("mobile-fashion-btn")
