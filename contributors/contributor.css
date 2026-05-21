@@ -500,6 +500,7 @@ body{
     transition:var(--transition);
 }
 
+
 .footer-link:hover{
     color:#00ffff;
     transform:translateX(6px);
@@ -528,6 +529,55 @@ body{
     background:var(--accent-color);
     color:#000;
     transform:translateY(-5px);
+
+.certificate-btn {
+  background: #16a34a;
+
+  color: white;
+
+  border: none;
+
+  padding: 0.8rem 1.6rem;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  font-weight: 700;
+
+  margin-top: 12px;
+
+  transition: 0.3s;
+}
+
+.certificate-btn:hover {
+  background: #15803d;
+
+  transform: scale(1.03);
+}
+#closeCertificate {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+
+  font-size: 30px;
+
+  background: none;
+  border: none;
+
+  color: white;
+
+  cursor: pointer;
+
+  z-index: 1000;
+}
+
+/* Footer */
+.footer {
+  background: var(--bg-primary) !important;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--glass-border);
+
 }
 
 /* Responsive */
@@ -564,8 +614,6 @@ body{
         justify-content:flex-start;
     }
 
-
-
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem 2rem;
@@ -598,11 +646,17 @@ body{
     }
 }
 
+
 @media(max-width:480px){
 
     body{
         padding-top:260px;
     }
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+
 
     .container{
         padding:0 1rem;
@@ -622,36 +676,70 @@ body{
   }
 }
 
-.rank-badge{
+.rank-badge {
+  position: absolute !important;
 
-position:absolute !important;
+  top: 4px !important;
 
-top:4px !important;
+  right: 4px !important;
 
-right:4px !important;
+  width: 52px !important;
 
-width:52px !important;
+  height: 52px !important;
 
-height:52px !important;
+  max-width: 52px !important;
 
-max-width:52px !important;
+  max-height: 52px !important;
 
-max-height:52px !important;
+  object-fit: contain;
 
-object-fit:contain;
+  z-index: 10;
 
-z-index:10;
+  padding: 0;
 
-padding:0;
-
-margin:0;
-
+  margin: 0;
 }
-.rank-badge:hover{
-
-transform:
-scale(1.1);
-
+.rank-badge:hover {
+  transform: scale(1.1);
 }
 
+.loading-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
 
+.api-error {
+  text-align: center;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 68, 68, 0.08);
+  border: 1px solid rgba(255, 68, 68, 0.25);
+}
+
+.api-error p {
+  color: #ff6b6b;
+  margin-bottom: 1rem;
+}
+
+.api-error button {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.api-error button:hover {
+  transform: translateY(-2px);
+  background: #ff2222;
+}
+
+.hidden {
+  display: none !important;
+}
