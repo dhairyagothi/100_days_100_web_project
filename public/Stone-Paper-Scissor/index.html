@@ -1,173 +1,1128 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Stone-Paper-Scissors Game</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <link rel="stylesheet" href="style.css" class="rel" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dangrek&family=Roboto:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Paper Scissors — 2 Player</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS VARIABLES & RESET ===== */
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.1);
+  --text: #f0f0ff;
+  --text2: #8888aa;
+  --p1: #00f5d4;
+  --p2: #f72585;
+  --accent: #7209b7;
+  --gold: #ffd60a;
+  --win: #00f5d4;
+  --lose: #f72585;
+  --draw: #ffd60a;
+  --glow1: 0 0 20px rgba(0,245,212,0.4);
+  --glow2: 0 0 20px rgba(247,37,133,0.4);
+  --radius: 20px;
+  --font-head: 'Orbitron', monospace;
+  --font-body: 'Rajdhani', sans-serif;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"] {
+  --bg: #f0f0ff;
+  --bg2: #e0e0f5;
+  --surface: rgba(0,0,0,0.05);
+  --surface2: rgba(0,0,0,0.08);
+  --border: rgba(0,0,0,0.12);
+  --text: #1a1a2e;
+  --text2: #555577;
+  --glow1: 0 0 20px rgba(0,200,180,0.3);
+  --glow2: 0 0 20px rgba(200,0,100,0.3);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:background var(--transition),color var(--transition);
+}
 
-  <body>
-    <div class="container">
-      <div class="display">
-        <div class="heading">
-          ROCK<br />
-          PAPER<br />
-          SCISSOR
-        </div>
-        <div class="scoreboard">
-          <div class="score">
-            Computer score
-            <div id="comscore"></div>
-          </div>
-          <div class="score">
-            Your<br />
-            score
-            <div id="youscore"></div>
-          </div>
-        </div>
-      </div>
-      <div class="export">
-        <div class="stone1">
-          <img src="./images/Group 2.png" />
-          <img class="logo1" src="./images/stone.png" />
-        </div>
-        <div class="paper1">
-          <img src="./images/Group 1.png" />
-          <img class="logo2" src="./images/paper.png" />
-        </div>
-        <div class="scissor1">
-          <img src="./images/Group 3.png" />
-          <img class="logo3" src="./images/scissors.png" />
-        </div>
-      </div>
+/* ===== ANIMATED BACKGROUND ===== */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,245,212,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,245,212,0.03) 1px,transparent 1px);
+  background-size:50px 50px;
+  animation:gridMove 20s linear infinite;
+}
+@keyframes gridMove{from{background-position:0 0}to{background-position:50px 50px}}
+.bg-orb{
+  position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;
+  animation:orbFloat 8s ease-in-out infinite;
+}
+.bg-orb:nth-child(1){width:400px;height:400px;background:rgba(0,245,212,0.08);top:-100px;left:-100px}
+.bg-orb:nth-child(2){width:300px;height:300px;background:rgba(247,37,133,0.08);bottom:-80px;right:-80px;animation-delay:-4s}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
 
-      <div class="game">
-        <div class="stone">
-          <img class="back" src="./images/Group 2.png" />
-          <img onclick="game('rock')" class="logo1" src="./images/stone.png" />
-        </div>
-        <div class="line"><img class="line1" src="./images/Line 1.png" /></div>
-        <div class="paper">
-          <img class="back" src="./images/Group 1.png" />
-          <img onclick="game('paper')" class="logo2" src="./images/paper.png" />
-        </div>
-        <div class="line"><img class="line3" src="./images/Line 3.png" /></div>
-        <div class="line"><img class="line2" src="./images/Line 2.png" /></div>
-        <div class="scissor">
-          <img class="back" src="./images/Group 3.png" />
-          <img
-            onclick="game('scissor')"
-            class="logo3"
-            src="./images/scissors.png"
-          />
-        </div>
-      </div>
+/* ===== LAYOUT ===== */
+#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.screen{
+  width:100%;max-width:800px;padding:20px;
+  display:none;flex-direction:column;align-items:center;gap:20px;
+  min-height:100vh;justify-content:center;
+}
+.screen.active{display:flex}
 
-      <div class="you-win">
-        <div class="you-picked">
-          <div class="ipt-U ipt-U1">You picked</div>
-          <div class="bg"><img src="./images/Ellipse 4.png" /></div>
-          <div class="opt-U opt-U1">
-            <div id="opt-U1"></div>
-            <!-- <div class="backopt" class="stone">
-                <img src="./images1/Group 2.png" />
-                <img onclick="game('rock')" class="logo1" src="./images1/icons8-fist-67 1.png" />
-              </div> -->
-          </div>
-        </div>
-        <div class="result result1">
-          <h2>YOU WIN</h2>
-          <h3>AGAINST PC</h3>
-          <button onclick="replay()">Play Again</button>
-        </div>
+/* ===== TOP BAR ===== */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;
+  background:rgba(10,10,15,0.8);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] .topbar{background:rgba(240,240,255,0.85)}
+.topbar-logo{font-family:var(--font-head);font-size:14px;letter-spacing:2px;color:var(--p1)}
+.topbar-btns{display:flex;gap:8px}
+.icon-btn{
+  width:38px;height:38px;border-radius:10px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:all var(--transition);
+}
+.icon-btn:hover{background:var(--surface2);transform:scale(1.05)}
 
-        <div class="btn">
-          <a href="index1.html"><button id="nxt" class="next">Next</button></a>
-        </div>
-        <div class="reset">
-          <button class="reset_button" onclick="resetscore()" style="margin-bottom:110px ;">Reset</button >
-        </div>
-        <div class="pc-picked">
-          <div class="ipt-P ipt-P1">PC picked</div>
-          <div id="opt-P" class="opt-P opt-P1">
-            <div id="opt-P1"></div>
-          </div>
-        </div>
-      </div>
-      <div class="you-lost">
-        <div class="you-picked">
-          <div class="ipt-U ipt-U2">YOU PICKED</div>
+/* ===== GLASS CARD ===== */
+.glass{
+  background:var(--surface);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;
+}
 
-          <div class="opt-U opt-U2">
-            <div id="opt-U2"></div>
-          </div>
-        </div>
-        <div class="result result2">
-          <h2>YOU LOST</h2>
-          <h3>AGAINST PC</h3>
-          <button onclick="replay()">Play Again</button>
-        </div>
-        <div class="pc-picked">
-          <div class="ipt-P ipt-P2">PC PICKED</div>
-          <div class="bg"><img src="./images/Ellipse 4.png" /></div>
-          <div class="opt-P opt-P2">
-            <div id="opt-P2"></div>
-          </div>
-        </div>
+/* ===== START SCREEN ===== */
+#startScreen{gap:32px}
+.start-logo{
+  text-align:center;
+  font-family:var(--font-head);
+  font-size:clamp(28px,6vw,52px);
+  font-weight:900;
+  letter-spacing:4px;
+  line-height:1.2;
+}
+.start-logo span.g1{color:var(--p1);text-shadow:var(--glow1)}
+.start-logo span.g2{color:var(--p2);text-shadow:var(--glow2)}
+.start-logo .sub{font-size:clamp(12px,2.5vw,16px);color:var(--text2);letter-spacing:6px;font-family:var(--font-body);font-weight:500;display:block;margin-top:8px}
+
+.player-setup{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:500px){.player-setup{grid-template-columns:1fr}}
+.player-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;display:flex;flex-direction:column;gap:12px;
+  transition:border-color var(--transition);
+}
+.player-card.p1-card{border-top:3px solid var(--p1)}
+.player-card.p2-card{border-top:3px solid var(--p2)}
+.player-label{font-family:var(--font-head);font-size:11px;letter-spacing:3px}
+.p1-card .player-label{color:var(--p1)}
+.p2-card .player-label{color:var(--p2)}
+.player-avatar-row{display:flex;gap:8px;flex-wrap:wrap}
+.avatar-btn{
+  width:40px;height:40px;border-radius:10px;border:2px solid transparent;
+  background:var(--surface2);cursor:pointer;font-size:20px;
+  transition:all var(--transition);display:flex;align-items:center;justify-content:center;
+}
+.avatar-btn.selected,.avatar-btn:hover{border-color:var(--p1);transform:scale(1.1)}
+.p2-card .avatar-btn.selected,.p2-card .avatar-btn:hover{border-color:var(--p2)}
+.name-input{
+  background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;color:var(--text);font-family:var(--font-body);font-size:15px;
+  outline:none;transition:border-color var(--transition);width:100%;
+}
+.name-input:focus{border-color:var(--p1)}
+.p2-card .name-input:focus{border-color:var(--p2)}
+
+.mode-row{display:flex;gap:10px;width:100%}
+.mode-btn{
+  flex:1;padding:12px;border-radius:12px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);cursor:pointer;
+  font-family:var(--font-head);font-size:11px;letter-spacing:2px;
+  transition:all var(--transition);
+}
+.mode-btn.active{background:linear-gradient(135deg,var(--p1),var(--accent));color:#fff;border-color:transparent;box-shadow:var(--glow1)}
+.mode-btn:hover:not(.active){background:var(--surface2);color:var(--text)}
+
+.play-btn{
+  padding:18px 60px;border-radius:50px;border:none;cursor:pointer;
+  font-family:var(--font-head);font-size:16px;letter-spacing:4px;
+  background:linear-gradient(135deg,var(--p1),var(--accent),var(--p2));
+  color:#fff;font-weight:700;
+  box-shadow:0 0 30px rgba(0,245,212,0.3),0 0 60px rgba(114,9,183,0.2);
+  transition:all var(--transition);
+  position:relative;overflow:hidden;
+}
+.play-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--p2),var(--accent),var(--p1));
+  opacity:0;transition:opacity var(--transition);
+}
+.play-btn:hover{transform:scale(1.05);box-shadow:0 0 50px rgba(0,245,212,0.5),0 0 80px rgba(114,9,183,0.3)}
+.play-btn:hover::before{opacity:1}
+.play-btn span{position:relative;z-index:1}
+
+/* ===== SCOREBOARD ===== */
+.scoreboard{
+  width:100%;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;
+  margin-top:60px;
+}
+.score-block{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;text-align:center;
+}
+.score-avatar{font-size:32px;line-height:1}
+.score-name{font-family:var(--font-head);font-size:11px;letter-spacing:2px;margin:4px 0}
+.score-p1{color:var(--p1)}
+.score-p2{color:var(--p2)}
+.score-val{font-family:var(--font-head);font-size:36px;font-weight:900;line-height:1}
+.score-streak{font-size:11px;color:var(--text2);margin-top:4px}
+.score-vs{font-family:var(--font-head);font-size:20px;font-weight:900;color:var(--text2);text-align:center}
+.round-badge{
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  padding:4px 12px;font-size:11px;font-family:var(--font-head);letter-spacing:2px;color:var(--text2);
+  text-align:center;margin-top:6px;
+}
+
+/* ===== CHOICE SCREEN ===== */
+.choice-header{text-align:center}
+.choice-header .player-turn{
+  font-family:var(--font-head);font-size:clamp(18px,4vw,28px);font-weight:700;letter-spacing:3px;
+}
+.choice-header .choose-label{font-size:13px;color:var(--text2);letter-spacing:2px;margin-top:4px}
+
+/* TIMER */
+.timer-ring{width:70px;height:70px;position:relative}
+.timer-ring svg{width:70px;height:70px;transform:rotate(-90deg)}
+.timer-ring circle{fill:none;stroke-width:4}
+.timer-bg{stroke:var(--border)}
+.timer-fg{stroke:var(--p1);stroke-dasharray:188;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke 0.5s}
+.timer-text{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-head);font-size:20px;font-weight:700;
+}
+
+/* CHOICE CARDS */
+.choices-grid{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.choice-card{
+  width:clamp(110px,28vw,160px);
+  aspect-ratio:1;
+  border-radius:24px;border:2px solid var(--border);
+  background:var(--surface);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  position:relative;overflow:hidden;
+  user-select:none;
+}
+.choice-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at center,rgba(255,255,255,0.08),transparent 70%);
+  opacity:0;transition:opacity var(--transition);
+}
+.choice-card:hover{transform:translateY(-8px) scale(1.05);border-color:var(--p1);box-shadow:0 20px 40px rgba(0,0,0,0.3),var(--glow1)}
+.choice-card:hover::before{opacity:1}
+.choice-card:active{transform:scale(0.95)}
+.choice-card.selected{
+  border-color:var(--p1);
+  background:linear-gradient(135deg,rgba(0,245,212,0.15),rgba(114,9,183,0.1));
+  box-shadow:var(--glow1),0 0 0 4px rgba(0,245,212,0.1);
+  animation:selectedPulse 0.5s ease;
+}
+.p2-turn .choice-card:hover{border-color:var(--p2);box-shadow:0 20px 40px rgba(0,0,0,0.3),var(--glow2)}
+.p2-turn .choice-card.selected{border-color:var(--p2);background:linear-gradient(135deg,rgba(247,37,133,0.15),rgba(114,9,183,0.1));box-shadow:var(--glow2),0 0 0 4px rgba(247,37,133,0.1)}
+@keyframes selectedPulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.choice-emoji{font-size:48px;line-height:1;transition:transform 0.3s}
+.choice-card:hover .choice-emoji{transform:scale(1.2) rotate(-10deg)}
+.choice-label{font-family:var(--font-head);font-size:11px;letter-spacing:3px;color:var(--text2)}
+.choice-key{
+  position:absolute;top:8px;right:8px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:6px;
+  padding:2px 6px;font-size:9px;font-family:var(--font-head);color:var(--text2);letter-spacing:1px;
+}
+
+/* CONFIRM BTN */
+.confirm-btn{
+  padding:14px 40px;border-radius:50px;border:none;cursor:pointer;
+  font-family:var(--font-head);font-size:13px;letter-spacing:3px;
+  background:linear-gradient(135deg,var(--p1),var(--accent));
+  color:#fff;font-weight:700;
+  box-shadow:var(--glow1);
+  transition:all var(--transition);
+  opacity:0.4;pointer-events:none;
+}
+.confirm-btn.ready{opacity:1;pointer-events:all}
+.confirm-btn.ready:hover{transform:scale(1.05);box-shadow:0 0 40px rgba(0,245,212,0.5)}
+.p2-turn .confirm-btn{background:linear-gradient(135deg,var(--p2),var(--accent));box-shadow:var(--glow2)}
+.p2-turn .confirm-btn.ready:hover{box-shadow:0 0 40px rgba(247,37,133,0.5)}
+
+/* ===== PASS SCREEN ===== */
+#passScreen{background:linear-gradient(135deg,rgba(0,245,212,0.05),rgba(247,37,133,0.05))}
+.pass-icon{font-size:80px;animation:passFloat 2s ease-in-out infinite}
+@keyframes passFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-15px) rotate(5deg)}}
+.pass-title{font-family:var(--font-head);font-size:clamp(20px,5vw,32px);font-weight:900;letter-spacing:3px;text-align:center}
+.pass-subtitle{color:var(--text2);letter-spacing:2px;font-size:14px;text-align:center}
+.countdown-bar{
+  width:200px;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;
+}
+.countdown-fill{
+  height:100%;background:linear-gradient(90deg,var(--p1),var(--p2));
+  border-radius:3px;animation:countdownAnim 2.5s linear forwards;
+}
+@keyframes countdownAnim{from{width:100%}to{width:0%}}
+.pass-btn{
+  padding:14px 40px;border-radius:50px;border:none;cursor:pointer;
+  font-family:var(--font-head);font-size:13px;letter-spacing:3px;
+  background:linear-gradient(135deg,var(--p2),var(--accent));
+  color:#fff;font-weight:700;box-shadow:var(--glow2);
+  transition:all var(--transition);
+}
+.pass-btn:hover{transform:scale(1.05)}
+
+/* ===== REVEAL SCREEN ===== */
+.reveal-vs-row{
+  display:flex;align-items:center;justify-content:center;gap:clamp(16px,4vw,40px);
+  width:100%;
+}
+.reveal-player{display:flex;flex-direction:column;align-items:center;gap:12px;flex:1}
+.reveal-avatar{font-size:24px}
+.reveal-name{font-family:var(--font-head);font-size:12px;letter-spacing:2px}
+.reveal-choice{
+  width:clamp(100px,22vw,150px);aspect-ratio:1;
+  border-radius:24px;border:3px solid;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(40px,10vw,64px);
+  position:relative;
+}
+.reveal-p1 .reveal-choice{border-color:var(--p1);background:rgba(0,245,212,0.1);box-shadow:var(--glow1)}
+.reveal-p2 .reveal-choice{border-color:var(--p2);background:rgba(247,37,133,0.1);box-shadow:var(--glow2)}
+.reveal-p1{animation:revealSlide 0.6s ease forwards;opacity:0;transform:translateX(-60px)}
+.reveal-p2{animation:revealSlide 0.6s 0.2s ease forwards;opacity:0;transform:translateX(60px)}
+@keyframes revealSlide{to{opacity:1;transform:translateX(0)}}
+.reveal-vs-badge{font-family:var(--font-head);font-size:clamp(16px,4vw,24px);font-weight:900;color:var(--text2)}
+.result-banner{
+  font-family:var(--font-head);font-size:clamp(22px,5vw,36px);font-weight:900;
+  letter-spacing:4px;text-align:center;
+  animation:resultPop 0.5s 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+  opacity:0;
+}
+@keyframes resultPop{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+.result-win{color:var(--win);text-shadow:0 0 30px rgba(0,245,212,0.6)}
+.result-lose{color:var(--lose);text-shadow:0 0 30px rgba(247,37,133,0.6)}
+.result-draw{color:var(--draw);text-shadow:0 0 30px rgba(255,214,10,0.6)}
+.shake{animation:shake 0.5s ease !important}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-10px)}80%{transform:translateX(10px)}}
+
+.result-emoji{font-size:40px;animation:resultPop 0.5s 1s cubic-bezier(0.34,1.56,0.64,1) both;opacity:0}
+.next-btn{
+  padding:14px 40px;border-radius:50px;border:none;cursor:pointer;
+  font-family:var(--font-head);font-size:13px;letter-spacing:3px;
+  background:linear-gradient(135deg,var(--p1),var(--p2));
+  color:#fff;font-weight:700;
+  transition:all var(--transition);
+  animation:resultPop 0.5s 1.2s cubic-bezier(0.34,1.56,0.64,1) both;opacity:0;
+}
+.next-btn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(0,245,212,0.3)}
+
+/* ===== FINAL WINNER SCREEN ===== */
+#winnerScreen .winner-trophy{font-size:80px;animation:trophySpin 1s ease forwards}
+@keyframes trophySpin{0%{transform:rotate(-30deg) scale(0)}100%{transform:rotate(0) scale(1)}}
+.winner-title{font-family:var(--font-head);font-size:clamp(14px,3vw,18px);letter-spacing:4px;color:var(--text2);text-align:center}
+.winner-name{font-family:var(--font-head);font-size:clamp(28px,7vw,52px);font-weight:900;text-align:center;animation:winnerGlow 2s ease-in-out infinite alternate}
+.winner-p1{color:var(--p1)}
+.winner-p2{color:var(--p2)}
+.winner-draw{color:var(--gold)}
+@keyframes winnerGlow{from{text-shadow:0 0 20px currentColor}to{text-shadow:0 0 60px currentColor,0 0 100px currentColor}}
+.final-scores{
+  display:flex;gap:16px;align-items:center;
+}
+.final-score-block{
+  text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 24px;
+}
+.final-score-block .fsname{font-family:var(--font-head);font-size:11px;letter-spacing:2px;color:var(--text2)}
+.final-score-block .fsval{font-family:var(--font-head);font-size:40px;font-weight:900;line-height:1}
+.final-score-block.fsp1 .fsval{color:var(--p1)}
+.final-score-block.fsp2 .fsval{color:var(--p2)}
+.fsep{font-family:var(--font-head);font-size:24px;color:var(--text2)}
+.play-again-btn{
+  padding:16px 50px;border-radius:50px;border:none;cursor:pointer;
+  font-family:var(--font-head);font-size:14px;letter-spacing:4px;
+  background:linear-gradient(135deg,var(--p1),var(--accent),var(--p2));
+  color:#fff;font-weight:700;
+  box-shadow:0 0 40px rgba(0,245,212,0.3);
+  transition:all var(--transition);
+}
+.play-again-btn:hover{transform:scale(1.05);box-shadow:0 0 60px rgba(0,245,212,0.5)}
+
+/* ===== ACHIEVEMENTS ===== */
+.achievement-toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:linear-gradient(135deg,var(--accent),var(--p1));
+  border-radius:50px;padding:12px 24px;
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--font-head);font-size:12px;letter-spacing:2px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);
+  z-index:1000;
+  transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.achievement-toast.show{transform:translateX(-50%) translateY(0)}
+.ach-icon{font-size:24px}
+
+/* ===== GAME HISTORY ===== */
+.history-section{width:100%;margin-top:8px}
+.history-title{font-family:var(--font-head);font-size:11px;letter-spacing:3px;color:var(--text2);margin-bottom:10px}
+.history-list{
+  display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+}
+.history-item{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:8px 12px;font-size:13px;letter-spacing:1px;
+  animation:fadeIn 0.3s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.history-round{font-family:var(--font-head);font-size:9px;color:var(--text2);width:50px;flex-shrink:0}
+.history-choices{flex:1;display:flex;gap:4px;align-items:center;font-size:18px}
+.history-result{font-family:var(--font-head);font-size:9px;letter-spacing:1px}
+.hr-win{color:var(--win)}
+.hr-lose{color:var(--lose)}
+.hr-draw{color:var(--draw)}
+
+/* ===== BADGES ===== */
+.badges-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.badge{
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  padding:6px 12px;font-size:11px;font-family:var(--font-head);letter-spacing:1px;color:var(--text2);
+  display:flex;align-items:center;gap:6px;
+  transition:all var(--transition);
+}
+.badge.unlocked{
+  background:linear-gradient(135deg,rgba(0,245,212,0.15),rgba(114,9,183,0.15));
+  border-color:var(--p1);color:var(--text);
+  box-shadow:var(--glow1);
+}
+
+/* ===== CONFETTI ===== */
+#confetti-canvas{position:fixed;inset:0;z-index:999;pointer-events:none}
+
+/* ===== FULLSCREEN BTN ===== */
+.fullscreen-hint{font-size:10px;color:var(--text2);font-family:var(--font-head);letter-spacing:2px;text-align:center}
+
+/* ===== UTILITY ===== */
+.hidden{display:none!important}
+.flex-center{display:flex;align-items:center;justify-content:center}
+.gap-8{gap:8px}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ===== MOBILE ===== */
+@media(max-width:500px){
+  .scoreboard{grid-template-columns:1fr auto 1fr}
+  .score-val{font-size:28px}
+  .choices-grid{gap:10px}
+  .choice-card{width:clamp(90px,27vw,130px)}
+  .choice-emoji{font-size:36px}
+  .choice-key{display:none}
+  .reveal-vs-row{gap:10px}
+}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Background -->
+<div class="bg-grid"></div>
+<div class="bg-orb"></div>
+<div class="bg-orb"></div>
+
+<!-- Achievement Toast -->
+<div class="achievement-toast" id="achToast">
+  <span class="ach-icon" id="achIcon">🏆</span>
+  <div>
+    <div style="font-size:9px;color:rgba(255,255,255,0.7);margin-bottom:2px">ACHIEVEMENT UNLOCKED</div>
+    <div id="achText">First Blood</div>
+  </div>
+</div>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-logo">Rock Paper Scissor</div>
+  <div class="topbar-btns">
+    <button class="icon-btn" id="soundBtn" title="Toggle Sound">🔊</button>
+    <button class="icon-btn" id="themeBtn" title="Toggle Theme">🌙</button>
+    <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+    <button class="icon-btn" id="resetBtn" title="Reset Game">↺</button>
+  </div>
+</div>
+
+<div id="app">
+
+<!-- ===== START SCREEN ===== -->
+<div class="screen active" id="startScreen">
+  <div class="start-logo">
+    <span class="g1">ROCK</span> <span class="g2">PAPER</span><br>
+    <span style="color:var(--gold)">SCISSORS</span>
+    <span class="sub">2 PLAYER BATTLE</span>
+  </div>
+
+  <div class="player-setup">
+    <!-- Player 1 -->
+    <div class="player-card p1-card glass">
+      <div class="player-label">⚡ PLAYER 1</div>
+      <div class="player-avatar-row" id="p1AvatarRow"></div>
+      <input class="name-input" id="p1Name" type="text" placeholder="Enter name..." maxlength="12" value="Player 1">
+    </div>
+    <!-- Player 2 -->
+    <div class="player-card p2-card glass">
+      <div class="player-label">🔥 PLAYER 2</div>
+      <div class="player-avatar-row" id="p2AvatarRow"></div>
+      <input class="name-input" id="p2Name" type="text" placeholder="Enter name..." maxlength="12" value="Player 2">
+    </div>
+  </div>
+
+  <!-- Game Mode -->
+  <div style="width:100%">
+    <div style="font-family:var(--font-head);font-size:11px;letter-spacing:3px;color:var(--text2);margin-bottom:10px;text-align:center">GAME MODE</div>
+    <div class="mode-row" id="modeRow">
+      <button class="mode-btn active" data-mode="3">BEST OF 3</button>
+      <button class="mode-btn" data-mode="5">BEST OF 5</button>
+      <button class="mode-btn" data-mode="7">BEST OF 7</button>
+    </div>
+  </div>
+
+  <!-- Timer Toggle -->
+  <div style="display:flex;align-items:center;gap:12px">
+    <label style="font-family:var(--font-head);font-size:11px;letter-spacing:2px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:8px">
+      <input type="checkbox" id="timerToggle" style="width:16px;height:16px;accent-color:var(--p1)"> TIMER MODE (10s)
+    </label>
+  </div>
+
+  <!-- Badges -->
+  <div style="width:100%">
+    <div style="font-family:var(--font-head);font-size:11px;letter-spacing:3px;color:var(--text2);margin-bottom:10px;text-align:center">ACHIEVEMENTS</div>
+    <div class="badges-row" id="badgesRow"></div>
+  </div>
+
+  <button class="play-btn" id="playBtn"><span>⚡ PLAY NOW</span></button>
+  <div class="fullscreen-hint">Press F for fullscreen • R/P/S for quick choices</div>
+</div>
+
+<!-- ===== PLAYER 1 CHOICE SCREEN ===== -->
+<div class="screen" id="p1ChoiceScreen">
+  <div class="scoreboard" id="scoreboard1"></div>
+  <div class="choice-header">
+    <div class="choice-timer-row" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
+      <div class="choice-title-block">
+        <div class="player-turn" id="p1TurnLabel" style="color:var(--p1)"></div>
+        <div class="choose-label">CHOOSE YOUR WEAPON</div>
       </div>
-      <div class="tie-up">
-        <div class="you-picked">
-          <div class="ipt-U ipt-U3">YOU PICKED</div>
-          <div class="opt-U opt-U3">
-            <div id="opt-U3"></div>
-          </div>
-        </div>
-        <div class="result result3">
-          <h2>TIE-UP</h2>
-          <button onclick="replay()">REPLAY</button>
-        </div>
-        <div class="pc-picked">
-          <div class="ipt-P ipt-P3">PC PICKED</div>
-          <div class="opt-P opt-P3">
-            <div id="opt-P3"></div>
-          </div>
-        </div>
-      </div>
-      <div class="btn1">
-        <button onclick="popup()" id="rul" class="rules">Rules</button>
-      </div>
-      <div class="box">
-        <button onclick="popdown()" class="close">
-          <img onclick="popdown()" />
-          <span class="symbol">X</span>
-        </button>
-        <h3 class="headline">Game Rules</h3>
-        <ul class="listrule">
-          <li class="listrule">
-            Rock beats scissors,scissors beat paper,and paper beats rock.
-          </li>
-          <li class="listrule">
-            Agree ahead of time whether you'll count off
-            “rock,paper,scissors,shoot” or just “rock,paper,scissors.”
-          </li>
-          <li class="listrule">
-            Use rock,paper,scissors to settle minor decisions or simply play to
-            pass the time
-          </li>
-          <li class="listrule">
-            If both players lay down the same hand,each player lays down another
-            hand
-          </li>
-        </ul>
+      <div class="timer-ring hidden" id="timer1">
+        <svg viewBox="0 0 60 60"><circle class="timer-bg" cx="30" cy="30" r="27"/><circle class="timer-fg" id="timerFg1" cx="30" cy="30" r="27"/></svg>
+        <div class="timer-text" id="timerText1">10</div>
       </div>
     </div>
+  </div>
+  <div class="choices-grid" id="p1Choices"></div>
+  <button class="confirm-btn" id="p1ConfirmBtn">CONFIRM ➤</button>
+</div>
 
-    <script src="./script.js"></script>
-  </body>
+<!-- ===== PASS SCREEN ===== -->
+<div class="screen" id="passScreen">
+  <div class="pass-icon">📱</div>
+  <div class="pass-title">PASS THE DEVICE</div>
+  <div class="pass-subtitle" id="passSubtitle">TO PLAYER 2</div>
+  <div class="countdown-bar"><div class="countdown-fill" id="countdownFill"></div></div>
+  <div style="font-size:13px;color:var(--text2);font-family:var(--font-head);letter-spacing:2px" id="passCountText">Auto-continuing in 3s...</div>
+  <button class="pass-btn" id="passReadyBtn">I'M READY ⚡</button>
+</div>
+
+<!-- ===== PLAYER 2 CHOICE SCREEN ===== -->
+<div class="screen p2-turn" id="p2ChoiceScreen">
+  <div class="scoreboard" id="scoreboard2"></div>
+  <div class="choice-header">
+    <div class="choice-timer-row" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
+      <div class="choice-title-block">
+        <div class="player-turn" id="p2TurnLabel" style="color:var(--p2)"></div>
+        <div class="choose-label">CHOOSE YOUR WEAPON</div>
+      </div>
+      <div class="timer-ring hidden" id="timer2">
+        <svg viewBox="0 0 60 60"><circle class="timer-bg" cx="30" cy="30" r="27"/><circle class="timer-fg" id="timerFg2" cx="30" cy="30" r="27"/></svg>
+        <div class="timer-text" id="timerText2">10</div>
+      </div>
+    </div>
+  </div>
+  <div class="choices-grid" id="p2Choices"></div>
+  <button class="confirm-btn" id="p2ConfirmBtn">CONFIRM ➤</button>
+</div>
+
+<!-- ===== REVEAL SCREEN ===== -->
+<div class="screen" id="revealScreen">
+  <div class="scoreboard" id="scoreboard3"></div>
+  <div style="font-family:var(--font-head);font-size:11px;letter-spacing:4px;color:var(--text2)">ROUND RESULT</div>
+  <div class="reveal-vs-row">
+    <div class="reveal-player reveal-p1" id="revealP1">
+      <div class="reveal-avatar" id="revealAvatar1"></div>
+      <div class="reveal-name" id="revealName1" style="color:var(--p1)"></div>
+      <div class="reveal-choice" id="revealChoice1"></div>
+    </div>
+    <div class="reveal-vs-badge">VS</div>
+    <div class="reveal-player reveal-p2" id="revealP2">
+      <div class="reveal-avatar" id="revealAvatar2"></div>
+      <div class="reveal-name" id="revealName2" style="color:var(--p2)"></div>
+      <div class="reveal-choice" id="revealChoice2"></div>
+    </div>
+  </div>
+  <div class="result-banner" id="resultBanner"></div>
+  <div class="result-emoji" id="resultEmoji"></div>
+  <button class="next-btn" id="nextRoundBtn">NEXT ROUND ➤</button>
+
+  <!-- History -->
+  <div class="history-section glass" style="padding:16px">
+    <div class="history-title">BATTLE LOG</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<!-- ===== WINNER SCREEN ===== -->
+<div class="screen" id="winnerScreen">
+  <div class="winner-trophy">🏆</div>
+  <div class="winner-title">CHAMPION</div>
+  <div class="winner-name" id="winnerName"></div>
+  <div style="font-size:32px" id="winnerAvatar"></div>
+  <div class="final-scores" id="finalScores"></div>
+  <div class="badges-row" id="winnerBadges" style="margin-top:8px"></div>
+  <button class="play-again-btn" id="playAgainBtn">⚡ PLAY AGAIN</button>
+  <button class="icon-btn" id="backToMenuBtn" style="width:auto;padding:10px 20px;font-family:var(--font-head);font-size:11px;letter-spacing:2px">MAIN MENU</button>
+</div>
+
+</div><!-- end app -->
+
+<script>
+// ===== GAME STATE =====
+const CHOICES = [
+  {id:'rock',  emoji:'🪨', label:'ROCK',     beats:'scissors', key:'R'},
+  {id:'paper', emoji:'📄', label:'PAPER',    beats:'rock',     key:'P'},
+  {id:'scissors',emoji:'✂️',label:'SCISSORS',beats:'paper',    key:'S'},
+];
+const AVATARS = ['😎','🦊','👾','🤖'];
+const RESULT_EMOJIS = {win:['😎🔥','👑💥','⚡🎯','🏆🔥'],lose:['😂😭','💀😬','😅🤦','🤣😱'],draw:['🤝😮','⚖️🙃','👀🫨','🤯🫶']};
+
+let state = {
+  p1:{name:'Player 1',avatar:'😎',score:0,streak:0},
+  p2:{name:'Player 2',avatar:'🦊',score:0,streak:0},
+  mode:3,
+  timerMode:false,
+  round:0,
+  p1Choice:null,
+  p2Choice:null,
+  history:[],
+  currentScreen:'startScreen',
+  soundOn:true,
+  achievements:JSON.parse(localStorage.getItem('rps_achievements')||'{}'),
+  savedScores:JSON.parse(localStorage.getItem('rps_scores')||'{"p1Total":0,"p2Total":0}'),
+  timerInterval:null,
+};
+
+// ===== ACHIEVEMENTS =====
+const ACHIEVEMENTS = [
+  {id:'first_win', icon:'⚡', label:'FIRST WIN', desc:'Win your first round'},
+  {id:'streak3',   icon:'🔥', label:'ON FIRE',  desc:'Win 3 in a row'},
+  {id:'comeback',  icon:'💪', label:'COMEBACK', desc:'Win after being down'},
+  {id:'perfect',   icon:'👑', label:'PERFECT',  desc:'Win without losing a round'},
+  {id:'draw_master',icon:'⚖️',label:'DIPLOMAT', desc:'Get 3 draws in a game'},
+];
+
+// ===== SOUND ENGINE =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx;
+function getACtx(){if(!actx)actx=new AudioCtx();return actx}
+function playTone(freq,dur,type='sine',vol=0.3){
+  if(!state.soundOn)return;
+  try{
+    const c=getACtx(),o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);
+    o.type=type;o.frequency.setValueAtTime(freq,c.currentTime);
+    g.gain.setValueAtTime(vol,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+dur);
+    o.start();o.stop(c.currentTime+dur);
+  }catch(e){}
+}
+function playClick(){playTone(400,0.1,'square',0.2)}
+function playConfirm(){playTone(600,0.05);setTimeout(()=>playTone(800,0.1),60)}
+function playReveal(){playTone(300,0.1);setTimeout(()=>playTone(500,0.1),100);setTimeout(()=>playTone(700,0.2),200)}
+function playWin(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,0.15,'sine',0.3),i*80))}
+function playLose(){[400,350,280].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'sawtooth',0.2),i*100))}
+function playDraw(){playTone(440,0.3,'sine',0.2)}
+
+// ===== CONFETTI =====
+const canvas=document.getElementById('confetti-canvas');
+const ctx2=canvas.getContext('2d');
+let confettiActive=false,particles=[];
+function resizeCanvas(){canvas.width=innerWidth;canvas.height=innerHeight}
+resizeCanvas();
+addEventListener('resize',resizeCanvas);
+function launchConfetti(){
+  confettiActive=true;
+  particles=Array.from({length:150},()=>({
+    x:Math.random()*innerWidth,y:Math.random()*innerHeight*-0.5,
+    vx:(Math.random()-0.5)*6,vy:Math.random()*4+2,
+    color:`hsl(${Math.random()*360},90%,60%)`,
+    size:Math.random()*8+4,
+    rot:Math.random()*360,
+    rotV:(Math.random()-0.5)*10,
+    alpha:1,
+  }));
+  animConfetti();
+  setTimeout(()=>{confettiActive=false;ctx2.clearRect(0,0,canvas.width,canvas.height)},4000);
+}
+function animConfetti(){
+  if(!confettiActive)return;
+  ctx2.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.vy+=0.1;p.rot+=p.rotV;p.alpha-=0.005;
+    if(p.alpha<=0)return;
+    ctx2.save();
+    ctx2.translate(p.x,p.y);ctx2.rotate(p.rot*Math.PI/180);
+    ctx2.globalAlpha=p.alpha;
+    ctx2.fillStyle=p.color;
+    ctx2.fillRect(-p.size/2,-p.size/2,p.size,p.size/2);
+    ctx2.restore();
+  });
+  requestAnimationFrame(animConfetti);
+}
+
+// ===== AVATAR PICKERS =====
+function buildAvatarRow(containerId, playerKey){
+  const row=document.getElementById(containerId);
+  row.innerHTML='';
+  AVATARS.forEach(a=>{
+    const btn=document.createElement('button');
+    btn.className='avatar-btn'+(state[playerKey].avatar===a?' selected':'');
+    btn.textContent=a;
+    btn.onclick=()=>{
+      state[playerKey].avatar=a;
+      document.querySelectorAll(`#${containerId} .avatar-btn`).forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      playClick();
+    };
+    row.appendChild(btn);
+  });
+}
+
+// ===== BUILD CHOICES =====
+function buildChoices(containerId, playerKey, confirmBtnId, timerCircleId, timerTextId, timerParentId){
+  const cont=document.getElementById(containerId);
+  cont.innerHTML='';
+  state[playerKey+'Choice']=null;
+  document.getElementById(confirmBtnId).classList.remove('ready');
+
+  CHOICES.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='choice-card';
+    card.innerHTML=`
+      <div class="choice-emoji">${c.emoji}</div>
+      <div class="choice-label">${c.label}</div>
+      <div class="choice-key">${c.key}</div>
+    `;
+    card.dataset.choice=c.id;
+    card.onclick=()=>{
+      document.querySelectorAll(`#${containerId} .choice-card`).forEach(cc=>cc.classList.remove('selected'));
+      card.classList.add('selected');
+      state[playerKey+'Choice']=c.id;
+      document.getElementById(confirmBtnId).classList.add('ready');
+      playClick();
+    };
+    cont.appendChild(card);
+  });
+}
+
+// ===== SCOREBOARD =====
+function renderScoreboard(containerId){
+  const el=document.getElementById(containerId);
+  const need=Math.ceil(state.mode/2);
+  el.innerHTML=`
+    <div class="score-block">
+      <div class="score-avatar">${state.p1.avatar}</div>
+      <div class="score-name score-p1">${state.p1.name}</div>
+      <div class="score-val score-p1">${state.p1.score}</div>
+      <div class="score-streak">${state.p1.streak>0?'🔥'.repeat(Math.min(state.p1.streak,5)):''}</div>
+    </div>
+    <div>
+      <div class="score-vs">VS</div>
+      <div class="round-badge">RD ${state.round+1} • BO${state.mode}</div>
+      <div style="font-family:var(--font-head);font-size:9px;color:var(--text2);text-align:center;margin-top:4px">NEED ${need}</div>
+    </div>
+    <div class="score-block">
+      <div class="score-avatar">${state.p2.avatar}</div>
+      <div class="score-name score-p2">${state.p2.name}</div>
+      <div class="score-val score-p2">${state.p2.score}</div>
+      <div class="score-streak">${state.p2.streak>0?'🔥'.repeat(Math.min(state.p2.streak,5)):''}</div>
+    </div>
+  `;
+}
+
+// ===== SCREEN TRANSITIONS =====
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  state.currentScreen=id;
+}
+
+// ===== TIMER =====
+let timerTimeout;
+function startTimer(playerKey, onTimeout, fgId, textId, parentId){
+  if(!state.timerMode)return;
+  document.getElementById(parentId).classList.remove('hidden');
+  let t=10;
+  const fg=document.getElementById(fgId);
+  const txt=document.getElementById(textId);
+  const circ=188;
+  txt.textContent=t;
+  fg.style.strokeDashoffset=0;
+  fg.style.stroke='var(--p1)';
+
+  clearInterval(state.timerInterval);
+  state.timerInterval=setInterval(()=>{
+    t--;
+    txt.textContent=t;
+    fg.style.strokeDashoffset=circ*(1-t/10);
+    if(t<=3){fg.style.stroke='var(--lose)';playTone(300,0.05,'square',0.1)}
+    if(t<=0){
+      clearInterval(state.timerInterval);
+      // Auto-pick random if no selection
+      if(!state[playerKey+'Choice']){
+        const rand=CHOICES[Math.floor(Math.random()*3)];
+        const cont=document.getElementById(playerKey==='p1'?'p1Choices':'p2Choices');
+        const cards=cont.querySelectorAll('.choice-card');
+        cards.forEach(c=>{if(c.dataset.choice===rand.id){c.classList.add('selected')}});
+        state[playerKey+'Choice']=rand.id;
+        document.getElementById(playerKey==='p1'?'p1ConfirmBtn':'p2ConfirmBtn').classList.add('ready');
+      }
+      onTimeout();
+    }
+  },1000);
+}
+function stopTimer(){clearInterval(state.timerInterval)}
+
+// ===== HISTORY =====
+function addHistory(round,p1c,p2c,result){
+  state.history.push({round,p1c,p2c,result});
+  const list=document.getElementById('historyList');
+  const p1ch=CHOICES.find(c=>c.id===p1c);
+  const p2ch=CHOICES.find(c=>c.id===p2c);
+  const item=document.createElement('div');
+  item.className='history-item';
+  const rClass=result==='p1'?'hr-win':result==='draw'?'hr-draw':'hr-lose';
+  const rText=result==='p1'?`${state.p1.name} WINS`:result==='draw'?'DRAW':`${state.p2.name} WINS`;
+  item.innerHTML=`
+    <span class="history-round">RND ${round}</span>
+    <span class="history-choices">${p1ch.emoji} <span style="font-size:12px;color:var(--text2)">vs</span> ${p2ch.emoji}</span>
+    <span class="history-result ${rClass}">${rText}</span>
+  `;
+  list.prepend(item);
+}
+
+// ===== ACHIEVEMENTS =====
+function checkAchievements(result){
+  const earned=[];
+  if(!state.achievements['first_win']&&(state.p1.score>0||state.p2.score>0)){
+    state.achievements['first_win']=true;earned.push('first_win');
+  }
+  if(!state.achievements['streak3']&&(state.p1.streak>=3||state.p2.streak>=3)){
+    state.achievements['streak3']=true;earned.push('streak3');
+  }
+  const draws=state.history.filter(h=>h.result==='draw').length;
+  if(!state.achievements['draw_master']&&draws>=3){
+    state.achievements['draw_master']=true;earned.push('draw_master');
+  }
+  localStorage.setItem('rps_achievements',JSON.stringify(state.achievements));
+  if(earned.length){
+    const a=ACHIEVEMENTS.find(ac=>ac.id===earned[0]);
+    if(a)showAchievementToast(a.icon,a.label);
+  }
+  renderBadges();
+}
+function showAchievementToast(icon,text){
+  const t=document.getElementById('achToast');
+  document.getElementById('achIcon').textContent=icon;
+  document.getElementById('achText').textContent=text;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+function renderBadges(){
+  ['badgesRow','winnerBadges'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.innerHTML='';
+    ACHIEVEMENTS.forEach(a=>{
+      const b=document.createElement('div');
+      b.className='badge'+(state.achievements[a.id]?' unlocked':'');
+      b.innerHTML=`${a.icon} ${a.label}`;
+      b.title=a.desc;
+      el.appendChild(b);
+    });
+  });
+}
+
+// ===== GAME LOGIC =====
+function getResult(p1c,p2c){
+  if(p1c===p2c)return'draw';
+  const p1=CHOICES.find(c=>c.id===p1c);
+  return p1.beats===p2c?'p1':'p2';
+}
+
+function startGame(){
+  state.p1.name=document.getElementById('p1Name').value.trim()||'Player 1';
+  state.p2.name=document.getElementById('p2Name').value.trim()||'Player 2';
+  state.p1.score=0;state.p2.score=0;
+  state.p1.streak=0;state.p2.streak=0;
+  state.round=0;state.history=[];
+  document.getElementById('historyList').innerHTML='';
+  goToP1Choice();
+}
+
+function goToP1Choice(){
+  document.getElementById('p1TurnLabel').textContent=state.p1.name.toUpperCase()+"'S TURN";
+  buildChoices('p1Choices','p1','p1ConfirmBtn','timerFg1','timerText1','timer1');
+  renderScoreboard('scoreboard1');
+  showScreen('p1ChoiceScreen');
+  startTimer('p1',()=>confirmP1(),'timerFg1','timerText1','timer1');
+  setupKeyboard('p1');
+}
+
+function confirmP1(){
+  stopTimer();
+  document.getElementById('timer1').classList.add('hidden');
+  // Show pass screen
+  showPassScreen();
+}
+
+function showPassScreen(){
+  document.getElementById('passSubtitle').textContent=`TO ${state.p2.name.toUpperCase()}`;
+  showScreen('passScreen');
+  playConfirm();
+  // Reset countdown animation
+  const fill=document.getElementById('countdownFill');
+  fill.style.animation='none';
+  void fill.offsetWidth;
+  fill.style.animation='countdownAnim 3s linear forwards';
+
+  clearTimeout(timerTimeout);
+  timerTimeout=setTimeout(()=>goToP2Choice(),3000);
+}
+
+function goToP2Choice(){
+  document.getElementById('p2TurnLabel').textContent=state.p2.name.toUpperCase()+"'S TURN";
+  buildChoices('p2Choices','p2','p2ConfirmBtn','timerFg2','timerText2','timer2');
+  renderScoreboard('scoreboard2');
+  showScreen('p2ChoiceScreen');
+  startTimer('p2',()=>confirmP2(),'timerFg2','timerText2','timer2');
+  setupKeyboard('p2');
+}
+
+function confirmP2(){
+  stopTimer();
+  document.getElementById('timer2').classList.add('hidden');
+  revealResult();
+}
+
+function revealResult(){
+  const p1c=state.p1Choice||'rock';
+  const p2c=state.p2Choice||'rock';
+  const result=getResult(p1c,p2c);
+  state.round++;
+
+  const p1ch=CHOICES.find(c=>c.id===p1c);
+  const p2ch=CHOICES.find(c=>c.id===p2c);
+
+  // Update scores
+  if(result==='p1'){state.p1.score++;state.p1.streak++;state.p2.streak=0}
+  else if(result==='p2'){state.p2.score++;state.p2.streak++;state.p1.streak=0}
+  else{state.p1.streak=0;state.p2.streak=0}
+
+  renderScoreboard('scoreboard3');
+
+  // Render reveal
+  document.getElementById('revealAvatar1').textContent=state.p1.avatar;
+  document.getElementById('revealAvatar2').textContent=state.p2.avatar;
+  document.getElementById('revealName1').textContent=state.p1.name;
+  document.getElementById('revealName2').textContent=state.p2.name;
+  document.getElementById('revealChoice1').textContent=p1ch.emoji;
+  document.getElementById('revealChoice2').textContent=p2ch.emoji;
+
+  const banner=document.getElementById('resultBanner');
+  const emo=document.getElementById('resultEmoji');
+  const p1Block=document.getElementById('revealP1');
+  const p2Block=document.getElementById('revealP2');
+  p1Block.style.animation='none';p2Block.style.animation='none';
+  void p1Block.offsetWidth;void p2Block.offsetWidth;
+  p1Block.style.animation='';p2Block.style.animation='';
+
+  if(result==='draw'){
+    banner.textContent='DRAW!';banner.className='result-banner result-draw';
+    emo.textContent=RESULT_EMOJIS.draw[Math.floor(Math.random()*4)];
+    playDraw();
+  } else if(result==='p1'){
+    banner.textContent=`${state.p1.name.toUpperCase()} WINS!`;banner.className='result-banner result-win';
+    emo.textContent=RESULT_EMOJIS.win[Math.floor(Math.random()*4)];
+    setTimeout(()=>p2Block.classList.add('shake'),900);
+    setTimeout(()=>p2Block.classList.remove('shake'),1400);
+    playWin();
+  } else {
+    banner.textContent=`${state.p2.name.toUpperCase()} WINS!`;banner.className='result-banner result-p2';
+    banner.style.color='var(--p2)';banner.style.textShadow='0 0 30px rgba(247,37,133,0.6)';
+    emo.textContent=RESULT_EMOJIS.win[Math.floor(Math.random()*4)];
+    setTimeout(()=>p1Block.classList.add('shake'),900);
+    setTimeout(()=>p1Block.classList.remove('shake'),1400);
+    playWin();
+  }
+  if(result!=='draw'){banner.style.color='';banner.style.textShadow='';}
+
+  playReveal();
+  addHistory(state.round,p1c,p2c,result);
+  checkAchievements(result);
+  showScreen('revealScreen');
+  banner.style.animation='none';emo.style.animation='none';
+  const nb=document.getElementById('nextRoundBtn');nb.style.animation='none';
+  void banner.offsetWidth;
+  banner.style.animation='';emo.style.animation='';nb.style.animation='';
+}
+
+function nextRound(){
+  const need=Math.ceil(state.mode/2);
+  if(state.p1.score>=need||state.p2.score>=need){
+    showWinner();return;
+  }
+  goToP1Choice();
+}
+
+function showWinner(){
+  const need=Math.ceil(state.mode/2);
+  const wEl=document.getElementById('winnerName');
+  const wAvEl=document.getElementById('winnerAvatar');
+
+  if(state.p1.score>=need){
+    wEl.textContent=state.p1.name.toUpperCase();
+    wEl.className='winner-name winner-p1';
+    wAvEl.textContent=state.p1.avatar;
+    state.savedScores.p1Total=(state.savedScores.p1Total||0)+1;
+    if(!state.achievements['perfect']&&state.p2.score===0){state.achievements['perfect']=true;showAchievementToast('👑','PERFECT!');}
+  } else if(state.p2.score>=need){
+    wEl.textContent=state.p2.name.toUpperCase();
+    wEl.className='winner-name winner-p2';
+    wAvEl.textContent=state.p2.avatar;
+    state.savedScores.p2Total=(state.savedScores.p2Total||0)+1;
+    if(state.p1.score>0&&!state.achievements['comeback']){state.achievements['comeback']=true;showAchievementToast('💪','COMEBACK!');}
+  }
+
+  localStorage.setItem('rps_scores',JSON.stringify(state.savedScores));
+  localStorage.setItem('rps_achievements',JSON.stringify(state.achievements));
+
+  document.getElementById('finalScores').innerHTML=`
+    <div class="final-score-block fsp1">
+      <div class="fsname">${state.p1.name}</div>
+      <div class="fsval">${state.p1.score}</div>
+    </div>
+    <div class="fsep">—</div>
+    <div class="final-score-block fsp2">
+      <div class="fsname">${state.p2.name}</div>
+      <div class="fsval">${state.p2.score}</div>
+    </div>
+  `;
+
+  renderBadges();
+  showScreen('winnerScreen');
+  launchConfetti();
+  playWin();setTimeout(playWin,500);
+}
+
+// ===== KEYBOARD CONTROLS =====
+let keyboardPlayer=null;
+function setupKeyboard(player){keyboardPlayer=player}
+document.addEventListener('keydown',e=>{
+  const key=e.key.toUpperCase();
+  if(key==='F'){document.getElementById('fullscreenBtn').click();return}
+  if(!keyboardPlayer)return;
+  const map={'R':'rock','P':'paper','S':'scissors'};
+  if(map[key]){
+    const choiceId=map[key];
+    const containerId=keyboardPlayer==='p1'?'p1Choices':'p2Choices';
+    const confirmId=keyboardPlayer==='p1'?'p1ConfirmBtn':'p2ConfirmBtn';
+    document.querySelectorAll(`#${containerId} .choice-card`).forEach(c=>c.classList.remove('selected'));
+    const card=document.querySelector(`#${containerId} [data-choice="${choiceId}"]`);
+    if(card){card.classList.add('selected');state[keyboardPlayer+'Choice']=choiceId;document.getElementById(confirmId).classList.add('ready');playClick();}
+  }
+  if(key==='ENTER'){
+    const confirmId=keyboardPlayer==='p1'?'p1ConfirmBtn':'p2ConfirmBtn';
+    const btn=document.getElementById(confirmId);
+    if(btn.classList.contains('ready'))btn.click();
+  }
+});
+
+// ===== EVENT LISTENERS =====
+document.getElementById('playBtn').onclick=()=>{playClick();startGame()};
+document.getElementById('p1ConfirmBtn').onclick=()=>{playConfirm();confirmP1()};
+document.getElementById('passReadyBtn').onclick=()=>{clearTimeout(timerTimeout);goToP2Choice()};
+document.getElementById('p2ConfirmBtn').onclick=()=>{playConfirm();confirmP2()};
+document.getElementById('nextRoundBtn').onclick=()=>{playClick();nextRound()};
+document.getElementById('playAgainBtn').onclick=()=>{playClick();startGame()};
+document.getElementById('backToMenuBtn').onclick=()=>{playClick();showScreen('startScreen')};
+document.getElementById('resetBtn').onclick=()=>{
+  stopTimer();clearTimeout(timerTimeout);
+  state.p1.score=0;state.p2.score=0;state.round=0;state.history=[];
+  document.getElementById('historyList').innerHTML='';
+  showScreen('startScreen');playClick();
+};
+document.getElementById('themeBtn').onclick=()=>{
+  const html=document.documentElement;
+  html.dataset.theme=html.dataset.theme==='dark'?'light':'dark';
+  document.getElementById('themeBtn').textContent=html.dataset.theme==='dark'?'🌙':'☀️';
+  playClick();
+};
+document.getElementById('soundBtn').onclick=()=>{
+  state.soundOn=!state.soundOn;
+  document.getElementById('soundBtn').textContent=state.soundOn?'🔊':'🔇';
+  if(state.soundOn)playClick();
+};
+document.getElementById('fullscreenBtn').onclick=()=>{
+  if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});
+  else document.exitFullscreen();
+  playClick();
+};
+document.getElementById('modeRow').querySelectorAll('.mode-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.mode=parseInt(btn.dataset.mode);
+    playClick();
+  };
+});
+document.getElementById('timerToggle').onchange=function(){
+  state.timerMode=this.checked;playClick();
+};
+
+// ===== INIT =====
+buildAvatarRow('p1AvatarRow','p1');
+buildAvatarRow('p2AvatarRow','p2');
+renderBadges();
+</script>
+</body>
 </html>

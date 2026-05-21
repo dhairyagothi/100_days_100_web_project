@@ -366,13 +366,87 @@ function renderContributors(data) {
 
   const fragment = document.createDocumentFragment();
 
-  data.forEach((contributor) => {
+  data.forEach(
+
+(contributor)=> {
     const card = document.createElement('div');
+
+    const globalRank =
+
+allContributors.findIndex(
+
+c =>
+
+c.login ===
+contributor.login
+
+) + 1;
+
+
+let badge='';
+
+
+if(globalRank===1){
+
+badge=
+'assets/badges/diamond.png';
+
+}
+
+else if(
+
+globalRank>=2 &&
+globalRank<=3
+
+){
+
+badge=
+'assets/badges/gold.png';
+
+}
+
+else if(
+
+globalRank>=4 &&
+globalRank<=6
+
+){
+
+badge=
+'assets/badges/silver.png';
+
+}
+
+else if(
+
+globalRank>=7 &&
+globalRank<=10
+
+){
+
+badge=
+'assets/badges/bronze.png';
+
+}
 
     card.className = 'contributor-card';
 
     card.innerHTML = `
-            <img src="${contributor.avatar_url}" alt="${contributor.login}">
+
+${badge
+?
+`<img
+src="${badge}"
+class="rank-badge"
+>`
+:
+''
+}
+
+<img
+src="${contributor.avatar_url}"
+
+alt="${contributor.login}">
 
             <h3>${contributor.login}</h3>
 
@@ -425,7 +499,13 @@ function renderContributors(data) {
         'click',
 
         () => {
-          openProfile(contributor.login);
+          openProfile(
+
+contributor.login,
+
+contributor.contributions
+
+);
         }
       );
     }

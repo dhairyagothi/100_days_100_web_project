@@ -247,6 +247,7 @@ body {
 }
 
 .contributor-card {
+  position: relative;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
@@ -922,6 +923,8 @@ z-index:1000;
   height: 100%;
 }
 
+
+
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem 2rem;
@@ -962,3 +965,37 @@ z-index:1000;
     transform: translateY(0) scale(1);
   }
 }
+
+.rank-badge{
+
+position:absolute !important;
+
+top:4px !important;
+
+right:4px !important;
+
+width:52px !important;
+
+height:52px !important;
+
+max-width:52px !important;
+
+max-height:52px !important;
+
+object-fit:contain;
+
+z-index:10;
+
+padding:0;
+
+margin:0;
+
+}
+.rank-badge:hover{
+
+transform:
+scale(1.1);
+
+}
+
+
