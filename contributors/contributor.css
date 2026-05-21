@@ -247,6 +247,7 @@ body {
 }
 
 .contributor-card {
+  position: relative;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
@@ -782,64 +783,47 @@ body {
   transform: scale(1.05);
 }
 
-.certificate-btn{
+.certificate-btn {
+  background: #16a34a;
 
-background:
-#16a34a;
+  color: white;
 
-color:white;
+  border: none;
 
-border:none;
+  padding: 0.8rem 1.6rem;
 
-padding:
-0.8rem 1.6rem;
+  border-radius: 14px;
 
-border-radius:
-14px;
+  cursor: pointer;
 
-cursor:pointer;
+  font-weight: 700;
 
-font-weight:
-700;
+  margin-top: 12px;
 
-margin-top:
-12px;
-
-transition:
-0.3s;
-
+  transition: 0.3s;
 }
 
+.certificate-btn:hover {
+  background: #15803d;
 
-.certificate-btn:hover{
-
-background:
-#15803d;
-
-transform:
-scale(1.03);
-
+  transform: scale(1.03);
 }
-#closeCertificate{
+#closeCertificate {
+  position: absolute;
+  top: 20px;
+  right: 25px;
 
-position:absolute;
-top:20px;
-right:25px;
+  font-size: 30px;
 
-font-size:30px;
+  background: none;
+  border: none;
 
-background:none;
-border:none;
+  color: white;
 
-color:white;
+  cursor: pointer;
 
-cursor:pointer;
-
-z-index:1000;
-
+  z-index: 1000;
 }
-
-
 
 /* Footer */
 .footer {
@@ -948,7 +932,6 @@ z-index:1000;
   }
 }
 
-
 @keyframes modalFade {
   from {
     opacity: 0;
@@ -961,4 +944,72 @@ z-index:1000;
 
     transform: translateY(0) scale(1);
   }
+}
+
+.rank-badge {
+  position: absolute !important;
+
+  top: 4px !important;
+
+  right: 4px !important;
+
+  width: 52px !important;
+
+  height: 52px !important;
+
+  max-width: 52px !important;
+
+  max-height: 52px !important;
+
+  object-fit: contain;
+
+  z-index: 10;
+
+  padding: 0;
+
+  margin: 0;
+}
+.rank-badge:hover {
+  transform: scale(1.1);
+}
+
+.loading-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.api-error {
+  text-align: center;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 68, 68, 0.08);
+  border: 1px solid rgba(255, 68, 68, 0.25);
+}
+
+.api-error p {
+  color: #ff6b6b;
+  margin-bottom: 1rem;
+}
+
+.api-error button {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.api-error button:hover {
+  transform: translateY(-2px);
+  background: #ff2222;
+}
+
+.hidden {
+  display: none !important;
 }

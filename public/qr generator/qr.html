@@ -116,13 +116,14 @@
                         <div id="qrcode" aria-live="polite"></div>
                     </div>
                     <p id="status-message" class="status-message" aria-live="polite">Ready to generate.</p>
+                    <p id="message"></p>
                     <div class="qr-actions">
+                        <button id="copy-btn" type="button"><i class="fas fa-copy"></i> Copy Text</button>
                         <button id="download-qr" type="button"><i class="fas fa-download"></i> Download</button>
                         <button id="scan-qr" type="button"><i class="fas fa-eye"></i> Show QR Content</button>
                     </div>
+                    <div id="qr-reader-results" class="card glass-card" style="display: none;"></div>
                 </div>
-
-                <div id="qr-reader-results" class="card glass-card" style="display: none;"></div>
             </section>
         </div>
     </main>

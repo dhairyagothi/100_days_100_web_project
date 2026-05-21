@@ -1,3 +1,5 @@
+const copyBtn = document.getElementById("copy-btn");
+const message = document.getElementById("message");
 const qrType = document.getElementById("qr-type");
 const themeBtns = document.querySelectorAll(".theme-btn");
 const inputText = document.getElementById("inputtext");
@@ -334,6 +336,15 @@ scanBtn.addEventListener("click", () => {
     setStatus("QR content is visible below.");
 });
 
+updateInputFields();
+copyBtn.addEventListener('click', () => {
+    if (!inputText.value) {
+        message.innerText = "Please enter valid input ❌";
+        return;
+    }
+    navigator.clipboard.writeText(inputText.value);
+    message.innerText = "Copied to clipboard ✅";
+});
 window.addEventListener("DOMContentLoaded", () => {
     setTheme(currentTheme);
     qrColor.value = themeColors[currentTheme];
