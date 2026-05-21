@@ -92,14 +92,11 @@
 
         /* ---- Theme toggle ---- */
         .theme-toggle {
-            position: fixed;
-            top: 20px; right: 20px;
-            font-size: 30px;
-            cursor: pointer;
-            z-index: 10;
-            transition: transform 0.3s ease;
-            user-select: none;
-        }
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    user-select: none;
+}
         .theme-toggle:hover { transform: scale(1.15) rotate(20deg); }
 
         /* ---- Machine wrapper ---- */
@@ -265,6 +262,116 @@
         }
 
         /* ---- Responsive ---- */
+        /* ===== TOP CONTROLS ===== */
+
+.top-controls {
+    position: fixed;
+
+    top: 18px;
+    right: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    z-index: 1000;
+}
+
+
+/* ===== SETTINGS ===== */
+
+.settings-container {
+    position: relative;
+}
+
+#settingsBtn {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background: rgba(255,255,255,0.12);
+
+    backdrop-filter: blur(10px);
+
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+#settingsBtn:hover {
+    transform: scale(1.08);
+}
+
+.settings-menu {
+
+    position: absolute;
+
+    top: 55px;
+    right: 0;
+
+    background: rgba(20,20,20,0.95);
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    display: none;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    min-width: 220px;
+
+    box-shadow:
+        0 0 25px rgba(0,0,0,0.35);
+}
+
+.settings-menu.active {
+    display: flex;
+}
+
+.settings-menu label {
+    color: white;
+    font-size: 14px;
+}
+
+
+/* ===== VOLUME ===== */
+
+.volume-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#soundToggle {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background: rgba(255,255,255,0.12);
+
+    color: white;
+
+    cursor: pointer;
+}
+
+#volumeControl {
+    width: 100%;
+}
         @media (max-width: 768px) {
             body { padding: 10px; }
             .paper-sheet { padding: 18px; min-height: 140px; font-size: 1.1rem; }
@@ -287,7 +394,38 @@
     </style>
 </head>
 <body>
+    <div class="top-controls">
+
     <div class="theme-toggle" id="themeToggle">🌙</div>
+
+    <div class="settings-container">
+
+        <button id="settingsBtn">⋮</button>
+
+        <div class="settings-menu" id="settingsMenu">
+
+            <label for="volumeControl">Manage Volume</label>
+
+            <div class="volume-controls">
+
+                <button id="soundToggle">🔊</button>
+
+                <input
+                    type="range"
+                    id="volumeControl"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value="0.55"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
     <div class="typewriter-machine">
         <div class="paper-sheet">
@@ -357,9 +495,15 @@
         const typewriterText = document.getElementById("typewriterText");
         const userInput      = document.getElementById("userInput");
         const themeToggle    = document.getElementById("themeToggle");
+        const settingsBtn  = document.getElementById("settingsBtn");
+const settingsMenu = document.getElementById("settingsMenu");
+        const soundToggle = document.getElementById("soundToggle");
+const volumeControl = document.getElementById("volumeControl");
 
         // ---- Audio ----
         let audioCtx;
+        let soundEnabled = true;
+let soundVolume = 0.55;
         function getAudioCtx() {
             if (!audioCtx) {
                 try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}
@@ -389,7 +533,9 @@
                 hpf.type = 'highpass';
                 hpf.frequency.value = 800;
                 noise.buffer = buf;
-                noiseGain.gain.setValueAtTime(noiseVol, now);
+               if (!soundEnabled) return;
+
+noiseGain.gain.setValueAtTime(noiseVol * soundVolume, now);
                 noise.connect(hpf);
                 hpf.connect(noiseGain);
                 noiseGain.connect(ctx.destination);
@@ -402,7 +548,7 @@
                 gain.connect(ctx.destination);
                 osc.frequency.setValueAtTime(freq1, now);
                 osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
-                gain.gain.setValueAtTime(noiseVol * 0.5, now);
+                gain.gain.setValueAtTime(noiseVol * 0.5 * soundVolume, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
                 osc.start(now);
                 osc.stop(now + dur);
@@ -482,7 +628,7 @@
             }
             if (e.key.length === 1) {
                 e.preventDefault();
-                addCharToPaper(e.key.toUpperCase());
+                addCharToPaper(e.key);
             }
         });
 
@@ -495,7 +641,6 @@
                 if (ch === 'ENTER')     {
                     paperContent += '\n';
                     typewriterText.textContent = paperContent;
-                    scrollPaperToBottom();
                     scrollPaperToBottom();
                     playReturn();
                     return;
@@ -516,6 +661,53 @@
                 addCharToPaper(ch === ' ' ? ' ' : ch);
             }, { passive: false });
         });
+
+        // ---- Settings Menu ----
+
+settingsBtn.addEventListener("click", () => {
+
+    settingsMenu.classList.toggle("active");
+
+});
+
+        // ---- Sound Controls ----
+
+soundToggle.addEventListener("click", () => {
+
+    soundEnabled = !soundEnabled;
+
+    soundToggle.textContent = soundEnabled ? "🔊" : "🔇";
+
+    localStorage.setItem("soundEnabled", soundEnabled);
+});
+
+volumeControl.addEventListener("input", () => {
+
+    soundVolume = volumeControl.value;
+
+    localStorage.setItem("soundVolume", soundVolume);
+});
+
+
+// Load saved preferences
+
+const savedSound = localStorage.getItem("soundEnabled");
+const savedVolume = localStorage.getItem("soundVolume");
+
+if (savedSound !== null) {
+
+    soundEnabled = savedSound === "true";
+
+    soundToggle.textContent = soundEnabled ? "🔊" : "🔇";
+}
+
+if (savedVolume !== null) {
+
+    soundVolume = parseFloat(savedVolume);
+
+    volumeControl.value = soundVolume;
+}
+
 
         // ---- Theme toggle ----
         themeToggle.addEventListener('click', () => {
