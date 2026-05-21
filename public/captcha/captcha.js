@@ -1,9 +1,9 @@
 const captchaTypeSelect = document.getElementById('captchaType');
 const captchaContainer = document.getElementById('captchaContainer');
-const textInput = document.querySelector(".textcaptcha input");
-const refreshButton = document.querySelector(".refresh");
-const resultMessage = document.querySelector(".result");
-const submitButton = document.querySelector(".button button");
+const textInput = document.getElementById('captchaInput');
+const refreshButton = document.querySelector('.refresh');
+const resultMessage = document.querySelector('.result');
+const submitButton = document.querySelector('.submit');
 
 let currentCaptcha = null;
 let attempts = 0;
@@ -54,31 +54,43 @@ const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
 };
 
 const generateCaptcha = () => {
+    textInput.value = '';
+    resultMessage.textContent = '';
+    resultMessage.className = 'result';
+
     const type = captchaTypeSelect.value;
     switch (type) {
-        case 'text':
+        case 'text': {
             currentCaptcha = generateTextCaptcha();
+            textInput.placeholder = 'Type the text above';
             captchaContainer.innerHTML = `<span style="font-size: 24px; letter-spacing: 5px;">${currentCaptcha}</span>`;
             break;
-        case 'image':
+        }
+        case 'image': {
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
+            textInput.placeholder = `Select the ${correct.name}`;
             captchaContainer.innerHTML = `
                 <p>Select the ${correct.name}</p>
                 <div class="image-grid">
-                    ${images.map(img => `<div class="image-option">${img.emoji}</div>`).join('')}
+                    ${images.map(img => `<button type="button" class="image-option">${img.emoji}</button>`).join('')}
                 </div>
             `;
             captchaContainer.querySelectorAll('.image-option').forEach(option => {
                 option.addEventListener('click', () => {
-                    textInput.value = images.find(img => img.emoji === option.textContent).name;
+                    const selected = images.find(img => img.emoji === option.textContent).name;
+                    textInput.value = selected;
+                    option.classList.add('selected');
+                    setTimeout(() => option.classList.remove('selected'), 200);
                 });
             });
             break;
-            case 'audio':
+        }
+        case 'audio': {
             currentCaptcha = generateTextCaptcha();
+            textInput.placeholder = 'Enter the spoken characters';
             captchaContainer.innerHTML = `
-                <p>Click play and enter the spoken characters:</p>
+                <p>Click play and enter the audio.</p>
                 <button id="playAudio">Play Audio</button>
             `;
             const playButton = document.getElementById('playAudio');
@@ -94,12 +106,14 @@ const generateCaptcha = () => {
                 }
             });
             break;
-              break;
-        case 'math':
+        }
+        case 'math': {
             const { question, answer } = generateMathCaptcha();
             currentCaptcha = answer.toString();
+            textInput.placeholder = 'Enter the numeric answer';
             captchaContainer.innerHTML = `<span style="font-size: 24px;">${question} = ?</span>`;
             break;
+        }
     }
 };
 
@@ -135,11 +149,13 @@ const verifyCaptcha = () => {
   
   if (isCorrect) {
       resultMessage.textContent = "Correct! CAPTCHA solved.";
-      resultMessage.style.color = "green";
+      resultMessage.classList.add('success');
+      resultMessage.classList.remove('error');
       attempts = 0;
       setTimeout(() => {
           textInput.value = "";
           resultMessage.textContent = "";
+          resultMessage.className = 'result';
           generateCaptcha();
       }, 1500);
   } else {
@@ -148,7 +164,8 @@ const verifyCaptcha = () => {
           lockoutUser();
       } else {
           resultMessage.textContent = `Incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
-          resultMessage.style.color = "red";
+          resultMessage.classList.add('error');
+          resultMessage.classList.remove('success');
       }
   }
 };

@@ -4,163 +4,258 @@
     box-sizing: border-box;
 }
 
+:root {
+    color-scheme: dark;
+    font-family: Inter, Arial, sans-serif;
+    color: #f3f4f6;
+    background: #090b16;
+}
+
 body {
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: black;
-    --dot-bg: black;
-    --dot-color: white;
-    --dot-size: 1px;
-    --dot-space: 22px;
-    background:
-        linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-        linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-        var(--dot-color);
-    font-family: Arial, sans-serif;
+    padding: 24px;
+    background: radial-gradient(circle at top left, rgba(86, 154, 255, 0.22), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(119, 86, 255, 0.16), transparent 28%),
+                #090b16;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 20%),
+                      radial-gradient(circle at 80% 30%, rgba(111, 208, 255, 0.08), transparent 18%);
+    pointer-events: none;
 }
 
 .container {
+    width: min(420px, 100%);
+    border-radius: 28px;
+    padding: 28px;
     display: grid;
-    width: 350px;
     gap: 20px;
-    border-radius: 20px;
-    background: white;
-    color: black;
-    padding: 20px;
-    font-size: 16px;
-    box-shadow: 0px 0px 14px 9px gray;
+    position: relative;
+    overflow: hidden;
+    background: rgba(15, 18, 32, 0.92);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 40px 120px rgba(0,0,0,0.35);
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    inset: -40% -40% -40% -40%;
+    background: radial-gradient(circle at top center, rgba(94, 156, 255, 0.16), transparent 40%);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.hero {
+    position: relative;
+    z-index: 1;
+}
+
+.eyebrow {
+    display: inline-block;
+    color: #7c9cff;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
 }
 
 .container header {
+    font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 6px;
     text-align: center;
-    font-size: 24px;
-    font-weight: bold;
 }
 
-.container p {
-    color: grey;
-    margin-bottom: 5px;
+.intro {
+    color: #b8bed2;
+    font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.6;
 }
 
-#captchaType {
+.field {
+    display: grid;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.field label {
+    font-size: 0.95rem;
+    color: #b8bed2;
+}
+
+select,
+input[type="text"] {
     width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid grey;
-    margin-bottom: 10px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: #eff2ff;
+    padding: 14px 16px;
+    font-size: 1rem;
+    outline: none;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+select:focus,
+input[type="text"]:focus {
+    border-color: rgba(124, 156, 255, 0.75);
+    box-shadow: 0 0 0 6px rgba(124, 156, 255, 0.12);
+    transform: translateY(-1px);
+    background: rgba(255,255,255,0.08);
 }
 
 #captchaContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    padding: 10px;
+    min-height: 140px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 18px;
+    display: grid;
+    place-items: center;
     text-align: center;
+    gap: 12px;
+    color: #e5e9ff;
+}
+
+#captchaContainer p {
+    color: #d1d6ff;
+    font-size: 0.96rem;
+    margin-bottom: 10px;
+}
+
+#captchaContainer span {
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    letter-spacing: 0.35em;
 }
 
 #captchaContainer .image-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 10px;
+    grid-template-columns: repeat(3, minmax(72px, 1fr));
+    gap: 12px;
+    width: 100%;
 }
 
 #captchaContainer .image-option {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-#captchaContainer .image-option:hover {
-    background-color: #e0e0e0;
+#captchaContainer .image-option:hover,
+#captchaContainer .image-option:focus-visible,
+#captchaContainer .image-option.selected {
+    background: rgba(124, 156, 255, 0.16);
+    border-color: rgba(124, 156, 255, 0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(40, 86, 255, 0.12);
 }
+
 
 #playAudio {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
+    padding: 12px 24px;
+    font-size: 1rem;
+    color: #fff;
+    background: linear-gradient(135deg, #6d8cff, #4fc3ff);
     border: none;
-    border-radius: 5px;
+    border-radius: 14px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: filter 0.25s ease, transform 0.25s ease;
 }
 
-#playAudio:hover {
-    background-color: #45a049;
+#playAudio:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
 }
 
 #playAudio:disabled {
-    opacity: 0.5;
+    opacity: 0.55;
     cursor: not-allowed;
 }
 
-.textcaptcha input {
-    width: 100%;
-    height: 50px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: 1px solid grey;
+.actions {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 12px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.refresh,
+.submit {
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
 }
 
 .refresh {
-    justify-self: end;
-    height: 40px;
-    width: 40px;
-    background: grey;
-    border: none;
-    font-size: 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    color: white;
+    width: 72px;
+    aspect-ratio: 1 / 1;
+    background: rgba(255,255,255,0.08);
+    font-size: 1.35rem;
+}
+
+.submit {
+    padding: 14px 20px;
+    min-height: 52px;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #7f96ff, #518dff);
+}
+
+.refresh:hover,
+.submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 38px rgba(81, 141, 255, 0.18);
 }
 
 .result {
+    min-height: 22px;
     text-align: center;
-    font-weight: bold;
-    color: grey;
-    min-height: 20px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #d1d6ff;
 }
 
-.button {
-    justify-self: center;
+.result.success {
+    color: #8de3a8;
 }
 
-.button button {
-    height: 45px;
-    background: grey;
-    color: white;
-    width: 200px;
-    font-size: 15px;
-    border-radius: 15px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.result.error {
+    color: #ff8399;
 }
 
-.button button:hover {
-    background: rgb(71, 69, 69);
-}
-
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 460px) {
     .container {
-        width: 90%;
-        padding: 15px;
+        padding: 20px;
+    }
+
+    .actions {
+        grid-template-columns: 1fr;
+    }
+
+    .refresh {
+        width: 100%;
+        aspect-ratio: auto;
+        height: 52px;
     }
 }

@@ -9,23 +9,35 @@
 </head>
 <body>
     <div class="container">
-        <header>CAPTCHA</header>
-        <p>Select CAPTCHA type:</p>
-        <select id="captchaType">
-            <option value="text">Text</option>
-            <option value="image">Image</option>
-            <option value="audio">Audio</option>
-            <option value="math">Math</option>
-        </select>
-        <div id="captchaContainer"></div>
-        <div class="textcaptcha">
-            <input type="text" placeholder="Enter CAPTCHA">
+        <div class="hero">
+            <span class="eyebrow">Interactive Security Check</span>
+            <header>CAPTCHA Challenge</header>
+            <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
         </div>
-        <button class="refresh">↻</button>
-        <p class="result"></p>
-        <div class="button">
-            <button>Submit CAPTCHA</button>
+
+        <div class="field">
+            <label for="captchaType">Select CAPTCHA type</label>
+            <select id="captchaType">
+                <option value="text">Text</option>
+                <option value="image">Image</option>
+                <option value="audio">Audio</option>
+                <option value="math">Math</option>
+            </select>
         </div>
+
+        <div id="captchaContainer" aria-live="polite"></div>
+
+        <div class="field textcaptcha">
+            <label for="captchaInput">Your answer</label>
+            <input id="captchaInput" type="text" placeholder="Enter CAPTCHA">
+        </div>
+
+        <div class="actions">
+            <button class="refresh" aria-label="Refresh CAPTCHA">↻</button>
+            <button class="submit" type="button">Submit CAPTCHA</button>
+        </div>
+
+        <p class="result" aria-live="assertive"></p>
     </div>
     <script src="captcha.js"></script>
 </body>
