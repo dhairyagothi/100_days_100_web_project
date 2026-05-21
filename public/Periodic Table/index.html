@@ -70,32 +70,85 @@
 
 
     <!-- ONLY ONE TREND POPUP -->
-    <div id="trendInfo"
-    class="trend-info hidden">
+   <!-- Trend Popup Container -->
+<div
+id="trendPopupContainer"
+class="trend-popup-container"
 
-        <button id="closeTrendInfo">
-            ×
-        </button>
-
-        <h3 id="trendTitle"></h3>
-
-        <p id="trendDescription"></p>
-
-        <div id="trendExtremes"></div>
+style="display:none;">
 
 
-        <!-- COLOR BAR RESTORED -->
-        <div class="trend-scale">
+<!-- Existing popup -->
+<div id="trendInfo"
+class="trend-info">
 
-            <span>LOW</span>
+<button id="closeTrendInfo">
 
-            <div class="gradient-bar"></div>
+×
 
-            <span>HIGH</span>
+</button>
 
-        </div>
+<h3 id="trendTitle"></h3>
 
-    </div>
+<p id="trendDescription"></p>
+
+<div id="trendExtremes"></div>
+
+<div class="trend-scale">
+
+<span>LOW</span>
+
+<div class="gradient-bar"></div>
+
+<span>HIGH</span>
+
+</div>
+<div class="trend-link">
+
+<p>
+
+Want to learn more about this property?
+
+</p>
+
+<a
+id="wikiLink"
+
+target="_blank">
+
+Explore in detail →
+
+</a>
+
+</div>
+
+</div>
+
+
+
+<!-- New Analysis Popup -->
+
+<div
+id="trendAnalysis"
+
+class="trend-info">
+
+<h3>
+
+Trend Analysis
+
+</h3>
+
+<div id="analysisContent">
+
+Select a trend property
+
+</div>
+
+</div>
+
+
+</div>
 
 
 

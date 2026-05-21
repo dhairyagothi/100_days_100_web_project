@@ -1472,30 +1472,31 @@ html {
 }
 
 /* Professional scrollbar */
+/* Chrome, Edge, Safari */
 ::-webkit-scrollbar {
-  width: 14px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 20px;
+  background: #050816;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00ff88, #00bdff, #7000ff);
-  border-radius: 20px;
-  border: 2px solid #050505;
-  min-height: 140px;
-  box-shadow: 0 0 14px rgba(0, 255, 136, 0.25);
+  background: linear-gradient(
+    to bottom,
+    #0f172a,
+    #2563eb
+  );
+  border-radius: 999px;
+  border: 2px solid #050816;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #00ff88, #00d4ff, #8a2be2);
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.45);
-}
-
-::-webkit-scrollbar-corner {
-  background: transparent;
+  background: linear-gradient(
+    to bottom,
+    #1e293b,
+    #3b82f6
+  );
 }
 @keyframes noiseShift {
   from {
