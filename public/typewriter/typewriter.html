@@ -29,6 +29,22 @@
             --input-color: #f5f5f5;
             --input-placeholder: rgba(255,255,255,0.55);
         }
+          .reset-key {
+    width: 140px;
+    height: 54px;
+    border-radius: 10px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+        .reset-row {
+    justify-content: center;
+}
 
         body.light-theme {
             --bg-color: #ffffff;
@@ -200,6 +216,7 @@
         .keyboard-row {
             display: flex; gap: 11px;
             justify-content: center; flex-wrap: wrap;
+            align-items: center;
         }
 
         .key {
@@ -297,6 +314,8 @@
         <div class="typewriter-body">
             <div class="input-area">
                 <input type="text" id="userInput" placeholder="Type here or click the keys below…">
+
+                
             </div>
 
             <div class="keyboard">
@@ -348,6 +367,7 @@
                     <div class="key enter-key" data-char="ENTER">↵ RET</div>
                     <div class="key space" data-char=" ">SPACE</div>
                     <div class="key backspace" data-char="BACKSPACE">⌫ DEL</div>
+                    <div class="key reset-key" id="resetBtn" data-char="RESET">⟲ RESET</div>
                 </div>
             </div>
         </div>
@@ -357,6 +377,7 @@
         const typewriterText = document.getElementById("typewriterText");
         const userInput      = document.getElementById("userInput");
         const themeToggle    = document.getElementById("themeToggle");
+        const resetBtn = document.getElementById("resetBtn");
 
         // ---- Audio ----
         let audioCtx;
@@ -464,28 +485,34 @@
         }
 
         // ---- Physical keyboard → paper ----
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace') {
-                e.preventDefault();
-                deleteCharFromPaper();
-                flashKey('BACKSPACE');
-                return;
-            }
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                paperContent += '\n';
-                typewriterText.textContent = paperContent;
-                scrollPaperToBottom();
-                playReturn();
-                flashKey('ENTER');
-                return;
-            }
-            if (e.key.length === 1) {
-                e.preventDefault();
-                addCharToPaper(e.key.toUpperCase());
-            }
-        });
+document.addEventListener('keydown', (e) => {
 
+    // Prevent typing directly inside input field
+    e.preventDefault();
+
+    if (e.key === 'Backspace') {
+        deleteCharFromPaper();
+        flashKey('BACKSPACE');
+        return;
+    }
+
+    if (e.key === 'Enter') {
+        paperContent += '\n';
+        typewriterText.textContent = paperContent;
+        scrollPaperToBottom();
+        playReturn();
+        flashKey('ENTER');
+        return;
+    }
+
+    // Allow both uppercase and lowercase typing
+    if (e.key.length === 1) {
+        addCharToPaper(e.key);
+
+        // Highlight matching virtual key
+        flashKey(e.key.toUpperCase());
+    }
+});
         // ---- On-screen keys → paper ----
         document.querySelectorAll('.key').forEach(key => {
             key.addEventListener('mousedown', (e) => {
@@ -524,6 +551,11 @@
             themeToggle.textContent = isLight ? '☀️' : '🌙';
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
+
+        resetBtn.addEventListener('click', () => {
+    clearPaper();
+    userInput.value = '';
+});
 
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {

@@ -676,7 +676,10 @@ body.light-mode .navbar {
 
 .search-bar {
   position: relative;
-  max-width: 480px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; 
 }
 
 .search-icon {
@@ -697,7 +700,7 @@ body.light-mode .navbar {
   color: var(--text-primary);
   font-family: 'Inter Tight', sans-serif;
   font-size: 0.875rem;
-  padding: 0.625rem 1rem 0.625rem 2.5rem;
+  padding: 0.625rem 2.5rem 0.625rem 2.5rem;
   outline: none;
   transition: var(--t);
 }
@@ -709,6 +712,94 @@ body.light-mode .navbar {
 .search-input:focus {
   border-color: var(--border-accent);
   background: var(--bg-surface);
+}
+
+.clear-btn {
+  /* Positioning */
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  
+  /* Visual*/
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-secondary, #9ca3af);
+  
+  /* Sizing */
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  
+  /* Interaction */
+  cursor: pointer;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  
+  /* Animation */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* Hover state */
+.clear-btn:hover {
+  background: var(--bg-hover, #f3f4f6);
+  color: var(--text-primary, #374151);
+}
+
+/* Active state - click feedback */
+.clear-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Focus state - accessibility */
+.clear-btn:focus-visible {
+  outline: 2px solid var(--accent, #6366f1);
+  outline-offset: 2px;
+}
+
+/* CSS-only visibility control */
+.search-input:not(:placeholder-shown) ~ .clear-btn {
+  display: flex;
+}
+
+/* Mobile responses */
+@media (max-width: 640px) {
+  .search-input {
+    padding: 10px 36px 10px 36px;
+    font-size: 13px;
+  }
+  
+  .clear-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+    right: 10px;
+  }
+  
+  .search-icon {
+    left: 12px;
+    font-size: 12px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .clear-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 16px;
+    right: 8px;
+  }
+  
+  .search-input {
+    padding: 8px 32px 8px 32px;
+    font-size: 12px;
+  }
 }
 
 /* Filter chips */
