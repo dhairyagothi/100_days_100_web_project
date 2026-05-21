@@ -1,39 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Image Classifier</title>
+<div class="container">
+    <h1>🖼️ AI Image Classifier</h1>
+    <p>Upload an image and let AI identify it!</p>
 
-    <link rel="stylesheet" href="style.css">
-
-    <!-- TensorFlow.js -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-
-    <!-- MobileNet Model -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
-</head>
-<body>
-
-    <div class="container">
-        <h1>🖼️ AI Image Classifier</h1>
-        <p>Upload an image and let AI identify it!</p>
+    <div class="drop-zone" id="dropZone">
+        <p>📂 Drag & Drop Image Here</p>
+        <span>or</span>
 
         <label for="imageUpload" class="upload-btn">
-        Choose Image
+            Choose Image
         </label>
-
-<input type="file" id="imageUpload" accept="image/*" hidden>
-        <div class="image-box">
-            <img id="preview" src="" alt="Preview Image">
-        </div>
-
-        <button id="classifyBtn">Classify Image</button>
-
-        <div id="result"></div>
     </div>
 
+    <input type="file" id="imageUpload" accept="image/*" hidden>
 
-    <script src="script.js"></script>
-</body>
-</html>
+    <div id="error-message"></div>
+
+    <div class="image-box">
+        <img id="preview" src="placeholder.png" alt="Uploaded preview image">
+    </div>
+
+    <div class="actions">
+        <button id="classifyBtn">Classify Image</button>
+    </div>
+
+    <div id="loading" class="hidden">
+        <p>⏳ AI is analyzing the image...</p>
+    </div>
+
+    <div id="result" aria-live="polite"></div>
+
+    <div id="confidence"></div>
+
+    <footer>
+        <p>Powered by TensorFlow.js & MobileNet</p>
+    </footer>
+</div>
