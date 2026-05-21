@@ -143,6 +143,7 @@
         <div class="projects-header">
           <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
+
             <input
               type="text"
               id="searchInput"
@@ -150,7 +151,18 @@
               placeholder="Search projects…"
               autocomplete="off"
             />
+
+            <!-- ADD THIS BUTTON -->
+            <button
+              id="clearSearch"
+              class="clear-btn"
+              aria-label="Clear search"
+              type="button"
+            >
+              &times;
+            </button>
           </div>
+        </div>
           <div class="filter-chips" id="filterChips">
             <button class="chip active" data-filter="all" id="filterAll">
               All <span class="chip-count" id="allCount">Projects</span>

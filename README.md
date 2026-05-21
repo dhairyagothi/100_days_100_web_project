@@ -66,122 +66,122 @@ The website features:
 
 | Day | Project Name | Technologies | Type | Demo Link |
 |-----|--------------|-------------|------|-----------|
-| 1 | To-Do List | HTML, CSS, JS | 📝 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/TO_DO_LIST/todolist) |
-| 2 | Digital Clock | HTML, CSS, JS | ⏰ Widget | [View Demo](https://100-days-100-web-project.vercel.app/public/digital_clock/digitalclock) |
-| 3 | Indian Flag | HTML, CSS | 🎨 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/indianflag/flag) |
-| 4 | Dropdown Nav Bar | HTML, CSS, JS | 🧭 Navigation | [View Demo](https://100-days-100-web-project.vercel.app/public/dropdown_navbar) |
-| 5 | Animated Cursor | HTML, CSS, JS | ✨ Effect | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated-cursor/animated-cursor) |
-| 6 | Background Image Slider | HTML, CSS, JS | 🖼️ Slider | [View Demo](https://100-days-100-web-project.vercel.app/public/Background-Image-sider/slider) |
-| 7 | Typewriter Effect | HTML, CSS, JS | ⌨️ Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/typewriter/typewriter) |
-| 8 | Parallel-X Website | HTML, CSS, JS | 🌐 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/Parallel-x%20website/parallal) |
-| 9 | Captcha Generator | HTML, CSS, JS | 🔐 Security | [View Demo](https://100-days-100-web-project.vercel.app/public/captcha/captcha) |
-| 10 | QR Code Generator | HTML, CSS, JS | 📱 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/qr%20generator/qr) |
+| 1 | To-Do List | HTML, CSS, JS | 📝 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/TO_DO_LIST/todolist.html) |
+| 2 | Digital Clock | HTML, CSS, JS | ⏰ Widget | [View Demo](https://100-days-100-web-project.vercel.app/public/digital_clock/digitalclock.html) |
+| 3 | Indian Flag | HTML, CSS | 🎨 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/indianflag/flag.html) |
+| 4 | Dropdown Nav Bar | HTML, CSS, JS | 🧭 Navigation | [View Demo](https://100-days-100-web-project.vercel.app/public/dropdown_navbar/index.html) |
+| 5 | Animated Cursor | HTML, CSS, JS | ✨ Effect | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated-cursor/animated-cursor.html) |
+| 6 | Background Image Slider | HTML, CSS, JS | 🖼️ Slider | [View Demo](https://100-days-100-web-project.vercel.app/public/Background-Image-sider/slider.html) |
+| 7 | Typewriter Effect | HTML, CSS, JS | ⌨️ Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/typewriter/typewriter.html) |
+| 8 | Parallel-X Website | HTML, CSS, JS | 🌐 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/Parallel-x%20website/parallal.html) |
+| 9 | Captcha Generator | HTML, CSS, JS | 🔐 Security | [View Demo](https://100-days-100-web-project.vercel.app/public/captcha/captcha.html) |
+| 10 | QR Code Generator | HTML, CSS, JS | 📱 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/qr%20generator/qr.html) |
 | 11 | Express Server | Node.js, Express | 🖥️ Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project) |
 | 12 | Gmail Nodemailer | Node.js, Nodemailer | 📧 Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/gmail_nodemailer) |
 | 13 | MERN Login Form | MongoDB, Express, React, Node | 🔐 Full-Stack | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern) |
 | 14 | File Uploader | Node.js, Express | 📁 Utility | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader) |
-| 15 | Progress Bar | HTML, CSS, JS | 📊 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/progress_bar/progress_bar) |
-| 16 | Custom Scroll Bar | CSS | 🎨 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/) |
-| 17 | Swiper API Slider | HTML, CSS, JS | 🖼️ Slider | [View Demo](https://100-days-100-web-project.vercel.app/public/slider%20box) |
-| 18 | Carousel Solar System | HTML, CSS, JS | 🪐 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/carousal) |
-| 19 | Plant Website | HTML, CSS, JS | 🌱 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/plantwebsite/plant) |
+| 15 | Progress Bar | HTML, CSS, JS | 📊 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/progress_bar/progress_bar.html) |
+| 16 | Custom Scroll Bar | CSS | 🎨 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Scroll%20Game%20Dark%20Run/index.html) |
+| 17 | Swiper API Slider | HTML, CSS, JS | 🖼️ Slider | [View Demo](https://100-days-100-web-project.vercel.app/public/slider%20box/index.html) |
+| 18 | Carousel Solar System | HTML, CSS, JS | 🪐 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/carousal/index.html) |
+| 19 | Plant Website | HTML, CSS, JS | 🌱 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/plantwebsite/plant.html) |
 | 20 | EveSparks | HTML, CSS, JS | ✨ Website | [View Demo](https://evesparks.onrender.com/) |
 | 21 | React Video Slider | React, Vite | 🎥 React App | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website) |
-| 22 | Page Loader | HTML, CSS, JS | ⏳ Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/pageloader/pageloader) |
-| 23 | Jarvis AI Assistant | HTML, CSS, JS | 🤖 AI | [View Demo](https://100-days-100-web-project.vercel.app/public/Jarvis-AI-main) |
-| 24 | AI ChatBot | HTML, CSS, JS | 💬 AI | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20ChatBot/chatbot) |
-| 25 | Tic-Tac-Toe | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/TicTacToe) |
-| 26 | Maze Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Maze-Game-main) |
-| 27 | Memory Game | HTML, CSS, JS | 🧠 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/MemoryGame) |
-| 28 | Wordle Clone | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/WORDLE) |
-| 29 | Snake Game | HTML, CSS, JS | 🐍 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/snake_game) |
-| 30 | Flappy Bird | HTML, CSS, JS | 🐦 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Flappy-bird-main) |
-| 31 | Password Manager | HTML, CSS, JS | 🔐 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/password%20manager) |
-| 32 | Missionaries & Cannibals | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Missionaries&Cannibals) |
-| 33 | Weather Forecasting | HTML, CSS, JS | 🌤️ App | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20Forcasting) |
-| 34 | Email Validator | HTML, CSS, JS | ✅ Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/email%20validator) |
-| 35 | Vanilla JS Calculator | HTML, CSS, JS | 🧮 Calculator | [View Demo](https://100-days-100-web-project.vercel.app/public/Vanilla-JavaScript-Calculator-master) |
-| 36 | Medical App | HTML, CSS, JS | 🏥 App | [View Demo](https://100-days-100-web-project.vercel.app/public/Medical_App) |
-| 37 | 2048 Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/2048_game) |
+| 22 | Page Loader | HTML, CSS, JS | ⏳ Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/pageloader/pageloader.html) |
+| 23 | Jarvis AI Assistant | HTML, CSS, JS | 🤖 AI | [View Demo](https://100-days-100-web-project.vercel.app/public/Jarvis-AI-main/index.html) |
+| 24 | AI ChatBot | HTML, CSS, JS | 💬 AI | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20ChatBot/chatbot.html) |
+| 25 | Tic-Tac-Toe | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/TicTacToe/index.html) |
+| 26 | Maze Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Maze-Game-main/index.html) |
+| 27 | Memory Game | HTML, CSS, JS | 🧠 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/MemoryGame/index.html) |
+| 28 | Wordle Clone | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/WORDLE/index.html) |
+| 29 | Snake Game | HTML, CSS, JS | 🐍 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/snake_game/index.html) |
+| 30 | Flappy Bird | HTML, CSS, JS | 🐦 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Flappy-bird-main/index.html) |
+| 31 | Password Manager | HTML, CSS, JS | 🔐 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/password%20manager/index.html) |
+| 32 | Missionaries & Cannibals | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Missionaries&Cannibals/index.html) |
+| 33 | Weather Forecasting | HTML, CSS, JS | 🌤️ App | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20Forcasting/index.html) |
+| 34 | Email Validator | HTML, CSS, JS | ✅ Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/email%20validator/index.html) |
+| 35 | Vanilla JS Calculator | HTML, CSS, JS | 🧮 Calculator | [View Demo](https://100-days-100-web-project.vercel.app/public/Vanilla-JavaScript-Calculator-master/index.html) |
+| 36 | Medical App | HTML, CSS, JS | 🏥 App | [View Demo](https://100-days-100-web-project.vercel.app/public/Medical_App/index.html) |
+| 37 | 2048 Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/2048_game/index.html) |
 | 38 | GitHub Profile Finder | HTML, CSS, JS, API | 👤 Utility | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder) |
-| 39 | Notes App | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/notes-app) |
-| 40 | Analog Clock | HTML, CSS, JS | ⏰ Widget | [View Demo](https://100-days-100-web-project.vercel.app/public/AnalogClock) |
-| 41 | Scroll Dark Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Scroll%20Game%20Dark%20Run) |
-| 42 | Amazon Clone | HTML, CSS, JS | 🛒 E-commerce | [View Demo](https://100-days-100-web-project.vercel.app/public/Amazon_Clone) |
-| 43 | Password Generator | HTML, CSS, JS | 🔐 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Password_Generator) |
-| 44 | BMI Calculator | HTML, CSS, JS | 🧮 Calculator | [View Demo](https://100-days-100-web-project.vercel.app/public/BMI_Calculator) |
-| 45 | BlackJack Game | HTML, CSS, JS | 🎰 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/BlackJack/blackJ) |
-| 46 | Palindrome Generator | HTML, CSS, JS | 📝 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Palindrome_Generator) |
-| 47 | Ping Pong Game | HTML, CSS, JS | 🏓 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/ping) |
-| 48 | Text to Voice Converter | HTML, CSS, JS | 🔊 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/TextToVoiceConverter) |
+| 39 | Notes App | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/notes-app/index.html) |
+| 40 | Analog Clock | HTML, CSS, JS | ⏰ Widget | [View Demo](https://100-days-100-web-project.vercel.app/public/AnalogClock/index.html) |
+| 41 | Scroll Dark Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Scroll%20Game%20Dark%20Run/index.html) |
+| 42 | Amazon Clone | HTML, CSS, JS | 🛒 E-commerce | [View Demo](https://100-days-100-web-project.vercel.app/public/Amazon_Clone/index.html) |
+| 43 | Password Generator | HTML, CSS, JS | 🔐 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Password_Generator/index.html) |
+| 44 | BMI Calculator | HTML, CSS, JS | 🧮 Calculator | [View Demo](https://100-days-100-web-project.vercel.app/public/BMI_Calculator/index.html) |
+| 45 | BlackJack Game | HTML, CSS, JS | 🎰 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/BlackJack/blackJ/index.html) |
+| 46 | Palindrome Generator | HTML, CSS, JS | 📝 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Palindrome_Generator/index.html) |
+| 47 | Ping Pong Game | HTML, CSS, JS | 🏓 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/ping/index.html) |
+| 48 | Text to Voice Converter | HTML, CSS, JS | 🔊 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/TextToVoiceConverter/index.html) |
 | 49 | URL Shortener | Node.js, Express | 🔗 Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/url_shortener) |
 | 50 | Recipe Genie | React, Node.js | 🍳 Full-Stack | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe-Genie) |
-| 51 | Netflix Clone | HTML, CSS, JS | 🎬 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Netflix_Cloning/Index) |
-| 52 | ClimaCode 2.0 | HTML, CSS, JS | 🌤️ App | [View Demo](https://100-days-100-web-project.vercel.app/public/ClimaCode%202.0) |
-| 53 | E-commerce Cart | HTML, CSS, JS | 🛒 E-commerce | [View Demo](https://100-days-100-web-project.vercel.app/public/e-commerce_cart) |
-| 54 | Budget Tracker | HTML, CSS, JS | 💰 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/Budget%20Tracker) |
-| 55 | Cricket Game | HTML, CSS, JS | 🏏 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/cricket) |
+| 51 | Netflix Clone | HTML, CSS, JS | 🎬 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Netflix_Cloning/Index.html) |
+| 52 | ClimaCode 2.0 | HTML, CSS, JS | 🌤️ App | [View Demo](https://100-days-100-web-project.vercel.app/public/ClimaCode%202.0/index.html) |
+| 53 | E-commerce Cart | HTML, CSS, JS | 🛒 E-commerce | [View Demo](https://100-days-100-web-project.vercel.app/public/e-commerce_cart/index.html) |
+| 54 | Budget Tracker | HTML, CSS, JS | 💰 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/Budget%20Tracker/index.html) |
+| 55 | Cricket Game | HTML, CSS, JS | 🏏 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/cricket/index.html) |
 | 56 | Pastebin Clone | Svelte | 📝 App | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/pastebin) |
-| 57 | Glowing Social Icons | HTML, CSS | ✨ UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Social%20Media%20Glowing) |
-| 58 | Music App | HTML, CSS, JS | 🎵 App | [View Demo](https://100-days-100-web-project.vercel.app/public/Music%20App) |
-| 59 | Blog Page | HTML, CSS, JS | 📝 Blog | [View Demo](https://100-days-100-web-project.vercel.app/public/Blog%20Page) |
-| 60 | Marketing Website | HTML, CSS, JS | 🌐 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/marketing_website) |
-| 61 | Hologram Button | HTML, CSS | ✨ UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Holo%20Button) |
-| 62 | Solar System Explorer | HTML, CSS | 🪐 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template) |
-| 63 | Image to Text App | HTML, CSS, JS | 🖼️ OCR | [View Demo](https://100-days-100-web-project.vercel.app/public/Image-To-Text-App) |
-| 64 | Zomato Clone | HTML, CSS, JS | 🍕 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/zomato-clone/zomato) |
-| 65 | The Cube | HTML, CSS | 🎲 3D Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/The%20Cube) |
+| 57 | Glowing Social Icons | HTML, CSS | ✨ UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Social%20Media%20Glowing/index.html) |
+| 58 | Music App | HTML, CSS, JS | 🎵 App | [View Demo](https://100-days-100-web-project.vercel.app/public/Music%20App/index.html) |
+| 59 | Blog Page | HTML, CSS, JS | 📝 Blog | [View Demo](https://100-days-100-web-project.vercel.app/public/Blog%20Page/index.html) |
+| 60 | Marketing Website | HTML, CSS, JS | 🌐 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/marketing_website/index.html) |
+| 61 | Hologram Button | HTML, CSS | ✨ UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Holo%20Button/index.html) |
+| 62 | Solar System Explorer | HTML, CSS | 🪐 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template/index.html) |
+| 63 | Image to Text App | HTML, CSS, JS | 🖼️ OCR | [View Demo](https://100-days-100-web-project.vercel.app/public/Image-To-Text-App/index.html) |
+| 64 | Zomato Clone | HTML, CSS, JS | 🍕 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/zomato-clone/zomato/index.html) |
+| 65 | The Cube | HTML, CSS | 🎲 3D Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/The%20Cube/index.html) |
 | 66 | Flask Auth App | Python, Flask | 🔐 Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app) |
-| 67 | Blog Website | HTML, CSS, JS | 📝 Blog | [View Demo](https://100-days-100-web-project.vercel.app/public/blog/main) |
-| 68 | 3D Rotating Card | HTML, CSS | 🎲 3D Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20cards) |
+| 67 | Blog Website | HTML, CSS, JS | 📝 Blog | [View Demo](https://100-days-100-web-project.vercel.app/public/blog/main.html) |
+| 68 | 3D Rotating Card | HTML, CSS | 🎲 3D Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20cards/index.html) |
 | 69 | Spotify Clone | HTML, CSS, JS | 🎵 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/spotify-clone%20-project/index.html) |
-| 70 | Insect Catch Game | HTML, CSS, JS | 🐛 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Insect-Catch-Game) |
-| 71 | Quotely Laughs | HTML, CSS, JS | 😂 Entertainment | [View Demo](https://100-days-100-web-project.vercel.app/public/Quotely-Laughs) |
+| 70 | Insect Catch Game | HTML, CSS, JS | 🐛 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Insect-Catch-Game/index.html) |
+| 71 | Quotely Laughs | HTML, CSS, JS | 😂 Entertainment | [View Demo](https://100-days-100-web-project.vercel.app/public/Quotely-Laughs/index.html) |
 | 72 | Contact Book | Node.js, Express | 📞 Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book) |
-| 73 | Candy Crush Game | HTML, CSS, JS | 🍭 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Candy_Crush_Game) |
-| 74 | Stock Profit Calculator | HTML, CSS, JS | 📈 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/Stock-Profit-Calculator) |
-| 75 | Code Jump Space Game | HTML, CSS, JS | 🚀 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/code-jump-space-game) |
-| 76 | Animated Searchbar | HTML, CSS, JS | 🔍 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated%20Searchbar) |
-| 77 | Rock Paper Scissors | HTML, CSS, JS | ✂️ Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Stone-Paper-Scissor) |
-| 78 | NPM Package Search | HTML, CSS, JS | 📦 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/NPM%20Package%20Search) |
-| 79 | LinkedIn Clone | HTML, CSS, JS | 💼 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Linkedin-Clone) |
-| 80 | Resume Studio | HTML, CSS, JS | 📄 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/ResumeStudio) |
-| 81 | Simon Says Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Simon_Says_Game) |
-| 82 | Love Calculator | HTML, CSS, JS | 💕 Fun | [View Demo](https://100-days-100-web-project.vercel.app/public/Love-Calculator) |
-| 83 | Currency Exchange | HTML, CSS, JS | 💱 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Exchange_Currency) |
-| 84 | Lights Out Puzzle | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Lights_Out_Puzzle) |
-| 85 | Image Search Engine | HTML, CSS, JS | 🔍 Search | [View Demo](https://100-days-100-web-project.vercel.app/public/Image%20Search%20Engine) |
-| 86 | 3D Profile Card | HTML, CSS | 🎲 3D Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20profile%20Card) |
-| 87 | Breakout Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Breakout%20game) |
-| 88 | Job Dashboard | HTML, CSS, JS | 💼 Dashboard | [View Demo](https://100-days-100-web-project.vercel.app/public/Job%20dashboard/jobs) |
-| 89 | N-Queen Solver | HTML, CSS, JS | 👑 Algorithm | [View Demo](https://100-days-100-web-project.vercel.app/public/N_Queen) |
-| 90 | Quiz App Timer | HTML, CSS, JS | ❓ Quiz | [View Demo](https://100-days-100-web-project.vercel.app/public/QuizeApp%20Timer/index1) |
+| 73 | Candy Crush Game | HTML, CSS, JS | 🍭 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Candy_Crush_Game/index.html) |
+| 74 | Stock Profit Calculator | HTML, CSS, JS | 📈 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/Stock-Profit-Calculator/index.html) |
+| 75 | Code Jump Space Game | HTML, CSS, JS | 🚀 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/code-jump-space-game/index.html) |
+| 76 | Animated Searchbar | HTML, CSS, JS | 🔍 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated%20Searchbar/index.html) |
+| 77 | Rock Paper Scissors | HTML, CSS, JS | ✂️ Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Stone-Paper-Scissor/index.html) |
+| 78 | NPM Package Search | HTML, CSS, JS | 📦 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/NPM%20Package%20Search/index.html) |
+| 79 | LinkedIn Clone | HTML, CSS, JS | 💼 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Linkedin-Clone/index.html) |
+| 80 | Resume Studio | HTML, CSS, JS | 📄 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/ResumeStudio/index.html) |
+| 81 | Simon Says Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Simon_Says_Game/index.html) |
+| 82 | Love Calculator | HTML, CSS, JS | 💕 Fun | [View Demo](https://100-days-100-web-project.vercel.app/public/Love-Calculator/index.html) |
+| 83 | Currency Exchange | HTML, CSS, JS | 💱 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Exchange_Currency/index.html) |
+| 84 | Lights Out Puzzle | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Lights_Out_Puzzle/index.html) |
+| 85 | Image Search Engine | HTML, CSS, JS | 🔍 Search | [View Demo](https://100-days-100-web-project.vercel.app/public/Image%20Search%20Engine/index.html) |
+| 86 | 3D Profile Card | HTML, CSS | 🎲 3D Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20profile%20Card/index.html) |
+| 87 | Breakout Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Breakout%20game/index.html) |
+| 88 | Job Dashboard | HTML, CSS, JS | 💼 Dashboard | [View Demo](https://100-days-100-web-project.vercel.app/public/Job%20dashboard/jobs/index.html) |
+| 89 | N-Queen Solver | HTML, CSS, JS | 👑 Algorithm | [View Demo](https://100-days-100-web-project.vercel.app/public/N_Queen/index.html) |
+| 90 | Quiz App Timer | HTML, CSS, JS | ❓ Quiz | [View Demo](https://100-days-100-web-project.vercel.app/public/QuizeApp%20Timer/index1.html) |
 | 91 | Voting App Backend | Node.js, Express | 🗳️ Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend) |
-| 92 | Slide Puzzle Game | HTML, CSS, JS | 🧩 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Slide%20puzzle%20Game) |
-| 93 | TextUtils | React | ✏️ React App | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils) |
-| 94 | Hangman Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/HangmanGame) |
-| 95 | TodoList React TS | React, TypeScript, Tailwind | 📝 React App | [View Demo](https://100-days-100-web-project.vercel.app/public/TodoList-React-TS-Tailwind) |
-| 96 | HCL Color Generator | HTML, CSS, JS | 🎨 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/HCL%20Color%20Generator) |
-| 97 | Time Capsule | HTML, CSS, JS | ⏰ Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Time-Capsule) |
-| 98 | Virtual Piano | HTML, CSS, JS | 🎹 Music | [View Demo](https://100-days-100-web-project.vercel.app/public/Virtual%20Piano) |
-| 99 | NASA APOD Extension | HTML, CSS, JS | 🚀 Extension | [View Demo](https://100-days-100-web-project.vercel.app/public/NASA-APOD/popup) |
-| 100 | Text Saver Extension | HTML, CSS, JS | 💾 Extension | [View Demo](https://100-days-100-web-project.vercel.app/public/Text_Saver_Ext/popup) |
-| 101 | Finance Tracker | HTML, CSS, JS | 💰 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/FinanceTracker) |
-| 102 | Travel Booking Website | HTML, CSS, JS | ✈️ Travel | [View Demo](https://100-days-100-web-project.vercel.app/public/Travel_booking_website) |
-| 103 | Drumkit Game | HTML, CSS, JS | 🥁 Music | [View Demo](https://100-days-100-web-project.vercel.app/public/Drumkit_Game) |
-| 104 | Debug Website | HTML, CSS, JS | 🐛 Development | [View Demo](https://100-days-100-web-project.vercel.app/public/Debug-Website) |
-| 105 | Periodic Table | HTML, CSS, JS | 🧪 Educational | [View Demo](https://100-days-100-web-project.vercel.app/public/Periodic%20Table) |
-| 106 | Plants Website | HTML, CSS, JS | 🌱 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/Plants%20Website) |
-| 107 | DocNow | HTML, CSS, JS | 📄 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/DocNow) |
-| 108 | Expense Tracker | HTML, CSS, JS | 💸 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/expense_Tracker) |
-| 109 | Mood Tracker | HTML, CSS, JS | 😊 Wellness | [View Demo](https://100-days-100-web-project.vercel.app/public/Mood%20Tracker) |
-| 110 | CRYPTOSHOW | HTML, CSS, JS | 💰 Crypto | [View Demo](https://100-days-100-web-project.vercel.app/public/CRYPTOSHOW) |
-| 111 | Whack-a-Mole Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Whack-a-Mole%20Game) |
-| 112 | Nykaa Clone | HTML, CSS, JS | 💄 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone) |
-| 113 | CPU Scheduler | HTML, CSS, JS | ⚙️ Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler) |
-| 114 | EchoNotes | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes) |
+| 92 | Slide Puzzle Game | HTML, CSS, JS | 🧩 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Slide%20puzzle%20Game/index.html) |
+| 93 | TextUtils | React | ✏️ React App | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils/index.html) |
+| 94 | Hangman Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/HangmanGame/index.html) |
+| 95 | TodoList React TS | React, TypeScript, Tailwind | 📝 React App | [View Demo](https://100-days-100-web-project.vercel.app/public/TodoList-React-TS-Tailwind/index.html) |
+| 96 | HCL Color Generator | HTML, CSS, JS | 🎨 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/HCL%20Color%20Generator/index.html) |
+| 97 | Time Capsule | HTML, CSS, JS | ⏰ Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Time-Capsule/index.html) |
+| 98 | Virtual Piano | HTML, CSS, JS | 🎹 Music | [View Demo](https://100-days-100-web-project.vercel.app/public/Virtual%20Piano/index.html) |
+| 99 | NASA APOD Extension | HTML, CSS, JS | 🚀 Extension | [View Demo](https://100-days-100-web-project.vercel.app/public/NASA-APOD/popup/index.html) |
+| 100 | Text Saver Extension | HTML, CSS, JS | 💾 Extension | [View Demo](https://100-days-100-web-project.vercel.app/public/Text_Saver_Ext/popup/index.html) |
+| 101 | Finance Tracker | HTML, CSS, JS | 💰 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/FinanceTracker/index.html) |
+| 102 | Travel Booking Website | HTML, CSS, JS | ✈️ Travel | [View Demo](https://100-days-100-web-project.vercel.app/public/Travel_booking_website/index.html) |
+| 103 | Drumkit Game | HTML, CSS, JS | 🥁 Music | [View Demo](https://100-days-100-web-project.vercel.app/public/Drumkit_Game/index.html) |
+| 104 | Debug Website | HTML, CSS, JS | 🐛 Development | [View Demo](https://100-days-100-web-project.vercel.app/public/Debug-Website/index.html) |
+| 105 | Periodic Table | HTML, CSS, JS | 🧪 Educational | [View Demo](https://100-days-100-web-project.vercel.app/public/Periodic%20Table/index.html) |
+| 106 | Plants Website | HTML, CSS, JS | 🌱 Website | [View Demo](https://100-days-100-web-project.vercel.app/public/Plants%20Website/index.html) |
+| 107 | DocNow | HTML, CSS, JS | 📄 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/DocNow/index.html) |
+| 108 | Expense Tracker | HTML, CSS, JS | 💸 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/expense_Tracker/index.html) |
+| 109 | Mood Tracker | HTML, CSS, JS | 😊 Wellness | [View Demo](https://100-days-100-web-project.vercel.app/public/Mood%20Tracker/index.html) |
+| 110 | CRYPTOSHOW | HTML, CSS, JS | 💰 Crypto | [View Demo](https://100-days-100-web-project.vercel.app/public/CRYPTOSHOW/index.html) |
+| 111 | Whack-a-Mole Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Whack-a-Mole%20Game/index.html) |
+| 112 | Nykaa Clone | HTML, CSS, JS | 💄 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone/index.html) |
+| 113 | CPU Scheduler | HTML, CSS, JS | ⚙️ Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler/index.html) |
+| 114 | EchoNotes | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes/index.html) |
 | 120 | Typing Speed Test | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/typing_test/index.html) |
-| 122 | AstronomyDashboard | HTML, CSS, JS | 📗Education | [View Demo](https://100-days-100-web-project-m2op.vercel.app/) |
+| 122 | AstronomyDashboard | HTML, CSS, JS | 📗Education | [View Demo](https://100-days-100-web-project-m2op.vercel.app/index.html) |
 | 123 | Pomodoro Timer | HTML, CSS, JS | 🍅 Productivity Tool | [View Demo](https://100-days-100-web-project.vercel.app/public/Pomodoro_Timer/index.html) |
 | 127 | Reaction Time Test | HTML, CSS, JS | ⚙️ Simulator  | [View Demo](https://100-days-100-web-project.vercel.app/public/reaction-time-tester/main.html) |
 

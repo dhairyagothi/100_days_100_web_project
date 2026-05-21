@@ -131,11 +131,21 @@
       const patriotImage = document.getElementById("patriot-image");
 
       function displayQuote() {
-        quoteText.textContent = quotes[currentQuoteIndex].text;
-        quoteAuthor.textContent = quotes[currentQuoteIndex].author;
-        patriotImage.src = quotes[currentQuoteIndex].image;
-        patriotImage.alt = quotes[currentQuoteIndex].author;
-      }
+  const currentQuote = quotes[currentQuoteIndex];
+
+  // Preload image first
+  const img = new Image();
+
+  img.onload = () => {
+    patriotImage.src = currentQuote.image;
+    patriotImage.alt = currentQuote.author;
+
+    quoteText.textContent = currentQuote.text;
+    quoteAuthor.textContent = currentQuote.author;
+  };
+
+  img.src = currentQuote.image;
+}
 
       displayQuote();
 

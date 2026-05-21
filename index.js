@@ -32,7 +32,7 @@ const PROJECT_DATA = [
   ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
   ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
   ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
-  ['Day 16', 'Scroll Bar CSS', './public/Scroll Game Dark Run/index.html', 'css', 'beginner'],
+  ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
   ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
   ['Day 18', 'Carousel Solar System', './public/carousal/index.html', 'css canvas', 'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
@@ -141,7 +141,7 @@ const PROJECT_DATA = [
   ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
   ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
-  ['Day 125', 'Snakeladder',   './public/Snakeladder/index.html', 'game', 'intermediate'],
+  ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
   ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
@@ -151,6 +151,7 @@ const PROJECT_DATA = [
   ['Day 132', 'Pokedex', './public/Pokedex/index.html', 'utility', 'intermediate'],
   ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
   ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
+   ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
 ];
 
 // Alias for consistency
@@ -713,6 +714,12 @@ function initFilterChips() {
 /* ============================================================
    LIVE SEARCH
    ============================================================ */
+/**
+ * Creates a debounced version of a function to limit its execution rate.
+ * Prevents UI performance lag by delaying grid rendering until typing pauses.
+ * @param {Function} func - The search function to execute.
+ * @param {number} wait - Delays execution by this many milliseconds.
+ */
 function debounce(func, wait) {
   let timeout;
   return function executedFunction(...args) {
@@ -724,17 +731,22 @@ function debounce(func, wait) {
     timeout = setTimeout(later, wait);
   };
 }
-
+/**
+ * Initializes real-time search functionality on the search input field.
+ * Handles both continuous typing and clearing the field via the native (x) button.
+ */
 function initSearch() {
   const input = document.getElementById('searchInput');
-  if (!input) return;
+  if (!input) return;  // Safeguard against null errors if element is missing
 
+  // Limit grid filtering frequency during quick keystrokes
   const debouncedFilter = debounce(() => {
     searchQuery = input.value.trim();
-    currentPage = 1;
+    currentPage = 1;  // Reset to the first page for fresh search result
     renderGrid();
   }, 300);
-
+  
+ // Fallback to instantly reset or process the query on field changes
   const handleSearch = () => {
     const value = input.value.trim();
     if (value === '') {
@@ -746,23 +758,52 @@ function initSearch() {
     }
   };
 
+  // Bind listeners to respond dynamically to user input and clearing events
   input.addEventListener('input', handleSearch);
   input.addEventListener('search', handleSearch);
 }
 
+initSearch(); // 
+
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById("clearSearch");
+
 function syncProjectCounts() {
   const total = PROJECTS.length.toLocaleString();
-  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
+
+  const countNodes = [
+    document.getElementById('projectCount'),
+    document.getElementById('allCount')
+  ];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
   });
 
-  const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.placeholder = `Search ${total} projects…`;
   }
 }
+
+// Clear button functionality
+if (searchInput && clearBtn) {
+  clearBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    searchInput.dispatchEvent(new Event("input"));
+    searchInput.focus();
+  });
+
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      searchInput.value = "";
+      searchInput.dispatchEvent(new Event("input"));
+      searchInput.focus();
+    }
+  });
+}
+
+// initialize
+syncProjectCounts();
 
 /* ============================================================
    NAVBAR — dynamic based on login state

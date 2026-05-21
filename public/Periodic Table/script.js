@@ -149,6 +149,87 @@ const shellConfigurations = {
     115: [2, 8, 18, 32, 32, 18, 5], 116: [2, 8, 18, 32, 32, 18, 6], 117: [2, 8, 18, 32, 32, 18, 7], 118: [2, 8, 18, 32, 32, 18, 8]
 };
 
+const electronegativity={
+1:2.20,2:null,3:0.98,4:1.57,5:2.04,6:2.55,7:3.04,8:3.44,9:3.98,10:null,
+11:0.93,12:1.31,13:1.61,14:1.90,15:2.19,16:2.58,17:3.16,18:null,
+19:0.82,20:1.00,21:1.36,22:1.54,23:1.63,24:1.66,25:1.55,26:1.83,
+27:1.88,28:1.91,29:1.90,30:1.65,31:1.81,32:2.01,33:2.18,34:2.55,
+35:2.96,36:3.00,37:0.82,38:0.95,39:1.22,40:1.33,41:1.60,42:2.16,
+43:1.90,44:2.20,45:2.28,46:2.20,47:1.93,48:1.69,49:1.78,50:1.96,
+51:2.05,52:2.10,53:2.66,54:2.60,55:0.79,56:0.89,57:1.10,57:1.10,
+58:1.12,59:1.13,60:1.14,61:1.13,62:1.17,63:1.20,64:1.20,65:1.10,
+66:1.22,67:1.23,68:1.24,69:1.25,70:1.10,71:1.27,72:1.30,73:1.50,
+74:2.36,75:1.90,76:2.20,77:2.20,78:2.28,79:2.54,80:2.00,81:1.62,
+82:2.33,83:2.02,84:2.00,85:2.20,86:null,87:0.70,88:0.90,89:1.10,
+90:1.30,91:1.50,92:1.38,93:1.36,94:1.28,95:1.30,96:1.30,97:1.30,
+98:1.30,99:1.30,100:1.30,101:1.30,102:1.30,103:1.30,104:null,
+105:null,106:null,107:null,108:null,109:null,110:null,111:null,
+112:null,113:null,114:null,115:null,116:null,117:null,118:null
+};
+
+
+const atomicRadius={
+1:53,2:31,3:167,4:112,5:87,6:67,7:56,8:48,9:42,10:38,
+11:190,12:145,13:118,14:111,15:98,16:88,17:79,18:71,
+19:243,20:194,21:184,22:176,23:171,24:166,25:161,26:156,
+27:152,28:149,29:145,30:142,31:136,32:125,33:114,34:103,
+35:94,36:88,37:265,38:219,39:212,40:206,41:198,42:190,
+43:183,44:178,45:173,46:169,47:165,48:161,49:156,50:145,
+51:133,52:123,53:115,54:108,55:298,56:253,57:195,58:185,
+59:247,60:206,61:205,62:238,63:231,64:233,65:225,66:228,
+67:226,68:226,69:222,70:222,71:217,72:208,73:200,74:193,
+75:188,76:185,77:180,78:177,79:174,80:171,81:156,82:154,
+83:143,84:135,85:127,86:120,87:348,88:283,89:260,90:237,
+91:243,92:240,93:221,94:243,95:244,96:245,97:244,98:245,
+99:245,100:245,101:246,102:246,103:246,104:157,105:149,
+106:143,107:141,108:134,109:129,110:128,111:121,112:122,
+113:136,114:143,115:162,116:175,117:165,118:152
+};
+
+
+const ionizationEnergy={
+1:13.598,2:24.587,3:5.392,4:9.323,5:8.298,6:11.260,
+7:14.534,8:13.618,9:17.423,10:21.565,11:5.139,12:7.646,
+13:5.986,14:8.152,15:10.487,16:10.360,17:12.968,18:15.760,
+19:4.341,20:6.113,21:6.561,22:6.828,23:6.746,24:6.767,
+25:7.434,26:7.902,27:7.881,28:7.640,29:7.726,30:9.394,
+31:5.999,32:7.900,33:9.789,34:9.752,35:11.814,36:14.000,
+37:4.177,38:5.695,39:6.217,40:6.634,41:6.759,42:7.092,
+43:7.280,44:7.361,45:7.459,46:8.337,47:7.576,48:8.994,
+49:5.786,50:7.344,51:8.608,52:9.010,53:10.451,54:12.130,
+55:3.894,56:5.212,57:5.577,57:5.577,58:5.539,59:5.473,
+60:5.525,61:5.582,62:5.644,63:5.670,64:6.150,65:5.864,
+66:5.939,67:6.022,68:6.108,69:6.184,70:6.254,71:5.426,
+72:6.825,73:7.550,74:7.864,75:7.833,76:8.438,77:8.967,
+78:8.959,79:9.226,80:10.438,81:6.108,82:7.417,83:7.289,
+84:8.417,85:9.300,86:10.745,87:4.073,88:5.279,89:5.170,
+90:6.307,91:5.890,92:6.194,93:6.266,94:6.026,95:5.974,
+96:5.992,97:6.198,98:6.282,99:6.367,100:6.500,101:6.580,
+102:6.650,103:4.960,104:6.020,105:6.800,106:7.800,
+107:7.700,108:7.600,109:8.700,110:9.000,111:10.600,
+112:11.000,113:7.300,114:8.500,115:5.600,116:6.600,
+117:7.700,118:9.000
+};
+
+
+const trendData={};
+
+elements.forEach(el=>{
+
+trendData[el.number]={
+
+electronegativity:
+electronegativity[el.number] ?? null,
+
+atomicRadius:
+atomicRadius[el.number] ?? null,
+
+ionizationEnergy:
+ionizationEnergy[el.number] ?? null
+
+};
+
+});
 // Maps element properties to chemically accurate categories dynamically
 function getElementCategory(element) {
     const num = element.number;
@@ -182,8 +263,32 @@ function getElementCategory(element) {
 }
 
 // Find Category for each element
-elements.forEach(el => {
-    el.category = getElementCategory(el);
+elements.forEach(el=>{
+
+el.category=
+getElementCategory(el);
+
+/* ADD MASS */
+
+el.massValue =
+parseFloat(el.mass);
+
+const trend =
+trendData[el.number];
+
+if(trend){
+
+el.electronegativity =
+trend.electronegativity;
+
+el.atomicRadius =
+trend.atomicRadius;
+
+el.ionizationEnergy =
+trend.ionizationEnergy;
+
+}
+
 });
 
 const container = document.querySelector(".table-container");
@@ -752,3 +857,388 @@ el.classList.add(
 });
 
 });
+const trendDefinitions={
+
+mass:{
+
+title:
+"Atomic Mass",
+
+description:
+"Average mass of protons and neutrons in an atom."
+
+},
+
+electronegativity:{
+
+title:
+"Electronegativity",
+
+description:
+"Ability of an atom to attract bonding electrons."
+
+},
+
+atomicRadius:{
+
+title:
+"Atomic Radius",
+
+description:
+"Distance between nucleus and outermost electron shell."
+
+},
+
+ionizationEnergy:{
+
+title:
+"Ionization Energy",
+
+description:
+"Energy required to remove an electron from an atom."
+
+}
+
+};
+const trendFilter =
+document.getElementById(
+"trendFilter"
+);
+
+const trendInfo =
+document.getElementById(
+"trendInfo"
+);
+
+const trendTitle =
+document.getElementById(
+"trendTitle"
+);
+
+const trendDescription =
+document.getElementById(
+"trendDescription"
+);
+
+const trendExtremes =
+document.getElementById(
+"trendExtremes"
+);
+
+
+
+
+trendFilter.addEventListener(
+
+"change",
+
+function(){
+
+const property =
+this.value;
+const actualProperty =
+
+property==="mass"
+
+?
+
+"massValue"
+
+:
+
+property;
+const cards =
+document.querySelectorAll(
+".element"
+);
+
+
+
+/* RESET */
+
+if(property==="none"){
+
+trendInfo.classList.add(
+"hidden"
+);
+
+cards.forEach(card=>{
+
+card.style.background="";
+card.style.border="none";
+card.style.boxShadow="none";
+
+});
+
+return;
+}
+
+
+
+/* SHOW INFO */
+
+trendInfo.classList.remove(
+"hidden"
+);
+
+
+
+trendTitle.innerText =
+trendDefinitions[
+property
+].title;
+
+trendDescription.innerText =
+trendDefinitions[
+property
+].description;
+
+
+
+const validElements =
+
+elements.filter(
+
+e=>
+e[actualProperty]
+ != null
+
+);
+
+
+
+const values =
+
+validElements.map(
+
+e=>e[actualProperty]
+);
+
+
+
+const min =
+Math.min(...values);
+
+const max =
+Math.max(...values);
+
+
+
+const lowest =
+validElements.find(
+
+e=>
+
+e[actualProperty]
+
+===
+
+min
+);
+
+
+
+const highest =
+validElements.find(
+
+e=>
+
+e[actualProperty]
+
+===
+
+max
+);
+
+
+trendExtremes.innerHTML =
+`
+<div class="extreme-row">
+
+<div class="low-tag">
+LOWEST:
+<b>${lowest.name} (${min})</b>
+</div>
+
+<div class="high-tag">
+HIGHEST:
+<b>${highest.name} (${max})</b>
+</div>
+
+</div>
+`;
+
+
+
+cards.forEach(card=>{
+
+const symbol =
+card.dataset.symbol;
+
+const element =
+
+elements.find(
+
+e=>
+
+e.symbol
+.toLowerCase()
+
+===symbol
+
+);
+
+
+
+if(
+!element
+
+||
+
+element[actualProperty]
+
+==null
+
+)
+
+return;
+card.style.border=
+"none";
+
+
+if(
+element.number
+===
+
+highest.number
+){
+
+card.style.border=
+"4px solid red";
+
+}
+
+
+if(
+element.number
+===
+
+lowest.number
+){
+
+card.style.border=
+"4px solid blue";
+
+}
+
+
+
+
+
+
+
+const norm =
+(element[actualProperty]-min)/(max-min);
+
+
+/* BLUE → GREEN → YELLOW → RED */
+
+const hue =
+220 - (norm*220);
+
+
+const color =
+`linear-gradient(
+145deg,
+
+hsl(${hue},90%,65%),
+
+hsl(${hue},90%,48%)
+
+)`;
+
+
+card.style.background =
+color;
+
+
+
+/* reset borders */
+
+card.style.border =
+"none";
+
+card.style.boxShadow =
+"none";
+
+
+/* highest highlight */
+
+if(
+element.number===highest.number
+){
+
+card.style.border=
+"3px solid white";
+
+card.style.boxShadow=
+"0 0 15px rgba(255,255,255,.7)";
+
+}
+
+
+/* lowest highlight */
+
+if(
+element.number===lowest.number
+){
+
+card.style.border=
+"3px solid #60a5fa";
+
+card.style.boxShadow=
+"0 0 15px rgba(96,165,250,.8)";
+
+}
+
+card.querySelector(
+".tooltip"
+).innerHTML =
+
+`
+${element.name}<br>
+
+${property}:
+
+<b>
+
+${element[actualProperty]}
+
+</b>
+`;
+
+});
+
+});
+document
+
+.getElementById(
+
+"closeTrendInfo"
+
+)
+
+.addEventListener(
+
+"click",
+
+()=>{
+
+trendInfo.classList.add(
+
+"hidden"
+
+);
+
+});
+
