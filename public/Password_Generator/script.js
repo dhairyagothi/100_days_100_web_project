@@ -6,6 +6,7 @@ const lengthDisplay = document.querySelector("[data-lengthNumber]");
 const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn = document.querySelector("[data-copy]");
 const copyMsg = document.querySelector("[data-copyMsg]");
+const hideTimerText = document.getElementById("hideTimer");
 const uppercaseCheck = document.querySelector("#uppercase");
 const lowercaseCheck = document.querySelector("#lowercase");
 const numbersCheck = document.querySelector("#numbers");
@@ -21,6 +22,8 @@ const symbols = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
 let password = "";
 let passwordLength = 10;
 let checkCount = 0;
+let hideTimeout;
+let countdownInterval;
 handleSlider();
 //ste strength circle color to grey
 setIndicator("#ccc");
@@ -222,6 +225,30 @@ generateBtn.addEventListener('click', () => {
     console.log("Shuffling done");
     //show in UI
     passwordDisplay.value = password;
+    
+      clearTimeout(hideTimeout);
+      clearInterval(countdownInterval);
+
+      let timeLeft = 10;
+
+      hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
+
+      countdownInterval = setInterval(() => {
+        timeLeft--;
+
+        if(timeLeft > 0) {
+          hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
+        }
+        else {
+          clearInterval(countdownInterval);
+          }
+    }, 1000);
+
+    hideTimeout = setTimeout(() => {
+      passwordDisplay.value = "********";
+      hideTimerText.innerText = "Password hidden for security";
+      clearInterval(countdownInterval);
+    }, 10000);
     console.log("UI adddition done");
     //calculate strength
     calcStrength();

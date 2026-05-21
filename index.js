@@ -16,6 +16,25 @@ let filteredProjectData = [];
 let currentCategory = 'all';
 let currentDifficulty = 'all';
 
+/* ============================================================
+   TECHNOLOGY STACK FILTERING VARIABLES
+   ============================================================ */
+let techStackFilters = []; // Array of active tech filters
+let techSearchQuery = ''; // Current tech search input
+
+// Technology normalization map (handles common variations)
+// Maps user input → actual tags in dataset
+const TECH_ALIASES = {
+  'js': 'javascript',
+  'react': 'javascript', // React projects are tagged as 'javascript'
+  'node': 'javascript',  // Node projects are tagged as 'javascript'
+  'vue': 'javascript',
+  'python': 'api',       // Python/Flask projects are tagged as 'api javascript'
+  'flask': 'api',
+  'game': 'game',
+  'games': 'game',
+};
+
 const PROJECT_DATA = [
   ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
   ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', 'javascript', 'beginner'],
@@ -26,7 +45,7 @@ const PROJECT_DATA = [
   ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'html css javascript', 'advanced'],
   ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', 'css', 'intermediate'],
   ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', 'javascript', 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
+  ['Day 10', 'QR Code Generator', './public/qr_generator/qr.html', 'api javascript', 'intermediate'],
   ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
   ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
   ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
@@ -152,12 +171,20 @@ const PROJECT_DATA = [
   ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
   ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
 <<<<<<< HEAD
+<<<<<<< HEAD
   ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
   ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', 'game javascript', 'intermediate'],
   ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
   ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner']
 =======
    ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
+>>>>>>> upstream/Main
+=======
+   ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
+   ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', 'game javascript', 'intermediate'],
+  ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
+  ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner']
+
 >>>>>>> upstream/Main
 ];
 // Alias for consistency
@@ -179,6 +206,127 @@ function getSourceUrl(url) {
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
 
+
+/* ============================================================
+   TECHNOLOGY STACK FILTERING FUNCTIONS
+   ============================================================ */
+
+/**
+ * Normalize technology name for consistent matching
+ * SIMPLIFIED: Just lowercase, no complex aliases needed
+ * @param {string} tech - Technology name to normalize
+ * @returns {string} Normalized technology name
+ */
+function normalizeTech(tech) {
+  const lower = tech.toLowerCase().trim();
+  // Only handle common variations
+  return TECH_ALIASES[lower] || lower;
+}
+
+/**
+ * Check if project matches the active tech stack filters
+ * EFFICIENT APPROACH: Direct string matching without complex transformations
+ * @param {string|array} projectTags - Project tags (space-separated string or array)
+ * @returns {boolean} True if project matches all active filters
+ */
+function matchesTechStack(projectTags) {
+  // No filters = show all projects
+  if (techStackFilters.length === 0) return true;
+  
+  // Handle empty or missing tags
+  if (!projectTags) return false;
+  
+  // Convert to single lowercase string for efficient matching
+  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  
+  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
+  // Uses simple includes() - O(n*m) where n=filters, m=tag length
+  return techStackFilters.every(filter => tagsLower.includes(filter));
+}
+
+
+/**
+ * Remove a specific technology filter
+ * @param {string} tech - Technology to remove from filters
+ */
+function removeTechFilter(tech) {
+  techStackFilters = techStackFilters.filter(t => t !== tech);
+  updateTechFilterDisplay();
+  renderGrid();
+}
+
+/**
+ * Clear all technology filters
+ */
+function clearAllTechFilters() {
+  techStackFilters = [];
+  techSearchQuery = '';
+  
+  const input = document.getElementById('techStackSearch');
+  if (input) input.value = '';
+  
+  updateTechFilterDisplay();
+  renderGrid();
+}
+
+/**
+ * Update the visual display of active tech filters
+ */
+function updateTechFilterDisplay() {
+  const container = document.getElementById('activeTechFilters');
+  const tagsContainer = document.getElementById('techFilterTags');
+  const clearBtn = document.getElementById('clearTechFilter');
+  
+  if (!container || !tagsContainer) return;
+  
+  // Show/hide clear button in search input
+  if (clearBtn) {
+    clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
+  }
+  
+  // Show/hide active filters container
+  if (techStackFilters.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.style.display = 'flex';
+  
+  // Render filter tags with remove buttons
+  tagsContainer.innerHTML = techStackFilters.map(tech => `
+    <span class="tech-filter-tag">
+      ${tech}
+      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
+        <i class="fas fa-times"></i>
+      </button>
+    </span>
+  `).join('');
+}
+
+/**
+ * Get all unique technologies from projects (optional utility)
+ * EFFICIENT: Uses Set for O(1) lookups
+ * @returns {array} Sorted array of unique technologies
+ */
+function getAllTechnologies() {
+  const techSet = new Set();
+  
+  PROJECTS.forEach(([, , , tags]) => {
+    if (tags) {
+      const tagArray = typeof tags === 'string' 
+        ? tags.split(/\s+/).filter(t => t) 
+        : tags;
+      
+      tagArray.forEach(tag => {
+        techSet.add(tag.toLowerCase());
+      });
+    }
+  });
+  
+  const techs = Array.from(techSet).sort();
+  console.log('Available technologies:', techs); // Debug: show available techs
+  return techs;
+}
 
 /* ============================================================
    BOOKMARK + RECENT SYSTEM
@@ -262,58 +410,23 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  // Dynamically set items per page based on viewport width to match CSS column layouts synchronously
-  const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
-  if (width <= 768) {
-    itemsPerPage = 6; // Mobile (1 column x 6 rows = 6 total)
-  } else if (width <= 1024) {
-    itemsPerPage = 6; // Tablet (2 columns x 3 rows = 6 total, no hanging cards!)
-  } else {
-    itemsPerPage = 9; // Laptop & Desktop (3 columns x 3 rows = 9 total)
-  }
-
-  // Filter projects by matching category chip and multi-term keyword search query
-  const filtered = PROJECTS.filter(([day, name, url, tags, cat]) => {
-    const matchesFilter = activeFilter === 'all' || (() => {
-      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
-      const nameStr = name.toLowerCase();
-      const urlStr = url.toLowerCase();
-
-      if (activeFilter === 'game') {
-        return tagStr.includes('game') || tagStr.includes('canvas');
-      }
-      if (activeFilter === 'clone') {
-        return nameStr.includes('clone') || urlStr.includes('clone') || urlStr.includes('cloning');
-      }
-      if (activeFilter === 'tool') {
-        return tagStr.includes('tool') || tagStr.includes('todo') || tagStr.includes('calculator') || tagStr.includes('weather') || nameStr.includes('tracker') || nameStr.includes('generator') || nameStr.includes('converter') || nameStr.includes('validator') || nameStr.includes('saver') || nameStr.includes('utils');
-      }
-      if (activeFilter === 'ui') {
-        return tagStr.includes('css') || tagStr.includes('canvas') || tagStr.includes('animation') || nameStr.includes('animation') || nameStr.includes('cursor') || nameStr.includes('effect') || nameStr.includes('slider');
-      }
-      if (activeFilter === 'api') {
-        return tagStr.includes('api') || tagStr.includes('weather') || nameStr.includes('api') || nameStr.includes('fetch');
-      }
-      return false;
-    })();
-
-    // Split search query by spaces to support multi-term criteria (e.g. "day 1 todo")
-    const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term => 
-      name.toLowerCase().includes(term) || 
-      day.toLowerCase().includes(term) || 
-      (typeof tags === 'string' && tags.toLowerCase().includes(term))
-    );
-
-    return matchesFilter && matchesSearch;
+  const filtered = PROJECTS.filter(([day, name, , tags, cat]) => {
+    // 1. Category filter (beginner/intermediate)
+    const matchesFilter = activeFilter === 'all' || cat === activeFilter;
+    
+    // 2. Name/Day search
+    const q = searchQuery.toLowerCase();
+    const matchesSearch =
+      !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
+    
+    // 3. Technology stack filter (NEW)
+    const matchesTech = matchesTechStack(tags);
+    
+    // Combine all three filters
+    return matchesFilter && matchesSearch && matchesTech;
   });
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-
-  // If a filter chip shrinks the results, reset current page index to avoid out-of-bounds
-  if (currentPage > totalPages) {
-    currentPage = Math.max(1, totalPages);
-  }
+  console.log('Filtered projects:', filtered.length, 'out of', PROJECTS.length); // Debug log
 
   grid.innerHTML = '';
 
@@ -327,6 +440,14 @@ function renderGrid() {
 
   grid.style.display = 'grid';
   noResults.style.display = 'none';
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
+  if (currentPage < 1) {
+    currentPage = 1;
+  }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -731,10 +852,66 @@ function initSearch() {
   });
 }
 
-initSearch(); // 
+/* ============================================================
+   TECH STACK SEARCH INITIALIZATION
+   ============================================================ */
+function initTechStackSearch() {
+  const input = document.getElementById('techStackSearch');
+  const clearBtn = document.getElementById('clearTechFilter');
+  
+  if (!input) return;
+  
+  // Debounce timer for performance
+  let debounceTimer;
+  
+  // Listen for input changes
+  input.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    
+    // Debounce: wait 300ms after user stops typing
+    debounceTimer = setTimeout(() => {
+      const value = e.target.value.trim().toLowerCase();
+      
+      if (value) {
+        // Split by comma or space to support multiple technologies
+        // More efficient: direct lowercase conversion
+        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+        
+        // Update filters array (already lowercase, no need to normalize yet)
+        techStackFilters = [...new Set(techs)]; // Remove duplicates efficiently
+        
+        console.log('Tech filters active:', techStackFilters); // Debug log
+        
+        updateTechFilterDisplay();
+        renderGrid();
+      } else {
+        // Empty input = clear all filters
+        clearAllTechFilters();
+      }
+    }, 300); // 300ms debounce delay
+  });
+  
+  // Clear button functionality
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      clearAllTechFilters();
+    });
+  }
+  
+  // Optional: Add Enter key support
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      input.blur(); // Trigger the debounced input event
+    }
+  });
+}
 
+/* ============================================================
+   SEARCH CONTROLS
+   ============================================================ */
 const searchInput = document.getElementById('searchInput');
-const clearBtn = document.getElementById("clearSearch");
+const clearBtn = document.getElementById('clearSearch');
 
 function syncProjectCounts() {
   const total = PROJECTS.length.toLocaleString();
@@ -887,34 +1064,24 @@ function initScrollBtn() {
 }
 
 /* ============================================================
-   BACK TO TOP BUTTON
-   ============================================================ */
-const backToTopButton = document.getElementById('backToTop');
-
-if (backToTopButton) {
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) {
-      backToTopButton.style.display = 'block';
-    } else {
-      backToTopButton.style.display = 'none';
-    }
-  });
-
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-/* ============================================================
    INIT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOMContentLoaded fired');
-  console.log('PROJECTS:', typeof PROJECTS, PROJECTS ? PROJECTS.length : 'undefined');
+  console.log(
+    'PROJECTS:',
+    typeof PROJECTS,
+    PROJECTS ? PROJECTS.length : 'undefined'
+  );
+  
+  // Show available technologies for debugging
+  getAllTechnologies();
+  
   initTheme();
   updateNavbar();
   initFilterChips();
   initSearch();
+  initTechStackSearch(); // Initialize tech stack search
   syncProjectCounts();
   renderGrid();
   renderBookmarks();
@@ -927,3 +1094,10 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('resize', () => {
   renderGrid();
 });
+
+/* ============================================================
+   EXPOSE FUNCTIONS TO GLOBAL SCOPE
+   (Required for HTML onclick handlers)
+   ============================================================ */
+window.removeTechFilter = removeTechFilter;
+window.clearAllTechFilters = clearAllTechFilters;

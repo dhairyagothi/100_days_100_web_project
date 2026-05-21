@@ -162,7 +162,28 @@
               &times;
             </button>
           </div>
-        </div>
+
+          <!-- Technology Stack Search -->
+          <div class="search-bar tech-search-bar">
+            <i class="fas fa-code search-icon"></i>
+            <input
+              type="text"
+              id="techStackSearch"
+              class="search-input"
+              placeholder="Filter by tech stack (React, Node.js, Python...)"
+              autocomplete="off"
+            />
+            <button id="clearTechFilter" class="clear-filter-btn" style="display: none;" aria-label="Clear tech filters">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <!-- Active Tech Filters Display -->
+          <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
+            <span class="filter-label">Active filters:</span>
+            <div id="techFilterTags"></div>
+          </div>
+
           <div class="filter-chips" id="filterChips">
             <button class="chip active" data-filter="all" id="filterAll">
               All <span class="chip-count" id="allCount">Projects</span>
@@ -278,27 +299,5 @@
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
 
-    <!-- ── BACK TO TOP BUTTON ────────────────────────────────── -->
-    <button id="backToTop">↑</button>
-    <button id="scrollToTopBtn" title="Go to top">▲</button>
-
-    <script>
-      const scrollBtn = document.getElementById("scrollToTopBtn");
-
-      window.onscroll = function() {
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-          scrollBtn.style.display = "block";
-        } else {
-          scrollBtn.style.display = "none";
-        }
-      };
-
-      scrollBtn.addEventListener("click", function() {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      });
-    </script>
   </body>
 </html>
