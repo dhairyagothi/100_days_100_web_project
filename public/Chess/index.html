@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chess</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<div class="app-title">Chess</div>
+
+<div class="layout">
+
+  <!-- Left panel -->
+  <div class="side-panel">
+    <div class="panel">
+      <div class="panel-label">Black captures</div>
+      <div class="captured-row" id="black-captured"></div>
+      <div class="material-score" id="black-material"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Move history</div>
+      <div class="move-list" id="move-list"></div>
+    </div>
+  </div>
+
+  <!-- Board -->
+  <div style="display:flex;flex-direction:column;align-items:center">
+
+    <div class="board-container">
+
+      <div class="rank-labels" id="rank-labels"></div>
+
+      <div>
+
+        <div class="board-wrap">
+
+          <div class="board" id="board"></div>
+
+          <div class="promo-overlay" id="promo-overlay">
+            <div class="promo-title">Promote pawn</div>
+
+            <div class="promo-pieces" id="promo-pieces"></div>
+          </div>
+
+        </div>
+
+        <div class="file-labels" id="file-labels"></div>
+
+      </div>
+
+    </div>
+
+    <div class="status-bar" id="status">
+      White to move
+    </div>
+
+    <div class="thinking" id="thinking">
+      AI is thinking...
+    </div>
+
+  </div>
+
+  <!-- Right panel -->
+  <div class="side-panel">
+
+    <div class="panel">
+      <div class="panel-label">White captures</div>
+      <div class="captured-row" id="white-captured"></div>
+      <div class="material-score" id="white-material"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Game</div>
+
+      <div class="controls">
+        <button class="btn primary" id="btn-new">
+          New Game
+        </button>
+
+        <button class="btn" id="btn-undo">
+          Undo Move
+        </button>
+
+        <button class="btn" id="btn-flip">
+          Flip Board
+        </button>
+      </div>
+    </div>
+
+    <div class="panel">
+
+      <div class="panel-label">Mode</div>
+
+      <div class="mode-row">
+        <button
+          class="diff-btn active"
+          id="mode-ai"
+          onclick="setMode('ai')"
+        >
+          vs AI
+        </button>
+
+        <button
+          class="diff-btn"
+          id="mode-2p"
+          onclick="setMode('2p')"
+        >
+          2 Player
+        </button>
+      </div>
+
+      <div class="panel-label" style="margin-top:10px">
+        AI Difficulty
+      </div>
+
+      <div class="diff-row" id="diff-row">
+
+        <button
+          class="diff-btn active"
+          id="diff-easy"
+          onclick="setDiff(1)"
+        >
+          Easy
+        </button>
+
+        <button
+          class="diff-btn"
+          id="diff-med"
+          onclick="setDiff(3)"
+        >
+          Med
+        </button>
+
+        <button
+          class="diff-btn"
+          id="diff-hard"
+          onclick="setDiff(4)"
+        >
+          Hard
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
