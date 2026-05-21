@@ -688,7 +688,8 @@ function renderBookmarks() {
   visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : (Array.isArray(tags) ? tags : []);
+    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
