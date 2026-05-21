@@ -1,81 +1,60 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BMI Calculator</title>
-    <meta name="description" content="JS app to calculates Body Mass Index">
-    <meta name="author" content="Supritha">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-     <!-- =====BOX ICONS===== -->
-     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
-    <div class="bmi">
-      <h2 style="color: azure;font-weight: bold;font-size:40px">Body Mass Index Calculator</h2>
-      <p class="text" style="font-weight: bold;font-size:20px">Height</p>
-        <select id="height-unit" style="text-align: center;">
-            <option value="cm" >Centimeter</option>
-            <option value="feet">Feet/Inches</option>
-        </select>
-        <input type="text" id="height" title="Enter your height" placeholder="Height">
-        <br>
-        <br>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BMI Fitness Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
 
-        <p class="text" style="font-weight: bold;font-size:20px">Weight</p>
-        <select id="weight-unit" style="text-align: center;">
-            <option value="kg">Kilogram</option>
-            <option value="lb">Pounds</option>
-        </select>
-        <input type="text" id="weight" title="Enter your weight" placeholder="Weight">
-        <p id="result"></p><button id="btn">Calculate</button>
-        <br>
-        <div id="result"></div>
-        <div id="category"></div>
-        <div id="tips"></div>
-    </div>
-    <div class="chart">
+<body>
 
-      <table>
-        <thead>
-          <tr>
-            <th>BMI</th>
-            <th>Category</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-column="bmi">less than 18.5</td>
-            <td data-column="category">Underweight</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">between 18.5 and 24.9</td>
-            <td data-column="category">Ideal</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">between 25 and 29.9</td>
-            <td data-column="category">Overweight</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">over 30 </td>
-            <td data-column="category">Obesity</td>
-          </tr>
-        </tbody>
-      </table>
-      <canvas id="bmiChart" style="background-color: black;"></canvas>
+<div class="app">
+
+  <!-- LEFT -->
+  <div class="left">
+
+    <h1>💪 BMI Fitness Dashboard</h1>
+
+    <!-- THEME BUTTONS -->
+    <div class="theme-box">
+      <p>🎨 Themes</p>
+
+      <button onclick="setTheme('dark')">Dark</button>
+      <button onclick="setTheme('light')">Light</button>
+      <button onclick="setTheme('ocean')">Ocean</button>
+      <button onclick="setTheme('sunset')">Sunset</button>
     </div>
-    <script src="script.js"></script>
-    <footer class="footer">
-      <p class="footer__title">Supritha Ravishankar</p>
-      <div class="footer__social">
-          <a href="https://de-de.facebook.com/supritha.ravishankar" class="footer__icon"><i class='bx bxl-facebook' ></i></a>
-          <a href="https://github.com/supzi-del" class="footer__icon"><i class='bx bxl-github' ></i></a>
-          <a href="https://twitter.com/SuprithaRavish1" class="footer__icon"><i class='bx bxl-twitter' ></i></a>
-          <a href="https://www.linkedin.com/in/supritha-ravishankar-560008216/" class="footer__icon"><i class='bx bxl-linkedin' ></i></a>
-      </div>
-      <p>&#169; 2021 copyright all right reserved</p>
-     </footer>
-  </body>
+
+    <div class="input-box">
+
+      <input id="height" placeholder="Height (cm or 5/8)">
+      <select id="heightUnit">
+        <option value="cm">cm</option>
+        <option value="ft">feet/inches</option>
+      </select>
+
+      <input id="weight" type="number" placeholder="Weight">
+      <select id="weightUnit">
+        <option value="kg">kg</option>
+        <option value="lb">lb</option>
+      </select>
+
+      <button onclick="calculateBMI()">Calculate</button>
+
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <h2>📊 Result</h2>
+    <div id="result" class="result-box">
+      Enter details to see report
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
 </html>

@@ -1,117 +1,82 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
+:root {
+  --bg1: #0f0c29;
+  --bg2: #302b63;
+  --card: rgba(255,255,255,0.08);
+  --text: white;
+  --accent: #00c6ff;
+}
 
 body {
   margin: 0;
-  padding: 0;
-  text-align: center;
-  font-family: "Montserrat";
-  /* background: rgb(34, 193, 195); */
-  background: linear-gradient(
-    0deg,
-    #cc5333 0%,
-    #23074d 100%
-    
-  );
-  min-height: 100vh;
+  font-family: Arial;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  color: var(--text);
+  transition: 0.4s;
 }
-.bmi {
-  color: white;
-  width: 350px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  background-color: black;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  border-radius: 10px;
+
+.app {
+  display: flex;
+  height: 100vh;
 }
-h2 {
-  font-size: 30px;
-  font-weight: 600;
+
+/* LEFT */
+.left {
+  width: 40%;
+  padding: 30px;
+  background: var(--card);
 }
-.text {
-  text-align: center;
-}
-#weight-unit,
-#height-unit {
-  color: black;
-  text-align: left;
-  font-size: 20px;
-  font-weight: 200;
-  outline: none;
-  border: 1px solid black;
-  border-radius: 10px;
-  width: 200px;
-  height: 35px;
-  height: 35px;
-  margin-top: 10px;
-}
-#weight:focus,
-#height:focus {
-  width: 250px;
-  transition: 0.5s;
-}
-#result {
-  color: white;
-}
-#btn {
-  font-family: inherit;
-  margin-top: 10px;
-  border: blue;
-  color: #000;
-  background: gainsboro;
-  width: 150px;
-  padding: 10px;
-  border-radius: 30px ;
-  outline: white;
+
+.theme-box button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
   cursor: pointer;
-  transition: 0.5s;
-}
-#btn:hover {
-  transform: scale(1.1);
-  transition: 0.5s;
-}
-
-table {
-  width: 650px;
-  border-collapse: collapse;
-  margin: 600px auto;
-  margin-top: 700px;
-  margin-bottom: 80px;
-}
-
-tr {
-  background: rgb(68, 38, 105);
+  border-radius: 8px;
+  background: var(--accent);
   color: white;
 }
 
-th {
-  background: #0d0101;
-  color: #fffbfb;
-  font-weight: bold;
+.theme-box button:hover {
+  transform: scale(1.05);
 }
 
-td,
-th {
+.input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+input, select {
   padding: 10px;
-  border: 1px solid #000;
-  text-align: center;
-  font-size: 18px;
+  border-radius: 8px;
+  border: none;
 }
 
-#bmichart {
-  display: block;
-    box-sizing: border-box;
-    height: 759px;
-    width: 1519px;
-    margin-bottom: 80px;
-    
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  cursor: pointer;
 }
 
-#height, #weight {
-  height: 35px;
-  margin-top: 10px;
+/* RIGHT */
+.right {
+  width: 60%;
+  padding: 30px;
 }
-.footer_social{
-  color: white;
+
+.result-box {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  min-height: 300px;
+  white-space: pre-line;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .app { flex-direction: column; }
+  .left, .right { width: 100%; }
 }
