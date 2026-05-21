@@ -858,9 +858,18 @@ function updateNavbar() {
    THEME TOGGLE
    ============================================================ */
 function initTheme() {
-    const saved = localStorage.getItem('theme') || 'dark';
+    // 1. Get user manual preference from localStorage (could be null, 'light', or 'dark')
+    const saved = localStorage.getItem('theme');
+    
+    // 2. Query the operating system/browser preference (returns true if system is in Light Mode)
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    
+    // 3. Resolve theme: Use manual preference if saved, otherwise default to OS preference
+    const isLightMode = saved === 'light' || (!saved && prefersLight);
+    
     let transitionTimer = null;
 
+    // Helper function to sync all theme icons across the page
     const syncThemeIcons = () => {
         const isLight = document.body.classList.contains('light-mode');
         const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
@@ -869,11 +878,15 @@ function initTheme() {
         });
     };
 
-    if (saved === 'light') {
+    // 4. Apply the resolved theme to the body initially
+    if (isLightMode) {
         document.body.classList.add('light-mode');
+    } else {
+        document.body.classList.remove('light-mode');
     }
     syncThemeIcons();
 
+    // 5. Click listener for toggle buttons with your transition classes
     document.body.addEventListener('click', (e) => {
         const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
         if (!target) return;
