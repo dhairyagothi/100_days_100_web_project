@@ -215,6 +215,11 @@ btn.addEventListener("click", () => {
     badge.style.background = cat.bg;
     badge.style.color = cat.color;
 
+    resultsEl.style.background = cat.bg;
+    resultsEl.style.border = `2px solid ${cat.color}`;
+    resultsEl.style.transition = "all 0.4s ease";
+    resultsEl.style.boxShadow = `0 0 20px ${cat.color}40`;
+
     // Healthy weight range
     const [wLow, wHigh] = calcHealthyWeight(heightCm);
     const dispUnit = wUnit === "lb" ? "lb" : "kg";
@@ -244,4 +249,49 @@ btn.addEventListener("click", () => {
     bmiChart.data.labels.push(time);
     bmiChart.data.datasets[0].data.push(bmiRounded);
     bmiChart.update();
+});
+
+const resetBtn = document.getElementById("reset-btn");
+
+resetBtn.addEventListener("click", () => {
+
+    // Clear inputs
+    heightInp.value = "";
+    weightInp.value = "";
+
+    // Hide results
+    resultsEl.classList.add("hidden");
+    rangeVisEl.classList.add("hidden");
+
+    // Clear error
+    clearError();
+
+    // Reset chart
+    bmiChart.data.labels = [];
+    bmiChart.data.datasets[0].data = [];
+    bmiChart.update();
+
+    // Reset BMI text
+    document.getElementById("bmi-val").textContent = "--";
+
+    // Reset badge
+    const badge = document.getElementById("cat-badge");
+    badge.textContent = "--";
+    badge.style.background = "";
+    badge.style.color = "";
+
+    // Reset healthy range
+    document.getElementById("healthy-range").textContent = "--";
+
+    // Reset tip text
+    document.getElementById("tip-text").textContent = "";
+
+    // Reset pointer
+    document.getElementById("bmi-ptr").style.left = "0%";
+});
+
+document.addEventListener("keydown", (e) => {
+   if (e.key === "Enter") {
+      btn.click();
+   }
 });
