@@ -157,3 +157,130 @@ button{
   }
 
 }
+
+.hidden {
+  display: none !important;
+}
+
+.section-title {
+  font-size: 20px;
+  color: #58a6ff;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 8px;
+  font-weight: 500;
+}
+
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.breakdown-item {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.breakdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.breakdown-header h4 {
+  color: #58a6ff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-correct {
+  background: rgba(46, 160, 67, 0.15);
+  color: #3fb950;
+  border: 1px solid rgba(46, 160, 67, 0.4);
+}
+
+.status-weak {
+  background: rgba(210, 153, 34, 0.15);
+  color: #d29922;
+  border: 1px solid rgba(210, 153, 34, 0.4);
+}
+
+.status-timeout {
+  background: rgba(248, 81, 73, 0.15);
+  color: #f85149;
+  border: 1px solid rgba(248, 81, 73, 0.4);
+}
+
+.breakdown-item .question-text {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #c9d1d9;
+}
+
+.breakdown-item .user-answer {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  color: #8b949e;
+  border: 1px solid #21262d;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.breakdown-item .time-meta {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #8b949e;
+  display: flex;
+  justify-content: space-between;
+}
+
+.feedback-card {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.feedback-card p {
+  color: #c9d1d9;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.suggestions-list {
+  margin-top: 15px;
+  padding-left: 20px;
+}
+
+.suggestions-list li {
+  color: #8b949e;
+  font-size: 14px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+#results-restart-btn {
+  background: #238636;
+  color: white;
+}
+
+#results-restart-btn:hover {
+  transform: translateY(-2px);
+  background: #2ea043;
+}

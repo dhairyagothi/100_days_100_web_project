@@ -11,7 +11,7 @@
 
   <div class="container">
 
-    <div class="top-bar">
+    <div class="top-bar" id="main-top-bar">
       <h1>INTERVIEW SIMULATOR</h1>
 
       <div class="stats">
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div class="interview-box">
+    <div class="interview-box" id="interview-box">
 
       <div class="interviewer">
         <div class="avatar"></div>
@@ -55,6 +55,54 @@
         <button id="restart-btn">Restart</button>
       </div>
 
+    </div>
+
+    <div id="results-container" class="hidden">
+      <div class="top-bar">
+        <h1>INTERVIEW RESULTS</h1>
+      </div>
+
+      <div class="stats results-stats">
+        <div class="card">
+          <span>Attempted</span>
+          <h2 id="results-attempted">0/5</h2>
+        </div>
+        <div class="card">
+          <span>Accuracy</span>
+          <h2 id="results-accuracy">0%</h2>
+        </div>
+        <div class="card">
+          <span>Correct / Detailed</span>
+          <h2 id="results-correct" style="color: #2ea043;">0</h2>
+        </div>
+        <div class="card">
+          <span>Incorrect / Weak</span>
+          <h2 id="results-incorrect" style="color: #f85149;">0</h2>
+        </div>
+        <div class="card">
+          <span>Avg Time / Q</span>
+          <h2 id="results-avg-time">0s</h2>
+        </div>
+      </div>
+
+      <div class="interview-box results-box">
+        <h2 class="section-title">Performance Breakdown</h2>
+        <div id="questions-breakdown" class="breakdown-list">
+          <!-- Dynamically populated question cards -->
+        </div>
+
+        <h2 class="section-title" style="margin-top: 30px;">Feedback & Recommendations</h2>
+        <div class="feedback-card">
+          <p id="feedback-summary">Generating feedback...</p>
+          <ul id="suggestions-list" class="suggestions-list">
+            <!-- Dynamically populated suggestions -->
+          </ul>
+        </div>
+
+        <div class="buttons" style="margin-top: 25px;">
+          <button id="results-restart-btn">Restart Interview</button>
+        </div>
+      </div>
     </div>
 
   </div>
