@@ -349,6 +349,44 @@ body {
 .cell.win-cell.x-mark { color: var(--x-color); }
 .cell.win-cell.o-mark { color: var(--o-color); }
 
+/* ── Game Mode Selection Toggles ─────────── */
+.mode-container {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: -4px;
+}
+
+.mode-container .sb-btn {
+  background: var(--bg-neutral);
+  color: var(--text-mid);
+  border: 2px solid var(--border-light);
+  font-size: 11px; /* Slightly compact for clear contrast */
+  padding: 8px 0;
+  transition: all 0.2s ease;
+}
+
+.mode-container .sb-btn:hover {
+  border-color: var(--border-mid);
+  color: var(--text-dark);
+}
+
+/* Style for when a game mode button is active/selected */
+.mode-container .sb-btn.active {
+  background: var(--text-dark);
+  color: #ffffff;
+  border-color: var(--text-dark);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Adjust responsiveness inside the mobile breakpoint */
+@media (max-width: 600px) {
+  .mode-container {
+    width: 100%;
+    order: -1; /* Pushes mode selection to the top in mobile layout */
+  }
+}
+
 /* ── Animations ──────────────────────────── */
 @keyframes pop {
   from { transform: scale(0.3);  opacity: 0; }
