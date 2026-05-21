@@ -713,14 +713,41 @@ function initFilterChips() {
 /* ============================================================
    LIVE SEARCH
    ============================================================ */
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
-  input.addEventListener('input', () => {
+
+  const debouncedFilter = debounce(() => {
     searchQuery = input.value.trim();
     currentPage = 1;
     renderGrid();
-  });
+  }, 300);
+
+  const handleSearch = () => {
+    const value = input.value.trim();
+    if (value === '') {
+      searchQuery = '';
+      currentPage = 1;
+      renderGrid();
+    } else {
+      debouncedFilter();
+    }
+  };
+
+  input.addEventListener('input', handleSearch);
+  input.addEventListener('search', handleSearch);
 }
 
 function syncProjectCounts() {
