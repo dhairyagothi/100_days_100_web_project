@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In – SEO Agency</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+</head>
+<body class="auth-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#services">Service List</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact Us</a></li>
+                <li class="nav-item nav-auth-divider"></li>
+                <li class="nav-item"><a class="nav-link nav-signin-link active" href="login.html">Sign In</a></li>
+                <li class="nav-item"><a class="nav-link nav-signup-btn" href="signup.html">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <div class="auth-card-header">
+                <div class="auth-logo">WEB TEMPLATE</div>
+                <h2>Welcome back</h2>
+                <p>Sign in to your account</p>
+            </div>
+
+            <div class="auth-social-row">
+                <button class="auth-social-btn" onclick="socialLogin('Google')">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                <button class="auth-social-btn auth-social-fb" onclick="socialLogin('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Continue with Facebook
+                </button>
+            </div>
+
+            <div class="auth-divider"><span>or sign in with email</span></div>
+
+            <form id="loginForm" novalidate>
+                <div class="auth-field">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="name@email.com" autocomplete="email">
+                    <span class="field-error" id="emailErr"></span>
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+                        <button type="button" class="toggle-pw" onclick="togglePw('loginPassword', this)" tabindex="-1">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="field-error" id="pwErr"></span>
+                </div>
+                <div class="auth-options-row">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe"> Remember me
+                    </label>
+                    <a href="forgot.html" class="forgot-link">Forgot password?</a>
+                </div>
+                <button type="submit" class="auth-submit-btn">Sign In</button>
+                <div id="loginSuccess" class="auth-success" style="display:none;"></div>
+            </form>
+
+            <p class="auth-switch">Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let valid = true;
+            const email = document.getElementById('loginEmail').value.trim();
+            const pw = document.getElementById('loginPassword').value;
+            document.getElementById('emailErr').textContent = '';
+            document.getElementById('pwErr').textContent = '';
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailErr').textContent = 'Please enter a valid email address.';
+                valid = false;
+            }
+            if (!pw || pw.length < 6) {
+                document.getElementById('pwErr').textContent = 'Password must be at least 6 characters.';
+                valid = false;
+            }
+            if (valid) {
+                const btn = this.querySelector('.auth-submit-btn');
+                btn.textContent = 'Signing in…';
+                btn.disabled = true;
+                setTimeout(() => {
+                    document.getElementById('loginSuccess').style.display = 'block';
+                    document.getElementById('loginSuccess').textContent = '✅ Signed in successfully! Redirecting…';
+                    setTimeout(() => window.location.href = 'index.html', 1800);
+                }, 1000);
+            }
+        });
+
+        function togglePw(id, btn) {
+            const input = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function socialLogin(provider) {
+            alert('Continuing with ' + provider + ' (integration placeholder)');
+        }
+    </script>
+</body>
+</html>
