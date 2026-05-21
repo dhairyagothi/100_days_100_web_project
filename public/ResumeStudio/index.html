@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume Studio</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -19,6 +21,16 @@
     <main>
         <section class="builder">
             <h2>Resume Builder</h2>
+
+            <div class="template-selector">
+                <label class="template-label">Choose Template:</label>
+                <div class="template-btns">
+                    <button class="tpl-btn active" data-template="modern">Modern</button>
+                    <button class="tpl-btn" data-template="classic">Classic</button>
+                    <button class="tpl-btn" data-template="minimal">Minimal</button>
+                </div>
+            </div>
+
             <form id="resumeForm">
                 <div class="form-row">
                     <div class="form-group">
@@ -67,7 +79,7 @@
                 <p class="error-msg" id="errorMsg">&#9888; Please fill in all fields before previewing.</p>
                 <div class="btn-row">
                     <button type="button" id="previewBtn">Live Preview</button>
-                    <button type="button" id="downloadBtn">Download PDF</button>
+                    <button type="button" id="downloadBtn">⬇ Download PDF</button>
                 </div>
             </form>
         </section>
