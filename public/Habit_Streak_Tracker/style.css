@@ -1,0 +1,187 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0f0f0f;
+  color: #f0f0f0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 16px;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+}
+
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 6px;
+  color: #ff6b35;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+}
+
+.input-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.input-section input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #333;
+  background: #1a1a1a;
+  color: #f0f0f0;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.input-section input:focus {
+  border-color: #ff6b35;
+}
+
+.input-section button {
+  padding: 12px 20px;
+  background: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.input-section button:hover {
+  background: #e85d2a;
+  transform: scale(1.03);
+}
+
+.habit-card {
+  background: #1a1a1a;
+  border: 2px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: border 0.2s;
+}
+
+.habit-card.done {
+  border-color: #2ecc71;
+}
+
+.habit-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.habit-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f0f0f0;
+}
+
+.habit-streak {
+  font-size: 0.82rem;
+  color: #ff6b35;
+  font-weight: 500;
+}
+
+.habit-streak span {
+  color: #aaa;
+  font-weight: 400;
+}
+
+.habit-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-done {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #2ecc71;
+  color: #fff;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-done:hover {
+  background: #27ae60;
+  transform: scale(1.05);
+}
+
+.btn-done.completed {
+  background: #555;
+  cursor: default;
+}
+
+.btn-delete {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  background: #e74c3c;
+  color: #fff;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+}
+
+.empty-msg {
+  text-align: center;
+  color: #555;
+  margin-top: 40px;
+  font-size: 0.95rem;
+  display: none;
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .input-section {
+    flex-direction: column;
+  }
+
+  .habit-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .habit-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
