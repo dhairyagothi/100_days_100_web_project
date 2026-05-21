@@ -5,128 +5,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator & Scanner</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link rel="stylesheet" href="qr.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <link rel="stylesheet" href="qr.css">
 </head>
 
 <body>
-    <div class="theme-bar" role="group" aria-label="Theme selector">
-        <span class="theme-label"><i class="fas fa-palette"></i> Theme</span>
-        <div class="theme-options">
-            <button class="theme-btn active" type="button" data-theme="aurora" title="Aurora"
-                aria-label="Aurora theme">🌌</button>
-            <button class="theme-btn" type="button" data-theme="neon" title="Neon" aria-label="Neon theme">⚡</button>
-            <button class="theme-btn" type="button" data-theme="dark" title="Dark" aria-label="Dark theme">🌑</button>
-            <button class="theme-btn" type="button" data-theme="candy" title="Candy"
-                aria-label="Candy theme">🍬</button>
-        </div>
+
+<div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+</div>
+
+<main class="container">
+    <div class="split-layout">
+
+        <!-- LEFT PANEL -->
+        <section class="panel panel-left">
+            <h1 class="head">QR Code Generator & Scanner</h1>
+            <p class="subhead">Create, customize, download, and scan QR codes.</p>
+
+            <div class="card glass-card">
+                <label>QR Type</label>
+                <select id="qr-type">
+                    <option value="text">Text</option>
+                    <option value="url">URL</option>
+                    <option value="wifi">WiFi</option>
+                    <option value="vcard">vCard</option>
+                </select>
+
+                <label>Input</label>
+                <input type="text" id="inputtext" placeholder="Enter text or URL">
+
+                <div id="wifi-inputs" style="display:none;">
+                    <input type="text" id="wifi-ssid" placeholder="SSID">
+                    <input type="password" id="wifi-password" placeholder="Password">
+                    <select id="wifi-encryption">
+                        <option value="WPA">WPA/WPA2</option>
+                        <option value="WEP">WEP</option>
+                        <option value="nopass">No Encryption</option>
+                    </select>
+                </div>
+
+                <div id="vcard-inputs" style="display:none;">
+                    <input type="text" id="vcard-name" placeholder="Name">
+                    <input type="text" id="vcard-phone" placeholder="Phone">
+                    <input type="text" id="vcard-email" placeholder="Email">
+                    <input type="text" id="vcard-website" placeholder="Website">
+                </div>
+            </div>
+
+            <div class="card glass-card">
+                <h2>Customize</h2>
+
+                <label>Color</label>
+                <input type="color" id="qr-color" value="#a78bfa">
+
+                <label>Shape</label>
+                <select id="qr-shape">
+                    <option value="square">Square</option>
+                    <option value="rounded">Rounded</option>
+                </select>
+
+                <label>Error Correction</label>
+                <select id="error-correction">
+                    <option value="L">Low</option>
+                    <option value="M">Medium</option>
+                    <option value="H">High</option>
+                </select>
+
+                <input type="file" id="logo-upload">
+
+                <button class="submit" type="button">
+                    <i class="fas fa-qrcode"></i> Generate QR
+                </button>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL -->
+        <section class="panel panel-right">
+            <div class="card glass-card result-card">
+                <div id="qrcode"></div>
+
+                <p id="status-message">Ready</p>
+
+                <div class="qr-actions">
+                    <button id="download-qr"><i class="fas fa-download"></i> Download</button>
+                    <button id="scan-qr"><i class="fas fa-camera"></i> Scan</button>
+                </div>
+
+                <div id="qr-reader-results"></div>
+            </div>
+        </section>
+
     </div>
+</main>
 
-    <div class="bg-blobs" aria-hidden="true">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
+<script src="qr.js"></script>
 
-    <main class="container">
-        <div class="split-layout">
-            <section class="panel panel-left">
-                <h1 class="head">QR Code Generator & Scanner</h1>
-                <p class="subhead">Create, customize, download, and scan QR codes.</p>
-
-                <div class="card glass-card input-card">
-                    <div class="input-section">
-                        <label for="qr-type">QR Type</label>
-                        <select id="qr-type">
-                            <option value="text">Text</option>
-                            <option value="url">URL</option>
-                            <option value="wifi">WiFi</option>
-                            <option value="vcard">vCard</option>
-                        </select>
-
-                        <label for="inputtext" id="main-input-label">Enter text or URL</label>
-                        <input type="text" id="inputtext" placeholder="Enter your text or URL" autocomplete="off">
-
-                        <div id="wifi-inputs" style="display: none;">
-                            <label for="wifi-ssid">WiFi SSID</label>
-                            <input type="text" id="wifi-ssid" placeholder="Network Name (SSID)">
-                            <label for="wifi-password">WiFi Password</label>
-                            <input type="password" id="wifi-password" placeholder="Password">
-                            <label for="wifi-encryption">Encryption</label>
-                            <select id="wifi-encryption">
-                                <option value="WPA">WPA/WPA2</option>
-                                <option value="WEP">WEP</option>
-                                <option value="nopass">No Encryption</option>
-                            </select>
-                        </div>
-
-                        <div id="vcard-inputs" style="display: none;">
-                            <label for="vcard-name">Full Name</label>
-                            <input type="text" class="glass-input" id="vcard-name" placeholder="Full Name">
-                            <label for="vcard-phone">Phone</label>
-                            <input type="text" class="glass-input" id="vcard-phone" placeholder="Phone">
-                            <label for="vcard-email">Email</label>
-                            <input type="text" class="glass-input" id="vcard-email" placeholder="Email">
-                            <label for="vcard-website">Website</label>
-                            <input type="text" class="glass-input" id="vcard-website" placeholder="Website">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card glass-card options-card">
-                    <h2>Customize Your QR Code</h2>
-                    <div class="qr-options">
-                        <div class="option">
-                            <label for="qr-color">Color</label>
-                            <input type="color" id="qr-color" value="#a78bfa">
-                        </div>
-                        <div class="option">
-                            <label for="qr-shape">Shape</label>
-                            <select id="qr-shape">
-                                <option value="square">Square</option>
-                                <option value="rounded">Rounded</option>
-                                <option value="dots">Dots</option>
-                            </select>
-                        </div>
-                        <div class="option">
-                            <label for="error-correction">Error Correction</label>
-                            <select id="error-correction">
-                                <option value="L">Low</option>
-                                <option value="M" selected>Medium</option>
-                                <option value="Q">Quartile</option>
-                                <option value="H">High</option>
-                            </select>
-                        </div>
-                        <div class="option">
-                            <label for="logo-upload">Add Logo</label>
-                            <input type="file" id="logo-upload" accept="image/*">
-                        </div>
-                    </div>
-                    <button class="submit" type="button"><i class="fas fa-qrcode"></i> Generate QR Code</button>
-                </div>
-            </section>
-
-            <section class="panel panel-right">
-                <div class="card glass-card result-card">
-                    <div class="image">
-                        <div id="qrcode" aria-live="polite"></div>
-                    </div>
-                    <p id="status-message" class="status-message" aria-live="polite">Ready to generate.</p>
-                    <div class="qr-actions">
-                        <button id="download-qr" type="button"><i class="fas fa-download"></i> Download</button>
-                        <button id="scan-qr" type="button"><i class="fas fa-eye"></i> Show QR Content</button>
-                    </div>
-                </div>
-
-                <div id="qr-reader-results" class="card glass-card" style="display: none;"></div>
-            </section>
-        </div>
-    </main>
-    <script src="qr.js"></script>
 </body>
-
 </html>

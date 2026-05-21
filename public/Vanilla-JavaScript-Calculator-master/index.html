@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +9,16 @@
   <link href="styles.css" rel="stylesheet">
   <script src="script.js" defer></script>
 </head>
+
 <body>
   <div id="basic-calculator" class="calculator-grid">
     <div class="output">
       <button id="toggle-scientific">
-        <img src="../Vanilla-JavaScript-Calculator-master/img/download (1).png" alt="Toggle Scientific Calculator" style="width: 24px; height: 24px;">
+        <img src="../Vanilla-JavaScript-Calculator-master/img/download (1).png" alt="Toggle Scientific Calculator"
+          style="width: 24px; height: 24px;">
       </button>
       <div data-previous-operand class="previous-operand"></div>
-      <div data-current-operand class="current-operand"></div>
+      <input type="text" data-current-operand class="current-operand">
     </div>
     <button data-all-clear class="span-two">AC</button>
     <button data-delete>DEL</button>
@@ -39,10 +42,11 @@
   <div id="scientific-calculator" class="calculator-grid hidden">
     <div class="output">
       <button id="toggle-scientific">
-        <img src="../Vanilla-JavaScript-Calculator-master/img/download (1).png" alt="Toggle Scientific Calculator" style="width: 24px; height: 24px;">
+        <img src="../Vanilla-JavaScript-Calculator-master/img/download (1).png" alt="Toggle Scientific Calculator"
+          style="width: 24px; height: 24px;">
       </button>
       <div data-previous-operand class="previous-operand"></div>
-      <div data-current-operand class="current-operand"></div>
+      <input type="text" data-current-operand class="current-operand">
     </div>
     <button data-function="rad">Rad</button>
     <button data-function="deg">Deg</button>
@@ -81,4 +85,5 @@
     <button data-operation>+</button>
   </div>
 </body>
+
 </html>
