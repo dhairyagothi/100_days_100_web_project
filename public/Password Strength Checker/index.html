@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An advanced, premium Password Strength Checker and Generator with live feedback, crack-time estimation, and interactive checklist.">
+    <title>Password Strength Checker | Advanced Password Strength Analyzer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Decorative Glowing Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <svg class="shield-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path class="shield-inner" d="M12 8v4M12 16h.01" stroke-width="3"/>
+                </svg>
+                <h1>Password Strength Checker</h1>
+            </div>
+            <p class="subtitle">Secure your digital identity with military-grade intelligence</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Left Panel: Checker Card -->
+            <section class="card checker-card">
+                <h2 class="card-title">
+                    <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    Password Analyzer
+                </h2>
+
+                <div class="input-wrapper">
+                    <input type="password" id="password-input" class="password-field" placeholder="Enter your password..." autocomplete="new-password" aria-label="Password to check">
+                    
+                    <button type="button" id="toggle-visibility" class="icon-button" aria-label="Toggle password visibility" title="Show Password">
+                        <!-- Eye Icon (default visible) -->
+                        <svg class="eye-icon eye-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        <!-- Eye Off Icon (hidden by default) -->
+                        <svg class="eye-icon eye-closed hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                            <line x1="1" y1="1" x2="23" y2="23"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Strength Progress Meter -->
+                <div class="strength-meter-container">
+                    <div class="strength-labels">
+                        <span class="strength-status">Strength: <strong id="strength-badge">Empty</strong></span>
+                        <span id="strength-score">0 / 5</span>
+                    </div>
+                    <div class="meter-track">
+                        <div id="meter-bar" class="meter-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Live Requirements Checklist -->
+                <div class="checklist-section">
+                    <h3>Requirements</h3>
+                    <ul class="requirements-checklist" id="checklist">
+                        <li data-rule="length" class="requirement-item">
+                            <span class="status-icon">
+                                <svg class="circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                                <svg class="check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            At least 8 characters
+                        </li>
+                        <li data-rule="uppercase" class="requirement-item">
+                            <span class="status-icon">
+                                <svg class="circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                                <svg class="check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Contains uppercase letter (A-Z)
+                        </li>
+                        <li data-rule="lowercase" class="requirement-item">
+                            <span class="status-icon">
+                                <svg class="circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                                <svg class="check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Contains lowercase letter (a-z)
+                        </li>
+                        <li data-rule="number" class="requirement-item">
+                            <span class="status-icon">
+                                <svg class="circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                                <svg class="check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Contains a number (0-9)
+                        </li>
+                        <li data-rule="special" class="requirement-item">
+                            <span class="status-icon">
+                                <svg class="circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                                <svg class="check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Contains special character (@, #, $, etc.)
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Right Panel: Generator & Estimation Cards -->
+            <div class="right-column">
+                <!-- Crack Estimation & Tips -->
+                <section class="card analysis-card">
+                    <h2 class="card-title">
+                        <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        Security Insights
+                    </h2>
+
+                    <div class="insights-grid">
+                        <div class="insight-box">
+                            <span class="insight-label">Crack Time Estimate</span>
+                            <div id="crack-time-display" class="insight-value neon-blue">Instantly</div>
+                            <span id="crack-desc" class="insight-subtext">For an standard computer hacker</span>
+                        </div>
+                        <div class="insight-box">
+                            <span class="insight-label">Entropy Score</span>
+                            <div id="entropy-display" class="insight-value neon-purple">0 bits</div>
+                            <span id="entropy-desc" class="insight-subtext">Total informational randomness</span>
+                        </div>
+                    </div>
+
+                    <div class="suggestions-box">
+                        <h3>Security Tips</h3>
+                        <p id="security-tip-text">Start typing your password to get dynamic security tips to secure your accounts.</p>
+                    </div>
+                </section>
+
+                <!-- Generator Card -->
+                <section class="card generator-card">
+                    <h2 class="card-title">
+                        <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                        Secure Generator
+                    </h2>
+
+                    <div class="generator-output-wrapper">
+                        <input type="text" id="generator-output" class="password-field generator-output" readonly placeholder="Click Generate Below..." aria-label="Generated password">
+                        <button type="button" id="copy-password" class="icon-button copy-button" aria-label="Copy password to clipboard" title="Copy to Clipboard">
+                            <!-- Copy Icon -->
+                            <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                            <!-- Success Check Icon -->
+                            <svg class="copy-success-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </button>
+                        <div id="copy-tooltip" class="copy-tooltip">Copied!</div>
+                    </div>
+
+                    <!-- Generator Controls -->
+                    <div class="generator-controls">
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>Password Length</span>
+                                <span id="length-val">8</span>
+                            </div>
+                            <input type="range" id="length-slider" min="8" max="32" value="8" class="range-slider">
+                        </div>
+
+                        <div class="checkbox-grid">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="gen-upper" checked>
+                                <span class="custom-checkbox"></span>
+                                Uppercase (A-Z)
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="gen-lower" checked>
+                                <span class="custom-checkbox"></span>
+                                Lowercase (a-z)
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="gen-numbers" checked>
+                                <span class="custom-checkbox"></span>
+                                Numbers (0-9)
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="gen-symbols" checked>
+                                <span class="custom-checkbox"></span>
+                                Symbols (!@#$)
+                            </label>
+                        </div>
+
+                        <button type="button" id="generate-btn" class="primary-btn">
+                            <svg class="btn-spinner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                            </svg>
+                            Generate Password
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+        </footer>
+    </div>
+
+    <!-- Script File -->
+    <script src="script.js"></script>
+</body>
+</html>

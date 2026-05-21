@@ -1,0 +1,693 @@
+/* ==========================================================================
+   Design System & Variables
+   ========================================================================== */
+:root {
+    --bg-dark: #06040d;
+    --card-bg: rgba(14, 11, 28, 0.65);
+    --card-border: rgba(255, 255, 255, 0.06);
+    --input-bg: rgba(255, 255, 255, 0.03);
+    --input-focus-border: rgba(139, 92, 246, 0.6);
+    
+    /* Text Palette */
+    --text-primary: #f8f6fc;
+    --text-muted: #9590b0;
+    --text-light: #ffffff;
+
+    /* Theme Accents */
+    --accent-purple: #8b5cf6;
+    --accent-indigo: #6366f1;
+    --accent-blue: #06b6d4;
+    --accent-pink: #ec4899;
+    --accent-success: #10b981;
+
+    /* Strength Colors */
+    --strength-0: #ef4444; /* Weak (Red) */
+    --strength-1: #f97316; /* Fair (Orange) */
+    --strength-2: #f59e0b; /* Medium (Amber) */
+    --strength-3: #10b981; /* Strong (Emerald) */
+    --strength-4: #06b6d4; /* Very Strong (Cyan) */
+    --strength-5: #6366f1; /* Bulletproof (Indigo) */
+
+    /* Typography */
+    --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* ==========================================================================
+   Global Resets
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+    padding: 2rem 1rem;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   Background Neon Glow Orbs
+   ========================================================================== */
+.orb {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Main Application Layout
+   ========================================================================== */
+.app-container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Header Styling */
+.app-header {
+    text-align: center;
+}
+
+.logo-area {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.25rem;
+}
+
+.shield-logo {
+    width: 2.2rem;
+    height: 2.2rem;
+    color: var(--accent-purple);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.logo-area:hover .shield-logo {
+    transform: rotate(15deg) scale(1.08);
+}
+
+.shield-inner {
+    stroke: var(--accent-pink);
+}
+
+h1 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--text-light) 30%, var(--text-muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+/* Grid Layout */
+.app-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ==========================================================================
+   Card Styling & Glassmorphism
+   ========================================================================== */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 18px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+}
+
+.title-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: var(--accent-purple);
+}
+
+/* ==========================================================================
+   Form Fields & Input Wrapping
+   ========================================================================== */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.password-field {
+    width: 100%;
+    padding: 0.8rem 3rem 0.8rem 1rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: var(--input-bg);
+    border: 1.5px solid var(--card-border);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
+}
+
+.password-field::placeholder {
+    color: var(--text-muted);
+}
+
+.password-field:focus {
+    border-color: var(--input-focus-border);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Eye Toggle & Clipboard Icons */
+.icon-button {
+    position: absolute;
+    right: 0.85rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.eye-icon, .copy-icon, .copy-success-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Strength Meter Components
+   ========================================================================== */
+.strength-meter-container {
+    margin-bottom: 1.25rem;
+}
+
+.strength-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.strength-status {
+    font-weight: 500;
+}
+
+#strength-badge {
+    transition: color 0.3s ease;
+}
+
+#strength-score {
+    font-weight: 600;
+}
+
+/* Meter Bar Track */
+.meter-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+}
+
+.meter-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 100px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                background-color 0.4s ease,
+                box-shadow 0.4s ease;
+    box-shadow: 0 0 10px transparent;
+}
+
+/* Dynamic Strength Color Mapping */
+.strength-weak { background-color: var(--strength-1); }
+.strength-fair { background-color: var(--strength-2); }
+.strength-good { background-color: var(--strength-3); }
+.strength-strong { background-color: var(--strength-4); }
+.strength-bulletproof { background-color: var(--strength-5); }
+
+/* ==========================================================================
+   Live Requirements Checklist
+   ========================================================================== */
+.checklist-section h3 {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.65rem;
+}
+
+.requirements-checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.requirement-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.status-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+}
+
+.status-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Active Completed Checklist State */
+.requirement-item.valid {
+    color: var(--text-primary);
+    transform: translateX(3px);
+}
+
+.requirement-item.valid .status-icon {
+    color: var(--accent-success);
+}
+
+/* ==========================================================================
+   Security Insights Card
+   ========================================================================== */
+.insights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.insight-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 0.9rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.insight-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.75px;
+    margin-bottom: 0.35rem;
+}
+
+.insight-value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+    line-height: 1.2;
+}
+
+.insight-subtext {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+
+/* Glowing text effects */
+.neon-blue {
+    color: var(--accent-blue);
+}
+
+.neon-purple {
+    color: var(--accent-purple);
+}
+
+/* Suggestions Container */
+.suggestions-box {
+    background: rgba(236, 72, 153, 0.03);
+    border: 1px dashed rgba(236, 72, 153, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.suggestions-box h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-pink);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.suggestions-box h3::before {
+    content: '!';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    background: var(--accent-pink);
+    color: var(--text-light);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+#security-tip-text {
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    line-height: 1.45;
+}
+
+/* ==========================================================================
+   Secure Generator Card
+   ========================================================================== */
+.generator-output-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.generator-output {
+    cursor: default;
+    background: rgba(0, 0, 0, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.05);
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--text-light);
+}
+
+.copy-button {
+    color: var(--accent-purple);
+}
+
+.copy-button:hover {
+    color: var(--accent-pink);
+    background: rgba(236, 72, 153, 0.08);
+}
+
+/* Clipboard Tooltip */
+.copy-tooltip {
+    position: absolute;
+    right: 1.15rem;
+    top: -2.25rem;
+    background: var(--accent-indigo);
+    color: var(--text-light);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.copy-tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Slider Controls */
+.generator-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+#length-val {
+    color: var(--text-light);
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 0.1rem 0.5rem;
+    border-radius: 6px;
+}
+
+/* Range Slider Styling */
+.range-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 100px;
+    outline: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-purple);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.range-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent-purple);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.range-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Custom Checkbox Grid */
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    user-select: none;
+    padding-left: 1.65rem;
+    transition: color 0.2s ease;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.custom-checkbox {
+    position: absolute;
+    left: 0;
+    height: 1rem;
+    width: 1rem;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1.5px solid var(--card-border);
+    border-radius: 4px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.checkbox-container:hover {
+    color: var(--text-light);
+}
+
+.checkbox-container:hover input ~ .custom-checkbox {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.checkbox-container input:checked ~ .custom-checkbox {
+    background-color: var(--accent-purple);
+    border-color: var(--accent-purple);
+}
+
+.custom-checkbox:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .custom-checkbox:after {
+    display: block;
+}
+
+.checkbox-container .custom-checkbox:after {
+    left: 4px;
+    top: 1px;
+    width: 3px;
+    height: 6px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Premium Buttons */
+.primary-btn {
+    background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-purple) 100%);
+    color: var(--text-light);
+    border: none;
+    border-radius: 10px;
+    padding: 0.85rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.primary-btn:active {
+    transform: translateY(1px);
+}
+
+.btn-spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.primary-btn:hover .btn-spinner {
+    transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.app-footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 900px) {
+    .app-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 1rem 0.5rem;
+    }
+    
+    .card {
+        padding: 1.5rem;
+        border-radius: 18px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+}
