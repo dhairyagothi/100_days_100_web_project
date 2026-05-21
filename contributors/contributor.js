@@ -1,14 +1,26 @@
-const modal = document.getElementById('profileModal');
+const modal =
+document.getElementById("profileModal");
 
-const modalBody = document.getElementById('modalBody');
+const modalBody =
+document.getElementById("modalBody");
 
-const closeModal = document.getElementById('closeModal');
+const closeModal =
+document.getElementById("closeModal");
 
-const certificateModal = document.getElementById('certificateModal');
+const certificateModal =
+document.getElementById(
+"certificateModal"
+);
 
-const certificateBody = document.getElementById('certificateBody');
+const certificateBody =
+document.getElementById(
+"certificateBody"
+);
 
-const closeCertificate = document.getElementById('closeCertificate');
+const closeCertificate =
+document.getElementById(
+"closeCertificate"
+);
 
 const GITHUB_API_BASE = 'https://api.github.com';
 
@@ -17,12 +29,14 @@ const REQUEST_TIMEOUT = 10000;
 const MAX_RETRIES = 3;
 
 closeModal?.addEventListener(
-  'click',
+"click",
 
-  () => {
-    modal.style.display = 'none';
-  }
-);
+()=>{
+
+modal.style.display =
+"none";
+
+});
 
 async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
   const controller = new AbortController();
@@ -87,14 +101,77 @@ async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
 }
 
 window.addEventListener(
-  'click',
+"click",
 
-  (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-    }
-  }
-);
+(e)=>{
+
+if(e.target===modal){
+
+modal.style.display=
+"none";
+
+}
+
+});
+
+function getBadge(rank){
+
+if(rank===1){
+
+return {
+text:"💎 Diamond",
+className:"diamond"
+};
+
+}
+
+if(rank>=2 && rank<=3){
+
+return {
+text:"🥇 Gold",
+className:"gold"
+};
+
+}
+
+if(rank>=4 && rank<=6){
+
+return {
+text:"🥈 Silver",
+className:"silver"
+};
+
+
+
+if(rank>=7 && rank<=10){
+
+return {
+text:"🥉 Bronze",
+className:"bronze"
+};
+
+}
+
+return {
+text:"",
+className:""
+};
+
+}
+
+async function openProfile(
+username,
+commits,
+rank
+) {
+
+modal.style.display = "flex";
+
+modalBody.innerHTML = `
+<p>Loading profile...</p>
+`;
+
+try {
 
 function saveCache(key, data) {
   localStorage.setItem(
@@ -131,92 +208,111 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
 async function openProfile(username, commits) {
   modal.style.display = 'flex';
 
-  modalBody.innerHTML = `
-        <p>Loading profile...</p>
-    `;
 
-  try {
-    const response = await fetch(`https://api.github.com/users/${username}`);
+const response =
+await fetch(
+`https://api.github.com/users/${username}`
+);
 
-    const user = await response.json();
+const user =
+await response.json();
 
-    modalBody.innerHTML = `
+const badge =
+getBadge(rank);
 
-            <img
-            src="${user.avatar_url}"
-            >
+modalBody.innerHTML = `
 
-            <h2>
-            ${user.name || user.login}
-            </h2>
+<img
+src="${user.avatar_url}"
+>
 
-            <p>
-            ${user.bio || 'This contributor has not added a bio yet.'}
-            </p>
+<h2>
+${user.name || user.login}
+</h2>
 
-            <p>
-            Followers:
-            ${user.followers}
-            </p>
+<div class="profile-badge ${badge.className}">
+${badge.text}
+</div>
 
-            <p>
-            Public Repos:
-            ${user.public_repos}
-            </p>
+<p>
+${user.bio || "This contributor has not added a bio yet."}
+</p>
 
-            <p>
-            Location:
-            ${user.location || 'Not available'}
-            </p>
+<p>
+Followers:
+${user.followers}
+</p>
 
-            <p>
-            Joined:
-            ${new Date(user.created_at).toLocaleDateString()}
-            </p>
+<p>
+Public Repos:
+${user.public_repos}
+</p>
 
-           <div class="popup-btn-container">
+<p>
+Location:
+${user.location || "Not available"}
+</p>
 
-    <a
-    href="${user.html_url}"
-    target="_blank"
-    class="github-btn"
-    >
+<p>
+Joined:
+${new Date(
+user.created_at
+).toLocaleDateString()}
+</p>
 
-    View GitHub
+<div class="popup-btn-container">
 
-    </a>
+<a
+href="${user.html_url}"
+target="_blank"
+class="github-btn"
+>
 
+View GitHub
 
-    <button
-    id="downloadCertificate"
-    class="certificate-btn"
-    >
+</a>
 
-    Download Certificate
+<button
+id="downloadCertificate"
+class="certificate-btn"
+>
 
-    </button>
+Download Certificate
+
+</button>
 
 </div>
 
-        `;
+`;
 
-    const certificateBtn = document.getElementById('downloadCertificate');
+const certificateBtn =
+document.getElementById(
+"downloadCertificate"
+);
 
-    closeCertificate?.addEventListener(
-      'click',
+closeCertificate?.addEventListener(
 
-      () => {
-        certificateModal.style.display = 'none';
-      }
-    );
+"click",
 
-    certificateBtn?.addEventListener(
-      'click',
+()=>{
 
-      () => {
-        certificateModal.style.display = 'flex';
+certificateModal.style.display =
+"none";
 
-        certificateBody.innerHTML = `
+}
+
+);
+
+certificateBtn?.addEventListener(
+
+"click",
+
+()=>{
+
+certificateModal.style.display =
+"flex";
+
+certificateBody.innerHTML = `
 
 <div style="
 position:relative;
@@ -231,20 +327,14 @@ display:block;
 border-radius:12px;
 ">
 
-
-<!-- NAME -->
-
 <div style="
 position:absolute;
 top:35%;
 left:50%;
 transform:translateX(-50%);
 font-family:'Cinzel',serif;
-
 font-size:24px;
-
 font-weight:700;
-
 background:
 linear-gradient(
 90deg,
@@ -252,14 +342,10 @@ linear-gradient(
 #f4d03f,
 #8b5a00
 );
-
 -webkit-background-clip:text;
-
 -webkit-text-fill-color:
 transparent;
-
 white-space:nowrap;
-
 text-shadow:
 0 2px 4px rgba(
 0,
@@ -272,10 +358,6 @@ text-shadow:
 ${user.name || user.login}
 
 </div>
-
-
-
-<!-- COMMITS -->
 
 <div style="
 position:absolute;
@@ -290,10 +372,6 @@ ${commits}
 
 </div>
 
-
-
-<!-- USERNAME -->
-
 <div style="
 position:absolute;
 top:82%;
@@ -306,10 +384,6 @@ color:#5b21b6;
 @${user.login}
 
 </div>
-
-
-
-<!-- DATE -->
 
 <div style="
 position:absolute;
@@ -325,7 +399,6 @@ ${new Date().toLocaleDateString('en-GB')}
 </div>
 
 </div>
-
 
 <div style="
 text-align:center;
@@ -350,68 +423,132 @@ Download PDF
 </div>
 
 `;
-        const downloadBtn = document.getElementById('downloadPdfBtn');
 
-        downloadBtn?.addEventListener(
-          'click',
+const downloadBtn =
+document.getElementById(
+"downloadPdfBtn"
+);
 
-          async () => {
-            const certificate = certificateBody.querySelector('div');
+downloadBtn?.addEventListener(
 
-            const canvas = await html2canvas(
-              certificate,
+"click",
 
-              {
-                scale: 3,
+async ()=>{
 
-                useCORS: true,
-              }
-            );
+const certificate =
 
-            const image = canvas.toDataURL('image/png');
+certificateBody.querySelector(
+"div"
+);
 
-            const { jsPDF } = window.jspdf;
+const canvas =
 
-            const pdf = new jsPDF(
-              'landscape',
+await html2canvas(
 
-              'px',
+certificate,
 
-              [canvas.width, canvas.height]
-            );
+{
 
-            pdf.addImage(
-              image,
+scale:3,
 
-              'PNG',
+useCORS:true
 
-              0,
-
-              0,
-
-              canvas.width,
-
-              canvas.height
-            );
-
-            pdf.save(`${user.login}-certificate.pdf`);
-          }
-        );
-      }
-    );
-  } catch (error) {
-    modalBody.innerHTML = '<p>Failed to load profile</p>';
-
-    console.error(error);
-  }
 }
 
-// Use global REPO_OWNER and REPO_NAME defined in index.js
+);
 
-let allContributors = [];
-let filteredContributors = [];
+const image =
+
+canvas.toDataURL(
+"image/png"
+);
+
+const {
+
+jsPDF
+
+}=window.jspdf;
+
+const pdf =
+
+new jsPDF(
+
+'landscape',
+
+'px',
+
+[
+
+canvas.width,
+
+canvas.height
+
+]
+
+);
+
+pdf.addImage(
+
+image,
+
+'PNG',
+
+0,
+
+0,
+
+canvas.width,
+
+canvas.height
+
+);
+
+pdf.save(
+
+`${user.login}-certificate.pdf`
+
+);
+
+}
+
+);
+
+}
+
+);
+
+}
+
+catch(error){
+
+modalBody.innerHTML =
+"<p>Failed to load profile</p>";
+
+console.error(error);
+
+}
+
+}
 
 async function fetchContributors() {
+
+const contributorsContainer =
+document.getElementById("contributors");
+
+const contributorCountSpan =
+document.getElementById("contributorCount");
+
+try {
+
+const response = await fetch(
+`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
+);
+
+if (!response.ok)
+throw new Error(
+"Failed to fetch contributors"
+);
+
   const contributorsContainer = document.getElementById('contributors');
 
   const contributorCountSpan = document.getElementById('contributorCount');
@@ -464,9 +601,35 @@ async function fetchContributors() {
       totalCommitsEl.textContent = totalCommits.toLocaleString();
     }
 
-    allContributors = contributors;
 
-    filteredContributors = [...contributors];
+const contributors =
+await response.json();
+
+contributors.sort(
+(a,b)=>
+b.contributions-a.contributions
+);
+
+contributorCountSpan.textContent =
+contributors.length;
+
+const totalCommits =
+contributors.reduce(
+(sum,c)=>
+sum+c.contributions,
+0
+);
+
+const totalCommitsEl =
+document.getElementById(
+'totalCommits'
+);
+
+if(totalCommitsEl){
+
+totalCommitsEl.textContent =
+totalCommits.toLocaleString();
+
 
     renderContributors(filteredContributors);
   } catch (error) {
@@ -478,24 +641,40 @@ async function fetchContributors() {
   } finally {
     loading.classList.add('hidden');
   }
-}
 
-function renderContributors(data) {
-  const contributorsContainer = document.getElementById('contributors');
 
-  const emptyState = document.getElementById('emptyState');
+contributorsContainer.innerHTML = "";
 
-  contributorsContainer.innerHTML = '';
+contributors.forEach(
+(contributor,index)=>{
 
-  if (data.length === 0) {
-    emptyState.style.display = 'block';
+const rank =
+index + 1;
 
-    return;
-  }
+const badge =
+getBadge(rank);
 
-  emptyState.style.display = 'none';
+const card =
+document.createElement("div");
 
-  const fragment = document.createDocumentFragment();
+card.className =
+"contributor-card";
+
+card.innerHTML = `
+
+
+<img
+src="${contributor.avatar_url}"
+alt="${contributor.login}"
+>
+
+<h3>
+${contributor.login}
+</h3>
+
+<div class="rank-badge ${badge.className}">
+${badge.text}
+</div>
 
   data.forEach((contributor) => {
     const card = document.createElement('div');
@@ -533,55 +712,100 @@ src="${contributor.avatar_url}"
 
 alt="${contributor.login}">
 
-            <h3>${contributor.login}</h3>
 
-            <div class="contributor-stats">
+<div class="contributor-rank">
+Rank #${rank}
+</div>
 
-                <div class="stat">
+<div class="contributor-stats">
 
-                    <span class="value">
-                        ${contributor.contributions}
-                    </span>
+<div class="stat">
 
-                    <span class="label">
-                        Commits
-                    </span>
+<span class="value">
+${contributor.contributions}
+</span>
 
-                </div>
-
-            </div>
-
-           <div class="contributor-links">
-
-    <button
-        class="details-btn"
-        data-user="${contributor.login}"
-    >
-
-        View Details
-
-    </button>
-
-    <a
-        href="${contributor.html_url}"
-        target="_blank"
-        class="github-btn"
-    >
-
-        <i class="fab fa-github"></i>
-        Profile
-
-    </a>
+<span class="label">
+Commits
+</span>
 
 </div>
-        `;
 
-    fragment.appendChild(card);
-    const detailsButton = card.querySelector('.details-btn');
+</div>
 
-    if (detailsButton) {
-      detailsButton.addEventListener(
-        'click',
+<div class="contributor-links">
+
+<button
+class="details-btn"
+data-user="${contributor.login}"
+>
+
+View Details
+
+</button>
+
+<a
+href="${contributor.html_url}"
+target="_blank"
+class="github-btn"
+>
+
+<i class="fab fa-github"></i>
+Profile
+
+</a>
+
+</div>
+
+`;
+
+contributorsContainer.appendChild(card);
+
+const detailsButton =
+card.querySelector(
+".details-btn"
+);
+
+if(detailsButton){
+
+detailsButton.addEventListener(
+
+
+"click",
+
+()=>{
+
+openProfile(
+
+contributor.login,
+contributor.contributions,
+rank
+
+);
+
+});
+
+}
+
+});
+
+}
+
+catch(error){
+
+console.error(
+"Error fetching contributors:",
+error
+);
+
+if(contributorsContainer){
+
+contributorsContainer.innerHTML =
+"<p style='color: #ff4444;'>Failed to load contributors.</p>";
+
+}
+
+}
 
         () => {
           openProfile(
@@ -594,7 +818,7 @@ alt="${contributor.login}">
     }
   });
 
-  contributorsContainer.appendChild(fragment);
+
 }
 
 function renderStargazers(stargazers) {
@@ -625,6 +849,32 @@ function renderStargazers(stargazers) {
 }
 
 async function fetchStargazers() {
+
+const stargazersContainer =
+document.getElementById("stargazers");
+
+try {
+
+const response = await fetch(
+`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`
+);
+
+if (!response.ok)
+throw new Error(
+"Failed to fetch stargazers"
+);
+
+const stargazers =
+await response.json();
+
+if(stargazersContainer){
+
+stargazersContainer.innerHTML = "";
+
+}
+
+stargazers.forEach((stargazer)=>{
+
   const stargazersContainer = document.getElementById('stargazers');
 
   const errorBox = document.getElementById('stargazersError');
@@ -681,26 +931,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const searchInput = document.getElementById('contributorSearch');
 
-  const sortSelect = document.getElementById('sortContributors');
-  searchInput.addEventListener('input', (e) => {
-    const value = e.target.value.toLowerCase();
 
-    filteredContributors = allContributors.filter((c) =>
-      c.login.toLowerCase().includes(value)
-    );
+const starItem =
+document.createElement("a");
 
-    renderContributors(filteredContributors);
-  });
+starItem.href =
+stargazer.html_url;
 
-  sortSelect.addEventListener('change', (e) => {
-    const order = e.target.value;
+starItem.target =
+"_blank";
 
-    filteredContributors.sort((a, b) => {
-      return order === 'asc'
-        ? a.contributions - b.contributions
-        : b.contributions - a.contributions;
-    });
+starItem.className =
+"stargazer-item";
 
-    renderContributors(filteredContributors);
-  });
+starItem.title =
+stargazer.login;
+
+starItem.innerHTML = `
+<img
+src="${stargazer.avatar_url}"
+alt="${stargazer.login}"
+>
+`;
+
+if(stargazersContainer){
+
+stargazersContainer.appendChild(
+starItem
+);
+
+}
+
 });
+
+}
+
+catch(error){
+
+console.error(
+"Error fetching stargazers:",
+error
+);
+
+}
+
+}
+
+document.addEventListener(
+"DOMContentLoaded",
+
+()=>{
+
+fetchContributors();
+fetchStargazers();
+
+}
+);
