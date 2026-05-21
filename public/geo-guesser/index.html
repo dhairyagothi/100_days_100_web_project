@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Geo Guesser - Location Challenge Game</title>
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-theme="light">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="logo">🌍 Mini Geo Guesser</h1>
+        <div class="header-controls">
+          <div class="score-display">
+            <span class="score-label">Score:</span>
+            <span class="score-value" id="totalScore">0</span>
+          </div>
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle theme"
+          >
+            <span class="theme-icon light">☀️</span>
+            <span class="theme-icon dark">🌙</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Game Container -->
+    <main class="game-container">
+      <!-- Welcome Screen -->
+      <div class="screen welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+          <div class="welcome-icon">🌍</div>
+          <h2>Welcome to Mini Geo Guesser!</h2>
+          <p>
+            Test your geography knowledge by guessing locations based on hints.
+          </p>
+
+          <div class="game-rules">
+            <h3>How to Play:</h3>
+            <ul>
+              <li>📍 Read the hints about a mystery location</li>
+              <li>🗺️ Click on the map to place your guess</li>
+              <li>🎯 Closer guesses = Higher scores!</li>
+              <li>🏆 Play 5 rounds and beat your high score</li>
+            </ul>
+          </div>
+
+          <div class="difficulty-select">
+            <h3>Select Difficulty:</h3>
+            <div class="difficulty-buttons">
+              <button class="btn btn-difficulty" data-difficulty="easy">
+                <span class="diff-icon">🤓</span>
+                <span>Easy</span>
+              </button>
+              <button
+                class="btn btn-difficulty active"
+                data-difficulty="medium"
+              >
+                <span class="diff-icon">😎</span>
+                <span>Medium</span>
+              </button>
+              <button class="btn btn-difficulty" data-difficulty="hard">
+                <span class="diff-icon">🗿</span>
+                <span>Hard</span>
+              </button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="startGameBtn">
+            <span>🎮</span> Start Game
+          </button>
+
+          <div class="stats-preview">
+            <div class="stat-item">
+              <span class="stat-label">Games Played</span>
+              <span class="stat-value" id="gamesPlayed">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">High Score</span>
+              <span class="stat-value" id="highScore">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Screen -->
+      <div class="screen game-screen hidden" id="gameScreen">
+        <!-- Hint Card -->
+        <div class="hint-card">
+          <div class="round-indicator">
+            <span id="currentRound">1</span> / <span id="totalRounds">5</span>
+          </div>
+
+          <div class="hint-content" id="hintContent">
+            <div class="hint-image">
+              <img id="hintImage" src="" alt="Location hint" />
+            </div>
+            <div class="hint-text">
+              <h3 id="hintTitle">Mystery Location</h3>
+              <div class="hints-list" id="hintsList"></div>
+            </div>
+          </div>
+
+          <div class="hint-actions">
+            <button class="btn btn-secondary" id="showMoreHints" disabled>
+              <span>💡</span> More Hints (-50 pts)
+            </button>
+            <button class="btn btn-primary" id="confirmGuessBtn" disabled>
+              <span>✅</span> Confirm Guess
+            </button>
+            <button
+              class="btn btn-primary"
+              id="nextRoundBtn"
+              style="display: none"
+            >
+              <span>➡️</span> Next Round
+            </button>
+          </div>
+
+          <div
+            class="result-info"
+            id="resultInfo"
+            style="
+              display: none;
+              margin-top: 1rem;
+              padding: 1rem;
+              background: rgba(59, 130, 246, 0.1);
+              border-radius: 8px;
+            "
+          >
+            <div style="text-align: center; margin-bottom: 1rem">
+              <div
+                style="font-size: 2rem; margin-bottom: 0.5rem"
+                id="inlineResultIcon"
+              >
+                🎯
+              </div>
+              <div
+                style="
+                  font-size: 1.5rem;
+                  font-weight: bold;
+                  margin-bottom: 0.5rem;
+                "
+                id="inlineResultTitle"
+              >
+                Great Guess!
+              </div>
+            </div>
+            <div style="text-align: center; margin-bottom: 0.5rem">
+              <strong>📍 Actual Location:</strong>
+              <span id="inlineLocationName"></span>
+            </div>
+            <div
+              style="display: flex; justify-content: space-around; gap: 1rem"
+            >
+              <div style="text-align: center">
+                <div style="font-size: 0.875rem; opacity: 0.8">Distance</div>
+                <div
+                  style="font-size: 1.25rem; font-weight: bold"
+                  id="inlineDistance"
+                >
+                  0 km
+                </div>
+              </div>
+              <div style="text-align: center">
+                <div style="font-size: 0.875rem; opacity: 0.8">Round Score</div>
+                <div
+                  style="font-size: 1.25rem; font-weight: bold; color: #10b981"
+                  id="inlineScore"
+                >
+                  0
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="map-container">
+          <div class="map-instructions" id="mapInstructions">
+            👆 Click on the map to place your guess
+          </div>
+          <div id="map"></div>
+        </div>
+      </div>
+
+      <!-- Result Screen -->
+      <div class="screen result-screen hidden" id="resultScreen">
+        <div class="result-content">
+          <div class="result-icon" id="resultIcon">🎯</div>
+          <h2 id="resultTitle">Great Guess!</h2>
+
+          <div class="result-stats">
+            <div class="result-stat">
+              <span class="result-label">Distance Off</span>
+              <span class="result-value" id="distanceValue">0 km</span>
+            </div>
+            <div class="result-stat highlight">
+              <span class="result-label">Round Score</span>
+              <span class="result-value" id="roundScore">0</span>
+            </div>
+            <div class="result-stat">
+              <span class="result-label">Total Score</span>
+              <span class="result-value" id="resultTotalScore">0</span>
+            </div>
+          </div>
+
+          <div class="location-reveal">
+            <p class="actual-location">
+              <strong>Actual Location:</strong>
+              <span id="actualLocationName">Unknown</span>
+            </p>
+          </div>
+
+          <button class="btn btn-primary" id="nextRoundBtn">
+            <span>➡️</span> Next Round
+          </button>
+        </div>
+      </div>
+
+      <!-- Final Score Screen -->
+      <div class="screen final-screen hidden" id="finalScreen">
+        <div class="final-content">
+          <div class="trophy-icon" id="trophyIcon">🏆</div>
+          <h2>Game Complete!</h2>
+
+          <div class="final-score">
+            <span class="final-score-label">Final Score</span>
+            <span class="final-score-value" id="finalScoreValue">0</span>
+          </div>
+
+          <div class="performance-message" id="performanceMessage"></div>
+
+          <div class="final-stats">
+            <div class="final-stat">
+              <span class="final-stat-label">Average Distance</span>
+              <span class="final-stat-value" id="avgDistance">0 km</span>
+            </div>
+            <div class="final-stat">
+              <span class="final-stat-label">Best Round</span>
+              <span class="final-stat-value" id="bestRound">0</span>
+            </div>
+            <div class="final-stat">
+              <span class="final-stat-label">High Score</span>
+              <span class="final-stat-value" id="finalHighScore">0</span>
+            </div>
+          </div>
+
+          <div class="final-actions">
+            <button class="btn btn-primary" id="playAgainBtn">
+              <span>🔄</span> Play Again
+            </button>
+            <button class="btn btn-secondary" id="backToMenuBtn">
+              <span>🏠</span> Main Menu
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Made with ❤️ for geography enthusiasts | No Google APIs used</p>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+
+    <!-- Game Modules -->
+    <script>
+      // Wait for Leaflet to load before initializing game
+      window.addEventListener("load", function () {
+        if (typeof L === "undefined") {
+          console.error("Leaflet failed to load!");
+          alert("Map library failed to load. Please refresh the page.");
+        }
+      });
+    </script>
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

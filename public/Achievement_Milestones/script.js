@@ -19,6 +19,15 @@ const activityData = [
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Render Badges
     const badgesContainer = document.getElementById('badges-container');
+    
+    // Update badge count dynamically
+    const unlockedCount = badgesData.filter(b => !b.locked).length;
+    const totalCount = badgesData.length;
+    const badgeCountEl = document.querySelector('.badge-count');
+    if (badgeCountEl) {
+        badgeCountEl.textContent = `${unlockedCount}/${totalCount}`;
+    }
+
     badgesData.forEach(badge => {
         const badgeEl = document.createElement('div');
         badgeEl.className = `badge-card ${badge.locked ? 'badge-locked' : badge.color}`;

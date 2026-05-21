@@ -227,7 +227,6 @@ body {
     padding: 1.5rem;
     text-align: center;
     transition: all 0.3s ease;
-    cursor: pointer;
     position: relative;
     overflow: hidden;
 }

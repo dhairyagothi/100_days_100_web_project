@@ -155,3 +155,82 @@ body {
         justify-content: center;
     }
 }
+.status-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+.status-text {
+    color: #7f8c8d;
+    font-size: 12px;
+    margin-top: 4px;
+}
+.main .input .talk.active {
+    background:
+        linear-gradient(
+            135deg,
+            #ff4d4d,
+            #ff0000
+        );
+    position: relative;
+}
+.main .input .talk.active::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid
+        rgba(255,0,0,0.7);
+    animation:
+        pulse 1.2s infinite;
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.45);
+        opacity: 0;
+    }
+}
+
+.wave-container {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    height: 25px;
+    margin-top: 8px;
+}
+
+.wave-container.active {
+    display: flex;
+}
+
+.wave-container span {
+    width: 4px;
+    height: 8px;
+    border-radius: 10px;
+    background: #00bcd4;
+    animation:
+        wave 1s infinite ease-in-out;
+}
+
+.wave-container span:nth-child(2){
+    animation-delay: 0.15s;
+}
+.wave-container span:nth-child(3){
+    animation-delay: 0.3s;
+}
+.wave-container span:nth-child(4){
+    animation-delay: 0.45s;
+}
+.wave-container span:nth-child(5){
+    animation-delay: 0.6s;
+}
+
+@keyframes wave {
+    0%,100% {height: 8px;}
+    50% {height: 24px;}
+}

@@ -6,9 +6,9 @@
 <link rel="stylesheet" href="pageloader.css">
 <title>Pageloader</title>
 </head>
-<body>
+<body><div id="loading"></div>
+
     <div id="container">
-        <div id="loading"></div>
         <nav class="navbar">
             <ul>
                     <li><a href="#home">Home</a></li>
@@ -17,7 +17,7 @@
             </ul>
         </nav>
         <header id ="home">
-        <h1>Welcome to Pageloader!</h1></div>
+        <h1>Welcome to Pageloader!</h1>
         </header>
         <section id="about" class="content">
             <h2>About Us</h2>
@@ -29,10 +29,12 @@
         </footer>
     </div>
        <script>
-         window.addEventListener("load", function () {
-            const loader = document.getElementById("loading");
-            loader.style.display = "none";
-        });
+        window.addEventListener("load", function() {
+        setTimeout(function() { 
+        const loader = document.getElementById("loading");       
+        loader.style.display = "none";  
+        }, 1000);                      
+});
     </script>
 </body>
 </html>
