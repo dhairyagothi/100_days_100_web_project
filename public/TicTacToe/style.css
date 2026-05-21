@@ -222,6 +222,54 @@ body {
   border-color: var(--o-color);
 }
 
+/* ── Board container + win line ──────────── */
+#board-container {
+  position: relative;
+}
+
+#win-line-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 6;
+  overflow: visible;
+}
+
+#win-line {
+  stroke-width: 7;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+#win-line.line-x {
+  stroke: var(--x-color);
+  filter: drop-shadow(0 0 6px var(--x-color)) drop-shadow(0 0 14px var(--x-glow));
+}
+
+#win-line.line-o {
+  stroke: var(--o-color);
+  filter: drop-shadow(0 0 6px var(--o-color)) drop-shadow(0 0 14px var(--o-glow));
+}
+
+#win-line.draw {
+  opacity: 1;
+  stroke-dashoffset: var(--line-length, 400);
+  animation: drawWinLine 0.75s ease-out forwards;
+}
+
+@keyframes drawWinLine {
+  from {
+    stroke-dashoffset: var(--line-length, 400);
+    opacity: 0.5;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
 /* ── Board grid ──────────────────────────── */
 #board {
   display: grid;

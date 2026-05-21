@@ -7,6 +7,8 @@
     [0, 4, 8], [2, 4, 6]
   ];
 
+  var WIN_LINE_DURATION = 750;
+
   var board     = Array(9).fill(null);
   var current   = "X";
   var gameOver  = false;
@@ -30,6 +32,9 @@
   var ctx      = canvas.getContext("2d");
   var startScreen = document.getElementById("start-screen");
   var startBtn = document.getElementById("start-btn");
+  var boardContainer = document.getElementById("board-container");
+  var winLineSvg = document.getElementById("win-line-svg");
+  var winLineEl = document.getElementById("win-line");
 
   /* ── Build board ──────────────────────── */
   function buildBoard() {
@@ -54,11 +59,14 @@
 
     var win = checkWin();
     if (win) {
+      var winner = current;
       highlightWin(win);
-      scores[current]++;
+      scores[winner]++;
       updateScores();
-      setTimeout(function () { showWinOverlay(current); }, 320);
       gameOver = true;
+      animateWinLine(win, winner, function () {
+        showWinOverlay(winner);
+      });
     } else if (board.every(Boolean)) {
       scores.D++;
       updateScores();
@@ -85,6 +93,60 @@
   function highlightWin(line) {
     var cells = boardEl.querySelectorAll(".cell");
     line.forEach(function (i) { cells[i].classList.add("win-cell"); });
+  }
+
+  /* ── Animated winning line ────────────── Created by Nityananda Dalei */
+  function clearWinLine() {
+    winLineEl.classList.remove("draw", "line-x", "line-o");
+    winLineEl.style.strokeDasharray = "";
+    winLineEl.style.animationDuration = "";
+    winLineEl.style.removeProperty("--line-length");
+  }
+
+  function animateWinLine(line, player, onComplete) {
+    requestAnimationFrame(function () {
+      var cells = boardEl.querySelectorAll(".cell");
+      var startIdx = line[0];
+      var endIdx = line[2];
+      var containerRect = boardContainer.getBoundingClientRect();
+      var startRect = cells[startIdx].getBoundingClientRect();
+      var endRect = cells[endIdx].getBoundingClientRect();
+      var w = boardContainer.offsetWidth;
+      var h = boardContainer.offsetHeight;
+      var x1 = startRect.left + startRect.width / 2 - containerRect.left;
+      var y1 = startRect.top + startRect.height / 2 - containerRect.top;
+      var x2 = endRect.left + endRect.width / 2 - containerRect.left;
+      var y2 = endRect.top + endRect.height / 2 - containerRect.top;
+      var length = Math.hypot(x2 - x1, y2 - y1);
+
+      winLineSvg.setAttribute("width", w);
+      winLineSvg.setAttribute("height", h);
+      winLineSvg.setAttribute("viewBox", "0 0 " + w + " " + h);
+
+      winLineEl.setAttribute("x1", x1);
+      winLineEl.setAttribute("y1", y1);
+      winLineEl.setAttribute("x2", x2);
+      winLineEl.setAttribute("y2", y2);
+      winLineEl.classList.remove("draw", "line-x", "line-o");
+      winLineEl.style.strokeDasharray = length;
+      winLineEl.style.setProperty("--line-length", length);
+      winLineEl.style.animationDuration = WIN_LINE_DURATION + "ms";
+      winLineEl.classList.add(player === "X" ? "line-x" : "line-o");
+
+      void winLineEl.offsetWidth;
+      winLineEl.classList.add("draw");
+
+      var finished = false;
+      function finish() {
+        if (finished) return;
+        finished = true;
+        winLineEl.removeEventListener("animationend", finish);
+        if (onComplete) onComplete();
+      }
+
+      winLineEl.addEventListener("animationend", finish);
+      setTimeout(finish, WIN_LINE_DURATION + 100);
+    });
   }
 
   /* ── Update turn UI + background ─────── */
@@ -130,6 +192,7 @@
     buildBoard();
     setUI("X");
     overlay.className = "";
+    clearWinLine();
     stopConfetti();
   }
 
