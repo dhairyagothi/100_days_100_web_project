@@ -287,6 +287,8 @@
     </footer>
 
     <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
+     <!-- Fix: Removed duplicate backToTop and scrollToTopBtn buttons. 
+     scrollBtn is the single scroll-to-top button with progress ring. -->
    <button id="scrollBtn" aria-label="Back to top">
     <svg class="progress-ring" viewBox="0 0 48 48">
         <circle class="ring-track" cx="24" cy="24" r="22"/>
@@ -299,27 +301,6 @@
     <script type="module" src="hero-terminal.js"></script>
     <script src="index.js"></script>
 
-    <!-- ── BACK TO TOP BUTTON ────────────────────────────────── -->
-    <button id="backToTop">↑</button>
-    <button id="scrollToTopBtn" title="Go to top">▲</button>
-
-    <script>
-      const scrollBtn = document.getElementById("scrollToTopBtn");
-
-      window.onscroll = function() {
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-          scrollBtn.style.display = "block";
-        } else {
-          scrollBtn.style.display = "none";
-        }
-      };
-
-      scrollBtn.addEventListener("click", function() {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      });
-    </script>
+    
   </body>
 </html>
