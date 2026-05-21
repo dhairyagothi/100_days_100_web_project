@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower of Hanoi - Drag & Drop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Instructions Modal -->
+    <div id="instructionModal" class="modal">
+        <div class="modal-content">
+            <h2>How to Play Tower of Hanoi</h2>
+            <div class="instructions">
+                <p><strong>Goal:</strong> Move all disks from the left tower to either the <strong>middle</strong> or <strong>right</strong> tower.</p>
+                <ul>
+                    <li>You can only move <strong>one disk</strong> at a time.</li>
+                    <li>You can only pick up the <strong>top disk</strong> from any tower.</li>
+                    <li>A larger disk can <strong>never</strong> be placed on top of a smaller disk.</li>
+                </ul>
+                <p><strong>Controls:</strong> You can either <em>drag and drop</em> the disks or <em>click</em> a tower to select and drop.</p>
+            </div>
+            <button id="startGameBtn">Start Game</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <h1>Tower of Hanoi</h1>
+        
+        <div class="controls">
+            <label for="diskCount">Disks: </label>
+            <input type="number" id="diskCount" min="3" max="8" value="4">
+            <button id="restartBtn">Restart Game</button>
+            <div class="stats">Moves: <span id="moveCount">0</span></div>
+        </div>
+
+        <div id="message"></div>
+
+        <div class="game-board">
+            <!-- Tower 1 -->
+            <div class="tower" data-index="0">
+                <div class="peg"></div>
+                <div class="base"></div>
+                <div class="disks"></div>
+            </div>
+            <!-- Tower 2 -->
+            <div class="tower" data-index="1">
+                <div class="peg"></div>
+                <div class="base"></div>
+                <div class="disks"></div>
+            </div>
+            <!-- Tower 3 -->
+            <div class="tower" data-index="2">
+                <div class="peg"></div>
+                <div class="base"></div>
+                <div class="disks"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
