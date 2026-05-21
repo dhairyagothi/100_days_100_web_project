@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FocusFlow Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>🚀 FocusFlow</h1>
+
+    <button id="themeToggle">🌙</button>
+  </header>
+
+  <div class="top-grid">
+
+    <div class="card">
+      <h2>Daily Goals</h2>
+
+      <div class="goal-input">
+        <input type="text" id="goalInput" placeholder="Add a goal...">
+        <button id="addGoal">Add</button>
+      </div>
+
+      <ul id="goalList"></ul>
+    </div>
+
+    <div class="card">
+      <h2>Pomodoro Timer</h2>
+
+      <div class="timer">
+        <span id="minutes">25</span>:<span id="seconds">00</span>
+      </div>
+
+      <div class="timer-buttons">
+        <button id="startTimer">Start</button>
+        <button id="resetTimer">Reset</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-grid">
+
+    <div class="card">
+      <h2>Productivity Score</h2>
+
+      <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+      </div>
+
+      <p id="scoreText">0% completed</p>
+    </div>
+
+    <div class="card streak-card">
+      <h2>🔥 Current Streak</h2>
+      <h1 id="streakCount">0 Days</h1>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
