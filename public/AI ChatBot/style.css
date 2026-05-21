@@ -40,6 +40,13 @@ header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.copy-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 0.8em;
+    background-color: #0065d2;
 header h1 {
     font-size: 1.5rem;
     color: white;
@@ -56,6 +63,11 @@ header h1 {
     padding: 8px 12px;
     border-radius: 6px;
     border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+    user-select: none;
+    position: relative;
+    align-self: flex-end;
     font-size: 0.85rem;
     background: rgba(255, 255, 255, 0.9);
 }
@@ -76,6 +88,16 @@ header h1 {
     background-color: #1557b0;
 }
 
+pre code {
+    display: block;
+    padding: 16px;
+    color: #dcdcdc;
+    background: #333;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'Source Code Pro', monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
 /* --- API Key Modal Overlay --- */
 .modal-overlay {
     position: fixed;
@@ -348,6 +370,16 @@ code {
     color: #2563eb;
 }
 
+/* Responsive adjustments as needed */
+@media (max-width: 768px) {
+    .chat-container {
+        width: 90%;
+        margin: 20px;
+        .copy-btn {
+    width: fit-content;
+    font-size: 0.75rem;
+    margin-left: auto;
+        }
 .message.user .avatar {
     background-color: #f3f4f6;
     color: #4b5563;
