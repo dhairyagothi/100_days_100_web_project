@@ -1,5 +1,5 @@
 {
-  "buildCommand": null,
+  "buildCommand": "echo \"window.ENV_CONFIG = { SUPABASE_URL: '$SUPABASE_URL', SUPABASE_ANON_KEY: '$SUPABASE_ANON_KEY' };\" > public/config.js",
   "outputDirectory": ".",
   "cleanUrls": false,
   "trailingSlash": false,
