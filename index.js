@@ -345,6 +345,7 @@ const INITIAL_VISIBLE_ITEMS = 3;
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
 console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
