@@ -1,15 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     const requestForm = document.getElementById('requestForm');
-    const responseForm = document.getElementById('responseForm');
-    const feedbackForm = document.getElementById('feedbackForm');
-    const statusMessage = document.getElementById('statusMessage');
-    const loading = document.getElementById('loading');
-    const specialistResponseSection = document.getElementById('specialist-response');
+
     const historyList = document.getElementById('historyList');
     
     const specialistTypeSelect = document.getElementById('specialistType');
 
-    const specialists = ['Allergist/Immunologist', 'Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Hematologist', 'Nephrologist', 'Neurologist', 'Oncologist', 'Ophthalmologist', 'Otolaryngologist (ENT)', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Rheumatologist', 'Urologist', 'Cardiothoracic Surgeon', 'General Surgeon', 'Neurosurgeon', 'Orthopedic Surgeon', 'Plastic Surgeon', 'Vascular Surgeon', 'Family Medicine Physician', 'General Practitioner (GP)', 'Internal Medicine Physician (Internist)'];
+    const specialistSearch =
+        document.getElementById('specialistSearch');
+
+    const specialistTypeSelect =
+        document.getElementById('specialistType');
+
+    const specialists = [
+        'Cardiologist',
+        'Dermatologist',
+        'Neurologist',
+        'Psychiatrist',
+        'Pediatrician',
+        'Orthopedic Surgeon'
+    ];
+
     const consultationHistory = [];
 
 
@@ -40,26 +51,67 @@ document.addEventListener('DOMContentLoaded', () => {
         const filteredSpecialists = specialists;
         filteredSpecialists.forEach(specialist => {
             const option = document.createElement('option');
+
             option.value = specialist;
+
             option.textContent = specialist;
+
             specialistTypeSelect.appendChild(option);
+
         });
     }
 
+    specialistSearch.addEventListener('input', e => {
+        updateSpecialistOptions(e.target.value);
+    });
+
+    updateSpecialistOptions('');
+
+    requestForm.addEventListener('submit', e => {
+
+        e.preventDefault();
+
+        const doctorName =
+            document.getElementById('doctorName').value;
+
+        const patientCondition =
+            document.getElementById('patientCondition').value;
+
+        const specialistType =
+            document.getElementById('specialistType').value;
+
+        const consultation = {
+            doctorName,
+            patientCondition,
+            specialistType,
+            date: new Date().toLocaleString()
+        };
+
+        consultationHistory.push(consultation);
+
+        renderHistory();
+
+        alert('Consultation Submitted Successfully');
+
+        requestForm.reset();
+    });
+
     function renderHistory() {
+
         historyList.innerHTML = '';
-        consultationHistory.forEach((historyItem) => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-                <strong>${historyItem.date}</strong><br>
-                Doctor: ${historyItem.doctorName} <br>
-                Condition: ${historyItem.condition} <br>
-                Specialist: ${historyItem.specialist} <br>
-                Status: ${historyItem.status} <br>
-                <em>${historyItem.notes || ''}</em>
-                <br><br>
+
+        consultationHistory.forEach(item => {
+
+            const li = document.createElement('li');
+
+            li.innerHTML = `
+                <strong>${item.date}</strong><br>
+                Doctor: ${item.doctorName}<br>
+                Condition: ${item.patientCondition}<br>
+                Specialist: ${item.specialistType}
             `;
-            historyList.appendChild(listItem);
+
+            historyList.appendChild(li);
         });
     }
 
@@ -98,10 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     });
 
-    responseForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const consultationId = document.getElementById('consultationId').value;
-        const suggestion = document.getElementById('suggestion').value;
+    const box =
+        document.getElementById('recommendationBox');
 
         const historyItem = consultationHistory.find(item => item.date === consultationId);
         if (historyItem) {
@@ -114,13 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast("Consultation ID not found!", "error");
 }
 
-        statusMessage.innerHTML = `Suggestion submitted for Consultation ID <strong>${consultationId}</strong>:${suggestion}`;
-        responseForm.reset();
-    });
+        cold:
+            'Stay hydrated, take rest, and consider steam inhalation.',
 
-    feedbackForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const feedbackMessage = document.getElementById('feedbackMessage').value;
+        headache:
+            'Maintain hydration and avoid excessive screen exposure.',
 
         statusMessage.textContent = `Feedback received: ${feedbackMessage}`;
         feedbackForm.reset();
