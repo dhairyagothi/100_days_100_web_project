@@ -186,6 +186,7 @@ const PROJECT_DATA = [
   ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
   ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
   ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
+  ['Day 146', 'Cute Habit Tracker', './public/cute_habit_tracker/index.html', 'html css js', 'beginner'],
   
 ];
 // Alias for consistency
