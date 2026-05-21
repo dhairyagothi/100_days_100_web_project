@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Race Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/TypingRaceGame/style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <section class="hero-panel" aria-labelledby="game-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Speed typing arena</p>
+        <h1 id="game-title">Typing Race Game</h1>
+        <p class="hero-text">Beat the clock, protect your accuracy, and push your car to the finish line with every correct character.</p>
+      </div>
+
+      <div class="score-card" aria-label="Best performance">
+        <span>Best score</span>
+        <strong id="bestScore">0</strong>
+        <small id="bestMeta">No races yet</small>
+      </div>
+    </section>
+
+    <section class="race-board" aria-label="Typing race board">
+      <div class="race-track">
+        <div class="finish-line" aria-hidden="true"></div>
+        <div class="car" id="raceCar" aria-hidden="true">
+          <span class="car-top"></span>
+          <span class="car-body"></span>
+          <span class="wheel wheel-left"></span>
+          <span class="wheel wheel-right"></span>
+        </div>
+      </div>
+
+      <div class="stats-grid" aria-label="Live race stats">
+        <article class="stat">
+          <span>WPM</span>
+          <strong id="wpm">0</strong>
+        </article>
+        <article class="stat">
+          <span>Accuracy</span>
+          <strong id="accuracy">100%</strong>
+        </article>
+        <article class="stat">
+          <span>Time</span>
+          <strong id="timer">60s</strong>
+        </article>
+        <article class="stat">
+          <span>Score</span>
+          <strong id="score">0</strong>
+        </article>
+      </div>
+
+      <div class="controls">
+        <label for="difficulty">Difficulty</label>
+        <select id="difficulty" aria-label="Choose difficulty">
+          <option value="easy">Easy - 75 seconds</option>
+          <option value="medium" selected>Medium - 60 seconds</option>
+          <option value="hard">Hard - 45 seconds</option>
+          <option value="expert">Expert - 35 seconds</option>
+        </select>
+        <button id="startBtn" type="button">Start Race</button>
+        <button id="resetBtn" type="button" class="secondary">Reset</button>
+      </div>
+
+      <div class="challenge-card">
+        <div class="challenge-header">
+          <span id="challengeLabel">Ready challenge</span>
+          <span id="progressLabel">0%</span>
+        </div>
+        <p id="challengeText" class="challenge-text" aria-live="polite"></p>
+        <textarea id="typingInput" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="Press Start Race, then type here..." disabled></textarea>
+      </div>
+    </section>
+
+    <section class="results-panel" id="resultsPanel" aria-live="polite">
+      <h2>Race summary</h2>
+      <div class="result-grid">
+        <span>Final WPM <strong id="finalWpm">0</strong></span>
+        <span>Accuracy <strong id="finalAccuracy">0%</strong></span>
+        <span>Score <strong id="finalScore">0</strong></span>
+      </div>
+      <p id="resultMessage">Start a race to set your first score.</p>
+    </section>
+  </main>
+
+  <script src="/public/TypingRaceGame/script.js"></script>
+</body>
+</html>
