@@ -2,268 +2,101 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Sign Up</title>
-
-  <link rel="icon" href="favv.png" type="image/x-icon" />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-
-  <style>
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #4a90e2, #1abc9c);
-      color: white;
-    }
-
-    .navbar {
-      padding: 15px 30px;
-      background: #1c2833;
-    }
-
-    .nav-link {
-      color: #f39c12;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 30px auto;
-      display: flex;
-      background: white;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-
-    .left {
-      flex: 1;
-      padding: 60px 40px;
-      color: black;
-    }
-
-    .left h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
-    .highlight {
-      color: #1abc9c;
-    }
-
-    .description {
-      line-height: 1.8;
-      margin-bottom: 30px;
-    }
-
-    .feature-list {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .feature-card {
-      background: #f5f5f5;
-      padding: 12px 18px;
-      border-radius: 10px;
-    }
-
-    .form-box {
-      flex: 1;
-      background: #111;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .form-box h2 {
-      margin-bottom: 10px;
-    }
-
-    .form-subtitle {
-      color: #bbb;
-      margin-bottom: 20px;
-    }
-
-    #signupForm {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    .login-btn {
-      background: #1abc9c;
-      border: none;
-      padding: 14px;
-      color: white;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .signup-text {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .signup-text a {
-      color: #1abc9c;
-      text-decoration: none;
-    }
-
-    @media (max-width: 900px) {
-
-      .container {
-        flex-direction: column;
-      }
-
-      .left,
-      .form-box {
-        width: 100%;
-      }
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <link rel="icon" href="favv.png" type="image/x-icon" />
 </head>
 
 <body>
-
-  <header class="navbar">
-    <a href="../index.html" class="nav-link">
-      ← Back to Home
-    </a>
-  </header>
-
-  <main class="container">
-
-    <!-- Left Section -->
-    <section class="left">
-
-      <h1>
-        Create Your
-        <span class="highlight">Account</span>
-      </h1>
-
-      <p class="description">
-        Join the 100 Days 100 Web Projects journey and improve your development skills through practical projects.
-      </p>
-
-      <div class="feature-list">
-        <div class="feature-card">🎨 Creative Projects</div>
-        <div class="feature-card">📚 Learn Daily</div>
-        <div class="feature-card">🚀 Build Skills</div>
-      </div>
-
+    <header class="navbar">
+        <a href="../index.html" class="nav-link">Back to Home</a>
+      </header>
+    <div class="container">
+        
+        <div class="left-section">
+            <button class="back-button" onclick="window.location.href='Login.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-arrow-left">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <h1 class="animated-heading">100 Days 100 Web Projects!<span class="blinking-cursor">|</span></h1>
+            <p class="description fs-6">
+                Thank you for joining us on this exciting journey of creativity and learning. Over the next 100 days, we
+                will embark on a web development adventure, creating 100 unique web projects together. Whether you're a
+                seasoned developer or just starting out, there's something here for everyone to explore, learn, and
+                build.
+            </p>
+            <form id="signupForm" class="login-form">
+                <input type="text" id="name" placeholder="Name" class="input-field">
+                <input type="text" id="username" placeholder="Username" class="input-field">
+                <input type="email" id="email" placeholder="Email" class="input-field">
+                <input type="password" id="password" placeholder="Password" class="input-field">
+                <button type="submit" class="submit-button">Sign up</button>
+            </form>
+            <p class="already-signed-up" style="margin-top: 10px;">
+                Already signed up? <a href="login.html">Login</a>
+            </p>
+        </div>
+    
+        <div class="right-section">
+            <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop" alt="Image 1" class="transition-image">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop" alt="Image 2" class="transition-image">
+            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop" alt="Image 3" class="transition-image">
+            <img src="https://static.vecteezy.com/system/resources/previews/011/153/366/original/3d-web-developer-working-on-project-illustration-png.png" alt="Image 4" class="transition-image">
+            <img src="https://labs.sogeti.com/wp-content/uploads/sites/2/2024/01/case-studies-illustration-digital-services-a.png" alt="Image 5" class="transition-image">
+          </div>
     </section>
-
-    <!-- Right Section -->
-    <section class="form-box">
-
-      <h2>Sign Up</h2>
-
-      <p class="form-subtitle">
-        Create your account to continue.
-      </p>
-
-      <form id="signupForm">
-
-        <div class="form-group">
-          <input
-            type="text"
-            id="name"
-            placeholder="Full Name"
-            required
-          />
         </div>
 
-        <div class="form-group">
-          <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            required
-          />
-        </div>
+          <button type="submit" class="login-btn">Sign Up</button>
 
-        <div class="form-group">
-          <input
-            type="email"
-            id="email"
-            placeholder="Email Address"
-            required
-          />
-        </div>
+        </form>
+      </section>
+    </main>
 
-        <div class="form-group">
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            required
-          />
-        </div>
+    <script>
+        const images = document.querySelectorAll('.transition-image');
+        let currentImageIndex = 0;
 
-        <button type="submit" class="login-btn">
-          Sign Up
-        </button>
+        function showNextImage() {
+            images[currentImageIndex].style.opacity = 0;
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            images[currentImageIndex].style.opacity = 1;
+        }
 
-      </form>
+        setInterval(showNextImage, 3000);
 
-      <p class="signup-text">
-        Already have an account?
-        <a href="./login.html">Login</a>
-      </p>
+        document.getElementById('signupForm').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-    </section>
+            const name = document.getElementById('name').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-  </main>
+            // Replace this with actual validation and signup logic
+            if (name && username && email && password) {
+                // Store username in localStorage
+                localStorage.setItem("username", username);
 
-  <script>
-    document.getElementById("signupForm").addEventListener("submit", function (event) {
-
-      event.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const username = document.getElementById("username").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      if (name && username && email && password) {
-
-        localStorage.setItem("username", username);
-
-        window.location.href = "./login.html";
-
-      } else {
-
-        alert("Please fill in all fields.");
-
-      }
-    });
-  </script>
-
+                // Assume the registration is successful
+                window.location.href = 'Login.html';
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+    </script>
 </body>
+
 </html>
