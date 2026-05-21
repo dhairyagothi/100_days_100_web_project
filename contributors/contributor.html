@@ -106,12 +106,32 @@
 
       <p id="emptyState" class="empty-state">No contributors found.</p>
 
+      <div id="contributorsError" class="hidden api-error">
+        <p id="contributorsErrorMessage">Failed to load contributors.</p>
+
+        <button id="retryContributors">Retry</button>
+      </div>
+
+      <div id="contributorsLoading" class="loading-state">
+        Loading contributors...
+      </div>
+
       <div id="contributors" class="contributors-grid"></div>
 
       <div class="contributor-header" style="margin-top: 5rem">
         <h1>Project Stargazers</h1>
         <p class="subtitle">The community supporting our growth</p>
       </div>
+      <div id="stargazersError" class="hidden api-error">
+        <p id="stargazersErrorMessage">Failed to load stargazers.</p>
+
+        <button id="retryStargazers">Retry</button>
+      </div>
+
+      <div id="stargazersLoading" class="loading-state">
+        Loading stargazers...
+      </div>
+
       <div id="stargazers" class="stargazers-grid"></div>
     </div>
 
