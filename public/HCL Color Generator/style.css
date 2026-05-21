@@ -108,6 +108,10 @@ span {
   border-radius: 16px;
   border: 2px solid rgba(255,255,255,0.15);
   transition: background-color 0.1s ease, box-shadow 0.3s ease;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #rgbText, #hexText {
@@ -116,7 +120,44 @@ span {
   font-family: monospace;
   margin: 4px 0;
 }
+/* Quick Color Palette */
+.palette-container {
+  margin: 24px 0 16px 0;
+  text-align: left;
+}
 
+.palette-title {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.palette-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.palette-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  padding: 0;
+}
+
+.palette-swatch:hover, .palette-swatch:focus-visible {
+  transform: scale(1.15);
+  border-color: #fff;
+}
+
+.palette-swatch:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
 
 #copyBtn {
   margin-top: 20px;
@@ -132,3 +173,14 @@ span {
 }
 #copyBtn:hover  { opacity: 0.85; transform: translateY(-2px); }
 #copyBtn:active { transform: translateY(0); }
+
+#colorValue {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-align: center;
+}

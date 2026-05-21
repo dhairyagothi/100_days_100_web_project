@@ -1,0 +1,166 @@
+
+
+footer{
+    background-color: #8c8d94;
+    margin-top: 40px;
+    width: 100%;
+}
+
+/* top section */
+
+.footpannell0{
+    background-color: #3f414d;
+    color: white;
+    padding: 30px 50px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.footerBox{
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.footerBox i{
+    font-size: 28px;
+    margin-top: 5px;
+}
+
+.footerText p{
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footerText h4{
+    margin: 8px 0 4px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.footerText span{
+    font-size: 13px;
+    color: #d4d4d4;
+}
+
+.footerInput{
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+}
+
+.footerInput input{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    padding: 8px 5px;
+    color: white;
+    outline: none;
+    width: 220px;
+}
+
+.footerInput input::placeholder{
+    color: #d4d4d4;
+}
+
+.footerInput button{
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.appLinks{
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.appLinks img{
+    width: 120px;
+    cursor: pointer;
+}
+.foot-pannell1{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 40px 30px;
+    gap: 30px;
+}
+
+.foot-pannell1 ul{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+}
+
+.foot-pannell1 ul a{
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.foot-pannell1 ul a:hover{
+    color: #ffd4e1;
+}
+
+/* bottom section */
+
+.foot-pannell2{
+    border-top: 1px solid rgba(255,255,255,0.3);
+    padding: 18px;
+    text-align: center;
+    background-color: #ee356c;
+}
+
+.foot-pannell2 a{
+    color: white;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+/*  FOOT PANEL 3 */
+
+.foot-pannell3{
+    background-color: white;
+    padding: 35px 60px;
+    border-top: 1px solid #e2e2e2;
+}
+
+.foot-pannell3 ul{
+    padding: 0;
+    margin: 0;
+}
+
+
+.foot-pannell3 p{
+    color: #8c8d94;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.foot-pannell3 a{
+    color: #8c8d94;
+    text-align: center;
+    font-size: 16px;
+    line-height: 26px;
+    text-decoration: none;
+    font-weight: 400;
+}
