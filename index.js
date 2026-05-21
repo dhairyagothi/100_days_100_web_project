@@ -157,7 +157,7 @@ const PROJECT_DATA = [
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
   ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
+    ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
   ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
   ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
@@ -172,8 +172,10 @@ const PROJECT_DATA = [
   ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
   ['Day 135', 'Minesweeper Game', './public/Minesweeper_Game/index.html', 'game javascript responsive', 'intermediate'],
   ['Day 136', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
-];
-
+  ['Day 137', 'Sudoku Solver', './public/sudoku-solver/index.html', 'game javascript', 'intermediate'],
+  ['Day 138', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
+  ['Day 139', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
+  ];
 // Alias for consistency
 const PROJECTS = PROJECT_DATA;
 console.log('PROJECTS defined:', PROJECTS.length, 'items');
@@ -427,6 +429,14 @@ function renderGrid() {
 
   grid.style.display = 'grid';
   noResults.style.display = 'none';
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
+  if (currentPage < 1) {
+    currentPage = 1;
+  }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -886,6 +896,12 @@ function initTechStackSearch() {
   });
 }
 
+/* ============================================================
+   SEARCH CONTROLS
+   ============================================================ */
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearSearch');
+
 function syncProjectCounts() {
   const total = PROJECTS.length.toLocaleString();
 
@@ -1034,25 +1050,6 @@ function initScrollBtn() {
     btn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-}
-
-/* ============================================================
-   BACK TO TOP BUTTON
-   ============================================================ */
-const backToTopButton = document.getElementById('backToTop');
-
-if (backToTopButton) {
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) {
-      backToTopButton.style.display = 'block';
-    } else {
-      backToTopButton.style.display = 'none';
-    }
-  });
-
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
 }
 
 /* ============================================================

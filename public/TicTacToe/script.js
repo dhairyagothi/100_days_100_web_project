@@ -10,6 +10,7 @@
   var board     = Array(9).fill(null);
   var current   = "X";
   var gameOver  = false;
+  var isVsComputer = false; // New variable to track game mode
   var scores    = { X: 0, O: 0, D: 0 };
   var particles = [];
   var animFrame = null;
@@ -31,6 +32,10 @@
   var startScreen = document.getElementById("start-screen");
   var startBtn = document.getElementById("start-btn");
 
+  // Mode Selection Elements
+  var btnPvP   = document.getElementById("btn-pvp");
+  var btnPvC   = document.getElementById("btn-pvc");
+
   /* ── Build board ──────────────────────── */
   function buildBoard() {
     boardEl.innerHTML = "";
@@ -49,7 +54,98 @@
   /* ── Handle cell click ────────────────── */
   function handleClick(i) {
     if (gameOver || board[i]) return;
+    
+    // Prevent human clicking if it's the computer's turn
+    if (isVsComputer && current === "O") return;
+
     board[i] = current;
+    buildBoard();
+
+    var win = checkWin();
+    if (win) {
+      highlightWin(win);
+      scores[current]++;
+      updateScores();
+      setTimeout(function () { showWinOverlay(current); }, 320);
+      gameOver = true;
+    } else if (board.every(Boolean)) {
+      scores.D++;
+      updateScores();
+      setTimeout(showDrawOverlay, 200);
+      gameOver = true;
+    } else {
+      current = current === "X" ? "O" : "X";
+      setUI(current);
+
+      // Trigger computer turn if mode is PvC and it's O's turn
+      if (isVsComputer && current === "O" && !gameOver) {
+        setTimeout(makeComputerMove, 500); // 500ms delay for natural feeling
+      }
+    }
+  }
+
+  /* ── Smart Computer ──────────────── */
+  function makeComputerMove() {
+    if (gameOver) return;
+
+    var emptyIndices = [];
+    board.forEach(function (val, index) {
+      if (val === null) emptyIndices.push(index);
+    });
+
+    if (emptyIndices.length === 0) return;
+
+    var chosenCell = null;
+
+    //Check if computer can win in this move.
+    for (var i = 0; i < WIN_LINES.length; i++) {
+      var line = WIN_LINES[i];
+      var oCount = 0;
+      var nullIndex = null;
+
+      line.forEach(function (pos) {
+        if (board[pos] === "O") oCount++;
+        else if (board[pos] === null) nullIndex = pos;
+      });
+
+      if (oCount === 2 && nullIndex !== null) {
+        chosenCell = nullIndex;
+        break;
+      }
+    }
+
+    //If cant win, check if it can block oponent.
+    if (chosenCell === null) {
+      for (var i = 0; i < WIN_LINES.length; i++) {
+        var line = WIN_LINES[i];
+        var xCount = 0;
+        var nullIndex = null;
+
+        line.forEach(function (pos) {
+          if (board[pos] === "X") xCount++;
+          else if (board[pos] === null) nullIndex = pos;
+        });
+
+        if (xCount === 2 && nullIndex !== null) {
+          chosenCell = nullIndex;
+          break;
+        }
+      }
+    }
+
+    //Else, center prefered
+    if (chosenCell === null && board[4] === null) {
+      chosenCell = 4;
+    }
+
+    // 4.Pick random
+    if (chosenCell === null) {
+      var randomIndex = Math.floor(Math.random() * emptyIndices.length);
+      chosenCell = emptyIndices[randomIndex];
+    }
+
+    // Execute the calculated smart move
+    board[chosenCell] = current;
     buildBoard();
 
     var win = checkWin();
@@ -202,6 +298,23 @@
   document.getElementById("btn-reset").addEventListener("click", resetAll);
   document.getElementById("btn-restart").addEventListener("click", nextRound);
   document.getElementById("win-btn").addEventListener("click", nextRound);
+
+  // Hooking up the Game Mode Button Actions
+  if (btnPvP && btnPvC) {
+    btnPvP.addEventListener("click", function () {
+      isVsComputer = false;
+      btnPvP.classList.add("active");
+      btnPvC.classList.remove("active");
+      resetAll();
+    });
+
+    btnPvC.addEventListener("click", function () {
+      isVsComputer = true;
+      btnPvC.classList.add("active");
+      btnPvP.classList.remove("active");
+      resetAll();
+    });
+  }
 
   /* ── Init ─────────────────────────────── */
   startBtn.addEventListener("click", function () {
