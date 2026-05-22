@@ -192,6 +192,8 @@ const PROJECT_DATA = [
   ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
   ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
+  ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate']
+  ['Day 125', 'Duolingo Clone', './public/duo-clone/index.html', 'html css javascript', 'intermediate'],
   ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
   ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
@@ -794,6 +796,60 @@ function renderRecentProjects() {
     recentGrid.appendChild(card);
   });
 }
+
+/* ============================================================
+   VIEW ALL TOGGLE
+   ============================================================ */
+
+const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+const recentToggleBtn = document.getElementById('recentToggleBtn');
+
+if (bookmarkToggleBtn) {
+  bookmarkToggleBtn.addEventListener('click', () => {
+    showAllBookmarks = !showAllBookmarks;
+    bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
+    renderBookmarks();
+  });
+}
+
+if (recentToggleBtn) {
+  recentToggleBtn.addEventListener('click', () => {
+    showAllRecent = !showAllRecent;
+    recentToggleBtn.textContent = showAllRecent ? 'Show Less' : 'View All';
+    renderRecentProjects();
+  });
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+document.addEventListener('click', (e) => {
+  const bookmarkBtn = e.target.closest('.bookmark-btn');
+  if (!bookmarkBtn) return;
+
+  e.preventDefault();
+  const projectDay = bookmarkBtn.dataset.id;
+  const project = PROJECTS.find((item) => item[0] === projectDay);
+  toggleBookmark(project);
+});
+
+document.addEventListener('click', (e) => {
+  const projectLink = e.target.closest('.open-project');
+  if (!projectLink) return;
+
+  const projectDay = projectLink.dataset.id;
+  const project = PROJECTS.find((item) => item[0] === projectDay);
+  if (!project) return;
+
+  trackRecentProject(project);
+});
 
 /* ============================================================
    VIEW ALL TOGGLE
