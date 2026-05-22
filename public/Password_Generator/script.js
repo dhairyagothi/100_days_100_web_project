@@ -1,14 +1,19 @@
+const warningMsg = document.getElementById("warningMsg");
 const inputSlider = document.querySelector("[data-lengthSlider]");
 const lengthDisplay = document.querySelector("[data-lengthNumber]");
 
 const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn = document.querySelector("[data-copy]");
 const copyMsg = document.querySelector("[data-copyMsg]");
+const hideTimerText = document.getElementById("hideTimer");
+const eyeBtn = document.querySelector("[data-eye]");
+const suggestionBox = document.getElementById("suggestionBox");
 const uppercaseCheck = document.querySelector("#uppercase");
 const lowercaseCheck = document.querySelector("#lowercase");
 const numbersCheck = document.querySelector("#numbers");
 const symbolsCheck = document.querySelector("#symbols");
 const indicator = document.querySelector("[data-indicator]");
+const strengthText = document.querySelector("[data-strengthText]");
 const generateBtn = document.querySelector(".generateButton");
 const allCheckBox = document.querySelectorAll("input[type=checkbox]");
 const symbols = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
@@ -16,26 +21,32 @@ const symbols = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
 
 //initially
 let password = "";
-let passwordLength = 10;
 let checkCount = 0;
-handleSlider();
-//ste strength circle color to grey
+let hideTimeout;
+let countdownInterval;
 setIndicator("#ccc");
 
+let passwordLength = 10;
+handleSlider();
+handleCheckBoxChange();
+calcStrength();
 
 //set passwordLength
 function handleSlider() {
     inputSlider.value = passwordLength;
     lengthDisplay.innerText = passwordLength;
-    //or kuch bhi karna chahiye ? - HW
-    const min = inputSlider.min;
-    const max = inputSlider.max;
-    inputSlider.style.backgroundSize = ( (passwordLength - min)*100/(max - min)) + "% 100%"
+
+    const min = Number(inputSlider.min);
+    const max = Number(inputSlider.max);
+
+    inputSlider.style.backgroundSize =
+        ((passwordLength - min) * 100 / (max - min)) + "% 100%";
 }
 
 function setIndicator(color) {
     indicator.style.backgroundColor = color;
     indicator.style.boxShadow = `0px 0px 12px 1px ${color}`;
+    if (lengthDisplay) lengthDisplay.style.color = color;
 }
 
 function getRndInteger(min, max) {
@@ -43,15 +54,15 @@ function getRndInteger(min, max) {
 }
 
 function generateRandomNumber() {
-    return getRndInteger(0,9);
+    return getRndInteger(0, 10);
 }
 
-function generateLowerCase() {  
-       return String.fromCharCode(getRndInteger(97,123))
+function generateLowerCase() {
+    return String.fromCharCode(getRndInteger(97, 123))
 }
 
-function generateUpperCase() {  
-    return String.fromCharCode(getRndInteger(65,91))
+function generateUpperCase() {
+    return String.fromCharCode(getRndInteger(65, 91))
 }
 
 function generateSymbol() {
@@ -68,34 +79,82 @@ function calcStrength() {
     if (lowercaseCheck.checked) hasLower = true;
     if (numbersCheck.checked) hasNum = true;
     if (symbolsCheck.checked) hasSym = true;
-  
+
     if (hasUpper && hasLower && (hasNum || hasSym) && passwordLength >= 8) {
+
       setIndicator("#0f0");
+      strengthText.innerText = "Strong";
     } else if (
       (hasLower || hasUpper) &&
       (hasNum || hasSym) &&
       passwordLength >= 6
     ) {
       setIndicator("#ff0");
+      strengthText.innerText = "Medium";
     } else {
       setIndicator("#f00");
+      strengthText.innerText = "Weak";
+
     }
+        updateSuggestions();
+}
+
+function updateSuggestions(){
+    if(!suggestionBox) return;
+    const hasUpper = uppercaseCheck.checked;
+    const hasLower = lowercaseCheck.checked;
+    const hasNum = numbersCheck.checked;
+    const hasSym = symbolsCheck.checked;
+    const suggestions = [];
+    const strength = (strengthText && strengthText.innerText) ? strengthText.innerText : '';
+
+    if(strength === 'Strong'){
+        suggestionBox.innerText = '';
+        return;
+    }
+
+    if(strength === 'Medium'){
+        // To reach Strong: need both upper & lower, (num || sym), and length >= 8
+        if(!(hasUpper && hasLower)){
+            if(!hasUpper) suggestions.push('Include uppercase letters');
+            if(!hasLower) suggestions.push('Include lowercase letters');
+        }
+        if(!(hasNum || hasSym)){
+            suggestions.push('Include numbers or symbols');
+        }
+        if(passwordLength < 8) suggestions.push('Increase length to at least 8');
+    } else {
+        // Weak -> suggest steps to reach Medium: (hasLower||hasUpper) && (hasNum||hasSym) && length >= 6
+        if(!(hasLower || hasUpper)){
+            suggestions.push('Include lowercase or uppercase letters');
+        } else {
+            if(!hasLower) suggestions.push('Include lowercase letters');
+            if(!hasUpper) suggestions.push('Include uppercase letters');
+        }
+        if(!(hasNum || hasSym)){
+            suggestions.push('Include numbers or symbols');
+        }
+        if(passwordLength < 6) suggestions.push('Increase length to at least 6');
+    }
+
+    if(suggestions.length === 0) suggestionBox.innerText = '';
+    else suggestionBox.innerText = 'Suggestions: ' + suggestions.join(', ');
 }
 
 async function copyContent() {
     try {
-        await navigator.clipboard.writeText(passwordDisplay.value);
+        await navigator.clipboard.writeText(password);
         copyMsg.innerText = "copied";
     }
-    catch(e) {
+    catch (e) {
         copyMsg.innerText = "Failed";
     }
     //to make copy wala span visible
     copyMsg.classList.add("active");
 
-    setTimeout( () => {
+    setTimeout(() => {
         copyMsg.classList.remove("active");
-    },2000);
+    }, 2000);
 
 }
 
@@ -108,7 +167,7 @@ function shufflePassword(array) {
         const temp = array[i];
         array[i] = array[j];
         array[j] = temp;
-      }
+    }
     let str = "";
     array.forEach((el) => (str += el));
     return str;
@@ -116,41 +175,74 @@ function shufflePassword(array) {
 
 function handleCheckBoxChange() {
     checkCount = 0;
-    allCheckBox.forEach( (checkbox) => {
-        if(checkbox.checked)
+    allCheckBox.forEach((checkbox) => {
+        if (checkbox.checked)
             checkCount++;
     });
 
     //special condition
-    if(passwordLength < checkCount ) {
+    if (passwordLength < checkCount) {
         passwordLength = checkCount;
         handleSlider();
     }
 }
 
-allCheckBox.forEach( (checkbox) => {
-    checkbox.addEventListener('change', handleCheckBoxChange);
-})
+allCheckBox.forEach((checkbox)=>{
+    checkbox.addEventListener("change",()=>{
+        handleCheckBoxChange();
+        calcStrength();
+    });
+});
 
+inputSlider.addEventListener("input",(e)=>{
+    passwordLength = parseInt(e.target.value);
 
-inputSlider.addEventListener('input', (e) => {
-    passwordLength = e.target.value;
-    handleSlider();
-})
+    handleSlider();     // update visible number
+    calcStrength();     // update strength
+});
 
 
 copyBtn.addEventListener('click', () => {
-    if(passwordDisplay.value)
+    if (password && passwordDisplay.value !== "********")
         copyContent();
 })
+
+if(eyeBtn){
+    eyeBtn.addEventListener('click', ()=>{
+        if(!password) return;
+        // if currently hidden, show for 5 seconds
+        if(passwordDisplay.value === "********"){
+            passwordDisplay.value = password;
+            clearTimeout(hideTimeout);
+            clearInterval(countdownInterval);
+            let showLeft = 5;
+            hideTimerText.innerText = `Visible for ${showLeft}s`;
+            const tmpInterval = setInterval(()=>{
+                showLeft--;
+                if(showLeft > 0) hideTimerText.innerText = `Visible for ${showLeft}s`;
+                else { clearInterval(tmpInterval); passwordDisplay.value = "********"; hideTimerText.innerText = "Password hidden for security"; }
+            },1000);
+        } else {
+            // if currently visible, hide immediately
+            passwordDisplay.value = "********";
+            hideTimerText.innerText = "Password hidden for security";
+            clearTimeout(hideTimeout);
+            clearInterval(countdownInterval);
+        }
+    });
+}
 
 generateBtn.addEventListener('click', () => {
     //none of the checkbox are selected
 
-    if(checkCount == 0) 
+    if (checkCount == 0) {
+        warningMsg.innerText = "Please select at least one option";
         return;
+    }
 
-    if(passwordLength < checkCount) {
+    warningMsg.innerText = "";
+
+    if (passwordLength < checkCount) {
         passwordLength = checkCount;
         handleSlider();
     }
@@ -160,47 +252,29 @@ generateBtn.addEventListener('click', () => {
     //remove old password
     password = "";
 
-    //let's put the stuff mentioned by checkboxes
-
-    // if(uppercaseCheck.checked) {
-    //     password += generateUpperCase();
-    // }
-
-    // if(lowercaseCheck.checked) {
-    //     password += generateLowerCase();
-    // }
-
-    // if(numbersCheck.checked) {
-    //     password += generateRandomNumber();
-    // }
-
-    // if(symbolsCheck.checked) {
-    //     password += generateSymbol();
-    // }
-
     let funcArr = [];
 
-    if(uppercaseCheck.checked)
+    if (uppercaseCheck.checked)
         funcArr.push(generateUpperCase);
 
-    if(lowercaseCheck.checked)
+    if (lowercaseCheck.checked)
         funcArr.push(generateLowerCase);
 
-    if(numbersCheck.checked)
+    if (numbersCheck.checked)
         funcArr.push(generateRandomNumber);
 
-    if(symbolsCheck.checked)
+    if (symbolsCheck.checked)
         funcArr.push(generateSymbol);
 
     //compulsory addition
-    for(let i=0; i<funcArr.length; i++) {
+    for (let i = 0; i < funcArr.length; i++) {
         password += funcArr[i]();
     }
     console.log("COmpulsory adddition done");
 
     //remaining adddition
-    for(let i=0; i<passwordLength-funcArr.length; i++) {
-        let randIndex = getRndInteger(0 , funcArr.length);
+    for (let i = 0; i < passwordLength - funcArr.length; i++) {
+        let randIndex = getRndInteger(0, funcArr.length);
         console.log("randIndex" + randIndex);
         password += funcArr[randIndex]();
     }
@@ -210,6 +284,30 @@ generateBtn.addEventListener('click', () => {
     console.log("Shuffling done");
     //show in UI
     passwordDisplay.value = password;
+    
+      clearTimeout(hideTimeout);
+      clearInterval(countdownInterval);
+
+      let timeLeft = 10;
+
+      hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
+
+      countdownInterval = setInterval(() => {
+        timeLeft--;
+
+        if(timeLeft > 0) {
+          hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
+        }
+        else {
+          clearInterval(countdownInterval);
+          }
+    }, 1000);
+
+    hideTimeout = setTimeout(() => {
+      passwordDisplay.value = "********";
+      hideTimerText.innerText = "Password hidden for security";
+      clearInterval(countdownInterval);
+    }, 10000);
     console.log("UI adddition done");
     //calculate strength
     calcStrength();
