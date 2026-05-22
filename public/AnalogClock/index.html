@@ -101,6 +101,28 @@
                 </button>
             </div>
         </section>
+
+        <section id="stopwatchPanel" aria-label="Stopwatch">
+            <h2 id="stopwatchTitle">Stopwatch</h2>
+
+            <div id="stopwatchDisplayWrapper">
+                <div id="stopwatchDisplay" aria-live="polite" aria-atomic="true">00:00:00</div>
+                <div id="stopwatchStatusLabel">Ready</div>
+            </div>
+
+            <button id="stopwatchStartBtn" class="btn btn-primary" type="button">
+                <span class="btn-icon">▶</span> Start
+            </button>
+
+            <div id="stopwatchControls">
+                <button id="stopwatchPauseBtn" class="btn btn-secondary" type="button" disabled>
+                    <span class="btn-icon">⏸</span> Pause
+                </button>
+                <button id="stopwatchResetBtn" class="btn btn-ghost" type="button" disabled>
+                    <span class="btn-icon">↺</span> Reset
+                </button>
+            </div>
+        </section>
     </main>
 
     <!-- Toast notification (replaces timerUpMsg) -->

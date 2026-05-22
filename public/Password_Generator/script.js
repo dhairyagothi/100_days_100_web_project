@@ -6,6 +6,8 @@ const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn = document.querySelector("[data-copy]");
 const copyMsg = document.querySelector("[data-copyMsg]");
 const hideTimerText = document.getElementById("hideTimer");
+const eyeBtn = document.querySelector("[data-eye]");
+const suggestionBox = document.getElementById("suggestionBox");
 const uppercaseCheck = document.querySelector("#uppercase");
 const lowercaseCheck = document.querySelector("#lowercase");
 const numbersCheck = document.querySelector("#numbers");
@@ -44,6 +46,7 @@ function handleSlider() {
 function setIndicator(color) {
     indicator.style.backgroundColor = color;
     indicator.style.boxShadow = `0px 0px 12px 1px ${color}`;
+    if (lengthDisplay) lengthDisplay.style.color = color;
 }
 
 function getRndInteger(min, max) {
@@ -93,11 +96,54 @@ function calcStrength() {
       strengthText.innerText = "Weak";
 
     }
+        updateSuggestions();
+}
+
+function updateSuggestions(){
+    if(!suggestionBox) return;
+    const hasUpper = uppercaseCheck.checked;
+    const hasLower = lowercaseCheck.checked;
+    const hasNum = numbersCheck.checked;
+    const hasSym = symbolsCheck.checked;
+    const suggestions = [];
+    const strength = (strengthText && strengthText.innerText) ? strengthText.innerText : '';
+
+    if(strength === 'Strong'){
+        suggestionBox.innerText = '';
+        return;
+    }
+
+    if(strength === 'Medium'){
+        // To reach Strong: need both upper & lower, (num || sym), and length >= 8
+        if(!(hasUpper && hasLower)){
+            if(!hasUpper) suggestions.push('Include uppercase letters');
+            if(!hasLower) suggestions.push('Include lowercase letters');
+        }
+        if(!(hasNum || hasSym)){
+            suggestions.push('Include numbers or symbols');
+        }
+        if(passwordLength < 8) suggestions.push('Increase length to at least 8');
+    } else {
+        // Weak -> suggest steps to reach Medium: (hasLower||hasUpper) && (hasNum||hasSym) && length >= 6
+        if(!(hasLower || hasUpper)){
+            suggestions.push('Include lowercase or uppercase letters');
+        } else {
+            if(!hasLower) suggestions.push('Include lowercase letters');
+            if(!hasUpper) suggestions.push('Include uppercase letters');
+        }
+        if(!(hasNum || hasSym)){
+            suggestions.push('Include numbers or symbols');
+        }
+        if(passwordLength < 6) suggestions.push('Increase length to at least 6');
+    }
+
+    if(suggestions.length === 0) suggestionBox.innerText = '';
+    else suggestionBox.innerText = 'Suggestions: ' + suggestions.join(', ');
 }
 
 async function copyContent() {
     try {
-        await navigator.clipboard.writeText(passwordDisplay.value);
+        await navigator.clipboard.writeText(password);
         copyMsg.innerText = "copied";
     }
     catch (e) {
@@ -157,9 +203,34 @@ inputSlider.addEventListener("input",(e)=>{
 
 
 copyBtn.addEventListener('click', () => {
-    if (passwordDisplay.value)
+    if (password && passwordDisplay.value !== "********")
         copyContent();
 })
+
+if(eyeBtn){
+    eyeBtn.addEventListener('click', ()=>{
+        if(!password) return;
+        // if currently hidden, show for 5 seconds
+        if(passwordDisplay.value === "********"){
+            passwordDisplay.value = password;
+            clearTimeout(hideTimeout);
+            clearInterval(countdownInterval);
+            let showLeft = 5;
+            hideTimerText.innerText = `Visible for ${showLeft}s`;
+            const tmpInterval = setInterval(()=>{
+                showLeft--;
+                if(showLeft > 0) hideTimerText.innerText = `Visible for ${showLeft}s`;
+                else { clearInterval(tmpInterval); passwordDisplay.value = "********"; hideTimerText.innerText = "Password hidden for security"; }
+            },1000);
+        } else {
+            // if currently visible, hide immediately
+            passwordDisplay.value = "********";
+            hideTimerText.innerText = "Password hidden for security";
+            clearTimeout(hideTimeout);
+            clearInterval(countdownInterval);
+        }
+    });
+}
 
 generateBtn.addEventListener('click', () => {
     //none of the checkbox are selected
