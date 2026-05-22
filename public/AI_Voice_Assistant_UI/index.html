@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Assistant UI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for premium aesthetic -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main AI Visualizer -->
+        <div class="ai-visualizer" id="visualizer">
+            <div class="orb"></div>
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="ring ring-3"></div>
+            
+            <!-- Voice Waves (Hidden by default) -->
+            <div class="waves" id="waves">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+        </div>
+
+        <!-- Status Text -->
+        <div class="status-container">
+            <h1 id="status-text">Hi, how can I help?</h1>
+            <p id="sub-status">System Idle</p>
+        </div>
+
+        <!-- Glassmorphism Control Dock -->
+        <div class="control-dock">
+            <button class="btn icon-btn" title="Settings" id="settings-btn" aria-label="Settings">
+                <i class="ph ph-gear" aria-hidden="true" focusable="false"></i>
+            </button>
+            <button class="btn main-btn" id="mic-btn" aria-label="Toggle Microphone">
+                <i class="ph-fill ph-microphone" aria-hidden="true" focusable="false"></i>
+            </button>
+            <button class="btn icon-btn" title="Close" id="close-btn" aria-label="Close Dashboard">
+                <i class="ph ph-x" aria-hidden="true" focusable="false"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
