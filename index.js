@@ -185,11 +185,11 @@ const PROJECT_DATA = [
   ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
+  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', 'tool', 'intermediate'],
+  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', 'html css javascript api-javascript', 'Advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
-  ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
+  ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
+  ['Day 125', 'Snakeladder', './public/snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
   ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
@@ -213,7 +213,10 @@ const PROJECT_DATA = [
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
+  
+
   ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
+  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
@@ -258,13 +261,13 @@ function normalizeTech(tech) {
 function matchesTechStack(projectTags) {
   // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-  
+
   // Handle empty or missing tags
   if (!projectTags) return false;
-  
+
   // Convert to single lowercase string for efficient matching
   const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
-  
+
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
   return techStackFilters.every(filter => tagsLower.includes(filter));
@@ -287,10 +290,10 @@ function removeTechFilter(tech) {
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = '';
-  
+
   const input = document.getElementById('techStackSearch');
   if (input) input.value = '';
-  
+
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -302,22 +305,22 @@ function updateTechFilterDisplay() {
   const container = document.getElementById('activeTechFilters');
   const tagsContainer = document.getElementById('techFilterTags');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!container || !tagsContainer) return;
-  
+
   // Show/hide clear button in search input
   if (clearBtn) {
     clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
   }
-  
+
   // Show/hide active filters container
   if (techStackFilters.length === 0) {
     container.style.display = 'none';
     return;
   }
-  
+
   container.style.display = 'flex';
-  
+
   // Render filter tags with remove buttons
   tagsContainer.innerHTML = techStackFilters.map(tech => `
     <span class="tech-filter-tag">
@@ -336,19 +339,19 @@ function updateTechFilterDisplay() {
  */
 function getAllTechnologies() {
   const techSet = new Set();
-  
+
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string' 
-        ? tags.split(/\s+/).filter(t => t) 
+      const tagArray = typeof tags === 'string'
+        ? tags.split(/\s+/).filter(t => t)
         : tags;
-      
+
       tagArray.forEach(tag => {
         techSet.add(tag.toLowerCase());
       });
     }
   });
-  
+
   return Array.from(techSet).sort();
 }
 
@@ -637,7 +640,7 @@ function renderPagination(totalItems, totalPages) {
   controlsDiv.appendChild(nextBtn);
 
   container.appendChild(controlsDiv);
-  
+
   // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
@@ -652,9 +655,9 @@ function scrollToProjectSection() {
   const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
-  
+
   // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
-  const duration = 100; 
+  const duration = 100;
   let startTime = null;
 
   function animation(currentTime) {
@@ -903,27 +906,27 @@ function initSearch() {
 function initTechStackSearch() {
   const input = document.getElementById('techStackSearch');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!input) return;
-  
+
   // Debounce timer for performance
   let debounceTimer;
-  
+
   // Listen for input changes
   input.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
-    
+
     // Debounce: wait 300ms after user stops typing
     debounceTimer = setTimeout(() => {
       const value = e.target.value.trim().toLowerCase();
-      
+
       if (value) {
         // Split by comma or space to support multiple technologies
         // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-        
+
         techStackFilters = [...new Set(techs)];
-        
+
         updateTechFilterDisplay();
         renderGrid();
       } else {
@@ -932,14 +935,14 @@ function initTechStackSearch() {
       }
     }, 300); // 300ms debounce delay
   });
-  
+
   // Clear button functionality
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       clearAllTechFilters();
     });
   }
-  
+
   // Optional: Add Enter key support
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -999,18 +1002,18 @@ function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
 
-    const username = window.username || null;
-    const isRoot   = !window.location.pathname.includes('/contributors/');
-    const base     = isRoot ? '' : '../';
-    const isLight  = document.body.classList.contains('light-mode');
-    const themeButton = `
+  const username = window.username || null;
+  const isRoot = !window.location.pathname.includes('/contributors/');
+  const base = isRoot ? '' : '../';
+  const isLight = document.body.classList.contains('light-mode');
+  const themeButton = `
             <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
                 <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
             </button>
         `;
 
-    if (username) {
-        container.innerHTML = `
+  if (username) {
+    container.innerHTML = `
             ${themeButton}
             <span class="welcome-text">Hi, ${username}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
@@ -1020,14 +1023,14 @@ function updateNavbar() {
             </a>
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
         `;
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            window.username = null;
-            updateNavbar();
-        });
-        const gen = document.getElementById('generateReadmeBtn');
-        if (gen) gen.addEventListener('click', generateReadme);
-    } else {
-        container.innerHTML = `
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.username = null;
+      updateNavbar();
+    });
+    const gen = document.getElementById('generateReadmeBtn');
+    if (gen) gen.addEventListener('click', generateReadme);
+  } else {
+    container.innerHTML = `
             ${themeButton}
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
@@ -1045,64 +1048,64 @@ function updateNavbar() {
    THEME TOGGLE
    ============================================================ */
 function initTheme() {
-    const saved = localStorage.getItem('theme') || 'dark';
-    let transitionTimer = null;
+  const saved = localStorage.getItem('theme') || 'dark';
+  let transitionTimer = null;
 
-    const syncThemeIcons = () => {
-        const isLight = document.body.classList.contains('light-mode');
-        const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-        document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-            icon.className = iconClass;
-        });
-    };
+  const syncThemeIcons = () => {
+    const isLight = document.body.classList.contains('light-mode');
+    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
+      icon.className = iconClass;
+    });
+  };
 
-    if (saved === 'light') {
-        document.body.classList.add('light-mode');
-    }
+  if (saved === 'light') {
+    document.body.classList.add('light-mode');
+  }
+  syncThemeIcons();
+
+  document.body.addEventListener('click', (e) => {
+    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
+    if (!target) return;
+
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
     syncThemeIcons();
 
-    document.body.addEventListener('click', (e) => {
-        const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-        if (!target) return;
-
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        syncThemeIcons();
-
-        document.body.classList.add('theme-transitioning');
-        if (transitionTimer) clearTimeout(transitionTimer);
-        transitionTimer = setTimeout(() => {
-            document.body.classList.remove('theme-transitioning');
-        }, 400);
-    });
+    document.body.classList.add('theme-transitioning');
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      document.body.classList.remove('theme-transitioning');
+    }, 400);
+  });
 }
 
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-    const btn = document.getElementById('scrollBtn');
-    const ring = document.getElementById('ringFill');
-    if (!btn) return;
+  const btn = document.getElementById('scrollBtn');
+  const ring = document.getElementById('ringFill');
+  if (!btn) return;
 
-    const circumference = 2 * Math.PI * 22;
+  const circumference = 2 * Math.PI * 22;
 
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-        btn.classList.toggle('show', scrollTop > 400);
+    btn.classList.toggle('show', scrollTop > 400);
 
-        if (ring) {
-            ring.style.strokeDashoffset = circumference * (1 - progress);
-        }
-    });
+    if (ring) {
+      ring.style.strokeDashoffset = circumference * (1 - progress);
+    }
+  });
 
-    btn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 /* ============================================================
@@ -1110,7 +1113,7 @@ function initScrollBtn() {
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   getAllTechnologies();
-  
+
   initTheme();
   updateNavbar();
   initFilterChips();
