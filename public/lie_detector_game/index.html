@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lie Detector</title>
+
+  <link rel="stylesheet" href="/public/lie_detector_game/style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>🕵️ AI Lie Detector</h1>
+
+    <p class="subtitle">
+      Answer honestly with YES or NO...
+    </p>
+
+    <div class="question-box">
+
+  <p id="questionText">
+    Did you secretly eat food at midnight?
+  </p>
+
+</div>
+
+<div class="custom-question">
+
+  <input
+    type="text"
+    id="customQuestion"
+    placeholder="Or type your own question..."
+  >
+
+  <button id="setQuestionBtn">
+    Set Question
+  </button>
+
+</div>
+
+    <textarea
+      id="answerInput"
+      placeholder="Type YES or NO..."
+    ></textarea>
+
+    <button id="analyzeBtn">
+      Analyze Truth
+    </button>
+
+    <div class="scanner hidden" id="scanner">
+      <div class="scan-line"></div>
+      <p>Scanning typing behavior...</p>
+    </div>
+
+    <div class="result hidden" id="result">
+      <h2 id="truthPercent"></h2>
+      <p id="message"></p>
+
+      <button id="retryBtn">
+        Try Again
+      </button>
+    </div>
+
+  </div>
+
+  <script src="/public/lie_detector_game/script.js"></script>
+
+</body>
+</html>

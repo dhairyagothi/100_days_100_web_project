@@ -1,0 +1,214 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#0f172a;
+  color:white;
+  font-family:Arial, Helvetica, sans-serif;
+
+  min-height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  padding:20px;
+}
+
+.container{
+  width:100%;
+  max-width:700px;
+
+  background:#111827;
+
+  padding:40px;
+
+  border-radius:20px;
+
+  box-shadow:0 0 30px rgba(0,0,0,0.5);
+
+  text-align:center;
+}
+
+h1{
+  font-size:3rem;
+  margin-bottom:15px;
+}
+
+.subtitle{
+  color:#9ca3af;
+  margin-bottom:30px;
+}
+
+.question-box{
+  background:#1e293b;
+
+  padding:20px;
+
+  border-radius:12px;
+
+  margin-bottom:20px;
+
+  font-size:1.2rem;
+}
+
+.custom-question{
+
+  display:flex;
+
+  gap:10px;
+
+  margin-bottom:20px;
+}
+
+.custom-question input{
+
+  flex:1;
+
+  padding:15px;
+
+  border:none;
+
+  outline:none;
+
+  border-radius:10px;
+
+  background:#1e293b;
+
+  color:white;
+
+  font-size:1rem;
+}
+
+.custom-question button{
+
+  white-space:nowrap;
+}
+
+textarea{
+  width:100%;
+  height:150px;
+
+  border:none;
+
+  outline:none;
+
+  border-radius:12px;
+
+  padding:20px;
+
+  resize:none;
+
+  font-size:1.1rem;
+
+  margin-bottom:20px;
+
+  background:#1e293b;
+
+  color:white;
+}
+
+button{
+  background:#22c55e;
+
+  color:white;
+
+  border:none;
+
+  padding:15px 30px;
+
+  border-radius:10px;
+
+  font-size:1rem;
+
+  cursor:pointer;
+
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
+}
+
+.scanner{
+  margin-top:30px;
+
+  background:#1e293b;
+
+  padding:30px;
+
+  border-radius:15px;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.scan-line{
+  position:absolute;
+
+  left:0;
+
+  top:0;
+
+  width:100%;
+
+  height:5px;
+
+  background:#22c55e;
+
+  animation:scan 2s linear infinite;
+}
+
+@keyframes scan{
+  0%{
+    top:0;
+  }
+
+  100%{
+    top:100%;
+  }
+}
+
+.result{
+  margin-top:30px;
+
+  background:#1e293b;
+
+  padding:30px;
+
+  border-radius:15px;
+}
+
+.result h2{
+  font-size:3rem;
+
+  color:#22c55e;
+
+  margin-bottom:15px;
+}
+
+.result p{
+  font-size:1.2rem;
+
+  margin-bottom:20px;
+}
+
+.hidden{
+  display:none;
+}
+
+@media(max-width:768px){
+
+  h1{
+    font-size:2rem;
+  }
+
+  .container{
+    padding:20px;
+  }
+
+}
