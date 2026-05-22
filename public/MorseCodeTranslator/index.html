@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morse Code Translator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <main class="container">
+
+    <header>
+      <div class="signal-bars" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <h1>Morse Code Translator</h1>
+      <p>Encode and decode messages — and hear them too</p>
+    </header>
+
+    <div class="mode-toggle" role="group" aria-label="Translation mode">
+      <button class="mode-btn active" id="encode-btn">Text → Morse</button>
+      <button class="mode-btn" id="decode-btn">Morse → Text</button>
+    </div>
+
+    <div class="panels">
+      <div class="panel glass">
+        <div class="panel-header">
+          <span class="panel-label" id="input-label">Text</span>
+          <button class="icon-btn" id="clear-btn" title="Clear input" aria-label="Clear input">✕</button>
+        </div>
+        <textarea
+          id="input"
+          placeholder="Type your message..."
+          aria-label="Input text"
+          spellcheck="false"
+        ></textarea>
+        <div class="char-count"><span id="char-count">0</span> characters</div>
+      </div>
+
+      <div class="divider" aria-hidden="true">
+        <div class="arrow-wrap">
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <div class="panel glass">
+        <div class="panel-header">
+          <span class="panel-label" id="output-label">Morse Code</span>
+          <button class="icon-btn" id="copy-btn" title="Copy output" aria-label="Copy output">&#x2398;</button>
+        </div>
+        <div id="output" class="output-area" role="status" aria-live="polite">—</div>
+      </div>
+    </div>
+
+    <div class="audio-controls glass">
+      <button class="play-btn" id="play-btn" aria-label="Play Morse audio">
+        <span id="play-icon" aria-hidden="true">▶</span>
+        <span id="play-label">Play Audio</span>
+      </button>
+      <div class="speed-control">
+        <span class="speed-label">Slow</span>
+        <input
+          type="range"
+          id="speed"
+          min="5"
+          max="30"
+          value="15"
+          aria-label="Playback speed in WPM"
+        >
+        <span class="speed-label">Fast</span>
+        <span class="speed-val" id="speed-val">15 WPM</span>
+      </div>
+    </div>
+
+    <button class="ref-toggle glass" aria-expanded="false" id="ref-toggle-btn">
+      Morse Reference <span id="ref-arrow">▾</span>
+    </button>
+    <div class="ref-table" id="ref-table" role="table" aria-label="Morse code reference chart"></div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
