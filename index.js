@@ -13,8 +13,7 @@ let currentPage = 1;
 let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
-let currentCategory = 'all';
-let currentDifficulty = 'all';
+
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
@@ -26,14 +25,44 @@ let techSearchQuery = ''; // Current tech search input
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
   'js': 'javascript',
-  'react': 'javascript', // React projects are tagged as 'javascript'
-  'node': 'javascript',  // Node projects are tagged as 'javascript'
+  'react': 'javascript',
+  'node': 'javascript',
   'vue': 'javascript',
-  'python': 'api',       // Python/Flask projects are tagged as 'api javascript'
+  'python': 'api',
   'flask': 'api',
   'game': 'game',
   'games': 'game',
 };
+
+/* Maps data-filter values on chip buttons to display category names */
+const FILTER_CATEGORY_MAP = {
+  'all': 'all',
+  'game': 'Games',
+  'clone': 'Clones',
+  'tool': 'Tools',
+  'ui': 'UI / Animation',
+  'api': 'APIs',
+};
+
+/**
+ * Derive a display category from a project's tags and name.
+ * Uses the existing tag structure so no new data field is needed.
+ */
+function getCategoryFromTags(tags, name) {
+  const tagStr = (tags || '').toLowerCase();
+  const nameStr = (name || '').toLowerCase();
+
+  if (tagStr.includes('game')) return 'Games';
+  if (tagStr.includes('clone')) return 'Clones';
+  if (tagStr.includes('tool')) return 'Tools';
+  if (tagStr.includes('ui')) return 'UI / Animation';
+  if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
+
+  if (nameStr.includes('clone')) return 'Clones';
+  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+
+  return 'Tools';
+}
 
 const PROJECT_DATA = [
   ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
@@ -45,18 +74,18 @@ const PROJECT_DATA = [
   ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'html css javascript', 'advanced'],
   ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', 'css', 'intermediate'],
   ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', 'javascript', 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr_generator/qr.html', 'api javascript', 'intermediate'],
+  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
   ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
   ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
   ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
-  ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
+  ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', 'javascript', 'intermediate'],
   ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
   ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
   ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
   ['Day 18', 'Carousel Solar System',' https://100-days-100-web-project-5sit.vercel.app/','css canvas','intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
   ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website', 'javascript', 'intermediate'],
+  ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', 'javascript', 'intermediate'],
   ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'ui css', 'beginner'],
   ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
   ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'intermediate'],
@@ -73,7 +102,7 @@ const PROJECT_DATA = [
   ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', 'tool javascript', 'beginner'],
   ['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
   ['Day 37', '2048 Game', './public/2048_game/index.html', 'game javascript', 'intermediate'],
-  ['Day 38', 'Github Profile Finder', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder', 'api javascript', 'intermediate'],
+  ['Day 38', 'Github Profile Finder', './public/github_profile_finder/index.html', 'api javascript', 'intermediate'],
   ['Day 39', 'Notes App', './public/notes-app/index.html', 'todo javascript', 'beginner'],
   ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', 'javascript css', 'beginner'],
   ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', 'game canvas', 'intermediate'],
@@ -84,14 +113,14 @@ const PROJECT_DATA = [
   ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', 'javascript', 'beginner'],
   ['Day 47', 'Ping Pong Game', './public/ping/index.html', 'game canvas', 'intermediate'],
   ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', 'api javascript', 'intermediate'],
-  ['Day 49', 'Url Shortener', 'https://github.com/chandankoranga02/100_days_100_web_project/tree/Main/public/url_shortener', 'api javascript', 'intermediate'],
-  ['Day 50', 'Recipe Genie', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe%20Genie', 'api javascript', 'intermediate'],
+  ['Day 49', 'Url Shortener', './public/url_shortener/frontend/public/index.html', 'api javascript', 'intermediate'],
+  ['Day 50', 'Recipe Genie', './public/Recipe%20Genie/index.html', 'api javascript', 'intermediate'],
   ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', 'clone css', 'beginner'],
   ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', 'weather api', 'intermediate'],
   ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', 'javascript', 'intermediate'],
   ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 55', 'Cricket Game', './public/cricket/index.html', 'game javascript', 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/pastebin', 'javascript', 'intermediate'],
+  ['Day 56', 'Pastebin using svelte', './public/pastebin/src/app.html', 'javascript', 'intermediate'],
   ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', 'ui css', 'beginner'],
   ['Day 58', 'Music App', './public/Music%20App/index.html', 'api javascript', 'intermediate'],
   ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', 'css', 'beginner'],
@@ -128,7 +157,7 @@ const PROJECT_DATA = [
   ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', 'javascript', 'beginner'],
   ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', 'api javascript', 'intermediate'],
   ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 93', 'TextUtils', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils', 'javascript', 'beginner'],
+  ['Day 93', 'TextUtils', './public/Textutils/public/index.html', 'javascript', 'beginner'],
   ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', 'game javascript', 'intermediate'],
   ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', 'todo javascript', 'intermediate'],
   ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', 'ui css javascript', 'beginner'],
@@ -142,7 +171,7 @@ const PROJECT_DATA = [
   ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
   ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
   ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-  ['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
+  ['Day 107', 'DocNow', './public/DocNow/index.html', 'api javascript', 'intermediate'],
   ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
@@ -151,7 +180,7 @@ const PROJECT_DATA = [
   ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'tool javascript', 'intermediate'],
   ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
   ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-  ['Day 116', 'AI Image Classifier', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AI Image Classifier/', 'api javascript', 'intermediate'],
+  ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', 'api javascript', 'intermediate'],
   ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'ui tool html css js', 'intermediate'],
   ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
@@ -166,7 +195,7 @@ const PROJECT_DATA = [
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
   ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
   ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
-  ["Day 131", "Retro Highway Racer", "/public/RetroHighwayRacer/index.html", 'game javascript', 'intermediate'],
+  ['Day 131', 'Retro Highway Racer', './public/RetroHighwayRacer/index.html', 'game javascript', 'intermediate'],
   ['Day 132', 'Pokedex', './public/Pokedex/index.html', 'utility', 'intermediate'],
   ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
   ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
@@ -175,8 +204,7 @@ const PROJECT_DATA = [
   ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
   ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
   ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
-  ['Day 140', 'Big Sales Prediction',
- 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
+  ['Day 140', 'Big Sales Prediction', './public/BigSales-Prediction/frontend/index.html', 'machine learning python javascript', 'advanced'],
   ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
   ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
@@ -184,10 +212,9 @@ const PROJECT_DATA = [
   ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
+  ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
 ];
-// Alias for consistency
 const PROJECTS = PROJECT_DATA;
-console.log('PROJECTS defined:', PROJECTS.length, 'items');
 
 
 /* ============================================================
@@ -321,9 +348,7 @@ function getAllTechnologies() {
     }
   });
   
-  const techs = Array.from(techSet).sort();
-  console.log('Available technologies:', techs); // Debug: show available techs
-  return techs;
+  return Array.from(techSet).sort();
 }
 
 /* ============================================================
@@ -338,12 +363,11 @@ let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
 
-// Category labels mapping
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
-console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
 /* ============================================================
    GITHUB REPO STATS
@@ -351,21 +375,42 @@ console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 async function fetchRepoStats() {
   try {
     const [repoRes, prRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`),
+      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`).catch(() => null),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`).catch(() => null),
     ]);
-    if (!repoRes.ok || !prRes.ok) throw new Error('Stats fetch failed');
-    const repo = await repoRes.json();
-    const prs = await prRes.json();
 
-    const set = (id, val) => {
+    const repo = repoRes && repoRes.ok ? await repoRes.json() : null;
+    const prs = prRes && prRes.ok ? await prRes.json() : null;
+    const prCount = Number.isFinite(prs?.total_count) ? prs.total_count : null;
+
+    const setNumber = (id, val) => {
       const el = document.getElementById(id);
-      if (el) el.textContent = Number(val).toLocaleString();
+      if (!el) return;
+      const numericVal = Number(val);
+      if (!Number.isFinite(numericVal)) return;
+      el.textContent = numericVal.toLocaleString();
     };
-    set('starCount', repo.stargazers_count);
-    set('forkCount', repo.forks_count);
-    set('issueCount', repo.open_issues_count - prs.total_count);
-    set('prCount', prs.total_count);
+
+    if (repo) {
+      setNumber('starCount', repo.stargazers_count);
+      setNumber('forkCount', repo.forks_count);
+      const issueCount = prCount !== null ? repo.open_issues_count - prCount : repo.open_issues_count;
+      if (issueCount < 0) {
+        console.warn('GitHub stats issue count negative:', {
+          openIssues: repo.open_issues_count,
+          prCount,
+        });
+      }
+      setNumber('issueCount', Math.max(issueCount, 0));
+    }
+
+    if (prCount !== null) {
+      setNumber('prCount', prCount);
+    }
+
+    if (!repo && !prs) {
+      console.warn('GitHub stats unavailable: Stats fetch failed');
+    }
   } catch (e) {
     console.warn('GitHub stats unavailable:', e.message);
   }
@@ -378,9 +423,10 @@ function generateReadme() {
     lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
     lines.push('');
     lines.push('## Projects');
-    PROJECTS.forEach(([day, name, url, tags, cat]) => {
+    PROJECTS.forEach(([day, name, url, tags]) => {
       const safeUrl = url || '';
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${cat}_`);
+      const category = getCategoryFromTags(tags, name);
+      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${category}_`);
     });
 
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
@@ -408,23 +454,20 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, , tags, cat]) => {
-    // 1. Category filter (beginner/intermediate)
-    const matchesFilter = activeFilter === 'all' || cat === activeFilter;
-    
-    // 2. Name/Day search
+  const filtered = PROJECTS.filter(([day, name, , tags]) => {
+    const category = getCategoryFromTags(tags, name);
+    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
+
+    const matchesFilter = activeFilter === 'all' || category === targetCategory;
+
     const q = searchQuery.toLowerCase();
     const matchesSearch =
       !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
-    
-    // 3. Technology stack filter (NEW)
+
     const matchesTech = matchesTechStack(tags);
-    
-    // Combine all three filters
+
     return matchesFilter && matchesSearch && matchesTech;
   });
-
-  console.log('Filtered projects:', filtered.length, 'out of', PROJECTS.length); // Debug log
 
   grid.innerHTML = '';
 
@@ -451,7 +494,8 @@ function renderGrid() {
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
 
-  pageItems.forEach(([day, name, url, tags, cat]) => {
+  pageItems.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -462,7 +506,7 @@ function renderGrid() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category ${cat}">${CATEGORY_LABEL[cat] || cat}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -682,7 +726,8 @@ function renderBookmarks() {
 
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
+  visibleBookmarks.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
@@ -691,7 +736,7 @@ function renderBookmarks() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -733,7 +778,8 @@ function renderRecentProjects() {
 
   const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags, cat]) => {
+  visibleRecent.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
@@ -743,7 +789,7 @@ function renderRecentProjects() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -875,10 +921,7 @@ function initTechStackSearch() {
         // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
         
-        // Update filters array (already lowercase, no need to normalize yet)
-        techStackFilters = [...new Set(techs)]; // Remove duplicates efficiently
-        
-        console.log('Tech filters active:', techStackFilters); // Debug log
+        techStackFilters = [...new Set(techs)];
         
         updateTechFilterDisplay();
         renderGrid();
@@ -1065,14 +1108,6 @@ function initScrollBtn() {
    INIT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired');
-  console.log(
-    'PROJECTS:',
-    typeof PROJECTS,
-    PROJECTS ? PROJECTS.length : 'undefined'
-  );
-  
-  // Show available technologies for debugging
   getAllTechnologies();
   
   initTheme();

@@ -34,6 +34,33 @@ const TILE_STYLES = {
   2048: { fontSize: '22px' },
 };
 
+
+const THEMES = {
+  classic: {},  
+  ocean:   { 2:'#e0f7fa,#b2ebf2', 4:'#80deea,#26c6da', 8:'#00bcd4,#0097a7', 16:'#006064,#00838f', 32:'#004d6e,#01579b', 64:'#0d47a1,#1565c0', 128:'#1a237e,#283593', 256:'#311b92,#4527a0', 512:'#4a148c,#6a1b9a', 1024:'#880e4f,#ad1457', 2048:'#b71c1c,#c62828' },
+  neon:    { 2:'#f0f,#c0f', 4:'#0ff,#09f', 8:'#0f0,#0a0', 16:'#ff0,#fa0', 32:'#f60,#f00', 64:'#f0a,#c00', 128:'#60f,#30c', 256:'#0cf,#09c', 512:'#0fc,#0c9', 1024:'#fc0,#f90', 2048:'#f0f,#f00' },
+  retro:   { 2:'#f5deb3,#deb887', 4:'#d2691e,#a0522d', 8:'#8b4513,#6b3410', 16:'#556b2f,#3b5323', 32:'#2e8b57,#1e6b47', 64:'#008080,#006060', 128:'#4682b4,#2c5f8a', 256:'#6a5acd,#483d8b', 512:'#9370db,#7b52c0', 1024:'#c71585,#a01060', 2048:'#dc143c,#b01030' },
+};
+
+let currentTheme = 'classic';
+
+function applyTheme(name) {
+  currentTheme = name;
+  const map = THEMES[name];
+  document.querySelectorAll('.theme-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.theme === name));
+  if (!map || Object.keys(map).length === 0) {
+    document.getElementById('theme-style').textContent = '';
+    return;
+  }
+  const css = Object.entries(map).map(([val, grad]) =>
+    `.tile[data-val="${val}"] { background: linear-gradient(135deg,${grad}) !important; }`
+  ).join('\n');
+  document.getElementById('theme-style').textContent = css;
+  try { localStorage.setItem('2048theme', name); } catch(_) {}
+}
+
+
 const PARTICLE_COLORS = ['#ff6b6b', '#ffd54f', '#69f0ae', '#4fc3f7', '#e040fb', '#ff9800'];
 
 const ACHIEVEMENTS = [
@@ -58,8 +85,9 @@ let N        = 4;       // grid size
 let TS       = 94;      // tile size in px
 let GAP      = 10;      // gap between tiles
 let PAD      = 12;      // board padding
-
+let paused = false;
 let board, score, best, prevBoard, prevScore;
+let reviveChance = 1;  
 let moves    = 0;
 let combo    = 0;
 let over     = false;
@@ -67,6 +95,9 @@ let won      = false;
 let dark     = false;
 let soundOn  = true;
 let mode     = 'classic';
+
+let moveHistory = [];
+let isReplaying = false;
 
 let timerInterval = null;
 let timeLeft      = 60;
@@ -84,9 +115,78 @@ function loadStats () {
   try { const s = localStorage.getItem('2048stats'); if (s) stats = JSON.parse(s); } catch (_) {}
 }
 
-function saveStats () {
+
+
+function saveStats() {
   try { localStorage.setItem('2048stats', JSON.stringify(stats)); } catch (_) {}
 }
+
+function logGameScore(s) {
+  stats.scoreHistory = stats.scoreHistory || [];
+  stats.scoreHistory.push(s);
+  if (stats.scoreHistory.length > 10) stats.scoreHistory.shift();
+  saveStats();
+}
+
+function togglePause() {
+  if (mode !== 'timed' || over) return;
+  paused = !paused;
+  const btn = document.getElementById('pausebtn');
+  if (paused) {
+    clearInterval(timerInterval);
+    btn.textContent = '▶ Resume';
+    showOverlayPause();
+  } else {
+    startTimer();
+    btn.textContent = '⏸ Pause';
+    document.getElementById('ov').style.display = 'none';
+  }
+}
+
+// REPLACE this entire function:
+function showOverlayPause() {
+  const ov = document.getElementById('ov');
+  ov.className = 'ov';
+  ov.innerHTML = `
+    <div class="ov-title" style="color:#4fc3f7">⏸ Paused</div>
+    <div class="ov-sub">Game is paused</div>
+    <button class="btn" id="ov-resume-btn">▶ Resume</button>
+  `;
+  ov.style.display = 'flex';
+  document.getElementById('ov-resume-btn').addEventListener('click', togglePause);
+}
+
+
+function drawScoreGraph() {
+  const history = stats.scoreHistory || [];
+  const cv = document.getElementById('score-graph');
+  if (!cv || history.length < 2) return;
+  const ctx = cv.getContext('2d');
+  const W = cv.width = cv.offsetWidth || 260;
+  const H = cv.height = 80;
+  ctx.clearRect(0, 0, W, H);
+  const max = Math.max(...history, 1);
+  const step = W / (history.length - 1);
+  ctx.beginPath();
+  ctx.strokeStyle = '#ff9800';
+  ctx.lineWidth = 2.5;
+  history.forEach((v, i) => {
+    const x = i * step;
+    const y = H - (v / max) * (H - 8) - 4;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  // Dots
+  history.forEach((v, i) => {
+    const x = i * step;
+    const y = H - (v / max) * (H - 8) - 4;
+    ctx.beginPath();
+    ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffd54f';
+    ctx.fill();
+  });
+}
+
 
 function loadBest () {
   try { return parseInt(localStorage.getItem('2048best'), 10) || 0; } catch (_) { return 0; }
@@ -109,6 +209,45 @@ function loadGame () {
     return true;
   } catch (_) { return false; }
 }
+
+
+
+document.getElementById('hintbtn').addEventListener('click', () => {
+  const dir = getBestHint();
+  showToast(`💡 Try: ${dir.toUpperCase()}`);
+  const arrows = { left: '←', right: '→', up: '↑', down: '↓' };
+  const el = document.getElementById('hint-arrow');
+  el.textContent = arrows[dir];
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1200);
+});
+
+document.querySelectorAll('.theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
+});
+
+function getBestHint() {
+  const dirs = ['left', 'right', 'up', 'down'];
+  let bestDir = null, bestScore = -1;
+  dirs.forEach(dir => {
+    const rotTurns = { right: 0, down: 1, left: 2, up: 3 };
+    let tmp = rotateBoard(board, rotTurns[dir]);
+    let pts = 0, merges = 0;
+    for (let r = 0; r < N; r++) {
+      const res = slideRow([...tmp[r]]);
+      pts += res.pts;
+      if (res.pts > 0) merges++;
+    }
+    if (pts + merges * 10 > bestScore) { bestScore = pts + merges * 10; bestDir = dir; }
+  });
+  return bestDir;
+}
+
+
+document.getElementById('pausebtn').addEventListener('click', togglePause);
+
+
+
 
 function clearSavedGame () {
   try { localStorage.removeItem('2048state'); } catch (_) {}
@@ -188,7 +327,7 @@ function rotateBoard (b, turns) {
    ========================================================= */
 
 function doMove (dir) {
-  if (over) return;
+  if (over || paused) return;
 
   prevBoard = copyBoard(board);
   prevScore = score;
@@ -208,6 +347,7 @@ function doMove (dir) {
   }
 
   if (!moved) { combo = 0; return; }
+  if (!isReplaying) moveHistory.push(dir);
 
   board = rotateBoard(tmp, (4 - rotTurns[dir]) % 4);
   score += pts;
@@ -238,6 +378,7 @@ function doMove (dir) {
     stats.games++;
     stats.best = Math.max(stats.best, score);
     stats.bestTile = Math.max(stats.bestTile, mt);
+    logGameScore(score);
     saveStats();
     clearSavedGame();
     if (mode === 'timed') clearInterval(timerInterval);
@@ -247,10 +388,16 @@ function doMove (dir) {
 
   if (isLost()) {
     over = true;
+    showToast(
+      reviveChance > 0
+      ? `Chance left: ${reviveChance}`
+      : 'No chances left'
+    );
     if (mode === 'timed') clearInterval(timerInterval);
     stats.games++;
     stats.best = Math.max(stats.best, score);
     stats.bestTile = Math.max(stats.bestTile, mt);
+    logGameScore(score); 
     saveStats();
     clearSavedGame();
     setTimeout(() => showOverlay('lose'), 350);
@@ -280,9 +427,13 @@ function init (resume = false) {
     board    = Array.from({ length: N }, () => Array(N).fill(0));
     score    = 0;
     moves    = 0;
+    moveHistory = [];
     combo    = 0;
     over     = false;
+    paused = false;
     won      = false;
+
+    reviveChance = 1; 
     prevBoard = null;
     prevScore = 0;
     addTile();
@@ -305,7 +456,9 @@ function init (resume = false) {
   stopConfetti();
 
   document.getElementById('ov').style.display = 'none';
+  document.getElementById('pausebtn').textContent = '⏸ Pause';
   document.getElementById('stats-modal').classList.remove('open');
+  document.getElementById('pausebtn').style.display = mode === 'timed' ? 'inline-flex' : 'none';
 }
 
 /* =========================================================
@@ -331,10 +484,27 @@ function updateTimerBar () {
   fill.className = 'timer-fill' + (timeLeft <= 15 ? ' danger' : '');
 }
 
+
+async function watchReplay() {
+  if (!moveHistory.length) { showToast('No moves to replay'); return; }
+  const snapshot = [...moveHistory];
+  isReplaying = true;
+  init();   // fresh board, same mode
+  isReplaying = true;  // init resets it via moveHistory=[], re-set flag
+  document.getElementById('ov').style.display = 'none';
+
+  for (const dir of snapshot) {
+    await new Promise(res => setTimeout(res, 380));
+    doMove(dir);
+  }
+  isReplaying = false;
+  showToast('Replay complete!');
+}
+
+
 /* =========================================================
    Rendering
    ========================================================= */
-
 function renderBoard () {
   const bd = document.getElementById('bd');
   bd.innerHTML = '';
@@ -458,9 +628,11 @@ function showOverlay (type) {
       <div class="ov-stat"><div class="ov-stat-lbl">Best Tile</div><div class="ov-stat-val">${maxTile()}</div></div>
     </div>
     <button class="btn" id="ov-replay-btn">Play Again</button>
+    <button class="btn sm" id="ov-replay-btn2" style="margin-top:4px">▶ Watch Replay</button>
   `;
   ov.style.display = 'flex';
   document.getElementById('ov-replay-btn').addEventListener('click', () => init());
+  document.getElementById('ov-replay-btn2').addEventListener('click', watchReplay);
 }
 
 function showToast (msg) {
@@ -502,7 +674,7 @@ function openStats () {
   document.getElementById('st-games').textContent = stats.games;
   document.getElementById('st-wins').textContent  = stats.wins;
   document.getElementById('st-tile').textContent  = stats.bestTile;
-
+  drawScoreGraph();
   const badges = document.getElementById('ach-badges');
   badges.innerHTML = '';
   ACHIEVEMENTS.forEach(a => {
@@ -626,18 +798,38 @@ document.getElementById('nb').addEventListener('click', () => {
 });
 
 document.getElementById('ub').addEventListener('click', () => {
-  if (!prevBoard) { showToast('Nothing to undo'); return; }
-  board     = prevBoard;
-  score     = prevScore;
-  prevBoard = null;
-  moves     = Math.max(0, moves - 1);
-  over      = false;
-  won       = false;
-  renderBoard();
-  renderTiles();
-  updateUI();
-  document.getElementById('ov').style.display = 'none';
-  showToast('Undone!');
+
+    if (!prevBoard) {
+        showToast('Nothing to undo');
+        return;
+    }
+    // BLOCK extra revive after game over
+    if (over && reviveChance <= 0) {
+        showToast('No chances left. Restart game');
+        return;
+    }
+
+    board = prevBoard;
+    score = prevScore;
+    prevBoard = null;
+
+    moves = Math.max(0, moves - 1);
+    // user used revive chance 
+    if (over) {
+        reviveChance--;
+    }
+    over = false;
+    won = false;
+
+    renderBoard();
+    renderTiles();
+    updateUI();
+    document.getElementById('ov').style.display='none';
+    showToast(
+        reviveChance === 0
+        ? 'Chance left: 0'
+        : 'Undone!'
+    );
 });
 
 document.getElementById('tb').addEventListener('click', () => {
@@ -675,8 +867,8 @@ const KEY_MAP = {
 };
 
 document.addEventListener('keydown', e => {
-  const dir = KEY_MAP[e.key];
-  if (dir) { e.preventDefault(); doMove(dir); }
+ const dir = KEY_MAP[e.key];
+  if (dir) { e.preventDefault(); if (!paused) doMove(dir); }
 });
 
 /* Touch / swipe */
@@ -698,5 +890,7 @@ document.getElementById('wr').addEventListener('touchend', e => {
    ========================================================= */
 
 loadStats();
+const savedTheme = localStorage.getItem('2048theme') || 'classic';
+applyTheme(savedTheme);
 best = loadBest();
 init(true);

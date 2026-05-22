@@ -1,160 +1,105 @@
-2048 — Enhanced Edition
-A fully redesigned and feature-rich version of the classic 2048 tile puzzle game, built as a GSSoC 2026 open source contribution. This upgrade transforms the original bare-bones game into a polished, responsive, and engaging experience with modern UI, animations, sound, multiple game modes, and much more.
+<div align="center">
 
-What Was Improved
-Here is a full breakdown of every improvement made over the original game:
-🎨 UI & Visual Design
+# 🎮 2048: Enhanced Edition
 
-Complete visual overhaul — replaced the flat, colourless layout with a deep purple/indigo themed interface
-Animated background blobs — soft glowing colour orbs slowly drift and pulse behind the board, giving a modern glassmorphism feel
-Gradient tile colours — every tile value now has a unique vibrant gradient (white → orange → red → pink → purple → blue → cyan → green → gold fire for 2048), replacing the dull flat tile colours of the original
-Frosted glass UI cards — score boxes, buttons, and modals use semi-transparent glass-style backgrounds with subtle borders
-Gradient logo — the 2048 title uses a dynamic colour gradient that adapts to the active theme
-Google Fonts (Nunito) — replaced the default system font with a bold, rounded typeface for a premium feel
+**A fully redesigned and feature-rich version of the classic 2048 tile puzzle game.**
 
-✨ Animations
+[![GSSoC 2026](https://img.shields.io/badge/GSSoC-2026-F96F36?style=for-the-badge&logo=girlscript)](https://gssoc.girlscript.org/projects/dhairyagothi%2F100_days_100_web_project)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/ananyajoshi-cseai/100_days_100_web_project/tree/Main/public/2048_game)
+[![Play Live](https://img.shields.io/badge/Play-Live_Demo-00C7B7?style=for-the-badge&logo=vercel)](https://100-days-100-web-project.vercel.app/public/2048_game/index.html)
 
-Tile pop animation — new tiles appear with a spring-physics scale + slight rotation effect
-Tile merge animation — merged tiles bounce with a satisfying scale pulse
-Smooth tile movement — tiles slide across the board with CSS transitions
-Particle burst on merge — 8 colourful particles explode outward every time two tiles combine
-Score float — a +points number rises from the board on every merge
-Confetti shower on winning — a full canvas-based confetti animation fires when you reach 2048
-Animated score bump — the score display scales up briefly on every change
-Best score gold flash — the best score card flashes gold when you beat your record
-Combo streak labels — consecutive merges trigger escalating text labels: "3× combo!" → "On fire!" → "Unstoppable!" → "LEGENDARY!"
+### 🚀 [Play the Live Game Here](https://100-days-100-web-project.vercel.app/public/2048_game/index.html)
 
-🕹️ Gameplay Features
+</div>
 
-Undo button — step back one move at any time
-Three game modes:
+<br/>
 
-Classic — standard 4×4 grid
-Timed (60s) — race against a countdown timer with a live progress bar that turns red when under 15 seconds
-Zen 5×5 — larger grid for a more relaxed, strategic experience
+## 🌌 About The Project
 
+Built as an open-source contribution for **GSSoC 2026**, this upgrade transforms the original bare-bones 2048 game into a polished, responsive, and engaging experience. Featuring a modern glassmorphism UI, fluid animations, immersive sound effects, and multiple game modes, it brings a fresh, highly responsive feel to a beloved classic.
 
-Auto-save & resume — the game state is saved to localStorage so refreshing the page brings you back to exactly where you left off
-Move counter — live display of how many moves have been played
-Tile count & best tile — live metadata bar showing active tile count and highest tile on the board
+---
 
-🏆 Achievements System
-Six unlockable achievements that pop up in-game when earned and persist across sessions:
-AchievementConditionQuarter WayReach tile 256HalfwayReach tile 512So CloseReach tile 1024Winner!Reach tile 2048CenturyPlay 100 movesHigh ScorerScore over 2000 points
-📊 Stats Modal
-A full statistics panel (📊 button) tracking:
+## ✨ Improvements & Features Breakdown
 
-Best score ever
-Total games played
-Total wins
-Best tile ever reached
-All earned achievement badges displayed visually
+### 🎨 UI & Visual Design
+* **Complete Visual Overhaul:** Replaced the flat layout with a deep purple/indigo-themed interface.
+* **Animated Background Blobs:** Soft, glowing color orbs slowly drift and pulse behind the board, delivering a premium glassmorphism aesthetic.
+* **Gradient Tile Colors:** Every tile value boasts a unique, vibrant gradient (white → orange → red → pink → purple → blue → cyan → gold fire for 2048).
+* **Frosted Glass UI:** Score boxes, buttons, and modals utilize semi-transparent glass-style backgrounds with subtle borders.
+* **Dynamic Typography & Logos:** Features a gradient 2048 title that adapts to the active theme, alongside the rounded, bold **Nunito** Google Font.
+* **🌙 Dark / Light Theme:** Instant toggle (☀/🌙) with distinct color palettes, blob colors, and board styles.
 
-All stats persist in localStorage across browser sessions.
-🔊 Sound Effects
-Implemented using the Web Audio API — no external files required:
+### 💨 Animations
+* **Tile Physics:** New tiles appear with a spring-physics scale and slight rotation effect. 
+* **Satisfying Merges:** Merged tiles bounce with a scale pulse, accompanied by an 8-particle colorful burst explosion.
+* **Score Dynamics:** A `+points` float rises on every merge, the score display scales up briefly, and the best score card flashes gold upon breaking records.
+* **Combo Streaks & Confetti:** Consecutive merges trigger escalating text labels (*"3× combo!" → "On fire!" → "Unstoppable!" → "LEGENDARY!"*). Reaching 2048 fires a full canvas-based confetti shower.
 
-Soft click on every move
-Rising tone on every merge
-Triumphant three-note chime on achievement unlock
-Mute/unmute toggle button (🔊 / 🔇)
+### 🕹️ Gameplay Features
+* **Undo Button:** Step back one move at any time.
+* **Three Game Modes:**
+  * 🧊 **Classic:** Standard 4×4 grid.
+  * ⏳ **Timed (60s):** Race against a countdown timer with a live progress bar that turns red under 15 seconds.
+  * 🧘 **Zen 5×5:** Larger grid for a more relaxed, strategic experience.
+* **State Persistence:** Auto-save & resume functionality via `localStorage`. Refreshing the page brings you back exactly where you left off.
+* **Live Metadata:** Real-time move counter, active tile count, and highest tile display.
 
-🌙 Dark / Light Theme
+### 🏆 Achievements System
+Six unlockable achievements pop up in-game when earned and persist across sessions.
 
-Full dark and light theme toggle (☀ / 🌙 button)
-Each theme has its own distinct background colour palette, blob colours, board style, and tile adjustments
-Theme applies instantly across every element
+| Achievement | Condition |
+| :--- | :--- |
+| 🥉 **Quarter Way** | Reach tile 256 |
+| 🥈 **Halfway** | Reach tile 512 |
+| 🥇 **So Close** | Reach tile 1024 |
+| 👑 **Winner!** | Reach tile 2048 |
+| 💯 **Century** | Play 100 moves |
+| 🔥 **High Scorer** | Score over 2000 points |
 
-📱 Responsive & Accessible
+### 📊 Stats Modal & 🔊 Audio
+* **Comprehensive Tracking (📊):** View your best score, total games played, total wins, best tile ever reached, and a visual display of all earned achievement badges.
+* **Web Audio API Effects:** Soft click on moves, rising tones on merges, and a triumphant three-note chime for achievements. Includes a quick mute/unmute toggle (🔊 / 🔇).
 
-Fully mobile responsive — tile sizes, fonts, and layout scale down for small screens
-Touch / swipe support — swipe in any direction on mobile to play
-Keyboard support — Arrow keys and WASD both work
-ARIA labels — board, score, overlays, and controls all have accessibility attributes
-Reduced motion support — particles, confetti, and animations are automatically disabled for users with prefers-reduced-motion set
+### 📱 Responsive & Accessible
+* **Mobile & Touch:** Fully responsive design that scales perfectly. Swipe in any direction on mobile devices to play.
+* **Keyboard Support:** Arrow keys and `W A S D` functionality.
+* **Accessibility (a11y):** Integrated ARIA labels for the board, score, overlays, and controls.
+* **Reduced Motion:** Particles, confetti, and animations automatically disable for users with `prefers-reduced-motion` enabled.
 
-🧹 Code Quality
+---
 
-Clean separation of concerns: index.html, style.css, script.js
-CSS custom properties (variables) used throughout for easy theming
-All game state managed in a single clear state block
-Modular functions — rendering, game logic, sound, and persistence are all separate
-Fully commented codebase
+## 🛠️ Technologies Used
 
+* **HTML5:** Semantic structure with ARIA accessibility attributes.
+* **CSS3:** Custom properties (variables), gradients, keyframe animations, glassmorphism, responsive design, `prefers-reduced-motion`.
+* **JavaScript (ES6+):** Game logic, Web Audio API, Canvas API (confetti), `localStorage`, touch events.
+* **Google Fonts:** Nunito (700, 800, 900 weights).
 
-Features Summary
+---
 
-Vibrant gradient tile colour system (2 → 2048)
-Animated drifting background blobs
-Spring-physics tile pop & merge animations
-Particle burst on every merge
-Confetti explosion on winning
-Score float (+pts) on merge
-Combo streak notifications
-Classic, Timed (60s), and Zen 5×5 game modes
-Undo last move
-Auto-save and resume on page refresh
-6 unlockable achievements with in-game pop-ups
-Full stats modal with localStorage persistence
-Web Audio API sound effects with mute toggle
-Dark and light theme toggle
-Live move counter, tile count, best tile display
-Fully responsive for mobile
-Swipe gesture support
-Arrow keys + WASD keyboard support
-ARIA accessibility attributes
-Reduced motion support
+## 🚀 How to Run Locally
 
+1. Clone or download this repository.
+2. Ensure all three core files are in the same directory:
+   * `index.html`
+   * `style.css`
+   * `script.js`
+3. Open `index.html` in any modern web browser.
+4. *No build tools, no dependencies, and no internet connection required (except to load the Google Font).*
 
-Technologies Used
-
-HTML5 — semantic structure with ARIA accessibility attributes
-CSS3 — custom properties, gradients, keyframe animations, glassmorphism, responsive design, prefers-reduced-motion
-JavaScript (ES6+) — game logic, Web Audio API, Canvas API (confetti), localStorage, touch events
-Google Fonts — Nunito (700, 800, 900 weights)
-
-
-How to Run
-
-Clone or download this repository
-Make sure all three files are in the same folder:
-
-   index.html
-   style.css
-   script.js
-
-Open index.html in any modern web browser
-No build tools, no dependencies, no internet connection required (except for the Google Font)
-
-
-Project Structure
+### 📁 Project Structure
+```text
 2048-game/
-├── game images
+├── game images/    # Assorted project assets
 ├── index.html      # Game structure and markup
-├── README.md
+├── README.md       # Project documentation
 ├── script.js       # Game logic, sound, achievements, persistence
-├── style.css       # All styles, themes, animations
-    
-       
-
-Screenshots
-
-Light Theme
-![alt text](image.png)
-
-Dark Theme
-![alt text](image-1.png)
-
-
-Win ScreenStats Modal
-![alt text](image-2.png)
-
-
-
-Contribution
-This project was built as part of GSSoC 2026 (GirlScript Summer of Code) under open source contribution guidelines.
-Issue addressed: UI enhancement, responsiveness, gameplay features, accessibility, and code quality improvements for the existing 2048 game.
-
-Author
-Pratham Srivastava
-GSSoC 2026 Contributor
+└── style.css       # All styles, themes, and animations
+```
+## 🤝 Contribution
+This project was proudly built as part of GSSoC 2026 (GirlScript Summer of Code) under open source contribution guidelines.
+1. Issue addressed: UI enhancement, responsiveness, gameplay features, accessibility, and code quality improvements for the existing 2048 game:
+    * Author : Pratham Srivastava GSSoC 2026 Contributor
+2. Documentation: Enhanced the Readme.md file:
+    * Author : Ananya Joshi

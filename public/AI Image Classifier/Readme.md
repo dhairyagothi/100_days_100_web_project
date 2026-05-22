@@ -36,3 +36,5 @@ This project allows users to upload an image and get a prediction/classification
 
 ## Author
 Megha Guleria
+
+UI designed by Nidhi satle
