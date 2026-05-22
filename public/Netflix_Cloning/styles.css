@@ -31,10 +31,10 @@ body {
         rgba(0, 0, 0, 0)
     );
 
-    padding: 20px 40px;   /* equal spacing from left & right */
-    
+    padding: 20px 40px;
+
     display: flex;
-    justify-content: space-between; /* pushes items to extreme ends */
+    justify-content: space-between;
     align-items: center;
 
     position: fixed;
@@ -45,7 +45,7 @@ body {
     z-index: 1000;
     transition: background 0.3s ease;
 
-    box-sizing: border-box; /* prevents overflow */
+    box-sizing: border-box;
 }
 
 .navbar.navbar-scrolled {
@@ -84,7 +84,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;        /* ✅ FIXED: was flex-start */
+    text-align: center;         /* ✅ FIXED: added for centered text */
     color: white;
     padding: 100px 50px 50px;
     margin-top: 0;
@@ -94,7 +95,7 @@ body {
     font-size: 68px;
     font-weight: 700;
     margin-bottom: 20px;
-    max-width: 600px;
+    max-width: 700px;           /* ✅ FIXED: was 600px */
     line-height: 1.1;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
@@ -111,6 +112,9 @@ body {
     gap: 15px;
     margin-top: 30px;
     flex-wrap: wrap;
+    justify-content: center;    /* ✅ FIXED: added so form stays centered */
+    max-width: 700px;           /* ✅ FIXED: added to constrain form width */
+    width: 100%;
 }
 
 .hero-form input {
@@ -327,6 +331,7 @@ footer {
 
     .hero-form {
         flex-direction: column;
+        align-items: center;    /* ✅ FIXED: keeps form centered on tablet */
     }
 
     .hero-form input,
@@ -500,7 +505,3 @@ footer {
         padding: 0 12px 12px;
     }
 }
-
-
-
-
