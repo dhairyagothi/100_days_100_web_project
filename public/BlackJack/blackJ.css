@@ -107,6 +107,20 @@ html{
     box-shadow: black 0px 0px 5px 2px;
 }
 
+#stand.stand-disabled {
+    opacity: 1;
+    background-color: auto;
+    color: auto;
+}
+
+#stand.stand-disabled:hover {
+    background-color: #999999 !important;
+    color: #666666;
+    opacity: 0.5;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
 .row3 h3{
     font-family: 'Teko', sans-serif;
     font-size: 4rem;

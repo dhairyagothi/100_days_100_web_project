@@ -15,11 +15,20 @@ const Dealer = BJgame['dealer'];
 
 const tink = new Audio('./static/sounds/tink.wav');
 
+// Track if blocking toast is active
+let isBlockingToastActive = false;
+
 // Toast Notification Function
 function showToast(message) {
     const toastElement = document.querySelector('#toast');
     toastElement.textContent = message;
     toastElement.classList.remove('show');
+    
+    // Check if this is the blocking message
+    if (message === 'Please Hit Some Cards First!') {
+        isBlockingToastActive = true;
+        document.querySelector('#stand').classList.add('stand-disabled');
+    }
     
     // Trigger animation
     setTimeout(() => {
@@ -29,6 +38,10 @@ function showToast(message) {
     // Auto-hide after 3 seconds
     setTimeout(() => {
         toastElement.classList.remove('show');
+        if (message === 'Please Hit Some Cards First!') {
+            isBlockingToastActive = false;
+            document.querySelector('#stand').classList.remove('stand-disabled');
+        }
     }, 3000);
 }
 
