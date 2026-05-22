@@ -12,6 +12,9 @@ min-height: 100vh;
 overflow-x: hidden;
 background: #f5f5f5;
 }
+html {
+  scroll-behavior: smooth;
+}
 html, body {
     font-family: "Roboto Condensed", sans-serif;
     font-optical-sizing: auto;
@@ -61,8 +64,10 @@ nav ul :hover{
     transition: 0.3;
 }
 
-nav ul li{
+nav ul li a{
     padding: 5px 12px;
+    text-decoration: none;
+    color: #359381;
 }
 
 nav ul li:hover,
@@ -171,6 +176,8 @@ nav ul{
 nav ul li{
     padding: 7px 14px;
     font-size: 0.95rem;
+    position: relative;
+    z-index: 1000;
 }
 
 .content{
@@ -236,6 +243,7 @@ nav ul li{
 
 .content{
     padding: 60px 5%;
+    height: auto;
 }
 
 .content div:first-child{
@@ -246,7 +254,6 @@ nav ul li{
     font-size: 0.95rem;
     line-height: 1.7;
 }
-
 
 }
 

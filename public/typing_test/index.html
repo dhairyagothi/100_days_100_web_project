@@ -46,7 +46,6 @@
             overflow: hidden;
         }
 
-        /* Animated background gradient */
         body::before {
             content: '';
             position: fixed;
@@ -82,7 +81,6 @@
             }
         }
 
-        /* Header with title and theme toggle */
         .header {
             display: flex;
             justify-content: space-between;
@@ -127,7 +125,6 @@
             transform: scale(0.95);
         }
 
-        /* Main test area */
         .test-area {
             background-color: var(--bg-secondary);
             border-radius: 20px;
@@ -138,7 +135,6 @@
             overflow: hidden;
         }
 
-        /* Text display */
         .text-display {
             font-size: 1.8rem;
             line-height: 1.8;
@@ -185,7 +181,6 @@
             color: var(--text-secondary);
         }
 
-        /* Input field */
         .input-section {
             margin-bottom: 20px;
         }
@@ -208,7 +203,6 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        /* Control buttons */
         .controls {
             display: flex;
             gap: 15px;
@@ -259,15 +253,7 @@
         /* Results section */
         .results {
             display: none;
-            background-color: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px solid var(--border-color);
             text-align: center;
-        }
-
-        .results.show {
-            display: block;
             animation: slideIn 0.5s ease-out;
         }
 
@@ -345,7 +331,6 @@
             color: var(--text-primary);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .title {
                 font-size: 1.8rem;
@@ -365,13 +350,9 @@
             }
         }
 
-        /* Hide during test */
-        .input-section.hidden {
-            display: none;
-        }
-
-        .stats.hidden {
-            display: none;
+        /* Visibility control styles */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
@@ -383,247 +364,70 @@
         </div>
 
         <div class="test-area">
-            <div class="text-display" id="textDisplay"></div>
-            <div class="input-section">
-                <input 
-                    type="text" 
-                    id="userInput" 
-                    placeholder="Click here and start typing..." 
-                    autocomplete="off"
-                    spellcheck="false"
-                >
+            <!-- Game Workspace Content -->
+            <div id="gameContent">
+                <div class="text-display" id="textDisplay"></div>
+                <div class="input-section">
+                    <input 
+                        type="text" 
+                        id="userInput" 
+                        placeholder="Click here and start typing..." 
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                </div>
+                <div class="controls">
+                    <button class="btn-start" id="startBtn">Start Test</button>
+                    <button class="btn-reset" id="resetBtn">Reset</button>
+                </div>
+                <div class="stats hidden" id="stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Time</div>
+                        <div class="stat-value" id="timerDisplay">0:00</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">WPM</div>
+                        <div class="stat-value" id="wpmDisplay">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Accuracy</div>
+                        <div class="stat-value" id="accuracyDisplay">0%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Typed</div>
+                        <div class="stat-value" id="typedDisplay">0</div>
+                    </div>
+                </div>
             </div>
-            <div class="controls">
-                <button class="btn-start" id="startBtn">Start Test</button>
-                <button class="btn-reset" id="resetBtn">Reset</button>
-            </div>
-            <div class="stats hidden" id="stats">
-                <div class="stat-item">
-                    <div class="stat-label">Time</div>
-                    <div class="stat-value" id="timerDisplay">0:00</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">WPM</div>
-                    <div class="stat-value" id="wpmDisplay">0</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Accuracy</div>
-                    <div class="stat-value" id="accuracyDisplay">0%</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Typed</div>
-                    <div class="stat-value" id="typedDisplay">0</div>
-                </div>
-            </div>
-        </div>
 
-        <div class="results" id="results">
-            <h2>Test Complete! 🎉</h2>
-            <div class="results-grid">
-                <div class="result-item">
-                    <div class="result-label">Words Per Minute</div>
-                    <div class="result-value" id="finalWpm">0</div>
+            <!-- Score / Result Content directly inside the card boundaries -->
+            <div class="results" id="results">
+                <h2>Test Complete! 🎉</h2>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Words Per Minute</div>
+                        <div class="result-value" id="finalWpm">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Accuracy</div>
+                        <div class="result-value" id="finalAccuracy">0%</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Time</div>
+                        <div class="result-value" id="finalTime">0s</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Errors</div>
+                        <div class="result-value" id="finalErrors">0</div>
+                    </div>
                 </div>
-                <div class="result-item">
-                    <div class="result-label">Accuracy</div>
-                    <div class="result-value" id="finalAccuracy">0%</div>
+                <div class="controls">
+                    <button class="btn-start" id="retryBtn">Try Again</button>
                 </div>
-                <div class="result-item">
-                    <div class="result-label">Time</div>
-                    <div class="result-value" id="finalTime">0s</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">Errors</div>
-                    <div class="result-value" id="finalErrors">0</div>
-                </div>
-            </div>
-            <div class="controls">
-                <button class="btn-start" id="retryBtn">Try Again</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // Typing test sentences - diverse and randomized
-        const sentences = [
-            "The quick brown fox jumps over the lazy dog.",
-            "In the heart of the city, life moves at its own rhythm.",
-            "Every morning brings new opportunities to grow and learn.",
-            "The ocean waves crash gently against the sandy shore.",
-            "Music has the power to heal the human soul.",
-            "Patience and persistence are keys to achieving success.",
-            "The starry night sky reminds us how small we are.",
-            "Kindness costs nothing but means everything to others.",
-            "Technology evolves faster than we can adapt to it.",
-            "Coffee and books are the perfect combination for peace.",
-            "The forest whispers secrets only the wind understands.",
-            "Time is the most precious resource we possess.",
-            "Dreams come true when we dare to chase them.",
-            "Every sunset brings the promise of a new dawn.",
-            "Writing is thinking with the fingers on the keyboard."
-        ];
-
-        // DOM elements
-        const textDisplay = document.getElementById('textDisplay');
-        const userInput = document.getElementById('userInput');
-        const startBtn = document.getElementById('startBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const retryBtn = document.getElementById('retryBtn');
-        const themeToggle = document.getElementById('themeToggle');
-        const resultsDiv = document.getElementById('results');
-        const statsDiv = document.getElementById('stats');
-
-        // State
-        let currentText = '';
-        let testStarted = false;
-        let testFinished = false;
-        let startTime = null;
-        let testText = '';
-        let timerInterval = null;
-
-        // Get random sentence
-        function getRandomSentence() {
-            return sentences[Math.floor(Math.random() * sentences.length)];
-        }
-
-        // Initialize display
-        function initTest() {
-            testText = getRandomSentence();
-            currentText = '';
-            testStarted = true;
-            testFinished = false;
-            startTime = Date.now();
-            userInput.value = '';
-            resultsDiv.classList.remove('show');
-            statsDiv.classList.remove('hidden');
-            userInput.disabled = false;
-            userInput.focus();
-            
-            // Clear any existing timer
-            if (timerInterval) clearInterval(timerInterval);
-            
-            // Start timer interval
-            timerInterval = setInterval(() => {
-                const seconds = Math.floor((Date.now() - startTime) / 1000);
-                const minutes = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                document.getElementById('timerDisplay').textContent = `${minutes}:${secs.toString().padStart(2, '0')}`;
-            }, 100);
-            
-            updateDisplay();
-        }
-
-        // Update text display with color coding
-        function updateDisplay() {
-            const chars = testText.split('');
-            const inputChars = userInput.value.split('');
-
-            textDisplay.innerHTML = chars.map((char, index) => {
-                let className = 'untyped';
-                if (index < inputChars.length) {
-                    className = inputChars[index] === char ? 'correct' : 'wrong';
-                } else if (index === inputChars.length) {
-                    className = 'current';
-                }
-                return `<span class="${className}">${char}</span>`;
-            }).join('');
-
-            updateStats();
-        }
-
-        // Calculate WPM and accuracy
-        function updateStats() {
-            const inputLength = userInput.value.length;
-            const timeElapsed = (Date.now() - startTime) / 1000 / 60;
-            const wpm = Math.round((inputLength / 5) / (timeElapsed || 1));
-            
-            let correctChars = 0;
-            userInput.value.split('').forEach((char, index) => {
-                if (char === testText[index]) correctChars++;
-            });
-            const accuracy = inputLength > 0 ? Math.round((correctChars / inputLength) * 100) : 0;
-
-            // Update timer
-            const seconds = Math.floor((Date.now() - startTime) / 1000);
-            const minutes = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            document.getElementById('timerDisplay').textContent = `${minutes}:${secs.toString().padStart(2, '0')}`;
-
-            document.getElementById('wpmDisplay').textContent = wpm;
-            document.getElementById('accuracyDisplay').textContent = accuracy + '%';
-            document.getElementById('typedDisplay').textContent = inputLength;
-        }
-
-        // Finish test
-        function finishTest() {
-            testFinished = true;
-            testStarted = false;
-            if (timerInterval) clearInterval(timerInterval);
-            
-            const timeElapsed = (Date.now() - startTime) / 1000;
-            const inputLength = userInput.value.length;
-            const wpm = Math.round((inputLength / 5) / (timeElapsed / 60));
-            
-            let correctChars = 0;
-            userInput.value.split('').forEach((char, index) => {
-                if (char === testText[index]) correctChars++;
-            });
-            const accuracy = inputLength > 0 ? Math.round((correctChars / inputLength) * 100) : 0;
-            const errors = inputLength - correctChars;
-
-            document.getElementById('finalWpm').textContent = wpm;
-            document.getElementById('finalAccuracy').textContent = accuracy + '%';
-            document.getElementById('finalTime').textContent = Math.round(timeElapsed) + 's';
-            document.getElementById('finalErrors').textContent = errors;
-
-            statsDiv.classList.add('hidden');
-            resultsDiv.classList.add('show');
-            userInput.disabled = true;
-        }
-
-        // Event listeners
-        startBtn.addEventListener('click', initTest);
-        
-        resetBtn.addEventListener('click', () => {
-            testStarted = false;
-            testFinished = false;
-            if (timerInterval) clearInterval(timerInterval);
-            userInput.value = '';
-            userInput.disabled = false;
-            textDisplay.innerHTML = '';
-            resultsDiv.classList.remove('show');
-            statsDiv.classList.add('hidden');
-        });
-
-        retryBtn.addEventListener('click', initTest);
-
-        userInput.addEventListener('input', () => {
-            if (!testStarted) return;
-
-            updateDisplay();
-
-            if (userInput.value === testText) {
-                finishTest();
-            }
-        });
-
-        // Theme toggle
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark-mode');
-            const isDark = document.documentElement.classList.contains('dark-mode');
-            themeToggle.textContent = isDark ? '☀️' : '🌙';
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark-mode');
-            themeToggle.textContent = '☀️';
-        }
-
-        // Initialize
-        textDisplay.innerHTML = '<span class="untyped">Click "Start Test" to begin...</span>';
-    </script>
+    <script src="script.js" defer></script>
 </body>
 </html>
