@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced CAPTCHA</title>
+    <title>Captcha Checker</title>
     <link rel="stylesheet" href="captcha.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -23,6 +26,11 @@
                 <option value="audio">Audio</option>
                 <option value="math">Math</option>
             </select>
+        </div>
+
+        <div class="field voice-field hidden" id="voiceField">
+            <label for="voiceSelect">Select voice</label>
+            <select id="voiceSelect"></select>
         </div>
 
         <div id="captchaContainer" aria-live="polite"></div>

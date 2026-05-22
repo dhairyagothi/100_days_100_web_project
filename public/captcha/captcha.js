@@ -4,6 +4,8 @@ const textInput = document.getElementById('captchaInput');
 const refreshButton = document.querySelector('.refresh');
 const resultMessage = document.querySelector('.result');
 const submitButton = document.querySelector('.submit');
+const voiceField = document.getElementById('voiceField');
+const voiceSelect = document.getElementById('voiceSelect');
 
 let currentCaptcha = null;
 let attempts = 0;
@@ -47,11 +49,34 @@ const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
   return new Promise((resolve) => {
       const utterance = new SpeechSynthesisUtterance();
       utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
+      const selectedVoice = voiceSelect.value;
+      if (selectedVoice) {
+          const voice = speechSynthesis.getVoices().find(v => v.name === selectedVoice);
+          if (voice) utterance.voice = voice;
+      }
       utterance.rate = speed;
       utterance.onend = resolve;
       speechSynthesis.speak(utterance);
   });
 };
+
+const populateVoiceList = () => {
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) {
+      voiceSelect.innerHTML = '<option value="">No voices available</option>';
+      return;
+  }
+  const previousValue = voiceSelect.value;
+  voiceSelect.innerHTML = voices
+      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})${voice.default ? ' — default' : ''}</option>`)
+      .join('');
+  if (previousValue) {
+      voiceSelect.value = previousValue;
+  }
+};
+
+speechSynthesis.addEventListener('voiceschanged', populateVoiceList);
+populateVoiceList();
 
 const generateCaptcha = () => {
     textInput.value = '';
@@ -59,6 +84,12 @@ const generateCaptcha = () => {
     resultMessage.className = 'result';
 
     const type = captchaTypeSelect.value;
+    if (type === 'audio') {
+        voiceField.classList.remove('hidden');
+    } else {
+        voiceField.classList.add('hidden');
+    }
+
     switch (type) {
         case 'text': {
             currentCaptcha = generateTextCaptcha();
@@ -148,7 +179,7 @@ const verifyCaptcha = () => {
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
   
   if (isCorrect) {
-      resultMessage.textContent = "Correct! CAPTCHA solved.";
+      resultMessage.textContent = "Very Good! You passed the Test.";
       resultMessage.classList.add('success');
       resultMessage.classList.remove('error');
       attempts = 0;
@@ -163,7 +194,7 @@ const verifyCaptcha = () => {
       if (attempts >= maxAttempts) {
           lockoutUser();
       } else {
-          resultMessage.textContent = `Incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
+          resultMessage.textContent = `Sorry, your input is incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
           resultMessage.classList.add('error');
           resultMessage.classList.remove('success');
       }
