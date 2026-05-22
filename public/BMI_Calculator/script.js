@@ -148,14 +148,17 @@ const bmiChart = new Chart(ctx, {
     },
 });
 
-// Unit label updates will be shown here
+// ─── Height Field Toggling ───
 heightUnitEl.addEventListener("change", () => {
+    const cmContainer = document.getElementById("height-cm-container");
+    const ftInContainer = document.getElementById("height-ft-in-container");
+    
     if (heightUnitEl.value === "feet") {
-        heightLbl.textContent = "Height (ft/in)";
-        heightInp.placeholder = "e.g. 5/8";
+        cmContainer.classList.add("hidden");
+        ftInContainer.classList.remove("hidden");
     } else {
-        heightLbl.textContent = "Height (cm)";
-        heightInp.placeholder = "e.g. 170";
+        cmContainer.classList.remove("hidden");
+        ftInContainer.classList.add("hidden");
     }
 });
 
@@ -175,46 +178,51 @@ function clearError() {
     errEl.textContent = "";
 }
 
+// ─── Calculate Button Click ───
 btn.addEventListener("click", () => {
     clearError();
 
-    const hRaw = heightInp.value.trim();
-    let w = parseFloat(weightInp.value);
     const hUnit = heightUnitEl.value;
     const wUnit = weightUnitEl.value;
-
-    if (!hRaw || isNaN(w) || w <= 0) {
-        showError("Please enter a valid height and weight.");
-        return;
-    }
+    let w = parseFloat(weightInp.value);
 
     let heightCm;
+    let heightDisplayStr;
 
     if (hUnit === "feet") {
-        const parts = hRaw.split("/");
-        if (parts.length !== 2) {
-            showError("Use format feet/inches — e.g. 5/8");
+        const ft = parseFloat(document.getElementById("height-ft").value);
+        const inc = parseFloat(document.getElementById("height-in").value || 0);
+        if (isNaN(ft) || ft <= 0) {
+            showError("Please enter a valid height in feet.");
             return;
         }
-        const ft = parseFloat(parts[0]);
-        const inc = parseFloat(parts[1]);
-        if (isNaN(ft) || isNaN(inc) || inc < 0 || inc >= 12) {
-            showError("Invalid feet/inches. Inches must be 0–11.");
+        if (isNaN(inc) || inc < 0 || inc >= 12) {
+            showError("Invalid inches. Inches must be 0–11.");
             return;
         }
         heightCm = ft * 30.48 + inc * 2.54;
+        heightDisplayStr = `${ft} ft ${inc} in`;
     } else {
+        const hRaw = heightInp.value.trim();
         heightCm = parseFloat(hRaw);
         if (isNaN(heightCm) || heightCm <= 0) {
             showError("Please enter a valid height in cm.");
             return;
         }
+        heightDisplayStr = `${heightCm} cm`;
     }
 
     if (heightCm < 50 || heightCm > 280) {
         showError("Height seems out of range (50–280 cm).");
         return;
     }
+
+    if (isNaN(w) || w <= 0) {
+        showError("Please enter a valid weight.");
+        return;
+    }
+
+    let weightDisplayStr = wUnit === "lb" ? `${w} lb` : `${w} kg`;
 
     if (wUnit === "lb") w *= 0.453592;
 
@@ -245,6 +253,9 @@ btn.addEventListener("click", () => {
 
     document.getElementById("tip-text").textContent = cat.tip;
 
+    // Highlight Reference Table Row
+    highlightCategoryRow(cat.label);
+
     // Shows result sections
     resultsEl.classList.remove("hidden");
     resultsEl.style.display = "grid";
@@ -256,24 +267,13 @@ btn.addEventListener("click", () => {
     const pct = bmiToPercent(bmi);
     document.getElementById("bmi-ptr").style.left = pct + "%";
 
-    // Updates chart data
-    const time = new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-    });
-    bmiChart.data.labels.push(time);
-    bmiChart.data.datasets[0].data.push(bmiRounded);
-    bmiChart.update();
-
     // ─── Body Fat % Estimate (Deurenberg formula) ───
     const age = parseFloat(document.getElementById("age").value);
     const gender = document.getElementById("gender").value;
     const bfSection = document.getElementById("bf-section");
 
     if (!isNaN(age) && age >= 2 && age <= 120) {
-        // Deurenberg et al. (1991): BF% = 1.20 × BMI + 0.23 × Age − 10.8 × Sex − 5.4
-        // Sex: male = 1, female = 0
+        // Deurenberg et al. (1991)
         const sexFactor = gender === "male" ? 1 : 0;
         let bodyFat = 1.2 * bmi + 0.23 * age - 10.8 * sexFactor - 5.4;
         bodyFat = Math.round(bodyFat * 10) / 10;
@@ -302,9 +302,12 @@ btn.addEventListener("click", () => {
         bfSection.classList.remove("hidden");
         bfSection.style.display = "block";
     } else {
-        // Hide if age not provided
         bfSection.classList.add("hidden");
+        bfSection.style.display = "";
     }
+
+    // Save to history
+    saveToHistory(bmiRounded, heightDisplayStr, weightDisplayStr, cat.label);
 });
 
 // ─── Body Fat Classification ───
@@ -337,3 +340,189 @@ function getBodyFatCategory(bf, gender) {
               ];
     return ranges.find((r) => bf < r.max);
 }
+
+// ─── Reference Table Highlights ───
+function highlightCategoryRow(categoryLabel) {
+    const rows = document.querySelectorAll(".bmi-table tbody tr");
+    rows.forEach(row => {
+        row.classList.remove("highlight-blue", "highlight-green", "highlight-amber", "highlight-red");
+    });
+
+    const labelLower = categoryLabel.toLowerCase();
+    rows.forEach(row => {
+        const rowText = row.cells[1].textContent.trim().toLowerCase();
+        if (rowText === labelLower) {
+            if (labelLower.includes("underweight")) {
+                row.classList.add("highlight-blue");
+            } else if (labelLower.includes("normal")) {
+                row.classList.add("highlight-green");
+            } else if (labelLower.includes("overweight")) {
+                row.classList.add("highlight-amber");
+            } else if (labelLower.includes("obese")) {
+                row.classList.add("highlight-red");
+            }
+        }
+    });
+}
+
+// ─── History Tracker Functionality ───
+function saveToHistory(bmi, heightStr, weightStr, category) {
+    const history = JSON.parse(localStorage.getItem("bmi-history") || "[]");
+    const record = {
+        id: Date.now(),
+        timestamp: Date.now(),
+        bmi: bmi,
+        height: heightStr,
+        weight: weightStr,
+        category: category
+    };
+    history.push(record);
+    localStorage.setItem("bmi-history", JSON.stringify(history));
+    loadHistory();
+}
+
+function deleteRecord(id) {
+    let history = JSON.parse(localStorage.getItem("bmi-history") || "[]");
+    history = history.filter(r => r.id !== id);
+    localStorage.setItem("bmi-history", JSON.stringify(history));
+    loadHistory();
+}
+
+function loadHistory() {
+    const history = JSON.parse(localStorage.getItem("bmi-history") || "[]");
+    const emptyEl = document.getElementById("history-empty");
+    const tableWrapEl = document.getElementById("history-table-wrap");
+    const listEl = document.getElementById("history-list");
+    const clearBtn = document.getElementById("btn-clear-history");
+
+    updateChartFromHistory(history);
+
+    if (history.length === 0) {
+        emptyEl.classList.remove("hidden");
+        tableWrapEl.classList.add("hidden");
+        clearBtn.classList.add("hidden");
+        listEl.innerHTML = "";
+        return;
+    }
+
+    emptyEl.classList.add("hidden");
+    tableWrapEl.classList.remove("hidden");
+    clearBtn.classList.remove("hidden");
+
+    listEl.innerHTML = "";
+    history.forEach(record => {
+        const tr = document.createElement("tr");
+        
+        // Find category color dot/badge
+        const catObj = CATS.find(c => record.category.toLowerCase() === c.label.toLowerCase()) || { color: "var(--ink)", bg: "transparent" };
+        
+        const date = new Date(record.timestamp);
+        const dateStr = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) + 
+                        ' ' + 
+                        date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+        
+        tr.innerHTML = `
+            <td>${dateStr}</td>
+            <td>${record.height}</td>
+            <td>${record.weight}</td>
+            <td><strong>${record.bmi.toFixed(1)}</strong></td>
+            <td><span class="category-badge" style="background: ${catObj.bg}; color: ${catObj.color}; margin-top: 0; display: inline-block;">${record.category}</span></td>
+            <td style="text-align: right;">
+                <button class="delete-record-btn" data-id="${record.id}" title="Delete record">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                </button>
+            </td>
+        `;
+        listEl.appendChild(tr);
+    });
+
+    listEl.querySelectorAll(".delete-record-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = parseInt(btn.getAttribute("data-id"));
+            deleteRecord(id);
+        });
+    });
+}
+
+function updateChartFromHistory(history) {
+    bmiChart.data.labels = [];
+    bmiChart.data.datasets[0].data = [];
+
+    history.forEach(record => {
+        const date = new Date(record.timestamp);
+        const label = date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }) + 
+                      ' ' + 
+                      date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false });
+        
+        bmiChart.data.labels.push(label);
+        bmiChart.data.datasets[0].data.push(record.bmi);
+    });
+
+    bmiChart.update();
+}
+
+// ─── Reset Button Handler ───
+document.getElementById("btn-reset").addEventListener("click", () => {
+    // 1. Clear form inputs
+    heightInp.value = "";
+    document.getElementById("height-ft").value = "";
+    document.getElementById("height-in").value = "";
+    weightInp.value = "";
+    document.getElementById("age").value = "";
+
+    // 2. Clear error message
+    clearError();
+
+    // 3. Hide calculated results & gauges
+    resultsEl.classList.add("hidden");
+    resultsEl.style.display = "";
+
+    rangeVisEl.classList.add("hidden");
+    rangeVisEl.style.display = "";
+
+    document.getElementById("bf-section").classList.add("hidden");
+    document.getElementById("bf-section").style.display = "";
+
+    // 4. Reset display values back to placeholders/defaults
+    document.getElementById("bmi-val").textContent = "—";
+    const badge = document.getElementById("cat-badge");
+    badge.textContent = "";
+    badge.style.background = "";
+    badge.style.color = "";
+
+    document.getElementById("healthy-range").textContent = "—";
+    document.getElementById("tip-text").textContent = "";
+
+    // 5. Reset gauge visuals
+    document.getElementById("bmi-ptr").style.left = "0%";
+    
+    document.getElementById("bf-pct").textContent = "—";
+    const bfBadge = document.getElementById("bf-badge");
+    bfBadge.textContent = "";
+    bfBadge.style.background = "";
+    bfBadge.style.color = "";
+    document.getElementById("bf-desc").textContent = "";
+    document.getElementById("bf-arc").style.strokeDashoffset = "326.73";
+
+    // 6. Remove table row highlights
+    const rows = document.querySelectorAll(".bmi-table tbody tr");
+    rows.forEach(row => {
+        row.classList.remove("highlight-blue", "highlight-green", "highlight-amber", "highlight-red");
+    });
+});
+
+// ─── Delete All History Handler ───
+document.getElementById("btn-clear-history").addEventListener("click", () => {
+    if (confirm("Are you sure you want to delete all calculation history?")) {
+        localStorage.removeItem("bmi-history");
+        loadHistory();
+    }
+});
+
+// ─── Initial History Load ───
+loadHistory();

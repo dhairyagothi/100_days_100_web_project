@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BMI Calculator</title>
+    <title>BMI Calculator - Track Your BMI and Body Fat History</title>
+    <meta name="description" content="Calculate your Body Mass Index (BMI) and estimated body fat percentage. Track your health progress over time with our persistent history tracker." />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -52,9 +53,18 @@
                 <option value="feet">Feet / inches</option>
               </select>
             </div>
-            <div class="field">
+            <!-- Centimetres input -->
+            <div class="field" id="height-cm-container">
               <div class="field-label" id="height-lbl">Height (cm)</div>
-              <input type="text" id="height" placeholder="e.g. 170" />
+              <input type="number" id="height" placeholder="e.g. 170" min="50" max="280" />
+            </div>
+            <!-- Feet/Inches input -->
+            <div class="field hidden" id="height-ft-in-container">
+              <div class="field-label">Height (ft & in)</div>
+              <div class="side-by-side-inputs">
+                <input type="number" id="height-ft" placeholder="ft" min="1" max="9" />
+                <input type="number" id="height-in" placeholder="in" min="0" max="11" />
+              </div>
             </div>
           </div>
 
@@ -86,7 +96,10 @@
             </div>
           </div>
 
-          <button id="btn">Calculate</button>
+          <div class="button-group">
+            <button id="btn">Calculate</button>
+            <button id="btn-reset">Reset</button>
+          </div>
           <div id="error-msg" class="error-msg hidden"></div>
 
           <div class="result-row hidden" id="results">
@@ -222,6 +235,34 @@
           <p class="chart-hint">
             BMI history — calculate multiple times to track changes.
           </p>
+        </div>
+      </div>
+ 
+      <!-- History Section -->
+      <div class="card history-card" id="history-section">
+        <div class="top-bar" style="margin-bottom: 20px;">
+          <p class="card-title">Calculation History</p>
+          <button id="btn-clear-history" class="clear-history-btn hidden">Delete All History</button>
+        </div>
+        <div id="history-empty" class="history-empty">
+          No history recorded yet. Calculate your BMI to start tracking.
+        </div>
+        <div class="history-table-wrap hidden" id="history-table-wrap">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Height</th>
+                <th>Weight</th>
+                <th>BMI</th>
+                <th>Category</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="history-list">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

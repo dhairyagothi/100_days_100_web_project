@@ -217,13 +217,16 @@ input:focus {
   background: var(--card);
 }
 
-button#btn {
-  width: 100%;
-  padding: 12px;
+.button-group {
+  display: flex;
+  gap: 12px;
   margin-top: 14px;
-  background: var(--ink);
-  color: var(--card);
-  border: 1px solid var(--ink);
+  width: 100%;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 12px;
   border-radius: var(--r-sm);
   font-size: 10px;
   font-family: var(--f-mono);
@@ -231,11 +234,33 @@ button#btn {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.1s;
+  transition: opacity 0.15s, transform 0.1s, background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+button#btn {
+  background: var(--ink);
+  color: var(--card);
+  border: 1px solid var(--ink);
 }
 
 button#btn:hover  { opacity: 0.8; }
-button#btn:active { transform: scale(0.997); }
+button#btn:active { transform: scale(0.99); }
+
+button#btn-reset {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--rule-strong);
+}
+
+button#btn-reset:hover {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+button#btn-reset:active {
+  transform: scale(0.99);
+}
 
 .error-msg {
   font-size: 11px;
@@ -673,4 +698,115 @@ input::placeholder {
 input:focus::placeholder {
   opacity: 0;
   transform: translateX(6px);
+}
+
+/* =========================================
+   Height side-by-side inputs
+   ========================================= */
+.side-by-side-inputs {
+  display: flex;
+  gap: 8px;
+}
+
+.side-by-side-inputs input {
+  flex: 1;
+}
+
+/* =========================================
+   Reference Table Highlights
+   ========================================= */
+.bmi-table tbody tr {
+  transition: background-color 0.25s, font-weight 0.25s;
+}
+
+.bmi-table tr.highlight-blue { background-color: var(--blue-tint); font-weight: bold; }
+.bmi-table tr.highlight-green { background-color: var(--green-tint); font-weight: bold; }
+.bmi-table tr.highlight-amber { background-color: var(--amber-tint); font-weight: bold; }
+.bmi-table tr.highlight-red { background-color: var(--red-tint); font-weight: bold; }
+
+/* =========================================
+   History Tracker Card
+   ========================================= */
+.history-card {
+  margin-top: 24px;
+  background: var(--card);
+  padding: 36px 32px;
+}
+
+.history-empty {
+  font-size: 11px;
+  color: var(--ink-2);
+  text-align: center;
+  padding: 24px 0;
+}
+
+.clear-history-btn {
+  background: transparent;
+  color: var(--red1);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-sm);
+  padding: 6px 12px;
+  font-size: 9px;
+  font-family: var(--f-mono);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.clear-history-btn:hover {
+  background: var(--red-tint);
+  border-color: var(--red1);
+}
+
+.history-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.history-table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.history-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.history-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.delete-record-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-3);
+  cursor: pointer;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-sm);
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.delete-record-btn:hover {
+  color: var(--red1);
+  background-color: var(--red-tint);
 }
