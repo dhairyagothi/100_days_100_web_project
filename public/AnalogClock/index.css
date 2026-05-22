@@ -119,7 +119,8 @@ body {
    PANELS (glass cards)
 ══════════════════════════════════════════════ */
 #clockPanel,
-#timerPanel {
+#timerPanel,
+#stopwatchPanel {
     background: var(--bg-glass);
     border: 1px solid var(--border-glass);
     border-radius: var(--radius-card);
@@ -137,9 +138,11 @@ body {
 
 #clockPanel { animation-delay: 0s; }
 #timerPanel { animation-delay: 0.15s; }
+#stopwatchPanel { animation-delay: 0.3s; }
 
 #clockPanel:hover,
-#timerPanel:hover {
+#timerPanel:hover,
+#stopwatchPanel:hover {
     box-shadow: var(--shadow-card), var(--shadow-glow);
     border-color: rgba(124, 58, 237, 0.25);
 }
@@ -152,7 +155,7 @@ body {
 /* ══════════════════════════════════════════════
    PANEL HEADINGS
 ══════════════════════════════════════════════ */
-#clockTitle, #timerTitle {
+#clockTitle, #timerTitle, #stopwatchTitle {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 1rem;
@@ -163,7 +166,7 @@ body {
     padding-bottom: 10px;
 }
 
-#clockTitle::after, #timerTitle::after {
+#clockTitle::after, #timerTitle::after, #stopwatchTitle::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -372,6 +375,52 @@ body {
     color: var(--text-muted);
 }
 
+#stopwatchDisplayWrapper {
+    position: relative;
+    width: min(55vw, 220px);
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(124,58,237,0.2), transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(6,182,212,0.16), transparent 50%),
+        var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    box-shadow: inset 0 0 28px rgba(255,255,255,0.04), 0 0 32px var(--accent-glow);
+    overflow: hidden;
+}
+
+#stopwatchDisplayWrapper::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+#stopwatchDisplay {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.5rem, 3.3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    text-shadow: 0 0 24px var(--accent-glow);
+    z-index: 1;
+}
+
+#stopwatchStatusLabel {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    z-index: 1;
+}
+
 /* ══════════════════════════════════════════════
    TIME INPUTS
 ══════════════════════════════════════════════ */
@@ -466,6 +515,12 @@ input[type="number"]:focus {
 
 .btn:hover::after { opacity: 1; }
 .btn:active { transform: scale(0.97); }
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    box-shadow: none;
+}
+.btn:disabled::after { opacity: 0; }
 
 .btn-icon { font-style: normal; }
 
@@ -515,7 +570,8 @@ input[type="number"]:focus {
     border-color: rgba(255,255,255,0.2);
 }
 
-#timerControls {
+#timerControls,
+#stopwatchControls {
     display: flex;
     gap: 10px;
     width: 100%;
@@ -588,7 +644,7 @@ input[type="number"]:focus {
         gap: 24px;
     }
 
-    #clockPanel, #timerPanel {
+    #clockPanel, #timerPanel, #stopwatchPanel {
         width: 100%;
         max-width: 420px;
     }
@@ -601,6 +657,10 @@ input[type="number"]:focus {
     #progressRingWrapper {
         width: min(70vw, 200px);
         height: min(70vw, 200px);
+    }
+
+    #stopwatchDisplayWrapper {
+        width: min(70vw, 200px);
     }
 }
 
