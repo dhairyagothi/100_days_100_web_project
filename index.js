@@ -179,6 +179,7 @@ const PROJECT_DATA = [
  'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
   ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
+  ['Day 143', 'Glassmorphism Login Page', './public/glassmorphism_login_page/index.html', 'ui html css glassmorphism neon responsive login', 'intermediate'],
 
 ];
 // Alias for consistency
