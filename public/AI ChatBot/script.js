@@ -147,3 +147,37 @@ promptInput.addEventListener('keypress', (e) => {
         sendBtn.click();
     }
 });
+const toggleBtn =
+document.getElementById("themeToggle");
+
+const themeIcon =
+document.getElementById("themeIcon");
+
+/* Load saved theme */
+
+if(localStorage.getItem("theme") === "dark") {
+
+    document.body.classList.add("dark-mode");
+
+    themeIcon.textContent = "☀️";
+}
+
+/* Toggle theme */
+
+toggleBtn.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    if(document.body.classList.contains("dark-mode")) {
+
+        localStorage.setItem("theme", "dark");
+
+        themeIcon.textContent = "☀️";
+
+    } else {
+
+        localStorage.setItem("theme", "light");
+
+        themeIcon.textContent = "🌙";
+    }
+})

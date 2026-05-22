@@ -12,11 +12,10 @@
     --shadow: 0 30px 80px rgba(15, 23, 42, 0.55);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
 
 body {
     font-family: "Manrope", sans-serif;
@@ -27,12 +26,27 @@ body {
     overflow-x: hidden;
 }
 
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
+    body{
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        background-color: #000000;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow: auto;
+        }
+    
+
+    
+    #container {
+        margin: auto;
+        width: 80%;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #252323;
+        border-radius: 8px;
+        box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.3);
 }
 
 body::before {
@@ -103,18 +117,15 @@ body.is-loaded .page {
     background: rgba(94, 234, 212, 0.15);
 }
 
-.hero {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 32px;
-    align-items: center;
+.navbar ul li a {
+    text-decoration: none;
+    color: #ffffffc9;
+    font-weight: bold;
+    transition: color 0.3s;
 }
 
-.hero-content h1 {
-    font-family: "Clash Display", sans-serif;
-    font-size: clamp(2.4rem, 4vw, 3.6rem);
-    line-height: 1.1;
-    margin-bottom: 16px;
+.navbar ul li a:hover {
+    color: #818181;;
 }
 
 .eyebrow {
@@ -244,11 +255,12 @@ body.is-loaded .page {
     border-radius: 18px;
 }
 
-.copyright {
-    color: var(--text-muted);
-}
-
-#preloader {
+#loading {
+    background: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMm41bHQ1Y2c1YTE2NHc1a2lxMW5tYzV5dGZqN3JhNmpsd3FkYTN1dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uIJBFZoOaifHf52MER/giphy.webp');
+    background-color: rgba(0, 0, 0, 0.729);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 250px;
     position: fixed;
     inset: 0;
     display: grid;
