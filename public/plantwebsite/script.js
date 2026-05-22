@@ -1,7 +1,7 @@
 // Mobile menu toggle
 const mobileMenuButton = document.getElementById('mobile-menu-button');
 const navItems = document.querySelector('.items');
-
+ 
 mobileMenuButton.addEventListener('click', () => {
     navItems.classList.toggle('show');
 });
@@ -110,3 +110,8 @@ document.querySelectorAll('.icons ul li img').forEach(icon => {
         this.style.transform = 'scale(1)';
     });
 });
+
+document.querySelectorAll('.icons img').forEach(icon => {
+    icon.classList.toggle('dark-mode-icon');
+});
+
