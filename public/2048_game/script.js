@@ -144,12 +144,46 @@ function tilePos (r, c) {
    ========================================================= */
 
 function applyGridDimensions () {
-  if (mode === 'zen') { N = 5; TS = 74; GAP = 8; PAD = 10; }
-  else                { N = 4; TS = 94; GAP = 10; PAD = 12; }
+  let baseTS, baseGAP, basePAD;
+  if (mode === 'zen') {
+    N = 5;
+    baseTS = 74;
+    baseGAP = 8;
+    basePAD = 10;
+  } else {
+    N = 4;
+    baseTS = 94;
+    baseGAP = 10;
+    basePAD = 12;
+  }
+
+  // Get available container width
+  const container = document.getElementById('g');
+  const containerWidth = container ? container.clientWidth : window.innerWidth;
+  // Account for horizontal padding in #g (18px left + 18px right = 36px)
+  const maxBoardWidth = Math.max(280, containerWidth - 36);
+
+  const baseSize = basePAD * 2 + N * baseTS + (N - 1) * baseGAP;
+  const availableWidth = Math.min(baseSize, maxBoardWidth);
+
+  const scale = availableWidth / baseSize;
+
+  TS  = Math.floor(baseTS * scale);
+  GAP = Math.floor(baseGAP * scale);
+  PAD = Math.floor(basePAD * scale);
+
+  // Set CSS variables so all cell styles update automatically
+  document.documentElement.style.setProperty('--tile-size', `${TS}px`);
+  document.documentElement.style.setProperty('--tile-gap', `${GAP}px`);
+  document.documentElement.style.setProperty('--board-pad', `${PAD}px`);
 
   const bd = document.getElementById('bd');
-  bd.style.gridTemplateColumns = `repeat(${N}, ${TS}px)`;
-  bd.style.gridTemplateRows    = `repeat(${N}, ${TS}px)`;
+  if (bd) {
+    bd.style.gridTemplateColumns = `repeat(${N}, var(--tile-size))`;
+    bd.style.gridTemplateRows    = `repeat(${N}, var(--tile-size))`;
+    bd.style.gap                 = `var(--tile-gap)`;
+    bd.style.padding             = `var(--board-pad)`;
+  }
 }
 
 /* =========================================================
@@ -158,19 +192,20 @@ function applyGridDimensions () {
 
 function slideRow (row) {
   const arr = row.filter(x => x);
-  let pts = 0, didMerge = false;
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] === arr[i + 1] && !didMerge) {
-      arr[i] *= 2;
-      pts += arr[i];
-      arr.splice(i + 1, 1);
-      didMerge = true;
+  let pts = 0;
+  const mergedRow = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (i < arr.length - 1 && arr[i] === arr[i + 1]) {
+      const mergedVal = arr[i] * 2;
+      mergedRow.push(mergedVal);
+      pts += mergedVal;
+      i++; // Skip the next element since it merged
     } else {
-      didMerge = false;
+      mergedRow.push(arr[i]);
     }
   }
-  while (arr.length < N) arr.push(0);
-  return { row: arr, pts };
+  while (mergedRow.length < N) mergedRow.push(0);
+  return { row: mergedRow, pts };
 }
 
 function rotateBoard (b, turns) {
@@ -197,12 +232,16 @@ function doMove (dir) {
   let tmp = rotateBoard(board, rotTurns[dir]);
   let pts = 0;
   let moved = false;
-  const mergePositions = [];
+  let mergeBoard = Array.from({ length: N }, () => Array(N).fill(0));
 
   for (let r = 0; r < N; r++) {
     const res = slideRow([...tmp[r]]);
     if (res.row.some((v, i) => v !== tmp[r][i])) moved = true;
-    for (let c = 0; c < N; c++) if (res.row[c] > tmp[r][c] && res.row[c] > 0) mergePositions.push({ r, c, v: res.row[c] });
+    for (let c = 0; c < N; c++) {
+      if (res.row[c] > tmp[r][c] && res.row[c] > 0) {
+        mergeBoard[r][c] = 1;
+      }
+    }
     tmp[r] = res.row;
     pts += res.pts;
   }
@@ -210,6 +249,16 @@ function doMove (dir) {
   if (!moved) { combo = 0; return; }
 
   board = rotateBoard(tmp, (4 - rotTurns[dir]) % 4);
+  const finalMergeBoard = rotateBoard(mergeBoard, (4 - rotTurns[dir]) % 4);
+  const mergePositions = [];
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      if (finalMergeBoard[r][c]) {
+        mergePositions.push({ r, c });
+      }
+    }
+  }
+
   score += pts;
   moves++;
 
@@ -345,18 +394,32 @@ function renderBoard () {
   tl.style.width  = size + 'px';
   tl.style.height = size + 'px';
 
-  for (let i = 0; i < N * N; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'cell';
-    cell.style.width  = TS + 'px';
-    cell.style.height = TS + 'px';
-    bd.appendChild(cell);
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.style.width  = TS + 'px';
+      cell.style.height = TS + 'px';
+      cell.setAttribute('role', 'gridcell');
+
+      const val = board[r][c];
+      if (val) {
+        cell.setAttribute('aria-label', `Row ${r + 1}, Column ${c + 1}: ${val}`);
+      } else {
+        cell.setAttribute('aria-label', `Row ${r + 1}, Column ${c + 1}: Empty`);
+      }
+
+      bd.appendChild(cell);
+    }
   }
 }
 
 function renderTiles (newCell, pts, merges) {
   const tl = document.getElementById('tl');
   tl.innerHTML = '';
+
+  let baseTS = mode === 'zen' ? 74 : 94;
+  const currentScale = TS / baseTS;
 
   for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
     const v = board[r][c];
@@ -375,7 +438,11 @@ function renderTiles (newCell, pts, merges) {
     el.style.left    = left + 'px';
     el.style.width   = TS   + 'px';
     el.style.height  = TS   + 'px';
-    el.style.fontSize = style.fontSize;
+
+    const baseFontSize = parseInt(style.fontSize, 10);
+    const scaledFontSize = Math.max(12, Math.floor(baseFontSize * currentScale));
+    el.style.fontSize = scaledFontSize + 'px';
+
     el.textContent   = v;
     tl.appendChild(el);
 
@@ -449,6 +516,7 @@ function updateUI () {
 function showOverlay (type) {
   const ov = document.getElementById('ov');
   ov.className = 'ov';
+  ov.setAttribute('tabindex', '-1');
   ov.innerHTML = `
     <div class="ov-title ${type === 'win' ? 'win' : 'lose'}">${type === 'win' ? 'You Win!' : 'Game Over'}</div>
     <div class="ov-sub">${type === 'win' ? 'You reached 2048!' : ''}</div>
@@ -457,10 +525,14 @@ function showOverlay (type) {
       <div class="ov-stat"><div class="ov-stat-lbl">Moves</div><div class="ov-stat-val">${moves}</div></div>
       <div class="ov-stat"><div class="ov-stat-lbl">Best Tile</div><div class="ov-stat-val">${maxTile()}</div></div>
     </div>
-    <button class="btn" id="ov-replay-btn">Play Again</button>
+    <button class="btn" id="ov-replay-btn" aria-label="Play Again">Play Again</button>
   `;
   ov.style.display = 'flex';
-  document.getElementById('ov-replay-btn').addEventListener('click', () => init());
+  ov.focus();
+  document.getElementById('ov-replay-btn').addEventListener('click', () => {
+    init();
+    document.body.focus();
+  });
 }
 
 function showToast (msg) {
@@ -623,6 +695,19 @@ document.getElementById('nb').addEventListener('click', () => {
   clearSavedGame();
   init();
   showToast('New game!');
+});
+
+document.getElementById('rb').addEventListener('click', () => {
+  clearSavedGame();
+  init();
+  showToast('Game restarted!');
+});
+
+/* Window resize */
+window.addEventListener('resize', () => {
+  applyGridDimensions();
+  renderBoard();
+  renderTiles();
 });
 
 document.getElementById('ub').addEventListener('click', () => {

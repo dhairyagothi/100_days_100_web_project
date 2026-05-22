@@ -321,10 +321,19 @@ body.dark .board {
   width: var(--tile-size);
   height: var(--tile-size);
   border-radius: var(--radius-tile);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.3s ease;
 }
 
-body.light .cell { background: rgba(255, 255, 255, 0.06); }
-body.dark  .cell { background: rgba(255, 255, 255, 0.04); }
+body.light .cell {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+body.dark  .cell {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.03);
+}
 
 /* ---------- Tiles layer ---------- */
 .tiles-layer {
