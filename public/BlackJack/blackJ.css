@@ -130,6 +130,17 @@ html{
     margin: auto;
 }
 
+#countdown-message {
+    font-family: 'Teko', sans-serif;
+    font-size: 2.5rem;
+    color: #8B0000;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.2rem;
+    min-height: 3rem;
+}
+
 table, th, td{
     padding: .5rem;
     border: solid 2px black;
@@ -143,6 +154,10 @@ table, th, td{
 table{
     margin: auto;
     margin-bottom: 5rem;
+}
+
+#play-again {
+    display: none !important;
 }
 
 /* title container */

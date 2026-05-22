@@ -212,6 +212,27 @@ function BJstand(){
         setTimeout(function(){
             showresults(findwinner());
             scoreboard();
+            
+            // Show countdown message
+            const countdownEl = document.querySelector('#countdown-message');
+            let count = 3;
+            countdownEl.textContent = `Resetting in ${count}...`;
+            
+            // Countdown timer
+            const countdownInterval = setInterval(function() {
+                count--;
+                if (count > 0) {
+                    countdownEl.textContent = `Resetting in ${count}...`;
+                } else {
+                    countdownEl.textContent = '';
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+            
+            // Auto-trigger Play Again after 3 seconds
+            setTimeout(function(){
+                BJdeal();
+            }, 3000);
         }, 800); 
     }
 }
