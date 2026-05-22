@@ -1,58 +1,7 @@
-
-:root {
-  --theme-card-bg: rgba(232, 221, 227, 1); /* default: theme 1 */
-  --theme-text: #1a1a2e;
-  --nav-bg: rgba(225, 225, 225, 0.45);
-  --nav-link-bg: rgba(20, 48, 65, 0.7);
-  --btn-bg: #2d2d2d;
-  --btn-hover: #000;
-  --radius-card: 14px;
-  --radius-btn: 9px;
-  --shadow-card: 0 4px 18px rgba(0, 0, 0, 0.18);
-  --shadow-nav: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --transition: 0.28s ease;
-  --font-main: 'Segoe UI', system-ui, sans-serif;
-}
-
-*,
-*::before,
-*::after {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background: linear-gradient(
-    135deg,
-    rgba(43, 48, 121, 1) 0%,
-    rgba(101, 78, 170, 0.97) 55%,
-    rgba(136, 136, 168, 1) 100%
-  );
-  min-height: 100vh;
-  font-family: var(--font-main);
-  transition: background var(--transition);
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
->>>>>>> upstream/main
-
 :root {
   --bg-grad: linear-gradient(135deg, #1a0533 0%, #3d1053 40%, #7b2d8b 100%);
   --accent: #f5c842;
   --accent2: #ff6b9d;
-  --card-bg: rgba(255,255,255,0.07);
-  --card-border: rgba(255,255,255,0.15);
-  --card-hover: rgba(255,255,255,0.12);
-  --text: rgb(255,126,126);
-  --text-muted: rgba(240,232,255,0.55);
-  --nav-bg: rgba(10,5,20,0.7);
   --card-bg: rgba(255, 255, 255, 0.07);
   --card-border: rgba(255, 255, 255, 0.15);
   --card-hover: rgba(255, 255, 255, 0.12);
@@ -85,9 +34,6 @@ body.theme-midnight {
   --bg-grad: linear-gradient(135deg, #000000 0%, #0d0d1a 50%, #1a1a2e 100%);
   --accent: #a855f7;
   --accent2: #06b6d4;
-  --text: #be9e9e;
-  --text-muted: rgba(226,232,255,0.5);
-  --nav-bg: rgba(0,0,0,0.8);
   --text: #e2e8ff;
   --text-muted: rgba(226, 232, 255, 0.5);
   --nav-bg: rgba(0, 0, 0, 0.8);
@@ -149,7 +95,7 @@ body {
 }
 
 .nav-left a {
-  color: rgb(255, 126, 126);
+  color: white;
   text-decoration: none;
   padding: 8px 18px;
   border-radius: var(--radius-btn);
@@ -357,7 +303,7 @@ body {
   background: rgba(255, 255, 255, 0.9);
   font-size: 0.88rem;
   font-family: var(--font-main);
-  color: var(--theme-text);
+  color: black;
   cursor: pointer;
   outline: none;
   transition: border-color var(--transition);
@@ -372,7 +318,7 @@ body {
   height: 44px;
   padding: 0 18px;
   background-color: var(--btn-bg);
-  color: white;
+  color: black;
   border: none;
   border-radius: var(--radius-btn);
   font-size: 0.9rem;
@@ -404,7 +350,6 @@ body {
   background-color: #0f3d1c;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0,0,0,0.35);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   transition: all 0.2s;
 }
 
@@ -836,10 +781,6 @@ main {
 .theme4 { background-color: #2C5364; color: white; }
 .theme5 { background-color: #b92b27; color: white; }
 
-
-.btn-add:active {
-  transform: translateY(0);
-}
 
 .progress-bar {
   flex: 1;

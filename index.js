@@ -213,6 +213,7 @@ const PROJECT_DATA = [
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
+  ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
 ];
 const PROJECTS = PROJECT_DATA;
 
