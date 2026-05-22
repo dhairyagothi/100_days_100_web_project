@@ -31,16 +31,11 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-
-                        </a>
+                            aria-expanded="false">Cities</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Delhi</a></li>
-                            <li><a class="dropdown-item" href="#">Seattle</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Bangalore</a></li>
+                            <li><a class="dropdown-item" href="#" data-city="Delhi">Delhi</a></li>
+                            <li><a class="dropdown-item" href="#" data-city="Seattle">Seattle</a></li>
+                            <li><a class="dropdown-item" href="#" data-city="Bengaluru">Bangalore</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -122,7 +117,30 @@
                 </div>
             </div>
 
-            <h2 class="display-6 text-center mb-4">Weather of other Commom Places</h2>
+            <h2 class="display-6 text-center mb-4">Weather of other Common Places</h2>
+
+            <!-- Weather Recommendations Section -->
+            <div class="card mb-4 rounded-3 shadow-sm" id="recommendations-card" style="display: none; background: rgba(255, 255, 255, 0.93); backdrop-filter: blur(10px); border: 1px solid rgba(0, 0, 0, 0.125);">
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; font-weight: 600; border-bottom: none;">
+                    <h4 class="my-0 fw-normal">💡 Smart Weather Recommendations</h4>
+                </div>
+                <div class="card-body text-start">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0 border-end" style="border-right: 1px solid #dee2e6 !important;">
+                            <h5 style="color: #764ba2; font-weight: 600; margin-bottom: 12px;">👕 Clothing Suggestions</h5>
+                            <div id="clothing-recommendation" class="fs-6 p-3 rounded" style="background: rgba(248, 249, 250, 0.85); min-height: 80px; border-left: 4px solid #667eea; color: #212529; line-height: 1.5;">
+                                Loading suggestions...
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 style="color: #764ba2; font-weight: 600; margin-bottom: 12px;">🚗 Travel & Safety Precautions</h5>
+                            <div id="travel-recommendation" class="fs-6 p-3 rounded" style="background: rgba(248, 249, 250, 0.85); min-height: 80px; border-left: 4px solid #764ba2; color: #212529; line-height: 1.5;">
+                                Loading suggestions...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="table-responsive">
                 <table class="table text-center">
