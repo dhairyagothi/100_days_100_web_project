@@ -111,12 +111,18 @@ h1 {
 /* Quiz Screen Styles */
 .header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
     margin-bottom: 2rem;
     padding: 1rem;
     background-color: #f7fafc;
     border-radius: 15px;
+}
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .timer, .score {
@@ -128,12 +134,12 @@ h1 {
 }
 
 .progress-container {
-    flex: 1;
-    height: 8px;
+    width: 100%;
+    height: 10px;
     background-color: #e2e8f0;
-    border-radius: 4px;
-    margin: 0 1rem;
+    border-radius: 10px;
     overflow: hidden;
+    margin: 15px 0;
 }
 
 .progress-bar {
@@ -437,5 +443,28 @@ select:focus {
     
     .category-card i {
         font-size: 2rem;
+    }
+}
+.timer.warning {
+    color: #f6ad55;
+    animation: pulse 1s infinite;
+}
+
+.timer.danger {
+    color: #f56565;
+    animation: pulse 0.6s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }

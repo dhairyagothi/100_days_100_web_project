@@ -353,6 +353,7 @@ function startQuiz() {
   correctAnswers = 0;
   wrongAnswers = 0;
   timeLeft = getTimeLimit();
+  document.querySelector('.timer').classList.remove('warning', 'danger');
   startTime = Date.now();
   
   // Update UI
@@ -462,10 +463,17 @@ function startTimer() {
       timeLeft--;
       timeEl.textContent = timeLeft;
       
-      // Add pulse animation when time is low
-      if (timeLeft <= 10) {
-          timeEl.style.animation = 'pulse 1s infinite';
-      }
+    // Timer warning states
+const timerContainer = document.querySelector('.timer');
+
+if (timeLeft <= 10 && timeLeft > 5) {
+    timerContainer.classList.add('warning');
+}
+
+if (timeLeft <= 5) {
+    timerContainer.classList.remove('warning');
+    timerContainer.classList.add('danger');
+}
       
       if (timeLeft <= 0) {
           endQuiz();
@@ -516,6 +524,7 @@ function goHome() {
   categoryCards.forEach(card => card.classList.remove('selected'));
   // Reset progress bar
   progressBar.style.width = '0%';
+   document.querySelector('.timer').classList.remove('warning', 'danger');
   // Reset timer animation
   timeEl.style.animation = '';
 }
@@ -538,6 +547,7 @@ function exitQuiz() {
         card.classList.remove('selected')
     );
     progressBar.style.width = '0%';
+    document.querySelector('.timer').classList.remove('warning', 'danger');
     timeEl.style.animation = '';
 }
 
