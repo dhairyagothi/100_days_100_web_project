@@ -83,10 +83,10 @@ const PROJECT_DATA = [
   ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
   ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
   ['Day 18',
- 'Carousel Solar System',
- './public/Carousel%20Solar%20System/index.html',
- 'css canvas',
- 'intermediate'],
+    'Carousel Solar System',
+    './public/Carousel%20Solar%20System/index.html',
+    'css canvas',
+    'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
   ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
   ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', 'javascript', 'intermediate'],
@@ -189,11 +189,11 @@ const PROJECT_DATA = [
   ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
+  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', 'tool', 'intermediate'],
+  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', 'html css javascript api-javascript', 'Advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
-  ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
+  ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
+  ['Day 125', 'Snakeladder', './public/snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
   ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
@@ -208,11 +208,7 @@ const PROJECT_DATA = [
   ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
   ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
   ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
-<<<<<<< HEAD
   ['Day 140', 'Big Sales Prediction', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
-=======
-  ['Day 140', 'Big Sales Prediction', './public/BigSales-Prediction/frontend/index.html', 'machine learning python javascript', 'advanced'],
->>>>>>> 63adf062ba2a280631b0207c95ebe6ea7bc48cc2
   ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
   ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
@@ -221,6 +217,10 @@ const PROJECT_DATA = [
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
+  
+
+  ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
+  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
@@ -265,13 +265,13 @@ function normalizeTech(tech) {
 function matchesTechStack(projectTags) {
   // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-  
+
   // Handle empty or missing tags
   if (!projectTags) return false;
-  
+
   // Convert to single lowercase string for efficient matching
   const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
-  
+
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
   return techStackFilters.every(filter => tagsLower.includes(filter));
@@ -294,10 +294,10 @@ function removeTechFilter(tech) {
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = '';
-  
+
   const input = document.getElementById('techStackSearch');
   if (input) input.value = '';
-  
+
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -309,22 +309,22 @@ function updateTechFilterDisplay() {
   const container = document.getElementById('activeTechFilters');
   const tagsContainer = document.getElementById('techFilterTags');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!container || !tagsContainer) return;
-  
+
   // Show/hide clear button in search input
   if (clearBtn) {
     clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
   }
-  
+
   // Show/hide active filters container
   if (techStackFilters.length === 0) {
     container.style.display = 'none';
     return;
   }
-  
+
   container.style.display = 'flex';
-  
+
   // Render filter tags with remove buttons
   tagsContainer.innerHTML = techStackFilters.map(tech => `
     <span class="tech-filter-tag">
@@ -343,19 +343,19 @@ function updateTechFilterDisplay() {
  */
 function getAllTechnologies() {
   const techSet = new Set();
-  
+
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string' 
-        ? tags.split(/\s+/).filter(t => t) 
+      const tagArray = typeof tags === 'string'
+        ? tags.split(/\s+/).filter(t => t)
         : tags;
-      
+
       tagArray.forEach(tag => {
         techSet.add(tag.toLowerCase());
       });
     }
   });
-  
+
   return Array.from(techSet).sort();
 }
 
@@ -644,7 +644,7 @@ function renderPagination(totalItems, totalPages) {
   controlsDiv.appendChild(nextBtn);
 
   container.appendChild(controlsDiv);
-  
+
   // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
@@ -659,9 +659,9 @@ function scrollToProjectSection() {
   const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
-  
+
   // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
-  const duration = 100; 
+  const duration = 100;
   let startTime = null;
 
   function animation(currentTime) {
@@ -910,27 +910,27 @@ function initSearch() {
 function initTechStackSearch() {
   const input = document.getElementById('techStackSearch');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!input) return;
-  
+
   // Debounce timer for performance
   let debounceTimer;
-  
+
   // Listen for input changes
   input.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
-    
+
     // Debounce: wait 300ms after user stops typing
     debounceTimer = setTimeout(() => {
       const value = e.target.value.trim().toLowerCase();
-      
+
       if (value) {
         // Split by comma or space to support multiple technologies
         // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-        
+
         techStackFilters = [...new Set(techs)];
-        
+
         updateTechFilterDisplay();
         renderGrid();
       } else {
@@ -939,14 +939,14 @@ function initTechStackSearch() {
       }
     }, 300); // 300ms debounce delay
   });
-  
+
   // Clear button functionality
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       clearAllTechFilters();
     });
   }
-  
+
   // Optional: Add Enter key support
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -1104,64 +1104,64 @@ function updateNavbar() {
    THEME TOGGLE
    ============================================================ */
 function initTheme() {
-    const saved = localStorage.getItem('theme') || 'dark';
-    let transitionTimer = null;
+  const saved = localStorage.getItem('theme') || 'dark';
+  let transitionTimer = null;
 
-    const syncThemeIcons = () => {
-        const isLight = document.body.classList.contains('light-mode');
-        const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-        document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-            icon.className = iconClass;
-        });
-    };
+  const syncThemeIcons = () => {
+    const isLight = document.body.classList.contains('light-mode');
+    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
+      icon.className = iconClass;
+    });
+  };
 
-    if (saved === 'light') {
-        document.body.classList.add('light-mode');
-    }
+  if (saved === 'light') {
+    document.body.classList.add('light-mode');
+  }
+  syncThemeIcons();
+
+  document.body.addEventListener('click', (e) => {
+    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
+    if (!target) return;
+
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
     syncThemeIcons();
 
-    document.body.addEventListener('click', (e) => {
-        const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-        if (!target) return;
-
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        syncThemeIcons();
-
-        document.body.classList.add('theme-transitioning');
-        if (transitionTimer) clearTimeout(transitionTimer);
-        transitionTimer = setTimeout(() => {
-            document.body.classList.remove('theme-transitioning');
-        }, 400);
-    });
+    document.body.classList.add('theme-transitioning');
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      document.body.classList.remove('theme-transitioning');
+    }, 400);
+  });
 }
 
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-    const btn = document.getElementById('scrollBtn');
-    const ring = document.getElementById('ringFill');
-    if (!btn) return;
+  const btn = document.getElementById('scrollBtn');
+  const ring = document.getElementById('ringFill');
+  if (!btn) return;
 
-    const circumference = 2 * Math.PI * 22;
+  const circumference = 2 * Math.PI * 22;
 
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-        btn.classList.toggle('show', scrollTop > 400);
+    btn.classList.toggle('show', scrollTop > 400);
 
-        if (ring) {
-            ring.style.strokeDashoffset = circumference * (1 - progress);
-        }
-    });
+    if (ring) {
+      ring.style.strokeDashoffset = circumference * (1 - progress);
+    }
+  });
 
-    btn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 /* ============================================================
@@ -1171,13 +1171,8 @@ function initializeApp() {
   console.log('initializeApp fired');
   console.log('PROJECTS:', typeof PROJECTS, PROJECTS ? PROJECTS.length : 'undefined');
   
-<<<<<<< HEAD
-=======
-  // Show available technologies for debugging
-document.addEventListener('DOMContentLoaded', () => {
->>>>>>> 63adf062ba2a280631b0207c95ebe6ea7bc48cc2
   getAllTechnologies();
-  
+
   initTheme();
   updateNavbar();
   initHamburgerMenu();

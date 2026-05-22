@@ -1,86 +1,6 @@
 <!doctype html>
 <html lang="en">
 
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A clean, responsive To-Do List app with theme switching and PDF export — part of the 100 Days 100 Projects challenge." />
-    <title>To-Do List | 100 Days 100 Projects</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="todolist.css" />
-    <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-/>
-<link rel="icon" href="data:,">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  </head>
-  <body>
-    <nav>
-      <ul class="navbar">
-        <li class="nav-left">
-          <a href="#" onclick="showHome()">Home</a>
-          <a href="#" onclick="showDocuments()">Documents</a>
-        </li>
-        <li class="nav-right">
-          <button id="colour1" onclick="c1()" title="Theme 1"></button>
-          <button id="colour2" onclick="c2()" title="Theme 2"></button>
-          <button id="colour3" onclick="c3()" title="Theme 3"></button>
-          <button id="colour4" onclick="c4()" title="Theme 4"></button>
-          <button id="colour5" onclick="c5()" title="Theme 5"></button>
-        </li>
-      </ul>
-    </nav>
-
-    <main class="main">
-      <!-- HOME TAB -->
-      <div id="home-tab">
-        <h1 class="heading">JUST DO IT.</h1>
-
-        <!-- Task input row -->
-        <div class="input-row">
-          <input
-            type="text"
-            id="task-input"
-            placeholder="What needs to be done?"
-            autocomplete="off"
-          />
-          <select id="task-type">
-            <option value="">Select Type</option>
-            <option value="Work"          data-color="#FFDE59">Work</option>
-            <option value="Personal"      data-color="#FFC0CB">Personal</option>
-            <option value="Professional"  data-color="#B0BEC5">Professional</option>
-            <option value="Fitness"       data-color="#B1EE99">Fitness</option>
-            <option value="Miscellaneous" data-color="#CAB9F5">Miscellaneous</option>
-          </select>
-          <button id="submittask" onclick="Add()">
-            <i class="fa-solid fa-plus"></i> Add Task
-          </button>
-          <button id="savepdf" onclick="saveAsPDF()">
-            <i class="fa-solid fa-file-pdf"></i> Save PDF
-          </button>
-        </div>
-
-        <!-- Task cards -->
-        <div id="notes-container"></div>
-      </div>
-
-      <!-- DOCUMENTS TAB -->
-      <div id="documents-tab" style="display: none">
-        <h2 class="heading">Saved Documents</h2>
-        <div class="documents-list"></div>
-      </div>
-    </main>
-
-    <div id="pdfMessage" class="pdf-message">
-      <i class="fa-solid fa-check-circle"></i> PDF Created Successfully!
-    </div>
-
-<script src="todolist.js"></script>
-</body>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -100,12 +20,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <link rel="stylesheet" href="todolist.css" />
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-/>
-<link rel="icon" href="data:,">
-
 </head>
 
 <body>
@@ -336,4 +250,5 @@
   <script src="todolist.js?v=2"></script>
 
 </body>
+
 </html>

@@ -8,7 +8,6 @@ const taskTypeSelect = document.getElementById('task-type');
 // ─── Theme State ───────────────────────────────────────────────────────────────
 // Maps theme id → gradient for body + card fallback colour for default cards
 const THEMES = {
-<<<<<<< HEAD
   sunset: {
     body: "linear-gradient(135deg, #3b0764, #6b21a8)",
     card: "#8b5fbf",
@@ -36,49 +35,6 @@ const THEMES = {
 };
 
 let currentTheme = "sunset"; // default
-=======
-  theme1: {
-    body: 'linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)',
-    card: 'rgba(232, 221, 227, 1)',
-  },
-  theme2: {
-    body: 'linear-gradient(135deg, #e4afcb 0%, #e2c58b 50%, #7edbdc 100%)',
-    card: '#e4afcb',
-  },
-  theme3: {
-    body: 'linear-gradient(135deg, #39db8c 0%, #a0c559 30%, #d1ab51 55%, #e6936b 80%, #df868d 100%)',
-    card: '#df868d',
-  },
-  theme4: {
-    body: 'linear-gradient(135deg, rgb(120,25,105) 0%, rgb(197,211,201) 100%)',
-    card: 'rgb(197, 211, 201)',
-  },
-  theme5: {
-    body: 'linear-gradient(135deg, #b92b27 0%, #1565c0 100%)',
-    card: '#c0cfe8',
-  },
-};
-
-let currentTheme = 'theme1'; // default
-
-function updateStats() {
-  const total = document.querySelectorAll('.notes').length;
-
-  const completed = document.querySelectorAll('.completed').length;
-
-  const pending = total - completed;
-
-  document.getElementById('totalTasks').innerText = total;
-
-  document.getElementById('completedTasks').innerText = completed;
-
-  document.getElementById('pendingTasks').innerText = pending;
-
-  const progress = total === 0 ? 0 : (completed / total) * 100;
-
-  document.getElementById('progressFill').style.width = `${progress}%`;
-}
->>>>>>> upstream/main
 
 // ─── Task Type colour map ──────────────────────────────────────────────────────
 // Keeps track of user-chosen type colours so they survive theme switches
@@ -364,12 +320,11 @@ function Add() {
   noteWrapper.appendChild(taskText);
   noteWrapper.appendChild(actions);
   note.insertBefore(noteWrapper, note.firstChild);
-  notesContainer.appendChild(note);
-
+  document.getElementById("pending-list").appendChild(note);
+  enableDragForNotes();
+  saveTaskState();
   updateStats();
-
   showToast('Task Added Successfully');
-
   // Reset inputs
   taskInput.value = '';
   taskTypeSelect.value = '';
@@ -383,52 +338,23 @@ taskInput.addEventListener('keydown', (e) => {
 
 // ─── Theme Switching ───────────────────────────────────────────────────────────
 function applyTheme(themeKey) {
-  const theme = THEMES[themeKey];
-  document.body.style.background = theme.body;
+  document.body.className = "";          // remove old theme
+  document.body.classList.add(`theme-${themeKey}`);
+
   currentTheme = themeKey;
 
-  // Update CSS custom property → auto-updates all default cards via var()
-  document.documentElement.style.setProperty('--theme-card-bg', theme.card);
+  localStorage.setItem("selectedTheme", themeKey);
 
-  // Also imperatively update existing default cards
-  const cards = document.querySelectorAll(".notes[data-default-card='true']");
-  cards.forEach((card) => {
-    card.style.backgroundColor = theme.card;
-    card.style.color = '#1a1a1a'; // Ensure dark text on light cards
-    
-    // Update task text color
-    const text = card.querySelector('.task-text');
-    if (text) text.style.color = '#111';
-    
-    // Update button colors
-    const btns = card.querySelectorAll('button');
-    btns.forEach(btn => {
-      if (!btn.classList.contains('delete-btn')) {
-        btn.style.color = '#111';
-      }
-    });
-  });
+  showToast(`${themeKey} theme applied`);
 }
 
-<<<<<<< HEAD
+// restore theme after refresh
+window.addEventListener("load", () => {
+  const savedTheme =
+    localStorage.getItem("selectedTheme") || "sunset";
 
-=======
-function c1() {
-  applyTheme('theme1');
-}
-function c2() {
-  applyTheme('theme2');
-}
-function c3() {
-  applyTheme('theme3');
-}
-function c4() {
-  applyTheme('theme4');
-}
-function c5() {
-  applyTheme('theme5');
-}
->>>>>>> upstream/main
+  applyTheme(savedTheme);
+});
 
 // ─── PDF Export ────────────────────────────────────────────────────────────────
 function saveAsPDF() {
@@ -561,110 +487,41 @@ function updateNotesTheme() {
     }
   });
 }
-/* =========================
-   KANBAN DRAG DROP FEATURE
-   (Append below existing code)
-
-// Make all newly created notes draggable
-function enableDragForNotes() {
-  const notes = document.querySelectorAll(".notes");
-
-  notes.forEach((note, index) => {
-    note.setAttribute("draggable", true);
-    note.dataset.id = index;
-
-    note.addEventListener("dragstart", function (e) {
-      e.dataTransfer.setData("text/plain", note.dataset.id);
-    });
-  });
-}
-
-// Override existing Add() behavior slightly
-const originalAdd = Add;
-
-Add = function () {
-  originalAdd();
-  enableDragForNotes();
-  saveTaskState();
-};
-
-// Save task positions/status
-function saveTaskState() {
-  const pendingTasks = [];
-  const progressTasks = [];
-  const completedTasks = [];
-
-  document.querySelectorAll("#pending-list .notes").forEach(task => {
-    pendingTasks.push(task.outerHTML);
-  });
-
-  document.querySelectorAll("#progress-list .notes").forEach(task => {
-    progressTasks.push(task.outerHTML);
-  });
-
-  document.querySelectorAll("#completed-list .notes").forEach(task => {
-    completedTasks.push(task.outerHTML);
-  });
-
-  localStorage.setItem("pendingTasks", JSON.stringify(pendingTasks));
-  localStorage.setItem("progressTasks", JSON.stringify(progressTasks));
-  localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
-}
-
-// Drag events
-function allowDrop(event) {
-  event.preventDefault();
-}
-
-function dropTask(event, sectionId) {
-  event.preventDefault();
-
-  const draggedId = event.dataTransfer.getData("text/plain");
-  const draggedTask = document.querySelector(
-    `.notes[data-id="${draggedId}"]`
-  );
-
   if (draggedTask) {
     document.getElementById(sectionId).appendChild(draggedTask);
     saveTaskState();
   }
+
+function updateStats() {
+
+const total =
+document.querySelectorAll(".notes").length;
+
+const completed =
+document.querySelectorAll(".completed").length;
+
+const pending =
+total - completed;
+
+document.getElementById(
+"totalTasks"
+).innerText = total;
+
+document.getElementById(
+"completedTasks"
+).innerText = completed;
+
+document.getElementById(
+"pendingTasks"
+).innerText = pending;
+
+const progress =
+total
+? (completed/total)*100
+:0;
+
+document.getElementById(
+"progressFill"
+).style.width =
+progress + "%";
 }
-
-// Restore tasks after refresh
-function loadTaskState() {
-  const sections = [
-    "pending-list",
-    "progress-list",
-    "completed-list"
-  ];
-
-  sections.forEach(section => {
-    const savedTasks = JSON.parse(
-      localStorage.getItem(
-        section === "pending-list"
-          ? "pendingTasks"
-          : section === "progress-list"
-          ? "progressTasks"
-          : "completedTasks"
-      )
-    ) || [];
-
-    const container = document.getElementById(section);
-
-    if (container) {
-      container.innerHTML = "";
-
-      savedTasks.forEach(taskHTML => {
-        container.innerHTML += taskHTML;
-      });
-    }
-  });
-
-  enableDragForNotes();
-}
-
-// Run when page loads
-window.onload = function () {
-  loadTaskState();
-  enableDragForNotes();
-};
