@@ -50,12 +50,13 @@ function updateHabitsDailyStatus() {
       habit.completed = true;
     } else {
       habit.completed = false;
-      // If the habit was not completed today, and was not completed yesterday, the streak is broken
+
       if (habit.lastCompleted !== yesterdayStr) {
         habit.streak = 0;
       }
     }
   });
+
   saveHabits();
 }
 
@@ -63,6 +64,7 @@ function updateHabitsDailyStatus() {
 
 function checkMilestones() {
   let maxStreakAcrossAll = 0;
+
   habits.forEach(habit => {
     if (habit.streak && habit.streak > maxStreakAcrossAll) {
       maxStreakAcrossAll = habit.streak;
@@ -77,6 +79,7 @@ function checkMilestones() {
 
   milestones.forEach(m => {
     const el = document.getElementById(m.id);
+
     if (el) {
       if (maxStreakAcrossAll >= m.streak) {
         el.classList.remove("locked");
@@ -103,16 +106,19 @@ function showMilestoneModal(habitName, streak) {
   const icon = modal.querySelector(".modal-badge-icon");
 
   let medal = "🥉";
+
   if (streak === 7) medal = "🥈";
   if (streak === 30) medal = "🥇";
 
   icon.textContent = medal;
   msg.textContent = `You achieved a ${streak}-Day streak on "${habitName}"! Keep it up! 🎉`;
+
   modal.classList.add("show");
 }
 
 function hideMilestoneModal() {
   const modal = document.getElementById("milestone-modal");
+
   if (modal) {
     modal.classList.remove("show");
   }
@@ -131,7 +137,7 @@ function toggleComplete(index) {
     if (habit.lastCompleted === yesterdayStr) {
       habit.streak = (habit.streak || 0) + 1;
     } else if (habit.lastCompleted === todayStr) {
-      // Already completed today
+
     } else {
       habit.streak = 1;
     }
@@ -142,6 +148,7 @@ function toggleComplete(index) {
     }
 
     habit.lastCompleted = todayStr;
+
   } else {
     habit.completed = false;
 
@@ -149,6 +156,7 @@ function toggleComplete(index) {
       if (habit.streak > 0) {
         habit.streak -= 1;
       }
+
       habit.lastCompleted = yesterdayStr;
     }
   }
@@ -169,8 +177,8 @@ function renderHabits() {
       completedCount++;
     }
 
-    const streakHtml = habit.streak && habit.streak > 0 
-      ? `<span class="streak-badge">🔥 ${habit.streak} day${habit.streak > 1 ? 's' : ''}</span>` 
+    const streakHtml = habit.streak && habit.streak > 0
+      ? `<span class="streak-badge">🔥 ${habit.streak} day${habit.streak > 1 ? 's' : ''}</span>`
       : "";
 
     li.innerHTML = `
@@ -241,6 +249,14 @@ addHabitBtn.addEventListener("click", () => {
   habitInput.value = "";
 });
 
+/* ENTER KEY SUPPORT */
+
+habitInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    addHabitBtn.click();
+  }
+});
+
 /* THEME HANDLING */
 
 function setTheme(theme) {
@@ -271,6 +287,7 @@ const milestoneBtn = document.getElementById("milestone-btn");
 if (closeModalBtn) {
   closeModalBtn.addEventListener("click", hideMilestoneModal);
 }
+
 if (milestoneBtn) {
   milestoneBtn.addEventListener("click", hideMilestoneModal);
 }
