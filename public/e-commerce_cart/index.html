@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeroStride</title>
+  <title>AeroStride - Premium Footwear Experience</title>
+  <script>
+    // Self-correct trailing slash issue to ensure relative paths (CSS/JS/images) resolve correctly
+    if (window.location.pathname.endsWith('/e-commerce_cart')) {
+      window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
+    }
+  </script>
   <link rel="stylesheet" href="index.css">
   <script type="module" src="index.js"></script>
   <link rel="icon" href="../favv.png" type="image/x-icon" />
@@ -16,19 +22,28 @@
     <div class="navbar">
       <div class="website_title">AeroStride</div>
       <div class="button-container">
-        <button class="button">
+        <button class="button" id="btn-home" title="Home">
           <img src="images_used/home_icon.png" width="17px"/>
         </button>
-        <button class="button">
+        <button class="button" id="btn-search" title="Search Products">
           <img src="images_used/search_icon.png" width="17px"/>
         </button>
-        <button class="button">
+        <button class="button" id="btn-profile" title="User Profile">
           <img src="images_used/profile_icon.png" width="19px"/>
         </button>
         <div class="box">
           <div class="cart-count">0</div>
-          <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
+          <img src="images_used/cart_icon.png" name="cart" id="cart-icon" alt="Cart Icon"/>
         </div>
+      </div>
+    </div>
+
+    <!-- Live Search Overlay -->
+    <div class="search-overlay" id="search-overlay">
+      <div class="search-bar-container">
+        <img src="images_used/search_icon.png" width="16px" class="search-icon-inside" alt="Search"/>
+        <input type="text" id="search-input" placeholder="Search sneakers by name (e.g. GOAT, CR7, Jordan, Pro)...">
+        <button id="search-close-btn">&times;</button>
       </div>
     </div>
 
@@ -43,21 +58,110 @@
           <div class="total-price">Rs.0</div>
         </div>
         <button class="btn-buy">Place Order</button>
-        <img src="images_used/cross.png" name="close" id="cart-close"/>
+        <img src="images_used/cross.png" name="close" id="cart-close" alt="Close"/>
       </div>
     </div>
   </header>
 
+  <!-- User Profile Drawer -->
+  <div class="profile-drawer" id="profile-drawer">
+    <div class="profile-drawer-content">
+      <div class="profile-drawer-header">
+        <h2>User Profile</h2>
+        <span id="profile-drawer-close">&times;</span>
+      </div>
+      <div class="profile-avatar-container">
+        <div class="profile-avatar">G</div>
+        <h3>Guest User</h3>
+        <p>Premium Member Since 2024</p>
+      </div>
+      <div class="profile-section">
+        <h4>Account Information</h4>
+        <p><strong>Email:</strong> guest.user@aerostride.com</p>
+        <p><strong>Phone:</strong> +91 98765 43210</p>
+        <p><strong>Shipping Address:</strong> 123 Sneaker Street, Fashion Hub, Delhi - 110001</p>
+      </div>
+      <div class="profile-section">
+        <h4>Order History</h4>
+        <div class="order-list" id="order-history-list">
+          <!-- Order history will be dynamically loaded here -->
+          <p class="no-orders">No orders placed yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Details / Quick-View Modal -->
+  <div class="modal" id="quick-view-modal">
+    <div class="modal-content quick-view-content">
+      <span class="modal-close" id="quick-view-close">&times;</span>
+      <div class="quick-view-grid">
+        <div class="quick-view-image-container">
+          <img src="images_used/hero_shoe.png" alt="Shoe Image" id="qv-image">
+        </div>
+        <div class="quick-view-details">
+          <h2 id="qv-title">Shoe Title</h2>
+          <div class="qv-rating">★★★★★ <span style="color:#777; font-size: 14px;">(4.9 / 5.0)</span></div>
+          <span class="qv-price" id="qv-price">Rs. 0</span>
+          <p class="qv-desc" id="qv-desc">Premium engineered upper provides targeted breathability. Signature midsole cushioning offers explosive energy return. Durable rubber outsole handles diverse training surfaces.</p>
+          
+          <div class="qv-size-section">
+            <h4>Select US Size:</h4>
+            <div class="size-options-container" id="qv-sizes-container">
+              <button class="size-btn active" data-size="7">7</button>
+              <button class="size-btn" data-size="8">8</button>
+              <button class="size-btn" data-size="9">9</button>
+              <button class="size-btn" data-size="10">10</button>
+              <button class="size-btn" data-size="11">11</button>
+            </div>
+          </div>
+          
+          <button class="btn-qv-add-cart" id="qv-add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Receipt / Checkout Modal -->
+  <div class="modal" id="checkout-modal">
+    <div class="modal-content checkout-content">
+      <span class="modal-close" id="checkout-close">&times;</span>
+      <h2>Order Receipt</h2>
+      <div class="receipt-divider"></div>
+      <div class="receipt-items" id="receipt-items-container">
+        <!-- Ordered items will be dynamically listed here -->
+      </div>
+      <div class="receipt-divider"></div>
+      <div class="receipt-summary">
+        <div class="receipt-row"><span>Subtotal:</span><span id="receipt-subtotal">Rs.0</span></div>
+        <div class="receipt-row"><span>GST (18%):</span><span id="receipt-tax">Rs.0</span></div>
+        <div class="receipt-row"><span>Shipping:</span><span id="receipt-shipping">FREE</span></div>
+        <div class="receipt-divider"></div>
+        <div class="receipt-row total-row"><span>Total Price:</span><span id="receipt-total">Rs.0</span></div>
+      </div>
+      <div class="shipping-info-form">
+        <h3>Delivery Details</h3>
+        <div class="form-group">
+          <label for="checkout-address">Delivery Address</label>
+          <input type="text" id="checkout-address" value="123 Sneaker Street, Fashion Hub, Delhi - 110001">
+        </div>
+      </div>
+      <button class="btn-confirm-order" id="btn-confirm-order">Confirm & Place Order</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
 
   <!-- hero section of the website-->
   <div class="hero" id="hero">
     <div class="hero-content">
       <div class="hero-text">
-        <h1>Exclusive Collections 2024</h1>
+        <h1>Exclusive Collections 2026</h1>
         <p>Discover our latest range of stylish and comfortable footwear, designed for every occasion.</p>
         <a class="button1" href="#trending-section">
           Shop now
-          <img src="images_used/cart_icon.png"/>
+          <img src="images_used/cart_icon.png" alt="Cart"/>
         </a>
       </div>
       <div class="hero-image">
@@ -73,67 +177,324 @@
         <span>Trending Right Now</span>
     </div>
     <div class="trending-line"></div>
-</div>
+  </div>
 
-  <!--Shoe cards (contains same code repeated 8 times)-->
+  <!--Shoe cards-->
   <div class="container">
-    <div class="shop-content">
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/messi shoes 0.png" class="shoe-img"></div>
+    <div class="shop-content" id="shop-content">
+      
+      <!-- Card 1 -->
+      <div class="shoe-box" data-name="goat" data-desc="Unleash greatness with the premium championship footwear. Engineered for unparalleled comfort, stability, and speed. Designed in partnership with sporting legends.">
+        <div class="pic">
+          <img src="images_used/messi shoes 0.png" class="shoe-img" alt="GOAT">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
         <h2 class="shoe-title">GOAT</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.5000</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
       </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
+
+      <!-- Card 2 -->
+      <div class="shoe-box" data-name="cr7" data-desc="Built for speed and power. High responsiveness and ultimate acceleration to dominate the game. Featuring lightweight mesh upper and sleek design.">
+        <div class="pic">
+          <img src="images_used/cristiano ronal 1.png" class="shoe-img" alt="CR7">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
         <h2 class="shoe-title">CR7</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.3000</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
       </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
+
+      <!-- Card 3 -->
+      <div class="shoe-box" data-name="the greek freak" data-desc="Dynamic agility and high traction. Ideal for fast cuts and explosiveness. Midsole cushioning provides excellent impact protection.">
+        <div class="pic">
+          <img src="images_used/giannis antetok 1.png" class="shoe-img" alt="The Greek Freak">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
         <h2 class="shoe-title">The Greek Freak</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.2500</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
       </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
+
+      <!-- Card 4 -->
+      <div class="shoe-box" data-name="sewy" data-desc="Vibrant energy in every stride. Expressive, lightweight, and fashionable design suitable for daily street-wear and casual look.">
+        <div class="pic">
+          <img src="images_used/ishowspeed shoe 1.png" class="shoe-img" alt="Sewy">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
         <h2 class="shoe-title">Sewy</h2>
-        <span class="shoe-price">Rs.1500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.1500</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
       </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
+
+      <!-- Card 5 -->
+      <div class="shoe-box" data-name="black mamba" data-desc="Precision, focus, and legendary control. Sleek dark aesthetic featuring composite materials for structural durability.">
+        <div class="pic">
+          <img src="images_used/kobe bryant sho 0.png" class="shoe-img" alt="Black Mamba">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
         <h2 class="shoe-title">Black Mamba</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.3000</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
       </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
+
+      <!-- Card 6 -->
+      <div class="shoe-box" data-name="jordan x" data-desc="The timeless classic retro basketball style. Features rich leather upper panels and signature high-top ankle cushioning.">
+        <div class="pic">
+          <img src="images_used/nike jordans 0.png" class="shoe-img" alt="Jordan X">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
         <h2 class="shoe-title">Jordan X</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.2500</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
       </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
+
+      <!-- Card 7 -->
+      <div class="shoe-box" data-name="king" data-desc="Rule the arena with unmatched stability and responsive cushioning. Premium build offering top tier comfort during long hours of dynamic movement.">
+        <div class="pic">
+          <img src="images_used/virat_kohli.png" class="shoe-img" alt="KING">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
         <h2 class="shoe-title">KING</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.5000</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
       </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
+
+      <!-- Card 8 -->
+      <div class="shoe-box" data-name="mr.360" data-desc="Complete versatility and multidirectional traction. Play on any court with premium responsive shock absorption. Lightweight construction.">
+        <div class="pic">
+          <img src="images_used/abd.png" class="shoe-img" alt="Mr.360">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
         <h2 class="shoe-title">Mr.360</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.5000</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
       </div>
+
+      <!-- Card 9 (New Product: AeroStride Pro) -->
+      <div class="shoe-box new-item-badge" data-name="aerostride pro" data-desc="Our signature high-performance running sneaker. Features a state-of-the-art carbon-fiber plate and explosive dual-density foam for maximum mileage and flight-like bounce.">
+        <div class="pic">
+          <img src="images_used/sneaker_running.png" class="shoe-img" alt="AeroStride Pro">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
+        <h2 class="shoe-title">AeroStride Pro</h2>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.4500</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
+      </div>
+
+      <!-- Card 10 (New Product: Cyber Pulse) -->
+      <div class="shoe-box new-item-badge" data-name="cyber pulse" data-desc="Step into the future with glowing neon highlights and advanced structural support. Engineered for the ultimate cyberpunk street-style vibe and comfortable all-day wear.">
+        <div class="pic">
+          <img src="images_used/sneaker_neon.png" class="shoe-img" alt="Cyber Pulse">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
+        <h2 class="shoe-title">Cyber Pulse</h2>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.6000</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
+      </div>
+
+      <!-- Card 11 (New Product: Classic Retro V) -->
+      <div class="shoe-box new-item-badge" data-name="classic retro v" data-desc="Vintage court style meets modern performance. Crafted from premium cream leather with matching green accents. A timeless aesthetic that pairs perfectly with any outfit.">
+        <div class="pic">
+          <img src="images_used/sneaker_retro.png" class="shoe-img" alt="Classic Retro V">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
+        <h2 class="shoe-title">Classic Retro V</h2>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.3500</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
+      </div>
+
+      <!-- Card 12 (New Product: Luxe Sovereign) -->
+      <div class="shoe-box new-item-badge" data-name="luxe sovereign" data-desc="The peak of luxury designer footwear. Exquisite black suede panels trimmed with gold foil accents. Handcrafted detailing and custom comfort inserts.">
+        <div class="pic">
+          <img src="images_used/sneaker_luxe.png" class="shoe-img" alt="Luxe Sovereign">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
+        <h2 class="shoe-title">Luxe Sovereign</h2>
+
+        <div class="shoe-size-selector">
+          <span class="size-label">US Size:</span>
+          <div class="size-options">
+            <span class="size-opt active" data-size="7">7</span>
+            <span class="size-opt" data-size="8">8</span>
+            <span class="size-opt" data-size="9">9</span>
+            <span class="size-opt" data-size="10">10</span>
+            <span class="size-opt" data-size="11">11</span>
+          </div>
+        </div>
+
+        <div class="shoe-footer">
+          <span class="shoe-price">Rs.7500</span>
+          <img src="images_used/cart_icon.png" name="cart" class="add-cart" alt="Add to Cart" />
+        </div>
+        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon" alt="Remove"/>
+      </div>
+
     </div>
   </div>
 
@@ -162,11 +523,8 @@
         <p>Phone: +123 456 7890</p>
       </div>
     </div>
-    <div class="copyright_part"><span style="margin-right:10px;">&copy;</span>AeroStride 2024</div>
+    <div class="copyright_part"><span style="margin-right:10px;">&copy;</span>AeroStride 2026</div>
   </footer>
 
-  
-
-  <script src="js/script.js"></script>
 </body>
 </html>
