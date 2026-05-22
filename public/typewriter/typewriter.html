@@ -69,6 +69,74 @@
             --input-placeholder: rgba(255, 255, 255, 0.65);
         }
 
+        body.vintage-theme {
+
+            --bg-color: #3b2f2f;
+
+            --text-color: #f5deb3;
+
+            --paper-bg: #f4e7c5;
+
+            --paper-text: #3b2f2f;
+
+            --body-grad-a: #6b4f4f;
+
+            --body-grad-b: #8b6f47;
+
+            --body-grad-c: #4b3621;
+        }
+
+        body.terminal-theme {
+
+            --bg-color: #000000;
+
+            --text-color: #00ff00;
+
+            --paper-bg: #001100;
+
+            --paper-text: #00ff00;
+
+            --body-grad-a: #001a00;
+
+            --body-grad-b: #003300;
+
+            --body-grad-c: #001100;
+        }
+
+        body.newspaper-theme {
+
+            --bg-color: #f2f2e6;
+
+            --text-color: #111111;
+
+            --paper-bg: #fffdf5;
+
+            --paper-text: #111111;
+
+            --body-grad-a: #d9d2c3;
+
+            --body-grad-b: #c2b280;
+
+            --body-grad-c: #a89f91;
+        }
+
+        body.cyberpunk-theme {
+
+            --bg-color: #0f0f1a;
+
+            --text-color: #ff00ff;
+
+            --paper-bg: #1a1a2e;
+
+            --paper-text: #00ffff;
+
+            --body-grad-a: #ff00ff;
+
+            --body-grad-b: #6a00ff;
+
+            --body-grad-c: #00ffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -136,6 +204,8 @@
             user-select: none;
         }
 
+
+
         .sound-toggle {
 
             position: fixed;
@@ -150,7 +220,9 @@
 
             border-radius: 10px;
 
-            background: rgba(0,0,0,0.6);
+            /*background: rgba(0,0,0,0.6);*/
+
+            background:  linear-gradient(135deg, var(--body-grad-a) 0%, var(--body-grad-b) 50%, var(--body-grad-c) 100%);
 
             color: white;
 
@@ -478,10 +550,55 @@
             font-weight: bold;
             color: white;
         }
+
+        .theme-selector {
+
+            position: fixed;
+
+            top: 140px;
+
+            right: 20px;
+
+            padding: 10px 14px;
+
+            border-radius: 10px;
+
+            border: none;
+
+            outline: none;
+
+            cursor: pointer;
+
+            z-index: 100;
+
+            font-family: 'Courier Prime', monospace;
+
+            background: rgba(0,0,0,0.6);
+
+            color: white;
+
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 <div class="theme-toggle" id="themeToggle">🌙</div>
+
+<select id="themeSelector" class="theme-selector">
+
+    <option value="dark">Dark</option>
+
+    <option value="light">Light</option>
+
+    <option value="vintage">Vintage</option>
+
+    <option value="terminal">Terminal</option>
+
+    <option value="newspaper">Newspaper</option>
+
+    <option value="cyberpunk">Cyberpunk</option>
+
+</select>
 
 <button id="soundToggle" class="sound-toggle">
     🔊 Sound ON
@@ -590,6 +707,8 @@
     const themeToggle = document.getElementById("themeToggle");
     //Sound-Toggle Button Feature added***********************************
     const soundToggle = document.getElementById("soundToggle");
+    //Theme-toggle Feature Added
+    const themeSelector = document.getElementById("themeSelector");
     const resetBtn = document.getElementById("resetBtn");
 
 
@@ -939,6 +1058,36 @@
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
+    /*Multiple-Theme-toggle----*/
+    themeSelector.addEventListener("change", () => {
+
+        // REMOVE OLD THEMES
+        document.body.classList.remove(
+            "light-theme",
+            "vintage-theme",
+            "terminal-theme",
+            "newspaper-theme",
+            "cyberpunk-theme"
+        );
+
+        const selectedTheme =
+            themeSelector.value;
+
+        // APPLY SELECTED THEME
+        if (selectedTheme !== "dark") {
+
+            document.body.classList.add(
+                `${selectedTheme}-theme`
+            );
+        }
+
+        // SAVE THEME
+        localStorage.setItem(
+            "selectedTheme",
+            selectedTheme
+        );
+    });
+
     //----Sound toggle --------
     soundToggle.addEventListener("click", () => {
 
@@ -962,10 +1111,19 @@
         userInput.value = '';
     });
 
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
-        themeToggle.textContent = '☀️';
+    const savedTheme =
+        localStorage.getItem("selectedTheme");
+
+    if (savedTheme) {
+
+        themeSelector.value = savedTheme;
+
+        if (savedTheme !== "dark") {
+
+            document.body.classList.add(
+                `${savedTheme}-theme`
+            );
+        }
     }
 
     setInterval(() => {
