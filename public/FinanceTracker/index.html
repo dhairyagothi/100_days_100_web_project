@@ -1,236 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personal Finance Tracker</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    :root{
-      --bg1:#0f172a;
-      --bg2:#1e293b;
-      --card:rgba(255,255,255,0.08);
-      --text:#e2e8f0;
-      --muted:#94a3b8;
-      --primary:#8b5cf6;
-      --income:#22c55e;
-      --expense:#ef4444;
-      --border:rgba(255,255,255,0.12);
+    /* KEEP ONLY ONE STYLE SYSTEM (use Main version styles) */
+    :root {
+      --primary-color: #6c5ce7;
+      --secondary-color: #a29bfe;
+      --accent-color: #fd79a8;
+      --background-color: #f0f3f6;
+      --text-color: #2d3436;
+      --card-background: #ffffff;
     }
 
-    body.light{
-      --bg1:#f1f5f9;
-      --bg2:#e2e8f0;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#475569;
-      --border:#e2e8f0;
+    body.dark-mode {
+      --background-color: #1a1a2e;
+      --text-color: #e0e0e0;
+      --card-background: #16213e;
+      --primary-color: #0f3460;
+      --secondary-color: #533483;
+      --accent-color: #e94560;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
-
-    body{
-      min-height:100vh;
-      color:var(--text);
-      background:linear-gradient(135deg,var(--bg1),var(--bg2));
-      transition:0.3s;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
     }
 
-    header{
-      text-align:center;
-      padding:30px 10px;
-      font-size:32px;
-      font-weight:700;
-      letter-spacing:1px;
+    header {
+      text-align: center;
+      padding: 20px;
+      background: var(--primary-color);
+      color: white;
     }
 
-    .container{
-      width:92%;
-      max-width:1200px;
-      margin:auto;
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
     }
 
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin:20px 0;
+    .dashboard {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
-    .toggle{
-      padding:10px 14px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--card);
-      color:var(--text);
-      cursor:pointer;
-      transition:0.3s;
+    .card {
+      flex: 1;
+      padding: 20px;
+      background: var(--card-background);
+      border-radius: 10px;
     }
 
-    .toggle:hover{transform:scale(1.05);}
-
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:18px;
+    button {
+      padding: 10px;
+      border: none;
+      cursor: pointer;
     }
-
-    .card{
-      padding:20px;
-      border-radius:18px;
-      background:var(--card);
-      border:1px solid var(--border);
-      backdrop-filter:blur(10px);
-      transition:0.3s;
-      box-shadow:0 10px 25px rgba(0,0,0,0.2);
-    }
-
-    .card:hover{
-      transform:translateY(-6px) scale(1.02);
-    }
-
-    .card h3{color:var(--muted);font-size:14px;}
-    .card p{font-size:28px;font-weight:700;margin-top:10px;}
-
-    form{
-      margin-top:25px;
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-      gap:12px;
-      padding:20px;
-      border-radius:18px;
-      background:var(--card);
-      border:1px solid var(--border);
-    }
-
-    input,select{
-      padding:12px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:transparent;
-      color:var(--text);
-      outline:none;
-      transition:0.3s;
-    }
-
-    input:focus,select:focus{
-      border-color:var(--primary);
-      box-shadow:0 0 10px rgba(139,92,246,0.4);
-    }
-
-    button{
-      grid-column:1/-1;
-      padding:12px;
-      border:none;
-      border-radius:12px;
-      background:linear-gradient(135deg,#8b5cf6,#6366f1);
-      color:white;
-      font-weight:600;
-      cursor:pointer;
-      transition:0.3s;
-    }
-
-    button:hover{
-      transform:scale(1.02);
-    }
-
-    table{
-      width:100%;
-      margin-top:25px;
-      border-collapse:collapse;
-      overflow:hidden;
-      border-radius:16px;
-      background:var(--card);
-      border:1px solid var(--border);
-    }
-
-    th,td{
-      padding:14px;
-      text-align:left;
-    }
-
-    th{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    tr{
-      border-bottom:1px solid var(--border);
-      transition:0.3s;
-    }
-
-    tr:hover{
-      background:rgba(255,255,255,0.05);
-    }
-
-    .income{color:var(--income);font-weight:600;}
-    .expense{color:var(--expense);font-weight:600;}
-
-    .chart{
-      margin-top:25px;
-      padding:20px;
-      border-radius:18px;
-      background:var(--card);
-      border:1px solid var(--border);
-      height:420px;
-    }
-
-    .badge{
-      display:inline-block;
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:12px;
-    }
-
-    .income-badge{background:rgba(34,197,94,0.2);color:var(--income);}
-    .expense-badge{background:rgba(239,68,68,0.2);color:var(--expense);}
-
   </style>
 </head>
 
 <body>
 
-<header>💰 Personal Finance Tracker</header>
+<header>
+  Personal Finance Tracker
+</header>
 
 <div class="container">
 
-  <div class="topbar">
-    <h2>Dashboard Overview</h2>
-    <button class="toggle" onclick="toggleTheme()">Toggle Theme</button>
-  </div>
-
-  <div class="cards">
+  <div class="dashboard">
     <div class="card">
       <h3>Balance</h3>
       <p id="balance">$0.00</p>
     </div>
+
     <div class="card">
       <h3>Income</h3>
       <p id="income">$0.00</p>
     </div>
+
     <div class="card">
       <h3>Expense</h3>
       <p id="expense">$0.00</p>
     </div>
   </div>
 
-  <form id="form">
-    <input id="desc" placeholder="Description" required>
+  <form id="transaction-form">
+    <input id="description" placeholder="Description" required>
     <input id="amount" type="number" placeholder="Amount" required>
+
     <select id="type">
       <option value="income">Income</option>
       <option value="expense">Expense</option>
     </select>
+
     <select id="category">
-      <option>Salary</option>
-      <option>Food</option>
-      <option>Rent</option>
-      <option>Other</option>
+      <option value="salary">Salary</option>
+      <option value="food">Food</option>
+      <option value="rent">Rent</option>
+      <option value="other">Other</option>
     </select>
-    <button>Add Transaction</button>
+
+    <button type="submit">Add Transaction</button>
   </form>
 
   <table>
@@ -245,9 +126,7 @@
     <tbody id="list"></tbody>
   </table>
 
-  <div class="chart">
-    <canvas id="chart"></canvas>
-  </div>
+  <canvas id="chart"></canvas>
 
 </div>
 
@@ -255,65 +134,51 @@
 let data = JSON.parse(localStorage.getItem("data")) || [];
 
 function update(){
-  let inc=0,exp=0,b=0;
+  let inc = 0, exp = 0, bal = 0;
 
-  data.forEach(t=>{
-    if(t.type=="income"){inc+=t.amount;b+=t.amount}
-    else{exp+=t.amount;b-=t.amount}
+  data.forEach(t => {
+    if(t.type === "income"){
+      inc += t.amount;
+      bal += t.amount;
+    } else {
+      exp += t.amount;
+      bal -= t.amount;
+    }
   });
 
-  document.getElementById("balance").innerText="$"+b.toFixed(2);
-  document.getElementById("income").innerText="$"+inc.toFixed(2);
-  document.getElementById("expense").innerText="$"+exp.toFixed(2);
+  document.getElementById("balance").innerText = "$" + bal.toFixed(2);
+  document.getElementById("income").innerText = "$" + inc.toFixed(2);
+  document.getElementById("expense").innerText = "$" + exp.toFixed(2);
 
-  const list=document.getElementById("list");
-  list.innerHTML="";
+  const list = document.getElementById("list");
+  list.innerHTML = "";
 
-  data.slice().reverse().forEach(t=>{
-    list.innerHTML+=`
+  data.slice().reverse().forEach(t => {
+    list.innerHTML += `
       <tr>
         <td>${t.desc}</td>
-        <td class='${t.type}'>$${t.amount}</td>
-        <td><span class='badge ${t.type}-badge'>${t.type}</span></td>
+        <td>$${t.amount}</td>
+        <td>${t.type}</td>
         <td>${t.cat}</td>
       </tr>`;
   });
 
-  localStorage.setItem("data",JSON.stringify(data));
-  updateChart();
+  localStorage.setItem("data", JSON.stringify(data));
 }
 
-document.getElementById("form").addEventListener("submit",e=>{
+document.getElementById("transaction-form").addEventListener("submit", e => {
   e.preventDefault();
 
   data.push({
-    desc:desc.value,
-    amount:+amount.value,
-    type:type.value,
-    cat:category.value
+    desc: description.value,
+    amount: +amount.value,
+    type: type.value,
+    cat: category.value
   });
 
   e.target.reset();
   update();
 });
-
-function toggleTheme(){
-  document.body.classList.toggle("light");
-  updateChart();
-}
-
-// chart
-let chart;
-function updateChart(){
-  const ctx=document.getElementById("chart").getContext("2d");
-
-  let inc=0,exp=0;
-  data.forEach(t=>t.type=="income"?inc+=t.amount:exp+=t.amount);
-
-  if(chart) chart.destroy();
-
-  chart=new Chart(ctx,{type:"doughnut",data:{labels:["Income","Expense"],datasets:[{data:[inc,exp]}]},options:{responsive:true,maintainAspectRatio:false}});
-}
 
 update();
 </script>
