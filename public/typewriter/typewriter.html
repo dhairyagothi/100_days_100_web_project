@@ -205,7 +205,6 @@
         }
 
 
-
         .sound-toggle {
 
             position: fixed;
@@ -222,7 +221,7 @@
 
             /*background: rgba(0,0,0,0.6);*/
 
-            background:  linear-gradient(135deg, var(--body-grad-a) 0%, var(--body-grad-b) 50%, var(--body-grad-c) 100%);
+            background: linear-gradient(135deg, var(--body-grad-a) 0%, var(--body-grad-b) 50%, var(--body-grad-c) 100%);
 
             color: white;
 
@@ -239,7 +238,7 @@
 
         .sound-toggle:hover {
 
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
 
             transform: scale(1.05);
         }
@@ -573,12 +572,13 @@
 
             font-family: 'Courier Prime', monospace;
 
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
 
             color: white;
 
             font-size: 14px;
         }
+
         /*Shift Key feature *******************/
         .shift-active {
 
@@ -590,8 +590,7 @@
 
             border-color: #93c5fd !important;
 
-            box-shadow:
-                    0 0 15px rgba(59,130,246,0.8) !important;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.8) !important;
 
             color: white !important;
         }
@@ -845,7 +844,8 @@
 
             osc.stop(now + dur);
 
-        } catch(e) {}
+        } catch (e) {
+        }
     }
 
     // Letters & numbers: sharp crisp clack — same sound for all
@@ -905,8 +905,12 @@
 
         paperContent += ch;
 
-        typewriterText.textContent =
-            paperContent;
+        typewriterText.textContent = paperContent;
+        //Saved Paper content
+        localStorage.setItem(
+            "savedPaper",
+            paperContent
+        );
 
         scrollPaperToBottom();
 
@@ -928,11 +932,14 @@
         if (paperContent.length === 0)
             return;
 
-        paperContent =
-            paperContent.slice(0, -1);
+        paperContent = paperContent.slice(0, -1);
 
-        typewriterText.textContent =
-            paperContent;
+        typewriterText.textContent = paperContent;
+        /*Save After Delete*/
+        localStorage.setItem(
+            "savedPaper",
+            paperContent
+        );
 
         scrollPaperToBottom();
 
@@ -946,6 +953,9 @@
         paperContent = '';
 
         typewriterText.textContent = '';
+        /*Save data On Reset*/
+        localStorage.removeItem(
+            "savedPaper");
 
         startTime = null;
 
@@ -1031,7 +1041,7 @@
         }
     });
 
-        // Allows User to write special Character and symbols
+    // Allows User to write special Character and symbols
 
     // ---- On-screen keys → paper ----
     document.querySelectorAll('.key').forEach(key => {
@@ -1045,6 +1055,11 @@
             if (ch === 'ENTER') {
                 paperContent += '\n';
                 typewriterText.textContent = paperContent;
+                /*Auto save Feature**********************************/
+                localStorage.setItem(
+                    "savedPaper",
+                    paperContent
+                );
                 scrollPaperToBottom();
                 scrollPaperToBottom();
                 playReturn();
@@ -1117,9 +1132,7 @@
 
             soundToggle.textContent =
                 "🔊 Sound ON";
-        }
-
-        else {
+        } else {
 
             soundToggle.textContent =
                 "🔇 Sound OFF";
@@ -1154,6 +1167,15 @@
         }
 
     }, 1000);
+    /*Restore Saved Content on Reload*/
+    const savedPaper = localStorage.getItem("savedPaper");
+
+    if (savedPaper) {
+
+        paperContent = savedPaper;
+
+        typewriterText.textContent = paperContent;
+    }
 </script>
 </body>
 </html>
