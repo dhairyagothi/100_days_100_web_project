@@ -281,6 +281,7 @@ h1 {
 .copyBtn:hover {
     cursor: pointer;
     opacity: 0.9;
+    transform: scale(1.02);
     transition: all 0.1s ease;
 }
 
@@ -308,15 +309,16 @@ h1 {
     text-align: center;
     margin-bottom: 1rem;
     font-size: 0.95rem;
+}
 
 .strength-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
 .strength-text {
-    color: white;
-    font-size: 1rem;
-    font-weight: 600;
+    color:white;
+    font-size:1rem;
+    font-weight:600;
 }
