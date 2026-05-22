@@ -8,7 +8,10 @@
 </head>
 <body>
 
-  <button id="theme-toggle">🌙 Dark Mode</button>
+  <div class="tooltip-container">
+    <button id="theme-toggle">🌙 Dark Mode</button>
+    <span class="tooltip-text">Switch Theme</span>
+  </div>
 
   <div class="container">
     <h1>Habit Tracker</h1>
@@ -35,6 +38,7 @@
             <span class="badge-desc">Complete a habit for 3 consecutive days</span>
           </div>
         </div>
+
         <div class="achievement-badge locked" id="badge-7">
           <span class="badge-icon">🥈</span>
           <div class="badge-info">
@@ -42,6 +46,7 @@
             <span class="badge-desc">Complete a habit for 7 consecutive days</span>
           </div>
         </div>
+
         <div class="achievement-badge locked" id="badge-30">
           <span class="badge-icon">🥇</span>
           <div class="badge-info">
@@ -56,10 +61,15 @@
   <div id="milestone-modal" class="modal-overlay">
     <div class="modal-card">
       <span class="modal-close" id="close-modal-btn">&times;</span>
+
       <div class="modal-content">
         <div class="modal-badge-icon">🎉</div>
         <h2>Milestone Unlocked!</h2>
-        <p id="milestone-message">You achieved a 3-Day streak on "Reading"!</p>
+
+        <p id="milestone-message">
+          You achieved a 3-Day streak on "Reading"!
+        </p>
+
         <button id="milestone-btn">Awesome!</button>
       </div>
     </div>

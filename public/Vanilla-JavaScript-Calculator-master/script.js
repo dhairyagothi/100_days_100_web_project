@@ -209,12 +209,30 @@ class Calculator {
         result = Math.tan(this.deg ? (current * Math.PI) / 180 : current);
         break;
       case 'sqrt':
+        if (current < 0) {
+          this.currentOperand = 'Error';
+          this.expression = 'Error';
+          this.updateDisplay();
+          return;
+        }
         result = Math.sqrt(current);
         break;
       case 'log':
+        if (current <= 0) {
+          this.currentOperand = 'Error';
+          this.expression = 'Error';
+          this.updateDisplay();
+          return;
+        }
         result = Math.log10(current);
         break;
       case 'ln':
+        if (current <= 0) {
+          this.currentOperand = 'Error';
+          this.expression = 'Error';
+          this.updateDisplay();
+          return;
+        }
         result = Math.log(current);
         break;
       case 'exp':
@@ -477,6 +495,48 @@ window.addEventListener('keydown', (e) => {
   } else if (key === '^') {
     matched = true;
     activeCalc.choosePowerOperation();
+  } else if(key === 's') {
+    matched=true;
+    activeCalc.computeFunction('sin');
+  } else if(key === 'c') {
+    matched=true;
+    activeCalc.computeFunction('cos');
+  } else if(key === 't') {
+    matched=true;
+    activeCalc.computeFunction('tan');
+  } else if(key === 'r') {
+    matched=true;
+    activeCalc.computeFunction('sqrt');
+  } else if(key === 'l') {
+    matched=true;
+    activeCalc.computeFunction('ln');
+  } else if(key === 'g') {
+    matched=true;
+    activeCalc.computeFunction('log');
+  } else if(key === 'e') {
+    matched=true;
+    activeCalc.computeFunction('e');
+  } else if(key === 'x') {
+    matched=true;
+    activeCalc.computeFunction('exp');
+  } else if(key === 'f') {
+    matched=true;
+    activeCalc.computeFunction('factorial');
+  } else if(key === '%') {
+    matched=true;
+    activeCalc.computeFunction('percent');
+  } else if(key === 'i') {
+    matched=true;
+    activeCalc.computeFunction('inv');
+  } else if(key === 'a') {
+    matched=true;
+    activeCalc.computeFunction('rad');
+  } else if(key === 'p') {
+    matched=true;
+    activeCalc.computeFunction('pi');
+  } else if(key === 'd') {
+    matched=true;
+    activeCalc.computeFunction('deg');
   }
 
   if (matched) {

@@ -1,35 +1,78 @@
-Express Server 🖥️
+# Express Server 🚀
 
-A lightweight backend server built with Node.js and Express.js. Fast, minimal, and responsible for carrying the entire application on its back while the frontend gets all the screenshots.
+A lightweight and modular backend server built with **Node.js** and **Express.js**.
 
-This project is a basic Express.js backend server setup designed for REST APIs, middleware handling, routing, environment configuration, and scalable backend development.
+This project demonstrates the fundamentals of backend development using Express.js, including routing, middleware, controller-based architecture, environment configuration, centralized response handling, and REST API development.
 
+> Part of the **100 Days 100 Web Projects** collection.
 
-📌 Features
+---
 
-⚡ Fast Express Server
-🌐 REST API Support
-📦 Middleware Integration
-🔒 Environment Variables with dotenv
-🛣️ Modular Routing Structure
-📡 JSON Request Handling
-🧹 Clean Project Architecture
-🚀 Ready for Full-Stack Integration
-🔧 Easy Scalability
-🛠️ Tech Stack
+## 🔗 Repository & Project Links
 
+### Main Repository
 
-Technology	Usage
-Node.js	Runtime Environment
-Express.js	Backend Framework
-dotenv	Environment Variables
-Nodemon	Development Server
+https://github.com/dhairyagothi/100_days_100_web_project
 
+### Project Showcase
 
-📂 Project Structure
+https://100-days-100-web-project.vercel.app/
+
+### Express Server Directory
+
+https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Express%20Server
+
+---
+
+## 📖 About This Project
+
+Unlike most projects in the repository that focus on frontend development, **Express Server** is a backend-oriented project designed to showcase Express.js server architecture and API development concepts.
+
+This project focuses on:
+
+- Express.js fundamentals
+- REST API architecture
+- Modular routing
+- Middleware implementation
+- Controller-based logic separation
+- Environment configuration
+- Standardized API responses
+- Backend project organization
+
+Since this is a backend project, it does not include a visual user interface. APIs can be tested using:
+
+- Browser
+- Postman
+- Thunder Client
+- Insomnia
+- cURL
+
+---
+
+# ✨ Features
+
+- ⚡ Express.js Server Setup
+- 📂 Modular Folder Structure
+- 🛣️ Express Router Integration
+- 🎯 Controller-Based Request Handling
+- 📝 Request Logging Middleware
+- 🛡️ Global Error Handling Middleware
+- 🌍 Environment Variable Support
+- 📡 REST API Endpoints
+- ❤️ Health Monitoring Endpoint
+- 👥 Mock User Endpoint
+- 🔄 Standardized JSON Responses
+
+---
+
+# 📁 Project Structure
+
 ```text
-express-server/
-├── node_modules/
+Express Server/
+├── package.json
+├── server.js
+├── .gitignore
+├── .env.example
 │
 ├── routes/
 │   └── apiRoutes.js
@@ -38,153 +81,277 @@ express-server/
 │   └── apiController.js
 │
 ├── middleware/
-│   └── loggerMiddleware.js
+│   ├── loggerMiddleware.js
+│   └── errorMiddleware.js
 │
-├── .env
-├── .gitignore
-├── package.json
-├── package-lock.json
-└── server.js
+├── utils/
+│   └── responseHandler.js
+│
+└── README.md
 ```
 
+---
 
-⚙️ Installation & Setup
+# 🛠️ Technologies Used
 
-1️⃣ Clone the Repository
-git clone https://github.com/your-username/express-server.git
-cd express-server
+| Technology | Purpose |
+|------------|---------|
+| Node.js | JavaScript Runtime |
+| Express.js | Backend Framework |
+| Dotenv | Environment Variable Management |
+| Nodemon | Development Server Reloading |
 
+---
 
+# ⚙️ Installation
 
-🚀 Install Dependencies
+### Clone Repository
+
+```bash
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+```
+
+### Navigate to Express Server
+
+```bash
+cd "public/Express Server"
+```
+
+### Install Dependencies
+
+```bash
 npm install
+```
 
-🔐 Environment Variables
+---
 
-Create a .env file in the root directory:
+# 🔐 Environment Setup
 
-PORT=5000
-▶️ Start Development Server
+Create a `.env` file in the project root.
+
+Example:
+
+```env
+PORT=3000
+NODE_ENV=development
+```
+
+Or copy values from:
+
+```text
+.env.example
+```
+
+---
+
+# ▶️ Running the Application
+
+### Development Mode
+
+```bash
 npm run dev
+```
 
-Server runs on:
+### Production Mode
 
-http://localhost:5000
-
-
-📜 Available Scripts
-
-Start Server
+```bash
 npm start
-Run Development Server with Nodemon
-npm run dev
+```
 
-🧠 Basic Express Server Example
+The server will run at:
 
-server.js
-const express = require("express");
-const dotenv = require("dotenv");
-dotenv.config();
-const app = express();
-app.use(express.json());
+```text
+http://localhost:3000
+```
 
-const PORT = process.env.PORT || 5000;
+---
 
-app.get("/", (req, res) => {
-  res.send("Express Server Running ");
-});
+# 🌐 API Endpoints
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+## Root Endpoint
 
+### GET /
 
-📡 Example API Route
+Returns API status.
 
+Response:
 
-GET Request
-GET /api
-Sample Response
+```json
 {
-  "message": "API is working successfully"
+  "success": true,
+  "message": "Express Server API is running successfully"
 }
+```
 
+---
 
-📦 Required Packages
+## Health Check
 
-Install Express & dotenv
-npm install express dotenv
-Install Nodemon (Development Dependency)
-npm install nodemon --save-dev
+### GET /api/health
 
-🛣️ API Routing Example
+Returns server health information.
 
-routes/apiRoutes.js
-const express = require("express");
-const router = express.Router();
+Response:
 
-router.get("/", (req, res) => {
-  res.json({
-    message: "API is working successfully"
-  });
-});
-module.exports = router;
+```json
+{
+  "success": true,
+  "message": "Server health status fetched successfully",
+  "data": {
+    "uptime": 150.12,
+    "timestamp": "2026-05-21T12:00:00.000Z"
+  }
+}
+```
 
+---
 
+## Server Information
 
-🔧 Middleware Example
+### GET /api/info
 
-middleware/loggerMiddleware.js
-const loggerMiddleware = (req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-};
+Returns server metadata.
 
-module.exports = loggerMiddleware;
+Response:
 
-🌍 Environment Variables
-Variable 	Description
-PORT	Server Port Number
+```json
+{
+  "success": true,
+  "message": "Server information fetched successfully",
+  "data": {
+    "project": "Express Server",
+    "framework": "Express.js",
+    "version": "1.0.0",
+    "environment": "development"
+  }
+}
+```
 
+---
 
-🚀 Future Improvements
+## Users Endpoint
 
-🔐 JWT Authentication
-🗄️ MongoDB Integration
-📁 File Uploads
-🧪 API Testing with Jest
-📄 Swagger API Documentation
-☁️ Docker Deployment
-🔄 Rate Limiting
-🛡️ Security Middleware (Helmet)
-🌐 Deployment
+### GET /api/users
 
-Deploy your backend using:
+Returns sample user data.
 
-Render
-Railway
-Cyclic
-🤝 Contributing
+Response:
+
+```json
+{
+  "success": true,
+  "message": "Users fetched successfully",
+  "data": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane@example.com"
+    }
+  ]
+}
+```
+
+---
+
+# 📝 Middleware
+
+## Logger Middleware
+
+Logs every incoming request.
+
+Example:
+
+```text
+[2026-05-21T12:00:00.000Z] GET /api/users
+```
+
+---
+
+## Error Middleware
+
+Handles unexpected server errors and returns standardized responses.
+
+Response:
+
+```json
+{
+  "success": false,
+  "message": "Internal Server Error"
+}
+```
+
+---
+
+# 🔄 Standardized API Responses
+
+All endpoints follow a consistent response format:
+
+```json
+{
+  "success": true,
+  "message": "Request successful",
+  "data": {}
+}
+```
+
+Benefits:
+
+- Better API consistency
+- Easier frontend integration
+- Improved maintainability
+- Predictable response structure
+
+---
+
+# 🚀 Future Enhancements
+
+Possible improvements:
+
+- MongoDB Integration
+- PostgreSQL Support
+- JWT Authentication
+- User Authentication System
+- Request Validation
+- Swagger API Documentation
+- Unit Testing
+- Docker Support
+- Deployment Configuration
+
+---
+
+# 🎯 Learning Outcomes
+
+This project helps developers understand:
+
+- Express.js Fundamentals
+- REST API Development
+- Routing Architecture
+- Middleware Design
+- Error Handling
+- Environment Variables
+- Backend Project Structure
+- API Response Standardization
+
+---
+
+# 🤝 Contributing
 
 Contributions are welcome.
 
-Fork the repository
-Create a new branch
-git checkout -b feature/new-feature
-Commit your changes
-git commit -m "Added new feature"
-Push to GitHub
-git push origin feature/new-feature
-Open a Pull Request
+1. Fork the repository
+2. Create a feature branch
+3. Make changes
+4. Commit using clear commit messages
+5. Open a Pull Request
+
+---
 
 
+### ⭐ If you find this project useful, consider starring the repository:
 
-
-⭐ Support
-
-If you found this project helpful:
-
-⭐ Star the repository
-🍴 Fork the project
-🚀 Build something awesome with it
-
+https://github.com/dhairyagothi/100_days_100_web_project

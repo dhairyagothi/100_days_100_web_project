@@ -474,3 +474,256 @@ code {
     color: #9ca3af;
     margin-top: 12px;
 }
+/* =========================
+   DARK MODE THEME
+========================= */
+
+.theme-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+
+    background: linear-gradient(145deg, #1e3a8a, #2563eb);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.3s ease;
+
+    box-shadow:
+        0 0 15px rgba(37, 99, 235, 0.5);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.08);
+    box-shadow:
+        0 0 25px rgba(59, 130, 246, 0.8);
+}
+
+/* =========================
+   FULL DARK MODE
+========================= */
+
+body.dark-mode {
+    background:
+        linear-gradient(
+            135deg,
+            #020617,
+            #0f172a,
+            #111827
+        );
+
+    color: #e2e8f0;
+}
+
+/* Main container */
+
+body.dark-mode .chat-container {
+    background: rgba(15, 23, 42, 0.95);
+
+    border: 1px solid #334155;
+
+    box-shadow:
+        0 0 25px rgba(0,0,0,0.4);
+}
+
+/* Header */
+
+body.dark-mode header {
+    background: transparent;
+    color: rgb(255, 255, 255);
+}
+
+/* Input fields */
+
+body.dark-mode input,
+body.dark-mode textarea {
+    background: #1e293b;
+
+    color: white;
+
+    border: 1px solid #475569;
+}
+
+/* Placeholder */
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #94a3b8;
+}
+
+/* Buttons */
+
+body.dark-mode button {
+    background:
+        linear-gradient(
+            145deg,
+            #2563eb,
+            #3b82f6
+        );
+
+    color: white;
+
+    border: none;
+}
+
+/* Chat messages */
+
+body.dark-mode .message,
+body.dark-mode .chat-box,
+body.dark-mode .bot-message,
+body.dark-mode .user-message {
+    background: #1e293b !important;
+
+    color: #f1f5f9 !important;
+
+    border: 1px solid #334155;
+}
+
+/* API settings section */
+
+body.dark-mode .api-settings {
+    background: transparent;
+}
+
+/* Scrollbar */
+
+body.dark-mode ::-webkit-scrollbar {
+    width: 10px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+/* LIGHT MODE */
+.ai-message.chat-message {
+    background: white;
+    color: black;
+}
+
+/* DARK MODE */
+body.dark-mode .ai-message.chat-message {
+    background: #1e293b;
+    color: white;
+}
+/* Input area container */
+body.dark-mode .input-area,
+body.dark-mode .chat-input,
+body.dark-mode .typing-area {
+    background-color: #0f172a !important;
+}
+
+/* Buttons */
+body.dark-mode button {
+    background-color: #2563eb !important;
+    color: white !important;
+}
+body.dark-mode .ai-message.chat-message {}
+body.dark-mode .ai-message.chat-message {
+    background-color: #111827 !important;
+}
+input,
+textarea {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+}
+/* LIGHT MODE */
+.welcome-message {
+    background-color: white;
+    color: black;
+}
+
+/* DARK MODE */
+body.dark-mode .welcome-message {
+    background-color: #1e293b;
+    color: white;
+}
+/* LIGHT MODE */
+button {
+    background-color: #3b82f6;
+    color: white;
+}
+
+/* DARK MODE */
+body.dark-mode button {
+    background-color: #2563eb;
+}
+/* LIGHT MODE */
+
+.chat-message {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* DARK MODE */
+
+body.dark .chat-message {
+    background-color: #1e293b;
+    color: white;
+}
+/* LIGHT MODE */
+
+.chat-message {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* DARK MODE */
+
+body.dark-mode .chat-message {
+    background-color: #1e293b;
+    color: white;
+}
+/* LIGHT MODE */
+
+#api-key-input {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+}
+
+/* DARK MODE */
+
+body.dark-mode #api-key-input {
+    background-color: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+}
+/* LIGHT MODE */
+
+.chat-input {
+    background-color: white;
+    color: black;
+}
+
+/* DARK MODE */
+
+body.dark-mode .chat-input {
+    background-color: #1e293b;
+    color: white;
+}
+/* LIGHT MODE */
+h1 {
+    color: black !important;
+}
+
+/* DARK MODE */
+body.dark-mode h1 {
+    color: white !important;
+}

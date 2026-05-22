@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html"],
+  content: ["./index.html", "./dashboard.html"],
   theme: {
     extend: {
       fontFamily :{mullish:["Mulish" , "sans-serif"],
