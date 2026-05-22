@@ -104,7 +104,7 @@ const PROJECT_DATA = [
   ['Day 33', 'Weather Forecasting', './public/Weather%20Forcasting/index.html', 'weather api', 'intermediate'],
   ['Day 34', 'Email Validator', './public/email%20validator/index.html', 'api javascript', 'beginner'],
   ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', 'tool javascript', 'beginner'],
-  ['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
+['Day 36', 'Medical App', './public/Medical_App/', 'javascript', 'intermediate'],
   ['Day 37', '2048 Game', './public/2048_game/index.html', 'game javascript', 'intermediate'],
   ['Day 38', 'Github Profile Finder', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder', 'api javascript', 'intermediate'],
   ['Day 39', 'Notes App', './public/notes-app/index.html', 'todo javascript', 'beginner'],
