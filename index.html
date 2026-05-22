@@ -1,280 +1,160 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-    content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript." />
-  <meta name="keywords"
-    content="web development, HTML, CSS, JavaScript, React, Node.js, projects, learning, 100 days, open source, GSSoC" />
-  <meta name="author" content="Dhairya Gothi and Contributors" />
-  <meta name="theme-color" content="#0a0a1a" />
-
-  <!-- Open Graph / Social Media -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="100 Days · 100 Web Projects" />
-  <meta property="og:description"
-    content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript." />
-  <meta property="og:url" content="https://100-days-100-web-project.vercel.app/" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="100 Days · 100 Web Projects" />
-  <meta name="twitter:description"
-    content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript." />
-
-  <title>100 Days · 100 Web Projects</title>
-  <link rel="icon" type="image/x-icon" href="public/fav.ico" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @media (min-width: 992px) {
+            .main-layout { display: flex !important; align-items: stretch !important; gap: 24px; }
+            .content-card.form-section { flex: 0 0 420px !important; max-width: 450px !important; margin: 0 !important; height: auto !important; display: flex !important; flex-direction: column !important; }
+            .content-card.summary-section { flex: 1 !important; margin: 0 !important; height: auto !important; display: flex !important; flex-direction: column !important; }
+            #transactionForm { display: flex !important; flex-direction: column !important; flex-grow: 1 !important; }
+            #transactionForm .btn-primary { margin-top: auto !important; }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="ambient ambient-left" aria-hidden="true"></div>
-  <div class="ambient ambient-right" aria-hidden="true"></div>
-  <div class="noise-layer" aria-hidden="true"></div>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-group">
+                <h1>Expense <span class="logo-accent">Tracker</span></h1>
+                <p class="logo-subtext">Your money, kept simple.</p>
+            </div>
+            <div class="header-controls">
+                <nav class="nav-links-group">
+                    <a href="index.html" class="nav-link active">Transactions</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="history.html" class="nav-link">History <span class="nav-badge" data-badge="count">0</span></a>
+                </nav>
+                <div class="utility-buttons">
+                    <button id="btnExport" class="btn-secondary">Backup</button>
+                    <button id="btnReset" class="btn-danger">Clear All</button>
+                </div>
+            </div>
+        </header>
 
-    <!-- ── NAVBAR ──────────────────────────────────────────── -->
-    <nav class="navbar" id="navbar">
-        <a class="navbar-brand" href="index.html" style="text-decoration:none;">
-            <span class="brand-mark" aria-hidden="true">100</span>
-            <span class="brand-copy">
-                <span class="brand-kicker">Open Source Archive</span>
-                <strong>100 Days · 100 Web Projects</strong>
-            </span>
-        </a>
+        <div class="main-layout">
+            <main class="content-card form-section">
+                <h2>Add New Entry</h2>
+                <form id="transactionForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-input-group">
+                            <label for="amount">Amount (₹) *</label>
+                            <input type="number" id="amount" placeholder="0.00" min="0.01" required>
+                            <span class="error-msg" id="amountError"></span>
+                        </div>
+                        <div class="form-input-group">
+                            <label for="date">Date *</label>
+                            <input type="date" id="date" required>
+                            <span class="error-msg" id="dateError"></span>
+                        </div>
+                    </div>
+                    <div class="form-input-group">
+                        <label>Transaction Type *</label>
+                        <div class="radio-switcher">
+                            <input type="radio" id="type-expense" name="type" value="Expense" checked required>
+                            <label for="type-expense" class="switch-label">💸 Expense</label>
+                            <input type="radio" id="type-income" name="type" value="Income" required>
+                            <label for="type-income" class="switch-label">💰 Income</label>
+                        </div>
+                    </div>
+                    <div class="form-input-group" id="categoryGroup">
+                        <label for="category">Category *</label>
+                        <select id="category" required>
+                            <option value="">Select a category...</option>
+                            <option value="Food">🍔 Food &amp; Dining</option>
+                            <option value="Travel">🚗 Travel &amp; Fuel</option>
+                            <option value="Shopping">🛍️ Shopping &amp; Clothes</option>
+                            <option value="Bills">🏠 Bills &amp; Rent</option>
+                            <option value="Others">📦 Others</option>
+                        </select>
+                        <span class="error-msg" id="categoryError"></span>
+                    </div>
+                    <div class="form-input-group">
+                        <label for="description">Description *</label>
+                        <input type="text" id="description" placeholder="What was this for? e.g., Grocery run" required>
+                        <span class="error-msg" id="descriptionError"></span>
+                    </div>
+                    <button type="submit" class="btn-primary">+ Add to My List</button>
+                </form>
+            </main>
 
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-    </div>
-    </nav>   
-    <!-- ── HERO ───────────────────────────────────────────── -->
-    <section class="hero" id="hero">
-      <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
-      <div class="hero-inner">
-        <p class="hero-overline">Open Source Frontend Archive · 2026</p>
-
-      <h1 class="hero-headline">
-        <span class="hero-line">100 DAYS</span>
-        <span class="hero-line hero-line-accent">100 WEB PROJECTS</span>
-      </h1>
-
-      <p class="hero-sub">
-        A comprehensive collection of 112+ web development projects ranging from beginner to intermediate level,
-        designed to help developers learn and practice through hands-on experience.
-      </p>
-
-      <p class="hero-extra">
-        Frontend • Backend • Full-Stack • Games • UI Components • Tools
-      </p>
-
-      <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
-          Browse Projects <i class="fas fa-arrow-down"></i>
-        </a>
-        <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer"
-          class="btn btn-ghost" id="heroGithubBtn">
-          <i class="fab fa-github"></i> GitHub
-        </a>
-      </div>
-
-      <div class="stats-strip" id="statsStrip">
-        <span class="stat-item">
-          <strong id="projectCount">—</strong> Projects
-        </span>
-        <span class="stat-divider">·</span>
-        <span class="stat-item">
-          <strong id="starCount">—</strong> Stars
-        </span>
-        <span class="stat-divider">·</span>
-        <span class="stat-item">
-          <strong id="forkCount">—</strong> Forks
-        </span>
-        <span class="stat-divider">·</span>
-        <span class="stat-item">
-          <strong id="issueCount">—</strong> Issues
-        </span>
-        <span class="stat-divider">·</span>
-        <span class="stat-item"> <strong id="prCount">—</strong> PRs </span>
-        <span class="stat-divider">·</span>
-        <span class="stat-item"> <strong>Open</strong> Source </span>
-      </div>
-    </div>
-  </section>
-
-  <section class="projects-section">
-    <div class="projects-inner">
-      <div class="projects-intro">
-        <p class="section-label">Continue Exploring</p>
-
-        <div class="section-heading-row">
-          <h2 class="section-title">Recently Viewed</h2>
-
-          <button class="view-all-btn" id="recentToggleBtn">View All</button>
-        </div>
-      </div>
-
-      <div class="project-grid" id="recentGrid"></div>
-    </div>
-  </section>
-
-  <section class="projects-section">
-    <div class="projects-inner">
-      <div class="projects-intro">
-        <p class="section-label">Saved Collection</p>
-
-        <div class="section-heading-row">
-          <h2 class="section-title">Bookmarked Projects</h2>
-
-          <button class="view-all-btn" id="bookmarkToggleBtn">
-            View All
-          </button>
-        </div>
-      </div>
-
-      <div class="project-grid" id="bookmarkGrid"></div>
-    </div>
-  </section>
-
-  <!-- ── PROJECTS ───────────────────────────────────────── -->
-  <section class="projects-section" id="projects">
-    <div class="projects-inner">
-      <div class="projects-intro">
-        <p class="section-label">Archive index</p>
-        <h2 class="section-title">Every experiment, catalogued.</h2>
-      </div>
-
-      <div class="projects-header">
-        <div class="search-bar">
-          <i class="fas fa-search search-icon"></i>
-
-          <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
-
-          <!-- ADD THIS BUTTON -->
-          <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
-            &times;
-          </button>
+            <section class="content-card summary-section">
+                <h2>Your Summary</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-box balance-box">
+                        <span class="stat-title">Current Balance</span>
+                        <div id="accountBalance" class="stat-number color-neutral">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Total Earned</span>
+                        <div id="totalIncome" class="stat-number text-green">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Total Spent</span>
+                        <div id="totalExpense" class="stat-number text-red">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Average Entry</span>
+                        <div id="avgTransaction" class="stat-number">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Savings Rate</span>
+                        <div id="savingsRate" class="stat-number text-blue">0.0%</div>
+                    </div>
+                </div>
+                <div class="visual-chart-box">
+                    <div class="donut-visual">
+                        <svg viewBox="0 0 42 42" class="svg-circle" aria-hidden="true">
+                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--chart-track)" stroke-width="4"></circle>
+                            <circle id="donutSegment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#4F46E5" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="25"></circle>
+                        </svg>
+                        <div class="donut-text">
+                            <span id="highestExpensePct">0%</span>
+                            <small id="highestExpenseName">Top Category</small>
+                        </div>
+                    </div>
+                    <div class="progress-bars-container" id="categoriesList">
+                        <div class="progress-bar-item" data-category="Food">
+                            <div class="progress-text"><span>🍔 Food &amp; Dining</span><span id="cat-Food">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#38BDF8;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Travel">
+                            <div class="progress-text"><span>🚗 Travel &amp; Fuel</span><span id="cat-Travel">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#FB923C;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Shopping">
+                            <div class="progress-text"><span>🛍️ Shopping &amp; Clothes</span><span id="cat-Shopping">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#F43F5E;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Bills">
+                            <div class="progress-text"><span>🏠 Bills &amp; Rent</span><span id="cat-Bills">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#34D399;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Others">
+                            <div class="progress-text"><span>📦 Others</span><span id="cat-Others">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#A78BFA;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
-        <!-- Technology Stack Search -->
-        <div class="search-bar tech-search-bar">
-          <i class="fas fa-code search-icon"></i>
-          <input type="text" id="techStackSearch" class="search-input"
-            placeholder="Filter by tech stack (React, Node.js, Python...)" autocomplete="off" />
-          <button id="clearTechFilter" class="clear-filter-btn" style="display: none;" aria-label="Clear tech filters">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-
-        <!-- Active Tech Filters Display -->
-        <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
-          <span class="filter-label">Active filters:</span>
-          <div id="techFilterTags"></div>
-        </div>
-
-        <div class="filter-chips" id="filterChips">
-          <button class="chip active" data-filter="all" id="filterAll">
-            All <span class="chip-count" id="allCount">Projects</span>
-          </button>
-          <button class="chip" data-filter="game" id="filterGame">
-            Games
-          </button>
-          <button class="chip" data-filter="clone" id="filterClone">
-            Clones
-          </button>
-          <button class="chip" data-filter="tool" id="filterTool">
-            Tools
-          </button>
-          <button class="chip" data-filter="ui" id="filterUI">
-            UI / Animation
-          </button>
-          <button class="chip" data-filter="api" id="filterAPI">APIs</button>
-        </div>
-      </div>
-
-      <div class="project-grid" id="projectGrid"></div>
-
-      <div class="no-results" id="noResults">
-        <i class="fas fa-search"></i>
-        <p>No projects match your search.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ─────────────────────────────────────────── -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">100 Days</span>
-        <p>
-          An open-source frontend exploration challenge — a growing collection
-          of HTML, CSS &amp; JavaScript experiments.
-        </p>
-      </div>
-
-      <div class="footer-nav">
-        <h4>Navigate</h4>
-        <ul>
-          <li><a href="#projects">Browse Projects</a></li>
-          <li>
-            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
-              rel="noopener noreferrer">GitHub Repo</a>
-          </li>
-          <li><a href="./contributors/contributor.html">Contributors</a></li>
-          <li><a href="./public/Login.html">Sign In</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-social">
-        <h4>Connect</h4>
-        <div class="social-row">
-          <a href="https://github.com/dhairyagothi" target="_blank" rel="noopener noreferrer" class="social-icon"
-            aria-label="GitHub" id="footerGithub">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer"
-            class="social-icon" aria-label="LinkedIn" id="footerLinkedin">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer"
-            class="social-icon" aria-label="Instagram" id="footerInstagram">
-            <i class="fab fa-instagram"></i>
-          </a>
-        </div>
-      </div>
+        <section class="content-card recent-section">
+            <div class="recent-header">
+                <h2>Recent Transactions</h2>
+                <a href="history.html">View all →</a>
+            </div>
+            <div class="recent-list" id="recentList">
+                <div class="recent-empty">No transactions yet. Add your first entry above!</div>
+            </div>
+        </section>
     </div>
 
-    <div class="footer-bottom">
-      <span>© 2024 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
-      <button id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-        <i class="fas fa-moon"></i>
-      </button>
-    </div>
-  </footer>
-
-  <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
-  <button id="scrollBtn" aria-label="Back to top">
-    <svg class="progress-ring" viewBox="0 0 48 48">
-      <circle class="ring-track" cx="24" cy="24" r="22" />
-      <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
-    </svg>
-    <i class="fas fa-arrow-up scroll-arrow"></i>
-    <span class="scroll-tooltip">Back to top</span>
-  </button>
-  <div class="toast" id="toast"></div>
-  <script type="module" src="hero-terminal.js"></script>
-  <script src="index.js"></script>
-
+    <div id="toast-container"></div>
+    <button id="themeToggle" class="floating-theme-btn">🌓</button>
+    <script src="expense.js" defer></script>
 </body>
-
 </html>
