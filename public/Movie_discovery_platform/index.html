@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Discovery Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-overlay" id="pageOverlay"></div>
+
+  <div class="app-shell" id="appShell">
+    <div id="loader" class="loader" aria-hidden="true">
+      <div class="spinner" aria-hidden="true"></div>
+    </div>
+    <div id="errorBanner" class="error-banner" hidden role="alert"></div>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">MDP</span>
+        <div>
+          <p class="brand-label">Movie Discovery</p>
+          <span class="brand-sub">Cinematic, full-screen UI</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">LIGHT</button>
+        <button id="settingsBtn" class="settings-btn" aria-label="Settings">⚙</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section" id="heroSection">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-header-row">
+            <div class="hero-intro">
+              <p class="eyebrow">Find Your Next</p>
+              <h1 class="hero-title" id="heroTitle">Obsession. Tonight.</h1>
+              <p class="hero-copy">A cinematic discovery playground for late-night favorites and must-watch premieres.</p>
+            </div>
+            <div class="hero-highlight">
+              <span class="hero-label">NOW STREAMING</span>
+              <strong id="movieCount">00</strong>
+              <span class="hero-subtext">curated titles ready for your queue</span>
+              <span class="hero-popular"><span id="popularCount">00+</span> top picks in rotation</span>
+            </div>
+          </div>
+
+          <form class="hero-search" id="searchForm">
+            <label class="search-label" for="searchInput">Search movies, genres, actors...</label>
+            <div class="search-field">
+              <input id="searchInput" type="search" placeholder="Search movies, genres, actors..." autocomplete="off" />
+              <button type="submit">SEARCH</button>
+            </div>
+          </form>
+
+          <div class="hero-genres">
+            <span class="hero-genres-label">Browse by genre</span>
+            <div id="genreBar" class="hero-genres-row">
+              <button class="genre-pill active" data-genre="all">All</button>
+              <button class="genre-pill" data-genre="Action">Action</button>
+              <button class="genre-pill" data-genre="Romance">Romance</button>
+              <button class="genre-pill" data-genre="Sci-Fi">Sci-Fi</button>
+              <button class="genre-pill" data-genre="Drama">Drama</button>
+              <button class="genre-pill" data-genre="Horror">Horror</button>
+              <button class="genre-pill" data-genre="Thriller">Thriller</button>
+              <button class="genre-pill" data-genre="Comedy">Comedy</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="trending-section">
+        <div class="section-header">
+          <div>
+            <p class="section-eyebrow">Trending Now</p>
+            <h2>Top Picks</h2>
+          </div>
+          <p class="section-note">Scroll the strip to discover what’s buzzing tonight.</p>
+        </div>
+        <div class="trending-strip" id="trendingStrip"></div>
+      </section>
+
+      <section class="movies-section">
+        <div class="section-header">
+          <div>
+            <p class="section-eyebrow">Popular right now</p>
+            <h2>Curated results</h2>
+          </div>
+          <p class="section-note">Swipe or click a card to reveal release details.</p>
+        </div>
+        <div class="movies-grid" id="moviesGrid"></div>
+        <div id="emptyState" class="empty-state" hidden>
+          <p>No movies match your search yet.</p>
+          <button id="resetSearchBtn" class="load-more-btn">Reset filters</button>
+        </div>
+        <div class="load-more-wrap" id="loadMoreWrap">
+          <button id="loadMoreBtn" class="load-more-btn">Load more</button>
+        </div>
+      </section>
+
+      <section class="palette-section">
+        <div class="palette-header">
+          <p class="section-eyebrow">Color palette</p>
+          <h2>Warm papaya, soft cream, and deep charcoal</h2>
+        </div>
+        <div class="palette-row">
+          <span class="palette-swatch swatch-1"></span>
+          <span class="palette-swatch swatch-2"></span>
+          <span class="palette-swatch swatch-3"></span>
+          <span class="palette-swatch swatch-4"></span>
+          <span class="palette-swatch swatch-5"></span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
