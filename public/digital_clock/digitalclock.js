@@ -237,3 +237,51 @@ function showToast(msg) {
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 2000);
 }
+
+// ============== TOGGLE TIME ZONE ===========
+function toggleTimezoneDropdown(event){
+  event.stopPropagation();
+  document.getElementById("tz-options-container").classList.toggle("hidden");
+}
+
+// ============ POPULATE TIME ZONE ===========
+function populateTimezoneDropdown(){
+  const list = document.getElementById("tz-options-list");
+  list.innerHTML = "";
+  TIMEZONES.forEach(tz => {
+    const option = document.createElement("div");
+    option.className = "timezone-option";
+    option.textContent = tz.name;
+    option.onclick = () => selectTimezone(tz);
+    list.appendChild(option);
+  });
+}
+
+// ============ SELECT TIME ZONE =============
+function selectTimezone(tz){
+  primaryTimezone = tz.id;
+  localStorage.setItem("primaryTimezone", primaryTimezone);
+  document.getElementById("selected-tz-display").textContent = tz.name;
+  timezoneLabel.textContent = tz.name;
+  document.getElementById("tz-options-container").classList.add("hidden");
+  updateClock();
+}
+
+// ============ FILTER TIME ZONE =============
+function filterTimezones(){
+  const search = document.getElementById("tz-search-input").value.toLowerCase();
+  const list = document.getElementById("tz-options-list");
+  list.innerHTML = "";
+  TIMEZONES.filter(tz => tz.name.toLowerCase().includes(search)).forEach(tz => {
+    const option = document.createElement("div");
+    option.className = "timezone-option";
+    option.textContent = tz.name;
+    option.onclick = () => selectTimezone(tz);
+    list.appendChild(option);
+  });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener("click", () => {
+  document.getElementById("tz-options-container").classList.add("hidden");
+})
