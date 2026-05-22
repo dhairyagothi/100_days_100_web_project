@@ -233,6 +233,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   gap: 0.5rem;
 }
 
+<<<<<<< HEAD
 /* Score badge next to player name */
 .score-badge {
   display: inline-flex;
@@ -249,6 +250,27 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-weight: 700;
   color: var(--gold-light);
   transition: color var(--transition), background var(--transition);
+=======
+#countdown-message {
+    font-family: 'Teko', sans-serif;
+    font-size: 2.5rem;
+    color: #8B0000;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.2rem;
+    min-height: 3rem;
+}
+
+table, th, td{
+    padding: .5rem;
+    border: solid 2px black;
+    font-size: 3rem;
+    font-family: 'Teko', sans-serif;
+    font-weight: 400;
+    padding-left: 3rem;
+    padding-right: 3rem;
+>>>>>>> b2f1d1e6 (feat: Introduced the Auto-Reseting feature along with reset timer)
 }
 
 /* Card row — horizontally scrollable on mobile */
@@ -259,6 +281,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   min-height: 8rem;
 }
 
+<<<<<<< HEAD
 /* Individual card images */
 .card-row img {
   height: 9rem;
@@ -267,6 +290,16 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   box-shadow: 3px 4px 10px rgba(0,0,0,0.5);
   animation: cardDeal 0.25s cubic-bezier(0.22,1,0.36,1);
   flex-shrink: 0;
+=======
+#play-again {
+    display: none !important;
+}
+
+/* title container */
+
+.title-container{
+    position: relative;
+>>>>>>> b2f1d1e6 (feat: Introduced the Auto-Reseting feature along with reset timer)
 }
 
 /* Card deal entrance animation */
