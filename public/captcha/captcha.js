@@ -1,9 +1,11 @@
 const captchaTypeSelect = document.getElementById('captchaType');
 const captchaContainer = document.getElementById('captchaContainer');
-const textInput = document.querySelector(".textcaptcha input");
-const refreshButton = document.querySelector(".refresh");
-const resultMessage = document.querySelector(".result");
-const submitButton = document.querySelector(".button button");
+const textInput = document.getElementById('captchaInput');
+const refreshButton = document.querySelector('.refresh');
+const resultMessage = document.querySelector('.result');
+const submitButton = document.querySelector('.submit');
+const voiceField = document.getElementById('voiceField');
+const voiceSelect = document.getElementById('voiceSelect');
 
 let currentCaptcha = null;
 let attempts = 0;
@@ -47,38 +49,79 @@ const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
   return new Promise((resolve) => {
       const utterance = new SpeechSynthesisUtterance();
       utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
+      const selectedVoice = voiceSelect.value;
+      if (selectedVoice) {
+          const voice = speechSynthesis.getVoices().find(v => v.name === selectedVoice);
+          if (voice) utterance.voice = voice;
+      }
       utterance.rate = speed;
       utterance.onend = resolve;
       speechSynthesis.speak(utterance);
   });
 };
 
+const populateVoiceList = () => {
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) {
+      voiceSelect.innerHTML = '<option value="">No voices available</option>';
+      return;
+  }
+  const previousValue = voiceSelect.value;
+  voiceSelect.innerHTML = voices
+      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})${voice.default ? ' — default' : ''}</option>`)
+      .join('');
+  if (previousValue) {
+      voiceSelect.value = previousValue;
+  }
+};
+
+speechSynthesis.addEventListener('voiceschanged', populateVoiceList);
+populateVoiceList();
+
 const generateCaptcha = () => {
+    textInput.value = '';
+    resultMessage.textContent = '';
+    resultMessage.className = 'result';
+
     const type = captchaTypeSelect.value;
+    if (type === 'audio') {
+        voiceField.classList.remove('hidden');
+    } else {
+        voiceField.classList.add('hidden');
+    }
+
     switch (type) {
-        case 'text':
+        case 'text': {
             currentCaptcha = generateTextCaptcha();
+            textInput.placeholder = 'Type the text above';
             captchaContainer.innerHTML = `<span style="font-size: 24px; letter-spacing: 5px;">${currentCaptcha}</span>`;
             break;
-        case 'image':
+        }
+        case 'image': {
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
+            textInput.placeholder = `Select the ${correct.name}`;
             captchaContainer.innerHTML = `
                 <p>Select the ${correct.name}</p>
                 <div class="image-grid">
-                    ${images.map(img => `<div class="image-option">${img.emoji}</div>`).join('')}
+                    ${images.map(img => `<button type="button" class="image-option">${img.emoji}</button>`).join('')}
                 </div>
             `;
             captchaContainer.querySelectorAll('.image-option').forEach(option => {
                 option.addEventListener('click', () => {
-                    textInput.value = images.find(img => img.emoji === option.textContent).name;
+                    const selected = images.find(img => img.emoji === option.textContent).name;
+                    textInput.value = selected;
+                    option.classList.add('selected');
+                    setTimeout(() => option.classList.remove('selected'), 200);
                 });
             });
             break;
-            case 'audio':
+        }
+        case 'audio': {
             currentCaptcha = generateTextCaptcha();
+            textInput.placeholder = 'Enter the spoken characters';
             captchaContainer.innerHTML = `
-                <p>Click play and enter the spoken characters:</p>
+                <p>Click play and enter the audio.</p>
                 <button id="playAudio">Play Audio</button>
             `;
             const playButton = document.getElementById('playAudio');
@@ -94,12 +137,14 @@ const generateCaptcha = () => {
                 }
             });
             break;
-              break;
-        case 'math':
+        }
+        case 'math': {
             const { question, answer } = generateMathCaptcha();
             currentCaptcha = answer.toString();
+            textInput.placeholder = 'Enter the numeric answer';
             captchaContainer.innerHTML = `<span style="font-size: 24px;">${question} = ?</span>`;
             break;
+        }
     }
 };
 
@@ -134,12 +179,14 @@ const verifyCaptcha = () => {
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
   
   if (isCorrect) {
-      resultMessage.textContent = "Correct! CAPTCHA solved.";
-      resultMessage.style.color = "green";
+      resultMessage.textContent = "Very Good! You passed the Test.";
+      resultMessage.classList.add('success');
+      resultMessage.classList.remove('error');
       attempts = 0;
       setTimeout(() => {
           textInput.value = "";
           resultMessage.textContent = "";
+          resultMessage.className = 'result';
           generateCaptcha();
       }, 1500);
   } else {
@@ -147,8 +194,9 @@ const verifyCaptcha = () => {
       if (attempts >= maxAttempts) {
           lockoutUser();
       } else {
-          resultMessage.textContent = `Incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
-          resultMessage.style.color = "red";
+          resultMessage.textContent = `Sorry, your input is incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
+          resultMessage.classList.add('error');
+          resultMessage.classList.remove('success');
       }
   }
 };
