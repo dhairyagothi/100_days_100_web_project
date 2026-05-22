@@ -228,7 +228,7 @@ const PROJECT_DATA = [
 
   ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
   ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
-    ['Day 154', 'Resume Analyzer', 'https://resume-analyzer-mauve-pi.vercel.app/', 'tool react', 'intermediate', 'https://github.com/Nazeem0'],
+    ['Day 154', 'Resume Analyzer', 'https://resume-analyzer-mauve-pi.vercel.app/', 'tool react', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
