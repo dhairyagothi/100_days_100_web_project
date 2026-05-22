@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="slider.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
 
-    <style>
+    <!-- <style>
 
         body{
             background-size: cover;
@@ -251,7 +251,7 @@
             }
         }
 
-    </style>
+    </style> -->
 </head>
 
 <body>
@@ -265,10 +265,10 @@
         </h1>
 
         <ul>
-            <li><a href="#">HOME</a></li>
-            <li><a href="#">CONTACT US</a></li>
-            <li><a href="#">ABOUT US</a></li>
-            <li><a href="#">SERVICES</a></li>
+            <li><a href="#home">HOME</a></li>
+            <li><a href="#contact">CONTACT US</a></li>
+            <li><a href="#about">ABOUT US</a></li>
+            <li><a href="#services">SERVICES</a></li>
         </ul>
 
     </div>
@@ -279,7 +279,7 @@
     Loading Destination...
 </div>
 
-<div class="content">
+<div class="content id="home"">
 
     <p id="placeDescription">
         Explore the beauty of glaciers and the breathtaking landscapes of Iceland.
@@ -332,7 +332,20 @@
 </div>
 
 <div id="toast"></div>
+<section id="contact">
+    <h2>Contact Us</h2>
+    <p>📧 contact@tripadvisor.com</p>
+</section>
 
+<section id="about">
+    <h2>About Us</h2>
+    <p>We help users explore beautiful travel destinations.</p>
+</section>
+
+<section id="services">
+    <h2>Services</h2>
+    <p>✈️ Flight Booking | 🏨 Hotels | 🗺️ Tour Packages</p>
+</section>
 <script src="script.js"></script>
 
 </body>
