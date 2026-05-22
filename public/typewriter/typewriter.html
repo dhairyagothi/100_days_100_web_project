@@ -136,6 +136,43 @@
             user-select: none;
         }
 
+        .sound-toggle {
+
+            position: fixed;
+
+            top: 80px;
+
+            right: 20px;
+
+            padding: 10px 16px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: rgba(0,0,0,0.6);
+
+            color: white;
+
+            font-size: 14px;
+
+            font-family: 'Courier Prime', monospace;
+
+            cursor: pointer;
+
+            z-index: 1000;
+
+            transition: 0.3s ease;
+        }
+
+        .sound-toggle:hover {
+
+            background: rgba(255,255,255,0.15);
+
+            transform: scale(1.05);
+        }
+
+
         .theme-toggle:hover {
             transform: scale(1.15) rotate(20deg);
         }
@@ -187,6 +224,7 @@
 
             text-align: left;
         }
+
 
         #typewriterText {
             position: relative;
@@ -445,10 +483,16 @@
 <body>
 <div class="theme-toggle" id="themeToggle">🌙</div>
 
+<button id="soundToggle" class="sound-toggle">
+    🔊 Sound ON
+</button>
+
+
 <div class="typewriter-machine">
     <div class="paper-sheet">
         <span id="typewriterText"></span><span class="cursor-paper"></span>
     </div>
+
 
     <div class="typewriter-body">
         <div class="input-area">
@@ -544,10 +588,15 @@
     const typewriterText = document.getElementById("typewriterText");
     const userInput = document.getElementById("userInput");
     const themeToggle = document.getElementById("themeToggle");
+    //Sound-Toggle Button Feature added***********************************
+    const soundToggle = document.getElementById("soundToggle");
     const resetBtn = document.getElementById("resetBtn");
+
 
     // ---- Audio ----
     let audioCtx;
+
+    let soundEnabled = true;
 
     function getAudioCtx() {
         if (!audioCtx) {
@@ -560,46 +609,107 @@
     }
 
     // Realistic typewriter clack — sharp noise burst + pitched transient
+
+
+    //Replaced playclick() Function.
     function playClick(noiseVol, freq1, freq2, dur) {
+
+        // STOP SOUND IF MUTED
+        if (!soundEnabled) return;
+
         const ctx = getAudioCtx();
+
         if (!ctx) return;
+
         try {
+
             const now = ctx.currentTime;
 
-            // Noise burst (the mechanical "clack")
-            const bufSize = Math.ceil(ctx.sampleRate * dur);
-            const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-            const data = buf.getChannelData(0);
+            const bufSize =
+                Math.ceil(ctx.sampleRate * dur);
+
+            const buf =
+                ctx.createBuffer(
+                    1,
+                    bufSize,
+                    ctx.sampleRate
+                );
+
+            const data =
+                buf.getChannelData(0);
+
             for (let i = 0; i < bufSize; i++) {
-                const env = Math.pow(1 - i / bufSize, 3);
-                data[i] = (Math.random() * 2 - 1) * env;
+
+                const env =
+                    Math.pow(1 - i / bufSize, 3);
+
+                data[i] =
+                    (Math.random() * 2 - 1) * env;
             }
-            const noise = ctx.createBufferSource();
-            const noiseGain = ctx.createGain();
-            // High-pass filter for crisp click
-            const hpf = ctx.createBiquadFilter();
+
+            const noise =
+                ctx.createBufferSource();
+
+            const noiseGain =
+                ctx.createGain();
+
+            const hpf =
+                ctx.createBiquadFilter();
+
             hpf.type = 'highpass';
+
             hpf.frequency.value = 800;
+
             noise.buffer = buf;
-            noiseGain.gain.setValueAtTime(noiseVol, now);
+
+            noiseGain.gain.setValueAtTime(
+                noiseVol,
+                now
+            );
+
             noise.connect(hpf);
+
             hpf.connect(noiseGain);
+
             noiseGain.connect(ctx.destination);
+
             noise.start(now);
 
-            // Tonal transient
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+            const osc =
+                ctx.createOscillator();
+
+            const gain =
+                ctx.createGain();
+
             osc.connect(gain);
+
             gain.connect(ctx.destination);
-            osc.frequency.setValueAtTime(freq1, now);
-            osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
-            gain.gain.setValueAtTime(noiseVol * 0.5, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+            osc.frequency.setValueAtTime(
+                freq1,
+                now
+            );
+
+            osc.frequency.exponentialRampToValueAtTime(
+                freq2,
+                now + dur
+            );
+
+            gain.gain.setValueAtTime(
+                noiseVol * 0.5,
+                now
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                now + dur
+            );
+
             osc.start(now);
+
             osc.stop(now + dur);
-        } catch (e) {
-        }
+
+        } catch(e) {}
     }
 
     // Letters & numbers: sharp crisp clack — same sound for all
@@ -827,6 +937,24 @@
         const isLight = document.body.classList.contains('light-theme');
         themeToggle.textContent = isLight ? '☀️' : '🌙';
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+
+    //----Sound toggle --------
+    soundToggle.addEventListener("click", () => {
+
+        soundEnabled = !soundEnabled;
+
+        if (soundEnabled) {
+
+            soundToggle.textContent =
+                "🔊 Sound ON";
+        }
+
+        else {
+
+            soundToggle.textContent =
+                "🔇 Sound OFF";
+        }
     });
 
     resetBtn.addEventListener('click', () => {
