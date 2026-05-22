@@ -274,3 +274,8 @@ button:hover {
         flex-basis: 100%;
     }
 }
+
+select option {
+    color: black;
+    background-color: white;
+}
