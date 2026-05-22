@@ -75,22 +75,22 @@ const PROJECT_DATA = [
   ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'html css javascript', 'advanced'],
   ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', 'css', 'intermediate'],
   ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', 'javascript', 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr_generator/qr.html', 'api javascript', 'intermediate'],
+  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
   ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
   ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
   ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
-  ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
+  ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', 'javascript', 'intermediate'],
   ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
   ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
   ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
   ['Day 18',
- 'Carousel Solar System',
- './public/Carousel%20Solar%20System/index.html',
- 'css canvas',
- 'intermediate'],
+    'Carousel Solar System',
+    './public/Carousel%20Solar%20System/index.html',
+    'css canvas',
+    'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
   ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website', 'javascript', 'intermediate'],
+  ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', 'javascript', 'intermediate'],
   ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'ui css', 'beginner'],
   ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
   ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'intermediate'],
@@ -107,7 +107,7 @@ const PROJECT_DATA = [
   ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', 'tool javascript', 'beginner'],
   ['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
   ['Day 37', '2048 Game', './public/2048_game/index.html', 'game javascript', 'intermediate'],
-  ['Day 38', 'Github Profile Finder', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder', 'api javascript', 'intermediate'],
+  ['Day 38', 'Github Profile Finder', './public/github_profile_finder/index.html', 'api javascript', 'intermediate'],
   ['Day 39', 'Notes App', './public/notes-app/index.html', 'todo javascript', 'beginner'],
   ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', 'javascript css', 'beginner'],
   ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', 'game canvas', 'intermediate'],
@@ -118,14 +118,14 @@ const PROJECT_DATA = [
   ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', 'javascript', 'beginner'],
   ['Day 47', 'Ping Pong Game', './public/ping/index.html', 'game canvas', 'intermediate'],
   ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', 'api javascript', 'intermediate'],
-  ['Day 49', 'Url Shortener', 'https://github.com/chandankoranga02/100_days_100_web_project/tree/Main/public/url_shortener', 'api javascript', 'intermediate'],
-  ['Day 50', 'Recipe Genie', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe%20Genie', 'api javascript', 'intermediate'],
+  ['Day 49', 'Url Shortener', './public/url_shortener/frontend/public/index.html', 'api javascript', 'intermediate'],
+  ['Day 50', 'Recipe Genie', './public/Recipe%20Genie/index.html', 'api javascript', 'intermediate'],
   ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', 'clone css', 'beginner'],
   ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', 'weather api', 'intermediate'],
   ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', 'javascript', 'intermediate'],
   ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 55', 'Cricket Game', './public/cricket/index.html', 'game javascript', 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/pastebin', 'javascript', 'intermediate'],
+  ['Day 56', 'Pastebin using svelte', './public/pastebin/src/app.html', 'javascript', 'intermediate'],
   ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', 'ui css', 'beginner'],
   ['Day 58', 'Music App', './public/Music%20App/index.html', 'api javascript', 'intermediate'],
   ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', 'css', 'beginner'],
@@ -162,7 +162,7 @@ const PROJECT_DATA = [
   ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', 'javascript', 'beginner'],
   ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', 'api javascript', 'intermediate'],
   ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 93', 'TextUtils', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils', 'javascript', 'beginner'],
+  ['Day 93', 'TextUtils', './public/Textutils/public/index.html', 'javascript', 'beginner'],
   ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', 'game javascript', 'intermediate'],
   ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', 'todo javascript', 'intermediate'],
   ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', 'ui css javascript', 'beginner'],
@@ -176,7 +176,7 @@ const PROJECT_DATA = [
   ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
   ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
   ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-  ['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
+  ['Day 107', 'DocNow', './public/DocNow/index.html', 'api javascript', 'intermediate'],
   ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
@@ -185,22 +185,22 @@ const PROJECT_DATA = [
   ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'tool javascript', 'intermediate'],
   ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
   ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-  ['Day 116', 'AI Image Classifier', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AI Image Classifier/', 'api javascript', 'intermediate'],
+  ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', 'api javascript', 'intermediate'],
   ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'ui tool html css js', 'intermediate'],
   ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
+  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', 'tool', 'intermediate'],
+  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', 'html css javascript api-javascript', 'Advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
-  ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
+  ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
+  ['Day 125', 'Snakeladder', './public/snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
   ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
   ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
   ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
-  ["Day 131", "Retro Highway Racer", "/public/RetroHighwayRacer/index.html", 'game javascript', 'intermediate'],
+  ['Day 131', 'Retro Highway Racer', './public/RetroHighwayRacer/index.html', 'game javascript', 'intermediate'],
   ['Day 132', 'Pokedex', './public/Pokedex/index.html', 'utility', 'intermediate'],
   ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
   ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
@@ -209,7 +209,7 @@ const PROJECT_DATA = [
   ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
   ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
   ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
-  ['Day 140', 'Big Sales Prediction', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
+  ['Day 140', 'Big Sales Prediction', './public/BigSales-Prediction/frontend/index.html', 'machine learning python javascript', 'advanced'],
   ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
   ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
@@ -218,6 +218,18 @@ const PROJECT_DATA = [
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
+
+
+  ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
+  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
+  
+
+  ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
+  
+  
+  ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
+  ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
+  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
 ];
 const PROJECTS = Object.freeze(PROJECT_DATA);
 
@@ -262,13 +274,13 @@ function normalizeTech(tech) {
 function matchesTechStack(projectTags) {
   // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-  
+
   // Handle empty or missing tags
   if (!projectTags) return false;
-  
+
   // Convert to single lowercase string for efficient matching
   const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
-  
+
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
   const tagSet = new Set(tagsLower.split(/\s+/));
@@ -292,10 +304,10 @@ function removeTechFilter(tech) {
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = '';
-  
+
   const input = document.getElementById('techStackSearch');
   if (input) input.value = '';
-  
+
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -307,22 +319,22 @@ function updateTechFilterDisplay() {
   const container = document.getElementById('activeTechFilters');
   const tagsContainer = document.getElementById('techFilterTags');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!container || !tagsContainer) return;
-  
+
   // Show/hide clear button in search input
   if (clearBtn) {
     clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
   }
-  
+
   // Show/hide active filters container
   if (techStackFilters.length === 0) {
     container.style.display = 'none';
     return;
   }
-  
+
   container.style.display = 'flex';
-  
+
   // Render filter tags with remove buttons
   tagsContainer.innerHTML = techStackFilters.map(tech => `
     <span class="tech-filter-tag">
@@ -341,19 +353,19 @@ function updateTechFilterDisplay() {
  */
 function getAllTechnologies() {
   const techSet = new Set();
-  
+
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string' 
-        ? tags.split(/\s+/).filter(t => t) 
+      const tagArray = typeof tags === 'string'
+        ? tags.split(/\s+/).filter(t => t)
         : tags;
-      
+
       tagArray.forEach(tag => {
         techSet.add(tag.toLowerCase());
       });
     }
   });
-  
+
   return Array.from(techSet).sort();
 }
 
@@ -381,21 +393,42 @@ const CATEGORY_LABEL = {
 async function fetchRepoStats() {
   try {
     const [repoRes, prRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`),
+      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`).catch(() => null),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`).catch(() => null),
     ]);
-    if (!repoRes.ok || !prRes.ok) throw new Error('Stats fetch failed');
-    const repo = await repoRes.json();
-    const prs = await prRes.json();
 
-    const set = (id, val) => {
+    const repo = repoRes && repoRes.ok ? await repoRes.json() : null;
+    const prs = prRes && prRes.ok ? await prRes.json() : null;
+    const prCount = Number.isFinite(prs?.total_count) ? prs.total_count : null;
+
+    const setNumber = (id, val) => {
       const el = document.getElementById(id);
-      if (el) el.textContent = Number(val).toLocaleString();
+      if (!el) return;
+      const numericVal = Number(val);
+      if (!Number.isFinite(numericVal)) return;
+      el.textContent = numericVal.toLocaleString();
     };
-    set('starCount', repo.stargazers_count);
-    set('forkCount', repo.forks_count);
-    set('issueCount', repo.open_issues_count - prs.total_count);
-    set('prCount', prs.total_count);
+
+    if (repo) {
+      setNumber('starCount', repo.stargazers_count);
+      setNumber('forkCount', repo.forks_count);
+      const issueCount = prCount !== null ? repo.open_issues_count - prCount : repo.open_issues_count;
+      if (issueCount < 0) {
+        console.warn('GitHub stats issue count negative:', {
+          openIssues: repo.open_issues_count,
+          prCount,
+        });
+      }
+      setNumber('issueCount', Math.max(issueCount, 0));
+    }
+
+    if (prCount !== null) {
+      setNumber('prCount', prCount);
+    }
+
+    if (!repo && !prs) {
+      console.warn('GitHub stats unavailable: Stats fetch failed');
+    }
   } catch (e) {
     console.warn('GitHub stats unavailable:', e.message);
   }
@@ -624,7 +657,7 @@ function renderPagination(totalItems, totalPages) {
   controlsDiv.appendChild(nextBtn);
 
   container.appendChild(controlsDiv);
-  
+
   // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
@@ -639,9 +672,9 @@ function scrollToProjectSection() {
   const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
-  
+
   // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
-  const duration = 100; 
+  const duration = 100;
   let startTime = null;
 
   function animation(currentTime) {
@@ -825,6 +858,8 @@ if (recentToggleBtn) {
 
 function showToast(message) {
   const toast = document.getElementById('toast');
+  if (!toast) return;
+
   toast.textContent = message;
   toast.classList.add('show');
 
@@ -840,6 +875,8 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   const projectDay = bookmarkBtn.dataset.id;
   const project = PROJECTS.find((item) => item[0] === projectDay);
+  if (!project) return;
+
   toggleBookmark(project);
 });
 
@@ -890,10 +927,11 @@ function initSearch() {
 function initTechStackSearch() {
   const input = document.getElementById('techStackSearch');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!input) return;
-  
+
   // Debounce timer for performance
+
   const debounce = (fn, delay = 300) => {
   let t;
   return (...args) => {
@@ -902,21 +940,25 @@ function initTechStackSearch() {
   };
 };
   
+
+  let debounceTimer;
+
+
   // Listen for input changes
   input.addEventListener('input', debounce((e) => {
     clearTimeout(debounceTimer);
-    
+
     // Debounce: wait 300ms after user stops typing
     debounceTimer = setTimeout(() => {
       const value = e.target.value.trim().toLowerCase();
-      
+
       if (value) {
         // Split by comma or space to support multiple technologies
         // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-        
+
         techStackFilters = [...new Set(techs)];
-        
+
         updateTechFilterDisplay();
         renderGrid();
       } else {
@@ -924,15 +966,20 @@ function initTechStackSearch() {
         clearAllTechFilters();
       }
     }, 300); // 300ms debounce delay
+
   }));
   
+
+  });
+
+
   // Clear button functionality
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       clearAllTechFilters();
     });
   }
-  
+
   // Optional: Add Enter key support
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -992,18 +1039,18 @@ function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
 
-    const username = window.username || null;
-    const isRoot   = !window.location.pathname.includes('/contributors/');
-    const base     = isRoot ? '' : '../';
-    const isLight  = document.body.classList.contains('light-mode');
-    const themeButton = `
+  const username = window.username || null;
+  const isRoot = !window.location.pathname.includes('/contributors/');
+  const base = isRoot ? '' : '../';
+  const isLight = document.body.classList.contains('light-mode');
+  const themeButton = `
             <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
                 <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
             </button>
         `;
 
-    if (username) {
-        container.innerHTML = `
+  if (username) {
+    container.innerHTML = `
             ${themeButton}
             <span class="welcome-text">Hi, ${username}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
@@ -1013,14 +1060,14 @@ function updateNavbar() {
             </a>
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
         `;
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            window.username = null;
-            updateNavbar();
-        });
-        const gen = document.getElementById('generateReadmeBtn');
-        if (gen) gen.addEventListener('click', generateReadme);
-    } else {
-        container.innerHTML = `
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.username = null;
+      updateNavbar();
+    });
+    const gen = document.getElementById('generateReadmeBtn');
+    if (gen) gen.addEventListener('click', generateReadme);
+  } else {
+    container.innerHTML = `
             ${themeButton}
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
@@ -1038,88 +1085,136 @@ function updateNavbar() {
    THEME TOGGLE
    ============================================================ */
 function initTheme() {
-    const saved = localStorage.getItem('theme') || 'dark';
-    let transitionTimer = null;
+  const saved = localStorage.getItem('theme') || 'dark';
+  let transitionTimer = null;
 
-    const syncThemeIcons = () => {
-        const isLight = document.body.classList.contains('light-mode');
-        const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-        document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-            icon.className = iconClass;
-        });
-    };
+  const syncThemeIcons = () => {
+    const isLight = document.body.classList.contains('light-mode');
+    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
+      icon.className = iconClass;
+    });
+  };
 
-    if (saved === 'light') {
-        document.body.classList.add('light-mode');
-    }
+  if (saved === 'light') {
+    document.body.classList.add('light-mode');
+  }
+  syncThemeIcons();
+
+  document.body.addEventListener('click', (e) => {
+    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
+    if (!target) return;
+
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
     syncThemeIcons();
 
-    document.body.addEventListener('click', (e) => {
-        const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-        if (!target) return;
-
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        syncThemeIcons();
-
-        document.body.classList.add('theme-transitioning');
-        if (transitionTimer) clearTimeout(transitionTimer);
-        transitionTimer = setTimeout(() => {
-            document.body.classList.remove('theme-transitioning');
-        }, 400);
-    });
+    document.body.classList.add('theme-transitioning');
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      document.body.classList.remove('theme-transitioning');
+    }, 400);
+  });
 }
 
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-    const btn = document.getElementById('scrollBtn');
-    const ring = document.getElementById('ringFill');
-    if (!btn) return;
+  const btn = document.getElementById('scrollBtn');
+  const ring = document.getElementById('ringFill');
+  if (!btn) return;
 
-    const circumference = 2 * Math.PI * 22;
+  const circumference = 2 * Math.PI * 22;
 
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-        btn.classList.toggle('show', scrollTop > 400);
+    btn.classList.toggle('show', scrollTop > 400);
 
-        if (ring) {
-            ring.style.strokeDashoffset = circumference * (1 - progress);
-        }
-    });
+    if (ring) {
+      ring.style.strokeDashoffset = circumference * (1 - progress);
+    }
+  });
 
-    btn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 /* ============================================================
    INIT
    ============================================================ */
+function hasProjectGrid() {
+  return Boolean(document.getElementById('projectGrid'));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   getAllTechnologies();
-  
+
   initTheme();
   updateNavbar();
-  initFilterChips();
-  initSearch();
-  initTechStackSearch(); // Initialize tech stack search
   syncProjectCounts();
-  renderGrid();
-  renderBookmarks();
-  renderRecentProjects();
   fetchRepoStats();
   initScrollBtn();
+
+  if (hasProjectGrid()) {
+    initFilterChips();
+    initSearch();
+    initTechStackSearch();
+    renderGrid();
+    renderBookmarks();
+    renderRecentProjects();
+  }
 });
+
+
+
+(() => {
+    const initDirectMobileMenu = () => {
+        const menuToggle = document.getElementById('menuToggle');
+        const navButtons = document.getElementById('navButtons');
+
+        if (!menuToggle || !navButtons) return;
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuToggle.classList.toggle('active');
+            navButtons.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navButtons.classList.remove('active');
+            }
+        });
+
+        navButtons.addEventListener('click', (e) => {
+            if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+                menuToggle.classList.remove('active');
+                navButtons.classList.remove('active');
+            }
+        });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+    } else {
+        initDirectMobileMenu();
+    }
+})();
+
+
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
-  renderGrid();
+  if (hasProjectGrid()) {
+    renderGrid();
+  }
 });
 
 /* ============================================================

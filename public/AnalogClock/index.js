@@ -210,6 +210,93 @@ function restartCountdown() {
 /* ══════════════════════════════════════════════
    TOAST
 ══════════════════════════════════════════════ */
+/* Stopwatch */
+const stopwatchDisplay = document.getElementById('stopwatchDisplay');
+const stopwatchStatus = document.getElementById('stopwatchStatusLabel');
+const stopwatchStartBtn = document.getElementById('stopwatchStartBtn');
+const stopwatchPauseBtn = document.getElementById('stopwatchPauseBtn');
+const stopwatchResetBtn = document.getElementById('stopwatchResetBtn');
+
+let stopwatchStartTime = 0;
+let stopwatchElapsedMs = 0;
+let stopwatchFrameId = null;
+let stopwatchRunning = false;
+
+function renderStopwatch(elapsedMs) {
+    stopwatchDisplay.textContent = formatTime(Math.floor(elapsedMs / 1000));
+}
+
+function updateStopwatchControls() {
+    const hasElapsedTime = stopwatchElapsedMs > 0;
+
+    stopwatchStartBtn.disabled = stopwatchRunning || hasElapsedTime;
+    stopwatchPauseBtn.disabled = !stopwatchRunning && !hasElapsedTime;
+    stopwatchResetBtn.disabled = !stopwatchRunning && !hasElapsedTime;
+}
+
+function setStopwatchPauseLabel(isRunning) {
+    stopwatchPauseBtn.innerHTML = isRunning
+        ? '<span class="btn-icon">&#10074;&#10074;</span> Pause'
+        : '<span class="btn-icon">&#9654;</span> Resume';
+}
+
+function stepStopwatch(timestamp) {
+    if (!stopwatchRunning) return;
+
+    renderStopwatch(stopwatchElapsedMs + (timestamp - stopwatchStartTime));
+    stopwatchFrameId = requestAnimationFrame(stepStopwatch);
+}
+
+function startStopwatch() {
+    if (stopwatchRunning || stopwatchElapsedMs > 0) return;
+
+    stopwatchRunning = true;
+    stopwatchStartTime = performance.now();
+    stopwatchStatus.textContent = 'Running';
+    setStopwatchPauseLabel(true);
+    updateStopwatchControls();
+    stopwatchFrameId = requestAnimationFrame(stepStopwatch);
+}
+
+function pauseStopwatch() {
+    if (stopwatchRunning) {
+        stopwatchElapsedMs += performance.now() - stopwatchStartTime;
+        stopwatchRunning = false;
+        cancelAnimationFrame(stopwatchFrameId);
+        stopwatchFrameId = null;
+        renderStopwatch(stopwatchElapsedMs);
+        stopwatchStatus.textContent = 'Paused';
+        setStopwatchPauseLabel(false);
+        updateStopwatchControls();
+        return;
+    }
+
+    if (stopwatchElapsedMs <= 0) return;
+
+    stopwatchRunning = true;
+    stopwatchStartTime = performance.now();
+    stopwatchStatus.textContent = 'Running';
+    setStopwatchPauseLabel(true);
+    updateStopwatchControls();
+    stopwatchFrameId = requestAnimationFrame(stepStopwatch);
+}
+
+function resetStopwatch() {
+    stopwatchRunning = false;
+    stopwatchElapsedMs = 0;
+    cancelAnimationFrame(stopwatchFrameId);
+    stopwatchFrameId = null;
+    renderStopwatch(0);
+    stopwatchStatus.textContent = 'Ready';
+    setStopwatchPauseLabel(true);
+    updateStopwatchControls();
+}
+
+stopwatchStartBtn.addEventListener('click', startStopwatch);
+stopwatchPauseBtn.addEventListener('click', pauseStopwatch);
+stopwatchResetBtn.addEventListener('click', resetStopwatch);
+updateStopwatchControls();
+
 let toastTimeout = null;
 
 function showToast(msg) {
