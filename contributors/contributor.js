@@ -3,6 +3,19 @@
 async function fetchContributors() {
     const contributorsContainer = document.getElementById("contributors");
     const contributorCountSpan = document.getElementById("contributorCount");
+    const totalCommitsEl = document.getElementById('totalCommits');
+
+    // Show fallback immediately so "..." never stays
+    if (contributorCountSpan) contributorCountSpan.textContent = "500+";
+    if (totalCommitsEl) totalCommitsEl.textContent = "10,000+";
+
+    // Show loading state
+    if (contributorsContainer) {
+        contributorsContainer.innerHTML = `
+            <p style='color: #aaa; text-align:center; padding: 2rem;'>
+                Loading contributors...
+            </p>`;
+    }
 
     try {
         const response = await fetch(
@@ -12,14 +25,18 @@ async function fetchContributors() {
         if (!response.ok) throw new Error("Failed to fetch contributors");
 
         const contributors = await response.json();
-        contributorCountSpan.textContent = contributors.length;
+
+        if (contributorCountSpan) {
+            contributorCountSpan.textContent = contributors.length;
+        }
 
         // Calculate total commits
         const totalCommits = contributors.reduce((sum, c) => sum + c.contributions, 0);
-        const totalCommitsEl = document.getElementById('totalCommits');
-        if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
+        if (totalCommitsEl) {
+            totalCommitsEl.textContent = totalCommits.toLocaleString();
+        }
 
-        contributorsContainer.innerHTML = ""; 
+        contributorsContainer.innerHTML = "";
 
         contributors.forEach((contributor) => {
             const card = document.createElement("div");
@@ -42,14 +59,37 @@ async function fetchContributors() {
             `;
             contributorsContainer.appendChild(card);
         });
+
     } catch (error) {
         console.error("Error fetching contributors:", error);
-        if (contributorsContainer) contributorsContainer.innerHTML = "<p style='color: #ff4444;'>Failed to load contributors.</p>";
+        if (contributorsContainer) {
+            contributorsContainer.innerHTML = `
+                <div style="text-align:center; padding: 2rem;">
+                    <p style="color: #ff4444; margin-bottom: 1rem;">
+                        Unable to load contributors right now (API rate limit).
+                    </p>
+                    <button 
+                        onclick="fetchContributors()" 
+                        style="padding: 0.5rem 1.5rem; cursor: pointer;
+                               background: #7c3aed; color: white;
+                               border: none; border-radius: 6px; font-size: 1rem;">
+                        🔄 Retry
+                    </button>
+                </div>`;
+        }
     }
 }
 
 async function fetchStargazers() {
     const stargazersContainer = document.getElementById("stargazers");
+
+    // Show loading state
+    if (stargazersContainer) {
+        stargazersContainer.innerHTML = `
+            <p style='color: #aaa; text-align:center; padding: 1rem;'>
+                Loading stargazers...
+            </p>`;
+    }
 
     try {
         const response = await fetch(
@@ -59,6 +99,7 @@ async function fetchStargazers() {
         if (!response.ok) throw new Error("Failed to fetch stargazers");
 
         const stargazers = await response.json();
+
         if (stargazersContainer) stargazersContainer.innerHTML = "";
 
         stargazers.forEach((stargazer) => {
@@ -67,16 +108,32 @@ async function fetchStargazers() {
             starItem.target = "_blank";
             starItem.className = "stargazer-item";
             starItem.title = stargazer.login;
-            starItem.innerHTML = `<img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
+            starItem.innerHTML = `
+                <img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
             if (stargazersContainer) stargazersContainer.appendChild(starItem);
         });
+
     } catch (error) {
         console.error("Error fetching stargazers:", error);
+        if (stargazersContainer) {
+            stargazersContainer.innerHTML = `
+                <div style="text-align:center; padding: 2rem;">
+                    <p style="color: #ff4444; margin-bottom: 1rem;">
+                        Unable to load stargazers right now (API rate limit).
+                    </p>
+                    <button 
+                        onclick="fetchStargazers()" 
+                        style="padding: 0.5rem 1.5rem; cursor: pointer;
+                               background: #7c3aed; color: white;
+                               border: none; border-radius: 6px; font-size: 1rem;">
+                        🔄 Retry
+                    </button>
+                </div>`;
+        }
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Repo stats are now handled by index.js
     fetchContributors();
     fetchStargazers();
 });
