@@ -2,10 +2,66 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+}
+
+:root {
+  --bg-color: #0f172a;
+  --card-color: rgba(255, 255, 255, 0.08);
+  --text-color: #ffffff;
+  --secondary-text: #cbd5e1;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --success: #22c55e;
+  --border: rgba(255,255,255,0.1);
+}
+
+body.light {
+  --bg-color: #f1f5f9;
+  --card-color: rgba(255,255,255,0.9);
+  --text-color: #0f172a;
+  --secondary-text: #475569;
+  --border: rgba(0,0,0,0.1);
 }
 
 body {
+
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  padding: 40px 20px;
+  transition: 0.3s;
+}
+
+.background-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  filter: blur(120px);
+  opacity: 0.25;
+  top: -100px;
+  right: -100px;
+  z-index: -1;
+}
+
+.app-container {
+  max-width: 700px;
+  margin: auto;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
   background: #f4f7fb;
   color: #222;
   display: flex;
@@ -25,20 +81,69 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: background 0.3s ease, color 0.3s ease;
+
 }
 
-h1 {
+.top-bar h1 {
+  font-size: 2.4rem;
+}
+
+.subtitle {
+  color: var(--secondary-text);
+  margin-top: 6px;
+}
+
+.theme-btn {
+  border: none;
+  padding: 12px 15px;
+  border-radius: 14px;
+  background: var(--card-color);
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+}
+
+.streak-box {
+  background: rgba(255,255,255,0.08);
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  color: orange;
+  border: 1px solid var(--border);
+}
+
+.card {
+  background: var(--card-color);
+  border-radius: 24px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  margin-bottom: 25px;
+  backdrop-filter: blur(12px);
+}
+
+.quote-card {
   text-align: center;
-  margin-bottom: 20px;
+  font-style: italic;
+  color: var(--secondary-text);
 }
 
-.input-section {
+.input-card {
   display: flex;
-  gap: 10px;
+  gap: 15px;
 }
 
-input {
+.input-card input {
   flex: 1;
+
+  border: none;
+  outline: none;
+  padding: 15px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  color: var(--text-color);
+  font-size: 1rem;
+
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -46,30 +151,39 @@ input {
   background: white;
   color: black;
   transition: 0.3s ease;
+
 }
 
-button {
-  padding: 10px 15px;
+.input-card button {
   border: none;
-  background: #00c853;
+  padding: 15px 22px;
+  border-radius: 14px;
+  background: var(--primary);
   color: white;
-  border-radius: 5px;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.3s ease;
 }
 
-button:hover {
-  background: #00e676;
+.input-card button:hover {
+  background: var(--primary-hover);
 }
 
-#stats {
-  margin: 20px 0;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 20px;
 }
 
-#habitList {
-  list-style: none;
+.stat-card h2 {
+  font-size: 2rem;
+  margin-bottom: 8px;
 }
 
+
+.stat-card p {
+  color: var(--secondary-text);
+=======
 .habit-item {
   background: #f1f1f1;
   padding: 12px;
@@ -79,16 +193,72 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   transition: 0.3s ease;
+
 }
 
-.actions {
+.success h2 {
+  color: var(--success);
+}
+
+/* Progress */
+
+
+.progress-info {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.complete-btn {
-  background: #2962ff;
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
 }
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(to right, #22c55e, #4ade80);
+  transition: 0.4s ease;
+}
+
+/* Habit List */
+
+#habitList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#habitList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+}
+
+.habit-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.habit-left input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--success);
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
 
 .complete-btn:hover {
   background: #448aff;
@@ -120,6 +290,14 @@ button:hover {
   border-radius: 12px;
   font-size: 15px;
   font-weight: bold;
+
+}
+
+
+.streak {
+  color: orange;
+  font-size: 0.85rem;
+  margin-top: 4px;
 }
 
 /* TOOLTIP */
@@ -155,28 +333,50 @@ body.dark-mode .tooltip-text {
 
 /* DARK MODE */
 
-body.dark-mode {
-  background: #121212;
-  color: white;
+
+.habit-actions {
+  display: flex;
+  gap: 10px;
 }
 
-body.dark-mode .container {
-  background: #1e1e1e;
+.edit-btn,
+.delete-btn {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
   color: white;
-  box-shadow: none;
+  cursor: pointer;
 }
+
+
+.edit-btn {
+  background: #3b82f6;
 
 body.dark-mode .habit-item {
   background: #2a2a2a;
   color: white;
+
 }
 
-body.dark-mode input {
-  background: #333;
-  color: white;
-  border: 1px solid #555;
+.delete-btn {
+  background: #ef4444;
 }
 
+
+@media(max-width: 600px) {
+
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .input-card {
+    flex-direction: column;
+  }
+
+  .input-card button {
+    width: 100%;
 body.dark-mode input::placeholder {
   color: #ccc;
 }
@@ -198,6 +398,7 @@ body.dark-mode #theme-toggle {
     position: static;
     width: 100%;
     margin-bottom: 20px;
+
   }
 
   #theme-toggle {
