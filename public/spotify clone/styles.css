@@ -20,6 +20,14 @@ body {
     padding: 24px;
 }
 
+
+.sidebar.collapsed {
+    width: 80px;
+}
+.sidebar.collapsed .nav-text {
+    display: none;
+}
+
 .sidebar .logo img {
     width: 130px;
 }
@@ -73,9 +81,69 @@ body {
     text-decoration: underline;
 }
 
+/* MENU BUTTON */
+
+.menu-toggle {
+    display: none;
+
+    position: fixed;
+    top: 20px;
+    left: 20px;
+
+    z-index: 2000;
+
+    background: #000;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+/* OVERLAY */
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,0.5);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.3s ease;
+
+    z-index: 999;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* RESPONSIVE */
+
+
+
 .main-container {
     margin-left: 350px;
     margin-bottom: 100px;
+  
+}
+
+  @media (max-width: 768px) {
+
+   .main-content,
+   .main-container {
+      margin-left: 0;
+      width: 100%;
+   }
+
 }
 
 .topbar {
@@ -126,8 +194,8 @@ body {
 }
 
 .topbar .navbar button {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #f4e9e9;
+    color: #000;
     font-size: 16px;
     font-weight: bold;
     padding: 14px 30px;
@@ -255,4 +323,117 @@ body {
     border: 0px;
     border-radius: 40px;
     cursor: pointer;
+}
+
+
+
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+    /* Hide sidebar */
+    .sidebar {
+        display: none;
+    }
+
+    /* Remove sidebar offset */
+    .main-content,
+    .main-container {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* Topbar adjustments */
+    .topbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+
+    .topbar .navbar ul li {
+        width: auto;
+        margin: 0px 4px;
+    }
+
+    .topbar .navbar button {
+        padding: 10px 18px;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+
+    /* Playlist grid */
+    .spotify-playlists {
+        padding: 15px 20px;
+    }
+
+    .spotify-playlists .list {
+        overflow-x: auto; /* Allow horizontal scroll on mobile */
+    }
+
+    .spotify-playlists .list .item {
+        min-width: 120px;
+        width: 130px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* Even smaller screens */
+    .topbar .navbar ul {
+        display: none; /* Hide nav links on very small screens */
+    }
+
+    .spotify-playlists h2 {
+        font-size: 18px;
+    }
+
+    .spotify-playlists .list .item {
+        min-width: 100px;
+        width: 110px;
+    }
+}
+
+
+/* Hide hamburger on desktop */
+.hamburger {
+    display: none;
+    background: #090909;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+
+    /* Show hamburger on mobile */
+    .hamburger {
+        display: block;
+    }
+
+    /* Sidebar hidden by default on mobile */
+    .sidebar {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 280px;
+        z-index: 999;
+        background-color: #000;
+    }
+
+    /* Show sidebar when active */
+    .sidebar.active {
+        display: block;
+    }
+
+    .main-content,
+    .main-container {
+        margin-left: 0;
+        width: 100%;
+    }
 }

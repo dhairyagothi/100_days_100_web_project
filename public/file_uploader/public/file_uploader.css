@@ -1,26 +1,272 @@
-*{
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-body{
-    display : flex;
+
+body {
+    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: auto;
+    /* Enhanced background */
+    background: #0a0a0a;
+    font-family: 'Syne', sans-serif;
+    overflow: hidden;
 }
-.container{
+
+.container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 10px;
 }
-#file-name,
-#message {
+
+/* ── Animated background grid ── */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 60% 40%, rgba(99,255,180,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(99,180,255,0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes gridMove {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(40px); }
+}
+
+/* ── Card ── */
+.myform {
+    position: relative;
+    z-index: 1;
+    height: auto;
+    background: rgba(16, 18, 22, 0.95);
+    padding: 44px 48px;
+    border-radius: 16px;
+    color: #fff;
+    font-size: larger;
+    display: grid;
+    gap: 22px;
+    justify-items: center;
+    width: 460px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+        0 0 0 1px rgba(99,255,180,0.05),
+        0 32px 80px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+    animation: slideUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Header ── */
+.form-header {
     text-align: center;
-    font-size: medium;
-    color: #333;
-    margin-top: 10px;
-    word-break: break-word;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.form-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #fff;
+}
+
+.form-header h1 span {
+    color: #63ffb4;
+}
+
+.form-header p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 5px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+/* ── Form fields ── */
+.form-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-field label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.5);
+}
+
+/* ── Text inputs ── */
+input[type="text"] {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+input[type="text"]::placeholder {
+    color: rgba(255,255,255,0.2);
+}
+
+input[type="text"]:focus {
+    border-color: rgba(99,255,180,0.5);
+    background: rgba(99,255,180,0.04);
+    box-shadow: 0 0 0 3px rgba(99,255,180,0.08);
+}
+
+/* ── File drop zone ── */
+.file-drop-zone {
+    width: 100%;
+    border: 1.5px dashed rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: rgba(255,255,255,0.02);
+    position: relative;
+}
+
+.file-drop-zone:hover,
+.file-drop-zone.dragover {
+    border-color: rgba(99,255,180,0.5);
+    background: rgba(99,255,180,0.04);
+}
+
+.file-drop-zone .drop-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    display: block;
+    filter: grayscale(1) opacity(0.5);
+    transition: all 0.25s;
+}
+
+.file-drop-zone:hover .drop-icon {
+    filter: none;
+    transform: translateY(-3px);
+}
+
+.file-drop-zone .drop-text {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+}
+
+.file-drop-zone .drop-text strong {
+    color: #63ffb4;
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+/* Hide actual file input but keep functional */
+input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+/* ── File preview list ── */
+#file-preview {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 120px;
+    overflow-y: auto;
+    display: none;
+}
+
+#file-preview::-webkit-scrollbar { width: 4px; }
+#file-preview::-webkit-scrollbar-track { background: transparent; }
+#file-preview::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+.file-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(99,255,180,0.06);
+    border: 1px solid rgba(99,255,180,0.15);
+    border-radius: 6px;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.7);
+    animation: chipIn 0.2s ease both;
+}
+
+@keyframes chipIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.file-chip .chip-icon { font-size: 1rem; }
+.file-chip .chip-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-chip .chip-size { color: rgba(255,255,255,0.3); flex-shrink: 0; }
+
+/* ── Submit button ── */
+input[type="submit"] {
+    background: #63ffb4;
+    color: #000;
+    cursor: pointer;
+    width: 100%;
+    padding: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: inherit;
+    height: auto;
+    border-radius: 8px;
+    border: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+input[type="submit"]:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(99,255,180,0.25);
+}
+
+input[type="submit"]:active {
+    transform: translateY(0);
 }
