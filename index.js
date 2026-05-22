@@ -206,7 +206,7 @@ function renderGrid() {
     const grid = document.getElementById('projectGrid');
     const noResults = document.getElementById('noResults');
     if (!grid) return;
-
+    if (!noResults) return;
     const filtered = PROJECTS.filter(([day, name, , , cat]) => {
         const matchesFilter = activeFilter === 'all' || cat === activeFilter;
         const q = searchQuery.toLowerCase();
