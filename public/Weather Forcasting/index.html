@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d6efd">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Weather App</title>
@@ -135,6 +137,29 @@
                 </div>
             </div>
 
+            <!-- Weather Recommendations Section -->
+            <div class="card mb-4 rounded-3 shadow-sm" id="recommendations-card" style="display: none; background: rgba(255, 255, 255, 0.93); backdrop-filter: blur(10px); border: 1px solid rgba(0, 0, 0, 0.125);">
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; font-weight: 600; border-bottom: none;">
+                    <h4 class="my-0 fw-normal">💡 Smart Weather Recommendations</h4>
+                </div>
+                <div class="card-body text-start">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0 border-end" style="border-right: 1px solid #dee2e6 !important;">
+                            <h5 style="color: #764ba2; font-weight: 600; margin-bottom: 12px;">👕 Clothing Suggestions</h5>
+                            <div id="clothing-recommendation" class="fs-6 p-3 rounded" style="background: rgba(248, 249, 250, 0.85); min-height: 80px; border-left: 4px solid #667eea; color: #212529; line-height: 1.5;">
+                                Loading suggestions...
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 style="color: #764ba2; font-weight: 600; margin-bottom: 12px;">🚗 Travel & Safety Precautions</h5>
+                            <div id="travel-recommendation" class="fs-6 p-3 rounded" style="background: rgba(248, 249, 250, 0.85); min-height: 80px; border-left: 4px solid #764ba2; color: #212529; line-height: 1.5;">
+                                Loading suggestions...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="display-6 text-center mb-4" style="color: white;">Weather of other Common Places</h2>
 
             <div class="table-responsive">
@@ -247,22 +272,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
+    <script src="script.js"></script>
     <script>
-        (function () {
-            var path = window.location.pathname;
-            if (/\/index\.html?(\?|#|$)/i.test(path)) {
-                path = path.replace(/index\.html?(\?|#|$)/i, '');
-            }
-            if (!path.endsWith('/')) {
-                path += '/';
-            }
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("./service-worker.js")
+        .then(() => console.log("Service Worker Registered"))
+        .catch((error) => console.log(error));
+    });
+  }
+</script>
 
-            var baseHref = new URL(path, window.location.href).href;
-            var script = document.createElement('script');
-            script.src = baseHref + 'script.js';
-            document.body.appendChild(script);
-        }());
-    </script>
+        <script src="script.js"></script>
 </body>
 
 </html>
