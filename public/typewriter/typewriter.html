@@ -579,6 +579,22 @@
 
             font-size: 14px;
         }
+        /*Shift Key feature *******************/
+        .shift-active {
+
+            background: linear-gradient(
+                    145deg,
+                    #60a5fa,
+                    #2563eb
+            ) !important;
+
+            border-color: #93c5fd !important;
+
+            box-shadow:
+                    0 0 15px rgba(59,130,246,0.8) !important;
+
+            color: white !important;
+        }
     </style>
 </head>
 <body>
@@ -690,6 +706,7 @@
                 <div class="key space" data-char=" ">SPACE</div>
                 <div class="key backspace" data-char="BACKSPACE">⌫ DEL</div>
                 <div class="key reset-key" id="resetBtn" data-char="RESET">⟲ RESET</div>
+                <div class="key shift" id="shiftBtn" data-char="">SHIFT</div>
             </div>
 
         </div>
@@ -1013,6 +1030,9 @@
             flashKey(e.key.toUpperCase());
         }
     });
+
+        // Allows User to write special Character and symbols
+
     // ---- On-screen keys → paper ----
     document.querySelectorAll('.key').forEach(key => {
         key.addEventListener('mousedown', (e) => {
