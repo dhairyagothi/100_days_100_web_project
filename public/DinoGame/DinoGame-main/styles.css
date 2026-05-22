@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: rgb(255, 168, 54);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.game-container {
+    text-align: center;
+    background: rgb(255, 203, 140);
+    padding: 20px;
+    border: 2px solid #333;
+}
+
+h1 {
+    color: #008d05;
+    margin-bottom: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #0000006a;
+}
+
+#gameCanvas {
+    border: 2px solid #333;
+    background: #fafc98;
+    margin: 0 auto;
+    position: relative;
+    height: 400px;
+    width: 800px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #3fa812;
+    color: white;
+    cursor: pointer;
+}
+
+#dino {
+    width: 100px;
+    height: 100px;
+    background: url(./dino.png) no-repeat;
+    background-size: cover;
+    position: relative;
+    top: 300px;
+    left: 50px;
+}
+
+#dino.animD {
+    animation: dinosaur 1s;
+}
+
+@keyframes dinosaur {
+    0% { top: 300px; }
+    50% { top: 150px; }
+    100% { top: 300px; }
+}
+
+#gameover {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 2px solid red;
+    color: red;
+    font-weight: bold;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#gameover.over {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dynamic-obstacle {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: url(./cactus.png) no-repeat;
+    background-size: cover;
+    top: 340px;
+    right: 0px;
+}

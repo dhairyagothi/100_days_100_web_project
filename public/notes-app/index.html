@@ -1,55 +1,171 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notes App</title>
+
   <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <h1><center>NOTES APP</center></h1>
-  
-  <div class="search-bar">
-    <input type="text" id="search-input" placeholder="Search notes...">
-  </div>
-  
-  <div class="popup-box">
-    <div class="popup">
-      <div class="content">
-        <header>
-          <p></p>
-          <i class="uil uil-times"></i>
-        </header>
-        <form action="#">
-          <div class="row title">
-            <label>Title</label>
-            <input type="text" spellcheck="false">
+
+  <div class="app">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+      <div>
+
+        <div class="logo">
+          <div class="logo-box">📝</div>
+          Notes App
+        </div>
+
+        <div class="menu">
+
+          <div class="menu-item active" data-filter="all">
+            📄 All Notes
           </div>
-          <div class="row description">
-            <label>Description</label>
-            <textarea spellcheck="false"></textarea>
+
+          <div class="menu-item" data-filter="favorites">
+            🤍 Favorites
           </div>
-          <div class="row tags">
-            <label>Tags</label>
-            <input type="text" spellcheck="false" placeholder="Enter tags separated by commas">
+
+          <div class="menu-item" data-filter="locked">
+            🔒 Locked
           </div>
-          <div class="row password">
-            <label>Password</label>
-            <input type="password" spellcheck="false">
+
+          <div class="menu-item" data-filter="trash">
+            🗑 Trash
           </div>
-          <button></button>
-        </form>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="tags">
+
+          <h3>Tags</h3>
+
+          <div class="tag">
+            <div class="dot blue"></div>Work
+          </div>
+          <div class="tag">
+            <div class="dot green"></div>Study
+          </div>
+          <div class="tag">
+            <div class="dot pink"></div>Personal
+          </div>
+          <div class="tag">
+            <div class="dot yellow"></div>Ideas
+          </div>
+
+        </div>
+
+        <div class="dark-toggle" id="themeToggle">
+
+          <span id="themeText">🌙 Dark Mode</span>
+
+          <div class="toggle">
+            <div class="toggle-circle"></div>
+          </div>
+
+        </div>
+
       </div>
+
+      <div class="quote">
+        ✨ <br><br>
+        Notes are the building blocks of brilliance.
+      </div>
+
     </div>
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+      <div class="topbar">
+
+        <!-- USERNAME HATA DIYA -->
+        <div class="welcome">
+          <h1 id="greeting">Welcome 👋</h1>
+          <p id="noteCount">You have 0 notes</p>
+        </div>
+
+        <div class="top-actions">
+
+          <input type="text" id="searchInput" class="search-input" placeholder="Search notes...">
+
+          <button class="new-btn" id="openModal">
+            + New Note
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- NOTES -->
+
+      <div class="notes-grid" id="notesGrid">
+
+        <!-- ADD CARD -->
+
+        <div class="card add-card" id="openCard">
+          <div class="plus">+</div>
+          <h2>Add New Note</h2>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
-  <div class="wrapper">
-    <li class="add-box">
-      <div class="icon"><i class="uil uil-plus"></i></div>
-      <p>Add new note</p>
-    </li>
+
+  <!-- MODAL -->
+
+  <div class="modal" id="modal">
+
+    <h2>Add New Note</h2>
+
+    <input type="text" id="title" placeholder="Title">
+
+    <textarea rows="5" id="content" placeholder="Write your note here..."></textarea>
+
+    <!-- <input type="text" id="tag" placeholder="Tag"> -->
+    <select id="tag" class="select-field">
+      <option value="Work">Work</option>
+      <option value="Study">Study</option>
+      <option value="Personal">Personal</option>
+      <option value="Ideas">Ideas</option>
+    </select>
+
+    <div class="modal-actions">
+      <button class="btn cancel" id="closeModal">
+        Cancel
+      </button>
+
+      <button class="btn save" id="saveBtn">
+        Save Note
+      </button>
+    </div>
+
+  </div>
+
+  <!-- TOAST -->
+
+  <div class="toast" id="toast">
+    ✔ Note added successfully!
   </div>
 
   <script src="script.js"></script>
+
 </body>
+
 </html>

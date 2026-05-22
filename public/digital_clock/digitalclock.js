@@ -1,141 +1,239 @@
-setInterval(updateClock, 1000);
+// App configuration and state
+let activeTheme = localStorage.getItem("clockTheme") || "classic";
+let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
+let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
+let worldClocks = JSON.parse(localStorage.getItem("clock_worldClocks")) || [];
+let historyLogs = JSON.parse(localStorage.getItem("clock_historyLogs")) || [];
 
-function updateClock() {
-  const format = localStorage.getItem('clockFormat') || 'format1';
-  const timezone = document.getElementById('timezone').value;
-  const now = getCurrentTimeAndDate(timezone);
+let ringingAlarm = null;
+let lastCheckedMinute = "";
+let ringInterval = null;
+let audioCtx = null;
 
-  switch (format) {
-    case 'format1':
-      showTimeFirst(now);
-      break;
-    case 'format2':
-      showDateFirstModern(now);
-      break;
-    case 'format3':
-      showDayFirst(now);
-      break;
-    default:
-      showTimeFirst(now);
-      break;
-  }
-  checkAlarm(now.time);
-}
+// DOM Selectors
+const hoursEl = document.getElementById("hours");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
+const ampmEl = document.getElementById("ampm");
+const dayNameEl = document.getElementById("day-name");
+const fullDateEl = document.getElementById("full-date");
+const timezoneLabel = document.getElementById("timezone-label");
+const alarmStatus = document.getElementById("alarm-status");
+const toast = document.getElementById("toast");
+const alarmPopup = document.getElementById("alarm-popup");
+const popupAlarmTitle = document.getElementById("popup-alarm-title");
+const popupAlarmTime = document.getElementById("popup-alarm-time");
+const popupAlarmLabel = document.getElementById("popup-alarm-label");
+const alarmSound = document.getElementById("alarm-sound");
 
-function showTimeFirst(now) {
-  const time = now.time;
-  const date = now.date;
-  document.getElementById('display').innerHTML = `${time}<br><span class="date-size">${date}</span>`;
-}
+// Supported timezones
+const TIMEZONES = [
+  { id: "local", name: "Local Time" },
+  { id: "UTC", name: "UTC / GMT" },
+  { id: "Asia/Kolkata", name: "Kolkata (India)" },
+  { id: "Asia/Tokyo", name: "Tokyo (Japan)" },
+  { id: "Europe/London", name: "London (UK)" },
+  { id: "America/New_York", name: "New York" }
+];
 
-function showDateFirstModern(now) {
-  const time = now.time;
-  const dateParts = now.date.split('/');
-  const day = dateParts[0];
-  const month = getMonthName(dateParts[1]);
-  const year = dateParts[2];
-  const formattedDate = `${day} ${month} ${year}`;
-  document.getElementById('display').innerHTML = `<span class="date-size">${formattedDate}</span><br>${time}`;
-}
+// INIT
+document.addEventListener("DOMContentLoaded", () => {
+  setTheme(activeTheme);
 
-function showDayFirst(now) {
-  const time = now.time;
-  const date = now.date;
-  const day = now.day;
-  document.getElementById('display').innerHTML = `<b>${day}</b><br><span class="date-size">${date}</span><br>${time}`;
-}
+  populateTimezoneDropdown();
+  renderAlarmsList();
+  renderWorldClocks();
+  renderHistoryLogs();
+  updateAlarmSummary();
 
-function getCurrentTimeAndDate(timezone) {
-  let time = new Date();
-
-  if (timezone !== 'local') {
-    time = new Date(time.toLocaleString('en-US', { timeZone: timezone }));
-  }
-
-  let hour = time.getHours();
-  let minutes = time.getMinutes();
-  let seconds = time.getSeconds();
-  let am_pm = "AM";
-
-  if (hour >= 12) {
-    hour -= 12;
-    am_pm = "PM";
-  } else if (hour == 0) {
-    hour = 12;
-    am_pm = "AM";
-  }
-
-  if (hour < 10) hour = "0" + hour;
-  if (minutes < 10) minutes = "0" + minutes;
-  if (seconds < 10) seconds = "0" + seconds;
-
-  const currentTime = `${hour}:${minutes}:${seconds} ${am_pm}`;
-  const currentDate = `${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear()}`;
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const currentDay = days[time.getDay()];
-
-  return {
-    time: currentTime,
-    date: currentDate,
-    day: currentDay
-  };
-}
-
-function setClockStyleAndFormat(face, format) {
-  localStorage.setItem('clockFormat', format);
-  setClockFace(face);
   updateClock();
+  setInterval(updateClock, 1000);
+});
+
+// ================= THEME =================
+function setTheme(theme) {
+  activeTheme = theme;
+  localStorage.setItem("clockTheme", theme);
+
+  document.body.className = `${theme}-theme`;
+
+  document.querySelectorAll(".theme-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.theme === theme);
+  });
+
+  showToast(`Theme: ${theme}`);
 }
 
+// Extra feature (from fix-theme) - SAFE VERSION
 function setClockFace(face) {
   const display = document.getElementById('display');
-  display.className = `relative font-mono text-4xl md:text-5xl border-4 rounded-lg p-4 mb-4 ${face}`;
-
   const clock = document.getElementById('clock');
-  clock.className = `relative font-mono text-4xl md:text-5xl border-4 rounded-lg p-4 ${face}`;
+
+  if (!display || !clock) return;
+
+  display.style.opacity = "0.7";
+  clock.style.opacity = "0.7";
+
+  setTimeout(() => {
+    display.className = `clock-display ${face}`;
+    clock.className = `clock ${face}`;
+    display.style.opacity = "1";
+    clock.style.opacity = "1";
+  }, 150);
 }
 
-function getMonthName(monthNumber) {
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-  return monthNames[monthNumber - 1];
+// ================= CLOCK =================
+function updateClock() {
+  let now = new Date();
+
+  if (primaryTimezone !== "local") {
+    now = new Date(now.toLocaleString("en-US", { timeZone: primaryTimezone }));
+  }
+
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const s = now.getSeconds();
+
+  const ampm = h >= 12 ? "PM" : "AM";
+  let hh = h % 12 || 12;
+
+  hoursEl.textContent = String(hh).padStart(2, "0");
+  minutesEl.textContent = String(m).padStart(2, "0");
+  secondsEl.textContent = String(s).padStart(2, "0");
+  ampmEl.textContent = ampm;
+
+  checkAlarms(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
 }
 
-function toggleAlarmMode() {
-  const alarmInput = document.getElementById('alarm-time');
-  const confirmButton = document.querySelector('#alarm-container button:nth-child(3)');
-  alarmInput.classList.toggle('hidden');
-  confirmButton.classList.toggle('hidden');
+// ================= ALARMS =================
+function addNewAlarm() {
+  const timeInput = document.getElementById("alarm-time");
+  const labelInput = document.getElementById("alarm-label");
+
+  if (!timeInput.value) return;
+
+  const alarm = {
+    id: Date.now(),
+    time: timeInput.value,
+    label: labelInput.value || "Alarm",
+    enabled: true,
+    snooze: 5,
+    snoozedTime: null,
+    snoozeCount: 0
+  };
+
+  alarms.push(alarm);
+  saveAlarms();
+  renderAlarmsList();
+  updateAlarmSummary();
+  showToast("Alarm added");
 }
 
-function setAlarm() {
-  const alarmTime = document.getElementById('alarm-time').value;
-  localStorage.setItem('alarmTime', alarmTime);
-  alert(`Alarm set for ${alarmTime}`);
+function checkAlarms(currentTime) {
+  alarms.forEach(alarm => {
+    if (!alarm.enabled) return;
+
+    if (alarm.time === currentTime) {
+      triggerAlarm(alarm);
+    }
+  });
 }
 
-function checkAlarm(currentTime) {
-  const alarmTime = localStorage.getItem('alarmTime');
-  if (alarmTime && currentTime.includes(alarmTime)) {
-    triggerAlarm();
+function triggerAlarm(alarm) {
+  ringingAlarm = alarm;
+
+  popupAlarmTitle.textContent = "Alarm!";
+  popupAlarmTime.textContent = alarm.time;
+  popupAlarmLabel.textContent = alarm.label;
+
+  alarmPopup.classList.remove("hidden");
+
+  startRinger();
+}
+
+function stopActiveAlarm() {
+  stopRinger();
+  alarmPopup.classList.add("hidden");
+  ringingAlarm = null;
+}
+
+function snoozeActiveAlarm() {
+  if (!ringingAlarm) return;
+
+  ringingAlarm.snoozedTime = Date.now() + 5 * 60000;
+  stopActiveAlarm();
+}
+
+// ================= AUDIO =================
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new AudioContext();
   }
 }
 
-function triggerAlarm() {
-  const alarmSound = document.getElementById('alarm-sound');
-  const alarmPopup = document.getElementById('alarm-popup');
-  alarmSound.play();
-  alarmPopup.classList.remove('hidden');
+function startRinger() {
+  initAudio();
+
+  ringInterval = setInterval(() => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.value = 800;
+
+    gain.gain.value = 0.1;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.2);
+  }, 500);
 }
 
-function stopAlarm() {
-  const alarmSound = document.getElementById('alarm-sound');
-  const alarmPopup = document.getElementById('alarm-popup');
-  alarmSound.pause();
-  alarmSound.currentTime = 0;
-  alarmPopup.classList.add('hidden');
-  localStorage.removeItem('alarmTime');
+function stopRinger() {
+  clearInterval(ringInterval);
 }
 
-// Initial call to set the format and style
-updateClock();
+// ================= WORLD CLOCK =================
+function renderWorldClocks() {
+  const container = document.getElementById("world-clocks-list");
+  container.innerHTML = "";
+
+  worldClocks.forEach(tz => {
+    const div = document.createElement("div");
+    div.className = "world-clock";
+    div.innerText = tz;
+    container.appendChild(div);
+  });
+}
+
+// ================= HISTORY =================
+function renderHistoryLogs() {
+  const container = document.getElementById("history-logs");
+  if (!container) return;
+
+  container.innerHTML = historyLogs
+    .map(log => `<div>${log.text}</div>`)
+    .join("");
+}
+
+function addHistoryLog(text) {
+  historyLogs.unshift({ text });
+  localStorage.setItem("clock_historyLogs", JSON.stringify(historyLogs));
+}
+
+// ================= HELPERS =================
+function saveAlarms() {
+  localStorage.setItem("clock_alarms", JSON.stringify(alarms));
+}
+
+function updateAlarmSummary() {
+  alarmStatus.textContent = alarms.filter(a => a.enabled).length + " Active";
+}
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
