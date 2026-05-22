@@ -5,6 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AeroStride - Premium Footwear Experience</title>
+  <script>
+    // Self-correct trailing slash issue to ensure relative paths (CSS/JS/images) resolve correctly
+    if (window.location.pathname.endsWith('/e-commerce_cart')) {
+      window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
+    }
+  </script>
   <link rel="stylesheet" href="index.css">
   <script type="module" src="index.js"></script>
   <link rel="icon" href="../favv.png" type="image/x-icon" />
