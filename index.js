@@ -166,9 +166,6 @@ async function fetchRepoStats() {
     }
 }
 
-// NOTE (difficulty): Generating content client-side must sanitize URLs and
-// avoid heavy sync work; large project lists may block the main thread.
-
 function generateReadme() {
     try {
         const lines = [];
@@ -197,16 +194,22 @@ function generateReadme() {
 }
 
 /* ============================================================
-   RENDER PROJECT GRID
+   RENDER PROJECT GRID  (with pagination)
    ============================================================ */
-let activeFilter = 'all';
-let searchQuery  = '';
+let activeFilter  = 'all';
+let searchQuery   = '';
+let currentPage   = 1;
+const itemsPerPage = 10;
 
 function renderGrid() {
-    const grid = document.getElementById('projectGrid');
-    const noResults = document.getElementById('noResults');
-    if (!grid) return;
+    const grid       = document.getElementById('projectGrid');
+    const noResults  = document.getElementById('noResults');
+    const pagination = document.getElementById('pagination');
+
+    if (!grid)      return;
     if (!noResults) return;
+
+    // Filter projects
     const filtered = PROJECTS.filter(([day, name, , , cat]) => {
         const matchesFilter = activeFilter === 'all' || cat === activeFilter;
         const q = searchQuery.toLowerCase();
@@ -216,17 +219,27 @@ function renderGrid() {
 
     grid.innerHTML = '';
 
+    // No results state
     if (filtered.length === 0) {
-        grid.style.display = 'none';
+        grid.style.display     = 'none';
         noResults.style.display = 'block';
+        if (pagination) pagination.innerHTML = '';
         return;
     }
 
-    grid.style.display = 'grid';
+    grid.style.display      = 'grid';
     noResults.style.display = 'none';
 
-    filtered.forEach(([day, name, url, tags, cat]) => {
-        const card = document.createElement('div');
+    // Pagination calculation
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    if (currentPage > totalPages) currentPage = 1;
+
+    const start     = (currentPage - 1) * itemsPerPage;
+    const paginated = filtered.slice(start, start + itemsPerPage);
+
+    // Render cards
+    paginated.forEach(([day, name, url, tags, cat]) => {
+        const card     = document.createElement('div');
         card.className = 'project-card';
 
         const tagsHTML = tags.map(t => `<span class="tag">${t}</span>`).join('');
@@ -247,6 +260,30 @@ function renderGrid() {
 
         grid.appendChild(card);
     });
+
+    // Render pagination buttons
+    if (pagination) {
+        pagination.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `page-num ${currentPage === i ? 'active' : ''}`;
+            pageBtn.textContent = i;
+            pageBtn.setAttribute('aria-label', `Page ${i}`);
+            pageBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                currentPage = i;
+                renderGrid();
+                // Delay scroll to let DOM re-render first
+                setTimeout(() => {
+                    const projectsSection = document.getElementById('projects');
+                    if (projectsSection) {
+                        projectsSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 50);
+            });
+            pagination.appendChild(pageBtn);
+        }
+    }
 }
 
 /* ============================================================
@@ -259,6 +296,7 @@ function initFilterChips() {
             chips.forEach(c => c.classList.remove('active'));
             chip.classList.add('active');
             activeFilter = chip.dataset.filter;
+            currentPage  = 1; // reset to page 1 on filter change
             renderGrid();
         });
     });
@@ -272,6 +310,7 @@ function initSearch() {
     if (!input) return;
     input.addEventListener('input', () => {
         searchQuery = input.value.trim();
+        currentPage = 1; // reset to page 1 on search
         renderGrid();
     });
 }
@@ -303,7 +342,6 @@ function updateNavbar() {
     const username = window.username || null;
     const isRoot   = !window.location.pathname.includes('/contributors/');
     const base     = isRoot ? '' : '../';
-    const isDark   = !document.body.classList.contains('light-mode');
 
     if (username) {
         container.innerHTML = `
@@ -342,7 +380,7 @@ function initTheme() {
     const btn = document.getElementById('themeToggle');
     if (!btn) return;
 
-    const icon = btn.querySelector('i');
+    const icon  = btn.querySelector('i');
     const saved = localStorage.getItem('theme') || 'dark';
 
     if (saved === 'light') {
@@ -352,14 +390,11 @@ function initTheme() {
 
     btn.addEventListener('click', () => {
         document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
+        const isLight  = document.body.classList.contains('light-mode');
         icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 }
-let currentPage = 1;
-const itemsPerPage = 10;
-let projectData = [];
 
 /* ============================================================
    SCROLL TO TOP
