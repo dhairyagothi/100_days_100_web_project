@@ -2,11 +2,11 @@ const typewriterText = document.getElementById("typewriterText");
 const userInput = document.getElementById("userInput");
 const themeToggle = document.getElementById("themeToggle");
 const capsLockKey = document.querySelector('[data-char="CAPSLOCK"]');
-
+const soundToggle = document.getElementById("soundToggle");
 let audioCtx = null;
 let paperContent = "";
 let capsLockEnabled = false;
-
+let soundEnabled = true;
 function getAudioCtx() {
     if (!audioCtx) {
         try {
@@ -24,6 +24,7 @@ function getAudioCtx() {
 }
 
 function playClick(noiseVol, freq1, freq2, dur) {
+    if (!soundEnabled) return;
     const ctx = getAudioCtx();
     if (!ctx) return;
 
@@ -215,7 +216,13 @@ function toggleTheme() {
     themeToggle.textContent = isLight ? "☀️" : "🌙";
     localStorage.setItem("theme", isLight ? "light" : "dark");
 }
+function toggleSound() {
+    soundEnabled = !soundEnabled;
 
+    soundToggle.textContent = soundEnabled ? "🔊" : "🔇";
+
+    localStorage.setItem("sound", soundEnabled ? "on" : "off");
+}
 document.querySelectorAll(".key").forEach((key) => {
     const trigger = (event) => {
         event.preventDefault();
@@ -311,13 +318,25 @@ themeToggle.addEventListener("keydown", (event) => {
         toggleTheme();
     }
 });
+soundToggle.addEventListener("click", toggleSound);
 
+soundToggle.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleSound();
+    }
+});
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "light") {
     document.body.classList.add("light-theme");
     themeToggle.textContent = "☀️";
 }
+const savedSound = localStorage.getItem("sound");
 
+if (savedSound === "off") {
+    soundEnabled = false;
+    soundToggle.textContent = "🔇";
+}
 setCapsLockState(false);
 paperContent = userInput.value || "";
 renderPaper();

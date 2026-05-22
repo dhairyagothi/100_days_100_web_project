@@ -119,7 +119,20 @@ body::after {
 .theme-toggle:hover {
     transform: scale(1.15) rotate(20deg);
 }
+.sound-toggle {
+    position: fixed;
+    top: 20px;
+    right: 70px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.3s ease;
+    user-select: none;
+}
 
+.sound-toggle:hover {
+    transform: scale(1.15);
+}
 .typewriter-machine {
     position: relative;
     z-index: 1;
@@ -401,7 +414,11 @@ body::after {
         right: 12px;
         font-size: 22px;
     }
-
+    .sound-toggle {
+    top: 10px;
+    right: 50px;
+    font-size: 20px;
+    }
     #userInput {
         min-height: 72px;
         font-size: 13px;
