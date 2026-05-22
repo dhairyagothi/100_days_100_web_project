@@ -180,7 +180,14 @@ const PROJECT_DATA = [
   ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
   ['Day 143', 'Glassmorphism Login Page', './public/glassmorphism_login_page/index.html', 'ui html css glassmorphism neon responsive login', 'intermediate'],
-
+  ['Day 144', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
+  ['Day 145', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
+  ['Day 146', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
+  ['Day 147', 'Data Structures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
+  ['Day 148', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
+  ['Day 149', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
+  ['Day 150', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
+  ['Day 151', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
 ];
 // Alias for consistency
 const PROJECTS = PROJECT_DATA;
