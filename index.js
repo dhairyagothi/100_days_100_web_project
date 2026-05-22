@@ -221,13 +221,14 @@ const PROJECT_DATA = [
 
   ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
-  
+
 
   ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
-  
-  
+
+
   ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
   ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
+    ['Day 154', 'Resume Analyzer', 'https://resume-analyzer-mauve-pi.vercel.app/', 'tool react', 'intermediate', 'https://github.com/Nazeem0'],
 ];
 const PROJECTS = PROJECT_DATA;
 
@@ -235,7 +236,8 @@ const PROJECTS = PROJECT_DATA;
 /* ============================================================
    SOURCE CODE URL GENERATOR
    ============================================================ */
-function getSourceUrl(url) {
+function getSourceUrl(url, explicitGithubUrl) {
+  if (explicitGithubUrl) return explicitGithubUrl; // Use explicit GitHub URL when provided
   const trimmed = url.trim();
   if (trimmed.startsWith('http')) return trimmed; // Already a full GitHub link
   if (trimmed.startsWith('./')) {
@@ -509,14 +511,14 @@ function renderGrid() {
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
 
-  pageItems.forEach(([day, name, url, tags]) => {
+  pageItems.forEach(([day, name, url, tags, difficulty, githubUrl]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const sourceUrl = getSourceUrl(url, githubUrl);
 
     card.innerHTML = `
             <div class="card-meta">
@@ -741,12 +743,12 @@ function renderBookmarks() {
 
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags]) => {
+  visibleBookmarks.forEach(([day, name, url, tags, difficulty, githubUrl]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const sourceUrl = getSourceUrl(url, githubUrl);
 
     card.innerHTML = `
             <div class="card-meta">
@@ -793,13 +795,13 @@ function renderRecentProjects() {
 
   const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
+  visibleRecent.forEach(([day, name, url, tags, difficulty, githubUrl]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const sourceUrl = getSourceUrl(url);
+    const sourceUrl = getSourceUrl(url, githubUrl);
 
     card.innerHTML = `
             <div class="card-meta">

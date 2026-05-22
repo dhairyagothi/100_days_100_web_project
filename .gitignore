@@ -176,3 +176,6 @@ dmypy.json
 # Docker
 *.tar
 docker-compose.override.yml
+
+# Nested projects with sensitive keys
+public/resumeanalyzer/
