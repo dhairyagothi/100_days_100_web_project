@@ -1,117 +1,284 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-body {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  font-family: "Montserrat";
-  /* background: rgb(34, 193, 195); */
-  background: linear-gradient(
-    0deg,
-    #cc5333 0%,
-    #23074d 100%
-    
-  );
-  min-height: 100vh;
-}
-.bmi {
-  color: white;
-  width: 350px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  background-color: black;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  border-radius: 10px;
-}
-h2 {
-  font-size: 30px;
-  font-weight: 600;
-}
-.text {
-  text-align: center;
-}
-#weight-unit,
-#height-unit {
-  color: black;
-  text-align: left;
-  font-size: 20px;
-  font-weight: 200;
-  outline: none;
-  border: 1px solid black;
-  border-radius: 10px;
-  width: 200px;
-  height: 35px;
-  height: 35px;
-  margin-top: 10px;
-}
-#weight:focus,
-#height:focus {
-  width: 250px;
-  transition: 0.5s;
-}
-#result {
-  color: white;
-}
-#btn {
-  font-family: inherit;
-  margin-top: 10px;
-  border: blue;
-  color: #000;
-  background: gainsboro;
-  width: 150px;
-  padding: 10px;
-  border-radius: 30px ;
-  outline: white;
-  cursor: pointer;
-  transition: 0.5s;
-}
-#btn:hover {
-  transform: scale(1.1);
-  transition: 0.5s;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
-table {
-  width: 650px;
-  border-collapse: collapse;
-  margin: 600px auto;
-  margin-top: 700px;
-  margin-bottom: 80px;
+body{
+    min-height:100vh;
+    transition:0.5s;
+    overflow-x:hidden;
 }
 
-tr {
-  background: rgb(68, 38, 105);
-  color: white;
+/* THEMES */
+
+.theme-purple{
+    background:linear-gradient(135deg,#141e30,#243b55);
 }
 
-th {
-  background: #0d0101;
-  color: #fffbfb;
-  font-weight: bold;
+.theme-blue{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 }
 
-td,
-th {
-  padding: 10px;
-  border: 1px solid #000;
-  text-align: center;
-  font-size: 18px;
+.theme-green{
+    background:linear-gradient(135deg,#134e5e,#71b280);
 }
 
-#bmichart {
-  display: block;
-    box-sizing: border-box;
-    height: 759px;
-    width: 1519px;
-    margin-bottom: 80px;
-    
+.theme-orange{
+    background:linear-gradient(135deg,#ff512f,#dd2476);
 }
 
-#height, #weight {
-  height: 35px;
-  margin-top: 10px;
+/* THEME BUTTONS */
+
+.theme-switcher{
+    position:fixed;
+    top:20px;
+    right:20px;
+    display:flex;
+    gap:10px;
+    z-index:1000;
 }
-.footer_social{
-  color: white;
+
+.theme-btn{
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.theme-btn:hover{
+    transform:scale(1.2);
+}
+
+.purple{
+    background:#9b59b6;
+}
+
+.blue{
+    background:#3498db;
+}
+
+.green{
+    background:#2ecc71;
+}
+
+.orange{
+    background:#ff9800;
+}
+
+/* MAIN */
+
+.container{
+    width:100%;
+    min-height:100vh;
+    padding:40px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+}
+
+/* LEFT CARD */
+
+.calculator-card{
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(15px);
+    border-radius:25px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    color:white;
+}
+
+.calculator-card h1{
+    text-align:center;
+    margin-bottom:40px;
+    font-size:38px;
+    font-weight:700;
+}
+
+/* INPUTS */
+
+.input-group{
+    margin-bottom:25px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:10px;
+    font-size:18px;
+    font-weight:500;
+}
+
+.input-group input{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:15px;
+    font-size:18px;
+    outline:none;
+    background:rgba(255,255,255,0.15);
+    color:white;
+}
+
+.input-group input::placeholder{
+    color:#ddd;
+}
+
+/* BUTTON */
+
+#calculateBtn{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:15px;
+    font-size:20px;
+    font-weight:600;
+    cursor:pointer;
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+    transition:0.4s;
+    margin-top:15px;
+}
+
+#calculateBtn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* RESULT CARD */
+
+.result-card{
+    margin-top:40px;
+    text-align:center;
+}
+
+/* BMI GAUGE */
+
+.gauge-container{
+    display:flex;
+    justify-content:center;
+    margin-bottom:20px;
+}
+
+.gauge{
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:conic-gradient(#00ff88 0deg,#00ff88 0deg,#ffffff33 0deg);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    transition:0.5s;
+}
+
+.gauge-cover{
+    width:170px;
+    height:170px;
+    background:#111827;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:40px;
+    font-weight:bold;
+}
+
+#category{
+    font-size:34px;
+    margin-top:20px;
+}
+
+#message{
+    margin-top:15px;
+    font-size:18px;
+    line-height:1.7;
+    color:#ddd;
+}
+
+/* RIGHT CARD */
+
+.recommendation-card{
+    display:grid;
+    gap:20px;
+}
+
+.recommendation-box{
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(15px);
+    padding:25px;
+    border-radius:20px;
+    color:white;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    transition:0.4s;
+}
+
+.recommendation-box:hover{
+    transform:translateY(-5px);
+}
+
+.recommendation-box h3{
+    margin-bottom:15px;
+    font-size:24px;
+}
+
+.recommendation-box p{
+    font-size:20px;
+}
+
+.recommendation-box ul{
+    padding-left:20px;
+}
+
+.recommendation-box li{
+    margin-bottom:12px;
+    line-height:1.6;
+    font-size:17px;
+}
+
+/* CHART */
+
+.chart-section{
+    width:95%;
+    margin:50px auto;
+    padding:40px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(15px);
+}
+
+.chart-section h2{
+    text-align:center;
+    color:white;
+    margin-bottom:30px;
+    font-size:36px;
+}
+
+canvas{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+    .container{
+        grid-template-columns:1fr;
+        padding:20px;
+    }
+
+    .calculator-card h1{
+        font-size:28px;
+    }
+
+    .chart-section{
+        width:90%;
+    }
 }

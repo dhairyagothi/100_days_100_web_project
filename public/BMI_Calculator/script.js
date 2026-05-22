@@ -1,96 +1,255 @@
-document.getElementById("btn").addEventListener("click", function() {
-    var height = document.getElementById('height').value;
-    var weight = document.getElementById('weight').value;
-    var heightUnit = document.getElementById('height-unit').value;
-    var weightUnit = document.getElementById('weight-unit').value;
+const btn = document.getElementById("calculateBtn");
 
-    // Convert units to metric
-    if (heightUnit === 'feet') {
-        var parts = height.split('/');
-        if (parts.length === 2) {
-            var feet = parseInt(parts[0], 10);
-            var inches = parseInt(parts[1], 10);
-            height = (feet * 30.48) + (inches * 2.54);
-        } else {
-            alert("Please enter height in the format 'feet/inches', e.g., '5/8' for 5 feet 8 inches.");
-            return;
-        }
+const bmiValue = document.getElementById("bmiValue");
+const category = document.getElementById("category");
+const message = document.getElementById("message");
+
+const calories = document.getElementById("calories");
+const water = document.getElementById("water");
+const healthyWeight = document.getElementById("healthyWeight");
+
+const dietPlan = document.getElementById("dietPlan");
+const workoutPlan = document.getElementById("workoutPlan");
+
+const gauge = document.querySelector(".gauge");
+
+let bmiData = [];
+let bmiLabels = [];
+
+btn.addEventListener("click", () => {
+
+    const height = parseFloat(document.getElementById("height").value);
+    const weight = parseFloat(document.getElementById("weight").value);
+
+    if(!height || !weight){
+        alert("Please enter valid height and weight");
+        return;
     }
-    if (weightUnit === 'lb') {
-        weight = weight * 0.453592;
+
+    const bmi = (weight / ((height/100)*(height/100))).toFixed(1);
+
+    bmiValue.innerText = bmi;
+
+    updateGauge(bmi);
+
+    let categoryText = "";
+    let msg = "";
+    let calorieText = "";
+    let waterText = `${(weight * 0.033).toFixed(1)} Litres/day`;
+
+    const minWeight = (18.5 * ((height/100)*(height/100))).toFixed(1);
+    const maxWeight = (24.9 * ((height/100)*(height/100))).toFixed(1);
+
+    healthyWeight.innerText = `${minWeight} kg - ${maxWeight} kg`;
+
+    dietPlan.innerHTML = "";
+    workoutPlan.innerHTML = "";
+
+    if(bmi < 18.5){
+
+        categoryText = "Underweight";
+        msg = "You should focus on gaining healthy weight with nutrient-rich meals.";
+
+        calorieText = "2500 - 2800 kcal/day";
+
+        addDiet([
+            "High protein foods",
+            "Milk, nuts and peanut butter",
+            "Rice, potatoes and whole grains",
+            "Smoothies and banana shakes",
+            "Eggs and chicken"
+        ]);
+
+        addWorkout([
+            "Strength training",
+            "Push-ups and squats",
+            "Weight lifting",
+            "Light cardio",
+            "Resistance exercises"
+        ]);
+
     }
 
-    var bmi = weight / ((height / 100) * (height / 100));
-    var bmio = bmi.toFixed(2);
+    else if(bmi >= 18.5 && bmi < 25){
 
-    document.getElementById("result").innerHTML = "Your BMI is " + bmio;
+        categoryText = "Normal Weight";
+        msg = "Excellent! Maintain your healthy lifestyle.";
 
-    var category = getBMICategory(bmio);
-    document.getElementById("category").innerHTML = "BMI Category: " + category;
+        calorieText = "2000 - 2400 kcal/day";
 
-    var tips = getHealthTips(category);
-    document.getElementById("tips").innerHTML = "Health Tips: " + tips;
+        addDiet([
+            "Balanced diet",
+            "Vegetables and fruits",
+            "Lean protein",
+            "Healthy fats",
+            "Whole grains"
+        ]);
 
-    // Add BMI data to chart
-    addBMIdata(bmio);
+        addWorkout([
+            "30 min cardio",
+            "Yoga and stretching",
+            "Moderate gym workout",
+            "Cycling or jogging",
+            "Daily walking"
+        ]);
+
+    }
+
+    else if(bmi >= 25 && bmi < 30){
+
+        categoryText = "Overweight";
+        msg = "Focus on calorie deficit and regular exercise.";
+
+        calorieText = "1700 - 2000 kcal/day";
+
+        addDiet([
+            "Low calorie meals",
+            "Avoid sugary drinks",
+            "Eat more salads",
+            "High fiber foods",
+            "Reduce junk food"
+        ]);
+
+        addWorkout([
+            "Running",
+            "Cycling",
+            "HIIT workouts",
+            "Jump rope",
+            "45 mins cardio"
+        ]);
+
+    }
+
+    else{
+
+        categoryText = "Obese";
+        msg = "Adopt healthy habits and focus on gradual fat loss.";
+
+        calorieText = "1500 - 1800 kcal/day";
+
+        addDiet([
+            "Strict calorie control",
+            "Protein-rich meals",
+            "Avoid processed food",
+            "Drink more water",
+            "Eat smaller portions"
+        ]);
+
+        addWorkout([
+            "Daily walking",
+            "Low impact cardio",
+            "Swimming",
+            "Cycling",
+            "Light strength exercises"
+        ]);
+    }
+
+    category.innerText = categoryText;
+    message.innerText = msg;
+    calories.innerText = calorieText;
+    water.innerText = waterText;
+
+    updateChart(bmi);
+
 });
 
-function getBMICategory(bmi) {
-    if (bmi < 18.5) {
-        return "Underweight";
-    } else if (bmi >= 18.5 && bmi < 24.9) {
-        return "Normal weight";
-    } else if (bmi >= 25 && bmi < 29.9) {
-        return "Overweight";
-    } else {
-        return "Obesity";
-    }
+/* ADD DIET ITEMS */
+
+function addDiet(items){
+
+    items.forEach(item => {
+
+        const li = document.createElement("li");
+        li.innerText = item;
+        dietPlan.appendChild(li);
+
+    });
+
 }
 
-function getHealthTips(category) {
-    switch (category) {
-        case "Underweight":
-            return "Consider eating more frequently, choose nutrient-rich foods, and try smoothies and shakes.";
-        case "Normal weight":
-            return "Maintain your current lifestyle and diet.";
-        case "Overweight":
-            return "Focus on a balanced diet and regular physical activity.";
-        case "Obesity":
-            return "Consult with a healthcare provider for personalized advice.";
-        default:
-            return "";
-    }
+/* ADD WORKOUT ITEMS */
+
+function addWorkout(items){
+
+    items.forEach(item => {
+
+        const li = document.createElement("li");
+        li.innerText = item;
+        workoutPlan.appendChild(li);
+
+    });
+
 }
 
-// Initialize chart
-var ctx = document.getElementById('bmiChart').getContext('2d');
-var bmiChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [],
-        datasets: [{
-            label: 'BMI Over Time',
-            
-            data: [],
-            borderColor: 'rgb(254, 250, 250)',
-            borderWidth: 1,
-            fill: true,
+/* GAUGE */
+
+function updateGauge(bmi){
+
+    let degree = (bmi / 40) * 360;
+
+    gauge.style.background =
+    `conic-gradient(
+        #00ff88 0deg,
+        #00ff88 ${degree}deg,
+        rgba(255,255,255,0.15) ${degree}deg
+    )`;
+
+}
+
+/* CHART */
+
+const ctx = document.getElementById("bmiChart");
+
+const bmiChart = new Chart(ctx, {
+
+    type:'line',
+
+    data:{
+        labels:bmiLabels,
+        datasets:[{
+            label:'BMI Progress',
+            data:bmiData,
+            borderWidth:3,
+            tension:0.4
         }]
     },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true,
-            },
-            
 
+    options:{
+        responsive:true,
+        plugins:{
+            legend:{
+                labels:{
+                    font:{
+                        size:18
+                    }
+                }
+            }
+        },
+        scales:{
+            y:{
+                beginAtZero:true
+            }
         }
     }
+
 });
 
-function addBMIdata(bmi) {
-    var date = new Date().toLocaleDateString();
-    bmiChart.data.labels.push(date);
-    bmiChart.data.datasets[0].data.push(bmi);
+/* UPDATE CHART */
+
+function updateChart(bmi){
+
+    bmiLabels.push(new Date().toLocaleTimeString());
+
+    bmiData.push(bmi);
+
     bmiChart.update();
+
+}
+
+/* THEME SWITCHER */
+
+function changeTheme(theme){
+
+    document.body.className = theme;
+
 }
