@@ -26,11 +26,11 @@
           <a href="#" onclick="showDocuments()">Documents</a>
         </li>
         <li class="nav-right">
-          <button id="colour1" onclick="c1()" title="Theme 1"></button>
-          <button id="colour2" onclick="c2()" title="Theme 2"></button>
-          <button id="colour3" onclick="c3()" title="Theme 3"></button>
-          <button id="colour4" onclick="c4()" title="Theme 4"></button>
-          <button id="colour5" onclick="c5()" title="Theme 5"></button>
+          <button id="colour1" onclick="c1()" title="Theme 1" aria-label="Apply theme 1"></button>
+          <button id="colour2" onclick="c2()" title="Theme 2" aria-label="Apply theme 2"></button>
+          <button id="colour3" onclick="c3()" title="Theme 3" aria-label="Apply theme 3"></button>
+          <button id="colour4" onclick="c4()" title="Theme 4" aria-label="Apply theme 4"></button>
+          <button id="colour5" onclick="c5()" title="Theme 5" aria-label="Apply theme 5"></button>
         </li>
       </ul>
     </nav>
@@ -42,25 +42,28 @@
 
         <!-- Task input row -->
         <div class="input-row">
-          <input
-            type="text"
-            id="task-input"
-            placeholder="What needs to be done?"
-            autocomplete="off"
-          />
-          <select id="task-type">
-            <option value="">Select Type</option>
+        <label for="task-input" class="sr-only">Task description</label>
+        <input
+        type="text"
+        id="task-input"
+        placeholder="What needs to be done?"
+        autocomplete="off"
+        aria-label="Enter task description"
+  />
+          <label for="task-type" class="sr-only">Task category</label>
+          <select id="task-type" aria-label="Select task category">
+          <option value="">Select Type</option>
             <option value="Work"          data-color="#FFDE59">Work</option>
             <option value="Personal"      data-color="#FFC0CB">Personal</option>
             <option value="Professional"  data-color="#B0BEC5">Professional</option>
             <option value="Fitness"       data-color="#B1EE99">Fitness</option>
             <option value="Miscellaneous" data-color="#CAB9F5">Miscellaneous</option>
           </select>
-          <button id="submittask" onclick="Add()">
-            <i class="fa-solid fa-plus"></i> Add Task
+          <button id="submittask" onclick="Add()" aria-label="Add new task">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i> Add Task
           </button>
-          <button id="savepdf" onclick="saveAsPDF()">
-            <i class="fa-solid fa-file-pdf"></i> Save PDF
+          <button id="savepdf" onclick="saveAsPDF()" aria-label="Save tasks as PDF">
+            <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Save PDF
           </button>
         </div>
 
@@ -188,11 +191,7 @@
           <div class="status-section">
             <h3>📌 Pending</h3>
 
-            <div
-              id="pending-list"
-              class="drop-zone"
-              ondrop="dropTask(event,'pending-list')"
-              ondragover="allowDrop(event)">
+            <div id="pending-list" class="drop-zone" role="region" aria-label="Pending tasks drop zone" ondrop="dropTask(event,'pending-list')" ondragover="allowDrop(event)">
             </div>
           </div>
 
@@ -203,6 +202,8 @@
             <div
               id="progress-list"
               class="drop-zone"
+              role="region"
+              aria-label="In progress tasks drop zone"
               ondrop="dropTask(event,'progress-list')"
               ondragover="allowDrop(event)">
             </div>
@@ -215,6 +216,8 @@
             <div
               id="completed-list"
               class="drop-zone"
+              role="region"
+              aria-label="Completed tasks drop zone"
               ondrop="dropTask(event,'completed-list')"
               ondragover="allowDrop(event)">
             </div>
@@ -234,16 +237,16 @@
 
         <!-- INPUT -->
         <div class="input-row">
-
-          <input
-            type="text"
-            id="task-input"
-            placeholder="Add your next task..."
-          />
-
-          <select id="task-type">
-
-            <option value="">Category</option>
+        <label for="task-input" class="sr-only">Task description</label>
+        <input
+          type="text"
+          id="task-input"
+          placeholder="Add your next task..."
+          aria-label="Enter task description"
+  />
+        <label for="task-type" class="sr-only">Task category</label>
+        <select id="task-type" aria-label="Select task category">
+    <option value="">Category</option>
 
             <option value="Work">💼 Work</option>
 
@@ -257,7 +260,7 @@
 
           </select>
 
-          <button id="submittask" onclick="Add()">Add Task</button>
+          <button id="submittask" onclick="Add()" aria-label="Add new task">Add Task</button>
 
         </div>
 
@@ -284,9 +287,11 @@
         <!-- PROGRESS -->
         <div class="progress-container">
 
-          <div class="progress-bar">
-            <div id="progressFill"></div>
+          <div class="progress-bar" role="progressbar" aria-label="Task completion progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div id="progressFill"></div>
           </div>
+
+          <span id="progressPercent">0%</span>
 
         </div>
 
@@ -294,7 +299,7 @@
         <div id="notes-container"></div>
 
         <!-- PDF -->
-        <button id="savepdf" onclick="saveAsPDF()">Save PDF</button>
+        <button id="savepdf" onclick="saveAsPDF()" aria-label="Save tasks as PDF">Save PDF</button>
 
       </div>
 
