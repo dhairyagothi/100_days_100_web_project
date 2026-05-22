@@ -91,6 +91,7 @@ function resetWeatherSummary() {
     sunrise: '—',
     sunset: '—'
   });
+  hideRecommendations();
 }
 
 function formatTime(isoDateTime) {
@@ -169,12 +170,91 @@ function buildWeatherSummary(data) {
   };
 }
 
+// FIX: Safe UI update for main weather card
 function updateWeatherCard(cityLabel, summary) {
-  if (cityName) {
-    cityName.textContent = cityLabel;
+  console.log("UPDATING UI:", cityLabel, summary); // DEBUG
+
+  if (!summary) {
+    console.error("Summary is undefined");
+    return;
   }
 
-  setWeatherSummary(summary);
+  if (cityName) {
+    cityName.textContent = cityLabel || "Unknown City";
+  }
+
+  setWeatherSummary({
+    temperatureValue: summary.temperatureValue || "—",
+    temperatureLabel: summary.temperatureLabel || "—",
+    feelsLike: summary.feelsLike || "—",
+    humidityValue: summary.humidityValue || "—",
+    humidityLabel: summary.humidityLabel || "—",
+    minTemperature: summary.minTemperature || "—",
+    maxTemperature: summary.maxTemperature || "—",
+    windSpeedValue: summary.windSpeedValue || "—",
+    windSpeedLabel: summary.windSpeedLabel || "—",
+    windDirection: summary.windDirection || "—",
+    sunrise: summary.sunrise || "—",
+    sunset: summary.sunset || "—"
+  });
+}
+
+function getRecommendations(temp, weatherCode) {
+  let clothing = "";
+  let travel = "";
+
+  const isRain = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(weatherCode);
+  const isSnow = [71, 73, 75, 77, 85, 86].includes(weatherCode);
+
+  if (isRain) {
+    clothing = "☔ <strong>Umbrella & Rainwear:</strong> It's currently wet or raining. Carry an umbrella or wear a waterproof raincoat/jacket, and opt for water-resistant footwear.";
+  } else if (isSnow) {
+    clothing = "❄️ <strong>Heavy Winter Wear:</strong> It is snowing. Dress in thick, warm layers with a thermal base, a heavy down jacket, gloves, scarf, beanie, and insulated boots.";
+  } else if (temp < 15) {
+    clothing = "🧥 <strong>Warm Outerwear:</strong> The weather is chilly. A thick sweater, fleece, or windbreaker jacket, along with long pants, is recommended to stay warm.";
+  } else if (temp > 28) {
+    clothing = "👕 <strong>Light & Breathable:</strong> It's warm/hot. Wear lightweight, light-colored cotton or linen clothing, sunglasses, and a sun hat if heading outdoors.";
+  } else {
+    clothing = "👟 <strong>Casual/Comfortable Wear:</strong> The temperature is mild and pleasant. A standard t-shirt, jeans, or a light cardigan/hoodie will be perfectly comfortable.";
+  }
+
+  const isThunderstorm = [95, 96, 99].includes(weatherCode);
+  const isHeavyRain = [65, 82].includes(weatherCode);
+  const isFog = [45, 48].includes(weatherCode);
+
+  if (isThunderstorm) {
+    travel = "⚡ <strong>Severe Warning:</strong> Thunderstorms active. Avoid outdoor activities, seek shelter indoors immediately, and stay away from open windows and tall metal structures.";
+  } else if (isHeavyRain) {
+    travel = "🚗 <strong>Hazardous Driving:</strong> Heavy downpour is causing low visibility and wet roads. Drive slowly, maintain safe following distance, and avoid flooded areas.";
+  } else if (isFog) {
+    travel = "🌫️ <strong>Dense Fog:</strong> Visibility is severely reduced. Use low-beam fog lights while driving, reduce your speed, and stay alert on the roads.";
+  } else if (temp > 35) {
+    travel = "☀️ <strong>Extreme Heat Advisory:</strong> Extremely hot weather. Stay indoors as much as possible, keep hydrated by drinking water/electrolytes, and avoid strenuous outdoor exercise during peak heat hours (11 AM - 4 PM).";
+  } else {
+    travel = "🟢 <strong>Safe to Travel:</strong> Weather conditions are clear and highly favorable. Perfect for road trips, outdoor walks, or sightseeing. Have a safe journey!";
+  }
+
+  return { clothing, travel };
+}
+
+function updateRecommendations(temp, weatherCode) {
+  const recsCard = document.getElementById('recommendations-card');
+  const clothingRecEl = document.getElementById('clothing-recommendation');
+  const travelRecEl = document.getElementById('travel-recommendation');
+
+  if (!recsCard || !clothingRecEl || !travelRecEl) return;
+
+  const recs = getRecommendations(temp, weatherCode);
+  clothingRecEl.innerHTML = recs.clothing;
+  travelRecEl.innerHTML = recs.travel;
+  recsCard.style.display = 'block';
+}
+
+function hideRecommendations() {
+  const recsCard = document.getElementById('recommendations-card');
+  if (recsCard) {
+    recsCard.style.display = 'none';
+  }
 }
 
 function setRowMessage(row, message) {
@@ -230,6 +310,11 @@ async function loadCityWeather(city, options = {}) {
     const label = formatCityLabel(location, normalizedCity);
 
     updateWeatherCard(label, summary);
+
+    if (weatherData && weatherData.current) {
+      updateRecommendations(weatherData.current.temperature_2m, weatherData.current.weather_code);
+    }
+
     setStatus(updateTable ? `Updated ${label} and the comparison table.` : `Showing weather for ${label}.`, 'success');
 
     return { location, weatherData };
@@ -272,21 +357,35 @@ async function updateComparisonTable() {
   });
 }
 
+// FIX: Clean and stable search handler
+function handleSearch(event) {
+  if (event) event.preventDefault(); // stop page reload
+
+  const city = cityInput.value.trim(); // take input safely
+  loadCityWeather(city); // send to API function
+}
+
+// FIX: Reliable search handling (button + Enter)
 function bindSearchForm() {
   const searchForm = cityInput?.form;
 
   if (!searchForm || !cityInput) return;
 
-  searchForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    loadCityWeather(cityInput.value);
-  });
+  console.log("Search system initialized"); // DEBUG
 
-  cityInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      loadCityWeather(cityInput.value);
-    }
+  // FIX: form submit (button click also triggers this)
+  searchForm.addEventListener("submit", (event) => {
+    event.preventDefault(); // stop page refresh
+
+    const city = cityInput.value.trim();
+
+    console.log("SEARCH CLICKED:", city); // DEBUG
+
+    if (!city) return;
+
+    loadCityWeather(city);
+
+    cityInput.value = ""; // clear after capture
   });
 }
 

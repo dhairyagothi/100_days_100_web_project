@@ -13,6 +13,19 @@
     </script>
   </head>
 
+  <!-- Reading Progress Bar -->
+  <div
+    id="progressBar"
+    class="fixed top-0 left-0 h-1 bg-emerald-500 z-50 transition-all duration-100"
+    style="width: 0%"
+  ></div>
+
+  <!-- Toast Notification Container -->
+  <div
+    id="toastContainer"
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col gap-2 z-50"
+  ></div>
+
   <body class="bg-gray-100 dark:bg-gray-900 transition duration-300">
     <div
       class="flex flex-col md:flex-row justify-center gap-10 md:gap-20 p-6 bg-gray-50 dark:bg-gray-900 min-h-screen transition duration-300"
@@ -129,7 +142,7 @@
               />
             </svg>
           </p>
-          <p class="cursor-pointer">
+          <p class="cursor-pointer" id="share">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -184,7 +197,15 @@
             Comments
           </h1>
 
-          <div class="mt-2">
+          <div class="mt-2 flex flex-col gap-2">
+            <input
+              type="text"
+              id="username"
+              placeholder="Your name (optional)"
+              maxlength="30"
+              class="w-full p-3 border border-emerald-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white dark:bg-gray-700 text-black dark:text-white text-sm"
+            />
+
             <textarea
               name="comment"
               id="comment"
@@ -194,7 +215,7 @@
 
             <button
               type="submit"
-              class="mt-2 bg-emerald-500 hover:bg-emerald-600 transition text-white py-2 px-5 rounded-xl shadow-sm"
+              class="mt-1 bg-emerald-500 hover:bg-emerald-600 transition text-white py-2 px-5 rounded-xl shadow-sm"
               onclick="addComment()"
             >
               Submit

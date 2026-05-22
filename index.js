@@ -13,8 +13,7 @@ let currentPage = 1;
 let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
-let currentCategory = 'all';
-let currentDifficulty = 'all';
+
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
@@ -26,14 +25,44 @@ let techSearchQuery = ''; // Current tech search input
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
   'js': 'javascript',
-  'react': 'javascript', // React projects are tagged as 'javascript'
-  'node': 'javascript',  // Node projects are tagged as 'javascript'
+  'react': 'javascript',
+  'node': 'javascript',
   'vue': 'javascript',
-  'python': 'api',       // Python/Flask projects are tagged as 'api javascript'
+  'python': 'api',
   'flask': 'api',
   'game': 'game',
   'games': 'game',
 };
+
+/* Maps data-filter values on chip buttons to display category names */
+const FILTER_CATEGORY_MAP = {
+  'all': 'all',
+  'game': 'Games',
+  'clone': 'Clones',
+  'tool': 'Tools',
+  'ui': 'UI / Animation',
+  'api': 'APIs',
+};
+
+/**
+ * Derive a display category from a project's tags and name.
+ * Uses the existing tag structure so no new data field is needed.
+ */
+function getCategoryFromTags(tags, name) {
+  const tagStr = (tags || '').toLowerCase();
+  const nameStr = (name || '').toLowerCase();
+
+  if (tagStr.includes('game')) return 'Games';
+  if (tagStr.includes('clone')) return 'Clones';
+  if (tagStr.includes('tool')) return 'Tools';
+  if (tagStr.includes('ui')) return 'UI / Animation';
+  if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
+
+  if (nameStr.includes('clone')) return 'Clones';
+  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+
+  return 'Tools';
+}
 
 const PROJECT_DATA = [
   ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
@@ -53,7 +82,11 @@ const PROJECT_DATA = [
   ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
   ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
   ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
-  ['Day 18', 'Carousel Solar System', './public/carousal/index.html', 'css canvas', 'intermediate'],
+  ['Day 18',
+ 'Carousel Solar System',
+ './public/Carousel%20Solar%20System/index.html',
+ 'css canvas',
+ 'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
   ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
   ['Day 21', 'Video BG Slider Using React', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website', 'javascript', 'intermediate'],
@@ -175,15 +208,17 @@ const PROJECT_DATA = [
   ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
   ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
   ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
-  ['Day 140', 'Big Sales Prediction',
- 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
+  ['Day 140', 'Big Sales Prediction', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
   ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
-
+  ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
+  ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
+  ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
+  ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
+  ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
+  ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
 ];
-// Alias for consistency
 const PROJECTS = PROJECT_DATA;
-console.log('PROJECTS defined:', PROJECTS.length, 'items');
 
 
 /* ============================================================
@@ -317,9 +352,7 @@ function getAllTechnologies() {
     }
   });
   
-  const techs = Array.from(techSet).sort();
-  console.log('Available technologies:', techs); // Debug: show available techs
-  return techs;
+  return Array.from(techSet).sort();
 }
 
 /* ============================================================
@@ -334,12 +367,11 @@ let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
 
-// Category labels mapping
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
-console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
 /* ============================================================
    GITHUB REPO STATS
@@ -374,9 +406,10 @@ function generateReadme() {
     lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
     lines.push('');
     lines.push('## Projects');
-    PROJECTS.forEach(([day, name, url, tags, cat]) => {
+    PROJECTS.forEach(([day, name, url, tags]) => {
       const safeUrl = url || '';
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${cat}_`);
+      const category = getCategoryFromTags(tags, name);
+      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${category}_`);
     });
 
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
@@ -404,23 +437,20 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, , tags, cat]) => {
-    // 1. Category filter (beginner/intermediate)
-    const matchesFilter = activeFilter === 'all' || cat === activeFilter;
-    
-    // 2. Name/Day search
+  const filtered = PROJECTS.filter(([day, name, , tags]) => {
+    const category = getCategoryFromTags(tags, name);
+    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
+
+    const matchesFilter = activeFilter === 'all' || category === targetCategory;
+
     const q = searchQuery.toLowerCase();
     const matchesSearch =
       !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
-    
-    // 3. Technology stack filter (NEW)
+
     const matchesTech = matchesTechStack(tags);
-    
-    // Combine all three filters
+
     return matchesFilter && matchesSearch && matchesTech;
   });
-
-  console.log('Filtered projects:', filtered.length, 'out of', PROJECTS.length); // Debug log
 
   grid.innerHTML = '';
 
@@ -447,7 +477,8 @@ function renderGrid() {
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
 
-  pageItems.forEach(([day, name, url, tags, cat]) => {
+  pageItems.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -458,7 +489,7 @@ function renderGrid() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category ${cat}">${CATEGORY_LABEL[cat] || cat}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -678,7 +709,8 @@ function renderBookmarks() {
 
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
+  visibleBookmarks.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
@@ -687,7 +719,7 @@ function renderBookmarks() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -729,7 +761,8 @@ function renderRecentProjects() {
 
   const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags, cat]) => {
+  visibleRecent.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
@@ -739,7 +772,7 @@ function renderRecentProjects() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -871,10 +904,7 @@ function initTechStackSearch() {
         // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
         
-        // Update filters array (already lowercase, no need to normalize yet)
-        techStackFilters = [...new Set(techs)]; // Remove duplicates efficiently
-        
-        console.log('Tech filters active:', techStackFilters); // Debug log
+        techStackFilters = [...new Set(techs)];
         
         updateTechFilterDisplay();
         renderGrid();
@@ -1061,14 +1091,6 @@ function initScrollBtn() {
    INIT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired');
-  console.log(
-    'PROJECTS:',
-    typeof PROJECTS,
-    PROJECTS ? PROJECTS.length : 'undefined'
-  );
-  
-  // Show available technologies for debugging
   getAllTechnologies();
   
   initTheme();

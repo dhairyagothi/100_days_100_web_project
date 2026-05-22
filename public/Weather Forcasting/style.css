@@ -304,39 +304,6 @@ main.container {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-.btn-outline-success {
-  background-color: #198754;
-  border-color: #198754;
-  color: #fff;
-}
-
-.btn-outline-success:hover {
-  background-color: #157347;
-  border-color: #157347;
-  color: #fff;
-}
-
-.btn-outline-primary {
-  background-color: #1f7aff !important;
-  border-color: #1f7aff !important;
-  color: #fff !important;
-}
-
-.btn-outline-primary:hover {
-  background-color: #0b5ed7 !important;
-  border-color: #0b5ed7 !important;
-}
-
-.btn-primary {
-  background-color: #1f7aff;
-  border-color: #1f7aff;
-}
-
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0b5ed7;
-}
-
 .table-responsive {
   margin-top: 1.25rem;
   border-radius: 1.15rem;
@@ -370,9 +337,41 @@ main.container {
   background: rgba(255, 255, 255, 0.06);
 }
 
+/* Weather Recommendation Section */
+
+#recommendations-card {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+#recommendations-card .card-body {
+  color: #212529;
+}
+
+#clothing-recommendation,
+#travel-recommendation {
+  transition: all 0.3s ease;
+}
+
+#clothing-recommendation:hover,
+#travel-recommendation:hover {
+  transform: translateY(-2px);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -416,18 +415,15 @@ main.container {
   .table {
     font-size: 0.85rem;
   }
-}
 
-.dropdown-menu {
-  z-index: 9999 !important;
-}
+  #recommendations-card .row {
+    flex-direction: column;
+  }
 
-.navbar {
-  position: relative;
-  z-index: 1000;
-}
-
-.weather-status {
-  position: relative;
-  z-index: 1;
+  #recommendations-card .border-end {
+    border-right: none !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
 }
