@@ -196,6 +196,33 @@ body.light .toggle-circle{
   font-size:16px;
 }
 
+.card-footer{
+     margin-top: auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.trash-actions{
+      display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.restore-btn{
+    background-color: #2ed573;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.restore-btn:hover{
+    background-color: #26c466;
+}
 /* GRID */
 
 .notes-grid{
@@ -210,6 +237,9 @@ body.light .toggle-circle{
   border-radius:22px;
   background:linear-gradient(135deg,#2b0b52,#5b21b6);
   position:relative;
+  display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card h2{
@@ -231,14 +261,12 @@ body.light .toggle-circle{
 }
 
 .date{
-  position:absolute;
   bottom:18px;
   left:22px;
   font-size:13px;
 }
 
 .delete-btn{
-  position:absolute;
   right:18px;
   bottom:16px;
   background:red;
