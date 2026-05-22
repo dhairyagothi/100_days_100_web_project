@@ -1,62 +1,118 @@
-// Hamburger Menu Toggle
-const hamburgerMenu = document.getElementById('hamburgerMenu');
-const navbarMenu = document.getElementById('navbarMenu');
-
-if (hamburgerMenu) {
-  hamburgerMenu.addEventListener('click', () => {
-    hamburgerMenu.classList.toggle('active');
-    navbarMenu.classList.toggle('active');
-  });
-
-  // Close menu when a link is clicked
-  navbarMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburgerMenu.classList.remove('active');
-      navbarMenu.classList.remove('active');
-    });
-  });
-
-  // Close menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.navbar')) {
-      hamburgerMenu.classList.remove('active');
-      navbarMenu.classList.remove('active');
-    }
-  });
-}
-
-const modal = document.getElementById('profileModal');
-
-const modalBody = document.getElementById('modalBody');
-
-const closeModal = document.getElementById('closeModal');
-
-const certificateModal = document.getElementById('certificateModal');
-
-const certificateBody = document.getElementById('certificateBody');
-
-const closeCertificate = document.getElementById('closeCertificate');
-
+// ============================================
+// CONFIGURATION
+// ============================================
+const REPO_OWNER = 'dhairyagothi';
+const REPO_NAME = '100_days_100_web_project';
 const GITHUB_API_BASE = 'https://api.github.com';
-
 const REQUEST_TIMEOUT = 10000;
-
 const MAX_RETRIES = 3;
 
-closeModal?.addEventListener(
-  'click',
+// ============================================
+// HAMBURGER MENU JAVASCRIPT
+// ============================================
+(function() {
+  const hamburgerBtn = document.getElementById('hamburgerMenu');
+  const navbarMenu = document.getElementById('navbarMenu');
+  
+  if (hamburgerBtn && navbarMenu) {
+    hamburgerBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      hamburgerBtn.classList.toggle('active');
+      navbarMenu.classList.toggle('active');
+      
+      const icon = hamburgerBtn.querySelector('i');
+      if (navbarMenu.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+    
+    const navLinks = navbarMenu.querySelectorAll('a, button');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        hamburgerBtn.classList.remove('active');
+        navbarMenu.classList.remove('active');
+        const icon = hamburgerBtn.querySelector('i');
+        if (icon) {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+    });
+    
+    document.addEventListener('click', function(e) {
+      if (!navbarMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+        hamburgerBtn.classList.remove('active');
+        navbarMenu.classList.remove('active');
+        const icon = hamburgerBtn.querySelector('i');
+        if (icon) {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      }
+    });
+  }
+})();
 
-  () => {
+// ============================================
+// THEME TOGGLE
+// ============================================
+(function() {
+  const themeBtn = document.getElementById('themeToggle');
+  const currentTheme = localStorage.getItem('theme');
+  if (currentTheme === 'light') document.body.classList.add('light-mode');
+  
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      const icon = themeBtn.querySelector('i');
+      if (icon) {
+        icon.classList.remove(isLight ? 'fa-moon' : 'fa-sun');
+        icon.classList.add(isLight ? 'fa-sun' : 'fa-moon');
+      }
+    });
+  }
+})();
+
+// ============================================
+// MODAL ELEMENTS
+// ============================================
+const modal = document.getElementById('profileModal');
+const modalBody = document.getElementById('modalBody');
+const closeModal = document.getElementById('closeModal');
+const certificateModal = document.getElementById('certificateModal');
+const certificateBody = document.getElementById('certificateBody');
+const closeCertificate = document.getElementById('closeCertificate');
+
+// Close modals
+closeModal?.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+closeCertificate?.addEventListener('click', () => {
+  certificateModal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === modal) {
     modal.style.display = 'none';
   }
-);
+  if (e.target === certificateModal) {
+    certificateModal.style.display = 'none';
+  }
+});
 
+// ============================================
+// GITHUB API HELPER FUNCTIONS
+// ============================================
 async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
   const controller = new AbortController();
-
-  const timeoutId = setTimeout(() => {
-    controller.abort();
-  }, REQUEST_TIMEOUT);
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
   try {
     const response = await fetch(url, {
@@ -71,15 +127,11 @@ async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
 
     if (response.status === 403) {
       const resetTime = response.headers.get('X-RateLimit-Reset');
-
       let message = 'GitHub API rate limit exceeded.';
-
       if (resetTime) {
         const resetDate = new Date(resetTime * 1000);
-
         message += ` Try again after ${resetDate.toLocaleTimeString()}`;
       }
-
       throw new Error(message);
     }
 
@@ -88,419 +140,140 @@ async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
     }
 
     const data = await response.json();
-
-    if (!data) {
-      throw new Error('Empty response received');
-    }
-
+    if (!data) throw new Error('Empty response received');
     return data;
   } catch (error) {
     clearTimeout(timeoutId);
-
-    if (retries > 0) {
-      return githubFetch(url, options, retries - 1);
-    }
-
-    if (error.name === 'AbortError') {
-      throw new Error('Request timeout. Please try again.');
-    }
-
-    if (error instanceof TypeError) {
-      throw new Error('Network error. Check your internet connection.');
-    }
-
+    if (retries > 0) return githubFetch(url, options, retries - 1);
+    if (error.name === 'AbortError') throw new Error('Request timeout. Please try again.');
+    if (error instanceof TypeError) throw new Error('Network error. Check your internet connection.');
     throw error;
   }
 }
 
-window.addEventListener(
-  'click',
-
-  (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-    }
-  }
-);
-
+// Cache functions
 function saveCache(key, data) {
-  localStorage.setItem(
-    key,
-    JSON.stringify({
-      timestamp: Date.now(),
-      data,
-    })
-  );
+  localStorage.setItem(key, JSON.stringify({ timestamp: Date.now(), data }));
 }
 
 function loadCache(key, maxAge = 1000 * 60 * 10) {
   const cached = localStorage.getItem(key);
-
   if (!cached) return null;
-
   try {
     const parsed = JSON.parse(cached);
-
-    const isExpired = Date.now() - parsed.timestamp > maxAge;
-
-    if (isExpired) {
+    if (Date.now() - parsed.timestamp > maxAge) {
       localStorage.removeItem(key);
-
       return null;
     }
-
     return parsed.data;
   } catch {
     return null;
   }
 }
 
+// ============================================
+// OPEN PROFILE WITH CERTIFICATE
+// ============================================
 async function openProfile(username, commits) {
   modal.style.display = 'flex';
-
-  modalBody.innerHTML = `
-        <p>Loading profile...</p>
-    `;
+  modalBody.innerHTML = '<p>Loading profile...</p>';
 
   try {
     const response = await fetch(`https://api.github.com/users/${username}`);
-
     const user = await response.json();
 
     modalBody.innerHTML = `
-
-            <img
-            src="${user.avatar_url}"
-            >
-
-            <h2>
-            ${user.name || user.login}
-            </h2>
-
-            <p>
-            ${user.bio || 'This contributor has not added a bio yet.'}
-            </p>
-
-            <p>
-            Followers:
-            ${user.followers}
-            </p>
-
-            <p>
-            Public Repos:
-            ${user.public_repos}
-            </p>
-
-            <p>
-            Location:
-            ${user.location || 'Not available'}
-            </p>
-
-            <p>
-            Joined:
-            ${new Date(user.created_at).toLocaleDateString()}
-            </p>
-
-           <div class="popup-btn-container">
-
-    <a
-    href="${user.html_url}"
-    target="_blank"
-    class="github-btn"
-    >
-
-    View GitHub
-
-    </a>
-
-
-    <button
-    id="downloadCertificate"
-    class="certificate-btn"
-    >
-
-    Download Certificate
-
-    </button>
-
-</div>
-
-        `;
+      <img src="${user.avatar_url}">
+      <h2>${user.name || user.login}</h2>
+      <p>${user.bio || 'This contributor has not added a bio yet.'}</p>
+      <p>Followers: ${user.followers}</p>
+      <p>Public Repos: ${user.public_repos}</p>
+      <p>Location: ${user.location || 'Not available'}</p>
+      <p>Joined: ${new Date(user.created_at).toLocaleDateString()}</p>
+      <div class="popup-btn-container">
+        <a href="${user.html_url}" target="_blank" class="github-btn">View GitHub</a>
+        <button id="downloadCertificate" class="certificate-btn">Download Certificate</button>
+      </div>
+    `;
 
     const certificateBtn = document.getElementById('downloadCertificate');
+    certificateBtn?.addEventListener('click', () => {
+      certificateModal.style.display = 'flex';
+      certificateBody.innerHTML = `
+        <div style="position:relative; width:100%;">
+          <img src="assets/template.png" style="width:100%; display:block; border-radius:12px;">
+          <div style="position:absolute; top:35%; left:50%; transform:translateX(-50%); font-family:'Cinzel',serif; font-size:24px; font-weight:700; background:linear-gradient(90deg, #b8860b, #f4d03f, #8b5a00); -webkit-background-clip:text; -webkit-text-fill-color:transparent; white-space:nowrap;">
+            ${user.name || user.login}
+          </div>
+          <div style="position:absolute; top:82%; left:30%; transform:translateX(-50%); font-size:5px; color:#5b21b6;">${commits}</div>
+          <div style="position:absolute; top:82%; left:50%; transform:translateX(-50%); font-size:5px; color:#5b21b6;">@${user.login}</div>
+          <div style="position:absolute; top:82%; left:69%; transform:translateX(-50%); font-size:5px; color:#5b21b6;">${new Date().toLocaleDateString('en-GB')}</div>
+        </div>
+        <div style="text-align:center; margin-top:20px;">
+          <button id="downloadPdfBtn" style="background:#16a34a; padding:14px 30px; color:white; border:none; border-radius:10px; cursor:pointer;">Download PDF</button>
+        </div>
+      `;
 
-    closeCertificate?.addEventListener(
-      'click',
-
-      () => {
-        certificateModal.style.display = 'none';
-      }
-    );
-
-    certificateBtn?.addEventListener(
-      'click',
-
-      () => {
-        certificateModal.style.display = 'flex';
-
-        certificateBody.innerHTML = `
-
-<div style="
-position:relative;
-width:100%;
-">
-
-<img
-src="assets/template.png"
-style="
-width:100%;
-display:block;
-border-radius:12px;
-">
-
-
-<!-- NAME -->
-
-<div style="
-position:absolute;
-top:35%;
-left:50%;
-transform:translateX(-50%);
-font-family:'Cinzel',serif;
-
-font-size:24px;
-
-font-weight:700;
-
-background:
-linear-gradient(
-90deg,
-#b8860b,
-#f4d03f,
-#8b5a00
-);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:
-transparent;
-
-white-space:nowrap;
-
-text-shadow:
-0 2px 4px rgba(
-0,
-0,
-0,
-0.12
-);
-">
-
-${user.name || user.login}
-
-</div>
-
-
-
-<!-- COMMITS -->
-
-<div style="
-position:absolute;
-top:82%;
-left:30%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-${commits}
-
-</div>
-
-
-
-<!-- USERNAME -->
-
-<div style="
-position:absolute;
-top:82%;
-left:50%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-@${user.login}
-
-</div>
-
-
-
-<!-- DATE -->
-
-<div style="
-position:absolute;
-top:82%;
-left:69%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-${new Date().toLocaleDateString('en-GB')}
-
-</div>
-
-</div>
-
-
-<div style="
-text-align:center;
-margin-top:20px;
-">
-
-<button
-id="downloadPdfBtn"
-style="
-background:#16a34a;
-padding:14px 30px;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-">
-
-Download PDF
-
-</button>
-
-</div>
-
-`;
-        const downloadBtn = document.getElementById('downloadPdfBtn');
-
-        downloadBtn?.addEventListener(
-          'click',
-
-          async () => {
-            const certificate = certificateBody.querySelector('div');
-
-            const canvas = await html2canvas(
-              certificate,
-
-              {
-                scale: 3,
-
-                useCORS: true,
-              }
-            );
-
-            const image = canvas.toDataURL('image/png');
-
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF(
-              'landscape',
-
-              'px',
-
-              [canvas.width, canvas.height]
-            );
-
-            pdf.addImage(
-              image,
-
-              'PNG',
-
-              0,
-
-              0,
-
-              canvas.width,
-
-              canvas.height
-            );
-
-            pdf.save(`${user.login}-certificate.pdf`);
-          }
-        );
-      }
-    );
+      const downloadBtn = document.getElementById('downloadPdfBtn');
+      downloadBtn?.addEventListener('click', async () => {
+        const certificate = certificateBody.querySelector('div');
+        const canvas = await html2canvas(certificate, { scale: 3, useCORS: true });
+        const image = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('landscape', 'px', [canvas.width, canvas.height]);
+        pdf.addImage(image, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save(`${user.login}-certificate.pdf`);
+      });
+    });
   } catch (error) {
     modalBody.innerHTML = '<p>Failed to load profile</p>';
-
     console.error(error);
   }
 }
 
-// Use global REPO_OWNER and REPO_NAME defined in index.js
-
+// ============================================
+// CONTRIBUTORS DATA
+// ============================================
 let allContributors = [];
 let filteredContributors = [];
 
 async function fetchContributors() {
   const contributorsContainer = document.getElementById('contributors');
-
   const contributorCountSpan = document.getElementById('contributorCount');
-
   const errorBox = document.getElementById('contributorsError');
-
   const errorMessage = document.getElementById('contributorsErrorMessage');
-
   const loading = document.getElementById('contributorsLoading');
+  const totalCommitsEl = document.getElementById('totalCommits');
 
   loading.classList.remove('hidden');
-
   errorBox.classList.add('hidden');
-
   contributorsContainer.innerHTML = '';
 
   try {
     const cached = loadCache('contributors-cache');
-
     if (cached) {
       allContributors = cached;
-
       filteredContributors = [...cached];
-
-      contributorCountSpan.textContent = cached.length;
-
+      if (contributorCountSpan) contributorCountSpan.textContent = cached.length;
       renderContributors(filteredContributors);
-
       loading.classList.add('hidden');
-
       return;
     }
 
-    const contributors = await githubFetch(
-      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
-    );
-
+    const contributors = await githubFetch(`${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/contributors?per_page=100`);
     saveCache('contributors-cache', contributors);
 
-    contributorCountSpan.textContent = contributors.length;
+    if (contributorCountSpan) contributorCountSpan.textContent = contributors.length;
 
-    const totalCommits = contributors.reduce(
-      (sum, c) => sum + c.contributions,
-      0
-    );
-
-    const totalCommitsEl = document.getElementById('totalCommits');
-
-    if (totalCommitsEl) {
-      totalCommitsEl.textContent = totalCommits.toLocaleString();
-    }
+    const totalCommits = contributors.reduce((sum, c) => sum + c.contributions, 0);
+    if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
 
     allContributors = contributors;
-
     filteredContributors = [...contributors];
-
     renderContributors(filteredContributors);
   } catch (error) {
     errorBox.classList.remove('hidden');
-
-    errorMessage.textContent = error.message;
-
+    if (errorMessage) errorMessage.textContent = error.message;
     contributorsContainer.innerHTML = '';
   } finally {
     loading.classList.add('hidden');
@@ -509,225 +282,209 @@ async function fetchContributors() {
 
 function renderContributors(data) {
   const contributorsContainer = document.getElementById('contributors');
-
   const emptyState = document.getElementById('emptyState');
 
   contributorsContainer.innerHTML = '';
 
   if (data.length === 0) {
-    emptyState.style.display = 'block';
-
+    if (emptyState) emptyState.style.display = 'block';
     return;
   }
 
-  emptyState.style.display = 'none';
+  if (emptyState) emptyState.style.display = 'none';
 
   const fragment = document.createDocumentFragment();
 
   data.forEach((contributor) => {
     const card = document.createElement('div');
-
-    const globalRank =
-      allContributors.findIndex((c) => c.login === contributor.login) + 1;
+    const globalRank = allContributors.findIndex((c) => c.login === contributor.login) + 1;
 
     let badge = '';
-
-    if (globalRank === 1) {
-      badge = 'assets/badges/diamond.png';
-    } else if (globalRank >= 2 && globalRank <= 3) {
-      badge = 'assets/badges/gold.png';
-    } else if (globalRank >= 4 && globalRank <= 6) {
-      badge = 'assets/badges/silver.png';
-    } else if (globalRank >= 7 && globalRank <= 10) {
-      badge = 'assets/badges/bronze.png';
-    }
+    if (globalRank === 1) badge = 'assets/badges/diamond.png';
+    else if (globalRank >= 2 && globalRank <= 3) badge = 'assets/badges/gold.png';
+    else if (globalRank >= 4 && globalRank <= 6) badge = 'assets/badges/silver.png';
+    else if (globalRank >= 7 && globalRank <= 10) badge = 'assets/badges/bronze.png';
 
     card.className = 'contributor-card';
-
     card.innerHTML = `
+      ${badge ? `<img src="${badge}" class="rank-badge">` : ''}
+      <img src="${contributor.avatar_url}" alt="${contributor.login}">
+      <h3>${contributor.login}</h3>
+      <div class="contributor-stats">
+        <div class="stat">
+          <span class="value">${contributor.contributions}</span>
+          <span class="label">Commits</span>
+        </div>
+      </div>
+      <div class="contributor-links">
+        <button class="details-btn" data-user="${contributor.login}">View Details</button>
+        <a href="${contributor.html_url}" target="_blank" class="github-btn"><i class="fab fa-github"></i> Profile</a>
+      </div>
+    `;
 
-${
-  badge
-    ? `<img
-src="${badge}"
-class="rank-badge"
->`
-    : ''
-}
-
-<img
-src="${contributor.avatar_url}"
-
-alt="${contributor.login}">
-
-            <h3>${contributor.login}</h3>
-
-            <div class="contributor-stats">
-
-                <div class="stat">
-
-                    <span class="value">
-                        ${contributor.contributions}
-                    </span>
-
-                    <span class="label">
-                        Commits
-                    </span>
-
-                </div>
-
-            </div>
-
-           <div class="contributor-links">
-
-    <button
-        class="details-btn"
-        data-user="${contributor.login}"
-    >
-
-        View Details
-
-    </button>
-
-    <a
-        href="${contributor.html_url}"
-        target="_blank"
-        class="github-btn"
-    >
-
-        <i class="fab fa-github"></i>
-        Profile
-
-    </a>
-
-</div>
-        `;
+    const detailsButton = card.querySelector('.details-btn');
+    if (detailsButton) {
+      detailsButton.addEventListener('click', () => {
+        openProfile(contributor.login, contributor.contributions);
+      });
+    }
 
     fragment.appendChild(card);
-    const detailsButton = card.querySelector('.details-btn');
-
-    if (detailsButton) {
-      detailsButton.addEventListener(
-        'click',
-
-        () => {
-          openProfile(
-            contributor.login,
-
-            contributor.contributions
-          );
-        }
-      );
-    }
   });
 
   contributorsContainer.appendChild(fragment);
 }
 
+// ============================================
+// STARGAZERS DATA
+// ============================================
 function renderStargazers(stargazers) {
   const stargazersContainer = document.getElementById('stargazers');
-
   stargazersContainer.innerHTML = '';
 
   stargazers.forEach((stargazer) => {
     const starItem = document.createElement('a');
-
     starItem.href = stargazer.html_url;
-
     starItem.target = '_blank';
-
     starItem.className = 'stargazer-item';
-
     starItem.title = stargazer.login;
-
-    starItem.innerHTML = `
-      <img
-        src="${stargazer.avatar_url}"
-        alt="${stargazer.login}"
-      >
-    `;
-
+    starItem.innerHTML = `<img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
     stargazersContainer.appendChild(starItem);
   });
 }
 
 async function fetchStargazers() {
   const stargazersContainer = document.getElementById('stargazers');
-
   const errorBox = document.getElementById('stargazersError');
-
   const errorMessage = document.getElementById('stargazersErrorMessage');
-
   const loading = document.getElementById('stargazersLoading');
 
   loading.classList.remove('hidden');
-
   errorBox.classList.add('hidden');
-
   stargazersContainer.innerHTML = '';
 
   try {
     const cached = loadCache('stargazers-cache');
-
     if (cached) {
       renderStargazers(cached);
-
       loading.classList.add('hidden');
-
       return;
     }
 
-    const stargazers = await githubFetch(
-      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`
-    );
-
+    const stargazers = await githubFetch(`${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/stargazers?per_page=100`);
     saveCache('stargazers-cache', stargazers);
-
     renderStargazers(stargazers);
   } catch (error) {
     errorBox.classList.remove('hidden');
-
-    errorMessage.textContent = error.message;
+    if (errorMessage) errorMessage.textContent = error.message;
   } finally {
     loading.classList.add('hidden');
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Repo stats are now handled by index.js
-  fetchContributors();
-  fetchStargazers();
-  
-  document
-    .getElementById('retryContributors')
-    ?.addEventListener('click', fetchContributors);
+// ============================================
+// REPOSITORY STATS
+// ============================================
+async function fetchRepoStats() {
+  try {
+    const [repoRes, prRes] = await Promise.all([
+      fetch(`${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}`),
+      fetch(`${GITHUB_API_BASE}/search/issues?q=repo:${REPO_OWNER}/${REPO_NAME}+type:pr+state:open`)
+    ]);
 
-  document
-    .getElementById('retryStargazers')
-    ?.addEventListener('click', fetchStargazers);
+    if (!repoRes.ok) throw new Error('Failed to fetch repo stats');
 
+    const repo = await repoRes.json();
+    const prs = prRes.ok ? await prRes.json() : { total_count: 0 };
+
+    // Get total commits count
+    let commitCount = 'N/A';
+    try {
+      const commitRes = await fetch(`${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/commits?per_page=1`);
+      const linkHeader = commitRes.headers.get('Link');
+      if (linkHeader) {
+        const match = linkHeader.match(/page=(\d+)>; rel="last"/);
+        if (match) commitCount = match[1];
+      }
+    } catch (e) {
+      console.warn('Could not fetch commit count');
+    }
+
+    // Update stats UI
+    const starEl = document.getElementById('starCount');
+    const forkEl = document.getElementById('forkCount');
+    const issueEl = document.getElementById('issueCount');
+    const prEl = document.getElementById('prCount');
+    const commitEl = document.getElementById('totalCommits');
+
+    if (starEl) starEl.innerText = repo.stargazers_count.toLocaleString();
+    if (forkEl) forkEl.innerText = repo.forks_count.toLocaleString();
+    if (issueEl) issueEl.innerText = repo.open_issues_count.toLocaleString();
+    if (prEl) prEl.innerText = prs.total_count.toLocaleString();
+    if (commitEl && commitCount !== 'N/A') commitEl.innerText = commitCount.toLocaleString();
+  } catch (error) {
+    console.error('Error fetching repo stats:', error);
+  }
+}
+
+// ============================================
+// SEARCH AND SORT FUNCTIONALITY
+// ============================================
+function initSearchAndSort() {
   const searchInput = document.getElementById('contributorSearch');
-
   const sortSelect = document.getElementById('sortContributors');
-  searchInput.addEventListener('input', (e) => {
-    const value = e.target.value.toLowerCase();
 
-    filteredContributors = allContributors.filter((c) =>
-      c.login.toLowerCase().includes(value)
-    );
-
-    renderContributors(filteredContributors);
-  });
-
-  sortSelect.addEventListener('change', (e) => {
-    const order = e.target.value;
-
-    filteredContributors.sort((a, b) => {
-      return order === 'asc'
-        ? a.contributions - b.contributions
-        : b.contributions - a.contributions;
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const value = e.target.value.toLowerCase();
+      filteredContributors = allContributors.filter(c =>
+        c.login.toLowerCase().includes(value)
+      );
+      renderContributors(filteredContributors);
     });
+  }
 
-    renderContributors(filteredContributors);
-  });
-});
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      const order = e.target.value;
+      filteredContributors.sort((a, b) => {
+        return order === 'asc'
+          ? a.contributions - b.contributions
+          : b.contributions - a.contributions;
+      });
+      renderContributors(filteredContributors);
+    });
+  }
+}
+
+// ============================================
+// RETRY BUTTONS
+// ============================================
+const retryContributors = document.getElementById('retryContributors');
+const retryStargazers = document.getElementById('retryStargazers');
+
+if (retryContributors) {
+  retryContributors.addEventListener('click', fetchContributors);
+}
+if (retryStargazers) {
+  retryStargazers.addEventListener('click', fetchStargazers);
+}
+
+// ============================================
+// INITIALIZE APP
+// ============================================
+async function initializeApp() {
+  await Promise.all([
+    fetchContributors(),
+    fetchStargazers(),
+    fetchRepoStats()
+  ]);
+  initSearchAndSort();
+}
+
+// Start the application
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
+}

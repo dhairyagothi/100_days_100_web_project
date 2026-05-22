@@ -1,4 +1,12 @@
+/* ----- GLOBAL RESET & VARIABLES ----- */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 :root {
   --bg-primary: #050505;
@@ -22,14 +30,7 @@ body.light-mode {
   --glass-border: rgba(0, 0, 0, 0.08);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
+html, body {
   background: var(--bg-primary) !important;
   color: var(--text-primary);
   transition: background 0.3s ease, color 0.3s ease;
@@ -50,10 +51,7 @@ body {
   padding: 0 2rem;
 }
 
-/* ============================================
-   FIXED NAVBAR (Enhanced visibility & contrast)
-============================================ */
-
+/* ========== NAVBAR ========== */
 .navbar {
   position: fixed;
   top: 0;
@@ -104,10 +102,10 @@ body.light-mode .navbar {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 0 6px rgba(0, 255, 136, 0.3);
+  text-shadow: 0 0 6px rgba(0,255,136,0.3);
 }
 
-/* Desktop Button Group */
+/* BUTTON GROUP (DESKTOP) */
 .buttons {
   display: flex;
   gap: 1rem;
@@ -159,10 +157,7 @@ body.light-mode #themeToggle {
   font-size: 0.9rem;
 }
 
-/* ============================================
-   HAMBURGER MENU (Visible & properly sized)
-============================================ */
-
+/* HAMBURGER MENU */
 .hamburger-menu {
   display: none;
   background: rgba(20, 20, 30, 0.85);
@@ -191,25 +186,21 @@ body.light-mode .hamburger-menu {
 .hamburger-menu:hover {
   background: var(--accent-color);
 }
-
 .hamburger-menu:hover i {
   color: #000;
 }
 
-/* Mobile Menu Overlay */
+/* MOBILE MENU OVERLAY */
 @media (max-width: 860px) {
   body {
     padding-top: 80px;
   }
-
   .navbar {
     padding: 0.7rem 1.2rem;
   }
-
   .navbar-brand span {
     font-size: 0.8rem;
   }
-
   .buttons {
     display: none;
     position: fixed;
@@ -223,20 +214,17 @@ body.light-mode .hamburger-menu {
     padding: 1.2rem 1.5rem;
     gap: 0.9rem;
     border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.5);
     z-index: 999;
   }
-
   body.light-mode .buttons {
     background: rgba(248, 250, 252, 0.98);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
   }
-
   .buttons.active {
     display: flex;
     animation: fadeSlide 0.25s ease-out;
   }
-
   .buttons .button,
   #themeToggle {
     width: 100%;
@@ -244,7 +232,6 @@ body.light-mode .hamburger-menu {
     padding: 0.8rem;
     font-size: 0.9rem;
   }
-
   .hamburger-menu {
     display: flex;
   }
@@ -261,7 +248,6 @@ body.light-mode .hamburger-menu {
   }
 }
 
-/* Small devices */
 @media (max-width: 480px) {
   .navbar-brand span {
     display: inline-block;
@@ -271,24 +257,21 @@ body.light-mode .hamburger-menu {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .navbar-brand img {
     width: 34px;
     height: 34px;
   }
-
   .hamburger-menu {
     width: 40px;
     height: 40px;
   }
-
   .hamburger-menu i {
     font-size: 1.3rem;
   }
 }
 
 /* ============================================
-   HEADER & STATS
+   CONTRIBUTORS PAGE STYLES
 ============================================ */
 
 .contributor-header {
@@ -315,6 +298,7 @@ body.light-mode .hamburger-menu {
   margin: 0 auto;
 }
 
+/* Stats Overview */
 .stats-overview {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -356,10 +340,7 @@ body.light-mode .hamburger-menu {
   display: block;
 }
 
-/* ============================================
-   CONTROLS (Search & Sort)
-============================================ */
-
+/* Controls (Search & Sort) */
 .contributors-controls {
   display: flex;
   gap: 1.5rem;
@@ -408,10 +389,7 @@ body.light-mode #sortContributors {
   padding-right: 3rem;
 }
 
-/* ============================================
-   CONTRIBUTORS GRID & CARDS
-============================================ */
-
+/* Contributors Grid & Cards */
 .contributors-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -436,7 +414,7 @@ body.light-mode #sortContributors {
 .contributor-card:hover {
   transform: translateY(-10px);
   border-color: var(--accent-color);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .contributor-card img {
@@ -451,7 +429,7 @@ body.light-mode #sortContributors {
 .contributor-card h3 {
   font-family: 'Orbitron', sans-serif;
   font-size: 1.2rem;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
 }
 
 .contributor-stats {
@@ -473,6 +451,16 @@ body.light-mode #sortContributors {
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.rank-badge {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  z-index: 2;
 }
 
 /* Buttons inside cards */
@@ -501,20 +489,7 @@ body.light-mode #sortContributors {
   border-color: transparent;
 }
 
-.rank-badge {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-  z-index: 2;
-}
-
-/* ============================================
-   STARGAZERS SECTION
-============================================ */
-
+/* Stargazers Section */
 .stargazers-grid {
   display: flex;
   flex-wrap: wrap;
@@ -546,12 +521,9 @@ body.light-mode #sortContributors {
   object-fit: cover;
 }
 
-/* ============================================
-   FOOTER
-============================================ */
-
+/* Footer */
 .footer {
-  background: var(--bg-primary);
+  background: var(--bg-primary) !important;
   padding: 4rem 2rem;
   border-top: 1px solid var(--glass-border);
 }
@@ -603,10 +575,7 @@ body.light-mode #sortContributors {
   transform: translateY(-5px);
 }
 
-/* ============================================
-   MODALS
-============================================ */
-
+/* Modals */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -695,10 +664,7 @@ body.light-mode #sortContributors {
   margin-top: 1.5rem;
 }
 
-/* ============================================
-   UTILITY & STATE CLASSES
-============================================ */
-
+/* Utility & State Classes */
 .empty-state {
   text-align: center;
   display: none;
@@ -750,10 +716,25 @@ body.light-mode #sortContributors {
   display: none !important;
 }
 
-/* ============================================
-   RESPONSIVE ADJUSTMENTS
-============================================ */
+/* Certificate Button */
+.certificate-btn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 12px;
+  transition: 0.3s;
+}
 
+.certificate-btn:hover {
+  background: #15803d;
+  transform: scale(1.03);
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .container {
     padding: 0 1.2rem;
