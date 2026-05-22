@@ -197,6 +197,59 @@ table{
     text-align:center;
 
     margin-bottom:1.5rem;
+}
+
+/* Toast Notification */
+
+.toast-message {
+    position: fixed;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: gold;
+    padding: 1.5rem 3rem;
+    border: 2px solid gold;
+    border-radius: 5rem;
+    box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.6), 0px 0px 40px rgba(255, 215, 0, 0.3);
+    font-family: 'Lobster', cursive;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 2000;
+    white-space: nowrap;
+    animation: toastSlideIn 0.3s ease forwards;
+}
+
+.toast-message.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        bottom: 1rem;
+    }
+    to {
+        opacity: 1;
+        bottom: 3rem;
+    }
+}
+
+@keyframes toastSlideOut {
+    from {
+        opacity: 1;
+        bottom: 3rem;
+    }
+    to {
+        opacity: 0;
+        bottom: 1rem;
+    }
+}
 
     font-size:3rem;
 }

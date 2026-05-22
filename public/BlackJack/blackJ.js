@@ -15,6 +15,23 @@ const Dealer = BJgame['dealer'];
 
 const tink = new Audio('./static/sounds/tink.wav');
 
+// Toast Notification Function
+function showToast(message) {
+    const toastElement = document.querySelector('#toast');
+    toastElement.textContent = message;
+    toastElement.classList.remove('show');
+    
+    // Trigger animation
+    setTimeout(() => {
+        toastElement.classList.add('show');
+    }, 10);
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        toastElement.classList.remove('show');
+    }, 3000);
+}
+
 function drawCard(activeplayer) {
     const randomNumber = Math.floor(Math.random() * (BJgame['cards'].length));
     const currentCard = BJgame['cards'].splice(randomNumber, 1);
@@ -137,10 +154,10 @@ document.querySelector('#deal').addEventListener('click', BJdeal);
 function BJdeal(){
 
     if(You['score']=== 0){
-        alert('Please Hit Some Cards First!');
+        showToast('Please Hit Some Cards First!');
     }
     else if(Dealer['score']===0){
-        alert('Please Press Stand Key Before Deal...');
+        showToast('Please Press Stand Key Before Deal...');
     }
     else{
 
@@ -173,7 +190,7 @@ document.querySelector('#stand').addEventListener('click', BJstand)
 
 function BJstand(){
     if(You['score']===0){
-        alert('Please Hit Some Cards First!');
+        showToast('Please Hit Some Cards First!');
     }
     else{
         while(Dealer['score']<16){
