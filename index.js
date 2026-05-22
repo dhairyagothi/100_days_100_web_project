@@ -219,7 +219,7 @@ const PROJECT_DATA = [
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
 
 
-  ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
+  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
   
 
@@ -229,7 +229,8 @@ const PROJECT_DATA = [
   ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
   ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
   ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
-  ['Day 155', 'ReadMeCraft-GitHub profile README generator', './public/ReadMeCraft/index.html', 'html css javascript', 'intermediate'],
+  ['Day 156', 'ReadMeCraft-GitHub profile README generator', './public/ReadMeCraft/index.html', 'html css javascript', 'intermediate'],
+  ['Day 155', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
 ];
 const PROJECTS = PROJECT_DATA;
 

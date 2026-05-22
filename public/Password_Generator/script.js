@@ -16,7 +16,10 @@ const indicator = document.querySelector("[data-indicator]");
 const strengthText = document.querySelector("[data-strengthText]");
 const generateBtn = document.querySelector(".generateButton");
 const allCheckBox = document.querySelectorAll("input[type=checkbox]");
+const historyList = document.querySelector("[data-history-list]");
+const clearHistoryBtn = document.querySelector("[data-clear-history]");
 const symbols = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
+const PASSWORD_HISTORY_KEY = "passwordGeneratorHistory";
 
 
 //initially
@@ -25,6 +28,7 @@ let checkCount = 0;
 let hideTimeout;
 let countdownInterval;
 setIndicator("#ccc");
+renderPasswordHistory();
 
 let passwordLength = 10;
 handleSlider();
@@ -47,6 +51,68 @@ function setIndicator(color) {
     indicator.style.backgroundColor = color;
     indicator.style.boxShadow = `0px 0px 12px 1px ${color}`;
     if (lengthDisplay) lengthDisplay.style.color = color;
+}
+
+function loadPasswordHistory() {
+    try {
+        const storedHistory = localStorage.getItem(PASSWORD_HISTORY_KEY);
+        if (!storedHistory) {
+            return [];
+        }
+
+        const parsedHistory = JSON.parse(storedHistory);
+        if (!Array.isArray(parsedHistory)) {
+            return [];
+        }
+
+        return parsedHistory.filter((item) => typeof item === "string" && item.trim()).slice(0, 5);
+    } catch (error) {
+        return [];
+    }
+}
+
+function savePasswordHistory() {
+    try {
+        localStorage.setItem(PASSWORD_HISTORY_KEY, JSON.stringify(passwordHistory));
+    } catch (error) {
+        return;
+    }
+}
+
+function renderPasswordHistory() {
+    historyList.innerHTML = "";
+
+    if (passwordHistory.length === 0) {
+        const emptyItem = document.createElement("li");
+        emptyItem.className = "history-empty";
+        emptyItem.textContent = "No recent passwords yet";
+        historyList.appendChild(emptyItem);
+        return;
+    }
+
+    passwordHistory.forEach((savedPassword) => {
+        const historyItem = document.createElement("li");
+        historyItem.className = "history-item";
+        historyItem.textContent = savedPassword;
+        historyList.appendChild(historyItem);
+    });
+}
+
+function addPasswordToHistory(newPassword) {
+    passwordHistory = [newPassword, ...passwordHistory];
+
+    if (passwordHistory.length > 5) {
+        passwordHistory = passwordHistory.slice(0, 5);
+    }
+
+    savePasswordHistory();
+    renderPasswordHistory();
+}
+
+function clearPasswordHistory() {
+    passwordHistory = [];
+    savePasswordHistory();
+    renderPasswordHistory();
 }
 
 function getRndInteger(min, max) {
@@ -85,9 +151,9 @@ function calcStrength() {
       setIndicator("#0f0");
       strengthText.innerText = "Strong";
     } else if (
-      (hasLower || hasUpper) &&
-      (hasNum || hasSym) &&
-      passwordLength >= 6
+        (hasLower || hasUpper) &&
+        (hasNum || hasSym) &&
+        passwordLength >= 6
     ) {
       setIndicator("#ff0");
       strengthText.innerText = "Medium";
@@ -247,8 +313,6 @@ generateBtn.addEventListener('click', () => {
         handleSlider();
     }
 
-    // let's start the jouney to find new password
-    console.log("Starting the Journey");
     //remove old password
     password = "";
 
@@ -270,7 +334,6 @@ generateBtn.addEventListener('click', () => {
     for (let i = 0; i < funcArr.length; i++) {
         password += funcArr[i]();
     }
-    console.log("COmpulsory adddition done");
 
     //remaining adddition
     for (let i = 0; i < passwordLength - funcArr.length; i++) {
@@ -278,10 +341,8 @@ generateBtn.addEventListener('click', () => {
         console.log("randIndex" + randIndex);
         password += funcArr[randIndex]();
     }
-    console.log("Remaining adddition done");
     //shuffle the password
     password = shufflePassword(Array.from(password));
-    console.log("Shuffling done");
     //show in UI
     passwordDisplay.value = password;
     
