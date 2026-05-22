@@ -359,3 +359,13 @@ main.container {
     font-size: 0.85rem;
   }
 }
+/* FIX: Dropdown should appear above all sections */
+.dropdown-menu {
+  z-index: 2000 !important;
+}
+
+/* FIX: Navbar stacking issue */
+.navbar {
+  position: relative;
+  z-index: 1050;
+}
