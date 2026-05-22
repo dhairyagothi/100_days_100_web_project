@@ -216,10 +216,30 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   margin: 0 1rem;
 }
 
+<<<<<<< HEAD
 /* ── Hand Areas ─────────────────────────────────────────────── */
 .hand-area {
   padding: 1.5rem 1.25rem 1.25rem;
   min-height: 14rem;
+=======
+#stand.stand-disabled {
+    opacity: 1;
+    background-color: auto;
+    color: auto;
+}
+
+#stand.stand-disabled:hover {
+    background-color: #999999 !important;
+    color: #666666;
+    opacity: 0.5;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.row3 h3{
+    font-family: 'Teko', sans-serif;
+    font-size: 4rem;
+>>>>>>> 54b06064 (feat: Added the Discolouration effect on the 'Stand' button)
 }
 
 .hand-label {
