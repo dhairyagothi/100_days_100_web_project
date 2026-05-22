@@ -3,250 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Trip Advisor</title>
+    <title>Dynamic Background Image Slider</title>
     <link rel="stylesheet" href="slider.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <style>
-        body {
-            background-size: cover;
-            background-position: center;
-            transition: background-image 0.5s ease-in-out;
-            color: white;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 20px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .navbar h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-
-        
-        .navbar ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
-
-        .navbar ul li a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-            transition: color 0.3s;
-        }
-
-        .navbar ul li a:hover {
-            color: #00ff00;
-        }
-
-        .content {
-            text-align: center;
-            margin-top: 5%;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-        }
-
-        #placeSelector{
-    padding: 14px 22px;
-    font-size: 1rem;
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(0, 0, 0, 0.45);
-    color: #fff;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-    min-width: 240px;
-}
-
-#placeSelector:hover{
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-#placeSelector:focus{
-    border-color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12), 0 8px 24px rgba(0, 0, 0, 0.35);
-}
-
-#placeSelector option{
-    background: #111;
-    color: #fff;
-}
-
-.booking{
-    margin-top: 18px;
-    padding: 14px 26px;
-    border: none;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, 0.45);
-    color: #111;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    cursor: pointer;
-    font-size: 1rem;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
-    transition: all 0.3s ease;
-}
-
-.booking:hover{
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
-}
-
-.booking:active{
-    transform: translateY(0) scale(0.98);
-}
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        }
-
-        select {
-            padding: 10px;
-            font-size: 1em;
-            margin: 20px 0;
-        }
-
-        .booking {
-            background-color: rgba(0, 0, 0, 0.45);
-            color: white;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 2px solid white;
-            cursor: pointer;
-            font-size: 1em;
-            font-style: italic;
-            font-family: serif;
-        }
-
-        @media screen and (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .navbar ul {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .content {
-                margin-top: 10%;
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            p {
-                font-size: 1em;
-            }
-
-            .booking {
-                width: 80%;
-            }
-
-            
-        }
-    </style>
 </head>
 <body>
-<header>
-    <div class="navbar">
-        <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-style:italic;font-style:bold">TRIP ADVISOR</h1>
-        <ul>
-            <li><a href="#">HOME</a></li>
-            <li><a href="#">CONTACT US</a></li>
-            <li><a href="#">ABOUT US</a></li>
-            <li><a href="#">SERVICES</a></li>
-        </ul>
-    </div>
-</header>
 
-<div class="content">
-    <p id="placeDescription">Explore the beauty of glaciers and the breathtaking landscapes of Iceland.</p>
-    <h1 id="placeTitle">Iceland</h1>
-    
-    <select id="placeSelector">
-        <option value="Iceland">Iceland</option>
-        <option value="Switzerland">Switzerland</option>
-        <option value="Scotland">Scotland</option>
-        <option value="Ireland">Ireland</option>
-        <option value="Germany">Germany</option>
-    </select>
-    <br>
-    <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
-</div>
+    <header class="navbar">
+        <div class="navbar-content">
+            <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-weight: bold; font-style: italic;">
+                SliderView
+            </h1>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#collections">Collections</a></li>
+            </ul>
+        </div>
+    </header>
 
-<script>
-    const placeBackgrounds = {
-        "Iceland": "url('images/iceland.jpg')",
-        "Switzerland": "url('images/Jennifer.avif')",
-        "Scotland": "url('images/Daniel.jpeg')",
-        "Ireland": "url('images/kai.jpg')",
-        "Germany": "url('images/Hannes-Becker4.jpg')"
-    };
+    <section id="home" class="home-section">
+        <div class="slider-background" id="sliderBg"></div>
+        <div class="content" style="margin-top: 15vh;">
+            <h1 id="placeTitle">Loading Title...</h1>
+            <p id="placeDescription">Loading description text...</p>
+        </div>
 
-    const placeDescriptions = {
-        "Iceland": "Explore the beauty of glaciers and the breathtaking landscapes of Iceland.",
-        "Switzerland": "Experience the serene beauty of the Swiss Alps and picturesque villages.",
-        "Scotland": "Discover the rich history and stunning highlands of Scotland.",
-        "Ireland": "Immerse yourself in the lush green landscapes and vibrant culture of Ireland.",
-        "Germany": "Explore Germany's charming cities and stunning countryside."
-    };
+        <div class="content" style="flex-direction: row; gap: 20px; justify-content: center; margin-top: 20px;">
+            <button class="booking" id="prevBtn" style="cursor: pointer; max-width: 150px;">Previous</button>
+            <button class="booking" id="nextBtn" style="cursor: pointer; max-width: 150px;">Next</button>
+        </div>
+    </section>
 
-    const placeSelector = document.getElementById('placeSelector');
-    const bookingButton = document.getElementById('bookingButton');
-    const placeTitle = document.getElementById('placeTitle');
-    const placeDescription = document.getElementById('placeDescription');
-    const body = document.body;
+    <script>
+        // Data Array matching the folder's asset images paths
+        const slideData = [
+            {
+                image: "url('images/iceland.jpg')",
+                title: "Glaciers of Iceland",
+                description: "Explore the breathtaking frozen horizons and unique structural volcanic landscapes."
+            },
+            {
+                image: "url('images/Jennifer.avif')",
+                title: "The Swiss Alps",
+                description: "Experience the calming visuals of peak mountain ranges and classic valleys."
+            },
+            {
+                image: "url('images/Daniel.jpeg')",
+                title: "Highlands of Scotland",
+                description: "Discover deep valleys, historic horizons, and mist-covered castles."
+            },
+            {
+                image: "url('images/kai.jpg')",
+                title: "Emerald Ireland",
+                description: "Immerse your view across sweeping oceansides and beautiful fields of green."
+            },
+            {
+                image: "url('images/Hannes-Becker4.jpg')",
+                title: "Bavarian Woodlands",
+                description: "Journey into classic old-world architecture hidden deep within dense country forests."
+            }
+        ];
 
-    // Function to update the UI
-    function updatePlace(place) {
-        body.style.backgroundImage = placeBackgrounds[place];
-        placeTitle.textContent = place;
-        placeDescription.textContent = placeDescriptions[place];
-        bookingButton.textContent = `Book a Trip to ${place}`;
-    }
+        let currentIndex = 0;
 
-    // Event listener for place selection
-    placeSelector.addEventListener('change', function () {
-        const selectedPlace = placeSelector.value;
-        updatePlace(selectedPlace);
-    });
+        // DOM Element Selectors mapping exactly to slider.css
+        const placeTitle = document.getElementById('placeTitle');
+        const placeDescription = document.getElementById('placeDescription');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
 
-    
-    window.onload = function () {
-        const defaultPlace = "Iceland";
-        updatePlace(defaultPlace);
-        placeSelector.value = defaultPlace;
-    };
-</script>
+        // Core State Update Loop
+        function updateSlider(index) {
+            const currentSlide = slideData[index];
+            const sliderBg = document.getElementById('sliderBg');
+            sliderBg.style.backgroundImage = currentSlide.image;
+            placeTitle.textContent = currentSlide.title;
+            placeDescription.textContent = currentSlide.description;
+        }
+
+        // Navigation Bindings
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentIndex = (currentIndex + 1) % slideData.length;
+            updateSlider(currentIndex);
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentIndex = (currentIndex - 1 + slideData.length) % slideData.length;
+            updateSlider(currentIndex);
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                currentIndex = (currentIndex + 1) % slideData.length;
+                updateSlider(currentIndex);
+            } else if (e.key === 'ArrowLeft') {
+                currentIndex = (currentIndex - 1 + slideData.length) % slideData.length;
+                updateSlider(currentIndex);
+            }
+        });
+
+        // Touch/Swipe Navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        const homeSection = document.getElementById('home');
+        homeSection.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        homeSection.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swiped left - show next
+                    currentIndex = (currentIndex + 1) % slideData.length;
+                    updateSlider(currentIndex);
+                } else {
+                    // Swiped right - show previous
+                    currentIndex = (currentIndex - 1 + slideData.length) % slideData.length;
+                    updateSlider(currentIndex);
+                }
+            }
+        }
+
+        // Initialize display properties immediately on window load
+        window.onload = function () {
+            updateSlider(currentIndex);
+        };
+    </script>
+
+    <section id="gallery" class="section">
+        <h2>Gallery</h2>
+        <div class="image-grid">
+            <div class="gallery-item">
+                <img src="images/iceland.jpg" alt="Iceland Glaciers">
+                <div class="gallery-item-title">Glaciers of Iceland</div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/Jennifer.avif" alt="Swiss Alps">
+                <div class="gallery-item-title">The Swiss Alps</div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/Daniel.jpeg" alt="Scotland Highlands">
+                <div class="gallery-item-title">Highlands of Scotland</div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/kai.jpg" alt="Emerald Ireland">
+                <div class="gallery-item-title">Emerald Ireland</div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/Hannes-Becker4.jpg" alt="Bavarian Woodlands">
+                <div class="gallery-item-title">Bavarian Woodlands</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="collections" class="section">
+        <h2>Collections</h2>
+        <div class="image-grid">
+            <div class="gallery-item">
+                <img src="images/iceland.jpg" alt="Nordic Collection">
+                <div class="gallery-item-title">Nordic Landscapes</div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/Jennifer.avif" alt="Alpine Collection">
+                <div class="gallery-item-title">Alpine Peaks</div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/Daniel.jpeg" alt="Celtic Collection">
+                <div class="gallery-item-title">Celtic Highlands</div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/kai.jpg" alt="Island Collection">
+                <div class="gallery-item-title">Island Paradise</div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/Hannes-Becker4.jpg" alt="European Collection">
+                <div class="gallery-item-title">European Heritage</div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
