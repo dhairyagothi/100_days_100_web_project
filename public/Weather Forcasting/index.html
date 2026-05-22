@@ -247,22 +247,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
-    <script>
-        (function () {
-            var path = window.location.pathname;
-            if (/\/index\.html?(\?|#|$)/i.test(path)) {
-                path = path.replace(/index\.html?(\?|#|$)/i, '');
-            }
-            if (!path.endsWith('/')) {
-                path += '/';
-            }
 
-            var baseHref = new URL(path, window.location.href).href;
-            var script = document.createElement('script');
-            script.src = baseHref + 'script.js';
-            document.body.appendChild(script);
-        }());
-    </script>
+        <script src="script.js"></script>
 </body>
 
 </html>
