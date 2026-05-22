@@ -1829,3 +1829,22 @@ body.light-mode .brand-mark {
   background-color: #007bff;
   transform: scale(1.1);
 }
+/* Fix navbar/mobile extra left spacing issue */
+
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+.container,
+.navbar,
+.hero,
+section {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+@media screen and (max-width: 768px) {
+    body {
+        padding-left: 0;
+        margin-left: 0;
+    }
+}
