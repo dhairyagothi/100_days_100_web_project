@@ -7,6 +7,7 @@ const subStatus = document.getElementById('sub-status');
 // States: 'idle', 'listening', 'thinking', 'speaking'
 let currentState = 'idle';
 let stateTimeout = null;
+let fadeTimeout = null;
 
 const states = {
     idle: {
@@ -36,6 +37,10 @@ const states = {
 };
 
 function changeState(newState) {
+    if (fadeTimeout) {
+        clearTimeout(fadeTimeout);
+    }
+
     currentState = newState;
     const stateData = states[newState];
 
@@ -47,7 +52,7 @@ function changeState(newState) {
 
     // Update text with a fade effect
     statusText.style.opacity = '0';
-    setTimeout(() => {
+    fadeTimeout = setTimeout(() => {
         statusText.textContent = stateData.text;
         subStatus.textContent = stateData.sub;
         statusText.style.opacity = '1';
