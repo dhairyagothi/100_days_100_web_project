@@ -1,41 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Profile card</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="https://kit.fontawesome.com/a33776bbdd.js" crossorigin="anonymous"></script>
+    <title>Profile Card</title>
 </head>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="card-inner">
-                <div class="front">
-                    <h2>Full Name</h2>
-                    <p style="text-align: center;font-weight: 600;">Aspiring Front-End Developer, India</p>
-                    <button>Hover me</button>
-                </div>
-                <div class="back">
-                    <img src="Images/waving-hand.png" alt="Waving Hand">
-                    <h1 style="font-size:30px; font-weight: 1000 ;">Welcome to my profile!</h1>
-                    <p style="color:rgb(111, 111, 111);">
-                    <b>B.Tech CSE</b> student at <b>Lovely Professional University</b></p>
-                    <div class="row">
-                        <div class="col">
-                            <h2 style="margin-bottom: 5px; font-size:15px;">Let's connect!</h2>
-                            <div class="row" id="file">
-                                <a class="fllw" href="#"><i class="fa-brands fa-instagram"></i></a>
-                                <a class="fllw" href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                                <a class='fllw' href="#"><i class="fa-brands fa-github"></i></a>
-                                <a class='fllw' href="#"><i class="fa-brands fa-youtube"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="card">
+        <div class="container1">
+            <img src="logo/Adobe Express - file.png" alt="" class="image">
+        </div>
+        <div class="container2">
+            <h1 class="heading">Krishna Bhati</h1>
+            <p class="subhead">Ui/Ux Designer</p>
+            <p class="info">Hardworking and reliable UI/UXdesigner focused on going above and beyond to support teams
+                and serve customers. Currently undergoing a self-taught process to enable me offer top-notch abilities.
+                Motivated to continue to learn and grow as a product design professional.</p>
+            <div class="profile">
+                <a href="#"><img src="logo/facebook-logo.svg" class="logo"></a>
+                <a href="#"><img src="logo/linkedin-svgrepo-com (1).svg" alt="" class="logo"></a>
+                <a href="#"><img src="logo/github-142-svgrepo-com.svg" alt="" class="logo git"></a>
+                <a href="#"><img src="logo/twitter-svgrepo-com.svg" alt="" class="logo"></a>
+                <a href="#"><img src="logo/leetcode-svgrepo-com.svg" alt="" class="logo leet"></a>
+                <a href="#"><img src="logo/instagram-svgrepo-com.svg" alt="" class="logo"></a>
+                <a href="#"><img src="logo/night-mode-svgrepo-com.svg" class="logo darkmode"></a>
+                <a href="#"><img src="logo/sun-svgrepo-com.svg" class="logo lightmode"></a>
             </div>
+            <button class="btn">Buy me a coffee</button>
         </div>
     </div>
+    <script>
+        let btn = document.querySelector(".darkmode");
+        let lightbtn = document.querySelector(".lightmode");
+        let currmode = "light";
+        function changeMode() {
+            if (currmode == "light") {
+                currmode = "dark";
+                //    document.querySelector(".lightmode").style.display="block";
+                document.querySelector(".container1").style.backgroundColor = "grey";
+                document.querySelector(".container2").style.backgroundColor = "black";
+                document.querySelector(".image").style.backgroundColor = "grey";
+                if (window.matchMedia("(max-width:1098px)").matches) {
+                    document.querySelector(".image").style.background = "linear-gradient(#222,#000)";
+                }
+                document.querySelector(".heading").style.color = "white";
+                document.querySelector(".info").style.color = "white";
+                document.querySelector(".btn").style.color = "black";
+                document.querySelector(".git").style.filter = "invert(1)";
+                document.querySelector(".leet").style.filter = "invert(1)";
+                btn.style.display = "none";
+                lightbtn.style.display = "block";
+
+            } else {
+                currmode = "light";
+                lightbtn.style.display = "none";
+                btn.style.display = "block";
+                // document.querySelector(".lightmode").style.display="none";
+                document.querySelector(".container1").style.backgroundColor = "#f2d5ed";
+                document.querySelector(".container2").style.backgroundColor = "#f5e0f2";
+                document.querySelector(".image").style.backgroundColor = "#f2d5ed";
+                if (window.matchMedia("(max-width:1098px)").matches) {
+                    document.querySelector(".image").style.background = "linear-gradient(#9ad7ff 0%, #fecfef 99%, #fecfef 100%)";
+                }
+                document.querySelector(".heading").style.color = "black";
+                document.querySelector(".info").style.color = "black";
+                document.querySelector(".btn").style.color = "white";
+                document.querySelector(".git").style.filter = "invert(0)";
+                document.querySelector(".leet").style.filter = "invert(0)";
+
+
+            }
+        }
+        btn.addEventListener("click", changeMode);
+        lightbtn.addEventListener("click", changeMode);
+    </script>
 </body>
+
 </html>

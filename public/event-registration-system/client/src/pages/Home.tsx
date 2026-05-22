@@ -1,9 +1,14 @@
+import { useState } from "react";
 import { RegistrationForm } from "@/components/RegistrationForm";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Shield } from "lucide-react";
 
 export default function Home() {
+  const [locationQuery, setLocationQuery] = useState("pune");
+  const displayLocation = locationQuery.trim() || "pune";
+
   return (
     <div className="min-h-screen flex flex-col w-full bg-background font-sans">
 
@@ -34,20 +39,38 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-purple-950/80 via-purple-900/40 to-transparent mix-blend-multiply" />
             <div className="absolute inset-0 bg-zinc-950/50" />
           </div>
-          <div className="relative z-10 text-white mt-8">
-            <div className="inline-flex items-center rounded-full border border-purple-400/30 bg-purple-400/10 px-3 py-1 text-sm font-medium backdrop-blur-md mb-6">
+          <div className="relative z-10 text-white mt-8 flex flex-col gap-8">
+            <div className="inline-flex items-center rounded-full border border-purple-400/30 bg-purple-400/10 px-3 py-1 text-sm font-medium backdrop-blur-md">
               <span className="flex h-2 w-2 rounded-full bg-purple-400 mr-2"></span>
               Registrations Open
             </div>
-            <h1 className="font-display text-5xl xl:text-6xl font-bold tracking-tight mb-6 leading-tight">
-              Welcome to <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-violet-400">
-                Zenith 2026
-              </span>
-            </h1>
-            <p className="text-lg xl:text-xl text-white/75 max-w-md font-medium leading-relaxed">
-              Join students and professionals at the premier event. Secure your spot today.
-            </p>
+            <div className="space-y-6">
+              <h1 className="font-display text-5xl xl:text-6xl font-bold tracking-tight leading-tight max-w-2xl">
+                Welcome to <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-violet-400">
+                  Zenith 2026
+                </span>
+              </h1>
+              <p className="text-lg xl:text-xl text-white/75 max-w-xl font-medium leading-relaxed">
+                Join students and professionals at the premier event. Secure your spot today.
+              </p>
+            </div>
+            <div className="rounded-3xl border border-white/10 bg-white/10 p-5 shadow-2xl shadow-black/10 backdrop-blur-xl max-w-xl">
+              <label className="block text-xs uppercase tracking-[0.3em] text-white/60">
+                Search locations
+              </label>
+              <Input
+                type="text"
+                placeholder="pune"
+                value={locationQuery}
+                onChange={(event) => setLocationQuery(event.target.value)}
+                className="mt-3 bg-white/10 text-white placeholder:text-white/50 border-white/20 focus-visible:ring-white/40"
+                data-testid="input-location-search"
+              />
+              <p className="mt-3 text-sm text-white/80">
+                Showing results for <span className="font-semibold text-white">{displayLocation}</span>
+              </p>
+            </div>
           </div>
           <div className="relative z-10 text-sm flex justify-between items-center">
             <p className="text-white/40">© 2026 Zenith Event. All rights reserved.</p>

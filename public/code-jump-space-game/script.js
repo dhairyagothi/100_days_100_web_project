@@ -1,58 +1,64 @@
-//board
 let board;
 let boardWidth = 360;
 let boardHeight = 576;
 let context;
 
-//doodler
-let doodlerWidth = 46;
-let doodlerHeight = 46;
-let doodlerX = boardWidth/2 - doodlerWidth/2;
-let doodlerY = boardHeight*7/8 - doodlerHeight;
+let cameraY = 0;
+
+// images
+let playImg = new Image();
+let restartImg = new Image();
+let pauseImg = new Image();
+let resumeImg = new Image();
+
 let doodlerRightImg;
 let doodlerLeftImg;
+let platformImg;
+
+// game states
+let gameStarted = false;
+let gameOver = false;
+let gamePaused = false;
+
+// doodler
+let doodlerWidth = 46;
+let doodlerHeight = 46;
+
+let doodlerX = boardWidth / 2 - doodlerWidth / 2;
+let doodlerY = boardHeight * 7 / 8 - doodlerHeight;
 
 let doodler = {
-    img : null,
-    x : doodlerX,
-    y : doodlerY,
-    width : doodlerWidth,
-    height : doodlerHeight
-}
+    img: null,
+    x: doodlerX,
+    y: doodlerY,
+    width: doodlerWidth,
+    height: doodlerHeight
+};
 
-//physics
-let velocityX = 0; 
-let velocityY = 0; //doodler jump speed
-let initialVelocityY = -8; //starting velocity Y
-let gravity = 0.4;
+// physics
+let velocityX = 0;
+let velocityY = 0;
+let initialVelocityY = -14;
+let gravity = 0.25;
+let maxVelocityX = 4;
 
-//platforms
+// platforms
 let platformArray = [];
 let platformWidth = 60;
 let platformHeight = 18;
-let platformImg;
 
+// score
 let score = 0;
-let maxScore = 0;
-let gameOver = false;
 
-window.onload = function() {
+window.onload = function () {
     board = document.getElementById("board");
-    board.height = boardHeight;
     board.width = boardWidth;
-    context = board.getContext("2d"); //used for drawing on the board
+    board.height = boardHeight;
+    context = board.getContext("2d");
 
-    //draw doodler
-    // context.fillStyle = "green";
-    // context.fillRect(doodler.x, doodler.y, doodler.width, doodler.height);
-
-    //load images
+    // images
     doodlerRightImg = new Image();
     doodlerRightImg.src = "./doodler-right.png";
-    doodler.img = doodlerRightImg;
-    doodlerRightImg.onload = function() {
-        context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
-    }
 
     doodlerLeftImg = new Image();
     doodlerLeftImg.src = "./doodler-left.png";
@@ -60,158 +66,283 @@ window.onload = function() {
     platformImg = new Image();
     platformImg.src = "./platform.png";
 
-    velocityY = initialVelocityY;
-    placePlatforms();
-    requestAnimationFrame(update);
-    document.addEventListener("keydown", moveDoodler);
-}
+    playImg.src = "./play.jpg";
+    restartImg.src = "./restart.jpg";
+    pauseImg.src = "./pause.jpg";
+    resumeImg.src = "./resume.jpg";
 
+    placePlatforms();
+
+    document.addEventListener("keydown", moveDoodler);
+    document.addEventListener("click", handleClick);
+
+    requestAnimationFrame(update);
+};
+
+// ================= UPDATE LOOP =================
 function update() {
     requestAnimationFrame(update);
-    if (gameOver) {
+    context.clearRect(0, 0, boardWidth, boardHeight);
+
+    // START SCREEN
+    if (!gameStarted) {
+        drawStartScreen();
         return;
     }
-    context.clearRect(0, 0, board.width, board.height);
 
-    //doodler
+    // PAUSE SCREEN
+    if (gamePaused) {
+        drawPauseScreen();
+        return;
+    }
+
+    // GAME OVER SCREEN
+    if (gameOver) {
+        drawGameOverScreen();
+        return;
+    }
+
+    // ================= PHYSICS =================
     doodler.x += velocityX;
-    if (doodler.x > boardWidth) {
-        doodler.x = 0;
-    }
-    else if (doodler.x + doodler.width < 0) {
-        doodler.x = boardWidth;
-    }
+    velocityX *= 0.9;
+
+    if (doodler.x > boardWidth) doodler.x = 0;
+    else if (doodler.x + doodler.width < 0) doodler.x = boardWidth;
 
     velocityY += gravity;
     doodler.y += velocityY;
-    if (doodler.y > board.height) {
+
+    // CAMERA FOLLOW
+    let targetCameraY = doodler.y - boardHeight / 2;
+    cameraY += (targetCameraY - cameraY) * 0.08;
+
+    // GAME OVER CHECK (SAFE)
+    if (doodler.y - cameraY > boardHeight) {
         gameOver = true;
     }
-    context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
 
-    //platforms
-    for (let i = 0; i < platformArray.length; i++) {
-        let platform = platformArray[i];
-        if (velocityY < 0 && doodler.y < boardHeight*3/4) {
-            platform.y -= initialVelocityY; //slide platform down
+    // DRAW DOODLER
+    context.drawImage(
+        doodler.img,
+        doodler.x,
+        doodler.y - cameraY,
+        doodler.width,
+        doodler.height
+    );
+
+    // PLATFORMS + COLLISION
+    for (let platform of platformArray) {
+
+        if (
+            velocityY >= 0 &&
+            doodler.y + doodler.height >= platform.y &&
+            doodler.y + doodler.height <= platform.y + platformHeight &&
+            doodler.x + doodler.width > platform.x &&
+            doodler.x < platform.x + platform.width
+        ) {
+            velocityY = initialVelocityY;
         }
-        if (detectCollision(doodler, platform) && velocityY >= 0) {
-            velocityY = initialVelocityY; //jump
-        }
-        context.drawImage(platform.img, platform.x, platform.y, platform.width, platform.height);
+
+        context.drawImage(
+            platform.img,
+            platform.x,
+            platform.y - cameraY,
+            platform.width,
+            platform.height
+        );
     }
 
-    // clear platforms and add new platform
-    while (platformArray.length > 0 && platformArray[0].y >= boardHeight) {
-        platformArray.shift(); //removes first element from the array
-        newPlatform(); //replace with new platform on top
+    while (
+        platformArray.length > 0 &&
+        platformArray[0].y - cameraY > boardHeight + 100
+    ) {
+        platformArray.shift();
+        newPlatform();
     }
 
-    //score
-    updateScore();
+    // SCORE
+    score = Math.max(score, Math.floor(-doodler.y));
+
     context.fillStyle = "black";
-    context.font = "16px sans-serif";
-    context.fillText(score, 5, 20);
+    context.font = "16px Arial";
+    context.textAlign = "left"; // Added to fix alignment issues caused by screen menus
+    context.fillText("Score: " + score, 10, 20);
 
-    if (gameOver) {
-        context.fillText("Game Over: Press 'Space' to Restart", boardWidth/7, boardHeight*7/8);
-    }
+    // pause icon
+    context.drawImage(pauseImg, boardWidth - 40, 10, 30, 30);
 }
 
+// ================= INPUT =================
 function moveDoodler(e) {
-    if (e.code == "ArrowRight" || e.code == "KeyD") { //move right
-        velocityX = 4;
+    if (!gameStarted || gameOver || gamePaused) return;
+
+    if (e.code == "ArrowRight" || e.code == "KeyD") {
+        velocityX = maxVelocityX;
         doodler.img = doodlerRightImg;
     }
-    else if (e.code == "ArrowLeft" || e.code == "KeyA") { //move left
-        velocityX = -4;
+    else if (e.code == "ArrowLeft" || e.code == "KeyA") {
+        velocityX = -maxVelocityX;
         doodler.img = doodlerLeftImg;
-    }
-    else if (e.code == "Space" && gameOver) {
-        //reset
-        doodler = {
-            img : doodlerRightImg,
-            x : doodlerX,
-            y : doodlerY,
-            width : doodlerWidth,
-            height : doodlerHeight
-        }
-
-        velocityX = 0;
-        velocityY = initialVelocityY;
-        score = 0;
-        maxScore = 0;
-        gameOver = false;
-        placePlatforms();
     }
 }
 
+// ================= CLICK =================
+function handleClick(e) {
+    let rect = board.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+
+    let bx = boardWidth / 2 - 60;
+
+    // START
+    if (!gameStarted) {
+        if (
+            x > bx &&
+            x < bx + 120 &&
+            y > boardHeight / 2 &&
+            y < boardHeight / 2 + 50
+        ) {
+            startGame();
+        }
+        return;
+    }
+
+    // GAME OVER → restart only
+    if (gameOver) {
+        if (
+            x > bx &&
+            x < bx + 120 &&
+            y > boardHeight / 2 + 20 &&
+            y < boardHeight / 2 + 70
+        ) {
+            resetGame();
+        }
+        return;
+    }
+
+    // RESUME BUTTON CLICK (CENTER BUTTON FOR PAUSE SCREEN)
+    if (gamePaused) {
+        let rx = boardWidth / 2 - 60;
+        let ry = boardHeight / 2;
+
+        if (
+            x > rx &&
+            x < rx + 120 &&
+            y > ry &&
+            y < ry + 50
+        ) {
+            gamePaused = false;
+            return; // Exit here so it doesn't immediately check the pause icon toggle below
+        }
+    }
+
+    // PAUSE / UNPAUSE VIA TOP ICON
+    if (
+        x > boardWidth - 40 &&
+        x < boardWidth - 10 &&
+        y > 10 &&
+        y < 40
+    ) {
+        gamePaused = !gamePaused;
+        return;
+    }
+}
+
+// ================= START GAME =================
+function startGame() {
+    gameStarted = true;
+    gameOver = false;
+    gamePaused = false;
+
+    velocityX = 0;
+    velocityY = initialVelocityY;
+    cameraY = 0;
+
+    // FIX: Set fallback image so canvas context.drawImage does not throw a null exception
+    doodler.img = doodlerRightImg;
+    doodler.x = boardWidth / 2 - doodlerWidth / 2;
+    doodler.y = boardHeight * 7 / 8 - doodlerHeight;
+}
+
+// ================= RESET GAME =================
+function resetGame() {
+    doodler = {
+        img: doodlerRightImg,
+        x: boardWidth / 2 - doodlerWidth / 2,
+        y: boardHeight * 7 / 8 - doodlerHeight,
+        width: doodlerWidth,
+        height: doodlerHeight
+    };
+
+    velocityX = 0;
+    velocityY = initialVelocityY;
+    cameraY = 0;
+    score = 0;
+    gameOver = false;
+
+    placePlatforms();
+}
+
+// ================= SCREENS =================
+function drawStartScreen() {
+    context.drawImage(playImg, boardWidth / 2 - 60, boardHeight / 2, 120, 50);
+}
+
+function drawGameOverScreen() {
+    context.fillStyle = "rgba(0,0,0,0.5)";
+    context.fillRect(0, 0, boardWidth, boardHeight);
+
+    context.fillStyle = "white";
+    context.textAlign = "center";
+
+    context.fillText("GAME OVER", boardWidth / 2, boardHeight / 2 - 40);
+    context.fillText("Score: " + score, boardWidth / 2, boardHeight / 2 - 10);
+
+    context.drawImage(restartImg, boardWidth / 2 - 60, boardHeight / 2 + 20, 120, 50);
+}
+
+function drawPauseScreen() {
+    context.fillStyle = "rgba(0,0,0,0.4)";
+    context.fillRect(0, 0, boardWidth, boardHeight);
+
+    context.fillStyle = "white";
+    context.textAlign = "center";
+
+    context.fillText("PAUSED", boardWidth / 2, boardHeight / 2 - 40);
+
+    // resume button
+    context.drawImage(resumeImg, boardWidth / 2 - 60, boardHeight / 2, 120, 50);
+}
+
+// ================= PLATFORM =================
 function placePlatforms() {
     platformArray = [];
 
-    //starting platforms
-    let platform = {
-        img : platformImg,
-        x : boardWidth/2,
-        y : boardHeight - 50,
-        width : platformWidth,
-        height : platformHeight
-    }
+    platformArray.push({
+        img: platformImg,
+        x: boardWidth / 2 - platformWidth / 2, // Centered perfectly under starting position
+        y: boardHeight - 50,
+        width: platformWidth,
+        height: platformHeight
+    });
 
-    platformArray.push(platform);
-
-    // platform = {
-    //     img : platformImg,
-    //     x : boardWidth/2,
-    //     y : boardHeight - 150,
-    //     width : platformWidth,
-    //     height : platformHeight
-    // }
-    // platformArray.push(platform);
-
-    for (let i = 0; i < 6; i++) {
-        let randomX = Math.floor(Math.random() * boardWidth*3/4); //(0-1) * boardWidth*3/4
-        let platform = {
-            img : platformImg,
-            x : randomX,
-            y : boardHeight - 75*i - 150,
-            width : platformWidth,
-            height : platformHeight
-        }
-    
-        platformArray.push(platform);
+    for (let i = 0; i < 7; i++) {
+        platformArray.push({
+            img: platformImg,
+            x: Math.random() * (boardWidth - platformWidth), // Keeps platforms inside game borders
+            y: boardHeight - 100 * i - 150,
+            width: platformWidth,
+            height: platformHeight
+        });
     }
 }
 
 function newPlatform() {
-    let randomX = Math.floor(Math.random() * boardWidth*3/4); //(0-1) * boardWidth*3/4
-    let platform = {
-        img : platformImg,
-        x : randomX,
-        y : -platformHeight,
-        width : platformWidth,
-        height : platformHeight
-    }
-
-    platformArray.push(platform);
-}
-
-function detectCollision(a, b) {
-    return a.x < b.x + b.width &&   //a's top left corner doesn't reach b's top right corner
-           a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
-           a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
-           a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
-}
-
-function updateScore() {
-    let points = Math.floor(50*Math.random()); //(0-1) *50 --> (0-50)
-    if (velocityY < 0) { //negative going up
-        maxScore += points;
-        if (score < maxScore) {
-            score = maxScore;
-        }
-    }
-    else if (velocityY >= 0) {
-        maxScore -= points;
-    }
+    platformArray.push({
+        img: platformImg,
+        x: Math.random() * (boardWidth - platformWidth),
+        y: cameraY - 50,
+        width: platformWidth,
+        height: platformHeight
+    });
 }

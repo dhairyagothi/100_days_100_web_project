@@ -3,66 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedConsult</title>
+    <title>MedConsult Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
+
 <body>
-    <header>
-        <br>
-        <br>
-        <h1>MedConsult</h1>
-        <p>Connecting Local Doctors with Specialists</p>
-    </header>
-    <main>
-        <section id="consultation-form">
-            <h2 >Request a Consultation</h2>
-            <form id="requestForm">
-                <label for="doctorName">Doctor's Name:</label>
-                <input type="text" id="doctorName" name="doctorName" required placeholder="Doctor's Name">
 
-                <label for="patientCondition">Patient's Condition:</label>
-                <textarea id="patientCondition" name="patientCondition"  placeholder="Condition" required></textarea>
+<header class="hero">
+    <h1>🏥 MedConsult Dashboard</h1>
+    <p>Connecting Local Doctors with Specialists</p>
+</header>
 
-                <label for="specialistType">Specialist Needed:</label>
-                <input type="text" id="specialistSearch" placeholder="Search Specialist...">
-                <select id="specialistType" name="specialistType" required></select>
+<main class="dashboard">
 
-                <button type="submit">Submit</button>
-            </form>
-        </section>
-        <section id="consultation-status">
-            <h2>Consultation Status</h2>
-            <div id="statusMessage"></div>
-            <div id="loading" style="display:none;">Loading...</div>
-        </section>
-        <section id="specialist-response" style="display:none;">
-            <h2>Provide Your Suggestion</h2>
-            <form id="responseForm">
-                <label for="consultationId">Consultation ID:</label>
-                <input type="text" id="consultationId" name="consultationId" required>
+    <section class="card">
+        <h2>📋 Request Consultation</h2>
 
-                <label for="suggestion">Your Suggestion:</label>
-                <textarea id="suggestion" name="suggestion" required></textarea>
+        <form id="requestForm">
 
-                <button type="submit">Submit Suggestion</button>
-            </form>
-        </section>
-        <section id="consultation-history">
-            <h2>Consultation History</h2>
-            <ul id="historyList"></ul>
-        </section>
-        <section id="feedback">
-            
-            <!-- <form id="feedbackForm">
-                <label for="feedbackMessage">Your Feedback:</label>
-                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
-                <button type="submit">Submit Feedback</button>
-            </form> -->
-            <a href="feedback.html" class="feed" ><button>Give Feedback</button></a>
-        </section>
-    </main>
-    <script src="script.js"></script>
+            <label>Doctor Name</label>
+            <input type="text" id="doctorName" required>
+
+            <label>Patient Condition</label>
+            <textarea id="patientCondition" required></textarea>
+
+            <label>Specialist Needed</label>
+
+            <input type="text" id="specialistSearch"
+                   placeholder="Search Specialist">
+
+            <select id="specialistType"></select>
+
+            <button type="submit">Submit Consultation</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>📊 Health Monitoring</h2>
+
+        <div class="stats-grid">
+
+            <div class="stat-box">
+                <h3>❤️ Heart Rate</h3>
+                <p id="heartRate">78 BPM</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🩸 Blood Pressure</h3>
+                <p>120 / 80</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🌡️ Temperature</h3>
+                <p>98.4°F</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🫁 Oxygen</h3>
+                <p>98%</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>💊 Safe Medicine Recommendations</h2>
+
+        <select id="symptomSelect">
+            <option value="">Select Symptom</option>
+            <option value="cold">Cold</option>
+            <option value="headache">Headache</option>
+            <option value="fever">Fever</option>
+            <option value="fatigue">Fatigue</option>
+        </select>
+
+        <button onclick="showRecommendation()">
+            Get Recommendation
+        </button>
+
+        <div id="recommendationBox"></div>
+
+        <p class="disclaimer">
+            ⚠️ Informational only. Consult a medical professional for diagnosis.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>🕒 Consultation History</h2>
+
+        <ul id="historyList"></ul>
+    </section>
+
+    <section class="card">
+        <h2>⭐ Feedback</h2>
+
+        <a href="feedback.html">
+            <button>Give Feedback</button>
+        </a>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
 </body>
 </html>
-<!-- 🧘🏼‍♀️🧘🏼‍♀️ 👨🏼‍⚕️👨🏼‍⚕️ -->

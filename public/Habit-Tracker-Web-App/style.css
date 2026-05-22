@@ -6,19 +6,25 @@
 }
 
 body {
-  background: #121212;
-  color: white;
+  background: #f4f7fb;
+  color: #222;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
   padding: 40px;
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
 }
 
 .container {
   width: 100%;
   max-width: 500px;
-  background: #1f1f1f;
+  background: white;
   padding: 20px;
   border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 h1 {
@@ -34,8 +40,12 @@ h1 {
 input {
   flex: 1;
   padding: 10px;
-  border: none;
   border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  background: white;
+  color: black;
+  transition: 0.3s ease;
 }
 
 button {
@@ -45,6 +55,7 @@ button {
   color: white;
   border-radius: 5px;
   cursor: pointer;
+  transition: 0.3s ease;
 }
 
 button:hover {
@@ -60,13 +71,14 @@ button:hover {
 }
 
 .habit-item {
-  background: #2c2c2c;
+  background: #f1f1f1;
   padding: 12px;
   margin-bottom: 10px;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: 0.3s ease;
 }
 
 .actions {
@@ -78,8 +90,16 @@ button:hover {
   background: #2962ff;
 }
 
+.complete-btn:hover {
+  background: #448aff;
+}
+
 .delete-btn {
   background: #d50000;
+}
+
+.delete-btn:hover {
+  background: #ff1744;
 }
 
 .completed {
@@ -87,47 +107,50 @@ button:hover {
   opacity: 0.7;
 }
 
-@media (max-width: 500px) {
-  .input-section {
-    flex-direction: column;
-  }
-}
 /* THEME TOGGLE BUTTON */
+
+.tooltip-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
 
 #theme-toggle {
   padding: 12px 18px;
-  margin: 20px;
-  border: none;
   border-radius: 12px;
-  cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
-  transition: 0.3s ease;
 }
 
-/* LIGHT MODE (DEFAULT) */
+/* TOOLTIP */
 
-body {
-  background: #f4f7fb;
-  color: #222;
-  transition: all 0.3s ease;
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: max-content;
+  background: #222;
+  color: #fff;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 6px;
+  position: absolute;
+  bottom: -42px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  z-index: 10;
 }
 
-.container {
-  background: white;
-  color: #222;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
-li {
+body.dark-mode .tooltip-text {
   background: #f1f1f1;
-  color: #222;
-}
-
-input {
-  background: white;
-  color: black;
-  border: 1px solid #ccc;
+  color: #111;
 }
 
 /* DARK MODE */
@@ -143,7 +166,7 @@ body.dark-mode .container {
   box-shadow: none;
 }
 
-body.dark-mode li {
+body.dark-mode .habit-item {
   background: #2a2a2a;
   color: white;
 }
@@ -154,6 +177,216 @@ body.dark-mode input {
   border: 1px solid #555;
 }
 
-body.dark-mode button {
+body.dark-mode input::placeholder {
+  color: #ccc;
+}
+
+body.dark-mode #theme-toggle {
+  background: #444;
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 20px;
+  }
+
+  .input-section {
+    flex-direction: column;
+  }
+
+  .tooltip-container {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  #theme-toggle {
+    width: 100%;
+  }
+}
+
+/* ACHIEVEMENTS & MILESTONES styling */
+
+.card-section {
+  margin-top: 25px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 20px;
+  transition: border-color 0.3s ease;
+}
+
+body.dark-mode .card-section {
+  border-top: 1px solid #3a3a3a;
+}
+
+.card-section h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.achievements-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.achievement-badge {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #fdfdfd;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid #eaeaea;
+}
+
+body.dark-mode .achievement-badge {
+  background: #252525;
+  border-color: #333333;
+}
+
+#badge-3 {
+  border-left: 4px solid #cd7f32;
+}
+
+#badge-7 {
+  border-left: 4px solid #adb5bd;
+}
+
+#badge-30 {
+  border-left: 4px solid #ffd700;
+}
+
+.achievement-badge.locked {
+  opacity: 0.55;
+}
+
+.achievement-badge.unlocked {
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.15);
+}
+
+body.dark-mode .achievement-badge.unlocked {
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
+}
+
+.badge-icon {
+  font-size: 26px;
+}
+
+.badge-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.badge-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.badge-desc {
+  font-size: 11px;
+  color: #666666;
+}
+
+body.dark-mode .badge-desc {
+  color: #aaaaaa;
+}
+
+/* HABIT LIST STREAK BADGE */
+
+.habit-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.streak-badge {
+  font-size: 12px;
+  color: #ff9800;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* MILESTONE MODAL styling */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-card {
+  transform: translateY(0);
+}
+
+body.dark-mode .modal-card {
+  background: #1e1e1e;
   color: white;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888888;
+}
+
+.modal-close:hover {
+  color: #ff1744;
+}
+
+.modal-badge-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+  animation: bounce 0.8s infinite alternate;
+  display: inline-block;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-10px);
+  }
+}
+
+#milestone-btn {
+  margin-top: 20px;
+  width: 100%;
 }
