@@ -1,45 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analog Clock</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="index.js"></script>
+    <meta name="description" content="A beautiful analog clock with an interactive countdown timer featuring pause, resume, and restart controls.">
+    <title>Analog Clock &amp; Countdown Timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
-    <div id="clockContainer">
-        <div id="hour"></div>
-        <div id="minute"></div>
-        <div id="second"></div>
-    </div>
+    <!-- Theme Toggle -->
+    <button id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark mode">
+        <span id="themeIcon">☀️</span>
+    </button>
 
-    <div id="timerContainer">
-        <div id="timeInput">
-            <input type="number" id="hours" placeholder="HH" min="0" max="23" />
-            <input type="number" id="minutes" placeholder="MM" min="0" max="59" />
-            <input type="number" id="seconds" placeholder="SS" min="0" max="59" />
-        </div>
-        <button onclick="startCountdown()">Start Countdown</button>
-        <div id="countdownDisplay">00:00:00</div>
-        <div id="timerControls">
-            <button id="pausebtn" onclick="pauseCountdown()">Pause</button>
-            <button id="restartbtn" onclick="restartCountdown()">Restart</button>
+    <main id="appContainer">
 
-        </div>
+        <!-- ── LEFT: Analog Clock Panel ── -->
+        <section id="clockPanel" aria-label="Analog Clock">
+            <h1 id="clockTitle">Analog Clock</h1>
 
-        <div id="timerUpMsg"  style="display: none;">
-            <p><b>Time's Up!</b></p>
-        </div>
+            <div id="clockWrapper">
+                <!-- Decorative tick marks drawn via CSS -->
+                <div id="tickMarks">
+                    <span class="tick tick-major" style="--i:0"></span>
+                    <span class="tick tick-minor" style="--i:1"></span>
+                    <span class="tick tick-minor" style="--i:2"></span>
+                    <span class="tick tick-major" style="--i:3"></span>
+                    <span class="tick tick-minor" style="--i:4"></span>
+                    <span class="tick tick-minor" style="--i:5"></span>
+                    <span class="tick tick-major" style="--i:6"></span>
+                    <span class="tick tick-minor" style="--i:7"></span>
+                    <span class="tick tick-minor" style="--i:8"></span>
+                    <span class="tick tick-major" style="--i:9"></span>
+                    <span class="tick tick-minor" style="--i:10"></span>
+                    <span class="tick tick-minor" style="--i:11"></span>
+                </div>
+
+                <div id="clockContainer">
+                    <div id="hour"></div>
+                    <div id="minute"></div>
+                    <div id="second"></div>
+                    <div id="centerDot"></div>
+                </div>
+            </div>
+
+            <!-- Live digital time display -->
+            <div id="digitalTime" aria-live="polite">00:00:00</div>
+            <div id="digitalDate"></div>
+        </section>
+
+        <!-- ── RIGHT: Countdown Timer Panel ── -->
+        <section id="timerPanel" aria-label="Countdown Timer">
+            <h2 id="timerTitle">Countdown Timer</h2>
+
+            <!-- SVG progress ring -->
+            <div id="progressRingWrapper" aria-hidden="true">
+                <svg id="progressRing" viewBox="0 0 200 200">
+                    <circle class="ring-track" cx="100" cy="100" r="88" />
+                    <circle id="ringFill" class="ring-fill" cx="100" cy="100" r="88" />
+                </svg>
+                <div id="countdownDisplay" aria-live="polite" aria-atomic="true">00:00:00</div>
+                <div id="timerStatusLabel"></div>
+            </div>
+
+            <!-- Input row -->
+            <div id="timeInput">
+                <label class="time-input-group">
+                    <span class="time-label">HH</span>
+                    <input type="number" id="hours" placeholder="0" min="0" max="23" maxlength="2" aria-label="Hours" />
+                </label>
+                <span class="colon-sep">:</span>
+                <label class="time-input-group">
+                    <span class="time-label">MM</span>
+                    <input type="number" id="minutes" placeholder="0" min="0" max="59" maxlength="2" aria-label="Minutes" />
+                </label>
+                <span class="colon-sep">:</span>
+                <label class="time-input-group">
+                    <span class="time-label">SS</span>
+                    <input type="number" id="seconds" placeholder="0" min="0" max="59" maxlength="2" aria-label="Seconds" />
+                </label>
+            </div>
+
+            <!-- Primary action -->
+            <button id="startBtn" class="btn btn-primary" onclick="startCountdown()">
+                <span class="btn-icon">▶</span> Start
+            </button>
+
+            <!-- Secondary controls -->
+            <div id="timerControls">
+                <button id="pausebtn" class="btn btn-secondary" onclick="pauseCountdown()">
+                    <span class="btn-icon">⏸</span> Pause
+                </button>
+                <button id="restartbtn" class="btn btn-ghost" onclick="restartCountdown()">
+                    <span class="btn-icon">↺</span> Restart
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast notification (replaces timerUpMsg) -->
+    <div id="toast" role="alert" aria-live="assertive">
+        <span id="toastIcon">🔔</span>
+        <span id="toastText">Time's Up!</span>
     </div>
 
     <!-- Audio Element -->
-    <audio id="timerSound" src="timer.mp3"></audio>
+    <audio id="timerSound" src="./timer.mp3" preload="auto"></audio>
 
-    
+    <script src="./index.js" defer></script>
 </body>
 
 </html>

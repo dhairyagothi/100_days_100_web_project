@@ -14,7 +14,21 @@ body {
   background: linear-gradient(#41ade3, #11568f, #0d6e9e, #00e3ef);
 }
 
-
+.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.instructions{
+ color: black;
+ border: 1px solid black;
+ background-color: rgba(255, 255, 255, .75);
+ padding: 20px;
+ border-radius: 20px;
+}
+.instructions li{
+  font-size: x-large;
+}
 .calculator-grid {
   display: grid;
   justify-content: center;
@@ -22,6 +36,7 @@ body {
   min-height: 100vh;
   grid-template-columns: repeat(4, 100px);
   grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+  margin-right: 100px;
 }
 
 

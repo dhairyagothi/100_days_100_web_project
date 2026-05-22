@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 :root {
   --theme-card-bg: rgba(232, 221, 227, 1); /* default: theme 1 */
   --theme-text: #1a1a2e;
@@ -48,6 +47,12 @@ body {
   --bg-grad: linear-gradient(135deg, #1a0533 0%, #3d1053 40%, #7b2d8b 100%);
   --accent: #f5c842;
   --accent2: #ff6b9d;
+  --card-bg: rgba(255,255,255,0.07);
+  --card-border: rgba(255,255,255,0.15);
+  --card-hover: rgba(255,255,255,0.12);
+  --text: rgb(255,126,126);
+  --text-muted: rgba(240,232,255,0.55);
+  --nav-bg: rgba(10,5,20,0.7);
   --card-bg: rgba(255, 255, 255, 0.07);
   --card-border: rgba(255, 255, 255, 0.15);
   --card-hover: rgba(255, 255, 255, 0.12);
@@ -80,6 +85,9 @@ body.theme-midnight {
   --bg-grad: linear-gradient(135deg, #000000 0%, #0d0d1a 50%, #1a1a2e 100%);
   --accent: #a855f7;
   --accent2: #06b6d4;
+  --text: #be9e9e;
+  --text-muted: rgba(226,232,255,0.5);
+  --nav-bg: rgba(0,0,0,0.8);
   --text: #e2e8ff;
   --text-muted: rgba(226, 232, 255, 0.5);
   --nav-bg: rgba(0, 0, 0, 0.8);
@@ -141,7 +149,7 @@ body {
 }
 
 .nav-left a {
-  color: white;
+  color: rgb(255, 126, 126);
   text-decoration: none;
   padding: 8px 18px;
   border-radius: var(--radius-btn);
@@ -395,11 +403,8 @@ body {
 #savepdf:hover {
   background-color: #0f3d1c;
   transform: translateY(-2px);
-<<<<<<< HEAD
   box-shadow: 0 6px 16px rgba(0,0,0,0.35);
-=======
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
->>>>>>> upstream/main
   transition: all 0.2s;
 }
 
@@ -566,7 +571,6 @@ main {
   box-shadow: 0 6px 20px rgba(245, 200, 66, 0.4);
   filter: brightness(1.1);
 }
-<<<<<<< HEAD
 .btn-add:active { transform: translateY(0); }
 
 #notes-container {
@@ -833,12 +837,10 @@ main {
 .theme5 { background-color: #b92b27; color: white; }
 
 
-=======
 .btn-add:active {
   transform: translateY(0);
 }
 
->>>>>>> upstream/main
 .progress-bar {
   flex: 1;
   height: 6px;

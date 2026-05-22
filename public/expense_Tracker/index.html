@@ -5,146 +5,181 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <style>
+        /* Forces equal vertical alignment matching on the cards and their contents */
+        @media (min-width: 992px) {
+            .main-layout {
+                display: flex !important;
+                align-items: stretch !important; /* Forces uniform vertical card stretching */
+                gap: 24px; 
+            }
+            .content-card.form-section {
+                flex: 0 0 420px !important;     /* Increased from 350px for a bit more room */
+                max-width: 450px !important;    /* Increased from 380px */
+                margin: 0 !important;
+                height: auto !important;         /* Cancels out fit-content block from stylesheet */
+                display: flex !important;        
+                flex-direction: column !important;
+            }
+            .content-card.summary-section {
+                flex: 1 !important;             /* Let the summary panel stretch horizontally */
+                margin: 0 !important;
+                height: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            
+            /* Structural alignment mechanics to flush card bottoms identically */
+            #transactionForm {
+                display: flex !important;
+                flex-direction: column !important;
+                flex-grow: 1 !important;         /* Stretches form internally to fill card bottom space */
+            }
+            /* Pushes the primary action button exactly to the matching bottom floor */
+            #transactionForm .btn-primary {
+                margin-top: auto !important;     /* Locks button flush against the baseline */
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="header">
-        <h1>Expense Tracker</h1>
-    </header>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Left Dashboard Panel -->
-        <aside class="dashboard">
-            <div class="dashboard-content">
-                <!-- Account Balance Card -->
-                <div class="card card-large">
-                    <div class="card-label">Account Balance</div>
-                    <div class="card-amount" id="accountBalance">₹0.00</div>
-                </div>
-
-                <!-- Two-column cards -->
-                <div class="cards-row">
-                    <div class="card card-small">
-                        <div class="card-label">Total Income</div>
-                        <div class="card-amount income-text" id="totalIncome">₹0.00</div>
-                    </div>
-                    <div class="card card-small">
-                        <div class="card-label">Total Expense</div>
-                        <div class="card-amount expense-text" id="totalExpense">₹0.00</div>
-                    </div>
-                </div>
-
-                <!-- Category Breakdown -->
-                <div class="category-section">
-                    <h3>Category Breakdown</h3>
-                    <div class="categories-list" id="categoriesList">
-                        <div class="category-item">
-                            <span class="category-name">Food</span>
-                            <span class="category-amount" id="cat-Food">₹0.00</span>
-                        </div>
-                        <div class="category-item">
-                            <span class="category-name">Travel</span>
-                            <span class="category-amount" id="cat-Travel">₹0.00</span>
-                        </div>
-                        <div class="category-item">
-                            <span class="category-name">Shopping</span>
-                            <span class="category-amount" id="cat-Shopping">₹0.00</span>
-                        </div>
-                        <div class="category-item">
-                            <span class="category-name">Utilities</span>
-                            <span class="category-amount" id="cat-Utilities">₹0.00</span>
-                        </div>
-                        <div class="category-item">
-                            <span class="category-name">Others</span>
-                            <span class="category-amount" id="cat-Others">₹0.00</span>
-                        </div>
-                    </div>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-group">
+                <h1>Expense <span class="logo-accent">Tracker</span></h1>
+                <p class="logo-subtext">Your money, kept simple.</p>
+            </div>
+            
+            <div class="header-controls">
+                <nav class="nav-links-group">
+                    <a href="index.html" class="nav-link active">Transactions</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="history.html" class="nav-link">History Log</a>
+                </nav>
+                
+                <div class="utility-buttons">
+                    <button id="btnExport" class="btn-secondary" aria-label="Copy backup pack">Backup</button>
+                    <button id="btnReset" class="btn-danger" aria-label="Reset database data">Clear All</button>
                 </div>
             </div>
-        </aside>
+        </header>
 
-        <!-- Right Transaction Form Panel -->
-        <section class="form-section">
-            <div class="form-container">
-                <h2>Add Transaction</h2>
-                <form id="transactionForm" class="transaction-form">
-                    <div class="form-group">
-                        <label for="amount">Amount *</label>
-                        <input type="number" id="amount" placeholder="0.00" step="0.01" min="0" required>
-                        <span class="error-message" id="amountError"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description">Description *</label>
-                        <input type="text" id="description" placeholder="Enter description" required>
-                        <span class="error-message" id="descriptionError"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="type">Type *</label>
-                        <div class="type-selector">
-                            <input type="radio" id="type-income" name="type" value="Income" required>
-                            <label for="type-income" class="type-label">Income</label>
-                            
-                            <input type="radio" id="type-expense" name="type" value="Expense" required>
-                            <label for="type-expense" class="type-label">Expense</label>
+        <div class="main-layout">
+            <main class="content-card form-section">
+                <h2>Add New Entry</h2>
+                <form id="transactionForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-input-group">
+                            <label for="amount">Amount (₹) *</label>
+                            <input type="number" id="amount" placeholder="0.00" min="0.01" required>
+                            <span class="error-msg" id="amountError"></span>
                         </div>
-                        <span class="error-message" id="typeError"></span>
+                        <div class="form-input-group">
+                            <label for="date">Date *</label>
+                            <input type="date" id="date" required>
+                            <span class="error-msg" id="dateError"></span>
+                        </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-input-group">
+                        <label>Transaction Type *</label>
+                        <div class="radio-switcher">
+                            <input type="radio" id="type-expense" name="type" value="Expense" checked required>
+                            <label for="type-expense" class="switch-label">Expense (Spent)</label>
+                            
+                            <input type="radio" id="type-income" name="type" value="Income" required>
+                            <label for="type-income" class="switch-label">Income (Earned)</label>
+                        </div>
+                    </div>
+
+                    <div class="form-input-group" id="categoryGroup">
                         <label for="category">Category *</label>
                         <select id="category" required>
-                            <option value="">Select a category</option>
-                            <option value="Food">Food</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Shopping">Shopping</option>
-                            <option value="Utilities">Utilities</option>
+                            <option value="">Select a category...</option>
+                            <option value="Food">Food & Dining</option>
+                            <option value="Travel">Travel & Fuel</option>
+                            <option value="Shopping">Shopping & Clothes</option>
+                            <option value="Bills">Bills & Rent</option>
                             <option value="Others">Others</option>
                         </select>
-                        <span class="error-message" id="categoryError"></span>
+                        <span class="error-msg" id="categoryError"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="date">Date *</label>
-                        <input type="date" id="date" required>
-                        <span class="error-message" id="dateError"></span>
-                        <span class="helper-message" id="dateHelper"></span>
+                    <div class="form-input-group">
+                        <label for="description">Description *</label>
+                        <input type="text" id="description" placeholder="What was this for? e.g., Grocery" required>
+                        <span class="error-msg" id="descriptionError"></span>
                     </div>
 
-                    <button type="submit" class="btn-submit">Add Transaction</button>
+                    <button type="submit" class="btn-primary">Add to My List</button>
                 </form>
-            </div>
-        </section>
+            </main>
+
+            <section class="content-card summary-section">
+                <h2>Your Summary</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-box balance-box">
+                        <span class="stat-title">Current Balance</span>
+                        <div id="accountBalance" class="stat-number color-neutral">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Total Earned</span>
+                        <div id="totalIncome" class="stat-number text-green">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Total Spent</span>
+                        <div id="totalExpense" class="stat-number text-red">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Average Entry</span>
+                        <div id="avgTransaction" class="stat-number">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Savings Rate</span>
+                        <div id="savingsRate" class="stat-number text-blue">0.0%</div>
+                    </div>
+                </div>
+
+                <div class="visual-chart-box">
+                    <div class="donut-visual">
+                        <svg viewBox="0 0 42 42" class="svg-circle" aria-hidden="true">
+                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--chart-track)" stroke-width="4"></circle>
+                            <circle id="donutSegment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#4F46E5" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="25"></circle>
+                        </svg>
+                        <div class="donut-text">
+                            <span id="highestExpensePct">0%</span>
+                            <small id="highestExpenseName">Top Category</small>
+                        </div>
+                    </div>
+
+                    <div class="progress-bars-container" id="categoriesList">
+                        <div class="progress-bar-item" data-category="Food">
+                            <div class="progress-text"><span>Food & Dining</span><span id="cat-Food">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #38BDF8;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Travel">
+                            <div class="progress-text"><span>Travel & Fuel</span><span id="cat-Travel">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #FB923C;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Shopping">
+                            <div class="progress-text"><span>Shopping & Clothes</span><span id="cat-Shopping">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #F43F5E;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Bills">
+                            <div class="progress-text"><span>Bills & Rent</span><span id="cat-Bills">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #34D399;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Others">
+                            <div class="progress-text"><span>Others</span><span id="cat-Others">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #A78BFA;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 
-    <!-- Recent Transactions Panel -->
-    <section class="transactions-section">
-        <div class="transactions-container">
-            <h2>Recent Transactions</h2>
-            <div class="table-wrapper">
-                <table class="transactions-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Amount</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionsBody">
-                        <!-- Transactions will be inserted here -->
-                    </tbody>
-                </table>
-                <div id="noTransactionsMessage" class="no-transactions">
-                    No transactions yet. Add one to get started!
-                </div>
-            </div>
-        </div>
-    </section>
+    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌓</button>
 
     <script src="expense.js" defer></script>
 </body>
