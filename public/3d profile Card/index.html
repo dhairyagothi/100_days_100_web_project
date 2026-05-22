@@ -38,50 +38,75 @@
         </div>
     </div>
     <script>
-        let btn = document.querySelector(".darkmode");
-        let lightbtn = document.querySelector(".lightmode");
-        let currmode = "light";
-        function changeMode() {
-            if (currmode == "light") {
-                currmode = "dark";
-                //    document.querySelector(".lightmode").style.display="block";
-                document.querySelector(".container1").style.backgroundColor = "grey";
-                document.querySelector(".container2").style.backgroundColor = "black";
-                document.querySelector(".image").style.backgroundColor = "grey";
-                if (window.matchMedia("(max-width:1098px)").matches) {
-                    document.querySelector(".image").style.background = "linear-gradient(#222,#000)";
-                }
-                document.querySelector(".heading").style.color = "white";
-                document.querySelector(".info").style.color = "white";
-                document.querySelector(".btn").style.color = "black";
-                document.querySelector(".git").style.filter = "invert(1)";
-                document.querySelector(".leet").style.filter = "invert(1)";
-                btn.style.display = "none";
-                lightbtn.style.display = "block";
+let btn = document.querySelector(".darkmode");
+let lightbtn = document.querySelector(".lightmode");
 
-            } else {
-                currmode = "light";
-                lightbtn.style.display = "none";
-                btn.style.display = "block";
-                // document.querySelector(".lightmode").style.display="none";
-                document.querySelector(".container1").style.backgroundColor = "#f2d5ed";
-                document.querySelector(".container2").style.backgroundColor = "#f5e0f2";
-                document.querySelector(".image").style.backgroundColor = "#f2d5ed";
-                if (window.matchMedia("(max-width:1098px)").matches) {
-                    document.querySelector(".image").style.background = "linear-gradient(#9ad7ff 0%, #fecfef 99%, #fecfef 100%)";
-                }
-                document.querySelector(".heading").style.color = "black";
-                document.querySelector(".info").style.color = "black";
-                document.querySelector(".btn").style.color = "white";
-                document.querySelector(".git").style.filter = "invert(0)";
-                document.querySelector(".leet").style.filter = "invert(0)";
+// Load saved theme OR default light
+let currmode = localStorage.getItem("theme") || "light";
 
+// Apply theme on page load
+applyTheme(currmode);
 
-            }
+function applyTheme(mode) {
+    currmode = mode;
+
+    if (mode === "dark") {
+
+        document.querySelector(".container1").style.backgroundColor = "grey";
+        document.querySelector(".container2").style.backgroundColor = "black";
+        document.querySelector(".image").style.backgroundColor = "grey";
+
+        if (window.matchMedia("(max-width:1098px)").matches) {
+            document.querySelector(".image").style.background = "linear-gradient(#222,#000)";
         }
-        btn.addEventListener("click", changeMode);
-        lightbtn.addEventListener("click", changeMode);
-    </script>
+
+        document.querySelector(".heading").style.color = "white";
+        document.querySelector(".info").style.color = "white";
+        document.querySelector(".btn").style.color = "black";
+
+        document.querySelector(".git").style.filter = "invert(1)";
+        document.querySelector(".leet").style.filter = "invert(1)";
+
+        btn.style.display = "none";
+        lightbtn.style.display = "block";
+
+    } else {
+
+        document.querySelector(".container1").style.backgroundColor = "#f2d5ed";
+        document.querySelector(".container2").style.backgroundColor = "#f5e0f2";
+        document.querySelector(".image").style.backgroundColor = "#f2d5ed";
+
+        if (window.matchMedia("(max-width:1098px)").matches) {
+            document.querySelector(".image").style.background =
+                "linear-gradient(#9ad7ff 0%, #fecfef 99%, #fecfef 100%)";
+        }
+
+        document.querySelector(".heading").style.color = "black";
+        document.querySelector(".info").style.color = "black";
+        document.querySelector(".btn").style.color = "white";
+
+        document.querySelector(".git").style.filter = "invert(0)";
+        document.querySelector(".leet").style.filter = "invert(0)";
+
+        lightbtn.style.display = "none";
+        btn.style.display = "block";
+    }
+
+    // SAVE theme in localStorage
+    localStorage.setItem("theme", mode);
+}
+
+function changeMode() {
+    if (currmode === "light") {
+        applyTheme("dark");
+    } else {
+        applyTheme("light");
+    }
+}
+
+btn.addEventListener("click", changeMode);
+lightbtn.addEventListener("click", changeMode);
+</script>
 </body>
 
 </html>
