@@ -337,7 +337,7 @@ function renderBookmarks() {
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
-                <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
                     View Demo <i class="fas fa-arrow-right"></i>
                 </a>
                 <button class="bookmark-btn active" data-id="${day}">
@@ -383,7 +383,7 @@ function renderRecentProjects() {
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
-                <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
                     View Demo <i class="fas fa-arrow-right"></i>
                 </a>
                 <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
@@ -468,13 +468,41 @@ function initFilterChips() {
 /* ============================================================
    LIVE SEARCH
    ============================================================ */
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
-  input.addEventListener('input', () => {
+
+  const debouncedFilter = debounce(() => {
     searchQuery = input.value.trim();
+    currentPage = 1;
     renderGrid();
-  });
+  }, 300);
+
+  const handleSearch = () => {
+    const value = input.value.trim();
+    if (value === '') {
+      searchQuery = '';
+      currentPage = 1;
+      renderGrid();
+    } else {
+      debouncedFilter();
+    }
+  };
+
+  input.addEventListener('input', handleSearch);
+  input.addEventListener('search', handleSearch);
 }
 
 function syncProjectCounts() {
@@ -507,7 +535,7 @@ function updateNavbar() {
             <span class="welcome-text">Hi, ${username}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
             <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-github"></i> GitHub
             </a>
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
@@ -521,7 +549,7 @@ function updateNavbar() {
   } else {
     container.innerHTML = `
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-github"></i> GitHub
             </a>
             <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>

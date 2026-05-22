@@ -92,6 +92,7 @@ async function openProfile(username) {
                 <a
                 href="${user.html_url}"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="github-btn"
                 >
 
@@ -166,6 +167,7 @@ async function fetchContributors() {
     <a
     href="${contributor.html_url}"
     target="_blank"
+    rel="noopener noreferrer"
     class="github-btn"
     >
 
@@ -221,6 +223,7 @@ async function fetchStargazers() {
             const starItem = document.createElement("a");
             starItem.href = stargazer.html_url;
             starItem.target = "_blank";
+            starItem.rel = "noopener noreferrer";
             starItem.className = "stargazer-item";
             starItem.title = stargazer.login;
             starItem.innerHTML = `<img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
