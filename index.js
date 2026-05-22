@@ -1,12 +1,13 @@
 /* ============================================================
    CONFIGURATION
    ============================================================ */
-if (typeof REPO_OWNER === 'undefined') {
-  window.REPO_OWNER = 'dhairyagothi';
-  window.REPO_NAME = '100_days_100_web_project';
-}
-window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
-window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
+window.REPO_OWNER = (window.REPO_OWNER && window.REPO_OWNER !== 'undefined')
+  ? window.REPO_OWNER
+  : 'dhairyagothi';
+
+window.REPO_NAME = (window.REPO_NAME && window.REPO_NAME !== 'undefined')
+  ? window.REPO_NAME
+  : '100_days_100_web_project';
 
 let currentPage = 1;
 //for the number of visible projects in one page.
@@ -218,7 +219,7 @@ const PROJECT_DATA = [
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
 ];
-const PROJECTS = PROJECT_DATA;
+const PROJECTS = Object.freeze(PROJECT_DATA);
 
 
 /* ============================================================
@@ -270,7 +271,8 @@ function matchesTechStack(projectTags) {
   
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  const tagSet = new Set(tagsLower.split(/\s+/));
+return techStackFilters.every(f => tagSet.has(f));
 }
 
 
@@ -477,7 +479,9 @@ function renderGrid() {
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
 
-  pageItems.forEach(([day, name, url, tags]) => {
+const fragment = document.createDocumentFragment();
+
+pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
@@ -508,8 +512,9 @@ function renderGrid() {
             </div>
         `;
 
-    grid.appendChild(card);
+    fragment.appendChild(card);
   });
+  grid.appendChild(fragment);
 
   renderPagination(filtered.length, totalPages);
 }
@@ -889,10 +894,16 @@ function initTechStackSearch() {
   if (!input) return;
   
   // Debounce timer for performance
-  let debounceTimer;
+  const debounce = (fn, delay = 300) => {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), delay);
+  };
+};
   
   // Listen for input changes
-  input.addEventListener('input', (e) => {
+  input.addEventListener('input', debounce((e) => {
     clearTimeout(debounceTimer);
     
     // Debounce: wait 300ms after user stops typing
@@ -913,7 +924,7 @@ function initTechStackSearch() {
         clearAllTechFilters();
       }
     }, 300); // 300ms debounce delay
-  });
+  }));
   
   // Clear button functionality
   if (clearBtn) {

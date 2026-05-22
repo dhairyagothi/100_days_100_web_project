@@ -111,8 +111,8 @@ body::after {
       rgba(59, 130, 246, 0.08),
       transparent 32%
     );
-  opacity: 0.6;
-  filter: blur(44px);
+  opacity: 0.35;
+filter: blur(28px);
   mix-blend-mode: screen;
   animation: ambientFloat 16s ease-in-out infinite alternate;
 }
@@ -156,7 +156,7 @@ body::after {
 }
 
 .noise-layer {
-  opacity: 0.035;
+  opacity: 0.02;
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.35) 1px, transparent 1px),
@@ -930,9 +930,9 @@ body.light-mode .navbar {
 }
 
 .project-card {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 28%),
-    var(--bg-elevated);
+  background: rgba(255, 255, 255, 0.04);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 1.4rem 1.5rem 1.35rem;
   display: flex;
   flex-direction: column;
@@ -980,8 +980,10 @@ body.light-mode .navbar {
 
 .project-card:hover {
   background: var(--bg-surface);
-  transform: translateY(-4px);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.26);
+  transform: translateY(-6px) scale(1.01);
+box-shadow:
+  0 20px 60px rgba(0, 0, 0, 0.35),
+  0 0 20px rgba(59, 130, 246, 0.15);
 }
 
 .project-card:hover::before {
@@ -1528,6 +1530,10 @@ html {
 }
 
 @media (max-width: 768px) {
+  .project-card {
+  padding: 1rem;
+  min-height: auto;
+}
   .navbar {
     padding: 0 1.5rem;
   }
