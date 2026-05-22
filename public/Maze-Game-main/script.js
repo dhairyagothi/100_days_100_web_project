@@ -1,612 +1,202 @@
-function rand(max) {
-  return Math.floor(Math.random() * max);
-}
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-function showToast(message, type = 'info', duration = 2600) {
-  const toastContainer = document.getElementById('toastContainer');
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  toast.textContent = message;
-  toastContainer.appendChild(toast);
-
-  requestAnimationFrame(() => toast.classList.add('visible'));
-
-  setTimeout(() => {
-    toast.classList.remove('visible');
-    setTimeout(() => toast.remove(), 300);
-  }, duration);
-}
-
-function updateStatus(message) {
-  const statusText = document.getElementById('statusText');
-  if (statusText) statusText.textContent = message;
-}
-
-function updateLevelText(level) {
-  const levelText = document.getElementById('levelText');
-  if (levelText) levelText.textContent = level;
-}
-
-function updateMoveDisplay(count) {
-  const moveCount = document.getElementById('moveCount');
-  if (moveCount) moveCount.textContent = count;
-}
-
-function showModal(title, message, moves) {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalText').textContent = message;
-  document.getElementById('moves').textContent = `Moves: ${moves}`;
-  document.getElementById('Message-Container').classList.add('visible');
-}
-
-function closeModal() {
-  const modal = document.getElementById('Message-Container');
-  if (modal) {
-    modal.classList.remove('visible');
-  }
-
-  if (isGameOver) {
-    isGameOver = false;
-    startGame();
-  }
-}
-
-function toggleVisibility(id) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.classList.toggle('visible');
-  }
-}
-
-function Maze(width, height) {
-  let mazeMap;
-  const dirs = ['n', 's', 'e', 'w'];
-  const modDir = {
-    n: { y: -1, x: 0, o: 's' },
-    s: { y: 1, x: 0, o: 'n' },
-    e: { y: 0, x: 1, o: 'w' },
-    w: { y: 0, x: -1, o: 'e' }
-  };
-  let startCoord, endCoord;
-
-  this.map = () => mazeMap;
-  this.startCoord = () => startCoord;
-  this.endCoord = () => endCoord;
-
-  function genMap() {
-    mazeMap = Array.from({ length: height }, () =>
-      Array.from({ length: width }, () => ({
-        n: false,
-        s: false,
-        e: false,
-        w: false,
-        visited: false,
-        priorPos: null
-      }))
-    );
-  }
-
-  function defineMaze() {
-    let isComplete = false;
-    let cellsVisited = 1;
-    let numLoops = 0;
-    let maxLoops = 0;
-    let pos = { x: 0, y: 0 };
-    const numCells = width * height;
-
-    while (!isComplete) {
-      mazeMap[pos.x][pos.y].visited = true;
-      if (numLoops >= maxLoops) {
-        shuffle(dirs);
-        maxLoops = Math.round(rand(height / 8));
-        numLoops = 0;
-      }
-      numLoops++;
-
-      let moved = false;
-      for (let index = 0; index < dirs.length; index++) {
-        const direction = dirs[index];
-        const nx = pos.x + modDir[direction].x;
-        const ny = pos.y + modDir[direction].y;
-        if (nx >= 0 && nx < width && ny >= 0 && ny < height && !mazeMap[nx][ny].visited) {
-          mazeMap[pos.x][pos.y][direction] = true;
-          mazeMap[nx][ny][modDir[direction].o] = true;
-          mazeMap[nx][ny].priorPos = pos;
-          pos = { x: nx, y: ny };
-          cellsVisited++;
-          moved = true;
-          break;
-        }
-      }
-
-      if (!moved) {
-        pos = mazeMap[pos.x][pos.y].priorPos;
-      }
-
-      if (cellsVisited === numCells) {
-        isComplete = true;
-      }
-    }
-  }
-
-  function defineStartEnd() {
-    const option = rand(4);
-    switch (option) {
-      case 0:
-        startCoord = { x: 0, y: 0 };
-        endCoord = { x: width - 1, y: height - 1 };
-        break;
-      case 1:
-        startCoord = { x: 0, y: height - 1 };
-        endCoord = { x: width - 1, y: 0 };
-        break;
-      case 2:
-        startCoord = { x: width - 1, y: 0 };
-        endCoord = { x: 0, y: height - 1 };
-        break;
-      default:
-        startCoord = { x: width - 1, y: height - 1 };
-        endCoord = { x: 0, y: 0 };
-        break;
-    }
-  }
-
-  genMap();
-  defineStartEnd();
-  defineMaze();
-}
-
-function DrawMaze(maze, ctx, cellSize) {
-  const map = maze.map();
-  let size = cellSize;
-  ctx.lineWidth = size / 40;
-  ctx.strokeStyle = '#7fd5ff';
-
-  this.redrawMaze = function (newSize) {
-    size = newSize;
-    ctx.lineWidth = size / 50;
-    this.render(0);
-  };
-
-  function drawCell(xCord, yCord, cell) {
-    const x = xCord * size;
-    const y = yCord * size;
-    if (!cell.n) {
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x + size, y);
-      ctx.stroke();
-    }
-    if (!cell.s) {
-      ctx.beginPath();
-      ctx.moveTo(x, y + size);
-      ctx.lineTo(x + size, y + size);
-      ctx.stroke();
-    }
-    if (!cell.e) {
-      ctx.beginPath();
-      ctx.moveTo(x + size, y);
-      ctx.lineTo(x + size, y + size);
-      ctx.stroke();
-    }
-    if (!cell.w) {
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x, y + size);
-      ctx.stroke();
-    }
-  }
-
-  function drawMap() {
-    ctx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
-    ctx.save();
-    ctx.shadowColor = 'rgba(96, 212, 255, 0.25)';
-    ctx.shadowBlur = size / 14;
-    for (let x = 0; x < map.length; x++) {
-      for (let y = 0; y < map[x].length; y++) {
-        drawCell(x, y, map[x][y]);
-      }
-    }
-    ctx.restore();
-  }
-
-  function drawGoalPortal(time) {
-    const coord = maze.endCoord();
-    const centerX = coord.x * size + size / 2;
-    const centerY = coord.y * size + size / 2;
-    const pulse = 4 + Math.sin(time / 300) * 2;
-    const radius = size * 0.28;
-
-    const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius + pulse);
-    gradient.addColorStop(0, 'rgba(152, 128, 255, 0.9)');
-    gradient.addColorStop(0.4, 'rgba(96, 212, 255, 0.35)');
-    gradient.addColorStop(1, 'rgba(15, 22, 56, 0)');
-
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius + pulse, 0, 2 * Math.PI);
-    ctx.fillStyle = gradient;
-    ctx.fill();
-
-    ctx.strokeStyle = '#8e6cff';
-    ctx.lineWidth = size * 0.05;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    ctx.stroke();
-
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = '#d3f1ff';
-    for (let i = 0; i < 5; i++) {
-      const angle = i * (Math.PI * 2) / 5 + time / 800;
-      ctx.beginPath();
-      ctx.moveTo(centerX + Math.cos(angle) * radius * 0.6, centerY + Math.sin(angle) * radius * 0.6);
-      ctx.lineTo(centerX + Math.cos(angle) * radius * 0.95, centerY + Math.sin(angle) * radius * 0.95);
-      ctx.stroke();
-    }
-  }
-
-  function drawMapBackground() {
-    ctx.fillStyle = 'rgba(5, 10, 25, 0.12)';
-    ctx.fillRect(0, 0, mazeCanvas.width, mazeCanvas.height);
-  }
-
-  this.render = function (time) {
-    drawMapBackground();
-    drawMap();
-    drawGoalPortal(time);
-  };
-
-  this.render(0);
-}
-
-function Player(maze, canvas, cellSize, onComplete) {
-  const ctx = canvas.getContext('2d');
-  const self = this;
-  const map = maze.map();
-  let cellCoords = { x: maze.startCoord().x, y: maze.startCoord().y };
-  let size = cellSize;
-  const halfCellSize = size / 2;
-  let moves = 0;
-  let hasWon = false;
-
-  this.redrawPlayer = function (newSize) {
-    size = newSize;
-    drawPlayerOrb(cellCoords);
-  };
-
-  function drawPlayerOrb(coord) {
-    const x = coord.x * size + size / 2;
-    const y = coord.y * size + size / 2;
-    const radius = Math.max(size * 0.16, 6);
-    const gradient = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
-    gradient.addColorStop(0, 'rgba(255, 249, 196, 0.95)');
-    gradient.addColorStop(0.6, 'rgba(255, 162, 59, 0.85)');
-    gradient.addColorStop(1, 'rgba(255, 72, 103, 0.55)');
-
-    ctx.beginPath();
-    ctx.fillStyle = gradient;
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.fill();
-
-    ctx.strokeStyle = 'rgba(255, 196, 129, 0.85)';
-    ctx.lineWidth = Math.max(size * 0.015, 1.5);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-    ctx.lineWidth = 1.5;
-    ctx.arc(x, y, radius * 0.6, 0, 2 * Math.PI);
-    ctx.stroke();
-
-    if (!hasWon && coord.x === maze.endCoord().x && coord.y === maze.endCoord().y) {
-      hasWon = true;
-      onComplete(moves);
-      self.unbindKeyDown();
-    }
-  }
-
-  function removeSprite(coord) {
-    const offsetLeft = size / 50;
-    const offsetRight = size / 25;
-    ctx.clearRect(
-      coord.x * size + offsetLeft,
-      coord.y * size + offsetLeft,
-      size - offsetRight,
-      size - offsetRight
-    );
-  }
-
-  function check(e) {
-    if (isGameOver) {
-      return;
-    }
-
-    const keyCode = e.keyCode || e.which;
-    if ([37, 38, 39, 40, 65, 68, 83, 87].includes(keyCode) && typeof e.preventDefault === 'function') {
-      e.preventDefault();
-    }
-
-    const cell = map[cellCoords.x][cellCoords.y];
-    let moved = false;
-
-    switch (keyCode) {
-      case 65:
-      case 37:
-        if (cell.w) {
-          removeSprite(cellCoords);
-          cellCoords = { x: cellCoords.x - 1, y: cellCoords.y };
-          drawPlayerOrb(cellCoords);
-          moved = true;
-        }
-        break;
-      case 87:
-      case 38:
-        if (cell.n) {
-          removeSprite(cellCoords);
-          cellCoords = { x: cellCoords.x, y: cellCoords.y - 1 };
-          drawPlayerOrb(cellCoords);
-          moved = true;
-        }
-        break;
-      case 68:
-      case 39:
-        if (cell.e) {
-          removeSprite(cellCoords);
-          cellCoords = { x: cellCoords.x + 1, y: cellCoords.y };
-          drawPlayerOrb(cellCoords);
-          moved = true;
-        }
-        break;
-      case 83:
-      case 40:
-        if (cell.s) {
-          removeSprite(cellCoords);
-          cellCoords = { x: cellCoords.x, y: cellCoords.y + 1 };
-          drawPlayerOrb(cellCoords);
-          moved = true;
-        }
-        break;
-    }
-
-    if (moved) {
-      moves++;
-      updateMoveDisplay(moves);      ensurePlayerVisible(cellCoords);    } else if ([65, 68, 83, 87, 37, 38, 39, 40].includes(e.keyCode)) {
-      showToast('Blocked! You cannot move through a wall.', 'warning');
-    }
-  }
-
-  this.bindKeyDown = function () {
-    window.addEventListener('keydown', check, false);
-    if (window.jQuery && typeof $.fn.swipe === 'function') {
-      $('#view').swipe({
-        swipe: function (event, direction) {
-          switch (direction) {
-            case 'up':
-              check({ keyCode: 38 });
-              break;
-            case 'down':
-              check({ keyCode: 40 });
-              break;
-            case 'left':
-              check({ keyCode: 37 });
-              break;
-            case 'right':
-              check({ keyCode: 39 });
-              break;
-          }
-        },
-        threshold: 0
-      });
-    }
-  };
-
-  this.unbindKeyDown = function () {
-    window.removeEventListener('keydown', check, false);
-    if (window.jQuery && typeof $.fn.swipe === 'function') {
-      try {
-        $('#view').swipe('destroy');
-      } catch (error) {
-        // swipe may not be initialized yet
-      }
-    }
-  };
-
-  drawPlayerOrb(maze.startCoord());
-  this.bindKeyDown();
-}
-
-const mazeCanvas = document.getElementById('mazeCanvas');
-const ctx = mazeCanvas.getContext('2d');
-let maze;
-let draw;
-let player;
-let cellSize = 0;
-let difficulty = 10;
-let animationFrameId = null;
-let currentLevel = 'Easy';
-let isGameActive = false;
-let isGameOver = false;
-
-const startButton = document.getElementById('startMazeBtn');
-const restartButton = document.getElementById('restartMazeBtn');
-const diffSelect = document.getElementById('diffSelect');
-const okBtn = document.getElementById('okBtn');
-
-function resizeCanvas() {
-  const board = document.getElementById('view');
-  const availableWidth = board.clientWidth - 36;
-  const availableHeight = window.innerHeight - 280;
-  const size = Math.min(availableWidth, availableHeight, 860);
-  mazeCanvas.width = size;
-  mazeCanvas.height = size;
-  if (difficulty) {
-    cellSize = mazeCanvas.width / difficulty;
-  }
-  if (draw && player) {
-    draw.redrawMaze(cellSize);
-    player.redrawPlayer(cellSize);
-  }
-}
-
-function ensurePlayerVisible(coord) {
-  const container = document.getElementById('mazeContainer');
-  if (!container || !coord) {
-    return;
-  }
-
-  const playerCenterX = coord.x * cellSize + cellSize / 2;
-  const playerCenterY = coord.y * cellSize + cellSize / 2;
-
-  const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
-  const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
-  const targetLeft = Math.max(0, Math.min(maxScrollLeft, playerCenterX - container.clientWidth / 2));
-  const targetTop = Math.max(0, Math.min(maxScrollTop, playerCenterY - container.clientHeight / 2));
-
-  container.scrollTo({ left: targetLeft, top: targetTop, behavior: 'smooth' });
-}
-
-function resetGameState() {
-  cancelRenderLoop();
-  if (player) {
-    player.unbindKeyDown();
-    player = null;
-  }
-  maze = null;
-  draw = null;
-  isGameActive = false;
-  isGameOver = false;
-  updateMoveDisplay(0);
-  ctx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
-  updateStatus('Ready to start');
-}
-
-function handleDifficultyChange() {
-  const selectedDifficulty = Number(diffSelect.value);
-  if (!selectedDifficulty || selectedDifficulty <= 0) {
-    showToast('Please select a valid difficulty level.', 'warning');
-    return;
-  }
-
-  currentLevel = diffSelect.options[diffSelect.selectedIndex].text;
-  updateLevelText(currentLevel);
-  updateStatus(`Selected ${currentLevel}`);
-  showToast(`Difficulty set to ${currentLevel}`, 'info');
-
-  difficulty = selectedDifficulty;
-  cellSize = mazeCanvas.width / difficulty;
-
-  if (isGameActive || isGameOver) {
-    startGame();
-  } else {
-    resetGameState();
-  }
-}
-
-function onMazeComplete(moves) {
-  if (isGameOver) {
-    return;
-  }
-
-  isGameOver = true;
-  isGameActive = false;
-  updateStatus('Maze completed! Ready for another run.');
-  showModal('Congratulations!', 'You escaped the maze.', moves);
-  showToast('Maze completed successfully 🎉', 'success');
-}
-
-function cancelRenderLoop() {
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-}
-
-function startRenderLoop() {
-  cancelRenderLoop();
-  if (draw) {
-    draw.render(0);
-  }
-  if (player) {
-    player.redrawPlayer(cellSize);
-  }
-  const loop = (time) => {
-    if (draw) {
-      draw.render(time);
-    }
-    if (player) {
-      player.redrawPlayer(cellSize);
-    }
-    animationFrameId = requestAnimationFrame(loop);
-  };
-  animationFrameId = requestAnimationFrame(loop);
-}
-
-function startGame() {
-  const selectedDifficulty = Number(diffSelect.value);
-  if (!selectedDifficulty || selectedDifficulty <= 0) {
-    showToast('Please select a valid difficulty level.', 'warning');
-    return;
-  }
-
-  currentLevel = diffSelect.options[diffSelect.selectedIndex].text;
-  updateLevelText(currentLevel);
-  difficulty = selectedDifficulty;
-  cellSize = mazeCanvas.width / difficulty;
-
-  resetGameState();
-
-  maze = new Maze(difficulty, difficulty);
-  draw = new DrawMaze(maze, ctx, cellSize);
-  player = new Player(maze, mazeCanvas, cellSize, onMazeComplete);
-
-  isGameActive = true;
-  isGameOver = false;
-
-  updateStatus(`Playing ${currentLevel} mode`);
-  updateMoveDisplay(0);
-  showToast(`Game started: ${currentLevel}`, 'success');
-  startButton.textContent = 'Restart';
-  restartButton.disabled = false;
-  diffSelect.blur();
-  startRenderLoop();
-}
-
-function initialize() {
-  const modalOverlay = document.getElementById('Message-Container');
-
-  resizeCanvas();
-  handleDifficultyChange();
-  startButton.disabled = false;
-  restartButton.disabled = true;
-  startButton.addEventListener('click', startGame);
-  restartButton.addEventListener('click', startGame);
-  diffSelect.addEventListener('change', handleDifficultyChange);
-
-  if (okBtn) {
-    okBtn.addEventListener('click', closeModal);
-  }
-
-  if (modalOverlay) {
-    modalOverlay.addEventListener('click', (event) => {
-      if (event.target === modalOverlay) {
-        closeModal();
-      }
+const CONFIG = {
+    Easy: 10,
+    Medium: 18,
+    Hard: 30
+};
+
+let currentDifficulty = 'Easy';
+let maze = [];
+let player = { x: 0, y: 0 };
+let steps = 0;
+let isWon = false;
+let highScores = JSON.parse(localStorage.getItem('neon-scores') || '{"Easy":null,"Medium":null,"Hard":null}');
+
+const canvas = document.getElementById('mazeCanvas');
+const ctx = canvas.getContext('2d');
+const stepsEl = document.getElementById('steps');
+const bestEl = document.getElementById('best');
+const complexityEl = document.getElementById('complexity');
+const modal = document.getElementById('winModal');
+const finalStepsEl = document.getElementById('finalSteps');
+
+function initGame(diff) {
+    currentDifficulty = diff;
+    const size = CONFIG[diff];
+    
+    // Update UI active buttons
+    document.querySelectorAll('.controls button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.diff === diff);
     });
-  }
 
-  window.addEventListener('resize', resizeCanvas);
-  showToast('Ready to play! Select a difficulty and start.', 'info', 3200);
+    // Reset State
+    steps = 0;
+    player = { x: 0, y: 0 };
+    isWon = false;
+    modal.classList.remove('visible');
+    
+    // Generate Maze
+    maze = generateMaze(size, size);
+    
+    // Update Stats
+    updateStats();
+    draw();
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('load', initialize);
-} else {
-  initialize();
+function generateMaze(w, h) {
+    const grid = [];
+    for (let y = 0; y < h; y++) {
+        const row = [];
+        for (let x = 0; x < w; x++) {
+            row.push({ x, y, visited: false, walls: { top: true, right: true, bottom: true, left: true } });
+        }
+        grid.push(row);
+    }
+
+    const stack = [];
+    const start = grid[0][0];
+    start.visited = true;
+    stack.push(start);
+
+    while (stack.length > 0) {
+        const curr = stack[stack.length - 1];
+        const neighbors = getNeighbors(curr, grid, w, h);
+
+        if (neighbors.length > 0) {
+            const next = neighbors[Math.floor(Math.random() * neighbors.length)];
+            removeWalls(curr, next);
+            next.visited = true;
+            stack.push(next);
+        } else {
+            stack.pop();
+        }
+    }
+    return grid;
 }
+
+function getNeighbors(cell, grid, w, h) {
+    const n = [];
+    const { x, y } = cell;
+    if (y > 0 && !grid[y - 1][x].visited) n.push(grid[y - 1][x]);
+    if (x < w - 1 && !grid[y][x + 1].visited) n.push(grid[y][x + 1]);
+    if (y < h - 1 && !grid[y + 1][x].visited) n.push(grid[y + 1][x]);
+    if (x > 0 && !grid[y][x - 1].visited) n.push(grid[y][x - 1]);
+    return n;
+}
+
+function removeWalls(a, b) {
+    if (a.x < b.x) { a.walls.right = false; b.walls.left = false; }
+    else if (a.x > b.x) { a.walls.left = false; b.walls.right = false; }
+    else if (a.y < b.y) { a.walls.bottom = false; b.walls.top = false; }
+    else if (a.y > b.y) { a.walls.top = false; b.walls.bottom = false; }
+}
+
+function draw() {
+    const size = CONFIG[currentDifficulty];
+    const cellSize = canvas.width / size;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw Maze
+    ctx.strokeStyle = '#22d3ee';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+
+    for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+            const cell = maze[y][x];
+            const px = x * cellSize;
+            const py = y * cellSize;
+
+            ctx.beginPath();
+            if (cell.walls.top) { ctx.moveTo(px, py); ctx.lineTo(px + cellSize, py); }
+            if (cell.walls.right) { ctx.moveTo(px + cellSize, py); ctx.lineTo(px + cellSize, py + cellSize); }
+            if (cell.walls.bottom) { ctx.moveTo(px, py + cellSize); ctx.lineTo(px + cellSize, py + cellSize); }
+            if (cell.walls.left) { ctx.moveTo(px, py); ctx.lineTo(px, py + cellSize); }
+            ctx.stroke();
+        }
+    }
+
+    // Draw End House
+    const endSize = cellSize * 0.7;
+    ctx.fillStyle = '#d946ef';
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#d946ef';
+    ctx.beginPath();
+    ctx.arc((size - 0.5) * cellSize, (size - 0.5) * cellSize, endSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Draw Player
+    const pSize = cellSize * 0.6;
+    ctx.fillStyle = '#fff';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#22d3ee';
+    ctx.beginPath();
+    ctx.roundRect((player.x + 0.2) * cellSize, (player.y + 0.2) * cellSize, cellSize * 0.6, cellSize * 0.6, 4);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+}
+
+function updateStats() {
+    stepsEl.textContent = steps;
+    bestEl.textContent = highScores[currentDifficulty] || '--';
+    complexityEl.textContent = `${CONFIG[currentDifficulty]}x${CONFIG[currentDifficulty]}`;
+}
+
+function move(dx, dy) {
+    if (isWon) return;
+    const size = CONFIG[currentDifficulty];
+    
+    // Boundary check
+    const nx = player.x + dx;
+    const ny = player.y + dy;
+    if (nx < 0 || nx >= size || ny < 0 || ny >= size) return;
+
+    // Wall check
+    const cell = maze[player.y][player.x];
+    if (dx === 1 && cell.walls.right) return;
+    if (dx === -1 && cell.walls.left) return;
+    if (dy === 1 && cell.walls.bottom) return;
+    if (dy === -1 && cell.walls.top) return;
+
+    player.x = nx;
+    player.y = ny;
+    steps++;
+    updateStats();
+    draw();
+
+    if (player.x === size - 1 && player.y === size - 1) {
+        win();
+    }
+}
+
+function win() {
+    isWon = true;
+    finalStepsEl.textContent = steps;
+    const currentBest = highScores[currentDifficulty];
+    if (currentBest === null || steps < currentBest) {
+        highScores[currentDifficulty] = steps;
+        localStorage.setItem('neon-scores', JSON.stringify(highScores));
+    }
+    modal.classList.add('visible');
+}
+
+// Input
+addEventListener('keydown', (e) => {
+    switch (e.key.toLowerCase()) {
+        case 'w': case 'arrowup': move(0, -1); break;
+        case 's': case 'arrowdown': move(0, 1); break;
+        case 'a': case 'arrowleft': move(-1, 0); break;
+        case 'd': case 'arrowright': move(1, 0); break;
+    }
+    if (['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+    }
+});
+
+// UI Events
+document.querySelectorAll('[data-diff]').forEach(btn => {
+    btn.onclick = () => initGame(btn.dataset.diff);
+});
+
+// Start
+initGame('Easy');
