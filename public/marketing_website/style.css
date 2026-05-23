@@ -50,11 +50,35 @@ html {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.7)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-/* Hero Section */
+.navbar {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.nav-link:hover {
+    color: #007bff !important;
+}
+
 .hero-section {
     background-color: #16213e;
     background-size: cover;
     background-position: center;
+<<<<<<< HEAD
+    color: white;
+    padding: 120px 0;
+    position: relative;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+=======
     color: #ffffff;
     padding: 120px 0;
 }
@@ -104,10 +128,64 @@ html {
 .hero-section .btn-secondary:hover {
     background-color: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.7);
+>>>>>>> upstream/Main
 }
 
 /* Services Section */
 .services-section {
+<<<<<<< HEAD
+    background: linear-gradient(to bottom, #f8f9fa, #eef3f8);
+    padding: 70px 0;
+}
+
+.services-section h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.services-section p {
+    color: #666;
+    font-size: 1.05rem;
+    margin-bottom: 40px;
+}
+
+.service-box {
+    background: #fff;
+    padding: 35px 25px;
+    margin: 15px 0;
+    border-radius: 20px;
+    text-align: center;
+    height: 100%;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: all 0.35s ease;
+}
+
+.service-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.service-box img {
+    width: 95px;
+    height: 95px;
+    object-fit: contain;
+    margin-bottom: 22px;
+    transition: transform 0.3s ease;
+}
+
+.service-box:hover img {
+    transform: scale(1.08);
+}
+
+.service-box h3 {
+    font-size: 1.45rem;
+    font-weight: 600;
+    min-height: 65px;
+    margin-bottom: 14px;
+=======
     background-color: #f8f8f8;
     padding: 80px 0;
 }
@@ -188,10 +266,49 @@ html {
     color: #777;
     line-height: 1.7;
     margin: 0;
+>>>>>>> upstream/Main
 }
 
+.service-box h3 a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.service-box h3 a:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.service-box p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .service-box {
+        margin-bottom: 20px;
+    }
+
+    .services-section h2 {
+        font-size: 2rem;
+    }
+}
 /* Footer */
 .footer-section {
+<<<<<<< HEAD
+    background-color: #222;
+    color: #fff;
+    padding: 50px 0 25px;
+    width: 100%;
+}
+
+.footer-section h5 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+=======
     background-color: #1a1a2e;
     color: #ccc;
     padding: 48px 0 24px;
@@ -204,10 +321,22 @@ html {
     letter-spacing: 1.5px;
     color: #ffffff;
     margin-bottom: 16px;
+>>>>>>> upstream/Main
 }
 
 .footer-section p,
 .footer-section a {
+<<<<<<< HEAD
+    color: #d1d1d1;
+    margin: 0;
+    line-height: 1.8;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    color: #007bff;
+    text-decoration: none;
+=======
     color: #888;
     margin: 0;
     font-size: 0.88rem;
@@ -218,6 +347,7 @@ html {
 
 .footer-section a:hover {
     color: #ffffff;
+>>>>>>> upstream/Main
 }
 
 .footer-divider {
