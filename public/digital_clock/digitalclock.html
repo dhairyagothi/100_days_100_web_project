@@ -65,15 +65,16 @@
     <!-- World Clocks Section -->
     <div class="world-clocks-section">
       <div class="section-header">
-        <h2>🌍 World Clocks</h2>
-        <button class="add-world-btn" onclick="toggleWorldClockModal()">
-          <span>+ Add Clock</span>
+        <div class="world-clocks-title-group">
+          <div class="header-accent-dot"></div>
+          <h2>World Clocks Dashboard</h2>
+        </div>
+        <button class="add-world-btn" id="add-world-clock-btn" onclick="toggleWorldClockModal()">
+          + Add Clock
         </button>
       </div>
-      <div class="world-clocks-grid" id="world-clocks-list">
-        <!-- World clock cards will be rendered dynamically here -->
+      <div class="world-clocks-grid" id="world-clocks-list"></div>
       </div>
-    </div>
 
     <!-- Control Center Panel -->
     <div class="controls-container">
@@ -200,10 +201,10 @@
         <button class="close-modal-btn" onclick="closeWorldClockModal()">&times;</button>
       </div>
       <div class="world-modal-body">
-        <label>Select Timezone to Add</label>
-        <input type="text" class="timezone-search" id="world-search-input" placeholder="Type city or region to search..." oninput="filterWorldTimezones()" />
-        <div class="world-tz-options" id="world-tz-options-list">
-          <!-- Dynamically populated world timezone choices -->
+        <label>Select Country to Add</label>
+        <input type="text" class="timezone-search" id="world-search-input" placeholder="Type country name (e.g. Canada)..." />
+        <div class="world-tz-options" id="world-tz-options-list" style="max-height: 200px; overflow-y: auto; margin-top: 10px;">
+          <p style="color: #aaa; padding: 10px; text-align: center;">Loading global country database...</p>
         </div>
       </div>
     </div>
