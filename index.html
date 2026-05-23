@@ -41,25 +41,28 @@
   <div class="ambient ambient-right" aria-hidden="true"></div>
   <div class="noise-layer" aria-hidden="true"></div>
 
-  <!-- ── NAVBAR ──────────────────────────────────────────── -->
-  <nav class="navbar" id="navbar">
-    <a class="navbar-brand" href="index.html" style="text-decoration:none;">
-      <span class="brand-mark" aria-hidden="true">100</span>
-      <span class="brand-copy">
-        <span class="brand-kicker">Open Source Archive</span>
-        <strong>100 Days · 100 Web Projects</strong>
-      </span>
-    </a>
-    <div class="nav-buttons" id="navButtons">
-      <!-- populated by JS -->
-    </div>
-  </nav>
+    <!-- ── NAVBAR ──────────────────────────────────────────── -->
+    <nav class="navbar" id="navbar">
+        <a class="navbar-brand" href="index.html" style="text-decoration:none;">
+            <span class="brand-mark" aria-hidden="true">100</span>
+            <span class="brand-copy">
+                <span class="brand-kicker">Open Source Archive</span>
+                <strong>100 Days · 100 Web Projects</strong>
+            </span>
+        </a>
 
-  <!-- ── HERO ───────────────────────────────────────────── -->
-  <section class="hero" id="hero">
-    <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <p class="hero-overline">Open Source Frontend Archive · 2026</p>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+    </div>
+    </nav>   
+    <!-- ── HERO ───────────────────────────────────────────── -->
+    <section class="hero" id="hero">
+      <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="hero-overline">Open Source Frontend Archive · 2026</p>
 
       <h1 class="hero-headline">
         <span class="hero-line">100 DAYS</span>
@@ -151,27 +154,41 @@
         <h2 class="section-title">Every experiment, catalogued.</h2>
       </div>
 
-      <div class="projects-header">
-        <div class="search-bar">
-          <i class="fas fa-search search-icon"></i>
+    <div class="projects-header">
+      <div class="search-bar">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
+        <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
+          &times;
+        </button>
+        <select id="sortProjects" aria-label="Sort projects">
+          <option value="default">Sort By</option>
+          <option value="az">A-Z</option>
+          <option value="latest">Latest Day</option>
+          <option value="difficulty">Difficulty</option>
+        </select>
+      </div>
 
-          <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
-
-          <!-- ADD THIS BUTTON -->
-          <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
-            &times;
-          </button>
-        </div>
-
-        <!-- Technology Stack Search -->
-        <div class="search-bar tech-search-bar">
-          <i class="fas fa-code search-icon"></i>
-          <input type="text" id="techStackSearch" class="search-input"
-            placeholder="Filter by tech stack (React, Node.js, Python...)" autocomplete="off" />
-          <button id="clearTechFilter" class="clear-filter-btn" style="display: none;" aria-label="Clear tech filters">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
+      <!-- Technology Stack Search -->
+      <div class="search-bar tech-search-bar">
+        <i class="fas fa-code search-icon"></i>
+        <input
+          type="text"
+          id="techStackSearch"
+          class="search-input"
+          placeholder="Filter by tech stack (React, Node.js, Python...)"
+          autocomplete="off"
+        />
+        <button
+          id="clearTechFilter"
+          class="clear-filter-btn"
+          style="display: none;"
+          aria-label="Clear tech filters"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
 
         <!-- Active Tech Filters Display -->
         <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
@@ -197,8 +214,6 @@
           </button>
           <button class="chip" data-filter="api" id="filterAPI">APIs</button>
         </div>
-      </div>
-
       <div class="project-grid" id="projectGrid"></div>
 
       <div class="no-results" id="noResults">

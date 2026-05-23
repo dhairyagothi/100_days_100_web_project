@@ -212,22 +212,20 @@ const PROJECT_DATA = [
   ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
   ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
-  ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
+   ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
   ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
-
-
-  ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
+  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
-  
-
   ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
-  
-  
   ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
   ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
+  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
+  ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', 'react typescript game hangman vite', 'advanced'],
+  ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
+  ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
 ];
 const PROJECTS = PROJECT_DATA;
 
@@ -388,49 +386,52 @@ const CATEGORY_LABEL = {
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
-  try {
-    const [repoRes, prRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`).catch(() => null),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`).catch(() => null),
-    ]);
 
-    const repo = repoRes && repoRes.ok ? await repoRes.json() : null;
-    const prs = prRes && prRes.ok ? await prRes.json() : null;
-    const prCount = Number.isFinite(prs?.total_count) ? prs.total_count : null;
-
-    const setNumber = (id, val) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const numericVal = Number(val);
-      if (!Number.isFinite(numericVal)) return;
-      el.textContent = numericVal.toLocaleString();
+    const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
     };
 
-    if (repo) {
-      setNumber('starCount', repo.stargazers_count);
-      setNumber('forkCount', repo.forks_count);
-      const issueCount = prCount !== null ? repo.open_issues_count - prCount : repo.open_issues_count;
-      if (issueCount < 0) {
-        console.warn('GitHub stats issue count negative:', {
-          openIssues: repo.open_issues_count,
-          prCount,
-        });
-      }
-      setNumber('issueCount', Math.max(issueCount, 0));
-    }
+    const setFallback = () => {
+        set('starCount', 'N/A');
+        set('forkCount', 'N/A');
+        set('issueCount', 'N/A');
+        set('prCount', 'N/A');
+    };
 
-    if (prCount !== null) {
-      setNumber('prCount', prCount);
-    }
+    try {
 
-    if (!repo && !prs) {
-      console.warn('GitHub stats unavailable: Stats fetch failed');
+        // Optional loading state
+        set('starCount', 'Loading...');
+        set('forkCount', 'Loading...');
+        set('issueCount', 'Loading...');
+        set('prCount', 'Loading...');
+
+        const [repoRes, prRes] = await Promise.all([
+            fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
+            fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+        ]);
+
+        if (!repoRes.ok || !prRes.ok) {
+            throw new Error("GitHub API request failed");
+        }
+
+        const repo = await repoRes.json();
+        const prs = await prRes.json();
+
+        set('starCount', repo.stargazers_count.toLocaleString());
+        set('forkCount', repo.forks_count.toLocaleString());
+        set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
+        set('prCount', prs.total_count.toLocaleString());
+
+    } catch (e) {
+
+        console.warn("GitHub stats unavailable:", e.message);
+
+        // Show fallback text instead of permanent dashes
+        setFallback();
     }
-  } catch (e) {
-    console.warn('GitHub stats unavailable:', e.message);
-  }
 }
-
 function generateReadme() {
   try {
     const lines = [];
@@ -463,6 +464,7 @@ function generateReadme() {
    ============================================================ */
 let activeFilter = 'all';
 let searchQuery = '';
+let sortOption = 'default';
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
@@ -483,6 +485,32 @@ function renderGrid() {
 
     return matchesFilter && matchesSearch && matchesTech;
   });
+  if (sortOption === 'az') {
+  filtered.sort((a, b) => a[1].localeCompare(b[1]));
+}
+
+if (sortOption === 'latest') {
+  filtered.sort((a, b) => {
+    const dayA = parseInt(a[0].replace('Day ', ''));
+    const dayB = parseInt(b[0].replace('Day ', ''));
+    return dayB - dayA;
+  });
+}
+
+if (sortOption === 'difficulty') {
+  const difficultyOrder = {
+    beginner: 1,
+    intermediate: 2,
+    advanced: 3
+  };
+
+  filtered.sort((a, b) => {
+    return (
+      difficultyOrder[a[4].toLowerCase()] -
+      difficultyOrder[b[4].toLowerCase()]
+    );
+  });
+}
 
   grid.innerHTML = '';
 
@@ -852,6 +880,8 @@ if (recentToggleBtn) {
 
 function showToast(message) {
   const toast = document.getElementById('toast');
+  if (!toast) return;
+
   toast.textContent = message;
   toast.classList.add('show');
 
@@ -867,6 +897,8 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   const projectDay = bookmarkBtn.dataset.id;
   const project = PROJECTS.find((item) => item[0] === projectDay);
+  if (!project) return;
+
   toggleBookmark(project);
 });
 
@@ -910,7 +942,17 @@ function initSearch() {
     renderGrid();
   });
 }
+function initSorting() {
+  const sortSelect = document.getElementById('sortProjects');
 
+  if (!sortSelect) return;
+
+  sortSelect.addEventListener('change', (e) => {
+    sortOption = e.target.value;
+    currentPage = 1;
+    renderGrid();
+  });
+}
 /* ============================================================
    TECH STACK SEARCH INITIALIZATION
    ============================================================ */
@@ -1122,25 +1164,77 @@ function initScrollBtn() {
 /* ============================================================
    INIT
    ============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  getAllTechnologies();
+function hasProjectGrid() {
+  return Boolean(document.getElementById('projectGrid'));
+}
 
+document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   updateNavbar();
+
   initFilterChips();
   initSearch();
-  initTechStackSearch(); // Initialize tech stack search
+  initSorting();
+  initTechStackSearch();
+
   syncProjectCounts();
-  renderGrid();
-  renderBookmarks();
-  renderRecentProjects();
   fetchRepoStats();
   initScrollBtn();
+
+  if (hasProjectGrid()) {
+    initFilterChips();
+    initSearch();
+    initTechStackSearch();
+    renderGrid();
+    renderBookmarks();
+    renderRecentProjects();
+  }
 });
+
+
+
+(() => {
+    const initDirectMobileMenu = () => {
+        const menuToggle = document.getElementById('menuToggle');
+        const navButtons = document.getElementById('navButtons');
+
+        if (!menuToggle || !navButtons) return;
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuToggle.classList.toggle('active');
+            navButtons.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navButtons.classList.remove('active');
+            }
+        });
+
+        navButtons.addEventListener('click', (e) => {
+            if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+                menuToggle.classList.remove('active');
+                navButtons.classList.remove('active');
+            }
+        });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+    } else {
+        initDirectMobileMenu();
+    }
+})();
+
+
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
-  renderGrid();
+  if (hasProjectGrid()) {
+    renderGrid();
+  }
 });
 
 /* ============================================================
