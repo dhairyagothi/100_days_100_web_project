@@ -697,8 +697,6 @@ body.light-mode .navbar {
   align-items: center;
   gap: 10px;
   width: 100%;
-  max-width: 650px;
-  flex-wrap: wrap;
 }
 
 #sortProjects {
@@ -712,11 +710,26 @@ body.light-mode .navbar {
   cursor: pointer;
   outline: none;
   flex-shrink: 0;
+  margin-left: 12px;
 }
 
 #sortProjects option {
   background: #111827;
   color: #ffffff;
+}
+
+
+.clear-btn {
+  position: absolute;
+  right: 200px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
 }
 
 .search-icon {
@@ -762,27 +775,21 @@ body.light-mode .navbar {
   margin-top: 1rem;
 }
 
-.clear-filter-btn {
+.clear-btn {
   position: absolute;
-  right: 12px;
-  top: 50%;
+  right: 170px;
+  top: 21px;
   transform: translateY(-50%);
-  background: none;
+  background: transparent;
   border: none;
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  font-size: 18px;
   cursor: pointer;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s var(--ease);
-  z-index: 10;
-  border-radius: 4px;
+  z-index: 5;
 }
 
-.clear-filter-btn:hover {
-  color: var(--accent);
-  background: var(--accent-dim);
+.clear-btn:hover {
+  color: var(--text-primary);
 }
 
 /* Active tech filters display */
