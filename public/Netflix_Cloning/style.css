@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* Dynamic CSS Transitions and Dark Style Layouts */
+:root {
+  --netflix-red: #E50914;
+  --bg-color: #141414;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: #ffffff;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2b2b2b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3e3e3e;
+}
+
+/* Hide horizontal scrollbar but support scrolling on Rows */
+.row-scroll-container {
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.row-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Semi-transparent blur gradients for full theater immersion */
+.netflix-gradient-bottom {
+  background: linear-gradient(0deg, rgba(20,20,20,1) 0%, rgba(20,20,20,0.85) 20%, rgba(20,20,20,0.4) 60%, rgba(20,20,20,0) 100%);
+}
+
+.hero-gradient {
+  background: linear-gradient(77deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 85%), linear-gradient(0deg, rgba(20,20,20,1) 0%, rgba(20,20,20,0) 30%);
+}
+
+.nav-gradient {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+}
+
+/* Netflix card zoom effect with hardware acceleration */
+.netflix-card-zoom {
+  background: linear-gradient(135deg, #232323 0%, #0c0c0c 100%);
+  border-radius: 4px;
+  border: 1px solid #2b2b2b;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.netflix-card-zoom:hover {
+  transform: scale(1.08);
+  border-color: #444;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+  z-index: 50;
+}
+
+/* Animation Classes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Set up Space Grotesk font for Headings */
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Subtitle overlay styling */
+.subtitle-text {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.7);
+}
+
+/* Custom progress slider */
+input[type="range"] {
+  accent-color: var(--netflix-red);
+}
+
+/* Profile selection customization circles */
+.profile-smiley {
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
