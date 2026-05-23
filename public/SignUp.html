@@ -77,6 +77,7 @@
                 class="form-input"
                 required
               />
+              <p class="form-error" id="passwordError"></p>
             </div>
 
             <button type="submit" class="button home-btn signup-btn">
@@ -115,9 +116,12 @@
           const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
 
           if (!passwordRegex.test(password)) {
-            alert(
-              "Password must contain:\n- 1 uppercase letter\n- 1 number\n- 1 special character\n- Minimum 6 characters",
-            );
+            document.getElementById("passwordError").innerHTML = `
+                * Password must be at least 6 characters long <br>
+                * Include an uppercase letter <br>
+                * Include a number <br>
+                * Include a special character
+                `;
             return;
           }
 
