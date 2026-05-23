@@ -55,6 +55,9 @@
         </ul>
       </div>
       <div class="navbar-right">
+        <button id = "themeToggle">
+           <i class="fa-solid fa-moon"></i>
+        </button>
         <div class="online">
           <img
             src="images/user-2.png"
@@ -445,6 +448,12 @@
           moreLink.innerHTML = "Show More <b>+</b>";
         }
       }
+
+      const themeToggle = document.getElementById("themeToggle");
+
+        themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+      });
     </script>
   </body>
 </html>
