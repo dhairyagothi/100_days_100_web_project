@@ -6,39 +6,12 @@
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Forces equal vertical alignment matching on the cards and their contents */
         @media (min-width: 992px) {
-            .main-layout {
-                display: flex !important;
-                align-items: stretch !important; /* Forces uniform vertical card stretching */
-                gap: 24px; 
-            }
-            .content-card.form-section {
-                flex: 0 0 420px !important;     /* Increased from 350px for a bit more room */
-                max-width: 450px !important;    /* Increased from 380px */
-                margin: 0 !important;
-                height: auto !important;         /* Cancels out fit-content block from stylesheet */
-                display: flex !important;        
-                flex-direction: column !important;
-            }
-            .content-card.summary-section {
-                flex: 1 !important;             /* Let the summary panel stretch horizontally */
-                margin: 0 !important;
-                height: auto !important;
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            
-            /* Structural alignment mechanics to flush card bottoms identically */
-            #transactionForm {
-                display: flex !important;
-                flex-direction: column !important;
-                flex-grow: 1 !important;         /* Stretches form internally to fill card bottom space */
-            }
-            /* Pushes the primary action button exactly to the matching bottom floor */
-            #transactionForm .btn-primary {
-                margin-top: auto !important;     /* Locks button flush against the baseline */
-            }
+            .main-layout { display: flex !important; align-items: stretch !important; gap: 24px; }
+            .content-card.form-section { flex: 0 0 420px !important; max-width: 450px !important; margin: 0 !important; height: auto !important; display: flex !important; flex-direction: column !important; }
+            .content-card.summary-section { flex: 1 !important; margin: 0 !important; height: auto !important; display: flex !important; flex-direction: column !important; }
+            #transactionForm { display: flex !important; flex-direction: column !important; flex-grow: 1 !important; }
+            #transactionForm .btn-primary { margin-top: auto !important; }
         }
     </style>
 </head>
@@ -49,17 +22,15 @@
                 <h1>Expense <span class="logo-accent">Tracker</span></h1>
                 <p class="logo-subtext">Your money, kept simple.</p>
             </div>
-            
             <div class="header-controls">
                 <nav class="nav-links-group">
                     <a href="index.html" class="nav-link active">Transactions</a>
                     <a href="dashboard.html" class="nav-link">Dashboard</a>
-                    <a href="history.html" class="nav-link">History Log</a>
+                    <a href="history.html" class="nav-link">History <span class="nav-badge" data-badge="count">0</span></a>
                 </nav>
-                
                 <div class="utility-buttons">
-                    <button id="btnExport" class="btn-secondary" aria-label="Copy backup pack">Backup</button>
-                    <button id="btnReset" class="btn-danger" aria-label="Reset database data">Clear All</button>
+                    <button id="btnExport" class="btn-secondary">Backup</button>
+                    <button id="btnReset" class="btn-danger">Clear All</button>
                 </div>
             </div>
         </header>
@@ -80,38 +51,33 @@
                             <span class="error-msg" id="dateError"></span>
                         </div>
                     </div>
-
                     <div class="form-input-group">
                         <label>Transaction Type *</label>
                         <div class="radio-switcher">
                             <input type="radio" id="type-expense" name="type" value="Expense" checked required>
-                            <label for="type-expense" class="switch-label">Expense (Spent)</label>
-                            
+                            <label for="type-expense" class="switch-label">💸 Expense</label>
                             <input type="radio" id="type-income" name="type" value="Income" required>
-                            <label for="type-income" class="switch-label">Income (Earned)</label>
+                            <label for="type-income" class="switch-label">💰 Income</label>
                         </div>
                     </div>
-
                     <div class="form-input-group" id="categoryGroup">
                         <label for="category">Category *</label>
                         <select id="category" required>
                             <option value="">Select a category...</option>
-                            <option value="Food">Food & Dining</option>
-                            <option value="Travel">Travel & Fuel</option>
-                            <option value="Shopping">Shopping & Clothes</option>
-                            <option value="Bills">Bills & Rent</option>
-                            <option value="Others">Others</option>
+                            <option value="Food">🍔 Food &amp; Dining</option>
+                            <option value="Travel">🚗 Travel &amp; Fuel</option>
+                            <option value="Shopping">🛍️ Shopping &amp; Clothes</option>
+                            <option value="Bills">🏠 Bills &amp; Rent</option>
+                            <option value="Others">📦 Others</option>
                         </select>
                         <span class="error-msg" id="categoryError"></span>
                     </div>
-
                     <div class="form-input-group">
                         <label for="description">Description *</label>
-                        <input type="text" id="description" placeholder="What was this for? e.g., Grocery" required>
+                        <input type="text" id="description" placeholder="What was this for? e.g., Grocery run" required>
                         <span class="error-msg" id="descriptionError"></span>
                     </div>
-
-                    <button type="submit" class="btn-primary">Add to My List</button>
+                    <button type="submit" class="btn-primary">+ Add to My List</button>
                 </form>
             </main>
 
@@ -139,7 +105,6 @@
                         <div id="savingsRate" class="stat-number text-blue">0.0%</div>
                     </div>
                 </div>
-
                 <div class="visual-chart-box">
                     <div class="donut-visual">
                         <svg viewBox="0 0 42 42" class="svg-circle" aria-hidden="true">
@@ -151,36 +116,45 @@
                             <small id="highestExpenseName">Top Category</small>
                         </div>
                     </div>
-
                     <div class="progress-bars-container" id="categoriesList">
                         <div class="progress-bar-item" data-category="Food">
-                            <div class="progress-text"><span>Food & Dining</span><span id="cat-Food">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #38BDF8;"></div></div>
+                            <div class="progress-text"><span>🍔 Food &amp; Dining</span><span id="cat-Food">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#38BDF8;"></div></div>
                         </div>
                         <div class="progress-bar-item" data-category="Travel">
-                            <div class="progress-text"><span>Travel & Fuel</span><span id="cat-Travel">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #FB923C;"></div></div>
+                            <div class="progress-text"><span>🚗 Travel &amp; Fuel</span><span id="cat-Travel">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#FB923C;"></div></div>
                         </div>
                         <div class="progress-bar-item" data-category="Shopping">
-                            <div class="progress-text"><span>Shopping & Clothes</span><span id="cat-Shopping">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #F43F5E;"></div></div>
+                            <div class="progress-text"><span>🛍️ Shopping &amp; Clothes</span><span id="cat-Shopping">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#F43F5E;"></div></div>
                         </div>
                         <div class="progress-bar-item" data-category="Bills">
-                            <div class="progress-text"><span>Bills & Rent</span><span id="cat-Bills">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #34D399;"></div></div>
+                            <div class="progress-text"><span>🏠 Bills &amp; Rent</span><span id="cat-Bills">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#34D399;"></div></div>
                         </div>
                         <div class="progress-bar-item" data-category="Others">
-                            <div class="progress-text"><span>Others</span><span id="cat-Others">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #A78BFA;"></div></div>
+                            <div class="progress-text"><span>📦 Others</span><span id="cat-Others">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width:0%;background-color:#A78BFA;"></div></div>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
+
+        <section class="content-card recent-section">
+            <div class="recent-header">
+                <h2>Recent Transactions</h2>
+                <a href="history.html">View all →</a>
+            </div>
+            <div class="recent-list" id="recentList">
+                <div class="recent-empty">No transactions yet. Add your first entry above!</div>
+            </div>
+        </section>
     </div>
 
-    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌓</button>
-
+    <div id="toast-container"></div>
+    <button id="themeToggle" class="floating-theme-btn">🌓</button>
     <script src="expense.js" defer></script>
 </body>
 </html>
