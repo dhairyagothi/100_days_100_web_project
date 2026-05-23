@@ -25,16 +25,14 @@
             <!-- Username -->
              <div>
             <label for="username">Username</label>
-            <input type="text" placeholder="Enter Your Username Here" name="username" id="username" required>
-            </div>
+            <input type="text" placeholder="Enter Your Username Here" name="username" id="username" autocomplete="username" required>
+
+            <br><br>
+
             <!-- Password -->
-             <div>
-            <label for="pswrd">Password</label>
-            <div class="password-container">
-             <input type="password" placeholder="Enter Your Password Here" name="password" id="password" required>
-             <span class="toggle-password" onclick="togglePassword('password', this)"> <i class="fa-solid fa-eye"></i></span>
-            </div>
-            </div>
+            <label for="password">Password</label>
+            <input type="password" placeholder="Enter Your Password Here" name="password" id="password" required autocomplete="current-password">
+
             <!-- sub-container for the checkbox and forgot password link -->
             <div class="subcontainer">
                 <label>
@@ -104,7 +102,27 @@
     }
 }
 
+    
+    document.addEventListener("DOMContentLoaded", () => {
 
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", () => {
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePassword.textContent = "🙈";
+        } else {
+            passwordInput.type = "password";
+            togglePassword.textContent = "👁️";
+        }
+
+    });
+
+});
+
+    
 </script>
 
 </html>
