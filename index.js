@@ -230,6 +230,7 @@ const PROJECT_DATA = [
   ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
   ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
   ['Day 155', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
+  ['Day 156', 'Invoice / Bill Generator', './public/Day156_Invoice_Generator/index.html', 'tool javascript', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
