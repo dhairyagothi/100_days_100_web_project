@@ -1,60 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Tracker</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <div class="main-container">
-        <div class="container">
-            <h1>Budget Tracker</h1>
-            <div class="budget-summary">
-                <h3>Main Salary: <span id="main-salary">₹0.00</span></h3>
-                <h3>Remaining Budget: <span id="remaining-budget">₹0.00</span></h3>
+  <div class="main">
+
+    <!-- HEADER -->
+    <header class="header">
+      <h1 class="main-heading">Expense Tracker</h1>
+
+      <div class="mode-toggle">
+        <input type="checkbox" class="mode" />
+        <button id="resetBtn">Reset</button>
+      </div>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <div class="main-layout">
+
+      <!-- ADD TRANSACTION -->
+      <section class="add-data">
+        <h3>Add Transaction</h3>
+
+        <form class="add-transaction">
+          <input type="number" id="amt" placeholder="Amount" required />
+          <input type="text" id="desc" placeholder="Description" required />
+
+          <!-- values MUST be lowercase -->
+          <select id="cat" required>
+            <option value="">Select Category</option>
+            <option value="food">Food</option>
+            <option value="travel">Travel</option>
+            <option value="shopping">Shopping</option>
+            <option value="income">Income</option>
+            <option value="other">Others</option>
+          </select>
+
+          <input type="date" id="date" required />
+          <input type="submit" value="Add Transaction" />
+        </form>
+      </section>
+
+      <!-- INSIGHTS -->
+      <section class="insights">
+        <h3>Monthly Insights</h3>
+        <div class="insights-body">
+          <div class="insight-card">
+            <span class="insight-icon">🔥</span>
+            <div class="insight-info">
+              <p class="insight-label">Highest Spending Category</p>
+              <p class="insight-value" id="highest-spending-cat">None</p>
             </div>
-            <form id="budget-form">
-                <input type="number" id="input-salary" placeholder="Enter Main Salary (₹)">
-                <input type="text" id="input-description" placeholder="Enter Description">
-                <input type="number" id="input-amount" placeholder="Enter Amount (₹)">
-                <select id="input-category">
-                    <option value="">Select Category</option>
-                    <option value="Food">Food</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Custom">Custom</option>
-                </select>
-                <input type="text" id="custom-category" placeholder="Enter Custom Category" style="display: none;">
-                <button type="submit">Add Expense</button>
-            </form>
-            <div class="expense-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Amount (₹)</th>
-                            <th>Category</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="expense-list">
-                        <!-- Expense items will be dynamically added here -->
-                    </tbody>
-                </table>
+          </div>
+          
+          <div class="insight-card">
+            <span class="insight-icon">💡</span>
+            <div class="insight-info">
+              <p class="insight-label">Smart Suggestion</p>
+              <p class="insight-value" id="smart-suggestion">Add transactions to generate suggestions.</p>
             </div>
+          </div>
+
+          <div class="insight-card">
+            <span class="insight-icon">📈</span>
+            <div class="insight-info">
+              <p class="insight-label">Financial Status</p>
+              <p class="insight-value" id="financial-status">No data available</p>
+            </div>
+          </div>
         </div>
-        <div class="container graphs-container">
-            <h1>Budget Analysis</h1>
-            <div class="charts">
-                <canvas id="category-chart" width="400" height="400"></canvas>
-                <canvas id="trend-chart" width="400" height="400"></canvas>
-            </div>
+      </section>
+
+      <!-- SUMMARY -->
+      <section class="summary">
+
+        <!-- ACCOUNT BALANCE -->
+        <div class="acc-balance">
+          <p class="label">Account Balance</p>
+          <p class="amount" id="curramt">₹0</p>
         </div>
+
+        <div class="summary-body">
+
+          <!-- LEFT COLUMN -->
+          <div class="summary-left">
+
+            <!-- INCOME & EXPENSE -->
+            <div class="income-expense">
+              <div class="income">
+                <p class="label">Total Income</p>
+                <p class="amount" id="income">₹0</p>
+              </div>
+
+              <div class="expense">
+                <p class="label">Total Expenses</p>
+                <p class="amount" id="expense">₹0</p>
+              </div>
+            </div>
+
+            <!-- MONTHLY BUDGET -->
+            <div class="monthly-budget">
+              <div class="budget-header">
+                <p class="label">Monthly Budget</p>
+                <input type="number" id="budgetInput" placeholder="Set Budget" />
+              </div>
+
+              <p class="amount" id="budget">₹0 / ₹0</p>
+
+              <div class="progress-bar">
+                <div class="progress-fill"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CATEGORY BREAKDOWN -->
+          <div class="category-breakdown">
+            <h3>Category Breakdown</h3>
+            <p>Food <span data-cat="food">₹0</span></p>
+            <p>Travel <span data-cat="travel">₹0</span></p>
+            <p>Shopping <span data-cat="shopping">₹0</span></p>
+            <p>Others <span data-cat="other">₹0</span></p>
+          </div>
+
+        </div>
+      </section>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <!-- RECENT TRANSACTIONS -->
+    <section class="recent-activity">
+      <h3>Recent Transactions</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="transaction-list"></tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

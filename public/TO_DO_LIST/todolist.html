@@ -1,61 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To-Do List | 100 Days 100 Projects</title>
-    <link rel="stylesheet" href="todolist.css" />
-    <script
-      src="https://kit.fontawesome.com/f30fac2c61.js"
-      crossorigin="anonymous"
-    ></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  </head>
-  <body>
-    <nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List | 100 Days 100 Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="todolist.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <!-- Floating decorative shapes -->
+  <div class="floating-shapes" aria-hidden="true">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <!-- Header with Navigation -->
+  <header>
+    <nav aria-label="Main navigation">
       <ul class="navbar">
-        <div class="nav-left">
-          <li ><a href="#" onclick="showHome()">Home</a></li>
-          <li><a href="#" onclick="showDocuments()">Documents</a></li>
-        </div>
-        <div class="nav-right">
-          <li><button id="colour1" onclick="c1()"></button></li>
-          <li><button id="colour2" onclick="c2()"></button></li>
-          <li><button id="colour3" onclick="c3()"></button></li>
-          <li><button id="colour4" onclick="c4()"></button></li>
-          <li><button id="colour5" onclick="c5()"></button></li>
-        </div>
+        <li class="nav-left">
+          <ul>
+            <li><a href="#" id="nav-home" aria-current="page">🏠 Home</a></li>
+            <li><a href="#" id="nav-documents">📄 Documents</a></li>
+          </ul>
+        </li>
+        <li class="nav-right">
+          <span class="theme-label">Theme</span>
+          <ul>
+            <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1"></button></li>
+            <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button></li>
+            <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button></li>
+            <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button></li>
+            <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button></li>
+          </ul>
+        </li>
       </ul>
     </nav>
-    <main class="main">
-      <div id="home-tab">
-        <div class="heading">JUST DO IT.</div>
-        <div class="buttons"> 
-          <div>
-            <button onclick="Add()" id="submittask">Add a task!</button>
-            <!-- <select id="tasktype" >
-              <option value="task1">Work</option>
-              <option value="task2">School</option>
-              <option value="task3">Personal</option>
-              <option value="task4">Fitness</option>
-            </select> -->
-          </div> 
-          
-          <button onclick="saveAsPDF()" id="savepdf">Save as PDF</button>
-        </div>
-        <div id="notes-container"></div>
-        <div class="container">
-        </div>
-      </div>
-      <div id="documents-tab" style="display: none">
-        <div class="heading">Saved Documents</div>
-        <div class="documents-list"></div>
-      </div>
-    </main>
-    
-    <div id="pdfMessage" class="pdf-message">PDF Created Successfully!</div>
+  </header>
 
-    <script src="todolist.js"></script>
-  </body>
+  <!-- Main Content -->
+  <main>
+    <!-- Home Section -->
+    <section id="home-tab" aria-label="Home tab">
+      <div class="hero">
+        <div class="hero-badge">🚀 Stay Productive</div>
+        <h1 class="heading home-heading">JUST DO IT.</h1>
+        <p class="hero-subtitle">Organise your day, conquer your goals.</p>
+        <!-- Progress bar -->
+        <div class="progress-wrapper" id="progressWrapper">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressFill"></div>
+          </div>
+          <output class="progress-text" id="progressText">0 / 0 done</output>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <form class="input-panel" id="task-form" novalidate>
+        <div class="input-group">
+          <label for="task-category" class="sr-only">Choose task category</label>
+          <select id="task-category" aria-label="Choose task category">
+            <option value="" disabled selected>📂 Category</option>
+            <option value="Work">💼 Work</option>
+            <option value="Personal">🧑 Personal</option>
+            <option value="Urgent">⚡ Urgent</option>
+            <option value="Fitness">💪 Fitness</option>
+            <option value="Miscellaneous">📌 Miscellaneous</option>
+          </select>
+          <label for="task" class="sr-only">Task description</label>
+          <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
+          <button type="submit" id="submittask">➕ Add Task</button>
+        </div>
+        <div class="input-actions">
+          <button type="button" id="savepdf">📥 Save as PDF</button>
+        </div>
+      </form>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState" role="status">
+        <div class="empty-icon" aria-hidden="true">📋</div>
+        <p class="empty-title">No tasks yet</p>
+        <p class="empty-desc">Add your first task above and get things done!</p>
+      </div>
+
+      <!-- Task List Container -->
+      <ul id="notes-container" aria-label="Task list"></ul>
+    </section>
+
+    <!-- Documents Section -->
+    <section id="documents-tab" aria-label="Documents tab" hidden>
+      <div class="documents-header">
+        <h2 class="heading">📂 Saved Documents</h2>
+      </div>
+      <div class="empty-state" id="emptyDocsState" role="status">
+        <div class="empty-icon" aria-hidden="true">📄</div>
+        <p class="empty-title">No saved documents</p>
+        <p class="empty-desc">Save your to-do list as a PDF to see it here.</p>
+      </div>
+      <ul class="documents-list" aria-label="Saved documents"></ul>
+    </section>
+  </main>
+
+  <!-- PDF Notification -->
+  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite">✅ PDF Created Successfully!</div>
+
+  <script src="todolist.js"></script>
+</body>
 </html>

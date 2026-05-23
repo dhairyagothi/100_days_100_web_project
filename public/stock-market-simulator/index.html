@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Trading Simulator</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav-content">
+        <h1>
+          <i class="fa-solid fa-chart-line"></i> <span>Stock</span> Trading
+          Simulator
+        </h1>
+        <div class="nav-actions">
+          <button id="themeToggle" class="icon-btn">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <!-- STATS -->
+      <div class="stats">
+        <div class="stat stat-balance">
+          <div class="stat-icon">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
+          <div class="stat-content">
+            <p>Available Balance</p>
+            <h2 id="balance">₹100000</h2>
+          </div>
+        </div>
+        <div class="stat stat-portfolio">
+          <div class="stat-icon">
+            <i class="fa-solid fa-briefcase"></i>
+          </div>
+          <div class="stat-content">
+            <p>Portfolio Value</p>
+            <h2 id="portfolioValue">₹0</h2>
+          </div>
+        </div>
+        <div class="stat stat-profit">
+          <div class="stat-icon">
+            <i class="fa-solid fa-chart-simple"></i>
+          </div>
+          <div class="stat-content">
+            <p>Total Profit / Loss</p>
+            <h2 id="pl" class="profit">₹0</h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- MARKET -->
+      <div class="card market-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-globe"></i> Market Watch</h2>
+          <div class="market-indicators">
+            <span class="market-trend" id="marketTrend">NEUTRAL</span>
+            <span class="live-indicator"><span class="pulse"></span> Live</span>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Stock</th>
+              <th>Live Price (₹)</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="market"></tbody>
+        </table>
+      </div>
+
+      <!-- MARKET NEWS -->
+      <div class="card news-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-newspaper"></i> Market News</h2>
+        </div>
+        <div id="marketNews" class="news-content">No news yet</div>
+      </div>
+
+      <!-- PORTFOLIO -->
+      <div class="card portfolio-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-layer-group"></i> My Portfolio</h2>
+        </div>
+        <div id="portfolio" class="portfolio-content">No holdings yet</div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="card history-card">
+        <div class="card-header">
+          <h2>
+            <i class="fa-solid fa-clock-rotate-left"></i> Transaction History
+          </h2>
+        </div>
+        <div id="history" class="history-content">No transactions yet</div>
+      </div>
+    </div>
+
+    <footer>© 2026 Stock Trading Simulator – Day 66</footer>
+
+    <script src="marketEngine.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
