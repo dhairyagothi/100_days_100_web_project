@@ -7,6 +7,89 @@ let audioCtx = null;
 let paperContent = "";
 let capsLockEnabled = false;
 let soundEnabled = true;
+let isSymbolMode = false;
+const symbolLayout = {
+    q: "!",
+    w: "@",
+    e: "#",
+    r: "$",
+    t: "%",
+    y: "^",
+    u: "&",
+    i: "*",
+    o: "(",
+    p: ")",
+    a: "-",
+    s: "_",
+    d: "+",
+    f: "=",
+    g: "[",
+    h: "]",
+    j: "{",
+    k: "}",
+    l: ":",
+    z: ";",
+    x: "'",
+    c: "\"",
+    v: ",",
+    b: ".",
+    n: "/",
+    m: "?"
+};
+const normalKeys = {
+    q: "Q",
+    w: "W",
+    e: "E",
+    r: "R",
+    t: "T",
+    y: "Y",
+    u: "U",
+    i: "I",
+    o: "O",
+    p: "P",
+
+    a: "A",
+    s: "S",
+    d: "D",
+    f: "F",
+    g: "G",
+    h: "H",
+    j: "J",
+    k: "K",
+    l: "L",
+
+    z: "Z",
+    x: "X",
+    c: "C",
+    v: "V",
+    b: "B",
+    n: "N",
+    m: "M"
+};
+function updateKeyboardLayout() {
+
+    document.querySelectorAll(".key").forEach((key) => {
+
+        const originalChar = key.getAttribute("data-original");
+
+        if (!originalChar) return;
+
+        if (symbolLayout[originalChar]) {
+
+            if (isSymbolMode) {
+
+                key.textContent = symbolLayout[originalChar];
+                key.dataset.char = symbolLayout[originalChar];
+
+            } else {
+
+                key.textContent = normalKeys[originalChar];
+                key.dataset.char = originalChar;
+
+            }
+        }
+    });
+}
 function getAudioCtx() {
     if (!audioCtx) {
         try {
@@ -202,11 +285,15 @@ function handleButtonPress(char) {
     }
 
     if (isLetter(char)) {
-        insertText(transformLetter(char, false));
-        userInput.focus();
-        return;
-    }
+    insertText(transformLetter(char, false));
+    userInput.focus();
+    return;
+}
 
+insertText(char);
+userInput.focus();
+
+    
     insertText(char);
     userInput.focus();
 }
@@ -337,6 +424,21 @@ if (savedSound === "off") {
     soundEnabled = false;
     soundToggle.textContent = "🔇";
 }
+const modeToggle = document.getElementById("modeToggle");
+document.querySelectorAll(".key").forEach((key) => {
+
+    if (key.dataset.char) {
+        key.setAttribute("data-original", key.dataset.char);
+    }
+});
+modeToggle.addEventListener("click", () => {
+
+    isSymbolMode = !isSymbolMode;
+
+    modeToggle.textContent = isSymbolMode ? "ABC" : "123";
+
+    updateKeyboardLayout();
+});
 setCapsLockState(false);
 paperContent = userInput.value || "";
 renderPaper();
