@@ -1,171 +1,140 @@
-const qrType = document.getElementById('qr-type');
-const inputText = document.getElementById('inputtext');
-const wifiInputs = document.getElementById('wifi-inputs');
-const vcardInputs = document.getElementById('vcard-inputs');
-const qrColor = document.getElementById('qr-color');
-const qrShape = document.getElementById('qr-shape');
-const errorCorrection = document.getElementById('error-correction');
-const logoUpload = document.getElementById('logo-upload');
-const generateBtn = document.querySelector('.submit');
-const qrcodeDiv = document.getElementById('qrcode');
-const downloadBtn = document.getElementById('download-qr');
-const scanBtn = document.getElementById('scan-qr');
-const qrReader = document.getElementById('qr-reader');
-const qrReaderResults = document.getElementById('qr-reader-results');
-const toggleThemeBtn = document.getElementById('toggle-theme');
+const copyBtn = document.getElementById("copy-btn");
+const message = document.getElementById("message");
 
-let qrcode = null;
+const qrType = document.getElementById("qr-type");
+const themeBtns = document.querySelectorAll(".theme-btn");
+
+const inputText = document.getElementById("inputtext");
+const inputLabel = document.getElementById("main-input-label");
+
+const wifiInputs = document.getElementById("wifi-inputs");
+const vcardInputs = document.getElementById("vcard-inputs");
+
+const qrColor = document.getElementById("qr-color");
+const qrShape = document.getElementById("qr-shape");
+const errorCorrection = document.getElementById("error-correction");
+const logoUpload = document.getElementById("logo-upload");
+
+const generateBtn = document.querySelector(".submit");
+const qrcodeDiv = document.getElementById("qrcode");
+
+const downloadBtn = document.getElementById("download-qr");
+const scanBtn = document.getElementById("scan-qr");
+
+const qrReaderResults = document.getElementById("qr-reader-results");
+const statusMessage = document.getElementById("status-message");
+
+const wifiSSID = document.getElementById("wifi-ssid");
+const wifiPassword = document.getElementById("wifi-password");
+const wifiEncryption = document.getElementById("wifi-encryption");
+
+const vcardName = document.getElementById("vcard-name");
+const vcardPhone = document.getElementById("vcard-phone");
+const vcardEmail = document.getElementById("vcard-email");
+const vcardWebsite = document.getElementById("vcard-website");
+
+let lastGeneratedData = "";
+let currentTheme = "aurora";
+
+const themeColors = {
+    aurora: "#a78bfa",
+    neon: "#00ff88",
+    dark: "#d4d4d4",
+    candy: "#e91e8c"
+};
+
+function setStatus(msg, error = false) {
+    statusMessage.textContent = msg;
+    statusMessage.style.color = error ? "red" : "";
+}
+
+function escapeText(text) {
+    return text.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,");
+}
 
 function updateInputFields() {
-    const selectedType = qrType.value;
-    inputText.style.display = selectedType === 'text' || selectedType === 'url' ? 'block' : 'none';
-    wifiInputs.style.display = selectedType === 'wifi' ? 'block' : 'none';
-    vcardInputs.style.display = selectedType === 'vcard' ? 'block' : 'none';
+    const type = qrType.value;
+
+    inputText.style.display = (type === "text" || type === "url") ? "block" : "none";
+    inputLabel.style.display = (type === "text" || type === "url") ? "block" : "none";
+
+    wifiInputs.style.display = type === "wifi" ? "block" : "none";
+    vcardInputs.style.display = type === "vcard" ? "block" : "none";
 }
 
-qrType.addEventListener('change', updateInputFields);
+function collectQrData() {
+    const type = qrType.value;
+
+    if (type === "text") return { data: inputText.value.trim() };
+    if (type === "url") return { data: inputText.value.trim() };
+
+    if (type === "wifi") {
+        const ssid = wifiSSID.value.trim();
+        const pass = wifiPassword.value;
+        const enc = wifiEncryption.value;
+        return { data: `WIFI:T:${enc};S:${ssid};P:${pass};;` };
+    }
+
+    if (type === "vcard") {
+        return {
+            data:
+`BEGIN:VCARD
+VERSION:3.0
+FN:${vcardName.value}
+TEL:${vcardPhone.value}
+EMAIL:${vcardEmail.value}
+URL:${vcardWebsite.value}
+END:VCARD`
+        };
+    }
+
+    return { error: "Invalid type" };
+}
 
 function generateQRCode() {
-    qrcodeDiv.innerHTML = '';
-    const selectedType = qrType.value;
-    let data = '';
+    qrcodeDiv.innerHTML = "";
 
-    switch (selectedType) {
-        case 'text':
-        case 'url':
-            data = inputText.value;
-            break;
-        case 'wifi':
-            const ssid = document.getElementById('wifi-ssid').value;
-            const password = document.getElementById('wifi-password').value;
-            const encryption = document.getElementById('wifi-encryption').value;
-            data = `WIFI:T:${encryption};S:${ssid};P:${password};;`;
-            break;
-        case 'vcard':
-            const name = document.getElementById('vcard-name').value;
-            const phone = document.getElementById('vcard-phone').value;
-            const email = document.getElementById('vcard-email').value;
-            const website = document.getElementById('vcard-website').value;
-            data = `BEGIN:VCARD\nVERSION:3.0\nN:${name}\nTEL:${phone}\nEMAIL:${email}\nURL:${website}\nEND:VCARD`;
-            break;
+    const result = collectQrData();
+    if (result.error) {
+        setStatus(result.error, true);
+        return;
     }
 
-    if (data) {
-        qrcode = new QRCode(qrcodeDiv, {
-            text: data,
-            width: 200,
-            height: 200,
-            colorDark: qrColor.value,
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel[errorCorrection.value]
-        });
+    lastGeneratedData = result.data;
 
-        applyQRCodeStyle();
-        addLogoToQRCode();
-    }
+    new QRCode(qrcodeDiv, {
+        text: result.data,
+        width: 200,
+        height: 200,
+        colorDark: qrColor.value,
+        colorLight: "#fff",
+        correctLevel: QRCode.CorrectLevel[errorCorrection.value]
+    });
+
+    setStatus("QR generated");
 }
 
-function applyQRCodeStyle() {
-    const modules = qrcodeDiv.getElementsByTagName('img')[0];
-    modules.style.borderRadius = qrShape.value === 'rounded' ? '15px' : '0';
-    
-    if (qrShape.value === 'dots') {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = modules.width;
-        canvas.height = modules.height;
-        ctx.drawImage(modules, 0, 0);
-        
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        
-        for (let i = 0; i < data.length; i += 4) {
-            const x = (i / 4) % canvas.width;
-            const y = Math.floor((i / 4) / canvas.width);
-            
-            if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) {
-                ctx.beginPath();
-                ctx.arc(x + 0.5, y + 0.5, 0.4, 0, Math.PI * 2);
-                ctx.fillStyle = qrColor.value;
-                ctx.fill();
-            }
-        }
-        
-        modules.src = canvas.toDataURL();
-    }
-}
+qrType.addEventListener("change", updateInputFields);
 
-function addLogoToQRCode() {
-    const file = logoUpload.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const logo = new Image();
-            logo.src = e.target.result;
-            logo.onload = function() {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const qrImage = qrcodeDiv.getElementsByTagName('img')[0];
-                
-                canvas.width = qrImage.width;
-                canvas.height = qrImage.height;
-                ctx.drawImage(qrImage, 0, 0);
-                
-                const logoSize = canvas.width * 0.2;
-                const logoX = (canvas.width - logoSize) / 2;
-                const logoY = (canvas.height - logoSize) / 2;
-                ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
-                
-                qrImage.src = canvas.toDataURL();
-            };
-        };
-        reader.readAsDataURL(file);
-    }
-}
+generateBtn.addEventListener("click", generateQRCode);
 
-generateBtn.addEventListener('click', generateQRCode);
-qrColor.addEventListener('change', generateQRCode);
-qrShape.addEventListener('change', generateQRCode);
-errorCorrection.addEventListener('change', generateQRCode);
-logoUpload.addEventListener('change', generateQRCode);
+downloadBtn.addEventListener("click", () => {
+    const img = qrcodeDiv.querySelector("img");
+    if (!img) return;
 
-downloadBtn.addEventListener('click', function() {
-    if (qrcode) {
-        const qrImage = qrcodeDiv.getElementsByTagName('img')[0];
-        const link = document.createElement('a');
-        link.download = 'qrcode.png';
-        link.href = qrImage.src;
-        link.click();
-    }
+    const a = document.createElement("a");
+    a.download = "qr.png";
+    a.href = img.src;
+    a.click();
 });
 
-scanBtn.addEventListener('click', function() {
-    if (qrReader.style.display === 'none') {
-        qrReader.style.display = 'block';
-        const html5QrCode = new Html5Qrcode("qr-reader");
-        const qrBoxSize = 250;
-        
-        html5QrCode.start(
-            { facingMode: "environment" },
-            {
-                qrbox: qrBoxSize,
-            },
-            (decodedText, decodedResult) => {
-                qrReaderResults.innerHTML = `<p>Decoded QR Code: ${decodedText}</p>`;
-                html5QrCode.stop();
-                qrReader.style.display = 'none';
-            },
-            (errorMessage) => {
-                // console.log(errorMessage);
-            }
-        );
-    } else {
-        qrReader.style.display = 'none';
-    }
+scanBtn.addEventListener("click", () => {
+    qrReaderResults.innerHTML = `<pre>${lastGeneratedData}</pre>`;
 });
 
-toggleThemeBtn.addEventListener('click', function() {
-    document.body.classList.toggle('dark-mode');
+copyBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(inputText.value);
+    message.innerText = "Copied!";
 });
 
 updateInputFields();
