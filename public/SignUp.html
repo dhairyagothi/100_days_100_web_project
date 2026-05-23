@@ -41,6 +41,7 @@
                 type="text"
                 id="name"
                 placeholder="Full Name"
+                aria-label="Full name"
                 class="form-input"
                 required
               />
@@ -52,6 +53,7 @@
                 type="text"
                 id="username"
                 placeholder="Username"
+                aria-label="Username"
                 class="form-input"
                 required
               />
@@ -63,6 +65,7 @@
                 type="email"
                 id="email"
                 placeholder="Email Address"
+                aria-label="Email address"
                 class="form-input"
                 required
               />
@@ -74,10 +77,14 @@
                 type="password"
                 id="password"
                 placeholder="Password"
+                aria-label="Password"
+                minlength="6"
                 class="form-input"
                 required
               />
             </div>
+
+            <div id="signupError" role="alert" aria-live="polite" style="color:#b91c1c; margin-top:0.5rem; display:none"></div>
 
             <button type="submit" class="button home-btn signup-btn">
               Sign Up
@@ -92,22 +99,34 @@
       </div>
     </section>
 
-    <script>
+          <script>
       document
         .getElementById("signupForm")
         .addEventListener("submit", function (event) {
           event.preventDefault();
+
+          const errorEl = document.getElementById('signupError');
+          errorEl.style.display = 'none';
+          errorEl.textContent = '';
 
           const name = document.getElementById("name").value.trim();
           const username = document.getElementById("username").value.trim();
           const email = document.getElementById("email").value.trim();
           const password = document.getElementById("password").value.trim();
 
+          // Basic validation
+          if (!name || !username || !email || !password) {
+            errorEl.textContent = 'Please fill out all fields.';
+            errorEl.style.display = 'block';
+            return;
+          }
+
           // Existing user validation
           const existingUser = localStorage.getItem(username);
 
           if (existingUser) {
-            alert("Username already exists.");
+            errorEl.textContent = 'Username already exists. Choose a different username.';
+            errorEl.style.display = 'block';
             return;
           }
 
@@ -115,9 +134,8 @@
           const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
 
           if (!passwordRegex.test(password)) {
-            alert(
-              "Password must contain:\n- 1 uppercase letter\n- 1 number\n- 1 special character\n- Minimum 6 characters",
-            );
+            errorEl.textContent = 'Password must have at least 6 characters, including 1 uppercase letter, 1 number and 1 special character.';
+            errorEl.style.display = 'block';
             return;
           }
 
@@ -130,9 +148,14 @@
 
           localStorage.setItem(username, JSON.stringify(userData));
 
-          alert("Signup successful!");
+          // Friendly success feedback and redirect
+          errorEl.style.color = '#16a34a';
+          errorEl.textContent = 'Signup successful — redirecting to login...';
+          errorEl.style.display = 'block';
 
-          window.location.href = "Login.html";
+          setTimeout(() => {
+            window.location.href = 'Login.html';
+          }, 900);
         });
     </script>
   </body>
