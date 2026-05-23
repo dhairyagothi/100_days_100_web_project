@@ -1,37 +1,44 @@
-*{
+* {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     color: white;
 }
+
 body {
     background-color: black;
-    overflow: hidden;
+    /* overflow: hidden hata diya — mobile pe scroll band ho jaata tha */
 }
-.main{
+
+.main {
     display: flex;
     height: 100vh;
     padding: 0.5rem;
 }
-.sidebar{
+
+.sidebar {
     width: 340px;
     border-radius: 1rem;
-    margin-right:0.5rem;
+    margin-right: 0.5rem;
     display: flex;
     flex-direction: column;
+    /* Mobile pe sidebar hide hogi — neeche media query mein */
 }
-.main-content{
+
+.main-content {
     background-color: #121212;
     flex: 1;
     border-radius: 1rem;
     overflow: auto;
-    padding: 0 1.5rem 7.5rem 1.5rem; /* bottom music player space overlay fix */
+    padding: 0 1.5rem 7.5rem 1.5rem;
+    /* min-width: 0 — flex child ko crush hone se bachata hai */
+    min-width: 0;
 }
-a{
-    text-decoration: none;
-}
-.nav{
+
+a { text-decoration: none; }
+
+.nav {
     background-color: #121212;
     border-radius: 1rem;
     height: 112px;
@@ -41,24 +48,19 @@ a{
     justify-content: center;
     gap: 1rem;
 }
-.nav-option{
+
+.nav-option {
     display: flex;
     align-items: center;
     gap: 1.25rem;
     opacity: 0.7;
     transition: opacity 0.2s ease;
 }
-.nav-option:hover{
-    opacity: 1;
-}
-.nav-option i{
-    font-size: 1.25rem;
-}
-.nav-option a{
-    font-size: 1rem;
-    font-weight: 600;
-}
-.library{
+.nav-option:hover { opacity: 1; }
+.nav-option i { font-size: 1.25rem; }
+.nav-option a { font-size: 1rem; font-weight: 600; }
+
+.library {
     background-color: #121212;
     border-radius: 1rem;
     flex: 1;
@@ -67,35 +69,32 @@ a{
     display: flex;
     flex-direction: column;
 }
-.options{
+
+.options {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
 }
-.lib-option img{
-    height: 1.25rem;
-    width: 1.25rem;
-}
-.icons{
+
+.lib-option img { height: 1.25rem; width: 1.25rem; }
+
+.icons {
     font-size: 1.1rem;
     display: flex;
     gap: 1rem;
 }
-.icons i{
-    opacity: 0.7;
-    cursor: pointer;
-}
-.icons i:hover{
-    opacity: 1;
-}
-.lib-box{
+.icons i { opacity: 0.7; cursor: pointer; }
+.icons i:hover { opacity: 1; }
+
+.lib-box {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
-.box{
+
+.box {
     background-color: #242424;
     border-radius: 0.75rem;
     padding: 1rem 1.25rem;
@@ -103,7 +102,8 @@ a{
     flex-direction: column;
     gap: 0.5rem;
 }
-.badge{
+
+.badge {
     background-color: white;
     color: black;
     border: none;
@@ -115,41 +115,24 @@ a{
     width: fit-content;
     transition: transform 0.1s ease;
 }
-.badge:hover{
-    transform: scale(1.05);
-}
-.dark-badge{
-    background-color: black;
-    color: white;
-}
-.login-btn {
-    background-color: white;
-    color: black;
-    padding: 0.5rem 1.5rem;
-}
+.badge:hover { transform: scale(1.05); }
+.dark-badge { background-color: black; color: white; }
+
+.login-btn { background-color: white; color: black; padding: 0.5rem 1.5rem; }
+
 .logout-btn-style {
     background-color: transparent;
     color: #a7a7a7;
     border: 1px solid #a7a7a7;
 }
-.logout-btn-style:hover {
-    color: white;
-    border-color: white;
-}
-.user-profile-display {
-    font-weight: 600;
-    margin-right: 0.5rem;
-    color: #1bd760;
-}
-.box-p1{
-    font-size: 0.95rem;
-    font-weight: 700;
-}
-.box-p2{
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-.sticky-nav{
+.logout-btn-style:hover { color: white; border-color: white; }
+
+.user-profile-display { font-weight: 600; margin-right: 0.5rem; color: #1bd760; }
+
+.box-p1 { font-size: 0.95rem; font-weight: 700; }
+.box-p2 { font-size: 0.8rem; font-weight: 500; }
+
+.sticky-nav {
     position: sticky;
     top: 0;
     background-color: #121212;
@@ -159,47 +142,42 @@ a{
     padding: 1rem 0;
     z-index: 10;
 }
-.sticky-nav-icons img{
-     margin-left: 0.5rem;
-     cursor: pointer;
+.sticky-nav-icons img { margin-left: 0.5rem; cursor: pointer; }
+.sticky-nav-options { display: flex; align-items: center; }
+.nav-items { margin-right: 1rem; }
+
+@media (max-width: 1000px) {
+    .hide { display: none; }
 }
-.sticky-nav-options{
-    display: flex;
-    align-items: center;
-}
-.nav-items{
-    margin-right: 1rem;
-}
-@media (max-width:1000px){
-    .hide{
-        display: none;
-    }
-}
-.cards-container{
+
+/* Cards — fixed width hata ke responsive banaya */
+.cards-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
     margin-top: 1rem;
     margin-bottom: 1.5rem;
 }
-.card{
+
+.card {
     background-color: #181818;
-    width: 180px;
+    /* Fixed 180px hata ke — chhoti screen pe overflow hota tha */
+    width: calc(20% - 1.5rem);
+    min-width: 140px;
     border-radius: 0.5rem;
     padding: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-.card:hover{
-    background-color: #282828;
-}
-.card-img{
+.card:hover { background-color: #282828; }
+
+.card-img {
     width: 100%;
     border-radius: 0.5rem;
     margin-bottom: 0.75rem;
     object-fit: cover;
 }
-.card-title{
+.card-title {
     font-weight: 700;
     font-size: 0.95rem;
     margin-bottom: 0.4rem;
@@ -207,7 +185,7 @@ a{
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.card-info{
+.card-info {
     font-size: 0.8rem;
     color: #a7a7a7;
     display: -webkit-box;
@@ -215,20 +193,17 @@ a{
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-.footer{
+
+.footer {
     height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.line{
-    width: 100%;
-    border-top: 1px solid white;
-    opacity: 0.1;
-}
+.line { width: 100%; border-top: 1px solid white; opacity: 0.1; }
 
-/* Bottom Controls Base styling */
-.music-player{
+/* Music Player */
+.music-player {
     background-color: black;
     position: fixed;
     bottom: 0;
@@ -241,66 +216,46 @@ a{
     padding: 0 1rem;
     z-index: 20;
 }
+
 .song-icon {
     display: flex;
     align-items: center;
     width: 25%;
     gap: 1rem;
+    min-width: 0; /* text overflow ke liye */
 }
-.cover-image {
-    width: 56px; 
-    height: 56px; 
-    border-radius: 4px;
-}
-.song-info {
-    display: flex;
-    flex-direction: column;
-}
+.cover-image { width: 56px; height: 56px; border-radius: 4px; flex-shrink: 0; }
+.song-info { display: flex; flex-direction: column; min-width: 0; }
 .song-title {
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.song-author {
-    font-size: 0.75rem; 
-    color: #a7a7a7; 
-}
-.icon-for-song{
-    color: #a7a7a7;
-    cursor: pointer;
-}
-.icon-for-song:hover {
-    color: white;
-}
-.player{
+.song-author { font-size: 0.75rem; color: #a7a7a7; }
+.icon-for-song { color: #a7a7a7; cursor: pointer; }
+.icon-for-song:hover { color: white; }
+
+.player {
     width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.4rem;
 }
-.player-controls{
+.player-controls {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1.5rem;
 }
-.player-control-icon{
-    height: 1rem;
-    opacity: 0.7;
-    cursor: pointer;
-}
-.player-control-icon:hover{
-    opacity: 1;
-}
-.main-play-btn {
-    font-size: 2rem;
-    cursor: pointer;
-    transition: transform 0.1s ease;
-}
-.main-play-btn:hover {
-    transform: scale(1.05);
-}
-.playback-bar{
+.player-control-icon { height: 1rem; opacity: 0.7; cursor: pointer; }
+.player-control-icon:hover { opacity: 1; }
+.main-play-btn { font-size: 2rem; cursor: pointer; transition: transform 0.1s ease; }
+.main-play-btn:hover { transform: scale(1.05); }
+
+.playback-bar {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -308,32 +263,23 @@ a{
     gap: 0.5rem;
     font-size: 0.75rem;
     color: #a7a7a7;
-} 
-.progress-bar{
-    width: 75%;
-    accent-color: #1bd760;
-    cursor: pointer;
-}  
+}
+.progress-bar { width: 75%; accent-color: #1bd760; cursor: pointer; }
+
 .diff-icons {
     width: 25%;
     display: flex;
-    justify-content: flex-end; 
+    justify-content: flex-end;
     align-items: center;
     gap: 1rem;
 }
-.volume-slider {
-    accent-color: #1bd760;
-    width: 80px;
-    cursor: pointer;
-}
+.volume-slider { accent-color: #1bd760; width: 80px; cursor: pointer; }
 
-/* Modal UI Overlay Style */
+/* Modal */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
@@ -343,45 +289,23 @@ a{
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
-.modal-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
 .modal-box {
     background-color: #121212;
     padding: 2.5rem;
     border-radius: 0.75rem;
-    width: 400px;
+    width: min(400px, 90vw); /* mobile pe 90% width */
     position: relative;
     border: 1px solid #282828;
     text-align: center;
 }
-.modal-box h2 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-}
-.modal-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 1.25rem;
-    color: #a7a7a7;
-    cursor: pointer;
-}
-.modal-close:hover {
-    color: white;
-}
-.form-group {
-    text-align: left;
-    margin-bottom: 1.25rem;
-}
-.form-group label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
+.modal-box h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 2rem; }
+.modal-close { position: absolute; top: 1rem; right: 1rem; font-size: 1.25rem; color: #a7a7a7; cursor: pointer; }
+.modal-close:hover { color: white; }
+
+.form-group { text-align: left; margin-bottom: 1.25rem; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
 .form-group input {
     width: 100%;
     background-color: #242424;
@@ -392,9 +316,8 @@ a{
     color: white;
     outline: none;
 }
-.form-group input:focus {
-    border-color: white;
-}
+.form-group input:focus { border-color: white; }
+
 .modal-submit-btn {
     width: 100%;
     background-color: #1bd760;
@@ -408,7 +331,74 @@ a{
     cursor: pointer;
     transition: transform 0.1s ease;
 }
-.modal-submit-btn:hover {
-    transform: scale(1.03);
+.modal-submit-btn:hover { transform: scale(1.03); }
+
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width: 768px) {
+
+    /* Sidebar hide — hamburger se toggle hogi */
+    .sidebar {
+        position: fixed;
+        top: 0; left: 0;
+        height: 100%;
+        width: 280px;
+        z-index: 999;
+        background-color: #121212;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        border-radius: 0;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    /* Main full width le */
+    .main {
+        padding: 0;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .main-content {
+        border-radius: 0;
+        padding: 0 1rem 7.5rem 1rem;
+    }
+
+    /* Cards 2 per row */
+    .card {
+        width: calc(50% - 0.75rem);
+        min-width: unset;
+    }
+
+    /* Music player — controls center mein, song info aur volume hide */
+    .music-player {
+        height: 64px;
+        padding: 0 0.75rem;
+    }
+
+    .song-icon { width: 30%; }
+
+    .player { width: 40%; }
+
+    /* Volume slider hide on mobile */
+    .diff-icons .volume-slider { display: none; }
+    .diff-icons { width: 15%; gap: 0.5rem; }
+
+    /* Progress bar thoda chota */
+    .progress-bar { width: 90%; }
 }
 
+@media (max-width: 480px) {
+
+    /* Cards 2 per row chhoti screen pe bhi */
+    .card { width: calc(50% - 0.75rem); }
+
+    /* Song title aur author hide — sirf cover image */
+    .song-info { display: none; }
+
+    .song-icon { width: auto; }
+
+    .player { width: 60%; }
+    .diff-icons { width: 20%; }
+}
