@@ -640,6 +640,7 @@ function showOverlay (type) {
   if (replayBtn2) {
     replayBtn2.onclick = watchReplay;
   }
+}
 function showToast (msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -899,3 +900,4 @@ const savedTheme = localStorage.getItem('2048theme') || 'classic';
 applyTheme(savedTheme);
 best = loadBest();
 init(true);
+
