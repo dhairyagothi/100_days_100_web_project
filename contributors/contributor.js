@@ -1,41 +1,26 @@
-// Use global REPO_OWNER and REPO_NAME defined in index.js
-
 async function fetchContributors() {
     const contributorsContainer = document.getElementById("contributors");
     const contributorCountSpan = document.getElementById("contributorCount");
     const totalCommitsEl = document.getElementById('totalCommits');
 
-    // Show fallback immediately so "..." never stays
     if (contributorCountSpan) contributorCountSpan.textContent = "500+";
     if (totalCommitsEl) totalCommitsEl.textContent = "10,000+";
-
-   
 
     try {
         const response = await fetch(
             `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
         );
-
         if (!response.ok) throw new Error("Failed to fetch contributors");
-
         const contributors = await response.json();
 
-        if (contributorCountSpan) {
-            contributorCountSpan.textContent = contributors.length;
-        }
-
-        // Calculate total commits
+        if (contributorCountSpan) contributorCountSpan.textContent = contributors.length;
         const totalCommits = contributors.reduce((sum, c) => sum + c.contributions, 0);
-        if (totalCommitsEl) {
-            totalCommitsEl.textContent = totalCommits.toLocaleString();
-        }
+        if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
 
         contributorsContainer.innerHTML = "";
-
         contributors.forEach((contributor) => {
             const card = document.createElement("div");
             card.className = "contributor-card";
-
             card.innerHTML = `
                 <img src="${contributor.avatar_url}" alt="${contributor.login}">
                 <h3>${contributor.login}</h3>
@@ -49,8 +34,7 @@ async function fetchContributors() {
                     <a href="${contributor.html_url}" target="_blank" class="github-btn">
                         <i class="fab fa-github"></i> Profile
                     </a>
-                </div>
-            `;
+                </div>`;
             contributorsContainer.appendChild(card);
         });
 
@@ -60,13 +44,12 @@ async function fetchContributors() {
             contributorsContainer.innerHTML = `
                 <div style="text-align:center; padding: 2rem;">
                     <p style="color: #ff4444; margin-bottom: 1rem;">
-                        Unable to load contributors right now (API rate limit).
+                        Unable to load contributors (API rate limit).
                     </p>
-                    <button 
-                        onclick="fetchContributors()" 
+                    <button onclick="fetchContributors()"
                         style="padding: 0.5rem 1.5rem; cursor: pointer;
                                background: #7c3aed; color: white;
-                               border: none; border-radius: 6px; font-size: 1rem;">
+                               border: none; border-radius: 6px;">
                         🔄 Retry
                     </button>
                 </div>`;
@@ -77,27 +60,21 @@ async function fetchContributors() {
 async function fetchStargazers() {
     const stargazersContainer = document.getElementById("stargazers");
 
-    
-
     try {
         const response = await fetch(
             `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`
         );
-
         if (!response.ok) throw new Error("Failed to fetch stargazers");
-
         const stargazers = await response.json();
 
         if (stargazersContainer) stargazersContainer.innerHTML = "";
-
         stargazers.forEach((stargazer) => {
             const starItem = document.createElement("a");
             starItem.href = stargazer.html_url;
             starItem.target = "_blank";
             starItem.className = "stargazer-item";
             starItem.title = stargazer.login;
-            starItem.innerHTML = `
-                <img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
+            starItem.innerHTML = `<img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
             if (stargazersContainer) stargazersContainer.appendChild(starItem);
         });
 
@@ -107,13 +84,12 @@ async function fetchStargazers() {
             stargazersContainer.innerHTML = `
                 <div style="text-align:center; padding: 2rem;">
                     <p style="color: #ff4444; margin-bottom: 1rem;">
-                        Unable to load stargazers right now (API rate limit).
+                        Unable to load stargazers (API rate limit).
                     </p>
-                    <button 
-                        onclick="fetchStargazers()" 
+                    <button onclick="fetchStargazers()"
                         style="padding: 0.5rem 1.5rem; cursor: pointer;
                                background: #7c3aed; color: white;
-                               border: none; border-radius: 6px; font-size: 1rem;">
+                               border: none; border-radius: 6px;">
                         🔄 Retry
                     </button>
                 </div>`;
