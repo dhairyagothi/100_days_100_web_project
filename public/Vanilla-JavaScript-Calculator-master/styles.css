@@ -2,6 +2,21 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family:
+    Gotham Rounded,
+    sans-serif;
+  font-weight: normal;
+}
+body {
+  padding: 20px;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+}
   font-family: Gotham Rounded, sans-serif;
   font-weight: normal;
 
@@ -34,6 +49,47 @@ body {
   justify-content: center;
   align-content: center;
   min-height: 100vh;
+  width: min(95vw, 420px);
+  margin: auto;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(70px, auto);
+  gap: 10px;
+  padding: 20px;
+}
+
+#scientific-calculator {
+  width: 100%;
+  max-width: 760px;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(65px, auto);
+  overflow-x: auto;
+}
+
+.calculator-grid > button {
+  cursor: pointer;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  border: none;
+  outline: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  padding: 12px;
+}
+.calculator-grid > button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+}
+.span-two {
+  grid-column: span 2;
+}
+.output {
+  grid-column: 1 / -1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  min-height: 120px;
   grid-template-columns: repeat(4, 100px);
   grid-template-rows: minmax(120px, auto) repeat(5, 100px);
   margin-right: 100px;
@@ -82,6 +138,18 @@ body {
   word-wrap: break-word;
   word-break: break-all;
   padding-left: 10px;
+}
+.output .previous-operand {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.5rem;
+}
+.output .current-operand {
+  color: white;
+  font-size: 2.5rem;
+}
+.hidden {
+  display: none;
+}
 
 }
 
@@ -129,4 +197,52 @@ body {
   width: 35px;
   height: 35px;
   border-radius: 100px;
+}
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  .calculator-grid {
+    gap: 6px;
+    padding: 10px;
+  }
+  .calculator-grid > button {
+    min-height: 55px;
+    font-size: 0.9rem;
+    padding: 8px;
+    min-width: 0;
+  }
+  #scientific-calculator {
+    width: 100%;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .output .current-operand {
+    font-size: 1.5rem;
+  }
+  .output .previous-operand {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+  .calculator-grid {
+    gap: 6px;
+  }
+  .calculator-grid > button {
+    min-height: 55px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+  .output {
+    min-height: 100px;
+  }
+  .output .current-operand {
+    font-size: 1.5rem;
+  }
+  .output .previous-operand {
+    font-size: 1rem;
+  }
+}
 }

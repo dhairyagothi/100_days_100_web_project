@@ -51,6 +51,10 @@ form.addEventListener("submit", e => {
   transactions.push(transaction);
   saveAndUpdate();
   form.reset();
+
+  // Re-set date after form reset
+  const today = new Date().toISOString().split("T")[0];
+  if (dateInput) dateInput.value = today;
 });
 
 /* ---------- RENDER ---------- */
@@ -144,7 +148,6 @@ function updateInsights() {
   const smartSuggestionEl = document.getElementById("smart-suggestion");
   const financialStatusEl = document.getElementById("financial-status");
 
-  // Determine highest spending category
   let maxCat = "";
   let maxAmount = 0;
   Object.keys(totals).forEach(cat => {
@@ -154,7 +157,6 @@ function updateInsights() {
     }
   });
 
-  // 1. Update Highest Spending Category
   if (maxAmount > 0) {
     const formattedCat = maxCat === "other" ? "Others" : maxCat.charAt(0).toUpperCase() + maxCat.slice(1);
     highestSpendingCatEl.textContent = `${formattedCat} (₹${maxAmount})`;
@@ -162,22 +164,20 @@ function updateInsights() {
     highestSpendingCatEl.textContent = "None";
   }
 
-  // 2. Determine Smart Suggestion
   let suggestion = "Add transactions to generate suggestions.";
   if (maxAmount > 0) {
     if (maxCat === "food") {
-      suggestion = "You spent more on food this month compared to other categories. Consider cooking at home to save money.";
+      suggestion = "You spent more on food this month. Consider cooking at home to save money.";
     } else if (maxCat === "travel") {
-      suggestion = "You spent more on travel this month compared to other categories. Consider using public transport or carpooling.";
+      suggestion = "You spent more on travel this month. Consider using public transport or carpooling.";
     } else if (maxCat === "shopping") {
-      suggestion = "You spent more on shopping this month compared to other categories. Try waiting 48 hours before buying non-essential items.";
+      suggestion = "You spent more on shopping this month. Try waiting 48 hours before buying non-essential items.";
     } else if (maxCat === "other") {
       suggestion = "You spent more on other items. Try tracking smaller expenses to see where your money goes.";
     }
   }
   smartSuggestionEl.textContent = suggestion;
 
-  // 3. Determine Financial Status
   let status = "No data available";
   if (totalExpense > 0 || totalIncome > 0) {
     if (totalExpense > totalIncome && totalIncome > 0) {
@@ -242,6 +242,10 @@ function saveAndUpdate() {
     document.body.classList.add("dark");
     modeToggle.checked = true;
   }
+
+  // Auto-fill today's date
+  const today = new Date().toISOString().split("T")[0];
+  if (dateInput) dateInput.value = today;
 
   saveAndUpdate();
 })();
