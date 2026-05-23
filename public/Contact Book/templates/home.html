@@ -10,21 +10,48 @@
   </head>
   <body class="bg-gray-100">
     <div class="flex flex-col min-h-screen">
-      <header class="bg-blue-600 p-6 rounded-b-lg shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-          <h1 class="text-white text-3xl font-bold">📚 Contact Book</h1>
-          <nav class="space-x-4">
-            <a href="{{ url_for('home') }}" class="text-white">Home</a>
-            {% if 'user_id' in session %}
-              <a href="{{ url_for('dashboard') }}" class="text-white ml-4">Dashboard</a>
-              <a href="{{ url_for('logout') }}" class="text-white ml-4">Logout</a>
-            {% else %}
-              <a href="{{ url_for('login') }}" class="text-white ml-4">Login</a>
-              <a href="{{ url_for('register') }}" class="text-white ml-4">Register</a>
-            {% endif %}
-          </nav>
-        </div>
-      </header>
+      <header class="bg-blue-600 p-4 md:p-6 rounded-b-lg shadow-lg">
+  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+
+    <h1 class="text-white text-2xl md:text-3xl font-bold">
+      📚 Contact Book
+    </h1>
+
+    <nav class="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+      <a href="{{ url_for('home') }}"
+         class="text-white hover:text-blue-200 transition duration-300">
+         Home
+      </a>
+
+      {% if 'user_id' in session %}
+
+      <a href="{{ url_for('dashboard') }}"
+         class="text-white hover:text-blue-200 transition duration-300">
+         Dashboard
+      </a>
+
+      <a href="{{ url_for('logout') }}"
+         class="text-white hover:text-blue-200 transition duration-300">
+         Logout
+      </a>
+
+      {% else %}
+
+      <a href="{{ url_for('login') }}"
+         class="text-white hover:text-blue-200 transition duration-300">
+         Login
+      </a>
+
+      <a href="{{ url_for('register') }}"
+         class="text-white hover:text-blue-200 transition duration-300">
+         Register
+      </a>
+
+      {% endif %}
+    </nav>
+
+  </div>
+</header>
 
       <main class="flex-1">
         <section class="w-full py-12 md:py-24 lg:py-32 xl:py-48">

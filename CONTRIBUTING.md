@@ -75,6 +75,40 @@ git checkout -b fix/bug-description
 git checkout -b add/project-name
 ```
 
+### 4. Run Locally
+
+Choose the method that works best for you:
+
+**Option A — Simple (no setup needed):**
+```bash
+# Just open in your browser
+open index.html    # macOS
+xdg-open index.html  # Linux
+```
+
+**Option B — Dev Server (requires Node.js):**
+```bash
+npm run dev
+# → http://localhost:3000
+```
+
+**Option C — Docker (requires Docker):**
+```bash
+# One-command setup — no Node.js needed
+docker compose up --build
+# → http://localhost:8080
+
+# Or use the Makefile
+make docker-up
+```
+
+**Option D — Make (shortcut commands):**
+```bash
+make help    # Show all available commands
+make dev     # Start local dev server
+make lint    # Run HTML linter
+```
+
 ## 📁 Project Structure
 
 ```
@@ -89,8 +123,13 @@ git checkout -b add/project-name
 │   │   ├── script.js     # Project functionality
 │   │   └── README.md     # Project documentation
 ├── contributors/          # Contributors showcase
+├── .github/workflows/     # CI/CD pipelines
+├── Dockerfile             # Docker container configuration
+├── docker-compose.yml     # Docker Compose for local dev
+├── nginx.conf             # Nginx server configuration
+├── Makefile               # Developer command shortcuts
 ├── .gitignore            # Git ignore rules
-└── vercel.json           # Deployment configuration
+└── vercel.json           # Vercel deployment configuration
 ```
 
 ## ➕ Adding New Projects
@@ -504,7 +543,7 @@ Thank you for considering contributing to our project! To ensure smooth collabor
 
 We look forward to your contributions and appreciate your effort in helping us improve the project!
 
-## License
+## License 
 
 By contributing, you agree that your contributions will be licensed under the same license as the project.
 

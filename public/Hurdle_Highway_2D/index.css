@@ -1,0 +1,319 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --stage-width: 1200px;
+  --stage-height: 700px;
+  --game-scale: 1;
+}
+
+body {
+  background: #0b1116;
+  overflow: hidden;
+  font-family: "BBH Bogle", sans-serif;
+}
+
+.game-shell {
+  position: fixed;
+  inset: 0;
+}
+
+.game-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--stage-width);
+  height: var(--stage-height);
+  transform: translate(-50%, -50%) scale(var(--game-scale));
+  transform-origin: center;
+  background: url("media/bg2.jpg") no-repeat center/cover;
+  overflow: hidden;
+}
+
+.car-container,
+.obstackle-conatiner {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#car {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.obstacle {
+  position: absolute;
+  left: 0;
+  top: -200px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 30px;
+  height: 200px;
+  width: 300px;
+  font-size: 54px;
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background-color: #081c24;
+}
+
+#maintitle1 {
+  color: #ff7a00;
+}
+
+#maintitle2 {
+  color: #00f6ff;
+}
+
+#maintitle3 {
+  color: #c6ff00;
+}
+
+#credits {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 300px;
+  font-size: 54px;
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#name1 {
+  color: #a4b5c6;
+}
+
+#name2 {
+  color: #ff7a00;
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 8px;
+  height: 100px;
+  width: 200px;
+  gap: 20px;
+  background-color: #111827;
+  border-radius: 8px;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+  font-weight: 600;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+#scorepara1 {
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+  font-size: 20px;
+}
+
+#scorepara2 {
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+  font-size: 20px;
+}
+
+#gameover {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 15px;
+  height: 500px;
+  width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url("media/gameover.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% 55%;
+  background-color: #203a43;
+  z-index: 10;
+  border: 3px solid #00ffff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+  /* gap: 0px; */
+}
+
+#scorepara {
+  position: relative;
+  top: 20px;
+  right: 0px;
+  color: #ff7a00;
+  font-size: 28px;
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#mainMenu {
+  visibility: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  border: 2px solid black;
+  border-radius: 15px;
+  min-height: 560px;
+  padding: 24px 0;
+  width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #203a43;
+  border: 3px solid #00ffff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+  z-index: 11;
+}
+
+#playbtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 150px;
+  background-color: #ffffff;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 22px;
+}
+
+#mainMenubtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 150px;
+  background-color: #ffffff;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 22px;
+  position: relative;
+  top: 75px;
+}
+
+#playagain {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 150px;
+  background-color: #ffffff;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 22px;
+  position: relative;
+  top: 50px;
+}
+
+#gametimer {
+  font-size: 40px;
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+#gametimercont {
+  visibility: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100px;
+  border: 2px solid black;
+  border-radius: 1000px;
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background-color: red;
+}
+
+#difficulty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #e6f4ff;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+#difficultyTitle {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.difficulty-options {
+  display: flex;
+  gap: 10px;
+}
+
+.difficulty-btn {
+  height: 38px;
+  min-width: 90px;
+  border-radius: 8px;
+  border: 2px solid #00ffff;
+  background-color: #0f2531;
+  color: #ffffff;
+  font-family: "BBH Bogle", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.difficulty-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 255, 255, 0.35);
+}
+
+.difficulty-btn.active {
+  background-color: #00bcd4;
+  color: #081c24;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.7);
+}

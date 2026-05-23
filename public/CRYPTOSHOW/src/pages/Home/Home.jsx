@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  useDeferredValue,
-  useEffect,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CoinContext } from "../../context/CoinContext";
 import "./Home.css";
 import { Link } from "react-router-dom";
@@ -22,23 +17,26 @@ const Home = () => {
 
   const searchHandler = async (event) => {
     event.preventDefault();
-    const filteredCoins = await allCoins.filter((coin) => {
-      return coin.name.toLowerCase().includes(input.toLowerCase());
-    });
+    const filteredCoins = await allCoins.filter((coin) =>
+      coin.name.toLowerCase().includes(input.toLowerCase())
+    );
     setDisplayCoin(filteredCoins);
   };
 
   useEffect(() => {
     setDisplayCoin(allCoins);
   }, [allCoins]);
+
   return (
     <div className="home">
       <div className="hero">
+        <div className="hero-eyebrow">Live Market Data</div>
         <h1>
-          Largest Crypto MarketPlace
+          The crypto market,<br />
+          <em>beautifully</em> tracked.
         </h1>
         <p>
-        Welcome to the Largest Crypto MarketPlace, your one-stop destination for real-time cryptocurrency data. Our platform provides the most accurate and up-to-date information on the top cryptocurrencies, including their current prices, market caps, and 24-hour changes. Whether you're an investor, trader, or simply curious about the crypto market, our user-friendly interface and comprehensive data make it easy to stay informed and make informed decisions. Start exploring the dynamic world of cryptocurrencies with us today!
+          Real-time prices, market caps, and 24h changes for the world's top cryptocurrencies. Stay informed, trade smarter.
         </p>
         <form onSubmit={searchHandler}>
           <input
@@ -47,9 +45,8 @@ const Home = () => {
             required
             onChange={inputHandler}
             type="text"
-            placeholder="Search crypto..."
+            placeholder="Search cryptocurrency..."
           />
-
           <datalist id="coinlist">
             {allCoins.map((coin, index) => (
               <option key={index} value={coin.name} />
@@ -58,31 +55,35 @@ const Home = () => {
           <button type="submit">Search</button>
         </form>
       </div>
+
       <div className="crypto-table">
-        <div className="table-layout">
+        <div className="table-heading">
           <p>#</p>
-          <p>Coins</p>
-          <p>Price</p>
-          <p style={{ textAlign: "center" }}>24H Change</p>
-          <p className="market-cap">Market Cap</p>
+          <p>Coin</p>
+          <p style={{ textAlign: "right" }}>Price</p>
+          <p style={{ textAlign: "right" }}>24h</p>
+          <p style={{ textAlign: "right" }}>Market Cap</p>
         </div>
+
         {displayCoin.slice(0, 10).map((item, index) => (
           <Link to={`/coin/${item.id}`} className="table-layout" key={index}>
             <p>{item.market_cap_rank}</p>
             <div>
-              <img src={item.image} alt="" />
-              <p>{item.name + "-" + item.symbol}</p>
+              <img src={item.image} alt={item.name} />
+              <div className="coin-label">
+                <span className="coin-name-text">{item.name}</span>
+                <span className="coin-sym">{item.symbol}</span>
+              </div>
             </div>
-            <p>
-              {currency.symbol} {item.current_price.toLocaleString()}
+            <p className="price">
+              {currency.symbol}{item.current_price.toLocaleString()}
             </p>
-            <p
-              className={item.price_change_percentage_24h > 0 ? "green" : "red"}
-            >
-              {Math.floor(item.price_change_percentage_24h * 100) / 100}
+            <p className={item.price_change_percentage_24h > 0 ? "green" : "red"}>
+              {item.price_change_percentage_24h > 0 ? "▲" : "▼"}{" "}
+              {Math.abs(Math.floor(item.price_change_percentage_24h * 100) / 100)}%
             </p>
             <p className="market-cap">
-              {currency.symbol} {item.market_cap.toLocaleString()}
+              {currency.symbol}{item.market_cap.toLocaleString()}
             </p>
           </Link>
         ))}
