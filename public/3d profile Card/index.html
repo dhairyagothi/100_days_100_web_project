@@ -3,148 +3,178 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile Card</title>
+    <title>Developer Directory - Profile Cards</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet"
-  />
-
   <body>
-    <div class="card">
-      <div class="container1">
-        <img
-          src="logo/Adobe Express - file.png"
-          alt="Profile picture"
-          class="image"
-        />
-      </div>
-      <div class="container2">
-        <h1 class="heading">Krishna Bhati</h1>
-        <p class="subhead">Ui/Ux Designer</p>
-        <p class="info">
-          Hardworking and reliable UI/UXdesigner focused on going above and
-          beyond to support teams and serve customers. Currently undergoing a
-          self-taught process to enable me offer top-notch abilities. Motivated
-          to continue to learn and grow as a product design professional.
-        </p>
+    <button id="global-theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+      <span class="theme-toggle-icon">🌓</span> Mode Toggle
+    </button>
 
-        <div class="profile">
-          <a href="#">
-            <img
-              src="logo/facebook-logo.svg"
-              alt="Facebook Profile"
-              class="logo"
-            />
-          </a>
+    <header class="page-header">
+      <h1 class="page-title">Developer Directory</h1>
+      <p class="page-subtitle">A collaborative collection of beautifully crafted 3D Profile Cards</p>
+    </header>
 
-          <a href="#">
-            <img
-              src="logo/linkedin-svgrepo-com (1).svg"
-              alt="LinkedIn Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/github-142-svgrepo-com.svg"
-              alt="GitHub Profile"
-              class="logo git"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/twitter-svgrepo-com.svg"
-              alt="Twitter Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/leetcode-svgrepo-com.svg"
-              alt="LeetCode Profile"
-              class="logo leet"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/instagram-svgrepo-com.svg"
-              alt="Instagram Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/night-mode-svgrepo-com.svg"
-              alt="Enable Dark Mode"
-              class="logo darkmode"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/sun-svgrepo-com.svg"
-              alt="Enable Light Mode"
-              class="logo lightmode"
-            />
-          </a>
+    <div class="cards-wrapper">
+      
+      <div class="card">
+        <div class="container1">
+          <img
+            src="logo/developer1.png"
+            alt="Profile picture of Krishna Bhati"
+            class="image"
+          />
         </div>
-        <button class="btn">Buy me a coffee</button>
+        <div class="container2">
+          <h1 class="heading">Krishna Bhati</h1>
+          <p class="subhead">Ui/Ux Designer</p>
+          <p class="info">
+            Hardworking and reliable UI/UX designer focused on going above and
+            beyond to support teams and serve customers. Currently undergoing a
+            self-taught process to enable me offer top-notch abilities. Motivated
+            to continue to learn and grow as a product design professional.
+          </p>
+
+          <dl class="stats-list">
+            <div class="stat-item">
+              <dt class="stat-label">Projects</dt>
+              <dd class="stat-value">45+</dd>
+            </div>
+            <div class="stat-item">
+              <dt class="stat-label">Experience</dt>
+              <dd class="stat-value">3+ Years</dd>
+            </div>
+            <div class="stat-item">
+              <dt class="stat-label">Rating</dt>
+              <dd class="stat-value">4.9 ★</dd>
+            </div>
+          </dl>
+
+          <div class="profile">
+            <a href="#" aria-label="Facebook Profile">
+              <img src="logo/facebook-logo.svg" alt="Facebook" class="logo" />
+            </a>
+            <a href="#" aria-label="LinkedIn Profile">
+              <img src="logo/linkedin-svgrepo-com (1).svg" alt="LinkedIn" class="logo" />
+            </a>
+            <a href="#" aria-label="GitHub Profile">
+              <img src="logo/github-142-svgrepo-com.svg" alt="GitHub" class="logo git" />
+            </a>
+            <a href="#" aria-label="Twitter Profile">
+              <img src="logo/twitter-svgrepo-com.svg" alt="Twitter" class="logo" />
+            </a>
+            <a href="#" aria-label="LeetCode Profile">
+              <img src="logo/leetcode-svgrepo-com.svg" alt="LeetCode" class="logo leet" />
+            </a>
+            <a href="#" aria-label="Instagram Profile">
+              <img src="logo/instagram-svgrepo-com.svg" alt="Instagram" class="logo" />
+            </a>
+          </div>
+          <button class="btn" onclick="document.getElementById('coffee-dialog-krishna').showModal()">Buy me a coffee</button>
+        </div>
       </div>
+
+      <div class="card">
+        <div class="container1">
+          <img
+            src="logo/bikram.jpg"
+            alt="Profile picture of Bikram Gorai"
+            class="image"
+          />
+        </div>
+        <div class="container2">
+          <h1 class="heading">Bikram Gorai</h1>
+          <p class="subhead">Backend Web Developer</p>
+          <p class="info">
+            Passionate back-end web developer, a bit of everything. Currently exploring node.js , express and mongo db 
+            Building things that help people and Businesses. 
+            Worked with business level technolgy & industry standard software engineering practices.
+          </p>
+
+          <dl class="stats-list">
+            <div class="stat-item">
+              <dt class="stat-label">Projects</dt>
+              <dd class="stat-value">12+</dd>
+            </div>
+            <div class="stat-item">
+              <dt class="stat-label">Experience</dt>
+              <dd class="stat-value">Learning</dd>
+            </div>
+            <div class="stat-item">
+              <dt class="stat-label">Commits</dt>
+              <dd class="stat-value">340+</dd>
+            </div>
+          </dl>
+
+          <div class="profile">
+            <!-- <a href="#" aria-label="Facebook Profile">
+              <img src="logo/facebook-logo.svg" alt="Facebook" class="logo" />
+            </a> -->
+            <a href="https://www.linkedin.com/in/bikram-gorai/" aria-label="LinkedIn Profile">
+              <img src="logo/linkedin-svgrepo-com (1).svg" alt="LinkedIn" class="logo" />
+            </a>
+            <a href="https://github.com/BIKRAM-GORAI" aria-label="GitHub Profile">
+              <img src="logo/github-142-svgrepo-com.svg" alt="GitHub" class="logo git" />
+            </a>
+            <!-- <a href="#" aria-label="Twitter Profile">
+              <img src="logo/twitter-svgrepo-com.svg" alt="Twitter" class="logo" />
+            </a> -->
+            <!-- <a href="#" aria-label="LeetCode Profile">
+              <img src="logo/leetcode-svgrepo-com.svg" alt="LeetCode" class="logo leet" />
+            </a> -->
+            <a href="https://www.instagram.com/bikram____776/" aria-label="Instagram Profile">
+              <img src="logo/instagram-svgrepo-com.svg" alt="Instagram" class="logo" />
+            </a>
+          </div>
+          <button class="btn" onclick="document.getElementById('coffee-dialog-bikram').showModal()">See my Work</button>
+        </div>
+      </div>
+
     </div>
+
+    <dialog id="coffee-dialog-krishna" class="coffee-dialog">
+      <div class="dialog-content">
+        <h3>Support Krishna Bhati ☕</h3>
+        <p>If you love my UI/UX designs, you can support my work!</p>
+        <div class="qr-placeholder">
+          <span>☕</span>
+        </div>
+        <form method="dialog">
+          <button class="btn btn-close">Close</button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="coffee-dialog-bikram" class="coffee-dialog">
+      <div class="dialog-content">
+        <h3>Bikram Gorai</h3>
+        <p>See my work in action</p>
+        <img src="logo/consistency.png" alt="Bikram's QR Code" class="qr-image" />
+        <form method="dialog">
+          <button class="btn btn-close">Close</button>
+        </form>
+      </div>
+    </dialog>
+
     <script>
-      let btn = document.querySelector('.darkmode');
-      let lightbtn = document.querySelector('.lightmode');
-      let currmode = 'light';
-      function changeMode() {
-        if (currmode == 'light') {
-          currmode = 'dark';
-          //    document.querySelector(".lightmode").style.display="block";
-          document.querySelector('.container1').style.backgroundColor = 'grey';
-          document.querySelector('.container2').style.backgroundColor = 'black';
-          document.querySelector('.image').style.backgroundColor = 'grey';
-          if (window.matchMedia('(max-width:1098px)').matches) {
-            document.querySelector('.image').style.background =
-              'linear-gradient(#222,#000)';
-          }
-          document.querySelector('.heading').style.color = 'white';
-          document.querySelector('.info').style.color = 'white';
-          document.querySelector('.btn').style.color = 'black';
-          document.querySelector('.git').style.filter = 'invert(1)';
-          document.querySelector('.leet').style.filter = 'invert(1)';
-          btn.style.display = 'none';
-          lightbtn.style.display = 'block';
-        } else {
-          currmode = 'light';
-          lightbtn.style.display = 'none';
-          btn.style.display = 'block';
-          // document.querySelector(".lightmode").style.display="none";
-          document.querySelector('.container1').style.backgroundColor =
-            '#f2d5ed';
-          document.querySelector('.container2').style.backgroundColor =
-            '#f5e0f2';
-          document.querySelector('.image').style.backgroundColor = '#f2d5ed';
-          if (window.matchMedia('(max-width:1098px)').matches) {
-            document.querySelector('.image').style.background =
-              'linear-gradient(#9ad7ff 0%, #fecfef 99%, #fecfef 100%)';
-          }
-          document.querySelector('.heading').style.color = 'black';
-          document.querySelector('.info').style.color = 'black';
-          document.querySelector('.btn').style.color = 'white';
-          document.querySelector('.git').style.filter = 'invert(0)';
-          document.querySelector('.leet').style.filter = 'invert(0)';
-        }
+      const themeToggle = document.getElementById('global-theme-toggle');
+      
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
       }
-      btn.addEventListener('click', changeMode);
-      lightbtn.addEventListener('click', changeMode);
     </script>
   </body>
 </html>
