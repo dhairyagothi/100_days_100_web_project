@@ -15,9 +15,13 @@ const strictToggle = document.getElementById("strict-toggle");
 const themeToggle = document.getElementById("theme-toggle");
 const startBtn = document.getElementById("start-btn");
 const allBtns = document.querySelectorAll(".btn");
+const livesDisplay = document.getElementById("lives-display");
 
 let highScore = localStorage.getItem("highScore") || 0;
 highScoreText.innerText = `High Score: ${highScore}`;
+function updateLivesDisplay() {
+  livesDisplay.innerText = "❤️".repeat(lives);
+}
 
 // ---------------- Flash functions ----------------
 function gameFlash(btn) {
@@ -36,6 +40,7 @@ function startGame() {
     started = true;
     level = 0;
     lives = 3;
+    updateLivesDisplay();
     gameSeq = [];
     userSeq = [];
     h2.innerText = "Game Started!";
@@ -81,35 +86,37 @@ function checkAns(idx) {
     }
   } else {
     if (strictMode) {
+        gameOver();
+      
+    } else {
       lives--;
+      updateLivesDisplay();
       if (lives > 0) {
         h2.innerText = `Wrong! Lives left: ${lives}`;
         userSeq = [];
         clickable = false;
         setTimeout(playSequence, 1000);
-      } else {
+      }
+      else {
         gameOver();
       }
-    } else {
-      h2.innerText = `Wrong! Try again...`;
-      userSeq = [];
-      clickable = false;
-      setTimeout(playSequence, 1000);
     }
   }
 }
 
 function gameOver() {
-  h2.innerHTML = `💀 Game Over! Score: <b>${level}</b><br>Press Start to play again.`;
+  h2.innerHTML = `💀 Game Over! Score: <b>${level - 1}</b><br>Press Start to play again.`;
   document.body.style.backgroundColor = "red";
-  setTimeout(() => (document.body.style.backgroundColor = "white"), 200);
+  setTimeout(() => {
+  document.body.style.backgroundColor = "";
+}, 200);
   updateHighScore();
   resetGame();
 }
 
 function updateHighScore() {
-  if (level > highScore) {
-    highScore = level;
+  if (level - 1  > highScore) {
+    highScore = level - 1;
     localStorage.setItem("highScore", highScore);
     highScoreText.innerText = `High Score: ${highScore}`;
   }
@@ -132,6 +139,8 @@ function resetGame() {
   userSeq = [];
   level = 0;
   clickable = true;
+  lives = 3;
+  updateLivesDisplay();
 }
 
 // ---------------- Event Listeners ----------------

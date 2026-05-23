@@ -191,3 +191,8 @@ body.dark h3 {
     margin: 8px;
   }
 }
+
+#lives-display {
+  font-size: 1.4rem;
+  margin: 0;
+}
