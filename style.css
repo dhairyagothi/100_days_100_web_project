@@ -1091,6 +1091,23 @@ body.light-mode .navbar {
   flex-wrap: wrap;
 }
 
+.card-status-row {
+  display: flex;
+  align-items: center;
+}
+
+.card-status-badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #facc15;
+  background: rgba(250, 204, 21, 0.1);
+  border: 1px solid rgba(250, 204, 21, 0.24);
+  padding: 0.16rem 0.5rem;
+  border-radius: 999px;
+}
+
 .tag {
   font-size: 0.65rem;
   font-weight: 500;
@@ -1127,6 +1144,12 @@ body.light-mode .navbar {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.card-link-disabled {
+  color: var(--text-muted);
+  cursor: default;
+  opacity: 0.8;
 }
 
 .view-code-link {
@@ -1186,6 +1209,11 @@ body.light-mode .navbar {
 .project-card:hover .card-link {
   color: var(--accent);
   transform: translateX(2px);
+}
+
+.project-card:hover .card-link-disabled {
+  color: var(--text-muted);
+  transform: none;
 }
 
 /* No results */

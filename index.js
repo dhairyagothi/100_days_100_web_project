@@ -77,7 +77,7 @@ const PROJECT_DATA = [
   ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
   ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
   ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
-  ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
+  ['Day 13', 'Login Form Using MERN', '', 'api javascript', 'intermediate', { linkType: 'source-only', sourcePath: 'public/loginusingmern' }],
   ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', 'javascript', 'intermediate'],
   ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
   ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
@@ -88,7 +88,7 @@ const PROJECT_DATA = [
     'css canvas',
     'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
-  ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
+  ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate', { sourcePath: 'public/EveSparks' }],
   ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', 'javascript', 'intermediate'],
   ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'ui css', 'beginner'],
   ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
@@ -134,13 +134,13 @@ const PROJECT_DATA = [
   ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', 'api javascript', 'intermediate'],
   ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', 'clone css', 'beginner'],
   ['Day 65', 'The Cube', './public/The%20Cube/index.html', 'ui canvas css', 'intermediate'],
-  ['Day 66', 'Flask Authentication App', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app', 'api javascript', 'intermediate'],
+  ['Day 66', 'Flask Authentication App', '', 'api javascript', 'intermediate', { linkType: 'source-only', sourcePath: 'public/flask_auth_app' }],
   ['Day 67', 'Blog-Website', './public/blog/main.html', 'css', 'beginner'],
   ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
   ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
   ['Day 70', 'Insect-Catch_Game', './public/Insect-Catch-Game/index.html', 'game canvas', 'intermediate'],
   ['Day 71', 'Quotely Laughs', './public/Quotely-Laughs/index.html', 'api javascript', 'beginner'],
-  ['Day 72', 'Contact Book', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book', 'todo javascript', 'intermediate'],
+  ['Day 72', 'Contact Book', '', 'todo javascript', 'intermediate', { linkType: 'source-only', sourcePath: 'public/Contact Book' }],
   ['Day 73', 'Candy_Crush_Game', './public/Candy_Crush_Game/index.html', 'game javascript', 'intermediate'],
   ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', 'tool javascript', 'beginner'],
   ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', 'game canvas', 'intermediate'],
@@ -159,7 +159,7 @@ const PROJECT_DATA = [
   ['Day 88', 'Job dashboard', './public/Job dashboard/jobs.html', 'tool javascript', 'intermediate'],
   ['Day 89', 'N-Queen', './public/N_Queen/index.html', 'game javascript', 'intermediate'],
   ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', 'javascript', 'beginner'],
-  ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', 'api javascript', 'intermediate'],
+  ['Day 91', 'Voting Application Backend', '', 'api javascript', 'intermediate', { linkType: 'source-only', sourcePath: 'public/Voting_Application_Backend' }],
   ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', 'game javascript', 'intermediate'],
   ['Day 93', 'TextUtils', './public/Textutils/public/index.html', 'javascript', 'beginner'],
   ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', 'game javascript', 'intermediate'],
@@ -183,7 +183,7 @@ const PROJECT_DATA = [
   ['Day 112', 'Nykaa Clone Website', './public/Nykaa-clone/index.html', 'clone css', 'intermediate'],
   ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'tool javascript', 'intermediate'],
   ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
-  ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
+  ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate', { sourcePath: 'public/event-registration-system' }],
   ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', 'api javascript', 'intermediate'],
   ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'ui tool html css js', 'intermediate'],
   ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
@@ -230,20 +230,120 @@ const PROJECT_DATA = [
   ['Day 159' , 'Dining Philosophers Simulation' , './public/Dining Philosophers Simulation/index.html' , 'simulation algorithm javascript' , 'intermediate' ] ,
 ];
 const PROJECTS = PROJECT_DATA;
+const PROJECT_LOOKUP = new Map(PROJECTS.map((project) => [project[0], project]));
 
 
 /* ============================================================
-   SOURCE CODE URL GENERATOR
+   PROJECT LINK HELPERS
    ============================================================ */
-function getSourceUrl(url) {
-  const trimmed = url.trim();
-  if (trimmed.startsWith('http')) return trimmed; // Already a full GitHub link
-  if (trimmed.startsWith('./')) {
-    // Converts "./public/folder/index.html" to "public/folder"
-    const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
-    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
+function getRepoUrlFromPath(path) {
+  const trimmed = (path || '').trim();
+  if (!trimmed) {
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
   }
-  return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
+
+  const normalizedPath = trimmed
+    .replace(/\\/g, '/')
+    .replace(/^\.\//, '');
+
+  return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${encodeURI(normalizedPath)}`;
+}
+
+function getSourceUrlFromValue(value) {
+  const trimmed = (value || '').trim();
+  if (!trimmed) {
+    return getRepoUrlFromPath('');
+  }
+
+  if (trimmed.startsWith('https://github.com/')) {
+    return trimmed;
+  }
+
+  if (trimmed.startsWith('./')) {
+    const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
+    return getRepoUrlFromPath(folderPath);
+  }
+
+  return getRepoUrlFromPath('');
+}
+
+function getProjectLinks(project) {
+  const [, , url, , , meta = {}] = project;
+  const demoUrl = (meta.demoUrl || url || '').trim();
+  const sourceUrl = meta.sourcePath
+    ? getRepoUrlFromPath(meta.sourcePath)
+    : getSourceUrlFromValue(demoUrl);
+  const isSourceOnly = meta.linkType === 'source-only';
+
+  return {
+    demoUrl,
+    sourceUrl,
+    isSourceOnly,
+    statusLabel: isSourceOnly ? 'Source Code Only' : '',
+  };
+}
+
+function rehydrateStoredProjects(key) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(key)) || [];
+    if (!Array.isArray(stored)) return [];
+
+    const normalized = stored
+      .map((project) => {
+        if (!Array.isArray(project) || !project[0]) return null;
+        return PROJECT_LOOKUP.get(project[0]) || project;
+      })
+      .filter(Boolean);
+
+    localStorage.setItem(key, JSON.stringify(normalized));
+    return normalized;
+  } catch (error) {
+    console.warn(`Could not restore ${key}:`, error);
+    return [];
+  }
+}
+
+function createProjectCard(project, { isBookmarked = false, forceBookmarked = false } = {}) {
+  const [day, name, , tags] = project;
+  const category = getCategoryFromTags(tags, name);
+  const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((tag) => tag) : tags;
+  const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
+  const { demoUrl, sourceUrl, isSourceOnly, statusLabel } = getProjectLinks(project);
+  const demoAction = isSourceOnly
+    ? `<span class="card-link card-link-disabled" aria-disabled="true">Source Only</span>`
+    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>`;
+  const statusBadge = statusLabel
+    ? `<div class="card-status-row">
+                <span class="card-status-badge">${statusLabel}</span>
+            </div>`
+    : '';
+
+  const card = document.createElement('div');
+  card.className = 'project-card';
+  card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${category}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            ${statusBadge}
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    ${demoAction}
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn ${(forceBookmarked || isBookmarked) ? 'active' : ''}" data-id="${day}">
+                    <i class="${(forceBookmarked || isBookmarked) ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+
+  return card;
 }
 
 
@@ -370,8 +470,8 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
-let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+let bookmarkedProjects = rehydrateStoredProjects('bookmarkedProjects');
+let recentProjects = rehydrateStoredProjects('recentProjects');
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -539,37 +639,10 @@ function renderGrid() {
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
 
-  pageItems.forEach(([day, name, url, tags]) => {
-    const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
-    card.className = 'project-card';
+  pageItems.forEach((project) => {
+    const [day] = project;
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
-
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
-
+    const card = createProjectCard(project, { isBookmarked });
     grid.appendChild(card);
   });
 
@@ -771,35 +844,8 @@ function renderBookmarks() {
 
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags]) => {
-    const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
-
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn active" data-id="${day}">
-                    <i class="fa-solid fa-bookmark"></i>
-                </button>
-            </div>
-        `;
-
+  visibleBookmarks.forEach((project) => {
+    const card = createProjectCard(project, { forceBookmarked: true });
     bookmarkGrid.appendChild(card);
   });
 }
@@ -823,36 +869,10 @@ function renderRecentProjects() {
 
   const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
-    const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+  visibleRecent.forEach((project) => {
+    const [day] = project;
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const sourceUrl = getSourceUrl(url);
-
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
-
+    const card = createProjectCard(project, { isBookmarked });
     recentGrid.appendChild(card);
   });
 }
