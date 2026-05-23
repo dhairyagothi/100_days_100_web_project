@@ -12,9 +12,71 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="chatbot.css" />
+<link
+  href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+  rel="stylesheet"
+/>
 </head>
 
 <body>
+  <div class="chatbot-container">
+
+  <!-- Floating Button -->
+  <button id="chat-toggle">
+    <i class="ri-robot-2-line"></i>
+  </button>
+
+  <!-- Chat Window -->
+  <div class="chatbot-box" id="chatbot-box">
+
+    <!-- Header -->
+    <div class="chat-header">
+
+      <div class="chat-header-left">
+        <i class="ri-robot-2-line"></i>
+        <h3>Travel AI</h3>
+      </div>
+
+      <button id="close-chat">
+        <i class="ri-close-line"></i>
+      </button>
+
+    </div>
+
+    <!-- Tabs -->
+    <div class="chat-tabs">
+      <button class="active-tab">✈️ Chat</button>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chat-messages">
+
+      <div class="bot-message">
+        Hi! 👋<br>
+        Ask me anything about destinations, hotels, flights, or travel planning.
+      </div>
+
+    </div>
+
+    <!-- Input -->
+    <div class="chat-input-area">
+
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Ask something..."
+      />
+
+      <button id="send-btn">
+        <i class="ri-send-plane-fill"></i>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
   <header class="header">
     <nav>
       <div class="nav_bar">
@@ -61,6 +123,7 @@
           <button class="btn" id="book-now-btn">Search Flights &rarr;</button>
         </form>
       </div>
+      
     </div>
   </header>
 
@@ -415,8 +478,10 @@
       Copyright © 2023 Shiven yadav S. All rights reserved.
     </div>
   </footer>
+  
   <script src="https://unpkg.com/scrollreveal"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="config.js"></script>
   <script src="index.js"></script>
 </body>
 </html>

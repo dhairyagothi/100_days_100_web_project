@@ -134,6 +134,10 @@ input[type="text"]:focus,
     display: none !important;
 }
 
+.type-btn:hover{
+    background: #d1d1d1;
+    transform: translateY(-2px) scale(1.08);
+}
 #captchaContainer {
     min-height: 160px;
     border-radius: 26px;
@@ -164,6 +168,13 @@ input[type="text"]:focus,
     grid-template-columns: repeat(3, minmax(80px, 1fr));
     gap: 14px;
     width: 100%;
+}
+
+.image-option.selected{
+    border: 3px solid #4CAF50;
+    transform: scale(1.12);
+    background: #dff5e1;
+    box-shadow: 0 0 12px rgba(16, 90, 201, 0.912);
 }
 
 #captchaContainer .image-option {

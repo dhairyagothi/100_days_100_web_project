@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,20 +20,44 @@
                 <li><a href="#more">More</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <!-- dark mode -->
-                <li>
-                    <input type="checkbox" id="dark-mode-toggle"/>
-                    <label for="dark-mode-toggle" class="theme-label"></label>
-                </li>
             </ul>
         </div>
-        <div class="icons">
-            <ul>
-                <li><img src="images/search.svg" alt="search" srcset=""></li>
-                <li><img src="images/cart.svg" alt="cart" srcset=""></li>
-                <li><img src="images/ellipsis-v.svg" alt="More" srcset=""></li>
-            </ul>
-        </div>
+       
+
+<div class="icons">
+    <ul>
+
+        <!-- Theme Toggle -->
+        <li class="theme-switch-wrapper">
+            <input type="checkbox" id="dark-mode-toggle">
+
+            <label for="dark-mode-toggle" class="theme-label">
+                <span class="sun-icon">☀</span>
+                <span class="moon-icon">☾</span>
+            </label>
+        </li>
+
+        <!-- Search -->
+        <li>
+            <img src="images/search.svg" alt="search">
+        </li>
+
+        <!-- Cart -->
+        <li>
+            <img src="images/cart.svg" alt="cart">
+        </li>
+
+        <!-- More -->
+        <li>
+            <img src="images/ellipsis-v.svg" alt="More">
+        </li>
+
+    </ul>
+</div>
+
+
+
+
     </nav>
     
     <main>

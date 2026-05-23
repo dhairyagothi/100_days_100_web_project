@@ -282,7 +282,7 @@ body {
   color: var(--text);
 }
 
-/* Secondary clocks widget */
+/* World Clock Dashboard */
 .world-clocks-section {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -297,75 +297,139 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 12px;
+  margin-bottom: 6px;
+}
+
+.world-clocks-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-accent-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+  transition: all var(--transition-speed) ease;
 }
 
 .section-header h2 {
-  font-size: 16px;
+  font-family: var(--font-family-body);
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text);
+  margin: 0;
 }
 
 .add-world-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--soft-text);
   padding: 8px 16px;
-  border-radius: 12px;
-  font-size: 12px;
+  border-radius: 10px;
+  font-size: 11px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .add-world-btn:hover {
-  background: var(--primary);
-  color: #000;
+  background: var(--primary-glow-light);
+  color: var(--primary);
   border-color: var(--primary);
-  box-shadow: 0 0 12px var(--primary-glow);
-  transform: translateY(-2px);
+  box-shadow: 0 0 12px var(--primary-glow-light);
+  transform: translateY(-1px);
 }
 
 .world-clocks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
 }
 
 .world-clock-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 18px;
-  padding: 16px;
-  position: relative;
-  transition: all 0.3s ease;
+  background: var(--card-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 14px 20px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
 }
 
 .world-clock-card:hover {
   border-color: var(--primary);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
-  transform: translateY(-3px);
+  box-shadow: 0 0 15px var(--primary-glow-light);
+  transform: translateY(-2px);
+}
+
+.world-clock-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0; 
+}
+
+.world-clock-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.world-city {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  font-family: var(--font-family-body);
+}
+
+.world-offset {
+  font-size: 11px;
+  color: var(--soft-text);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.world-time-zone-display {
+  display: flex;
+  align-items: center;
+  gap: 20px; 
+}
+
+.world-time {
+  font-family: var(--font-family-clock);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary-glow);
+  letter-spacing: 1px;
+  white-space: nowrap; 
+  transition: all var(--transition-speed) ease;
 }
 
 .world-clock-remove {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   color: #ef4444;
-  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -376,48 +440,7 @@ body {
 .world-clock-remove:hover {
   background: #ef4444;
   color: #fff;
-  transform: scale(1.15);
-}
-
-.world-city {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: var(--text);
-  padding-right: 20px;
-}
-
-.world-offset {
-  font-size: 10px;
-  color: var(--soft-text);
-  text-transform: uppercase;
-}
-
-.world-time-wrapper {
-  margin-top: 4px;
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-}
-
-.world-time {
-  font-family: var(--font-family-clock);
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--primary);
-  text-shadow: 0 0 8px var(--primary-glow);
-  transition: color var(--transition-speed) ease;
-}
-
-.world-ampm {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.world-date {
-  font-size: 10px;
-  color: var(--soft-text);
+  transform: scale(1.1);
 }
 
 /* Custom dropdown menu elements */

@@ -31,7 +31,12 @@ window.addEventListener('load', () => {
 });
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
+
+if (!SpeechRecognition) {
+    alert("Speech Recognition is not supported in this browser.");
+    status.textContent = "Speech Recognition not supported";
+} else {
+    const recognition = new SpeechRecognition();
 
 recognition.onresult = (event) => {
     const currentIndex = event.resultIndex;
@@ -47,6 +52,7 @@ btn.addEventListener('click', () => {
     status.textContent ="Jarvis is listening";
     recognition.start();
 });
+}
 
 recognition.onend = () => {
     btn.classList.remove('active');

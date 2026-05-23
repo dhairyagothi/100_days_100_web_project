@@ -1,4 +1,6 @@
-const captchaTypeSelect = document.getElementById('captchaType');
+let selectedImageAnswer = "";
+const typeButtons = document.querySelectorAll(".type-btn");
+let selectedType = "text";
 const captchaContainer = document.getElementById('captchaContainer');
 const textInput = document.getElementById('captchaInput');
 const refreshButton = document.querySelector('.refresh');
@@ -159,7 +161,7 @@ const updateLockoutUI = () => {
   if (now < lockoutEndTime) {
       const remainingTime = Math.ceil((lockoutEndTime - now) / 1000);
       submitButton.disabled = true;
-      resultMessage.textContent = `Too many attempts. Please wait ${remainingTime} seconds.`;
+      resultMessage.textContent = `Too many unsuccessful attempts. Please wait ${remainingTime} seconds.`;
       resultMessage.style.color = "red";
       setTimeout(updateLockoutUI, 1000);
   } else {
@@ -175,7 +177,10 @@ const verifyCaptcha = () => {
       return;
   }
 
-  const userInput = textInput.value.trim().toLowerCase();
+  const userInput = 
+  selectedType == "image"
+  ? selectedImageAnswer.toLowerCase()
+  : textInput.value.trim().toLowerCase();
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
   
   if (isCorrect) {
@@ -201,7 +206,16 @@ const verifyCaptcha = () => {
   }
 };
 
-captchaTypeSelect.addEventListener('change', generateCaptcha);
+typeButtons.forEach(button =>{
+    button.addEventListener ("click", () =>{
+        typeButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        selectedType = button.dataset.type;
+        textInput.value = "";       //clears the text input field
+        selectedImageAnswer = "";   // resets the stored image answer too
+        generateCaptcha();
+    });
+});
 refreshButton.addEventListener("click", () => {
   if (Date.now() >= lockoutEndTime) {
       generateCaptcha();
