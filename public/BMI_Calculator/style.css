@@ -1,9 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap");
 
 /* =========================================
    Reset
-========================================= */
 *, *::before, *::after {
+   ========================================= */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -34,8 +37,8 @@
   --amber-tint: #fef3e2;
   --red-tint: #fef2f2;
 
-  --f-mono: 'DM Mono', monospace;
-  --f-serif: 'Instrument Serif', serif;
+  --f-mono: "DM Mono", "Courier New", monospace;
+  --f-serif: "Instrument Serif", Georgia, serif;
 
   --r-sm: 4px;
   --r-md: 6px;
@@ -73,9 +76,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  transition: background 0.25s, color 0.25s;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition:
+    background 0.25s,
+    color 0.25s;
 }
 
 .page {
@@ -94,6 +98,15 @@ body {
   border: 1px solid var(--rule-strong);
   border-radius: var(--r-lg);
   overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .bmi-grid {
+    grid-template-columns: 1fr;
+  }
+  body {
+    padding: 28px 16px;
+  }
 }
 
 .card {
@@ -141,8 +154,10 @@ body {
   overflow: hidden;
   display: grid;
   place-items: center;
-  color: var(--ink-2);
-  transition: 0.2s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  font-family: var(--f-mono);
 }
 
 .theme-toggle:hover {
@@ -152,7 +167,9 @@ body {
 
 .theme-toggle svg {
   position: absolute;
-  transition: all 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .icon-sun {
@@ -160,6 +177,10 @@ body {
   transform: rotate(-90deg) scale(0.6);
 }
 
+.icon-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
 .icon-moon {
   opacity: 1;
   transform: rotate(0deg) scale(1);
@@ -169,7 +190,6 @@ body.dark .icon-sun {
   opacity: 1;
   transform: rotate(0deg) scale(1);
 }
-
 body.dark .icon-moon {
   opacity: 0;
   transform: rotate(90deg) scale(0.6);
@@ -210,7 +230,11 @@ input[type="number"] {
   font-family: var(--f-mono);
   font-size: 13px;
   outline: none;
-  transition: 0.2s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 select:hover,
@@ -240,15 +264,16 @@ button#btn {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   cursor: pointer;
-  transition: 0.2s;
+  transition:
+    opacity 0.15s,
+    transform 0.1s;
 }
 
 button#btn:hover {
-  opacity: 0.85;
+  opacity: 0.8;
 }
-
 button#btn:active {
-  transform: scale(0.99);
+  transform: scale(0.997);
 }
 
 /* =========================================
@@ -278,6 +303,18 @@ button#btn:active {
   padding-top: 20px;
   display: flex;
   flex-direction: column;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+body.dark .metric-card:hover {
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.05);
 }
 
 .metric-card + .metric-card {
@@ -305,15 +342,18 @@ button#btn:active {
   padding-top: 8px;
 }
 
-.category-badge,
-.bf-badge {
-  display: inline-block;
-  padding: 4px 9px;
-  border-radius: 2px;
-  font-size: 10px;
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  margin-top: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-top: 14px;
+  transition: all 0.3s ease;
 }
 
 .tip-text,
@@ -326,7 +366,7 @@ button#btn:active {
 
 /* =========================================
    BMI Range Bar
-========================================= */
+   ========================================= */
 .range-vis {
   margin-top: 28px;
 }
@@ -342,10 +382,21 @@ button#btn:active {
   height: 100%;
 }
 
-.seg-blue { background: var(--blue); }
-.seg-green { background: var(--green); }
-.seg-amber { background: var(--amber); }
-.seg-red { background: var(--red1); }
+.seg {
+  display: block;
+}
+.seg-blue {
+  background: var(--blue);
+}
+.seg-green {
+  background: var(--green);
+}
+.seg-amber {
+  background: var(--amber);
+}
+.seg-red {
+  background: var(--red1);
+}
 
 .bmi-pointer {
   position: absolute;
@@ -394,8 +445,10 @@ button#btn:active {
 .bf-fill {
   stroke: var(--green);
   transform: rotate(-90deg);
-  transform-origin: center;
-  transition: 0.5s;
+  transform-origin: 50% 50%;
+  transition:
+    stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    stroke 0.3s ease;
 }
 
 .bf-pct-text {
@@ -407,6 +460,56 @@ button#btn:active {
 .bf-pct-unit {
   font-size: 8px;
   fill: var(--ink-3);
+}
+
+.bf-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.bf-desc {
+  font-size: 11px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+.bf-ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.bf-range-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+.bf-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bf-dot-blue {
+  background: #2563b0;
+}
+.bf-dot-green {
+  background: #16a34a;
+}
+.bf-dot-teal {
+  background: #0d9488;
+}
+.bf-dot-amber {
+  background: #d97706;
+}
+.bf-dot-red {
+  background: #dc2626;
 }
 
 /* =========================================
@@ -424,15 +527,39 @@ button#btn:active {
   border-bottom: 1px solid var(--rule);
 }
 
-.bmi-table th {
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--ink-3);
+.bmi-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .bmi-table td:last-child,
 .bmi-table th:last-child {
   text-align: right;
+}
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.dot-blue {
+  background: var(--blue);
+}
+.dot-green {
+  background: var(--green);
+}
+.dot-amber {
+  background: var(--amber);
+}
+.dot-red1 {
+  background: var(--red1);
+}
+.dot-red2 {
+  background: var(--red2);
+}
+.dot-red3 {
+  background: var(--red3);
 }
 
 /* =========================================
@@ -464,11 +591,12 @@ button#btn:active {
   height: 0;
 }
 
-/* =========================================
-   Responsive
-========================================= */
 @media (max-width: 768px) {
 
+@media (max-width: 768px) {
+  /* =========================
+     Page spacing fix
+  ========================= */
   body {
     padding: 16px 10px;
   }
@@ -498,6 +626,48 @@ button#btn:active {
 
   .metric-value {
     font-size: 34px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  body.dark .metric-value {
+    text-shadow: 0 2px 14px rgba(255, 255, 255, 0.06);
+  }
+
+  .range-val {
+    font-size: 18px;
+  }
+
+  .range-vis {
+    margin-top: 18px;
+  }
+
+  .range-labels {
+    font-size: 10px;
+  }
+
+  /* =========================
+     TABLE scroll fix
+  ========================= */
+  .bmi-table {
+    font-size: 11px;
+  }
+
+  .bmi-table td {
+    padding: 8px 0;
+  }
+
+  .chart-wrap {
+    min-height: 180px;
+    padding-top: 12px;
+  }
+
+  .chart-wrap canvas {
+    width: 100% !important;
+    height: 160px !important;
+  }
+
+  .chart-hint {
+    font-size: 10px;
   }
 
   .bf-body {
@@ -522,10 +692,34 @@ button#btn:active {
 ========================================= */
 input::placeholder {
   opacity: 1;
-  transition: 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 input:focus::placeholder {
   opacity: 0;
   transform: translateX(6px);
+}
+
+.result-row,
+.range-vis,
+.bf-section {
+  animation: fadeSlide 0.5s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.active-row {
+  background: rgba(100, 100, 255, 0.08);
+  transition: background 0.3s ease;
 }
