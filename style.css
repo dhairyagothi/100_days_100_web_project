@@ -695,8 +695,28 @@ body.light-mode .navbar {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 10px;
   width: 100%;
-  max-width: 400px; 
+  max-width: 650px;
+  flex-wrap: wrap;
+}
+
+#sortProjects {
+  min-width: 140px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+  flex-shrink: 0;
+}
+
+#sortProjects option {
+  background: #111827;
+  color: #ffffff;
 }
 
 .search-icon {
@@ -1336,25 +1356,41 @@ body.light-mode .navbar {
 }
 
 /* Theme toggle — lives in footer-bottom */
-#themeToggle {
+#themeToggle,
+#themeToggleNav {
   background: transparent;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  width: 32px;
-  height: 32px;
+  min-width: 32px;
+  height: 36px;
   color: var(--text-muted);
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.6rem;
   transition: var(--t);
 }
 
-#themeToggle:hover {
+#themeToggle i,
+#themeToggleNav i {
+  transition: transform 0.25s var(--t), color 0.25s var(--t);
+}
+
+#themeToggle:hover,
+#themeToggleNav:hover {
   border-color: var(--border-hover);
   color: var(--text-primary);
   background: var(--bg-surface);
+  transform: translateY(-2px);
+}
+
+#themeToggle:hover i,
+#themeToggleNav:hover i {
+  transform: rotate(20deg);
+  color: var(--accent-color);
 }
 
 .menu-toggle {
@@ -1417,7 +1453,7 @@ body.light-mode .navbar {
 
     .nav-buttons.mobile-drawer-layer .btn {
         width: 100% !important;
-        max-width: 280px !important;
+      max-width: none !important;
         justify-content: center !important;
         text-align: center !important;
         padding: 0.8rem 1rem !important;
@@ -1920,4 +1956,14 @@ body.light-mode .brand-mark {
 #scrollToTopBtn:hover {
   background-color: #007bff;
   transform: scale(1.1);
+}
+
+#particleCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
 }

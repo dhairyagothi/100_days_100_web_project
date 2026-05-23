@@ -9,44 +9,199 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    font-family: 'Segoe UI', sans-serif;
+
+    background: linear-gradient(135deg, #0f172a, #1e293b, #312e81);
+
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    position: relative;
 }
+
+/* Background Glow Blobs */
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    z-index: -1;
+    opacity: 0.7;
+}
+
+.blob1 {
+    width: 280px;
+    height: 280px;
+    background: #7c3aed;
+    top: 10%;
+    left: 10%;
+}
+
+.blob2 {
+    width: 320px;
+    height: 320px;
+    background: #2563eb;
+    bottom: 10%;
+    right: 10%;
+}
+
+/* Calendar Card */
 
 .calendar-card {
-    background: white;
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    border-radius: 24px;
     padding: 40px;
+
+    width: 320px;
+
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    width: 280px;
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,0.25),
+        inset 0 1px 1px rgba(255,255,255,0.2);
+
+    color: white;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
+.calendar-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,0.35),
+        inset 0 1px 1px rgba(255,255,255,0.2);
+}
+
+/* Month & Year */
+
 .month-year {
-    background: #4f46e5;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
     color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
+
+    padding: 14px 22px;
+
+    border-radius: 14px;
+
     font-size: 1.1rem;
     font-weight: 600;
+
     letter-spacing: 1px;
-    margin-bottom: 20px;
+
+    margin-bottom: 25px;
+
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    box-shadow: 0 4px 20px rgba(99,102,241,0.4);
 }
+
+/* Day Name */
 
 .day-name {
     font-size: 1.2rem;
-    color: #6b7280;
+
+    color: #e2e8f0;
+
     font-weight: 500;
-    margin-bottom: 10px;
+
+    margin-bottom: 12px;
+
     text-transform: uppercase;
-    letter-spacing: 2px;
+
+    letter-spacing: 3px;
 }
 
+/* Date Number */
+
 .date-number {
-    font-size: 5rem;
+    font-size: 6rem;
     font-weight: 800;
-    color: #1f2937;
+
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+
     line-height: 1;
+
+    margin-bottom: 10px;
+}
+
+/* Live Clock */
+
+.clock {
+    margin-top: 20px;
+
+    padding: 10px 18px;
+
+    background: rgba(255,255,255,0.12);
+
+    border: 1px solid rgba(255,255,255,0.15);
+
+    border-radius: 12px;
+
+    font-size: 1.4rem;
+    font-weight: bold;
+
+    color: #f8fafc;
+
+    letter-spacing: 2px;
+
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* Weekday Style */
+
+.weekday {
+    color: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+/* Weekend Highlight */
+
+.weekend {
+    color: #ff6b6b;
+
+    font-weight: bold;
+
+    text-shadow:
+        0 0 10px rgba(255, 107, 107, 0.6),
+        0 0 20px rgba(255, 107, 107, 0.3);
+
+    transition: all 0.3s ease;
+}
+
+/* Responsive Design */
+
+@media (max-width: 480px) {
+    .calendar-card {
+        width: 90%;
+        padding: 30px;
+    }
+
+    .date-number {
+        font-size: 4.5rem;
+    }
+
+    .clock {
+        font-size: 1.1rem;
+    }
+
+    .month-year {
+        font-size: 1rem;
+    }
 }
