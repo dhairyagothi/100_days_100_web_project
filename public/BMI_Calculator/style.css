@@ -513,6 +513,19 @@ button#btn:active { transform: scale(0.997); }
 .dot-red3  { background: var(--red3); }
 
 /* =========================================
+   Reference Table Highlight Utilities
+   ========================================= */
+.bmi-table tbody tr.active-highlight td {
+  color: #1c1a17 !important; 
+  font-weight: bold;
+}
+
+.bmi-table tbody tr.active-highlight {
+  outline: 1px solid var(--ink-2);
+  transition: background-color 0.3s ease;
+}
+
+/* =========================================
    Chart
    ========================================= */
 .chart-wrap {

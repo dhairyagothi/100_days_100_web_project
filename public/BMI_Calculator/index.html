@@ -52,9 +52,20 @@
                 <option value="feet">Feet / inches</option>
               </select>
             </div>
-            <div class="field">
+            
+            <!-- Container for standard metric input (Visible by default) -->
+            <div class="field" id="metric-height-container">
               <div class="field-label" id="height-lbl">Height (cm)</div>
-              <input type="text" id="height" placeholder="e.g. 170" />
+              <input type="number" id="height" placeholder="e.g. 170" min="1" max="300" />
+            </div>
+
+            <!-- Container for imperial inputs (Hidden by default using a .hidden utility class) -->
+            <div class="field hidden" id="imperial-height-container">
+              <div class="field-label">Height</div>
+              <div class="dual-inputs" style="display: flex; gap: 8px;">
+                <input type="number" id="height-ft" placeholder="ft" min="1" max="8" style="flex: 1;" />
+                <input type="number" id="height-in" placeholder="in" min="0" max="11" style="flex: 1;" />
+              </div>
             </div>
           </div>
 
@@ -68,7 +79,7 @@
             </div>
             <div class="field">
               <div class="field-label" id="weight-lbl">Weight (kg)</div>
-              <input type="number" id="weight" placeholder="e.g. 70" min="1" />
+              <input type="number" id="weight" placeholder="e.g. 70" min="1" max="600" />
             </div>
           </div>
 
@@ -86,7 +97,10 @@
             </div>
           </div>
 
-          <button id="btn">Calculate</button>
+          <div class="action-buttons" style="display: flex; gap: 12px; margin-bottom: 16px;">
+            <button type="button" id="calculate-btn" style="flex: 2;">Calculate</button>
+            <button type="button" id="reset-btn" style="flex: 1;">Reset</button>
+          </div>
           <div id="error-msg" class="error-msg hidden"></div>
 
           <div class="result-row hidden" id="results">
@@ -113,8 +127,7 @@
               <div class="bmi-pointer" id="bmi-ptr"></div>
             </div>
             <div class="range-labels">
-              <span>10</span><span>18.5</span><span>25</span><span>30</span
-              ><span>40+</span>
+              <span>10</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
             </div>
           </div>
 
@@ -168,13 +181,13 @@
           </div>
         </div>
 
-        <!-- Right: Reference + Chart -->
+        <!-- Right: Reference + Chart & Persistent History -->
         <div class="card right-card">
           <div class="top-bar" style="margin-bottom: 0">
             <p class="card-title">Reference chart</p>
           </div>
 
-          <table class="bmi-table">
+          <table class="bmi-table" id="reference-table">
             <thead>
               <tr>
                 <th>BMI</th>
@@ -183,33 +196,33 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr id="row-underweight">
                 <td>&lt; 18.5</td>
                 <td>Underweight</td>
                 <td><span class="dot dot-blue"></span></td>
               </tr>
-              <tr>
+              <tr id="row-normal">
                 <td>18.5 – 24.9</td>
                 <td>Normal weight</td>
                 <td><span class="dot dot-green"></span></td>
               </tr>
-              <tr>
+              <tr id="row-overweight">
                 <td>25.0 – 29.9</td>
                 <td>Overweight</td>
                 <td><span class="dot dot-amber"></span></td>
               </tr>
-              <tr>
+              <tr id="row-obese1">
                 <td>30.0 – 34.9</td>
                 <td>Obese (Class I)</td>
                 <td><span class="dot dot-red1"></span></td>
               </tr>
-              <tr>
+              <tr id="row-obese2">
                 <td>35.0 – 39.9</td>
                 <td>Obese (Class II)</td>
                 <td><span class="dot dot-red2"></span></td>
               </tr>
-              <tr>
-                <td>≥ 40.0</td>
+              <tr id="row-obese3">
+                <td>&ge; 40.0</td>
                 <td>Obese (Class III)</td>
                 <td><span class="dot dot-red3"></span></td>
               </tr>
@@ -219,10 +232,19 @@
           <div class="chart-wrap">
             <canvas id="bmiChart"></canvas>
           </div>
-          <p class="chart-hint">
-            BMI history — calculate multiple times to track changes.
-          </p>
+          
+          <!-- Modernised History Logging Area -->
+          <div class="history-container" style="margin-top: 20px; border-top: 1px solid var(--border-color, #eee); padding-top: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <p class="card-title" style="font-size: 0.95rem; margin: 0;">Log History</p>
+              <button type="button" id="clear-history-btn" class="clear-btn" style="padding: 4px 8px; font-size: 0.8rem; cursor: pointer;">Clear History</button>
+            </div>
+            <ul id="history-log-list" style="list-style: none; padding: 0; max-height: 150px; overflow-y: auto; margin: 0;">
+              <!-- LocalStorage history items will be injected here as <li> elements -->
+            </ul>
+          </div>
         </div>
+
       </div>
     </div>
 
