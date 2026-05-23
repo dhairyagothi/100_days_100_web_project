@@ -25,9 +25,9 @@
             <div class="template-selector">
                 <label class="template-label">Choose Template:</label>
                 <div class="template-btns">
-                    <button class="tpl-btn active" data-template="modern">Modern</button>
-                    <button class="tpl-btn" data-template="classic">Classic</button>
-                    <button class="tpl-btn" data-template="minimal">Minimal</button>
+                    <button class="tpl-btn active" data-template="modern" aria-label="Modern resume template">Modern</button>
+                    <button class="tpl-btn active" data-template="classic" aria-label="Classic resume template">Classic</button>
+                    <button class="tpl-btn active" data-template="minimal" aria-label="Minimal resume template">Minimal</button>
                 </div>
             </div>
 
@@ -35,19 +35,27 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" placeholder="Enter your name" maxlength="60">
+                        <input type="text" id="name" autocomplete="name" placeholder="Enter your name" maxlength="60" required>
                         <span class="char-count" id="nameCount">0/60</span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="Enter your email" maxlength="80">
+                        <input type="email" id="email" autocomplete="email" placeholder="Enter your email" maxlength="80" required>
                         <span class="char-count" id="emailCount">0/80</span>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="tel" id="phone" placeholder="Enter your phone number" maxlength="15">
+                        <input 
+                        type="tel" 
+                        id="phone" 
+                        placeholder="Enter your phone number"
+                        maxlength="15"
+                        pattern="[0-9]{10}"
+                        autocomplete="tel"
+                        required
+                        >
                         <span class="char-count" id="phoneCount">0/15</span>
                     </div>
                     <div class="form-group">
