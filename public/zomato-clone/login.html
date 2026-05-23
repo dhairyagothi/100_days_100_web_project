@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in – Zomato</title>
+    <link rel="icon" type="image/png" href="images/favicon.ico">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'ProximaNova', 'Okra', sans-serif; }
+        body { background: #f8f8f8; min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* Navbar */
+        .z-navbar {
+            background: #fff;
+            padding: 0 5%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .z-navbar img { height: 28px; cursor: pointer; }
+        .z-navbar-right { display: flex; gap: 14px; align-items: center; }
+        .z-navbar-right a { text-decoration: none; font-size: 1.4rem; color: #696969; font-weight: 500; padding: 7px 16px; border-radius: 6px; transition: background 0.2s; }
+        .z-navbar-right a:hover { background: #f5f5f5; }
+        .z-navbar-right a.active { border: 1px solid #e23744; color: #e23744; }
+
+        /* Main */
+        .z-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+
+        /* Card */
+        .z-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 40px 36px 32px;
+            width: 100%; max-width: 420px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+        .z-card h2 { font-size: 2.2rem; font-weight: 700; color: #1c1c1c; margin-bottom: 6px; }
+        .z-card .sub { font-size: 1.3rem; color: #696969; margin-bottom: 28px; }
+
+        /* Social */
+        .z-social { display: flex; gap: 10px; margin-bottom: 20px; }
+        .z-social-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px;
+            background: #fff; font-size: 1.3rem; font-weight: 600; color: #333;
+            cursor: pointer; transition: border-color 0.2s, background 0.2s;
+        }
+        .z-social-btn:hover { border-color: #e23744; background: #fff5f5; }
+        .z-social-btn i { font-size: 1.5rem; }
+        .z-social-btn .fa-google { color: #4285F4; }
+        .z-social-btn .fa-facebook { color: #3b5998; }
+
+        /* Divider */
+        .z-divider { display: flex; align-items: center; gap: 10px; color: #b0b0b0; font-size: 1.2rem; margin: 18px 0; }
+        .z-divider::before, .z-divider::after { content: ''; flex: 1; height: 1px; background: #ebebeb; }
+
+        /* Fields */
+        .z-field { margin-bottom: 16px; }
+        .z-field label { display: block; font-size: 1.2rem; font-weight: 600; color: #3d3d3d; margin-bottom: 6px; }
+        .z-field input {
+            width: 100%; padding: 12px 14px; border: 1.5px solid #ddd; border-radius: 8px;
+            font-size: 1.3rem; color: #1c1c1c; outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .z-field input:focus { border-color: #e23744; box-shadow: 0 0 0 3px rgba(226,55,68,0.1); }
+        .z-field input.err { border-color: #e23744; }
+        .z-err { font-size: 1.1rem; color: #e23744; margin-top: 4px; min-height: 15px; display: block; }
+
+        /* Password wrap */
+        .pw-wrap { position: relative; }
+        .pw-wrap input { padding-right: 55px; }
+        .pw-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #696969; font-size: 1.1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; transition: color 0.2s; }
+        .pw-toggle:hover { color: #e23744; }
+
+        /* Options row */
+        .z-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1.2rem; }
+        .z-options label { display: flex; align-items: center; gap: 6px; color: #555; cursor: pointer; }
+        .z-options input[type=checkbox] { accent-color: #e23744; }
+        .z-options a { color: #e23744; text-decoration: none; font-weight: 600; }
+        .z-options a:hover { text-decoration: underline; }
+
+        /* Submit */
+        .z-submit { width: 100%; padding: 13px; background: #e23744; color: #fff; border: none; border-radius: 8px; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 4px; }
+        .z-submit:hover { background: #c72d39; transform: translateY(-1px); }
+        .z-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+        /* Success */
+        .z-success { background: #f0fff4; border: 1px solid #a3d9a5; color: #276749; border-radius: 8px; padding: 10px 14px; font-size: 1.2rem; text-align: center; margin-top: 14px; }
+
+        /* Switch */
+        .z-switch { text-align: center; font-size: 1.3rem; color: #696969; margin-top: 22px; }
+        .z-switch a { color: #e23744; font-weight: 700; text-decoration: none; }
+        .z-switch a:hover { text-decoration: underline; }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .z-card { padding: 28px 18px 24px; }
+            .z-card h2 { font-size: 1.8rem; }
+            .z-social { flex-direction: column; }
+            .z-options { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .z-navbar-right a { font-size: 1.2rem; padding: 6px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="z-navbar">
+        <a href="zomato.html">
+            <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato">
+        </a>
+        <div class="z-navbar-right">
+            <a href="login.html" class="active">Log in</a>
+            <a href="signup.html">Sign up</a>
+        </div>
+    </nav>
+
+    <main class="z-main">
+        <div class="z-card">
+            <h2>Log in</h2>
+            <p class="sub">or <a href="signup.html" style="color:#e23744;text-decoration:none;font-weight:600;">create an account</a></p>
+
+            <div class="z-social">
+                <button class="z-social-btn" onclick="alert('Google login coming soon!')">
+                    <i class="fa fa-google"></i> Google
+                </button>
+                <button class="z-social-btn" onclick="alert('Facebook login coming soon!')">
+                    <i class="fa fa-facebook"></i> Facebook
+                </button>
+            </div>
+
+            <div class="z-divider"><span>or</span></div>
+
+            <form id="loginForm" novalidate>
+                <div class="z-field">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                    <span class="z-err" id="emailErr"></span>
+                </div>
+                <div class="z-field">
+                    <label for="loginPw">Password</label>
+                    <div class="pw-wrap">
+                        <input type="password" id="loginPw" placeholder="Enter your password">
+                        <button type="button" class="pw-toggle" id="pwToggle" onclick="togglePw('loginPw','pwToggle')">SHOW</button>
+                    </div>
+                    <span class="z-err" id="pwErr"></span>
+                </div>
+                <div class="z-options">
+                    <label><input type="checkbox"> Remember me</label>
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button type="submit" class="z-submit">Log in</button>
+                <div id="loginSuccess" class="z-success" style="display:none;"></div>
+            </form>
+
+            <p class="z-switch">New to Zomato? <a href="signup.html">Create account</a></p>
+        </div>
+    </main>
+
+    <script>
+        function togglePw(inputId, btnId) {
+            const input = document.getElementById(inputId);
+            const btn = document.getElementById(btnId);
+            if (input.type === 'password') { input.type = 'text'; btn.textContent = 'HIDE'; }
+            else { input.type = 'password'; btn.textContent = 'SHOW'; }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let valid = true;
+            const email = document.getElementById('loginEmail').value.trim();
+            const pw = document.getElementById('loginPw').value;
+            document.getElementById('emailErr').textContent = '';
+            document.getElementById('pwErr').textContent = '';
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailErr').textContent = 'Please enter a valid email address.';
+                document.getElementById('loginEmail').classList.add('err');
+                valid = false;
+            } else { document.getElementById('loginEmail').classList.remove('err'); }
+
+            if (!pw || pw.length < 4) {
+                document.getElementById('pwErr').textContent = 'Please enter a valid password.';
+                document.getElementById('loginPw').classList.add('err');
+                valid = false;
+            } else { document.getElementById('loginPw').classList.remove('err'); }
+
+            if (valid) {
+                const btn = this.querySelector('.z-submit');
+                btn.textContent = 'Logging in…'; btn.disabled = true;
+                setTimeout(() => {
+                    document.getElementById('loginSuccess').style.display = 'block';
+                    document.getElementById('loginSuccess').textContent = '✅ Logged in successfully! Redirecting…';
+                    setTimeout(() => window.location.href = 'zomato.html', 1800);
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
