@@ -227,7 +227,9 @@ const PROJECT_DATA = [
   ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
   ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
   ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
-  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', 'simulation algorithm javascript', 'intermediate'],
+  ['Day 159' , 'Dining Philosophers Simulation' , './public/Dining Philosophers Simulation/index.html' , 'simulation algorithm javascript' , 'intermediate' ] ,
+  ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', 'html css javascript', 'intermediate'],
+  ['Day 161', 'ResumeForge', './public/ResumeForge/index.html', 'tool react javascript html css', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
