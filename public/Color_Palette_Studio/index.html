@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Palette Studio</title>
+  <meta name="description" content="Generate beautiful, harmonious color palettes from any seed color. Export as CSS, copy hex codes, and save your favorites." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app-wrapper">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r="0.5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r="0.5" fill="currentColor"/>
+              <circle cx="8.5"  cy="7.5"  r="0.5" fill="currentColor"/>
+              <circle cx="6.5"  cy="12.5" r="0.5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </div>
+          <span class="brand-name">Color Palette Studio</span>
+        </div>
+        <p class="brand-tagline">Generate · Explore · Export beautiful color palettes</p>
+      </div>
+    </header>
+
+    <!-- Controls -->
+    <section class="controls-section">
+      <div class="controls-card">
+
+        <!-- Seed Color Picker -->
+        <div class="control-group">
+          <label class="control-label" for="seedColor">Seed Color</label>
+          <div class="color-input-row">
+            <input type="color" id="seedColor" value="#6366f1" class="color-picker" />
+            <input type="text" id="hexInput" value="#6366f1" class="hex-text" placeholder="#rrggbb" maxlength="7" />
+          </div>
+        </div>
+
+        <!-- Harmony Mode -->
+        <div class="control-group">
+          <label class="control-label" for="harmonySelect">Harmony</label>
+          <select id="harmonySelect" class="select-input">
+            <option value="analogous">Analogous</option>
+            <option value="complementary">Complementary</option>
+            <option value="triadic">Triadic</option>
+            <option value="tetradic">Tetradic</option>
+            <option value="split-complementary">Split Complementary</option>
+            <option value="monochromatic" selected>Monochromatic</option>
+            <option value="shades">Shades &amp; Tints</option>
+          </select>
+        </div>
+
+        <!-- Count slider -->
+        <div class="control-group">
+          <label class="control-label">
+            Swatches: <span id="countLabel">6</span>
+          </label>
+          <input type="range" id="countSlider" min="3" max="10" value="6" class="range-input" />
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-row">
+          <button id="generateBtn" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            Generate
+          </button>
+          <button id="randomBtn" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M11 18H3"/><path d="m15 18 5-5-5-5"/><path d="M11 6H3"/><path d="m15 6 5 5"/>
+            </svg>
+            Random
+          </button>
+          <button id="exportCSSBtn" class="btn btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Export CSS
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Palette Display -->
+    <section class="palette-section">
+      <div class="section-header">
+        <h2 class="section-title">Your Palette</h2>
+        <div class="view-toggle">
+          <button id="gridViewBtn" class="view-btn active" title="Grid view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </button>
+          <button id="listViewBtn" class="view-btn" title="Strip view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div id="paletteGrid" class="palette-grid"></div>
+      <div id="paletteStrip" class="palette-strip hidden"></div>
+    </section>
+
+    <!-- Color Details Panel -->
+    <section id="detailPanel" class="detail-panel hidden">
+      <div class="detail-card">
+        <div id="detailSwatch" class="detail-swatch"></div>
+        <div class="detail-info">
+          <h3 class="detail-heading">Color Details</h3>
+          <div class="detail-codes">
+            <div class="code-row"><span class="code-label">HEX</span><span id="dHex" class="code-value mono"></span><button class="copy-small" data-target="dHex">Copy</button></div>
+            <div class="code-row"><span class="code-label">RGB</span><span id="dRgb" class="code-value mono"></span><button class="copy-small" data-target="dRgb">Copy</button></div>
+            <div class="code-row"><span class="code-label">HSL</span><span id="dHsl" class="code-value mono"></span><button class="copy-small" data-target="dHsl">Copy</button></div>
+          </div>
+          <button id="closeDetail" class="btn btn-sm btn-outline" style="margin-top:1rem;">Close</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Saved Palettes -->
+    <section class="saved-section">
+      <div class="section-header">
+        <h2 class="section-title">Saved Palettes</h2>
+        <button id="savePaletteBtn" class="btn btn-sm btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Save Current
+        </button>
+      </div>
+      <div id="savedList" class="saved-list">
+        <p class="empty-hint">No palettes saved yet. Generate one and hit Save!</p>
+      </div>
+    </section>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+  </div>
+
+  <!-- CSS Export Modal -->
+  <div id="exportModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>CSS Custom Properties</h3>
+        <button id="closeModal" class="close-btn">✕</button>
+      </div>
+      <pre id="cssOutput" class="css-output"></pre>
+      <div class="modal-footer">
+        <button id="copyCSSBtn" class="btn btn-primary">Copy CSS</button>
+        <button id="downloadCSSBtn" class="btn btn-secondary">Download .css</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -226,6 +226,7 @@ const PROJECT_DATA = [
   ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', 'react typescript game hangman vite', 'advanced'],
   ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
   ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
+  ['Day 158', 'Color Palette Studio', './public/Color_Palette_Studio/index.html', 'ui tool css javascript color', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
