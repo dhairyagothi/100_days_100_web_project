@@ -588,7 +588,6 @@ body.dark-theme .clock-banner {
     letter-spacing: 0.02em;
     text-shadow: 0px 2px 4px rgba(0,0,0,0.02);
 }
-.btn:disabled::after { opacity: 0; }
 
 .timer-controls {
     display: flex;

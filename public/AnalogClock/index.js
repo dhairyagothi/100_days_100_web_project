@@ -300,28 +300,6 @@ document.addEventListener('DOMContentLoaded', () => {
         pausebtn.innerText = 'Pause';
         isPaused = false;
     }
-}
-
-function startCountdown() {
-    const h = parseInt(document.getElementById('hours').value)   || 0;
-    const m = parseInt(document.getElementById('minutes').value) || 0;
-    const s = parseInt(document.getElementById('seconds').value) || 0;
-
-    const duration = h * 3600 + m * 60 + s;
-    if (duration <= 0) {
-        shakeInputs();
-        return;
-    }
-
-    clearInterval(countdownInterval);
-    countdownTime = duration;
-    totalTime     = duration;
-    isPaused      = false;
-
-    display.textContent = formatTime(countdownTime);
-    setRingProgress(countdownTime, totalTime);
-    progressWrapper.classList.remove('urgent');
-    statusLabel.textContent = 'Running';
 
     window.pauseCountdown = function() {
         if (countdownTime <= 0) return;
