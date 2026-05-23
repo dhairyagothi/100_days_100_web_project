@@ -135,19 +135,20 @@ body {
 .contributors-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-auto-rows: 1fr;
   justify-items: center;
   align-items: stretch;
-  gap: 2rem;
+  gap: 2.5rem;
   margin-bottom: 8rem;
 }
 
 .contributor-card {
   position: relative;
   background: var(--glass-bg);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  border-radius: 32px;
-  padding: 2.5rem 2rem;
+  border-radius: 38px;
+  padding:3rem 2rem;
   text-align: center;
   transition: var(--transition);
   display: flex;
@@ -163,7 +164,6 @@ body {
 
 .contributor-card:hover {
   transform: translateY(-15px);
-  transform: scale(1.05);
   border-color: var(--accent-color);
   background: rgba(255, 255, 255, 0.05);
 }
@@ -628,85 +628,6 @@ body {
   border-radius: 20px;
 
   background: rgba(255, 255, 255, 0.02);
-}
-
-.empty-state {
-  text-align: center;
-
-  color: var(--text-secondary);
-
-  display: none;
-
-  margin-bottom: 3rem;
-
-  font-size: 1rem;
-}
-
-.contributors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  justify-items: center;
-  align-items: start;
-  gap: 2.5rem;
-  margin-bottom: 8rem;
-}
-
-.contributor-card {
-  position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 35px;
-  padding: 3rem 2rem;
-  text-align: center;
-  transition: var(--transition);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-self: stretch;
-  width: 100%;
-  max-width: 100%;
-}
-
-.contributor-card:hover {
-  transform: translateY(-15px);
-  border-color: var(--accent-color);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.contributor-card img {
-  width: 110px;
-  height: 110px;
-  border-radius: 30px;
-  margin-bottom: 1.5rem;
-  border: 2px solid var(--glass-border);
-}
-
-.contributor-card h3 {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-}
-
-.contributor-stats {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.contributor-stats .value {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--accent-color);
-}
-
-.contributor-stats .label {
-  font-size: 0.65rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
 }
 
 .certificate-btn {
