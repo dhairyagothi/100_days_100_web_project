@@ -29,3 +29,29 @@ a {
   display: flex;
   flex-direction: column;
 }
+
+.location {
+  position: relative;
+  cursor: pointer;
+}
+
+.location-dropdown {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: none;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}

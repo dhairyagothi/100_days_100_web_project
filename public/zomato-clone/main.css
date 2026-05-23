@@ -265,7 +265,7 @@
   
   @media (max-width: 500px) {
     .main-body .option {
-      max-width: 45%;
+      max-width: 100%;
       flex: auto;
     }
   

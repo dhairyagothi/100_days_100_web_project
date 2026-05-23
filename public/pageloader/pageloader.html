@@ -1,110 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./pageloader.css">
-        <title>Page Loader</title>
-    </head>
-    <body class="is-loading">
-        <div id="preloader" aria-live="polite" aria-busy="true">
-            <div class="loader-card" role="status" aria-label="Loading content">
-                <div class="spinner" aria-hidden="true"></div>
-                <div class="progress" aria-hidden="true">
-                    <span class="progress-bar"></span>
-                </div>
-                <p class="loading-text">
-                    Loading your experience
-                    <span class="dots" aria-hidden="true"></span>
-                </p>
-            </div>
-        </div>
-
-        <div id="page" class="page">
-            <nav class="navbar">
-                <div class="brand">NovaLoad</div>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-
-            <header id="home" class="hero">
-                <div class="hero-content">
-                    <p class="eyebrow">Modern Preloader Demo</p>
-                    <h1>Build focus while your content gets ready.</h1>
-                    <p class="subtext">
-                        A lightweight, glassmorphic loader with smooth transitions and
-                        responsive styling for every screen.
-                    </p>
-                    <div class="cta-group">
-                        <button class="cta primary">Explore</button>
-                        <button class="cta ghost">View Docs</button>
-                    </div>
-                </div>
-                <div class="hero-panel">
-                    <div class="panel-card">
-                        <p class="panel-title">Performance First</p>
-                        <p class="panel-body">
-                            Optimized animation curves and minimal DOM to keep things
-                            smooth.
-                        </p>
-                        <div class="panel-metrics">
-                            <div>
-                                <span class="metric">1.2s</span>
-                                <span class="label">Avg load</span>
-                            </div>
-                            <div>
-                                <span class="metric">98%</span>
-                                <span class="label">Smoothness</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <section id="about" class="content">
-                <h2>About the Loader</h2>
-                <p>
-                    This preloader blends a gradient backdrop, a glassy loader card,
-                    and a simple progress animation to keep users informed without
-                    heavy scripts.
-                </p>
-                <div class="feature-grid">
-                    <article>
-                        <h3>Balanced Motion</h3>
-                        <p>Soft easing and layered animation keep the visuals calm.</p>
-                    </article>
-                    <article>
-                        <h3>Responsive Layout</h3>
-                        <p>Built with fluid spacing for phones, tablets, and desktop.</p>
-                    </article>
-                    <article>
-                        <h3>Clean Structure</h3>
-                        <p>Modular CSS makes the loader easy to tweak or reuse.</p>
-                    </article>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pageloader.css">
+    <title>Pageloader</title>
+</head>
+<body>
+    <div id="loading"></div>
+  
+  <body>
+    <div id="loading"></div>
+    <div id="container">
+        <nav class="navbar">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        
+        <main class="content-wrapper">
+            <section id="home" class="page-section active">
+                <h1>Welcome to Pageloader!</h1>
             </section>
+            
+            <section id="about" class="page-section">
+                <h2>About Us</h2>
+                <p>Thank you for visiting our website. Here is a simple example of a pageloader.</p>
+            </section>
+            
+            <section id="contact" class="page-section">
+                <h2>Contact Us</h2>
+                <p>Get in touch with us anytime!</p>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 Your Company. All rights reserved.</p>
+        </footer>
+    </div>
 
-            <footer id="contact" class="footer">
-                <div>
-                    <h2>Contact Us</h2>
-                    <p>hello@novaload.example</p>
-                </div>
-                <p class="copyright">&copy; 2026 NovaLoad Studio. All rights reserved.</p>
-            </footer>
-        </div>
+    <script>
+        // --- Preloader Script ---
+        window.addEventListener("load", function () {
+            const loader = document.getElementById("loading");
+            loader.classList.add("fade-out");
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 500);
+        });
 
-        <script>
-            window.addEventListener("load", function () {
-                const preloader = document.getElementById("preloader");
-                document.body.classList.add("is-loaded");
-
-                preloader.addEventListener("transitionend", function () {
-                    preloader.remove();
-                }, { once: true });
+        // --- Single Page Router Script ---
+        function handleRouting() {
+            // Get current hash, default to '#home' if empty
+            const hash = window.location.hash || '#home';
+            
+            // Hide all sections
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
             });
-        </script>
-    </body>
+            
+            // Reveal target section matching hash identifier
+            const targetSection = document.querySelector(hash);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        }
+
+        // Listen for link clicks / hash modifications
+        window.addEventListener('hashchange', handleRouting);
+        // Initialize routing state on system startup execution
+        window.addEventListener('DOMContentLoaded', handleRouting);
+        <header id ="home">
+        <h1>Welcome to Pageloader!</h1>
+        </header>
+        <section id="about" class="content">
+            <h2>About Us</h2>
+            <p>Thank you for visiting our website. Here is a simple example of a pageloader.</p>
+        </section>
+        <footer id="contact">
+            <h2>Contact Us</h2>
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+        </footer>
+    </div>
+       <script>
+        window.addEventListener("load", function() {
+        setTimeout(function() { 
+        const loader = document.getElementById("loading");       
+        loader.style.display = "none";  
+        }, 1000);                      
+});
+    </script>
+</body>
 </html>

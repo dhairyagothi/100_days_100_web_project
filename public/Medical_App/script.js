@@ -1,242 +1,165 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     const requestForm = document.getElementById('requestForm');
-    const responseForm = document.getElementById('responseForm');
-    const feedbackForm = document.getElementById('feedbackForm');
-    const statusMessage = document.getElementById('statusMessage');
-    const loading = document.getElementById('loading');
+
     const historyList = document.getElementById('historyList');
-    const specialistSearch = document.getElementById('specialistSearch');
-    const specialistTypeSelect = document.getElementById('specialistType');
-    const statusFilter = document.getElementById('statusFilter');
-    const formError = document.getElementById('formError');
-    const responseError = document.getElementById('responseError');
+
+    const specialistSearch =
+        document.getElementById('specialistSearch');
+
+    const specialistTypeSelect =
+        document.getElementById('specialistType');
+
+    // Target DOM nodes for the Safe Medicine module
+    const symptomSelect =
+        document.getElementById('symptomSelect');
+    const recommendationBox =
+        document.getElementById('recommendationBox');    
 
     const specialists = [
-        'Allergist/Immunologist',
-        'Anesthesiologist',
         'Cardiologist',
         'Dermatologist',
-        'Endocrinologist',
-        'Gastroenterologist',
-        'Hematologist',
-        'Nephrologist',
         'Neurologist',
-        'Oncologist',
-        'Ophthalmologist',
-        'Otolaryngologist (ENT)',
-        'Pediatrician',
         'Psychiatrist',
-        'Pulmonologist',
-        'Rheumatologist',
-        'Urologist',
-        'Cardiothoracic Surgeon',
-        'General Surgeon',
-        'Neurosurgeon',
-        'Orthopedic Surgeon',
-        'Plastic Surgeon',
-        'Vascular Surgeon',
-        'Family Medicine Physician',
-        'General Practitioner (GP)',
-        'Internal Medicine Physician (Internist)'
+        'Pediatrician',
+        'Orthopedic Surgeon'
     ];
 
-    let consultationHistory = JSON.parse(localStorage.getItem('consultationHistory')) || [];
+    const consultationHistory = [];
 
-    function saveHistory() {
-        localStorage.setItem('consultationHistory', JSON.stringify(consultationHistory));
-    }
-
-    function createConsultationId() {
-        return `CONS-${Date.now()}`;
-    }
+    // Immutable Data Mapping Engine for Symptoms and Safe Recommendations
+    const MEDICINE_CATALOG = Object.freeze({
+        cold: {
+            medicines: ["Antihistamines", "Saline Nasal Spray"],
+            guidelines: "Stay hydrated, prioritize deep rest, and leverage steam inhalation protocols.",
+            contraindications: "Severe hypertension"
+        },
+        headache: {
+            medicines: ["Ibuprofen", "Acetaminophen"],
+            guidelines: "Maintain aggressive liquid hydration and avoid excessive screen emission exposure.",
+            contraindications: "Active stomach ulcers"
+        },
+        fever: {
+            medicines: ["Paracetamol (Acetaminophen)"],
+            guidelines: "Track thermal core temperature variations carefully. Avoid exceeding 4,000mg per 24 hours.",
+            contraindications: "Advanced liver impairment"
+        },
+        fatigue: {
+            medicines: ["Multivitamin Supplements", "Electrolyte Replacements"],
+            guidelines: "Ensure consistent REM sleep cycles, hydration balance, and balanced caloric nutrition intake.",
+            contraindications: "Chronic underlying metabolic conditions"
+        }
+    });
 
     function updateSpecialistOptions(searchText) {
+
         specialistTypeSelect.innerHTML = '';
 
-        const filteredSpecialists = specialists.filter((specialist) =>
-            specialist.toLowerCase().includes(searchText.toLowerCase())
+        const filtered = specialists.filter(item =>
+            item.toLowerCase().includes(searchText.toLowerCase())
         );
 
-        if (filteredSpecialists.length === 0) {
-            const option = document.createElement('option');
-            option.value = '';
-            option.textContent = 'No specialist found';
-            specialistTypeSelect.appendChild(option);
-            return;
-        }
+        filtered.forEach(specialist => {
 
-        filteredSpecialists.forEach((specialist) => {
             const option = document.createElement('option');
+
             option.value = specialist;
+
             option.textContent = specialist;
+
             specialistTypeSelect.appendChild(option);
+
         });
     }
 
-    function renderHistory() {
-        const selectedStatus = statusFilter.value;
-        const filteredHistory = consultationHistory.filter((item) =>
-            selectedStatus === 'All' || item.status === selectedStatus
-        );
-
-        historyList.innerHTML = '';
-
-        if (filteredHistory.length === 0) {
-            const emptyItem = document.createElement('li');
-            emptyItem.className = 'empty-state';
-            emptyItem.textContent = 'No consultations found.';
-            historyList.appendChild(emptyItem);
-            return;
-        }
-
-        filteredHistory.forEach((item) => {
-            const listItem = document.createElement('li');
-            listItem.className = `history-card ${item.status.toLowerCase()}`;
-
-            const title = document.createElement('strong');
-            title.textContent = `${item.id} - ${item.status}`;
-
-            const details = document.createElement('p');
-            details.textContent = `Date: ${item.date}`;
-
-            const doctor = document.createElement('p');
-            doctor.textContent = `Doctor: ${item.doctorName}`;
-
-            const condition = document.createElement('p');
-            condition.textContent = `Condition: ${item.condition}`;
-
-            const specialist = document.createElement('p');
-            specialist.textContent = `Specialist: ${item.specialist}`;
-
-            const notes = document.createElement('p');
-            notes.textContent = item.notes ? `Suggestion: ${item.notes}` : 'Suggestion: Not provided yet';
-
-            listItem.append(title, details, doctor, condition, specialist, notes);
-            historyList.appendChild(listItem);
-        });
-    }
-
-    function validateConsultationForm(doctorName, patientCondition, specialistType) {
-        const namePattern = /^[A-Za-z .'-]{3,}$/;
-
-        if (!namePattern.test(doctorName)) {
-            return 'Please enter a valid doctor name with at least 3 letters.';
-        }
-
-        if (patientCondition.length < 10) {
-            return 'Please describe the patient condition in at least 10 characters.';
-        }
-
-        if (!specialistType) {
-            return 'Please select a valid specialist.';
-        }
-
-        return '';
-    }
-
-    specialistSearch.addEventListener('input', (event) => {
-        updateSpecialistOptions(event.target.value);
-    });
-
-    statusFilter.addEventListener('change', renderHistory);
-
-    requestForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const doctorName = document.getElementById('doctorName').value.trim();
-        const patientCondition = document.getElementById('patientCondition').value.trim();
-        const specialistType = specialistTypeSelect.value;
-
-        const validationMessage = validateConsultationForm(doctorName, patientCondition, specialistType);
-
-        if (validationMessage) {
-            formError.textContent = validationMessage;
-            return;
-        }
-
-        formError.textContent = '';
-        loading.hidden = false;
-        statusMessage.textContent = '';
-
-        setTimeout(() => {
-            const newHistoryItem = {
-                id: createConsultationId(),
-                date: new Date().toLocaleString(),
-                doctorName,
-                condition: patientCondition,
-                specialist: specialistType,
-                status: 'Pending',
-                notes: ''
-            };
-
-            consultationHistory.unshift(newHistoryItem);
-            saveHistory();
-            renderHistory();
-
-            loading.hidden = true;
-            statusMessage.textContent =
-                `Consultation requested successfully.\nConsultation ID: ${newHistoryItem.id}\nSpecialist type: ${specialistType}`;
-
-            requestForm.reset();
-            updateSpecialistOptions('');
-        }, 800);
-    });
-
-    responseForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const consultationId = document.getElementById('consultationId').value.trim();
-        const suggestion = document.getElementById('suggestion').value.trim();
-        const urgencyLevel = document.getElementById('urgencyLevel').value;
-        const recommendedTests = document.getElementById('recommendedTests').value.trim();
-        const followUpDate = document.getElementById('followUpDate').value;
-
-        if (suggestion.length < 10) {
-            responseError.textContent = 'Please enter a suggestion with at least 10 characters.';
-            return;
-        }
-
-        const historyItem = consultationHistory.find((item) => item.id === consultationId);
-
-        if (!historyItem) {
-            responseError.textContent = 'No consultation found with this ID.';
-            return;
-        }
-
-        responseError.textContent = '';
-        historyItem.status = 'Completed';
-         historyItem.notes = suggestion;
-       historyItem.urgencyLevel = urgencyLevel;
-     historyItem.recommendedTests = recommendedTests || 'Not specified';
-      historyItem.followUpDate = followUpDate || 'Not specified';
-
-        saveHistory();
-        renderHistory();
-
-        statusMessage.textContent = `Suggestion submitted for Consultation ID ${consultationId}.`;
-        responseForm.reset();
-    });
-
-    feedbackForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const feedbackMessage = document.getElementById('feedbackMessage').value.trim();
-        const rating = document.getElementById('rating').value;
-
-        const feedbackList = JSON.parse(localStorage.getItem('feedbackList')) || [];
-
-        feedbackList.unshift({
-            message: feedbackMessage,
-            rating,
-            date: new Date().toLocaleString()
-        });
-
-        localStorage.setItem('feedbackList', JSON.stringify(feedbackList));
-
-        statusMessage.textContent = `Thank you for your feedback. Rating received: ${rating}/5.`;
-        feedbackForm.reset();
+    specialistSearch.addEventListener('input', e => {
+        updateSpecialistOptions(e.target.value);
     });
 
     updateSpecialistOptions('');
-    renderHistory();
+
+    requestForm.addEventListener('submit', e => {
+
+        e.preventDefault();
+
+        const doctorName =
+            document.getElementById('doctorName').value;
+
+        const patientCondition =
+            document.getElementById('patientCondition').value;
+
+        const specialistType =
+            document.getElementById('specialistType').value;
+
+        const consultation = {
+            doctorName,
+            patientCondition,
+            specialistType,
+            date: new Date().toLocaleString()
+        };
+
+        consultationHistory.push(consultation);
+
+        renderHistory();
+
+        alert('Consultation Submitted Successfully');
+
+        requestForm.reset();
+    });
+
+    function renderHistory() {
+
+        historyList.innerHTML = '';
+
+        consultationHistory.forEach(item => {
+
+            const li = document.createElement('li');
+
+            li.innerHTML = `
+                <strong>${item.date}</strong><br>
+                Doctor: ${item.doctorName}<br>
+                Condition: ${item.patientCondition}<br>
+                Specialist: ${item.specialistType}
+            `;
+
+            historyList.appendChild(li);
+        });
+    }
+
+//Modern Real-time Data-Driven State Event Architecture
+function handleSymptomRenderPipeline(){
+    const selectedValue = symptomSelect.value;
+
+    if(!selectedValue || !MEDICINE_CATALOG[selectedValue]){
+        recommendationBox.innerHTML = `
+            <p class="text-slate-400 italic" style="color: #64748b; font-style: italic;">
+                Please select a documented symptom category from the dropdown menu to generate therapeutic recommendations.
+            </p>
+        `;
+        return;
+    }
+
+    const data = MEDICINE_CATALOG[selectedValue];
+
+    recommendationBox.innerHTML = `
+       <div class="recommendation-card" style="border-left: 4px solid #3b82f6; padding: 1rem; margin-top: 1rem; background-color: #f8fafc; border-radius: 0 4px 4px 0;">
+                <h4 style="margin: 0 0 0.5rem 0; color: #1e293b; font-size: 1rem; font-weight: 700;">💊 Suggested Alternatives:</h4>
+                <p style="margin: 0 0 1rem 0; color: #475569; font-size: 0.9rem;">${data.medicines.join(", ")}</p>
+                
+                <h4 style="margin: 0 0 0.5rem 0; color: #1e293b; font-size: 1rem; font-weight: 700;">📋 Functional Guidelines:</h4>
+                <p style="margin: 0 0 1rem 0; color: #475569; font-size: 0.9rem;">${data.guidelines}</p>
+                
+                <div style="padding: 0.5rem; background-color: #fef2f2; border: 1px solid #fee2e2; border-radius: 4px; margin-top: 0.5rem;">
+                    <span style="color: #dc2626; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 0.25rem;">⚠️ Critical Contraindications:</span>
+                    <span style="color: #991b1b; font-size: 0.75rem;">${data.contraindications}</span>
+                </div>
+            </div> 
+    `;
+}
+
+// Attach modern, scalable change listener to the selection dropdown block
+symptomSelect.addEventListener('change', handleSymptomRenderPipeline);
+
+// Initialize standard fallback layout on page startup
+handleSymptomRenderPipeline();
 });
