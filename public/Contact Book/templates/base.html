@@ -8,23 +8,22 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📞</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
-    <header class="bg-blue-600 p-6 rounded-b-lg shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
+<body class="bg-gradient-to-br from-gray-100 to-blue-50 min-h-screen">    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 p-5 md:p-6 rounded-b-2xl shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <h1 class="text-white text-3xl font-bold">📚 Contact Book</h1>
           <nav class="space-x-4">
-            <a href="{{ url_for('home') }}" class="text-white">Home</a>
+            <a href="{{ url_for('home') }}" class="text-white hover:text-blue-200 transition duration-300">Home</a>
             {% if 'user_id' in session %}
-              <a href="{{ url_for('dashboard') }}" class="text-white ml-4">Dashboard</a>
-              <a href="{{ url_for('logout') }}" class="text-white ml-4">Logout</a>
+              <a href="{{ url_for('dashboard') }}" class="text-white ml-4 hover:text-blue-200 transition duration-300">Dashboard</a>
+              <a href="{{ url_for('logout') }}" class="text-white ml-4 hover:text-blue-200 transition duration-300">Logout</a>
             {% else %}
-              <a href="{{ url_for('login') }}" class="text-white ml-4">Login</a>
-              <a href="{{ url_for('register') }}" class="text-white ml-4">Register</a>
+              <a href="{{ url_for('login') }}" class="text-white ml-4 hover:text-blue-200 transition duration-300">Login</a>
+              <a href="{{ url_for('register') }}" class="text-white ml-4 hover:text-blue-200 transition duration-300">Register</a>
             {% endif %}
           </nav>
         </div>
     </header>
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto px-4 py-6 md:px-8">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="mb-4">

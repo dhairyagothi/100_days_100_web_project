@@ -11,7 +11,7 @@
   <body class="bg-gray-100">
     <div class="flex flex-col min-h-screen">
       <header class="bg-blue-600 p-6 rounded-b-lg shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <h1 class="text-white text-3xl font-bold">📚 Contact Book</h1>
           <nav class="space-x-4">
             <a href="{{ url_for('home') }}" class="text-white">Home</a>
@@ -27,16 +27,16 @@
       </header>
 
       <main class="flex-1">
-        <section class="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+        <section class="w-full py-10 md:py-16 lg:py-20">
           <div class="container mx-auto px-4 md:px-6">
-            <div class="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+            <div class="grid gap-10 lg:grid-cols-2 items-center">
               <div class="flex flex-col justify-center space-y-4">
                 <div class="space-y-2">
                   <h1 class="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl">Effortless Contact Management</h1>
                   <p class="max-w-[600px] text-gray-700 md:text-xl">Streamline your contacts with our powerful contact book app. Create, update, and manage your contacts with ease.</p>
                 </div>
                 <div class="flex flex-col gap-2 min-[400px]:flex-row">
-                  <a href="/register" class="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-300 disabled:pointer-events-none disabled:opacity-50">Get Started</a>
+                  <a href="/register" class="inline-flex h-11 items-center justify-center rounded-xl bg-blue-600 px-8 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-500 hover:scale-105">Get Started</a>
                 </div>
               </div>
               <div class="flex flex-col items-start space-y-4">
@@ -59,20 +59,20 @@
             </div>
           </div>
         </section>
-        <section class="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
+       <section class="w-full py-10 md:py-12 lg:py-14 bg-gray-100">
           <div class="container mx-auto grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
             <div class="space-y-2">
               <h2 class="text-3xl font-bold tracking-tighter md:text-4xl">Get Started with Contact Book</h2>
               <p class="max-w-[600px] text-gray-700 md:text-xl lg:text-base xl:text-xl">Streamline your contact management with our powerful app. Start organizing your contacts today.</p>
             </div>
             <div class="flex flex-col gap-2 min-[400px]:flex-row lg:justify-end">
-              <a href="/register" class="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-300 disabled:pointer-events-none disabled:opacity-50">Get Started</a>
+              <a href="/register" class="inline-flex h-11 items-center justify-center rounded-xl bg-blue-600 px-8 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-500 hover:scale-105">Get Started</a>
             </div>
           </div>
         </section>
       </main>
 
-      <footer class="bg-gray-200 p-6 rounded-t-lg">
+      <footer class="bg-gray-200 py-5 mt-10 rounded-t-2xl">
         <div class="container mx-auto text-center">
           <p class="text-gray-600 mt-2">&copy; 2024 Contact Book. All rights reserved.</p>
         </div>
