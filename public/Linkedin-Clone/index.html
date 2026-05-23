@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Linkedin</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <title>Linkedin</title>
+
+      <link rel="icon" type="image/png" href="favicon.png">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -64,11 +66,39 @@
           </ul>
         </div>
         <div class="navbar-right">
-          <a href="#">
-            <img src="images/user-2.png" alt="User Profile" class="profile-pic" />
-            <span>Me</span>
-          </a>
+  <a href="#" id="profileToggle">
+    <img src="images/user-2.png" alt="User Profile" class="profile-pic" />
+    <span>Me</span>
+  </a>
+
+  <div class="profile-menu-wrap" id="profileMenu">
+    <div class="profile-menu">
+
+      <div class="user-info">
+        <img src="images/user-2.png" />
+        <div>
+          <h3>Jane Smith</h3>
+          <a href="#">View your profile</a>
         </div>
+      </div>
+
+      <hr>
+
+      <a href="#" class="profile-menu-link">
+        <p>Settings & Privacy</p>
+      </a>
+
+      <a href="#" class="profile-menu-link">
+        <p>Help & Support</p>
+      </a>
+
+      <a href="#" class="profile-menu-link">
+        <p>Logout</p>
+      </a>
+
+    </div>
+  </div>
+</div>
       </div>
     </nav>
 
@@ -403,139 +433,230 @@
       
     </div>
 
-    <script>
-      let profileMenu = document.getElementById("profileMenu");
+  <script>
+  // =========================
+  // PROFILE MENU FUNCTIONALITY
+  // =========================
 
-      function toggleMenu() {
-        profileMenu.classList.toggle("open-menu");
-      }
+  const navbarRight = document.querySelector(".navbar-right");
 
-      let sideActivity = document.getElementById("sidebarActivity");
-      let moreLink = document.getElementById("showMoreLink");
+  // Create dropdown menu dynamically
+  const menuHTML = `
+    <div class="profile-menu-wrap" id="profileMenu">
+      <div class="profile-menu">
 
-      function toggleActivity() {
-        sideActivity.classList.toggle("open-activity");
-        if (sideActivity.classList.contains("open-activity")) {
-          moreLink.innerHTML = "Show less <b>-</b>";
-        } else {
-          moreLink.innerHTML = "Show More <b>+</b>";
-        }
-      }
-
-      // Create Post functionality
-      const postBtn = document.getElementById('postButton');
-      const postTextarea = document.getElementById('postContent');
-      const startPostBtn = document.getElementById('startPost');
-      const createPostWrapper = document.getElementById('createPost');
-
-      function expandCreate() {
-        createPostWrapper.classList.add('expanded');
-        postTextarea.style.display = 'block';
-        postBtn.classList.remove('hidden');
-        postTextarea.focus();
-        // slide main content and right sidebar together
-        const contentArea = document.querySelector('.content-area');
-        if (contentArea) {
-          const leftSidebar = document.querySelector('.left-sidebar');
-          const mainContent = document.querySelector('.main-content');
-          const defaultGap = 24;
-          const gap = mainContent ? parseInt(getComputedStyle(mainContent).marginLeft) || defaultGap : defaultGap;
-          const leftWidth = leftSidebar ? leftSidebar.offsetWidth : 216;
-          const offset = leftWidth + gap;
-          contentArea.style.setProperty('--slide-x', offset + 'px');
-          contentArea.classList.add('shifted');
-        }
-      }
-
-      startPostBtn && startPostBtn.addEventListener('click', expandCreate);
-      startPostBtn && startPostBtn.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); expandCreate(); }
-      });
-
-      function createPost() {
-        const content = postTextarea.value.trim();
-        if (!content) return;
-
-        const authorName = document.querySelector('.sidebar-profile-info h1')?.textContent || 'You';
-        const authorTitle = document.querySelector('.sidebar-profile-info h3')?.textContent || '';
-        const authorImg = document.querySelector('.sidebar-profile-info img')?.getAttribute('src') || 'images/user-2.png';
-
-        const postHtml = `
-        <div class="post">
-          <div class="post-author">
-            <img src="${authorImg}" />
-            <div>
-              <h1>${authorName}</h1>
-              <small>${authorTitle}</small>
-              <small>Just now</small>
-            </div>
-          </div>
-          <p>${escapeHtml(content)}</p>
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">You</span>
-            </div>
-            <div>
-              <span>0 comments &middot; 0 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-2.png" class="post-activity-user-icon" />
-              <img src="images/down-arrow.png" class="post-activity-arrow-icon" />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
+        <div class="user-info">
+          <img src="images/user-2.png" />
+          <div>
+            <h3>Jane Smith</h3>
+            <a href="#">View your profile</a>
           </div>
         </div>
-        `;
 
-        const createPostEl = document.querySelector('.create-post');
-        createPostEl.insertAdjacentHTML('afterend', postHtml);
-        postTextarea.value = '';
-        postTextarea.focus();
-        // collapse create UI
-        createPostWrapper.classList.remove('expanded');
-        postTextarea.style.display = 'none';
-        postBtn.classList.add('hidden');
-        // remove slide
-        const contentArea = document.querySelector('.content-area');
-        if (contentArea) {
-          contentArea.classList.remove('shifted');
-          contentArea.style.removeProperty('--slide-x');
-        }
+        <hr>
+
+        <a href="#" class="profile-menu-link">
+          <p>Settings & Privacy</p>
+        </a>
+
+        <a href="#" class="profile-menu-link">
+          <p>Help & Support</p>
+        </a>
+
+        <a href="#" class="profile-menu-link">
+          <p>Logout</p>
+        </a>
+
+      </div>
+    </div>
+  `;
+
+  navbarRight.insertAdjacentHTML("beforeend", menuHTML);
+
+  const profileToggle = document.querySelector(".navbar-right a");
+  const profileMenu = document.getElementById("profileMenu");
+
+  // Toggle menu
+  profileToggle.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    profileMenu.classList.toggle("open-menu");
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", function (e) {
+    if (
+      !profileMenu.contains(e.target) &&
+      !profileToggle.contains(e.target)
+    ) {
+      profileMenu.classList.remove("open-menu");
+    }
+  });
+
+  // =========================
+  // SIDEBAR ACTIVITY
+  // =========================
+
+  let sideActivity = document.getElementById("sidebarActivity");
+  let moreLink = document.getElementById("showMoreLink");
+
+  function toggleActivity() {
+    if (!sideActivity) return;
+
+    sideActivity.classList.toggle("open-activity");
+
+    if (sideActivity.classList.contains("open-activity")) {
+      moreLink.innerHTML = "Show less <b>-</b>";
+    } else {
+      moreLink.innerHTML = "Show More <b>+</b>";
+    }
+  }
+
+  // =========================
+  // CREATE POST FUNCTIONALITY
+  // =========================
+
+  const postBtn = document.getElementById("postButton");
+  const postTextarea = document.getElementById("postContent");
+  const startPostBtn = document.getElementById("startPost");
+  const createPostWrapper = document.getElementById("createPost");
+
+  function expandCreate() {
+    createPostWrapper.classList.add("expanded");
+
+    postTextarea.style.display = "block";
+
+    postBtn.classList.remove("hidden");
+
+    postTextarea.focus();
+
+    const contentArea = document.querySelector(".content-area");
+
+    if (contentArea) {
+      const leftSidebar = document.querySelector(".left-sidebar");
+      const leftWidth = leftSidebar ? leftSidebar.offsetWidth : 216;
+
+      contentArea.style.setProperty(
+        "--slide-x",
+        leftWidth + 24 + "px"
+      );
+
+      contentArea.classList.add("shifted");
+    }
+  }
+
+  if (startPostBtn) {
+    startPostBtn.addEventListener("click", expandCreate);
+
+    startPostBtn.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        expandCreate();
       }
+    });
+  }
 
-      // Simple HTML escape to avoid injecting raw HTML
-      function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  function createPost() {
+    const content = postTextarea.value.trim();
+
+    if (!content) return;
+
+    const postHTML = `
+      <div class="post">
+        <div class="post-author">
+          <img src="images/user-2.png" />
+          <div>
+            <h1>You</h1>
+            <small>Just now</small>
+          </div>
+        </div>
+
+        <p>${escapeHtml(content)}</p>
+
+        <div class="post-stats">
+          <div>
+            <img src="images/thumbsup.png" />
+            <img src="images/love.png" />
+            <img src="images/clap.png" />
+            <span class="liked-users">You</span>
+          </div>
+
+          <div>
+            <span>0 comments · 0 shares</span>
+          </div>
+        </div>
+
+        <div class="post-activity">
+          <div>
+            <img src="images/user-2.png" class="post-activity-user-icon" />
+            <img src="images/down-arrow.png" class="post-activity-arrow-icon" />
+          </div>
+
+          <div class="post-activity-link">
+            <img src="images/like.png" />
+            <span>Like</span>
+          </div>
+
+          <div class="post-activity-link">
+            <img src="images/comment.png" />
+            <span>Comment</span>
+          </div>
+
+          <div class="post-activity-link">
+            <img src="images/share.png" />
+            <span>Share</span>
+          </div>
+
+          <div class="post-activity-link">
+            <img src="images/send.png" />
+            <span>Send</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    createPostWrapper.insertAdjacentHTML("afterend", postHTML);
+
+    postTextarea.value = "";
+
+    createPostWrapper.classList.remove("expanded");
+
+    postTextarea.style.display = "none";
+
+    postBtn.classList.add("hidden");
+
+    const contentArea = document.querySelector(".content-area");
+
+    if (contentArea) {
+      contentArea.classList.remove("shifted");
+      contentArea.style.removeProperty("--slide-x");
+    }
+  }
+
+  // Prevent HTML injection
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  if (postBtn) {
+    postBtn.addEventListener("click", createPost);
+  }
+
+  if (postTextarea) {
+    postTextarea.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        createPost();
       }
-
-      postBtn && postBtn.addEventListener('click', createPost);
-      postTextarea && postTextarea.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-          e.preventDefault();
-          createPost();
-        }
-      });
-    </script>
+    });
+  }
+</script>
     
     <!-- Mobile bottom navigation -->
     <div class="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
