@@ -15,6 +15,7 @@ $(document).ready(function(){
         }else
         $('.header').css({'background':'none','box-shadow':'none'})
     })
+
     // FAQ function 
     $('.subject-header').click(function(){
         $('.subject .subject-body').slideUp();
@@ -22,4 +23,21 @@ $(document).ready(function(){
         $('.subject .subject-header span').text('+')
         $(this).children('span').text('-')
     });
+
+     // Read more function to toggle the visibility of the additional text and change the button text accordingly
+    $('.content').each(function(){
+        const $content = $(this);
+        const $more = $content.find('.moreext, [id="moreText"], .moreText').first();
+        const $btn  = $content.find('.readBtn, [id="readBtn"], button.btn').first();
+
+        if ($btn.length && $more.length) {
+            $btn.off('click.readmore').on('click.readmore', function (e) {
+                e.preventDefault();
+                $more.toggleClass('hidden');
+                const isHidden = $more.hasClass('hidden');
+                $(this).text(isHidden ? 'Read more' : 'Read less');
+            });
+        }
+    });
+
 });
