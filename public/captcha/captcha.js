@@ -169,6 +169,8 @@ typeButtons.forEach(button =>{
         typeButtons.forEach(btn => btn.classList.remove("active"));
         button.classList.add("active");
         selectedType = button.dataset.type;
+        textInput.value = "";       //clears the text input field
+        selectedImageAnswer = "";   // resets the stored image answer too
         generateCaptcha();
     });
 });
