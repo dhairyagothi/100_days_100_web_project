@@ -542,3 +542,75 @@ body.light .lock-btn{
 body.light .favorite-btn{
   color:#f59e0b;
 }
+
+.import-export-group{
+  position:relative;
+}
+
+.io-btn{
+  padding:14px 18px;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,0.08);
+  color:white;
+  cursor:pointer;
+  font-size:14px;
+  font-family:'Poppins',sans-serif;
+  transition:0.2s;
+}
+
+.io-btn:hover{
+  background:rgba(255,255,255,0.15);
+}
+
+.export-dropdown{
+  position:absolute;
+  top:calc(100% + 8px);
+  right:0;
+  background:#1e1b4b;
+  border-radius:14px;
+  padding:8px;
+  display:none;
+  z-index:200;
+  min-width:180px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.export-dropdown.open{
+  display:block;
+}
+
+.export-option{
+  padding:11px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:14px;
+  transition:0.2s;
+}
+
+.export-option:hover{
+  background:rgba(255,255,255,0.1);
+}
+
+body.light .io-btn{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+body.light .io-btn:hover{
+  background:#d1d5db;
+}
+
+body.light .export-dropdown{
+  background:#ffffff;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  border:1px solid #e5e7eb;
+}
+
+body.light .export-option{
+  color:#111827;
+}
+
+body.light .export-option:hover{
+  background:#f3f4f6;
+}

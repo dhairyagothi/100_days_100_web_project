@@ -103,6 +103,20 @@
 
           <input type="text" id="searchInput" class="search-input" placeholder="Search notes...">
 
+          <div class="import-export-group">
+            <button class="io-btn" id="exportBtn">⬆ Export</button>
+            <div class="export-dropdown" id="exportDropdown">
+              <div class="export-option" data-format="txt">📄 Export as TXT</div>
+              <div class="export-option" data-format="csv">📊 Export as CSV</div>
+              <div class="export-option" data-format="db">🗄 Export as DB</div>
+            </div>
+          </div>
+
+          <div class="import-export-group">
+            <button class="io-btn" id="importBtn">⬇ Import</button>
+            <input type="file" id="importFile" accept=".txt,.csv,.db" style="display:none">
+          </div>
+
           <button class="new-btn" id="openModal">
             + New Note
           </button>

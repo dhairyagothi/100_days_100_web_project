@@ -495,3 +495,168 @@ menuItems.forEach((item) => {
 /* START */
 
 renderNotes();
+
+const exportBtn = document.getElementById("exportBtn");
+const exportDropdown = document.getElementById("exportDropdown");
+const importBtn = document.getElementById("importBtn");
+const importFile = document.getElementById("importFile");
+
+exportBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  exportDropdown.classList.toggle("open");
+});
+
+document.addEventListener("click", () => {
+  exportDropdown.classList.remove("open");
+});
+
+document.querySelectorAll(".export-option").forEach((opt) => {
+  opt.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const fmt = opt.dataset.format;
+    if (fmt === "txt") exportTXT();
+    if (fmt === "csv") exportCSV();
+    if (fmt === "db") exportDB();
+    exportDropdown.classList.remove("open");
+  });
+});
+
+importBtn.addEventListener("click", () => {
+  importFile.click();
+});
+
+importFile.addEventListener("change", () => {
+  const file = importFile.files[0];
+  if (!file) return;
+  const ext = file.name.split(".").pop().toLowerCase();
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const raw = e.target.result;
+    if (ext === "txt") importTXT(raw);
+    else if (ext === "csv") importCSV(raw);
+    else if (ext === "db") importDB(raw);
+    importFile.value = "";
+  };
+  reader.readAsText(file);
+});
+
+function exportTXT() {
+  let out = "";
+  notes.forEach((n, i) => {
+    out += `Note ${i + 1}\n`;
+    out += `Title: ${n.title}\n`;
+    out += `Tag: ${n.tag}\n`;
+    out += `Date: ${n.date}\n`;
+    out += `Favorite: ${n.favorite}\n`;
+    out += `Locked: ${n.locked}\n`;
+    out += `Trash: ${n.trash}\n`;
+    out += `Content:\n${n.content}\n`;
+    out += `---\n`;
+  });
+  download("notes.txt", out, "text/plain");
+}
+
+function importTXT(raw) {
+  const blocks = raw.split("---\n").filter((b) => b.trim());
+  const imported = [];
+  blocks.forEach((block) => {
+    const lines = block.split("\n");
+    const get = (key) => {
+      const line = lines.find((l) => l.startsWith(key + ":"));
+      return line ? line.slice(key.length + 1).trim() : "";
+    };
+    const contentStart = lines.findIndex((l) => l === "Content:") + 1;
+    const content = lines.slice(contentStart).join("\n").trim();
+    if (!get("Title")) return;
+    imported.push({
+      id: Date.now() + Math.random(),
+      title: get("Title"),
+      tag: get("Tag") || "Personal",
+      date: get("Date") || new Date().toLocaleDateString(),
+      favorite: get("Favorite") === "true",
+      locked: get("Locked") === "true",
+      trash: get("Trash") === "true",
+      content,
+    });
+  });
+  mergeImported(imported);
+}
+
+function exportCSV() {
+  const headers = ["id","title","content","tag","date","favorite","locked","trash"];
+  const rows = notes.map((n) =>
+    headers.map((h) => `"${String(n[h]).replace(/"/g, '""')}"`).join(",")
+  );
+  download("notes.csv", [headers.join(","), ...rows].join("\n"), "text/csv");
+}
+
+function importCSV(raw) {
+  const lines = raw.trim().split("\n");
+  if (lines.length < 2) return;
+  const headers = lines[0].split(",");
+  const imported = lines.slice(1).map((line) => {
+    const vals = [];
+    let cur = "";
+    let inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') inQ = !inQ;
+      else if (ch === "," && !inQ) { vals.push(cur); cur = ""; }
+      else cur += ch;
+    }
+    vals.push(cur);
+    const obj = {};
+    headers.forEach((h, i) => (obj[h.trim()] = (vals[i] || "").trim()));
+    return {
+      id: parseFloat(obj.id) || Date.now() + Math.random(),
+      title: obj.title || "",
+      content: obj.content || "",
+      tag: obj.tag || "Personal",
+      date: obj.date || new Date().toLocaleDateString(),
+      favorite: obj.favorite === "true",
+      locked: obj.locked === "true",
+      trash: obj.trash === "true",
+    };
+  }).filter((n) => n.title);
+  mergeImported(imported);
+}
+
+function exportDB() {
+  const payload = JSON.stringify({ version: 1, exported: new Date().toISOString(), notes });
+  download("notes.db", payload, "application/octet-stream");
+}
+
+function importDB(raw) {
+  try {
+    const parsed = JSON.parse(raw);
+    const list = parsed.notes || (Array.isArray(parsed) ? parsed : []);
+    mergeImported(list.filter((n) => n.title));
+  } catch {
+    alert("Invalid .db file");
+  }
+}
+
+function mergeImported(incoming) {
+  const existingIds = new Set(notes.map((n) => String(n.id)));
+  let added = 0;
+  incoming.forEach((n) => {
+    if (!existingIds.has(String(n.id))) {
+      notes.push(n);
+      added++;
+    }
+  });
+  localStorage.setItem("notes", JSON.stringify(notes));
+  renderNotes(currentView);
+  toast.innerText = `✔ Imported ${added} note${added !== 1 ? "s" : ""}`;
+  showToast();
+  setTimeout(() => { toast.innerText = "✔ Note added successfully!"; }, 3000);
+}
+
+function download(name, content, type) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([content], { type }));
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
