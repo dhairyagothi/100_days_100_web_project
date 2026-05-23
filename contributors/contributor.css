@@ -394,44 +394,55 @@ body {
    CONTRIBUTOR MODAL
 ============================================ */
 
+
 .modal-overlay {
-  position: fixed;
 
-  inset: 0;
+    display: none;
 
-  background: rgba(0, 0, 0, 0.7);
+    position: fixed;
 
-  backdrop-filter: blur(10px);
+    top: 0;
+    left: 0;
 
-  display: none;
+    width: 100vw;
+    height: 100vh;
 
-  align-items: center;
+    background:
+    rgba(0,0,0,.85);
 
-  justify-content: center;
+    z-index: 99999999;
 
-  z-index: 3000;
+    justify-content: center;
 
-  padding: 2rem;
+    align-items: center;
 }
 
+
 .modal-content {
-  background: var(--glass-bg);
 
-  border: 1px solid var(--glass-border);
+    background: #111827;
 
-  backdrop-filter: blur(25px);
+    width: 90%;
 
-  border-radius: 28px;
+    max-width: 500px;
 
-  width: 100%;
+    padding: 30px;
 
-  max-width: 500px;
+    border-radius: 20px;
 
-  padding: 2rem;
+    color: white;
 
-  position: relative;
+    text-align: center;
 
-  animation: modalFade 0.3s ease;
+    border:
+    1px solid rgba(
+    255,
+    255,
+    255,
+    .1
+    );
+
+    position: relative;
 }
 
 #modalBody {
@@ -918,4 +929,93 @@ body {
 
 .hidden {
   display: none !important;
+}
+.repo-list{
+
+margin-top:20px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+
+.repo-card{
+
+padding:12px;
+
+border-radius:12px;
+
+background:
+rgba(
+255,
+255,
+255,
+0.05
+);
+
+border:
+1px solid
+rgba(
+255,
+255,
+255,
+0.08
+);
+
+}
+
+
+.repo-card p{
+
+margin:4px 0;
+
+font-size:14px;
+
+}
+.modal-content{
+
+max-width:500px;
+
+width:90%;
+
+background:#111;
+
+padding:30px;
+
+border-radius:20px;
+
+text-align:center;
+}
+#profileModal{
+    display:none;
+
+    position:fixed !important;
+
+    inset:0 !important;
+
+    width:100vw !important;
+
+    height:100vh !important;
+
+    z-index:999999999 !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
+    background:
+    rgba(0,0,0,.75) !important;
+}
+
+#profileModal .modal-content{
+
+    display:block !important;
+
+    opacity:1 !important;
+
+    transform:none !important;
 }
