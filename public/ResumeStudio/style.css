@@ -429,6 +429,8 @@ main {
 
 /* Dark mode */
 
+/* Dark mode */
+
 body.dark {
   background-color: #0f1117;
   color: #d0d5e8;
@@ -465,13 +467,13 @@ body.dark .form-group textarea {
 }
 
 body.dark .form-group input::placeholder,
-body.dark .form-group textarea::placeholder{
-  color:#7d88a8;
+body.dark .form-group textarea::placeholder {
+  color: #7d88a8;
 }
 
 body.dark .form-group input:hover,
-body.dark .form-group textarea:hover{
-  border-color:#00b4d8;
+body.dark .form-group textarea:hover {
+  border-color: #00b4d8;
 }
 
 body.dark .form-group input:focus,
@@ -484,7 +486,26 @@ body.dark .form-group textarea:focus {
 body.dark #resumePreview {
   background: #1e2235;
   border-color: #2e3350;
-  color:#d0d5e8;
+  color: #d0d5e8;
+}
+
+body.dark #resumePreview p,
+body.dark #resumePreview li,
+body.dark #resumePreview strong {
+  color: #d0d5e8;
+}
+
+body.dark #resumePreview h3,
+body.dark #resumePreview h4 {
+  color: #00b4d8;
+}
+
+body.dark #resumePreview ul {
+  padding-left: 20px;
+}
+
+body.dark .placeholder {
+  color: #9ba6c4;
 }
 
 body.dark .tpl-btn {
@@ -493,8 +514,8 @@ body.dark .tpl-btn {
   border-color: #00b4d8;
 }
 
-body.dark .tpl-btn:hover{
-  background:#27314d;
+body.dark .tpl-btn:hover {
+  background: #27314d;
 }
 
 body.dark .tpl-btn.active {
@@ -508,8 +529,8 @@ body.dark #downloadBtn {
   border-color: #00b4d8;
 }
 
-body.dark #downloadBtn:hover{
-  background:#27314d;
+body.dark #downloadBtn:hover {
+  background: #27314d;
 }
 
 body.dark .error-msg {
@@ -522,4 +543,4 @@ body.dark footer {
   background: #0a0d1a;
   border-top-color: #1a1e30;
   color: #5d6785;
-}
+}      
