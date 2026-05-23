@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Register</title>
+    
 </head>
 
 <body>
@@ -43,9 +45,15 @@
                 </div>
                 <div class="error"></div>
             </div>
+
             <button type="button" onclick="getDetails()">Register</button>
+            <p style="text-align:center; color:#888; font-size:13px;">or</p>
+            <button type="button" class="google-btn"><i class="fa-brands fa-google"></i>Continue with Google</button>
+            <p class="register">Already a member? <a href="/">Login here!</a></p>
+
+        
         </form>
-        <p class="register">Already a member? <a href="/">Login here!</a></p>
+      
 
     </div>
 </body>
@@ -104,6 +112,14 @@
 
     errorDisplay.innerText = message;
 }
+function togglePassword(id, element) {
+
+    const input = document.getElementById(id);
+    const icon = element.querySelector("i");
+
+    if (input.type === "password") {
+
+        input.type = "text";
 
     function clearErrors() {
 
