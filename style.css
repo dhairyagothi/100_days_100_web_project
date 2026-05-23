@@ -701,6 +701,14 @@ body.light-mode .navbar {
   flex-wrap: wrap;
 }
 
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 250px;
+}
+
 #sortProjects {
   min-width: 140px;
   height: 42px;
@@ -749,6 +757,35 @@ body.light-mode .navbar {
 .search-input:focus {
   border-color: var(--border-accent);
   background: var(--bg-surface);
+}
+
+.clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  border-radius: 4px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+  z-index: 2;
+}
+
+.clear-btn:hover {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.search-input:not(:placeholder-shown) ~ .clear-btn {
+  display: flex;
 }
 
 /* ============================================================
@@ -894,6 +931,10 @@ body.light-mode .navbar {
   .tech-filter-tag {
     font-size: 0.8125rem;
     padding: 0.3rem 0.6rem;
+  }
+
+  .clear-btn {
+    right: 12px;
   }
 }
 

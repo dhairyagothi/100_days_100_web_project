@@ -1032,10 +1032,19 @@ function syncProjectCounts() {
 
 // Clear button functionality
 if (searchInput && clearBtn) {
+  const toggleClearBtn = () => {
+    clearBtn.style.display = searchInput.value.length > 0 ? 'flex' : 'none';
+  };
+
+  toggleClearBtn();
+
+  searchInput.addEventListener('input', toggleClearBtn);
+
   clearBtn.addEventListener("click", () => {
     searchInput.value = "";
     searchInput.dispatchEvent(new Event("input"));
     searchInput.focus();
+    toggleClearBtn();
   });
 
   searchInput.addEventListener("keydown", (e) => {
@@ -1043,6 +1052,7 @@ if (searchInput && clearBtn) {
       searchInput.value = "";
       searchInput.dispatchEvent(new Event("input"));
       searchInput.focus();
+      toggleClearBtn();
     }
   });
 }
@@ -1056,6 +1066,11 @@ syncProjectCounts();
 function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
+
+  const storedUser = localStorage.getItem('loggedInUser');
+  if (storedUser && !window.username) {
+    window.username = storedUser;
+  }
 
   const username = window.username || null;
   const isRoot = !window.location.pathname.includes('/contributors/');
@@ -1083,6 +1098,7 @@ function updateNavbar() {
         `;
     document.getElementById('logoutBtn').addEventListener('click', () => {
       window.username = null;
+      localStorage.removeItem('loggedInUser');
       updateNavbar();
     });
     const gen = document.getElementById('generateReadmeBtn');
