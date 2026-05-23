@@ -134,7 +134,7 @@ const PROJECT_DATA = [
   ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', 'api javascript', 'intermediate'],
   ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', 'clone css', 'beginner'],
   ['Day 65', 'The Cube', './public/The%20Cube/index.html', 'ui canvas css', 'intermediate'],
-  ['Day 66', 'Flask Authentication App', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app', 'api javascript', 'intermediate'],
+  ['Day 66', 'Flask Authentication App', './public/flask_auth_app/explain.html', 'api javascript', 'intermediate'],
   ['Day 67', 'Blog-Website', './public/blog/main.html', 'css', 'beginner'],
   ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
   ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
@@ -212,7 +212,7 @@ const PROJECT_DATA = [
   ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
   ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
-   ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
+  ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
   ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
@@ -226,6 +226,8 @@ const PROJECT_DATA = [
   ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', 'react typescript game hangman vite', 'advanced'],
   ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
   ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
+  ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
+  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', 'simulation algorithm javascript', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
@@ -387,50 +389,50 @@ const CATEGORY_LABEL = {
    ============================================================ */
 async function fetchRepoStats() {
 
-    const set = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
-    };
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
 
-    const setFallback = () => {
-        set('starCount', 'N/A');
-        set('forkCount', 'N/A');
-        set('issueCount', 'N/A');
-        set('prCount', 'N/A');
-    };
+  const setFallback = () => {
+    set('starCount', 'N/A');
+    set('forkCount', 'N/A');
+    set('issueCount', 'N/A');
+    set('prCount', 'N/A');
+  };
 
-    try {
+  try {
 
-        // Optional loading state
-        set('starCount', 'Loading...');
-        set('forkCount', 'Loading...');
-        set('issueCount', 'Loading...');
-        set('prCount', 'Loading...');
+    // Optional loading state
+    set('starCount', 'Loading...');
+    set('forkCount', 'Loading...');
+    set('issueCount', 'Loading...');
+    set('prCount', 'Loading...');
 
-        const [repoRes, prRes] = await Promise.all([
-            fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-            fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
-        ]);
+    const [repoRes, prRes] = await Promise.all([
+      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+    ]);
 
-        if (!repoRes.ok || !prRes.ok) {
-            throw new Error("GitHub API request failed");
-        }
-
-        const repo = await repoRes.json();
-        const prs = await prRes.json();
-
-        set('starCount', repo.stargazers_count.toLocaleString());
-        set('forkCount', repo.forks_count.toLocaleString());
-        set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
-        set('prCount', prs.total_count.toLocaleString());
-
-    } catch (e) {
-
-        console.warn("GitHub stats unavailable:", e.message);
-
-        // Show fallback text instead of permanent dashes
-        setFallback();
+    if (!repoRes.ok || !prRes.ok) {
+      throw new Error("GitHub API request failed");
     }
+
+    const repo = await repoRes.json();
+    const prs = await prRes.json();
+
+    set('starCount', repo.stargazers_count.toLocaleString());
+    set('forkCount', repo.forks_count.toLocaleString());
+    set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
+    set('prCount', prs.total_count.toLocaleString());
+
+  } catch (e) {
+
+    console.warn("GitHub stats unavailable:", e.message);
+
+    // Show fallback text instead of permanent dashes
+    setFallback();
+  }
 }
 function generateReadme() {
   try {
@@ -486,31 +488,31 @@ function renderGrid() {
     return matchesFilter && matchesSearch && matchesTech;
   });
   if (sortOption === 'az') {
-  filtered.sort((a, b) => a[1].localeCompare(b[1]));
-}
+    filtered.sort((a, b) => a[1].localeCompare(b[1]));
+  }
 
-if (sortOption === 'latest') {
-  filtered.sort((a, b) => {
-    const dayA = parseInt(a[0].replace('Day ', ''));
-    const dayB = parseInt(b[0].replace('Day ', ''));
-    return dayB - dayA;
-  });
-}
+  if (sortOption === 'latest') {
+    filtered.sort((a, b) => {
+      const dayA = parseInt(a[0].replace('Day ', ''));
+      const dayB = parseInt(b[0].replace('Day ', ''));
+      return dayB - dayA;
+    });
+  }
 
-if (sortOption === 'difficulty') {
-  const difficultyOrder = {
-    beginner: 1,
-    intermediate: 2,
-    advanced: 3
-  };
+  if (sortOption === 'difficulty') {
+    const difficultyOrder = {
+      beginner: 1,
+      intermediate: 2,
+      advanced: 3
+    };
 
-  filtered.sort((a, b) => {
-    return (
-      difficultyOrder[a[4].toLowerCase()] -
-      difficultyOrder[b[4].toLowerCase()]
-    );
-  });
-}
+    filtered.sort((a, b) => {
+      return (
+        difficultyOrder[a[4].toLowerCase()] -
+        difficultyOrder[b[4].toLowerCase()]
+      );
+    });
+  }
 
   grid.innerHTML = '';
 
@@ -540,12 +542,21 @@ if (sortOption === 'difficulty') {
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
+    
+    // FIX PART 1: Add a pointer cursor so users know it's clickable
     card.className = 'project-card';
+    card.style.cursor = 'pointer'; 
+    
+    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
+    card.onclick = () => window.open(url.trim(), '_blank');
+
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
 
+    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
+    // This stops the click from "bubbling up" to the main card, preventing double-opening!
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
@@ -555,14 +566,14 @@ if (sortOption === 'difficulty') {
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Code
                     </a>
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                 </button>
             </div>
@@ -861,12 +872,34 @@ function renderRecentProjects() {
 
 const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
 const recentToggleBtn = document.getElementById('recentToggleBtn');
+const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener('click', () => {
     showAllBookmarks = !showAllBookmarks;
     bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
     renderBookmarks();
+  });
+}
+
+if (copyBookmarksBtn) {
+  copyBookmarksBtn.addEventListener('click', async () => {
+    if (bookmarkedProjects.length === 0) {
+      showToast('No bookmarks to copy!');
+      return;
+    }
+    const textToCopy = bookmarkedProjects.map(p => {
+      const projectName = p[1];
+      const projectLink = new URL(p[2], window.location.href).href;
+      return `${projectName} - ${projectLink}`;
+    }).join('\n');
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      showToast('Bookmarks copied to clipboard!');
+    } catch (err) {
+      showToast('Failed to copy bookmarks.');
+    }
   });
 }
 
@@ -1060,10 +1093,13 @@ function updateNavbar() {
   const base = isRoot ? '' : '../';
   const isLight = document.body.classList.contains('light-mode');
   const themeButton = `
-            <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-                <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
-            </button>
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
+        </button>
         `;
+  const otherLink = isRoot
+    ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html">Home</a>`;
 
   if (username) {
     container.innerHTML = `
@@ -1072,9 +1108,9 @@ function updateNavbar() {
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
             <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-                <i class="fab fa-github"></i> GitHub
+              <i class="fab fa-github"></i> GitHub
             </a>
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+            ${otherLink}
         `;
     document.getElementById('logoutBtn').addEventListener('click', () => {
       window.username = null;
@@ -1085,7 +1121,7 @@ function updateNavbar() {
   } else {
     container.innerHTML = `
             ${themeButton}
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+            ${otherLink}
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
@@ -1194,38 +1230,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 (() => {
-    const initDirectMobileMenu = () => {
-        const menuToggle = document.getElementById('menuToggle');
-        const navButtons = document.getElementById('navButtons');
+  const initDirectMobileMenu = () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const navButtons = document.getElementById('navButtons');
 
-        if (!menuToggle || !navButtons) return;
+    if (!menuToggle || !navButtons) return;
 
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            menuToggle.classList.toggle('active');
-            navButtons.classList.toggle('active');
-        });
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menuToggle.classList.toggle('active');
+      navButtons.classList.toggle('active');
+    });
 
-        document.addEventListener('click', (e) => {
-            if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-                menuToggle.classList.remove('active');
-                navButtons.classList.remove('active');
-            }
-        });
+    document.addEventListener('click', (e) => {
+      if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+        menuToggle.classList.remove('active');
+        navButtons.classList.remove('active');
+      }
+    });
 
-        navButtons.addEventListener('click', (e) => {
-            if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-                menuToggle.classList.remove('active');
-                navButtons.classList.remove('active');
-            }
-        });
-    };
+    navButtons.addEventListener('click', (e) => {
+      if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+        menuToggle.classList.remove('active');
+        navButtons.classList.remove('active');
+      }
+    });
+  };
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
-    } else {
-        initDirectMobileMenu();
-    }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+  } else {
+    initDirectMobileMenu();
+  }
 })();
 
 
@@ -1242,4 +1278,135 @@ window.addEventListener('resize', () => {
    (Required for HTML onclick handlers)
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
-window.clearAllTechFilters = clearAllTechFilters;
+window.clearAllTechFilters = clearAllTechFilters; 
+
+// Particle Network Background
+(function () {
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const N = 60;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function init() {
+    particles = [];
+    for (let i = 0; i < N; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 3 + 1, 
+        hue: [220, 260, 280][Math.floor(Math.random() * 3)],
+        alpha: Math.random() * 0.8 + 0.4,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    });
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(59,130,246,${(1 - d / 120) * 0.35})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue},80%,72%,${p.alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); init(); });
+  resize(); init(); draw();
+})();
+
+// =============================================
+// PERSISTENT FILTERS & SEARCH — Issue #3320
+// =============================================
+
+function getQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    search: params.get('search') || '',
+    category: params.get('category') || 'all'
+  };
+}
+
+function updateURL(search, category) {
+  const params = new URLSearchParams();
+  if (search) params.set('search', search);
+  if (category && category !== 'all') params.set('category', category);
+  const newURL = params.toString()
+    ? `${window.location.pathname}?${params.toString()}`
+    : window.location.pathname;
+  history.pushState({ search, category }, '', newURL);
+}
+
+function restoreStateFromURL() {
+  const { search, category } = getQueryParams();
+  const searchInput = document.getElementById('search') ||
+                      document.querySelector('input[type="text"]') ||
+                      document.querySelector('.search-input');
+  if (searchInput && search) searchInput.value = search;
+  const categoryFilter = document.querySelector('select') ||
+                          document.getElementById('category');
+  if (categoryFilter && category !== 'all') categoryFilter.value = category;
+  if (search || category !== 'all') applyFilters(search, category);
+}
+
+function applyFilters(search, category) {
+  const cards = document.querySelectorAll('.card, .project-card, .box');
+  cards.forEach(card => {
+    const title = (card.querySelector('h3,h4,.title')?.textContent || '').toLowerCase();
+    const tag = (card.dataset.category || card.dataset.tags || '').toLowerCase();
+    const matchSearch = !search || title.includes(search.toLowerCase());
+    const matchCategory = category === 'all' || tag.includes(category.toLowerCase());
+    card.style.display = matchSearch && matchCategory ? '' : 'none';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  restoreStateFromURL();
+  const searchInput = document.getElementById('search') ||
+                      document.querySelector('input[type="text"]') ||
+                      document.querySelector('.search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const { category } = getQueryParams();
+      updateURL(searchInput.value, category);
+      applyFilters(searchInput.value, category);
+    });
+  }
+  const categoryFilter = document.querySelector('select') ||
+                          document.getElementById('category');
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener('popstate', () => restoreStateFromURL());
+});

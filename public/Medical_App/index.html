@@ -10,8 +10,10 @@
 <body>
 
 <header class="hero">
-    <h1>🏥 MedConsult Dashboard</h1>
-    <p>Connecting Local Doctors with Specialists</p>
+    <div class="hero-content">
+        <h1>🏥 MedConsult Dashboard</h1>
+        <p>Connecting Local Doctors with Specialists</p>
+    </div>
 </header>
 
 <main class="dashboard">
@@ -21,20 +23,26 @@
 
         <form id="requestForm">
 
-            <label>Doctor Name</label>
-            <input type="text" id="doctorName" required>
+            <label for="doctorName">Doctor Name</label>
+            <input type="text" id="doctorName" placeholder="Enter doctor name" required>
 
-            <label>Patient Condition</label>
-            <textarea id="patientCondition" required></textarea>
+            <label for="patientCondition">Patient Condition</label>
+            <textarea id="patientCondition" placeholder="Describe patient condition" required></textarea>
 
-            <label>Specialist Needed</label>
+            <label for="specialistSearch">Specialist Needed</label>
 
-            <input type="text" id="specialistSearch"
-                   placeholder="Search Specialist">
+            <input type="text"
+                   id="specialistSearch"
+                   placeholder="Search specialist">
 
-            <select id="specialistType"></select>
+            <select id="specialistType">
+                <option value="">Select Specialist</option>
+            </select>
 
-            <button type="submit">Submit Consultation</button>
+            <button type="submit" class="primary-btn">
+                Submit Consultation
+            </button>
+
         </form>
     </section>
 
@@ -90,11 +98,11 @@
         <ul id="historyList"></ul>
     </section>
 
-    <section class="card">
+    <section class="card feedback-card">
         <h2>⭐ Feedback</h2>
 
         <a href="feedback.html">
-            <button>Give Feedback</button>
+            <button class="primary-btn">Give Feedback</button>
         </a>
     </section>
 
