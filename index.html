@@ -148,47 +148,98 @@
 
   <!-- ── PROJECTS ───────────────────────────────────────── -->
   <section class="projects-section" id="projects">
-    <div class="projects-inner">
-      <div class="projects-intro">
-        <p class="section-label">Archive index</p>
-        <h2 class="section-title">Every experiment, catalogued.</h2>
-      </div>
-
-    <div class="projects-header">
-      <div class="search-bar">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
-        <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
-          &times;
-        </button>
-        <select id="sortProjects" aria-label="Sort projects">
-          <option value="default">Sort By</option>
-          <option value="az">A-Z</option>
-          <option value="latest">Latest Day</option>
-          <option value="difficulty">Difficulty</option>
-        </select>
-      </div>
 
       <!-- Technology Stack Search -->
-      <div class="search-bar tech-search-bar">
-        <i class="fas fa-code search-icon"></i>
-        <input
-          type="text"
-          id="techStackSearch"
-          class="search-input"
-          placeholder="Filter by tech stack (React, Node.js, Python...)"
-          autocomplete="off"
-        />
-        <button
-          id="clearTechFilter"
-          class="clear-filter-btn"
-          style="display: none;"
-          aria-label="Clear tech filters"
-        >
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
+     <!-- <section class="projects-section"> -->
+
+  <div class="projects-inner">
+
+    <!-- =========================
+         SECTION INTRO
+    ========================== -->
+    <div class="projects-intro">
+
+      <p class="section-label">
+        Archive Index
+      </p>
+
+      <h2 class="section-title">
+        Every experiment, catalogued.
+      </h2>
+
+      <p class="section-subtitle">
+        Browse all creative frontend builds, development experiments,
+        and open-source projects in one beautifully organized archive.
+      </p>
+
     </div>
+
+    <!-- =========================
+         SEARCH + FILTER SECTION
+    ========================== -->
+    <div class="projects-header">
+
+      <div class="search-bar">
+
+        <!-- SEARCH INPUT -->
+        <div class="search-input-wrapper">
+
+          <i class="fas fa-search search-icon"></i>
+
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search projects..."
+            autocomplete="off"
+          />
+
+          <button
+            id="clearSearch"
+            class="clear-btn"
+            aria-label="Clear search"
+            type="button"
+          >
+            &times;
+          </button>
+
+        </div>
+
+        <!-- FILTER DROPDOWN -->
+        <div class="filter-wrapper">
+
+          <i class="fas fa-sliders-h filter-icon"></i>
+
+          <select id="sortProjects" aria-label="Sort projects">
+
+            <option value="default">
+              Sort By
+            </option>
+
+            <option value="az">
+              A-Z
+            </option>
+
+            <option value="latest">
+              Latest Day
+            </option>
+
+            <option value="difficulty">
+              Difficulty
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  
+        
+
+<!-- </section> -->
 
         <!-- Active Tech Filters Display -->
         <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
