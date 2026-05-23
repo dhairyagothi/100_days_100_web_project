@@ -435,3 +435,47 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 2. RUN THE FIX: Populate the comparison table using your declarative mapping
   await updateComparisonTable();
 });
+
+/* Usage Guide */
+
+const guideBtn =
+document.getElementById("openGuide");
+
+const guideModal =
+document.getElementById("guideModal");
+
+const closeGuide =
+document.querySelector(".close-guide");
+
+
+guideBtn?.addEventListener(
+"click",
+(e)=>{
+
+e.preventDefault();
+
+guideModal.style.display="block";
+
+});
+
+
+closeGuide?.addEventListener(
+"click",
+()=>{
+
+guideModal.style.display="none";
+
+});
+
+
+window.addEventListener(
+"click",
+(e)=>{
+
+if(e.target===guideModal){
+
+guideModal.style.display="none";
+
+}
+
+});
