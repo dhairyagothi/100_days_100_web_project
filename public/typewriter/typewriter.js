@@ -8,6 +8,7 @@ let paperContent = "";
 let capsLockEnabled = false;
 let soundEnabled = true;
 let isSymbolMode = false;
+let cursorPosition = 0;
 const symbolLayout = {
     q: "!",
     w: "@",
@@ -176,7 +177,18 @@ function playBackspace() {
 }
 
 function renderPaper() {
-    typewriterText.textContent = paperContent;
+
+    const beforeCursor = paperContent.slice(0, cursorPosition);
+    const afterCursor = paperContent.slice(cursorPosition);
+
+    typewriterText.textContent = beforeCursor;
+
+    const cursorSpan = document.createElement("span");
+    cursorSpan.className = "cursor-paper";
+
+    typewriterText.appendChild(cursorSpan);
+
+    typewriterText.append(afterCursor);
 }
 
 function syncInput() {
@@ -230,7 +242,12 @@ function flashKey(token) {
 function insertText(text, shouldFlash = true) {
     if (typeof text !== "string" || text.length === 0) return;
 
-    paperContent += text;
+    paperContent =
+    paperContent.slice(0, cursorPosition) +
+    text +
+    paperContent.slice(cursorPosition);
+
+cursorPosition += text.length;
     renderPaper();
     syncInput();
 
@@ -251,15 +268,21 @@ function insertText(text, shouldFlash = true) {
 }
 
 function deleteCharFromPaper() {
-    if (paperContent.length === 0) return;
 
-    paperContent = paperContent.slice(0, -1);
+    if (cursorPosition === 0) return;
+
+    paperContent =
+        paperContent.slice(0, cursorPosition - 1) +
+        paperContent.slice(cursorPosition);
+
+    cursorPosition--;
+
     renderPaper();
     syncInput();
+
     playBackspace();
     flashKey("BACKSPACE");
 }
-
 function handleButtonPress(char) {
     if (char === "CAPSLOCK") {
         toggleCapsLock();
@@ -439,7 +462,26 @@ modeToggle.addEventListener("click", () => {
 
     updateKeyboardLayout();
 });
+const leftCursor = document.getElementById("leftCursor");
+const rightCursor = document.getElementById("rightCursor");
+
+leftCursor.addEventListener("click", () => {
+
+    if (cursorPosition > 0) {
+        cursorPosition--;
+        renderPaper();
+    }
+});
+
+rightCursor.addEventListener("click", () => {
+
+    if (cursorPosition < paperContent.length) {
+        cursorPosition++;
+        renderPaper();
+    }
+});
 setCapsLockState(false);
 paperContent = userInput.value || "";
+cursorPosition = paperContent.length;
 renderPaper();
 syncInput();
