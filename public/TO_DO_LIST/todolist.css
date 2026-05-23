@@ -222,10 +222,62 @@ header {
 #colour4 { background: #ffb86b; }
 #colour5 { background: #ef4444; }
 
+.theme-theme1 {
+  --page-bg-start: #201b44;
+  --page-bg-mid: #0f122a;
+  --page-bg-end: #080a1e;
+  --accent: #7c63ff;
+  --accent-soft: rgba(124, 99, 255, 0.18);
+  --accent-gradient: linear-gradient(135deg, #7c63ff, #4f8dff);
+}
+
+.theme-theme2 {
+  --page-bg-start: #093c57;
+  --page-bg-mid: #082f49;
+  --page-bg-end: #041724;
+  --accent: #4f8dff;
+  --accent-soft: rgba(79, 141, 255, 0.18);
+  --accent-gradient: linear-gradient(135deg, #4f8dff, #22d3ee);
+}
+
+.theme-theme3 {
+  --page-bg-start: #0f3b2e;
+  --page-bg-mid: #102a24;
+  --page-bg-end: #071713;
+  --accent: #14b8a6;
+  --accent-soft: rgba(20, 184, 166, 0.18);
+  --accent-gradient: linear-gradient(135deg, #14b8a6, #22c55e);
+}
+
+.theme-theme4 {
+  --page-bg-start: #4a2b0f;
+  --page-bg-mid: #2b1d12;
+  --page-bg-end: #120c07;
+  --accent: #ffb86b;
+  --accent-soft: rgba(255, 184, 107, 0.20);
+  --accent-gradient: linear-gradient(135deg, #ffb86b, #f97316);
+}
+
+.theme-theme5 {
+  --page-bg-start: #4a1525;
+  --page-bg-mid: #2a1020;
+  --page-bg-end: #130711;
+  --accent: #ef4444;
+  --accent-soft: rgba(239, 68, 68, 0.18);
+  --accent-gradient: linear-gradient(135deg, #ef4444, #f43f5e);
+}
+
 .theme-btn:hover {
   transform: scale(1.20);
   border-color: rgba(255, 255, 255, 0.80);
   box-shadow: 0 0 24px rgba(255, 255, 255, 0.15);
+}
+
+.theme-btn.active,
+.theme-btn:focus-visible {
+  border-color: #fff;
+  box-shadow: 0 0 0 4px var(--accent-soft), 0 0 26px rgba(255, 255, 255, 0.18);
+  outline: none;
 }
 
 /* ---------- Main Layout ---------- */
