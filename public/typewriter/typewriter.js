@@ -1,6 +1,15 @@
 const typewriterText = document.getElementById("typewriterText");
 const userInput = document.getElementById("userInput");
 const themeToggle = document.getElementById("themeToggle");
+const themes = [
+    "dark-theme",
+    "light-theme",
+    "vintage-theme",
+    "neon-theme",
+    "minimal-theme"
+];
+
+let currentThemeIndex = 0;
 const capsLockKey = document.querySelector('[data-char="CAPSLOCK"]');
 const soundToggle = document.getElementById("soundToggle");
 let audioCtx = null;
@@ -322,9 +331,27 @@ userInput.focus();
 }
 
 function toggleTheme() {
-    const isLight = document.body.classList.toggle("light-theme");
-    themeToggle.textContent = isLight ? "☀️" : "🌙";
-    localStorage.setItem("theme", isLight ? "light" : "dark");
+
+    document.body.classList.remove(...themes);
+
+    currentThemeIndex =
+        (currentThemeIndex + 1) % themes.length;
+
+    const nextTheme = themes[currentThemeIndex];
+
+    document.body.classList.add(nextTheme);
+
+    localStorage.setItem("theme", nextTheme);
+
+    const icons = {
+        "dark-theme": "🌙",
+        "light-theme": "☀️",
+        "vintage-theme": "🟤",
+        "neon-theme": "💜",
+        "minimal-theme": "⚪"
+    };
+
+    themeToggle.textContent = icons[nextTheme];
 }
 function toggleSound() {
     soundEnabled = !soundEnabled;
@@ -437,9 +464,26 @@ soundToggle.addEventListener("keydown", (event) => {
     }
 });
 const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "light") {
-    document.body.classList.add("light-theme");
-    themeToggle.textContent = "☀️";
+
+if (savedTheme && themes.includes(savedTheme)) {
+
+    document.body.classList.add(savedTheme);
+
+    currentThemeIndex = themes.indexOf(savedTheme);
+
+    const icons = {
+        "dark-theme": "🌙",
+        "light-theme": "☀️",
+        "vintage-theme": "🟤",
+        "neon-theme": "💜",
+        "minimal-theme": "⚪"
+    };
+
+    themeToggle.textContent = icons[savedTheme];
+
+} else {
+
+    document.body.classList.add("dark-theme");
 }
 const savedSound = localStorage.getItem("sound");
 
