@@ -4,6 +4,8 @@ const gameOverText = document.getElementById("gameover");
 const scoreText = document.getElementById("score");
 const finalScoreText = document.getElementById("finalScore");
 const bestScoreText = document.getElementById("bestScore");
+const gameOverBestText = document.getElementById("gameOverBest");
+const newBestMsg = document.getElementById("newBestMsg");
 const speedText = document.getElementById("speed");
 const levelText = document.getElementById("level");
 const comboText = document.getElementById("combo");
@@ -24,6 +26,7 @@ const shopModal = document.getElementById("shopModal");
 const shopClose = document.getElementById("shopClose");
 const shopList = document.getElementById("shopList");
 const shopCoins = document.getElementById("coinCount");
+const resetBestBtn = document.getElementById("resetBestBtn");
 
 let gameRunning = false;
 let obstacles = [];
@@ -308,6 +311,7 @@ function endBossWave() {
 function endGame() {
     gameRunning = false;
     finalScoreText.textContent = score;
+    gameOverBestText.textContent = bestScore;
     gameOverText.classList.add("over");
     restartBtn.style.display = "inline-block";
     playTone(180, 0.3, "sawtooth");
@@ -315,10 +319,27 @@ function endGame() {
     clearActivePower();
     setCombo(0);
 
+    // Update best score if current score is higher
     if (score > bestScore) {
         bestScore = score;
         localStorage.setItem("dinoBest", String(bestScore));
         bestScoreText.textContent = bestScore;
+        gameOverBestText.textContent = bestScore;
+
+        // Show "New Best!" message in game over panel
+        newBestMsg.style.display = "block";
+
+        // Flash the Best stat in the HUD
+        bestScoreText.classList.remove("new-best");
+        void bestScoreText.offsetWidth; // force reflow to restart animation
+        bestScoreText.classList.add("new-best");
+        setTimeout(() => bestScoreText.classList.remove("new-best"), 1500);
+
+        // Play a celebratory tone
+        playTone(880, 0.15, "triangle");
+        setTimeout(() => playTone(1100, 0.15, "triangle"), 180);
+    } else {
+        newBestMsg.style.display = "none";
     }
 }
 
@@ -400,6 +421,7 @@ function clearActivePower() {
 function restartGame() {
     clearObstacles();
     gameOverText.classList.remove("over");
+    newBestMsg.style.display = "none";
     startGame();
 }
 
@@ -436,6 +458,7 @@ function startGame() {
     startBtn.style.display = "none";
     restartBtn.style.display = "none";
     gameOverText.classList.remove("over");
+    newBestMsg.style.display = "none";
     dino.classList.add("running");
     clearObstacles();
     clearPowerups();
@@ -578,6 +601,14 @@ difficultySelect.addEventListener("change", e => {
 
 startBtn.addEventListener("click", startGame);
 restartBtn.addEventListener("click", restartGame);
+
+resetBestBtn.addEventListener("click", () => {
+    if (confirm("Reset your best score to 0?")) {
+        bestScore = 0;
+        localStorage.removeItem("dinoBest");
+        bestScoreText.textContent = 0;
+    }
+});
 
 shopBtn.addEventListener("click", () => {
     shopModal.classList.add("open");
