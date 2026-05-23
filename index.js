@@ -229,6 +229,7 @@ const PROJECT_DATA = [
   ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
   ['Day 159' , 'Dining Philosophers Simulation' , './public/Dining Philosophers Simulation/index.html' , 'simulation algorithm javascript' , 'intermediate' ] ,
   ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', 'html css javascript', 'intermediate'],
+  ['Day 161', 'Movie Discovery Platform', './public/Movie_discovery_platform/index.html', 'api javascript', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
