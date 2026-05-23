@@ -93,11 +93,21 @@ function playBackspace() {
 
 function renderPaper() {
     typewriterText.textContent = paperContent;
+
+    const paper = document.querySelector(".paper-sheet");
+    // Use requestAnimationFrame to ensure DOM is updated before scrolling
+    requestAnimationFrame(() => {
+        paper.scrollTop = paper.scrollHeight;
+    });
 }
 
 function syncInput() {
     if (userInput.value !== paperContent) {
         userInput.value = paperContent;
+        // Auto-scroll input area to show latest content
+        requestAnimationFrame(() => {
+            userInput.scrollTop = userInput.scrollHeight;
+        });
     }
 }
 
@@ -229,6 +239,8 @@ document.querySelectorAll(".key").forEach((key) => {
 userInput.addEventListener("input", () => {
     paperContent = userInput.value;
     renderPaper();
+    userInput.scrollTop = userInput.scrollHeight;
+
 });
 
 document.addEventListener("keydown", (event) => {
@@ -322,3 +334,33 @@ setCapsLockState(false);
 paperContent = userInput.value || "";
 renderPaper();
 syncInput();
+const paperSheet = document.querySelector(".paper-sheet");
+
+const scrollUpBtn = document.getElementById("scrollUp");
+const scrollDownBtn = document.getElementById("scrollDown");
+
+if (scrollUpBtn) {
+    scrollUpBtn.addEventListener("click", () => {
+        paperSheet.scrollBy({
+            top: -120,
+            behavior: "smooth"
+        });
+        userInput.scrollBy({
+            top: -120,
+            behavior: "smooth"
+        });
+    });
+}
+
+if (scrollDownBtn) {
+    scrollDownBtn.addEventListener("click", () => {
+        paperSheet.scrollBy({
+            top: 120,
+            behavior: "smooth"
+        });
+        userInput.scrollBy({
+            top: 120,
+            behavior: "smooth"
+        });
+    });
+}

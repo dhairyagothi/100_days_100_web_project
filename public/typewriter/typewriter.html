@@ -20,12 +20,8 @@
 
         <div class="typewriter-body">
             <div class="input-area">
-                <textarea
-                    id="userInput"
-                    rows="3"
-                    placeholder="Type here or click the keys below…"
-                    aria-label="Typing input"
-                ></textarea>
+                <textarea id="userInput" rows="1" placeholder="Type here or click the keys below…"
+                    aria-label="Typing input"></textarea>
             </div>
 
             <div class="keyboard" aria-label="Typewriter keyboard">
@@ -78,15 +74,16 @@
                 </div>
 
                 <div class="keyboard-row keyboard-row--functions">
-                    <button type="button" class="key caps-lock" data-char="CAPSLOCK" aria-pressed="false">CAPS LOCK</button>
+                    <button type="button" class="key caps-lock" data-char="CAPSLOCK" aria-pressed="false">CAPS
+                        LOCK</button>
                     <button type="button" class="key enter-key" data-char="ENTER">↵ RET</button>
                     <button type="button" class="key space" data-char="SPACE">SPACE</button>
                     <button type="button" class="key backspace" data-char="BACKSPACE">⌫ DEL</button>
                 </div>
-            </div>
-            <div class="cursor-controls">
-                <button class="cursor-btn" id="leftCursor">←</button>
-                <button class="cursor-btn" id="rightCursor">→</button>
+                <div class="paper-controls">
+                    <button class="scroll-btn" id="scrollUp">▲</button>
+                    <button class="scroll-btn" id="scrollDown">▼</button>
+                </div>
             </div>
         </div>
     </div>
