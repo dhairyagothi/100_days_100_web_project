@@ -19,6 +19,7 @@ const allCheckBox = document.querySelectorAll("input[type=checkbox]");
 const historyList = document.querySelector("[data-history-list]");
 const clearHistoryBtn = document.querySelector("[data-clear-history]");
 const symbols = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
+let passwordHistory = loadPasswordHistory();
 const PASSWORD_HISTORY_KEY = "passwordGeneratorHistory";
 
 
@@ -345,6 +346,7 @@ generateBtn.addEventListener('click', () => {
     password = shufflePassword(Array.from(password));
     //show in UI
     passwordDisplay.value = password;
+    addPasswordToHistory(password);
     
       clearTimeout(hideTimeout);
       clearInterval(countdownInterval);
@@ -373,3 +375,6 @@ generateBtn.addEventListener('click', () => {
     //calculate strength
     calcStrength();
 });
+if(clearHistoryBtn) {
+    clearHistoryBtn.addEventListener('click', clearPasswordHistory);
+}

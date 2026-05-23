@@ -695,8 +695,28 @@ body.light-mode .navbar {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 10px;
   width: 100%;
-  max-width: 400px; 
+  max-width: 650px;
+  flex-wrap: wrap;
+}
+
+#sortProjects {
+  min-width: 140px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+  flex-shrink: 0;
+}
+
+#sortProjects option {
+  background: #111827;
+  color: #ffffff;
 }
 
 .search-icon {
