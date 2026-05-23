@@ -539,7 +539,7 @@ body.light-mode .navbar {
   opacity: 1;
 }
 
-/* Gradient highlight on the "WEB PROJECTS" word */
+/* Gradient on "WEB PROJECTS" text */
 .hero-line-highlight {
   background: linear-gradient(
     110deg,
@@ -552,7 +552,7 @@ body.light-mode .navbar {
   background-clip: text;
 }
 
-/* Third line — smaller tagline below the main heading */
+/* Monospace tagline line */
 .hero-line-sub {
   display: block;
   font-size: clamp(0.95rem, 2.2vw, 1.35rem);
@@ -585,7 +585,7 @@ body.light-mode .navbar {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem 0.2rem;
+  gap: 0.4rem 0.3rem;
   margin-bottom: 2.5rem;
   opacity: 0;
   animation: fadeUp 0.6s var(--ease) 0.35s forwards;
