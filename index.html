@@ -40,6 +40,7 @@
   <div class="ambient ambient-left" aria-hidden="true"></div>
   <div class="ambient ambient-right" aria-hidden="true"></div>
   <div class="noise-layer" aria-hidden="true"></div>
+  <canvas id="particleCanvas" aria-hidden="true"></canvas>
 
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
     <nav class="navbar" id="navbar">
@@ -154,27 +155,41 @@
         <h2 class="section-title">Every experiment, catalogued.</h2>
       </div>
 
-      <div class="projects-header">
-        <div class="search-bar">
-          <i class="fas fa-search search-icon"></i>
+    <div class="projects-header">
+      <div class="search-bar">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
+        <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
+          &times;
+        </button>
+        <select id="sortProjects" aria-label="Sort projects">
+          <option value="default">Sort By</option>
+          <option value="az">A-Z</option>
+          <option value="latest">Latest Day</option>
+          <option value="difficulty">Difficulty</option>
+        </select>
+      </div>
 
-          <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
-
-          <!-- ADD THIS BUTTON -->
-          <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
-            &times;
-          </button>
-        </div>
-
-        <!-- Technology Stack Search -->
-        <div class="search-bar tech-search-bar">
-          <i class="fas fa-code search-icon"></i>
-          <input type="text" id="techStackSearch" class="search-input"
-            placeholder="Filter by tech stack (React, Node.js, Python...)" autocomplete="off" />
-          <button id="clearTechFilter" class="clear-filter-btn" style="display: none;" aria-label="Clear tech filters">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
+      <!-- Technology Stack Search -->
+      <div class="search-bar tech-search-bar">
+        <i class="fas fa-code search-icon"></i>
+        <input
+          type="text"
+          id="techStackSearch"
+          class="search-input"
+          placeholder="Filter by tech stack (React, Node.js, Python...)"
+          autocomplete="off"
+        />
+        <button
+          id="clearTechFilter"
+          class="clear-filter-btn"
+          style="display: none;"
+          aria-label="Clear tech filters"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
 
         <!-- Active Tech Filters Display -->
         <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
@@ -200,8 +215,6 @@
           </button>
           <button class="chip" data-filter="api" id="filterAPI">APIs</button>
         </div>
-      </div>
-
       <div class="project-grid" id="projectGrid"></div>
 
       <div class="no-results" id="noResults">
@@ -240,24 +253,27 @@
         <div class="social-row">
           <a href="https://github.com/dhairyagothi" target="_blank" rel="noopener noreferrer" class="social-icon"
             aria-label="GitHub" id="footerGithub">
-            <i class="fab fa-github"></i>
+            <i class="fab fa-github" aria-hidden="true"></i>
+            <span style="display:none;">Visit Dhairya Gothi's GitHub Profile</span>
           </a>
           <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer"
             class="social-icon" aria-label="LinkedIn" id="footerLinkedin">
-            <i class="fab fa-linkedin-in"></i>
+            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+            <span style="display:none;">Visit Dhairya Gothi's LinkedIn Profile</span>
           </a>
           <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer"
             class="social-icon" aria-label="Instagram" id="footerInstagram">
-            <i class="fab fa-instagram"></i>
+            <i class="fab fa-instagram" aria-hidden="true"></i>
+            <span style="display:none;">Visit Dhairya Gothi's Instagram Profile</span>
           </a>
         </div>
       </div>
     </div>
 
-    <div class="footer-bottom">
+      <div class="footer-bottom">
       <span>© 2024 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
       <button id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-        <i class="fas fa-moon"></i>
+        <i class="fas fa-moon"></i> Theme
       </button>
     </div>
   </footer>
