@@ -288,3 +288,349 @@ submitBtn.addEventListener("click", function(e) {
 usernameInput.addEventListener("keydown", function(e) {
     if (e.key === "Enter") handleValidate();
 });
+// =====================================================
+// ADVANCED BULK EMAIL VALIDATION SUITE
+// =====================================================
+
+// ── DOM Elements ──
+
+var bulkEmails       = document.getElementById("bulkEmails");
+var bulkValidateBtn  = document.getElementById("bulkValidateBtn");
+var copyResultsBtn   = document.getElementById("copyBtn");
+var exportCsvBtn     = document.getElementById("exportCSV");
+var exportJsonBtn    = document.getElementById("exportJSON");
+
+var totalChecked = document.getElementById("totalCount");
+var validCount       = document.getElementById("validCount");
+var invalidCount     = document.getElementById("invalidCount");
+var disposableCount  = document.getElementById("disposableCount");
+
+var resultsBody      = document.getElementById("resultsBody");
+
+var historyContainer = document.getElementById("historyContainer");
+var clearHistoryBtn  = document.getElementById("clearHistory");
+
+var themeToggle      = document.getElementById("themeToggle");
+
+// ─────────────────────────────────────────────
+// Validate Bulk Emails
+// ─────────────────────────────────────────────
+
+var latestResults = [];
+
+function validateBulkEmails() {
+
+    var emails = bulkEmails.value
+        .split("\n")
+        .map(function(email) {
+            return email.trim();
+        })
+        .filter(function(email) {
+            return email !== "";
+        });
+
+    resultsBody.innerHTML = "";
+    latestResults = [];
+
+    if (emails.length === 0) {
+        resultsBody.innerHTML =
+        `
+        <tr>
+            <td colspan="4" class="empty-state">
+                No emails entered
+            </td>
+        </tr>
+        `;
+        return;
+    }
+
+    var valid = 0;
+    var invalid = 0;
+    var disposable = 0;
+
+    emails.forEach(function(email){
+
+        var atIdx = email.lastIndexOf("@");
+
+        var domain = atIdx !== -1
+            ? email.substring(atIdx + 1).toLowerCase()
+            : "";
+
+        var formatErrorsList = validateFormat(email);
+
+        var isDisposable =
+            DISPOSABLE_DOMAINS.indexOf(domain) !== -1;
+
+        var isKnown =
+            KNOWN_DOMAINS.indexOf(domain) !== -1;
+
+        var fuzzy = findClosestDomain(domain);
+
+        var isTypo =
+            !isKnown && fuzzy !== null;
+
+        var status = "";
+        var category = "";
+
+        if(formatErrorsList.length > 0){
+
+            status = "Invalid";
+            category = "Format Error";
+            invalid++;
+
+        }
+        else if(isDisposable){
+
+            status = "Disposable";
+            category = "Temporary Email";
+            disposable++;
+
+        }
+        else if(isTypo){
+
+            status = "Typo Detected";
+            category = "Suspicious Domain";
+            invalid++;
+
+        }
+        else if(isKnown){
+
+            status = "Valid";
+            category = "Free Provider";
+            valid++;
+
+        }
+        else{
+
+            status = "Potentially Valid";
+            category = "Business/Custom Domain";
+            valid++;
+        }
+
+        latestResults.push({
+            email: email,
+            status: status,
+            domain: domain,
+            category: category
+        });
+
+        var rowClass = "";
+
+        if(status === "Valid"){
+            rowClass = "valid";
+        }
+        else if(status === "Disposable"){
+            rowClass = "disposable";
+        }
+        else{
+            rowClass = "invalid";
+        }
+
+        resultsBody.innerHTML +=
+        `
+        <tr>
+            <td>${email}</td>
+            <td class="${rowClass}">
+                ${status}
+            </td>
+            <td>${domain}</td>
+            <td>${category}</td>
+        </tr>
+        `;
+    });
+
+    totalChecked.textContent = emails.length;
+    validCount.textContent = valid;
+    invalidCount.textContent = invalid;
+    disposableCount.textContent = disposable;
+
+    saveHistory(latestResults);
+}
+
+// ─────────────────────────────────────────────
+// Save History
+// ─────────────────────────────────────────────
+
+function saveHistory(results){
+
+    var history =
+        JSON.parse(localStorage.getItem("emailHistory")) || [];
+
+    history.unshift({
+        date: new Date().toLocaleString(),
+        results: results
+    });
+
+    history = history.slice(0, 5);
+
+    localStorage.setItem(
+        "emailHistory",
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+}
+
+// ─────────────────────────────────────────────
+// Render History
+// ─────────────────────────────────────────────
+
+function renderHistory(){
+
+    var history =
+        JSON.parse(localStorage.getItem("emailHistory")) || [];
+
+    historyContainer.innerHTML = "";
+
+    if(history.length === 0){
+
+        historyContainer.innerHTML =
+        `
+        <div class="empty-history">
+            No history found
+        </div>
+        `;
+
+        return;
+    }
+
+    history.forEach(function(item){
+
+        var div = document.createElement("div");
+
+        div.className = "history-item";
+
+        div.innerHTML =
+        `
+        <strong>${item.date}</strong>
+        <p>
+            ${item.results.length} emails validated
+        </p>
+        `;
+
+        historyContainer.appendChild(div);
+    });
+}
+
+// ─────────────────────────────────────────────
+// Copy Results
+// ─────────────────────────────────────────────
+
+copyResultsBtn.addEventListener("click", function(){
+
+    if(latestResults.length === 0){
+        alert("No results to copy");
+        return;
+    }
+
+    var text = latestResults.map(function(r){
+        return (
+            r.email +
+            " | " +
+            r.status +
+            " | " +
+            r.domain +
+            " | " +
+            r.category
+        );
+    }).join("\n");
+
+    navigator.clipboard.writeText(text);
+
+    alert("Results copied");
+});
+
+// ─────────────────────────────────────────────
+// Export CSV
+// ─────────────────────────────────────────────
+
+exportCsvBtn.addEventListener("click", function(){
+
+    if(latestResults.length === 0){
+        alert("No results to export");
+        return;
+    }
+
+    var csv =
+        "Email,Status,Domain,Category\n";
+
+    latestResults.forEach(function(r){
+
+        csv +=
+            `"${r.email}","${r.status}","${r.domain}","${r.category}"\n`;
+    });
+
+    var blob =
+        new Blob([csv], { type: "text/csv" });
+
+    var url = URL.createObjectURL(blob);
+
+    var a = document.createElement("a");
+
+    a.href = url;
+    a.download = "email-results.csv";
+
+    a.click();
+});
+
+// ─────────────────────────────────────────────
+// Export JSON
+// ─────────────────────────────────────────────
+
+exportJsonBtn.addEventListener("click", function(){
+
+    if(latestResults.length === 0){
+        alert("No results to export");
+        return;
+    }
+
+    var blob =
+        new Blob(
+            [JSON.stringify(latestResults, null, 2)],
+            { type: "application/json" }
+        );
+
+    var url = URL.createObjectURL(blob);
+
+    var a = document.createElement("a");
+
+    a.href = url;
+    a.download = "email-results.json";
+
+    a.click();
+});
+
+// ─────────────────────────────────────────────
+// Clear History
+// ─────────────────────────────────────────────
+
+clearHistoryBtn.addEventListener("click", function(){
+
+    localStorage.removeItem("emailHistory");
+
+    renderHistory();
+});
+
+// ─────────────────────────────────────────────
+// Theme Toggle
+// ─────────────────────────────────────────────
+
+themeToggle.addEventListener("click", function(){
+
+    document.body.classList.toggle("dark-mode");
+});
+
+// ─────────────────────────────────────────────
+// Validate Button
+// ─────────────────────────────────────────────
+
+bulkValidateBtn.addEventListener(
+    "click",
+    validateBulkEmails
+);
+
+// ─────────────────────────────────────────────
+// Initial Load
+// ─────────────────────────────────────────────
+
+renderHistory();

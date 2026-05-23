@@ -48,6 +48,271 @@
 
       <!-- API results / loading / error -->
       <div id="resultCont" class="result-container" aria-live="polite"></div>
+      
+      <!-- ================= BULK VALIDATION ================= -->
+
+    <section class="bulk-section">
+
+      <div class="section-title">
+
+        <h2>Bulk Email Validation</h2>
+
+      </div>
+
+      <div class="textarea-wrapper">
+
+        <textarea
+          id="bulkEmails"
+          placeholder="Enter multiple emails (one email per line)"
+        ></textarea>
+
+      </div>
+
+      <div class="bulk-buttons">
+
+        <button
+          id="bulkValidateBtn"
+          class="btn gradient-btn"
+        >
+          Validate Bulk Emails
+        </button>
+
+        <button
+          id="copyBtn"
+          class="btn secondary-btn"
+        >
+          Copy Results
+        </button>
+
+        <button
+          id="exportCSV"
+          class="btn secondary-btn"
+        >
+          Export CSV
+        </button>
+
+        <button
+          id="exportJSON"
+          class="btn secondary-btn"
+        >
+          Export JSON
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- ================= ANALYTICS ================= -->
+
+    <section class="stats">
+
+      <div class="stat-card total-card">
+
+        <div class="stat-icon">
+          📊
+        </div>
+
+        <div class="stat-content">
+
+          <h3>Total Checked</h3>
+
+          <p id="totalCount">0</p>
+
+          <span>Emails validated</span>
+
+        </div>
+
+      </div>
+
+      <div class="stat-card valid-card">
+
+        <div class="stat-icon">
+          ✅
+        </div>
+
+        <div class="stat-content">
+
+          <h3>Valid Emails</h3>
+
+          <p id="validCount">0</p>
+
+          <span>Valid addresses</span>
+
+        </div>
+
+      </div>
+
+      <div class="stat-card invalid-card">
+
+        <div class="stat-icon">
+          ❌
+        </div>
+
+        <div class="stat-content">
+
+          <h3>Invalid Emails</h3>
+
+          <p id="invalidCount">0</p>
+
+          <span>Invalid addresses</span>
+
+        </div>
+
+      </div>
+
+      <div class="stat-card disposable-card">
+
+        <div class="stat-icon">
+          🗑️
+        </div>
+
+        <div class="stat-content">
+
+          <h3>Disposable Emails</h3>
+
+          <p id="disposableCount">0</p>
+
+          <span>Temporary addresses</span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= RESULTS TABLE ================= -->
+
+    <section class="results-section">
+
+      <div class="section-title">
+        <h2>Validation Results</h2>
+
+      </div>
+
+      <div class="table-container">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Email</th>
+
+              <th>Status</th>
+
+              <th>Domain</th>
+
+              <th>Category</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="resultsBody">
+
+            <tr class="empty-row">
+
+              <td colspan="4">
+
+                <div class="empty-state">
+
+                  <div class="empty-icon">
+                    📭
+                  </div>
+
+                  <h3>No results to display.</h3>
+
+                  <p>
+                    Validate some emails to see results here.
+                  </p>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+    <!-- ================= BOTTOM SECTION ================= -->
+
+    <section class="bottom-grid">
+
+      <!-- HISTORY -->
+
+      <div class="history-section">
+
+        <div class="history-header">
+
+          <div class="section-title">
+
+            <div class="section-icon">
+            </div>
+
+            <h2>Validation History</h2>
+
+          </div>
+
+          <button
+            id="clearHistory"
+            class="btn danger-btn"
+          >
+            Clear History
+          </button>
+
+        </div>
+
+        <div id="historyContainer">
+
+          <div class="empty-history">
+
+            <div class="empty-icon">
+              📭
+            </div>
+
+            <h3>No history found.</h3>
+
+            <p>
+              Your validation history will appear here.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- THEME TOGGLE -->
+
+      <div class="theme-section">
+
+        <button
+          id="themeToggle"
+          class="btn theme-btn"
+        >
+          Toggle Dark / Light Mode
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+      <p>
+        © 2025 Email Validator. All rights reserved.
+      </p>
+
+    </footer>
     </div>
 
     <script src="script.js"></script>
