@@ -59,6 +59,7 @@ function type() {
         if (displayedPhrases.length === phrases.length) {
             displayedPhrases = [];
         }
+    }
 
         phraseIndex = (phraseIndex + 1) % phrases.length;
 
@@ -98,7 +99,7 @@ addTextButton.addEventListener("click", () => {
 
         pauseResumeButton.textContent = "Pause";
     }
-});
+}
 
 deleteTextButton.addEventListener("click", () => {
 
@@ -114,7 +115,6 @@ deleteTextButton.addEventListener("click", () => {
             phraseIndex = 0;
         }
     }
-});
 
 pauseResumeButton.addEventListener("click", () => {
 
@@ -129,10 +129,74 @@ pauseResumeButton.addEventListener("click", () => {
     } else {
         clearTimeout(typingTimeout);
     }
+
+    playKeyClick();
+    if (shouldFlash) flashKey(text);
+}
+
+function deleteCharFromPaper() {
+    if (paperContent.length === 0) return;
+
+    paperContent = paperContent.slice(0, -1);
+    renderPaper();
+    syncInput();
+    playBackspace();
+    flashKey("BACKSPACE");
+}
+
+function handleButtonPress(char) {
+    if (char === "CAPSLOCK") {
+        toggleCapsLock();
+        return;
+    }
+
+    if (char === "BACKSPACE") {
+        deleteCharFromPaper();
+        userInput.focus();
+        return;
+    }
+
+    if (char === "ENTER") {
+        insertText("\n");
+        userInput.focus();
+        return;
+    }
+
+    if (char === "SPACE") {
+        insertText(" ");
+        userInput.focus();
+        return;
+    }
+
+    if (isLetter(char)) {
+        insertText(transformLetter(char, false));
+        userInput.focus();
+        return;
+    }
+
+    insertText(char);
+    userInput.focus();
+}
+
+function toggleTheme() {
+    const isLight = document.body.classList.toggle("light-theme");
+    themeToggle.textContent = isLight ? "☀️" : "🌙";
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+}
+
+document.querySelectorAll(".key").forEach((key) => {
+    const trigger = (event) => {
+        event.preventDefault();
+        handleButtonPress(key.dataset.char);
+    };
+
+    key.addEventListener("mousedown", trigger);
+    key.addEventListener("touchstart", trigger, { passive: false });
 });
 
-speedSlider.addEventListener("input", (e) => {
-    typingSpeed = parseInt(e.target.value);
+userInput.addEventListener("input", () => {
+    paperContent = userInput.value;
+    renderPaper();
 });
 
 toggleThemeButton.addEventListener("click", () => {

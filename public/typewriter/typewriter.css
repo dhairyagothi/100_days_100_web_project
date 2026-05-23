@@ -38,6 +38,7 @@ body {
 .typewriter-container {
 
     display: flex;
+    flex-direction: column;
     align-items: center;
 
     margin-bottom: 40px;
@@ -172,6 +173,25 @@ body {
     cursor: pointer;
 
     border-radius: 50%;
+    background: linear-gradient(145deg, var(--key-bg-a), var(--key-bg-b));
+    border: 2px solid var(--key-border);
+    box-shadow:
+        0 5px 10px rgba(0, 0, 0, 0.32),
+        inset 0 1px 3px rgba(255, 255, 255, 0.8),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--key-text);
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+    position: relative;
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body.light-theme {
