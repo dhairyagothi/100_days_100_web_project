@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
 body {
     font-family: 'Source Code Pro', monospace;
     background-color: #f0f8ff;
@@ -102,19 +109,77 @@ main { display: grid; grid-template-columns: 1fr 1fr; gap: 0; flex: 1; min-heigh
     .preview-section { position: static; max-height: none; padding: 0; background: #fff; }
     #resumePreview { border: none; padding: 0; }
 }
+input:invalid,
+textarea:invalid {
+    border: 2px solid #ff4d4d;
+}
 
-/* Dark mode */
-body.dark { background-color: #0f1117; color: #d0d5e8; }
-body.dark .header { background: linear-gradient(135deg, #091525, #0c1e38); }
-body.dark .builder { background: #14172a; border-right-color: #22263a; }
-body.dark .preview-section { background: #0f1117; }
-body.dark .builder h2, body.dark .preview-section h2 { color: #00b4d8; border-bottom-color: #00b4d8; }
-body.dark .form-group label { color: #6b7590; }
-body.dark .form-group input, body.dark .form-group textarea { background: #1e2235; border-color: #2e3350; color: #d0d5e8; }
-body.dark .form-group input:focus, body.dark .form-group textarea:focus { border-color: #00b4d8; background: #242840; }
-body.dark #resumePreview { background: #1e2235; border-color: #2e3350; }
-body.dark .tpl-btn { background: #1e2235; color: #00b4d8; border-color: #00b4d8; }
-body.dark .tpl-btn.active { background: #00b4d8; color: #111; }
-body.dark #downloadBtn { background: transparent; color: #00b4d8; border-color: #00b4d8; }
-body.dark .error-msg { background: #2e1215; border-color: #c0313c; color: #ff7b85; }
-body.dark footer { background: #0a0d1a; border-top-color: #1a1e30; color: #2e3550; }
+input:valid,
+textarea:valid {
+    border: 2px solid #28a745;
+}
+input:required:focus,
+textarea:required:focus {
+    box-shadow: 0 0 5px rgba(0, 119, 182, 0.5);
+}
+.error {
+    border: 2px solid #ff4d4d !important;
+    background-color: #fff0f0 !important;
+    animation: shake 0.3s ease;
+}
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+}
+
+@media print {
+    body {
+        background: white;
+        padding: 0;
+        margin: 0;
+    }
+
+    .header,
+    .builder,
+    footer,
+    button {
+        display: none !important;
+    }
+
+    main {
+        display: block;
+          padding: 0;
+        margin: 0;
+    }
+
+    .preview {
+        width: 100%;
+        max-height: none;
+        overflow: visible;
+        border: none;
+        box-shadow: none;
+        background: white;
+        padding: 20px;
+    }
+
+    #resumePreview {
+        color: black;
+    }
+    #resumePreview h3,
+#resumePreview h4 {
+    color: black;
+}
+
+    section {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+    }
+body.dark footer {
+    background: #0a0d1a;
+    border-top-color: #1a1e30;
+    color: #2e3550;
+}
