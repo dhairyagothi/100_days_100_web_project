@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | WanderLust</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+
+        .auth-container{
+            width:100%;
+            min-height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            background:#f8f9fa;
+            padding:2rem;
+        }
+
+        .auth-box{
+            width:100%;
+            max-width:450px;
+
+            background:white;
+
+            padding:2.5rem;
+
+            border-radius:1rem;
+
+            box-shadow:0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .auth-title{
+            text-align:center;
+            margin-bottom:2rem;
+            font-size:2rem;
+        }
+
+        .form-group{
+            margin-bottom:1.5rem;
+        }
+
+        .form-group label{
+            display:block;
+            margin-bottom:0.5rem;
+            font-weight:500;
+        }
+
+        .form-control{
+            width:100%;
+            padding:0.9rem 1rem;
+
+            border:1px solid #ccc;
+            border-radius:0.5rem;
+
+            font-size:1rem;
+        }
+
+        .form-control:focus{
+            outline:none;
+            border-color:rgb(225, 32, 32);
+        }
+
+        .auth-btn{
+            width:100%;
+
+            padding:1rem;
+
+            border:none;
+            border-radius:0.5rem;
+
+            background:rgb(225, 32, 32);
+
+            color:white;
+
+            font-size:1rem;
+            font-weight:600;
+
+            cursor:pointer;
+
+            transition:0.3s;
+        }
+
+        .auth-btn:hover{
+            background:black;
+        }
+
+        .bottom-text{
+            text-align:center;
+            margin-top:1.5rem;
+        }
+
+        .bottom-text a{
+            color:rgb(225, 32, 32);
+            text-decoration:none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="auth-container">
+
+        <div class="auth-box">
+
+            <h1 class="auth-title">
+                Login to WanderLust
+            </h1>
+
+            <form>
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        class="form-control"
+                        placeholder="Enter username"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-control"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                </div>
+
+                <button class="auth-btn">
+                    Login
+                </button>
+
+            </form>
+
+            <p class="bottom-text">
+                Don't have an account?
+                <a href="signup.html">
+                    Signup
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

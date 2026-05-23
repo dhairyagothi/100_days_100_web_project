@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Property Details | WanderLust</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <i class="fa-regular fa-compass"></i>
+
+            <span>Explore</span>
+
+        </div>
+
+        <div class="nav-center">
+
+            <input type="text" placeholder="Search">
+
+            <button>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Search
+            </button>
+
+        </div>
+
+        <div class="nav-right">
+
+            <a href="#">Airbnb your home</a>
+
+            <a href="signup.html">Sign up</a>
+
+            <a href="login.html">Log in</a>
+
+        </div>
+
+    </nav>
+
+    <!-- PROPERTY -->
+
+    <div class="property-container">
+
+        <h1 class="property-title" id="title">
+            Beach Paradise Villa
+        </h1>
+
+        <img
+            id="property-image"
+            class="property-image"
+            src=""
+        >
+
+        <div class="property-details">
+
+            <p id="host"></p>
+
+            <p id="description"></p>
+
+            <p class="property-price" id="price"></p>
+
+            <p id="location"></p>
+
+        </div>
+
+        <!-- REVIEWS -->
+
+        <div class="review-section">
+
+            <h2>Leave a Review</h2>
+
+            <form>
+
+                <textarea
+                    rows="5"
+                    placeholder="Write your review..."
+                ></textarea>
+
+                <button class="submit-btn">
+                    Submit Review
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- MAP -->
+
+        <div style="margin-top:4rem;">
+
+            <h2>Where you'll be</h2>
+
+            <div id="map">
+                Map Preview Area
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 WanderLust, Inc.
+        </p>
+
+        <div class="footer-links">
+
+            <a href="#">Privacy</a>
+
+            <a href="#">Terms</a>
+
+            <a href="#">Support</a>
+
+        </div>
+
+    </footer>
+
+    <!-- SCRIPT -->
+
+         <script>
+
+    const listings = {
+
+        1: {
+            title: "Beach Paradise Villa",
+            image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Tanvee Rajput",
+            description: "Luxury beachfront villa with peaceful surroundings and stunning ocean views.",
+            price: "₹3,500/night",
+            location: "Goa, India"
+        },
+
+        2: {
+            title: "Mountain Retreat",
+            image: "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Rahul Sharma",
+            description: "Beautiful mountain retreat surrounded by nature and scenic valleys.",
+            price: "₹2,200/night",
+            location: "Manali, Himachal Pradesh"
+        },
+
+        3: {
+            title: "Lake View Cottage",
+            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Ananya Verma",
+            description: "Relaxing lakeside cottage with peaceful atmosphere and modern interiors.",
+            price: "₹2,900/night",
+            location: "Nainital, Uttarakhand"
+        },
+
+        4: {
+            title: "Luxury Apartment",
+            image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Vikram Singh",
+            description: "Premium luxury apartment in the heart of the city with elegant design.",
+            price: "₹4,500/night",
+            location: "Mumbai, Maharashtra"
+        },
+
+        5: {
+            title: "Ocean Breeze Stay",
+            image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Priya Kapoor",
+            description: "Beachside stay with breathtaking sunset views and calming sea breeze.",
+            price: "₹5,200/night",
+            location: "Pondicherry, India"
+        },
+
+        6: {
+            title: "Modern Villa",
+            image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Arjun Mehta",
+            description: "Modern luxury villa with stylish interiors and private outdoor spaces.",
+            price: "₹4,800/night",
+            location: "Bangalore, Karnataka"
+        },
+
+        7: {
+            title: "Forest Escape",
+            image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Sneha Reddy",
+            description: "Peaceful forest getaway surrounded by greenery and natural beauty.",
+            price: "₹2,700/night",
+            location: "Coorg, Karnataka"
+        },
+
+        8: {
+            title: "Snow Mountain Stay",
+            image: "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Karan Malhotra",
+            description: "Snow-covered mountain stay with cozy interiors and scenic views.",
+            price: "₹3,900/night",
+            location: "Shimla, Himachal Pradesh"
+        },
+
+        9: {
+            title: "Royal Palace Stay",
+            image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Rajveer Singh",
+            description: "Experience royal luxury in this palace-inspired heritage property.",
+            price: "₹6,200/night",
+            location: "Jaipur, Rajasthan"
+        },
+
+        10: {
+            title: "Desert Camping Dome",
+            image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=1200&auto=format&fit=crop",
+            host: "Hosted by Aisha Khan",
+            description: "Unique desert dome stay with stunning night skies and adventure vibes.",
+            price: "₹1,900/night",
+            location: "Jaisalmer, Rajasthan"
+        }
+
+    };
+
+    const params = new URLSearchParams(window.location.search);
+
+    const id = params.get("id");
+
+    const property = listings[id];
+
+    document.getElementById("title").innerText = property.title;
+
+    document.getElementById("property-image").src = property.image;
+
+    document.getElementById("host").innerText = property.host;
+
+    document.getElementById("description").innerText = property.description;
+
+    document.getElementById("price").innerText = property.price;
+
+    document.getElementById("location").innerText = property.location;
+
+</script>
+
+</body>
+</html>
