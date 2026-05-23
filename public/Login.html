@@ -1,109 +1,143 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sammu Trial Login Page</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Auth Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+  <link rel="icon" href="favv.png" type="image/x-icon" />
+</head>
+<body class="auth-page" data-mode="login">
+  <script>
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+    }
+  </script>
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+  <div class="auth-page__backdrop" aria-hidden="true">
+    <span class="auth-page__orb auth-page__orb--one"></span>
+    <span class="auth-page__orb auth-page__orb--two"></span>
+    <span class="auth-page__grid"></span>
+  </div>
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="bg-blur"></div>
+  <main class="auth-shell">
+    
+    <div class="auth-header">
+      <a class="auth-home" href="../index.html" aria-label="Back to home">
+        <span class="auth-home__icon">←</span>
+        <span>Back to Home</span>
+      </a>
+      <button id="authThemeToggle" class="auth-theme-toggle" aria-label="Toggle Theme">
+        <span class="theme-icon">☀️</span>
+      </button>
+    </div>
 
-    <nav class="navbar">
-      <a href="../index.html" class="button home-btn">Home</a>
-    </nav>
+    <section class="auth-card" aria-labelledby="auth-title">
+      
+      <aside class="auth-hero">
+        <div class="auth-hero__badge">Open Source Archive</div>
+        <h1 id="auth-title">100 Days.<br>100 Projects.</h1>
+        <p class="auth-hero__desc">
+          A curated collection of frontend experiments, UI systems, and interactive concepts.
+        </p>
+        <div class="auth-hero__features">
+          <span>✔️ 100+ Live Demos</span>
+          <span>✔️ Save Favorites</span>
+          <span>✔️ Open Source</span>
+        </div>
+      </aside>
 
-    <section class="hero-section">
-      <h1 class="hero-title">100 Days 100 Web Projects</h1>
-      <p class="auth-title">
-        Dive in to explore a seamless access to 100+ exciting web experiments
-        crafted for learning and inspiration. Log in to continue building,
-        exploring, and creating amazing web experiences every day.
-      </p>
+      <section class="auth-panel" aria-label="Authentication forms">
+        <div class="auth-tabs" role="tablist" aria-label="Authentication mode">
+          <button class="auth-tab is-active" type="button" data-auth-tab="login" aria-selected="true">Login</button>
+          <button class="auth-tab" type="button" data-auth-tab="signup" aria-selected="false">Sign Up</button>
+          <span class="auth-tab-indicator" aria-hidden="true"></span>
+        </div>
 
-      <div class="auth-container">
-        <div class="auth-card">
-          <h2 class="auth-title-1">Login</h2>
-
-          <form id="loginForm" class="auth-form">
-            <div class="form-group">
-              <i class="fa-solid fa-user"></i>
-              <input
-                type="text"
-                id="username"
-                placeholder="Username"
-                class="form-input"
-                autocomplete="username"
-                required
-              />
+        <div class="auth-forms">
+          <form class="auth-form is-active" data-auth-form="login" autocomplete="on">
+            <div class="form-copy">
+              <h2>Welcome back</h2>
+              <p>Sign in to continue browsing the project collection.</p>
             </div>
 
-            <div class="form-group">
-              <i class="fa-solid fa-lock"></i>
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                class="form-input"
-                autocomplete="current-password"
-                required
-              />
-            </div>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" name="login-email" placeholder="you@example.com" autocomplete="email" />
+            </label>
 
-            <button type="submit" class="button home-btn">
-              <i class="fa-solid fa-right-to-bracket"></i>
-              Login
-            </button>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" name="login-password" placeholder="Enter your password" autocomplete="current-password" />
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-button">Login</button>
+              <button type="button" class="secondary-button" data-switch-auth="signup">Create account</button>
+            </div>
           </form>
 
-          <p class="already-signed-up">
-            Not signed up? <a href="./SignUp.html">Sign Up</a>
-          </p>
+          <form class="auth-form" data-auth-form="signup" autocomplete="on">
+            <div class="form-copy">
+              <h2>Create your account</h2>
+              <p>Join the project hub with a clean, lightweight sign up form.</p>
+            </div>
+
+            <label class="field">
+              <span>Name</span>
+              <input type="text" name="signup-name" placeholder="Your full name" />
+            </label>
+
+            <label class="field">
+              <span>Username</span>
+              <input type="text" name="signup-username" placeholder="Pick a username" />
+            </label>
+
+            <label class="field">
+              <span>Email</span>
+              <input type="email" name="signup-email" placeholder="you@example.com" />
+            </label>
+
+            <label class="field">
+              <span>Password</span>
+              <input type="password" name="signup-password" placeholder="Create a password" autocomplete="new-password" />
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-button">Sign Up</button>
+              <button type="button" class="secondary-button" data-switch-auth="login">Back to login</button>
+            </div>
+          </form>
         </div>
-      </div>
+      </section>
     </section>
+  </main>
 
-    <script>
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./auth-controller.js"></script>
+  <script>
+    // Theme Toggle Logic
+    const themeToggleBtn = document.getElementById('authThemeToggle');
+    const themeIcon = themeToggleBtn.querySelector('.theme-icon');
 
-          const username = document.getElementById("username").value.trim();
-          const password = document.getElementById("password").value.trim();
+    function updateIcon() {
+      const isLight = document.body.classList.contains('light-mode');
+      themeIcon.innerHTML = isLight ? '🌙' : '☀️';
+    }
 
-          // Get stored user
-          const storedUser = localStorage.getItem(username);
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      updateIcon();
+    });
 
-          // Check if user exists
-          if (!storedUser) {
-            alert("User does not exist.");
-            return;
-          }
-
-          const userData = JSON.parse(storedUser);
-
-          // Password matching
-          if (password !== userData.password) {
-            alert("Incorrect password.");
-            return;
-          }
-
-          // Login successful
-          alert("Login successful!");
-
-          localStorage.setItem("loggedInUser", username);
-          window.location.href = "../index.html";
-        });
-    </script>
-  </body>
+    updateIcon(); // Run once on load
+  </script>
+</body>
 </html>

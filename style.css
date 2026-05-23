@@ -1941,3 +1941,47 @@ body.light-mode .brand-mark {
   background-color: #007bff;
   transform: scale(1.1);
 }
+
+/* ============================================================
+   GLOBAL LOADER (Prevents Auth Glitches)
+   ============================================================ */
+#globalLoader {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #050816; /* Matches your dark theme */
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+#globalLoader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#globalLoader .spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #38bdf8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================================
+   LIGHT MODE LOADER OVERRIDE
+   ============================================================ */
+body.light-mode #globalLoader {
+  background: #f4f6f9 !important; /* Matches your light mode dashboard */
+}
+
+body.light-mode #globalLoader .spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Darker track for visibility */
+  border-top-color: #2563eb; /* Matches your light mode blue accent */
+}

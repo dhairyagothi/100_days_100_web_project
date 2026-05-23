@@ -1,0 +1,485 @@
+/* ============================================================
+   1. BASE RESET & TYPOGRAPHY
+   ============================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.auth-page {
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  color: #f5f7ff;
+  background:
+    radial-gradient(circle at top left, rgba(88, 196, 255, 0.22), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(123, 92, 255, 0.22), transparent 28%),
+    linear-gradient(135deg, #050816 0%, #0a1020 45%, #070a14 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ambient Orbs */
+body.auth-page::before,
+body.auth-page::after {
+  content: "";
+  position: fixed;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+}
+body.auth-page::before {
+  top: -8rem;
+  left: -6rem;
+  background: rgba(56, 189, 248, 0.22);
+}
+body.auth-page::after {
+  right: -8rem;
+  bottom: -10rem;
+  background: rgba(168, 85, 246, 0.22);
+}
+
+.auth-page__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 42px 42px;
+  z-index: 1;
+}
+
+/* ============================================================
+   2. MAIN LAYOUT & CARD
+   ============================================================ */
+.auth-shell {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1000px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.auth-home {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.auth-home:hover {
+  color: #fff;
+}
+
+.auth-theme-toggle {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #eef4ff;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+}
+.auth-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-card {
+  display: flex;
+  background: rgba(10, 15, 30, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  min-height: 550px;
+}
+
+/* Left Hero Section */
+.auth-hero {
+  flex: 1;
+  padding: 3rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-hero__badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+#auth-title {
+  font-size: 2.5rem;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.auth-hero__desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-hero__features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+/* Right Form Section */
+.auth-content,
+[data-auth-form] {
+  flex: 1.2;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+/* Top Navigation Tabs */
+.auth-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  padding: 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.auth-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-tab.is-active,
+.auth-tab[aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================================
+   3. FORM ELEMENTS & ALIGNMENT FIXES
+   ============================================================ */
+/* ============================================================
+   3. FORM ELEMENTS & ALIGNMENT FIXES
+   ============================================================ */
+.auth-forms {
+  position: relative;
+  width: 100%;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transform: translateX(24px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.auth-form.is-active {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.form-copy h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.form-copy p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field span,
+.field label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Universal Input Alignment (Fixes the password glitch cleanly) */
+.auth-form .field input {
+  width: 100%;
+  height: 48px;
+  line-height: normal;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.auth-form .field input:focus {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+/* Hide injected browser password buttons */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  display: none;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Form Buttons */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.primary-button,
+.auth-submit {
+  height: 48px;
+  border-radius: 8px;
+  border: none;
+  background: #38bdf8;
+  color: #050816;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.primary-button:hover,
+.auth-submit:hover {
+  background: #0ea5e9;
+  transform: translateY(-2px);
+}
+
+.secondary-button,
+.auth-link-button {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0.5rem;
+}
+.secondary-button:hover,
+.auth-link-button:hover {
+  color: #38bdf8;
+}
+
+#authMessage {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================================
+   4. LIGHT MODE (Clean, Hierarchical Overrides)
+   ============================================================ */
+body.auth-page.light-mode {
+  color: #1e293b;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.15), transparent 40%),
+    radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.15), transparent 40%),
+    linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+body.auth-page.light-mode::before {
+  background: rgba(59, 130, 246, 0.2);
+}
+body.auth-page.light-mode::after {
+  background: rgba(168, 85, 246, 0.2);
+}
+
+body.auth-page.light-mode .auth-page__grid {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+body.auth-page.light-mode .auth-card {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+body.auth-page.light-mode .auth-hero {
+  border-right-color: rgba(15, 23, 42, 0.08);
+}
+
+body.auth-page.light-mode .auth-hero__badge {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+/* Text Colors */
+body.auth-page.light-mode .auth-hero__desc,
+body.auth-page.light-mode .auth-hero__features,
+body.auth-page.light-mode .form-copy p,
+body.auth-page.light-mode #authMessage {
+  color: #475569;
+}
+
+body.auth-page.light-mode .auth-form span,
+body.auth-page.light-mode .auth-form label,
+body.auth-page.light-mode .form-copy h2 {
+  color: #0f172a;
+}
+
+/* Light Mode Tabs Fix - Explicitly removing dark shadows */
+body.auth-page.light-mode .auth-tabs {
+  background: rgba(15, 23, 42, 0.05);
+}
+body.auth-page.light-mode .auth-tab {
+  color: #64748b;
+  background: transparent;
+}
+body.auth-page.light-mode .auth-tab.is-active,
+body.auth-page.light-mode .auth-tab[aria-selected="true"] {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Light Mode Inputs */
+body.auth-page.light-mode .auth-form .field input {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(15, 23, 42, 0.1);
+  color: #0f172a;
+}
+body.auth-page.light-mode .auth-form .field input:focus {
+  background: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Light Mode Buttons Fix - Makes secondary text visible */
+body.auth-page.light-mode .primary-button,
+body.auth-page.light-mode .auth-submit {
+  background: #2563eb;
+  color: #ffffff;
+}
+body.auth-page.light-mode .primary-button:hover,
+body.auth-page.light-mode .auth-submit:hover {
+  background: #1d4ed8;
+}
+
+body.auth-page.light-mode .secondary-button,
+body.auth-page.light-mode .auth-link-button {
+  color: #475569;
+}
+body.auth-page.light-mode .secondary-button:hover,
+body.auth-page.light-mode .auth-link-button:hover {
+  color: #2563eb;
+}
+
+/* Light Mode Header Links */
+body.auth-page.light-mode .auth-home,
+body.auth-page.light-mode .auth-theme-toggle {
+  color: #475569;
+  border-color: rgba(15, 23, 42, 0.15);
+}
+body.auth-page.light-mode .auth-home:hover,
+body.auth-page.light-mode .auth-theme-toggle:hover {
+  background: rgba(15, 23, 42, 0.05);
+  color: #0f172a;
+}
+
+/* ============================================================
+   5. RESPONSIVE DESIGN
+   ============================================================ */
+@media (max-width: 768px) {
+  .auth-card {
+    flex-direction: column;
+  }
+  .auth-hero {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2rem;
+  }
+  body.auth-page.light-mode .auth-hero {
+    border-bottom-color: rgba(15, 23, 42, 0.08);
+  }
+  .auth-content,
+  [data-auth-form] {
+    padding: 2rem;
+  }
+  #auth-title {
+    font-size: 2rem;
+  }
+}

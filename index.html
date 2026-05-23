@@ -11,14 +11,12 @@
   <meta name="author" content="Dhairya Gothi and Contributors" />
   <meta name="theme-color" content="#0a0a1a" />
 
-  <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="100 Days · 100 Web Projects" />
   <meta property="og:description"
     content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript." />
   <meta property="og:url" content="https://100-days-100-web-project.vercel.app/" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="100 Days · 100 Web Projects" />
   <meta name="twitter:description"
@@ -37,32 +35,34 @@
 </head>
 
 <body>
+  <div id="globalLoader" class="global-loader">
+    <div class="spinner"></div>
+  </div>
+
   <div class="ambient ambient-left" aria-hidden="true"></div>
   <div class="ambient ambient-right" aria-hidden="true"></div>
   <div class="noise-layer" aria-hidden="true"></div>
 
-    <!-- ── NAVBAR ──────────────────────────────────────────── -->
-    <nav class="navbar" id="navbar">
-        <a class="navbar-brand" href="index.html" style="text-decoration:none;">
-            <span class="brand-mark" aria-hidden="true">100</span>
-            <span class="brand-copy">
-                <span class="brand-kicker">Open Source Archive</span>
-                <strong>100 Days · 100 Web Projects</strong>
-            </span>
-        </a>
+  <nav class="navbar" id="navbar">
+    <a class="navbar-brand" href="index.html" style="text-decoration:none;">
+      <span class="brand-mark" aria-hidden="true">100</span>
+      <span class="brand-copy">
+        <span class="brand-kicker">Open Source Archive</span>
+        <strong>100 Days · 100 Web Projects</strong>
+      </span>
+    </a>
 
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
-            <i class="fas fa-bars"></i>
-        </button>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+      <i class="fas fa-bars"></i>
+    </button>
 
-        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-    </div>
-    </nav>   
-    <!-- ── HERO ───────────────────────────────────────────── -->
-    <section class="hero" id="hero">
-      <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
-      <div class="hero-inner">
-        <p class="hero-overline">Open Source Frontend Archive · 2026</p>
+    <div class="nav-buttons mobile-drawer-layer" id="navButtons"></div>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="hero-overline">Open Source Frontend Archive · 2026</p>
 
       <h1 class="hero-headline">
         <span class="hero-line">100 DAYS</span>
@@ -119,7 +119,6 @@
 
         <div class="section-heading-row">
           <h2 class="section-title">Recently Viewed</h2>
-
           <button class="view-all-btn" id="recentToggleBtn">View All</button>
         </div>
       </div>
@@ -135,10 +134,7 @@
 
         <div class="section-heading-row">
           <h2 class="section-title">Bookmarked Projects</h2>
-
-          <button class="view-all-btn" id="bookmarkToggleBtn">
-            View All
-          </button>
+          <button class="view-all-btn" id="bookmarkToggleBtn">View All</button>
         </div>
       </div>
 
@@ -146,7 +142,6 @@
     </div>
   </section>
 
-  <!-- ── PROJECTS ───────────────────────────────────────── -->
   <section class="projects-section" id="projects">
     <div class="projects-inner">
       <div class="projects-intro">
@@ -154,66 +149,45 @@
         <h2 class="section-title">Every experiment, catalogued.</h2>
       </div>
 
-    <div class="projects-header">
-      <div class="search-bar">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
-        <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
-          &times;
-        </button>
-        <select id="sortProjects" aria-label="Sort projects">
-          <option value="default">Sort By</option>
-          <option value="az">A-Z</option>
-          <option value="latest">Latest Day</option>
-          <option value="difficulty">Difficulty</option>
-        </select>
-      </div>
-
-      <!-- Technology Stack Search -->
-      <div class="search-bar tech-search-bar">
-        <i class="fas fa-code search-icon"></i>
-        <input
-          type="text"
-          id="techStackSearch"
-          class="search-input"
-          placeholder="Filter by tech stack (React, Node.js, Python...)"
-          autocomplete="off"
-        />
-        <button
-          id="clearTechFilter"
-          class="clear-filter-btn"
-          style="display: none;"
-          aria-label="Clear tech filters"
-        >
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
-
-        <!-- Active Tech Filters Display -->
-        <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
-          <span class="filter-label">Active filters:</span>
-          <div id="techFilterTags"></div>
+      <div class="projects-header">
+        <div class="search-bar">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
+          <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">&times;</button>
+          
+          <select id="sortProjects" aria-label="Sort projects">
+            <option value="default">Sort By</option>
+            <option value="az">A-Z</option>
+            <option value="latest">Latest Day</option>
+            <option value="difficulty">Difficulty</option>
+          </select>
         </div>
 
-        <div class="filter-chips" id="filterChips">
-          <button class="chip active" data-filter="all" id="filterAll">
-            All <span class="chip-count" id="allCount">Projects</span>
+        <div class="search-bar tech-search-bar">
+          <i class="fas fa-code search-icon"></i>
+          <input type="text" id="techStackSearch" class="search-input" placeholder="Filter by tech stack (React, Node.js, Python...)" autocomplete="off" />
+          <button id="clearTechFilter" class="clear-filter-btn" style="display: none;" aria-label="Clear tech filters">
+            <i class="fas fa-times"></i>
           </button>
-          <button class="chip" data-filter="game" id="filterGame">
-            Games
-          </button>
-          <button class="chip" data-filter="clone" id="filterClone">
-            Clones
-          </button>
-          <button class="chip" data-filter="tool" id="filterTool">
-            Tools
-          </button>
-          <button class="chip" data-filter="ui" id="filterUI">
-            UI / Animation
-          </button>
-          <button class="chip" data-filter="api" id="filterAPI">APIs</button>
         </div>
+      </div>
+
+      <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
+        <span class="filter-label">Active filters:</span>
+        <div id="techFilterTags"></div>
+      </div>
+
+      <div class="filter-chips" id="filterChips">
+        <button class="chip active" data-filter="all" id="filterAll">
+          All <span class="chip-count" id="allCount">Projects</span>
+        </button>
+        <button class="chip" data-filter="game" id="filterGame">Games</button>
+        <button class="chip" data-filter="clone" id="filterClone">Clones</button>
+        <button class="chip" data-filter="tool" id="filterTool">Tools</button>
+        <button class="chip" data-filter="ui" id="filterUI">UI / Animation</button>
+        <button class="chip" data-filter="api" id="filterAPI">APIs</button>
+      </div>
+
       <div class="project-grid" id="projectGrid"></div>
 
       <div class="no-results" id="noResults">
@@ -223,25 +197,18 @@
     </div>
   </section>
 
-  <!-- ── FOOTER ─────────────────────────────────────────── -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
         <span class="footer-logo">100 Days</span>
-        <p>
-          An open-source frontend exploration challenge — a growing collection
-          of HTML, CSS &amp; JavaScript experiments.
-        </p>
+        <p>An open-source frontend exploration challenge — a growing collection of HTML, CSS &amp; JavaScript experiments.</p>
       </div>
 
       <div class="footer-nav">
         <h4>Navigate</h4>
         <ul>
           <li><a href="#projects">Browse Projects</a></li>
-          <li>
-            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
-              rel="noopener noreferrer">GitHub Repo</a>
-          </li>
+          <li><a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">GitHub Repo</a></li>
           <li><a href="./contributors/contributor.html">Contributors</a></li>
           <li><a href="./public/Login.html">Sign In</a></li>
         </ul>
@@ -250,16 +217,13 @@
       <div class="footer-social">
         <h4>Connect</h4>
         <div class="social-row">
-          <a href="https://github.com/dhairyagothi" target="_blank" rel="noopener noreferrer" class="social-icon"
-            aria-label="GitHub" id="footerGithub">
+          <a href="https://github.com/dhairyagothi" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub" id="footerGithub">
             <i class="fab fa-github"></i>
           </a>
-          <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer"
-            class="social-icon" aria-label="LinkedIn" id="footerLinkedin">
+          <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn" id="footerLinkedin">
             <i class="fab fa-linkedin-in"></i>
           </a>
-          <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer"
-            class="social-icon" aria-label="Instagram" id="footerInstagram">
+          <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram" id="footerInstagram">
             <i class="fab fa-instagram"></i>
           </a>
         </div>
@@ -274,7 +238,6 @@
     </div>
   </footer>
 
-  <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
   <button id="scrollBtn" aria-label="Back to top">
     <svg class="progress-ring" viewBox="0 0 48 48">
       <circle class="ring-track" cx="24" cy="24" r="22" />
@@ -283,10 +246,13 @@
     <i class="fas fa-arrow-up scroll-arrow"></i>
     <span class="scroll-tooltip">Back to top</span>
   </button>
-  <div class="toast" id="toast"></div>
-  <script type="module" src="hero-terminal.js"></script>
-  <script src="index.js"></script>
 
+  <div class="toast" id="toast"></div>
+  
+  <script type="module" src="hero-terminal.js"></script>
+  <script src="./public/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="index.js"></script>
 </body>
 
 </html>
