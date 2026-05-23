@@ -49,24 +49,32 @@ const categoryCollections = {
   ]
 };
 
-const slides = Object.entries(categoryCollections).flatMap(([category, items]) =>
-  items.map(([title, src, description]) => ({
-    title,
-    category,
-    description,
-    src,
-    type: "image",
-    alt: `${title} ${category} image`
-  }))
+const slides = Object.entries(categoryCollections).flatMap(
+  ([category, items]) =>
+    items.map(([title, src, description]) => ({
+      title,
+      category,
+      description,
+      src,
+      type: "image",
+      alt: `${title} ${category} image`
+    }))
 );
 
 const wrapper = document.querySelector("#sliderWrapper");
 const template = document.querySelector("#slideTemplate");
-const categoryButtons = document.querySelectorAll(".category-btn");
-const currentSlide = document.querySelector("#currentSlide");
-const totalSlides = document.querySelector("#totalSlides");
+
+const categoryButtons =
+  document.querySelectorAll(".category-btn");
+
+const currentSlide =
+  document.querySelector("#currentSlide");
+
+const totalSlides =
+  document.querySelector("#totalSlides");
 
 let swiper;
+
 let activeCategory = "all";
 
 function formatCount(number) {
@@ -74,73 +82,114 @@ function formatCount(number) {
 }
 
 function getVisibleSlides() {
+
   if (activeCategory === "all") {
     return slides;
   }
 
-  return slides.filter((slide) => slide.category === activeCategory);
+  return slides.filter(
+    (slide) => slide.category === activeCategory
+  );
 }
 
 function createMedia(slide) {
+
   if (slide.type === "video") {
+
     const video = document.createElement("video");
+
     video.src = slide.src;
     video.loop = true;
     video.muted = true;
     video.playsInline = true;
     video.autoplay = true;
+
     video.setAttribute("aria-label", slide.alt);
+
     return video;
   }
 
   const image = document.createElement("img");
+
   image.src = slide.src;
   image.alt = slide.alt;
+
   return image;
 }
 
 function renderSlides() {
+
   const visibleSlides = getVisibleSlides();
+
   wrapper.innerHTML = "";
 
   visibleSlides.forEach((slide) => {
+
     const node = template.content.cloneNode(true);
-    const mediaFrame = node.querySelector(".media-frame");
+
+    const mediaFrame =
+      node.querySelector(".media-frame");
 
     mediaFrame.appendChild(createMedia(slide));
-    node.querySelector(".slide-category").textContent = slide.category;
-    node.querySelector(".slide-title").textContent = slide.title;
-    node.querySelector(".slide-description").textContent = slide.description;
+
+    node.querySelector(".slide-category").textContent =
+      slide.category;
+
+    node.querySelector(".slide-title").textContent =
+      slide.title;
+
+    node.querySelector(".slide-description").textContent =
+      slide.description;
+
     wrapper.appendChild(node);
   });
 
-  totalSlides.textContent = formatCount(visibleSlides.length);
-  currentSlide.textContent = visibleSlides.length ? "01" : "00";
+  totalSlides.textContent =
+    formatCount(visibleSlides.length);
+
+  currentSlide.textContent =
+    visibleSlides.length ? "01" : "00";
 }
 
 function updateCounter() {
-  if (!swiper) {
-    return;
-  }
 
-  currentSlide.textContent = formatCount(swiper.realIndex + 1);
+  if (!swiper) return;
+
+  currentSlide.textContent =
+    formatCount(swiper.realIndex + 1);
 }
 
 function initSwiper() {
+
   if (swiper) {
     swiper.destroy(true, true);
   }
 
   swiper = new Swiper(".mySwiper", {
+
     effect: "coverflow",
+
     grabCursor: true,
+
     centeredSlides: true,
+
     slidesPerView: "auto",
+
     speed: 650,
-    keyboard: true,
-    mousewheel: {
-      forceToAxis: true
+
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
     },
+
+    keyboard: true,
+
+    mousewheel: {
+      invert: false,
+      sensitivity: 3,
+      thresholdDelta: 20,
+    },
+
     coverflowEffect: {
       rotate: 0,
       stretch: 0,
@@ -148,10 +197,12 @@ function initSwiper() {
       modifier: 1.6,
       slideShadows: false
     },
+
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev"
     },
+
     on: {
       slideChange: updateCounter
     }
@@ -161,22 +212,42 @@ function initSwiper() {
 }
 
 function setCategory(category) {
+
   activeCategory = category;
 
   categoryButtons.forEach((button) => {
-    const isActive = button.dataset.category === category;
+
+    const isActive =
+      button.dataset.category === category;
+
     button.classList.toggle("active", isActive);
-    button.setAttribute("aria-pressed", String(isActive));
+
+    button.setAttribute(
+      "aria-pressed",
+      String(isActive)
+    );
   });
 
   renderSlides();
+
   initSwiper();
 }
 
 categoryButtons.forEach((button) => {
-  button.setAttribute("aria-pressed", String(button.classList.contains("active")));
-  button.addEventListener("click", () => setCategory(button.dataset.category));
+
+  button.setAttribute(
+    "aria-pressed",
+    String(
+      button.classList.contains("active")
+    )
+  );
+
+  button.addEventListener(
+    "click",
+    () => setCategory(button.dataset.category)
+  );
 });
 
 renderSlides();
+
 initSwiper();

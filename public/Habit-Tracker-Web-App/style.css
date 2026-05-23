@@ -390,3 +390,60 @@ body.dark-mode .modal-card {
   margin-top: 20px;
   width: 100%;
 }
+/* ACHIEVEMENT TOOLTIPS */
+
+.achievement-wrapper {
+  position: relative;
+}
+
+.achievement-tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  width: max-content;
+  max-width: 260px;
+  text-align: center;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s ease;
+  z-index: 20;
+}
+
+.achievement-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #222 transparent transparent transparent;
+}
+
+.achievement-wrapper:hover .achievement-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* DARK MODE TOOLTIPS */
+
+body.dark-mode .theme-tooltip,
+body.dark-mode .achievement-tooltip {
+  background: #f1f1f1;
+  color: #111;
+}
+
+body.dark-mode .theme-tooltip::after {
+  border-color: transparent transparent #f1f1f1 transparent;
+}
+
+body.dark-mode .achievement-tooltip::after {
+  border-color: #f1f1f1 transparent transparent transparent;
+}
