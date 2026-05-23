@@ -1,23 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="pageloader.css">
-<title>Pageloader</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pageloader.css">
+    <title>Pageloader</title>
 </head>
 <body>
+    <div id="loading"></div>
+  
+  <body>
+    <div id="loading"></div>
     <div id="container">
-        <div id="loading"></div>
         <nav class="navbar">
             <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
+        
+        <main class="content-wrapper">
+            <section id="home" class="page-section active">
+                <h1>Welcome to Pageloader!</h1>
+            </section>
+            
+            <section id="about" class="page-section">
+                <h2>About Us</h2>
+                <p>Thank you for visiting our website. Here is a simple example of a pageloader.</p>
+            </section>
+            
+            <section id="contact" class="page-section">
+                <h2>Contact Us</h2>
+                <p>Get in touch with us anytime!</p>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 Your Company. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- Preloader Script ---
+        window.addEventListener("load", function () {
+            const loader = document.getElementById("loading");
+            loader.classList.add("fade-out");
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 500);
+        });
+
+        // --- Single Page Router Script ---
+        function handleRouting() {
+            // Get current hash, default to '#home' if empty
+            const hash = window.location.hash || '#home';
+            
+            // Hide all sections
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Reveal target section matching hash identifier
+            const targetSection = document.querySelector(hash);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        }
+
+        // Listen for link clicks / hash modifications
+        window.addEventListener('hashchange', handleRouting);
+        // Initialize routing state on system startup execution
+        window.addEventListener('DOMContentLoaded', handleRouting);
         <header id ="home">
-        <h1>Welcome to Pageloader!</h1></div>
+        <h1>Welcome to Pageloader!</h1>
         </header>
         <section id="about" class="content">
             <h2>About Us</h2>
@@ -29,10 +86,12 @@
         </footer>
     </div>
        <script>
-         window.addEventListener("load", function () {
-            const loader = document.getElementById("loading");
-            loader.style.display = "none";
-        });
+        window.addEventListener("load", function() {
+        setTimeout(function() { 
+        const loader = document.getElementById("loading");       
+        loader.style.display = "none";  
+        }, 1000);                      
+});
     </script>
 </body>
 </html>

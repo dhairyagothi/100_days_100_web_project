@@ -4,7 +4,7 @@
     font-family: "Poppins", "sans-serif";
     box-sizing: border-box;
 }
-bosy{
+body{
     background: #FFFDD0;
     color: black;
 }
@@ -47,10 +47,10 @@ form button{
     cursor: pointer;
 }
 ::placeholder{
-    color: whgite
+    color: white;
     font-size: 18px;
 }
-#show-more-btn{
+#show-more-button{
     background: #ff3929;
     color: white;
     border: 0;
@@ -65,7 +65,7 @@ form button{
     width: 80%;
     margin: 100px auto 50px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-gap: 40px;
 }
 #search-result img{
