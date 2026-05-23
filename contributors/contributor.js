@@ -9,13 +9,7 @@ async function fetchContributors() {
     if (contributorCountSpan) contributorCountSpan.textContent = "500+";
     if (totalCommitsEl) totalCommitsEl.textContent = "10,000+";
 
-    // Show loading state
-    if (contributorsContainer) {
-        contributorsContainer.innerHTML = `
-            <p style='color: #aaa; text-align:center; padding: 2rem;'>
-                Loading contributors...
-            </p>`;
-    }
+   
 
     try {
         const response = await fetch(
@@ -83,13 +77,7 @@ async function fetchContributors() {
 async function fetchStargazers() {
     const stargazersContainer = document.getElementById("stargazers");
 
-    // Show loading state
-    if (stargazersContainer) {
-        stargazersContainer.innerHTML = `
-            <p style='color: #aaa; text-align:center; padding: 1rem;'>
-                Loading stargazers...
-            </p>`;
-    }
+    
 
     try {
         const response = await fetch(
