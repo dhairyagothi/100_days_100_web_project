@@ -32,18 +32,19 @@
             <a href="#">Get the app</a>
           </div>
         </div>
-        <div class="right">
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Toggle navigation">&#9776;</button>
+        <div class="right" id="mobileNav">
           <div class="nav-item">
             <a href="#">Investor Relations</a>
           </div>
           <div class="nav-item">
             <a href="#">Add restaurant</a>
           </div>
-          <div class="nav-item">
-            <a href="#">Log in</a>
+          <div class="nav-item login-nav">
+            <a href="login.html">Log in</a>
           </div>
-          <div class="nav-item">
-            <a href="#">Sign up</a>
+          <div class="nav-item signup-nav">
+            <a href="signup.html">Sign up</a>
           </div>
         </div>
       </nav>
@@ -655,5 +656,20 @@
     </script>
    
     <script src="accordion.js"></script>
+    <script>
+      function toggleMobileNav() {
+        const nav = document.getElementById('mobileNav');
+        const btn = document.getElementById('hamburgerBtn');
+        nav.classList.toggle('mobile-open');
+        btn.classList.toggle('active');
+      }
+      // Close mobile nav on link click
+      document.querySelectorAll('#mobileNav .nav-item a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          document.getElementById('mobileNav').classList.remove('mobile-open');
+          document.getElementById('hamburgerBtn').classList.remove('active');
+        });
+      });
+    </script>
   </body>
 </html>
