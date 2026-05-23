@@ -135,6 +135,8 @@ body {
 .contributors-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  justify-items: center;
+  align-items: start;
   gap: 2.5rem;
   margin-bottom: 8rem;
 }
@@ -151,6 +153,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
 }
 
 .contributor-card:hover {
@@ -634,11 +639,14 @@ body {
 .contributors-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  justify-items: center;
+  align-items: start;
   gap: 2.5rem;
   margin-bottom: 8rem;
 }
 
 .contributor-card {
+  position: relative;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
@@ -649,6 +657,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
 }
 
 .contributor-card:hover {
