@@ -144,6 +144,7 @@ async function openProfile(username, commits) {
 
             <img
             src="${user.avatar_url}"
+            alt="Profile photo of ${user.login}"
             >
 
             <h2>
@@ -225,6 +226,7 @@ width:100%;
 
 <img
 src="assets/template.png"
+alt="Certificate template"
 style="
 width:100%;
 display:block;
@@ -521,17 +523,17 @@ function renderContributors(data) {
 
 ${
   badge
-    ? `<img
-src="${badge}"
-class="rank-badge"
->`
+      ? `<img
+  src="${badge}"
+  class="rank-badge"
+  alt="Rank badge"
+  >`
     : ''
 }
 
 <img
 src="${contributor.avatar_url}"
-
-alt="${contributor.login}">
+alt="Avatar of ${contributor.login}">
 
             <h3>${contributor.login}</h3>
 
