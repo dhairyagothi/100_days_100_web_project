@@ -710,6 +710,24 @@ function toggleBookmark(project) {
   renderRecentProjects();
 }
 
+
+function clearAllBookmarks() {
+  bookmarkedProjects = [];
+
+  localStorage.setItem(
+    'bookmarkedProjects',
+    JSON.stringify(bookmarkedProjects)
+  );
+
+  renderBookmarks();
+  renderGrid();
+  renderRecentProjects();
+
+  showToast('Bookmarks cleared!');
+}
+
+
+
 function trackRecentProject(project) {
   recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
   recentProjects.unshift(project);
@@ -847,6 +865,14 @@ if (recentToggleBtn) {
     showAllRecent = !showAllRecent;
     recentToggleBtn.textContent = showAllRecent ? 'Show Less' : 'View All';
     renderRecentProjects();
+  });
+}
+
+const clearBookmarksBtn = document.getElementById('clearBookmarksBtn');
+
+if (clearBookmarksBtn) {
+  clearBookmarksBtn.addEventListener('click', () => {
+    clearAllBookmarks();
   });
 }
 
@@ -1136,7 +1162,15 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRecentProjects();
   fetchRepoStats();
   initScrollBtn();
+
+   const clearBookmarksBtn = document.getElementById('clearBookmarksBtn');
+
+  if (clearBookmarksBtn) {
+    clearBookmarksBtn.addEventListener('click', clearAllBookmarks);
+  }
+  
 });
+
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {

@@ -640,6 +640,12 @@ body.light-mode .navbar {
   gap: 1rem;
 }
 
+.bookmark-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .view-all-btn {
   border: 1px solid var(--border);
 
