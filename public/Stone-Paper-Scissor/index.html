@@ -1,172 +1,737 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Stone-Paper-Scissors Game</title>
-  </head>
-  <link rel="stylesheet" href="style.css" class="rel" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dangrek&family=Roboto:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+<html lang="en">
 
-  <body>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock Paper Scissors</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fffbea;
+            --card: #ffffff;
+            --text: #555555;
+            --muted: #888888;
+            --border: #d9c97a;
+            --primary: #f28a30;
+            --primary-2: #d96e10;
+            --primary-fg: #ffffff;
+            --muted-bg: #fff8cc;
+            --win: #16a34a;
+            --lose: #dc2626;
+            --warning: #d97706;
+            --app-grad: linear-gradient(135deg, #ffc09f 0%, #ffe599 50%, #b5ead7 100%);
+            --title-grad: linear-gradient(135deg, #f28a30, #d96e10);
+            --primary-grad: linear-gradient(135deg, #f28a30, #d96e10);
+            --winner-grad: linear-gradient(135deg, #fff8cc, #ffe066);
+            --glow: 0 8px 24px rgba(242, 138, 48, .4);
+        }
+
+        .dark {
+            --bg: #000000;
+            --card: #0a0520;
+            --text: #ffb3c6;
+            --muted: #cc99aa;
+            --border: #2d0d5a;
+            --primary: #cc0000;
+            --primary-2: #990000;
+            --primary-fg: #ffb3c6;
+            --muted-bg: #050010;
+            --win: #34d399;
+            --lose: #f87171;
+            --warning: #fbbf24;
+            --app-grad: linear-gradient(135deg, #000000 0%, #0d0035 25%, #2a0070 50%, #5e0090 70%, #7a0060 85%, #3a0020 100%);
+            --title-grad: linear-gradient(135deg, #cc0000, #ff2222);
+            --primary-grad: linear-gradient(135deg, #cc0000, #880000);
+            --winner-grad: linear-gradient(135deg, #050010, #150035);
+            --glow: 0 8px 24px rgba(204, 0, 0, .5);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--app-grad);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text);
+            transition: background .3s;
+        }
+
+        .container {
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid var(--border);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .2);
+            border: 2px solid rgba(255, 255, 255, .3);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: all .3s;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .dark .theme-toggle {
+            background: rgba(0, 0, 0, .3);
+            border-color: var(--border);
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .game-title {
+            font-size: 42px;
+            font-weight: 700;
+            background: var(--title-grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .game-subtitle {
+            font-size: 14px;
+            font-weight: 500;
+            color: #c8860a;
+        }
+
+        .dark .game-subtitle {
+            color: #ffb3c6;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-bottom: 32px;
+            padding: 20px;
+            background: var(--muted-bg);
+            border-radius: 15px;
+        }
+
+        .score-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .setup-title,
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .mode-group,
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s;
+            font-family: inherit;
+        }
+
+        .mode-btn,
+        .btn-secondary {
+            flex: 1;
+            background: var(--card);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: var(--primary-fg);
+            border-color: var(--primary);
+        }
+
+        .mode-btn:hover,
+        .btn-secondary:hover {
+            border-color: var(--primary);
+        }
+
+        .btn-secondary {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: transparent;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: var(--primary-grad);
+            color: var(--primary-fg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        .rounds-label {
+            display: block;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .rounds-input {
+            width: 100%;
+            max-width: 200px;
+            padding: 12px;
+            font-size: 16px;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text);
+            display: block;
+            margin: 0 auto 20px;
+            font-family: inherit;
+        }
+
+        .rounds-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .round-counter {
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .round-counter strong {
+            color: var(--primary);
+        }
+
+        .choices-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .choice-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background: var(--card);
+            color: var(--text);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+        }
+
+        .choice-btn:hover {
+            border-color: var(--primary);
+            background: var(--muted-bg);
+            transform: translateY(-2px);
+        }
+
+        .choice-icon {
+            font-size: 48px;
+            line-height: 1;
+        }
+
+        .result-screen {
+            text-align: center;
+            animation: slideIn .4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-title.win {
+            color: var(--win);
+        }
+
+        .result-title.lose {
+            color: var(--lose);
+        }
+
+        .result-title.draw {
+            color: var(--warning);
+        }
+
+        .choices-display {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .choice-display-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .choice-display-icon {
+            font-size: 64px;
+        }
+
+        .vs-text {
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .match-winner {
+            background: var(--winner-grad);
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .match-winner-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .match-winner-subtitle {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .rules-btn {
+            width: 100%;
+            margin-top: 20px;
+            background: var(--muted-bg);
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+
+        .rules-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card);
+            color: var(--text);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--border);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: var(--text);
+        }
+
+        .rules-list {
+            list-style: none;
+        }
+
+        .rules-list li {
+            color: var(--muted);
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .rules-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .btn-home {
+            width: 100%;
+            background: #f28a30;
+            color: #ffffff;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+            opacity: .9;
+        }
+
+        .dark .btn-home {
+            background: #cc0000;
+            color: #000000;
+        }
+
+        .dark .btn-secondary {
+            background: #000000;
+            color: var(--primary-fg);
+            border-color: #333333;
+        }
+
+        .dark .btn-secondary:hover {
+            border-color: var(--primary);
+        }
+
+        .dark .choice-btn {
+            background: #000000;
+            border-color: #222222;
+        }
+
+        .dark .choice-btn:hover {
+            border-color: var(--primary);
+            background: #0a0020;
+        }
+
+        .dark .rounds-input {
+            background: #000000;
+            border-color: #222222;
+            color: var(--text);
+        }
+
+        .dark .score-label {
+            color: #000000;
+        }
+
+        .dark .scoreboard {
+            background: #ffb3c6;
+        }
+
+        .dark .rules-btn {
+            background: #ffb3c6;
+            border-color: #ffb3c6;
+            color: #cc0000;
+        }
+
+        .dark .rules-btn:hover {
+            background: #ffc8d6;
+            border-color: #ff6699;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="dark">
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+
     <div class="container">
-      <div class="display">
-        <div class="heading">
-          ROCK<br />
-          PAPER<br />
-          SCISSOR
-        </div>
+        <header class="game-header">
+            <h1 class="game-title">Rock Paper Scissors</h1>
+            <p class="game-subtitle">Choose wisely, your fate lies in your hands!</p>
+        </header>
+
         <div class="scoreboard">
-          <div class="score">
-            Computer score
-            <div id="comscore"></div>
-          </div>
-          <div class="score">
-            Your<br />
-            score
-            <div id="youscore"></div>
-          </div>
-        </div>
-      </div>
-      <div class="export">
-        <div class="stone1">
-          <img src="./images/Group 2.png" />
-          <img class="logo1" src="./images/stone.png" />
-        </div>
-        <div class="paper1">
-          <img src="./images/Group 1.png" />
-          <img class="logo2" src="./images/paper.png" />
-        </div>
-        <div class="scissor1">
-          <img src="./images/Group 3.png" />
-          <img class="logo3" src="./images/scissors.png" />
-        </div>
-      </div>
-
-      <div class="game">
-        <div class="stone">
-          <img class="back" src="./images/Group 2.png" />
-          <img onclick="game('rock')" class="logo1" src="./images/stone.png" />
-        </div>
-        <div class="line"><img class="line1" src="./images/Line 1.png" /></div>
-        <div class="paper">
-          <img class="back" src="./images/Group 1.png" />
-          <img onclick="game('paper')" class="logo2" src="./images/paper.png" />
-        </div>
-        <div class="line"><img class="line3" src="./images/Line 3.png" /></div>
-        <div class="line"><img class="line2" src="./images/Line 2.png" /></div>
-        <div class="scissor">
-          <img class="back" src="./images/Group 3.png" />
-          <img
-            onclick="game('scissor')"
-            class="logo3"
-            src="./images/scissors.png"
-          />
-        </div>
-      </div>
-
-      <div class="you-win">
-        <div class="you-picked">
-          <div class="ipt-U ipt-U1">You picked</div>
-          <div class="bg"><img src="./images/Ellipse 4.png" /></div>
-          <div class="opt-U opt-U1">
-            <div id="opt-U1"></div>
-            <!-- <div class="backopt" class="stone">
-                <img src="./images1/Group 2.png" />
-                <img onclick="game('rock')" class="logo1" src="./images1/icons8-fist-67 1.png" />
-              </div> -->
-          </div>
-        </div>
-        <div class="result result1">
-          <h2>YOU WIN</h2>
-          <h3>AGAINST PC</h3>
-          <button onclick="replay()">Play Again</button>
+            <div>
+                <div class="score-label">Your Score</div>
+                <div class="score-value" id="scoreYou">0</div>
+            </div>
+            <div>
+                <div class="score-label" id="oppLabel">PC Score</div>
+                <div class="score-value" id="scoreOpp">0</div>
+            </div>
         </div>
 
-        <div class="btn">
-          <a href="index1.html"><button id="nxt" class="next">Next</button></a>
-        </div>
-        <div class="reset">
-          <button class="reset_button" onclick="resetscore()" style="margin-bottom:110px ;">Reset</button >
-        </div>
-        <div class="pc-picked">
-          <div class="ipt-P ipt-P1">PC picked</div>
-          <div id="opt-P" class="opt-P opt-P1">
-            <div id="opt-P1"></div>
-          </div>
-        </div>
-      </div>
-      <div class="you-lost">
-        <div class="you-picked">
-          <div class="ipt-U ipt-U2">YOU PICKED</div>
+        <!-- SETUP -->
+        <section id="setupScreen">
+            <h2 class="setup-title">How Many Rounds?</h2>
+            <div class="mode-group" style="display:none">
+                <button class="mode-btn active" data-mode="pc">vs PC</button>
+            </div>
+            <label class="rounds-label">Enter number of rounds (1-10):</label>
+            <input type="number" class="rounds-input" id="roundsInput" min="1" max="10" value="3" />
+            <button class="btn-primary" id="startBtn" style="width:100%">Start Game</button>
+        </section>
 
-          <div class="opt-U opt-U2">
-            <div id="opt-U2"></div>
-          </div>
-        </div>
-        <div class="result result2">
-          <h2>YOU LOST</h2>
-          <h3>AGAINST PC</h3>
-          <button onclick="replay()">Play Again</button>
-        </div>
-        <div class="pc-picked">
-          <div class="ipt-P ipt-P2">PC PICKED</div>
-          <div class="bg"><img src="./images/Ellipse 4.png" /></div>
-          <div class="opt-P opt-P2">
-            <div id="opt-P2"></div>
-          </div>
-        </div>
-      </div>
-      <div class="tie-up">
-        <div class="you-picked">
-          <div class="ipt-U ipt-U3">YOU PICKED</div>
-          <div class="opt-U opt-U3">
-            <div id="opt-U3"></div>
-          </div>
-        </div>
-        <div class="result result3">
-          <h2>TIE-UP</h2>
-          <button onclick="replay()">REPLAY</button>
-        </div>
-        <div class="pc-picked">
-          <div class="ipt-P ipt-P3">PC PICKED</div>
-          <div class="opt-P opt-P3">
-            <div id="opt-P3"></div>
-          </div>
-        </div>
-      </div>
-      <div class="btn1">
-        <button onclick="popup()" id="rul" class="rules">Rules</button>
-      </div>
-      <div class="box">
-        <button onclick="popdown()" class="close">
-          <img onclick="popdown()" />
-          <span class="symbol">X</span>
-        </button>
-        <h3 class="headline">Game Rules</h3>
-        <ul class="listrule">
-          <li class="listrule">
-            Rock beats scissors,scissors beat paper,and paper beats rock.
-          </li>
-          <li class="listrule">
-            Agree ahead of time whether you'll count off
-            “rock,paper,scissors,shoot” or just “rock,paper,scissors.”
-          </li>
-          <li class="listrule">
-            Use rock,paper,scissors to settle minor decisions or simply play to
-            pass the time
-          </li>
-          <li class="listrule">
-            If both players lay down the same hand,each player lays down another
-            hand
-          </li>
-        </ul>
-      </div>
+        <!-- PLAYING -->
+        <section id="playingScreen" class="hidden">
+            <div class="round-counter">
+                Round <strong id="roundNum">1</strong> of <strong id="roundTotal">3</strong>
+                <div id="turnInfo"></div>
+            </div>
+            <div class="choices-grid">
+                <button class="choice-btn" data-choice="rock"><span
+                        class="choice-icon">✊</span><span>Rock</span></button>
+                <button class="choice-btn" data-choice="paper"><span
+                        class="choice-icon">✋</span><span>Paper</span></button>
+                <button class="choice-btn" data-choice="scissors"><span
+                        class="choice-icon">✌️</span><span>Scissors</span></button>
+            </div>
+        </section>
+
+        <!-- RESULT -->
+        <section id="resultScreen" class="hidden result-screen">
+            <h2 class="result-title" id="resultTitle">Result</h2>
+            <div class="choices-display">
+                <div>
+                    <div class="choice-display-label" id="youLabel">You Chose</div>
+                    <div class="choice-display-icon" id="yourPick"></div>
+                </div>
+                <div class="vs-text">VS</div>
+                <div>
+                    <div class="choice-display-label" id="oppPickLabel">PC Chose</div>
+                    <div class="choice-display-icon" id="oppPick"></div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-primary" id="nextBtn">Next Round</button>
+                <button class="btn-secondary" id="quitBtn">Quit</button>
+            </div>
+        </section>
+
+        <!-- MATCH END -->
+        <section id="matchEndScreen" class="hidden">
+            <div class="match-winner">
+                <div class="match-winner-title" id="matchTitle">You Won the Match!</div>
+                <div class="match-winner-subtitle" id="matchSubtitle"></div>
+            </div>
+            <div class="button-group" style="margin-top:20px">
+                <button class="btn-home" id="homeBtn">Home</button>
+            </div>
+        </section>
+
+        <button class="rules-btn" id="rulesBtn">📋 View Rules</button>
     </div>
 
-    <script src="./script.js"></script>
-  </body>
+    <div class="modal" id="rulesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Game Rules</h2>
+                <button class="close-btn" id="closeRules">×</button>
+            </div>
+            <ul class="rules-list">
+                <li>Rock beats scissors</li>
+                <li>Scissors beats paper</li>
+                <li>Paper beats rock</li>
+                <li>If both pick the same, it's a tie — no points, move to next round</li>
+                <li>Win individual rounds to earn points</li>
+                <li>After all rounds, whoever has the most points wins the match!</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Mode select (PC only)
+        const CHOICES = { rock: "✊", paper: "✋", scissors: "✌️" };
+        const beats = { rock: "scissors", scissors: "paper", paper: "rock" };
+        const state = {
+            mode: "pc", totalRounds: 3, round: 1,
+            scoreYou: 0, scoreOpp: 0,
+            yourChoice: null, oppChoice: null,
+        };
+
+        const $ = id => document.getElementById(id);
+        const screens = ["setupScreen", "playingScreen", "resultScreen", "matchEndScreen"];
+        function show(id) { screens.forEach(s => $(s).classList.toggle("hidden", s !== id)); }
+
+        // Theme
+        $("themeToggle").addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            $("themeToggle").textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+        });
+
+        function updateOppLabels() {
+            $("oppLabel").textContent = "PC Score";
+            $("oppPickLabel").textContent = "PC Chose";
+            $("youLabel").textContent = "You Chose";
+        }
+
+        function renderScores() {
+            $("scoreYou").textContent = state.scoreYou;
+            $("scoreOpp").textContent = state.scoreOpp;
+        }
+
+        function startGame() {
+            const n = Math.min(10, Math.max(1, parseInt($("roundsInput").value) || 1));
+            state.totalRounds = n;
+            state.round = 1; state.scoreYou = 0; state.scoreOpp = 0;
+            state.yourChoice = null; state.oppChoice = null;
+            renderScores();
+            $("roundNum").textContent = state.round;
+            $("roundTotal").textContent = state.totalRounds;
+            $("turnInfo").textContent = "";
+            show("playingScreen");
+        }
+        $("startBtn").addEventListener("click", startGame);
+
+        document.querySelectorAll(".choice-btn").forEach(b => {
+            b.addEventListener("click", () => pick(b.dataset.choice));
+        });
+
+        function pick(c) {
+            const keys = Object.keys(CHOICES);
+            const opp = keys[Math.floor(Math.random() * 3)];
+            resolve(c, opp);
+        }
+
+        function resolve(you, opp) {
+            state.yourChoice = you; state.oppChoice = opp;
+            if (you !== opp) {
+                if (beats[you] === opp) state.scoreYou++;
+                else state.scoreOpp++;
+            }
+            renderScores();
+            $("yourPick").textContent = CHOICES[you];
+            $("oppPick").textContent = CHOICES[opp];
+            const t = $("resultTitle");
+            t.className = "result-title";
+            if (you === opp) { t.textContent = "It's a Tie!"; t.classList.add("draw"); }
+            else if (beats[you] === opp) { t.textContent = "You Win!"; t.classList.add("win"); }
+            else { t.textContent = "You Lost!"; t.classList.add("lose"); }
+            // Always show result screen, change button text on last round
+            if (state.round >= state.totalRounds) {
+                $("nextBtn").textContent = "See Results";
+            } else {
+                $("nextBtn").textContent = "Next Round";
+            }
+            show("resultScreen");
+        }
+
+        $("nextBtn").addEventListener("click", () => {
+            if (state.round >= state.totalRounds) {
+                showMatchEnd();
+            } else {
+                state.round++;
+                $("roundNum").textContent = state.round;
+                $("turnInfo").textContent = "";
+                show("playingScreen");
+            }
+        });
+        $("quitBtn").addEventListener("click", goHome);
+        $("homeBtn").addEventListener("click", goHome);
+
+        function goHome() {
+            state.round = 1;
+            state.scoreYou = 0;
+            state.scoreOpp = 0;
+            state.yourChoice = null;
+            state.oppChoice = null;
+            renderScores();
+            $("nextBtn").textContent = "Next Round";
+            show("setupScreen");
+        }
+
+        function showMatchEnd() {
+            let title;
+            if (state.scoreYou > state.scoreOpp) title = "You Won the Match!";
+            else if (state.scoreYou < state.scoreOpp) title = "PC Won the Match!";
+            else title = "It's a Draw!";
+            $("matchTitle").textContent = title;
+            $("matchSubtitle").textContent = `Final Score: You ${state.scoreYou} - PC ${state.scoreOpp}`;
+            show("matchEndScreen");
+        }
+
+        // Rules modal
+        $("rulesBtn").addEventListener("click", () => $("rulesModal").classList.add("active"));
+        $("closeRules").addEventListener("click", () => $("rulesModal").classList.remove("active"));
+        $("rulesModal").addEventListener("click", e => {
+            if (e.target.id === "rulesModal") e.currentTarget.classList.remove("active");
+        });
+
+        updateOppLabels();
+        // Rules modal</script>
+</body>
+
 </html>
