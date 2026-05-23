@@ -1,103 +1,248 @@
-*, *::before, *::after {
-    box-sizing: border-box;
-    font-family: Gotham Rounded, sans-serif;
-    font-weight: normal;
-   
-  }
-  
-  
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family:
+    Gotham Rounded,
+    sans-serif;
+  font-weight: normal;
+}
+body {
+  padding: 20px;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+}
+  font-family: Gotham Rounded, sans-serif;
+  font-weight: normal;
+
+}
+
+
+body {
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(#41ade3, #11568f, #0d6e9e, #00e3ef);
+}
+
+.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.instructions{
+ color: black;
+ border: 1px solid black;
+ background-color: rgba(255, 255, 255, .75);
+ padding: 20px;
+ border-radius: 20px;
+}
+.instructions li{
+  font-size: x-large;
+}
+.calculator-grid {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  min-height: 100vh;
+  width: min(95vw, 420px);
+  margin: auto;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(70px, auto);
+  gap: 10px;
+  padding: 20px;
+}
+
+#scientific-calculator {
+  width: 100%;
+  max-width: 760px;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(65px, auto);
+  overflow-x: auto;
+}
+
+.calculator-grid > button {
+  cursor: pointer;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  border: none;
+  outline: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  padding: 12px;
+}
+.calculator-grid > button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+}
+.span-two {
+  grid-column: span 2;
+}
+.output {
+  grid-column: 1 / -1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  min-height: 120px;
+  grid-template-columns: repeat(4, 100px);
+  grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+  margin-right: 100px;
+}
+
+
+#scientific-calculator {
+  grid-template-columns: repeat(7, 100px);
+  grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+}
+
+
+.calculator-grid>button {
+  cursor: pointer;
+  font-size: 1.5rem;
+  border: 1px solid white;
+  outline: none;
+  background-color: rgba(255, 255, 255, .75);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+
+.calculator-grid>button:hover {
+  background-color: rgba(255, 255, 255, .9);
+}
+
+.calculator-grid>button.keyboard-active {
+  background-color: rgba(255, 255, 255, 0.45);
+  transform: scale(0.95);
+}
+
+
+.span-two {
+  grid-column: span 2;
+}
+
+
+.output {
+  grid-column: 1 / -1;
+  background-color: rgba(0, 0, 0, .75);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  flex-direction: column;
+  padding-right: 10px;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding-left: 10px;
+}
+.output .previous-operand {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.5rem;
+}
+.output .current-operand {
+  color: white;
+  font-size: 2.5rem;
+}
+.hidden {
+  display: none;
+}
+
+}
+
+
+.output .previous-operand {
+  color: rgba(255, 255, 255, .75);
+  font-size: 1.5rem;
+}
+
+
+.output .current-operand {
+  color: white;
+  font-size: 2.5rem;
+  border: none;
+  background-color: transparent;
+  text-align: right;
+  outline: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+
+.hidden {
+  display: none;
+}
+
+
+#toggle-scientific {
+  width: 35.2px;
+  height: 32.2px;
+  margin-bottom: 0px;
+  place-self: flex-start;
+}
+
+#toggle-scientific {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+
+#toggle-scientific img {
+  width: 35px;
+  height: 35px;
+  border-radius: 100px;
+}
+@media (max-width: 768px) {
   body {
-    padding: 0;
-    margin: 0;
-    background: linear-gradient(#41ade3,#11568f, #0d6e9e, #00e3ef);
+    padding: 10px;
   }
-  
-  
   .calculator-grid {
-    display: grid;
-    justify-content: center;
-    align-content: center;
-    min-height: 100vh;
-    grid-template-columns: repeat(4, 100px);
-    grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+    gap: 6px;
+    padding: 10px;
   }
-  
-  
-  #scientific-calculator {
-    grid-template-columns: repeat(7, 100px);
-    grid-template-rows: minmax(120px, auto) repeat(5, 100px);
-  }
-  
-  
   .calculator-grid > button {
-    cursor: pointer;
-    font-size: 1.5rem;
-    border: 1px solid white;
-    outline: none;
-    background-color: rgba(255, 255, 255, .75);
-   
+    min-height: 55px;
+    font-size: 0.9rem;
+    padding: 8px;
+    min-width: 0;
   }
-  
-  
-  .calculator-grid > button:hover {
-    background-color: rgba(255, 255, 255, .9);
+  #scientific-calculator {
+    width: 100%;
+    grid-template-columns: repeat(7, 1fr);
   }
-  
-  
-  .span-two {
-    grid-column: span 2;
-  }
-  
-  
-  .output {
-    grid-column: 1 / -1;
-      background-color: rgba(0, 0, 0, .75);
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-around;
-      flex-direction: column;
-      padding-right: 10px;
-      word-wrap: break-word;
-      word-break: break-all;
-      padding-left: 10px;
-     
-  }
-  
-  
-  .output .previous-operand {
-    color: rgba(255, 255, 255, .75);
-    font-size: 1.5rem;
-  }
-  
-  
   .output .current-operand {
-    color: white;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
-  
-  
-  .hidden {
-    display: none;
+  .output .previous-operand {
+    font-size: 1rem;
   }
-  
-  
-  #toggle-scientific {
-    width: 35.2px;
-    height: 32.2px;
-    margin-bottom: 0px;
-    place-self: flex-start;
+}
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
   }
-  #toggle-scientific {
-    border: none;
-    background: none;
-    cursor: pointer;
-    padding: 0;
+  .calculator-grid {
+    gap: 6px;
   }
-  
-  
-  #toggle-scientific img {
-    width: 35px;
-    height: 35px;
-    border-radius: 100px;
+  .calculator-grid > button {
+    min-height: 55px;
+    font-size: 0.9rem;
+    border-radius: 10px;
   }
-  
+  .output {
+    min-height: 100px;
+  }
+  .output .current-operand {
+    font-size: 1.5rem;
+  }
+  .output .previous-operand {
+    font-size: 1rem;
+  }
+}
+}
