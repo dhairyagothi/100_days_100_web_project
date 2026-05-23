@@ -5,7 +5,10 @@ margin: 0;
 padding: 0;
 box-sizing: border-box;
 }
-
+.logo {
+  height: 50px;   /* adjust size */
+  width: auto;
+}
 body{
 font-family: "Roboto Condensed", sans-serif;
 min-height: 100vh;
@@ -49,7 +52,7 @@ nav ul{
     display: flex;
     flex-direction: row;
     list-style: none;
-    gap:35px;
+    gap:18px;
     font-weight: 600;
     margin-top: 10px;
     padding-right: 10px;
@@ -69,7 +72,25 @@ nav ul li a{
     text-decoration: none;
     color: #359381;
 }
+/* ================= TRACKER BUTTON ================= */
 
+/* .tracker-btn{
+    background: #359381;
+    color: white !important;
+    padding: 12px 28px !important;
+    border-radius: 40px;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: 0.3s ease;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(53, 147, 129, 0.3);
+}
+
+.tracker-btn:hover{
+    background: #267565;
+    transform: scale(1.08);
+    color: white !important;
+} */
 nav ul li:hover,
 .active{
 background: #359381;
