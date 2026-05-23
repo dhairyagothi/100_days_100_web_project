@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ResumeForge – Build professional resumes with live preview and PDF export." />
+  <title>ResumeForge – Professional Resume Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    /* ═══════════════════════════════════════════
+       BASE RESET & ROOT TOKENS
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #020b18;
+      --panel:     #061525;
+      --card:      #0b1e35;
+      --border:    #152d4a;
+      --text:      #cde4f5;
+      --muted:     #5a88aa;
+      --cyan:      #00c8e0;
+      --cyan2:     #0099bb;
+      --green:     #00d97e;
+      --red:       #ff4d6d;
+      --inp-bg:    #081628;
+      --inp-brd:   #1a3a5c;
+      --nav-h:     60px;
+      --tab-bar-h: 56px;
+      --mob-toggle-h: 52px;
+    }
+
+    html { font-size: 16px; }
+    body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+    #root { height: 100vh; display: flex; flex-direction: column; }
+    .app  { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+    /* ═══════════════════════════════════════════
+       NAVBAR
+    ═══════════════════════════════════════════ */
+    .navbar {
+      height: var(--nav-h);
+      flex-shrink: 0;
+      background: rgba(2,11,24,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 200;
+      gap: 12px;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-logo {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, #00c8e0, #0066cc);
+      border-radius: 9px;
+      display: grid; place-items: center;
+      font-size: 15px; color: #fff;
+      box-shadow: 0 0 16px rgba(0,200,224,0.35);
+      flex-shrink: 0;
+    }
+    .nav-title { font-size: 18px; font-weight: 800; letter-spacing: -.5px; color: #fff; white-space: nowrap; }
+    .nav-title span {
+      background: linear-gradient(90deg, #00c8e0, #66e6f5);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-badge {
+      font-size: 8px; font-weight: 800; letter-spacing: 1.5px;
+      background: rgba(0,200,224,0.15);
+      border: 1px solid rgba(0,200,224,0.35);
+      color: #00c8e0;
+      padding: 2px 6px; border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .saved-pill {
+      font-size: 11px; color: var(--green);
+      display: flex; align-items: center; gap: 5px;
+      white-space: nowrap;
+    }
+    .btn-red {
+      background: rgba(255,77,109,0.1);
+      border: 1px solid rgba(255,77,109,0.3);
+      color: #ff6b85; padding: 6px 12px; border-radius: 8px;
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      font-family: inherit; display: flex; align-items: center; gap: 6px;
+      transition: all .2s; white-space: nowrap;
+    }
+    .btn-red:hover { background: rgba(255,77,109,0.2); }
+    .btn-demo {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      border: none; color: #fff; padding: 8px 16px;
+      border-radius: 9px; font-size: 12px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; gap: 7px;
+      box-shadow: 0 4px 18px rgba(124,58,237,0.4);
+      transition: transform .2s, box-shadow .2s;
+      white-space: nowrap;
+      position: relative;
+      animation: demoPulse 2.5s ease-in-out infinite;
+    }
+    .btn-demo:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(168,85,247,0.6); animation: none; }
+    @keyframes demoPulse {
+      0%, 100% { box-shadow: 0 4px 18px rgba(124,58,237,0.4); }
+      50%       { box-shadow: 0 4px 28px rgba(168,85,247,0.75), 0 0 0 4px rgba(168,85,247,0.15); }
+    }
+    .btn-cyan {
+      background: linear-gradient(135deg, #00c8e0, #0077cc);
+      border: none; color: #fff; padding: 8px 18px;
+      border-radius: 9px; font-size: 12px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; gap: 7px;
+      box-shadow: 0 4px 18px rgba(0,200,224,0.35);
+      transition: transform .2s, box-shadow .2s;
+      white-space: nowrap;
+    }
+    .btn-cyan:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(0,200,224,0.5); }
+
+    /* ═══════════════════════════════════════════
+       MOBILE VIEW TOGGLE
+    ═══════════════════════════════════════════ */
+    .mob-toggle {
+      display: none;
+      height: var(--mob-toggle-h);
+      flex-shrink: 0;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 16px;
+      gap: 8px;
+    }
+    .mob-toggle-btn {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--muted);
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      padding: 0 12px;
+    }
+    .mob-toggle-btn.active {
+      background: rgba(0,200,224,0.12);
+      border-color: rgba(0,200,224,0.4);
+      color: var(--cyan);
+    }
+    .mob-toggle-btn i { font-size: 14px; }
+
+    /* ═══════════════════════════════════════════
+       BODY SPLIT
+    ═══════════════════════════════════════════ */
+    .body-split {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       BUILDER (LEFT PANEL)
+    ═══════════════════════════════════════════ */
+    .builder {
+      width: 420px;
+      flex-shrink: 0;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all .3s ease;
+    }
+
+    .tabs {
+      display: flex;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      height: var(--tab-bar-h);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex: 1;
+      min-width: 64px;
+      padding: 8px 4px;
+      background: transparent; border: none;
+      border-bottom: 2.5px solid transparent;
+      color: var(--muted); cursor: pointer;
+      font-size: 9.5px; font-weight: 700; font-family: inherit;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+      transition: all .2s; white-space: nowrap; letter-spacing: .2px;
+    }
+    .tab i { font-size: 14px; }
+    .tab:hover { color: var(--text); background: rgba(0,200,224,0.04); }
+    .tab.active {
+      color: var(--cyan);
+      border-bottom-color: var(--cyan);
+      background: rgba(0,200,224,0.07);
+    }
+
+    .tab-body { flex: 1; overflow-y: auto; padding: 18px 16px; }
+    .tab-body::-webkit-scrollbar { width: 4px; }
+    .tab-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* ═══════════════════════════════════════════
+       FORM ELEMENTS
+    ═══════════════════════════════════════════ */
+    .form-heading {
+      font-size: 13px; font-weight: 700; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text);
+    }
+    .form-heading i { color: var(--cyan); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .fg { display: flex; flex-direction: column; gap: 5px; }
+    .fg.span-2 { grid-column: 1 / -1; }
+
+    .fg label {
+      font-size: 9px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .8px;
+    }
+    .fg input, .fg textarea, .fg select {
+      background: var(--inp-bg);
+      border: 1px solid var(--inp-brd);
+      border-radius: 8px; color: var(--text);
+      font-family: inherit; font-size: 12.5px;
+      padding: 9px 11px; transition: all .2s; resize: vertical;
+      width: 100%;
+    }
+    .fg input::placeholder, .fg textarea::placeholder { color: #1e4060; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus {
+      outline: none; border-color: var(--cyan);
+      background: rgba(0,200,224,0.04);
+      box-shadow: 0 0 0 3px rgba(0,200,224,0.1);
+    }
+    .fg input:disabled { opacity: .4; cursor: not-allowed; }
+
+    .chk label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 400; text-transform: none;
+      letter-spacing: 0; color: var(--text); cursor: pointer;
+    }
+    .chk input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--cyan); padding: 0; flex-shrink:0; }
+
+    .entry-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--cyan);
+      border-radius: 10px; padding: 14px; margin-bottom: 12px;
+      animation: fadeIn .25s ease;
+    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+    .entry-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+      font-size: 10px; font-weight: 800; color: var(--cyan);
+      text-transform: uppercase; letter-spacing: .8px;
+    }
+    .rm-btn {
+      background: rgba(255,77,109,.1); border: none; color: #ff6b85;
+      width: 26px; height: 26px; border-radius: 6px; cursor: pointer;
+      font-size: 11px; display: flex; align-items: center; justify-content: center;
+      transition: background .2s; flex-shrink: 0;
+    }
+    .rm-btn:hover { background: rgba(255,77,109,.25); }
+
+    .add-btn {
+      width: 100%;
+      background: rgba(0,200,224,.07);
+      border: 1px dashed rgba(0,200,224,.3);
+      color: var(--cyan); padding: 11px; border-radius: 10px;
+      cursor: pointer; font-size: 13px; font-weight: 600;
+      font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all .2s; margin-top: 4px;
+    }
+    .add-btn:hover { background: rgba(0,200,224,.14); border-color: rgba(0,200,224,.6); }
+
+    /* Template Cards UI */
+    .template-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .template-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .template-card:hover { border-color: var(--muted); }
+    .template-card.active {
+      border-color: var(--cyan);
+      background: rgba(0,200,224,0.05);
+    }
+    .template-icon { font-size: 24px; margin-bottom: 8px; color: var(--muted); }
+    .template-card.active .template-icon { color: var(--cyan); }
+    .template-name { font-size: 11px; font-weight: 700; color: var(--text); }
+
+    /* Color Picker */
+    .color-section { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .color-section > label {
+      font-size: 9px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .8px;
+      display: block; margin-bottom: 10px;
+    }
+    .color-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all .2s; }
+    .swatch:hover { transform: scale(1.18); }
+    .swatch.sel { border-color: #fff; transform: scale(1.25); box-shadow: 0 0 0 3px rgba(255,255,255,.2); }
+    .custom-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; padding: 0; background: none; }
+
+    /* Skills */
+    .skills-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; min-height: 38px; }
+    .skill-chip {
+      background: rgba(0,200,224,.1);
+      border: 1px solid rgba(0,200,224,.25);
+      color: #66e6f5; padding: 5px 11px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      display: flex; align-items: center; gap: 7px;
+      animation: fadeIn .2s ease;
+    }
+    .skill-chip button { background: none; border: none; color: #66e6f5; cursor: pointer; font-size: 10px; padding: 0; opacity: .6; transition: opacity .2s; }
+    .skill-chip button:hover { opacity: 1; }
+    .empty-hint { color: var(--muted); font-size: 12px; font-style: italic; padding: 8px 0; }
+
+    .skill-suggestions { margin-top: 18px; }
+    .sug-label {
+      font-size: 9px; color: var(--muted); font-weight: 800;
+      text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px;
+    }
+    .sug-list { display: flex; flex-wrap: wrap; gap: 7px; }
+    .sug-btn {
+      background: rgba(255,255,255,.03); border: 1px solid var(--border);
+      color: var(--muted); padding: 5px 10px; border-radius: 20px;
+      font-size: 11px; cursor: pointer; font-family: inherit; transition: all .2s;
+    }
+    .sug-btn:hover { background: rgba(0,200,224,.1); border-color: rgba(0,200,224,.35); color: var(--cyan); }
+
+    /* ═══════════════════════════════════════════
+       PREVIEW (RIGHT PANEL)
+    ═══════════════════════════════════════════ */
+    .preview-panel {
+      flex: 1;
+      background: #0a0f1a;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .preview-bar {
+      padding: 10px 20px;
+      background: rgba(2,11,24,.9);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; color: var(--muted); flex-shrink: 0;
+      gap: 12px;
+    }
+    .preview-bar-left { display: flex; align-items: center; gap: 6px; color: var(--cyan); font-weight: 600; }
+    .preview-bar-left i { font-size: 13px; }
+    .preview-scale-info { font-size: 10.5px; color: var(--muted); }
+    .print-btn {
+      background: rgba(0,200,224,.1);
+      border: 1px solid rgba(0,200,224,.25);
+      color: var(--cyan); padding: 6px 14px; border-radius: 7px;
+      font-size: 12px; font-weight: 600; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: all .2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .print-btn:hover { background: rgba(0,200,224,.2); }
+
+    .preview-scroll {
+      flex: 1; overflow-y: auto; overflow-x: auto;
+      padding: 28px 20px;
+      display: flex; justify-content: center; align-items: flex-start;
+      background: radial-gradient(ellipse at top, #0a1828 0%, #020b18 100%);
+    }
+    .preview-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .preview-scroll::-webkit-scrollbar-thumb { background: rgba(0,200,224,.2); border-radius: 3px; }
+
+    /* ═══════════════════════════════════════════
+       RESUME DOCUMENT (A4 Base)
+    ═══════════════════════════════════════════ */
+    .resume-wrapper {
+      transform-origin: top center;
+    }
+    .resume {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff; color: #1a2332;
+      font-family: 'Inter', sans-serif;
+      padding: 14mm 16mm;
+      box-shadow: 0 0 0 1px rgba(0,200,224,.15), 0 30px 80px rgba(0,0,0,.6);
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    /* ═══════════════════════════════════════════
+       TEMPLATE 1: MODERN
+    ═══════════════════════════════════════════ */
+    .tpl-modern .rv-header { padding-bottom: 13px; margin-bottom: 15px; border-bottom: 3px solid; }
+    .tpl-modern .rv-name { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 800; color: #0a1628; letter-spacing: -.5px; line-height: 1.1; }
+    .tpl-modern .rv-role { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px; }
+    .tpl-modern .rv-contacts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .tpl-modern .rv-ci { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #4a6080; }
+    .tpl-modern .rv-ci i { font-size: 9px; color: #8aa0bc; }
+    .tpl-modern .rv-section { margin-bottom: 15px; }
+    .tpl-modern .rv-sh { font-size: 9.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 5px; }
+    .tpl-modern .rv-sdiv { height: 2px; border-radius: 1px; margin-bottom: 10px; opacity: .85; }
+    .tpl-modern .rv-summary { font-size: 11px; line-height: 1.8; color: #3a5070; }
+    .tpl-modern .rv-entry { margin-bottom: 11px; padding-bottom: 11px; border-bottom: 1px solid #eef2f7; }
+    .tpl-modern .rv-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .tpl-modern .rv-eh { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3px; }
+    .tpl-modern .rv-eh strong { font-size: 12px; font-weight: 700; color: #0a1628; display: block; }
+    .tpl-modern .rv-org { font-size: 10.5px; color: #5a7898; display: block; margin-top: 2px; }
+    .tpl-modern .rv-date { font-size: 9.5px; color: #7a98b0; white-space: nowrap; margin-top: 3px; }
+    .tpl-modern .rv-gpa { font-size: 9.5px; color: #7a98b0; display: block; text-align: right; margin-top: 2px; }
+    .tpl-modern .rv-tech { font-size: 10px; color: #7a98b0; font-weight: 400; }
+    .tpl-modern .rv-link { font-size: 10px; color: #0077cc; word-break: break-all; }
+    .tpl-modern .rv-desc { margin-top: 6px; }
+    .tpl-modern .rv-desc p { font-size: 11px; line-height: 1.65; color: #3a5070; margin-bottom: 2px; }
+    .tpl-modern .rv-pdesc { font-size: 11px; line-height: 1.65; color: #3a5070; margin-top: 6px; }
+    .tpl-modern .rv-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tpl-modern .rv-sk { border: 1.5px solid; border-radius: 20px; padding: 3px 11px; font-size: 10.5px; font-weight: 600; }
+
+    /* ═══════════════════════════════════════════
+       TEMPLATE 2: CLASSIC
+    ═══════════════════════════════════════════ */
+    .tpl-classic { font-family: 'Times New Roman', Times, serif; color: #000; }
+    .tpl-classic .rv-header { text-align: center; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid #000; border-top: 1px solid #000; padding-top: 12px; }
+    .tpl-classic .rv-name { font-family: 'Times New Roman', Times, serif; font-size: 32px; font-weight: normal; color: #000; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
+    .tpl-classic .rv-role { font-size: 13px; font-weight: normal; font-style: italic; color: #444; margin-bottom: 8px; }
+    .tpl-classic .rv-contacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; }
+    .tpl-classic .rv-ci { font-size: 11px; color: #222; display: flex; align-items: center; gap: 4px; }
+    .tpl-classic .rv-ci i { display: none; } /* Hide icons for classic */
+    
+    .tpl-classic .rv-section { margin-bottom: 16px; }
+    .tpl-classic .rv-sh { font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; border-bottom: 1px solid #000; padding-bottom: 2px; color: #000; }
+    .tpl-classic .rv-sdiv { display: none; }
+    .tpl-classic .rv-summary { font-size: 11.5px; line-height: 1.5; color: #000; }
+    
+    .tpl-classic .rv-entry { margin-bottom: 12px; padding-bottom: 0; border: none; }
+    .tpl-classic .rv-eh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+    .tpl-classic .rv-eh strong { font-size: 12px; font-weight: bold; color: #000; }
+    .tpl-classic .rv-org { font-size: 11.5px; color: #222; font-style: italic; }
+    .tpl-classic .rv-date { font-size: 11px; color: #000; }
+    .tpl-classic .rv-gpa { font-size: 11px; color: #000; text-align: right; }
+    .tpl-classic .rv-tech { font-size: 11px; font-style: italic; color: #444; font-weight: normal; }
+    .tpl-classic .rv-link { font-size: 11px; color: #000; text-decoration: underline; }
+    
+    .tpl-classic .rv-desc { margin-top: 4px; padding-left: 14px; }
+    .tpl-classic .rv-desc p { font-size: 11.5px; line-height: 1.5; color: #000; margin-bottom: 2px; position: relative; }
+    .tpl-classic .rv-desc p::before { content: "•"; position: absolute; left: -14px; }
+    .tpl-classic .rv-pdesc { font-size: 11.5px; line-height: 1.5; color: #000; margin-top: 4px; }
+    
+    .tpl-classic .rv-skills { display: block; font-size: 11.5px; line-height: 1.5; }
+    .tpl-classic .rv-sk { display: inline-block; padding: 0; border: none; font-weight: normal; color: #000; font-size: 11.5px; margin-right: 8px; }
+    .tpl-classic .rv-sk::after { content: ","; }
+    .tpl-classic .rv-sk:last-child::after { content: ""; }
+
+    /* ═══════════════════════════════════════════
+       TEMPLATE 3: MINIMALIST
+    ═══════════════════════════════════════════ */
+    .tpl-minimalist { display: grid; grid-template-columns: 200px 1fr; padding: 0 !important; background: #fff; height: 100%; min-height: 297mm; }
+    .tpl-minimalist .min-sidebar { background: #f8fafc; padding: 30px 20px; border-right: 1px solid #e2e8f0; }
+    .tpl-minimalist .min-main { padding: 30px; }
+    
+    .tpl-minimalist .rv-header { margin-bottom: 24px; border: none; padding: 0; }
+    .tpl-minimalist .rv-name { font-size: 28px; font-weight: 300; letter-spacing: 1px; color: #0f172a; line-height: 1.1; margin-bottom: 8px; }
+    .tpl-minimalist .rv-role { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #64748b; }
+    
+    .tpl-minimalist .rv-section { margin-bottom: 24px; }
+    .tpl-minimalist .rv-sh { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 14px; }
+    .tpl-minimalist .rv-sdiv { display: none; }
+    
+    /* Sidebar Contacts & Skills */
+    .tpl-minimalist .rv-contacts { display: flex; flex-direction: column; gap: 12px; }
+    .tpl-minimalist .rv-ci { display: flex; align-items: flex-start; gap: 8px; font-size: 10.5px; color: #334155; line-height: 1.4; }
+    .tpl-minimalist .rv-ci i { font-size: 12px; color: #94a3b8; margin-top: 2px; width: 14px; text-align: center; }
+    .tpl-minimalist .rv-skills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tpl-minimalist .rv-sk { background: #e2e8f0; color: #334155 !important; padding: 4px 10px; border-radius: 4px; font-size: 10.5px; font-weight: 500; border: none; }
+    
+    /* Main Content */
+    .tpl-minimalist .rv-summary { font-size: 11.5px; line-height: 1.8; color: #475569; }
+    .tpl-minimalist .rv-entry { margin-bottom: 16px; border: none; padding: 0; }
+    .tpl-minimalist .rv-eh { display: flex; flex-direction: column; margin-bottom: 6px; }
+    .tpl-minimalist .rv-eh strong { font-size: 13px; font-weight: 600; color: #0f172a; }
+    .tpl-minimalist .rv-org { font-size: 11.5px; color: #64748b; font-weight: 500; margin-top: 2px; }
+    .tpl-minimalist .rv-date { font-size: 10px; color: #94a3b8; font-weight: 600; margin-top: 4px; }
+    .tpl-minimalist .rv-gpa { font-size: 10.5px; color: #64748b; margin-top: 2px; text-align: left; }
+    .tpl-minimalist .rv-tech { font-size: 10px; color: #64748b; font-weight: 400; }
+    .tpl-minimalist .rv-link { font-size: 10.5px; color: #3b82f6; text-decoration: none; display: inline-block; margin-top: 2px; }
+    .tpl-minimalist .rv-desc p { font-size: 11.5px; line-height: 1.7; color: #475569; margin-bottom: 4px; padding-left: 12px; position: relative; }
+    .tpl-minimalist .rv-desc p::before { content: ""; position: absolute; left: 0; top: 6px; width: 4px; height: 4px; border-radius: 50%; background: #cbd5e1; }
+    .tpl-minimalist .rv-pdesc { font-size: 11.5px; line-height: 1.7; color: #475569; margin-top: 6px; }
+
+    /* Empty state */
+    .rv-empty {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 14px; padding: 80px 20px;
+      color: #94a3b8; text-align: center;
+    }
+    .rv-empty i { font-size: 54px; opacity: .12; }
+    .rv-empty p { font-size: 12.5px; line-height: 1.7; color: #94a3b8; }
+
+    /* ═══════════════════════════════════════════
+       TOAST
+    ═══════════════════════════════════════════ */
+    .toast {
+      position: fixed; bottom: 20px; right: 20px;
+      background: #00d97e; color: #002010;
+      padding: 11px 18px; border-radius: 10px;
+      font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 28px rgba(0,217,126,.3);
+      animation: slideUp .3s ease; z-index: 999;
+    }
+    @keyframes slideUp { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+    /* ═══════════════════════════════════════════
+       PRINT
+    ═══════════════════════════════════════════ */
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      body { background: #fff !important; overflow: visible !important; }
+      #root, .app { height: auto !important; overflow: visible !important; }
+      .navbar, .builder, .preview-bar, .toast, .mob-toggle { display: none !important; }
+      .body-split { display: block !important; }
+      .preview-panel { display: block !important; overflow: visible !important; background: #fff !important; }
+      .preview-scroll { display: block !important; overflow: visible !important; padding: 0 !important; background: #fff !important; }
+      .resume-wrapper { transform: none !important; }
+      .resume { box-shadow: none !important; border-radius: 0 !important; width: 100% !important; padding: 12mm 14mm !important; min-height: auto !important; }
+      .tpl-minimalist { height: auto !important; min-height: 297mm !important; }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — TABLET (≤900px)
+    ═══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .builder { width: 360px; }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — MOBILE (≤700px)
+    ═══════════════════════════════════════════ */
+    @media (max-width: 700px) {
+      :root { --nav-h: 54px; }
+      html, body { overflow: hidden; height: 100%; }
+      #root, .app { height: 100dvh; overflow: hidden; }
+      .mob-toggle { display: flex; }
+      .body-split { position: relative; overflow: hidden; }
+      .builder {
+        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        width: 100%; border-right: none;
+        transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s; z-index: 10;
+      }
+      .builder.hidden { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+      .preview-panel {
+        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s; z-index: 10;
+      }
+      .preview-panel.hidden { transform: translateX(100%); opacity: 0; pointer-events: none; }
+      .nav-badge, .saved-pill, .btn-red span { display: none; }
+      .tab { font-size: 8.5px; min-width: 56px; }
+      .btn-cyan { padding: 7px 13px; font-size: 11.5px; }
+      .btn-red, .btn-demo { padding: 6px 10px; font-size: 11.5px; }
+      .tab-body { padding: 14px 14px; }
+      .grid-2 { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .preview-scroll { padding: 16px 10px; justify-content: flex-start; overflow-x: auto; }
+      .preview-bar { padding: 8px 14px; }
+      .print-btn { padding: 6px 12px; font-size: 11.5px; }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — VERY SMALL (≤380px)
+    ═══════════════════════════════════════════ */
+    @media (max-width: 380px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .fg.span-2 { grid-column: 1; }
+      .nav-title { font-size: 16px; }
+      .template-selector { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    const INIT = {
+      template: 'modern',
+      personal: { fullName:'', jobTitle:'', email:'', phone:'', location:'', website:'', linkedin:'', github:'', summary:'' },
+      experience: [{ id:1, company:'', role:'', startDate:'', endDate:'', current:false, description:'' }],
+      education:  [{ id:1, institution:'', degree:'', field:'', startDate:'', endDate:'', gpa:'' }],
+      projects:   [{ id:1, name:'', tech:'', url:'', description:'' }],
+      skills: [],
+      accentColor: '#0077cc',
+    };
+
+    const DEMO = {
+      template: 'modern',
+      personal: {
+        fullName:  'Rohit Sharma',
+        jobTitle:  'Full Stack Developer',
+        email:     'rohit.sharma@gmail.com',
+        phone:     '+91 98765 43210',
+        location:  'Mumbai, Maharashtra',
+        website:   'rohitsharma.dev',
+        linkedin:  'linkedin.com/in/rohitsharma',
+        github:    'github.com/rohitsharma',
+        summary:   'Passionate Full Stack Developer with 2+ years of experience building scalable web applications using React, Node.js, and MongoDB. Strong problem-solving skills with a focus on clean, maintainable code. Open-source contributor and active participant in hackathons.',
+      },
+      experience: [
+        { id: 1, company: 'TechNova Solutions', role: 'Frontend Developer Intern', startDate: 'Jun 2024', endDate: '', current: true,
+          description: '• Built 10+ reusable React components reducing development time by 35%\n• Integrated REST APIs and implemented real-time features with Socket.IO\n• Collaborated with UI/UX team to implement pixel-perfect designs\n• Improved Lighthouse performance score from 68 to 94' },
+        { id: 2, company: 'FreelanceHub', role: 'Freelance Web Developer', startDate: 'Jan 2023', endDate: 'May 2024', current: false,
+          description: '• Delivered 12+ client projects including e-commerce sites and portfolios\n• Built MERN stack applications with JWT authentication\n• Reduced page load time by 40% through code splitting and lazy loading' },
+      ],
+      education: [
+        { id: 1, institution: 'Kalinga Institute of Industrial Technology (KIIT)', degree: 'B.Tech', field: 'Computer Science & Engineering', startDate: '2021', endDate: '2025', gpa: '8.7 / 10' },
+      ],
+      projects: [
+        { id: 1, name: 'ResumeForge', tech: 'React, Vanilla CSS, LocalStorage', url: 'github.com/priyabratasahoo780/resume-forge',
+          description: 'A professional resume builder with live A4 preview, PDF export, accent color themes, and auto-save. Fully responsive with mobile toggle.' },
+        { id: 2, name: 'ShopCart – E-Commerce Platform', tech: 'MongoDB, Express, React, Node.js', url: 'github.com/priyabratasahoo780/shopcart',
+          description: 'Full-stack e-commerce app with product listings, cart management, Stripe payment integration, and admin dashboard.' },
+        { id: 3, name: 'CodeCollab – Real-Time Code Editor', tech: 'Socket.IO, Monaco Editor, Node.js', url: 'github.com/priyabratasahoo780/codecollab',
+          description: 'Real-time collaborative code editor supporting 10+ languages with live cursor sync, chat, and room sharing.' },
+      ],
+      skills: ['JavaScript','React','Node.js','MongoDB','Express.js','TypeScript','HTML5','CSS3','Git','REST APIs','Docker','Python','SQL','Figma','Next.js'],
+      accentColor: '#0077cc',
+    };
+
+    const uid = () => Date.now() + Math.random();
+
+    /* ── RESUME SECTION COMPONENT ── */
+    function Sec({ title, color, children, tpl }) {
+      return (
+        <div className="rv-section">
+          <h2 className="rv-sh" style={tpl === 'modern' ? {color} : {}}>{title}</h2>
+          <div className="rv-sdiv" style={{background: color}}></div>
+          {children}
+        </div>
+      );
+    }
+
+    /* ── RESUME PREVIEW ── */
+    function ResumePreview({ data, scale }) {
+      const { template, personal:p, experience, education, projects, skills, accentColor:ac } = data;
+      const hasExp  = experience.some(e => e.company || e.role);
+      const hasEdu  = education.some(e => e.institution || e.degree);
+      const hasProj = projects.some(pr => pr.name);
+      const isEmpty = !p.fullName && !hasExp && !hasEdu && !hasProj && skills.length === 0;
+
+      const tplClass = `tpl-${template || 'modern'}`;
+
+      // Parts of the resume
+      const Contacts = () => (
+        <div className="rv-contacts">
+          {p.email    && <div className="rv-ci"><i className="fas fa-envelope"></i>{p.email}</div>}
+          {p.phone    && <div className="rv-ci"><i className="fas fa-phone"></i>{p.phone}</div>}
+          {p.location && <div className="rv-ci"><i className="fas fa-map-marker-alt"></i>{p.location}</div>}
+          {p.linkedin && <div className="rv-ci"><i className="fab fa-linkedin"></i>{p.linkedin}</div>}
+          {p.github   && <div className="rv-ci"><i className="fab fa-github"></i>{p.github}</div>}
+          {p.website  && <div className="rv-ci"><i className="fas fa-globe"></i>{p.website}</div>}
+        </div>
+      );
+
+      const SkillsList = () => (
+        skills.length > 0 && (
+          <Sec title="Technical Skills" color={ac} tpl={template}>
+            <div className="rv-skills">
+              {skills.map(s => (
+                <span key={s} className="rv-sk" style={template==='modern'?{borderColor:ac,color:ac}:{}}>{s}</span>
+              ))}
+            </div>
+          </Sec>
+        )
+      );
+
+      const MainContent = () => (
+        <React.Fragment>
+          {p.summary && (
+            <Sec title="Professional Summary" color={ac} tpl={template}>
+              <p className="rv-summary">{p.summary}</p>
+            </Sec>
+          )}
+
+          {hasExp && (
+            <Sec title="Work Experience" color={ac} tpl={template}>
+              {experience.filter(e => e.company || e.role).map(e => (
+                <div key={e.id} className="rv-entry">
+                  <div className="rv-eh">
+                    <div>
+                      <strong>{e.role || 'Role'}</strong>
+                      <span className="rv-org">{e.company}</span>
+                    </div>
+                    <div style={{textAlign: template==='classic' ? 'right' : 'left'}}>
+                      <span className="rv-date">{e.startDate}{e.startDate&&' — '}{e.current?'Present':e.endDate}</span>
+                    </div>
+                  </div>
+                  {e.description && (
+                    <div className="rv-desc">
+                      {e.description.split('\n').filter(Boolean).map((ln,i) => {
+                        const cleanLn = ln.startsWith('•') ? ln.substring(1).trim() : ln;
+                        return <p key={i}>{template==='classic' ? cleanLn : ln}</p>;
+                      })}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </Sec>
+          )}
+
+          {hasEdu && (
+            <Sec title="Education" color={ac} tpl={template}>
+              {education.filter(e => e.institution || e.degree).map(e => (
+                <div key={e.id} className="rv-entry">
+                  <div className="rv-eh">
+                    <div>
+                      <strong>{e.degree}{e.field ? ` in ${e.field}` : ''}</strong>
+                      <span className="rv-org">{e.institution}</span>
+                    </div>
+                    <div style={{textAlign: template==='minimalist' ? 'left' : 'right'}}>
+                      <span className="rv-date">{e.startDate}{e.startDate&&' — '}{e.endDate}</span>
+                      {e.gpa && <span className="rv-gpa">{template==='minimalist'?'':'GPA: '}{e.gpa}</span>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </Sec>
+          )}
+
+          {hasProj && (
+            <Sec title="Projects" color={ac} tpl={template}>
+              {projects.filter(pr => pr.name).map(pr => (
+                <div key={pr.id} className="rv-entry">
+                  <div className="rv-eh">
+                    <div>
+                      <strong>{pr.name}{pr.tech && <span className="rv-tech"> ({pr.tech})</span>}</strong>
+                    </div>
+                    {pr.url && <span className="rv-link">{pr.url}</span>}
+                  </div>
+                  {pr.description && <p className="rv-pdesc">{pr.description}</p>}
+                </div>
+              ))}
+            </Sec>
+          )}
+        </React.Fragment>
+      );
+
+      // Render Minimalist Layout
+      if (template === 'minimalist') {
+        return (
+          <div className="resume-wrapper" style={{ transform: `scale(${scale})` }}>
+            <div className={`resume ${tplClass}`} id="resume-doc">
+              <div className="min-sidebar">
+                <div className="rv-header">
+                  <h1 className="rv-name">{p.fullName || 'Your Name'}</h1>
+                  <p className="rv-role" style={{color: ac}}>{p.jobTitle || 'Your Title'}</p>
+                </div>
+                <Sec title="Contact" color={ac} tpl={template}>
+                  <Contacts />
+                </Sec>
+                <SkillsList />
+              </div>
+              <div className="min-main">
+                <MainContent />
+                {isEmpty && (
+                  <div className="rv-empty">
+                    <i className="fas fa-file-alt"></i>
+                    <p>Start filling in your details on the left.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      // Render Modern & Classic Layouts
+      return (
+        <div className="resume-wrapper" style={{ transform: `scale(${scale})` }}>
+          <div className={`resume ${tplClass}`} id="resume-doc">
+            <div className="rv-header" style={template==='modern'?{borderBottomColor:ac}:{}}>
+              <div>
+                <h1 className="rv-name">{p.fullName || 'Your Full Name'}</h1>
+                <p className="rv-role" style={template==='modern'?{color:ac}:{}}>{p.jobTitle || 'Your Job Title'}</p>
+              </div>
+              <Contacts />
+            </div>
+            <MainContent />
+            {template !== 'minimalist' && <SkillsList />}
+            {isEmpty && (
+              <div className="rv-empty">
+                <i className="fas fa-file-alt"></i>
+                <p>Start filling in your details on the left.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    /* ── MAIN APP ── */
+    function App() {
+      const [resume, setResume] = useState(() => {
+        try { const s = localStorage.getItem('rf_v6'); return s ? JSON.parse(s) : INIT; }
+        catch { return INIT; }
+      });
+      const [tab, setTab] = useState('personal');
+      const [skillInput, setSkillInput] = useState('');
+      const [toast, setToast] = useState('');
+      const [mobileView, setMobileView] = useState('builder');
+      const [previewScale, setPreviewScale] = useState(1);
+      const previewScrollRef = useRef(null);
+
+      /* Auto-save */
+      useEffect(() => { localStorage.setItem('rf_v6', JSON.stringify(resume)); }, [resume]);
+
+      /* Compute preview scale */
+      useEffect(() => {
+        const A4_WIDTH_PX = 794;
+        const computeScale = () => {
+          if (!previewScrollRef.current) return;
+          const available = previewScrollRef.current.clientWidth - 40;
+          if (available < A4_WIDTH_PX) {
+            setPreviewScale(Math.max(0.35, available / A4_WIDTH_PX));
+          } else {
+            setPreviewScale(1);
+          }
+        };
+        computeScale();
+        const ro = new ResizeObserver(computeScale);
+        if (previewScrollRef.current) ro.observe(previewScrollRef.current);
+        return () => ro.disconnect();
+      }, [mobileView]);
+
+      const showToast = msg => { setToast(msg); setTimeout(() => setToast(''), 3000); };
+      const setP = (k, v) => setResume(r => ({...r, personal: {...r.personal, [k]: v}}));
+      const setTpl = (tpl) => setResume(r => ({...r, template: tpl}));
+
+      const handleLoadDemo = () => {
+        setResume({...DEMO, template: resume.template || 'modern'});
+        setTab('personal');
+        setMobileView('builder');
+        showToast('🎉 Demo resume loaded!');
+      };
+
+      const crud = (key, blank) => ({
+        add: () => setResume(r => ({...r, [key]: [...r[key], {id: uid(), ...blank}]})),
+        upd: (id, k, v) => setResume(r => ({...r, [key]: r[key].map(e => e.id===id ? {...e, [k]:v} : e)})),
+        del: (id) => setResume(r => ({...r, [key]: r[key].filter(e => e.id !== id)})),
+      });
+
+      const EXP  = crud('experience', {company:'',role:'',startDate:'',endDate:'',current:false,description:''});
+      const EDU  = crud('education',  {institution:'',degree:'',field:'',startDate:'',endDate:'',gpa:''});
+      const PROJ = crud('projects',   {name:'',tech:'',url:'',description:''});
+
+      const addSkillKey = e => {
+        if (e.key === 'Enter' || e.key === ',') {
+          e.preventDefault();
+          const s = skillInput.trim().replace(/,$/, '');
+          if (s && !resume.skills.includes(s)) setResume(r => ({...r, skills:[...r.skills, s]}));
+          setSkillInput('');
+        }
+      };
+      const rmSkill = s => setResume(r => ({...r, skills: r.skills.filter(x => x !== s)}));
+      const quickSkill = s => { if (!resume.skills.includes(s)) setResume(r => ({...r, skills:[...r.skills, s]})); };
+      const handleClear = () => {
+        if (!window.confirm('Clear all resume data? This cannot be undone.')) return;
+        setResume({ ...INIT, template: resume.template });
+        localStorage.removeItem('rf_v6');
+        showToast('Resume cleared ✓');
+      };
+
+      const ACCENT_COLORS = ['#0077cc','#00c8e0','#7c3aed','#059669','#dc2626','#0f172a'];
+      const QUICK_SKILLS  = ['HTML','CSS','JavaScript','React','Node.js','Python','Java','C++','Git','SQL','MongoDB','TypeScript','Next.js','Docker','AWS','Figma'];
+
+      const TABS = [
+        {id:'personal',   label:'Personal',   icon:'fa-user'},
+        {id:'experience', label:'Experience', icon:'fa-briefcase'},
+        {id:'education',  label:'Education',  icon:'fa-graduation-cap'},
+        {id:'skills',     label:'Skills',     icon:'fa-code'},
+        {id:'projects',   label:'Projects',   icon:'fa-rocket'},
+      ];
+
+      const switchToTab = (tabId) => {
+        setTab(tabId);
+        setMobileView('builder');
+      };
+
+      return (
+        <div className="app">
+          {/* NAVBAR */}
+          <nav className="navbar">
+            <div className="nav-brand">
+              <div className="nav-logo"><i className="fas fa-file-alt"></i></div>
+              <span className="nav-title">Resume<span>Forge</span></span>
+              <span className="nav-badge">BETA</span>
+            </div>
+            <div className="nav-actions">
+              <span className="saved-pill"><i className="fas fa-check-circle"></i> Auto-saved</span>
+              <button className="btn-demo" onClick={handleLoadDemo} title="Fill with sample resume data">
+                <i className="fas fa-magic"></i> Demo
+              </button>
+              <button className="btn-red" onClick={handleClear}>
+                <i className="fas fa-trash-alt"></i>
+                <span>Clear</span>
+              </button>
+              <button className="btn-cyan" onClick={() => window.print()}>
+                <i className="fas fa-download"></i> Download PDF
+              </button>
+            </div>
+          </nav>
+
+          {/* MOBILE VIEW TOGGLE */}
+          <div className="mob-toggle">
+            <button className={`mob-toggle-btn ${mobileView === 'builder' ? 'active' : ''}`} onClick={() => setMobileView('builder')}>
+              <i className="fas fa-edit"></i> Builder
+            </button>
+            <button className={`mob-toggle-btn ${mobileView === 'preview' ? 'active' : ''}`} onClick={() => setMobileView('preview')}>
+              <i className="fas fa-eye"></i> Live Preview
+            </button>
+          </div>
+
+          <div className="body-split">
+            {/* BUILDER */}
+            <aside className={`builder ${mobileView !== 'builder' ? 'hidden' : ''}`}>
+              <div className="tabs">
+                {TABS.map(t => (
+                  <button key={t.id} className={`tab ${tab===t.id?'active':''}`} onClick={() => switchToTab(t.id)}>
+                    <i className={`fas ${t.icon}`}></i>
+                    <span>{t.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="tab-body">
+
+                {/* PERSONAL */}
+                {tab === 'personal' && (
+                  <div>
+                    <p className="form-heading"><i className="fas fa-paint-brush"></i> Template Selection</p>
+                    <div className="template-selector">
+                      <div className={`template-card ${resume.template === 'modern' ? 'active' : ''}`} onClick={() => setTpl('modern')}>
+                        <i className="fas fa-border-all template-icon"></i>
+                        <div className="template-name">Modern</div>
+                      </div>
+                      <div className={`template-card ${resume.template === 'classic' ? 'active' : ''}`} onClick={() => setTpl('classic')}>
+                        <i className="fas fa-align-center template-icon"></i>
+                        <div className="template-name">Classic</div>
+                      </div>
+                      <div className={`template-card ${resume.template === 'minimalist' ? 'active' : ''}`} onClick={() => setTpl('minimalist')}>
+                        <i className="fas fa-columns template-icon"></i>
+                        <div className="template-name">Minimalist</div>
+                      </div>
+                    </div>
+
+                    <p className="form-heading"><i className="fas fa-id-card"></i> Personal Information</p>
+                    <div className="grid-2">
+                      <div className="fg span-2">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="e.g. Priyabrata Sahoo"
+                          value={resume.personal.fullName} onChange={e => setP('fullName', e.target.value)} />
+                      </div>
+                      <div className="fg span-2">
+                        <label>Job Title / Role</label>
+                        <input type="text" placeholder="e.g. Full Stack Developer"
+                          value={resume.personal.jobTitle} onChange={e => setP('jobTitle', e.target.value)} />
+                      </div>
+                      <div className="fg">
+                        <label>Email</label>
+                        <input type="email" placeholder="you@email.com"
+                          value={resume.personal.email} onChange={e => setP('email', e.target.value)} />
+                      </div>
+                      <div className="fg">
+                        <label>Phone</label>
+                        <input type="tel" placeholder="+91 98765 43210"
+                          value={resume.personal.phone} onChange={e => setP('phone', e.target.value)} />
+                      </div>
+                      <div className="fg">
+                        <label>Location</label>
+                        <input type="text" placeholder="Mumbai, India"
+                          value={resume.personal.location} onChange={e => setP('location', e.target.value)} />
+                      </div>
+                      <div className="fg">
+                        <label>Portfolio / Website</label>
+                        <input type="text" placeholder="yoursite.com"
+                          value={resume.personal.website} onChange={e => setP('website', e.target.value)} />
+                      </div>
+                      <div className="fg">
+                        <label>LinkedIn URL</label>
+                        <input type="text" placeholder="linkedin.com/in/yourname"
+                          value={resume.personal.linkedin} onChange={e => setP('linkedin', e.target.value)} />
+                      </div>
+                      <div className="fg">
+                        <label>GitHub URL</label>
+                        <input type="text" placeholder="github.com/yourname"
+                          value={resume.personal.github} onChange={e => setP('github', e.target.value)} />
+                      </div>
+                      <div className="fg span-2">
+                        <label>Professional Summary</label>
+                        <textarea rows="5"
+                          placeholder="Write a brief overview of your background, expertise, and career goals..."
+                          value={resume.personal.summary} onChange={e => setP('summary', e.target.value)}>
+                        </textarea>
+                      </div>
+                    </div>
+                    {resume.template !== 'classic' && (
+                      <div className="color-section">
+                        <label>Resume Accent Color</label>
+                        <div className="color-row">
+                          {ACCENT_COLORS.map(c => (
+                            <button key={c} className={`swatch ${resume.accentColor===c?'sel':''}`}
+                              style={{background: c}}
+                              onClick={() => setResume(r => ({...r, accentColor: c}))} />
+                          ))}
+                          <input type="color" className="custom-swatch"
+                            value={resume.accentColor}
+                            onChange={e => setResume(r => ({...r, accentColor: e.target.value}))}
+                            title="Custom accent color" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* EXPERIENCE */}
+                {tab === 'experience' && (
+                  <div>
+                    <p className="form-heading"><i className="fas fa-briefcase"></i> Work Experience</p>
+                    {resume.experience.map((e, i) => (
+                      <div key={e.id} className="entry-box">
+                        <div className="entry-head">
+                          <span>Experience #{i+1}</span>
+                          {resume.experience.length > 1 && (
+                            <button className="rm-btn" onClick={() => EXP.del(e.id)}>
+                              <i className="fas fa-times"></i>
+                            </button>
+                          )}
+                        </div>
+                        <div className="grid-2">
+                          <div className="fg span-2">
+                            <label>Company / Organisation</label>
+                            <input type="text" placeholder="e.g. Google, Infosys, Startup..."
+                              value={e.company} onChange={x => EXP.upd(e.id,'company',x.target.value)} />
+                          </div>
+                          <div className="fg span-2">
+                            <label>Role / Position</label>
+                            <input type="text" placeholder="e.g. Software Engineer"
+                              value={e.role} onChange={x => EXP.upd(e.id,'role',x.target.value)} />
+                          </div>
+                          <div className="fg">
+                            <label>Start Date</label>
+                            <input type="text" placeholder="Jan 2022"
+                              value={e.startDate} onChange={x => EXP.upd(e.id,'startDate',x.target.value)} />
+                          </div>
+                          <div className="fg">
+                            <label>End Date</label>
+                            <input type="text" placeholder="Dec 2024"
+                              value={e.current ? 'Present' : e.endDate}
+                              disabled={e.current}
+                              onChange={x => EXP.upd(e.id,'endDate',x.target.value)} />
+                          </div>
+                          <div className="fg span-2 chk">
+                            <label>
+                              <input type="checkbox" checked={e.current}
+                                onChange={x => EXP.upd(e.id,'current',x.target.checked)} />
+                              Currently working here
+                            </label>
+                          </div>
+                          <div className="fg span-2">
+                            <label>Responsibilities &amp; Achievements</label>
+                            <textarea rows="5"
+                              placeholder="• Led a team of 5 developers&#10;• Improved API response time by 40%&#10;• Mentored junior engineers"
+                              value={e.description}
+                              onChange={x => EXP.upd(e.id,'description',x.target.value)}>
+                            </textarea>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button className="add-btn" onClick={EXP.add}>
+                      <i className="fas fa-plus"></i> Add Experience
+                    </button>
+                  </div>
+                )}
+
+                {/* EDUCATION */}
+                {tab === 'education' && (
+                  <div>
+                    <p className="form-heading"><i className="fas fa-graduation-cap"></i> Education</p>
+                    {resume.education.map((e, i) => (
+                      <div key={e.id} className="entry-box">
+                        <div className="entry-head">
+                          <span>Education #{i+1}</span>
+                          {resume.education.length > 1 && (
+                            <button className="rm-btn" onClick={() => EDU.del(e.id)}>
+                              <i className="fas fa-times"></i>
+                            </button>
+                          )}
+                        </div>
+                        <div className="grid-2">
+                          <div className="fg span-2">
+                            <label>Institution / University</label>
+                            <input type="text" placeholder="e.g. IIT Bombay, NIT, VIT..."
+                              value={e.institution} onChange={x => EDU.upd(e.id,'institution',x.target.value)} />
+                          </div>
+                          <div className="fg">
+                            <label>Degree</label>
+                            <input type="text" placeholder="B.Tech / MCA / BCA"
+                              value={e.degree} onChange={x => EDU.upd(e.id,'degree',x.target.value)} />
+                          </div>
+                          <div className="fg">
+                            <label>Field of Study</label>
+                            <input type="text" placeholder="Computer Science"
+                              value={e.field} onChange={x => EDU.upd(e.id,'field',x.target.value)} />
+                          </div>
+                          <div className="fg">
+                            <label>Start Year</label>
+                            <input type="text" placeholder="2020"
+                              value={e.startDate} onChange={x => EDU.upd(e.id,'startDate',x.target.value)} />
+                          </div>
+                          <div className="fg">
+                            <label>End Year</label>
+                            <input type="text" placeholder="2024"
+                              value={e.endDate} onChange={x => EDU.upd(e.id,'endDate',x.target.value)} />
+                          </div>
+                          <div className="fg span-2">
+                            <label>GPA / Percentage / CGPA</label>
+                            <input type="text" placeholder="9.2 / 10  or  87%"
+                              value={e.gpa} onChange={x => EDU.upd(e.id,'gpa',x.target.value)} />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button className="add-btn" onClick={EDU.add}>
+                      <i className="fas fa-plus"></i> Add Education
+                    </button>
+                  </div>
+                )}
+
+                {/* SKILLS */}
+                {tab === 'skills' && (
+                  <div>
+                    <p className="form-heading"><i className="fas fa-code"></i> Technical Skills</p>
+                    <div className="fg">
+                      <label>Type a skill then press Enter or comma</label>
+                      <input type="text" placeholder="e.g. React, Node.js, Python..."
+                        value={skillInput}
+                        onChange={e => setSkillInput(e.target.value)}
+                        onKeyDown={addSkillKey} />
+                    </div>
+                    <div className="skills-cloud">
+                      {resume.skills.length === 0
+                        ? <p className="empty-hint">No skills added yet. Start typing above!</p>
+                        : resume.skills.map(s => (
+                          <span key={s} className="skill-chip">
+                            {s}
+                            <button onClick={() => rmSkill(s)}><i className="fas fa-times"></i></button>
+                          </span>
+                        ))
+                      }
+                    </div>
+                    <div className="skill-suggestions">
+                      <p className="sug-label">⚡ Quick Add Popular Skills</p>
+                      <div className="sug-list">
+                        {QUICK_SKILLS.filter(s => !resume.skills.includes(s)).map(s => (
+                          <button key={s} className="sug-btn" onClick={() => quickSkill(s)}>+ {s}</button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* PROJECTS */}
+                {tab === 'projects' && (
+                  <div>
+                    <p className="form-heading"><i className="fas fa-rocket"></i> Projects</p>
+                    {resume.projects.map((pr, i) => (
+                      <div key={pr.id} className="entry-box">
+                        <div className="entry-head">
+                          <span>Project #{i+1}</span>
+                          {resume.projects.length > 1 && (
+                            <button className="rm-btn" onClick={() => PROJ.del(pr.id)}>
+                              <i className="fas fa-times"></i>
+                            </button>
+                          )}
+                        </div>
+                        <div className="grid-2">
+                          <div className="fg span-2">
+                            <label>Project Name</label>
+                            <input type="text" placeholder="e.g. ResumeForge"
+                              value={pr.name} onChange={x => PROJ.upd(pr.id,'name',x.target.value)} />
+                          </div>
+                          <div className="fg span-2">
+                            <label>Tech Stack Used</label>
+                            <input type="text" placeholder="React, Node.js, MongoDB"
+                              value={pr.tech} onChange={x => PROJ.upd(pr.id,'tech',x.target.value)} />
+                          </div>
+                          <div className="fg span-2">
+                            <label>GitHub / Live Demo URL</label>
+                            <input type="text" placeholder="github.com/yourname/project"
+                              value={pr.url} onChange={x => PROJ.upd(pr.id,'url',x.target.value)} />
+                          </div>
+                          <div className="fg span-2">
+                            <label>Short Description</label>
+                            <textarea rows="3"
+                              placeholder="What does this project do? What problem does it solve?"
+                              value={pr.description}
+                              onChange={x => PROJ.upd(pr.id,'description',x.target.value)}>
+                            </textarea>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button className="add-btn" onClick={PROJ.add}>
+                      <i className="fas fa-plus"></i> Add Project
+                    </button>
+                  </div>
+                )}
+
+              </div>
+            </aside>
+
+            {/* PREVIEW */}
+            <div className={`preview-panel ${mobileView !== 'preview' ? 'hidden' : ''}`}>
+              <div className="preview-bar">
+                <div className="preview-bar-left">
+                  <i className="fas fa-eye"></i> Live Preview
+                  {previewScale < 1 && (
+                    <span className="preview-scale-info">({Math.round(previewScale*100)}% zoom)</span>
+                  )}
+                </div>
+                <button className="print-btn" onClick={() => window.print()}>
+                  <i className="fas fa-print"></i> Print / Save PDF
+                </button>
+              </div>
+              <div className="preview-scroll" ref={previewScrollRef}>
+                <ResumePreview data={resume} scale={previewScale} />
+              </div>
+            </div>
+          </div>
+
+          {toast && (
+            <div className="toast">
+              <i className="fas fa-check-circle"></i> {toast}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
