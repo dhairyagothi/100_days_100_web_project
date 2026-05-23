@@ -130,6 +130,27 @@ body {
     transform: translateX(-50%) scale(1);
 }
 
+.element.search-active .tooltip{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:
+    translateX(-50%)
+    scale(1);
+
+}
+
+.element.search-active{
+
+    transform:
+    translateY(-10px)
+    scale(1.1);
+
+    z-index:100;
+}
+
 .empty {
     background-color: transparent;
     border: none;
@@ -206,8 +227,11 @@ body {
 
 /* Controls Styling */
 .controls {
-    margin-bottom: 20px;
-    position: relative;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:20px;
+    position:relative;
 }
 
 .controls::after {
@@ -236,6 +260,29 @@ body {
     backdrop-filter: blur(10px);
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+#searchInput{
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    font-size:14px;
+
+    background:rgba(255,255,255,.9);
+
+    box-shadow:
+    0 4px 10px rgba(0,0,0,.15);
+
+    outline:none;
+    width:240px;
+
+    transition:.3s;
+}
+
+#searchInput:focus{
+    box-shadow:
+    0 0 0 2px #90caf9,
+    0 8px 15px rgba(0,0,0,.2);
 }
 
 #categoryFilter:hover {
@@ -669,4 +716,376 @@ body {
     .control-panel {
         max-width: 320px;
     }
+}
+/* =========================
+TREND FILTER
+========================= */
+
+#trendFilter{
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+
+padding:10px 40px 10px 15px;
+
+font-size:14px;
+border:none;
+border-radius:10px;
+
+background:rgba(255,255,255,.9);
+
+color:#333;
+font-weight:500;
+
+box-shadow:
+0 4px 10px rgba(0,0,0,.15);
+
+cursor:pointer;
+transition:.3s;
+
+height:37px;
+width:250px;
+}
+
+#trendFilter:hover{
+transform:translateY(-2px);
+}
+
+
+
+/* =========================
+TREND POPUP
+========================= */
+
+.hidden{
+display:none;
+}
+
+.trend-info{
+
+position:relative;
+
+background:
+rgba(255,255,255,.92);
+
+padding:22px;
+
+width:360px;
+
+border-radius:20px;
+
+margin-bottom:22px;
+
+box-shadow:
+0 10px 30px rgba(
+0,0,0,.25);
+
+min-height:170px;
+
+}
+
+
+
+#closeTrendInfo{
+
+position:absolute;
+
+top:10px;
+
+right:15px;
+
+border:none;
+
+background:none;
+
+font-size:28px;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+
+
+#trendTitle{
+
+margin:0;
+
+font-size:20px;
+
+font-weight:700;
+
+}
+
+
+
+#trendDescription{
+
+margin-top:18px;
+
+font-size:15px;
+
+line-height:1.6;
+
+color:#444;
+
+}
+
+
+
+#trendExtremes{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:18px;
+
+font-size:15px;
+
+font-weight:700;
+
+}
+
+
+
+.low-tag{
+color:#2563eb;
+}
+
+.high-tag{
+color:#ef4444;
+}
+
+
+
+/* LOW -------- HIGH BAR */
+
+.trend-scale{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+margin-top:18px;
+
+font-weight:700;
+
+}
+
+
+
+.gradient-bar{
+
+flex:1;
+
+height:18px;
+
+border-radius:50px;
+
+background:
+
+linear-gradient(
+
+90deg,
+
+#2563eb 0%,
+#22c55e 35%,
+#facc15 70%,
+#ef4444 100%
+
+);
+
+box-shadow:
+0 0 12px rgba(
+0,0,0,.15);
+
+}
+
+
+
+/* REMOVE SECOND POPUP COMPLETELY */
+
+#trendPattern,
+#closeTrendPattern,
+#patternTitle,
+#patternText{
+
+display:none;
+
+}
+.trend-values{
+display:flex;
+justify-content:space-between;
+margin:18px 0 10px;
+font-size:1rem;
+}
+
+.lowest{
+color:#2563eb;
+font-weight:700;
+}
+
+.highest{
+color:#ef4444;
+font-weight:700;
+}
+
+/* =============================
+DUAL TREND PANELS
+============================= */
+
+.trend-popup-container{
+
+display:flex;
+
+gap:20px;
+
+justify-content:center;
+
+align-items:stretch;
+
+margin-bottom:22px;
+
+flex-wrap:wrap;
+
+}
+
+
+
+.trend-popup-container
+.trend-info{
+
+width:360px;
+
+min-height:260px;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+
+
+#analysisContent{
+
+margin-top:18px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+font-size:15px;
+
+line-height:1.6;
+
+}
+
+
+
+.analysis-section{
+
+padding:12px;
+
+border-radius:12px;
+
+background:
+rgba(0,0,0,.05);
+
+}
+
+
+
+.analysis-heading{
+
+font-weight:700;
+
+margin-bottom:5px;
+
+}
+
+
+
+.analysis-up{
+
+color:#16a34a;
+
+font-weight:700;
+
+}
+
+
+
+.analysis-down{
+
+color:#dc2626;
+
+font-weight:700;
+
+}
+
+
+
+@media(max-width:900px){
+
+.trend-popup-container{
+
+flex-direction:column;
+
+align-items:center;
+
+}
+
+}
+
+.trend-link{
+
+margin-top:22px;
+
+padding-top:14px;
+
+border-top:
+1px solid rgba(0,0,0,.08);
+
+text-align:center;
+
+}
+
+
+.trend-link p{
+
+margin:0 0 8px;
+
+font-size:14px;
+
+color:#555;
+
+}
+
+
+.trend-link a{
+
+text-decoration:none;
+
+font-weight:700;
+
+color:#2563eb;
+
+transition:.2s;
+
+}
+
+
+.trend-link a:hover{
+
+text-decoration:underline;
+
+color:#1d4ed8;
+
 }

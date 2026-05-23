@@ -40,6 +40,38 @@ function updateMoveDisplay(count) {
   if (moveCount) moveCount.textContent = count;
 }
 
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
+  const secs = (seconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${secs}`;
+}
+
+function updateTimerDisplay(seconds) {
+  const timerText = document.getElementById('timerText');
+  if (timerText) timerText.textContent = formatTime(seconds);
+}
+
+function stopTimer() {
+  if (timerIntervalId) {
+    clearInterval(timerIntervalId);
+    timerIntervalId = null;
+  }
+}
+
+function resetTimer() {
+  elapsedSeconds = 0;
+  updateTimerDisplay(elapsedSeconds);
+  stopTimer();
+}
+
+function startTimer() {
+  resetTimer();
+  timerIntervalId = setInterval(() => {
+    elapsedSeconds += 1;
+    updateTimerDisplay(elapsedSeconds);
+  }, 1000);
+}
+
 function showModal(title, message, moves) {
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalText').textContent = message;
@@ -433,6 +465,8 @@ let animationFrameId = null;
 let currentLevel = 'Easy';
 let isGameActive = false;
 let isGameOver = false;
+let elapsedSeconds = 0;
+let timerIntervalId = null;
 
 const startButton = document.getElementById('startMazeBtn');
 const restartButton = document.getElementById('restartMazeBtn');
@@ -474,6 +508,7 @@ function ensurePlayerVisible(coord) {
 
 function resetGameState() {
   cancelRenderLoop();
+  stopTimer();
   if (player) {
     player.unbindKeyDown();
     player = null;
@@ -482,7 +517,9 @@ function resetGameState() {
   draw = null;
   isGameActive = false;
   isGameOver = false;
+  elapsedSeconds = 0;
   updateMoveDisplay(0);
+  updateTimerDisplay(elapsedSeconds);
   ctx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
   updateStatus('Ready to start');
 }
@@ -516,6 +553,7 @@ function onMazeComplete(moves) {
 
   isGameOver = true;
   isGameActive = false;
+  stopTimer();
   updateStatus('Maze completed! Ready for another run.');
   showModal('Congratulations!', 'You escaped the maze.', moves);
   showToast('Maze completed successfully 🎉', 'success');
@@ -571,6 +609,7 @@ function startGame() {
 
   updateStatus(`Playing ${currentLevel} mode`);
   updateMoveDisplay(0);
+  startTimer();
   showToast(`Game started: ${currentLevel}`, 'success');
   startButton.textContent = 'Restart';
   restartButton.disabled = false;
@@ -602,6 +641,7 @@ function initialize() {
   }
 
   window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('beforeunload', stopTimer);
   showToast('Ready to play! Select a difficulty and start.', 'info', 3200);
 }
 

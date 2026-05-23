@@ -265,10 +265,12 @@
         </h1>
 
         <ul>
+
             <li><a href="#home">HOME</a></li>
             <li><a href="#contact">CONTACT US</a></li>
             <li><a href="#about">ABOUT US</a></li>
             <li><a href="#services">SERVICES</a></li>
+
         </ul>
 
     </div>
@@ -279,7 +281,7 @@
     Loading Destination...
 </div>
 
-<div class="content id="home"">
+<div class="content" id="home">
 
     <p id="placeDescription">
         Explore the beauty of glaciers and the breathtaking landscapes of Iceland.
@@ -331,22 +333,77 @@
 
 </div>
 
-<div id="toast"></div>
-<section id="contact">
-    <h2>Contact Us</h2>
-    <p>📧 contact@tripadvisor.com</p>
-</section>
 
-<section id="about">
-    <h2>About Us</h2>
-    <p>We help users explore beautiful travel destinations.</p>
-</section>
 
-<section id="services">
-    <h2>Services</h2>
-    <p>✈️ Flight Booking | 🏨 Hotels | 🗺️ Tour Packages</p>
-</section>
 <script src="script.js"></script>
+
+
+<script>
+    const placeBackgrounds = {
+        "Iceland": "url('images/iceland.jpg')",
+        "Switzerland": "url('images/Jennifer.avif')",
+        "Scotland": "url('images/Daniel.jpeg')",
+        "Ireland": "url('images/kai.jpg')",
+        "Germany": "url('images/Hannes-Becker4.jpg')"
+    };
+
+    const placeDescriptions = {
+        "Iceland": "Explore the beauty of glaciers and the breathtaking landscapes of Iceland.",
+        "Switzerland": "Experience the serene beauty of the Swiss Alps and picturesque villages.",
+        "Scotland": "Discover the rich history and stunning highlands of Scotland.",
+        "Ireland": "Immerse yourself in the lush green landscapes and vibrant culture of Ireland.",
+        "Germany": "Explore Germany's charming cities and stunning countryside."
+    };
+
+    const placeSelector = document.getElementById('placeSelector');
+    const bookingButton = document.getElementById('bookingButton');
+    const placeTitle = document.getElementById('placeTitle');
+    const placeDescription = document.getElementById('placeDescription');
+    const body = document.body;
+
+    // Function to update the UI
+    function updatePlace(place) {
+        body.style.backgroundImage = placeBackgrounds[place];
+        placeTitle.textContent = place;
+        placeDescription.textContent = placeDescriptions[place];
+        bookingButton.textContent = `Book a Trip to ${place}`;
+    }
+
+    // Event listener for place selection
+    placeSelector.addEventListener('change', function () {
+        const selectedPlace = placeSelector.value;
+        updatePlace(selectedPlace);
+    });
+
+    
+    window.onload = function () {
+        const defaultPlace = "Iceland";
+        updatePlace(defaultPlace);
+        placeSelector.value = defaultPlace;
+    };
+</script>
+<!-- CONTACT US SECTION -->
+<section id="contact" style="background:rgba(0,0,0,0.7);color:white;padding:60px 20px;text-align:center;">
+  <h2 style="font-size:2em;margin-bottom:20px;">Contact Us</h2>
+  <p style="font-size:1.1em;margin-bottom:10px;"> contact@tripadvisor.com</p>
+  <p style="font-size:1.1em;margin-bottom:10px;"> +1 800 123 4567</p>
+  <p style="font-size:1.1em;"> Mon–Fri, 9am–6pm</p>
+</section>
+
+<!-- ABOUT US SECTION -->
+<section id="about" style="background:rgba(0,0,0,0.5);color:white;padding:60px 20px;text-align:center;">
+  <h2 style="font-size:2em;margin-bottom:20px;">About Us</h2>
+  <p style="font-size:1.1em;max-width:600px;margin:0 auto;line-height:1.8;">We are a travel platform helping you discover the most beautiful destinations around the world. Our mission is to make travel planning simple, beautiful and inspiring.</p>
+</section>
+
+<!-- SERVICES SECTION -->
+<section id="services" style="background:rgba(0,0,0,0.7);color:white;padding:60px 20px;text-align:center;">
+  <h2 style="font-size:2em;margin-bottom:20px;">Services</h2>
+  <p style="font-size:1.1em;margin-bottom:10px;">✈ Flight Booking</p>
+  <p style="font-size:1.1em;margin-bottom:10px;"> Hotel Reservations</p>
+  <p style="font-size:1.1em;margin-bottom:10px;"> Tour Packages</p>
+  <p style="font-size:1.1em;"> Car Rentals</p>
+</section>
 
 </body>
 </html>

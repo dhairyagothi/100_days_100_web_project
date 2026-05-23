@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: black;
+    background:#111827;
     --dot-bg: black;
     --dot-color: white;
     --dot-size: 1px;
@@ -35,13 +35,15 @@ body {
 
 .container header {
     text-align: center;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
 }
 
 .container p {
-    color: grey;
+    color: black;
+    font-size:16px;
     margin-bottom: 5px;
+    text-align: center;
 }
 
 #captchaType {
@@ -49,9 +51,36 @@ body {
     padding: 10px;
     border-radius: 10px;
     border: 1px solid grey;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
+.captcha-types{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.type-btn{
+    width: 60px;
+    height: 42px;
+    border: none;
+    border-radius: 10px;
+    background: #e5e5e5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.type-btn:hover{
+    background: #d1d1d1;
+    transform: translateY(-2px) scale(1.08);
+}
 #captchaContainer {
     display: flex;
     flex-direction: column;
@@ -71,6 +100,13 @@ body {
     margin-top: 10px;
 }
 
+.image-option.selected{
+    border: 3px solid #4CAF50;
+    transform: scale(1.12);
+    background: #dff5e1;
+    box-shadow: 0 0 12px rgba(16, 90, 201, 0.912);
+}
+
 #captchaContainer .image-option {
     width: 60px;
     height: 60px;
@@ -82,11 +118,12 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 #captchaContainer .image-option:hover {
     background-color: #e0e0e0;
+    transform: scale(1.12);
 }
 
 #playAudio {
@@ -118,32 +155,51 @@ body {
     border: 1px solid grey;
 }
 
+.captcha-input-group{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 .refresh {
-    justify-self: end;
-    height: 40px;
-    width: 40px;
-    background: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 45px;
+    width: 45px;
+    background: black;
     border: none;
-    font-size: 20px;
-    border-radius: 10px;
+    border-radius:50%;
+    font-size: 22px;
     cursor: pointer;
     color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.refresh:hover{
+    transform: rotate(180deg) scale(1.1);
+    background: #222;
 }
 
 .result {
     text-align: center;
+    font-style: poppins;
     font-weight: bold;
     color: grey;
     min-height: 20px;
+    letter-spacing: 0.3px;
+    white-space: pre-line;
 }
 
 .button {
     justify-self: center;
+    padding-bottom: 20px;
 }
 
 .button button {
     height: 45px;
-    background: grey;
+    background: #4CAF50;
     color: white;
     width: 200px;
     font-size: 15px;
