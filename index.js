@@ -104,7 +104,7 @@ const PROJECT_DATA = [
   ['Day 33', 'Weather Forecasting', './public/Weather%20Forcasting/index.html', 'weather api', 'intermediate'],
   ['Day 34', 'Email Validator', './public/email%20validator/index.html', 'api javascript', 'beginner'],
   ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', 'tool javascript', 'beginner'],
-['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
+  ['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
   ['Day 37', '2048 Game', './public/2048_game/index.html', 'game javascript', 'intermediate'],
   ['Day 38', 'Github Profile Finder', './public/github_profile_finder/index.html', 'api javascript', 'intermediate'],
   ['Day 39', 'Notes App', './public/notes-app/index.html', 'todo javascript', 'beginner'],
@@ -134,7 +134,7 @@ const PROJECT_DATA = [
   ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', 'api javascript', 'intermediate'],
   ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', 'clone css', 'beginner'],
   ['Day 65', 'The Cube', './public/The%20Cube/index.html', 'ui canvas css', 'intermediate'],
-  ['Day 66', 'Flask Authentication App', '', 'api javascript', 'intermediate', { linkType: 'source-only', sourcePath: 'public/flask_auth_app' }],
+  ['Day 66', 'Flask Authentication App', './public/flask_auth_app/explain.html', 'api javascript', 'intermediate'],
   ['Day 67', 'Blog-Website', './public/blog/main.html', 'css', 'beginner'],
   ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
   ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
@@ -217,6 +217,9 @@ const PROJECT_DATA = [
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
+  
+
+
   ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
   ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
@@ -227,7 +230,11 @@ const PROJECT_DATA = [
   ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
   ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
   ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
-  ['Day 159' , 'Dining Philosophers Simulation' , './public/Dining Philosophers Simulation/index.html' , 'simulation algorithm javascript' , 'intermediate' ] ,
+  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', 'simulation algorithm javascript', 'intermediate'],
+  ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', 'html css javascript', 'intermediate'],
+  ['Day 161', "Unit-Converter", './public/Unit-Converter/index.html' , 'tool javascript html css' , 'intermediate'],
+  ['Day 162', 'Color Palette From Art Generator', './public/ColorPaletteArtGenerator/index.html', 'html css javascript', 'intermediate'],
+  ['Day 163' , 'Ai Image Editor' , './public/image-editor/index.html' , 'edits images' , 'advanced'],
 ];
 const PROJECTS = PROJECT_DATA;
 const PROJECT_LOOKUP = new Map(PROJECTS.map((project) => [project[0], project]));
@@ -567,50 +574,52 @@ function generateReadme() {
 let activeFilter = 'all';
 let searchQuery = '';
 let sortOption = 'default';
+let techStackFilter = 'all';
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, , tags]) => {
+  const filtered = PROJECTS.filter(([day, name, url, tags]) => {
+    // Category filter
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
-
     const matchesFilter = activeFilter === 'all' || category === targetCategory;
 
-    const q = searchQuery.toLowerCase();
-    const matchesSearch =
-      !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
+    // Search filter
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch = !q || q.split(/\s+/).every(term => 
+      name.toLowerCase().includes(term) || 
+      day.toLowerCase().includes(term) || 
+      (typeof tags === 'string' && tags.toLowerCase().includes(term))
+    );
 
-    const matchesTech = matchesTechStack(tags);
+    // Tech stack dropdown filter
+    let matchesTech = true;
+    if (techStackFilter && techStackFilter !== 'all') {
+      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
+      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+    }
 
     return matchesFilter && matchesSearch && matchesTech;
   });
+
+  // Apply sorting
   if (sortOption === 'az') {
     filtered.sort((a, b) => a[1].localeCompare(b[1]));
-  }
-
-  if (sortOption === 'latest') {
+  } else if (sortOption === 'latest') {
     filtered.sort((a, b) => {
       const dayA = parseInt(a[0].replace('Day ', ''));
       const dayB = parseInt(b[0].replace('Day ', ''));
       return dayB - dayA;
     });
-  }
-
-  if (sortOption === 'difficulty') {
-    const difficultyOrder = {
-      beginner: 1,
-      intermediate: 2,
-      advanced: 3
-    };
-
+  } else if (sortOption === 'difficulty') {
+    const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
-      return (
-        difficultyOrder[a[4].toLowerCase()] -
-        difficultyOrder[b[4].toLowerCase()]
-      );
+      const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
+      const diffB = b[4] ? difficultyOrder[b[4].toLowerCase()] || 0 : 0;
+      return diffA - diffB;
     });
   }
 
@@ -618,22 +627,18 @@ function renderGrid() {
 
   if (filtered.length === 0) {
     grid.style.display = 'none';
-    noResults.style.display = 'block';
+    if (noResults) noResults.style.display = 'block';
     const container = document.getElementById('paginationContainer');
-    if (container) container.innerHTML = '';
+    if (container) container.remove();
     return;
   }
 
   grid.style.display = 'grid';
-  noResults.style.display = 'none';
+  if (noResults) noResults.style.display = 'none';
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-  if (currentPage > totalPages) {
-    currentPage = totalPages;
-  }
-  if (currentPage < 1) {
-    currentPage = 1;
-  }
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -883,12 +888,34 @@ function renderRecentProjects() {
 
 const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
 const recentToggleBtn = document.getElementById('recentToggleBtn');
+const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener('click', () => {
     showAllBookmarks = !showAllBookmarks;
     bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
     renderBookmarks();
+  });
+}
+
+if (copyBookmarksBtn) {
+  copyBookmarksBtn.addEventListener('click', async () => {
+    if (bookmarkedProjects.length === 0) {
+      showToast('No bookmarks to copy!');
+      return;
+    }
+    const textToCopy = bookmarkedProjects.map(p => {
+      const projectName = p[1];
+      const projectLink = new URL(p[2], window.location.href).href;
+      return `${projectName} - ${projectLink}`;
+    }).join('\n');
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      showToast('Bookmarks copied to clipboard!');
+    } catch (err) {
+      showToast('Failed to copy bookmarks.');
+    }
   });
 }
 
@@ -952,8 +979,9 @@ function initFilterChips() {
 }
 
 /* ============================================================
-   LIVE SEARCH
+   LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
+
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
@@ -963,10 +991,20 @@ function initSearch() {
     currentPage = 1;
     renderGrid();
   });
+  
+  // Tech stack dropdown filter listener
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) {
+    techStack.addEventListener('change', () => {
+      techStackFilter = techStack.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
 }
+
 function initSorting() {
   const sortSelect = document.getElementById('sortProjects');
-
   if (!sortSelect) return;
 
   sortSelect.addEventListener('change', (e) => {
@@ -975,6 +1013,7 @@ function initSorting() {
     renderGrid();
   });
 }
+
 /* ============================================================
    TECH STACK SEARCH INITIALIZATION
    ============================================================ */
@@ -984,45 +1023,35 @@ function initTechStackSearch() {
 
   if (!input) return;
 
-  // Debounce timer for performance
   let debounceTimer;
 
-  // Listen for input changes
   input.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
-
-    // Debounce: wait 300ms after user stops typing
     debounceTimer = setTimeout(() => {
       const value = e.target.value.trim().toLowerCase();
 
       if (value) {
-        // Split by comma or space to support multiple technologies
-        // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-
         techStackFilters = [...new Set(techs)];
-
         updateTechFilterDisplay();
+        currentPage = 1;
         renderGrid();
       } else {
-        // Empty input = clear all filters
         clearAllTechFilters();
       }
-    }, 300); // 300ms debounce delay
+    }, 300);
   });
 
-  // Clear button functionality
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       clearAllTechFilters();
     });
   }
 
-  // Optional: Add Enter key support
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      input.blur(); // Trigger the debounced input event
+      input.blur();
     }
   });
 }
@@ -1031,28 +1060,34 @@ function initTechStackSearch() {
    SEARCH CONTROLS
    ============================================================ */
 const searchInput = document.getElementById('searchInput');
-const clearBtn = document.getElementById('clearSearch');
+const clearSearchBtn = document.getElementById('clearSearch');
 
 function syncProjectCounts() {
-  const total = PROJECTS.length.toLocaleString();
-
-  const countNodes = [
-    document.getElementById('projectCount'),
-    document.getElementById('allCount')
-  ];
+  let filtered = [...PROJECTS];
+  
+  // Apply search filter
+  if (searchQuery) {
+    filtered = filtered.filter(([day, name]) => 
+      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      day.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+  
+  const total = filtered.length.toLocaleString();
+  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
   });
 
   if (searchInput) {
-    searchInput.placeholder = `Search ${total} projects…`;
+    searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 }
 
 // Clear button functionality
-if (searchInput && clearBtn) {
-  clearBtn.addEventListener("click", () => {
+if (searchInput && clearSearchBtn) {
+  clearSearchBtn.addEventListener("click", () => {
     searchInput.value = "";
     searchInput.dispatchEvent(new Event("input"));
     searchInput.focus();
@@ -1067,7 +1102,7 @@ if (searchInput && clearBtn) {
   });
 }
 
-// initialize
+// Initialize
 syncProjectCounts();
 
 /* ============================================================
@@ -1088,7 +1123,7 @@ function updateNavbar() {
         `;
   const otherLink = isRoot
     ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html">Home</a>`;
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>`;
 
   if (username) {
     container.innerHTML = `
@@ -1111,7 +1146,7 @@ function updateNavbar() {
     container.innerHTML = `
             ${themeButton}
             ${otherLink}
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
             <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
@@ -1267,7 +1302,7 @@ window.addEventListener('resize', () => {
    (Required for HTML onclick handlers)
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
-window.clearAllTechFilters = clearAllTechFilters; 
+window.clearAllTechFilters = clearAllTechFilters;
 
 // Particle Network Background
 (function () {
@@ -1289,7 +1324,7 @@ window.clearAllTechFilters = clearAllTechFilters;
         y: Math.random() * H,
         vx: (Math.random() - 0.5) * 0.3,
         vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 3 + 1, 
+        r: Math.random() * 3 + 1,
         hue: [220, 260, 280][Math.floor(Math.random() * 3)],
         alpha: Math.random() * 0.8 + 0.4,
       });
@@ -1330,3 +1365,72 @@ window.clearAllTechFilters = clearAllTechFilters;
   window.addEventListener('resize', () => { resize(); init(); });
   resize(); init(); draw();
 })();
+
+// =============================================
+// PERSISTENT FILTERS & SEARCH — Issue #3320
+// =============================================
+
+function getQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    search: params.get('search') || '',
+    category: params.get('category') || 'all'
+  };
+}
+
+function updateURL(search, category) {
+  const params = new URLSearchParams();
+  if (search) params.set('search', search);
+  if (category && category !== 'all') params.set('category', category);
+  const newURL = params.toString()
+    ? `${window.location.pathname}?${params.toString()}`
+    : window.location.pathname;
+  history.pushState({ search, category }, '', newURL);
+}
+
+function restoreStateFromURL() {
+  const { search, category } = getQueryParams();
+  const searchInput = document.getElementById('search') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('.search-input');
+  if (searchInput && search) searchInput.value = search;
+  const categoryFilter = document.querySelector('select') ||
+    document.getElementById('category');
+  if (categoryFilter && category !== 'all') categoryFilter.value = category;
+  if (search || category !== 'all') applyFilters(search, category);
+}
+
+function applyFilters(search, category) {
+  const cards = document.querySelectorAll('.card, .project-card, .box');
+  cards.forEach(card => {
+    const title = (card.querySelector('h3,h4,.title')?.textContent || '').toLowerCase();
+    const tag = (card.dataset.category || card.dataset.tags || '').toLowerCase();
+    const matchSearch = !search || title.includes(search.toLowerCase());
+    const matchCategory = category === 'all' || tag.includes(category.toLowerCase());
+    card.style.display = matchSearch && matchCategory ? '' : 'none';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  restoreStateFromURL();
+  const searchInput = document.getElementById('search') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('.search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const { category } = getQueryParams();
+      updateURL(searchInput.value, category);
+      applyFilters(searchInput.value, category);
+    });
+  }
+  const categoryFilter = document.querySelector('select') ||
+    document.getElementById('category');
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener('popstate', () => restoreStateFromURL());
+});
