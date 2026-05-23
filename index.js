@@ -904,6 +904,17 @@ document.addEventListener('click', (e) => {
 function initFilterChips() {
   const chips = document.querySelectorAll('.chip[data-filter]');
   chips.forEach((chip) => {
+    // Calculate and append project count
+    const filterKey = chip.dataset.filter;
+    let count = 0;
+    if (filterKey === 'all') {
+      count = PROJECTS.length;
+    } else {
+      const targetCategory = FILTER_CATEGORY_MAP[filterKey];
+      count = PROJECTS.filter(item => getCategoryFromTags(item[3], item[1]) === targetCategory).length;
+    }
+    chip.textContent = `${chip.textContent.trim()} (${count})`;
+
     chip.addEventListener('click', () => {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
