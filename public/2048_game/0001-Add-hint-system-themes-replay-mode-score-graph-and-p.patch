@@ -1,0 +1,639 @@
+From eb6c6bb0942929920b53265c9d9bb82016570823 Mon Sep 17 00:00:00 2001
+From: Omm Dutta <ommdutta124@gmail.com>
+Date: Fri, 22 May 2026 00:36:14 +0530
+Subject: [PATCH] Add hint system, themes, replay mode, score graph and pause
+ functionality
+
+---
+ public/2048_game/index.html | 100 ++++++++++++--------
+ public/2048_game/script.js  | 180 ++++++++++++++++++++++++++++++++++--
+ public/2048_game/style.css  | 137 +++++++++++++++++++++++++--
+ 3 files changed, 364 insertions(+), 53 deletions(-)
+
+diff --git a/public/2048_game/index.html b/public/2048_game/index.html
+index d71e5bcd..70f56d4f 100644
+--- a/public/2048_game/index.html
++++ b/public/2048_game/index.html
+@@ -1,5 +1,6 @@
+ <!DOCTYPE html>
+ <html lang="en">
++
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+@@ -8,7 +9,9 @@
+   <link rel="preconnect" href="https://fonts.googleapis.com" />
+   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+   <link rel="stylesheet" href="style.css" />
++  <style id="theme-style"></style>
+ </head>
++
+ <body class="light">
+ 
+   <div id="g">
+@@ -45,20 +48,31 @@
+         <div class="btns">
+           <button class="btn" id="nb" aria-label="New Game">New Game</button>
+           <button class="btn sm" id="ub" aria-label="Undo last move">↩ Undo</button>
++          <button class="btn sm" id="pausebtn" aria-label="Pause game" style="display:none">⏸ Pause</button>
++          <button class="btn sm" id="hintbtn" aria-label="Hint">💡 Hint</button>
+         </div>
+         <div class="top-icons">
+           <button class="icon-btn" id="stbtn" title="View Stats" aria-label="View Stats">📊</button>
+           <button class="icon-btn" id="sdbtn" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
+-          <button class="icon-btn" id="tb"    title="Toggle Theme" aria-label="Toggle Theme">☀</button>
++          <button class="icon-btn" id="tb" title="Toggle Theme" aria-label="Toggle Theme">☀</button>
+         </div>
+       </div>
+ 
+       <!-- Mode selector -->
+       <div class="mode-row" role="group" aria-label="Game mode">
+-        <button class="mode-btn active" data-mode="classic">Classic</button>
+-        <button class="mode-btn" data-mode="timed">⏱ 60s</button>
+-        <button class="mode-btn" data-mode="zen">Zen 5×5</button>
+-      </div>
++  <div class="theme-row" role="group" aria-label="Tile theme">
++    <span class="theme-label">Theme:</span>
++    <button class="theme-btn active" data-theme="classic">Classic</button>
++    <button class="theme-btn" data-theme="ocean">🌊 Ocean</button>
++    <button class="theme-btn" data-theme="neon">⚡ Neon</button>
++    <button class="theme-btn" data-theme="retro">🎮 Retro</button>
++  </div>
++  <div class="mode-btns-row">
++    <button class="mode-btn active" data-mode="classic">Classic</button>
++    <button class="mode-btn" data-mode="timed">⏱ 60s</button>
++    <button class="mode-btn" data-mode="zen">Zen 5×5</button>
++  </div>
++</div>
+ 
+       <!-- Timer bar (timed mode only) -->
+       <div class="timer-bar" id="tbar" aria-hidden="true">
+@@ -75,41 +89,52 @@
+       <!-- Combo streak -->
+       <div class="streak" id="streak" role="status" aria-live="polite"></div>
+ 
+-      <!-- Game board wrapper -->
+-      <div class="wrap" id="wr">
+-        <div class="board" id="bd" role="grid" aria-label="Game board"></div>
+-        <div class="tiles-layer" id="tl" aria-hidden="true"></div>
++      
++   <!-- Game board wrapper -->
++<div class="wrap" id="wr">
++  <div class="board" id="bd" role="grid" aria-label="Game board"></div>
++  <div class="tiles-layer" id="tl" aria-hidden="true"></div>
++
++  <!-- Game-over / win overlay -->
++  <div id="ov" style="display:none" role="dialog" aria-modal="true" aria-label="Game result"></div>
++
++  <!-- Achievement pop-up -->
++  <div class="achievement" id="ach" role="alert">
++    <div class="ach-title">Achievement Unlocked</div>
++    <div id="ach-msg"></div>
++  </div>
++
++  <!-- Toast notification -->
++  <div class="toast" id="toast" role="status" aria-live="polite"></div>
++  <div class="hint-arrow" id="hint-arrow"></div>
++
++  <!-- Stats modal -->
++  <div class="stats-modal" id="stats-modal" role="dialog" aria-modal="true" aria-label="Your Statistics">
++    <div class="stats-inner">
++      <h2 class="stats-title">Your Stats</h2>
++
++      <div class="stats-grid">
++        <div class="stat-card"><div class="lbl">Best Score</div><div class="val" id="st-best">0</div></div>
++        <div class="stat-card"><div class="lbl">Games Played</div><div class="val" id="st-games">0</div></div>
++        <div class="stat-card"><div class="lbl">Wins</div><div class="val" id="st-wins">0</div></div>
++        <div class="stat-card"><div class="lbl">Best Tile</div><div class="val" id="st-tile">2</div></div>
++      </div>
+ 
+-        <!-- Game-over / win overlay -->
+-        <div id="ov" style="display:none" role="dialog" aria-modal="true" aria-label="Game result"></div>
++      <div class="graph-section">
++        <div class="ach-list-title">Last 10 Games</div>
++        <canvas id="score-graph" style="width:100%;height:80px;"></canvas>
++      </div>
+ 
+-        <!-- Achievement pop-up -->
+-        <div class="achievement" id="ach" role="alert">
+-          <div class="ach-title">Achievement Unlocked</div>
+-          <div id="ach-msg"></div>
+-        </div>
++      <div class="ach-list">
++        <div class="ach-list-title">Achievements</div>
++        <div id="ach-badges"></div>
++      </div>
+ 
+-        <!-- Toast notification -->
+-        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+-
+-        <!-- Stats modal -->
+-        <div class="stats-modal" id="stats-modal" role="dialog" aria-modal="true" aria-label="Your Statistics">
+-          <div class="stats-inner">
+-            <h2 class="stats-title">Your Stats</h2>
+-            <div class="stats-grid">
+-              <div class="stat-card"><div class="lbl">Best Score</div><div class="val" id="st-best">0</div></div>
+-              <div class="stat-card"><div class="lbl">Games Played</div><div class="val" id="st-games">0</div></div>
+-              <div class="stat-card"><div class="lbl">Wins</div><div class="val" id="st-wins">0</div></div>
+-              <div class="stat-card"><div class="lbl">Best Tile</div><div class="val" id="st-tile">2</div></div>
+-            </div>
+-            <div class="ach-list">
+-              <div class="ach-list-title">Achievements</div>
+-              <div id="ach-badges"></div>
+-            </div>
+-            <button class="btn" id="close-stats">Close</button>
+-          </div>
+-        </div>
+-      </div><!-- /.wrap -->
++      <button class="btn" id="close-stats">Close</button>
++    </div>
++  </div>
++
++</div><!-- /.wrap -->
+ 
+       <p class="hint">Arrow keys · WASD · Swipe to play</p>
+     </div><!-- /#inner -->
+@@ -117,4 +142,5 @@
+ 
+   <script src="script.js"></script>
+ </body>
++
+ </html>
+\ No newline at end of file
+diff --git a/public/2048_game/script.js b/public/2048_game/script.js
+index 91c3b10b..d2bf0598 100644
+--- a/public/2048_game/script.js
++++ b/public/2048_game/script.js
+@@ -34,6 +34,33 @@ const TILE_STYLES = {
+   2048: { fontSize: '22px' },
+ };
+ 
++
++const THEMES = {
++  classic: {},  
++  ocean:   { 2:'#e0f7fa,#b2ebf2', 4:'#80deea,#26c6da', 8:'#00bcd4,#0097a7', 16:'#006064,#00838f', 32:'#004d6e,#01579b', 64:'#0d47a1,#1565c0', 128:'#1a237e,#283593', 256:'#311b92,#4527a0', 512:'#4a148c,#6a1b9a', 1024:'#880e4f,#ad1457', 2048:'#b71c1c,#c62828' },
++  neon:    { 2:'#f0f,#c0f', 4:'#0ff,#09f', 8:'#0f0,#0a0', 16:'#ff0,#fa0', 32:'#f60,#f00', 64:'#f0a,#c00', 128:'#60f,#30c', 256:'#0cf,#09c', 512:'#0fc,#0c9', 1024:'#fc0,#f90', 2048:'#f0f,#f00' },
++  retro:   { 2:'#f5deb3,#deb887', 4:'#d2691e,#a0522d', 8:'#8b4513,#6b3410', 16:'#556b2f,#3b5323', 32:'#2e8b57,#1e6b47', 64:'#008080,#006060', 128:'#4682b4,#2c5f8a', 256:'#6a5acd,#483d8b', 512:'#9370db,#7b52c0', 1024:'#c71585,#a01060', 2048:'#dc143c,#b01030' },
++};
++
++let currentTheme = 'classic';
++
++function applyTheme(name) {
++  currentTheme = name;
++  const map = THEMES[name];
++  document.querySelectorAll('.theme-btn').forEach(b =>
++    b.classList.toggle('active', b.dataset.theme === name));
++  if (!map || Object.keys(map).length === 0) {
++    document.getElementById('theme-style').textContent = '';
++    return;
++  }
++  const css = Object.entries(map).map(([val, grad]) =>
++    `.tile[data-val="${val}"] { background: linear-gradient(135deg,${grad}) !important; }`
++  ).join('\n');
++  document.getElementById('theme-style').textContent = css;
++  try { localStorage.setItem('2048theme', name); } catch(_) {}
++}
++
++
+ const PARTICLE_COLORS = ['#ff6b6b', '#ffd54f', '#69f0ae', '#4fc3f7', '#e040fb', '#ff9800'];
+ 
+ const ACHIEVEMENTS = [
+@@ -58,7 +85,7 @@ let N        = 4;       // grid size
+ let TS       = 94;      // tile size in px
+ let GAP      = 10;      // gap between tiles
+ let PAD      = 12;      // board padding
+-
++let paused = false;
+ let board, score, best, prevBoard, prevScore;
+ let moves    = 0;
+ let combo    = 0;
+@@ -68,6 +95,9 @@ let dark     = false;
+ let soundOn  = true;
+ let mode     = 'classic';
+ 
++let moveHistory = [];
++let isReplaying = false;
++
+ let timerInterval = null;
+ let timeLeft      = 60;
+ 
+@@ -84,10 +114,79 @@ function loadStats () {
+   try { const s = localStorage.getItem('2048stats'); if (s) stats = JSON.parse(s); } catch (_) {}
+ }
+ 
+-function saveStats () {
++
++
++function saveStats() {
+   try { localStorage.setItem('2048stats', JSON.stringify(stats)); } catch (_) {}
+ }
+ 
++function logGameScore(s) {
++  stats.scoreHistory = stats.scoreHistory || [];
++  stats.scoreHistory.push(s);
++  if (stats.scoreHistory.length > 10) stats.scoreHistory.shift();
++  saveStats();
++}
++
++function togglePause() {
++  if (mode !== 'timed' || over) return;
++  paused = !paused;
++  const btn = document.getElementById('pausebtn');
++  if (paused) {
++    clearInterval(timerInterval);
++    btn.textContent = '▶ Resume';
++    showOverlayPause();
++  } else {
++    startTimer();
++    btn.textContent = '⏸ Pause';
++    document.getElementById('ov').style.display = 'none';
++  }
++}
++
++// REPLACE this entire function:
++function showOverlayPause() {
++  const ov = document.getElementById('ov');
++  ov.className = 'ov';
++  ov.innerHTML = `
++    <div class="ov-title" style="color:#4fc3f7">⏸ Paused</div>
++    <div class="ov-sub">Game is paused</div>
++    <button class="btn" id="ov-resume-btn">▶ Resume</button>
++  `;
++  ov.style.display = 'flex';
++  document.getElementById('ov-resume-btn').addEventListener('click', togglePause);
++}
++
++
++function drawScoreGraph() {
++  const history = stats.scoreHistory || [];
++  const cv = document.getElementById('score-graph');
++  if (!cv || history.length < 2) return;
++  const ctx = cv.getContext('2d');
++  const W = cv.width = cv.offsetWidth || 260;
++  const H = cv.height = 80;
++  ctx.clearRect(0, 0, W, H);
++  const max = Math.max(...history, 1);
++  const step = W / (history.length - 1);
++  ctx.beginPath();
++  ctx.strokeStyle = '#ff9800';
++  ctx.lineWidth = 2.5;
++  history.forEach((v, i) => {
++    const x = i * step;
++    const y = H - (v / max) * (H - 8) - 4;
++    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
++  });
++  ctx.stroke();
++  // Dots
++  history.forEach((v, i) => {
++    const x = i * step;
++    const y = H - (v / max) * (H - 8) - 4;
++    ctx.beginPath();
++    ctx.arc(x, y, 3.5, 0, Math.PI * 2);
++    ctx.fillStyle = '#ffd54f';
++    ctx.fill();
++  });
++}
++
++
+ function loadBest () {
+   try { return parseInt(localStorage.getItem('2048best'), 10) || 0; } catch (_) { return 0; }
+ }
+@@ -110,6 +209,45 @@ function loadGame () {
+   } catch (_) { return false; }
+ }
+ 
++
++
++document.getElementById('hintbtn').addEventListener('click', () => {
++  const dir = getBestHint();
++  showToast(`💡 Try: ${dir.toUpperCase()}`);
++  const arrows = { left: '←', right: '→', up: '↑', down: '↓' };
++  const el = document.getElementById('hint-arrow');
++  el.textContent = arrows[dir];
++  el.classList.add('show');
++  setTimeout(() => el.classList.remove('show'), 1200);
++});
++
++document.querySelectorAll('.theme-btn').forEach(btn => {
++  btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
++});
++
++function getBestHint() {
++  const dirs = ['left', 'right', 'up', 'down'];
++  let bestDir = null, bestScore = -1;
++  dirs.forEach(dir => {
++    const rotTurns = { right: 0, down: 1, left: 2, up: 3 };
++    let tmp = rotateBoard(board, rotTurns[dir]);
++    let pts = 0, merges = 0;
++    for (let r = 0; r < N; r++) {
++      const res = slideRow([...tmp[r]]);
++      pts += res.pts;
++      if (res.pts > 0) merges++;
++    }
++    if (pts + merges * 10 > bestScore) { bestScore = pts + merges * 10; bestDir = dir; }
++  });
++  return bestDir;
++}
++
++
++document.getElementById('pausebtn').addEventListener('click', togglePause);
++
++
++
++
+ function clearSavedGame () {
+   try { localStorage.removeItem('2048state'); } catch (_) {}
+ }
+@@ -188,7 +326,7 @@ function rotateBoard (b, turns) {
+    ========================================================= */
+ 
+ function doMove (dir) {
+-  if (over) return;
++  if (over || paused) return;
+ 
+   prevBoard = copyBoard(board);
+   prevScore = score;
+@@ -208,6 +346,7 @@ function doMove (dir) {
+   }
+ 
+   if (!moved) { combo = 0; return; }
++  if (!isReplaying) moveHistory.push(dir);
+ 
+   board = rotateBoard(tmp, (4 - rotTurns[dir]) % 4);
+   score += pts;
+@@ -238,6 +377,7 @@ function doMove (dir) {
+     stats.games++;
+     stats.best = Math.max(stats.best, score);
+     stats.bestTile = Math.max(stats.bestTile, mt);
++    logGameScore(score);
+     saveStats();
+     clearSavedGame();
+     if (mode === 'timed') clearInterval(timerInterval);
+@@ -251,6 +391,7 @@ function doMove (dir) {
+     stats.games++;
+     stats.best = Math.max(stats.best, score);
+     stats.bestTile = Math.max(stats.bestTile, mt);
++    logGameScore(score); 
+     saveStats();
+     clearSavedGame();
+     setTimeout(() => showOverlay('lose'), 350);
+@@ -280,8 +421,10 @@ function init (resume = false) {
+     board    = Array.from({ length: N }, () => Array(N).fill(0));
+     score    = 0;
+     moves    = 0;
++    moveHistory = [];
+     combo    = 0;
+     over     = false;
++    paused = false;
+     won      = false;
+     prevBoard = null;
+     prevScore = 0;
+@@ -305,7 +448,9 @@ function init (resume = false) {
+   stopConfetti();
+ 
+   document.getElementById('ov').style.display = 'none';
++  document.getElementById('pausebtn').textContent = '⏸ Pause';
+   document.getElementById('stats-modal').classList.remove('open');
++  document.getElementById('pausebtn').style.display = mode === 'timed' ? 'inline-flex' : 'none';
+ }
+ 
+ /* =========================================================
+@@ -331,10 +476,27 @@ function updateTimerBar () {
+   fill.className = 'timer-fill' + (timeLeft <= 15 ? ' danger' : '');
+ }
+ 
++
++async function watchReplay() {
++  if (!moveHistory.length) { showToast('No moves to replay'); return; }
++  const snapshot = [...moveHistory];
++  isReplaying = true;
++  init();   // fresh board, same mode
++  isReplaying = true;  // init resets it via moveHistory=[], re-set flag
++  document.getElementById('ov').style.display = 'none';
++
++  for (const dir of snapshot) {
++    await new Promise(res => setTimeout(res, 380));
++    doMove(dir);
++  }
++  isReplaying = false;
++  showToast('Replay complete!');
++}
++
++
+ /* =========================================================
+    Rendering
+    ========================================================= */
+-
+ function renderBoard () {
+   const bd = document.getElementById('bd');
+   bd.innerHTML = '';
+@@ -458,9 +620,11 @@ function showOverlay (type) {
+       <div class="ov-stat"><div class="ov-stat-lbl">Best Tile</div><div class="ov-stat-val">${maxTile()}</div></div>
+     </div>
+     <button class="btn" id="ov-replay-btn">Play Again</button>
++    <button class="btn sm" id="ov-replay-btn2" style="margin-top:4px">▶ Watch Replay</button>
+   `;
+   ov.style.display = 'flex';
+   document.getElementById('ov-replay-btn').addEventListener('click', () => init());
++  document.getElementById('ov-replay-btn2').addEventListener('click', watchReplay);
+ }
+ 
+ function showToast (msg) {
+@@ -502,7 +666,7 @@ function openStats () {
+   document.getElementById('st-games').textContent = stats.games;
+   document.getElementById('st-wins').textContent  = stats.wins;
+   document.getElementById('st-tile').textContent  = stats.bestTile;
+-
++  drawScoreGraph();
+   const badges = document.getElementById('ach-badges');
+   badges.innerHTML = '';
+   ACHIEVEMENTS.forEach(a => {
+@@ -675,8 +839,8 @@ const KEY_MAP = {
+ };
+ 
+ document.addEventListener('keydown', e => {
+-  const dir = KEY_MAP[e.key];
+-  if (dir) { e.preventDefault(); doMove(dir); }
++ const dir = KEY_MAP[e.key];
++  if (dir) { e.preventDefault(); if (!paused) doMove(dir); }
+ });
+ 
+ /* Touch / swipe */
+@@ -698,5 +862,7 @@ document.getElementById('wr').addEventListener('touchend', e => {
+    ========================================================= */
+ 
+ loadStats();
++const savedTheme = localStorage.getItem('2048theme') || 'classic';
++applyTheme(savedTheme);
+ best = loadBest();
+ init(true);
+\ No newline at end of file
+diff --git a/public/2048_game/style.css b/public/2048_game/style.css
+index 35a85060..9abfff95 100644
+--- a/public/2048_game/style.css
++++ b/public/2048_game/style.css
+@@ -212,8 +212,27 @@ body.dark .logo {
+ /* ---------- Mode buttons ---------- */
+ .mode-row {
+   display: flex;
++  flex-direction: column;
+   gap: 6px;
+   margin-bottom: 9px;
++}
++
++.mode-row > .theme-row {
++  display: flex;
++  align-items: center;
++  gap: 5px;
++  flex-wrap: nowrap;
++  overflow-x: auto;
++  scrollbar-width: none;
++  -ms-overflow-style: none;
++  padding-bottom: 2px;
++}
++
++.mode-row > .theme-row::-webkit-scrollbar { display: none; }
++
++.mode-btns-row {
++  display: flex;
++  gap: 6px;
+   justify-content: center;
+ }
+ 
+@@ -638,23 +657,123 @@ body.dark  .stats-modal { background: rgba(0, 10, 25, 0.94); }
+ /* ---------- Responsive ---------- */
+ @media (max-width: 480px) {
+   :root {
+-    --tile-size: 72px;
+-    --tile-gap: 8px;
+-    --board-pad: 10px;
++    --tile-size: 68px;
++    --tile-gap: 7px;
++    --board-pad: 8px;
+   }
+ 
+-  .logo       { font-size: 40px; }
+-  .sc-val     { font-size: 18px; }
+-  .sc         { min-width: 64px; padding: 6px 10px; }
++  #g { padding: 14px 10px 20px; }
++
++  .logo       { font-size: 38px; }
++  .sc-val     { font-size: 17px; }
++  .sc         { min-width: 60px; padding: 5px 8px; }
++
++  .btns       { gap: 4px; }
++  .btn        { padding: 6px 10px; font-size: 12px; }
++  .btn.sm     { padding: 5px 8px;  font-size: 11px; }
++
++  .wrap       { width: 100%; overflow: visible; }
++
+   .tile[data-val="2"],
+   .tile[data-val="4"],
+   .tile[data-val="8"],
+   .tile[data-val="16"],
+   .tile[data-val="32"],
+-  .tile[data-val="64"]   { font-size: 28px; }
++  .tile[data-val="64"]   { font-size: 26px; }
+   .tile[data-val="128"],
+   .tile[data-val="256"],
+-  .tile[data-val="512"]  { font-size: 22px; }
++  .tile[data-val="512"]  { font-size: 20px; }
+   .tile[data-val="1024"],
+-  .tile[data-val="2048"] { font-size: 17px; }
++  .tile[data-val="2048"] { font-size: 16px; }
++}
++@media (max-width: 360px) {
++  :root {
++    --tile-size: 58px;
++    --tile-gap: 6px;
++    --board-pad: 7px;
++  }
++
++  #g { padding: 12px 8px 16px; }
++  .logo { font-size: 32px; }
++}
++
++#g {
++  
++  overflow: visible;   
++}
++.arrow {
++  position: absolute;
++  top: 50%; left: 50%;
++  transform: translate(-50%, -50%);
++  font-size: 72px;
++  color: #fff;
++  opacity: 0;
++  pointer-events: none;
++  z-index: 35;
++  text-shadow: 0 0 24px rgba(255,255,255,0.9);
++  transition: opacity 0.3s;
++}
++.hint-arrow.show { opacity: 1; animation: hpulse 1.2s ease forwards; }
++@keyframes hpulse {
++  0%   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
++  60%  { opacity: 1; transform: translate(-50%,-50%) scale(1.2); }
++  100% { opacity: 0; transform: translate(-50%,-50%) scale(0.9); }
++}
++.graph-section {
++  margin-bottom: 14px;
++  background: rgba(255,255,255,0.05);
++  border-radius: 10px;
++  padding: 10px;
++  border: 1px solid rgba(255,255,255,0.1);
++}
++/* ---------- Theme row ---------- */
++.theme-row {
++  display: flex;
++  align-items: center;
++  gap: 5px;
++  margin-bottom: 6px;
++  flex-wrap: nowrap;        /* prevent wrapping */
++  overflow-x: auto;         /* scroll if needed */
++  scrollbar-width: none;    /* hide scrollbar Firefox */
++  -ms-overflow-style: none; /* hide scrollbar IE */
++  padding-bottom: 2px;
++}
++
++.theme-row::-webkit-scrollbar { display: none; } /* hide scrollbar Chrome */
++
++.theme-label {
++  font-size: 11px;
++  font-weight: 800;
++  color: rgba(255,255,255,0.4);
++  letter-spacing: 0.5px;
++  white-space: nowrap;
++  flex-shrink: 0;           /* label never shrinks */
++}
++
++.theme-btn {
++  font-family: var(--font);
++  font-size: 11px;
++  font-weight: 800;
++  border: 1.5px solid rgba(255,255,255,0.2);
++  background: rgba(255,255,255,0.07);
++  color: rgba(255,255,255,0.55);
++  border-radius: 7px;
++  padding: 4px 9px;
++  cursor: pointer;
++  transition: all 0.2s;
++  white-space: nowrap;      /* button text never wraps */
++  flex-shrink: 0;           /* buttons never shrink */
++}
++
++.theme-btn.active {
++  background: rgba(255,255,255,0.2);
++  color: #fff;
++  border-color: rgba(255,255,255,0.45);
++}
++@media (max-width: 420px) {
++  .theme-btn { 
++    padding: 3px 7px; 
++    font-size: 10px; 
++  }
++  .theme-label { font-size: 10px; }
+ }
+\ No newline at end of file
+-- 
+2.50.1.windows.1
+

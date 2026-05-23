@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Trip Advisor</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:url("images/iceland.jpg");
+      background-size:cover;
+      background-position:center;
+    }
+
+    .container{
+      width:350px;
+      background:rgba(0,0,0,0.75);
+      padding:40px;
+      border-radius:15px;
+      color:white;
+      backdrop-filter:blur(6px);
+      box-shadow:0 0 20px rgba(0,0,0,0.5);
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:30px;
+      font-style:italic;
+    }
+
+    .input-box{
+      margin-bottom:20px;
+    }
+
+    .input-box input{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      outline:none;
+      font-size:16px;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:30px;
+      background:#00aa55;
+      color:white;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      background:#00cc66;
+    }
+
+    p{
+      text-align:center;
+      margin-top:20px;
+    }
+
+    a{
+      color:#00ff99;
+      text-decoration:none;
+    }
+
+    @media(max-width:500px){
+      .container{
+        width:90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>LOGIN</h1>
+
+  <div class="input-box">
+    <input type="email" placeholder="Enter Email">
+  </div>
+
+  <div class="input-box">
+    <input type="password" placeholder="Enter Password">
+  </div>
+
+  <button>Login</button>
+
+  <p>
+    Don't have an account?
+    <a href="signup.html">Sign Up</a>
+  </p>
+</div>
+
+</body>
+</html>
