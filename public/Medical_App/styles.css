@@ -20,8 +20,13 @@ body {
     margin-bottom: 20px;
 }
 
-.hero h1 {
-    font-size: 2.5rem;
+main{
+    width: 92%;
+    max-width: 850px;
+    background: rgba(255,255,255,0.96);
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 .dashboard {
@@ -56,22 +61,29 @@ button {
     border: 1px solid #ccc;
 }
 
-button {
-    background: #2563eb;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
+button{
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
 }
 
 button:hover {
     background: #1d4ed8;
 }
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-    gap: 15px;
+form{
+    gap: 10px;
+}
+
+#loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color:#3498db;
+    font-weight: bold;
+}
+#statusMessage{
+    white-space: pre-line;
+    margin-top: 10px;
 }
 
 .stat-box {
@@ -146,23 +158,60 @@ button:hover {
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.remedy-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(32, 180, 134, 0.45);
-    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
+#toast-container{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.remedy-card h2 {
-    font-size: 1.3rem;
+.toast{
+    min-width: 260px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.remedy-card p {
-    line-height: 1.6;
-    color: #334e68;
+.toast.success{
+    background: #2ecc71;
 }
 
-@media (max-width: 700px) {
-    .remedy-grid {
-        grid-template-columns: 1fr;
+.toast.error{
+    background: #e74c3c;
+}
+
+.toast.info{
+    background: #3498db;
+}
+
+.toast.warning{
+    background: #f39c12;
+}
+
+.toast button{
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+@keyframes slideIn{
+    from{
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to{
+        transform: translateX(0);
+        opacity: 1;
     }
 }
