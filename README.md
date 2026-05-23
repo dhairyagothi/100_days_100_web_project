@@ -55,6 +55,35 @@ The website features:
 - Beautiful dark/light theme toggle
 - Responsive design for all devices
 
+## 🛠️ Installation
+
+Follow these steps to run the project locally for development or testing:
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/DebasmitaBose0/100_days_100_web_project.git
+    cd 100_days_100_web_project/100_days_100_web_project
+    ```
+
+2. Install dependencies (optional — only required for tooling):
+
+    ```bash
+    npm install
+    ```
+
+3. Start a local static server:
+
+    ```bash
+    npm run dev
+    ```
+
+4. Open your browser at `http://localhost:3000` to preview the site.
+
+Notes:
+- The site is primarily static — `npm run dev` uses `serve` to host files locally.
+- Use `npm run lint` to run basic HTML linting for changed files.
+
 ## 📚 All Projects (112 Total)
 
 <div align="center">
