@@ -9,7 +9,6 @@
   <body>
     <div class="page">
       <div class="bmi-grid">
-        
         <!-- Left: Calculator -->
         <div class="card">
           <div class="top-bar">
@@ -21,25 +20,45 @@
               aria-label="Toggle dark mode"
             >
               <!-- Sun icon (visible in dark mode → click to go light) -->
-              <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="1" x2="12" y2="3"/>
-                <line x1="12" y1="21" x2="12" y2="23"/>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                <line x1="1" y1="12" x2="3" y2="12"/>
-                <line x1="21" y1="12" x2="23" y2="12"/>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              <svg
+                class="icon-sun"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
               </svg>
               <!-- Moon icon (visible in light mode → click to go dark) -->
-              <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3
-                         a7 7 0 0 0 9.79 9.79z"/>
+              <svg
+                class="icon-moon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 12.79A9 9 0 1 1 11.21 3
+                         a7 7 0 0 0 9.79 9.79z"
+                />
               </svg>
             </button>
           </div>
@@ -75,7 +94,13 @@
           <div class="field-row">
             <div class="field">
               <div class="field-label">Age (years)</div>
-              <input type="number" id="age" placeholder="e.g. 25" min="2" max="120" />
+              <input
+                type="number"
+                id="age"
+                placeholder="e.g. 25"
+                min="2"
+                max="120"
+              />
             </div>
             <div class="field">
               <div class="field-label">Gender</div>
@@ -127,16 +152,45 @@
             <div class="bf-body">
               <div class="bf-gauge-wrap">
                 <svg class="bf-gauge" viewBox="0 0 120 120">
-                  <circle class="bf-track" cx="60" cy="60" r="52"
-                          stroke-width="7" fill="none"/>
-                  <circle class="bf-fill" id="bf-arc" cx="60" cy="60" r="52"
-                          stroke-width="7" fill="none"
-                          stroke-dasharray="326.73" stroke-dashoffset="326.73"
-                          stroke-linecap="round" />
-                  <text class="bf-pct-text" x="60" y="56" text-anchor="middle"
-                        dominant-baseline="central" id="bf-pct">—</text>
-                  <text class="bf-pct-unit" x="60" y="74" text-anchor="middle"
-                        dominant-baseline="central">% body fat</text>
+                  <circle
+                    class="bf-track"
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    stroke-width="7"
+                    fill="none"
+                  />
+                  <circle
+                    class="bf-fill"
+                    id="bf-arc"
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    stroke-width="7"
+                    fill="none"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="326.73"
+                    stroke-linecap="round"
+                  />
+                  <text
+                    class="bf-pct-text"
+                    x="60"
+                    y="56"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    id="bf-pct"
+                  >
+                    —
+                  </text>
+                  <text
+                    class="bf-pct-unit"
+                    x="60"
+                    y="74"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                  >
+                    % body fat
+                  </text>
                 </svg>
               </div>
               <div class="bf-info">
@@ -183,32 +237,32 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr id="underweight-row">
                 <td>&lt; 18.5</td>
                 <td>Underweight</td>
                 <td><span class="dot dot-blue"></span></td>
               </tr>
-              <tr>
+              <tr id="normal-row">
                 <td>18.5 – 24.9</td>
                 <td>Normal weight</td>
                 <td><span class="dot dot-green"></span></td>
               </tr>
-              <tr>
+              <tr id="overweight-row">
                 <td>25.0 – 29.9</td>
                 <td>Overweight</td>
                 <td><span class="dot dot-amber"></span></td>
               </tr>
-              <tr>
+              <tr id="obese1-row">
                 <td>30.0 – 34.9</td>
                 <td>Obese (Class I)</td>
                 <td><span class="dot dot-red1"></span></td>
               </tr>
-              <tr>
+              <tr id="obese2-row">
                 <td>35.0 – 39.9</td>
                 <td>Obese (Class II)</td>
                 <td><span class="dot dot-red2"></span></td>
               </tr>
-              <tr>
+              <tr id="obese3-row">
                 <td>≥ 40.0</td>
                 <td>Obese (Class III)</td>
                 <td><span class="dot dot-red3"></span></td>

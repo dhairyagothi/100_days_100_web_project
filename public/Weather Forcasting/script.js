@@ -1,7 +1,7 @@
 const GEOCODING_API = 'https://geocoding-api.open-meteo.com/v1/search';
 const WEATHER_API = 'https://api.open-meteo.com/v1/forecast';
 
-const COMMON_CITIES = ['Bangalore', 'Chennai', 'Hyderabad', 'Pune', 'Noida', 'Delhi'];
+const COMMON_CITIES = ['Bengaluru', 'Chennai', 'Hyderabad', 'Pune', 'Noida', 'Delhi'];
 
 const weatherFields = {
   temp: document.getElementById('temp'),
@@ -263,23 +263,44 @@ function setRowMessage(row, message) {
   });
 }
 
-function renderRowWeather(row, data) {
+function renderRowWeather(row, data, cachedHeaders = null) {
   const current = data?.current || {};
   const daily = data?.daily || {};
+  
+  // 1. Map API values directly to keys that match the exact HTML header text strings
+  const weatherMap = {
+    'Cloud_pct': Number.isFinite(current.cloud_cover) ? `${Math.round(current.cloud_cover)}%` : '—',
+    'Feels_like' : Number.isFinite(current.apparent_temperature) ? `${Math.round(current.apparent_temperature)}°C` : '—',
+    'Humidity' : Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—',
+    'Max_temp' : Number.isFinite(daily.temperature_2m_max?.[0]) ? `${Math.round(daily.temperature_2m_max[0])}°C` : '—',
+    'Min_temp' : Number.isFinite(daily.temperature_2m_min?.[0]) ? `${Math.round(daily.temperature_2m_min[0])}°C` : '—',
+    'Sunrise' : formatTime(daily.sunrise?.[0]),
+    'Sunset' : formatTime(daily.sunset?.[0]),
+    'Temp' : Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}°C` : '—',
+    'Wind_degrees' : Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—',
+    'Wind_speed' : Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—'
+  };  
+
+  let headers = cachedHeaders;
+  if (!headers) {
+    const tableEl = row.closest('table');
+    if (!tableEl) return;
+    headers = Array.from(tableEl.querySelectorAll('thead th')).map(th => th.textContent.trim());
+  }
+
   const cells = row.querySelectorAll('td');
 
-  if (cells.length < 10) return;
+  // 3. Iterate over table cells and bind data by structural name matching
+  cells.forEach((cell, index) => {
+    // index + 1 skips first header colums
+    const headerName = headers[index + 1]; // Get the header text for this cell
 
-  cells[0].textContent = Number.isFinite(current.cloud_cover) ? `${Math.round(current.cloud_cover)}%` : '—';
-  cells[1].textContent = Number.isFinite(current.apparent_temperature) ? `${Math.round(current.apparent_temperature)}°C` : '—';
-  cells[2].textContent = Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—';
-  cells[3].textContent = Number.isFinite(daily.temperature_2m_max?.[0]) ? `${Math.round(daily.temperature_2m_max[0])}°C` : '—';
-  cells[4].textContent = Number.isFinite(daily.temperature_2m_min?.[0]) ? `${Math.round(daily.temperature_2m_min[0])}°C` : '—';
-  cells[5].textContent = formatTime(daily.sunrise?.[0]);
-  cells[6].textContent = formatTime(daily.sunset?.[0]);
-  cells[7].textContent = Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}°C` : '—';
-  cells[8].textContent = Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—';
-  cells[9].textContent = Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—';
+    if(headerName && weatherMap[headerName] !== undefined) {
+      cell.textContent = weatherMap[headerName]; // Set cell text based on header mapping
+    } else {
+      cell.textContent = '—'; // Default if no mapping found
+    }
+  });
 }
 
 async function loadCityWeather(city, options = {}) {
@@ -332,7 +353,12 @@ async function loadCityWeather(city, options = {}) {
 }
 
 async function updateComparisonTable() {
-  const results = await Promise.allSettled(
+  const tableEl = commonCityRows[0]?.closest('table');
+  if (!tableEl) return;
+
+  const cachedHeaders = Array.from(tableEl.querySelectorAll('thead th')).map(th => th.textContent.trim());
+
+  await Promise.allSettled(
     commonCityRows.map(async (row) => {
       const city = row.querySelector('th[scope="row"]')?.textContent.trim();
       if (!city) return;
@@ -346,15 +372,9 @@ async function updateComparisonTable() {
       }
 
       const weatherData = await fetchWeather(location.latitude, location.longitude);
-      renderRowWeather(row, weatherData);
+      renderRowWeather(row, weatherData, cachedHeaders);
     })
   );
-
-  results.forEach((result) => {
-    if (result.status === 'rejected') {
-      console.error('Comparison table update failed:', result.reason);
-    }
-  });
 }
 
 // FIX: Clean and stable search handler
@@ -411,4 +431,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setStatus('Search for a city to load live weather data.', 'info');
 
   await loadCityWeather('Delhi', { updateTable: false });
+
+  // 2. RUN THE FIX: Populate the comparison table using your declarative mapping
+  await updateComparisonTable();
 });
