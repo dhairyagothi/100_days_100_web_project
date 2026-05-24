@@ -410,7 +410,7 @@ body.light-mode .navbar {
 .hero {
   /* FIX: was min-height:100vh with padding:100px 2rem 6rem — caused huge dead space */
   min-height: auto;
-  padding: 100px 2rem 5rem;
+  padding: 6rem 2rem 5rem;
 
   display: flex;
   align-items: center;
