@@ -110,6 +110,18 @@ h1 {
     animation: scoreBump 0.22s ease-in-out;
 }
 
+/* New Best flash animation on the HUD Best stat */
+.value.new-best {
+    animation: newBestFlash 1.5s ease-in-out forwards;
+}
+
+@keyframes newBestFlash {
+    0%   { transform: scale(1);    color: inherit; }
+    25%  { transform: scale(1.35); color: #ffd700; }
+    55%  { transform: scale(1.2);  color: #ffcd38; }
+    100% { transform: scale(1);    color: #ffd700; }
+}
+
 @keyframes scoreBump {
     0% { transform: scale(1); }
     50% { transform: scale(1.12); }
@@ -412,13 +424,14 @@ button:active {
     50% { transform: translateY(-3px) scaleX(0.98); }
 }
 
+/* Game Over overlay */
 #gameover {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: white;
-    padding: 20px;
+    padding: 20px 28px;
     border: 2px solid #e72b2b;
     color: #e72b2b;
     font-weight: bold;
@@ -426,11 +439,62 @@ button:active {
     visibility: hidden;
     border-radius: 12px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-width: 200px;
 }
 
 #gameover.over {
     opacity: 1;
     visibility: visible;
+}
+
+.gameover-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #e72b2b;
+}
+
+.gameover-scores {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 10px;
+}
+
+.gameover-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.gameover-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    font-weight: 600;
+}
+
+.gameover-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1d1d1d;
+}
+
+/* New Best message inside game over panel */
+.new-best-msg {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1aa34a;
+    margin-top: 4px;
+    animation: newBestPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes newBestPop {
+    0%   { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
 }
 
 .dynamic-obstacle {

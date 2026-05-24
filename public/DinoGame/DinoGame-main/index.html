@@ -62,8 +62,18 @@
             <div id="particles" class="particles"></div>
             <div id="dino"></div>
             <div id="gameover">
-                Game Over!<br>
-                Final Score: <span id="finalScore">0</span>
+                <div class="gameover-title">Game Over!</div>
+                <div class="gameover-scores">
+                    <div class="gameover-stat">
+                        <span class="gameover-label">Score</span>
+                        <span id="finalScore" class="gameover-value">0</span>
+                    </div>
+                    <div class="gameover-stat">
+                        <span class="gameover-label">Best</span>
+                        <span id="gameOverBest" class="gameover-value">0</span>
+                    </div>
+                </div>
+                <div id="newBestMsg" class="new-best-msg" style="display:none;">🏆 New Best!</div>
             </div>
         </div>
         <div class="mission-bar">
@@ -78,6 +88,7 @@
             <button id="restartBtn">Restart</button>
             <button id="pauseBtn" class="ghost">Pause</button>
             <button id="shopBtn" class="ghost">Shop / Skins</button>
+            <button id="resetBestBtn" class="ghost">Reset Best</button>
             <label class="select-wrap" for="difficulty">
                 <span>Difficulty</span>
                 <select id="difficulty">
