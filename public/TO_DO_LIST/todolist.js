@@ -1,6 +1,6 @@
 
 // 1. DOM Element References
-const taskInput = document.getElementById("task-input");
+const taskInput = document.getElementById("task");
 const taskTypeSelect = document.getElementById("task-type-select");
 const taskList = document.getElementById("task-list");
 const emptyState = document.getElementById("empty-state");
@@ -173,18 +173,38 @@ function showDocuments() {
 
 // 5. Theme Customization System
 function applyTheme(themeName) {
-  // Clear any theme classes on body
-  document.body.className = "";
-  
-  if (themeName !== 'sunset') {
-    document.body.classList.add(`theme-${themeName}`);
-  }
+  document.body.classList.remove(
+    "theme1",
+    "theme2",
+    "theme3",
+    "theme4",
+    "theme5"
+  );
 
-  // Explicitly manage layout active states
-  document.querySelectorAll(".theme-swatch").forEach(swatch => swatch.classList.remove("active"));
-  const mapping = { sunset: "t1", ocean: "t2", forest: "t3", midnight: "t4", aurora: "t5" };
-  document.getElementById(mapping[themeName])?.classList.add("active");
+  document.body.classList.add(themeName);
+
+  document.querySelectorAll(".theme-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  const activeBtn = document.querySelector(
+    `[data-theme="${themeName}"]`
+  );
+
+  if (activeBtn) {
+    activeBtn.classList.add("active");
+  }
 }
+document.querySelectorAll(".theme-btn").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    const theme = button.dataset.theme;
+
+    applyTheme(theme);
+
+  });
+
+});
 
 // 6. PDF System using jsPDF Global Library
 function saveAsPDF() {
