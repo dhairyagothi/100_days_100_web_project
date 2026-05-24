@@ -7,6 +7,7 @@
 }
 body {
     background: #000;
+    position: relative;
     overflow: hidden;
 }
 #particles-js {
@@ -79,7 +80,7 @@ body {
 .main .image-container p {
     color: #7f8c8d;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
     font-size: 15px;
     max-width: 500px;
     margin-left: auto;
@@ -98,14 +99,15 @@ body {
     border: 1px solid rgba(0, 188, 212, 0.2);
     backdrop-filter: blur(10px);
     gap: 18px;
+    margin-bottom: 10px;
 }
 
 .main .input .talk {
     background: linear-gradient(135deg, #00bcd4, #0066ff);
     outline: none;
     border: none;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -122,7 +124,7 @@ body {
 }
 
 .main .input .talk i {
-    font-size: 20px;
+    font-size: 16px;
     color: #aed0d0;
 }
 
@@ -137,18 +139,25 @@ body {
 }
 @media (max-width: 768px) {
     .main .image-container .image img {
-        width: 260px;
+        width: 280px;
+        max-width: 85%;
+        align-items: center;
     }
     .main .image-container h1 {
-        font-size: 36px;
-        letter-spacing: 8px;
+        color: #00bcd4;
+        text-align: center;
+        margin-top: 20px; /* Reduced from 35px */
+        margin-bottom: 8px; /* Reduced from 10px */
+        font-size: 42px; /* Slightly optimized from 48px */
+        letter-spacing: 12px;
     }
 }
 @media (max-width: 500px) {
     .main .input {
         flex-direction: column;
         border-radius: 25px;
-        padding: 20px;
+        padding: 30px 20px;
+        gap: 24px;
     }
     .main .input .content {
         text-align: center;
@@ -174,16 +183,18 @@ body {
             #ff0000
         );
     position: relative;
+    will-change: transform;
 }
 .main .input .talk.active::after {
     content: '';
     position: absolute;
-    inset: -6px;
+    inset: -3px;
     border-radius: 50%;
     border: 2px solid
         rgba(255,0,0,0.7);
     animation:
         pulse 1.2s infinite;
+        backface-visibility: hidden;
 }
 @keyframes pulse {
     0% {

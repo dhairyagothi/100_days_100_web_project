@@ -416,14 +416,4 @@ main.container {
     font-size: 0.85rem;
   }
 
-  #recommendations-card .row {
-    flex-direction: column;
-  }
-
-  #recommendations-card .border-end {
-    border-right: none !important;
-    border-bottom: 1px solid #dee2e6 !important;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-  }
 }

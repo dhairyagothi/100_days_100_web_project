@@ -72,20 +72,9 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#guide">Usage Guide</a>
-                    </li>
-
                 </ul>
 
                 <form class="d-flex" role="search">
-
-                    <input id="city" class="form-control me-2" type="search"
-                        placeholder="Search" aria-label="Search" required>
-
-                    <button class="btn btn-outline-light" type="submit" id="submit">
-                        Search
-                    </button>
 
                 </form>
 
@@ -114,16 +103,6 @@
 
     </section>
 
-    <main class="container py-4">
-
-        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-
-            <div class="col">
-
-                <div class="card mb-4 rounded-3 shadow-sm border-dark">
-
-                    <div class="card-header py-3 text-bg-dark border-dark">
-                        <h4 class="my-0 fw-normal">Temperatures</h4>
                     </div>
 
                     <div class="card-body">
@@ -308,138 +287,6 @@
                 </div>
 
             </div>
-        </div>
-
-        <h2 class="display-6 text-center mb-4" style="color: white;">
-            Weather of other Common Places
-        </h2>
-
-        <div class="table-responsive">
-
-            <table class="table text-center table-dark">
-
-                <thead>
-
-                    <tr>
-
-                        <th style="width: 34%;"></th>
-                        <th style="width: 22%;">Cloud_pct</th>
-                        <th style="width: 22%;">Feels_like</th>
-                        <th style="width: 22%;">Humidity</th>
-                        <th style="width: 22%;">Max_temp</th>
-                        <th style="width: 22%;">Min_temp</th>
-                        <th style="width: 22%;">Sunrise</th>
-                        <th style="width: 22%;">Sunset</th>
-                        <th style="width: 22%;">Temp</th>
-                        <th style="width: 22%;">Wind_degrees</th>
-                        <th style="width: 22%;">Wind_speed</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <th scope="row" class="text-start">Bengaluru</th>
-                        <td>40</td>
-                        <td>23</td>
-                        <td>23</td>
-                        <td>88</td>
-                        <td>23</td>
-                        <td>23</td>
-                        <td>5.14</td>
-                        <td>230</td>
-                        <td>1694651927</td>
-                        <td>1694695937</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row" class="text-start">Chennai</th>
-                        <td>75</td>
-                        <td>29</td>
-                        <td>35</td>
-                        <td>81</td>
-                        <td>27</td>
-                        <td>29</td>
-                        <td>4.12</td>
-                        <td>150</td>
-                        <td>1694651283</td>
-                        <td>1694695297</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row" class="text-start">Hyderabad</th>
-                        <td>75</td>
-                        <td>25</td>
-                        <td>26</td>
-                        <td>83</td>
-                        <td>24</td>
-                        <td>25</td>
-                        <td>2.06</td>
-                        <td>280</td>
-                        <td>1694651642</td>
-                        <td>1694695804</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row" class="text-start">Pune</th>
-                        <td>39</td>
-                        <td>22</td>
-                        <td>23</td>
-                        <td>90</td>
-                        <td>22</td>
-                        <td>22</td>
-                        <td>3.31</td>
-                        <td>255</td>
-                        <td>1694652730</td>
-                        <td>1694696933</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row" class="text-start">Noida</th>
-                        <td>100</td>
-                        <td>32</td>
-                        <td>37</td>
-                        <td>58</td>
-                        <td>32</td>
-                        <td>32</td>
-                        <td>2.14</td>
-                        <td>133</td>
-                        <td>1694651697</td>
-                        <td>1694696298</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row" class="text-start">Delhi</th>
-                        <td>40</td>
-                        <td>32</td>
-                        <td>39</td>
-                        <td>70</td>
-                        <td>32</td>
-                        <td>32</td>
-                        <td>2.57</td>
-                        <td>140</td>
-                        <td>1694651722</td>
-                        <td>1694696327</td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-    crossorigin="anonymous">
-</script>
-
-<script src="script.js"></script>
-
-<script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker

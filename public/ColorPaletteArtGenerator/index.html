@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Palette Extractor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>Palette Extractor</h1>
+            <p>Upload any photo to instantly extract a beautiful, dominant color palette.</p>
+        </header>
+
+        <section class="upload-section">
+            <label for="imageUpload" class="upload-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                Upload Photo
+                <input type="file" id="imageUpload" accept="image/png, image/jpeg, image/webp" hidden>
+            </label>
+            <p id="statusMsg" class="status-message">Supported formats: JPG, PNG, WEBP</p>
+        </section>
+
+        <main class="result-section" id="resultSection" style="display: none;">
+            <div class="image-preview">
+                <img id="previewImage" alt="Uploaded Preview" />
+            </div>
+
+            <div class="palette-container">
+                <h3>Extracted Colors</h3>
+                <p class="hint">Click a swatch to copy its HEX code to your clipboard.</p>
+                <div class="swatches" id="swatchesContainer">
+                </div>
+            </div>
+        </main>
+
+        <div id="toast" class="toast">Copied to clipboard!</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
