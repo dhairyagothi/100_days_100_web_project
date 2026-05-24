@@ -167,19 +167,30 @@ body::after {
   animation: noiseShift 0.8s steps(2) infinite;
 }
 
-body>*:not(.ambient):not(.noise-layer) {
+body>*:not(.ambient):not(.noise-layer):not(canvas):not(header) {
   position: relative;
   z-index: 1;
 }
 
+/* header wraps .navbar — needs its own stacking context above ALL
+   fixed overlay layers (body::before/after, ambient, noise, canvas) */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10000;
+  pointer-events: auto;
+}
+
 /* ============================================================
-    NAVBAR & RESPONSIVE DRAWER ARCHITECTURE
+   NAVBAR & RESPONSIVE DRAWER ARCHITECTURE
    ============================================================ */
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 100000;
   background: rgba(11, 13, 15, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -348,7 +359,6 @@ body.light-mode .navbar {
     display: block;
   }
 
-
   .menu-toggle i {
     transition: transform 0.3s ease;
   }
@@ -363,7 +373,6 @@ body.light-mode .navbar {
     flex-direction: column;
     gap: 0.8rem;
 
-    /* animation stuff */
     max-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -396,14 +405,16 @@ body.light-mode .navbar {
 }
 
 /* ============================================================
-   HERO
+   HERO — FIXED: removed min-height:100vh, reduced padding
    ============================================================ */
 .hero {
-  min-height: 100vh;
+  /* FIX: was min-height:100vh with padding:100px 2rem 6rem — caused huge dead space */
+  min-height: auto;
+  padding: 100px 2rem 5rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px 2rem 6rem;
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -553,7 +564,7 @@ body.light-mode .navbar {
   font-size: 0.875rem;
 }
 
-/* Stats strip — inline, elegant, one row */
+/* Stats strip */
 .stats-strip {
   display: inline-flex;
   align-items: center;
@@ -593,10 +604,11 @@ body.light-mode .navbar {
 }
 
 /* ============================================================
-   PROJECTS SECTION
+   PROJECTS SECTION — FIXED: reduced bottom padding from 8rem→4rem
    ============================================================ */
 .projects-section {
-  padding: 4rem 2rem 8rem;
+  /* FIX: was padding:4rem 2rem 8rem — 8rem bottom stacked between sections */
+  padding: 3rem 2rem 4rem;
   position: relative;
 }
 
@@ -632,33 +644,23 @@ body.light-mode .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   gap: 1rem;
 }
 
 .view-all-btn {
   border: 1px solid var(--border);
-
   background: transparent;
-
   color: var(--text-secondary);
-
   padding: 0.45rem 0.9rem;
-
   border-radius: 10px;
-
   font-size: 0.8rem;
-
   cursor: pointer;
-
   transition: var(--t);
 }
 
 .view-all-btn:hover {
   background: var(--accent-dim);
-
   color: var(--accent);
-
   border-color: var(--border-accent);
 }
 
@@ -677,25 +679,26 @@ body.light-mode .navbar {
   gap: 10px;
   width: 100%;
   max-width: 650px;
-  flex-wrap: wrap;
 }
 
-#sortProjects {
+#sortProjects,
+#difficultyFilter {
   min-width: 140px;
   height: 42px;
   padding: 0 12px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: #111827;
-  color: #ffffff;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   cursor: pointer;
   outline: none;
   flex-shrink: 0;
 }
 
-#sortProjects option {
-  background: #111827;
-  color: #ffffff;
+#sortProjects option,
+#difficultyFilter option {
+ background: var(--bg-elevated);
+color: var(--text-primary);
 }
 
 .search-icon {
@@ -709,7 +712,8 @@ body.light-mode .navbar {
 }
 
 .search-input {
-  width: 100%;
+  flex: 1;
+  min-width: 250px;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -730,11 +734,33 @@ body.light-mode .navbar {
   background: var(--bg-surface);
 }
 
+.clear-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+
+  flex-shrink: 0;
+}
+
+.clear-btn:hover {
+  background: var(--bg-surface);
+  border-color: var(--border-hover);
+}
+
 /* ============================================================
    TECHNOLOGY STACK SEARCH & FILTERING
    ============================================================ */
 
-/* Tech search bar */
 .tech-search-bar {
   position: relative;
   max-width: 480px;
@@ -783,7 +809,6 @@ body.light-mode .navbar {
     opacity: 0;
     transform: translateY(-10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -827,7 +852,6 @@ body.light-mode .navbar {
     opacity: 0;
     transform: scale(0.8);
   }
-
   to {
     opacity: 1;
     transform: scale(1);
@@ -856,7 +880,6 @@ body.light-mode .navbar {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .tech-search-bar {
     margin-top: 0.75rem;
@@ -943,6 +966,15 @@ body.light-mode .navbar {
     0 0 0 1px rgba(255, 255, 255, 0.02),
     0 20px 80px rgba(59, 130, 246, 0.08);
   position: relative;
+}
+
+/* FIX: collapse empty grid containers so they don't take up layout space */
+.project-grid:empty,
+.project-grid:has(.empty-state):not(:has(.project-card)) {
+  background: none;
+  border: none;
+  box-shadow: none;
+  min-height: 0;
 }
 
 .project-card {
@@ -1141,19 +1173,12 @@ body.light-mode .navbar {
 .bookmark-btn {
   width: 38px;
   height: 38px;
-
   border-radius: 10px;
-
   border: 1px solid var(--border);
-
   background: transparent;
-
   color: var(--text-secondary);
-
   cursor: pointer;
-
   transition: var(--t);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1161,21 +1186,15 @@ body.light-mode .navbar {
 
 .bookmark-btn:hover {
   background: var(--accent-dim);
-
   border-color: var(--border-accent);
-
   color: var(--accent);
-
   transform: translateY(-2px);
 }
 
 .bookmark-btn.active {
   background: var(--accent-dim);
-
   border-color: var(--border-accent);
-
   color: var(--accent);
-
   box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
 }
 
@@ -1214,44 +1233,29 @@ body.light-mode .navbar {
 
 .toast {
   position: fixed;
-
   bottom: 30px;
   left: 50%;
-
   transform: translateX(-50%) translateY(20px);
-
   background: var(--bg-surface);
-
   color: var(--text-primary);
-
   padding: 0.9rem 1.3rem;
-
   border-radius: 12px;
-
   border: 1px solid var(--border);
-
   opacity: 0;
-
   pointer-events: none;
-
   transition: 0.3s ease;
-
   z-index: 9999;
-
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
 .toast.show {
   opacity: 1;
-
   transform: translateX(-50%) translateY(0);
 }
 
 .empty-state {
   padding: 2rem;
-
   color: var(--text-muted);
-
   text-align: center;
 }
 
@@ -1263,6 +1267,79 @@ body.light-mode .navbar {
   border-top: 1px solid var(--border);
   position: relative;
   z-index: 1;
+}
+
+.footer.homepage-footer {
+  background: var(--bg-primary);
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.footer.homepage-footer .footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 4rem;
+}
+
+.footer.homepage-footer h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.footer.homepage-footer p {
+  color: var(--text-secondary);
+}
+
+.footer.homepage-footer .social-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer.homepage-footer .social-btn {
+  width: 50px;
+  height: 50px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 1.4rem;
+  transition: var(--t);
+}
+
+.footer.homepage-footer .social-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-5px);
+}
+
+.footer.homepage-footer .featured-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.4rem;
+  border-radius: 14px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  transition: var(--t);
+}
+
+.footer.homepage-footer .featured-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .footer.homepage-footer .footer-content {
+    grid-template-columns: 1fr;
+  }
 }
 
 .footer-inner {
@@ -1360,7 +1437,7 @@ body.light-mode .navbar {
   color: var(--text-muted);
 }
 
-/* Theme toggle — lives in footer-bottom */
+/* Theme toggle */
 #themeToggle,
 #themeToggleNav {
   background: transparent;
@@ -1417,18 +1494,17 @@ body.light-mode .navbar {
     width: 100% !important;
     height: 60px !important;
     padding: 0 1.5rem !important;
-    z-index: 99999 !important;
+    z-index: 100000 !important;
   }
 
   .menu-toggle {
     display: block !important;
-    z-index: 100000 !important;
+    z-index: 100001 !important;
   }
 
   .menu-toggle.active i::before {
     content: "\f00d" !important;
   }
-
 
   .nav-buttons.mobile-drawer-layer {
     display: none !important;
@@ -1443,7 +1519,7 @@ body.light-mode .navbar {
     align-items: center !important;
     justify-content: flex-start !important;
     gap: 1.5rem !important;
-    z-index: 99998 !important;
+    z-index: 99999 !important;
     box-sizing: border-box !important;
     overflow-y: auto !important;
   }
@@ -1471,7 +1547,6 @@ body.light-mode .navbar {
     margin-bottom: 0.5rem !important;
   }
 }
-
 
 /* ============================================================
    SCROLL TO TOP
@@ -1575,7 +1650,6 @@ body.light-mode .navbar {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1586,7 +1660,6 @@ body.light-mode .navbar {
   from {
     transform: translate3d(0, 0, 0);
   }
-
   to {
     transform: translate3d(0, 12px, 0);
   }
@@ -1596,19 +1669,12 @@ body.light-mode .navbar {
   from {
     transform: translate3d(0, 0, 0) scale(1);
   }
-
   to {
     transform: translate3d(0, -8px, 0) scale(1.03);
   }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
 /* Professional scrollbar */
-/* Chrome, Edge, Safari */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -1618,24 +1684,19 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom,
-      #0f172a,
-      #2563eb);
+  background: linear-gradient(to bottom, #0f172a, #2563eb);
   border-radius: 999px;
   border: 2px solid #050816;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom,
-      #1e293b,
-      #3b82f6);
+  background: linear-gradient(to bottom, #1e293b, #3b82f6);
 }
 
 @keyframes noiseShift {
   from {
     transform: translate3d(0, 0, 0);
   }
-
   to {
     transform: translate3d(-2%, 1%, 0);
   }
@@ -1664,6 +1725,11 @@ html {
 }
 
 @media (max-width: 768px) {
+  .search-bar {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+
   .navbar {
     padding: 0 1.5rem;
   }
@@ -1676,12 +1742,27 @@ html {
     font-size: 0.55rem;
   }
 
+  /* FIX: reduced hero top padding on mobile from 90px → 70px */
   .hero {
-    padding: 90px 1.5rem 4rem;
+    padding: 70px 1.5rem 3rem;
   }
 
   .hero-headline {
     font-size: clamp(2.4rem, 12vw, 4.2rem);
+  }
+
+  .hero-sub,
+  .hero-extra {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-actions {
+    margin-bottom: 2rem;
+  }
+
+  .hero-terminal {
+    opacity: 0.45;
   }
 
   .stats-strip {
@@ -1702,19 +1783,28 @@ html {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
   .footer-brand {
     grid-column: auto;
+  }
+
+  /* FIX: tighter section padding on mobile */
+  .projects-section {
+    padding: 2rem 1.5rem 3rem;
   }
 }
 
 @media (max-width: 480px) {
+  /* FIX: was padding:3rem 1rem 6rem — reduced bottom */
   .projects-section {
-    padding: 3rem 1rem 6rem;
+    padding: 2rem 1rem 2.5rem;
   }
+
   .hero-actions .btn {
     width: 100%;
     justify-content: center;
   }
+
   .stats-strip {
     border-radius: 1rem;
     flex-wrap: wrap;
@@ -1728,6 +1818,9 @@ html {
   }
 }
 
+/* ============================================================
+   PAGINATION
+   ============================================================ */
 .pagination-container {
   grid-column: 1 / -1;
   display: flex;
@@ -1763,7 +1856,6 @@ html {
   gap: 0.5rem;
 }
 
-/* Base style for all pagination buttons */
 .pagination-controls button {
   background: transparent;
   border: none;
@@ -1780,7 +1872,6 @@ html {
   padding: 0;
 }
 
-/* Numeric page buttons */
 .pagination-controls button.page-num {
   width: 32px;
   height: 32px;
@@ -1793,11 +1884,9 @@ html {
   background: var(--bg-surface);
 }
 
-/* Active page button has a colored block background */
 .pagination-controls button.page-num.active {
   background: var(--accent);
   color: #ffffff !important;
-  /* Ensure high-contrast readable text */
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
 }
 
@@ -1807,7 +1896,6 @@ body.light-mode .pagination-controls button.page-num.active {
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-/* Prev/Next buttons (chevron icons) */
 .pagination-controls button.prev-btn,
 .pagination-controls button.next-btn {
   width: 32px;
@@ -1897,7 +1985,6 @@ body.light-mode .pagination-controls button.page-num.active {
     font-size: 11px;
   }
 
-  /* Stacks pagination elements vertically and centers them cleanly on mobile screens */
   .pagination-container {
     flex-direction: column;
     align-items: center;
@@ -1923,8 +2010,6 @@ body.theme-transitioning * {
 
 /* ============================================================
    LIGHT-MODE OVERRIDES
-   Applied only when body.light-mode is active to replace hard
-   dark-mode gradients/backgrounds with light-friendly variants.
    ============================================================ */
 body.light-mode .hero-terminal {
   filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.9);
@@ -1952,7 +2037,6 @@ body.light-mode .brand-mark {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-
 #scrollToTopBtn {
   display: none;
   position: fixed;
@@ -1976,87 +2060,40 @@ body.light-mode .brand-mark {
   transform: scale(1.1);
 }
 
-/* Tech Stack Dropdown - CLEAN VERSION */
-#techStackFilter {
-  width: 280px;
-  padding: 12px 24px 12px 20px;
-  border-radius: 30px;
-  border: 1px solid #333;
-  background: #1a1a1a;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: inherit;
-  margin-left: 300px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 18px center;
-  padding-right: 40px;
-  transition: all 0.3s ease;
-  transform: rotate(0deg);
-}
-
-#techStackFilter:hover {
-  border-color: #667eea;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-}
-
-#techStackFilter:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-}
-
-#techStackFilter option {
-  background: #1a1a1a;
-  color: white;
-  padding: 10px;
-}
-
-/* Light mode */
-body.light-mode #techStackFilter {
-  background: white;
-  color: #333;
-  border-color: #ddd;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-}
-
-body.light-mode #techStackFilter option {
-  background: white;
-  color: #333;
-}
-
-/* Align tech stack dropdown with search bar */
-.projects-header + div {
-  margin-left: 0;
-}
-
-@media (min-width: 768px) {
-  #techStackFilter {
-    margin-left: 0;
-  }
-}
-
-.projects-inner {
-  text-align: left;
-}
-
-.tech-stack-wrapper {
-  text-align: left;
-  width: 100%;
-}
-
-#techStackFilter {
-  margin-left: 0 !important;
-  display: inline-block;
+/* ============================================================
+   CANVAS FIX — particle canvas was pushing hero content down
+   by occupying block layout space equal to window.innerHeight.
+   position:fixed takes it out of flow as a pure background layer.
+   ============================================================ */
 #particleCanvas {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.9;
+}
+
+/* ============================================================
+   POINTER-EVENTS STACKING FIX
+   All decorative background layers must never intercept clicks.
+   ============================================================ */
+
+/* body pseudo-elements are purely decorative */
+body::before,
+body::after {
+  pointer-events: none;
+}
+
+/* ambient blobs and noise grain — purely visual, never clickable */
+.ambient,
+.ambient::before,
+.noise-layer {
+  pointer-events: none;
+}
+
+/* Toast sits above content */
+.toast {
+  z-index: 100001;
 }

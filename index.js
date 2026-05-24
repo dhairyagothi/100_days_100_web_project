@@ -232,9 +232,13 @@ const PROJECT_DATA = [
   ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
   ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', 'simulation algorithm javascript', 'intermediate'],
   ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', 'html css javascript', 'intermediate'],
-  ['Day 161', "Unit-Converter", './public/Unit-Converter/index.html' , 'tool javascript html css' , 'intermediate'],
-  ['Day 162', 'Color Palette From Art Generator', './public/ColorPaletteArtGenerator/index.html', 'html css javascript', 'intermediate'],
-  ['Day 163' , 'Ai Image Editor' , './public/image-editor/index.html' , 'edits images' , 'advanced'],
+  [ 'Day 161' , "Unit-Converter" , './public/Unit-Converter/index.html' , 'tool javascript html css' , 'intermediate' ],
+  [ 'Day 162' , 'Color Palette From Art Generator' , './public/ColorPaletteArtGenerator/index.html' , 'html css javascript' , 'intermediate' ],
+  [ 'Day 163' , 'Ai Image Editor' , './public/image-editor/index.html' , 'edits images' , 'advanced' ],
+  [ 'Day 164' , 'Code Visualizer Playground' , './public/code-visualizer-playground/index.html' , 'tool javascript html css' , 'advanced' ],
+  [ 'Day 165' , 'Amazon Clone' , './public/AmazonClone/index.html' , 'Amazon Clone HTML CSS JavaScript' , 'beginner' ],
+  [ "Day 166" , "Boredom Buster" , "./public/BoredomBuster/index.html" , "html css javascript" , 'advanced' ],
+   [ "Day 166" , "Color Sort Puzzle game" , "./public/colorsort/index.html" , "html css javascript" , 'advanced' ]
 ];
 const PROJECTS = PROJECT_DATA;
 const PROJECT_LOOKUP = new Map(PROJECTS.map((project) => [project[0], project]));
@@ -575,13 +579,14 @@ let activeFilter = 'all';
 let searchQuery = '';
 let sortOption = 'default';
 let techStackFilter = 'all';
+let difficultyFilter = 'all';
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, url, tags]) => {
+  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
@@ -602,7 +607,13 @@ function renderGrid() {
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
 
-    return matchesFilter && matchesSearch && matchesTech;
+    // Difficulty filter
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== 'all') {
+      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
+    }
+
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
 
   // Apply sorting
@@ -643,6 +654,7 @@ function renderGrid() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
+  const fragment = document.createDocumentFragment();
 
   pageItems.forEach((project) => {
     const [day] = project;
@@ -651,6 +663,9 @@ function renderGrid() {
     grid.appendChild(card);
   });
 
+   fragment.appendChild(card);
+  });
+  grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
@@ -981,11 +996,30 @@ function initFilterChips() {
 /* ============================================================
    LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
+function debounce(fn, delay = 300) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
 
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
 
+  input.addEventListener(
+    'input',
+    debounce(() => {
+      searchQuery = input.value.trim();
+      currentPage = 1;
+      renderGrid();
+    }, 300)
+  );
   input.addEventListener('input', () => {
     searchQuery = input.value.trim();
     currentPage = 1;
@@ -997,6 +1031,16 @@ function initSearch() {
   if (techStack) {
     techStack.addEventListener('change', () => {
       techStackFilter = techStack.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+
+  // Difficulty dropdown filter listener
+  const diffFilterElement = document.getElementById('difficultyFilter');
+  if (diffFilterElement) {
+    diffFilterElement.addEventListener('change', () => {
+      difficultyFilter = diffFilterElement.value;
       currentPage = 1;
       renderGrid();
     });
@@ -1130,7 +1174,7 @@ function updateNavbar() {
             ${themeButton}
             <span class="welcome-text">Hi, ${username}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
               <i class="fab fa-github"></i> GitHub
             </a>
@@ -1140,8 +1184,6 @@ function updateNavbar() {
       window.username = null;
       updateNavbar();
     });
-    const gen = document.getElementById('generateReadmeBtn');
-    if (gen) gen.addEventListener('click', generateReadme);
   } else {
     container.innerHTML = `
             ${themeButton}
@@ -1149,11 +1191,9 @@ function updateNavbar() {
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
             <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
         `;
-    const gen2 = document.getElementById('generateReadmeBtn');
-    if (gen2) gen2.addEventListener('click', generateReadme);
   }
 }
 
@@ -1242,9 +1282,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollBtn();
 
   if (hasProjectGrid()) {
-    initFilterChips();
-    initSearch();
-    initTechStackSearch();
     renderGrid();
     renderBookmarks();
     renderRecentProjects();
@@ -1291,6 +1328,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    renderGrid();
+  }, 200)
+);
 window.addEventListener('resize', () => {
   if (hasProjectGrid()) {
     renderGrid();
@@ -1309,16 +1352,32 @@ window.clearAllTechFilters = clearAllTechFilters;
   const canvas = document.getElementById('particleCanvas');
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
-  const N = 60;
+  const minParticles = 30;
+  const maxParticles = 120;
+  const areaPerParticle = 26000;
+  let particleCount = 60;
+  let linkDistance = 120;
+  let dpr = 1;
 
   function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    canvas.style.width = `${W}px`;
+    canvas.style.height = `${H}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    particleCount = Math.min(
+      maxParticles,
+      Math.max(minParticles, Math.round((W * H) / areaPerParticle))
+    );
+    linkDistance = Math.max(90, Math.min(150, Math.round(Math.min(W, H) / 6)));
   }
 
   function init() {
     particles = [];
-    for (let i = 0; i < N; i++) {
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * W,
         y: Math.random() * H,
@@ -1338,16 +1397,16 @@ window.clearAllTechFilters = clearAllTechFilters;
       if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
       if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
     });
-    for (let i = 0; i < N; i++) {
-      for (let j = i + 1; j < N; j++) {
+    for (let i = 0; i < particleCount; i++) {
+      for (let j = i + 1; j < particleCount; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
         const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < 120) {
+        if (d < linkDistance) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(59,130,246,${(1 - d / 120) * 0.35})`;
+          ctx.strokeStyle = `rgba(59,130,246,${(1 - d / linkDistance) * 0.35})`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -1362,7 +1421,17 @@ window.clearAllTechFilters = clearAllTechFilters;
     requestAnimationFrame(draw);
   }
 
-  window.addEventListener('resize', () => { resize(); init(); });
+  let resizeFrame = null;
+  const handleResize = () => {
+    if (resizeFrame) return;
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = null;
+      resize();
+      init();
+    });
+  };
+
+  window.addEventListener('resize', handleResize);
   resize(); init(); draw();
 })();
 
@@ -1390,25 +1459,21 @@ function updateURL(search, category) {
 
 function restoreStateFromURL() {
   const { search, category } = getQueryParams();
-  const searchInput = document.getElementById('search') ||
+  const searchInput = document.getElementById('searchInput') ||
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.querySelector('select') ||
-    document.getElementById('category');
+  const categoryFilter = document.getElementById('category');
   if (categoryFilter && category !== 'all') categoryFilter.value = category;
   if (search || category !== 'all') applyFilters(search, category);
 }
 
 function applyFilters(search, category) {
-  const cards = document.querySelectorAll('.card, .project-card, .box');
-  cards.forEach(card => {
-    const title = (card.querySelector('h3,h4,.title')?.textContent || '').toLowerCase();
-    const tag = (card.dataset.category || card.dataset.tags || '').toLowerCase();
-    const matchSearch = !search || title.includes(search.toLowerCase());
-    const matchCategory = category === 'all' || tag.includes(category.toLowerCase());
-    card.style.display = matchSearch && matchCategory ? '' : 'none';
-  });
+  earchQuery = search || '';
+  activeFilter = category || 'all';
+  currentPage = 1;
+  renderGrid();
+  
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1423,8 +1488,7 @@ document.addEventListener('DOMContentLoaded', () => {
       applyFilters(searchInput.value, category);
     });
   }
-  const categoryFilter = document.querySelector('select') ||
-    document.getElementById('category');
+  const categoryFilter = document.getElementById('category');
   if (categoryFilter) {
     categoryFilter.addEventListener('change', () => {
       const { search } = getQueryParams();

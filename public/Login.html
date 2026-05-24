@@ -57,6 +57,7 @@
                 autocomplete="current-password"
                 required
               />
+              <span class="toggle-password" onclick="togglePassword()">👁</span>
             </div>
 
             <button type="submit" class="button home-btn">
@@ -77,6 +78,22 @@
     </section>
 
     <script>
+      // Show password toggle
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.querySelector(".toggle-password");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.add("active");
+            // toggleIcon.textContent = "..";
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("active");
+            // toggleIcon.textContent = "👁";
+        }
+      }
+      
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (event) {
