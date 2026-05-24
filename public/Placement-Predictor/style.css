@@ -182,6 +182,29 @@ body.dark-mode .theme-toggle {
   }
 }
 
+.charts-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.chart-card {
+  background: var(--result-bg);
+  padding: 20px;
+  border-radius: 16px;
+  transition: 0.3s;
+}
+
+.chart-card canvas {
+  width: 100% !important;
+  height: 320px !important;
+}
+
+@media (max-width: 768px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
 .meter-wrapper {
   display: flex;
   justify-content: center;
