@@ -596,27 +596,6 @@ function renderGrid() {
         `;
 
     fragment.appendChild(card);
-      <div class="card-meta">
-        <span class="card-day">${day}</span>
-        <span class="card-category">${category}</span>
-      </div>
-      <div class="card-name">${name}</div>
-      <div class="card-tags">${tagsHTML}</div>
-      <div class="card-footer">
-        <div class="card-actions-left">
-          <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}">
-            Demo <i class="fas fa-arrow-right"></i>
-          </a>
-          <a href="${sourceUrl}" target="_blank" class="card-link view-code-link">
-            <i class="fab fa-github"></i> Code
-          </a>
-        </div>
-        <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-          <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-        </button>
-      </div>
-    `;
-    grid.appendChild(card);
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
@@ -1475,7 +1454,7 @@ function restoreStateFromURL() {
 }
 
 function applyFilters(search, category) {
-  earchQuery = search || '';
+  searchQuery = search || '';
   activeFilter = category || 'all';
   currentPage = 1;
   renderGrid();
