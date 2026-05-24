@@ -59,11 +59,11 @@ body {
   padding: 100px 2rem 0;
 }
 
-/* Ensure navbar stays fixed at top (override style.css body > * rule) */
+/* Ensure navbar stays fixed at top */
 #navbar {
   position: fixed !important;
   top: 0 !important;
-  z-index: 100 !important;
+  z-index: 1000 !important;
 }
 
 
@@ -410,7 +410,7 @@ body {
     background:
     rgba(0,0,0,.85);
 
-    z-index: 99999999;
+    z-index: 1100;
 
     justify-content: center;
 
@@ -1092,12 +1092,12 @@ body {
         width: 100% !important;
         height: 60px !important;
         padding: 0 1.5rem !important;
-        z-index: 99999 !important; 
+        z-index: 1000 !important;
     }
 
     .menu-toggle {
         display: block !important;
-        z-index: 100000 !important;
+        z-index: 1001 !important;
     }
 
     .menu-toggle.active i::before {
@@ -1118,7 +1118,7 @@ body {
         align-items: center !important;
         justify-content: flex-start !important;
         gap: 1.5rem !important;
-        z-index: 99998 !important; 
+        z-index: 999 !important; 
         box-sizing: border-box !important;
         overflow-y: auto !important;
     }
