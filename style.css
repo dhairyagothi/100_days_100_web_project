@@ -681,7 +681,8 @@ body.light-mode .navbar {
   max-width: 650px;
 }
 
-#sortProjects {
+#sortProjects,
+#difficultyFilter {
   min-width: 140px;
   height: 42px;
   padding: 0 12px;
@@ -694,7 +695,8 @@ body.light-mode .navbar {
   flex-shrink: 0;
 }
 
-#sortProjects option {
+#sortProjects option,
+#difficultyFilter option {
  background: var(--bg-elevated);
 color: var(--text-primary);
 }
@@ -1695,6 +1697,11 @@ color: var(--text-primary);
 }
 
 @media (max-width: 768px) {
+  .search-bar {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+
   .navbar {
     padding: 0 1.5rem;
   }
