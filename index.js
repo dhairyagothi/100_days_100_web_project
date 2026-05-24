@@ -13,8 +13,7 @@ let currentPage = 1;
 let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
-let currentCategory = 'all';
-let currentDifficulty = 'all';
+
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
@@ -26,14 +25,44 @@ let techSearchQuery = ''; // Current tech search input
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
   'js': 'javascript',
-  'react': 'javascript', // React projects are tagged as 'javascript'
-  'node': 'javascript',  // Node projects are tagged as 'javascript'
+  'react': 'javascript',
+  'node': 'javascript',
   'vue': 'javascript',
-  'python': 'api',       // Python/Flask projects are tagged as 'api javascript'
+  'python': 'api',
   'flask': 'api',
   'game': 'game',
   'games': 'game',
 };
+
+/* Maps data-filter values on chip buttons to display category names */
+const FILTER_CATEGORY_MAP = {
+  'all': 'all',
+  'game': 'Games',
+  'clone': 'Clones',
+  'tool': 'Tools',
+  'ui': 'UI / Animation',
+  'api': 'APIs',
+};
+
+/**
+ * Derive a display category from a project's tags and name.
+ * Uses the existing tag structure so no new data field is needed.
+ */
+function getCategoryFromTags(tags, name) {
+  const tagStr = (tags || '').toLowerCase();
+  const nameStr = (name || '').toLowerCase();
+
+  if (tagStr.includes('game')) return 'Games';
+  if (tagStr.includes('clone')) return 'Clones';
+  if (tagStr.includes('tool')) return 'Tools';
+  if (tagStr.includes('ui')) return 'UI / Animation';
+  if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
+
+  if (nameStr.includes('clone')) return 'Clones';
+  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+
+  return 'Tools';
+}
 
 const PROJECT_DATA = [
   ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
@@ -45,18 +74,22 @@ const PROJECT_DATA = [
   ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'html css javascript', 'advanced'],
   ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', 'css', 'intermediate'],
   ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', 'javascript', 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr_generator/qr.html', 'api javascript', 'intermediate'],
+  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
   ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
   ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
   ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
-  ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
+  ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', 'javascript', 'intermediate'],
   ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
   ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
   ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
-  ['Day 18', 'Carousel Solar System', './public/carousal/index.html', 'css canvas', 'intermediate'],
+  ['Day 18',
+    'Carousel Solar System',
+    './public/Carousel%20Solar%20System/index.html',
+    'css canvas',
+    'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
   ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website', 'javascript', 'intermediate'],
+  ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', 'javascript', 'intermediate'],
   ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'ui css', 'beginner'],
   ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
   ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'intermediate'],
@@ -73,7 +106,7 @@ const PROJECT_DATA = [
   ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', 'tool javascript', 'beginner'],
   ['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
   ['Day 37', '2048 Game', './public/2048_game/index.html', 'game javascript', 'intermediate'],
-  ['Day 38', 'Github Profile Finder', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder', 'api javascript', 'intermediate'],
+  ['Day 38', 'Github Profile Finder', './public/github_profile_finder/index.html', 'api javascript', 'intermediate'],
   ['Day 39', 'Notes App', './public/notes-app/index.html', 'todo javascript', 'beginner'],
   ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', 'javascript css', 'beginner'],
   ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', 'game canvas', 'intermediate'],
@@ -84,14 +117,14 @@ const PROJECT_DATA = [
   ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', 'javascript', 'beginner'],
   ['Day 47', 'Ping Pong Game', './public/ping/index.html', 'game canvas', 'intermediate'],
   ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', 'api javascript', 'intermediate'],
-  ['Day 49', 'Url Shortener', 'https://github.com/chandankoranga02/100_days_100_web_project/tree/Main/public/url_shortener', 'api javascript', 'intermediate'],
-  ['Day 50', 'Recipe Genie', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe%20Genie', 'api javascript', 'intermediate'],
+  ['Day 49', 'Url Shortener', './public/url_shortener/frontend/public/index.html', 'api javascript', 'intermediate'],
+  ['Day 50', 'Recipe Genie', './public/Recipe%20Genie/index.html', 'api javascript', 'intermediate'],
   ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', 'clone css', 'beginner'],
   ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', 'weather api', 'intermediate'],
   ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', 'javascript', 'intermediate'],
   ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 55', 'Cricket Game', './public/cricket/index.html', 'game javascript', 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/pastebin', 'javascript', 'intermediate'],
+  ['Day 56', 'Pastebin using svelte', './public/pastebin/src/app.html', 'javascript', 'intermediate'],
   ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', 'ui css', 'beginner'],
   ['Day 58', 'Music App', './public/Music%20App/index.html', 'api javascript', 'intermediate'],
   ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', 'css', 'beginner'],
@@ -101,7 +134,7 @@ const PROJECT_DATA = [
   ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', 'api javascript', 'intermediate'],
   ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', 'clone css', 'beginner'],
   ['Day 65', 'The Cube', './public/The%20Cube/index.html', 'ui canvas css', 'intermediate'],
-  ['Day 66', 'Flask Authentication App', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app', 'api javascript', 'intermediate'],
+  ['Day 66', 'Flask Authentication App', './public/flask_auth_app/explain.html', 'api javascript', 'intermediate'],
   ['Day 67', 'Blog-Website', './public/blog/main.html', 'css', 'beginner'],
   ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
   ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
@@ -112,7 +145,7 @@ const PROJECT_DATA = [
   ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', 'tool javascript', 'beginner'],
   ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', 'game canvas', 'intermediate'],
   ['Day 76', 'Animated Searchbar', './public/Animated%20Searchbar/index.html', 'ui css javascript', 'beginner'],
-  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', 'game javascript', 'beginner'],
+  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', 'game javascript', 'intermediate'],
   ['Day 78', 'NPM Package Search', './public/NPM%20Package%20Search/index.html', 'tool api javascript', 'intermediate'],
   ['Day 79', 'Linkedin Homepage Clone', './public/Linkedin-Clone/index.html', 'clone css', 'intermediate'],
   ['Day 80', 'Resume Studio', './public/ResumeStudio/index.html', 'tool javascript', 'intermediate'],
@@ -128,7 +161,7 @@ const PROJECT_DATA = [
   ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', 'javascript', 'beginner'],
   ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', 'api javascript', 'intermediate'],
   ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 93', 'TextUtils', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils', 'javascript', 'beginner'],
+  ['Day 93', 'TextUtils', './public/Textutils/public/index.html', 'javascript', 'beginner'],
   ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', 'game javascript', 'intermediate'],
   ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', 'todo javascript', 'intermediate'],
   ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', 'ui css javascript', 'beginner'],
@@ -142,7 +175,7 @@ const PROJECT_DATA = [
   ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
   ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
   ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
+  ['Day 107', 'DocNow', './public/DocNow/index.html', 'api javascript', 'intermediate'],
   ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
   ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
@@ -151,31 +184,62 @@ const PROJECT_DATA = [
   ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'tool javascript', 'intermediate'],
   ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
   ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-['Day 116', 'AI Image Classifier', './public/AI Image Classifier/', 'api javascript', 'intermediate'],
+  ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', 'api javascript', 'intermediate'],
   ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'ui tool html css js', 'intermediate'],
   ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
+  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', 'tool', 'intermediate'],
+  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', 'html css javascript api-javascript', 'Advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
-  ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
+  ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
+  ['Day 125', 'Snakeladder', './public/snakeladder/index.html', 'game', 'intermediate'],
   ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
   ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
   ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
   ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
   ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
-  ["Day 131", "Retro Highway Racer", "/public/RetroHighwayRacer/index.html", 'game javascript', 'intermediate'],
+  ['Day 131', 'Retro Highway Racer', './public/RetroHighwayRacer/index.html', 'game javascript', 'intermediate'],
   ['Day 132', 'Pokedex', './public/Pokedex/index.html', 'utility', 'intermediate'],
   ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
   ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
-   ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
-];
+  ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
+  ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', 'game javascript', 'intermediate'],
+  ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
+  ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
+  ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
+  ['Day 140', 'Big Sales Prediction', './public/BigSales-Prediction/frontend/index.html', 'machine learning python javascript', 'advanced'],
+  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
+  ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
+  ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
+  ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
+  ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
+  ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
+  ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
+  ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
+  
 
-// Alias for consistency
+
+  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
+  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
+  ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
+  ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
+  ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
+  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
+  ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', 'react typescript game hangman vite', 'advanced'],
+  ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
+  ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
+  ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
+  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', 'simulation algorithm javascript', 'intermediate'],
+  ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', 'html css javascript', 'intermediate'],
+  [ 'Day 161' , "Unit-Converter" , './public/Unit-Converter/index.html' , 'tool javascript html css' , 'intermediate' ],
+  [ 'Day 162' , 'Color Palette From Art Generator' , './public/ColorPaletteArtGenerator/index.html' , 'html css javascript' , 'intermediate' ],
+  [ 'Day 163' , 'Ai Image Editor' , './public/image-editor/index.html' , 'edits images' , 'advanced' ],
+  [ 'Day 164' , 'Code Visualizer Playground' , './public/code-visualizer-playground/index.html' , 'tool javascript html css' , 'advanced' ],
+  [ 'Day 165' , 'Amazon Clone' , './public/AmazonClone/index.html' , 'Amazon Clone HTML CSS JavaScript' , 'beginner' ],
+  [ "Day 166" , "Boredom Buster" , "./public/BoredomBuster/index.html" , "html css javascript" , 'advanced' ],
+];
 const PROJECTS = PROJECT_DATA;
-console.log('PROJECTS defined:', PROJECTS.length, 'items');
 
 
 /* ============================================================
@@ -218,13 +282,13 @@ function normalizeTech(tech) {
 function matchesTechStack(projectTags) {
   // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-  
+
   // Handle empty or missing tags
   if (!projectTags) return false;
-  
+
   // Convert to single lowercase string for efficient matching
   const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
-  
+
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
   return techStackFilters.every(filter => tagsLower.includes(filter));
@@ -247,10 +311,10 @@ function removeTechFilter(tech) {
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = '';
-  
+
   const input = document.getElementById('techStackSearch');
   if (input) input.value = '';
-  
+
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -262,22 +326,22 @@ function updateTechFilterDisplay() {
   const container = document.getElementById('activeTechFilters');
   const tagsContainer = document.getElementById('techFilterTags');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!container || !tagsContainer) return;
-  
+
   // Show/hide clear button in search input
   if (clearBtn) {
     clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
   }
-  
+
   // Show/hide active filters container
   if (techStackFilters.length === 0) {
     container.style.display = 'none';
     return;
   }
-  
+
   container.style.display = 'flex';
-  
+
   // Render filter tags with remove buttons
   tagsContainer.innerHTML = techStackFilters.map(tech => `
     <span class="tech-filter-tag">
@@ -296,22 +360,20 @@ function updateTechFilterDisplay() {
  */
 function getAllTechnologies() {
   const techSet = new Set();
-  
+
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string' 
-        ? tags.split(/\s+/).filter(t => t) 
+      const tagArray = typeof tags === 'string'
+        ? tags.split(/\s+/).filter(t => t)
         : tags;
-      
+
       tagArray.forEach(tag => {
         techSet.add(tag.toLowerCase());
       });
     }
   });
-  
-  const techs = Array.from(techSet).sort();
-  console.log('Available technologies:', techs); // Debug: show available techs
-  return techs;
+
+  return Array.from(techSet).sort();
 }
 
 /* ============================================================
@@ -326,39 +388,62 @@ let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
 
-// Category labels mapping
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
-console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
 /* ============================================================
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
+
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+
+  const setFallback = () => {
+    set('starCount', 'N/A');
+    set('forkCount', 'N/A');
+    set('issueCount', 'N/A');
+    set('prCount', 'N/A');
+  };
+
   try {
+
+    // Optional loading state
+    set('starCount', 'Loading...');
+    set('forkCount', 'Loading...');
+    set('issueCount', 'Loading...');
+    set('prCount', 'Loading...');
+
     const [repoRes, prRes] = await Promise.all([
       fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
     ]);
-    if (!repoRes.ok || !prRes.ok) throw new Error('Stats fetch failed');
+
+    if (!repoRes.ok || !prRes.ok) {
+      throw new Error("GitHub API request failed");
+    }
+
     const repo = await repoRes.json();
     const prs = await prRes.json();
 
-    const set = (id, val) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = Number(val).toLocaleString();
-    };
-    set('starCount', repo.stargazers_count);
-    set('forkCount', repo.forks_count);
-    set('issueCount', repo.open_issues_count - prs.total_count);
-    set('prCount', prs.total_count);
+    set('starCount', repo.stargazers_count.toLocaleString());
+    set('forkCount', repo.forks_count.toLocaleString());
+    set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
+    set('prCount', prs.total_count.toLocaleString());
+
   } catch (e) {
-    console.warn('GitHub stats unavailable:', e.message);
+
+    console.warn("GitHub stats unavailable:", e.message);
+
+    // Show fallback text instead of permanent dashes
+    setFallback();
   }
 }
-
 function generateReadme() {
   try {
     const lines = [];
@@ -366,9 +451,10 @@ function generateReadme() {
     lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
     lines.push('');
     lines.push('## Projects');
-    PROJECTS.forEach(([day, name, url, tags, cat]) => {
+    PROJECTS.forEach(([day, name, url, tags]) => {
       const safeUrl = url || '';
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${cat}_`);
+      const category = getCategoryFromTags(tags, name);
+      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${category}_`);
     });
 
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
@@ -390,59 +476,107 @@ function generateReadme() {
    ============================================================ */
 let activeFilter = 'all';
 let searchQuery = '';
+let sortOption = 'default';
+let techStackFilter = 'all';
+let difficultyFilter = 'all';
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, , tags, cat]) => {
-    // 1. Category filter (beginner/intermediate)
-    const matchesFilter = activeFilter === 'all' || cat === activeFilter;
-    
-    // 2. Name/Day search
-    const q = searchQuery.toLowerCase();
-    const matchesSearch =
-      !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
-    
-    // 3. Technology stack filter (NEW)
-    const matchesTech = matchesTechStack(tags);
-    
-    // Combine all three filters
-    return matchesFilter && matchesSearch && matchesTech;
+  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
+    // Category filter
+    const category = getCategoryFromTags(tags, name);
+    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
+    const matchesFilter = activeFilter === 'all' || category === targetCategory;
+
+    // Search filter
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch = !q || q.split(/\s+/).every(term => 
+      name.toLowerCase().includes(term) || 
+      day.toLowerCase().includes(term) || 
+      (typeof tags === 'string' && tags.toLowerCase().includes(term))
+    );
+
+    // Tech stack dropdown filter
+    let matchesTech = true;
+    if (techStackFilter && techStackFilter !== 'all') {
+      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
+      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+    }
+
+    // Difficulty filter
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== 'all') {
+      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
+    }
+
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
 
-  console.log('Filtered projects:', filtered.length, 'out of', PROJECTS.length); // Debug log
+  // Apply sorting
+  if (sortOption === 'az') {
+    filtered.sort((a, b) => a[1].localeCompare(b[1]));
+  } else if (sortOption === 'latest') {
+    filtered.sort((a, b) => {
+      const dayA = parseInt(a[0].replace('Day ', ''));
+      const dayB = parseInt(b[0].replace('Day ', ''));
+      return dayB - dayA;
+    });
+  } else if (sortOption === 'difficulty') {
+    const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
+    filtered.sort((a, b) => {
+      const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
+      const diffB = b[4] ? difficultyOrder[b[4].toLowerCase()] || 0 : 0;
+      return diffA - diffB;
+    });
+  }
 
   grid.innerHTML = '';
 
   if (filtered.length === 0) {
     grid.style.display = 'none';
-    noResults.style.display = 'block';
+    if (noResults) noResults.style.display = 'block';
     const container = document.getElementById('paginationContainer');
-    if (container) container.innerHTML = '';
+    if (container) container.remove();
     return;
   }
 
   grid.style.display = 'grid';
-  noResults.style.display = 'none';
+  if (noResults) noResults.style.display = 'none';
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
+  const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags, cat]) => {
+  pageItems.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
+
+    // FIX PART 1: Add a pointer cursor so users know it's clickable
     card.className = 'project-card';
+    card.style.cursor = 'pointer';
+
+    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
+    card.onclick = () => window.open(url.trim(), '_blank');
+
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
 
+    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
+    // This stops the click from "bubbling up" to the main card, preventing double-opening!
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category ${cat}">${CATEGORY_LABEL[cat] || cat}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -461,9 +595,9 @@ function renderGrid() {
             </div>
         `;
 
-    grid.appendChild(card);
+   fragment.appendChild(card);
   });
-
+  grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
@@ -572,7 +706,7 @@ function renderPagination(totalItems, totalPages) {
   controlsDiv.appendChild(nextBtn);
 
   container.appendChild(controlsDiv);
-  
+
   // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
@@ -587,9 +721,9 @@ function scrollToProjectSection() {
   const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
-  
+
   // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
-  const duration = 100; 
+  const duration = 100;
   let startTime = null;
 
   function animation(currentTime) {
@@ -662,7 +796,8 @@ function renderBookmarks() {
 
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
+  visibleBookmarks.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
@@ -671,7 +806,7 @@ function renderBookmarks() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -713,7 +848,8 @@ function renderRecentProjects() {
 
   const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags, cat]) => {
+  visibleRecent.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
@@ -723,7 +859,7 @@ function renderRecentProjects() {
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
+                <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -752,12 +888,34 @@ function renderRecentProjects() {
 
 const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
 const recentToggleBtn = document.getElementById('recentToggleBtn');
+const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener('click', () => {
     showAllBookmarks = !showAllBookmarks;
     bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
     renderBookmarks();
+  });
+}
+
+if (copyBookmarksBtn) {
+  copyBookmarksBtn.addEventListener('click', async () => {
+    if (bookmarkedProjects.length === 0) {
+      showToast('No bookmarks to copy!');
+      return;
+    }
+    const textToCopy = bookmarkedProjects.map(p => {
+      const projectName = p[1];
+      const projectLink = new URL(p[2], window.location.href).href;
+      return `${projectName} - ${projectLink}`;
+    }).join('\n');
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      showToast('Bookmarks copied to clipboard!');
+    } catch (err) {
+      showToast('Failed to copy bookmarks.');
+    }
   });
 }
 
@@ -771,6 +929,8 @@ if (recentToggleBtn) {
 
 function showToast(message) {
   const toast = document.getElementById('toast');
+  if (!toast) return;
+
   toast.textContent = message;
   toast.classList.add('show');
 
@@ -786,6 +946,8 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   const projectDay = bookmarkBtn.dataset.id;
   const project = PROJECTS.find((item) => item[0] === projectDay);
+  if (!project) return;
+
   toggleBookmark(project);
 });
 
@@ -817,14 +979,65 @@ function initFilterChips() {
 }
 
 /* ============================================================
-   LIVE SEARCH
+   LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
+function debounce(fn, delay = 300) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
 
+  input.addEventListener(
+    'input',
+    debounce(() => {
+      searchQuery = input.value.trim();
+      currentPage = 1;
+      renderGrid();
+    }, 300)
+  );
   input.addEventListener('input', () => {
     searchQuery = input.value.trim();
+    currentPage = 1;
+    renderGrid();
+  });
+  
+  // Tech stack dropdown filter listener
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) {
+    techStack.addEventListener('change', () => {
+      techStackFilter = techStack.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+
+  // Difficulty dropdown filter listener
+  const diffFilterElement = document.getElementById('difficultyFilter');
+  if (diffFilterElement) {
+    diffFilterElement.addEventListener('change', () => {
+      difficultyFilter = diffFilterElement.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+}
+
+function initSorting() {
+  const sortSelect = document.getElementById('sortProjects');
+  if (!sortSelect) return;
+
+  sortSelect.addEventListener('change', (e) => {
+    sortOption = e.target.value;
     currentPage = 1;
     renderGrid();
   });
@@ -836,75 +1049,74 @@ function initSearch() {
 function initTechStackSearch() {
   const input = document.getElementById('techStackSearch');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!input) return;
-  
-  // Debounce timer for performance
+
   let debounceTimer;
-  
-  // Listen for input changes
+
   input.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
-    
-    // Debounce: wait 300ms after user stops typing
     debounceTimer = setTimeout(() => {
       const value = e.target.value.trim().toLowerCase();
-      
+
       if (value) {
-        // Split by comma or space to support multiple technologies
-        // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-        
-        // Update filters array (already lowercase, no need to normalize yet)
-        techStackFilters = [...new Set(techs)]; // Remove duplicates efficiently
-        
-        console.log('Tech filters active:', techStackFilters); // Debug log
-        
+        techStackFilters = [...new Set(techs)];
         updateTechFilterDisplay();
+        currentPage = 1;
         renderGrid();
       } else {
-        // Empty input = clear all filters
         clearAllTechFilters();
       }
-    }, 300); // 300ms debounce delay
+    }, 300);
   });
-  
-  // Clear button functionality
+
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       clearAllTechFilters();
     });
   }
-  
-  // Optional: Add Enter key support
+
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      input.blur(); // Trigger the debounced input event
+      input.blur();
     }
   });
 }
 
-function syncProjectCounts() {
-  const total = PROJECTS.length.toLocaleString();
+/* ============================================================
+   SEARCH CONTROLS
+   ============================================================ */
+const searchInput = document.getElementById('searchInput');
+const clearSearchBtn = document.getElementById('clearSearch');
 
-  const countNodes = [
-    document.getElementById('projectCount'),
-    document.getElementById('allCount')
-  ];
+function syncProjectCounts() {
+  let filtered = [...PROJECTS];
+  
+  // Apply search filter
+  if (searchQuery) {
+    filtered = filtered.filter(([day, name]) => 
+      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      day.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+  
+  const total = filtered.length.toLocaleString();
+  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
   });
 
   if (searchInput) {
-    searchInput.placeholder = `Search ${total} projects…`;
+    searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 }
 
 // Clear button functionality
-if (searchInput && clearBtn) {
-  clearBtn.addEventListener("click", () => {
+if (searchInput && clearSearchBtn) {
+  clearSearchBtn.addEventListener("click", () => {
     searchInput.value = "";
     searchInput.dispatchEvent(new Event("input"));
     searchInput.focus();
@@ -919,7 +1131,7 @@ if (searchInput && clearBtn) {
   });
 }
 
-// initialize
+// Initialize
 syncProjectCounts();
 
 /* ============================================================
@@ -929,45 +1141,44 @@ function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
 
-    const username = window.username || null;
-    const isRoot   = !window.location.pathname.includes('/contributors/');
-    const base     = isRoot ? '' : '../';
-    const isLight  = document.body.classList.contains('light-mode');
-    const themeButton = `
-            <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-                <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
-            </button>
+  const username = window.username || null;
+  const isRoot = !window.location.pathname.includes('/contributors/');
+  const base = isRoot ? '' : '../';
+  const isLight = document.body.classList.contains('light-mode');
+  const themeButton = `
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
+        </button>
         `;
+  const otherLink = isRoot
+    ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>`;
 
-    if (username) {
-        container.innerHTML = `
+  if (username) {
+    container.innerHTML = `
             ${themeButton}
             <span class="welcome-text">Hi, ${username}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            ${otherLink}
+        `;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.username = null;
+      updateNavbar();
+    });
+  } else {
+    container.innerHTML = `
+            ${themeButton}
+            ${otherLink}
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-        `;
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            window.username = null;
-            updateNavbar();
-        });
-        const gen = document.getElementById('generateReadmeBtn');
-        if (gen) gen.addEventListener('click', generateReadme);
-    } else {
-        container.innerHTML = `
-            ${themeButton}
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
             <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
         `;
-    const gen2 = document.getElementById('generateReadmeBtn');
-    if (gen2) gen2.addEventListener('click', generateReadme);
   }
 }
 
@@ -975,81 +1186,62 @@ function updateNavbar() {
    THEME TOGGLE
    ============================================================ */
 function initTheme() {
-    const saved = localStorage.getItem('theme') || 'dark';
-    let transitionTimer = null;
+  const saved = localStorage.getItem('theme') || 'dark';
+  let transitionTimer = null;
 
-    const syncThemeIcons = () => {
-        const isLight = document.body.classList.contains('light-mode');
-        const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-        document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-            icon.className = iconClass;
-        });
-    };
+  const syncThemeIcons = () => {
+    const isLight = document.body.classList.contains('light-mode');
+    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
+      icon.className = iconClass;
+    });
+  };
 
-    if (saved === 'light') {
-        document.body.classList.add('light-mode');
-    }
+  if (saved === 'light') {
+    document.body.classList.add('light-mode');
+  }
+  syncThemeIcons();
+
+  document.body.addEventListener('click', (e) => {
+    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
+    if (!target) return;
+
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
     syncThemeIcons();
 
-    document.body.addEventListener('click', (e) => {
-        const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-        if (!target) return;
-
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        syncThemeIcons();
-
-        document.body.classList.add('theme-transitioning');
-        if (transitionTimer) clearTimeout(transitionTimer);
-        transitionTimer = setTimeout(() => {
-            document.body.classList.remove('theme-transitioning');
-        }, 400);
-    });
+    document.body.classList.add('theme-transitioning');
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      document.body.classList.remove('theme-transitioning');
+    }, 400);
+  });
 }
 
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-    const btn = document.getElementById('scrollBtn');
-    const ring = document.getElementById('ringFill');
-    if (!btn) return;
+  const btn = document.getElementById('scrollBtn');
+  const ring = document.getElementById('ringFill');
+  if (!btn) return;
 
-    const circumference = 2 * Math.PI * 22;
+  const circumference = 2 * Math.PI * 22;
 
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-
-        btn.classList.toggle('show', scrollTop > 400);
-
-        if (ring) {
-            ring.style.strokeDashoffset = circumference * (1 - progress);
-        }
-    });
-
-    btn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-}
-
-/* ============================================================
-   BACK TO TOP BUTTON
-   ============================================================ */
-const backToTopButton = document.getElementById('backToTop');
-
-if (backToTopButton) {
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) {
-      backToTopButton.style.display = 'block';
-    } else {
-      backToTopButton.style.display = 'none';
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+    btn.classList.toggle('show', scrollTop > 400);
+
+    if (ring) {
+      ring.style.strokeDashoffset = circumference * (1 - progress);
     }
   });
 
-  backToTopButton.addEventListener('click', () => {
+  btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
@@ -1057,33 +1249,80 @@ if (backToTopButton) {
 /* ============================================================
    INIT
    ============================================================ */
+function hasProjectGrid() {
+  return Boolean(document.getElementById('projectGrid'));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired');
-  console.log(
-    'PROJECTS:',
-    typeof PROJECTS,
-    PROJECTS ? PROJECTS.length : 'undefined'
-  );
-  
-  // Show available technologies for debugging
-  getAllTechnologies();
-  
   initTheme();
   updateNavbar();
+
   initFilterChips();
   initSearch();
-  initTechStackSearch(); // Initialize tech stack search
+  initSorting();
+  initTechStackSearch();
+
   syncProjectCounts();
-  renderGrid();
-  renderBookmarks();
-  renderRecentProjects();
   fetchRepoStats();
   initScrollBtn();
+
+  if (hasProjectGrid()) {
+    renderGrid();
+    renderBookmarks();
+    renderRecentProjects();
+  }
 });
 
+
+
+(() => {
+  const initDirectMobileMenu = () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const navButtons = document.getElementById('navButtons');
+
+    if (!menuToggle || !navButtons) return;
+
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menuToggle.classList.toggle('active');
+      navButtons.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+        menuToggle.classList.remove('active');
+        navButtons.classList.remove('active');
+      }
+    });
+
+    navButtons.addEventListener('click', (e) => {
+      if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+        menuToggle.classList.remove('active');
+        navButtons.classList.remove('active');
+      }
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+  } else {
+    initDirectMobileMenu();
+  }
+})();
+
+
+
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    renderGrid();
+  }, 200)
+);
 window.addEventListener('resize', () => {
-  renderGrid();
+  if (hasProjectGrid()) {
+    renderGrid();
+  }
 });
 
 /* ============================================================
@@ -1092,3 +1331,155 @@ window.addEventListener('resize', () => {
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
+
+// Particle Network Background
+(function () {
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const minParticles = 30;
+  const maxParticles = 120;
+  const areaPerParticle = 26000;
+  let particleCount = 60;
+  let linkDistance = 120;
+  let dpr = 1;
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    canvas.style.width = `${W}px`;
+    canvas.style.height = `${H}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    particleCount = Math.min(
+      maxParticles,
+      Math.max(minParticles, Math.round((W * H) / areaPerParticle))
+    );
+    linkDistance = Math.max(90, Math.min(150, Math.round(Math.min(W, H) / 6)));
+  }
+
+  function init() {
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 3 + 1,
+        hue: [220, 260, 280][Math.floor(Math.random() * 3)],
+        alpha: Math.random() * 0.8 + 0.4,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    });
+    for (let i = 0; i < particleCount; i++) {
+      for (let j = i + 1; j < particleCount; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < linkDistance) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(59,130,246,${(1 - d / linkDistance) * 0.35})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue},80%,72%,${p.alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  let resizeFrame = null;
+  const handleResize = () => {
+    if (resizeFrame) return;
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = null;
+      resize();
+      init();
+    });
+  };
+
+  window.addEventListener('resize', handleResize);
+  resize(); init(); draw();
+})();
+
+// =============================================
+// PERSISTENT FILTERS & SEARCH — Issue #3320
+// =============================================
+
+function getQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    search: params.get('search') || '',
+    category: params.get('category') || 'all'
+  };
+}
+
+function updateURL(search, category) {
+  const params = new URLSearchParams();
+  if (search) params.set('search', search);
+  if (category && category !== 'all') params.set('category', category);
+  const newURL = params.toString()
+    ? `${window.location.pathname}?${params.toString()}`
+    : window.location.pathname;
+  history.pushState({ search, category }, '', newURL);
+}
+
+function restoreStateFromURL() {
+  const { search, category } = getQueryParams();
+  const searchInput = document.getElementById('searchInput') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('.search-input');
+  if (searchInput && search) searchInput.value = search;
+  const categoryFilter = document.getElementById('category');
+  if (categoryFilter && category !== 'all') categoryFilter.value = category;
+  if (search || category !== 'all') applyFilters(search, category);
+}
+
+function applyFilters(search, category) {
+  earchQuery = search || '';
+  activeFilter = category || 'all';
+  currentPage = 1;
+  renderGrid();
+  
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  restoreStateFromURL();
+  const searchInput = document.getElementById('search') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('.search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const { category } = getQueryParams();
+      updateURL(searchInput.value, category);
+      applyFilters(searchInput.value, category);
+    });
+  }
+  const categoryFilter = document.getElementById('category');
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener('popstate', () => restoreStateFromURL());
+});

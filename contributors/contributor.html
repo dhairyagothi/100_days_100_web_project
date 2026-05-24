@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>100 Days 100 Web Projects</title>
+    <title>100 Days · 100 Web Projects — Contributors</title>
     <link rel="icon" href="../public/favv.png" type="image/x-icon" />
     <meta content="100 Days, 100 Web Projects" property="og:title" />
     <meta
@@ -12,47 +12,46 @@
     />
     <meta content="/" property="og:url" />
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
-    <meta content="#c2a3d6" data-react-helmet="true" name="theme-color" />
+    <meta content="#0b0d0f" data-react-helmet="true" name="theme-color" />
     <meta name="twitter:card" content="summary_large_image" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
+    <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="contributor.css" />
   </head>
 
   <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-      <div class="navbar-brand">
-        <img
-          src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg"
-          alt="Logo"
-        />
-        <span>100 DAYS 100 WEB PROJECTS</span>
-      </div>
-      <div class="buttons">
-        <a class="button" href="../index.html"> Home </a>
-        <a
-          href="https://www.github-readme.tech"
-          target="_blank"
-          class="button featured-btn"
-        >
-          <i class="fas fa-rocket"></i>
-          <span>Generate README</span>
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+    <div class="ambient ambient-right" aria-hidden="true"></div>
+    <div class="noise-layer" aria-hidden="true"></div>
+
+    <nav class="navbar" id="navbar">
+        <a class="navbar-brand" href="../index.html" style="text-decoration:none;">
+            <span class="brand-mark" aria-hidden="true">100</span>
+            <span class="brand-copy">
+                <span class="brand-kicker">Open Source Archive</span>
+                <strong>100 Days · 100 Web Projects</strong>
+            </span>
         </a>
-        <a
-          class="button"
-          href="https://github.com/dhairyagothi/100_days_100_web_project"
-          target="_blank"
-        >
-          GitHub
-        </a>
-        <button id="themeToggle" title="Toggle Theme">
-          <i class="fas fa-moon"></i>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+            <i class="fas fa-bars"></i>
         </button>
-      </div>
+
+        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+            <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
+            <a class="btn btn-primary btn-sm" href="https://www.github-readme.tech" target="_blank"><i class="fas fa-rocket"></i> Generate README</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <button class="btn btn-ghost btn-sm" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i> Theme</button>
+        </div>
     </nav>
 
     <div class="container">
@@ -106,12 +105,32 @@
 
       <p id="emptyState" class="empty-state">No contributors found.</p>
 
+      <div id="contributorsError" class="hidden api-error">
+        <p id="contributorsErrorMessage">Failed to load contributors.</p>
+
+        <button id="retryContributors">Retry</button>
+      </div>
+
+      <div id="contributorsLoading" class="loading-state">
+        Loading contributors...
+      </div>
+
       <div id="contributors" class="contributors-grid"></div>
 
       <div class="contributor-header" style="margin-top: 5rem">
         <h1>Project Stargazers</h1>
         <p class="subtitle">The community supporting our growth</p>
       </div>
+      <div id="stargazersError" class="hidden api-error">
+        <p id="stargazersErrorMessage">Failed to load stargazers.</p>
+
+        <button id="retryStargazers">Retry</button>
+      </div>
+
+      <div id="stargazersLoading" class="loading-state">
+        Loading stargazers...
+      </div>
+
       <div id="stargazers" class="stargazers-grid"></div>
     </div>
 
@@ -124,7 +143,7 @@
             basic to intermediate using HTML, CSS, and JS.
           </p>
           <p>
-            <strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and
+            <strong>&copy; <span id="Current-Year"></span> 100 Days, 100 Projects</strong> by Dhairya and
             Contributors.
           </p>
         </div>
@@ -182,10 +201,23 @@
         <div id="certificateBody">Loading Certificate...</div>
       </div>
     </div>
+    <button id="scrollBtn" aria-label="Back to top">
+        <svg class="progress-ring" viewBox="0 0 48 48">
+            <circle class="ring-track" cx="24" cy="24" r="22"/>
+            <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22"/>
+        </svg>
+        <i class="fas fa-arrow-up scroll-arrow"></i>
+        <span class="scroll-tooltip">Back to top</span>
+    </button>
+    <div class="toast" id="toast"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="
 https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="../index.js"></script>
     <script src="contributor.js"></script>
+    <script>
+      document.getElementById("Current-Year").textContent=new Date().getFullYear();
+    </script>
   </body>
 </html>

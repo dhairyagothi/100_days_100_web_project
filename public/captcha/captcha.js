@@ -1,4 +1,6 @@
-const captchaTypeSelect = document.getElementById('captchaType');
+let selectedImageAnswer = "";
+const typeButtons = document.querySelectorAll(".type-btn");
+let selectedType = "text";
 const captchaContainer = document.getElementById('captchaContainer');
 const textInput = document.querySelector(".textcaptcha input");
 const refreshButton = document.querySelector(".refresh");
@@ -54,15 +56,17 @@ const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
 };
 
 const generateCaptcha = () => {
-    const type = captchaTypeSelect.value;
+    const type = selectedType;
     switch (type) {
         case 'text':
             currentCaptcha = generateTextCaptcha();
+            document.querySelector(".textcaptcha").style.display = "block";
             captchaContainer.innerHTML = `<span style="font-size: 24px; letter-spacing: 5px;">${currentCaptcha}</span>`;
             break;
         case 'image':
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
+            document.querySelector(".textcaptcha").style.display = "none";
             captchaContainer.innerHTML = `
                 <p>Select the ${correct.name}</p>
                 <div class="image-grid">
@@ -71,12 +75,16 @@ const generateCaptcha = () => {
             `;
             captchaContainer.querySelectorAll('.image-option').forEach(option => {
                 option.addEventListener('click', () => {
-                    textInput.value = images.find(img => img.emoji === option.textContent).name;
+                    captchaContainer.querySelectorAll(".image-option")
+                    .forEach(img => img.classList.remove("selected"));
+                    option.classList.add("selected");
+                    selectedImageAnswer = images.find(img => img.emoji === option.textContent).name;
                 });
             });
             break;
             case 'audio':
             currentCaptcha = generateTextCaptcha();
+            document.querySelector(".textcaptcha").style.display = "block";
             captchaContainer.innerHTML = `
                 <p>Click play and enter the spoken characters:</p>
                 <button id="playAudio">Play Audio</button>
@@ -94,10 +102,10 @@ const generateCaptcha = () => {
                 }
             });
             break;
-              break;
         case 'math':
             const { question, answer } = generateMathCaptcha();
             currentCaptcha = answer.toString();
+            document.querySelector(".textcaptcha").style.display = "block";
             captchaContainer.innerHTML = `<span style="font-size: 24px;">${question} = ?</span>`;
             break;
     }
@@ -114,7 +122,7 @@ const updateLockoutUI = () => {
   if (now < lockoutEndTime) {
       const remainingTime = Math.ceil((lockoutEndTime - now) / 1000);
       submitButton.disabled = true;
-      resultMessage.textContent = `Too many attempts. Please wait ${remainingTime} seconds.`;
+      resultMessage.textContent = `Too many unsuccessful attempts. Please wait ${remainingTime} seconds.`;
       resultMessage.style.color = "red";
       setTimeout(updateLockoutUI, 1000);
   } else {
@@ -130,7 +138,10 @@ const verifyCaptcha = () => {
       return;
   }
 
-  const userInput = textInput.value.trim().toLowerCase();
+  const userInput = 
+  selectedType == "image"
+  ? selectedImageAnswer.toLowerCase()
+  : textInput.value.trim().toLowerCase();
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
   
   if (isCorrect) {
@@ -147,13 +158,22 @@ const verifyCaptcha = () => {
       if (attempts >= maxAttempts) {
           lockoutUser();
       } else {
-          resultMessage.textContent = `Incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
-          resultMessage.style.color = "red";
+          resultMessage.textContent = `Incorrect. Please try again. \n(Attempt ${attempts}/${maxAttempts})`;
+          resultMessage.style.color = "#d01100";
       }
   }
 };
 
-captchaTypeSelect.addEventListener('change', generateCaptcha);
+typeButtons.forEach(button =>{
+    button.addEventListener ("click", () =>{
+        typeButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        selectedType = button.dataset.type;
+        textInput.value = "";       //clears the text input field
+        selectedImageAnswer = "";   // resets the stored image answer too
+        generateCaptcha();
+    });
+});
 refreshButton.addEventListener("click", () => {
   if (Date.now() >= lockoutEndTime) {
       generateCaptcha();

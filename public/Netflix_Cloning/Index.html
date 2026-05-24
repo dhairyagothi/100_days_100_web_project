@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- ============= NAVBAR ============= -->
-    <header class="navbar">
-        <img src="./img/logo.svg" alt="Netflix Logo" class="logo">
-        <button class="signin-btn">Sign In</button>
-    </header>
+    <!-- ============= LANDING PAGE ============= -->
+    <div id="landingPage">
+        <!-- ============= NAVBAR ============= -->
+        <header class="navbar">
+            <img src="./img/logo.svg" alt="Netflix Logo" class="logo">
+            <button class="signin-btn" id="navSignInBtn">Sign In</button>
+        </header>
 
     <!-- ============= HERO SECTION ============= -->
     <section class="hero">
@@ -20,9 +22,9 @@
         <p>Watch anywhere. Cancel anytime.</p>
         <p style="font-size: 18px; color: rgba(255, 255, 255, 0.8); margin-bottom: 30px;">Ready to watch? Enter your email to create or restart your membership.</p>
         
-        <form class="hero-form" onsubmit="handleHeroSubmit(event)">
-            <input type="email" placeholder="Email address" required>
-            <button type="submit">Get Started ></button>
+        <form class="hero-form" id="emailForm">
+            <input type="email" id="heroEmail" placeholder="Email address" required>
+            <button type="submit" id="getStartedBtn">Get Started ></button>
         </form>
     </section>
 
@@ -138,19 +140,113 @@
             </div>
         </div>
     </footer>
+    </div><!-- End of landing page -->
+
+    <!-- ============= AUTHENTICATION MODALS ============= -->
+    <!-- SIGN UP MODAL -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+            <div class="modal-header">
+                <h2>Create Your Account</h2>
+                <p>Join Netflix to start watching</p>
+            </div>
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password" required>
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            <p class="modal-footer-text">
+                Already have an account? 
+                <button type="button" class="link-btn" onclick="switchToSignIn()">Sign In</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- SIGN IN MODAL -->
+    <div id="signinModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSigninModal()">&times;</button>
+            <div class="modal-header">
+                <h2>Sign In</h2>
+                <p>Welcome back to Netflix</p>
+            </div>
+            <form id="signinForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signinEmail">Email Address</label>
+                    <input type="email" id="signinEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signinPassword">Password</label>
+                    <input type="password" id="signinPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+            <p class="modal-footer-text">
+                Don't have an account? 
+                <button type="button" class="link-btn" onclick="switchToSignUp()">Sign Up</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- ============= MOVIES PAGE (Hidden initially) ============= -->
+    <div id="moviesPage" class="hidden">
+        <!-- MOVIES NAVBAR -->
+        <header class="navbar movies-navbar">
+            <img src="./img/logo.svg" alt="Netflix Logo" class="logo">
+            <div class="navbar-right">
+                <input type="text" id="searchMovies" class="search-bar" placeholder="Search movies...">
+                <div class="user-menu">
+                    <span id="userGreeting"></span>
+                    <button id="logoutBtn" class="btn-logout">Log Out</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- FEATURED SECTION -->
+        <section class="featured-section">
+            <div class="featured-content">
+                <h1 id="featuredTitle">Stranger Things</h1>
+                <p id="featuredDescription">When a young boy disappears, his friends, family and local police go on a search.</p>
+                <div class="featured-buttons">
+                    <button class="btn-play"><i class="fas fa-play"></i> Play</button>
+                    <button class="btn-info"><i class="fas fa-info-circle"></i> More Info</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOVIE CATEGORIES -->
+        <section class="movies-container">
+            <div class="category">
+                <h2>Trending Now</h2>
+                <div class="movies-grid" id="trendingMovies"></div>
+            </div>
+            <div class="category">
+                <h2>Action</h2>
+                <div class="movies-grid" id="actionMovies"></div>
+            </div>
+            <div class="category">
+                <h2>Drama</h2>
+                <div class="movies-grid" id="dramaMovies"></div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="movies-footer">
+            <p>&copy; 2026 Netflix Clone. All rights reserved.</p>
+        </footer>
+    </div>
 
     <script src="script.js"></script>
-    <script>
-        function toggleFAQ(button) {
-            button.classList.toggle('active');
-            const answer = button.nextElementSibling;
-            answer.classList.toggle('active');
-        }
-
-        function handleHeroSubmit(e) {
-            e.preventDefault();
-            alert('Thank you for your interest in Netflix!');
-        }
-    </script>
 </body>
 </html>

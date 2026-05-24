@@ -176,15 +176,19 @@
         }
     </style>
 </head>
-<body>
+<body id="top">
 <header>
     <div class="navbar">
         <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-style:italic;font-style:bold">TRIP ADVISOR</h1>
         <ul>
-            <li><a href="#">HOME</a></li>
-            <li><a href="#">CONTACT US</a></li>
-            <li><a href="#">ABOUT US</a></li>
-            <li><a href="#">SERVICES</a></li>
+       <li>
+  <a href="#top" onclick="updatePlace('Iceland'); placeSelector.value='Iceland';">
+    HOME
+  </a>
+</li>
+<li><a href="#contact">CONTACT US</a></li>
+<li><a href="#about">ABOUT US</a></li>
+<li><a href="#services">SERVICES</a></li>
         </ul>
     </div>
 </header>
@@ -248,5 +252,27 @@
         placeSelector.value = defaultPlace;
     };
 </script>
+<!-- CONTACT US SECTION -->
+<section id="contact" style="background:rgba(0,0,0,0.7);color:white;padding:60px 20px;text-align:center;">
+  <h2 style="font-size:2em;margin-bottom:20px;">Contact Us</h2>
+  <p style="font-size:1.1em;margin-bottom:10px;">📧 contact@tripadvisor.com</p>
+  <p style="font-size:1.1em;margin-bottom:10px;">📞 +1 800 123 4567</p>
+  <p style="font-size:1.1em;">🕐 Mon–Fri, 9am–6pm</p>
+</section>
+
+<!-- ABOUT US SECTION -->
+<section id="about" style="background:rgba(0,0,0,0.5);color:white;padding:60px 20px;text-align:center;">
+  <h2 style="font-size:2em;margin-bottom:20px;">About Us</h2>
+  <p style="font-size:1.1em;max-width:600px;margin:0 auto;line-height:1.8;">We are a travel platform helping you discover the most beautiful destinations around the world. Our mission is to make travel planning simple, beautiful and inspiring.</p>
+</section>
+
+<!-- SERVICES SECTION -->
+<section id="services" style="background:rgba(0,0,0,0.7);color:white;padding:60px 20px;text-align:center;">
+  <h2 style="font-size:2em;margin-bottom:20px;">Services</h2>
+  <p style="font-size:1.1em;margin-bottom:10px;">✈️ Flight Booking</p>
+  <p style="font-size:1.1em;margin-bottom:10px;">🏨 Hotel Reservations</p>
+  <p style="font-size:1.1em;margin-bottom:10px;">🗺️ Tour Packages</p>
+  <p style="font-size:1.1em;">🚗 Car Rentals</p>
+</section>
 </body>
 </html>
