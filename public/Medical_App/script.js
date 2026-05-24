@@ -1,134 +1,154 @@
-document.addEventListener('DOMContentLoaded', () => {
+const specialists = [
+    "Cardiologist",
+    "Neurologist",
+    "Dermatologist",
+    "Orthopedic",
+    "Pediatrician",
+    "Psychiatrist"
+];
 
-    const requestForm = document.getElementById('requestForm');
+const specialistSelect = document.getElementById("specialistType");
+const specialistSearch = document.getElementById("specialistSearch");
+const requestForm = document.getElementById("requestForm");
+const historyList = document.getElementById("historyList");
+const recommendationBox = document.getElementById("recommendationBox");
+const symptomSelect = document.getElementById("symptomSelect");
 
-    const historyList = document.getElementById('historyList');
 
-    const specialistSearch =
-        document.getElementById('specialistSearch');
+// Load specialists into dropdown
+function loadSpecialists(list) {
 
-    const specialistTypeSelect =
-        document.getElementById('specialistType');
+    specialistSelect.innerHTML =
+        `<option value="">Select Specialist</option>`;
 
-    const specialists = [
-        'Cardiologist',
-        'Dermatologist',
-        'Neurologist',
-        'Psychiatrist',
-        'Pediatrician',
-        'Orthopedic Surgeon'
-    ];
+    list.forEach((specialist) => {
 
-    const consultationHistory = [];
+        const option = document.createElement("option");
 
-    function updateSpecialistOptions(searchText) {
+        option.value = specialist;
+        option.textContent = specialist;
 
-        specialistTypeSelect.innerHTML = '';
-
-        const filtered = specialists.filter(item =>
-            item.toLowerCase().includes(searchText.toLowerCase())
-        );
-
-        filtered.forEach(specialist => {
-
-            const option = document.createElement('option');
-
-            option.value = specialist;
-
-            option.textContent = specialist;
-
-            specialistTypeSelect.appendChild(option);
-
-        });
-    }
-
-    specialistSearch.addEventListener('input', e => {
-        updateSpecialistOptions(e.target.value);
+        specialistSelect.appendChild(option);
     });
+}
 
-    updateSpecialistOptions('');
+loadSpecialists(specialists);
 
-    requestForm.addEventListener('submit', e => {
 
-        e.preventDefault();
+// Live search filter
+specialistSearch.addEventListener("input", () => {
 
-        const doctorName =
-            document.getElementById('doctorName').value;
+    const searchValue =
+        specialistSearch.value.toLowerCase();
 
-        const patientCondition =
-            document.getElementById('patientCondition').value;
+    const filtered = specialists.filter((specialist) =>
+        specialist.toLowerCase().includes(searchValue)
+    );
 
-        const specialistType =
-            document.getElementById('specialistType').value;
-
-        const consultation = {
-            doctorName,
-            patientCondition,
-            specialistType,
-            date: new Date().toLocaleString()
-        };
-
-        consultationHistory.push(consultation);
-
-        renderHistory();
-
-        alert('Consultation Submitted Successfully');
-
-        requestForm.reset();
-    });
-
-    function renderHistory() {
-
-        historyList.innerHTML = '';
-
-        consultationHistory.forEach(item => {
-
-            const li = document.createElement('li');
-
-            li.innerHTML = `
-                <strong>${item.date}</strong><br>
-                Doctor: ${item.doctorName}<br>
-                Condition: ${item.patientCondition}<br>
-                Specialist: ${item.specialistType}
-            `;
-
-            historyList.appendChild(li);
-        });
-    }
-
+    loadSpecialists(filtered);
 });
 
-function showRecommendation() {
 
-    const symptom =
-        document.getElementById('symptomSelect').value;
+// Consultation form submission
+requestForm.addEventListener("submit", (e) => {
 
-    const box =
-        document.getElementById('recommendationBox');
+    e.preventDefault();
 
-    const recommendations = {
+    const doctorName =
+        document.getElementById("doctorName").value;
 
-        cold:
-            'Stay hydrated, take rest, and consider steam inhalation.',
+    const patientCondition =
+        document.getElementById("patientCondition").value;
 
-        headache:
-            'Maintain hydration and avoid excessive screen exposure.',
+    const specialist =
+        specialistSelect.value;
 
-        fever:
-            'Monitor temperature and consult a doctor if persistent.',
-
-        fatigue:
-            'Ensure proper sleep, hydration, and balanced nutrition.'
-    };
-
-    if (!symptom) {
-
-        box.innerHTML =
-            'Please select a symptom first.';
-
+    if (!specialist) {
+        alert("Please select a specialist.");
         return;
     }
 
-    box.innerHTML =
-        recommendations[symptom];
-}
+    // Create history item
+    const listItem = document.createElement("li");
+
+    listItem.innerHTML = `
+        <strong>${doctorName}</strong> requested
+        <strong>${specialist}</strong> consultation
+        for "${patientCondition}"
+    `;
+
+    historyList.prepend(listItem);
+
+    // Success message
+    alert("✅ Consultation submitted successfully!");
+
+    // Reset form
+    requestForm.reset();
+});
+
+
+// Medicine recommendations
+const recommendations = {
+
+    cold: `
+        <h3>Recommended Medicines</h3>
+        <ul>
+            <li>Paracetamol</li>
+            <li>Cetirizine</li>
+            <li>Steam Inhalation</li>
+        </ul>
+    `,
+
+    headache: `
+        <h3>Recommended Medicines</h3>
+        <ul>
+            <li>Ibuprofen</li>
+            <li>Hydration</li>
+            <li>Proper Rest</li>
+        </ul>
+    `,
+
+    fever: `
+        <h3>Recommended Medicines</h3>
+        <ul>
+            <li>Paracetamol</li>
+            <li>Electrolytes</li>
+            <li>Doctor Consultation</li>
+        </ul>
+    `,
+
+    fatigue: `
+        <h3>Recommended Suggestions</h3>
+        <ul>
+            <li>Vitamin Supplements</li>
+            <li>Sleep Improvement</li>
+            <li>Balanced Diet</li>
+        </ul>
+    `
+};
+
+
+// Symptom change
+symptomSelect.addEventListener("change", () => {
+
+    const selected =
+        symptomSelect.value;
+
+    recommendationBox.innerHTML =
+        recommendations[selected] || "";
+});
+
+
+// Simulated live heart rate
+const heartRate =
+    document.getElementById("heartRate");
+
+setInterval(() => {
+
+    const randomRate =
+        Math.floor(Math.random() * 15) + 70;
+
+    heartRate.textContent =
+        `${randomRate} BPM`;
+
+}, 3000);

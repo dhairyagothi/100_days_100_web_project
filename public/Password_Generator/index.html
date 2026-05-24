@@ -18,11 +18,15 @@
         <h1>Password Generator</h1>
         <div class="display-container">
             <input readonly placeholder="Password" class="display" data-passwordDisplay>
-            <button class="copyBtn" data-copy>
-                <span class="tooltip" data-copyMsg></span>
-                <img src="./assets/copy.svg" alt="copy" width="23" height="23">
-            </button>
-
+            <div class="btns">
+                <button class="copyBtn" data-copy>
+                    <span class="tooltip" data-copyMsg></span>
+                    <img src="./assets/copy.svg" alt="copy" width="23" height="23">
+                </button>
+                <button class="eyeBtn" data-eye title="Reveal password" aria-label="Reveal password">
+                    <img src="./assets/eye.png" alt="eye" class="eyeIcon" width="22" height="22">
+                </button>
+            </div>
         </div>
 
         <div class="input-container">
@@ -57,7 +61,7 @@
 
             <!-- strength section-->
             
-            <div class="strength-container">
+                        <div class="strength-container">
                 <p>Strength</p>
                 <div class="strength-info">
                   <div class="indicator" data-indicator></div>
@@ -66,12 +70,18 @@
                 </div>
             </div>
             
+                        <div id="suggestionBox" class="suggestion"></div>
             <p id="hideTimer"></p>
 
             <p id="warningMsg"></p>
             <!-- generate password-->
             <button class="generateButton">Generate Password</button>
         </div>
+    </div>
+        <div class="history-container">
+        <h3>Recent Passwords</h3>
+        <ul data-history-list></ul>
+        <button data-clear-history>Clear History</button>
     </div>
     <script src="script.js"></script>
 </body>
