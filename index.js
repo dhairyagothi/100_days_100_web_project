@@ -478,13 +478,14 @@ let activeFilter = 'all';
 let searchQuery = '';
 let sortOption = 'default';
 let techStackFilter = 'all';
+let difficultyFilter = 'all';
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, url, tags]) => {
+  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
@@ -505,7 +506,13 @@ function renderGrid() {
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
 
-    return matchesFilter && matchesSearch && matchesTech;
+    // Difficulty filter
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== 'all') {
+      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
+    }
+
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
 
   // Apply sorting
@@ -546,6 +553,7 @@ function renderGrid() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
+  const fragment = document.createDocumentFragment();
 
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
@@ -566,29 +574,30 @@ function renderGrid() {
     // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
     // This stops the click from "bubbling up" to the main card, preventing double-opening!
     card.innerHTML = `
-      <div class="card-meta">
-        <span class="card-day">${day}</span>
-        <span class="card-category">${category}</span>
-      </div>
-      <div class="card-name">${name}</div>
-      <div class="card-tags">${tagsHTML}</div>
-      <div class="card-footer">
-        <div class="card-actions-left">
-          <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}">
-            Demo <i class="fas fa-arrow-right"></i>
-          </a>
-          <a href="${sourceUrl}" target="_blank" class="card-link view-code-link">
-            <i class="fab fa-github"></i> Code
-          </a>
-        </div>
-        <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-          <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-        </button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${category}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
 
+   fragment.appendChild(card);
+  });
+  grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
@@ -972,22 +981,15 @@ function initFilterChips() {
 /* ============================================================
    LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
-
-/**
- * Creates a debounced version of a function to limit its execution rate.
- * Prevents UI performance lag by delaying grid rendering until typing pauses.
- * @param {Function} func - The search function to execute.
- * @param {number} wait - Delays execution by this many milliseconds.
- */
-function debounce(func, wait) {
+function debounce(fn, delay = 300) {
   let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
+
+  return (...args) => {
     clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
+
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, delay);
   };
 }
 /**
@@ -1027,6 +1029,16 @@ function initSearch() {
   if (techStack) {
     techStack.addEventListener('change', () => {
       techStackFilter = techStack.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+
+  // Difficulty dropdown filter listener
+  const diffFilterElement = document.getElementById('difficultyFilter');
+  if (diffFilterElement) {
+    diffFilterElement.addEventListener('change', () => {
+      difficultyFilter = diffFilterElement.value;
       currentPage = 1;
       renderGrid();
     });
@@ -1327,6 +1339,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    renderGrid();
+  }, 200)
+);
 window.addEventListener('resize', () => {
   if (hasProjectGrid()) {
     renderGrid();
