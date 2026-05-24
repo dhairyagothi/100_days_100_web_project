@@ -5,6 +5,7 @@ const taskTypeSelect = document.getElementById("task-type-select");
 const taskList = document.getElementById("task-list");
 const emptyState = document.getElementById("empty-state");
 const documentsList = document.getElementById("documents-list");
+const searchInput = document.getElementById("searchTask");
 
 // Stats counters
 const statTotal = document.getElementById("stat-total");
@@ -91,12 +92,23 @@ function filterTasks(buttonElement, filterValue) {
 
 function renderTasks() {
   // Filter core task pool
-  const filteredTasks = tasks.filter(task => {
-    if (currentFilter === "all") return true;
-    if (currentFilter === "pending") return !task.completed;
-    if (currentFilter === "done") return task.completed;
-    return task.category === currentFilter; // Matches Category Strings
-  });
+const searchText = searchInput
+  ? searchInput.value.toLowerCase()
+  : "";
+
+const filteredTasks = tasks.filter(task => {
+
+  const matchesSearch =
+    task.text.toLowerCase().includes(searchText);
+
+  if (!matchesSearch) return false;
+
+  if (currentFilter === "all") return true;
+  if (currentFilter === "pending") return !task.completed;
+  if (currentFilter === "done") return task.completed;
+
+  return task.category === currentFilter;
+});
 
   // Toggle Visibility of Empty State Element
   if (filteredTasks.length === 0) {
@@ -288,3 +300,8 @@ function showToast(message) {
 taskInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addTask();
 });
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    renderTasks();
+  });
+}
