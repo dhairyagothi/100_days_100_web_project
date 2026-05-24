@@ -1,4 +1,4 @@
-# Day 156 - Invoice / Bill Generator
+# Day 167 - Invoice / Bill Generator
 
 A professional Invoice/Bill Generator that works entirely in the browser no backend required.
 
@@ -18,7 +18,7 @@ A professional Invoice/Bill Generator that works entirely in the browser no back
 - JavaScript
 
 ## Folder Structure
-Day156_Invoice_Generator/  
+Day167_Invoice_Generator/  
 ├── index.html  
 ├── style.css  
 └── script.js
