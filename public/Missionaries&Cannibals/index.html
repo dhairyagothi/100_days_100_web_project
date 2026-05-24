@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missionaries and Cannibals</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <h1>Missionaries and Cannibals</h1>
+    <div class="top-bar">
+        <h1>MISSIONARIES AND CANNIBALS</h1>
+
+        <button id="instructions-btn" class="instructions-btn">
+            Instructions
+        </button>
+    </div>
+
     <div class="instructions">
-        <p>Use the boat to transfer missionaries and cannibals between the banks. The boat can carry two people at a time.</p>
+        <p>Use the boat to transfer missionaries and cannibals between the banks. The boat can carry two people at a
+            time.</p>
     </div>
 
     <div class="game-container">
@@ -40,11 +50,31 @@
 
     <div class="controls">
         <button id="start-reset">Start Game</button>
+        <button id="move-boat">Move Boat</button>
+
     </div>
 
     <div id="message"></div>
+    <!-- Instructions Modal -->
+    <div id="instructions-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal">&times;</span>
+
+            <h2>How to Play</h2>
+
+            <ul>
+                <li>Move all missionaries and cannibals to the right bank.</li>
+                <li>The boat can carry only 2 people at a time.</li>
+                <li>Click a person to move them into the boat.</li>
+                <li>Click "Move Boat" to cross the river.</li>
+                <li>Click people inside the boat to unload them.</li>
+                <li>Never leave missionaries outnumbered by cannibals on either bank.</li>
+            </ul>
+
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
-</html>
 
+</html>

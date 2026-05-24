@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumina AI | Intelligent Image Editing</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { overflow-y: auto; height: auto; }
+    .hero-section {
+      padding: 6rem 2rem;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+    }
+    .hero-section h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to bottom, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-section p {
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+    }
+    .demo-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 2rem;
+      border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .card:hover { border-color: var(--accent-color); transform: translateY(-5px); }
+    .card i { font-size: 2rem; color: var(--accent-color); margin-bottom: 1.5rem; }
+    .card h3 { margin-bottom: 0.8rem; }
+    .card p { color: var(--text-dim); line-height: 1.6; font-size: 0.95rem; }
+    
+    .cta-container { margin-top: 5rem; text-align: center; padding-bottom: 5rem; }
+    .main-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        background: var(--accent-color);
+        color: white;
+        padding: 1.2rem 3rem;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        box-shadow: 0 10px 30px var(--accent-glow);
+        transition: all 0.3s;
+    }
+    .main-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+  </style>
+</head>
+<body>
+
+  <header class="editor-header" style="position: sticky; top: 0; z-index: 100;">
+    <div class="logo-area" style="border: none; padding: 0.5rem 2rem;">
+      <span class="logo-icon"><i class="fas fa-wand-magic-sparkles"></i></span>
+      <span class="logo-text">Lumina AI</span>
+    </div>
+    <div class="top-actions">
+      <a href="index.html" class="primary-btn" style="text-decoration: none;">
+        Launch Editor <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </header>
+
+  <main class="demo-container">
+    <section class="hero-section">
+      <h1>Intelligent Image Editing.</h1>
+      <p>Lumina AI uses state-of-the-art neural networks directly in your browser to transform your photos without ever uploading them to a server.</p>
+    </section>
+
+    <div class="feature-cards">
+      <div class="card">
+        <i class="fas fa-brain"></i>
+        <h3>Edge Intelligence</h3>
+        <p>Uses TensorFlow.js to run complex computer vision models locally on your GPU/CPU.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-scissors"></i>
+        <h3>Auto Cutout</h3>
+        <p>Remove backgrounds from portraits instantly using BodyPix person segmentation.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-bolt"></i>
+        <h3>Instant Effects</h3>
+        <p>Apply filters like Cartoonification, Edge Detection, and Sepia in real-time.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-history"></i>
+        <h3>Non-Destructive</h3>
+        <p>Full undo history and comparison tools to ensure you get the perfect look.</p>
+      </div>
+    </div>
+
+    <section class="demo-section" style="margin-top: 5rem;">
+      <h2 style="text-align: center; margin-bottom: 3rem;">See the Magic</h2>
+      <div class="before-after" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div style="text-align: center;">
+          <h4 style="margin-bottom: 1rem; color: var(--text-dim);">Original</h4>
+          <img src="assets/demo-before.jpg" alt="Before" style="width: 100%; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        </div>
+        <div style="text-align: center;">
+          <h4 style="margin-bottom: 1rem; color: var(--accent-color);">AI Enhanced</h4>
+          <img src="assets/demo-after.png" alt="After" style="width: 100%; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px var(--accent-glow);">
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-container">
+      <h2>Ready to transform your images?</h2>
+      <p style="margin-bottom: 2rem; color: var(--text-dim);">No sign-up required. Completely private offline processing.</p>
+      <a href="index.html" class="main-btn">
+        Start Creating Now
+      </a>
+    </section>
+  </main>
+
+  <footer style="text-align: center; padding: 3rem; border-top: 1px solid var(--border-color); color: var(--text-dim); font-size: 0.9rem;">
+    Lumina AI • Day 108 Capstone Project • Built with TensorFlow.js
+  </footer>
+
+</body>
+</html>
+
