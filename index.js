@@ -343,14 +343,22 @@ function updateTechFilterDisplay() {
   container.style.display = 'flex';
 
   // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters.map(tech => `
-    <span class="tech-filter-tag">
-      ${tech}
-      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
-        <i class="fas fa-times"></i>
-      </button>
-    </span>
-  `).join('');
+  tagsContainer.innerHTML = '';
+  techStackFilters.forEach(tech => {
+    const span = document.createElement('span');
+    span.className = 'tech-filter-tag';
+
+    const label = document.createTextNode(tech + ' ');
+    span.appendChild(label);
+
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-label', 'Remove ' + tech + ' filter');
+    btn.innerHTML = '<i class="fas fa-times"></i>';
+    btn.addEventListener('click', () => removeTechFilter(tech));
+    span.appendChild(btn);
+
+    tagsContainer.appendChild(span);
+  });
 }
 
 /**
