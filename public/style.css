@@ -205,6 +205,26 @@ a {
   font-size: 14px;
 }
 
+.form-group input {
+  padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    opacity: 0.4;
+    transition: 0.3s ease;
+}
+
+.toggle-password.active {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px white);
+}
+
 /*Button styling*/
 .button {
   background: var(--glass-bg);

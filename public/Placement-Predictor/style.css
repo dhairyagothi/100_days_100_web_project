@@ -5,34 +5,58 @@
   font-family: Arial, sans-serif;
 }
 
+:root {
+  --bg-gradient: linear-gradient(135deg, #1d2671, #c33764);
+  --container-bg: white;
+  --text-color: #222;
+  --subtitle-color: #666;
+  --input-bg: white;
+  --input-border: #ccc;
+  --result-bg: #f4f6ff;
+  --heading-color: #1d2671;
+}
+
+body.dark-mode {
+  --bg-gradient: linear-gradient(135deg, #0f172a, #111827);
+  --container-bg: #1e293b;
+  --text-color: #f8fafc;
+  --subtitle-color: #cbd5e1;
+  --input-bg: #334155;
+  --input-border: #475569;
+  --result-bg: #334155;
+  --heading-color: #93c5fd;
+}
+
 body {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1d2671, #c33764);
+  background: var(--bg-gradient);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 30px;
+  transition: background 0.4s ease;
 }
 
 .container {
   width: 100%;
   max-width: 850px;
-  background: white;
+  background: var(--container-bg);
   border-radius: 20px;
   padding: 35px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transition: all 0.4s ease;
 }
 
 h1 {
   text-align: center;
   margin-bottom: 10px;
-  color: #1d2671;
+  color: var(--heading-color);
 }
 
 .subtitle {
   text-align: center;
   margin-bottom: 30px;
-  color: #666;
+  color: var(--subtitle-color);
   font-size: 15px;
 }
 
@@ -50,23 +74,25 @@ h1 {
 label {
   margin-bottom: 8px;
   font-weight: bold;
-  color: #333;
+  color: var(--text-color);
 }
 
 input,
 select {
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border);
   border-radius: 10px;
   outline: none;
   font-size: 15px;
   transition: 0.3s;
+  background: var(--input-bg);
+  color: var(--text-color);
 }
 
 input:focus,
 select:focus {
-  border-color: #1d2671;
-  box-shadow: 0 0 5px rgba(29,38,113,0.3);
+  border-color: #7c3aed;
+  box-shadow: 0 0 8px rgba(124,58,237,0.3);
 }
 
 button {
@@ -95,19 +121,20 @@ button:hover {
 .result-box h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #1d2671;
+  color: var(--heading-color);
 }
 
 .result-card {
-  background: #f4f6ff;
+  background: var(--result-bg);
   padding: 18px;
   border-radius: 14px;
   margin-bottom: 15px;
   text-align: center;
+  transition: 0.3s;
 }
 
 .result-card span {
-  color: #666;
+  color: var(--subtitle-color);
   font-size: 14px;
 }
 
@@ -117,8 +144,40 @@ button:hover {
   font-size: 24px;
 }
 
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  color: black;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .theme-toggle {
+  background: #1e293b;
+  color: white;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.08) rotate(8deg);
+}
+
 @media (max-width: 600px) {
   .container {
     padding: 25px;
+  }
+
+  .theme-toggle {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
   }
 }
