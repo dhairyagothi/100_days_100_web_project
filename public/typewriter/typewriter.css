@@ -47,7 +47,75 @@ body.light-theme {
     --input-color: #111111;
     --input-placeholder: rgba(17, 17, 17, 0.55);
 }
+body.vintage-theme {
+    --bg-color: #3b2f2f;
+    --text-color: #f4e8c1;
+    --glow-color: rgba(255, 214, 102, 0.15);
 
+    --paper-bg: #f5ecd7;
+    --paper-text: #3e2c1c;
+    --paper-line: #d8c3a5;
+
+    --body-grad-a: #6f4e37;
+    --body-grad-b: #5a3e2b;
+    --body-grad-c: #3e2c1c;
+
+    --key-bg-a: #8b6b4f;
+    --key-bg-b: #6f4e37;
+    --key-border: #3e2c1c;
+    --key-text: #fff8e7;
+
+    --input-bg: rgba(255,255,255,0.08);
+    --input-border: rgba(255,255,255,0.2);
+    --input-color: #fff8e7;
+    --input-placeholder: rgba(255,255,255,0.5);
+}
+body.neon-theme {
+    --bg-color: #0f0f1a;
+    --text-color: #00ffff;
+    --glow-color: rgba(255, 0, 255, 0.25);
+
+    --paper-bg: #161625;
+    --paper-text: #00ffff;
+    --paper-line: #ff00ff;
+
+    --body-grad-a: #240046;
+    --body-grad-b: #3c096c;
+    --body-grad-c: #5a189a;
+
+    --key-bg-a: #1a1a40;
+    --key-bg-b: #12002b;
+    --key-border: #ff00ff;
+    --key-text: #00ffff;
+
+    --input-bg: rgba(255,255,255,0.05);
+    --input-border: rgba(255,0,255,0.4);
+    --input-color: #00ffff;
+    --input-placeholder: rgba(0,255,255,0.5);
+}
+body.minimal-theme {
+    --bg-color: #f4f4f4;
+    --text-color: #222222;
+    --glow-color: rgba(0,0,0,0.05);
+
+    --paper-bg: #ffffff;
+    --paper-text: #111111;
+    --paper-line: #dddddd;
+
+    --body-grad-a: #eaeaea;
+    --body-grad-b: #dcdcdc;
+    --body-grad-c: #cfcfcf;
+
+    --key-bg-a: #ffffff;
+    --key-bg-b: #eeeeee;
+    --key-border: #bbbbbb;
+    --key-text: #111111;
+
+    --input-bg: rgba(0,0,0,0.03);
+    --input-border: rgba(0,0,0,0.1);
+    --input-color: #111111;
+    --input-placeholder: rgba(0,0,0,0.4);
+}
 * {
     margin: 0;
     padding: 0;
@@ -119,7 +187,20 @@ body::after {
 .theme-toggle:hover {
     transform: scale(1.15) rotate(20deg);
 }
+.sound-toggle {
+    position: fixed;
+    top: 20px;
+    right: 70px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.3s ease;
+    user-select: none;
+}
 
+.sound-toggle:hover {
+    transform: scale(1.15);
+}
 .typewriter-machine {
     position: relative;
     z-index: 1;
@@ -401,7 +482,11 @@ body::after {
         right: 12px;
         font-size: 22px;
     }
-
+    .sound-toggle {
+    top: 10px;
+    right: 50px;
+    font-size: 20px;
+    }
     #userInput {
         min-height: 72px;
         font-size: 13px;

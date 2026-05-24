@@ -1,12 +1,105 @@
 const typewriterText = document.getElementById("typewriterText");
 const userInput = document.getElementById("userInput");
 const themeToggle = document.getElementById("themeToggle");
-const capsLockKey = document.querySelector('[data-char="CAPSLOCK"]');
+const themes = [
+    "dark-theme",
+    "light-theme",
+    "vintage-theme",
+    "neon-theme",
+    "minimal-theme"
+];
 
+let currentThemeIndex = 0;
+const capsLockKey = document.querySelector('[data-char="CAPSLOCK"]');
+const soundToggle = document.getElementById("soundToggle");
 let audioCtx = null;
 let paperContent = "";
 let capsLockEnabled = false;
+let soundEnabled = true;
+let isSymbolMode = false;
+let cursorPosition = 0;
+const symbolLayout = {
+    q: "!",
+    w: "@",
+    e: "#",
+    r: "$",
+    t: "%",
+    y: "^",
+    u: "&",
+    i: "*",
+    o: "(",
+    p: ")",
+    a: "-",
+    s: "_",
+    d: "+",
+    f: "=",
+    g: "[",
+    h: "]",
+    j: "{",
+    k: "}",
+    l: ":",
+    z: ";",
+    x: "'",
+    c: "\"",
+    v: ",",
+    b: ".",
+    n: "/",
+    m: "?"
+};
+const normalKeys = {
+    q: "Q",
+    w: "W",
+    e: "E",
+    r: "R",
+    t: "T",
+    y: "Y",
+    u: "U",
+    i: "I",
+    o: "O",
+    p: "P",
 
+    a: "A",
+    s: "S",
+    d: "D",
+    f: "F",
+    g: "G",
+    h: "H",
+    j: "J",
+    k: "K",
+    l: "L",
+
+    z: "Z",
+    x: "X",
+    c: "C",
+    v: "V",
+    b: "B",
+    n: "N",
+    m: "M"
+};
+function updateKeyboardLayout() {
+
+    document.querySelectorAll(".key").forEach((key) => {
+
+        const originalChar = key.getAttribute("data-original");
+
+        if (!originalChar) return;
+
+        if (symbolLayout[originalChar]) {
+
+            if (isSymbolMode) {
+
+                key.textContent = symbolLayout[originalChar];
+                key.dataset.char = symbolLayout[originalChar];
+
+            } else {
+
+                key.textContent = normalKeys[originalChar];
+                key.dataset.char = originalChar;
+
+            }
+        }
+    });
+}
 function getAudioCtx() {
     if (!audioCtx) {
         try {
@@ -24,6 +117,7 @@ function getAudioCtx() {
 }
 
 function playClick(noiseVol, freq1, freq2, dur) {
+    if (!soundEnabled) return;
     const ctx = getAudioCtx();
     if (!ctx) return;
 
@@ -92,7 +186,18 @@ function playBackspace() {
 }
 
 function renderPaper() {
-    typewriterText.textContent = paperContent;
+
+    const beforeCursor = paperContent.slice(0, cursorPosition);
+    const afterCursor = paperContent.slice(cursorPosition);
+
+    typewriterText.textContent = beforeCursor;
+
+    const cursorSpan = document.createElement("span");
+    cursorSpan.className = "cursor-paper";
+
+    typewriterText.appendChild(cursorSpan);
+
+    typewriterText.append(afterCursor);
 }
 
 function syncInput() {
@@ -146,7 +251,12 @@ function flashKey(token) {
 function insertText(text, shouldFlash = true) {
     if (typeof text !== "string" || text.length === 0) return;
 
-    paperContent += text;
+    paperContent =
+    paperContent.slice(0, cursorPosition) +
+    text +
+    paperContent.slice(cursorPosition);
+
+cursorPosition += text.length;
     renderPaper();
     syncInput();
 
@@ -167,15 +277,21 @@ function insertText(text, shouldFlash = true) {
 }
 
 function deleteCharFromPaper() {
-    if (paperContent.length === 0) return;
 
-    paperContent = paperContent.slice(0, -1);
+    if (cursorPosition === 0) return;
+
+    paperContent =
+        paperContent.slice(0, cursorPosition - 1) +
+        paperContent.slice(cursorPosition);
+
+    cursorPosition--;
+
     renderPaper();
     syncInput();
+
     playBackspace();
     flashKey("BACKSPACE");
 }
-
 function handleButtonPress(char) {
     if (char === "CAPSLOCK") {
         toggleCapsLock();
@@ -201,21 +317,49 @@ function handleButtonPress(char) {
     }
 
     if (isLetter(char)) {
-        insertText(transformLetter(char, false));
-        userInput.focus();
-        return;
-    }
+    insertText(transformLetter(char, false));
+    userInput.focus();
+    return;
+}
 
+insertText(char);
+userInput.focus();
+
+    
     insertText(char);
     userInput.focus();
 }
 
 function toggleTheme() {
-    const isLight = document.body.classList.toggle("light-theme");
-    themeToggle.textContent = isLight ? "☀️" : "🌙";
-    localStorage.setItem("theme", isLight ? "light" : "dark");
-}
 
+    document.body.classList.remove(...themes);
+
+    currentThemeIndex =
+        (currentThemeIndex + 1) % themes.length;
+
+    const nextTheme = themes[currentThemeIndex];
+
+    document.body.classList.add(nextTheme);
+
+    localStorage.setItem("theme", nextTheme);
+
+    const icons = {
+        "dark-theme": "🌙",
+        "light-theme": "☀️",
+        "vintage-theme": "🟤",
+        "neon-theme": "💜",
+        "minimal-theme": "⚪"
+    };
+
+    themeToggle.textContent = icons[nextTheme];
+}
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+
+    soundToggle.textContent = soundEnabled ? "🔊" : "🔇";
+
+    localStorage.setItem("sound", soundEnabled ? "on" : "off");
+}
 document.querySelectorAll(".key").forEach((key) => {
     const trigger = (event) => {
         event.preventDefault();
@@ -311,14 +455,77 @@ themeToggle.addEventListener("keydown", (event) => {
         toggleTheme();
     }
 });
+soundToggle.addEventListener("click", toggleSound);
 
+soundToggle.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleSound();
+    }
+});
 const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "light") {
-    document.body.classList.add("light-theme");
-    themeToggle.textContent = "☀️";
-}
 
+if (savedTheme && themes.includes(savedTheme)) {
+
+    document.body.classList.add(savedTheme);
+
+    currentThemeIndex = themes.indexOf(savedTheme);
+
+    const icons = {
+        "dark-theme": "🌙",
+        "light-theme": "☀️",
+        "vintage-theme": "🟤",
+        "neon-theme": "💜",
+        "minimal-theme": "⚪"
+    };
+
+    themeToggle.textContent = icons[savedTheme];
+
+} else {
+
+    document.body.classList.add("dark-theme");
+}
+const savedSound = localStorage.getItem("sound");
+
+if (savedSound === "off") {
+    soundEnabled = false;
+    soundToggle.textContent = "🔇";
+}
+const modeToggle = document.getElementById("modeToggle");
+document.querySelectorAll(".key").forEach((key) => {
+
+    if (key.dataset.char) {
+        key.setAttribute("data-original", key.dataset.char);
+    }
+});
+modeToggle.addEventListener("click", () => {
+
+    isSymbolMode = !isSymbolMode;
+
+    modeToggle.textContent = isSymbolMode ? "ABC" : "123";
+
+    updateKeyboardLayout();
+});
+const leftCursor = document.getElementById("leftCursor");
+const rightCursor = document.getElementById("rightCursor");
+
+leftCursor.addEventListener("click", () => {
+
+    if (cursorPosition > 0) {
+        cursorPosition--;
+        renderPaper();
+    }
+});
+
+rightCursor.addEventListener("click", () => {
+
+    if (cursorPosition < paperContent.length) {
+        cursorPosition++;
+        renderPaper();
+    }
+});
 setCapsLockState(false);
 paperContent = userInput.value || "";
+cursorPosition = paperContent.length;
 renderPaper();
 syncInput();
