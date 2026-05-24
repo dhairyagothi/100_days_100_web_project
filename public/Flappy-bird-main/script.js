@@ -231,9 +231,16 @@ function update(dt) {
   bird.x += dx * BIRD_SPEED * dt;
   bird.y += dy * BIRD_SPEED * dt;
 
-  
+  const hitBoundary = bird.x <= BIRD_SIZE || bird.x >= canvas.width - BIRD_SIZE ||
+                      bird.y <= BIRD_SIZE || bird.y >= canvas.height - BIRD_SIZE;
+
   bird.x = Math.max(BIRD_SIZE, Math.min(canvas.width  - BIRD_SIZE, bird.x));
   bird.y = Math.max(BIRD_SIZE, Math.min(canvas.height - BIRD_SIZE, bird.y));
+
+  if (hitBoundary) {
+    endGame();
+    return;
+  }
 
 
   if (star.visible) {
