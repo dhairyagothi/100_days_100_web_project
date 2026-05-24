@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #E3F2FD;
+  padding: 20px;
+}
+
+.wrapper {
+  padding: 35px 40px;
+  border-radius: 20px;
+  background: #141414;
+  width: 100%;
+  max-width: 900px;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.wrapper header {
+  display: flex;
+  color: #B2B2B2;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+header h2 {
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+}
+
+header .column {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header span {
+  font-weight: 500;
+  font-size: clamp(0.85rem, 2vw, 1.19rem);
+  white-space: nowrap;
+}
+
+header input {
+  outline: none;
+  border-radius: 30px;
+}
+
+.volume-slider input {
+  accent-color: #fff;
+  width: clamp(80px, 12vw, 140px);
+}
+
+.keys-checkbox input {
+  height: 30px;
+  width: 60px;
+  cursor: pointer;
+  appearance: none;
+  position: relative;
+  background: #4B4B4B;
+  border-radius: 30px;
+  flex-shrink: 0;
+}
+
+.keys-checkbox input::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #8c8c8c;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+
+.keys-checkbox input:checked::before {
+  left: 35px;
+  background: #fff;
+}
+
+/* ── Piano keys container ── */
+.piano-keys {
+  display: flex;
+  list-style: none;
+  margin-top: 40px;
+  /* Let it shrink to fit the wrapper */
+  width: 100%;
+  justify-content: center;
+}
+
+.piano-keys .key {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  text-transform: uppercase;
+  /* Prevent text selection on rapid clicks / touch */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── White keys ── */
+.piano-keys .white {
+  /* fluid width: shrinks from 70px down to 36px */
+  width: clamp(36px, 6.5vw, 70px);
+  height: clamp(120px, 22vw, 230px);
+  border-radius: 8px;
+  border: 1px solid #000;
+  background: linear-gradient(#fff 96%, #eee 4%);
+  flex-shrink: 0;
+}
+
+.piano-keys .white.active {
+  box-shadow: inset -5px 5px 20px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+}
+
+/* ── Black keys ── */
+.piano-keys .black {
+  z-index: 2;
+  /* Black key is ~63% the width of a white key */
+  width: clamp(22px, 4vw, 44px);
+  height: clamp(75px, 14vw, 140px);
+  /* Overlap: pull back by half its own width on each side */
+  margin: 0 calc(clamp(22px, 4vw, 44px) / -2);
+  border-radius: 0 0 5px 5px;
+  background: linear-gradient(#333, #000);
+  flex-shrink: 0;
+}
+
+.piano-keys .black.active {
+  box-shadow: inset -5px -10px 10px rgba(255, 255, 255, 0.1);
+  background: linear-gradient(to bottom, #000, #434343);
+}
+
+/* ── Key labels ── */
+.piano-keys .key span {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  color: #A2A2A2;
+  font-size: clamp(0.6rem, 1.2vw, 1.13rem);
+  text-align: center;
+  pointer-events: none;
+}
+
+.piano-keys .black span {
+  bottom: 13px;
+  color: #888888;
+}
+
+.piano-keys .key.hide span {
+  display: none;
+}
+
+/* ── Responsive breakpoints ── */
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+  .wrapper {
+    padding: 20px 16px;
+  }
+
+  .piano-keys {
+    margin-top: 24px;
+  }
+
+  /* Hide last octave group (keys 13–17) on tablet */
+  .piano-keys li:nth-child(n+13) {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 480px) {
+  .wrapper {
+    padding: 16px 12px;
+    border-radius: 14px;
+  }
+
+  .piano-keys {
+    margin-top: 18px;
+  }
+
+  /* Hide from key 9 onward on small mobile */
+  .piano-keys li:nth-child(n+9) {
+    display: none;
+  }
+}
+
+/* Very small screens */
+@media screen and (max-width: 340px) {
+  /* Hide from key 7 onward on very small screens */
+  .piano-keys li:nth-child(n+7) {
+    display: none;
+  }
+}
