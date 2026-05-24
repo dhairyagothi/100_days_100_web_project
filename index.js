@@ -656,37 +656,39 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-pageItems.forEach((project) => {
-  const [day, , url] = project;
+  pageItems.forEach((project) => {
+    const [day] = project;
 
-  const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => item[0] === day
+    );
 
-  // Reuse centralized card creator
-  const card = createProjectCard(project, { isBookmarked });
+    // Reuse centralized card creator
+    const card = createProjectCard(project, { isBookmarked });
 
-  // Add clickable-card UX improvement from incoming branch
-  const { demoUrl, isSourceOnly } = getProjectLinks(project);
+    // Add clickable-card UX improvement
+    const { demoUrl, isSourceOnly } = getProjectLinks(project);
 
-  if (!isSourceOnly && demoUrl) {
-    card.style.cursor = 'pointer';
+    if (!isSourceOnly && demoUrl) {
+      card.style.cursor = 'pointer';
 
-    card.addEventListener('click', (e) => {
-      // Prevent opening when clicking buttons/links
-      if (
-        e.target.closest('a') ||
-        e.target.closest('button')
-      ) {
-        return;
-      }
+      card.addEventListener('click', (e) => {
+        // Prevent opening when clicking buttons/links
+        if (
+          e.target.closest('a') ||
+          e.target.closest('button')
+        ) {
+          return;
+        }
 
-      window.open(demoUrl, '_blank');
-    });
-  }
+        window.open(demoUrl, '_blank');
+      });
+    }
 
-  fragment.appendChild(card);
-});
+    fragment.appendChild(card);
+  });
 
-grid.appendChild(fragment);
+  grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
