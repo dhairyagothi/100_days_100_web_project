@@ -122,4 +122,75 @@
       width: 90%;
     }
   }
-  
+
+  /* ── GAME OVER MODAL ── */
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    animation: fade-in 0.3s ease;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .modal-content {
+    background: #34495e;
+    border: 3px solid #ecf0f1;
+    border-radius: 12px;
+    padding: 2.5rem 3rem;
+    text-align: center;
+    color: #ecf0f1;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    animation: grow 0.3s ease;
+  }
+
+  .modal-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 1px;
+  }
+
+  .modal-content p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: #bdc3c7;
+  }
+
+  .modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .modal-buttons button {
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    color: #ecf0f1;
+    background-color: #e74c3c;
+    padding: 10px 20px;
+    font-size: 0.95em;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  .modal-buttons button:hover {
+    background-color: #c0392b;
+    transform: scale(1.08);
+  }
+
+  #closeBtn {
+    background-color: #7f8c8d;
+  }
+
+  #closeBtn:hover {
+    background-color: #636e72;
+  }
