@@ -131,7 +131,7 @@ const PROJECT_DATA = [
   ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', 'api javascript', 'intermediate'],
   ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', 'clone css', 'beginner'],
   ['Day 65', 'The Cube', './public/The%20Cube/index.html', 'ui canvas css', 'intermediate'],
-  ['Day 66', 'Flask Authentication App', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app', 'api javascript', 'intermediate'],
+  ['Day 66', 'Flask Authentication App', './public/flask_auth_app/explain.html', 'api javascript', 'intermediate'],
   ['Day 67', 'Blog-Website', './public/blog/main.html', 'css', 'beginner'],
   ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
   ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
@@ -214,6 +214,9 @@ const PROJECT_DATA = [
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
+  
+
+
   ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
   ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
@@ -224,7 +227,14 @@ const PROJECT_DATA = [
   ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
   ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
   ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
-
+  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', 'simulation algorithm javascript', 'intermediate'],
+  ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', 'html css javascript', 'intermediate'],
+  [ 'Day 161' , "Unit-Converter" , './public/Unit-Converter/index.html' , 'tool javascript html css' , 'intermediate' ],
+  [ 'Day 162' , 'Color Palette From Art Generator' , './public/ColorPaletteArtGenerator/index.html' , 'html css javascript' , 'intermediate' ],
+  [ 'Day 163' , 'Ai Image Editor' , './public/image-editor/index.html' , 'edits images' , 'advanced' ],
+  [ 'Day 164' , 'Code Visualizer Playground' , './public/code-visualizer-playground/index.html' , 'tool javascript html css' , 'advanced' ],
+  [ 'Day 165' , 'Amazon Clone' , './public/AmazonClone/index.html' , 'Amazon Clone HTML CSS JavaScript' , 'beginner' ],
+  [ "Day 166" , "Boredom Buster" , "./public/BoredomBuster/index.html" , "html css javascript" , 'advanced' ],
 ];
 const PROJECTS = PROJECT_DATA;
 
@@ -467,23 +477,45 @@ let searchQuery = '';
 let activeDifficulty = 'all';
 
 let sortOption = 'default';
+let techStackFilter = 'all';
+let difficultyFilter = 'all';
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
+
   const filtered = PROJECTS.filter(([day, name, , tags, difficulty]) => {
+
+  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
+    // Category filter
+
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
-
     const matchesFilter = activeFilter === 'all' || category === targetCategory;
 
-    const q = searchQuery.toLowerCase();
-    const matchesSearch =
-      !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
+    // Search filter
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch = !q || q.split(/\s+/).every(term => 
+      name.toLowerCase().includes(term) || 
+      day.toLowerCase().includes(term) || 
+      (typeof tags === 'string' && tags.toLowerCase().includes(term))
+    );
 
-    const matchesTech = matchesTechStack(tags);
+    // Tech stack dropdown filter
+    let matchesTech = true;
+    if (techStackFilter && techStackFilter !== 'all') {
+      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
+      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+    }
+
+    // Difficulty filter
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== 'all') {
+      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
+    }
+
 
     const matchesDifficulty =
       activeDifficulty === 'all' ||
@@ -495,31 +527,26 @@ function renderGrid() {
       matchesTech &&
       matchesDifficulty
     );
+
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
+
   });
+
+  // Apply sorting
   if (sortOption === 'az') {
     filtered.sort((a, b) => a[1].localeCompare(b[1]));
-  }
-
-  if (sortOption === 'latest') {
+  } else if (sortOption === 'latest') {
     filtered.sort((a, b) => {
       const dayA = parseInt(a[0].replace('Day ', ''));
       const dayB = parseInt(b[0].replace('Day ', ''));
       return dayB - dayA;
     });
-  }
-
-  if (sortOption === 'difficulty') {
-    const difficultyOrder = {
-      beginner: 1,
-      intermediate: 2,
-      advanced: 3
-    };
-
+  } else if (sortOption === 'difficulty') {
+    const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
-      return (
-        difficultyOrder[a[4].toLowerCase()] -
-        difficultyOrder[b[4].toLowerCase()]
-      );
+      const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
+      const diffB = b[4] ? difficultyOrder[b[4].toLowerCase()] || 0 : 0;
+      return diffA - diffB;
     });
   }
 
@@ -527,36 +554,42 @@ function renderGrid() {
 
   if (filtered.length === 0) {
     grid.style.display = 'none';
-    noResults.style.display = 'block';
+    if (noResults) noResults.style.display = 'block';
     const container = document.getElementById('paginationContainer');
-    if (container) container.innerHTML = '';
+    if (container) container.remove();
     return;
   }
 
   grid.style.display = 'grid';
-  noResults.style.display = 'none';
+  if (noResults) noResults.style.display = 'none';
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-  if (currentPage > totalPages) {
-    currentPage = totalPages;
-  }
-  if (currentPage < 1) {
-    currentPage = 1;
-  }
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
+  const fragment = document.createDocumentFragment();
 
   pageItems.forEach(([day, name, url, tags, difficulty]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
+
+    // FIX PART 1: Add a pointer cursor so users know it's clickable
     card.className = 'project-card';
+    card.style.cursor = 'pointer';
+
+    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
+    card.onclick = () => window.open(url.trim(), '_blank');
+
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
 
+    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
+    // This stops the click from "bubbling up" to the main card, preventing double-opening!
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
@@ -582,9 +615,9 @@ function renderGrid() {
             </div>
         `;
 
-    grid.appendChild(card);
+   fragment.appendChild(card);
   });
-
+  grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
@@ -875,12 +908,34 @@ function renderRecentProjects() {
 
 const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
 const recentToggleBtn = document.getElementById('recentToggleBtn');
+const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener('click', () => {
     showAllBookmarks = !showAllBookmarks;
     bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
     renderBookmarks();
+  });
+}
+
+if (copyBookmarksBtn) {
+  copyBookmarksBtn.addEventListener('click', async () => {
+    if (bookmarkedProjects.length === 0) {
+      showToast('No bookmarks to copy!');
+      return;
+    }
+    const textToCopy = bookmarkedProjects.map(p => {
+      const projectName = p[1];
+      const projectLink = new URL(p[2], window.location.href).href;
+      return `${projectName} - ${projectLink}`;
+    }).join('\n');
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      showToast('Bookmarks copied to clipboard!');
+    } catch (err) {
+      showToast('Failed to copy bookmarks.');
+    }
   });
 }
 
@@ -969,20 +1024,62 @@ function initDifficultyFilters() {
 
 /* ============================================================
    LIVE SEARCH
+
+   LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
+function debounce(fn, delay = 300) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
 
+  input.addEventListener(
+    'input',
+    debounce(() => {
+      searchQuery = input.value.trim();
+      currentPage = 1;
+      renderGrid();
+    }, 300)
+  );
   input.addEventListener('input', () => {
     searchQuery = input.value.trim();
     currentPage = 1;
     renderGrid();
   });
+  
+  // Tech stack dropdown filter listener
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) {
+    techStack.addEventListener('change', () => {
+      techStackFilter = techStack.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+
+  // Difficulty dropdown filter listener
+  const diffFilterElement = document.getElementById('difficultyFilter');
+  if (diffFilterElement) {
+    diffFilterElement.addEventListener('change', () => {
+      difficultyFilter = diffFilterElement.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
 }
+
 function initSorting() {
   const sortSelect = document.getElementById('sortProjects');
-
   if (!sortSelect) return;
 
   sortSelect.addEventListener('change', (e) => {
@@ -991,6 +1088,7 @@ function initSorting() {
     renderGrid();
   });
 }
+
 /* ============================================================
    TECH STACK SEARCH INITIALIZATION
    ============================================================ */
@@ -1000,47 +1098,43 @@ function initTechStackSearch() {
 
   if (!input) return;
 
-  // Debounce timer for performance
   let debounceTimer;
 
-  // Listen for input changes
   input.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
-
-    // Debounce: wait 300ms after user stops typing
     debounceTimer = setTimeout(() => {
       const value = e.target.value.trim().toLowerCase();
 
       if (value) {
-        // Split by comma or space to support multiple technologies
-        // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+
 
         techStackFilters = [...new Set(
           techs.map(tech => normalizeTech(tech))
         )];
 
+
+        techStackFilters = [...new Set(techs)];
+
         updateTechFilterDisplay();
+        currentPage = 1;
         renderGrid();
       } else {
-        // Empty input = clear all filters
         clearAllTechFilters();
       }
-    }, 300); // 300ms debounce delay
+    }, 300);
   });
 
-  // Clear button functionality
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       clearAllTechFilters();
     });
   }
 
-  // Optional: Add Enter key support
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      input.blur(); // Trigger the debounced input event
+      input.blur();
     }
   });
 }
@@ -1049,28 +1143,34 @@ function initTechStackSearch() {
    SEARCH CONTROLS
    ============================================================ */
 const searchInput = document.getElementById('searchInput');
-const clearBtn = document.getElementById('clearSearch');
+const clearSearchBtn = document.getElementById('clearSearch');
 
 function syncProjectCounts() {
-  const total = PROJECTS.length.toLocaleString();
-
-  const countNodes = [
-    document.getElementById('projectCount'),
-    document.getElementById('allCount')
-  ];
+  let filtered = [...PROJECTS];
+  
+  // Apply search filter
+  if (searchQuery) {
+    filtered = filtered.filter(([day, name]) => 
+      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      day.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+  
+  const total = filtered.length.toLocaleString();
+  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
   });
 
   if (searchInput) {
-    searchInput.placeholder = `Search ${total} projects…`;
+    searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 }
 
 // Clear button functionality
-if (searchInput && clearBtn) {
-  clearBtn.addEventListener("click", () => {
+if (searchInput && clearSearchBtn) {
+  clearSearchBtn.addEventListener("click", () => {
     searchInput.value = "";
     searchInput.dispatchEvent(new Event("input"));
     searchInput.focus();
@@ -1085,7 +1185,7 @@ if (searchInput && clearBtn) {
   });
 }
 
-// initialize
+// Initialize
 syncProjectCounts();
 
 /* ============================================================
@@ -1100,40 +1200,39 @@ function updateNavbar() {
   const base = isRoot ? '' : '../';
   const isLight = document.body.classList.contains('light-mode');
   const themeButton = `
-            <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-                <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
-            </button>
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
+        </button>
         `;
+  const otherLink = isRoot
+    ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>`;
 
   if (username) {
     container.innerHTML = `
             ${themeButton}
             <span class="welcome-text">Hi, ${username}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-                <i class="fab fa-github"></i> GitHub
+              <i class="fab fa-github"></i> GitHub
             </a>
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+            ${otherLink}
         `;
     document.getElementById('logoutBtn').addEventListener('click', () => {
       window.username = null;
       updateNavbar();
     });
-    const gen = document.getElementById('generateReadmeBtn');
-    if (gen) gen.addEventListener('click', generateReadme);
   } else {
     container.innerHTML = `
             ${themeButton}
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
+            ${otherLink}
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
             <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
         `;
-    const gen2 = document.getElementById('generateReadmeBtn');
-    if (gen2) gen2.addEventListener('click', generateReadme);
   }
 }
 
@@ -1223,9 +1322,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollBtn();
 
   if (hasProjectGrid()) {
-    initFilterChips();
-    initSearch();
-    initTechStackSearch();
     renderGrid();
     renderBookmarks();
     renderRecentProjects();
@@ -1272,6 +1368,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    renderGrid();
+  }, 200)
+);
 window.addEventListener('resize', () => {
   if (hasProjectGrid()) {
     renderGrid();
@@ -1284,3 +1386,155 @@ window.addEventListener('resize', () => {
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
+
+// Particle Network Background
+(function () {
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const minParticles = 30;
+  const maxParticles = 120;
+  const areaPerParticle = 26000;
+  let particleCount = 60;
+  let linkDistance = 120;
+  let dpr = 1;
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    canvas.style.width = `${W}px`;
+    canvas.style.height = `${H}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    particleCount = Math.min(
+      maxParticles,
+      Math.max(minParticles, Math.round((W * H) / areaPerParticle))
+    );
+    linkDistance = Math.max(90, Math.min(150, Math.round(Math.min(W, H) / 6)));
+  }
+
+  function init() {
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 3 + 1,
+        hue: [220, 260, 280][Math.floor(Math.random() * 3)],
+        alpha: Math.random() * 0.8 + 0.4,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    });
+    for (let i = 0; i < particleCount; i++) {
+      for (let j = i + 1; j < particleCount; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < linkDistance) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(59,130,246,${(1 - d / linkDistance) * 0.35})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue},80%,72%,${p.alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  let resizeFrame = null;
+  const handleResize = () => {
+    if (resizeFrame) return;
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = null;
+      resize();
+      init();
+    });
+  };
+
+  window.addEventListener('resize', handleResize);
+  resize(); init(); draw();
+})();
+
+// =============================================
+// PERSISTENT FILTERS & SEARCH — Issue #3320
+// =============================================
+
+function getQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    search: params.get('search') || '',
+    category: params.get('category') || 'all'
+  };
+}
+
+function updateURL(search, category) {
+  const params = new URLSearchParams();
+  if (search) params.set('search', search);
+  if (category && category !== 'all') params.set('category', category);
+  const newURL = params.toString()
+    ? `${window.location.pathname}?${params.toString()}`
+    : window.location.pathname;
+  history.pushState({ search, category }, '', newURL);
+}
+
+function restoreStateFromURL() {
+  const { search, category } = getQueryParams();
+  const searchInput = document.getElementById('searchInput') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('.search-input');
+  if (searchInput && search) searchInput.value = search;
+  const categoryFilter = document.getElementById('category');
+  if (categoryFilter && category !== 'all') categoryFilter.value = category;
+  if (search || category !== 'all') applyFilters(search, category);
+}
+
+function applyFilters(search, category) {
+  earchQuery = search || '';
+  activeFilter = category || 'all';
+  currentPage = 1;
+  renderGrid();
+  
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  restoreStateFromURL();
+  const searchInput = document.getElementById('search') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('.search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const { category } = getQueryParams();
+      updateURL(searchInput.value, category);
+      applyFilters(searchInput.value, category);
+    });
+  }
+  const categoryFilter = document.getElementById('category');
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener('popstate', () => restoreStateFromURL());
+});
