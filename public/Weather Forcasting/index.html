@@ -62,6 +62,9 @@
                 <form class="d-flex" role="search">
                     <input  id="city" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required>
                     <button class="btn btn-outline-light" type="submit" id="submit">Search</button>
+                    <button id="unit-toggle" class="unit-toggle-btn">
+    Switch to °F
+</button>
                 </form>
             </div>
           </div>
@@ -89,8 +92,9 @@
                             <h4 class="my-0 fw-normal">Temperatures</h4>
                         </div>
                         <div class="card-body">
-                            <h1 class="card-title pricing-card-title"><span id="temp2"></span><small
-                                    class="text-body-secondary fw-light"><span>&#8451;</span></small></h1>
+                            <h1 class="card-title pricing-card-title">
+                            <span id="temp2"></span>
+                            </h1>
                             <ul class="list-unstyled mt-3 mb-4">
                                 <li>Temperature is <span id="temp"></span></li>
                                 <li>Min Temperature is <span id="min_temp"></span></li>
