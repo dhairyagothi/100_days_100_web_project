@@ -1,44 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parallal-X Website</title>
-<link rel="stylesheet" href="parallal.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Go Green — Live Sustainably</title>
+  <link rel="stylesheet" href="parallal.css">
 </head>
 <body>
-    <header>
-        <div class="name">GO-GREEN</div>
-        <nav>
-                <ul>
-                    <li class="active">Home</li>
-                    <li>About</li>
-                    <li>Service</li>
-                    <li>Contact</li>
-                </ul>
-        </nav>
-    </header>
-    <section class="parallal">
-        <img src="hill1.png" id="hill1"   alt="">
-        <img src="hill2.png" id="hill2"  alt="">
-        <img src="hill3.png" id="hill3"  alt="">
-        <img src="tree.png"  id="tree" alt="">
-        <img src="hill4.png" id="hill4"  alt="">
-        <img src="hill5.png" id="hill5" alt="">
-        <div class="text" id="text1" >GO-GREEN</div>
-        <img src="plant.png" id="plant" alt="">
-        <img src="leaf.png" id="leaf" alt="">
-        
-    </section>
-    <section class="content">
-        <div>GO-GREEN</div>
-        <br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div><br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div><br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div><br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div><br>
-        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</div>
-    </section>
-    <script src="parallal.js"></script>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ── HEADER ── -->
+  <header id="mainHeader">
+    <div class="name">GO-GREEN</div>
+    <div class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </div>
+    <nav id="mainNav">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#tips">Eco Tips</a></li>
+        <li><a href="#facts">Did You Know</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ── PARALLAX HERO ── -->
+  <section id="home" class="parallal">
+    <img src="hill1.png" id="hill1" alt="">
+    <img src="hill2.png" id="hill2" alt="">
+    <img src="hill3.png" id="hill3" alt="">
+    <img src="tree.png"  id="tree"  alt="">
+    <img src="hill4.png" id="hill4" alt="">
+    <img src="hill5.png" id="hill5" alt="">
+    <div class="text"    id="text1">GO-GREEN</div>
+    <img src="plant.png" id="plant" alt="">
+    <img src="leaf.png"  id="leaf"  alt="">
+    <div class="scroll-hint">Scroll</div>
+  </section>
+
+  <!-- ── STATS BAND ── -->
+  <div class="stats-band">
+    <div class="stat-item reveal">
+      <div class="number"><span class="count" data-target="8">0</span><span class="unit">M+</span></div>
+      <div class="label">Species Endangered</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="number"><span class="count" data-target="1">0</span><span class="unit">°C</span></div>
+      <div class="label">Temperature Rise Since 1900</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="number"><span class="count" data-target="91">0</span><span class="unit">%</span></div>
+      <div class="label">Plastic Never Recycled</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="number"><span class="count" data-target="15">0</span><span class="unit">B</span></div>
+      <div class="label">Trees Cut Per Year</div>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <section id="about" class="content">
+    <p class="section-label reveal">Our Mission</p>
+    <h2 class="section-heading reveal">The Planet Needs <span>Your</span> Action</h2>
+    <div class="content-grid">
+      <p class="reveal">Going green is a fundamental reimagining of how we interact with our planet. It's about making conscious choices — like reducing single-use plastics and adopting renewable energy — to protect Earth's delicate ecosystems. Every small action contributes to a larger global movement aimed at preserving nature for the generations to follow.</p>
+      <p class="reveal">Sustainability begins at home through mindful resource management. By using energy-efficient tools and embracing the "Reduce, Reuse, Recycle" philosophy, we significantly lower our carbon footprint. These habits do more than save resources; they foster a deeper appreciation for the natural world and the intrinsic value of the environment.</p>
+      <p class="reveal">Eco-friendly living also means rethinking how we consume. Supporting local businesses and choosing high-quality, long-lasting goods helps dismantle the culture of disposability. True change often happens when individual efforts meet community action — sharing knowledge and participating in local conservation efforts turns personal habits into systemic progress.</p>
+      <p class="reveal">Ultimately, this journey is about progress rather than perfection. As we adapt our lifestyles to coexist harmoniously with nature, we pave the way for a more resilient world. Together, we can build a future where clean air and thriving landscapes are a reality for everyone.</p>
+    </div>
+  </section>
+
+  <!-- ── ECO TIPS ── -->
+  <section id="tips" class="eco-section">
+    <p class="section-label reveal">Simple Steps</p>
+    <h2 class="section-heading reveal">Eco-Friendly Tips <span style="color:var(--green-accent)">For Every Day</span></h2>
+    <div class="cards-grid">
+
+      <div class="eco-card reveal">
+        <span class="icon">🌿</span>
+        <h3>Go Plant-Based</h3>
+        <p>Even one plant-based meal per day can reduce your carbon footprint by up to 50% compared to a meat-heavy diet.</p>
+        <span class="card-tag">Food</span>
+      </div>
+
+      <div class="eco-card reveal">
+        <span class="icon">🚲</span>
+        <h3>Walk or Cycle</h3>
+        <p>Choosing a bicycle or walking instead of driving just twice a week cuts your transport emissions significantly.</p>
+        <span class="card-tag">Transport</span>
+      </div>
+
+      <div class="eco-card reveal">
+        <span class="icon">💧</span>
+        <h3>Save Water Daily</h3>
+        <p>Shorter showers, fixing leaks, and collecting rainwater can save thousands of litres of water every year.</p>
+        <span class="card-tag">Water</span>
+      </div>
+
+      <div class="eco-card reveal">
+        <span class="icon">♻️</span>
+        <h3>Reduce & Reuse</h3>
+        <p>Carry a reusable bag, bottle, and cup. Avoiding single-use items prevents tonnes of plastic from reaching oceans.</p>
+        <span class="card-tag">Waste</span>
+      </div>
+
+      <div class="eco-card reveal">
+        <span class="icon">🔌</span>
+        <h3>Unplug Electronics</h3>
+        <p>Standby power accounts for up to 10% of home electricity use. Unplug devices when not in use.</p>
+        <span class="card-tag">Energy</span>
+      </div>
+
+      <div class="eco-card reveal">
+        <span class="icon">🌳</span>
+        <h3>Plant a Tree</h3>
+        <p>A single tree absorbs roughly 22kg of CO₂ per year. Planting trees is one of the most direct ways to offset carbon.</p>
+        <span class="card-tag">Nature</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── DID YOU KNOW ── -->
+  <section id="facts" class="did-you-know">
+    <div class="fact-card reveal">
+      <span class="fact-icon">🌊</span>
+      <p class="fact-text">Over 8 million tonnes of plastic enter our oceans every year — equivalent to a rubbish truck dumping waste every minute.</p>
+      <p class="fact-source">SOURCE: OCEAN CONSERVANCY</p>
+    </div>
+    <div class="fact-card reveal">
+      <span class="fact-icon">🌡️</span>
+      <p class="fact-text">The last decade (2011–2020) was the warmest on record globally, with 2023 being the hottest single year ever measured.</p>
+      <p class="fact-source">SOURCE: NASA / NOAA</p>
+    </div>
+    <div class="fact-card reveal">
+      <span class="fact-icon">🐝</span>
+      <p class="fact-text">Bees pollinate one-third of everything we eat. Their population has declined by 30% in recent decades due to habitat loss.</p>
+      <p class="fact-source">SOURCE: FRIENDS OF THE EARTH</p>
+    </div>
+    <div class="fact-card reveal">
+      <span class="fact-icon">☀️</span>
+      <p class="fact-text">Solar energy is now the cheapest electricity in history. Enough sunlight hits Earth in one hour to power the world for a full year.</p>
+      <p class="fact-source">SOURCE: INTERNATIONAL ENERGY AGENCY</p>
+    </div>
+  </section>
+
+  <!-- ── TRACKER CTA ── -->
+  <section class="tracker-cta">
+    <p class="section-label reveal">Take Action Today</p>
+    <h2 class="section-heading reveal">Track Your <span style="color:var(--lime)">Green Habits</span></h2>
+    <p class="sub reveal">Small daily shifts add up. Use our Eco Habit Tracker to log your sustainable actions and watch your positive impact grow.</p>
+    <a href="tracker.html" class="cta-btn reveal">
+      Start Tracking <span class="arrow">→</span>
+    </a>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer id="contact" class="footer">
+    <p>© 2026 Go-Green. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#tips">Eco Tips</a>
+      <a href="#facts">Facts</a>
+    </div>
+  </footer>
+
+  <script src="parallal.js"></script>
 </body>
 </html>

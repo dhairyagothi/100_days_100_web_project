@@ -13,21 +13,21 @@
     --gradient-boat: linear-gradient(135deg, #ffd166 0%, #ff9a3d 100%);
     --gradient-missionary: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --gradient-cannibal: linear-gradient(135deg, #ff5858 0%, #f09819 100%);
-    
+
     /* Refined shadows with better depth perception */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 15px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.05);
-    
+
     /* Refined border radiuses */
     --border-radius-sm: 8px;
     --border-radius-md: 16px;
     --border-radius-lg: 24px;
-    
+
     /* Smooth transitions */
     --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-medium: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    
+
     /* Spacing system */
     --space-xs: 0.5rem;
     --space-sm: 1rem;
@@ -90,7 +90,8 @@ h1 {
 }
 
 /* Improved Banks and Boat */
-.bank, .boat {
+.bank,
+.boat {
     background: rgba(255, 255, 255, 0.98);
     padding: var(--space-xl);
     border-radius: var(--border-radius-lg);
@@ -105,7 +106,8 @@ h1 {
     overflow: hidden;
 }
 
-.bank:hover, .boat:hover {
+.bank:hover,
+.boat:hover {
     transform: translateY(-5px);
 }
 
@@ -139,6 +141,11 @@ h1 {
     gap: var(--space-sm);
     justify-content: center;
     padding: var(--space-sm);
+}
+
+.selected {
+    border: 4px solid yellow;
+    transform: scale(1.15);
 }
 
 /* Improved Individual Person */
@@ -236,27 +243,145 @@ button:hover::before {
     transition: all var(--transition-medium);
 }
 
+/* Modal Overlay */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Modal Box */
+.modal-content {
+    background: white;
+    color: #2d3748;
+    padding: 2rem;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: popup 0.3s ease;
+}
+
+/* Close Button */
+#close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+}
+
+.modal-content ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.modal-content li {
+    margin-bottom: 0.75rem;
+}
+
+/* Popup Animation */
+@keyframes popup {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+/* Top Section */
+.top-bar {
+    width: 100%;
+    max-width: 1200px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+    padding: 0 20px;
+
+    margin-bottom: 20px;
+
+    flex-wrap: wrap;
+}
+/* Instructions Button */
+.instructions-btn {
+    padding: 8px 16px;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+    transition: 0.3s ease;
+
+    text-transform: none;
+
+    white-space: nowrap;
+}
+
+.instructions-btn:hover {
+    transform: translateY(-2px);
+    background: white;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .game-container {
         grid-template-columns: 1fr;
         gap: var(--space-lg);
     }
-    
-    .bank, .boat {
+
+    .bank,
+    .boat {
         min-height: 250px;
     }
-    
+
     h1 {
         font-size: clamp(1.5rem, 4vw, 2.5rem);
     }
-    
+
     .controls {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     button {
         width: 100%;
+    }
+}
+@media (max-width: 768px) {
+
+    .top-bar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .instructions-btn {
+        width: auto;
     }
 }
