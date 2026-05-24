@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("instructions-modal");
+    const closeModal = document.getElementById("close-modal");
+    const instructionsBtn = document.getElementById("instructions-btn");
     let leftBank = document.getElementById("left-people");
     let rightBank = document.getElementById("right-people");
     let boat = document.getElementById("boat-people");
@@ -36,22 +39,39 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const isValidState = () => {
-        if (state.leftMissionaries > 0 && 
+        if (state.leftMissionaries > 0 &&
             state.leftMissionaries < state.leftCannibals) {
             return false;
         }
-        
-        if (state.rightMissionaries > 0 && 
+
+        if (state.rightMissionaries > 0 &&
             state.rightMissionaries < state.rightCannibals) {
             return false;
         }
-        
-        if (state.boatMissionaries > 0 && 
+
+        if (state.boatMissionaries > 0 &&
             state.boatMissionaries < state.boatCannibals) {
             return false;
         }
 
         return true;
+    };
+    const checkGameState = () => {
+        // Lose condition
+        if (!isValidState()) {
+            state.isGameOver = true;
+            message.textContent = "Game Over! Cannibals outnumbered missionaries.";
+            return;
+        }
+
+        // Win condition
+        if (
+            state.rightMissionaries === 3 &&
+            state.rightCannibals === 3
+        ) {
+            state.isGameOver = true;
+            message.textContent = "Congratulations! You won!";
+        }
     };
 
     const updateUI = () => {
@@ -63,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = 0; i < numMissionaries; i++) {
                 let person = document.createElement("div");
                 person.classList.add("person", "missionary");
+                person.textContent = "M";
                 if (isDraggable) {
                     person.setAttribute("draggable", "true");
                     person.dataset.type = "missionary";
@@ -75,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = 0; i < numCannibals; i++) {
                 let person = document.createElement("div");
                 person.classList.add("person", "cannibal");
+                person.textContent = "C";
                 if (isDraggable) {
                     person.setAttribute("draggable", "true");
                     person.dataset.type = "cannibal";
@@ -95,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Clear any previous selections
         clearSelectedStyles();
-        
+
         boat.classList.remove('boat-left', 'boat-right');
         boat.classList.add(`boat-${state.boatPosition}`);
 
@@ -105,32 +127,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const handlePersonClick = (person) => {
         if (state.isGameOver) return;
 
-        // If no person is selected, select this one if it's on the current boat bank
-        if (!state.selectedPerson) {
-            const personBank = person.dataset.bank;
-            if (personBank === state.boatPosition || personBank === 'boat') {
-                selectPerson(person);
-            }
+        const personBank = person.dataset.bank;
+        const personType = person.dataset.type;
+
+        // Move from bank -> boat
+        if (personBank === state.boatPosition) {
+            movePerson(personBank, "boat", personType);
             return;
         }
 
-        // If clicking the same person, deselect it
-        if (state.selectedPerson === person) {
-            clearSelectedStyles();
-            state.selectedPerson = null;
+        // Move from boat -> current bank
+        if (personBank === "boat") {
+            movePerson("boat", state.boatPosition, personType);
             return;
         }
-
-        // Handle movement based on selection
-        const fromBank = state.selectedPerson.dataset.bank;
-        const toBank = person.dataset.bank;
-        
-        // Moving to/from boat
-        movePerson(fromBank, toBank, state.selectedPerson.dataset.type);
-        
-        // Clear selection after move
-        clearSelectedStyles();
-        state.selectedPerson = null;
     };
 
     const selectPerson = (person) => {
@@ -141,6 +151,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const clearSelectedStyles = () => {
         document.querySelectorAll('.person').forEach(p => p.classList.remove('selected'));
+    };
+    const canMove = (fromBank, personType) => {
+        // Prevent movement if game is over
+        if (state.isGameOver) {
+            return false;
+        }
+
+        // Boat must be on same side
+        if (fromBank !== "boat" && fromBank !== state.boatPosition) {
+            message.textContent = "Boat is not on this side!";
+            return false;
+        }
+
+        // Check available people
+        if (personType === "missionary") {
+            if (
+                (fromBank === "left" && state.leftMissionaries <= 0) ||
+                (fromBank === "right" && state.rightMissionaries <= 0) ||
+                (fromBank === "boat" && state.boatMissionaries <= 0)
+            ) {
+                return false;
+            }
+        }
+
+        if (personType === "cannibal") {
+            if (
+                (fromBank === "left" && state.leftCannibals <= 0) ||
+                (fromBank === "right" && state.rightCannibals <= 0) ||
+                (fromBank === "boat" && state.boatCannibals <= 0)
+            ) {
+                return false;
+            }
+        }
+
+        return true;
     };
 
     const movePerson = (fromBank, toBank, personType) => {
@@ -204,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const onDrop = (event, bank) => {
         event.preventDefault();
-        
+
         if (state.isGameOver) return;
 
         let personClass = event.dataTransfer.getData("person");
@@ -220,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const moveBoat = () => {
         if (state.isGameOver) return;
-        
+
         if (state.boatMissionaries === 0 && state.boatCannibals === 0) {
             message.textContent = "The boat needs at least one person!";
             return;
@@ -249,6 +294,22 @@ document.addEventListener("DOMContentLoaded", () => {
     leftBank.addEventListener("drop", (e) => onDrop(e, "left"));
     rightBank.addEventListener("drop", (e) => onDrop(e, "right"));
     boat.addEventListener("drop", (e) => onDrop(e, "boat"));
+    // Close modal function
+    const hideModal = () => {
+        modal.style.display = "none";
+    };
+
+    closeModal.addEventListener("click", hideModal);
+    instructionsBtn.addEventListener("click", () => {
+        modal.style.display = "flex";
+    });
+
+    // Close when clicking outside
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            hideModal();
+        }
+    });
 
     // Start the game
     startGame();

@@ -43,22 +43,24 @@
   <canvas id="particleCanvas" aria-hidden="true"></canvas>
 
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
-    <nav class="navbar" id="navbar">
+  <header>
+      <nav class="navbar" id="navbar" aria-hidden="Main Navigation">
         <a class="navbar-brand" href="index.html" style="text-decoration:none;">
-            <span class="brand-mark" aria-hidden="true">100</span>
+          <span class="brand-mark" aria-label="100 Days logo">100</span>
             <span class="brand-copy">
-                <span class="brand-kicker">Open Source Archive</span>
-                <strong>100 Days · 100 Web Projects</strong>
-            </span>
+            <span class="brand-kicker">Open Source Archive</span>
+            <strong>100 Days · 100 Web Projects</strong>
+          </span>
         </a>
 
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
-            <i class="fas fa-bars"></i>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
+          <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
 
         <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-    </div>
-    </nav>   
+      </div>
+    </nav>
+  </header>     
     <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
@@ -137,9 +139,14 @@
         <div class="section-heading-row">
           <h2 class="section-title">Bookmarked Projects</h2>
 
-          <button class="view-all-btn" id="bookmarkToggleBtn">
-            View All
-          </button>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button class="view-all-btn" id="copyBookmarksBtn" title="Copy Bookmarks">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button class="view-all-btn" id="bookmarkToggleBtn">
+              View All
+            </button>
+          </div>
         </div>
       </div>
 
@@ -155,128 +162,138 @@
         <h2 class="section-title">Every experiment, catalogued.</h2>
       </div>
 
-    <div class="projects-header">
-      <div class="search-bar">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search projects…" autocomplete="off" />
-        <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
-          &times;
-        </button>
-        <select id="sortProjects" aria-label="Sort projects">
-          <option value="default">Sort By</option>
-          <option value="az">A-Z</option>
-          <option value="latest">Latest Day</option>
-          <option value="difficulty">Difficulty</option>
+      <div class="projects-header">
+        <div class="search-bar">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search projects…"
+            autocomplete="off"
+          />
+          <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
+            &times;
+          </button>
+          <select id="sortProjects" aria-label="Sort projects">
+            <option value="default">Sort By</option>
+            <option value="az">A-Z</option>
+            <option value="latest">Latest Day</option>
+            <option value="difficulty">Difficulty</option>
+          </select>
+          <select id="difficultyFilter" aria-label="Filter projects by difficulty">
+            <option value="all">Difficulty (All)</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tech Stack Dropdown -->
+      <div style="margin: 20px 0 10px 0; display: flex; justify-content: flex-start; width: 100%;">
+        <select id="techStackFilter" style="width: 280px; padding: 12px 20px; border-radius: 30px; border: 1px solid #333; background: #1a1a1a; color: white; cursor: pointer; font-size: 14px;">
+          <option value="all">Filter by Tech Stack (All)</option>
+          <option value="HTML"> HTML</option>
+          <option value="CSS"> CSS</option>
+          <option value="JavaScript"> JavaScript</option>
+          <option value="React"> React</option>
+          <option value="Node.js"> Node.js</option>
+          <option value="Express"> Express</option>
+          <option value="MongoDB"> MongoDB</option>
+          <option value="Python"> Python</option>
+          <option value="Tailwind"> Tailwind</option>
+          <option value="Firebase"> Firebase</option>
+          <option value="Next.js"> Next.js</option>
+          <option value="TypeScript"> TypeScript</option>
         </select>
       </div>
 
-      <!-- Technology Stack Search -->
-      <div class="search-bar tech-search-bar">
-        <i class="fas fa-code search-icon"></i>
-        <input
-          type="text"
-          id="techStackSearch"
-          class="search-input"
-          placeholder="Filter by tech stack (React, Node.js, Python...)"
-          autocomplete="off"
-        />
-        <button
-          id="clearTechFilter"
-          class="clear-filter-btn"
-          style="display: none;"
-          aria-label="Clear tech filters"
-        >
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
+    <!-- Filter Chips -->
+    <div class="filter-chips" id="filterChips">
+      <button class="chip active" data-filter="all" id="filterAll">
+        All <span class="chip-count" id="allCount">Projects</span>
+      </button>
+      <button class="chip" data-filter="game" id="filterGame">
+        Games
+      </button>
+      <button class="chip" data-filter="clone" id="filterClone">
+        Clones
+      </button>
+      <button class="chip" data-filter="tool" id="filterTool">
+        Tools
+      </button>
+      <button class="chip" data-filter="ui" id="filterUI">
+        UI / Animation
+      </button>
+      <button class="chip" data-filter="api" id="filterAPI">APIs</button>
     </div>
 
-        <!-- Active Tech Filters Display -->
-        <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
-          <span class="filter-label">Active filters:</span>
-          <div id="techFilterTags"></div>
-        </div>
+    <!-- Project Grid -->
+    <div class="project-grid" id="projectGrid"></div>
 
-        <div class="filter-chips" id="filterChips">
-          <button class="chip active" data-filter="all" id="filterAll">
-            All <span class="chip-count" id="allCount">Projects</span>
-          </button>
-          <button class="chip" data-filter="game" id="filterGame">
-            Games
-          </button>
-          <button class="chip" data-filter="clone" id="filterClone">
-            Clones
-          </button>
-          <button class="chip" data-filter="tool" id="filterTool">
-            Tools
-          </button>
-          <button class="chip" data-filter="ui" id="filterUI">
-            UI / Animation
-          </button>
-          <button class="chip" data-filter="api" id="filterAPI">APIs</button>
-        </div>
-      <div class="project-grid" id="projectGrid"></div>
-
-      <div class="no-results" id="noResults">
-        <i class="fas fa-search"></i>
-        <p>No projects match your search.</p>
-      </div>
+    <!-- No Results -->
+    <div class="no-results" id="noResults">
+      <i class="fas fa-search"></i>
+      <p>No projects match your search.</p>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- ── FOOTER ─────────────────────────────────────────── -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">100 Days</span>
-        <p>
-          An open-source frontend exploration challenge — a growing collection
-          of HTML, CSS &amp; JavaScript experiments.
-        </p>
-      </div>
-
-      <div class="footer-nav">
-        <h4>Navigate</h4>
-        <ul>
-          <li><a href="#projects">Browse Projects</a></li>
-          <li>
-            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
-              rel="noopener noreferrer">GitHub Repo</a>
-          </li>
-          <li><a href="./contributors/contributor.html">Contributors</a></li>
-          <li><a href="./public/Login.html">Sign In</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-social">
-        <h4>Connect</h4>
-        <div class="social-row">
-          <a href="https://github.com/dhairyagothi" target="_blank" rel="noopener noreferrer" class="social-icon"
-            aria-label="GitHub" id="footerGithub">
-            <i class="fab fa-github" aria-hidden="true"></i>
-            <span style="display:none;">Visit Dhairya Gothi's GitHub Profile</span>
-          </a>
-          <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer"
-            class="social-icon" aria-label="LinkedIn" id="footerLinkedin">
-            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-            <span style="display:none;">Visit Dhairya Gothi's LinkedIn Profile</span>
-          </a>
-          <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer"
-            class="social-icon" aria-label="Instagram" id="footerInstagram">
-            <i class="fab fa-instagram" aria-hidden="true"></i>
-            <span style="display:none;">Visit Dhairya Gothi's Instagram Profile</span>
+  <footer class="footer homepage-footer">
+      <div class="footer-content">
+        <div>
+          <h3>About</h3>
+          <p>
+            This repository contains a growing collection of web projects from
+            basic to intermediate using HTML, CSS, and JS.
+          </p>
+          <p>
+            <strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and
+            Contributors.
+          </p>
+        </div>
+        <div>
+          <h3>Connect With Us</h3>
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/dhairyaa__31/"
+              target="_blank"
+              class="social-btn"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a
+              href="https://github.com/dhairyagothi/100_days_100_web_project"
+              target="_blank"
+              class="social-btn"
+            >
+              <i class="fab fa-github"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
+              target="_blank"
+              class="social-btn"
+            >
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3>Featured Project</h3>
+          <p>Generate free, stunning GitHub README profiles in minutes.</p>
+          <a
+            href="https://www.github-readme.tech"
+            target="_blank"
+            class="button featured-btn"
+            style="margin-top: 1rem"
+          >
+            <i class="fas fa-magic"></i> Try README Generator
           </a>
         </div>
       </div>
-    </div>
-
-      <div class="footer-bottom">
-      <span>© 2024 100 Days, 100 Projects — Dhairya &amp; Contributors</span>
-      <button id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-        <i class="fas fa-moon"></i> Theme
-      </button>
-    </div>
-  </footer>
+    </footer>
 
   <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
   <button id="scrollBtn" aria-label="Back to top">
@@ -290,6 +307,9 @@
   <div class="toast" id="toast"></div>
   <script type="module" src="hero-terminal.js"></script>
   <script src="index.js"></script>
+  <script>
+    document.getElementById("Current-Year").textContent=new Date().getFullYear();
+  </script>
 
 </body>
 
