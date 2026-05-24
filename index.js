@@ -288,6 +288,7 @@ function removeTechFilter(tech) {
   techStackFilters = techStackFilters.filter(t => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
+  visibleProjects = INITIAL_RENDER_COUNT;
 }
 
 /**
@@ -302,6 +303,7 @@ function clearAllTechFilters() {
 
   updateTechFilterDisplay();
   renderGrid();
+  visibleProjects = INITIAL_RENDER_COUNT;
 }
 
 /**
@@ -459,6 +461,11 @@ function generateReadme() {
 let activeFilter = 'all';
 let searchQuery = '';
 
+const INITIAL_RENDER_COUNT = 24;
+const LOAD_MORE_COUNT = 12;
+
+let visibleProjects = INITIAL_RENDER_COUNT;
+
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
@@ -504,7 +511,9 @@ function renderGrid() {
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
 
-  pageItems.forEach(([day, name, url, tags]) => {
+  pageItems
+    .slice(0, visibleProjects)
+    .forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
@@ -539,6 +548,7 @@ function renderGrid() {
   });
 
   renderPagination(filtered.length, totalPages);
+  initInfiniteScroll(pageItems.length);
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -583,6 +593,7 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage > 1) {
       currentPage--;
       renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
       // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
@@ -619,6 +630,7 @@ function renderPagination(totalItems, totalPages) {
       e.preventDefault();
       currentPage = i;
       renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
       // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
@@ -637,6 +649,7 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage < totalPages) {
       currentPage++;
       renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
       // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
@@ -702,6 +715,7 @@ function toggleBookmark(project) {
   localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
   renderBookmarks();
   renderGrid();
+  visibleProjects = INITIAL_RENDER_COUNT;
   renderRecentProjects();
 }
 
@@ -888,8 +902,30 @@ function initFilterChips() {
       activeFilter = chip.dataset.filter;
       currentPage = 1;
       renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
     });
   });
+}
+
+function initInfiniteScroll(totalItems) {
+  const sentinel = document.getElementById('scrollSentinel');
+
+  if (!sentinel) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    if (
+      entries[0].isIntersecting &&
+      visibleProjects < totalItems
+    ) {
+      visibleProjects += LOAD_MORE_COUNT;
+      renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
+    }
+  }, {
+    rootMargin: '200px'
+  });
+
+  observer.observe(sentinel);
 }
 
 /* ============================================================
@@ -903,6 +939,7 @@ function initSearch() {
     searchQuery = input.value.trim();
     currentPage = 1;
     renderGrid();
+    visibleProjects = INITIAL_RENDER_COUNT;
   });
 }
 
@@ -935,6 +972,7 @@ function initTechStackSearch() {
 
         updateTechFilterDisplay();
         renderGrid();
+        visibleProjects = INITIAL_RENDER_COUNT;
       } else {
         // Empty input = clear all filters
         clearAllTechFilters();
@@ -1136,6 +1174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
   renderGrid();
+  visibleProjects = INITIAL_RENDER_COUNT;
 });
 
 /* ============================================================
