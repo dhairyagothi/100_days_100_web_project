@@ -2,86 +2,147 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta HTTP-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page </title>
-    <link rel="stylesheet" href="login.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    <div class="image"><iframe
-            src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe></div>
-    <form>
-        <!-- Headings for the form -->
-        <div class="headingsContainer">
-            <h3>Log In
-            </h3>
+
+  <div class="page-wrapper">
+
+    <!-- Lottie Animation -->
+    <div class="image">
+      <iframe src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe>
+    </div>
+
+    <!-- Login Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Welcome Back</h3>
+        <p>Log in to your account to continue</p>
+      </div>
+
+      <div class="form-body">
+
+        <!-- Username -->
+        <div class="field-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username"
+            required>
         </div>
 
-        <!-- The Wrapper contains all the inputs -->
-        <div class="mainContainer">
-            <!-- Username -->
-            <label for="username">Username</label>
-            <input type="text" placeholder="Enter Your Username Here" name="username" id="username" required>
-
-            <br><br>
-
-            <!-- Password -->
-            <label for="pswrd">Password</label>
-            <input type="password" placeholder="Enter Your Password Here" name="password" id="password" required>
-
-            <!-- sub-container for the checkbox and forgot password link -->
-            <div class="subcontainer">
-                <label>
-                    <input type="checkbox" checked="checked" name="remember">Keep me signed in
-                </label>
-                <p class="forgotpsd"> <a href="#">Forgot Password?</a></p>
-            </div>
-
-
-            <!-- Submit button -->
-            <button type="button" onclick="getDetails()">Login</button>
-
-            <!-- Sign up link -->
-            <p class="register">Not a member? <a href="/signup">Sign Up here!</a></p>
-
+        <!-- Password -->
+        <div class="field-group">
+          <label for="password">Password</label>
+          <div class="password-container">
+            <input type="password" id="password" name="password" placeholder="Enter your password"
+              autocomplete="current-password" required>
+            <span class="toggle-password" onclick="togglePassword('password', this)">
+              <i class="fa-regular fa-eye"></i>
+            </span>
+          </div>
         </div>
 
-    </form>
-</body>
-<script>
-    async function postRequest(data) {
-        try {
-            const res = await fetch('/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
+        <!-- Remember me + Forgot password -->
+        <div class="subcontainer">
+          <label>
+            <input type="checkbox" name="remember" checked>
+            <span>Keep me signed in</span>
+          </label>
+          <a href="#">Forgot Password?</a>
+        </div>
 
-            const text = await res.text();
+        <!-- Login Button -->
+        <button type="button" class="btn-primary" onclick="getDetails()">
+          Log In
+        </button>
 
-            if (!res.ok) {
-                alert(text);
-                return;
-            }
+        <!-- Divider -->
+        <div class="divider">or</div>
 
-            alert(text);
-            window.location.href = "/home";
+        <!-- Google Button -->
+        <a href="/auth/google">
+          <button type="button" class="google-btn">
+            <i class="fa-brands fa-google"></i>
+            Continue with Google
+          </button>
+        </a>
 
-        } catch (error) {
-            console.log(error);
+        <!-- Sign Up Link -->
+        <p class="register">
+          Not a member? <a href="/signup">Sign Up here!</a>
+        </p>
+
+      </div><!-- /.form-body -->
+    </div><!-- /.card -->
+
+  </div><!-- /.page-wrapper -->
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function showToast(msg, type = 'error') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast ${type} show`;
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    async function getDetails() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const text = await res.text();
+
+        if (!res.ok) {
+          showToast(text, 'error');
+          return;
         }
+
+        showToast(text, 'success');
+        setTimeout(() => window.location.href = '/home', 800);
+
+      } catch (err) {
+        console.error(err);
+        showToast('Something went wrong. Try again.', 'error');
+      }
     }
 
-    function getDetails() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        postRequest({ username, password })
+    function togglePassword(id, el) {
+      const input = document.getElementById(id);
+      const icon = el.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
     }
 
+    // Allow Enter key to submit
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') getDetails();
+    });
+  </script>
 
-</script>
+</body>
 
 </html>

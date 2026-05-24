@@ -9,13 +9,10 @@ function sendSelection() {
       });
     }
   }
-  
-  // Listen for double-click
-  document.addEventListener("dblclick", sendSelection);
-  
-  // Listen for a specific keypress (e.g., pressing "S")
+
+  // Listen for Ctrl+C key combination to trigger text saving
   document.addEventListener("keydown", (event) => {
-    if (event.key === "s") {
+    if (event.ctrlKey &&event.key.toLowerCase() === "c") {
       sendSelection();
     }
   });

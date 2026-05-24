@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Habit Dashboard</title>
+  <script>
+    if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('.html')) {
+      window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=3" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon"><i data-lucide="layers"></i></div>
+        <h2>HabitFlow</h2>
+        <button id="closeMenuBtn" class="close-sidebar-btn" aria-label="Close menu">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebarNav">
+        <div class="nav-group">
+          <p class="nav-section-title">Views</p>
+          <a href="#" class="nav-item active" data-filter="all">
+            <i data-lucide="layout-grid"></i> Dashboard
+          </a>
+          <a href="#" class="nav-item" data-filter="today">
+            <i data-lucide="calendar"></i> Today
+          </a>
+          <a href="#" class="nav-item" data-filter="completed">
+            <i data-lucide="check-circle-2"></i> Completed
+          </a>
+          <a href="#" class="nav-item" data-filter="missed">
+            <i data-lucide="x-circle"></i> Missed
+          </a>
+        </div>
+
+        <div class="nav-group">
+          <p class="nav-section-title">Categories</p>
+          <a href="#" class="nav-item category-item" data-category="Health">
+            <span class="category-dot health"></span> Health
+          </a>
+          <a href="#" class="nav-item category-item" data-category="Work">
+            <span class="category-dot work"></span> Work
+          </a>
+          <a href="#" class="nav-item category-item" data-category="Personal">
+            <span class="category-dot personal"></span> Personal
+          </a>
+        </div>
+      </nav>
+
+      <div class="theme-switch-wrapper">
+        <button id="theme-toggle">
+          <i data-lucide="moon" class="theme-icon"></i>
+          <span id="theme-text">Dark Mode</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="main-header">
+        <div class="header-title-wrapper">
+          <button id="mobileMenuBtn" class="hamburger-btn" aria-label="Open menu">
+            <i data-lucide="menu"></i>
+          </button>
+          <div>
+            <h1 id="viewTitle">Dashboard</h1>
+            <p class="subtitle" id="motivationalBanner">Ready to crush your goals today?</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="search-wrapper">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search habits..." />
+          </div>
+        </div>
+      </header>
+
+      <!-- KPI HERO SECTION -->
+      <section class="kpi-hero">
+        <div class="kpi-card progress-card">
+          <div class="circular-progress">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" id="progressRing" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <text x="18" y="20.5" class="percentage" id="progressText">0%</text>
+            </svg>
+          </div>
+          <div class="kpi-info">
+            <span class="kpi-label">Today's Progress</span>
+            <span class="kpi-value" id="kpiCompletedRatio">0/0 Habits</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap"><i data-lucide="flame"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">Current Streak</span>
+            <span class="kpi-value" id="kpiCurrentStreak">0 Days</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap"><i data-lucide="target"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">Best Streak</span>
+            <span class="kpi-value" id="kpiBestStreak">0 Days</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap"><i data-lucide="activity"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">Completion Rate</span>
+            <span class="kpi-value" id="kpiCompletionRate">0%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUICK FILTERS -->
+      <div class="quick-filters">
+        <button class="filter-chip active" data-qf="all">All</button>
+        <button class="filter-chip" data-qf="today">Today</button>
+        <button class="filter-chip" data-qf="high-priority">High Priority</button>
+        <button class="filter-chip" data-qf="Health">Health</button>
+        <button class="filter-chip" data-qf="Work">Work</button>
+      </div>
+
+      <!-- HABIT LIST -->
+      <div class="habits-container">
+        <div id="emptyState" class="empty-state hidden">
+          <i data-lucide="inbox" class="empty-icon"></i>
+          <h3>No habits found</h3>
+          <p>Get started by creating a new habit.</p>
+          <button class="btn-primary" onclick="openAddModal()">Create Habit</button>
+        </div>
+        <ul id="habitList"></ul>
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL (Contextual) -->
+    <aside class="right-panel">
+
+      <!-- DEFAULT OVERVIEW STATE -->
+      <div id="overviewContext" class="context-panel">
+        <div class="glass-card context-card">
+          <h3>Achievements</h3>
+          <div class="achievements-grid" id="achievementsGrid">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="glass-card context-card">
+          <h3>Weekly Trend</h3>
+          <div class="chart-container" id="weeklyChart">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="glass-card context-card">
+          <h3>Consistency Heatmap</h3>
+          <div class="heatmap-container" id="heatmapGrid">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+      <!-- MONTHLY CALENDAR -->
+      <div class="glass-card context-card">
+        <div class="calendar-header">
+          <h3>Habit Calendar</h3>
+
+          <div class="calendar-nav">
+            <button id="prevMonthBtn" class="icon-btn">
+              <i data-lucide="chevron-left"></i>
+            </button>
+
+            <span id="calendarMonthLabel"></span>
+
+            <button id="nextMonthBtn" class="icon-btn">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="calendar-weekdays">
+          <span>Sun</span>
+          <span>Mon</span>
+          <span>Tue</span>
+          <span>Wed</span>
+          <span>Thu</span>
+          <span>Fri</span>
+          <span>Sat</span>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <!-- SELECTED DATE DETAILS -->
+      <div class="glass-card context-card">
+        <h3>Selected Day Activity</h3>
+
+        <div id="selectedDateDetails" class="selected-date-details">
+          Click a date to view completed habits.
+        </div>
+      </div>
+
+      <!-- HABIT NOTES STATE -->
+      <div id="habitDetailsSection" class="context-panel hidden">
+        <div class="glass-card details-card">
+          <div class="details-header">
+            <div>
+              <button id="closeDetailsBtn" class="icon-btn" title="Back to overview">
+                <i data-lucide="arrow-left"></i>
+              </button>
+            </div>
+            <h3 id="detailsTitle">Habit Name</h3>
+            <span class="status-badge" id="detailsStatus"></span>
+          </div>
+          <div class="editor-wrapper">
+            <div id="editor"></div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div><!-- /.dashboard-layout -->
+
+  <div id="sidebarOverlay" class="sidebar-overlay hidden"></div>
+
+  <!-- FLOATING ACTION BUTTON -->
+  <button class="fab" id="fabAdd" title="Create new habit">
+    <i data-lucide="plus"></i>
+  </button>
+
+  <!-- ADD HABIT MODAL -->
+  <div class="modal-overlay hidden" id="addModal">
+    <div class="modal-content glass-card">
+      <h3>Create New Habit</h3>
+      <div class="input-group">
+        <label>Habit Name</label>
+        <input type="text" id="addHabitInput" placeholder="e.g. Read 20 pages" />
+      </div>
+      <div class="input-row">
+        <div class="input-group">
+          <label>Category</label>
+          <select id="addHabitCategory" class="category-select">
+            <option value="Personal">Personal</option>
+            <option value="Health">Health</option>
+            <option value="Work">Work</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Time</label>
+          <select id="addHabitTimeLabel" class="category-select">
+            <option value="Anytime">Anytime</option>
+            <option value="Morning">Morning</option>
+            <option value="Afternoon">Afternoon</option>
+            <option value="Evening">Evening</option>
+            <option value="Night">Night</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-group checkbox-group">
+        <input type="checkbox" id="addHabitPriority" />
+        <label for="addHabitPriority">High Priority</label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="cancelAddBtn">Cancel</button>
+        <button class="btn-primary" id="confirmAddBtn">Create Habit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE-OVER EDIT DRAWER -->
+  <div class="drawer-overlay hidden" id="editDrawerOverlay"></div>
+  <div class="drawer hidden" id="editDrawer">
+    <div class="drawer-header">
+      <h3>Edit Habit</h3>
+      <button class="icon-btn" id="closeDrawerBtn"><i data-lucide="x"></i></button>
+    </div>
+    <div class="drawer-body">
+      <div class="input-group">
+        <label>Habit Name</label>
+        <input type="text" id="editHabitInput" />
+      </div>
+      <div class="input-group">
+        <label>Category</label>
+        <select id="editHabitCategory" class="category-select">
+          <option value="Personal">Personal</option>
+          <option value="Health">Health</option>
+          <option value="Work">Work</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Time</label>
+        <select id="editHabitTimeLabel" class="category-select">
+          <option value="Anytime">Anytime</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Evening">Evening</option>
+          <option value="Night">Night</option>
+        </select>
+      </div>
+      <div class="input-group checkbox-group">
+        <input type="checkbox" id="editHabitPriority" />
+        <label for="editHabitPriority">High Priority</label>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <!-- Delete button injected here by JS -->
+      <button class="btn-primary" id="saveEditBtn">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="modal-overlay hidden" id="deleteModal">
+    <div class="modal-content glass-card delete-modal-content">
+      <h3>Delete Habit</h3>
+      <p class="modal-text">Are you sure you want to delete this habit? All history and notes will be permanently lost.</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="cancelDeleteBtn">Cancel</button>
+        <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MILESTONE CELEBRATION MODAL -->
+  <div id="milestone-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <span class="modal-close" id="close-modal-btn">&times;</span>
+      <div class="modal-badge-icon">🎉</div>
+      <h2>Milestone Unlocked!</h2>
+      <p id="milestone-message">You achieved a streak milestone!</p>
+      <button id="milestone-btn" class="btn-primary">Awesome!</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

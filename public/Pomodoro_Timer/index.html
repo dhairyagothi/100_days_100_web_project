@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Toggle light/dark theme">🌙</button>
+    </div>
+
+    <div class="title">
+        POMODORO TIMER
+    </div>
+
+    <div class="container">
+
+        <div class="top-section">
+
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="What are you working on?"
+                aria-label="Enter your current task"
+            >
+
+            <div class="task-display">
+                <input type="checkbox" id="taskCheck" aria-label="Mark task as complete">
+                <span id="currentTask">No current task</span>
+            </div>
+
+        </div>
+
+        <div class="center-section">
+
+            <div class="mode">
+                <button id="workBtn" class="active" aria-label="Switch to Work mode">Work</button>
+                <button id="breakBtn" aria-label="Switch to Break mode">Break</button>
+            </div>
+
+            <button id="focusModeBtn" aria-label="Toggle Focus Mode">Focus Mode</button>
+            <div class="custom-time">
+    <input
+        type="number"
+        id="customInput"
+        placeholder="Custom mins"
+        min="1"
+        max="120"
+        aria-label="Set custom timer in minutes"
+    >
+    <button id="setTimeBtn" aria-label="Set custom time">Set</button>
+</div>
+            <div class="circle">
+
+                <svg aria-hidden="true">
+                    <circle class="bg" cx="160" cy="160" r="100"></circle>
+                    <circle class="progress" id="progressCircle" cx="160" cy="160" r="100"></circle>
+                </svg>
+
+                <div
+                    id="timer"
+                    role="timer"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    aria-label="Countdown timer"
+                >25:00</div>
+
+            </div>
+
+            <div class="buttons">
+                <button id="start" aria-label="Start the timer">Start</button>
+                <button id="pause" aria-label="Pause the timer" disabled>Pause</button>
+                <button id="reset" aria-label="Reset the timer">Reset</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="quote-banner">
+      <marquee id="quoteText" scrollamount="3">Stay focused and never give up</marquee>
+    </div> 
+
+    <audio id="tickSound" loop>
+        <source src="https://www.soundjay.com/clock/sounds/clock-ticking-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
