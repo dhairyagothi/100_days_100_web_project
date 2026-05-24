@@ -230,6 +230,7 @@ let photos = [
 ];
 
 let index = 0;
+let autoplayInterval;
 // Preload all images for smooth transitions
 function preloadImages() {
   for (let i = 0; i < photos.length; i++) {
@@ -265,10 +266,12 @@ function buildDots() {
     if (i === index) dot.classList.add("active");
     // Click a dot to jump to that slide
     (function(i) {
-      dot.addEventListener("click", function() {
-        index = i;
-        showPhoto();
-      });
+     dot.addEventListener("click", function() {
+    index = i;
+    showPhoto();
+
+    startAutoplay();
+});
     })(i);
     dotsContainer.appendChild(dot);
   }
@@ -306,11 +309,27 @@ function showPhoto() {
 function nextPhoto() {
   index = (index + 1) % photos.length;
   showPhoto();
+
+  startAutoplay();
 }
 
 function prevPhoto() {
   index = (index - 1 + photos.length) % photos.length;
   showPhoto();
+
+  startAutoplay();
+}
+
+function startAutoplay() {
+  stopAutoplay(); // prevent duplicate timers
+
+  autoplayInterval = setInterval(function () {
+    nextPhoto();
+  }, 4000); // changes slide every 4 sec
+}
+
+function stopAutoplay() {
+  clearInterval(autoplayInterval);
 }
 
 
@@ -324,6 +343,11 @@ document.addEventListener("keydown", function(e) {
 window.onload = function() {
   preloadImages();
   buildDots();
+  let slideshow = document.getElementById("slideshow");
+
+slideshow.addEventListener("mouseenter", stopAutoplay);
+
+slideshow.addEventListener("mouseleave", startAutoplay);
 
   let img = document.getElementById("photo");
   let placeName = document.getElementById("place-name");
@@ -335,4 +359,5 @@ window.onload = function() {
   if (placeLocation) placeLocation.textContent = "📍 " + photos[index].location;
 
   updateCounter();
+  startAutoplay();
 };

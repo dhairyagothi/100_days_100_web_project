@@ -219,7 +219,7 @@ header {
 #colour1 { background: #7c63ff; }
 #colour2 { background: #4f8dff; }
 #colour3 { background: #14b8a6; }
-#colour4 { background: #ffb86b; }
+#colour4 { background: #d57b1b; }
 #colour5 { background: #ef4444; }
 
 .theme-btn:hover {
@@ -900,17 +900,17 @@ section {
 }
 
 .theme4 {
-  --page-bg-start: #3b0764;
-  --page-bg-mid: #1e1b4b;
-  --page-bg-end: #0f172a;
+  --page-bg-start: #db4505;
+  --page-bg-mid: #9f4d21;
+  --page-bg-end: #cb550c;
   --accent: #ffb86b;
   --accent-gradient: linear-gradient(135deg, #ffb86b, #f59e0b);
 }
 
 .theme5 {
-  --page-bg-start: #450a0a;
+  --page-bg-start: #ef1414;
   --page-bg-mid: #7f1d1d;
-  --page-bg-end: #1f2937;
+  --page-bg-end: #cb0808;
   --accent: #ef4444;
   --accent-gradient: linear-gradient(135deg, #ef4444, #f97316);
 }
