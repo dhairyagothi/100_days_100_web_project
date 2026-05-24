@@ -103,10 +103,47 @@
       </div>
     </section>
 
+    <section id="analyticsSection" class="analytics-section hidden">
+      <div class="section-title">
+        <h3>Developer Insights</h3>
+        <p>Repository analytics overview</p>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="analytics-card">
+          <span class="analytics-label">Total Stars</span>
+          <strong id="totalStars">0</strong>
+        </div>
+
+        <div class="analytics-card">
+          <span class="analytics-label">Total Forks</span>
+          <strong id="totalForks">0</strong>
+        </div>
+
+        <div class="analytics-card">
+          <span class="analytics-label">Top Repo</span>
+          <strong id="topRepo">—</strong>
+        </div>
+
+        <div class="analytics-card">
+          <span class="analytics-label">  Top Language</span>
+          <strong id="topLanguage">—</strong>
+        </div>
+      </div>
+    </section>
+
     <section id="reposSection" class="repos-section hidden">
       <div class="section-title">
         <h3>Popular Repositories</h3>
         <p>Sorted by stars and recent activity</p>
+      </div>
+      <div class="repo-search-wrap">
+        <input
+          type="text"
+          id="repoSearchInput"
+          class="repo-search-input"
+          placeholder="Search repositories..."
+        />
       </div>
       <div id="reposList" class="repos-list"></div>
     </section>

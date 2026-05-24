@@ -4,6 +4,13 @@ const statusBox = document.getElementById("statusBox");
 const profileCard = document.getElementById("profileCard");
 const reposSection = document.getElementById("reposSection");
 const reposList = document.getElementById("reposList");
+const repoSearchInput = document.getElementById("repoSearchInput");
+const analyticsSection = document.getElementById("analyticsSection");
+
+const totalStars = document.getElementById("totalStars");
+const totalForks = document.getElementById("totalForks");
+const topRepo = document.getElementById("topRepo");
+const topLanguage = document.getElementById("topLanguage");
 
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
@@ -82,6 +89,8 @@ function safeText(value, fallback = "—") {
   return value && String(value).trim() ? value : fallback;
 }
 
+let currentRepos = [];
+
 function renderProfile(user) {
   elements.avatar.src = user.avatar_url;
   elements.avatar.alt = `${user.login} avatar`;
@@ -108,7 +117,40 @@ function renderProfile(user) {
   profileCard.classList.remove("hidden");
 }
 
+function renderAnalytics(repos) {
+  const stars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+
+  const forks = repos.reduce((sum, repo) => sum + repo.forks_count, 0);
+
+  const mostStarredRepo = repos.reduce((top, repo) =>
+    repo.stargazers_count > top.stargazers_count ? repo : top,
+    repos[0]
+  );
+
+  const languageCount = {};
+
+  repos.forEach((repo) => {
+    if (repo.language) {
+      languageCount[repo.language] =
+        (languageCount[repo.language] || 0) + 1;
+    }
+  });
+
+  const mostUsedLanguage =
+    Object.keys(languageCount).sort(
+      (a, b) => languageCount[b] - languageCount[a]
+    )[0] || "—";
+
+  totalStars.textContent = stars;
+  totalForks.textContent = forks;
+  topRepo.textContent = mostStarredRepo?.name || "—";
+  topLanguage.textContent = mostUsedLanguage;
+
+  analyticsSection.classList.remove("hidden");
+}
+
 function renderRepos(repos) {
+  currentRepos = repos;
   reposList.innerHTML = "";
 
   if (!repos.length) {
@@ -232,10 +274,21 @@ async function fetchUser(username) {
         renderSearchResults(searchData.items);
       }
     }
+
+    const repos = await repoResponse.json();
+
+    const sortedRepos = repos
+      .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.updated_at) - new Date(a.updated_at))
+      .slice(0, 6);
+
+    renderProfile(user);
+    renderAnalytics(repos);
+    renderRepos(sortedRepos);
+    hideStatus();
   } catch (error) {
     profileCard.classList.add("hidden");
     reposSection.classList.add("hidden");
-    searchResultsContainer.style.display = "none";
+    analyticsSection.classList.add("hidden");
     showStatus(error.message || "Something went wrong.", "error");
   }
 }
@@ -259,3 +312,13 @@ themeToggle.addEventListener("click", () => {
 });
 
 initTheme();
+
+repoSearchInput.addEventListener("input", (event) => {
+  const searchValue = event.target.value.toLowerCase();
+
+  const filteredRepos = currentRepos.filter((repo) =>
+    repo.name.toLowerCase().includes(searchValue)
+  );
+
+  renderRepos(filteredRepos);
+});
