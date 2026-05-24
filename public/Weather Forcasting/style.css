@@ -7,6 +7,64 @@ body {
   min-height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.info-section {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.info-card {
+  background: rgba(18, 24, 35, 0.45);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  color: #ffffff;
+  box-shadow: 0 12px 32px rgba(9, 24, 51, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(9, 24, 51, 0.35);
+}
+
+.info-card h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.info-card p,
+.info-card li {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.info-card ul {
+  padding-left: 1.2rem;
+  margin-bottom: 0;
+}
+
+.info-card li {
+  margin-bottom: 0.7rem;
+}
+
+.nav-link.active {
+  color: #ffffff !important;
+  font-weight: 600;
+  border-bottom: 2px solid #4ea1ff;
+}
+
+section {
+  scroll-margin-top: 90px;
+}
+
 body {
   margin: 0;
   color: #eef3f9;
@@ -246,39 +304,6 @@ main.container {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-.btn-outline-success {
-  background-color: #198754;
-  border-color: #198754;
-  color: #fff;
-}
-
-.btn-outline-success:hover {
-  background-color: #157347;
-  border-color: #157347;
-  color: #fff;
-}
-
-.btn-outline-primary {
-  background-color: #1f7aff !important;
-  border-color: #1f7aff !important;
-  color: #fff !important;
-}
-
-.btn-outline-primary:hover {
-  background-color: #0b5ed7 !important;
-  border-color: #0b5ed7 !important;
-}
-
-.btn-primary {
-  background-color: #1f7aff;
-  border-color: #1f7aff;
-}
-
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0b5ed7;
-}
-
 .table-responsive {
   margin-top: 1.25rem;
   border-radius: 1.15rem;
@@ -312,9 +337,41 @@ main.container {
   background: rgba(255, 255, 255, 0.06);
 }
 
+/* Weather Recommendation Section */
+
+#recommendations-card {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+#recommendations-card .card-body {
+  color: #212529;
+}
+
+#clothing-recommendation,
+#travel-recommendation {
+  transition: all 0.3s ease;
+}
+
+#clothing-recommendation:hover,
+#travel-recommendation:hover {
+  transform: translateY(-2px);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -358,188 +415,5 @@ main.container {
   .table {
     font-size: 0.85rem;
   }
-}
-/* FIX: Dropdown should appear above all sections */
-.dropdown-menu {
-  z-index: 2000 !important;
-}
-
-/* FIX: Navbar stacking issue */
-.navbar {
-  position: relative;
-  z-index: 1050;
-}
-
-/* Usage Guide Modal */
-.guide-modal{
-
-display:none;
-position:fixed;
-inset:0;
-
-background:
-rgba(0,0,0,.55);
-
-backdrop-filter:
-blur(10px);
-
-z-index:3000;
-}
-
-/* C & F toggle button style */
-.unit-toggle-btn {
-    
-  white-space: nowrap;
-    background: transparent;
-    color: white;
-    border: 1px solid rgba(255,255,255,0.4);
-    padding: 10px 16px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-}
-
-.unit-toggle-btn:hover {
-    background: rgba(255,255,255,0.12);
-    border-color: white;
-    transform: translateY(-1px);
-}
-
-.unit-toggle-btn:active {
-    transform: scale(0.98);
-}
-
-.guide-content{
-
-position:relative;
-
-width:min(90%,650px);
-
-margin:8vh auto;
-
-padding:40px;
-
-border-radius:28px;
-
-background:
-rgba(16,22,35,.92);
-
-border:
-1px solid rgba(255,255,255,.08);
-
-backdrop-filter:
-blur(20px);
-
-box-shadow:
-0 25px 70px rgba(0,0,0,.35);
-
-color:white;
-}
-
-
-.guide-tag{
-
-font-size:.75rem;
-
-letter-spacing:2px;
-
-color:#7fa6ff;
-
-font-weight:600;
-}
-
-
-.guide-content h2{
-
-font-size:2rem;
-
-font-weight:700;
-
-margin:
-
-12px 0 18px;
-}
-
-
-.guide-desc{
-
-color:
-rgba(255,255,255,.72);
-
-line-height:1.7;
-
-margin-bottom:35px;
-}
-
-
-.guide-grid{
-
-display:grid;
-
-grid-template-columns:
-
-1fr 1fr;
-
-gap:40px;
-}
-
-
-.guide-grid h4{
-
-margin-bottom:18px;
-
-font-size:1rem;
-
-color:white;
-}
-
-
-.guide-grid p{
-
-color:
-rgba(255,255,255,.75);
-
-margin:10px 0;
-}
-
-
-.close-guide{
-
-position:absolute;
-
-top:20px;
-right:25px;
-
-background:none;
-
-border:none;
-
-font-size:30px;
-
-color:white;
-
-cursor:pointer;
-
-opacity:.7;
-}
-
-.close-guide:hover{
-
-opacity:1;
-
-transform:scale(1.1);
-}
-
-
-@media(max-width:700px){
-
-.guide-grid{
-
-grid-template-columns:
-1fr;
-
-}
 
 }

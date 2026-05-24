@@ -438,80 +438,26 @@ function bindPresetCityLinks() {
   });
 }
 
-const toggleBtn = document.getElementById("unit-toggle");
 
-toggleBtn?.addEventListener("click", async () => {
-
-  isCelsius = !isCelsius;
-
-  toggleBtn.textContent = isCelsius
-    ? "Switch to °F"
-    : "Switch to °C";
-
-  const city = cityName?.textContent?.split(",")[0] || "Delhi";
-
-  await loadCityWeather(city);
-
-commonCityRows.forEach((row) => {
-  setRowMessage(row, 'Loading...');
-});
-
-await updateComparisonTable();
-
-});
-
-document.addEventListener('DOMContentLoaded', async () => {
   bindSearchForm();
   bindPresetCityLinks();
   resetWeatherSummary();
+
+  setStatus('Search for a city to load live weather data.', 'info');
+
+  await loadCityWeather('Delhi', { updateTable: false });
+  async function initializeApp() {
+  if (appInitialized) return;
+
+  appInitialized = true;
+
+  bindSearchForm();
+  bindPresetCityLinks();
+  resetWeatherSummary();
+
   setStatus('Search for a city to load live weather data.', 'info');
 
   await loadCityWeather('Delhi', { updateTable: false });
 
-  // 2. RUN THE FIX: Populate the comparison table using your declarative mapping
+  // Populate comparison table
   await updateComparisonTable();
-});
-
-/* Usage Guide */
-
-const guideBtn =
-document.getElementById("openGuide");
-
-const guideModal =
-document.getElementById("guideModal");
-
-const closeGuide =
-document.querySelector(".close-guide");
-
-
-guideBtn?.addEventListener(
-"click",
-(e)=>{
-
-e.preventDefault();
-
-guideModal.style.display="block";
-
-});
-
-
-closeGuide?.addEventListener(
-"click",
-()=>{
-
-guideModal.style.display="none";
-
-});
-
-
-window.addEventListener(
-"click",
-(e)=>{
-
-if(e.target===guideModal){
-
-guideModal.style.display="none";
-
-}
-
-});
