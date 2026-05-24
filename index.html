@@ -308,7 +308,8 @@
   <script type="module" src="hero-terminal.js"></script>
   <script src="index.js"></script>
   <script>
-    document.getElementById("Current-Year").textContent=new Date().getFullYear();
+    const yearNode = document.getElementById("Current-Year");
+    if (yearNode) yearNode.textContent = new Date().getFullYear();
   </script>
 
 </body>
