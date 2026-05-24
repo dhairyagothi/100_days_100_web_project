@@ -1862,7 +1862,9 @@ body.light-mode .pagination-controls button.page-num.active {
 }
 
 .pagination-controls button.prev-btn,
-.pagination-controls button.next-btn {
+.pagination-controls button.next-btn,
+.pagination-controls button.first-btn,
+.pagination-controls button.last-btn {
   width: 32px;
   height: 32px;
   border-radius: 6px;
@@ -1870,7 +1872,9 @@ body.light-mode .pagination-controls button.page-num.active {
 }
 
 .pagination-controls button.prev-btn:hover:not(:disabled),
-.pagination-controls button.next-btn:hover:not(:disabled) {
+.pagination-controls button.next-btn:hover:not(:disabled),
+.pagination-controls button.first-btn:hover:not(:disabled),
+.pagination-controls button.last-btn:hover:not(:disabled) {
   color: var(--text-primary);
   background: var(--bg-surface);
 }

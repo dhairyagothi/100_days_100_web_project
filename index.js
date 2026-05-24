@@ -632,6 +632,22 @@ function renderPagination(totalItems, totalPages) {
   const controlsDiv = document.createElement('div');
   controlsDiv.className = 'pagination-controls';
 
+  // FIRST button
+  const firstBtn = document.createElement('button');
+  firstBtn.className = 'first-btn';
+  firstBtn.innerHTML = '<i class="fas fa-angle-double-left"></i>';
+  firstBtn.disabled = currentPage === 1;
+  firstBtn.setAttribute('aria-label', 'First Page');
+  firstBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+  controlsDiv.appendChild(firstBtn);
+
   const prevBtn = document.createElement('button');
   prevBtn.className = 'prev-btn';
   prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
@@ -642,10 +658,7 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage > 1) {
       currentPage--;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
+      setTimeout(() => scrollToProjectSection(), 50);
     }
   });
   controlsDiv.appendChild(prevBtn);
@@ -696,13 +709,26 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage < totalPages) {
       currentPage++;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
+      setTimeout(() => scrollToProjectSection(), 50);
     }
   });
   controlsDiv.appendChild(nextBtn);
+
+  // LAST button
+  const lastBtn = document.createElement('button');
+  lastBtn.className = 'last-btn';
+  lastBtn.innerHTML = '<i class="fas fa-angle-double-right"></i>';
+  lastBtn.disabled = currentPage === totalPages;
+  lastBtn.setAttribute('aria-label', 'Last Page');
+  lastBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+  controlsDiv.appendChild(lastBtn);
 
   container.appendChild(controlsDiv);
 
