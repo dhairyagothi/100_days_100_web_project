@@ -24,15 +24,11 @@
     "open-source",
     "frontend"
   ],
-  "author": "Dhairya Gothi and Contributors",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dhairyagothi/100_days_100_web_project/issues"
+  "dependencies": {
+    "dotenv": "^17.4.2"
   },
-  "homepage": "https://github.com/dhairyagothi/100_days_100_web_project#readme",
   "devDependencies": {
     "serve": "^14.2.6"
   }
-  "dependencies": {}
-  "license": "MIT"
 }

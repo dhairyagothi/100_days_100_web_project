@@ -1,0 +1,201 @@
+:root {
+    --md-sys-color-background: #fdfcff;
+    --md-sys-color-on-background: #1a1c1e;
+    --md-sys-color-surface: #ffffff;
+    --md-sys-color-surface-variant: #e1e2e8;
+    --md-sys-color-on-surface-variant: #44474f;
+    --md-sys-color-primary: #0061a4;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #d1e4ff;
+    --md-sys-color-on-primary-container: #001d36;
+
+    --border-radius-xl: 24px;
+    --border-radius-lg: 16px;
+    --border-radius-sm: 8px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    min-height: 100vh;
+}
+
+.app-container {
+    max-width: 700px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.header {
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--md-sys-color-primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.header p {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 1.1rem;
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 2rem;
+    background-color: var(--md-sys-color-surface);
+    border: 2px dashed var(--md-sys-color-primary);
+    border-radius: var(--border-radius-xl);
+    transition: background-color 0.3s ease;
+}
+
+.upload-section:hover {
+    background-color: var(--md-sys-color-primary-container);
+}
+
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 97, 164, 0.2);
+}
+
+.upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 97, 164, 0.3);
+}
+
+.status-message {
+    font-size: 0.9rem;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.result-section {
+    background-color: var(--md-sys-color-surface);
+    border-radius: var(--border-radius-xl);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--md-sys-color-surface-variant);
+}
+
+.image-preview {
+    display: flex;
+    justify-content: center;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    background-color: var(--md-sys-color-surface-variant);
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    display: block;
+}
+
+.palette-container {
+    background-color: var(--md-sys-color-primary-container);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.palette-container h3 {
+    color: var(--md-sys-color-on-primary-container);
+    margin-bottom: 0.25rem;
+    font-size: 1.25rem;
+}
+
+.hint {
+    font-size: 0.9rem;
+    color: var(--md-sys-color-on-surface-variant);
+    margin-bottom: 1.5rem;
+}
+
+.swatches {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.swatch-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.swatch {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 3px solid white;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.swatch-wrapper:hover .swatch {
+    transform: scale(1.15);
+}
+
+.swatch-label {
+    font-size: 0.85rem;
+    font-family: monospace;
+    font-weight: 700;
+    color: var(--md-sys-color-on-primary-container);
+    background: rgba(255, 255, 255, 0.7);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background-color: var(--md-sys-color-on-background);
+    color: var(--md-sys-color-background);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
