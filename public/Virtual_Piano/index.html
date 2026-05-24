@@ -1,80 +1,441 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virtual Piano</title>
-    <link rel="stylesheet" href="./style.css" />
-    <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
-    <link
-    href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
-    rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Virtual Piano – Day 98</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=DM+Mono:wght@400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #1a1410;
+      --surface: #211c17;
+      --gold: #c9a84c;
+      --gold-light: #e8c96e;
+      --cream: #f5efe0;
+      --shadow-dark: #0a0806;
+      --white-key: #f7f0e0;
+      --white-key-active: #e8d87a;
+      --black-key: #1e1812;
+      --black-key-active: #4a3f1a;
+      --key-label: #888070;
+    }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      padding: 24px 16px;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, #2a200f22 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, #1a0f0522 0%, transparent 60%);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    header h1 {
+      font-family: 'Special Elite', serif;
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      color: var(--gold-light);
+      letter-spacing: 0.12em;
+      text-shadow: 0 2px 18px #c9a84c55;
+    }
+
+    header p {
+      color: var(--key-label);
+      font-size: 0.78rem;
+      margin-top: 6px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── touch hint ── */
+    .touch-hint {
+      display: none;
+      background: #c9a84c18;
+      border: 1px solid #c9a84c44;
+      border-radius: 8px;
+      color: var(--gold);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      padding: 6px 16px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    @media (hover: none) and (pointer: coarse) {
+      .touch-hint { display: block; }
+    }
+
+    /* ── piano body ── */
+    .piano-wrap {
+      background: linear-gradient(180deg, #2e2318 0%, #1a1208 100%);
+      border-radius: 12px 12px 20px 20px;
+      padding: 28px 28px 38px;
+      box-shadow:
+        0 0 0 2px #c9a84c33,
+        0 8px 40px #00000088,
+        inset 0 1px 0 #c9a84c22;
+      position: relative;
+    }
+
+    .piano-wrap::before {
+      content: '';
+      position: absolute;
+      top: 10px; left: 16px; right: 16px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #c9a84c55, transparent);
+      border-radius: 2px;
+    }
+
+    /* ── keys container ── */
+    .keys {
+      display: flex;
+      position: relative;
+      user-select: none;
+      gap: 0;
+    }
+
+    /* ── WHITE keys ── */
+    .key {
+      position: relative;
+      width: clamp(40px, 6vw, 58px);
+      height: clamp(140px, 20vw, 190px);
+      background: linear-gradient(180deg, #ede6d4 0%, var(--white-key) 40%, #e8e0cc 100%);
+      border: 1px solid #bbb09a;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 10px;
+      cursor: pointer;
+      transition: background 0.06s, transform 0.06s, box-shadow 0.06s;
+      box-shadow:
+        2px 4px 6px #00000044,
+        inset 0 -3px 6px #00000022;
+      z-index: 1;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .key:first-child { border-radius: 0 0 8px 4px; }
+    .key:last-child  { border-radius: 0 0 4px 8px; }
+
+    .key.active,
+    .key:active {
+      background: linear-gradient(180deg, #e8d87a 0%, #d4c35a 60%, #c9a84c 100%);
+      transform: translateY(3px) scaleY(0.985);
+      box-shadow:
+        1px 1px 3px #00000055,
+        inset 0 2px 6px #00000033;
+    }
+
+    .key .note-label {
+      font-family: 'Special Elite', serif;
+      font-size: clamp(0.65rem, 1.2vw, 0.82rem);
+      color: #8a7a5a;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+
+    .key .key-label {
+      font-size: clamp(0.5rem, 1vw, 0.65rem);
+      color: var(--key-label);
+      background: #0002;
+      border-radius: 4px;
+      padding: 1px 5px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── BLACK keys ── */
+    .key.black {
+      position: absolute;
+      width: clamp(26px, 3.8vw, 36px);
+      height: clamp(85px, 12vw, 118px);
+      background: linear-gradient(180deg, #2e2818 0%, var(--black-key) 50%, #111 100%);
+      border: 1px solid #111;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      z-index: 2;
+      top: 0;
+      box-shadow:
+        2px 5px 8px #00000077,
+        inset 0 -2px 4px #ffffff11;
+      padding-bottom: 8px;
+    }
+
+    .key.black .note-label {
+      color: #c9a84c99;
+      font-size: clamp(0.55rem, 1vw, 0.68rem);
+    }
+
+    .key.black .key-label {
+      color: #88806077;
+      background: #ffffff08;
+      font-size: clamp(0.42rem, 0.8vw, 0.55rem);
+    }
+
+    .key.black.active,
+    .key.black:active {
+      background: linear-gradient(180deg, #4a3f1a 0%, #3a3010 60%, #2a2208 100%);
+      transform: translateY(3px) scaleY(0.985);
+      box-shadow:
+        1px 2px 4px #00000088,
+        inset 0 2px 5px #00000055;
+    }
+
+    /* ── volume ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 28px;
+      justify-content: center;
+    }
+
+    .controls label {
+      color: var(--key-label);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+
+    .controls input[type=range] {
+      -webkit-appearance: none;
+      width: 120px;
+      height: 4px;
+      background: #c9a84c33;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    .controls input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      cursor: pointer;
+    }
+
+    .vol-val {
+      color: var(--gold);
+      font-size: 0.7rem;
+      min-width: 28px;
+    }
+
+    footer {
+      margin-top: 32px;
+      color: #55503a;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <div class="noise"></div>
-    <h1>Virtual Piano</h1>
-    <h2>Use your mouse to click on the keys or use your keyboard</h2>
-    <em>* Key starts from the C note</em>
 
-    <div class="piano">
-        <div class="keys">
+<header>
+  <h1>🎹 Virtual Piano</h1>
+  <p>Day 98 &nbsp;·&nbsp; Use keyboard or tap to play</p>
+</header>
 
-  <div class="key-group">
-    <button class="key white" id="a">A</button>
-    <button class="key black" id="w">W</button>
+<div class="touch-hint">👆 Tap the keys to play — touch supported!</div>
+
+<div class="piano-wrap">
+  <div class="keys" id="keys"></div>
+  <div class="controls">
+    <label for="volume">VOLUME</label>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.7">
+    <span class="vol-val" id="vol-display">70%</span>
   </div>
-
-  <div class="key-group">
-    <button class="key white" id="s">S</button>
-    <button class="key black" id="e">E</button>
-  </div>
-
-  <div class="key-group no-black">
-    <button class="key white" id="d">D</button>
-  </div>
-
-  <div class="key-group">
-    <button class="key white" id="f">F</button>
-    <button class="key black" id="t">T</button>
-  </div>
-
-  <div class="key-group">
-    <button class="key white" id="g">G</button>
-    <button class="key black" id="y">Y</button>
-  </div>
-
-  <div class="key-group">
-    <button class="key white" id="h">H</button>
-    <button class="key black" id="u">U</button>
-  </div>
-
-  <div class="key-group no-black">
-    <button class="key white" id="j">J</button>
-  </div>
-
-  <div class="key-group">
-    <button class="key white" id="k">K</button>
-    <button class="key black" id="o">O</button>
-  </div>
-
-  <div class="key-group">
-    <button class="key white" id="l">L</button>
-    <button class="key black" id="p">P</button>
-  </div>
-
-  <div class="key-group no-black">
-    <button class="key white" id=";">;</button>
-  </div>
-
 </div>
-    </div>
-    
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="./index.js"></script>
+<footer>A · W · S · E · D · F · T · G · Y · H · U · J · K · O · L · P · ;</footer>
 
+<script>
+  // ─── Note definitions ───────────────────────────────────────────────
+  // Each entry: { note, freq, type:'white'|'black', keyCode, label }
+  // keyCode uses event.CODE values for layout-agnostic detection
+  const KEYS = [
+    { note:'C4',  freq:261.63, type:'white', code:'KeyA',       label:'A' },
+    { note:'C#4', freq:277.18, type:'black', code:'KeyW',       label:'W' },
+    { note:'D4',  freq:293.66, type:'white', code:'KeyS',       label:'S' },
+    { note:'D#4', freq:311.13, type:'black', code:'KeyE',       label:'E' },
+    { note:'E4',  freq:329.63, type:'white', code:'KeyD',       label:'D' },
+    { note:'F4',  freq:349.23, type:'white', code:'KeyF',       label:'F' },
+    { note:'F#4', freq:369.99, type:'black', code:'KeyT',       label:'T' },
+    { note:'G4',  freq:392.00, type:'white', code:'KeyG',       label:'G' },
+    { note:'G#4', freq:415.30, type:'black', code:'KeyY',       label:'Y' },
+    { note:'A4',  freq:440.00, type:'white', code:'KeyH',       label:'H' },
+    { note:'A#4', freq:466.16, type:'black', code:'KeyU',       label:'U' },
+    { note:'B4',  freq:493.88, type:'white', code:'KeyJ',       label:'J' },
+    { note:'C5',  freq:523.25, type:'white', code:'KeyK',       label:'K' },
+    { note:'C#5', freq:554.37, type:'black', code:'KeyO',       label:'O' },
+    { note:'D5',  freq:587.33, type:'white', code:'KeyL',       label:'L' },
+    { note:'D#5', freq:622.25, type:'black', code:'KeyP',       label:'P' },
+    { note:'E5',  freq:659.25, type:'white', code:'Semicolon',  label:';' },
+  ];
+
+  // Build lookup maps
+  const codeMap = {};
+  KEYS.forEach(k => { codeMap[k.code] = k; });
+
+  // ─── Audio context ───────────────────────────────────────────────────
+  let audioCtx = null;
+  function getCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playNote(freq) {
+    const ctx = getCtx();
+    const vol = parseFloat(document.getElementById('volume').value);
+
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+    // Piano-like envelope: quick attack, gentle decay, sustain, release
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(vol * 0.4, ctx.currentTime + 0.15);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
+
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 1.2);
+  }
+
+  // ─── Build DOM ───────────────────────────────────────────────────────
+  const container = document.getElementById('keys');
+
+  // We need to position black keys absolutely over white keys.
+  // Strategy: render all white keys in flow; overlay blacks with absolute positioning.
+  const whiteKeys = KEYS.filter(k => k.type === 'white');
+  const blackKeys = KEYS.filter(k => k.type === 'black');
+
+  // Wrapper to allow absolute positioning of black keys
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position:relative; display:flex;';
+  container.appendChild(wrapper);
+
+  // White key width (must match CSS)
+  const WHITE_W = () => wrapper.querySelector('.key:not(.black)')?.offsetWidth || 52;
+
+  // Render white keys
+  whiteKeys.forEach(k => {
+    const el = makeKeyEl(k);
+    wrapper.appendChild(el);
+    k.el = el;
+  });
+
+  // Render black keys
+  // Map note → white-key index to compute left offset
+  const NOTE_ORDER = ['C','D','E','F','G','A','B'];
+  const BLACK_OFFSETS = { 'C#':0.65, 'D#':1.65, 'F#':3.65, 'G#':4.65, 'A#':5.65 };
+
+  // Reposition black keys after DOM paint
+  requestAnimationFrame(() => {
+    const ww = WHITE_W();
+    blackKeys.forEach(k => {
+      const el = makeKeyEl(k);
+      el.classList.add('black');
+      wrapper.appendChild(el);
+      k.el = el;
+
+      // Find the white key index where this black key sits
+      const baseNote = k.note.replace('#','').replace(/\d/,'');
+      const octave   = parseInt(k.note.replace(/[^0-9]/g,''));
+      const octaveOffset = (octave - 4) * 7;
+      const noteIdx = NOTE_ORDER.indexOf(baseNote);
+      const whiteIdx = octaveOffset + noteIdx;
+
+      const fraction = BLACK_OFFSETS[k.note.replace(/\d/,'')];
+      if (fraction !== undefined) {
+        el.style.left = (fraction * ww) + 'px';
+      }
+    });
+  });
+
+  function makeKeyEl(k) {
+    const el = document.createElement('div');
+    el.className = 'key' + (k.type === 'black' ? ' black' : '');
+    el.dataset.code = k.code;
+
+    const noteSpan = document.createElement('span');
+    noteSpan.className = 'note-label';
+    noteSpan.textContent = k.note;
+
+    const keySpan = document.createElement('span');
+    keySpan.className = 'key-label';
+    keySpan.textContent = k.label;
+
+    el.appendChild(noteSpan);
+    el.appendChild(keySpan);
+
+    // ── Mouse events ──
+    el.addEventListener('mousedown', e => { e.preventDefault(); activate(k); });
+    el.addEventListener('mouseup',   () => deactivate(k));
+    el.addEventListener('mouseleave',() => deactivate(k));
+
+    // ── Touch events (FIX: mobile support) ──
+    el.addEventListener('touchstart', e => {
+      e.preventDefault(); // prevent ghost click
+      activate(k);
+    }, { passive: false });
+    el.addEventListener('touchend',   e => { e.preventDefault(); deactivate(k); }, { passive: false });
+    el.addEventListener('touchcancel',e => { e.preventDefault(); deactivate(k); }, { passive: false });
+
+    return el;
+  }
+
+  function activate(k) {
+    playNote(k.freq);
+    k.el.classList.add('active');
+  }
+
+  function deactivate(k) {
+    k.el.classList.remove('active');
+  }
+
+  // ─── Keyboard events (FIX: use event.code not event.key) ─────────────
+  const pressed = new Set();
+
+  document.addEventListener('keydown', e => {
+    if (e.repeat) return;                    // ignore held keys
+    const k = codeMap[e.code];              // layout-agnostic lookup
+    if (!k) return;
+    e.preventDefault();
+    if (pressed.has(e.code)) return;
+    pressed.add(e.code);
+    activate(k);
+  });
+
+  document.addEventListener('keyup', e => {
+    const k = codeMap[e.code];
+    if (!k) return;
+    pressed.delete(e.code);
+    deactivate(k);
+  });
+
+  // ─── Volume control ──────────────────────────────────────────────────
+  const volSlider  = document.getElementById('volume');
+  const volDisplay = document.getElementById('vol-display');
+  volSlider.addEventListener('input', () => {
+    volDisplay.textContent = Math.round(volSlider.value * 100) + '%';
+  });
+</script>
 </body>
 </html>
