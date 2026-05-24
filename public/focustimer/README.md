@@ -30,10 +30,11 @@ The Focus Timer lets users set a custom work duration and break intervals. Motiv
 ## 🚀 How to Run Locally
 
 ```bash
-git clone https://github.com/aisheeem7/focustimer.git
-cd focustimer
-npm install
-npm run dev
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+cd 100_days_100_web_project
+cd public/focustimer
+```
+Then open `index.html` with Live Server in VS Code.
 ```
 
 ## 👩‍💻 Author
@@ -43,4 +44,4 @@ npm run dev
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the [MIT License](https://opensource.org/licenses/MIT).
