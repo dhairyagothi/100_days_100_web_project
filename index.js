@@ -236,7 +236,7 @@ const PROJECT_DATA = [
   [ 'Day 165' , 'Amazon Clone' , './public/AmazonClone/index.html' , 'Amazon Clone HTML CSS JavaScript' , 'beginner' ],
   [ "Day 166" , "Boredom Buster" , "./public/BoredomBuster/index.html" , "html css javascript" , 'advanced' ],
   [ "Day 167" , "Color Sort Puzzle game" , "./public/colorsort/index.html" , "html css javascript" , 'advanced' ],
-  ['Day 168', 'Invoice / Bill Generator', './public/Day156_Invoice_Generator/index.html', 'tool javascript', 'intermediate']git
+  ['Day 168', 'Invoice / Bill Generator', './public/Day156_Invoice_Generator/index.html', 'tool javascript', 'intermediate']
 ];
 const PROJECTS = PROJECT_DATA;
 
