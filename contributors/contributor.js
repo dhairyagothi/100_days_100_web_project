@@ -128,284 +128,112 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
   }
 }
 
-async function openProfile(username, commits) {
-  modal.style.display = 'flex';
+async function openProfile(username){
 
-  modalBody.innerHTML = `
-        <p>Loading profile...</p>
-    `;
+    modal.style.display = "flex";
+    modal.style.position = "fixed";
 
-  try {
-    const response = await fetch(`https://api.github.com/users/${username}`);
+    modal.style.top = "0";
 
-    const user = await response.json();
+    modal.style.left = "0";
 
-    modalBody.innerHTML = `
+    modal.style.zIndex = "999999999";
 
-            <img
-            src="${user.avatar_url}"
-            >
+    modal.style.justifyContent = "center";
 
-            <h2>
-            ${user.name || user.login}
-            </h2>
+    modal.style.alignItems = "center";
 
-            <p>
-            ${user.bio || 'This contributor has not added a bio yet.'}
-            </p>
+    modalBody.innerHTML =
+    "<p>Loading...</p>";
 
-            <p>
-            Followers:
-            ${user.followers}
-            </p>
+    try{
 
-            <p>
-            Public Repos:
-            ${user.public_repos}
-            </p>
+        const response =
+        await fetch(
+        `https://api.github.com/users/${username}`
+        );
+
+        if(!response.ok){
+
+            modalBody.innerHTML = `
+            <h2>${username}</h2>
 
             <p>
-            Location:
-            ${user.location || 'Not available'}
+            Profile unavailable
             </p>
+            `;
 
-            <p>
-            Joined:
-            ${new Date(user.created_at).toLocaleDateString()}
-            </p>
+            return;
+        }
 
-           <div class="popup-btn-container">
-
-    <a
-    href="${user.html_url}"
-    target="_blank"
-    class="github-btn"
-    >
-
-    View GitHub
-
-    </a>
+        const user =
+        await response.json();
 
 
-    <button
-    id="downloadCertificate"
-    class="certificate-btn"
-    >
+        modalBody.innerHTML = `
 
-    Download Certificate
+        <img
+        src="${user.avatar_url}"
+        style="
+        width:120px;
+        height:120px;
+        border-radius:50%;
+        ">
 
-    </button>
+        <h2>
+        ${user.name || username}
+        </h2>
 
-</div>
+        <p>
+        ${user.bio || "No bio available"}
+        </p>
+
+        <p>
+        Followers:
+        ${user.followers}
+        </p>
+
+        <p>
+        Repositories:
+        ${user.public_repos}
+        </p>
+
+        <p>
+        Location:
+        ${user.location || "Unknown"}
+        </p>
+
+        ${
+        user.html_url
+        ?
+
+        `<a
+        href="${user.html_url}"
+        target="_blank"
+        class="github-btn">
+
+        GitHub Profile
+
+        </a>`
+
+        :
+
+        ""
+        }
 
         `;
 
-    const certificateBtn = document.getElementById('downloadCertificate');
+    }
 
-    closeCertificate?.addEventListener(
-      'click',
+    catch(err){
 
-      () => {
-        certificateModal.style.display = 'none';
-      }
-    );
+        modalBody.innerHTML =
+        "<p>Failed to load profile</p>";
 
-    certificateBtn?.addEventListener(
-      'click',
+        console.log(err);
+    }
 
-      () => {
-        certificateModal.style.display = 'flex';
-
-        certificateBody.innerHTML = `
-
-<div style="
-position:relative;
-width:100%;
-">
-
-<img
-src="assets/template.png"
-style="
-width:100%;
-display:block;
-border-radius:12px;
-">
-
-
-<!-- NAME -->
-
-<div style="
-position:absolute;
-top:35%;
-left:50%;
-transform:translateX(-50%);
-font-family:'Cinzel',serif;
-
-font-size:24px;
-
-font-weight:700;
-
-background:
-linear-gradient(
-90deg,
-#b8860b,
-#f4d03f,
-#8b5a00
-);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:
-transparent;
-
-white-space:nowrap;
-
-text-shadow:
-0 2px 4px rgba(
-0,
-0,
-0,
-0.12
-);
-">
-
-${user.name || user.login}
-
-</div>
-
-
-
-<!-- COMMITS -->
-
-<div style="
-position:absolute;
-top:82%;
-left:30%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-${commits}
-
-</div>
-
-
-
-<!-- USERNAME -->
-
-<div style="
-position:absolute;
-top:82%;
-left:50%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-@${user.login}
-
-</div>
-
-
-
-<!-- DATE -->
-
-<div style="
-position:absolute;
-top:82%;
-left:69%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-${new Date().toLocaleDateString('en-GB')}
-
-</div>
-
-</div>
-
-
-<div style="
-text-align:center;
-margin-top:20px;
-">
-
-<button
-id="downloadPdfBtn"
-style="
-background:#16a34a;
-padding:14px 30px;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-">
-
-Download PDF
-
-</button>
-
-</div>
-
-`;
-        const downloadBtn = document.getElementById('downloadPdfBtn');
-
-        downloadBtn?.addEventListener(
-          'click',
-
-          async () => {
-            const certificate = certificateBody.querySelector('div');
-
-            const canvas = await html2canvas(
-              certificate,
-
-              {
-                scale: 3,
-
-                useCORS: true,
-              }
-            );
-
-            const image = canvas.toDataURL('image/png');
-
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF(
-              'landscape',
-
-              'px',
-
-              [canvas.width, canvas.height]
-            );
-
-            pdf.addImage(
-              image,
-
-              'PNG',
-
-              0,
-
-              0,
-
-              canvas.width,
-
-              canvas.height
-            );
-
-            pdf.save(`${user.login}-certificate.pdf`);
-          }
-        );
-      }
-    );
-  } catch (error) {
-    modalBody.innerHTML = '<p>Failed to load profile</p>';
-
-    console.error(error);
-  }
 }
-
 // Use global REPO_OWNER and REPO_NAME defined in index.js
 
 let allContributors = [];
@@ -584,11 +412,7 @@ alt="${contributor.login}">
         'click',
 
         () => {
-          openProfile(
-            contributor.login,
-
-            contributor.contributions
-          );
+    openProfile(contributor.login);
         }
       );
     }

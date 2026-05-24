@@ -14,6 +14,20 @@
 
 <body>
     <img src="pink-realistic-heart-isolate-on-transparente-background-symbol-love-3d-heart-icon-png.webp" height="20px" width="20px" alt="heart" style="position: absolute; top: 0; right: 0; margin: 10px;">
+    <!-- Floating hearts background -->
+
+<div class="hearts">
+    <span>❤</span>
+    <span>❤</span>
+    <span>❤</span>
+    <span>❤</span>
+    <span>❤</span>
+    <span>❤</span>
+    <span>❤</span>
+    <span>❤</span>
+    <span>❤</span>
+    <span>❤</span>
+</div>
     <div class="contentbox">
         <h1><span>Love</span> Calculator</h1>
         <p>Enter your name and your crush's name to see the chance that this relationship will work out:</p>
@@ -36,13 +50,18 @@
 
         <!-- Calculate Button -->
         <button id="calculate">Calculate</button>
-        <button id="reset" class="hidden">Try Again</button>
+       
 
         <!-- Result Display -->
         <div class="footer">
             <h2 id="result-message"></h2>
             <p id="result-percentage"></p>
         </div>
+        <!-- Loading animation text -->
+
+<p id="loading" class="hidden">
+    Calculating compatibility...
+</p>
     </div>
     
     <script src="script.js"></script>

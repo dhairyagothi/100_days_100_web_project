@@ -1,20 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Welcome to Your Homepage</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home — Welcome</title>
+  <link rel="stylesheet" href="/login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-    <h1>Welcome <%= username %></h1>
+  <div class="home-wrapper">
+    <div class="home-card">
 
-    <p>This is your personalized homepage after login.</p>
+      <div class="avatar">👋</div>
 
-    <a href="/logout">
-        <button>Logout</button>
-    </a>
+      <h1>Hello, <span><%= username %></span>!</h1>
+      <p>You've successfully logged in.<br>Your account is up and running.</p>
+
+      <a href="/logout" class="btn-logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </a>
+
+    </div>
+  </div>
 
 </body>
-
 </html>

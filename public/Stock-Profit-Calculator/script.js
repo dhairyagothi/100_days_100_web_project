@@ -27,6 +27,17 @@ async function calculateProfit() {
     const sellCommission = parseFloat(document.getElementById('sellCommission').value);
     const holdingPeriod = parseFloat(document.getElementById('holdingPeriod').value);
 
+    const sharesError = document.getElementById('sharesError');
+
+// clear previous message
+sharesError.innerText = '';
+
+if (isNaN(shares) || shares <= 0) {
+    sharesError.innerText =
+        'Please enter a valid number of shares greater than 0';
+    return;
+}
+
     const purchasedFor = (shares * purchasePrice) + buyCommission;
     const soldFor = (shares * sellPrice) - sellCommission;
     const profitAmount = soldFor - purchasedFor;
