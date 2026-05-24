@@ -177,6 +177,45 @@
           </div>
         </div>
       </div>
+      <!-- MONTHLY CALENDAR -->
+      <div class="glass-card context-card">
+        <div class="calendar-header">
+          <h3>Habit Calendar</h3>
+
+          <div class="calendar-nav">
+            <button id="prevMonthBtn" class="icon-btn">
+              <i data-lucide="chevron-left"></i>
+            </button>
+
+            <span id="calendarMonthLabel"></span>
+
+            <button id="nextMonthBtn" class="icon-btn">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="calendar-weekdays">
+          <span>Sun</span>
+          <span>Mon</span>
+          <span>Tue</span>
+          <span>Wed</span>
+          <span>Thu</span>
+          <span>Fri</span>
+          <span>Sat</span>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <!-- SELECTED DATE DETAILS -->
+      <div class="glass-card context-card">
+        <h3>Selected Day Activity</h3>
+
+        <div id="selectedDateDetails" class="selected-date-details">
+          Click a date to view completed habits.
+        </div>
+      </div>
 
       <!-- HABIT NOTES STATE -->
       <div id="habitDetailsSection" class="context-panel hidden">
