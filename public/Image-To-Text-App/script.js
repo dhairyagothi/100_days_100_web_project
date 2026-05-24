@@ -1,5 +1,3 @@
-console.log("🚀 SCRIPT.JS IS SUCCESSFULLY CONNECTED!");
-
 // 1. THEME TOGGLE LOGIC 
 document.addEventListener('DOMContentLoaded', () => {
   const themeToggleBtn = document.getElementById('themeToggle');
@@ -57,6 +55,9 @@ async function convertImage() {
   const file = fileInput.files[0];
   showImagePreview(file);
 
+  // Send the file through our new canvas preprocessor!
+  const processedImageBlob = await preprocessImage(file);
+
   outputDiv.innerHTML = `
     <div class="flex flex-col items-center justify-center gap-4 py-10">
       <div class="w-12 h-12 border-4 border-cyan-500 dark:border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
@@ -68,13 +69,24 @@ async function convertImage() {
   convertBtn.classList.add("opacity-50", "cursor-not-allowed");
 
   try {
-    const { data: { text } } = await Tesseract.recognize(file, "eng", {
+    // 1. Get the language from the dropdown
+    const languageSelect = document.getElementById("languageSelect");
+    const selectedLanguage = languageSelect ? languageSelect.value : "eng";
+
+    // 2. Run Tesseract with the dynamic language variable
+    const { data: { text } } = await Tesseract.recognize(processedImageBlob, selectedLanguage, {
       logger: (m) => {
-        if (m.status === "recognizing text") {
+        // Tesseract goes through several phases. We track them here.
+        if (m.status === "loading language traineddata" || m.status === "recognizing text") {
+          
+          let statusText = m.status === "loading language traineddata" 
+              ? "Downloading Language Data..." 
+              : "Recognizing Text...";
+
           outputDiv.innerHTML = `
             <div class="flex flex-col items-center justify-center gap-4 py-10">
               <div class="w-12 h-12 border-4 border-cyan-500 dark:border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-              <p class="text-cyan-600 dark:text-cyan-300 font-medium">Recognizing Text...</p>
+              <p class="text-cyan-600 dark:text-cyan-300 font-medium">${statusText}</p>
               <p class="text-sm text-gray-500 dark:text-gray-400">${Math.round(m.progress * 100)}%</p>
             </div>
           `;
@@ -83,7 +95,7 @@ async function convertImage() {
     });
 
     outputDiv.innerHTML = `
-      <div class="text-gray-800 dark:text-gray-200 whitespace-pre-wrap leading-relaxed text-left">
+      <div class="text-gray-800 dark:text-gray-200 whitespace-pre-wrap leading-relaxed text-left" dir="auto">
         ${text.trim() || "No text detected in the image."}
       </div>
     `;
@@ -200,3 +212,49 @@ document.addEventListener("paste", (e) => {
     }
   }
 });
+
+// 8. IMAGE PREPROCESSING (Boosts OCR Accuracy)
+function preprocessImage(file) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    
+    img.onload = () => {
+      // 1. Create a hidden canvas
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // 2. Draw the original image onto the canvas
+      ctx.drawImage(img, 0, 0);
+
+      // 3. Extract the raw pixel data
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // 4. Loop through every single pixel
+      for (let i = 0; i < data.length; i += 4) {
+        // Calculate the grayscale value of the pixel
+        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        
+        // High Contrast Binarization: 
+        // If it's light, make it pure white. If it's dark, make it pure black.
+        const threshold = avg > 130 ? 255 : 0;
+        
+        data[i] = threshold;     // Red
+        data[i + 1] = threshold; // Green
+        data[i + 2] = threshold; // Blue
+        // data[i + 3] is Alpha (transparency), we leave it alone
+      }
+
+      // 5. Put the modified pixels back onto the canvas
+      ctx.putImageData(imageData, 0, 0);
+
+      // 6. Convert the canvas back into an image file for Tesseract
+      canvas.toBlob((blob) => {
+        resolve(blob);
+      }, 'image/png');
+    };
+  });
+}

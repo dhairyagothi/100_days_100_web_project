@@ -57,9 +57,19 @@
                 <input type="file" id="fileInput" accept="image/*" class="hidden">
             </label>
 
-            <button onclick="convertImage()" class="px-8 py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300">
-                Convert Image
-            </button>
+            <div class="flex flex-col gap-3 min-w-[220px]">
+                
+                <select id="languageSelect" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-white/20 bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500 cursor-pointer transition-all duration-300">
+                    <option value="eng" class="text-black">🇺🇸 English</option>
+                    <option value="hin" class="text-black">🇮🇳 Hindi (हिन्दी)</option>
+                    <option value="eng+hin" class="text-black">🇺🇸 + 🇮🇳 English & Hindi</option>
+                </select>
+
+                <button onclick="convertImage()" class="w-full px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300">
+                    Convert Image
+                </button>
+                
+            </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
