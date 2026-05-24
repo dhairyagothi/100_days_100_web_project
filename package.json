@@ -5,7 +5,14 @@
   "main": "index.html",
   "scripts": {
     "dev": "serve .",
-    "build": "echo 'No build step required for static site'"
+    "build": "echo 'No build step required for static site'",
+    "lint:js": "eslint index.js hero-terminal.js contributors/contributor.js",
+    "lint:html": "htmlhint --config .htmlhintrc index.html contributors/contributor.html",
+    "lint": "npm run lint:js && npm run lint:html"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "htmlhint": "^1.1.4"
   },
   "repository": {
     "type": "git",
