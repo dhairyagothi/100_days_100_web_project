@@ -1,31 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Protected Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <link rel="icon" href="../../favv.png" type="image/x-icon" />
-  </head>
 
-  <body class="bg-gray-100">
-    <div class="container mx-auto py-8">
-      <a href="/" class="text-2xl font-bold p-4 bg-blue-500 text-white rounded-xl">Home</a>
-      <h1 class="text-4xl font-bold underline text-center mb-8">Protected Page</h1>
-      <p class="mb-4 text-2xl">Welcome, {{ current_user.name }}!</p>
-      <h2 class="text-3xl font-bold mb-4">Users List:</h2>
-      <ul class="divide-y divide-gray-200">
-        {% for user in users %}
-          <li class="py-4">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <span class="font-medium text-lg text-gray-900">{{ user.name }}</span>
-                <span class="ml-2 text-lg text-gray-500">{{ user.email }}</span>
-              </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Protected Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+  <main class="page-wrap">
+    <section class="page-panel">
+      <div class="toolbar">
+        <div class="brand">
+          <div class="brand-badge">A</div>
+          <div>
+            <div class="pill">Protected area</div>
+            <h2>Authenticated dashboard</h2>
+          </div>
+        </div>
+        <a href="/" class="btn btn-secondary">Home</a>
+      </div>
+
+      <div class="page-hero">
+        <div class="page-panel" style="background: rgba(15, 23, 42, 0.45);">
+          <span class="eyebrow">Hello</span>
+          <h1>Welcome, {{ current_user.name }}.</h1>
+          <p>
+            This page is only visible after login because the Flask server checks the JWT cookie before rendering it.
+          </p>
+          <div class="hero-metric">
+            <div class="metric">
+              <strong>Signed in</strong>
+              <span>Session verified by the server.</span>
             </div>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </body>
+            <div class="metric">
+              <strong>{{ users|length }} users</strong>
+              <span>Records currently stored in SQLite.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-panel" style="background: rgba(15, 23, 42, 0.45);">
+          <span class="eyebrow">Users</span>
+          <h2 style="margin-top: 14px;">Registered accounts</h2>
+          {% if users %}
+          <ul class="list-card">
+            {% for user in users %}
+              <li>
+                <div>
+                  <div class="name">{{ user.name }}</div>
+                  <div class="email">{{ user.email }}</div>
+                </div>
+                <span class="pill">ID {{ loop.index }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <div class="empty-state">
+            No users are registered yet. Sign up from the home page to populate this list.
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+
 </html>

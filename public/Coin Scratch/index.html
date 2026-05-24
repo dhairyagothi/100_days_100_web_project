@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Premium ASMR Coin Scratch</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="ambient-background"></div>
     <div id="custom-cursor" class="custom-cursor"></div>
-    
+
     <div id="recommendation-card" class="recommendation-card">
         <div class="recommendation-content">
             <span class="headphone-icon">🎧</span>
             <p>Use headphones for the best ASMR experience</p>
         </div>
     </div>
-    
+
     <main class="experience-container">
         <div class="coin-wrapper" id="coin-wrapper">
             <!-- 3D Metallic Coin Base -->
@@ -38,12 +40,19 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Scratchable Coating -->
             <canvas id="scratch-layer"></canvas>
-            
+
             <!-- Scratch Instruction Text -->
             <div class="scratch-instruction" id="scratch-instruction">Scratch Here</div>
+        </div>
+        <div class="brush-controls">
+            <label for="brush-size">Brush Size</label>
+
+            <input type="range" id="brush-size" min="4" max="30" value="6">
+
+            <span id="brush-size-value">6</span>
         </div>
 
         <button id="reset-btn" class="reset-button">Restore Coin</button>
@@ -51,4 +60,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
