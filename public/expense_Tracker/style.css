@@ -331,6 +331,7 @@ button { font-family: inherit; font-weight: 500; border-radius: 8px; cursor: poi
 .text-green { color: var(--green-success); }
 .text-red { color: var(--red-error); }
 .text-blue { color: var(--blue-info); }
+.color-neutral { color: var(--text-main); }
 
 @media (min-width: 576px) {
     .dashboard-stats { grid-template-columns: repeat(4, 1fr); gap: 16px; }
