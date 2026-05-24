@@ -64,7 +64,15 @@ h1 {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Generate button */
+/* Generate + Download buttons row */
+.buttons-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+}
+
 button {
     background: white;
     color: #9C27B0;
@@ -81,6 +89,17 @@ button:hover {
     background: #9C27B0;
     color: white;
     transform: scale(1.05);
+}
+
+#downloadBtn {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    border: 2px solid white;
+}
+
+#downloadBtn:hover {
+    background: white;
+    color: #9C27B0;
 }
 
 /* Message (copy confirmation) */
