@@ -108,6 +108,7 @@ footer {
 .topbar {
     justify-content: space-between;
     gap: 28px;
+    flex-wrap: wrap;
     margin-bottom: 22px;
 }
 
@@ -1370,61 +1371,4 @@ body.teal-mode {
         line-height: 1;
     }
 }
-
-
-/* Light mode background */
-body.light-theme {
-    background:
-        radial-gradient(circle at 82% 7%, rgba(96, 142, 255, 0.12), transparent 24rem),
-        radial-gradient(circle at 100% 18%, rgba(187, 66, 255, 0.08), transparent 18rem),
-        linear-gradient(90deg, rgba(238, 243, 255, 0.95), rgba(238, 243, 255, 0.92)),
-        url("https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=2200&q=85") center / cover fixed;
-}
-
-/* Theme Toggle */
-.topbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.theme-toggle {
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-
-    background: var(--panel);
-    color: var(--text);
-
-    cursor: pointer;
-
-    font-size: 18px;
-
-    transition:
-        transform 0.25s ease,
-        background 0.3s ease,
-        color 0.3s ease,
-        border-color 0.3s ease;
-}
-
-.theme-toggle:hover {
-    transform: scale(1.08);
-}
-
-:root {
-  --bg: #f4f7fb;
-  --card: #ffffff;
-  --text: #111827;
-}
-
-[data-theme="dark"] {
-  --bg: #0b1020;
-  --card: #141b2d;
-  --text: #e6edf7;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-}
+/*

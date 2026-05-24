@@ -4,10 +4,12 @@ body {
     padding: 20px;
     background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     color: #333;
+    overflow-x: hidden;
 }
 
 .main-container {
@@ -15,6 +17,7 @@ body {
     flex-direction: column;
     align-items: center;   
     justify-content: center;
+    width: 100%;
 }
 
 .table-container {
@@ -31,8 +34,9 @@ body {
 .element {
     width: 65px;
     height: 85px;
+    box-sizing: border-box;
     background: rgba(255, 255, 255, 0.95);
-    border: none;
+    border: 2px solid transparent;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -99,10 +103,13 @@ body {
 }
 
 .element-name {
-    font-size: 11px;
+    font-size: 9.5px;
     color: #555;
     font-weight: 500;
-    letter-spacing: 0.5px;
+    letter-spacing: 0;
+    width: 95%;
+    word-break: break-word;
+    line-height: 1.1;
 }
 
 .tooltip {
@@ -186,19 +193,21 @@ body {
 }
 
 /* Add media query for better responsiveness */
-@media (max-width: 1200px) {
-    .table-container {
-        grid-template-columns: repeat(9, 65px);
-        transform: scale(0.9);
-    }
+.periodic-table-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-@media (max-width: 768px) {
-    .table-container {
-        grid-template-columns: repeat(6, 65px);
-        transform: scale(0.8);
-    }
-}
+@media (max-width: 1450px) { .periodic-table-wrapper { zoom: 0.95; } }
+@media (max-width: 1350px) { .periodic-table-wrapper { zoom: 0.85; } }
+@media (max-width: 1200px) { .periodic-table-wrapper { zoom: 0.75; } }
+@media (max-width: 1050px) { .periodic-table-wrapper { zoom: 0.65; } }
+@media (max-width: 900px)  { .periodic-table-wrapper { zoom: 0.55; } }
+@media (max-width: 750px)  { .periodic-table-wrapper { zoom: 0.45; } }
+@media (max-width: 600px)  { .periodic-table-wrapper { zoom: 0.35; } }
+@media (max-width: 450px)  { .periodic-table-wrapper { zoom: 0.25; } }
 
 /* Legend Styling */
 .legend {
