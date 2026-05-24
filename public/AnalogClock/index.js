@@ -262,15 +262,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function tickCountdown() {
-        countdownInterval = setInterval(() => {
-            if (countdownTime <= 0) {
-                triggerTimerFinished();
-            } else {
-                countdownTime--;
-                updateTimerDisplay();
-            }
-        }, 1000);
-    }
+    updateTimerDisplay();
+
+    countdownInterval = setInterval(() => {
+        if (countdownTime <= 0) {
+            triggerTimerFinished();
+        } else {
+            countdownTime--;
+            updateTimerDisplay();
+        }
+    }, 1000);
+}
+    
 
     function updateTimerDisplay() {
         const leftH = Math.floor(countdownTime / 3600);
@@ -300,28 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pausebtn.innerText = 'Pause';
         isPaused = false;
     }
-}
 
-function startCountdown() {
-    const h = parseInt(document.getElementById('hours').value)   || 0;
-    const m = parseInt(document.getElementById('minutes').value) || 0;
-    const s = parseInt(document.getElementById('seconds').value) || 0;
-
-    const duration = h * 3600 + m * 60 + s;
-    if (duration <= 0) {
-        shakeInputs();
-        return;
-    }
-
-    clearInterval(countdownInterval);
-    countdownTime = duration;
-    totalTime     = duration;
-    isPaused      = false;
-
-    display.textContent = formatTime(countdownTime);
-    setRingProgress(countdownTime, totalTime);
-    progressWrapper.classList.remove('urgent');
-    statusLabel.textContent = 'Running';
 
     window.pauseCountdown = function() {
         if (countdownTime <= 0) return;
@@ -341,11 +323,11 @@ function startCountdown() {
         clearInterval(countdownInterval);
         countdownTime = 0;
         countdownDisplay.textContent = '00:00:00';
-        
+
         hoursInput.value = '';
         minutesInput.value = '';
         secondsInput.value = '';
-        
+
         pausebtn.innerText = 'Pause';
         isPaused = false;
         timerUpMsg.style.display = 'none';
@@ -355,4 +337,5 @@ function startCountdown() {
             timerSound.currentTime = 0;
         }
     };
+
 });
