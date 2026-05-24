@@ -24,23 +24,23 @@ let currentTheme = "theme1";
 // ---------- Theme Configuration ----------
 const themeConfig = {
   theme1: {
-    body: "linear-gradient(135deg, #2f1d70 0%, #1f1c4d 45%, #0c1530 100%)",
+    body: "linear-gradient(135deg, #9a8cff 0%, #7c63ff 45%, #4b3bbd 100%)",
     noteColor: "rgba(255,255,255,0.95)",
   },
   theme2: {
-    body: "linear-gradient(135deg, #e6a8d7 0%, #cdb6e6 42%, #87cbdc 100%)",
+    body: "linear-gradient(135deg, #4f8dff 0%, #6ca8ff 42%, #b8d8ff 100%)",
     noteColor: "rgba(255, 250, 253, 0.95)",
   },
   theme3: {
-    body: "linear-gradient(135deg, #7dd8b8 0%, #d1c772 45%, #e68c72 100%)",
+    body: "linear-gradient(135deg, #14b8a6 0%, #4fd1c5 45%, #99f6e4 100%)",
     noteColor: "rgba(255, 255, 255, 0.95)",
   },
   theme4: {
-    body: "linear-gradient(135deg, #60177e 0%, #24334b 55%, #121a2c 100%)",
+    body: "linear-gradient(135deg, #ffd29a 0%, #ffb86b 45%, #d17a1f 100%)",
     noteColor: "rgba(245, 241, 255, 0.92)",
   },
   theme5: {
-    body: "linear-gradient(135deg, #b72f2a 0%, #2a4b7a 100%)",
+    body: "linear-gradient(135deg, #ff7b7b 0%, #ef4444 45%, #991b1b 100%)",
     noteColor: "rgba(255, 249, 244, 0.94)",
   },
 };

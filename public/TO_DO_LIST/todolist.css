@@ -16,9 +16,9 @@
 :root {
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  --page-bg-start: #201b44;
-  --page-bg-mid: #0f122a;
-  --page-bg-end: #080a1e;
+  --page-bg-start: #4f8dff;
+  --page-bg-mid: #6ca8ff;
+  --page-bg-end: #b8d8ff;
 
   --glass-bg: rgba(18, 32, 58, 0.70);
   --glass-border: rgba(255, 255, 255, 0.10);
@@ -53,7 +53,7 @@ body {
   font-family: var(--font-family);
   line-height: 1.6;
   color: var(--text-primary);
-  background: linear-gradient(135deg, var(--page-bg-start) 0%, var(--page-bg-mid) 45%, var(--page-bg-end) 100%);
+  background: linear-gradient(135deg, var(--page-bg-start) 0%, var(--page-bg-mid) 42%, var(--page-bg-end) 100%);
   overflow-x: hidden;
   transition: background var(--transition);
 }
