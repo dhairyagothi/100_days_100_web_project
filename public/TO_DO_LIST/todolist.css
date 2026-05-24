@@ -874,3 +874,43 @@ section {
     width: 100%;
   }
 }
+
+.theme1 {
+  --page-bg-start: #201b44;
+  --page-bg-mid: #0f122a;
+  --page-bg-end: #080a1e;
+  --accent: #7c63ff;
+  --accent-gradient: linear-gradient(135deg, #7c63ff, #4f8dff);
+}
+
+.theme2 {
+  --page-bg-start: #06243a;
+  --page-bg-mid: #0a3d62;
+  --page-bg-end: #001219;
+  --accent: #4f8dff;
+  --accent-gradient: linear-gradient(135deg, #4f8dff, #38bdf8);
+}
+
+.theme3 {
+  --page-bg-start: #052e16;
+  --page-bg-mid: #14532d;
+  --page-bg-end: #022c22;
+  --accent: #14b8a6;
+  --accent-gradient: linear-gradient(135deg, #14b8a6, #22c55e);
+}
+
+.theme4 {
+  --page-bg-start: #3b0764;
+  --page-bg-mid: #1e1b4b;
+  --page-bg-end: #0f172a;
+  --accent: #ffb86b;
+  --accent-gradient: linear-gradient(135deg, #ffb86b, #f59e0b);
+}
+
+.theme5 {
+  --page-bg-start: #450a0a;
+  --page-bg-mid: #7f1d1d;
+  --page-bg-end: #1f2937;
+  --accent: #ef4444;
+  --accent-gradient: linear-gradient(135deg, #ef4444, #f97316);
+}
