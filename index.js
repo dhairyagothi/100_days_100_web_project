@@ -406,34 +406,49 @@ const CATEGORY_LABEL = {
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
-
   const set = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   };
 
-  const setFallback = () => {
-    set('starCount', 'N/A');
-    set('forkCount', 'N/A');
-    set('issueCount', 'N/A');
-    set('prCount', 'N/A');
+  const setFallback = (label = 'N/A') => {
+    set('starCount', label);
+    set('forkCount', label);
+    set('issueCount', label);
+    set('prCount', label);
   };
 
+  // Show loading state
+  set('starCount', '…');
+  set('forkCount', '…');
+  set('issueCount', '…');
+  set('prCount', '…');
+
+  // Abort fetch if GitHub takes longer than 8 seconds
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+
   try {
-
-    // Optional loading state
-    set('starCount', 'Loading...');
-    set('forkCount', 'Loading...');
-    set('issueCount', 'Loading...');
-    set('prCount', 'Loading...');
-
     const [repoRes, prRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`, { signal: controller.signal }),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`, { signal: controller.signal })
     ]);
 
+    clearTimeout(timeout);
+
+    // Detect rate limiting (403 or 429)
+    if (repoRes.status === 403 || repoRes.status === 429) {
+      const retryAfter = repoRes.headers.get('X-RateLimit-Reset');
+      const resetTime = retryAfter
+        ? new Date(retryAfter * 1000).toLocaleTimeString()
+        : 'soon';
+      console.warn(`GitHub API rate limit reached. Resets at ${resetTime}.`);
+      setFallback('—');
+      return;
+    }
+
     if (!repoRes.ok || !prRes.ok) {
-      throw new Error("GitHub API request failed");
+      throw new Error(`GitHub API error: ${repoRes.status} / ${prRes.status}`);
     }
 
     const repo = await repoRes.json();
@@ -441,15 +456,21 @@ async function fetchRepoStats() {
 
     set('starCount', repo.stargazers_count.toLocaleString());
     set('forkCount', repo.forks_count.toLocaleString());
-    set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
+    set('issueCount', Math.max(0, repo.open_issues_count - prs.total_count).toLocaleString());
     set('prCount', prs.total_count.toLocaleString());
 
   } catch (e) {
+    clearTimeout(timeout);
 
-    console.warn("GitHub stats unavailable:", e.message);
+    if (e.name === 'AbortError') {
+      console.warn('GitHub stats: request timed out after 8s.');
+    } else if (!navigator.onLine) {
+      console.warn('GitHub stats: no internet connection.');
+    } else {
+      console.warn('GitHub stats unavailable:', e.message);
+    }
 
-    // Show fallback text instead of permanent dashes
-    setFallback();
+    setFallback('N/A');
   }
 }
 function generateReadme() {
