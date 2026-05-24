@@ -580,20 +580,16 @@ function renderGrid() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
 
-    // FIX PART 1: Add a pointer cursor so users know it's clickable
     card.className = 'project-card';
     card.style.cursor = 'pointer';
-
-    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
     card.onclick = () => window.open(url.trim(), '_blank');
 
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
+    const project = PROJECTS.find(p => p[0] === day);
 
-    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
-    // This stops the click from "bubbling up" to the main card, preventing double-opening!
     card.innerHTML = `
       <div class="card-meta">
         <span class="card-day">${day}</span>
@@ -603,7 +599,7 @@ function renderGrid() {
       <div class="card-tags">${tagsHTML}</div>
       <div class="card-footer">
         <div class="card-actions-left">
-          <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}">
+          <a href="${url.trim()}" target="_blank" rel="noopener noreferrer" class="card-link open-project" data-id="${day}">
             Demo <i class="fas fa-arrow-right"></i>
           </a>
           <a href="${sourceUrl}" target="_blank" class="card-link view-code-link">
@@ -615,6 +611,19 @@ function renderGrid() {
         </button>
       </div>
     `;
+
+    // Directly attach tracking to the Demo link so it fires reliably
+    // regardless of event propagation or navigation behaviour
+    if (project) {
+      const demoLink = card.querySelector('.open-project');
+      if (demoLink) {
+        demoLink.addEventListener('click', (e) => {
+          e.stopPropagation(); // prevent card.onclick double-opening
+          trackRecentProject(project);
+        });
+      }
+    }
+
     grid.appendChild(card);
   });
 
@@ -995,17 +1004,6 @@ document.addEventListener('click', (e) => {
   if (!project) return;
 
   toggleBookmark(project);
-});
-
-document.addEventListener('click', (e) => {
-  const projectLink = e.target.closest('.open-project');
-  if (!projectLink) return;
-
-  const projectDay = projectLink.dataset.id;
-  const project = PROJECTS.find((item) => item[0] === projectDay);
-  if (!project) return;
-
-  trackRecentProject(project);
 });
 
 /* ============================================================
