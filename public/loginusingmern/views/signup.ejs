@@ -17,22 +17,30 @@
             <h1>Register</h1>
             <div class="input-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username">
+                <input type="text" id="username" name="username" placeholder="Enter Username">
                 <div class="error"></div>
             </div>
             <div class="input-group">
                 <label for="email" >Email</label>
-                <input type="email" id="email" name="email" autocomplete="email">
+                <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter Email">
                 <div class="error"></div>
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password"  autocomplete="new-password">
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" autocomplete="new-password" placeholder="Enter Password?">
+                
+                    <span id="togglePassword">👁️</span>
+                </div>
                 <div class="error"></div>
             </div>
             <div class="input-group">
                 <label for="cpassword">Confirm Password</label>
-                <input type="password" id="cpassword" name="cpassword"  autocomplete="new-password">
+                <div class="input-wrapper">
+                    <input type="password" id="cpassword" name="cpassword" autocomplete="new-password" placeholder="Enter Password?">
+                
+                    <span id="toggleConfirmPassword">👁️</span>
+                </div>
                 <div class="error"></div>
             </div>
 
@@ -114,6 +122,37 @@ function togglePassword(id, element) {
         icon.classList.add("fa-eye");
     }
 }
+
+function setupPasswordToggle(inputId, toggleId) {
+
+    const passwordInput = document.getElementById(inputId);
+    const togglePassword = document.getElementById(toggleId);
+
+    if (passwordInput && togglePassword) {
+
+        togglePassword.addEventListener("click", () => {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+                togglePassword.textContent = "🙈";
+
+            } else {
+
+                passwordInput.type = "password";
+                togglePassword.textContent = "👁️";
+
+            }
+
+        });
+
+    }
+}
+
+setupPasswordToggle("password", "togglePassword");
+setupPasswordToggle("cpassword", "toggleConfirmPassword");
+
+
 
 </script>
 

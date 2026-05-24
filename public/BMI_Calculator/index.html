@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -87,6 +88,7 @@
               </div>
             </div>
           </div>
+        </div>
 
           <div class="field-row">
             <div class="field">
@@ -101,6 +103,7 @@
               <input type="number" id="weight" placeholder="e.g. 70" min="1" max="600" />
             </div>
           </div>
+        </div>
 
           <div class="field-row">
             <div class="field">
@@ -121,6 +124,7 @@
               </select>
             </div>
           </div>
+        </div>
 
           <div class="action-buttons" style="display: flex; gap: 12px; margin-bottom: 16px;">
             <button type="button" id="calculate-btn" style="flex: 2;">Calculate</button>
@@ -128,18 +132,18 @@
           </div>
           <div id="error-msg" class="error-msg hidden"></div>
 
-          <div class="result-row hidden" id="results">
-            <div class="metric-card">
-              <div class="metric-label">BMI score</div>
-              <div class="metric-value" id="bmi-val">—</div>
-              <span class="category-badge" id="cat-badge"></span>
-            </div>
-            <div class="metric-card">
-              <div class="metric-label">Healthy weight range</div>
-              <div class="metric-value range-val" id="healthy-range">—</div>
-              <div class="tip-text" id="tip-text"></div>
-            </div>
+        <div class="result-row hidden" id="results">
+          <div class="metric-card">
+            <div class="metric-label">BMI score</div>
+            <div class="metric-value" id="bmi-val">—</div>
+            <span class="category-badge" id="cat-badge"></span>
           </div>
+          <div class="metric-card">
+            <div class="metric-label">Healthy weight range</div>
+            <div class="metric-value range-val" id="healthy-range">—</div>
+            <div class="tip-text" id="tip-text"></div>
+          </div>
+        </div>
 
           <div id="range-vis" class="range-vis hidden">
             <div class="range-bar">
@@ -154,13 +158,30 @@
             <div class="range-labels">
               <span>10</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
             </div>
+            <div class="bmi-pointer" id="bmi-ptr"></div>
           </div>
+          <div class="range-labels">
+            <span>10</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
+          </div>
+        </div>
 
-          <!-- Body Fat Estimate -->
-          <div id="bf-section" class="bf-section hidden">
-            <div class="bf-header">
-              <div class="metric-label">Est. body fat</div>
-              <span class="bf-badge" id="bf-badge"></span>
+        <!-- Body Fat Estimate -->
+        <div id="bf-section" class="bf-section hidden">
+          <div class="bf-header">
+            <div class="metric-label">Est. body fat</div>
+            <span class="bf-badge" id="bf-badge"></span>
+          </div>
+          <div class="bf-body">
+            <div class="bf-gauge-wrap">
+              <svg class="bf-gauge" viewBox="0 0 120 120">
+                <circle class="bf-track" cx="60" cy="60" r="52" stroke-width="7" fill="none" />
+                <circle class="bf-fill" id="bf-arc" cx="60" cy="60" r="52" stroke-width="7" fill="none"
+                  stroke-dasharray="326.73" stroke-dashoffset="326.73" stroke-linecap="round" />
+                <text class="bf-pct-text" x="60" y="56" text-anchor="middle" dominant-baseline="central"
+                  id="bf-pct">—</text>
+                <text class="bf-pct-unit" x="60" y="74" text-anchor="middle" dominant-baseline="central">% body
+                  fat</text>
+              </svg>
             </div>
             <div class="bf-body">
               <div class="bf-gauge-wrap">
@@ -234,6 +255,7 @@
             </div>
           </div>
         </div>
+      </div>
 
         <!-- Right: Reference + Chart & Persistent History -->
         <div class="card right-card">
@@ -301,6 +323,11 @@
 
       </div>
     </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="script.js"></script>

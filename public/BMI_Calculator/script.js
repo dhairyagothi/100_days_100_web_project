@@ -510,7 +510,7 @@ resetBtn.addEventListener("click", () => {
     if(arc) arc.style.strokeDashoffset = "326.73";
 });
 
-// ─── Feature 4: Clear All Persistent Logs Handling Engine ───
+// ─── Feature 3: Clear All Persistent Logs Handling Engine ───
 clearHistoryBtn.addEventListener("click", () => {
     localStorage.removeItem("bmi-history-logs");
     updateHistoryUI(); 

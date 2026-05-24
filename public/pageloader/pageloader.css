@@ -1,3 +1,43 @@
+/* --- Global Resets --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    background: radial-gradient(circle at center, #141f32 0%, #080d16 100%);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow-y: auto; 
+}
+
+/* --- The Glassmorphic Container --- */
+#container {
+    width: 100%;
+    max-width: 900px; /* Made slightly wider to support the huge section sizing */
+    background: rgba(255, 255, 255, 0.03); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Navigation Layout --- */
+.navbar {
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
 @import url("https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;600&family=Manrope:wght@300;400;600&display=swap");
 
 :root {
@@ -99,6 +139,11 @@ body.is-loaded .page {
 
 .nav-links {
     list-style: none;
+}
+
+.navbar ul li {
+    display: inline-block;
+    margin-right: 25px;
     display: flex;
     gap: 18px;
 }
@@ -119,6 +164,29 @@ body.is-loaded .page {
 
 .navbar ul li a {
     text-decoration: none;
+    color: #94a3b8; 
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    color: #3b82f6; 
+}
+
+/* --- Dynamic Section Formatting ("Huge Layout") --- */
+.content-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.page-section {
+    display: none; /* Keeps sections hidden out of view by default */
+    min-height: 50vh; /* This makes the section content height look huge inside the glass container */
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Aligns text left nicely matching the original card theme */
+    padding: 40px 0;
     color: #ffffffc9;
     font-weight: bold;
     transition: color 0.3s;
@@ -255,7 +323,71 @@ body.is-loaded .page {
     border-radius: 18px;
 }
 
+/* Shows section only when active */
+.page-section.active {
+    display: flex;
+    animation: fadeInPage 0.4s ease-in-out forwards;
+}
+
+/* --- Typography Content --- */
+h1 {
+    font-size: 2.8rem; /* Made larger to matching "huge page" requirement */
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 2.2rem; /* Made larger to matching "huge page" requirement */
+    margin-bottom: 15px;
+}
+
+p {
+    color: #cbd5e1; 
+    font-size: 1.1rem;
+}
+
+footer p {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 15px;
+}
+
+/* --- Smooth Transition Keyframes --- */
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- The Real-World Pageloader Layer --- */
 #loading {
+    background-image: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMm41bHQ1Y2c1YTE2NHc1a2lxMW5tYzV5dGZqN3JhNmpsd3FkYTN1dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uIJBFZoOaifHf52MER/giphy.webp');
+    background-color: #080d16;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80px; 
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loading.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
     background: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMm41bHQ1Y2c1YTE2NHc1a2lxMW5tYzV5dGZqN3JhNmpsd3FkYTN1dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uIJBFZoOaifHf52MER/giphy.webp');
     background-color: rgba(0, 0, 0, 0.729);
     background-repeat: no-repeat;
