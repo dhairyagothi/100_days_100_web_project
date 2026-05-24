@@ -656,57 +656,37 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-<<<<<<< HEAD
-  pageItems.forEach((project) => {
-    const [day] = project;
-    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const card = createProjectCard(project, { isBookmarked });
-    grid.appendChild(card);
-=======
-  pageItems.forEach(([day, name, url, tags]) => {
-    const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
+pageItems.forEach((project) => {
+  const [day, , url] = project;
 
-    // FIX PART 1: Add a pointer cursor so users know it's clickable
-    card.className = 'project-card';
+  const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+
+  // Reuse centralized card creator
+  const card = createProjectCard(project, { isBookmarked });
+
+  // Add clickable-card UX improvement from incoming branch
+  const { demoUrl, isSourceOnly } = getProjectLinks(project);
+
+  if (!isSourceOnly && demoUrl) {
     card.style.cursor = 'pointer';
 
-    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
+    card.addEventListener('click', (e) => {
+      // Prevent opening when clicking buttons/links
+      if (
+        e.target.closest('a') ||
+        e.target.closest('button')
+      ) {
+        return;
+      }
 
-    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+      window.open(demoUrl, '_blank');
+    });
+  }
 
-    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
-    // This stops the click from "bubbling up" to the main card, preventing double-opening!
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+  fragment.appendChild(card);
+});
 
-   fragment.appendChild(card);
->>>>>>> origin/Main
-  });
-  grid.appendChild(fragment);
+grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
