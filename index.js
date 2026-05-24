@@ -227,7 +227,6 @@ const PROJECT_DATA = [
   ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
   ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
   ['Day 155', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
-  ['Day 156', 'Invoice / Bill Generator', './public/Day156_Invoice_Generator/index.html', 'tool javascript', 'intermediate'],
   ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', 'react typescript game hangman vite', 'advanced'],
   ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
   ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
@@ -240,7 +239,8 @@ const PROJECT_DATA = [
   [ 'Day 164' , 'Code Visualizer Playground' , './public/code-visualizer-playground/index.html' , 'tool javascript html css' , 'advanced' ],
   [ 'Day 165' , 'Amazon Clone' , './public/AmazonClone/index.html' , 'Amazon Clone HTML CSS JavaScript' , 'beginner' ],
   [ "Day 166" , "Boredom Buster" , "./public/BoredomBuster/index.html" , "html css javascript" , 'advanced' ],
-   [ "Day 166" , "Color Sort Puzzle game" , "./public/colorsort/index.html" , "html css javascript" , 'advanced' ]
+  [ "Day 166" , "Color Sort Puzzle game" , "./public/colorsort/index.html" , "html css javascript" , 'advanced' ],
+  ['Day 167', 'Invoice / Bill Generator', './public/Day156_Invoice_Generator/index.html', 'tool javascript', 'intermediate']
 ];
 const PROJECTS = PROJECT_DATA;
 
