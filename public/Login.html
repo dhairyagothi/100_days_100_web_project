@@ -1,83 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="login.css">
-  <link rel="icon" href="favv.png" type="image/x-icon" />
-</head>
-<body>
-  <header class="navbar">
-    <a href="../index.html" class="nav-link">Back to Home</a>
-  </header>
-  <div class="container">
-    <div class="left-section">
-      <button class="back-button" onclick="window.location.href = '../index.html';">
-        <svg xmlns="Imagemain.png" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-      </button>
-      <h1 class="animated-heading">
-        100 Days 100 Web Projects! <span class="blinking-cursor">|</span>
-      </h1>
-      <p class="description">
-        Dive in to explore a user-friendly interface designed for secure and seamless access to your account.
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sammu Trial Login Page</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-blur"></div>
+
+    <nav class="navbar">
+      <a href="../index.html" class="button home-btn">Home</a>
+    </nav>
+
+    <section class="hero-section">
+      <h1 class="hero-title">100 Days 100 Web Projects</h1>
+      <p class="auth-title">
+        Dive in to explore a seamless access to 100+ exciting web experiments
+        crafted for learning and inspiration. Log in to continue building,
+        exploring, and creating amazing web experiences every day.
       </p>
-      <form id="loginForm" class="login-form">
-        <input type="text" id="username" placeholder="Username" class="input-field" required>
-        <input type="password" id="password" placeholder="Password" class="input-field" required>
-        <button type="submit" class="submit-button">Login</button>
-      </form><br>
-      <p class="already-signed-up">
-        Not signed up? <a href="./signup.html">Sign Up</a>
-      </p>
-    </div>
 
-    <!-- Right Section -->
-    <div class="right-section">
-      <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop" alt="Image 1" class="transition-image">
-      <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop" alt="Image 2" class="transition-image">
-      <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop" alt="Image 3" class="transition-image">
-      <img src="https://static.vecteezy.com/system/resources/previews/011/153/366/original/3d-web-developer-working-on-project-illustration-png.png" alt="Image 4" class="transition-image">
-      <img src="https://labs.sogeti.com/wp-content/uploads/sites/2/2024/01/case-studies-illustration-digital-services-a.png" alt="Image 5" class="transition-image">
-    </div>
-  </div>
+      <div class="auth-container">
+        <div class="auth-card">
+          <h2 class="auth-title-1">Login</h2>
 
-  <script>
-    // Transition effect for images
-    const images = document.querySelectorAll(".transition-image");
-    let currentImageIndex = 0;
+          <form id="loginForm" class="auth-form">
+            <div class="form-group">
+              <i class="fa-solid fa-user"></i>
+              <input
+                type="text"
+                id="username"
+                placeholder="Username"
+                class="form-input"
+                autocomplete="username"
+                required
+              />
+            </div>
 
-    function showNextImage() {
-      images[currentImageIndex].style.opacity = 0;
-      currentImageIndex = (currentImageIndex + 1) % images.length;
-      images[currentImageIndex].style.opacity = 1;
-    }
+            <div class="form-group">
+              <i class="fa-solid fa-lock"></i>
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                class="form-input"
+                autocomplete="current-password"
+                required
+              />
+              <span class="toggle-password" onclick="togglePassword()">👁</span>
+            </div>
 
-    setInterval(showNextImage, 3000);
+            <button type="submit" class="button home-btn">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              Login
+            </button>
+          </form>
 
-    // Login form submission
-    document.getElementById("loginForm").addEventListener("submit", function (event) {
-      event.preventDefault();
+          <p class="already-signed-up">
+            <a href="./ForgotPassword.html" id="forgotPasswordLink">Forgot Password?</a>
+          </p>
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
+          <p class="already-signed-up">
+            Not signed up? <a href="./SignUp.html">Sign Up</a>
+          </p>
+        </div>
+      </div>
+    </section>
 
-      if (username && password) {
-        localStorage.setItem("username", username);
-        window.location.pathname = "/index.html";
-      } else {
-        alert("Invalid credentials. Please try again.");
+    <script>
+      // Show password toggle
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.querySelector(".toggle-password");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.add("active");
+            // toggleIcon.textContent = "..";
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("active");
+            // toggleIcon.textContent = "👁";
+        }
       }
-    });
-  </script>
-</body>
+      
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+
+          // Get stored user
+          const storedUser = localStorage.getItem(username);
+
+          // Check if user exists
+          if (!storedUser) {
+            alert("User does not exist.");
+            return;
+          }
+
+          const userData = JSON.parse(storedUser);
+
+          // Password matching
+          if (password !== userData.password) {
+            alert("Incorrect password.");
+            return;
+          }
+
+          // Login successful
+          alert("Login successful!");
+
+          localStorage.setItem("loggedInUser", username);
+          window.location.href = "../index.html";
+        });
+    </script>
+  </body>
 </html>

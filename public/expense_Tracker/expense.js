@@ -1,291 +1,317 @@
-// Transaction storage - source of truth
-let transactions = [];
+let records = JSON.parse(localStorage.getItem('budgetbuddy_data')) || [];
+let currentFilter = 'All';
+let currentSearchQuery = '';
 
-// DOM Elements
 const transactionForm = document.getElementById('transactionForm');
 const amountInput = document.getElementById('amount');
-const descriptionInput = document.getElementById('description');
-const typeIncomeInput = document.getElementById('type-income');
-const typeExpenseInput = document.getElementById('type-expense');
-const categorySelect = document.getElementById('category');
 const dateInput = document.getElementById('date');
-
+const descriptionInput = document.getElementById('description');
+const categorySelect = document.getElementById('category');
+const categoryGroup = document.getElementById('categoryGroup');
+const searchBar = document.getElementById('searchBar');
+const themeToggleBtn = document.getElementById('themeToggle');
 const accountBalanceEl = document.getElementById('accountBalance');
 const totalIncomeEl = document.getElementById('totalIncome');
 const totalExpenseEl = document.getElementById('totalExpense');
+const avgTransactionEl = document.getElementById('avgTransaction');
+const savingsRateEl = document.getElementById('savingsRate');
 const transactionsBody = document.getElementById('transactionsBody');
 const noTransactionsMessage = document.getElementById('noTransactionsMessage');
+const donutSegment = document.getElementById('donutSegment');
+const highestExpensePctEl = document.getElementById('highestExpensePct');
+const highestExpenseNameEl = document.getElementById('highestExpenseName');
 
-// Error elements
-const errorElements = {
+const errorLogs = {
     amount: document.getElementById('amountError'),
+    date: document.getElementById('dateError'),
     description: document.getElementById('descriptionError'),
-    type: document.getElementById('typeError'),
-    category: document.getElementById('categoryError'),
-    date: document.getElementById('dateError')
+    category: document.getElementById('categoryError')
 };
-
-// Helper message element
-const dateHelper = document.getElementById('dateHelper');
-let dateHelperTimeout;
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function () {
-    setMaxDateToToday();
-    setupDatePickerBehavior();
-    renderDashboard();
-    renderTransactions();
+document.addEventListener('DOMContentLoaded', () => {
+    initializeThemeEngine();
+    setDefaultDateToToday();
+    setupUserInteractionEvents();
+    calculateAndRefreshSummary();
 });
 
-// Set max date to today to prevent future dates
-function setMaxDateToToday() {
-    const today = new Date().toISOString().split('T')[0];
-    dateInput.max = today;
-}
-
-// Show helper message for a short duration
-function showDateHelper(message, duration = 4000) {
-    dateHelper.textContent = message;
-    dateHelper.classList.add('visible');
-    
-    clearTimeout(dateHelperTimeout);
-    dateHelperTimeout = setTimeout(() => {
-        dateHelper.classList.remove('visible');
-    }, duration);
-}
-
-// Hide helper message
-function hideDateHelper() {
-    dateHelper.classList.remove('visible');
-    clearTimeout(dateHelperTimeout);
-}
-
-// Setup date picker behavior to encourage using calendar picker and prevent manual typing
-function setupDatePickerBehavior() {
-    // Show helper message on focus
-    dateInput.addEventListener('focus', function () {
-        showDateHelper('Only today or past dates are allowed.');
-    });
-
-    // Hide helper message on blur
-    dateInput.addEventListener('blur', function () {
-        hideDateHelper();
-    });
-
-    // Clear invalid manual input to encourage using the picker
-    dateInput.addEventListener('keydown', function (e) {
-        // Allow only: Tab, Backspace, Delete, and the picker opening
-        const allowedKeys = ['Tab', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
-        if (!allowedKeys.includes(e.key)) {
-            e.preventDefault();
-        }
-    });
-
-    // Prevent paste of invalid dates
-    dateInput.addEventListener('paste', function (e) {
-        e.preventDefault();
-    });
-
-    // Auto-focus the picker on click
-    dateInput.addEventListener('click', function () {
-        this.showPicker();
-    });
-}
-
-// Format money with rupee symbol
-function formatMoney(amount) {
-    return '₹' + parseFloat(amount).toFixed(2);
-}
-
-// Clear all error messages
-function clearErrors() {
-    Object.values(errorElements).forEach(el => el.textContent = '');
-}
-
-// Validate form inputs
-function validateForm() {
-    clearErrors();
-    let isValid = true;
-
-    // Validate amount
-    const amount = parseFloat(amountInput.value);
-    if (!amountInput.value.trim()) {
-        errorElements.amount.textContent = 'Amount is required';
-        isValid = false;
-    } else if (amount <= 0) {
-        errorElements.amount.textContent = 'Amount must be greater than 0';
-        isValid = false;
+document.addEventListener('DOMContentLoaded', () => {
+    initializeThemeEngine();
+    if (document.getElementById('date')) setDefaultDateToToday();
+    setupUserInteractionEvents();
+    if (document.getElementById('transactionsBody')) {
+        renderHistoryTable();
     }
-
-    // Validate description
-    if (!descriptionInput.value.trim()) {
-        errorElements.description.textContent = 'Description is required';
-        isValid = false;
-    }
-
-    // Validate type
-    const selectedType = document.querySelector('input[name="type"]:checked')?.value;
-    if (!selectedType) {
-        errorElements.type.textContent = 'Type is required';
-        isValid = false;
-    }
-
-    // Validate category - required only for expenses
-    if (selectedType === 'Expense' && !categorySelect.value) {
-        errorElements.category.textContent = 'Category is required for expenses';
-        isValid = false;
-    }
-
-    // Validate date
-    if (!dateInput.value) {
-        errorElements.date.textContent = 'Date is required';
-        isValid = false;
+});
+function initializeThemeEngine() {
+    const savedTheme = localStorage.getItem('budgetbuddy_theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
     } else {
-        // Compare date strings directly to avoid timezone issues
-        const today = new Date().toISOString().split('T')[0];
-        if (dateInput.value > today) {
-            errorElements.date.textContent = 'Future entries cannot be added right now. Please select today or a past date.';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    }
+}
+
+function toggleApplicationTheme() {
+    const activeTheme = document.documentElement.getAttribute('data-theme');
+    const targetTheme = activeTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', targetTheme);
+    localStorage.setItem('budgetbuddy_theme', targetTheme);
+}
+
+function setDefaultDateToToday() {
+    const today = new Date().toLocaleDateString('en-CA'); 
+    if (dateInput) {
+        dateInput.max = today;
+        dateInput.value = today;
+    }
+}
+
+function setupUserInteractionEvents() {
+    if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleApplicationTheme);
+
+    document.querySelectorAll('input[name="type"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            if (categoryGroup && categorySelect) {
+                if (e.target.value === 'Income') {
+                    categoryGroup.classList.add('hidden');
+                    categorySelect.required = false;
+                    categorySelect.value = '';
+                } else {
+                    categoryGroup.classList.remove('hidden');
+                    categorySelect.required = true;
+                }
+            }
+            clearFormWarnings();
+        });
+    });
+
+    if (transactionsBody) {
+        transactionsBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-delete-row')) {
+                deleteItem(parseInt(e.target.dataset.id, 10));
+            }
+        });
+    }
+
+    if (searchBar) {
+        searchBar.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value.toLowerCase().trim();
+            renderHistoryTable();
+        });
+    }
+
+    const filterGroup = document.querySelector('.filter-buttons-group');
+    if (filterGroup) {
+        filterGroup.addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-tab')) {
+                document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.filter;
+                renderHistoryTable();
+            }
+        });
+    }
+
+    const btnReset = document.getElementById('btnReset');
+    if (btnReset) btnReset.addEventListener('click', clearAllStoredData);
+
+    const btnExport = document.getElementById('btnExport');
+    if (btnExport) btnExport.addEventListener('click', downloadBackupAsSpreadsheet);
+}
+
+function clearFormWarnings() {
+    Object.values(errorLogs).forEach(element => { if(element) element.textContent = ''; });
+}
+
+function checkFormErrors() {
+    clearFormWarnings();
+    let isValid = true;
+    if (amountInput) {
+        const amountValue = parseFloat(amountInput.value);
+        if (isNaN(amountValue) || amountValue <= 0) {
+            if (errorLogs.amount) errorLogs.amount.textContent = 'Please enter a valid amount greater than 0.';
             isValid = false;
         }
     }
-
+    if (dateInput && !dateInput.value) {
+        if (errorLogs.date) errorLogs.date.textContent = 'Please select a date.';
+        isValid = false;
+    }
+    if (descriptionInput && !descriptionInput.value.trim()) {
+        if (errorLogs.description) errorLogs.description.textContent = 'Please type a short description.';
+        isValid = false;
+    }
+    const checkedTypeNode = document.querySelector('input[name="type"]:checked');
+    const checkedType = checkedTypeNode ? checkedTypeNode.value : 'Expense';
+    if (checkedType === 'Expense' && categorySelect && !categorySelect.value) {
+        if (errorLogs.category) errorLogs.category.textContent = 'Please pick a category for this expense.';
+        isValid = false;
+    }
     return isValid;
 }
 
-// Handle form submission
-transactionForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+if (transactionForm) {
+    transactionForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!checkFormErrors()) return;
+        const checkedTypeNode = document.querySelector('input[name="type"]:checked');
+        const selectedType = checkedTypeNode ? checkedTypeNode.value : 'Expense';
+        const newRecord = {
+            id: Date.now(),
+            amount: amountInput ? parseFloat(amountInput.value) : 0,
+            date: dateInput ? dateInput.value : new Date().toLocaleDateString('en-CA'),
+            type: selectedType,
+            category: selectedType === 'Expense' ? (categorySelect ? categorySelect.value : 'Others') : 'Income Stream',
+            description: descriptionInput ? descriptionInput.value.trim() : ''
+        };
+        records.push(newRecord);
+        saveAndReload();
+        if (amountInput) amountInput.value = '';
+        if (descriptionInput) descriptionInput.value = '';
+        setDefaultDateToToday();
+    });
+}
 
-    if (!validateForm()) {
-        return;
-    }
+function deleteItem(id) {
+    records = records.filter(item => item.id !== id);
+    saveAndReload();
+}
 
-    // Create transaction object
-    const selectedType = document.querySelector('input[name="type"]:checked').value;
-    const transaction = {
-        id: Date.now(), // Simple unique ID
-        amount: parseFloat(amountInput.value),
-        description: descriptionInput.value.trim(),
-        type: selectedType,
-        category: selectedType === 'Expense' ? categorySelect.value : null,
-        date: dateInput.value
-    };
+function saveAndReload() {
+    localStorage.setItem('budgetbuddy_data', JSON.stringify(records));
+    calculateAndRefreshSummary();
+}
 
-    // Add to transactions array
-    transactions.push(transaction);
-
-    // Reset form
-    transactionForm.reset();
-    clearErrors();
-
-    // Update UI
-    renderDashboard();
-    renderTransactions();
-});
-
-// Calculate totals from transactions
-function calculateTotals() {
-    let totalIncome = 0;
-    let totalExpense = 0;
-    const categoryTotals = {
-        Food: 0,
-        Travel: 0,
-        Shopping: 0,
-        Utilities: 0,
-        Others: 0
-    };
-
-    transactions.forEach(transaction => {
-        if (transaction.type === 'Income') {
-            totalIncome += transaction.amount;
-        } else if (transaction.type === 'Expense') {
-            totalExpense += transaction.amount;
-            if (transaction.category) {
-                categoryTotals[transaction.category] = (categoryTotals[transaction.category] || 0) + transaction.amount;
+function calculateAndRefreshSummary() {
+    let earnedTotal = 0;
+    let spentTotal = 0;
+    const categoryTotals = { Food: 0, Travel: 0, Shopping: 0, Bills: 0, Others: 0 };
+    records.forEach(item => {
+        if (item.type === 'Income') {
+            earnedTotal += item.amount;
+        } else {
+            spentTotal += item.amount;
+            if (categoryTotals.hasOwnProperty(item.category)) {
+                categoryTotals[item.category] += item.amount;
             }
         }
     });
 
-    return {
-        totalIncome,
-        totalExpense,
-        balance: totalIncome - totalExpense,
-        categoryTotals
-    };
-}
+    const currentBalance = earnedTotal - spentTotal;
+    const avgAmount = records.length ? (records.reduce((sum, item) => sum + item.amount, 0) / records.length) : 0;
+    const savingsPercentage = earnedTotal > 0 ? Math.max(0, (currentBalance / earnedTotal) * 100) : 0;
+    const formatRupees = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(num);
+    
+    if (accountBalanceEl) {
+        accountBalanceEl.textContent = formatRupees(currentBalance);
+        accountBalanceEl.className = `stat-number ${currentBalance >= 0 ? 'text-green' : 'text-red'}`;
+    }
+    if (totalIncomeEl) totalIncomeEl.textContent = formatRupees(earnedTotal);
+    if (totalExpenseEl) totalExpenseEl.textContent = formatRupees(spentTotal);
+    if (avgTransactionEl) avgTransactionEl.textContent = formatRupees(avgAmount);
+    if (savingsRateEl) savingsRateEl.textContent = `${savingsPercentage.toFixed(1)}%`;
 
-// Render dashboard with updated values
-function renderDashboard() {
-    const totals = calculateTotals();
-
-    // Update main cards
-    accountBalanceEl.textContent = formatMoney(totals.balance);
-    totalIncomeEl.textContent = formatMoney(totals.totalIncome);
-    totalExpenseEl.textContent = formatMoney(totals.totalExpense);
-
-    // Update category breakdown
-    Object.entries(totals.categoryTotals).forEach(([category, amount]) => {
-        const categoryEl = document.getElementById(`cat-${category}`);
-        if (categoryEl) {
-            categoryEl.textContent = formatMoney(amount);
+    let topCategoryLabel = 'None';
+    let topCategorySum = 0;
+    Object.entries(categoryTotals).forEach(([category, total]) => {
+        const valueNode = document.getElementById(`cat-${category}`);
+        if (valueNode) valueNode.textContent = formatRupees(total);
+        const ratioPercentage = spentTotal > 0 ? (total / spentTotal) * 100 : 0;
+        const progressFillBar = document.querySelector(`.progress-bar-item[data-category="${category}"] .progress-fill`);
+        if (progressFillBar) progressFillBar.style.width = `${ratioPercentage}%`;
+        if (total > topCategorySum) {
+            topCategorySum = total;
+            topCategoryLabel = category;
         }
     });
 
-    // Color account balance based on positive/negative
-    if (totals.balance >= 0) {
-        accountBalanceEl.style.color = '#4CAF50';
-    } else {
-        accountBalanceEl.style.color = '#FF6B6B';
-    }
+    const topCategoryPercent = spentTotal > 0 ? Math.round((topCategorySum / spentTotal) * 100) : 0;
+    if (highestExpensePctEl) highestExpensePctEl.textContent = `${topCategoryPercent}%`;
+    if (highestExpenseNameEl) highestExpenseNameEl.textContent = topCategoryLabel === 'None' ? 'Top Category' : topCategoryLabel;
+    if (donutSegment) donutSegment.style.strokeDasharray = `${topCategoryPercent} ${100 - topCategoryPercent}`;
+    renderHistoryTable();
 }
 
-// Render transactions table
-function renderTransactions() {
-    if (transactions.length === 0) {
-        transactionsBody.innerHTML = '';
-        noTransactionsMessage.style.display = 'block';
-        return;
-    }
-
-    noTransactionsMessage.style.display = 'none';
-
-    // Sort transactions by date (newest first)
-    const sortedTransactions = [...transactions].sort((a, b) => {
-        return new Date(b.date) - new Date(a.date);
+function renderHistoryTable() {
+    if (!transactionsBody) return;
+    const matchedRecords = records.filter(item => {
+        const matchFilter = (currentFilter === 'All') || (item.type === currentFilter);
+        const matchSearch = (item.description || '').toLowerCase().includes(currentSearchQuery) || 
+                            (item.category || '').toLowerCase().includes(currentSearchQuery);
+        return matchFilter && matchSearch;
     });
 
-    transactionsBody.innerHTML = sortedTransactions.map(transaction => {
-        // Format date for display
-        const dateObj = new Date(transaction.date);
-        const formattedDate = dateObj.toLocaleDateString('en-IN', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
+    if (!matchedRecords.length) {
+        transactionsBody.innerHTML = '';
+        if (noTransactionsMessage) noTransactionsMessage.style.display = 'block';
+        return;
+    }
+    if (noTransactionsMessage) noTransactionsMessage.style.display = 'none';
 
-        // Determine amount display and category
-        const amountDisplay = transaction.type === 'Income' 
-            ? `+${formatMoney(transaction.amount)}` 
-            : formatMoney(transaction.amount);
-        const categoryDisplay = transaction.category || transaction.type;
-
+    const chronologicallySorted = [...matchedRecords].sort((a, b) => new Date(b.date) - new Date(a.date));
+    transactionsBody.innerHTML = chronologicallySorted.map(item => {
+        let readableDate = item.date;
+        if (item.date && item.date.includes('-')) {
+            const [year, month, day] = item.date.split('-');
+            readableDate = new Date(year, month - 1, day).toLocaleDateString('en-IN', {
+                day: 'numeric', month: 'short', year: 'numeric'
+            });
+        }
+        const cashDisplayValue = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(item.amount);
+        const displayRowStyle = item.type === 'Income' ? 'row-inc' : 'row-exp';
+        const operatorMathSymbol = item.type === 'Income' ? '+ ' : '- ';
         return `
             <tr>
-                <td>${formattedDate}</td>
-                <td>${transaction.description}</td>
-                <td>${categoryDisplay}</td>
-                <td>${amountDisplay}</td>
-                <td>
-                    <button class="btn-delete" onclick="deleteTransaction(${transaction.id})">Delete</button>
+                <td data-label="Date">${readableDate}</td>
+                <td data-label="Description">${escapeScriptPayloads(item.description || '')}</td>
+                <td data-label="Category"><span class="stat-title" style="font-size:0.7rem; font-weight:bold;">${item.category || ''}</span></td>
+                <td data-label="Amount" class="${displayRowStyle}" style="text-align: right;">${operatorMathSymbol}${cashDisplayValue}</td>
+                <td data-label="Action">
+                    <button class="btn-delete-row" data-id="${item.id}">Delete</button>
                 </td>
             </tr>
         `;
     }).join('');
 }
 
-// Delete transaction by ID
-function deleteTransaction(id) {
-    transactions = transactions.filter(transaction => transaction.id !== id);
-    renderDashboard();
-    renderTransactions();
+function escapeScriptPayloads(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
+
+function clearAllStoredData() {
+    if (confirm('Are you completely sure you want to delete all entries? This cannot be undone.')) {
+        records = [];
+        saveAndReload();
+    }
+}
+
+function downloadBackupAsSpreadsheet() {
+    const currentRecords = JSON.parse(localStorage.getItem('budgetbuddy_data')) || [];
+    if (currentRecords.length === 0) {
+        alert('You do not have any data entries to backup yet!');
+        return;
+    }
+    const headers = ['Date', 'Type', 'Category', 'Description', 'Amount'];
+    const csvRows = currentRecords.map(item => {
+        const safeDescription = `"${String(item.description || '').replace(/"/g, '""')}"`;
+        return [item.date, item.type, item.category, safeDescription, item.amount].join(',');
+    });
+    const csvContent = [headers.join(','), ...csvRows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `ExpenseTracker_Backup_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+document.addEventListener('DOMContentLoaded', () => {
+    if (!document.getElementById('bg-aura')) {
+        const aura = document.createElement('div');
+        aura.id = 'bg-aura';
+        document.body.prepend(aura);
+    }
+});
