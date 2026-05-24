@@ -20,17 +20,37 @@
                 <br><br>
                 <button type="submit">Submit Feedback</button>
             </form>
-            <a href="index.html" class="back"><button>Back To the Main</button></a>
+           <button class="back" onclick="window.location.href='./index.html'">
+    Back To the Main
+</button>
     </div>
-    <script>
-        
-        document.getElementById("feedbackform").addEventListener("submit", function(event) {
-            event.preventDefault(); 
-            
-            const feedbackMessage = document.getElementById("feedbackMessage").value;
-            console.log("User Feedback:", feedbackMessage);
-            alert("Thank you for your feedback: " + feedbackMessage);
-        });
-    </script>
+
+    <div id="toast-container"></div>
+
+<script>
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+
+    toast.innerHTML = `
+        <span>${message}</span>
+        <button onclick="this.parentElement.remove()">&times;</button>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+document.getElementById("feedbackform").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    showToast("Feedback submitted successfully!", "success");
+});
+</script>
 </body>
 </html>

@@ -165,266 +165,185 @@ function formatSelectedText(tag, styles = {}) {
     return;
   }
 
-  const range = selection.getRangeAt(0);
-  const selectedText = selection.toString();
-
-  if (!selectedText) {
-    showToast("Please select text to format", "warning");
-    return;
-  }
-
-  const element = document.createElement(tag);
-  Object.assign(element.style, styles);
-  element.textContent = selectedText;
-
-  range.deleteContents();
-  range.insertNode(element);
-  range.selectNode(element);
-  selection.removeAllRanges();
-  selection.addRange(range);
-
-  updateUndoRedoHistory();
+  const item = document.createElement('div');
+  item.className = 'folder-input-item';
+  item.innerHTML = `
+    <span class="folder-item-icon">📂</span>
+    <input type="text" id="newFolderInput" placeholder="Folder name..." onblur="saveNewFolder()" onkeydown="handleFolderInputKey(event)" />
+  `;
+  list.appendChild(item);
+  document.getElementById('newFolderInput').focus();
 }
 
-/* ============================================
-   BOLD, ITALIC, UNDERLINE
-   ============================================ */
+function saveNewFolder() {
+  const input = document.getElementById('newFolderInput');
+  if (!input) return;
 
-boldBtn.addEventListener("click", () => {
-  applyFormat("bold");
-  boldBtn.style.background = "rgba(255, 255, 255, 0.4)";
-  setTimeout(() => {
-    boldBtn.style.background = "rgba(255, 255, 255, 0.2)";
-  }, 200);
-});
+  const name = input.value.trim();
+  if (name) {
+    // Check for duplicate names
+    const exists = folders.some(f => f.name.toLowerCase() === name.toLowerCase());
+    if (exists) {
+      showToast('⚠️', 'Folder name already exists', 'error');
+      renderFoldersList();
+      return;
+    }
 
-italicBtn.addEventListener("click", () => {
-  applyFormat("italic");
-  italicBtn.style.background = "rgba(255, 255, 255, 0.4)";
-  setTimeout(() => {
-    italicBtn.style.background = "rgba(255, 255, 255, 0.2)";
-  }, 200);
-});
-
-underlineBtn.addEventListener("click", () => {
-  applyFormat("underline");
-  underlineBtn.style.background = "rgba(255, 255, 255, 0.4)";
-  setTimeout(() => {
-    underlineBtn.style.background = "rgba(255, 255, 255, 0.2)";
-  }, 200);
-});
-
-/* ============================================
-   SHAPES
-   ============================================ */
-
-let currentShapeColor = "black";
-let selectedShape = null;
-
-shapesBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  hideAllDropdowns();
-  positionDropdown(shapesDropdown, shapesBtn);
-  shapesDropdown.classList.toggle("visible");
-});
-
-shapesDropdown.addEventListener("click", (e) => {
-  const button = e.target.closest("button");
-  if (!button || !button.dataset.shape) {
-    return;
+    const newFolder = {
+      id: 'folder_' + Date.now().toString(),
+      name: name,
+      icon: '📂'
+    };
+    folders.push(newFolder);
+    localStorage.setItem('echo_folders', JSON.stringify(folders));
+    showToast('📂', `Folder "${name}" created!`, 'success');
   }
+  renderFoldersList();
+}
 
-  const shapeType = button.dataset.shape;
-
-  // Create dropdown menu immediately with shape selection
-  hideAllDropdowns();
-  
-  // Position and show color picker
-  positionDropdown(shapeColorDropdown, e.target);
-  shapeColorDropdown.classList.add("visible");
-  
-  // Store shape type for when color is selected
-  shapeColorDropdown.dataset.pendingShape = shapeType;
-});
-
-shapeColorDropdown.addEventListener("click", (e) => {
-  if (e.target.tagName !== "BUTTON") return;
-
-  currentShapeColor = e.target.dataset.color;
-  const shapeType = shapeColorDropdown.dataset.pendingShape;
-
-  if (shapeType) {
-    createShape(shapeType, currentShapeColor);
-    showToast(`${shapeType} added!`);
-  }
-
-  hideAllDropdowns();
-});
-
-function createShape(shapeType, color) {
-  const shapeDiv = document.createElement("div");
-  shapeDiv.className = "note-shape";
-  shapeDiv.draggable = true;
-  shapeDiv.style.width = "50px";
-  shapeDiv.style.height = "50px";
-
-  // Create shape element
-  let shapeElement;
-
-  if (shapeType === "star") {
-    shapeElement = document.createElement("div");
-    shapeElement.className = `shape-${shapeType}`;
-    shapeElement.innerHTML = "★";
-    shapeElement.style.color = color;
-    shapeElement.style.fontSize = "2.5rem";
-  } else if (shapeType === "heart") {
-    shapeElement = document.createElement("div");
-    shapeElement.className = `shape-${shapeType}`;
-    shapeElement.style.background = color;
-    shapeElement.style.position = "relative";
-    shapeElement.style.width = "50px";
-    shapeElement.style.height = "50px";
-    // Add a child div for the bottom point
-    const point = document.createElement("div");
-    point.style.position = "absolute";
-    point.style.bottom = "-10px";
-    point.style.left = "50%";
-    point.style.transform = "translateX(-50%)";
-    point.style.width = "0";
-    point.style.height = "0";
-    point.style.borderLeft = "15px solid transparent";
-    point.style.borderRight = "15px solid transparent";
-    point.style.borderTop = `15px solid ${color}`;
-    shapeElement.appendChild(point);
-  } else {
-    shapeElement = document.createElement("div");
-    shapeElement.className = `shape-${shapeType}`;
-    shapeElement.style.background = color;
-    shapeElement.style.width = "100%";
-    shapeElement.style.height = "100%";
-  }
-
-  shapeDiv.appendChild(shapeElement);
-
-  // Store color on the shape for resizing
-  shapeDiv.dataset.shapeColor = color;
-  shapeDiv.dataset.shapeType = shapeType;
-
-  // Add drag functionality
-  let isDragging = false;
-  let offsetX, offsetY;
-
-  shapeDiv.addEventListener("dragstart", (e) => {
-    isDragging = true;
-    offsetX = e.clientX - shapeDiv.getBoundingClientRect().left;
-    offsetY = e.clientY - shapeDiv.getBoundingClientRect().top;
-    e.dataTransfer.effectAllowed = "move";
-    shapeDiv.style.opacity = "0.7";
-  });
-
-  shapeDiv.addEventListener("dragend", () => {
-    isDragging = false;
-    shapeDiv.style.opacity = "1";
-  });
-
-  // Click to select
-  shapeDiv.addEventListener("click", (e) => {
-    e.stopPropagation();
-    document.querySelectorAll(".note-shape").forEach(s => s.classList.remove("selected"));
-    shapeDiv.classList.add("selected");
-    selectedShape = shapeDiv;
-  });
-
-  // Right-click to delete
-  shapeDiv.addEventListener("contextmenu", (e) => {
+// Handler for keyboard event inside new folder input
+function handleFolderInputKey(e) {
+  if (e.key === 'Enter') {
     e.preventDefault();
-    if (confirm("Delete this shape?")) {
-      shapeDiv.remove();
-      selectedShape = null;
-      updateUndoRedoHistory();
-      showToast("Shape deleted");
-    }
-  });
-
-  // Add double-click to resize
-  shapeDiv.addEventListener("dblclick", () => {
-    const sizes = ["30px", "50px", "70px", "90px", "120px"];
-    const currentSize = shapeDiv.style.width;
-    const currentIndex = sizes.indexOf(currentSize);
-    const nextIndex = (currentIndex + 1) % sizes.length;
-    const newSize = sizes[nextIndex];
-
-    shapeDiv.style.width = newSize;
-    shapeDiv.style.height = newSize;
-    updateUndoRedoHistory();
-    showToast(`Size: ${newSize}`);
-  });
-
-  // Insert into note
-  noteContent.appendChild(shapeDiv);
-  updateUndoRedoHistory();
+    saveNewFolder();
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    renderFoldersList();
+  }
 }
 
-// Delete selected shape with Delete key
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Delete" && selectedShape) {
-    if (confirm("Delete this shape?")) {
-      selectedShape.remove();
-      selectedShape = null;
-      updateUndoRedoHistory();
-      showToast("Shape deleted");
-    }
-  }
-});
+function deleteFolder(folderId, e) {
+  if (e) e.stopPropagation();
 
-/* ============================================
-   TEXT COLOR
-   ============================================ */
-
-changeColorBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  hideAllDropdowns();
-  positionDropdown(colorDropdown, changeColorBtn);
-  colorDropdown.classList.toggle("visible");
-});
-
-colorDropdown.addEventListener("click", (e) => {
-  if (e.target.tagName !== "BUTTON") return;
-
-  const color = e.target.dataset.color;
-  formatSelectedText("span", { color: color });
-  hideAllDropdowns();
-  showToast(`Color applied: ${color}`);
-});
-
-/* ============================================
-   HIGHLIGHT
-   ============================================ */
-
-highlightBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  hideAllDropdowns();
-  positionDropdown(highlightDropdown, highlightBtn);
-  highlightDropdown.classList.toggle("visible");
-});
-
-highlightDropdown.addEventListener("click", (e) => {
-  if (e.target.tagName !== "BUTTON") return;
-
-  const highlight = e.target.dataset.highlight;
-  const selection = window.getSelection();
-
-  if (selection.rangeCount === 0) {
-    showToast("Select text first!", "warning");
+  if (folderId === 'personal' || folderId === 'work' || folderId === 'ideas') {
+    showToast('⚠️', 'Default folders cannot be deleted', 'error');
     return;
   }
 
-  const range = selection.getRangeAt(0);
-  const selectedText = selection.toString();
+  openModal('Delete Folder', 'Are you sure? Notes in this folder will be uncategorized (but not deleted).', () => {
+    folders = folders.filter(f => f.id !== folderId);
+    localStorage.setItem('echo_folders', JSON.stringify(folders));
+
+    // Clear folder association for notes in this folder
+    notes.forEach(n => {
+      if (n.folderId === folderId) {
+        n.folderId = null;
+      }
+    });
+    saveAll();
+
+    if (activeFolderId === folderId) {
+      activeFolderId = 'all';
+    }
+
+    renderFoldersList();
+    renderNotesList();
+    showToast('🗑️', 'Folder deleted', '');
+  });
+}
+
+function populateFolderSelect(folderId) {
+  const select = document.getElementById('noteFolderSelect');
+  if (!select) return;
+  select.innerHTML = folders.map(f => `<option value="${f.id}" ${f.id === folderId ? 'selected' : ''}>${escHtml(f.name)}</option>`).join('');
+}
+
+function changeNoteFolder() {
+  if (!activeId) return;
+  const select = document.getElementById('noteFolderSelect');
+  const note = notes.find(n => n.id === activeId);
+  if (note && select) {
+    note.folderId = select.value;
+    note.updated = new Date().toISOString();
+    saveAll();
+    renderFoldersList();
+    renderNotesList();
+    showToast('📂', 'Note moved', 'success');
+  }
+}
+
+function updatePinFavoriteButtons() {
+  const note = notes.find(n => n.id === activeId);
+  if (!note) return;
+  document.getElementById('pinBtn').classList.toggle('active', !!note.isPinned);
+  document.getElementById('favBtn').classList.toggle('active', !!note.isFavorite);
+}
+
+function togglePin() {
+  if (!activeId) return;
+  const note = notes.find(n => n.id === activeId);
+  if (note) {
+    note.isPinned = !note.isPinned;
+    saveAll();
+    updatePinFavoriteButtons();
+    renderNotesList();
+    renderFoldersList();
+  }
+}
+
+function toggleFavorite() {
+  if (!activeId) return;
+  const note = notes.find(n => n.id === activeId);
+  if (note) {
+    note.isFavorite = !note.isFavorite;
+    saveAll();
+    updatePinFavoriteButtons();
+    renderNotesList();
+    renderFoldersList();
+  }
+}
+
+function handleTagInput(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (!activeId) return;
+    const note = notes.find(n => n.id === activeId);
+    if (!note) return;
+    
+    const val = e.target.value.trim();
+    if (val) {
+      if (!note.tags) note.tags = [];
+      if (!note.tags.includes(val)) {
+        note.tags.push(val);
+        saveAll();
+        renderTags();
+      }
+    }
+    e.target.value = '';
+  }
+}
+
+function removeTag(tag) {
+  if (!activeId) return;
+  const note = notes.find(n => n.id === activeId);
+  if (note && note.tags) {
+    note.tags = note.tags.filter(t => t !== tag);
+    saveAll();
+    renderTags();
+  }
+}
 
   if (!selectedText) {
     showToast("Please select text to highlight", "warning");
     return;
+  }
+  
+  list.innerHTML = note.tags.map(t => `
+    <div class="tag-pill">
+      #${escHtml(t)}
+      <button onclick="removeTag('${escHtml(t)}')">✕</button>
+    </div>
+  `).join('');
+}
+
+// ==========================================================================
+// NOTE CREATION & LOADING
+// ==========================================================================
+function createNewNote() {
+  // If active folder is not 'all', assign to active folder, else default to first folder
+  let folderId = activeFolderId;
+  if (folderId === 'all') {
+    folderId = folders[0] ? folders[0].id : null;
   }
 
   if (highlight === "none") {
@@ -584,89 +503,157 @@ function loadNoteFromLocal() {
       console.error("Error loading note:", error);
     }
   }
+  return text;
 }
 
-function updateUndoRedoHistory() {
-  undoRedoManager.save(noteContent.innerHTML);
-  updateHistoryButtons();
-  updateCharAndWordCount();
-  saveNoteToLocal();
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
 }
 
-/* ============================================
-   EVENT LISTENERS
-   ============================================ */
+function markUnsaved() {
+  unsaved = true;
+  const dot = document.getElementById('statusDot');
+  if (dot) dot.className = 'status-dot unsaved';
+  const txt = document.getElementById('saveStatusText');
+  if (txt) txt.textContent = 'Unsaved Changes';
+}
 
-noteTitle.addEventListener("input", saveNoteToLocal);
-noteContent.addEventListener("input", () => {
-  updateCharAndWordCount();
-  updateUndoRedoHistory();
+function markSaved() {
+  unsaved = false;
+  const dot = document.getElementById('statusDot');
+  if (dot) dot.className = 'status-dot saved';
+  const txt = document.getElementById('saveStatusText');
+  if (txt) txt.textContent = 'Saved';
+}
+
+function updateWordCount() {
+  const txt = document.getElementById('note-content').innerText || '';
+  const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  document.getElementById('wordCount').textContent =
+    `${words} word${words !== 1 ? 's' : ''} · ${txt.length} chars`;
+}
+
+// ==========================================================================
+// TOAST NOTIFICATIONS
+// ==========================================================================
+let toastTimer;
+function showToast(icon, msg, type) {
+  const t = document.getElementById('toast');
+  const tIcon = document.getElementById('toastIcon');
+  const tMsg = document.getElementById('toastMsg');
+  
+  if (!t || !tIcon || !tMsg) return;
+  
+  tIcon.textContent = icon;
+  tMsg.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.classList.remove('show'); }, 2400);
+}
+
+// ==========================================================================
+// MODALS
+// ==========================================================================
+let modalCallback = null;
+
+function openModal(title, msg, cb) {
+  const mTitle = document.getElementById('modalTitle');
+  const mMsg = document.getElementById('modalMsg');
+  const mOverlay = document.getElementById('modalOverlay');
+
+  if (!mTitle || !mMsg || !mOverlay) return;
+
+  mTitle.textContent = title;
+  mMsg.textContent = msg;
+  modalCallback = cb;
+  mOverlay.classList.add('show');
+}
+
+function closeModal() {
+  const mOverlay = document.getElementById('modalOverlay');
+  if (mOverlay) mOverlay.classList.remove('show');
+}
+
+document.getElementById('modalConfirmBtn').onclick = () => {
+  closeModal();
+  if (modalCallback) modalCallback();
+};
+
+document.getElementById('modalOverlay').onclick = (e) => {
+  if (e.target === e.currentTarget) closeModal();
+};
+
+// ==========================================================================
+// INTERFACE SYNC & TOOLBAR LISTENERS
+// ==========================================================================
+
+// Track and highlight active toolbar buttons for current selection
+function checkActiveFormats() {
+  const btns = document.querySelectorAll('.toolbar .format-btn');
+  if (btns.length === 0) return;
+
+  // Group 1: Basic styles
+  if (btns[0]) btns[0].classList.toggle('active', document.queryCommandState('bold'));
+  if (btns[1]) btns[1].classList.toggle('active', document.queryCommandState('italic'));
+  if (btns[2]) btns[2].classList.toggle('active', document.queryCommandState('underline'));
+  
+  // Group 2: Headings & text
+  const blockType = document.queryCommandValue('formatBlock');
+  if (btns[3]) btns[3].classList.toggle('active', blockType === 'h3');
+  if (btns[4]) btns[4].classList.toggle('active', blockType === 'h4');
+  if (btns[5]) btns[5].classList.toggle('active', blockType === 'p' || (blockType !== 'h3' && blockType !== 'h4'));
+
+  // Group 3: Lists
+  if (btns[6]) btns[6].classList.toggle('active', document.queryCommandState('insertUnorderedList'));
+  if (btns[7]) btns[7].classList.toggle('active', document.queryCommandState('insertOrderedList'));
+
+  // Group 4: Alignments
+  if (btns[8]) btns[8].classList.toggle('active', document.queryCommandState('justifyLeft'));
+  if (btns[9]) btns[9].classList.toggle('active', document.queryCommandState('justifyCenter'));
+  if (btns[10]) btns[10].classList.toggle('active', document.queryCommandState('justifyRight'));
+  if (btns[11]) btns[11].classList.toggle('active', document.queryCommandState('justifyFull'));
+}
+
+// Sync formatting states when cursor position changes in editor
+document.addEventListener('selectionchange', () => {
+  const activeEl = document.activeElement;
+  if (activeEl && activeEl.id === 'note-content') {
+    checkActiveFormats();
+  }
 });
 
-noteContent.addEventListener("keydown", (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === "z") {
+// Bind autosave and word counts to editor changes
+document.getElementById('noteTitleInput').addEventListener('input', triggerAutosave);
+document.getElementById('note-content').addEventListener('input', () => {
+  updateWordCount();
+  triggerAutosave();
+});
+document.getElementById('textColorInput').addEventListener('input', triggerAutosave);
+document.getElementById('fontSizeSelect').addEventListener('change', triggerAutosave);
+
+// ==========================================================================
+// KEYBOARD SHORTCUTS
+// ==========================================================================
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
     e.preventDefault();
-    undoBtn.click();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === "y") {
+    saveNote();
+  } else if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
     e.preventDefault();
-    redoBtn.click();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === "b") {
+    createNewNote();
+  } else if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
     e.preventDefault();
-    boldBtn.click();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === "i") {
+    document.getElementById('searchInput').focus();
+  } else if (e.altKey && e.key === 'p') {
     e.preventDefault();
-    italicBtn.click();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === "u") {
-    e.preventDefault();
-    underlineBtn.click();
+    togglePin();
   }
 });
-
-// Close dropdowns when clicking outside
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".main-nav")) {
-    hideAllDropdowns();
-  }
-});
-
-// Deselect shapes when clicking on note area
-noteContent.addEventListener("click", (e) => {
-  if (!e.target.closest(".note-shape")) {
-    document.querySelectorAll(".note-shape").forEach(s => s.classList.remove("selected"));
-    selectedShape = null;
-  }
-});
-
-/* ============================================
-   INITIALIZATION
-   ============================================ */
-
-window.addEventListener("load", () => {
-  loadNoteFromLocal();
-  updateCharAndWordCount();
-  updateHistoryButtons();
-});
-
-// Keyboard shortcuts hint
-console.log(
-  "%c✨ Echo Notes - Keyboard Shortcuts",
-  "color: #667eea; font-size: 16px; font-weight: bold"
-);
-console.log("%cCtrl+Z / Cmd+Z → Undo", "color: #667eea");
-console.log("%cCtrl+Y / Cmd+Y → Redo", "color: #667eea");
-console.log("%cCtrl+B / Cmd+B → Bold", "color: #667eea");
-console.log("%cCtrl+I / Cmd+I → Italic", "color: #667eea");
-console.log("%cCtrl+U / Cmd+U → Underline", "color: #667eea");
-console.log(
-  "%c\n🎨 Shapes Features:",
-  "color: #667eea; font-size: 14px; font-weight: bold"
-);
-console.log(
-  "%cDouble-click shape → Resize\nRight-click → Delete\nDelete key → Remove selected shape\nDrag → Move shape",
-  "color: #667eea"
-);
-

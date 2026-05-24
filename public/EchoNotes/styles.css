@@ -19,6 +19,16 @@ body {
   color: #2d3748;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition: var(--transition-slow);
+  z-index: 10;
+}
+
+/* Branding / Header */
+.sidebar-header {
+  padding: 24px 20px 16px;
+  display: flex;
   align-items: center;
   padding: 20px;
 }
