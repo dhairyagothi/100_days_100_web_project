@@ -43,21 +43,44 @@
                    <div>Multi-city</div>
                   </div>
                   <form action="/" class="booking_form">
-                    <div class="booking_input">
-                        <label for="arrival">To</label>
-                        <input type="text" placeholder="Arrival">
-                    </div>
+                    
                     <div class="booking_input">
                         <label for="departure">From</label>
-                        <input type="text" placeholder="Departure">
+                        <select id ='departure'>
+    <option value="">Select Departure</option>
+    <option value="Chennai">Chennai</option>
+    <option value="Delhi">Delhi</option>
+    <option value="Mumbai">Mumbai</option>
+    <option value="Bangalore">Bangalore</option>
+    <option value="Hyderabad">Hyderabad</option>
+</select>
+                    </div>
+                    <div class="booking_input">
+                        <label for="arrival">To</label>
+                        <select id="arrival">
+    <option value="">Select Arrival</option>
+    <option value="Chennai">Chennai</option>
+    <option value="Delhi">Delhi</option>
+    <option value="Mumbai">Mumbai</option>
+    <option value="Bangalore">Bangalore</option>
+    <option value="Hyderabad">Hyderabad</option>
+</select>
                     </div>
                     <div class="booking_input">
                         <label for="arrival">Date</label>
-                        <input type="text" placeholder="Date">
+                        <input
+type="date"
+id="travelDate"
+required
+placeholder="Date">
                     </div>
                   </form>
                   <div class="booking_btn">
-                    <button class="btn">Book Now</button>
+                    <button type="button"
+                             class="btn"
+                             onclick="validateBooking()">
+                             Book Now
+                    </button>
                   </div>
             </div>
         </div>

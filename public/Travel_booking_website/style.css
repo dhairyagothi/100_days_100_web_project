@@ -179,6 +179,44 @@ nav{
     background-color: rgba(255,255,255,0.2);
     border-radius: 2px;
 }
+select,
+input[type="date"]{
+    width:180px;
+
+    height:45px;
+
+    font-size:16px;
+
+    padding:0 12px;
+
+    font-family:inherit;
+
+    color:#555;
+
+    border:none;
+
+    outline:none;
+
+    background:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+#travelDate{
+    color:#777;
+}
+input[type="date"]{
+    border-radius:8px;
+
+    background:#fff;
+
+    transition:0.3s;
+}
+
+input[type="date"]:hover{
+    transform:scale(1.02);
+}
 .booking_input{
     display: grid;
     gap: 5px;
@@ -188,20 +226,36 @@ nav{
     font-weight: 500;
     color: var(--white);
 }
-.booking_input input{
-    width: 100%;
-    padding:.5rem ;
-    font-size: 1rem;
-    color: var(--text-dark);
-    outline: none;
-    border: 1px solid var(--extra-light) ;
-    border-radius: 2px;
+.booking_input select{
+
+    width:100%;
+
+    padding:.5rem;
+
+    font-size:1rem;
+
+    color:var(--text-dark);
+
+    outline:none;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#fff;
+
+    cursor:pointer;
+
 }
+
+
+
 
 .booking_btn{
     text-align: right;
 
 }
+
 .service_grid{
     margin-top: 4rem;
     display: grid;

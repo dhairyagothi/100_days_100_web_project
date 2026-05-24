@@ -60,3 +60,55 @@ const swiper = new Swiper(".swiper", {
     ...scrollRevealOption,
     interval: 500,
   });
+  ScrollReveal().reveal(".offer_card", {
+  ...scrollRevealOption,
+  interval: 500,
+});
+
+
+
+
+// Booking Form Validation
+function validateBooking(){
+
+const from=document.getElementById("departure").value;
+
+const to=document.getElementById("arrival").value;
+
+const date=document.getElementById("travelDate").value;
+
+if(from===""){
+
+alert("Please select departure");
+
+return;
+
+}
+
+if(to===""){
+
+alert("Please select arrival");
+
+return;
+
+}
+
+if(date===""){
+
+alert("Please select date");
+
+return;
+
+}
+
+if(from===to){
+
+alert("Departure and Arrival cannot be same");
+
+return;
+
+}
+
+alert("Booking details validated");
+
+}
