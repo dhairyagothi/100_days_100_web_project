@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1 class="app-title">Invoice Generator</h1>
+  <p class="app-sub">Professional Billing · GSSoC'26</p>
+
+  <div class="builder" id="builder">
+
+    <h2>Business Details</h2>
+    <div class="meta-grid">
+      <div class="field">
+        <label>Your Company / Name</label>
+        <input type="text" id="from-name" placeholder="Acme Corp." />
+      </div>
+      <div class="field">
+        <label>Invoice No.</label>
+        <input type="text" id="inv-no" placeholder="INV-2026-001" />
+      </div>
+      <div class="field full">
+        <label>Your Address / Email / Phone</label>
+        <textarea id="from-detail" placeholder="123 Street, City&#10;contact@email.com  |  +91 98765 43210"></textarea>
+      </div>
+    </div>
+
+    <h2>Bill To</h2>
+    <div class="meta-grid">
+      <div class="field">
+        <label>Client Name</label>
+        <input type="text" id="client-name" placeholder="Client Name" />
+      </div>
+      <div class="field">
+        <label>Invoice Date</label>
+        <input type="date" id="inv-date" />
+      </div>
+      <div class="field">
+        <label>Due Date</label>
+        <input type="date" id="due-date" />
+      </div>
+      <div class="field full">
+        <label>Client Address / Details</label>
+        <textarea id="client-detail" placeholder="Client address, email, etc."></textarea>
+      </div>
+    </div>
+
+    <h2>Line Items</h2>
+    <div class="items-header">
+      <span>Description</span>
+      <span>Qty</span>
+      <span>Price (₹)</span>
+      <span></span>
+    </div>
+    <div id="items-list"></div>
+    <button class="btn-add" id="btn-add-item">+ Add Item</button>
+
+    <div class="tax-row">
+      <label>Tax / GST (%)</label>
+      <input type="number" id="tax-rate" value="0" min="0" max="100" step="0.5" />
+      <label>Discount (%)</label>
+      <input type="number" id="discount-rate" value="0" min="0" max="100" step="0.5" />
+    </div>
+
+    <div class="field" style="margin-top:16px">
+      <label>Notes / Payment Terms</label>
+      <textarea id="notes" placeholder="Payment due within 30 days. Thank you for your business."></textarea>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-generate" id="btn-generate">Generate Invoice</button>
+      <button class="btn-clear" id="btn-clear">Clear</button>
+    </div>
+  </div>
+
+  <div id="invoice-preview">
+    <div class="inv-watermark">INVOICE</div>
+
+    <div class="inv-header">
+      <div class="inv-brand">
+        <div class="company-name" id="out-company"></div>
+        <div class="company-detail" id="out-from-detail"></div>
+      </div>
+      <div class="inv-meta-block">
+        <div class="inv-tag">INVOICE</div>
+        <div class="inv-details">
+          No. <span id="out-inv-no"></span><br>
+          Date <span id="out-date"></span><br>
+          Due <span id="out-due"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bill-to">
+      <div class="section-label">Bill To</div>
+      <div class="client-name" id="out-client-name"></div>
+      <div class="client-detail" id="out-client-detail"></div>
+    </div>
+
+    <table class="inv-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody id="out-items"></tbody>
+    </table>
+
+    <div class="inv-totals">
+      <div class="total-row">
+        <span class="t-label">Subtotal</span>
+        <span class="t-val" id="out-subtotal"></span>
+      </div>
+      <div class="total-row" id="discount-row">
+        <span class="t-label">Discount</span>
+        <span class="t-val" id="out-discount"></span>
+      </div>
+      <div class="total-row" id="tax-row-out">
+        <span class="t-label">Tax</span>
+        <span class="t-val" id="out-tax"></span>
+      </div>
+      <div class="total-row grand">
+        <span class="t-label">Total Due</span>
+        <span class="t-val" id="out-total"></span>
+      </div>
+    </div>
+
+    <div class="inv-footer">
+      <div class="inv-note">
+        <strong>Notes</strong>
+        <span id="out-notes"></span>
+      </div>
+      <div class="inv-stamp">ISSUED</div>
+    </div>
+  </div>
+
+  <div class="print-bar" id="print-bar">
+    <button class="btn-print" id="btn-print">🖨 Print</button>
+    <button class="btn-pdf" id="btn-pdf">⬇ Save as PDF</button>
+    <button class="btn-back" id="btn-back">← Edit</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
