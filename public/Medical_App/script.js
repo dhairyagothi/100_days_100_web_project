@@ -1,102 +1,154 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const requestForm = document.getElementById('requestForm');
-    const responseForm = document.getElementById('responseForm');
-    const feedbackForm = document.getElementById('feedbackForm');
-    const statusMessage = document.getElementById('statusMessage');
-    const loading = document.getElementById('loading');
-    const specialistResponseSection = document.getElementById('specialist-response');
-    const historyList = document.getElementById('historyList');
-    const specialistSearch = document.getElementById('specialistSearch');
-    const specialistTypeSelect = document.getElementById('specialistType');
+const specialists = [
+    "Cardiologist",
+    "Neurologist",
+    "Dermatologist",
+    "Orthopedic",
+    "Pediatrician",
+    "Psychiatrist"
+];
 
-    const specialists = ['Allergist/Immunologist', 'Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Hematologist', 'Nephrologist', 'Neurologist', 'Oncologist', 'Ophthalmologist', 'Otolaryngologist (ENT)', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Rheumatologist', 'Urologist', 'Cardiothoracic Surgeon', 'General Surgeon', 'Neurosurgeon', 'Orthopedic Surgeon', 'Plastic Surgeon', 'Vascular Surgeon', 'Family Medicine Physician', 'General Practitioner (GP)', 'Internal Medicine Physician (Internist)'];
-    const consultationHistory = [];
+const specialistSelect = document.getElementById("specialistType");
+const specialistSearch = document.getElementById("specialistSearch");
+const requestForm = document.getElementById("requestForm");
+const historyList = document.getElementById("historyList");
+const recommendationBox = document.getElementById("recommendationBox");
+const symptomSelect = document.getElementById("symptomSelect");
 
-    function updateSpecialistOptions(searchText) {
-        specialistTypeSelect.innerHTML = '';
-        const filteredSpecialists = specialists.filter(specialist => specialist.toLowerCase().includes(searchText.toLowerCase()));
-        filteredSpecialists.forEach(specialist => {
-            const option = document.createElement('option');
-            option.value = specialist;
-            option.textContent = specialist;
-            specialistTypeSelect.appendChild(option);
-        });
-    }
 
-    function renderHistory() {
-        historyList.innerHTML = '';
-        consultationHistory.forEach((historyItem) => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-                <strong>${historyItem.date}</strong><br>
-                Doctor: ${historyItem.doctorName} <br>
-                Condition: ${historyItem.condition} <br>
-                Specialist: ${historyItem.specialist} <br>
-                Status: ${historyItem.status} <br>
-                <em>${historyItem.notes || ''}</em>
-                <br><br>
-            `;
-            historyList.appendChild(listItem);
-        });
-    }
+// Load specialists into dropdown
+function loadSpecialists(list) {
 
-    specialistSearch.addEventListener('input', (event) => {
-        updateSpecialistOptions(event.target.value);
+    specialistSelect.innerHTML =
+        `<option value="">Select Specialist</option>`;
+
+    list.forEach((specialist) => {
+
+        const option = document.createElement("option");
+
+        option.value = specialist;
+        option.textContent = specialist;
+
+        specialistSelect.appendChild(option);
     });
+}
 
-    updateSpecialistOptions('');
+loadSpecialists(specialists);
 
-    requestForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const doctorName = document.getElementById('doctorName').value;
-        const patientCondition = document.getElementById('patientCondition').value;
-        const specialistType = document.getElementById('specialistType').value;
 
-        loading.style.display = 'block';
-        statusMessage.textContent = '';
+// Live search filter
+specialistSearch.addEventListener("input", () => {
 
-        setTimeout(() => {
-            loading.style.display = 'none';
-            const currentDate = new Date().toLocaleString();
-            const newHistoryItem = {
-                date: currentDate,
-                doctorName: doctorName,
-                condition: patientCondition,
-                specialist: specialistType,
-                status: 'Pending',
-                notes: ''
-            };
-            consultationHistory.push(newHistoryItem);
-            renderHistory();
+    const searchValue =
+        specialistSearch.value.toLowerCase();
 
-            statusMessage.textContent = `Consultation requested for Dr.${doctorName} regarding ${patientCondition}.            
-            Specialist type: ${specialistType}.`;
-            specialistResponseSection.style.display = 'block';
-            requestForm.reset();
-        }, 2000);
-    });
+    const filtered = specialists.filter((specialist) =>
+        specialist.toLowerCase().includes(searchValue)
+    );
 
-    responseForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const consultationId = document.getElementById('consultationId').value;
-        const suggestion = document.getElementById('suggestion').value;
-
-        const historyItem = consultationHistory.find(item => item.date === consultationId);
-        if (historyItem) {
-            historyItem.status = 'Completed';
-            historyItem.notes = suggestion;
-            renderHistory();
-        }
-
-        statusMessage.innerHTML = `Suggestion submitted for Consultation ID <strong>${consultationId}</strong>:${suggestion}`;
-        responseForm.reset();
-    });
-
-    feedbackForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const feedbackMessage = document.getElementById('feedbackMessage').value;
-
-        statusMessage.textContent = `Feedback received: ${feedbackMessage}`;
-        feedbackForm.reset();
-    });
+    loadSpecialists(filtered);
 });
+
+
+// Consultation form submission
+requestForm.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+
+    const doctorName =
+        document.getElementById("doctorName").value;
+
+    const patientCondition =
+        document.getElementById("patientCondition").value;
+
+    const specialist =
+        specialistSelect.value;
+
+    if (!specialist) {
+        alert("Please select a specialist.");
+        return;
+    }
+
+    // Create history item
+    const listItem = document.createElement("li");
+
+    listItem.innerHTML = `
+        <strong>${doctorName}</strong> requested
+        <strong>${specialist}</strong> consultation
+        for "${patientCondition}"
+    `;
+
+    historyList.prepend(listItem);
+
+    // Success message
+    alert("✅ Consultation submitted successfully!");
+
+    // Reset form
+    requestForm.reset();
+});
+
+
+// Medicine recommendations
+const recommendations = {
+
+    cold: `
+        <h3>Recommended Medicines</h3>
+        <ul>
+            <li>Paracetamol</li>
+            <li>Cetirizine</li>
+            <li>Steam Inhalation</li>
+        </ul>
+    `,
+
+    headache: `
+        <h3>Recommended Medicines</h3>
+        <ul>
+            <li>Ibuprofen</li>
+            <li>Hydration</li>
+            <li>Proper Rest</li>
+        </ul>
+    `,
+
+    fever: `
+        <h3>Recommended Medicines</h3>
+        <ul>
+            <li>Paracetamol</li>
+            <li>Electrolytes</li>
+            <li>Doctor Consultation</li>
+        </ul>
+    `,
+
+    fatigue: `
+        <h3>Recommended Suggestions</h3>
+        <ul>
+            <li>Vitamin Supplements</li>
+            <li>Sleep Improvement</li>
+            <li>Balanced Diet</li>
+        </ul>
+    `
+};
+
+
+// Symptom change
+symptomSelect.addEventListener("change", () => {
+
+    const selected =
+        symptomSelect.value;
+
+    recommendationBox.innerHTML =
+        recommendations[selected] || "";
+});
+
+
+// Simulated live heart rate
+const heartRate =
+    document.getElementById("heartRate");
+
+setInterval(() => {
+
+    const randomRate =
+        Math.floor(Math.random() * 15) + 70;
+
+    heartRate.textContent =
+        `${randomRate} BPM`;
+
+}, 3000);
