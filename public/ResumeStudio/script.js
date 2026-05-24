@@ -300,6 +300,34 @@ function initResumeStudio() {
         scaleResumePreview();
     }
 
+    // ==========================================
+    // 7. SIDEEBAR LAYOUTS
+    // ==========================================
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+
+    // Create overlay element dynamically
+    const overlay = document.createElement("div");
+    overlay.className = "sidebar-overlay";
+    document.body.appendChild(overlay);
+
+    function toggleSidebar() {
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("active");
+    }
+
+    sidebarToggle.addEventListener("click", toggleSidebar);
+    overlay.addEventListener("click", toggleSidebar);
+
+    // Close sidebar automatically when a nav-item is clicked on mobile
+    navItems.forEach(item => {
+        item.addEventListener("click", () => {
+            if (window.innerWidth <= 1024) {
+                toggleSidebar();
+            }
+        });
+    });
+
     function renderModernTemplate(v) {
         const skillsArr = v.skills ? v.skills.split(",").map(s => s.trim()).filter(Boolean) : [];
         
