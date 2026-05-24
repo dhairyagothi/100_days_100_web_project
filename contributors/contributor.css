@@ -59,14 +59,11 @@ body {
   padding: 100px 2rem 0;
 }
 
-/* Ensure navbar stays fixed at top (override style.css body > * rule) */
 #navbar {
   position: fixed !important;
   top: 0 !important;
   z-index: 100 !important;
 }
-
-
 
 /* Header */
 .contributor-header {
@@ -134,32 +131,31 @@ body {
 /* Contributors Grid */
 .contributors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  grid-auto-rows: 1fr;
-  justify-items: center;
-  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2.5rem;
+  align-items: stretch;
   margin-bottom: 8rem;
 }
 
+/* Contributor Card */
 .contributor-card {
   position: relative;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: 38px;
-  padding:3rem 2rem;
+  padding: 2.5rem 2rem;
   text-align: center;
   transition: var(--transition);
+
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
   align-items: center;
-  align-self: stretch;
+
   width: 100%;
-  height: 100%;
-  max-width: 100%;
+  min-height: 420px;
+
+  overflow: hidden;
 }
 
 .contributor-card:hover {
@@ -176,6 +172,11 @@ body {
   border: 2px solid var(--glass-border);
   object-fit: cover;
   transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.contributor-card:hover img {
+  transform: scale(1.05);
 }
 
 .contributor-card h3 {
@@ -185,11 +186,14 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* Contributor Stats */
 .contributor-stats {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 2rem;
   margin-bottom: 2rem;
+  min-height: 60px;
 }
 
 .contributor-stats .value {
@@ -205,45 +209,31 @@ body {
   text-transform: uppercase;
 }
 
-/* Contributor Action Buttons */
-
+/* Contributor Buttons */
 .contributor-links {
   display: flex;
-
   gap: 0.8rem;
-
   flex-wrap: wrap;
-
   justify-content: center;
-
   margin-top: auto;
+  width: 100%;
 }
 
 .details-btn {
   background: transparent;
-
   border: 1px solid var(--accent-color);
-
   color: var(--accent-color);
-
   padding: 0.8rem 1.4rem;
-
   border-radius: 14px;
-
   cursor: pointer;
-
   font-weight: 700;
-
   transition: var(--transition);
-
   font-family: inherit;
 }
 
 .details-btn:hover {
   background: var(--accent-color);
-
   color: #fff;
-
   transform: translateY(-3px);
 }
 
@@ -293,32 +283,12 @@ body {
 .footer p {
   color: var(--text-secondary);
 }
+
 .footer-nav {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   margin-top: 1.5rem;
-}
-
-.featured-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  color: #fff !important;
-  border: none !important;
-  padding: 0.6rem 1.2rem !important;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.85rem !important;
-  text-decoration: none;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.featured-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px var(--accent-glow);
 }
 
 .footer-link {
@@ -361,87 +331,28 @@ body {
   transform: translateY(-5px);
 }
 
-/* Stargazers */
-.stargazers-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2.5rem;
-  background: var(--glass-bg);
-  border-radius: 35px;
-  border: 1px solid var(--glass-border);
-  margin-bottom: 6rem;
-}
-
-.stargazer-item {
-  width: 45px;
-  height: 45px;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: var(--transition);
-}
-
-.stargazer-item:hover {
-  transform: scale(1.3) translateY(-5px);
-  z-index: 2;
-}
-
-.stargazer-item img {
-  width: 100%;
-  height: 100%;
-}
-
-@media (max-width: 768px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-  }
-  .stats-overview {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* ============================================
-   CONTRIBUTOR MODAL
-============================================ */
-
+/* Modal */
 .modal-overlay {
   position: fixed;
-
   inset: 0;
-
   background: rgba(0, 0, 0, 0.7);
-
   backdrop-filter: blur(10px);
-
   display: none;
-
   align-items: center;
-
   justify-content: center;
-
   z-index: 3000;
-
   padding: 2rem;
 }
 
 .modal-content {
   background: var(--glass-bg);
-
   border: 1px solid var(--glass-border);
-
   backdrop-filter: blur(25px);
-
   border-radius: 28px;
-
   width: 100%;
-
   max-width: 500px;
-
   padding: 2rem;
-
   position: relative;
-
   animation: modalFade 0.3s ease;
 }
 
@@ -451,55 +362,38 @@ body {
 
 #modalBody img {
   width: 120px;
-
   height: 120px;
-
   border-radius: 24px;
-
   margin-bottom: 1.5rem;
 }
 
 #modalBody h2 {
   margin-bottom: 1rem;
-
   font-family: 'Orbitron', sans-serif;
 }
 
 #modalBody p {
   margin-bottom: 0.8rem;
-
   color: var(--text-secondary);
 }
 
 #closeModal {
   position: absolute;
-
   top: 15px;
-
   right: 15px;
-
   width: 40px;
-
   height: 40px;
-
   border-radius: 12px;
-
   border: none;
-
   background: rgba(255, 255, 255, 0.05);
-
   color: var(--text-primary);
-
   font-size: 1.2rem;
-
   cursor: pointer;
-
   transition: var(--transition);
 }
 
 #closeModal:hover {
   background: #ff4444;
-
   color: white;
 }
 
@@ -507,314 +401,45 @@ body {
   margin-top: 1.5rem;
 }
 
-.contributors-controls {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 1.5rem;
-
-  margin-bottom: 4rem;
-
-  flex-wrap: wrap;
-
-  padding: 1.5rem;
-
-  background: var(--glass-bg);
-
-  border: 1px solid var(--glass-border);
-
-  border-radius: 28px;
-
-  backdrop-filter: blur(20px);
-
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.contributors-controls input,
-.contributors-controls select {
-  flex: 1;
-
-  min-width: 240px;
-
-  background: rgba(255, 255, 255, 0.04);
-
-  border: 1px solid var(--glass-border);
-
-  color: var(--text-primary);
-
-  padding: 1rem 1.2rem;
-
-  border-radius: 16px;
-
-  outline: none;
-
-  font-family: inherit;
-
-  font-size: 0.95rem;
-
-  transition: var(--transition);
-
-  backdrop-filter: blur(12px);
-
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.contributors-controls input::placeholder {
-  color: var(--text-secondary);
-}
-
-.contributors-controls input:focus,
-.contributors-controls select:focus {
-  border-color: var(--accent-color);
-
-  box-shadow: 0 0 0 4px var(--accent-glow);
-}
-
-#contributorSearch {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-}
-
-#contributorSearch:hover,
-#sortContributors:hover {
-  border-color: var(--accent-color);
-}
-
-/* Dropdown Styling */
-
-.contributors-controls select {
-  cursor: pointer;
-
-  appearance: none;
-
-  -webkit-appearance: none;
-
-  -moz-appearance: none;
-
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-primary) 50%),
-    linear-gradient(135deg, var(--text-primary) 50%, transparent 50%);
-
-  background-position:
-    calc(100% - 18px) calc(50% - 3px),
-    calc(100% - 12px) calc(50% - 3px);
-
-  background-size: 6px 6px;
-
-  background-repeat: no-repeat;
-
-  padding-right: 3rem;
-}
-
-/* Empty State */
-
-.empty-state {
-  text-align: center;
-
-  color: var(--text-secondary);
-
-  display: none;
-
-  margin-bottom: 4rem;
-
-  font-size: 1rem;
-
-  padding: 2rem;
-
-  border: 1px dashed var(--glass-border);
-
-  border-radius: 20px;
-
-  background: rgba(255, 255, 255, 0.02);
-}
-
 .certificate-btn {
   background: var(--accent-color);
-
   color: #fff;
-
   border: none;
-
   padding: 0.8rem 1.6rem;
-
   border-radius: 14px;
-
   cursor: pointer;
-
   font-weight: 700;
-
   margin-top: 12px;
-
   transition: 0.3s;
 }
 
 .certificate-btn:hover {
   background: var(--accent-hover, #60a5fa);
-
   transform: scale(1.03);
 }
+
 #closeCertificate {
   position: absolute;
   top: 20px;
   right: 25px;
-
   font-size: 30px;
-
   background: none;
   border: none;
-
   color: white;
-
   cursor: pointer;
-
   z-index: 1000;
 }
 
-/* Footer */
-.footer {
-  background: var(--bg-primary) !important;
-  padding: 6rem 2rem 4rem;
-  border-top: 1px solid var(--glass-border);
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 4rem;
-}
-
-.footer h3 {
-  font-family: 'Orbitron', sans-serif;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-}
-
-.footer p {
+.empty-state {
+  text-align: center;
   color: var(--text-secondary);
-}
-
-.social-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.social-btn {
-  width: 50px;
-  height: 50px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  font-size: 1.4rem;
-  transition: var(--transition);
-}
-
-.social-btn:hover {
-  background: var(--accent-color);
-  color: #fff;
-  transform: translateY(-5px);
-}
-
-/* Stargazers */
-.stargazers-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2.5rem;
-  background: var(--glass-bg);
-  border-radius: 35px;
-  border: 1px solid var(--glass-border);
-  margin-bottom: 6rem;
-}
-
-.stargazer-item {
-  width: 45px;
-  height: 45px;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: var(--transition);
-}
-
-.stargazer-item:hover {
-  transform: scale(1.3) translateY(-5px);
-  z-index: 2;
-}
-
-.stargazer-item img {
-  width: 100%;
-  height: 100%;
-}
-
-@media (max-width: 768px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-  }
-  .stats-overview {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .contributors-controls {
-    flex-direction: column;
-
-    align-items: stretch;
-
-    padding: 1.2rem;
-  }
-
-  .contributors-controls input,
-  .contributors-controls select {
-    width: 100%;
-
-    min-width: 100%;
-  }
-}
-
-@keyframes modalFade {
-  from {
-    opacity: 0;
-
-    transform: translateY(20px) scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-
-    transform: translateY(0) scale(1);
-  }
-}
-
-.rank-badge {
-  position: absolute !important;
-
-  top: 4px !important;
-
-  right: 4px !important;
-
-  width: 52px !important;
-
-  height: 52px !important;
-
-  max-width: 52px !important;
-
-  max-height: 52px !important;
-
-  object-fit: contain;
-
-  z-index: 10;
-
-  padding: 0;
-
-  margin: 0;
-}
-.rank-badge:hover {
-  transform: scale(1.1);
+  display: none;
+  margin-bottom: 4rem;
+  font-size: 1rem;
+  padding: 2rem;
+  border: 1px dashed var(--glass-border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .loading-state {
@@ -854,6 +479,150 @@ body {
   background: #ff2222;
 }
 
+.stargazers-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2.5rem;
+  background: var(--glass-bg);
+  border-radius: 35px;
+  border: 1px solid var(--glass-border);
+  margin-bottom: 6rem;
+}
+
+.stargazer-item {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.stargazer-item:hover {
+  transform: scale(1.3) translateY(-5px);
+  z-index: 2;
+}
+
+.stargazer-item img {
+  width: 100%;
+  height: 100%;
+}
+
+.contributors-controls input::placeholder {
+  color: var(--text-secondary);
+}
+
+#contributorSearch:hover,
+#sortContributors:hover {
+  border-color: var(--accent-color);
+}
+
+/* Controls */
+.contributors-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+  padding: 1.5rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  backdrop-filter: blur(20px);
+}
+
+.contributors-controls input,
+.contributors-controls select {
+  flex: 1;
+  min-width: 240px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+.contributors-controls input:focus,
+.contributors-controls select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+/* Rank Badge */
+.rank-badge {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  width: 52px !important;
+  height: 52px !important;
+  object-fit: contain;
+  z-index: 10;
+}
+
+.rank-badge:hover {
+  transform: scale(1.1);
+}
+
 .hidden {
   display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-overview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contributors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contributors-controls {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.2rem;
+  }
+
+  .contributors-controls input,
+  .contributors-controls select {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .contributor-card {
+    min-height: auto;
+  }
+
+  .contributor-links {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .details-btn,
+  .github-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
