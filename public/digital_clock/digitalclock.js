@@ -1,83 +1,57 @@
+const hoursEl = document.getElementById("hours");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
+
+const ampmEl = document.getElementById("ampm");
+
+const dayNameEl = document.getElementById("day-name");
+const fullDateEl = document.getElementById("full-date");
+
+const timezoneLabel = document.getElementById("timezone-label");
+
+const toast = document.getElementById("toast");
+
+const alarmStatus = document.getElementById("alarm-status");
+
+const alarmSound = document.getElementById("alarm-sound");
+
+const alarmPopup = document.getElementById("alarm-popup");
+
+let alarmTime = localStorage.getItem("alarmTime") || null;
+
 let alarmTriggered = false;
 
-// Start clock
-setInterval(updateClock, 1000);
-
 function updateClock() {
-  const format = localStorage.getItem('clockFormat') || 'format1';
-  const timezone = document.getElementById('timezone').value;
 
-  const now = getCurrentTimeAndDate(timezone);
+  const timezone =
+    document.getElementById("timezone").value;
 
-  switch (format) {
-    case 'format1':
-      showTimeFirst(now);
-      break;
+  let now = new Date();
 
-    case 'format2':
-      showDateFirstModern(now);
-      break;
+  if (timezone !== "local") {
 
-    case 'format3':
-      showDayFirst(now);
-      break;
-
-    default:
-      showTimeFirst(now);
-  }
-
-  checkAlarm(now.rawTime);
-}
-
-function showTimeFirst(now) {
-  document.getElementById('display').innerHTML =
-    `${now.displayTime}<br><span class="date-size">${now.date}</span>`;
-}
-
-function showDateFirstModern(now) {
-  const dateParts = now.date.split('/');
-  const day = dateParts[0];
-  const month = getMonthName(dateParts[1]);
-  const year = dateParts[2];
-
-  const formattedDate = `${day} ${month} ${year}`;
-
-  document.getElementById('display').innerHTML =
-    `<span class="date-size">${formattedDate}</span><br>${now.displayTime}`;
-}
-
-function showDayFirst(now) {
-  document.getElementById('display').innerHTML =
-    `<b>${now.day}</b><br>
-     <span class="date-size">${now.date}</span><br>
-     ${now.displayTime}`;
-}
-
-function getCurrentTimeAndDate(timezone) {
-  let time = new Date();
-
-  if (timezone !== 'local') {
-    time = new Date(
-      time.toLocaleString('en-US', { timeZone: timezone })
+    now = new Date(
+      now.toLocaleString("en-US", {
+        timeZone: timezone
+      })
     );
   }
 
-  let hours = time.getHours();
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
+  let hours = now.getHours();
 
-  // Store raw 24-hour format for alarm matching
-  const rawHours = String(hours).padStart(2, '0');
-  const rawMinutes = String(minutes).padStart(2, '0');
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
 
-  const rawTime = `${rawHours}:${rawMinutes}`;
+  const ampm = hours >= 12 ? "PM" : "AM";
 
-  // Convert for display
-  let am_pm = "AM";
+  const rawHours =
+    String(hours).padStart(2, "0");
 
-  if (hours >= 12) {
-    am_pm = "PM";
-  }
+  const rawMinutes =
+    String(minutes).padStart(2, "0");
+
+  const currentTime =
+    `${rawHours}:${rawMinutes}`;
 
   hours = hours % 12;
 
@@ -85,66 +59,28 @@ function getCurrentTimeAndDate(timezone) {
     hours = 12;
   }
 
-  const displayHours = String(hours).padStart(2, '0');
-  const displayMinutes = String(minutes).padStart(2, '0');
-  const displaySeconds = String(seconds).padStart(2, '0');
+  hoursEl.textContent =
+    String(hours).padStart(2, "0");
 
-  const displayTime =
-    `${displayHours}:${displayMinutes}:${displaySeconds} ${am_pm}`;
+  minutesEl.textContent =
+    String(minutes).padStart(2, "0");
 
-  const currentDate =
-    `${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear()}`;
+  secondsEl.textContent =
+    String(seconds).padStart(2, "0");
+
+  ampmEl.textContent = ampm;
 
   const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
   ];
 
-  return {
-    displayTime,
-    rawTime,
-    date: currentDate,
-    day: days[time.getDay()]
-  };
-}
-
-function setClockStyleAndFormat(face, format) {
-  localStorage.setItem('clockFormat', format);
-  setClockFace(face);
-  updateClock();
-}
-
-function setClockFace(face) {
-  const display = document.getElementById('display');
-  const clock = document.getElementById('clock');
-
-  // Add transition effect
-  display.style.opacity = '0.7';
-  clock.style.opacity = '0.7';
-
-  // Update classes after brief delay for smooth transition
-  setTimeout(() => {
-    display.className =
-      `relative font-mono text-4xl md:text-5xl 
-       border-4 rounded-lg p-4 mb-4 ${face}`;
-
-    clock.className =
-      `relative font-mono text-4xl md:text-5xl 
-       border-4 rounded-lg p-4 ${face}`;
-
-    // Fade back in
-    display.style.opacity = '1';
-    clock.style.opacity = '1';
-  }, 150);
-}
-
-function getMonthName(monthNumber) {
-  const monthNames = [
+  const months = [
     "January",
     "February",
     "March",
@@ -159,178 +95,322 @@ function getMonthName(monthNumber) {
     "December"
   ];
 
-  return monthNames[monthNumber - 1];
+  dayNameEl.textContent =
+    days[now.getDay()];
+
+  fullDateEl.textContent =
+    `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  timezoneLabel.textContent =
+    document.getElementById("timezone")
+    .selectedOptions[0].text;
+
+  checkAlarm(currentTime);
 }
 
-function toggleAlarmMode() {
-  const alarmInput = document.getElementById('alarm-time');
+function setTheme(theme) {
 
-  const confirmButton =
-    document.querySelector('#alarm-container button:nth-child(3)');
+  const root =
+    document.documentElement;
 
-  // Add smooth transition animations
-  if (alarmInput.classList.contains('hidden')) {
-    alarmInput.classList.remove('hidden');
-    confirmButton.classList.remove('hidden');
+  const label =
+    document.getElementById("theme-label");
 
-    alarmInput.style.animation = 'slideDown 0.3s ease-out';
-    confirmButton.style.animation = 'slideDown 0.3s ease-out';
-  } else {
-    alarmInput.style.animation =
-      'slideDown 0.3s ease-out reverse';
+  const buttons =
+    document.querySelectorAll(".theme-btn");
 
-    confirmButton.style.animation =
-      'slideDown 0.3s ease-out reverse';
+  buttons.forEach(btn =>
+    btn.classList.remove("active")
+  );
 
-    setTimeout(() => {
-      alarmInput.classList.add('hidden');
-      confirmButton.classList.add('hidden');
-    }, 300);
+  if (theme === "classic") {
+
+    root.style.setProperty(
+      "--primary",
+      "#00ff99"
+    );
+
+    label.textContent =
+      "CLASSIC MODE";
+
+    document
+      .querySelector(".classic-btn")
+      .classList.add("active");
   }
+
+  else if (theme === "modern") {
+
+    root.style.setProperty(
+      "--primary",
+      "#3b82f6"
+    );
+
+    label.textContent =
+      "MODERN MODE";
+
+    document
+      .querySelector(".modern-btn")
+      .classList.add("active");
+  }
+
+  else {
+
+    root.style.setProperty(
+      "--primary",
+      "#ec4899"
+    );
+
+    label.textContent =
+      "FUTURISTIC MODE";
+
+    document
+      .querySelector(".futuristic-btn")
+      .classList.add("active");
+  }
+
+  localStorage.setItem(
+    "clockTheme",
+    theme
+  );
+}
+
+function toggleAlarmSection() {
+
+  document
+    .getElementById("alarm-controls")
+    .classList.toggle("hidden");
 }
 
 function setAlarm() {
-  const alarmTime =
-    document.getElementById('alarm-time').value;
 
-  if (!alarmTime) {
-    alert("Please select a valid time.");
+  const input =
+    document.getElementById("alarm-time");
+
+  if (!input.value) {
+
+    showToast("Select alarm time");
     return;
   }
 
-  localStorage.setItem('alarmTime', alarmTime);
+  alarmTime = input.value;
 
-  // Reset trigger state
+  localStorage.setItem(
+    "alarmTime",
+    alarmTime
+  );
+
+  alarmStatus.textContent =
+    alarmTime;
+
+  showToast(
+    `Alarm set for ${alarmTime}`
+  );
+}
+
+function setTheme(theme) {
+
+  const root =
+    document.documentElement;
+
+  const label =
+    document.getElementById("theme-label");
+
+  const buttons =
+    document.querySelectorAll(".theme-btn");
+
+  const body =
+    document.body;
+
+  const card =
+    document.querySelector(".clock-card");
+
+  buttons.forEach(btn =>
+    btn.classList.remove("active")
+  );
+
+  // Remove old themes
+  body.classList.remove(
+    "classic-theme",
+    "modern-theme",
+    "future-theme"
+  );
+
+  card.classList.remove(
+    "classic-clock",
+    "modern-clock",
+    "future-clock"
+  );
+
+  if (theme === "classic") {
+
+    root.style.setProperty(
+      "--primary",
+      "#00ff99"
+    );
+
+    label.textContent =
+      "CLASSIC MODE";
+
+    document
+      .querySelector(".classic-btn")
+      .classList.add("active");
+
+    body.classList.add(
+      "classic-theme"
+    );
+
+    card.classList.add(
+      "classic-clock"
+    );
+  }
+
+  else if (theme === "modern") {
+
+    root.style.setProperty(
+      "--primary",
+      "#3b82f6"
+    );
+
+    label.textContent =
+      "MODERN MODE";
+
+    document
+      .querySelector(".modern-btn")
+      .classList.add("active");
+
+    body.classList.add(
+      "modern-theme"
+    );
+
+    card.classList.add(
+      "modern-clock"
+    );
+  }
+
+  else if (theme === "futuristic") {
+
+    root.style.setProperty(
+      "--primary",
+      "#ec4899"
+    );
+
+    label.textContent =
+      "FUTURISTIC MODE";
+
+    document
+      .querySelector(".futuristic-btn")
+      .classList.add("active");
+
+    body.classList.add(
+      "future-theme"
+    );
+
+    card.classList.add(
+      "future-clock"
+    );
+  }
+
+  localStorage.setItem(
+    "clockTheme",
+    theme
+  );
+}
+
+
+function clearAlarm() {
+
+  localStorage.removeItem(
+    "alarmTime"
+  );
+
+  alarmTime = null;
+
   alarmTriggered = false;
 
-  // Unlock audio for browser autoplay policy
-  const alarmSound =
-    document.getElementById('alarm-sound');
+  alarmStatus.textContent =
+    "Not Set";
 
-  alarmSound.load();
-
-  alarmSound.play()
-    .then(() => {
-      alarmSound.pause();
-      alarmSound.currentTime = 0;
-    })
-    .catch(() => {
-      console.log("Audio initialized after user interaction.");
-    });
-
-  // Show success animation
-  const confirmButton =
-    document.querySelector('#alarm-container button:nth-child(3)');
-
-  confirmButton.classList.add('success-animation');
-
-  // Create success notification
-  const successMsg = document.createElement('div');
-
-  successMsg.textContent =
-    `✓ Alarm set for ${alarmTime}`;
-
-  successMsg.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: rgba(34, 197, 94, 0.9);
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    font-size: 1rem;
-    animation: slideDown 0.3s ease-out;
-    z-index: 2000;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-  `;
-
-  document.body.appendChild(successMsg);
-
-  setTimeout(() => {
-    confirmButton.classList.remove('success-animation');
-  }, 600);
-
-  setTimeout(() => {
-    successMsg.style.animation =
-      'slideDown 0.3s ease-out reverse';
-
-    setTimeout(() => successMsg.remove(), 300);
-  }, 3000);
-
-  alert(`Alarm set for ${alarmTime}`);
+  showToast("Alarm cleared");
 }
 
 function checkAlarm(currentTime) {
-  const alarmTime =
-    localStorage.getItem('alarmTime');
 
   if (
-    alarmTime &&
+    alarmTime !== null &&
     currentTime === alarmTime &&
     !alarmTriggered
   ) {
+
     alarmTriggered = true;
+
     triggerAlarm();
   }
 }
 
 function triggerAlarm() {
-  const alarmSound =
-    document.getElementById('alarm-sound');
 
-  const alarmPopup =
-    document.getElementById('alarm-popup');
-
-  alarmPopup.classList.remove('hidden');
+  alarmPopup.classList.remove(
+    "hidden"
+  );
 
   alarmSound.loop = true;
 
-  alarmSound.play()
-    .then(() => {
-      console.log("Alarm playing.");
-    })
-    .catch((error) => {
-      console.error("Audio playback failed:", error);
-
-      alert(
-        "Browser blocked alarm sound. Please interact with the page first."
-      );
-    });
-
-  // Add pulsing effect to popup
-  setInterval(() => {
-    alarmPopup.style.animation = 'none';
-
-    setTimeout(() => {
-      alarmPopup.style.animation =
-        'alarmShake 0.5s ease-in-out';
-    }, 10);
-  }, 2000);
+  alarmSound.play().catch(() => {
+    showToast(
+      "Browser blocked audio"
+    );
+  });
 }
 
 function stopAlarm() {
-  const alarmSound =
-    document.getElementById('alarm-sound');
 
-  const alarmPopup =
-    document.getElementById('alarm-popup');
+  alarmPopup.classList.add(
+    "hidden"
+  );
 
   alarmSound.pause();
+
   alarmSound.currentTime = 0;
 
-  // Add smooth close animation
-  alarmPopup.style.animation =
-    'alarmEntrance 0.4s ease-out reverse';
-
-  setTimeout(() => {
-    alarmPopup.classList.add('hidden');
-    alarmPopup.style.animation = '';
-  }, 400);
-
-  localStorage.removeItem('alarmTime');
-
   alarmTriggered = false;
+
+  // Remove saved alarm
+  localStorage.removeItem("alarmTime");
+
+  alarmTime = null;
+
+  // Update UI
+  alarmStatus.textContent =
+    "Not Set";
+
+  showToast("Alarm stopped");
 }
 
-// Initial load
+function showToast(message) {
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+
+    toast.classList.remove("show");
+
+  }, 3000);
+}
+
+const savedTheme =
+  localStorage.getItem("clockTheme")
+  || "classic";
+
+setTheme(savedTheme);
+
+if (alarmTime) {
+
+  alarmStatus.textContent =
+    alarmTime;
+}
+
 updateClock();
+
+setInterval(updateClock, 1000);
