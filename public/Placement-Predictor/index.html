@@ -121,6 +121,32 @@
     <button id="predictBtn">Predict Placement</button>
 
     <div class="result-box" id="resultBox">
+
+      <div class="meter-wrapper">
+        <div class="progress-ring" id="progressRing">
+          <svg class="progress-svg" width="180" height="180">
+            <circle
+              class="progress-bg"
+              cx="90"
+              cy="90"
+              r="75"
+            ></circle>
+            <circle
+              class="progress-circle"
+              id="progressCircle"
+              cx="90"
+              cy="90"
+              r="75"
+            ></circle>
+          </svg>
+
+        <div class="meter-content">
+          <h2 id="meterScore">0%</h2>
+          <p>Placement Chance</p>
+        </div>
+      </div>
+    </div>
+    
       <h2>Your Prediction</h2>
 
       <div class="result-card">

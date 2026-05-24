@@ -1,3 +1,15 @@
+const progressCircle =
+  document.getElementById("progressCircle");
+
+const radius = 75;
+
+const circumference = 2 * Math.PI * radius;
+
+progressCircle.style.strokeDasharray =
+  circumference;
+
+progressCircle.style.strokeDashoffset =
+  circumference;
 const predictBtn = document.getElementById("predictBtn");
 
 predictBtn.addEventListener("click", () => {
@@ -53,6 +65,41 @@ predictBtn.addEventListener("click", () => {
   }
 
   document.getElementById("placementChance").textContent = `${score}%`;
+  const circle = document.getElementById("progressCircle");
+
+const meterScore = document.getElementById("meterScore");
+
+const radius = 75;
+
+const circumference = 2 * Math.PI * radius;
+
+const offset =
+  circumference - (score / 100) * circumference;
+
+circle.style.strokeDashoffset = offset;
+
+meterScore.textContent = `${score}%`;
+if (score >= 80) {
+
+  circle.style.stroke = "#22c55e";
+
+  circle.style.filter =
+    "drop-shadow(0 0 12px rgba(34,197,94,0.8))";
+
+} else if (score >= 60) {
+
+  circle.style.stroke = "#eab308";
+
+  circle.style.filter =
+    "drop-shadow(0 0 12px rgba(234,179,8,0.8))";
+
+} else {
+
+  circle.style.stroke = "#ef4444";
+
+  circle.style.filter =
+    "drop-shadow(0 0 12px rgba(239,68,68,0.8))";
+}
   document.getElementById("expectedPackage").textContent = `₹${packageValue} LPA`;
   document.getElementById("suggestion").textContent = suggestion;
 
