@@ -27,12 +27,6 @@ const errorLogs = {
     description: document.getElementById('descriptionError'),
     category: document.getElementById('categoryError')
 };
-document.addEventListener('DOMContentLoaded', () => {
-    initializeThemeEngine();
-    setDefaultDateToToday();
-    setupUserInteractionEvents();
-    calculateAndRefreshSummary();
-});
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeThemeEngine();
