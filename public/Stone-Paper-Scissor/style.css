@@ -1,5 +1,4 @@
-
- {
+{
   font-family: "Dangrek", "Roboto";
 }
 
@@ -23,8 +22,6 @@ body {
   overflow: hidden;
   /* Prevents weird scrollbars */
 }
-
-
 
 h1 {
   color: #fff;
@@ -67,7 +64,6 @@ button {
   border: 8px solid white;
   padding-left: 10px;
   padding-bottom: 10px;
-
 }
 
 .scoreboard {
@@ -98,22 +94,6 @@ button {
 
 .export {
   display: none;
-}
-
-.stone1 {
-  position: relative;
-}
-
-.paper1 {
-  position: relative;
-}
-
-.scissor1 {
-  position: relative;
-}
-
-.line {
-  position: relative;
 }
 
 .line1 {
@@ -175,12 +155,6 @@ button {
   right: 7%;
 }
 
-.reset_button {
-  background-color: purple;
-  color: white;
-  margin-top: 85vh;
-}
-
 .logo3 {
   position: absolute;
   top: 28%;
@@ -193,7 +167,6 @@ button {
   from {
     background-color: #FF0099;
   }
-
   to {
     background-color: #6f2a61;
   }
@@ -323,14 +296,6 @@ ul li::before {
   letter-spacing: 1.7px;
 }
 
-.opt-U {
-  background: none;
-}
-
-.opt-P {
-  background: none;
-}
-
 .ipt-P {
   color: #fff;
   font-family: Roboto;
@@ -339,14 +304,6 @@ ul li::before {
   font-weight: 600;
   line-height: normal;
   letter-spacing: 1.7px;
-  background: none;
-}
-
-.opt-U img {
-  background: none;
-}
-
-.opt-P img {
   background: none;
 }
 
@@ -499,7 +456,6 @@ ul li::before {
   bottom: 30px;
   right: 30px;
   margin: 0;
-  /* Clears out the old margin-left: 85vw and margin-bottom */
 }
 
 .rules {
@@ -519,11 +475,8 @@ ul li::before {
 .btn1 {
   position: absolute;
   bottom: 30px;
-  right: 120px;
-  /* <-- This is a typo! */
-  /* Positions it nicely to the left of the Next button */
+  right: 170px; /* Shifted left from 120px to prevent button collisions */
   margin: 0;
-  /* Clears out the old margin-top: 91vh */
 }
 
 #nxt {
@@ -564,7 +517,6 @@ ul li::before {
   margin-left: 3vw;
 }
 
-/* Add this to your existing CSS */
 .chart {
   margin-top: 30px;
   display: flex;
@@ -575,18 +527,13 @@ ul li::before {
   position: absolute;
   bottom: 30px;
   left: 30px;
-  /* Anchors it cleanly to the bottom-left corner */
 }
 
 .reset_button {
   background-color: purple;
   color: white;
   margin-top: 0;
-  /* Clears the old 85vh push! */
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
 }
-
-;
-
