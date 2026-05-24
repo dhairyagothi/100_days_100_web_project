@@ -255,13 +255,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         isPaused = false;
+        if(!pausebtn) return ;
         pausebtn.innerText = 'Pause';
         
         updateTimerDisplay();
         tickCountdown();
     };
 
-    function tickCountdown() {
+function tickCountdown() {
+
+    clearInterval(countdownInterval);
+
     updateTimerDisplay();
 
     countdownInterval = setInterval(() => {
