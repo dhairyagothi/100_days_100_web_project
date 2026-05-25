@@ -2069,3 +2069,17 @@ body::after {
 .toast {
   z-index: 100001;
 }
+
+/* ============================================================
+   ACCESSIBILITY — KEYBOARD FOCUS OUTLINES
+   Uses :focus-visible so mouse users are unaffected.
+   ============================================================ */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

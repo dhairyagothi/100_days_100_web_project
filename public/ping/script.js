@@ -48,8 +48,46 @@ const net = {
   color: "white"
 };
 
+const WIN_SCORE = 7;
+const modal = document.getElementById("gameModal");
+const resultText = document.getElementById("resultText");
+const finalScore = document.getElementById("finalScore");
+
+function showGameOver(winner) {
+  gameRunning = false;
+  cancelAnimationFrame(animationId);
+  resultText.textContent = winner === "player" ? "🎉 You Won!" : "😢 Computer Won!";
+  finalScore.textContent = `Final Score: ${user.score} — ${computer.score}`;
+  modal.classList.remove("hidden");
+}
+
+function resetGame() {
+  user.score = 0;
+  computer.score = 0;
+  user.y = canvas.height / 2 - user.height / 2;
+  computer.y = canvas.height / 2 - computer.height / 2;
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height / 2;
+  ball.speed = 5;
+  ball.velocityX = 5;
+  ball.velocityY = 5;
+  modal.classList.add("hidden");
+  render();
+}
+
+document.getElementById("playAgainBtn").addEventListener("click", () => {
+  resetGame();
+  gameRunning = true;
+  animate();
+});
+
+document.getElementById("closeBtn").addEventListener("click", () => {
+  resetGame();
+});
+
 restartBtn.addEventListener("click", () => {
-  document.location.reload();
+  resetGame();
+  gameRunning = false;
 });
 
 window.addEventListener("load", () => {
@@ -182,12 +220,12 @@ function update() {
 
   // UPDATE THE SCORE
   if (ball.x - ball.radius < 0) {
-    // THE COMPUTER GAINS 1 POINT
     computer.score++;
+    if (computer.score >= WIN_SCORE) { showGameOver("computer"); return; }
     resetBall();
   } else if (ball.x + ball.radius > canvas.width) {
-    // THE USER GAINS 1 POINT
     user.score++;
+    if (user.score >= WIN_SCORE) { showGameOver("player"); return; }
     resetBall();
   }
 }

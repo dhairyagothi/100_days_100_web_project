@@ -198,9 +198,19 @@ document.getElementById('search-input').addEventListener('input', function() {
   if (!query) { results.innerHTML = ''; return; }
   const cards = [...document.querySelectorAll('.card-title')];
   const matched = cards.filter(c => c.textContent.toLowerCase().includes(query));
-  results.innerHTML = matched.length
-    ? matched.map(c => `<div style="padding:0.5rem 0;border-bottom:1px solid #333;">${c.textContent}</div>`).join('')
-    : '<div>No results found.</div>';
+  results.innerHTML = '';
+  if (matched.length) {
+    matched.forEach(c => {
+      const div = document.createElement('div');
+      div.style.cssText = 'padding:0.5rem 0;border-bottom:1px solid #333;';
+      div.textContent = c.textContent;
+      results.appendChild(div);
+    });
+  } else {
+    const div = document.createElement('div');
+    div.textContent = 'No results found.';
+    results.appendChild(div);
+  }
 });
 
 // ===== PROFILE =====
