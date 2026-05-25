@@ -554,6 +554,17 @@
           </div>
         </div>
       </section>
+      <section class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-8 fade-in">
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h2 class="text-2xl font-bold">⚖️ Algorithm Comparison Mode</h2>
+              <p class="text-slate-400 mt-1">Run all algorithms on the same input and compare side-by-side.</p>
+            </div>
+            <button id="compareToggle" class="px-6 py-3 rounded-2xl font-semibold border border-cyan-400/30 text-cyan-300 hover:bg-cyan-400/10 transition-all">
+              Enable Compare Mode
+            </button>
+          </div>
+      </section>
 
       <!-- Process Configuration -->
       <section
@@ -699,6 +710,14 @@
 
           <div id="analysisContent"></div>
         </div>
+      </section>
+      <section id="comparisonResults" class="hidden fade-in mt-8">
+          <div class="bg-white/5 border border-white/10 rounded-3xl p-8 mb-8">
+            <h2 class="text-3xl font-bold mb-6">⚖️ Algorithm Comparison Dashboard</h2>
+            <div id="comparisonTable" class="overflow-x-auto mb-8"></div>
+            <div id="comparisonCharts" class="grid md:grid-cols-2 gap-6 mb-8"></div>
+            <div id="recommendationBox" class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-6"></div>
+          </div>
       </section>
     </main>
 
@@ -1464,6 +1483,151 @@
           inputs[1].value = sample[index].burst;
         });
       }
+      // ============================================================
+// COMPARISON MODE
+// ============================================================
+let compareMode = false;
+
+document.getElementById('compareToggle').addEventListener('click', () => {
+  compareMode = !compareMode;
+  const btn = document.getElementById('compareToggle');
+  btn.textContent = compareMode ? '✅ Compare Mode ON' : 'Enable Compare Mode';
+  btn.classList.toggle('bg-cyan-400/20', compareMode);
+});
+
+const ALL_ALGORITHMS = ['fcfs','sjf','srtf','rr','priority','priority_preemptive','hrrn','multilevel'];
+
+function runComparison(baseInput) {
+  const results = {};
+
+  ALL_ALGORITHMS.forEach(algo => {
+    // Skip priority-based algorithms if no priority field in input
+    const needsPriority = ['priority','priority_preemptive','multilevel'].includes(algo);
+    const hasPriority = baseInput.processes[0]?.priority !== undefined;
+    if (needsPriority && !hasPriority) return;
+
+    const cloned = structuredClone(baseInput.processes).map(p => ({
+      ...p, remainingTime: p.burst, completionTime:0,
+      turnaroundTime:0, waitingTime:0, responseTime:-1
+    }));
+
+    try {
+      const r = simulate({ algorithm: algo, processes: cloned, timeQuantum: baseInput.timeQuantum || 2 });
+      results[algo] = r.metrics;
+    } catch(e) {}
+  });
+
+  return results;
+}
+
+function displayComparison(results) {
+  const algos = Object.keys(results);
+  const metrics = ['averageWaitingTime','averageTurnaroundTime','averageResponseTime','cpuUtilization','throughput'];
+  const labels  = ['Avg Waiting','Avg Turnaround','Avg Response','CPU Util %','Throughput'];
+  // lower is better for first 3, higher for last 2
+  const higherBetter = [false, false, false, true, true];
+
+  // --- Best per metric ---
+  const best = {};
+  metrics.forEach((m, i) => {
+    best[m] = algos.reduce((b, a) =>
+      higherBetter[i] ? (results[a][m] > results[b][m] ? a : b)
+                      : (results[a][m] < results[b][m] ? a : b)
+    , algos[0]);
+  });
+
+  // --- Table ---
+  const headers = ['Algorithm', ...labels].map(h => `<th class="px-4 py-3 text-left">${h}</th>`).join('');
+  const worst = {};
+metrics.forEach((m, i) => {
+  worst[m] = algos.reduce((b, a) =>
+    higherBetter[i] ? (results[a][m] < results[b][m] ? a : b)
+                    : (results[a][m] > results[b][m] ? a : b)
+  , algos[0]);
+});
+
+const rows = algos.map(algo => {
+  const cells = metrics.map((m, i) => {
+    const isBest = best[m] === algo;
+    const isWorst = worst[m] === algo;
+    const val = m === 'throughput' ? results[algo][m].toFixed(3)
+              : m === 'cpuUtilization' ? results[algo][m].toFixed(1)+'%'
+              : results[algo][m].toFixed(2);
+    return `<td class="px-4 py-3 ${isBest ? 'text-emerald-400 font-bold' : isWorst ? 'text-red-400' : ''}">${val}${isBest ? ' 🏆' : isWorst ? ' ⚠️' : ''}</td>`;
+  }).join('');
+  return `<tr class="border-b border-white/5 hover:bg-white/5"><td class="px-4 py-3 font-semibold">${algo.toUpperCase()}</td>${cells}</tr>`;
+}).join('');
+  document.getElementById('comparisonTable').innerHTML = `
+    <table class="w-full text-sm">
+      <thead><tr class="bg-gradient-to-r from-cyan-600 to-blue-600">${headers}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+
+  // --- Bar Charts ---
+  const colors = ['#22d3ee','#3b82f6','#8b5cf6','#ec4899','#f59e0b','#10b981','#ef4444','#14b8a6'];
+  document.getElementById('comparisonCharts').innerHTML = metrics.map((m, i) => {
+    const max = Math.max(...algos.map(a => results[a][m]));
+    const bars = algos.map((a, ai) => {
+      const pct = ((results[a][m] / max) * 100).toFixed(1);
+      return `
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-28 text-xs text-slate-400 text-right">${a.toUpperCase()}</span>
+          <div class="flex-1 bg-white/5 rounded-full h-5 overflow-hidden">
+            <div class="h-full rounded-full flex items-center pl-2 text-xs font-bold text-white"
+              style="width:${pct}%; background:${colors[ai]}; transition:width 0.6s ease">
+              ${results[a][m].toFixed(2)}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    return `<div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+      <h3 class="font-bold mb-3 text-slate-200">${labels[i]}</h3>${bars}</div>`;
+  }).join('');
+
+  // --- Recommendation ---
+  const scoreBoard = {};
+  algos.forEach(a => scoreBoard[a] = 0);
+  Object.values(best).forEach(a => scoreBoard[a] = (scoreBoard[a]||0) + 1);
+  const winner = Object.entries(scoreBoard).sort((a,b)=>b[1]-a[1])[0][0];
+
+  document.getElementById('recommendationBox').innerHTML = `
+    <h3 class="text-xl font-bold text-emerald-400 mb-2">🏆 Recommended Algorithm: ${winner.toUpperCase()}</h3>
+    <p class="text-slate-300">${algorithmInfo[winner].description}</p>
+   <p class="text-slate-400 text-sm mt-2">Won ${scoreBoard[winner]} out of ${metrics.length} metric categories.</p>
+<p class="text-xs text-slate-500 mt-3 border-t border-white/10 pt-3">📌 Avg Waiting, Turnaround & Response → lower is better &nbsp;|&nbsp; CPU Utilization & Throughput → higher is better</p>`;
+
+  document.getElementById('comparisonResults').classList.remove('hidden');
+  document.getElementById('comparisonResults').scrollIntoView({ behavior:'smooth' });
+}
+
+// --- Hook into existing runSimulation ---
+const _originalRun = runSimulation;
+// Wrap the run button click instead:
+elements.runSimulation.removeEventListener('click', runSimulation);
+elements.runSimulation.addEventListener('click', async () => {
+  hideError();
+  setLoading(true);
+  try {
+    const input = collectInputData();
+    if (!input) { setLoading(false); return; }
+    const result = simulate(input);
+    displayResults(result);
+    elements.results.classList.remove('hidden');
+    elements.results.scrollIntoView({ behavior:'smooth' });
+
+    if (compareMode) {
+      const compData = runComparison(input);
+      displayComparison(compData);
+      const skipped = ALL_ALGORITHMS.filter(a =>
+        ['priority','priority_preemptive','multilevel'].includes(a) && !input.processes[0]?.priority
+      );
+    if (skipped.length) showError(`ℹ️ Skipped in comparison (no priority values): ${skipped.join(', ')}`);
+    } else {
+      document.getElementById('comparisonResults').classList.add('hidden');
+    }
+  } catch(e) { showError(e.message); }
+  finally { setLoading(false); }
+});
     </script>
   </body>
 </html>

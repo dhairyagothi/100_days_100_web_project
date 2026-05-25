@@ -163,6 +163,26 @@
       </div>
 
       <div class="projects-header">
+        <!-- Filter Chips -->
+        <div class="filter-chips" id="filterChips" style="margin-bottom: 20px;">
+          <button class="chip active" data-filter="all" id="filterAll">
+            All <span class="chip-count" id="allCount">Projects</span>
+          </button>
+          <button class="chip" data-filter="game" id="filterGame">
+            Games
+          </button>
+          <button class="chip" data-filter="clone" id="filterClone">
+            Clones
+          </button>
+          <button class="chip" data-filter="tool" id="filterTool">
+            Tools
+          </button>
+          <button class="chip" data-filter="ui" id="filterUI">
+            UI / Animation
+          </button>
+          <button class="chip" data-filter="api" id="filterAPI">APIs</button>
+        </div>
+
         <div class="search-bar">
           <i class="fas fa-search search-icon"></i>
           <input
@@ -180,6 +200,12 @@
             <option value="az">A-Z</option>
             <option value="latest">Latest Day</option>
             <option value="difficulty">Difficulty</option>
+          </select>
+          <select id="difficultyFilter" aria-label="Filter projects by difficulty">
+            <option value="all">Difficulty (All)</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
           </select>
         </div>
       </div>
@@ -203,25 +229,7 @@
         </select>
       </div>
 
-    <!-- Filter Chips -->
-    <div class="filter-chips" id="filterChips">
-      <button class="chip active" data-filter="all" id="filterAll">
-        All <span class="chip-count" id="allCount">Projects</span>
-      </button>
-      <button class="chip" data-filter="game" id="filterGame">
-        Games
-      </button>
-      <button class="chip" data-filter="clone" id="filterClone">
-        Clones
-      </button>
-      <button class="chip" data-filter="tool" id="filterTool">
-        Tools
-      </button>
-      <button class="chip" data-filter="ui" id="filterUI">
-        UI / Animation
-      </button>
-      <button class="chip" data-filter="api" id="filterAPI">APIs</button>
-    </div>
+
 
     <!-- Project Grid -->
     <div class="project-grid" id="projectGrid"></div>

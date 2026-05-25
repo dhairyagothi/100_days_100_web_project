@@ -1,12 +1,12 @@
-const form = document.getElementById("searchForm");
-const input = document.getElementById("usernameInput");
-const statusBox = document.getElementById("statusBox");
-const profileCard = document.getElementById("profileCard");
-const reposSection = document.getElementById("reposSection");
-const reposList = document.getElementById("reposList");
+const form = document.getElementById("search-form") || document.getElementById("searchForm");
+const input = document.getElementById("username-input") || document.getElementById("usernameInput");
+const statusBox = document.getElementById("status-box") || document.getElementById("statusBox");
+const profileCard = document.getElementById("profile-card") || document.getElementById("profileCard");
+const reposSection = document.getElementById("repos-section") || document.getElementById("reposSection");
+const reposList = document.getElementById("repos-list") || document.getElementById("reposList");
 
-const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
+const themeToggle = document.getElementById("theme-toggle") || document.getElementById("themeToggle");
+const themeIcon = document.getElementById("theme-icon") || document.getElementById("themeIcon");
 
 const elements = {
   avatar: document.getElementById("avatar"),
@@ -35,7 +35,16 @@ if (!searchResultsContainer) {
     overflow: hidden;
     border: 1px solid var(--border, #ccc);
   `;
-  form.parentNode.insertBefore(searchResultsContainer, profileCard);
+  
+  // Defensive check: If form is missing or null, insert relative to profileCard layout container
+  if (profileCard && profileCard.parentNode) {
+    profileCard.parentNode.insertBefore(searchResultsContainer, profileCard);
+  } else if (form && form.parentNode) {
+    form.parentNode.appendChild(searchResultsContainer);
+  } else {
+    // Ultimate fallback if DOM structure is unexpectedly detached
+    document.body.appendChild(searchResultsContainer);
+  }
 }
 
 function updateThemeIcon() {
@@ -240,14 +249,26 @@ async function fetchUser(username) {
   }
 }
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  fetchUser(input.value);
-});
+// Look for the form via fallback IDs, and fallback to the CSS class if those fail
+const activeForm = form || document.querySelector(".search-form");
+const activeInput = input || document.querySelector("input");
+
+if (activeForm) {
+  activeForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (activeInput) {
+      fetchUser(activeInput.value);
+    }
+  });
+} else {
+  console.warn("Senior Dev Alert: Target search form element could not be found in the DOM structure.");
+}
 
 document.querySelectorAll(".quick-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    input.value = btn.dataset.user;
+    if (activeInput) {
+      activeInput.value = btn.dataset.user;
+    }
     fetchUser(btn.dataset.user);
   });
 });
