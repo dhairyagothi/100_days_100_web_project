@@ -1,6 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left"></div>
+        <h1>Resume Studio</h1>
+        <div class="header-right">
+            <button id="themeSwitcher" title="Switch Theme" aria-label="Switch to dark mode">
+                <span id="themeIcon">&#9790;</span>
+            </button>
+        </div>
+    </header>
+    <main>
+        <section class="builder">
+            <h2>Resume Builder</h2>
+
+            <div class="template-selector">
+                <label class="template-label">Choose Template:</label>
+                <div class="template-btns">
+                    <button class="tpl-btn active" data-template="modern">Modern</button>
+                    <button class="tpl-btn" data-template="classic">Classic</button>
+                    <button class="tpl-btn" data-template="minimal">Minimal</button>
+                </div>
+            </div>
+
+            <form id="resumeForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter your name" maxlength="60">
+                        <span class="char-count" id="nameCount">0/60</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email" maxlength="80">
+                        <span class="char-count" id="emailCount">0/80</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" placeholder="Enter your phone number" maxlength="15">
+                        <span class="char-count" id="phoneCount">0/15</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="education">Education</label>
+                        <input type="text" id="education" placeholder="Enter your education details" maxlength="120">
+                        <span class="char-count" id="educationCount">0/120</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="summary">Summary</label>
+                    <textarea id="summary" placeholder="Brief about yourself" maxlength="300"></textarea>
+                    <span class="char-count" id="summaryCount">0/300</span>
+                </div>
+                <div class="form-group">
+                    <label for="projects">Projects</label>
+                    <textarea id="projects" placeholder="Brief about projects developed by you" maxlength="400"></textarea>
+                    <span class="char-count" id="projectsCount">0/400</span>
+                </div>
+                <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <textarea id="skills" placeholder="Separate skills with commas" maxlength="200"></textarea>
+                    <span class="char-count" id="skillsCount">0/200</span>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience</label>
+                    <textarea id="experience" placeholder="Describe your past experiences" maxlength="400"></textarea>
+                    <span class="char-count" id="experienceCount">0/400</span>
+                </div>
+                <p class="error-msg" id="errorMsg">&#9888; Please fill in all fields before previewing.</p>
+                <div class="btn-row">
+                    <button type="button" id="previewBtn">Live Preview</button>
+                    <button type="button" id="downloadBtn">⬇ Download PDF</button>
+                </div>
+            </form>
+        </section>
+        <section class="preview-section">
+            <h2>Live Preview</h2>
+            <div id="resumePreview">
+                <p class="placeholder">Fill the form to see live preview...</p>
+            </div>
+            <div id="atsScoreBox">
+    <h3>ATS Resume Score</h3>
+    <div id="atsScore">0/100</div>
+
+    <div class="ats-feedback">
+        <h4>Strengths</h4>
+        <ul id="atsStrengths"></ul>
+
+        <h4>Suggestions</h4>
+        <ul id="atsSuggestions"></ul>
+    </div>
+</div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <!-- Redirect to trailing slash to fix relative paths when loaded without index.html -->
     <script>
         if (window.location.pathname.endsWith('/ResumeStudio')) {
@@ -408,6 +515,18 @@
                     </div>
                 </div>
             </div>
+            <div id="atsScoreBox">
+    <h3>ATS Resume Score</h3>
+    <div id="atsScore">0/100</div>
+
+    <div class="ats-feedback">
+        <h4>Strengths</h4>
+        <ul id="atsStrengths"></ul>
+
+        <h4>Suggestions</h4>
+        <ul id="atsSuggestions"></ul>
+    </div>
+</div>
         </section>
     </div>
 
