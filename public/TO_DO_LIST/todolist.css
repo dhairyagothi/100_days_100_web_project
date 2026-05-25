@@ -123,6 +123,22 @@ body {
   right: 15%;
   animation-delay: -15s;
 }
+.search-container {
+  margin: 20px 0;
+}
+
+#searchTask {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+#searchTask:focus {
+  border-color: #6c63ff;
+}
 
 @keyframes floatShape {
   0%, 100% { transform: translate(0, 0) scale(1); }

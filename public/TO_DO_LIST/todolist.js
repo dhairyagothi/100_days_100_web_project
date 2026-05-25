@@ -4,11 +4,15 @@ const taskInput = document.getElementById("task");
 const taskTypeSelect = document.getElementById("task-category");
 const taskList = document.getElementById("notes-container");
 const emptyState = document.getElementById("emptyState");
-const documentsList = document.querySelector('.documents-list');
+const documentsList = document.querySelector(".documents-list");
 
-// Progress / stats elements present in HTML
+// Search feature
+const searchInput = document.getElementById("searchTask");
+
+// Progress elements
 const progressFill = document.getElementById("progressFill");
 const progressText = document.getElementById("progressText");
+
 
 // Data State
 let tasks = [];
@@ -88,12 +92,23 @@ function filterTasks(buttonElement, filterValue) {
 
 function renderTasks() {
   // Filter core task pool
-  const filteredTasks = tasks.filter(task => {
-    if (currentFilter === "all") return true;
-    if (currentFilter === "pending") return !task.completed;
-    if (currentFilter === "done") return task.completed;
-    return task.category === currentFilter; // Matches Category Strings
-  });
+const searchText = searchInput
+  ? searchInput.value.toLowerCase()
+  : "";
+
+const filteredTasks = tasks.filter(task => {
+
+  const matchesSearch =
+    task.text.toLowerCase().includes(searchText);
+
+  if (!matchesSearch) return false;
+
+  if (currentFilter === "all") return true;
+  if (currentFilter === "pending") return !task.completed;
+  if (currentFilter === "done") return task.completed;
+
+  return task.category === currentFilter;
+});
 
   // Toggle Visibility of Empty State Element
   if (filteredTasks.length === 0) {
@@ -288,6 +303,7 @@ if (taskForm) {
   });
 }
 
+
 taskInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -295,8 +311,10 @@ taskInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Load saved theme if present
-try {
-  const saved = localStorage.getItem('todo-theme');
-  if (saved) applyTheme(saved);
-} catch (e) {}
+// Search feature
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    renderTasks();
+  });
+}
+
