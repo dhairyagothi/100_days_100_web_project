@@ -232,10 +232,16 @@ const PROJECT_DATA = [
   ['Day 165', 'Amazon Clone', './public/AmazonClone/index.html', ['Amazon', 'Clone', 'HTML', 'CSS', 'JavaScript'], 'beginner'],
   ['Day 166', 'Boredom Buster', './public/BoredomBuster/index.html', ['html', 'css', 'javascript'], 'advanced'],
   ['Day 167', 'scam-sms-detector', '/public/scam-sms-detector/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 168', 'Color Sort Puzzle game', './public/colorsort/index.html', ['html', 'css', 'javascript'], 'advanced'],
+ ['Day 168', 'Color Sort Puzzle game',
+ './public/color%20sort%20puzzle/index.html',
+ ['html', 'css', 'javascript'],
+ 'advanced'
+],
   ['Day 169', 'Subscription Tracker', './public/subscriptiontracker/tracker.html', ['react', 'typescript', 'tailwindcss', 'ui'], 'advanced'],
   ['Day 170', 'Vector Flowchart Designer', './public/VectorFlowchartDesigner/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", "html css javascript", 'advanced']
+  ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", "html css javascript", 'advanced'],
+  ['Day 172', 'PlaceMate', './public/PlaceMate/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
+  ['Day 173', 'Live Code Playground', '/public/live-code-playground/index.html', ['tool', 'html', 'css', 'javascript'], 'advanced'],
 ];
 const PROJECTS = PROJECT_DATA;
 
