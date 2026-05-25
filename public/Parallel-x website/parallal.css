@@ -105,11 +105,17 @@ nav ul li a:hover {
   align-items: center;
   position: relative;
 }
+
 .parallal img {
   position: absolute;
   width: 100%;
-  top: 0; left: 0;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  will-change: transform;
 }
+
 .text {
   font-family: 'Playfair Display', serif;
   font-size: clamp(4rem, 10vw, 9rem);
@@ -438,7 +444,30 @@ nav ul li a:hover {
   .did-you-know { padding:60px 5%; }
   .tracker-cta { padding:80px 5%; }
   .footer { flex-direction:column; text-align:center; }
+
+
+    .parallal {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #plant,
+  #leaf {
+    top: auto;
+    bottom: 0;
+  }
+
+  #hill1,
+  #hill2,
+  #hill3,
+  #hill4,
+  #hill5,
+  #tree {
+    top: 0;
+  }
 }
+
+ 
 @media (max-width: 480px) {
   .text { font-size: 2.4rem; letter-spacing:1px; }
   .section-heading { font-size:2rem; }
