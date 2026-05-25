@@ -128,19 +128,16 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
   }
 }
 
-async function openProfile(username, commits) {
-  modal.style.display = 'flex';
+async function openProfile(username){
 
-  modalBody.innerHTML = `
-        <p>Loading profile...</p>
-    `;
+    modal.style.display = "flex";
+    modal.style.position = "fixed";
 
-  try {
-    const response = await fetch(`https://api.github.com/users/${username}`);
+    modal.style.top = "0";
 
-    const user = await response.json();
+    modal.style.left = "0";
 
-    modalBody.innerHTML = `
+    modal.style.zIndex = "999999999";
 
             <img
             src="${user.avatar_url}"
@@ -148,72 +145,97 @@ async function openProfile(username, commits) {
             loading="lazy"
             >
 
-            <h2>
-            ${user.name || user.login}
-            </h2>
+    modal.style.alignItems = "center";
+
+    modalBody.innerHTML =
+    "<p>Loading...</p>";
+
+    try{
+
+        const response =
+        await fetch(
+        `https://api.github.com/users/${username}`
+        );
+
+        if(!response.ok){
+
+            modalBody.innerHTML = `
+            <h2>${username}</h2>
 
             <p>
-            ${user.bio || 'This contributor has not added a bio yet.'}
+            Profile unavailable
             </p>
+            `;
 
-            <p>
-            Followers:
-            ${user.followers}
-            </p>
+            return;
+        }
 
-            <p>
-            Public Repos:
-            ${user.public_repos}
-            </p>
-
-            <p>
-            Location:
-            ${user.location || 'Not available'}
-            </p>
-
-            <p>
-            Joined:
-            ${new Date(user.created_at).toLocaleDateString()}
-            </p>
-
-           <div class="popup-btn-container">
-
-    <a
-    href="${user.html_url}"
-    target="_blank"
-    class="github-btn"
-    >
-
-    View GitHub
-
-    </a>
+        const user =
+        await response.json();
 
 
-    <button
-    id="downloadCertificate"
-    class="certificate-btn"
-    >
+        modalBody.innerHTML = `
 
-    Download Certificate
+        <img
+        src="${user.avatar_url}"
+        style="
+        width:120px;
+        height:120px;
+        border-radius:50%;
+        ">
 
-    </button>
+        <h2>
+        ${user.name || username}
+        </h2>
 
-</div>
+        <p>
+        ${user.bio || "No bio available"}
+        </p>
+
+        <p>
+        Followers:
+        ${user.followers}
+        </p>
+
+        <p>
+        Repositories:
+        ${user.public_repos}
+        </p>
+
+        <p>
+        Location:
+        ${user.location || "Unknown"}
+        </p>
+
+        ${
+        user.html_url
+        ?
+
+        `<a
+        href="${user.html_url}"
+        target="_blank"
+        class="github-btn">
+
+        GitHub Profile
+
+        </a>`
+
+        :
+
+        ""
+        }
 
         `;
 
-    const certificateBtn = document.getElementById('downloadCertificate');
+    }
 
-    closeCertificate?.addEventListener(
-      'click',
+    catch(err){
 
-      () => {
-        certificateModal.style.display = 'none';
-      }
-    );
+        modalBody.innerHTML =
+        "<p>Failed to load profile</p>";
 
-    certificateBtn?.addEventListener(
-      'click',
+        console.log(err);
+    }
 
       () => {
         certificateModal.style.display = 'flex';
@@ -409,7 +431,6 @@ Download PDF
     console.error(error);
   }
 }
-
 // Use global REPO_OWNER and REPO_NAME defined in index.js
 
 let allContributors = [];
@@ -590,11 +611,7 @@ loading="lazy">
         'click',
 
         () => {
-          openProfile(
-            contributor.login,
-
-            contributor.contributions
-          );
+    openProfile(contributor.login);
         }
       );
     }

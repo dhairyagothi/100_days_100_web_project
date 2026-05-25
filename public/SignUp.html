@@ -82,6 +82,7 @@
                 class="form-input"
                 required
               />
+              <span class="toggle-password" onclick="togglePassword()">👁</span>
             </div>
 
             <div id="signupError" role="alert" aria-live="polite" style="color:#b91c1c; margin-top:0.5rem; display:none"></div>
@@ -95,6 +96,7 @@
           <p class="already-signed-up">
             Already signed up? <a href="Login.html">Login</a>
           </p>
+          
         </div>
       </div>
     </section>
@@ -129,6 +131,7 @@
             errorEl.style.display = 'block';
             return;
           }
+
 
           // Strong password validation
           const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
