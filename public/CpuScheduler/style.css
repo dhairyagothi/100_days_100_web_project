@@ -1,0 +1,424 @@
+:root {
+  --bg-1: #020617;
+  --bg-2: #0f172a;
+  --bg-3: #1e293b;
+
+  --card-bg: rgba(15, 23, 42, 0.75);
+  --card-border: rgba(148, 163, 184, 0.12);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --accent-cyan: #22d3ee;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-pink: #ec4899;
+  --accent-emerald: #10b981;
+
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.12);
+  --danger-border: rgba(239, 68, 68, 0.35);
+
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.35);
+  --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.45);
+
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+/* ---------- Global Styles ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text-primary);
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(34, 211, 238, 0.08),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(139, 92, 246, 0.08),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom,
+      rgba(236, 72, 153, 0.06),
+      transparent 40%
+    ),
+    linear-gradient(135deg, #020617 0%, #0f172a 50%, #111827 100%);
+}
+
+/* ---------- Decorative Glow ---------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(34, 211, 238, 0.08),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 15%,
+      rgba(139, 92, 246, 0.08),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 50% 80%,
+      rgba(16, 185, 129, 0.06),
+      transparent 30%
+    );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ---------- Header Gradient ---------- */
+header {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(6, 182, 212, 0.18),
+      rgba(59, 130, 246, 0.15),
+      rgba(139, 92, 246, 0.15)
+    ),
+    rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* ---------- Cards ---------- */
+.algorithm-card,
+.results-table,
+.gantt-container,
+#analysisPanel {
+  background: var(--card-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- Process Cards ---------- */
+.process-card {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.9),
+    rgba(15, 23, 42, 0.95)
+  );
+  border: 1px solid rgba(34, 211, 238, 0.12);
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  transition: all 0.35s ease;
+}
+
+.process-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34, 211, 238, 0.25);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Inputs & Selects ---------- */
+input,
+select {
+  transition: all 0.25s ease;
+  color: #ffffff;
+}
+
+input::placeholder {
+  color: #94a3b8;
+}
+
+input:focus,
+select:focus {
+  border-color: rgba(34, 211, 238, 0.35) !important;
+  box-shadow:
+    0 0 0 4px rgba(34, 211, 238, 0.12),
+    0 8px 30px rgba(34, 211, 238, 0.08);
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow:
+    0 15px 35px rgba(59, 130, 246, 0.35),
+    0 0 40px rgba(34, 211, 238, 0.15);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Sample Data Button */
+#sampleBtn {
+  background: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
+  transition: all 0.35s ease;
+  border: none;
+}
+
+#sampleBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(16, 185, 129, 0.35);
+}
+
+/* ---------- Loading Spinner ---------- */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Error Message ---------- */
+#errorMessage {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: #fecaca;
+  backdrop-filter: blur(12px);
+}
+
+/* ---------- Metrics Cards ---------- */
+.metric-card {
+  background: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.85),
+    rgba(30, 41, 59, 0.92)
+  );
+  border: 1px solid rgba(34, 211, 238, 0.12);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.28);
+  transition: all 0.35s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(34, 211, 238, 0.25);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(34, 211, 238, 0.08);
+}
+
+/* ---------- Tables ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+thead tr {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6);
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+}
+
+tbody tr {
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+  transition: background 0.25s ease;
+}
+
+tbody tr:hover {
+  background: rgba(34, 211, 238, 0.05);
+}
+
+/* ---------- Gantt Chart ---------- */
+.gantt-block {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: white;
+  border-radius: 0.75rem;
+  margin-right: 4px;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.gantt-block:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.35),
+    0 0 15px rgba(255, 255, 255, 0.06);
+}
+
+.gantt-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* ---------- Process Colors ---------- */
+.process-color-0 {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.process-color-1 {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.process-color-2 {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.process-color-3 {
+  background: linear-gradient(135deg, #ec4899, #db2777);
+}
+
+.process-color-4 {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.process-color-5 {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.process-color-6 {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.process-color-7 {
+  background: linear-gradient(135deg, #14b8a6, #0f766e);
+}
+
+.process-color-8 {
+  background: linear-gradient(135deg, #84cc16, #65a30d);
+}
+
+.process-color-9 {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+/* ---------- Idle Block ---------- */
+.idle-block {
+  background: repeating-linear-gradient(
+    45deg,
+    #334155,
+    #334155 10px,
+    #475569 10px,
+    #475569 20px
+  );
+  color: #cbd5e1;
+  font-style: italic;
+}
+
+/* ---------- Tooltip ---------- */
+.gantt-tooltip {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: rgba(2, 6, 23, 0.96);
+  color: #ffffff;
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  transition: opacity 0.2s ease;
+}
+
+/* ---------- Analysis Cards ---------- */
+#analysisContent > div > div {
+  background: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.82),
+    rgba(30, 41, 59, 0.9)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+}
+
+/* ---------- Fade Animation ---------- */
+.fade-in {
+  animation: fadeInUp 0.6s ease both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #06b6d4, #3b82f6, #8b5cf6);
+  border-radius: 999px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2.5rem !important;
+  }
+
+  .algorithm-card,
+  .results-table,
+  .gantt-container,
+  #analysisPanel {
+    padding: 1.5rem !important;
+  }
+
+  .gantt-block {
+    min-height: 48px;
+    font-size: 0.75rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+}

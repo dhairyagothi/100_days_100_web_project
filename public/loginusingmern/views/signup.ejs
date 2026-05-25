@@ -96,6 +96,44 @@
     <div class="image">
       <iframe src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe>
     </div>
+</body>
+
+<script>
+
+    async function postRequest(data) {
+        try {
+            const res = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const text = await res.text();
+
+            const form = document.querySelector("form");
+
+            let messageBox = document.getElementById("messageBox");
+
+            if (!messageBox) {
+                messageBox = document.createElement("div");
+                messageBox.id = "messageBox";
+                form.appendChild(messageBox);
+            }
+
+            messageBox.innerText = text;
+
+            if (!res.ok) {
+                messageBox.className = "message error-message";
+                return;
+            }
+
+            messageBox.className = "message success-message";
+
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1500);
+
+            window.location.href = "/";
 
     <!-- Signup Card -->
     <div class="card">
