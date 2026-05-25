@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Bhasad - Select Mode</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: #05050C;
+            color: white; font-family: 'Impact', sans-serif;
+        }
+        
+        /* The canvas sits in the background waiting for a script to take control */
+        canvas { 
+            display: block; width: 100vw; height: 100vh; 
+            position: absolute; top: 0; left: 0; z-index: 1; 
+        }
+
+        /* --- THE MODE SELECTOR UI --- */
+        #modeSelector {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background-color: rgba(5, 5, 12, 0.98); /* Solid dark background */
+            z-index: 10; /* Keeps it above the canvas */
+        }
+        
+        h1 { 
+            font-size: 90px; text-shadow: 0 0 20px #FF9600; 
+            margin-bottom: 60px; text-align: center; color: #FFF;
+        }
+        
+        .btn-container { display: flex; gap: 40px; }
+        
+        .btn {
+            background: transparent; color: white; font-family: 'Impact', sans-serif;
+            font-size: 35px; padding: 25px 50px; border: 4px solid; cursor: pointer;
+            transition: all 0.2s ease-in-out; text-transform: uppercase;
+        }
+        
+        /* Single Player Button Styling */
+        .btn-single { 
+            border-color: #00FFFF; text-shadow: 0 0 10px #00FFFF; 
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); 
+        }
+        .btn-single:hover { 
+            background: #00FFFF; color: #000; 
+            box-shadow: 0 0 50px rgba(0, 255, 255, 1); transform: scale(1.05); 
+        }
+        
+        /* Multi Player Button Styling */
+        .btn-multi { 
+            border-color: #FF0096; text-shadow: 0 0 10px #FF0096; 
+            box-shadow: 0 0 20px rgba(255, 0, 150, 0.2); 
+        }
+        .btn-multi:hover { 
+            background: #FF0096; color: #000; 
+            box-shadow: 0 0 50px rgba(255, 0, 150, 1); transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="modeSelector">
+        <h1>CHOOSE YOUR BHASAD</h1>
+        <div class="btn-container">
+            <button class="btn btn-single" onclick="loadGame('game1.js')">LONE WOLF (1 PLAYER)</button>
+            <button class="btn btn-multi" onclick="loadGame('game2.js')">TAKAAAR (2 PLAYERS)</button>
+        </div>
+    </div>
+
+    <script>
+        function loadGame(scriptFileName) {
+            // 1. Instantly hide the selection menu
+            document.getElementById('modeSelector').style.display = 'none';
+            
+            // 2. Create a new <script> tag via JavaScript
+            const gameScript = document.createElement('script');
+            
+            // 3. Set it to load either game1.js or game2.js
+            gameScript.src = scriptFileName;
+            
+            // 4. Attach it to the webpage, which executes the chosen game engine!
+            document.body.appendChild(gameScript);
+        }
+    </script>
+
+</body>
+</html>
