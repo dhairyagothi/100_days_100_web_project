@@ -11,6 +11,7 @@ body{
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    background-attachment: fixed;
     min-height: 100vh;
     width: 100%;
     animation: bg-change 40s infinite ;
@@ -25,15 +26,13 @@ ul{
 }
 
 .navbar{
-      font-size: x-large;
+    font-size: x-large;
     display: flex;
     flex-direction: row;
-    padding: 20px;
-    justify-content: space-evenly;
+    padding: 15px 20px;
+    justify-content: space-between;
     align-items: center;
-    gap: 550px;
-    
-    
+    width: 100%;
 }
 .navbar ul li {
   position: relative;
@@ -148,23 +147,25 @@ ul li:hover::after{
 }
 
 @media only screen and (max-width: 768px) {
-
-    
     ul {
-        flex-direction: column;
-        width: auto;
-        gap: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        gap: 15px;
     }
     .navbar{
         font-size: large;
-      align-items: baseline;
-      gap: 100px
-  }
-  .content{
-    width: auto;
-    top: 40vh;
-    padding-left: 10px;
-  }
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 5px;
+    }
+    .content{
+        width: 100%;
+        top: auto;
+        padding: 10px;
+    }
 }
 
 

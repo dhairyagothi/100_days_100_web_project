@@ -8,8 +8,10 @@
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <style>
         body {
+            background-color: black;
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             transition: background-image 0.5s ease-in-out;
             color: white;
             margin: 0;
@@ -18,11 +20,7 @@
 
         header {
             background: rgba(0, 0, 0, 0.8);
-            padding: 10px 20px;
             color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -145,16 +143,6 @@
         }
 
         @media screen and (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .navbar ul {
-                flex-direction: column;
-                gap: 10px;
-            }
-
             .content {
                 margin-top: 10%;
                 padding: 10px;
