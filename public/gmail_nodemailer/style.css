@@ -1,0 +1,23 @@
+body{font-family:Arial;
+     background:linear-gradient(135deg,#0f172a,#2563eb);
+     display:flex;justify-content:center;
+     align-items:center;
+     height:100vh;
+     margin:0}
+.container{background:white;
+           padding:40px;
+           border-radius:20px;
+           width:400px;
+           text-align:center}
+input{width:100%;
+      padding:14px;
+      margin:10px 0;
+      border-radius:10px;
+      border:1px solid #ccc}
+button{width:100%;
+       padding:14px;
+       background:#2563eb;
+       color:white;
+       border:none;
+       border-radius:10px;
+       cursor:pointer}#message{margin-top:15px}
