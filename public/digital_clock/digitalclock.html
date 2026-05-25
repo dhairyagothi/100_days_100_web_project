@@ -99,6 +99,9 @@
           <button class="theme-swatch swatch-nebula" data-theme="nebula" onclick="setTheme('nebula')" title="Nebula Purple" aria-label="Nebula Purple theme">
             <span class="theme-swatch-label">Nebula</span>
           </button>
+          <button class="theme-swatch swatch-dark" data-theme="dark" onclick="setTheme('dark')" title="Dark Midnight" aria-label="Dark midnight theme">
+            <span class="theme-swatch-label">Dark</span>
+          </button>
         </nav>
 
         <hr class="mt-2" aria-hidden="true" />
@@ -167,11 +170,17 @@
                 <option value="5">5 min</option>
                 <option value="10">10 min</option>
                 <option value="15">15 min</option>
+                <option value="custom">Custom...</option>
               </select>
             </div>
+            <div class="form-field hidden" id="alarm-snooze-custom-wrap">
+              <label for="alarm-snooze-custom">Custom Snooze</label>
+              <input type="number" id="alarm-snooze-custom" min="1" step="1" placeholder="Minutes" />
+            </div>
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Add Alarm</button>
-              <button type="button" onclick="clearAllAlarms()" class="btn btn-danger">Clear All</button>
+              <button type="submit" class="btn btn-primary" id="alarm-submit-btn">Add Alarm</button>
+              <button type="button" class="btn btn-ghost hidden" id="alarm-cancel-btn" onclick="cancelAlarmEdit()">Cancel</button>
+              <button type="button" onclick="clearAllAlarms()" class="btn btn-danger" id="clear-all-btn">Clear All</button>
             </div>
           </form>
 
@@ -223,6 +232,21 @@
 
   <!-- Toast Notification -->
   <div id="toast" class="toast" role="alert" aria-live="assertive">Alarm set</div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirm-modal" class="world-modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title" aria-describedby="confirm-modal-message" onclick="closeConfirmModal()">
+    <div class="modal-card confirm-card" onclick="event.stopPropagation()">
+      <header class="modal-header">
+        <h3 id="confirm-modal-title">Confirm Action</h3>
+        <button class="modal-close" onclick="closeConfirmModal()" aria-label="Close confirmation">&times;</button>
+      </header>
+      <p class="confirm-message" id="confirm-modal-message">Are you sure want to delete this item?</p>
+      <div class="popup-actions confirm-actions">
+        <button type="button" class="btn btn-danger" id="confirm-modal-yes">Yes</button>
+        <button type="button" class="btn btn-ghost" onclick="closeConfirmModal()">No</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Alarm Ringing Popup -->
   <div id="alarm-popup" class="alarm-popup hidden" role="alertdialog" aria-modal="true" aria-labelledby="popup-alarm-title">
