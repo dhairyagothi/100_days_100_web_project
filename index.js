@@ -233,7 +233,8 @@ const PROJECT_DATA = [
   ['Day 166', 'Boredom Buster', './public/BoredomBuster/index.html', ['html', 'css', 'javascript'], 'advanced'],
   ['Day 167', 'scam-sms-detector', '/public/scam-sms-detector/index.html'],
   ['Day 168', 'Color Sort Puzzle game', './public/colorsort/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 169', 'Subscription Tracker', './public/subscriptiontracker/tracker.html', ['react', 'typescript', 'tailwindcss', 'ui'], 'advanced']
+  ['Day 169', 'Subscription Tracker', './public/subscriptiontracker/tracker.html', ['react', 'typescript', 'tailwindcss', 'ui'], 'advanced'],
+  ['Day 170', 'IP Address Tracker', './public/Ip_Address_Tracker/index.html', ['html', 'css', 'javascript'], 'intermediate']
 ];
 const PROJECTS = PROJECT_DATA;
 
