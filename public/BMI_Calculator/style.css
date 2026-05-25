@@ -627,8 +627,7 @@ body.dark .metric-card:hover {
    ========================================= */
 .chart-wrap {
   position: relative;
-  flex: 1;
-  min-height: 140px;
+  height: 220px;
   border-top: 1px solid var(--rule);
   padding-top: 20px;
 }
@@ -750,10 +749,10 @@ body.dark .metric-card:hover {
     padding: 8px 0;
   }
 
-  .chart-wrap {
-    min-height: 180px;
-    padding-top: 12px;
-  }
+.chart-wrap {
+  height: 180px;
+  padding-top: 12px;
+}
 
   .chart-wrap canvas {
     width: 100% !important;
