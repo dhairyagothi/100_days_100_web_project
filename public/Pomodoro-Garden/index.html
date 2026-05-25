@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1A1814" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F5F1EA" media="(prefers-color-scheme: light)" />
+    <meta name="description" content="Pomodoro Garden — a meditative focus timer that grows a wabi-sabi inspired garden as you work." />
+
+    <title>Pomodoro Garden · 庭園</title>
+
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E🌱%3C/text%3E%3C/svg%3E" />
+
+    <!-- Fonts: Fraunces (variable serif), Karla (geometric sans), JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Maru+Gothic:wght@400;500;700&family=JetBrains+Mono:wght@300..600&display=swap" />    <link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="auto" data-tod="day">
+
+    <!-- Paper noise overlay -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- Particle canvas (fireflies / petals) -->
+    <canvas id="fxCanvas" class="fx-canvas" aria-hidden="true"></canvas>
+
+    <header class="masthead">
+        <div class="masthead__brand">
+            <span class="masthead__kanji" aria-hidden="true">庭園</span>
+            <h1 class="masthead__title">Pomodoro Garden</h1>
+        </div>
+        <nav class="masthead__nav" aria-label="App controls">
+            <button class="icon-btn" id="settingsBtn" aria-label="Open settings" title="Settings">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </button>
+            <button class="icon-btn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
+                <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+        </nav>
+    </header>
+    <main class="stage">
+
+        <!-- LEFT: Timer instrument panel -->
+        <aside class="panel panel--timer" aria-label="Focus timer">
+            <div class="timer">
+                <div class="timer__mode" id="timerMode">Focus</div>
+                <div class="timer__ring" aria-hidden="true">
+                    <svg viewBox="0 0 200 200" class="ring">
+                        <circle class="ring__track" cx="100" cy="100" r="92" />
+                        <circle class="ring__fill" id="ringFill" cx="100" cy="100" r="92" />
+                    </svg>
+                    <div class="timer__display">
+                        <span class="timer__time" id="timerTime" aria-live="polite" aria-atomic="true">25:00</span>
+                        <span class="timer__cycle" id="timerCycle">·  ·  ·  ·</span>
+                    </div>
+                </div>
+
+                <div class="timer__controls">
+                    <button class="btn btn--primary" id="startBtn">Begin</button>
+                    <button class="btn btn--ghost" id="resetBtn" aria-label="Reset session">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn--ghost" id="skipBtn" aria-label="Skip session">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M5 4l10 8-10 8V4zM19 5v14"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <button class="ambient-toggle" id="ambientBtn" aria-label="Toggle ambient sound">
+                    <span class="ambient-toggle__indicator" data-state="off"></span>
+                    <span class="ambient-toggle__label" id="ambientLabel">Silence</span>
+                </button>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat__label">Streak</div>
+                    <div class="stat__value"><span id="statStreak">0</span><span class="stat__unit">days</span></div>
+                </div>
+                <div class="stat">
+                    <div class="stat__label">Today</div>
+                    <div class="stat__value"><span id="statToday">0</span><span class="stat__unit">sessions</span></div>
+                </div>
+                <div class="stat">
+                    <div class="stat__label">Total</div>
+                    <div class="stat__value"><span id="statTotal">0</span><span class="stat__unit">h focused</span></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT: Garden -->
+        <section class="panel panel--garden" aria-labelledby="gardenLabel">
+            <header class="garden-head">
+                <h2 id="gardenLabel" class="garden-head__title">Your Garden</h2>
+                <div class="garden-head__meta">
+                    <span id="plantCount">0</span> plants · <span id="todClock">—</span>
+                </div>
+            </header>
+            <div class="garden" id="garden" role="img" aria-label="Your grown garden"></div>
+
+            <!-- Empty state -->
+            <div class="garden-empty" id="gardenEmpty">
+                <svg viewBox="0 0 80 80" width="80" height="80" aria-hidden="true">
+                    <path d="M40 60c0-15 0-25 0-40M40 40c-6 0-12-4-12-12M40 30c6 0 12-4 12-10" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                <p>Complete a focus session to plant your first seed.</p>
+            </div>
+        </section>
+
+    </main>
+<!-- Focus heatmap (90 days) -->
+    <section class="panel panel--heatmap" aria-labelledby="hmLabel">
+        <header class="hm-head">
+            <h2 id="hmLabel" class="hm-head__title">Focus History</h2>
+            <div class="hm-head__legend" aria-hidden="true">
+                <span>less</span>
+                <span class="hm-legend__cell" data-level="0"></span>
+                <span class="hm-legend__cell" data-level="1"></span>
+                <span class="hm-legend__cell" data-level="2"></span>
+                <span class="hm-legend__cell" data-level="3"></span>
+                <span class="hm-legend__cell" data-level="4"></span>
+                <span>more</span>
+            </div>
+        </header>
+        <div class="heatmap" id="heatmap" aria-label="Last 90 days of focus activity"></div>
+    </section>
+
+    <!-- Settings modal -->
+    <dialog class="modal" id="settingsModal" aria-labelledby="settingsTitle">
+        <form method="dialog" class="modal__inner">
+            <header class="modal__head">
+                <h3 id="settingsTitle">Settings</h3>
+                <button class="icon-btn" value="cancel" aria-label="Close">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </header>
+
+            <div class="modal__body">
+                <label class="field">
+                    <span class="field__label">Focus duration</span>
+                    <span class="field__control">
+                        <input type="range" id="setFocus" min="5" max="60" step="5" value="25" />
+                        <output id="setFocusOut">25 min</output>
+                    </span>
+                </label>
+                <label class="field">
+                    <span class="field__label">Short break</span>
+                    <span class="field__control">
+                        <input type="range" id="setShort" min="1" max="15" step="1" value="5" />
+                        <output id="setShortOut">5 min</output>
+                    </span>
+                </label>
+                <label class="field">
+                    <span class="field__label">Long break</span>
+                    <span class="field__control">
+                        <input type="range" id="setLong" min="10" max="30" step="5" value="15" />
+                        <output id="setLongOut">15 min</output>
+                    </span>
+                </label>
+                <label class="field">
+                    <span class="field__label">Long break every</span>
+                    <span class="field__control">
+                        <input type="range" id="setCycle" min="2" max="8" step="1" value="4" />
+                        <output id="setCycleOut">4 sessions</output>
+                    </span>
+                </label>
+                <label class="field field--row">
+                    <span class="field__label">Notifications</span>
+                    <input type="checkbox" id="setNotif" />
+                </label>
+                <label class="field field--row">
+                    <span class="field__label">Soundscape</span>
+                    <select id="setSound">
+                        <option value="silence">Silence</option>
+                        <option value="forest">Forest</option>
+                        <option value="rain">Rain</option>
+<option value="bowls">Singing bowls</option>
+                    </select>
+                </label>
+
+                <details class="danger">
+                    <summary>Reset garden</summary>
+                    <p>This permanently deletes every plant and all stats. Cannot be undone.</p>
+                    <button class="btn btn--danger" type="button" id="wipeBtn">Erase everything</button>
+                </details>
+            </div>
+
+            <footer class="modal__foot">
+                <button class="btn btn--primary" value="confirm">Save</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <!-- Achievement toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+    "name": "Pomodoro Garden",
+    "short_name": "Garden",
+    "description": "A meditative focus timer that grows a wabi-sabi inspired garden as you work.",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#F4ECD8",
+    "theme_color": "#2B231C",
+    "categories": ["productivity", "lifestyle"],
+    "icons": [
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23F4ECD8'/%3E%3Ctext x='256' y='340' font-size='280' text-anchor='middle' font-family='serif'%3E🌱%3C/text%3E%3C/svg%3E",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}
