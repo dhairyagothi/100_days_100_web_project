@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Typewriter by @tanyaroy00</title>
-    <link rel="icon" href="data:," />
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="typewriter.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typewriter-by @tanyaroy00</title>
+    <link href="typewriter.css" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="theme-toggle" id="themeToggle" role="button" tabindex="0" aria-label="Toggle theme">🌙</div>
-
+    <div class="theme-toggle" id="themeToggle">🌙</div>
     <div class="typewriter-machine">
-        <div class="paper-sheet" aria-label="Typewriter paper">
-            <span id="typewriterText"></span><span class="cursor-paper"></span>
+        <div id="pagesContainer">
+            <div class="paper-sheet page active-page">
+                <span class="typewriterText"></span>
+                <span class="cursor-paper"></span>
+            </div>
         </div>
-
         <div class="typewriter-body">
             <div class="input-area">
-                <textarea
-                    id="userInput"
-                    rows="3"
-                    placeholder="Type here or click the keys below…"
-                    aria-label="Typing input"
-                ></textarea>
+                <input type="text" id="userInput" placeholder="Type here or click the keys below…">
+                    <div class="controls">
+                        <button id="soundToggle">🔊 Sound ON</button>
+                        <button id="copyBtn">📋 Copy</button>
+                        <button id="downloadPDF">📄 Download PDF</button>
+                        <span id="pageCounter">Page 1</span>
+                    </div>
+                    <div class="counters">
+                        <span id="wordCount">Words: 0</span>
+                        <span class="counter-separator">|</span>
+                        <span id="charCount">Characters: 0</span>
+                    </div>
             </div>
-
-            <div class="keyboard" aria-label="Typewriter keyboard">
+            <div class="keyboard">
                 <div class="keyboard-row" id="row-numbers">
                     <button type="button" class="key" data-char="1">1</button>
                     <button type="button" class="key" data-char="2">2</button>
@@ -90,8 +93,7 @@
             </div>
         </div>
     </div>
-
     <script src="typewriter.js"></script>
-</body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    </body>
 </html>

@@ -603,11 +603,13 @@ function animate() {
 // Update Play/Pause UI Icons
 function updatePlayPauseUI() {
     if (isPlaying) {
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "block";
+        if (playIcon) playIcon.style.display = "none";
+        if (pauseIcon) pauseIcon.style.display = "block";
+        if (!playIcon && !pauseIcon) playPauseBtn.textContent = "Pause";
     } else {
-        playIcon.style.display = "block";
-        pauseIcon.style.display = "none";
+        if (playIcon) playIcon.style.display = "block";
+        if (pauseIcon) pauseIcon.style.display = "none";
+        if (!playIcon && !pauseIcon) playPauseBtn.textContent = "Play";
     }
 }
 
@@ -751,7 +753,7 @@ el.symbol.toLowerCase();
 
 actContainer.appendChild(actLabel);
 actContainer.appendChild(actRow);
-document.querySelector(".main-container").appendChild(actContainer);
+document.querySelector(".periodic-table-wrapper").appendChild(actContainer);
 
 
 // Filter categories from Dropdown List
