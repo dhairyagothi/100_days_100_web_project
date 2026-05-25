@@ -1,19 +1,52 @@
 
-var numOfKeys = $(".key").length;
 
-for(var i=0; i<numOfKeys; i++) {
-    $(".key")[i].addEventListener("click", function() {
-        var keyInnerHTML = this.innerHTML;
-        playNote(keyInnerHTML);
-        pressAnimation(keyInnerHTML);
-    })
+var isRecording  = false;
+var recordStart  = null;
+var recording    = [];
+var playbackTimers = [];
+var keysHeld     = {};
+
+// Load saved recording from localStorage on startup
+var saved = localStorage.getItem("pianoRecording");
+if (saved) {
+    recording = JSON.parse(saved);
+    $("#btn-play, #btn-clear, #btn-export").prop("disabled", false);
+    $("#speed-slider").prop("disabled", false);
 }
 
 
+var numOfKeys = $(".key").length;
+function handleKey(note) {
+    playNote(note);
+    pressAnimation(note);
+
+    if (isRecording) {
+        recording.push({
+            key: note.toUpperCase(),
+            time: Date.now() - recordStart
+        });
+    }
+}
+for(var i=0; i<numOfKeys; i++) {
+    $(".key")[i].addEventListener("click", function() {
+        var keyInnerHTML = this.innerHTML;
+        handleKey(keyInnerHTML);
+    })
+}
+
 $(document).keydown(function(event) {
-    playNote(event.key);
-    pressAnimation(event.key);
-})
+    if (keysHeld[event.key]) return; 
+    keysHeld[event.key] = true;
+    handleKey(event.key);
+});
+
+$(document).keyup(function(event) {
+    delete keysHeld[event.key];
+});
+
+$("#speed-slider").on("input", function() {
+    $("#speed-label").text($(this).val() + "×");
+});
 
 function playNote(note) {
 
@@ -121,3 +154,72 @@ function pressAnimation(key) {
         $("#" + inputKey).removeClass("pressed");
     }, 100);
 }
+// ── Record ────────────────────────────────────────────────
+$("#btn-record").on("click", function () {
+    isRecording = true;
+    recordStart = Date.now();
+    recording   = [];
+
+    $(this).addClass("recording").text("⏺ Recording…");
+    $("#btn-stop").prop("disabled", false);
+    $("#btn-play, #btn-clear, #btn-export").prop("disabled", true);
+    $("#speed-slider").prop("disabled", true);
+});
+
+// ── Stop ──────────────────────────────────────────────────
+$("#btn-stop").on("click", function () {
+    isRecording = false;
+
+    // Save to localStorage immediately on stop
+    localStorage.setItem("pianoRecording", JSON.stringify(recording));
+
+    $("#btn-record").removeClass("recording").text("⏺ Record");
+    $(this).prop("disabled", true);
+
+    var hasNotes = recording.length > 0;
+    $("#btn-play, #btn-clear, #btn-export").prop("disabled", !hasNotes);
+    $("#speed-slider").prop("disabled", !hasNotes);
+});
+
+// ── Play ──────────────────────────────────────────────────
+$("#btn-play").on("click", function () {
+    playbackTimers.forEach(clearTimeout);
+    playbackTimers = [];
+
+    var speed = parseFloat($("#speed-slider").val());
+
+    recording.forEach(function (event) {
+        var t = setTimeout(function () {
+            playNote(event.key);
+            pressAnimation(event.key);
+        }, event.time / speed);
+        playbackTimers.push(t);
+    });
+});
+
+// ── Clear ─────────────────────────────────────────────────
+$("#btn-clear").on("click", function () {
+    playbackTimers.forEach(clearTimeout);
+    playbackTimers = [];
+    recording      = [];
+
+    localStorage.removeItem("pianoRecording");
+
+    $("#btn-play, #btn-clear, #btn-export").prop("disabled", true);
+    $("#speed-slider").prop("disabled", true);
+    $("#btn-record").text("⏺ Record");
+});
+
+// ── Export ────────────────────────────────────────────────
+$("#btn-export").on("click", function () {
+    var blob = new Blob(
+        [JSON.stringify(recording, null, 2)],
+        { type: "application/json" }
+    );
+    var url = URL.createObjectURL(blob);
+    var a   = document.createElement("a");
+    a.href     = url;
+    a.download = "piano-recording.json";
+    a.click();
+    URL.revokeObjectURL(url);
+});

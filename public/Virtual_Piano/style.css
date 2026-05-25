@@ -311,3 +311,84 @@ body::selection {
 
     z-index: -1;
 }
+
+.controls {
+    display: flex;
+    gap: 12px;
+    margin: 24px 0 8px;
+}
+
+.controls button {
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: linear-gradient(145deg, #202028, #141419);
+    color: #b3b3c2;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.controls button:hover:not(:disabled) {
+    background: linear-gradient(145deg, #2a2a35, #1a1a22);
+    color: #f5f5f5;
+    box-shadow: 0 0 14px rgba(139,92,246,0.3);
+}
+
+.controls button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* Pulsing red glow when recording is active */
+#btn-record.recording {
+    color: #f87171;
+    box-shadow: 0 0 16px rgba(248,113,113,0.45);
+    animation: recordPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes recordPulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(248,113,113,0.35); }
+    50%       { box-shadow: 0 0 24px rgba(248,113,113,0.7);  }
+}
+.controls-secondary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    color: #b3b3c2;
+    font-size: 0.85rem;
+}
+
+#speed-slider {
+    -webkit-appearance: none;
+    width: 140px;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.1);
+    outline: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+#speed-slider:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+#speed-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #8b5cf6;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(139,92,246,0.5);
+}
+
+#speed-label {
+    min-width: 28px;
+    color: #8b5cf6;
+    font-weight: 500;
+}
