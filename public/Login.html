@@ -6,7 +6,18 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="login.css" />
     <link rel="icon" href="favv.png" type="image/x-icon" />
+
+    <style>
+      /* Inline error styling (you can move to login.css if needed) */
+      .error-message {
+        color: #ff4d4d;
+        font-size: 14px;
+        margin-top: 8px;
+        min-height: 18px;
+      }
+    </style>
   </head>
+
   <body>
     <!-- Navigation -->
     <header class="navbar">
@@ -15,7 +26,7 @@
 
     <!-- Main Container -->
     <main class="container">
-      <!-- Left Animated Text Section -->
+      <!-- Left Section -->
       <section class="left">
         <p class="subtitle">Welcome Back</p>
 
@@ -26,8 +37,7 @@
 
         <p class="description">
           Sign in to continue your journey through
-          <strong>100 Days • 100 Web Projects</strong>. Explore creative
-          designs, animations, and real-world projects.
+          <strong>100 Days • 100 Web Projects</strong>.
         </p>
 
         <div class="feature-list">
@@ -39,12 +49,10 @@
 
       <!-- Right Login Form -->
       <section class="form-box">
-        <!-- Small Back Button -->
         <button
           class="back-button"
           type="button"
           onclick="window.location.href = '../index.html'"
-          aria-label="Back to Home"
         >
           ←
         </button>
@@ -68,10 +76,12 @@
             />
           </div>
 
+          <!-- ✅ Inline error message -->
+          <p id="login-error" class="error-message"></p>
+
           <button type="submit" class="login-btn">Login</button>
         </form>
 
-        <!-- New User Link -->
         <p class="signup-text">
           New here?
           <a href="./signup.html">Sign Up</a>
@@ -79,35 +89,34 @@
       </section>
     </main>
 
-  <script>
-    // Transition effect for images
-    const images = document.querySelectorAll(".transition-image");
-    let currentImageIndex = 0;
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
 
-    function showNextImage() {
-      images[currentImageIndex].style.opacity = 0;
-      currentImageIndex = (currentImageIndex + 1) % images.length;
-      images[currentImageIndex].style.opacity = 1;
-    }
+          const username = document
+            .getElementById("username")
+            .value.trim();
 
-    setInterval(showNextImage, 3000);
+          const password = document
+            .getElementById("password")
+            .value.trim();
 
-    // Login form submission
-    document.getElementById("loginForm").addEventListener("submit", function (event) {
-      event.preventDefault();
+          const errorEl = document.getElementById("login-error");
 
-          const username = document.getElementById("username").value.trim();
+          if (username && password) {
+            // clear error
+            errorEl.textContent = "";
 
-          const password = document.getElementById("password").value.trim();
-
-      if (username && password) {
-        localStorage.setItem("username", username);
-        window.location.pathname = "/index.html";
-      } else {
-        alert("Invalid credentials. Please try again.");
-      }
-    });
-  </script>
-</body>
+            localStorage.setItem("username", username);
+            window.location.pathname = "/index.html";
+          } else {
+            // ✅ inline validation instead of alert
+            errorEl.textContent =
+              "Invalid credentials. Please try again.";
+          }
+        });
+    </script>
+  </body>
 </html>
-
