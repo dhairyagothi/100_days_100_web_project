@@ -2,15 +2,12 @@
     --bg-color: #000000;
     --text-color: #f8fafc;
     --glow-color: rgba(59, 130, 246, 0.15);
-
     --paper-bg: #ffffff;
     --paper-text: #222222;
     --paper-line: #d0d0d0;
-
     --body-grad-a: #667eea;
     --body-grad-b: #764ba2;
     --body-grad-c: #5a4a8a;
-
     --key-bg-a: #1a1a1a;
     --key-bg-b: #111111;
     --key-border: #333333;
@@ -18,22 +15,19 @@
     --key-active-bg: #1e3a5f;
     --key-active-border: #3b82f6;
     --key-active-shadow: rgba(59, 130, 246, 0.55);
-
-    --input-bg: rgba(255, 255, 255, 0.07);
-    --input-border: rgba(255, 255, 255, 0.2);
+    --input-bg: rgba(255,255,255,0.07);
+    --input-border: rgba(255,255,255,0.2);
     --input-color: #f5f5f5;
-    --input-placeholder: rgba(255, 255, 255, 0.55);
+    --input-placeholder: rgba(255,255,255,0.55);
 }
 
 body.light-theme {
     --bg-color: #ffffff;
     --text-color: #111111;
     --glow-color: rgba(59, 130, 246, 0.10);
-
     --body-grad-a: #7c85d8;
     --body-grad-b: #8b5fad;
     --body-grad-c: #6a56a2;
-
     --key-bg-a: #f5f5f5;
     --key-bg-b: #e0e0e0;
     --key-border: #c8c8c8;
@@ -41,18 +35,13 @@ body.light-theme {
     --key-active-bg: #dbeafe;
     --key-active-border: #3b82f6;
     --key-active-shadow: rgba(59, 130, 246, 0.5);
-
-    --input-bg: rgba(0, 0, 0, 0.07);
-    --input-border: rgba(0, 0, 0, 0.18);
-    --input-color: #111111;
-    --input-placeholder: rgba(17, 17, 17, 0.55);
+    --input-bg: rgba(0,0,0,0.07);
+    --input-border: rgba(0,0,0,0.18);
+    --input-color: #f5f5f5;
+    --input-placeholder: rgba(255,255,255,0.65);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     background-color: var(--bg-color);
@@ -88,16 +77,8 @@ body::after {
     animation: floatingGlow 8s ease-in-out infinite;
 }
 
-body::before {
-    top: -120px;
-    left: -120px;
-}
-
-body::after {
-    bottom: -120px;
-    right: -120px;
-    animation-delay: 4s;
-}
+body::before { top: -120px; left: -120px; }
+body::after  { bottom: -120px; right: -120px; animation-delay: 4s; }
 
 @keyframes floatingGlow {
 
@@ -113,18 +94,14 @@ body::after {
 
 .theme-toggle {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 20px; right: 20px;
     font-size: 30px;
     cursor: pointer;
     z-index: 10;
     transition: transform 0.3s ease;
     user-select: none;
 }
-
-.theme-toggle:hover {
-    transform: scale(1.15) rotate(20deg);
-}
+.theme-toggle:hover { transform: scale(1.15) rotate(20deg); }
 
 .typewriter-machine {
     width: min(96vw, 1400px);
@@ -171,7 +148,8 @@ body::after {
     border-radius: 8px 8px 0 0;
 }
 
-#typewriterText {
+.typewriterText {
+    display: inline;
     position: relative;
     z-index: 2;
     white-space: pre-wrap;
@@ -184,9 +162,9 @@ body::after {
 .cursor-paper {
     display: inline-block;
     background-color: var(--paper-text);
-    width: 2px;
-    height: 1.05em;
-    margin-left: 2px;
+    width: 3px;
+    height: 1.6ex;
+    margin-left: 1px;
     vertical-align: text-bottom;
     animation: blink-paper 1s infinite;
     position: relative;
@@ -280,31 +258,22 @@ body::after {
 
     scrollbar-width: none;
 }
-
 #userInput:focus {
     outline: none;
-    border-color: rgba(59, 130, 246, 0.55);
-    background-color: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.22);
+    border-color: rgba(59,130,246,0.55);
+    background-color: rgba(255,255,255,0.12);
+    box-shadow: 0 0 10px rgba(59,130,246,0.22);
 }
-
-#userInput::placeholder {
-    color: var(--input-placeholder);
-}
+#userInput::placeholder { color: var(--input-placeholder); }
 
 .keyboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 13px;
-    width: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 13px; width: 100%;
 }
 
 .keyboard-row {
-    display: flex;
-    gap: 11px;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: flex; gap: 11px;
+    justify-content: center; flex-wrap: wrap;
 }
 
 .key {
@@ -337,7 +306,7 @@ body::after {
 
 .key:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.38), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.38), inset 0 1px 3px rgba(255,255,255,0.8);
 }
 
 .key:active,
@@ -372,24 +341,22 @@ body::after {
 }
 
 .key.space {
-    width: min(420px, 70vw);
+    width: 420px;
     border-radius: 22px;
     font-size: 11px;
     letter-spacing: 2px;
 }
 
-.key.backspace,
-.key.enter-key {
+.key.backspace {
     width: 90px;
     border-radius: 10px;
     font-size: 11px;
 }
 
-.key.caps-lock {
-    width: 120px;
-    border-radius: 12px;
+.key.enter-key {
+    width: 90px;
+    border-radius: 10px;
     font-size: 11px;
-    letter-spacing: 0.6px;
 }
 
 @media (max-width: 768px) {
@@ -446,35 +413,40 @@ body::after {
         width: 230px;
     }
 
-    .key.backspace,
-    .key.enter-key {
-        width: 58px;
-    }
-
-    .key.caps-lock {
-        width: 84px;
-        font-size: 8px;
-    }
-
-    .theme-toggle {
-        top: 10px;
-        right: 12px;
-        font-size: 22px;
-    }
-
-    #userInput {
-        min-height: 72px;
-        font-size: 13px;
-    }
+@media (max-width: 480px) {
+    .paper-sheet { padding: 13px; min-height: 110px; font-size: 0.95rem; }
+    .typewriter-body { padding: 12px; gap: 10px; }
+    .keyboard-row { gap: 5px; }
+    .key { width: 32px; height: 32px; font-size: 7px; }
+    .key.space { width: 190px; }
+    .key.backspace, .key.enter-key { width: 50px; }
 }
 
-@media (max-width: 480px) {
-    .paper-sheet {
-        padding: 13px;
-        min-height: 110px;
-        font-size: 0.95rem;
-        line-height: 24px;
-    }
+.controls{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.controls button{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+#pageCounter{
+    color:white;
+    font-weight:bold;
+}
+
+#copyBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
     .paper-sheet::after {
         background: repeating-linear-gradient(to bottom,
@@ -484,38 +456,42 @@ body::after {
                 var(--paper-line) 24px);
     }
 
-    .typewriter-body {
-        padding: 12px;
-        gap: 10px;
-    }
+.counter-separator {
+    opacity: 0.7;
+}
 
-    .keyboard-row {
-        gap: 5px;
-    }
+#pagesContainer{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+    align-items:center;
+}
 
-    .key {
-        width: 32px;
-        height: 32px;
-        font-size: 7px;
-    }
+.ink{
+    color:#000 !important;
+    opacity:1 !important;
+    filter:none !important;
+    font-weight:900;
+    -webkit-text-fill-color:#000;
+}
 
-    .key.space {
-        width: 190px;
-    }
+.stamp{
+    animation:stamp .15s;
+}
 
-    .key.backspace,
-    .key.enter-key {
-        width: 50px;
+@keyframes stamp{
+    0%{
+    transform:scale(1.2);
     }
-
-    .key.caps-lock {
-        width: 78px;
-        font-size: 7px;
+    100%{
+    transform:scale(1);
     }
+}
 
-    #userInput {
-        min-height: 64px;
-        padding: 10px 12px;
+@media print{
+    .cursor-paper{
+        display:none;
     }
 }
 

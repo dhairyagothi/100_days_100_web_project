@@ -8,8 +8,11 @@
 </head>
 <body>
 
+  <button id="themeToggle" class="theme-toggle">🌙</button>
+
   <div class="container">
     <h1>🎓 Placement Predictor</h1>
+
     <p class="subtitle">
       Predict your placement chances and expected package based on your profile
     </p>
@@ -118,6 +121,32 @@
     <button id="predictBtn">Predict Placement</button>
 
     <div class="result-box" id="resultBox">
+
+      <div class="meter-wrapper">
+        <div class="progress-ring" id="progressRing">
+          <svg class="progress-svg" width="180" height="180">
+            <circle
+              class="progress-bg"
+              cx="90"
+              cy="90"
+              r="75"
+            ></circle>
+            <circle
+              class="progress-circle"
+              id="progressCircle"
+              cx="90"
+              cy="90"
+              r="75"
+            ></circle>
+          </svg>
+
+        <div class="meter-content">
+          <h2 id="meterScore">0%</h2>
+          <p>Placement Chance</p>
+        </div>
+      </div>
+    </div>
+    
       <h2>Your Prediction</h2>
 
       <div class="result-card">
@@ -134,10 +163,21 @@
         <span>Suggested Focus Area</span>
         <h3 id="suggestion">-</h3>
       </div>
+
+
+      <div class="charts-container">
+        <div class="chart-card">
+          <canvas id="placementChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <canvas id="skillsChart"></canvas>
+        </div>
+      </div>
     </div>
 
   </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

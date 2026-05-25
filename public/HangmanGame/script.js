@@ -280,6 +280,7 @@ const resetGame = () => {
     wordDisplay.innerHTML = currentWord.split("").map(() => `<li class="letter"></li>`).join("");
     keyboardDiv.querySelectorAll("button").forEach(btn => btn.disabled = false);
     gameModal.classList.remove("show");
+    document.activeElement.blur();
 }
 
 const getRandomWord = () => {
@@ -324,5 +325,71 @@ for (let i = 97; i <= 122; i++) {
     button.addEventListener("click", (e) => initGame(e.target, String.fromCharCode(i)));
 }
 
+const rulesBtn =
+document.querySelector(".rules-btn");
+
+const rulesModal =
+document.querySelector(".rules-modal");
+
+const closeRules =
+document.querySelector(".close-rules");
+
+
+rulesBtn.addEventListener(
+"click",
+()=>{
+
+rulesModal.classList.add("show");
+
+});
+
+
+closeRules.addEventListener(
+"click",
+()=>{
+
+rulesModal.classList.remove("show");
+
+});
+
+
+rulesModal.addEventListener(
+"click",
+(e)=>{
+
+if(
+e.target === rulesModal
+){
+
+rulesModal.classList.remove("show");
+
+}
+
+});
 getRandomWord();
 playAgainBtn.addEventListener("click", getRandomWord);
+document.addEventListener("keydown", (e) => {
+
+    const key = e.key.toLowerCase();
+
+    // allow only letters
+    if (!/^[a-z]$/.test(key)) return;
+
+    // stop input if modal open
+    if (gameModal.classList.contains("show")) return;
+
+    // directly click matching button
+    const targetBtn =
+        [...keyboardDiv.children]
+        .find(btn =>
+            btn.innerText.toLowerCase() === key
+        );
+
+    if (
+        targetBtn &&
+        !targetBtn.disabled
+    ) {
+        targetBtn.click();
+    }
+
+});
