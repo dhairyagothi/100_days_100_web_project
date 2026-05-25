@@ -107,8 +107,8 @@ function renderTasks() {
     taskList.innerHTML = "";
 
     filteredTasks.forEach((task, idx) => {
-      const card = document.createElement("div");
-      card.className = `notes` + (task.completed ? " completed" : "");
+      const card = document.createElement("li");
+      card.className = `task-item` + (task.completed ? " completed" : "");
       card.setAttribute("data-id", task.id);
       card.style.setProperty("--i", idx);
 
@@ -300,3 +300,10 @@ try {
   const saved = localStorage.getItem('todo-theme');
   if (saved) applyTheme(saved);
 } catch (e) {}
+
+
+
+window.addTask = addTask;
+window.toggleTask = toggleTask;
+window.deleteTask = deleteTask;
+window.updateTaskText = updateTaskText;

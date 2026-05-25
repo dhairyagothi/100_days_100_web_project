@@ -53,7 +53,16 @@ body {
   font-family: var(--font-family);
   line-height: 1.6;
   color: var(--text-primary);
-  background: linear-gradient(135deg, var(--page-bg-start) 0%, var(--page-bg-mid) 45%, var(--page-bg-end) 100%);
+
+  background:
+    radial-gradient(circle at top left, rgba(139,92,246,0.35), transparent 25%),
+    radial-gradient(circle at bottom right, rgba(59,130,246,0.30), transparent 25%),
+    linear-gradient(135deg,
+      var(--page-bg-start) 0%,
+      var(--page-bg-mid) 45%,
+      var(--page-bg-end) 100%
+    );
+
   overflow-x: hidden;
   transition: background var(--transition);
 }
@@ -239,12 +248,16 @@ main {
   width: 100%;
   max-width: 820px;
   margin: 0 auto;
-  padding: 20px 16px 60px;
+  /* padding: 20px 16px 60px; */
+  padding:
+    40px
+    clamp(20px, 5vw, 80px);
 }
 
 /* ---------- Sections ---------- */
 section {
   width: 100%;
+  margin-bottom:40px;
 }
 
 /* ---------- Hero Section ---------- */
@@ -380,6 +393,66 @@ section {
   min-width: 180px;
 }
 
+
+.task-item{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:10px;
+  color:white;
+}
+
+
+.tasks-wrapper{
+  width: 100%;
+
+  margin-top: 35px;
+
+  padding: 28px;
+
+  border-radius: 30px;
+
+  position: relative;
+
+  background: rgba(17, 25, 40, 0.42);
+
+  border: 1.5px solid rgba(255,255,255,0.14);
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  box-shadow:
+    0 8px 32px rgba(31, 38, 135, 0.20),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+
+  overflow: hidden;
+
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.tasks-wrapper::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.10),
+      transparent 40%
+    );
+
+  pointer-events:none;
+}
+
+
 #task::placeholder {
   color: #8e8e9c;
 }
@@ -476,38 +549,116 @@ section {
 }
 
 /* ---------- Notes Container (Task Cards) ---------- */
-#notes-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  width: 100%;
-  justify-content: center;
-  padding: 0 0 20px;
-  list-style: none;
+#notes-container{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+
+  width:100%;
+  padding:0;
+
+  list-style:none;
 }
 
 /* ---------- Individual Task Card ---------- */
-.notes {
-  width: min(100%, 380px);
-  border-radius: var(--card-radius);
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  padding: 18px 20px 20px;
-  box-shadow: 0 12px 40px rgba(9, 15, 45, 0.12);
-  color: var(--text-dark);
-  overflow-wrap: break-word;
-  transition: transform var(--transition), box-shadow var(--transition);
-  animation: fadeInUp 0.4s ease forwards;
-  opacity: 0;
-  animation-delay: calc(var(--i, 0) * 0.05s);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.notes{
+  width:100%;
+
+  padding:20px;
+
+  border-radius:24px;
+
+  background: rgba(255,255,255,0.06);
+
+  border:1px solid rgba(255,255,255,0.10);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  box-shadow:
+    0 8px 32px rgba(31,38,135,0.18);
+
+  transition: all 0.3s ease;
+
+  position:relative;
+
+  overflow:hidden;
 }
 
-.notes:hover {
+.notes::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.10),
+      transparent 45%
+    );
+
+  pointer-events:none;
+}
+
+.notes:hover{
   transform: translateY(-4px);
-  box-shadow: 0 20px 56px rgba(9, 15, 45, 0.20);
+
+  background: rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 12px 30px rgba(59,130,246,0.22);
+}
+
+.note-text{
+  width:100%;
+
+  background: rgba(255,255,255,0.04);
+
+  color:white;
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  border-radius:16px;
+
+  outline:none;
+
+  resize:none;
+
+  font-size:16px;
+
+  line-height:1.6;
+
+  font-weight:500;
+
+  min-height:40px;
+
+  padding:14px 16px;
+
+  transition:0.3s ease;
+}
+
+
+.note-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: nowrap;
+}
+
+
+
+.note-check,
+.note-delete {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 @keyframes fadeInUp {
@@ -527,17 +678,14 @@ section {
 
 /* ---------- Category Badge ---------- */
 .category-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 12px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  width: fit-content;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
 }
 
 /* ---------- Note Row ---------- */
@@ -548,23 +696,19 @@ section {
   width: 100%;
 }
 
-.note-text {
-  font-size: 16px;
-  line-height: 1.6;
-  font-weight: 600;
-  color: #0d1631;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: rgba(245, 247, 250, 0.80);
-  border: 1px solid rgba(16, 24, 56, 0.06);
-  outline: none;
-  min-height: 44px;
-  transition: border-color var(--transition), box-shadow var(--transition);
+.note-actions div:last-child {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-.note-text:focus {
-  border-color: rgba(124, 99, 255, 0.45);
-  box-shadow: 0 0 0 3px rgba(124, 99, 255, 0.10);
+.note-text:focus{
+  background: rgba(255,255,255,0.07);
+
+  border-color: rgba(139,92,246,0.35);
+
+  box-shadow:
+    0 0 0 4px rgba(139,92,246,0.12);
 }
 
 /* ---------- Completed Animation ---------- */
@@ -792,9 +936,22 @@ section {
     width: 100%;
   }
 
-  .notes {
-    width: 100%;
-  }
+.notes::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.08),
+      transparent 45%
+    );
+
+  pointer-events:none;
+}
 
   .document-item {
     width: 100%;
