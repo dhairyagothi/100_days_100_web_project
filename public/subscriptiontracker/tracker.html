@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscription Tracker | Premium Dashboard</title>
+  
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="./tracker.css">
+</head>
+
+<body>
+  
+  <div class="app-container">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="brand">
+        <div class="brand-icon"><i class="ph ph-infinity"></i></div>
+        <span>SubscriptionTracker</span>
+      </div>
+      <div class="nav-actions">
+        <select id="currency-select" class="form-select" style="width: auto; padding: 6px 30px 6px 12px; height: 36px; border-radius: var(--radius-full);">
+          <option value="USD">USD ($)</option>
+          <option value="INR">INR (₹)</option>
+        </select>
+        <div class="search-bar">
+          <i class="ph ph-magnifying-glass"></i>
+          <input type="text" id="search-input" placeholder="Search subscriptions...">
+        </div>
+        <button class="btn btn-primary" id="btn-add-sub">
+          <i class="ph ph-plus"></i> Add New
+        </button>
+      </div>
+    </nav>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Main Area (70%) -->
+      <main class="main-area">
+        
+        <!-- Analytics Cards -->
+        <div class="analytics-grid">
+          <div class="stat-card active">
+            <div class="stat-header">
+              <span>Active Subscriptions</span>
+              <div class="stat-icon"><i class="ph ph-check-circle"></i></div>
+            </div>
+            <div class="stat-value" id="stat-active">0</div>
+          </div>
+          
+          <div class="stat-card monthly">
+            <div class="stat-header">
+              <span>Monthly Spend</span>
+              <div class="stat-icon"><i class="ph ph-currency-dollar"></i></div>
+            </div>
+            <div class="stat-value" id="stat-monthly">$0.00</div>
+          </div>
+          
+          <div class="stat-card yearly">
+            <div class="stat-header">
+              <span>Yearly Projection</span>
+              <div class="stat-icon"><i class="ph ph-trend-up"></i></div>
+            </div>
+            <div class="stat-value" id="stat-yearly">$0.00</div>
+          </div>
+        </div>
+
+        <!-- Data Controls -->
+        <div class="controls-toolbar">
+          <div class="category-tabs" id="filter-tabs">
+            <button class="tab-btn active" data-filter="All">All Categories</button>
+            <button class="tab-btn" data-filter="Entertainment">Entertainment</button>
+            <button class="tab-btn" data-filter="Software">Software</button>
+            <button class="tab-btn" data-filter="Utility">Utility</button>
+            <button class="tab-btn" data-filter="Gaming">Gaming</button>
+            <button class="tab-btn" data-filter="Other">Other</button>
+          </div>
+        </div>
+
+        <!-- Subscription List -->
+        <div class="subs-container">
+          <div class="subs-header">
+            <div>Service Details</div>
+            <div>Billing Cycle</div>
+            <div>Cost</div>
+            <div>Next Renewal</div>
+            <div style="text-align: right;">Actions</div>
+          </div>
+          
+          <div class="subs-list" id="subs-list">
+            <!-- Populated via JS -->
+          </div>
+          
+          <div class="empty-state" id="empty-state" style="display: none;">
+            <div class="empty-icon"><i class="ph ph-ghost"></i></div>
+            <div class="empty-title">No subscriptions found</div>
+            <div class="empty-desc">You aren't tracking any subscriptions in this category. Add one to get started!</div>
+            <button class="btn btn-primary" id="btn-empty-add" style="margin-top: 10px;">
+              <i class="ph ph-plus"></i> Add Subscription
+            </button>
+          </div>
+        </div>
+        
+      </main>
+
+      <!-- Right Sidebar (30%) -->
+      <aside class="sidebar">
+        
+        <!-- Upcoming Renewals Widget -->
+        <div class="widget">
+          <div class="widget-header">
+            <i class="ph ph-calendar-blank"></i> Upcoming Renewals
+          </div>
+          <div class="renewal-list" id="renewals-list">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+        
+        <!-- Insights Widget -->
+        <div class="widget">
+          <div class="widget-header">
+            <i class="ph ph-lightbulb"></i> Spending Insights
+          </div>
+          <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+            Most of your tracked expenses are usually monthly. Switching to yearly billing can save you up to 20% on average.
+          </div>
+        </div>
+
+      </aside>
+      
+    </div>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal-overlay" id="sub-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Subscription</h2>
+        <button class="modal-close"><i class="ph ph-x"></i></button>
+      </div>
+      
+      <form id="sub-form">
+        <div class="modal-body form-grid">
+          
+          <div class="form-group full">
+            <label class="form-label">Service Name</label>
+            <input type="text" id="sub-name" class="form-input" placeholder="e.g. Netflix, Spotify" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Cost Amount</label>
+            <input type="number" id="sub-cost" class="form-input" step="0.01" min="0" placeholder="0.00" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Billing Cycle</label>
+            <select id="sub-cycle" class="form-select">
+              <option value="Monthly">Monthly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">First Billing Date</label>
+            <input type="date" id="sub-date" class="form-input" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="sub-category" class="form-select">
+              <option value="Entertainment">Entertainment</option>
+              <option value="Software">Software</option>
+              <option value="Utility">Utility</option>
+              <option value="Gaming">Gaming</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Subscription</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toasts Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JS -->
+  <script src="./tracker.js"></script>
+</body>
+</html>

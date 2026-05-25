@@ -113,6 +113,334 @@ textarea {
     text-align: center;
 }
 
+/* Reusable Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Available Doctors Styles */
+.doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.doctor-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto; /* Natural card height */
+}
+
+@media (hover: hover) {
+    .doctor-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .doctor-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
+    }
+}
+
+/* Flex-based Status Header */
+.card-status-header {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.availability {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.availability.available {
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.availability.limited {
+    background: #fef9c3;
+    color: #713f12;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.green {
+    background: #22c55e;
+}
+
+.status-dot.yellow {
+    background: #eab308;
+}
+
+/* Reusable Avatar Circle */
+.doctor-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 1px solid #bfdbfe;
+    font-size: 1.8rem;
+}
+
+/* Profile Group & Stack Breakpoint */
+.doctor-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    width: 100%;
+}
+
+.doctor-identity {
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-identity h3 {
+    margin-bottom: 3px;
+    color: #1e293b;
+    font-size: 1.15rem;
+}
+
+.specialty-badge {
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    align-self: flex-start;
+    margin-top: 4px;
+}
+
+/* Horizontal/Vertical Metrics Grid */
+.doctor-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 18px 0;
+    border-top: 1px dashed #e2e8f0;
+    border-bottom: 1px dashed #e2e8f0;
+    padding: 12px 0;
+    width: 100%;
+}
+
+.experience, .rating {
+    font-size: 0.82rem;
+    color: #475569;
+    font-weight: 500;
+}
+
+.doctor-card button {
+    width: 100%;
+}
+
+/* Breakpoint for Stacking Experience & Rating */
+@media (max-width: 576px) {
+    .doctor-meta {
+        flex-direction: column;
+        gap: 6px;
+        align-items: center;
+    }
+}
+
+/* Breakpoint for Stacking Avatar & Info */
+@media (max-width: 480px) {
+    .doctor-profile {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+    .specialty-badge {
+        align-self: center;
+    }
+}
+
+/* Booking Modal Overlay */
+.booking-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+/* Booking Modal Dialog */
+.booking-modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideDown 0.3s ease;
+}
+
+@keyframes modalSlideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.booking-modal-content h2 {
+    color: #2563eb;
+    margin-bottom: 5px;
+}
+
+#modalSubtitle {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #94a3b8;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #ef4444;
+}
+
+/* Form Styles inside Modal */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+/* Validation & Errors */
+.error-message {
+    color: #dc2626;
+    font-size: 0.8rem;
+    min-height: 18px;
+    display: block;
+    margin-top: 2px;
+}
+
+.invalid-input {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2;
+}
+
+/* Modal Footer Buttons */
+.modal-footer {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-footer button {
+    flex: 1;
+}
+
+.cancel-btn {
+    background: #e2e8f0;
+    color: #475569;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 1rem;
+}
+
+.cancel-btn:hover {
+    background: #cbd5e1;
+}
+
+/* Success Banner */
+.success-message {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+
+.success-text {
+    color: #15803d;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.success-close-btn {
+    background: #15803d;
+    min-width: 120px;
+}
+
+.success-close-btn:hover {
+    background: #166534;
+}
+
 @media (max-width: 768px) {
 
     .hero h1 {
@@ -122,6 +450,16 @@ textarea {
     .dashboard {
         width: 95%;
     }
+
+    .doctors-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+
 }
 
 #buttons {

@@ -1,3 +1,5 @@
+let placementChart;
+let skillsChart;
 const progressCircle =
   document.getElementById("progressCircle");
 
@@ -52,7 +54,58 @@ predictBtn.addEventListener("click", () => {
 
   if (score > 100) score = 100;
 
-  let packageValue = (score / 10).toFixed(1);
+  let packageValue = 0;
+
+  if (score >= 85) {
+
+    packageValue = 12 + (dsa * 0.6);
+
+  } else if (score >= 70) {
+
+    packageValue = 8 + (dsa * 0.4);
+
+  } else if (score >= 55) {
+
+    packageValue = 5 + (dsa * 0.3);
+
+  } else {
+
+    packageValue = 2 + (dsa * 0.2);
+  }
+
+  if (stack === "AI / ML") {
+
+    packageValue += 3;
+
+  } else if (stack === "Data Science") {
+
+    packageValue += 2.5;
+
+  } else if (stack === "Cyber Security") {
+
+    packageValue += 2;
+
+  } else if (stack === "Web Development") {
+
+    packageValue += 1.5;
+  }
+
+  if (internship === "Yes") {
+
+    packageValue += 1.5;
+  }
+
+  if (projects >= 5) {
+
+    packageValue += 1;
+  }
+
+  if (packageValue > 25) {
+
+    packageValue = 25;
+  }
+
+  packageValue = packageValue.toFixed(1);
 
   let suggestion = "";
 
@@ -104,6 +157,146 @@ if (score >= 80) {
   document.getElementById("suggestion").textContent = suggestion;
 
   document.getElementById("resultBox").style.display = "block";
+  const textColor = document.body.classList.contains("dark-mode")
+  ? "#f8fafc"
+  : "#222";
+
+const gridColor = document.body.classList.contains("dark-mode")
+  ? "#475569"
+  : "#ddd";
+  if (placementChart) placementChart.destroy();
+
+  if (skillsChart) skillsChart.destroy();
+  const placementCtx = document
+  .getElementById("placementChart")
+  .getContext("2d");
+
+placementChart = new Chart(placementCtx, {
+  type: "bar",
+
+  data: {
+    labels: ["Placement Chance", "Expected Package"],
+
+    datasets: [{
+      label: "Prediction Metrics",
+
+      data: [score, packageValue],
+
+      borderRadius: 10
+    }]
+  },
+
+  options: {
+    responsive: true,
+
+    plugins: {
+      legend: {
+        labels: {
+          color: textColor
+        }
+      }
+    },
+
+    scales: {
+      y: {
+        ticks: {
+          color: textColor
+        },
+
+        grid: {
+          color: gridColor
+        }
+      },
+
+      x: {
+        ticks: {
+          color: textColor
+        },
+
+        grid: {
+          color: gridColor
+        }
+      }
+    }
+  }
+});
+const skillsCtx = document
+  .getElementById("skillsChart")
+  .getContext("2d");
+
+skillsChart = new Chart(skillsCtx, {
+  type: "radar",
+
+  data: {
+    labels: [
+      "CGPA",
+      "DSA",
+      "Projects",
+      "Communication",
+      "Internship"
+    ],
+
+    datasets: [{
+      label: "Skill Analysis",
+
+      data: [
+        cgpa,
+
+        dsa,
+
+        projects > 10 ? 10 : projects,
+
+        communication === "Excellent"
+          ? 10
+          : communication === "Good"
+          ? 7
+          : communication === "Average"
+          ? 5
+          : 2,
+
+        internship === "Yes"
+          ? 10
+          : 3
+      ]
+    }]
+  },
+
+  options: {
+    responsive: true,
+
+    scales: {
+      r: {
+        suggestedMin: 0,
+        suggestedMax: 10,
+
+        ticks: {
+          color: textColor,
+          backdropColor: "transparent"
+        },
+
+        pointLabels: {
+          color: textColor
+        },
+
+        grid: {
+          color: gridColor
+        },
+
+        angleLines: {
+          color: gridColor
+        }
+      }
+    },
+
+    plugins: {
+      legend: {
+        labels: {
+          color: textColor
+        }
+      }
+    }
+  }
+});
 });
 
 
@@ -127,5 +320,10 @@ themeToggle.addEventListener("click", () => {
     localStorage.setItem("placementTheme", "light");
     themeToggle.textContent = "🌙";
   }
+  if (
+  document.getElementById("resultBox").style.display === "block"
+) {
+  predictBtn.click();
+}
 
 });
