@@ -496,10 +496,33 @@ const setupEventListeners = () => {
     button.addEventListener('click', () => togglePanel(button.dataset.collapse, button));
   });
 
-  window.addEventListener('message', (event) => {
-    if (event.data?.source !== 'live-code-playground') return;
-    appendConsoleLine(event.data.level || 'log', event.data.values || []);
-  });
+window.addEventListener('message', (event) => {
+  const previewFrame = elements.previewFrame;
+
+  // Ensure iframe exists
+  if (!previewFrame?.contentWindow) return;
+
+  // Accept messages only from the sandbox preview iframe
+  if (event.source !== previewFrame.contentWindow) return;
+
+  const data = event.data;
+
+  // Validate payload
+  if (!data || data.source !== 'live-code-playground') return;
+
+  // Allow only expected console levels
+  const allowedLevels = ['log', 'warn', 'error', 'info'];
+
+  const level = allowedLevels.includes(data.level)
+    ? data.level
+    : 'log';
+
+  const values = Array.isArray(data.values)
+    ? data.values
+    : [];
+
+  appendConsoleLine(level, values);
+});
 
   window.addEventListener('keydown', (event) => {
     const modifierPressed = event.ctrlKey || event.metaKey;
