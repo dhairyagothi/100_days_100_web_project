@@ -1,101 +1,213 @@
-const slider       = document.getElementById("slider");
-const directionBtn = document.getElementById("directionBtn");
-const pauseBtn     = document.getElementById("pauseBtn");
-const themeBtn     = document.getElementById("themeBtn");
+const leftBank = document.getElementById("left-bank");
+const rightBank = document.getElementById("right-bank");
+const boat = document.getElementById("boat");
+const message = document.getElementById("message");
 
-let isPaused   = false;
-let isReversed = false;
+let state;
 
-function getCurrentAngle() {
-  const style  = window.getComputedStyle(slider);
-  const matrix = new DOMMatrixReadOnly(style.transform);
-  
-  const angle  = Math.round(Math.atan2(matrix.m13, matrix.m11) * (180 / Math.PI));
-  return ((angle % 360) + 360) % 360;
+function initGame(){
+
+    state = {
+        leftM:3,
+        leftC:3,
+        rightM:0,
+        rightC:0,
+        boatM:0,
+        boatC:0,
+        boatPosition:"left",
+        gameOver:false
+    };
+
+    render();
+
+    message.textContent = "Game Started!";
 }
 
-function freeze() {
-  const angle = getCurrentAngle();
-  slider.style.animation = "none";
-  slider.style.transform = `perspective(1400px) rotateY(${angle}deg)`;
-  return angle;
-}
+function createPerson(type, location){
 
-function resume(fromAngle, reverse) {
-  const old = document.getElementById("__dyn_kf");
-  if (old) old.remove();
+    const div = document.createElement("div");
 
-  const endAngle  = reverse ? fromAngle - 360 : fromAngle + 360;
-  const duration  = getComputedStyle(document.documentElement)
-                      .getPropertyValue("--duration").trim() || "18s";
+    div.classList.add("person");
 
-  const style = document.createElement("style");
-  style.id    = "__dyn_kf";
-  style.textContent = `
-    @keyframes __resume {
-      from { transform: perspective(1400px) rotateY(${fromAngle}deg); }
-      to   { transform: perspective(1400px) rotateY(${endAngle}deg); }
+    if(type === "missionary"){
+
+        div.classList.add("missionary");
+        div.innerHTML = "👨";
+
+    }else{
+
+        div.classList.add("cannibal");
+        div.innerHTML = "👹";
     }
-  `;
-  document.head.appendChild(style);
 
-  slider.style.transform = "";
-  slider.style.animation = `__resume ${duration} linear infinite`;
+    div.addEventListener("click", ()=>handleMove(type, location));
+
+    return div;
 }
 
-pauseBtn.addEventListener("click", () => {
-  if (!isPaused) {
-    freeze();
-    pauseBtn.querySelector(".btn-label").textContent = "Resume Rotation";
-  } else {
-    const frozenAngle = parseFloat(
-      slider.style.transform.match(/rotateY\(([-\d.]+)deg\)/)?.[1] ?? 0
-    );
-    resume(frozenAngle, isReversed);
-    pauseBtn.querySelector(".btn-label").textContent = "Pause Rotation";
-  }
-  isPaused = !isPaused;
-});
+function render(){
 
+    leftBank.innerHTML = "";
+    rightBank.innerHTML = "";
+    boat.innerHTML = "";
 
-directionBtn.addEventListener("click", () => {
-  isReversed = !isReversed;
+    for(let i=0;i<state.leftM;i++){
+        leftBank.appendChild(createPerson("missionary","left"));
+    }
 
-  if (isPaused) {
-    directionBtn.querySelector(".btn-label").textContent =
-      isReversed ? "Normal Rotation" : "Reverse Rotation";
-    return;
-  }
+    for(let i=0;i<state.leftC;i++){
+        leftBank.appendChild(createPerson("cannibal","left"));
+    }
 
-  const angle = getCurrentAngle();
-  resume(angle, isReversed);
+    for(let i=0;i<state.rightM;i++){
+        rightBank.appendChild(createPerson("missionary","right"));
+    }
 
-  directionBtn.querySelector(".btn-label").textContent =
-    isReversed ? "Normal Rotation" : "Reverse Rotation";
-});
+    for(let i=0;i<state.rightC;i++){
+        rightBank.appendChild(createPerson("cannibal","right"));
+    }
 
-themeBtn.addEventListener("click", () => {
-  document.body.classList.toggle("light-theme");
-  const isLight = document.body.classList.contains("light-theme");
-  themeBtn.querySelector(".btn-label").textContent =
-    isLight ? "Dark Mode" : "Light Mode";
-});
+    for(let i=0;i<state.boatM;i++){
+        boat.appendChild(createPerson("missionary","boat"));
+    }
 
-document.querySelectorAll(".ctrl-btn").forEach(btn => {
-  btn.addEventListener("mousemove", e => {
-    const rect   = btn.getBoundingClientRect();
-    const cx     = rect.left + rect.width  / 2;
-    const cy     = rect.top  + rect.height / 2;
-    const dx     = (e.clientX - cx) / (rect.width  / 2);  // -1 … 1
-    const dy     = (e.clientY - cy) / (rect.height / 2);
-    const pull   = 6; // max pixel pull
-    btn.style.setProperty("--mx", `${dx * pull}px`);
-    btn.style.setProperty("--my", `${dy * pull}px`);
-    btn.style.transform =
-      `translateY(-5px) scale(1.04) translate(${dx * pull}px, ${dy * pull}px)`;
-  });
+    for(let i=0;i<state.boatC;i++){
+        boat.appendChild(createPerson("cannibal","boat"));
+    }
 
-  btn.addEventListener("mouseleave", () => {
-    btn.style.transform = "";
-  });
-});
+    checkWin();
+}
+
+function handleMove(type, location){
+
+    if(state.gameOver) return;
+
+    // FROM BANK TO BOAT
+    if(location === state.boatPosition){
+
+        if(state.boatM + state.boatC >= 2){
+
+            message.textContent = "Boat is full!";
+            return;
+        }
+
+        if(type === "missionary"){
+
+            if(location === "left"){
+                state.leftM--;
+            }else{
+                state.rightM--;
+            }
+
+            state.boatM++;
+
+        }else{
+
+            if(location === "left"){
+                state.leftC--;
+            }else{
+                state.rightC--;
+            }
+
+            state.boatC++;
+        }
+    }
+
+    // FROM BOAT TO BANK
+    else if(location === "boat"){
+
+        if(type === "missionary"){
+
+            state.boatM--;
+
+            if(state.boatPosition === "left"){
+                state.leftM++;
+            }else{
+                state.rightM++;
+            }
+
+        }else{
+
+            state.boatC--;
+
+            if(state.boatPosition === "left"){
+                state.leftC++;
+            }else{
+                state.rightC++;
+            }
+        }
+    }
+
+    if(!isValid()){
+
+        message.textContent =
+        "Invalid Move! Missionaries got eaten 😭";
+
+        initGame();
+        return;
+    }
+
+    render();
+}
+
+function isValid(){
+
+    if(state.leftM > 0 &&
+       state.leftC > state.leftM){
+
+        return false;
+    }
+
+    if(state.rightM > 0 &&
+       state.rightC > state.rightM){
+
+        return false;
+    }
+
+    return true;
+}
+
+function moveBoat(){
+
+    if(state.gameOver) return;
+
+    if(state.boatM + state.boatC === 0){
+
+        message.textContent =
+        "Boat needs at least 1 person!";
+
+        return;
+    }
+
+    state.boatPosition =
+    state.boatPosition === "left"
+    ? "right"
+    : "left";
+
+    message.textContent =
+    `Boat moved to ${state.boatPosition} bank`;
+
+    render();
+}
+
+function checkWin(){
+
+    if(state.rightM === 3 &&
+       state.rightC === 3){
+
+        message.textContent =
+        "🎉 You Won The Game!";
+
+        state.gameOver = true;
+    }
+}
+
+document
+.getElementById("moveBoatBtn")
+.addEventListener("click", moveBoat);
+
+document
+.getElementById("resetBtn")
+.addEventListener("click", initGame);
+
+initGame();
