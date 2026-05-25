@@ -4,28 +4,6 @@
     const themeBtn = document.getElementById("theme-toggle");
     const STORAGE_KEY = "bmi-theme";
 
-    function getPreferred() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) return saved;
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-    }
-
-    function applyTheme(theme) {
-        document.body.classList.toggle("dark", theme === "dark");
-    }
-
-    applyTheme(getPreferred());
-
-    themeBtn.addEventListener("click", () => {
-        const isDark = document.body.classList.toggle("dark");
-        localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
-    });
-
-  const themeBtn = document.getElementById("theme-toggle");
-  const STORAGE_KEY = "bmi-theme";
-
   // Resolve initial theme: saved preference → OS preference → light
   function getPreferred() {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -123,11 +101,6 @@ function bmiToPercent(bmi) {
     const MIN = 10, MAX = 45;
     const clamped = Math.min(Math.max(bmi, MIN), MAX);
     return ((clamped - MIN) / (MAX - MIN)) * 100;
-
-  const MIN = 10,
-    MAX = 45;
-  const clamped = Math.min(Math.max(bmi, MIN), MAX);
-  return ((clamped - MIN) / (MAX - MIN)) * 100;
 
 }
 
@@ -308,13 +281,6 @@ btn.addEventListener("click", () => {
   badge.style.background = cat.bg;
   badge.style.color = cat.color;
 
-  // Healthy weight range
-  const [wLow, wHigh] = calcHealthyWeight(heightCm);
-  const dispUnit = wUnit === "lb" ? "lb" : "kg";
-  const mult = wUnit === "lb" ? 2.20462 : 1;
-  document.getElementById("healthy-range").textContent =
-    `${(wLow * mult).toFixed(1)}–${(wHigh * mult).toFixed(1)} ${dispUnit}`;
-
   document.getElementById("tip-text").textContent = cat.tip;
 
   document
@@ -401,6 +367,8 @@ resetBtn.addEventListener("click", () => {
     // Clear inputs
     heightInp.value = "";
     weightInp.value = "";
+    document.getElementById("age").value = "";
+    document.getElementById("gender").value = "female";
 
     // Hide results
     resultsEl.classList.add("hidden");
@@ -431,6 +399,8 @@ resetBtn.addEventListener("click", () => {
 
     // Reset pointer
     document.getElementById("bmi-ptr").style.left = "0%";
+
+    document.getElementById("bf-section").classList.add("hidden");
 });
 
 document.addEventListener("keydown", (e) => {
