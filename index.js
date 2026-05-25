@@ -197,6 +197,12 @@ function generateReadme() {
 }
 
 /* ============================================================
+   PAGINATION STATE — declared before renderGrid
+   ============================================================ */
+let currentPage = 1;
+const itemsPerPage = 10;
+
+/* ============================================================
    RENDER PROJECT GRID
    ============================================================ */
 let activeFilter = 'all';
@@ -219,18 +225,24 @@ function renderGrid() {
     if (filtered.length === 0) {
         grid.style.display = 'none';
         noResults.style.display = 'block';
+        removePagination();
         return;
     }
 
     grid.style.display = 'grid';
     noResults.style.display = 'none';
 
-    filtered.forEach(([day, name, url, tags, cat]) => {
+    // Pagination logic
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    if (currentPage > totalPages) currentPage = 1;
+
+    const start = (currentPage - 1) * itemsPerPage;
+    const paginated = filtered.slice(start, start + itemsPerPage);
+
+    paginated.forEach(([day, name, url, tags, cat]) => {
         const card = document.createElement('div');
         card.className = 'project-card';
-
         const tagsHTML = tags.map(t => `<span class="tag">${t}</span>`).join('');
-
         card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
@@ -244,9 +256,40 @@ function renderGrid() {
                 </a>
             </div>
         `;
-
         grid.appendChild(card);
     });
+
+    renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+    removePagination();
+    if (totalPages <= 1) return;
+
+    const container = document.createElement('div');
+    container.id = 'pagination';
+    container.style.cssText = 'display:flex;justify-content:center;gap:8px;margin-top:2rem;flex-wrap:wrap;';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.style.cssText = `padding:8px 14px;border-radius:6px;border:1px solid #444;
+            background:${i === currentPage ? '#fff' : 'transparent'};
+            color:${i === currentPage ? '#000' : '#fff'};cursor:pointer;`;
+        btn.addEventListener('click', () => {
+            currentPage = i;
+            renderGrid();
+            document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+        });
+        container.appendChild(btn);
+    }
+
+    document.getElementById('projectGrid').after(container);
+}
+
+function removePagination() {
+    const old = document.getElementById('pagination');
+    if (old) old.remove();
 }
 
 /* ============================================================
@@ -259,6 +302,7 @@ function initFilterChips() {
             chips.forEach(c => c.classList.remove('active'));
             chip.classList.add('active');
             activeFilter = chip.dataset.filter;
+            currentPage = 1;
             renderGrid();
         });
     });
@@ -272,6 +316,7 @@ function initSearch() {
     if (!input) return;
     input.addEventListener('input', () => {
         searchQuery = input.value.trim();
+        currentPage = 1;
         renderGrid();
     });
 }
@@ -357,9 +402,6 @@ function initTheme() {
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 }
-let currentPage = 1;
-const itemsPerPage = 10;
-let projectData = [];
 
 /* ============================================================
    SCROLL TO TOP
