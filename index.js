@@ -1590,3 +1590,49 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.addEventListener('popstate', () => restoreStateFromURL());
 });
+/* ===================================
+   BLUE GLOW CURSOR
+=================================== */
+
+const blueCursor = document.getElementById("blueCursor");
+
+let mouseX = 0;
+let mouseY = 0;
+
+let currentX = 0;
+let currentY = 0;
+
+/* Track Mouse */
+
+document.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+/* Smooth Floating Animation */
+
+function animateCursor() {
+  currentX += (mouseX - currentX) * 0.15;
+  currentY += (mouseY - currentY) * 0.15;
+
+  blueCursor.style.left = currentX + "px";
+  blueCursor.style.top = currentY + "px";
+
+  requestAnimationFrame(animateCursor);
+}
+
+animateCursor();
+
+/* Scroll Glow Animation */
+
+let scrollTimeout;
+
+window.addEventListener("scroll", () => {
+  blueCursor.classList.add("scroll-active");
+
+  clearTimeout(scrollTimeout);
+
+  scrollTimeout = setTimeout(() => {
+    blueCursor.classList.remove("scroll-active");
+  }, 180);
+});

@@ -2385,3 +2385,71 @@ body::after {
   z-index: 100001;
 }
 
+}
+/* ===================================
+   BLUE GLOW CURSOR
+=================================== */
+
+#blueCursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background: #93c5fd;
+
+  pointer-events: none;
+
+  top: 0;
+  left: 0;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 999999999999 !important;
+
+  box-shadow:
+    0 0 8px rgba(147, 197, 253, 1),
+    0 0 18px rgba(59, 130, 246, 0.9),
+    0 0 35px rgba(59, 130, 246, 0.7);
+
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    background 0.2s ease;
+}
+
+/* Large Outer Glow */
+
+#blueCursor::after {
+  content: "";
+
+  position: absolute;
+
+  width: 38px;
+  height: 38px;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(3, 28, 67, 0.25) 0%,
+    rgba(59,130,246,0.12) 40%,
+    rgba(59,130,246,0.03) 70%,
+    transparent 100%
+  );
+}
+
+/* Scroll Animation */
+
+#blueCursor.scroll-active {
+  width: 20px;
+  height: 20px;
+
+  background: #dbeafe;
+}
