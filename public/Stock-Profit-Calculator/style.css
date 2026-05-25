@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-image: url('https://i.pinimg.com/736x/ce/7c/90/ce7c90925d736b364348f7e1895705d7.jpg');
@@ -5,21 +9,27 @@ body {
     background-position: center;
     background-attachment: fixed;
     margin: 0;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     min-height: 100vh;
     padding: 20px;
-    box-sizing: border-box;
+
+    overflow-x: hidden;
 }
 
 .container {
     display: flex;
     flex-wrap: wrap;
+
     background: rgba(46, 190, 209, 0.9);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
     overflow: hidden;
+
     max-width: 800px;
     width: 100%;
     animation: fadeIn 1s ease-in-out;
@@ -52,24 +62,30 @@ h1, h2 {
     color: #333;
 }
 
-.input-group input, .input-group select {
+.input-group input,
+.input-group select {
     width: 100%;
     padding: 10px;
+
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
+
     font-size: 16px;
 }
 
 button {
     width: 100%;
     padding: 12px;
+
     background-color: #600ce6;
     color: white;
+
     border: none;
     border-radius: 4px;
+
     cursor: pointer;
     font-size: 18px;
+
     transition: background 0.3s, transform 0.3s;
 }
 
@@ -103,6 +119,7 @@ canvas {
     height: auto;
 }
 
+/* MOBILE */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -130,7 +147,8 @@ canvas {
         font-size: 20px;
     }
 
-    .input-group input, .input-group select {
+    .input-group input,
+    .input-group select {
         font-size: 14px;
     }
 
