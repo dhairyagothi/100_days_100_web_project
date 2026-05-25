@@ -1,145 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Calculator</title>
-  <link href="styles.css" rel="stylesheet">
-  <script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <div id="basic-calculator" class="calculator-grid">
-    <div class="output">
-      <button id="toggle-scientific">
-        <img src="../Vanilla-JavaScript-Calculator-master/img/download (1).png" alt="Toggle Scientific Calculator">
-      </button>
-      <div data-previous-operand class="previous-operand"></div>
-      <div data-current-operand class="current-operand"></div>
-    </div class="calculator-wrapper">
-    <button data-all-clear class="span-two">AC</button>
-    <button data-delete>DEL</button>
-    <button data-operation>÷</button>
-    <button data-number>1</button>
-    <button data-number>2</button>
-    <button data-number>3</button>
-    <button data-operation>*</button>
-    <button data-number>4</button>
-    <button data-number>5</button>
-    <button data-number>6</button>
-    <button data-operation>+</button>
-    <button data-number>7</button>
-    <button data-number>8</button>
-    <button data-number>9</button>
-    <button data-operation>-</button>
-    <button data-number>.</button>
-    <button data-number>0</button>
-    <button data-equals class="span-two">=</button>
-  </div>
-  <div id="scientific-calculator" class="calculator-grid hidden">
-    <div class="output">
-      <button id="toggle-scientific">
-        <img src="../Vanilla-JavaScript-Calculator-master/img/download (1).png" alt="Toggle Scientific Calculator"
-  <div class="container">
+    <div class="app-container">
+        <header class="app-header">
+            <h1 class="app-title">Calculator</h1>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </header>
 
-    <div id="basic-calculator" class="calculator-grid">
-      <div class="output">
-        <button id="toggle-scientific">
-          <img src="../Vanilla-JavaScript-Calculator-master/img/download (1).png" alt="Toggle Scientific Calculator"
-          style="width: 24px; height: 24px;">
+        <main class="calculator-container">
+            <section class="display-section">
+                <div class="history-preview" id="historyPreview">
+                    <span class="history-label">History</span>
+                    <span class="history-expression" id="historyExpression"></span>
+                </div>
+                <div class="display" id="display">
+                    <span class="display-expression" id="expressionDisplay">0</span>
+                    <span class="display-result" id="resultDisplay"></span>
+                </div>
+            </section>
+
+            <section class="keypad">
+                <div class="button-row">
+                    <button class="btn btn-function" data-action="clear" aria-label="Clear">AC</button>
+                    <button class="btn btn-function" data-action="negate" aria-label="Negate">±</button>
+                    <button class="btn btn-function" data-action="percent" aria-label="Percent">%</button>
+                    <button class="btn btn-operator" data-operator="/" aria-label="Divide">÷</button>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-number" data-number="7" aria-label="7">7</button>
+                    <button class="btn btn-number" data-number="8" aria-label="8">8</button>
+                    <button class="btn btn-number" data-number="9" aria-label="9">9</button>
+                    <button class="btn btn-operator" data-operator="*" aria-label="Multiply">×</button>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-number" data-number="4" aria-label="4">4</button>
+                    <button class="btn btn-number" data-number="5" aria-label="5">5</button>
+                    <button class="btn btn-number" data-number="6" aria-label="6">6</button>
+                    <button class="btn btn-operator" data-operator="-" aria-label="Subtract">−</button>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-number" data-number="1" aria-label="1">1</button>
+                    <button class="btn btn-number" data-number="2" aria-label="2">2</button>
+                    <button class="btn btn-number" data-number="3" aria-label="3">3</button>
+                    <button class="btn btn-operator" data-operator="+" aria-label="Add">+</button>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-number btn-zero" data-number="0" aria-label="0">0</button>
+                    <button class="btn btn-number" data-number="." aria-label="Decimal">.</button>
+                    <button class="btn btn-operator" data-action="backspace" aria-label="Backspace">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18"></path>
+                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-equals" data-action="calculate" aria-label="Equals">=</button>
+                </div>
+            </section>
+        </main>
+
+        <aside class="history-panel" id="historyPanel">
+            <div class="history-header">
+                <h2>Calculation History</h2>
+                <button class="btn-clear-history" id="clearHistory" aria-label="Clear history">Clear All</button>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="history-empty" id="historyEmpty">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <p>No calculations yet</p>
+                </div>
+            </div>
+        </aside>
+
+        <button class="btn-history-toggle" id="historyToggle" aria-label="Toggle history">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>History</span>
         </button>
-        <div data-previous-operand class="previous-operand"></div>
-        <input type="text" data-current-operand class="current-operand">
-      </div>
-      <button data-all-clear class="span-two">AC</button>
-      <button data-delete>DEL</button>
-      <button data-operation>÷</button>
-      <button data-number>1</button>
-      <button data-number>2</button>
-      <button data-number>3</button>
-      <button data-operation>*</button>
-      <button data-number>4</button>
-      <button data-number>5</button>
-      <button data-number>6</button>
-      <button data-operation>+</button>
-      <button data-number>7</button>
-      <button data-number>8</button>
-      <button data-number>9</button>
-      <button data-operation>-</button>
-      <button data-number>.</button>
-      <button data-number>0</button>
-      <button data-equals class="span-two">=</button>
-    </div>
-    <div id="scientific-calculator" class="calculator-grid hidden">
-      <div class="output">
-        <button id="toggle-scientific">
-          <img src="../Vanilla-JavaScript-Calculator-master/img/download (1).png" alt="Toggle Scientific Calculator"
-          style="width: 24px; height: 24px;">
+
+        <button class="btn-shortcuts" id="shortcutsToggle" aria-label="Keyboard shortcuts">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                <path d="M6 8h.01"></path>
+                <path d="M10 8h.01"></path>
+                <path d="M14 8h.01"></path>
+                <path d="M18 8h.01"></path>
+                <path d="M8 12h.01"></path>
+                <path d="M12 12h.01"></path>
+                <path d="M16 12h.01"></path>
+                <path d="M7 16h10"></path>
+            </svg>
         </button>
-        <div data-previous-operand class="previous-operand"></div>
-        <input type="text" data-current-operand class="current-operand">
-      </div>
-      <button data-function="rad">Rad</button>
-      <button data-function="deg">Deg</button>
-      <button data-function="factorial">x!</button>
-      <button data-function="left-paren">(</button>
-      <button data-function="right-paren">)</button>
-      <button data-delete>DEL</button>
-      <button data-all-clear>AC</button>
-      <button data-function="percent">%</button>
-      <button data-function="sin">sin</button>
-      <button data-function="ln">ln</button>
-      <button data-number>7</button>
-      <button data-number>8</button>
-      <button data-number>9</button>
-      <button data-operation>÷</button>
-      <button data-function="pi">π</button>
-      <button data-function="cos">cos</button>
-      <button data-function="log">log</button>
-      <button data-number>4</button>
-      <button data-number>5</button>
-      <button data-number>6</button>
-      <button data-operation>*</button>
-      <button data-function="e">e</button>
-      <button data-function="tan">tan</button>
-      <button data-function="sqrt">√</button>
-      <button data-number>1</button>
-      <button data-number>2</button>
-      <button data-number>3</button>
-      <button data-operation>-</button>
-      <button data-function="ans">Ans</button>
-      <button data-function="exp">EXP</button>
-      <button data-function="pow">x^y</button>
-      <button data-number>.</button>
-      <button data-number>0</button>
-      <button data-equals>=</button>
-      <button data-operation>+</button>
+
+        <div class="modal-overlay" id="shortcutsModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>Keyboard Shortcuts</h2>
+                    <button class="modal-close" id="closeShortcuts" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-content">
+                    <div class="shortcut-group">
+                        <h3>Basic Operations</h3>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">0-9</span>
+                            <span class="shortcut-desc">Enter numbers</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">.</span>
+                            <span class="shortcut-desc">Decimal point</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">+</span>
+                            <span class="shortcut-desc">Addition</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">-</span>
+                            <span class="shortcut-desc">Subtraction</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">*</span>
+                            <span class="shortcut-desc">Multiplication</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">/</span>
+                            <span class="shortcut-desc">Division</span>
+                        </div>
+                    </div>
+                    <div class="shortcut-group">
+                        <h3>Actions</h3>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Enter</span>
+                            <span class="shortcut-desc">Calculate result</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Escape</span>
+                            <span class="shortcut-desc">Clear all</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Backspace</span>
+                            <span class="shortcut-desc">Delete last digit</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">%</span>
+                            <span class="shortcut-desc">Percentage</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="instructions">
-      <h1>INSTRUCTIONS</h1>
-      <ul>
-        <li>sin (s)</li>
-        <li>cos (c)</li>
-        <li>tan (t)</li>
-        <li>ln (l)</li>
-        <li>log (g)</li>
-        <li>π (p)</li>
-        <li>√ (r)</li>
-        <li>e (e)</li>
-        <li>EXP (x)</li>
-        <li>% (p)</li>
-        <li>deg (d)</li>
-        <li>rad (a)</li>
-        <li>x! (f)</li>
-        <li>x^y (^)</li>
-        <li>DEL (Backspace)</li>
-        <li>AC (Esc)</li>
-        <li>= (Enter or =)</li>
-      </ul>
-    </div>
-  </div>
-  </body>
-  
+
+    <script src="script.js"></script>
+</body>
 </html>
