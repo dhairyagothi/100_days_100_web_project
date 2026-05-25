@@ -25,6 +25,9 @@ let currentMode = 'work';
 let sessionsToday = 0;
 let lastSessionDate = null;
 
+// Theme toggle references
+const themeToggle = document.getElementById('themeToggle');
+
 const timeDisplay = document.getElementById('timeDisplay');
 const startBtn = document.getElementById('startBtn');
 const resetBtn = document.getElementById('resetBtn');
@@ -43,6 +46,27 @@ const sessionList = document.getElementById('sessionList');
 const clearSessionsBtn = document.getElementById('clearSessions');
 const profileNameInput = document.getElementById('profileName');
 
+// ── Theme management ─────────────────────────────────────
+// Read saved theme from localStorage on page load
+// Apply it before anything renders to prevent flash of wrong theme
+function initTheme() {
+    const savedTheme = localStorage.getItem('zenTheme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        themeToggle.textContent = '🌙';
+    } else {
+        themeToggle.textContent = '☀️';
+    }
+}
+
+// Toggle between light and dark, save preference to localStorage
+function toggleTheme() {
+    const isLight = document.body.classList.toggle('light-mode');
+    localStorage.setItem('zenTheme', isLight ? 'light' : 'dark');
+    themeToggle.textContent = isLight ? '🌙' : '☀️';
+}
+
+themeToggle.addEventListener('click', toggleTheme);
 function loadStats() {
     const saved = localStorage.getItem('zenTimerStats');
     if (saved) {
@@ -385,5 +409,6 @@ function generateShareImage(stats) {
 
 progressCircle.style.strokeDasharray = CIRCUMFERENCE;
 progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
+initTheme();
 updateStatsUI();
 updateDisplay();

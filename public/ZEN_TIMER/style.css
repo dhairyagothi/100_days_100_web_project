@@ -15,6 +15,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: background 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 body {
@@ -381,5 +382,53 @@ h1 {
     .progress-ring {
         width: 180px;
         height: 180px;
+    }
+}
+
+/* ── Light mode theme ───────────────────────── */
+body.light-mode {
+    --bg-dark: #f0ebe5;
+    --bg-card: #ffffff;
+    --bg-card-light: #f5f0eb;
+    --text-light: #2a1f1a;
+    --text-dim: #6b5c54;
+}
+
+/* Override elements that use hardcoded colors in light mode */
+body.light-mode .btn-secondary:hover {
+    background: #e8e0d8;
+}
+
+body.light-mode .export-btn:hover {
+    background: #e8e0d8;
+}
+
+body.light-mode .sidebar {
+    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Theme toggle button ────────────────────── */
+.theme-toggle {
+    background: var(--bg-card);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: rotate(20deg) scale(1.1);
+}
+
+/* ── Tablet responsive fix (768px) ─────────── */
+@media (max-width: 768px) {
+    .badges-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 }
