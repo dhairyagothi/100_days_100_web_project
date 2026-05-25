@@ -1,27 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Countdown Timer</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
+
+  <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
   <div class="countdown-container">
     <h1>Countdown Timer</h1>
+
     <div id="countdown">
-      <span id="days">00</span> Days
-      <span id="hours">00</span> Hours
-      <span id="minutes">00</span> Minutes
-      <span id="seconds">00</span> Seconds
+      <div class="time-block">
+        <span id="days">00</span>
+        <label>Days</label>
+      </div>
+      <div class="time-block">
+        <span id="hours">00</span>
+        <label>Hours</label>
+      </div>
+      <div class="time-block">
+        <span id="minutes">00</span>
+        <label>Minutes</label>
+      </div>
+      <div class="time-block">
+        <span id="seconds">00</span>
+        <label>Seconds</label>
+      </div>
     </div>
+
+    <div class="input-section">
+      <h3>Set Custom Timer</h3>
+      <div class="inputs-container">
+        <div class="input-field">
+          <input type="number" id="input-hours" min="0" max="23" placeholder="00">
+          <label>Hrs</label>
+        </div>
+        <div class="input-field">
+          <input type="number" id="input-minutes" min="0" max="59" placeholder="00">
+          <label>Min</label>
+        </div>
+        <div class="input-field">
+          <input type="number" id="input-seconds" min="0" max="59" placeholder="00">
+          <label>Sec</label>
+        </div>
+      </div>
+      <button id="set-time-btn">Set Target Time</button>
+    </div>
+
     <div class="controls">
-      <button id="start">Start</button>
-      <button id="pause">Pause</button>
-      <button id="reset">Reset</button>
+      <button id="start" class="btn primary-btn" disabled>Start</button>
+      <button id="pause" class="btn secondary-btn" disabled>Pause</button>
+      <button id="reset" class="btn danger-btn">Reset</button>
     </div>
   </div>
+
+  <audio id="alarm-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-500.wav" preload="auto"></audio>
+
   <script src="script.js"></script>
 </body>
+
 </html>
