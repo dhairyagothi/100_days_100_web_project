@@ -186,7 +186,7 @@ const PROJECT_DATA = [
   ['Day 119', 'Virtual Playground', './playground.html', ['ui', 'game', 'html', 'css', 'js'], 'intermediate'],
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', ['html', 'css', 'js', 'game'], 'intermediate'],
   ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', ['tool'], 'intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', ['html', 'css', 'javascript', 'api-javascript'], 'Advanced'],
+  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', ['html', 'css', 'javascript', 'api-javascript'], 'advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', ['productivity', 'tool'], 'intermediate'],
   ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', ['game'], 'intermediate'],
   ['Day 125', 'Snakeladder', './public/snakeladder/index.html', ['game'], 'intermediate'],
@@ -231,11 +231,11 @@ const PROJECT_DATA = [
   ['Day 164', 'Code Visualizer Playground', './public/code-visualizer-playground/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 165', 'Amazon Clone', './public/AmazonClone/index.html', ['Amazon', 'Clone', 'HTML', 'CSS', 'JavaScript'], 'beginner'],
   ['Day 166', 'Boredom Buster', './public/BoredomBuster/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 167', 'scam-sms-detector', '/public/scam-sms-detector/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 168', 'Color Sort Puzzle game', './public/colorsort/index.html', ['html', 'css', 'javascript'], 'advanced'],
+  ['Day 167', 'scam-sms-detector', './public/scam-sms-detector/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
+  ['Day 168', 'Color Sort Puzzle game', './public/color sort puzzle/index.html', ['html', 'css', 'javascript'], 'advanced'],
   ['Day 169', 'Subscription Tracker', './public/subscriptiontracker/tracker.html', ['react', 'typescript', 'tailwindcss', 'ui'], 'advanced'],
   ['Day 170', 'Vector Flowchart Designer', './public/VectorFlowchartDesigner/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", "html css javascript", 'advanced']
+  ['Day 171', 'Glyph Pattern Maker', './public/GlyphPatternMaker/index.html', ['html', 'css', 'javascript'], 'advanced'],
 ];
 const PROJECTS = PROJECT_DATA;
 
@@ -562,7 +562,10 @@ function renderGrid() {
     card.style.cursor = 'pointer';
 
     // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
+    card.onclick = (e) => {
+      if (e.target.closest('a, button')) return;
+      window.open(url.trim(), '_blank');
+    };
 
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
@@ -944,6 +947,7 @@ document.addEventListener('click', (e) => {
   if (!bookmarkBtn) return;
 
   e.preventDefault();
+  e.stopPropagation();
   const projectDay = bookmarkBtn.dataset.id;
   const project = PROJECTS.find((item) => item[0] === projectDay);
   if (!project) return;

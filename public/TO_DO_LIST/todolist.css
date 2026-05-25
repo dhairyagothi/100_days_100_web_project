@@ -756,6 +756,10 @@ section {
   animation: slideInRight 0.4s ease;
 }
 
+.pdf-message.show {
+  display: block;
+}
+
 @keyframes slideInRight {
   from {
     opacity: 0;
