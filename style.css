@@ -589,6 +589,17 @@ body.light-mode .navbar {
     position: relative;
 }
 
+.project-grid.single-result {
+    grid-template-columns: 380px !important;
+    width: fit-content;
+    max-width: 100%;
+}
+
+.project-grid.single-result .project-card {
+    max-width: 380px;
+    width: 100%;
+}
+
 .project-card {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 28%),

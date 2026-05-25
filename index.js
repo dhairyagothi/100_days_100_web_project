@@ -222,6 +222,7 @@ function renderGrid() {
     });
 
     grid.innerHTML = '';
+    grid.classList.remove('single-result');
 
     if (filtered.length === 0) {
         grid.style.display = 'none';
@@ -231,6 +232,10 @@ function renderGrid() {
 
     grid.style.display = 'grid';
     noResults.style.display = 'none';
+
+    if (filtered.length === 1) {
+        grid.classList.add('single-result');
+    }
 
     filtered.forEach(([day, name, url, tags, cat]) => {
         const card = document.createElement('div');
