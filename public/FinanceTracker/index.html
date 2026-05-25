@@ -902,6 +902,30 @@
         <button id="clear-storage">Clear All Data</button>
 
         <div id="transactions">
+            <section id="monthly-report">
+
+    <h2>Monthly Report</h2>
+
+    <div class="dashboard">
+
+        <div class="balance">
+            <h2>Total Income</h2>
+            <p id="monthlyIncome">₹0</p>
+        </div>
+
+        <div class="expense">
+            <h2>Total Expense</h2>
+            <p id="monthlyExpense">₹0</p>
+        </div>
+
+        <div class="income">
+            <h2>Monthly Balance</h2>
+            <p id="monthlyBalance">₹0</p>
+        </div>
+
+    </div>
+
+</section>
             <h2>Recent Transactions</h2>
             <table id="transactions-table">
                 <thead>
@@ -994,6 +1018,7 @@
             updateBalance();
             displayTransactions();
             updateChart();
+            generateMonthlyReport();
             updateSavingsAnalytics(); // update analytics on new transaction
 
             form.reset();
@@ -1448,6 +1473,28 @@
         // ---- Init savings on page load ----
         renderGoals();
     </script>
+    function generateMonthlyReport() {
+
+    let income = 0;
+    let expense = 0;
+
+    transactions.forEach(transaction => {
+
+        if (transaction.type === "income") {
+            income += Number(transaction.amount);
+        } else {
+            expense += Number(transaction.amount);
+        }
+
+    });
+
+    document.getElementById("monthlyIncome").innerText = `₹${income}`;
+
+    document.getElementById("monthlyExpense").innerText = `₹${expense}`;
+
+    document.getElementById("monthlyBalance").innerText =
+        `₹${income - expense}`;
+}
 </body>
 
 </html>

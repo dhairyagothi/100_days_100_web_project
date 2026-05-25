@@ -1,6 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('jobFilterForm');
     
+    // Add event listeners to form elements
+    form.title.addEventListener('input', filterJobs);
+    form.location.addEventListener('input', filterJobs);
+    form.datePosted.addEventListener('change', filterJobs);
+    form.salary.addEventListener('change', filterJobs);
+    form.jobType.addEventListener('change', filterJobs);
+    form.education.addEventListener('change', filterJobs);
+    form.shift.addEventListener('change', filterJobs);
+    form.sortBy.addEventListener('change', filterJobs);
+
+    // Add event listener to reset button
+    document.getElementById('resetButton').addEventListener('click', () => {
+        form.reset();
+        filterJobs(); // Reapply filter with default values
+    });
+
+    // Add event listeners to View details buttons
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            document.querySelectorAll('.save-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        button.classList.toggle('far');
+        button.classList.toggle('fas');
+
+        if (button.classList.contains('fas')) {
+            alert('Job saved successfully!');
+        } else {
+            alert('Job removed from saved!');
+        }
+    });
+});
+            // Perform any custom action here if needed
+            // For example, you can check if the URL is valid before navigating
+            const href = button.getAttribute('href');
+            if (href && href !== '#') {
+                window.location.href = href;
+            } else {
+                alert('Invalid URL!');
     if (form) {
         // Add event listeners to form elements
         form.title.addEventListener('input', filterJobs);
@@ -117,6 +155,7 @@ function filterJobs() {
     const jobType = form.jobType.value.toLowerCase();
     const education = form.education.value.toLowerCase();
     const shift = form.shift.value.toLowerCase();
+    const sortBy = form.sortBy.value.toLowerCase();
 
     const jobs = [
         {company: 'IT Infosy co.', title: 'Senior Web Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '10k - 20k', jobType: 'part-time', education: 'bachelor\'s degree', shift: 'day shift', image: './image/html.webp', link: 'ITinfosy.html'},
@@ -137,7 +176,8 @@ function filterJobs() {
         job.shift.toLowerCase().includes(shift)
     );
 
-    displayFilteredJobs(filteredJobs);
+    sortJobs(filteredJobs, sortBy);
+displayFilteredJobs(filteredJobs);
 
     return false; 
 }
@@ -226,4 +266,124 @@ function displayFilteredJobs(jobs) {
         `;
         jobContainer.appendChild(jobBox);
     });
+    
+  // Add event listeners to the new View details buttons after they are created
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', (event) => {
+        handleButtonClick(event, button);
+    });
+});
+
+function handleButtonClick(event, button) {
+    const href = button.getAttribute('href');
+    if (href && href !== '#') {
+        window.location.href = href;
+    } else {
+        alert('Invalid URL!');
+    }
+}
+}
+function getSalaryValue(salary) {
+
+    const numbers = salary.match(/\d+/g);
+
+    if (!numbers) return 0;
+
+    return parseInt(numbers[0]) * 1000;
+}
+
+function sortJobs(jobs, sortBy) {
+
+    if (sortBy === 'salary low to high') {
+
+        jobs.sort((a, b) =>
+            getSalaryValue(a.salary) - getSalaryValue(b.salary)
+        );
+    }
+
+    else if (sortBy === 'salary high to low') {
+
+        jobs.sort((a, b) =>
+            getSalaryValue(b.salary) - getSalaryValue(a.salary)
+        );
+    }
+
+    else if (sortBy === 'title a-z') {
+
+        jobs.sort((a, b) =>
+            a.title.localeCompare(b.title)
+        );
+    }
+
+    else if (sortBy === 'newest first') {
+
+        jobs.sort((a, b) => {
+
+            const aDays = parseInt(a.datePosted.match(/\d+/)) || 0;
+            const bDays = parseInt(b.datePosted.match(/\d+/)) || 0;
+
+            return aDays - bDays;
+        });
+    }
+}
+
+function loadSavedJobs() {
+
+    const savedContainer =
+        document.getElementById('savedJobsContainer');
+
+    if (!savedContainer) return;
+
+    const savedJobs =
+        JSON.parse(localStorage.getItem('savedJobs')) || [];
+
+    const allJobs =
+        document.querySelectorAll('.job-container .box');
+
+    savedContainer.innerHTML = '';
+
+    let found = false;
+
+    allJobs.forEach(job => {
+
+        const jobId = job.dataset.id;
+
+        if (savedJobs.includes(jobId)) {
+
+            const clone = job.cloneNode(true);
+
+            savedContainer.appendChild(clone);
+
+            found = true;
+        }
+    });
+
+    if (!found) {
+
+        savedContainer.innerHTML =
+        '<p class="no-saved">No saved jobs yet.</p>';
+    }
+}
+
+window.addEventListener('load', () => {
+
+    const savedJobs =
+        JSON.parse(localStorage.getItem('savedJobs')) || [];
+
+    document.querySelectorAll('.job-container .box')
+    .forEach(job => {
+
+        const jobId = job.dataset.id;
+
+        const heart = job.querySelector('.fa-heart');
+
+        if (savedJobs.includes(jobId)) {
+
+            heart.classList.remove('far');
+            heart.classList.add('fas');
+        }
+    });
+
+    loadSavedJobs();
+});
 }

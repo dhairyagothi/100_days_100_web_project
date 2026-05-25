@@ -219,7 +219,7 @@ header {
 #colour1 { background: #7c63ff; }
 #colour2 { background: #4f8dff; }
 #colour3 { background: #14b8a6; }
-#colour4 { background: #ffb86b; }
+#colour4 { background: #d57b1b; }
 #colour5 { background: #ef4444; }
 
 .theme-btn:hover {
@@ -873,4 +873,44 @@ section {
   .document-item button {
     width: 100%;
   }
+}
+
+.theme1 {
+  --page-bg-start: #201b44;
+  --page-bg-mid: #0f122a;
+  --page-bg-end: #080a1e;
+  --accent: #7c63ff;
+  --accent-gradient: linear-gradient(135deg, #7c63ff, #4f8dff);
+}
+
+.theme2 {
+  --page-bg-start: #06243a;
+  --page-bg-mid: #0a3d62;
+  --page-bg-end: #001219;
+  --accent: #4f8dff;
+  --accent-gradient: linear-gradient(135deg, #4f8dff, #38bdf8);
+}
+
+.theme3 {
+  --page-bg-start: #052e16;
+  --page-bg-mid: #14532d;
+  --page-bg-end: #022c22;
+  --accent: #14b8a6;
+  --accent-gradient: linear-gradient(135deg, #14b8a6, #22c55e);
+}
+
+.theme4 {
+  --page-bg-start: #db4505;
+  --page-bg-mid: #9f4d21;
+  --page-bg-end: #cb550c;
+  --accent: #ffb86b;
+  --accent-gradient: linear-gradient(135deg, #ffb86b, #f59e0b);
+}
+
+.theme5 {
+  --page-bg-start: #ef1414;
+  --page-bg-mid: #7f1d1d;
+  --page-bg-end: #cb0808;
+  --accent: #ef4444;
+  --accent-gradient: linear-gradient(135deg, #ef4444, #f97316);
 }
