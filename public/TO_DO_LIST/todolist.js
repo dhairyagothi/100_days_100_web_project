@@ -1,9 +1,9 @@
-
 // 1. DOM Element References (match HTML ids/classes)
 const taskInput = document.getElementById("task");
 const taskTypeSelect = document.getElementById("task-category");
 const taskList = document.getElementById("notes-container");
 const emptyState = document.getElementById("emptyState");
+const emptyDocsState = document.getElementById("emptyDocsState");
 const documentsList = document.querySelector('.documents-list');
 
 // Progress / stats elements present in HTML
@@ -11,8 +11,29 @@ const progressFill = document.getElementById("progressFill");
 const progressText = document.getElementById("progressText");
 
 // Data State
+const STORAGE_KEY = 'taskflow-tasks';
 let tasks = [];
 let currentFilter = "all";
+
+function loadTasks() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) tasks = parsed;
+    }
+  } catch (e) {
+    console.warn('Could not load saved tasks:', e);
+  }
+}
+
+function saveTasks() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  } catch (e) {
+    console.warn('Could not save tasks:', e);
+  }
+}
 
 // 2. Core Task CRUD & Operations
 function addTask() {
@@ -21,6 +42,11 @@ function addTask() {
   
   if (!text) {
     showToast("⚠️ Please enter a task description!");
+    return;
+  }
+
+  if (!category) {
+    showToast("⚠️ Please select a category!");
     return;
   }
 
@@ -39,8 +65,9 @@ function addTask() {
 
   tasks.push(newTask);
   taskInput.value = "";
-  taskTypeSelect.value = ""; // Reset dropdown
-  
+  taskTypeSelect.selectedIndex = 0;
+
+  saveTasks();
   renderTasks();
   showToast("✅ Task added successfully!");
 }
@@ -50,18 +77,23 @@ function toggleTask(id) {
     if (task.id === id) return { ...task, completed: !task.completed };
     return task;
   });
+  saveTasks();
   renderTasks();
 }
 
 function deleteTask(id) {
-  // Triggers exit animation before layout re-render
+  const removeFromState = () => {
+    tasks = tasks.filter(task => task.id !== id);
+    saveTasks();
+    renderTasks();
+  };
+
   const card = document.querySelector(`[data-id="${id}"]`);
   if (card) {
     card.style.animation = "fadeOut 0.25s ease forwards";
-    setTimeout(() => {
-      tasks = tasks.filter(task => task.id !== id);
-      renderTasks();
-    }, 250);
+    setTimeout(removeFromState, 250);
+  } else {
+    removeFromState();
   }
 }
 
@@ -71,6 +103,7 @@ function clearDone() {
   if (tasks.length === previousLength) {
     showToast("ℹ️ No completed tasks to clear.");
   } else {
+    saveTasks();
     renderTasks();
     showToast("🧹 Cleared all finished tasks!");
   }
@@ -95,19 +128,15 @@ function renderTasks() {
     return task.category === currentFilter; // Matches Category Strings
   });
 
-  // Toggle Visibility of Empty State Element
-  if (filteredTasks.length === 0) {
-    taskList.innerHTML = "";
-    if (emptyState) {
-      taskList.appendChild(emptyState);
-      emptyState.style.display = "flex";
-    }
-  } else {
-    if (emptyState) emptyState.style.display = "none";
-    taskList.innerHTML = "";
+  if (emptyState) {
+    emptyState.style.display = filteredTasks.length === 0 ? "flex" : "none";
+  }
 
+  taskList.innerHTML = "";
+
+  if (filteredTasks.length > 0) {
     filteredTasks.forEach((task, idx) => {
-      const card = document.createElement("div");
+      const card = document.createElement("li");
       card.className = `notes` + (task.completed ? " completed" : "");
       card.setAttribute("data-id", task.id);
       card.style.setProperty("--i", idx);
@@ -136,6 +165,7 @@ function updateTaskText(id, newText) {
     if (task.id === id) return { ...task, text: newText.trim() || "Untitled Task" };
     return task;
   });
+  saveTasks();
 }
 
 function updateMetrics() {
@@ -150,17 +180,28 @@ function updateMetrics() {
 
 // 4. Tab Navigation System
 function showHome() {
-  document.getElementById("btn-home").classList.add("active");
-  document.getElementById("btn-docs").classList.remove("active");
-  document.getElementById("home-tab").style.display = "block";
-  document.getElementById("documents-tab").style.display = "none";
+  const navHome = document.getElementById("nav-home");
+  const navDocs = document.getElementById("nav-documents");
+  const homeTab = document.getElementById("home-tab");
+  const docsTab = document.getElementById("documents-tab");
+
+  if (navHome) navHome.setAttribute("aria-current", "page");
+  if (navDocs) navDocs.removeAttribute("aria-current");
+  if (homeTab) homeTab.hidden = false;
+  if (docsTab) docsTab.hidden = true;
 }
 
 function showDocuments() {
-  document.getElementById("btn-home").classList.remove("active");
-  document.getElementById("btn-docs").classList.add("active");
-  document.getElementById("home-tab").style.display = "none";
-  document.getElementById("documents-tab").style.display = "block";
+  const navHome = document.getElementById("nav-home");
+  const navDocs = document.getElementById("nav-documents");
+  const homeTab = document.getElementById("home-tab");
+  const docsTab = document.getElementById("documents-tab");
+
+  if (navHome) navHome.removeAttribute("aria-current");
+  if (navDocs) navDocs.setAttribute("aria-current", "page");
+  if (homeTab) homeTab.hidden = true;
+  if (docsTab) docsTab.hidden = false;
+  updateDocumentsEmptyState();
 }
 
 // 5. Theme Customization System
@@ -232,48 +273,46 @@ function saveAsPDF() {
   showToast("📥 Exported list to Documents Tab!");
 }
 
-function appendDocumentToList(fileName, fileURL) {
-  // Clear out documents page empty layout placeholder if present
-  const docEmptyState = documentsList.querySelector(".empty-state");
-  if (docEmptyState) docEmptyState.remove();
+function updateDocumentsEmptyState() {
+  if (!documentsList || !emptyDocsState) return;
+  const hasDocs = documentsList.querySelectorAll('.document-item').length > 0;
+  emptyDocsState.style.display = hasDocs ? 'none' : 'flex';
+}
 
-  const docItem = document.createElement("div");
-  docItem.className = "doc-item";
+function appendDocumentToList(fileName, fileURL) {
+  if (!documentsList) return;
+
+  const docItem = document.createElement("li");
+  docItem.className = "document-item";
   docItem.innerHTML = `
-    <div class="doc-icon">📄</div>
-    <div class="doc-name">${fileName}</div>
-    <div class="doc-date">${new Date().toLocaleDateString()}</div>
+    <span>📄 ${fileName}</span>
+    <span>${new Date().toLocaleDateString()}</span>
     <div class="doc-actions">
-      <button class="doc-btn" onclick="window.open('${fileURL}', '_blank')">View</button>
-      <a class="doc-btn" href="${fileURL}" download="${fileName}" style="text-decoration:none; display:inline-block; text-align:center;">Download</a>
-      <button class="doc-btn del" onclick="removeDocumentItem(this)">Delete</button>
+      <button type="button" onclick="window.open('${fileURL}', '_blank')">View</button>
+      <a href="${fileURL}" download="${fileName}">Download</a>
+      <button type="button" onclick="removeDocumentItem(this)">Delete</button>
     </div>
   `;
   documentsList.appendChild(docItem);
+  updateDocumentsEmptyState();
 }
 
 function removeDocumentItem(button) {
-  button.closest(".doc-item").remove();
-  if (documentsList.children.length === 0) {
-    documentsList.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🗂️</div>
-        <p>No documents saved yet. Export your tasks!</p>
-      </div>`;
-  }
+  button.closest(".document-item")?.remove();
+  updateDocumentsEmptyState();
 }
 
 // 7. Toast Alerts Notification System
 function showToast(message) {
-  const toast = document.getElementById("toast");
+  const toast = document.getElementById("pdfMessage");
   if (!toast) {
-    // Fallback for standalone page: simple console/log
     console.log('Toast:', message);
     return;
   }
-  toast.innerText = message;
+  toast.textContent = message;
   toast.classList.add("show");
-  setTimeout(() => {
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => {
     toast.classList.remove("show");
   }, 3000);
 }
@@ -295,7 +334,38 @@ taskInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Load saved theme if present
+const navHome = document.getElementById("nav-home");
+const navDocs = document.getElementById("nav-documents");
+const savePdfBtn = document.getElementById("savepdf");
+
+if (navHome) {
+  navHome.addEventListener("click", (e) => {
+    e.preventDefault();
+    showHome();
+  });
+}
+
+if (navDocs) {
+  navDocs.addEventListener("click", (e) => {
+    e.preventDefault();
+    showDocuments();
+  });
+}
+
+if (savePdfBtn) {
+  savePdfBtn.addEventListener("click", saveAsPDF);
+}
+
+window.toggleTask = toggleTask;
+window.deleteTask = deleteTask;
+window.updateTaskText = updateTaskText;
+window.removeDocumentItem = removeDocumentItem;
+
+loadTasks();
+renderTasks();
+showHome();
+updateDocumentsEmptyState();
+
 try {
   const saved = localStorage.getItem('todo-theme');
   if (saved) applyTheme(saved);
