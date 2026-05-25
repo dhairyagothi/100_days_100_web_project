@@ -11,6 +11,17 @@
   </head>
 
   <body>
+    <button
+      class="theme-toggle"
+      id="theme-toggle"
+      type="button"
+      aria-label="Switch to dark mode"
+      title="Switch to dark mode"
+    >
+      <span id="theme-icon" aria-hidden="true">&#9790;</span>
+      <span id="theme-label">Dark Mode</span>
+    </button>
+
     <div class="background-video">
       <video autoplay muted loop id="bg-video">
         <source
@@ -37,6 +48,7 @@
             <img
               src="../indianflag/img/ashokchakr.gif"
               alt="Ashoka Chakra"
+              draggable="false"
             />
           </div>
 
@@ -46,7 +58,7 @@
 
       <div class="quote-container">
         <div class="image-wrapper">
-          <img id="patriot-image" src="" alt="Patriot Image" />
+          <img id="patriot-image" src="" alt="Patriot Image" draggable="false" />
         </div>
 
         <div class="quote">
@@ -63,9 +75,38 @@
     </div>
 
     <div class="music-controls">
-      <audio id="bgMusic" controls autoplay loop>
+      <audio id="bgMusic" autoplay loop>
         <source src="vande_mataram.mp3" type="audio/mpeg">
       </audio>
+
+      <div class="custom-player" aria-label="Vande Mataram audio player">
+        <button
+          class="player-btn"
+          id="music-toggle"
+          type="button"
+          aria-label="Play music"
+        >
+          <span id="music-icon" class="is-play" aria-hidden="true"></span>
+        </button>
+
+        <div class="player-info">
+          <div class="player-title">Vande Mataram</div>
+          <div class="player-row">
+            <span id="music-current">0:00</span>
+            <input
+              id="music-progress"
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              aria-label="Music progress"
+            />
+            <span id="music-duration">0:00</span>
+          </div>
+        </div>
+
+        <span class="music-note" aria-hidden="true">&#9835;</span>
+      </div>
     </div>
 
     <script>
@@ -167,11 +208,119 @@
       });
 
       const music = document.getElementById("bgMusic");
+      const musicToggle = document.getElementById("music-toggle");
+      const musicIcon = document.getElementById("music-icon");
+      const musicProgress = document.getElementById("music-progress");
+      const musicCurrent = document.getElementById("music-current");
+      const musicDuration = document.getElementById("music-duration");
 
       window.addEventListener("load", () => {
-        music.play().catch(() => {
+        music.play().then(() => {
+          updateMusicButton();
+        }).catch(() => {
           console.log("Autoplay blocked by browser");
+          updateMusicButton();
         });
+      });
+
+      function formatTime(seconds) {
+        if (!Number.isFinite(seconds)) {
+          return "0:00";
+        }
+
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60)
+          .toString()
+          .padStart(2, "0");
+
+        return `${minutes}:${remainingSeconds}`;
+      }
+
+      function updateMusicButton() {
+        const isPlaying = !music.paused;
+
+        musicIcon.classList.toggle("is-pause", isPlaying);
+        musicIcon.classList.toggle("is-play", !isPlaying);
+        musicToggle.setAttribute(
+          "aria-label",
+          isPlaying ? "Pause music" : "Play music"
+        );
+      }
+
+      function updateMusicProgress() {
+        const duration = music.duration || 0;
+        const progress = duration ? (music.currentTime / duration) * 100 : 0;
+
+        musicProgress.value = progress;
+        musicProgress.style.setProperty("--progress", `${progress}%`);
+        musicCurrent.textContent = formatTime(music.currentTime);
+        musicDuration.textContent = formatTime(duration);
+      }
+
+      musicToggle.addEventListener("click", () => {
+        if (music.paused) {
+          music.play();
+        } else {
+          music.pause();
+        }
+      });
+
+      musicProgress.addEventListener("input", () => {
+        if (!music.duration) {
+          return;
+        }
+
+        music.currentTime = (musicProgress.value / 100) * music.duration;
+      });
+
+      music.addEventListener("play", updateMusicButton);
+      music.addEventListener("pause", updateMusicButton);
+      music.addEventListener("loadedmetadata", updateMusicProgress);
+      music.addEventListener("timeupdate", updateMusicProgress);
+
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+      const themeLabel = document.getElementById("theme-label");
+
+      // Theme preference logic:
+      // 1. Use the saved theme from localStorage when available.
+      // 2. Otherwise, respect the user's OS-level color scheme preference.
+      const savedTheme = localStorage.getItem("indianFlagTheme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initialTheme = savedTheme ? savedTheme : prefersDark ? "dark" : "light";
+
+      function applyTheme(theme) {
+        const isDark = theme === "dark";
+
+        document.body.classList.remove("theme-changing");
+        void document.body.offsetWidth;
+        document.body.classList.add("theme-changing");
+        document.body.classList.toggle("dark-mode", isDark);
+        themeIcon.innerHTML = isDark ? "&#9788;" : "&#9790;";
+        themeLabel.textContent = isDark ? "Light Mode" : "Dark Mode";
+        themeToggle.setAttribute(
+          "aria-label",
+          isDark ? "Switch to light mode" : "Switch to dark mode"
+        );
+        themeToggle.setAttribute(
+          "title",
+          isDark ? "Switch to light mode" : "Switch to dark mode"
+        );
+
+        window.setTimeout(() => {
+          document.body.classList.remove("theme-changing");
+        }, 650);
+      }
+
+      applyTheme(savedTheme === "dark" ? "dark" : "light");
+
+      themeToggle.addEventListener("click", () => {
+        const nextTheme = document.body.classList.contains("dark-mode")
+          ? "light"
+          : "dark";
+
+        localStorage.setItem("indianFlagTheme", nextTheme);
+        applyTheme(nextTheme);
       });
     </script>
   </body>
