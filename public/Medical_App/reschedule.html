@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Appointment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <style>
+        .input {
+            outline: none;
+            width: 50%; 
+            padding: 4px;
+        }
+
+        #reason {
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .feedbackmain {
+            color: white;
+            background-color: black;
+            border-radius: 10px;
+            padding: 20px;
+            line-height: 10px;
+            height: 80%;
+            width: 35%;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body style="background: url(pngtree-medical-device-line-draft-border-png-image_2392872.jpg);">
+
+    <div class="feedbackmain">
+
+        <h2>Reschedule Appointment</h2>
+        <p>Update your appointment details.</p>
+
+        <form id="rescheduleForm">
+
+            <label for="patientName">Patient Name:</label>
+            <br><br>
+            <input type="text" class="input" style="padding: 4px;" id="patientName" name="patientName" required>
+            <br><br>
+
+            <label for="doctorName">Doctor Name:</label>
+            <br><br>
+            <input type="text" class="input" style="padding: 4px;" id="doctorName" name="doctorName" required>
+            <br><br>
+
+            <label for="appointmentDate">New Appointment Date:</label>
+            <br><br>
+            <input type="date" class="input" id="appointmentDate" name="appointmentDate" required>
+            <br><br>
+            <label for="reason">Reason for Rescheduling:</label>
+            <br><br>
+            <input id="reason" class="input" name="reason" required>
+            <br><br>
+
+            <button type="submit" id="btn">Reschedule Appointment</button>
+
+        </form>
+
+        <a href="index.html" class="back">
+            <button>Back To the Main</button>
+        </a>
+
+    </div>
+
+    <script src="reschedule.js"></script>
+
+</body>
+
+</html>

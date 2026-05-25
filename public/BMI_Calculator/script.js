@@ -383,6 +383,12 @@ btn.addEventListener("click", () => {
   }
 });
 
+
+document.querySelectorAll('input[type=number]').forEach(function(el) {
+  el.addEventListener('wheel', function(e) {
+    el.blur();  // lose focus so scroll doesn't change the value
+  });
+});
 // ─── Body Fat Classification ───
 function getBodyFatCategory(bf, gender) {
   const ranges =
