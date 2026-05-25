@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Promo-Card Maker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+    <header class="app-header">
+        <h1><span class="material-symbols-outlined">wallpaper</span> Promo-Card Maker</h1>
+        <p>Generate beautiful social media cards for your open-source projects.</p>
+    </header>
+
+    <main class="container">
+        <section class="control-panel m3-card">
+            <form id="repoForm" class="input-group">
+                <div class="m3-input-container">
+                    <span class="material-symbols-outlined input-icon">link</span>
+                    <input type="text" id="repoInput" class="m3-input" placeholder="e.g., facebook/react or full URL" required>
+                </div>
+                <button type="submit" class="m3-btn m3-btn-filled" id="generateBtn">Generate Card</button>
+            </form>
+            <p id="errorMessage" class="error-text hidden">Repository not found. Please check the URL.</p>
+        </section>
+
+        <section class="preview-section">
+            <div class="preview-header">
+                <h2>Card Preview</h2>
+                <button class="m3-btn m3-btn-tonal" id="downloadBtn" disabled>
+                    <span class="material-symbols-outlined">download</span> Download PNG
+                </button>
+            </div>
+
+            <div class="card-wrapper">
+                <div id="promoCard" class="promo-card">
+                    <div class="card-background-mesh"></div>
+                    
+                    <div class="card-content">
+                        <div class="card-top">
+                            <img id="ownerAvatar" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Owner Avatar" class="owner-avatar">
+                            <div class="repo-title-group">
+                                <p id="ownerName" class="owner-name">owner</p>
+                                <h2 id="repoName" class="repo-name">repository-name</h2>
+                            </div>
+                        </div>
+
+                        <p id="repoDescription" class="repo-description">
+                            Your repository description will appear right here. Make it catchy and informative to attract contributors!
+                        </p>
+
+                        <div class="card-bottom">
+                            <div class="metrics">
+                                <div class="metric-badge">
+                                    <span class="material-symbols-outlined">star</span>
+                                    <span id="starCount">0</span>
+                                </div>
+                                <div class="metric-badge">
+                                    <span class="material-symbols-outlined">call_split</span>
+                                    <span id="forkCount">0</span>
+                                </div>
+                                <div class="metric-badge">
+                                    <span class="material-symbols-outlined">visibility</span>
+                                    <span id="watcherCount">0</span>
+                                </div>
+                            </div>
+
+                            <div class="language-badge" id="languageBadge">
+                                <span class="lang-dot"></span>
+                                <span id="repoLanguage">Language</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

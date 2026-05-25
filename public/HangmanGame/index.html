@@ -10,6 +10,8 @@
     <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
 
     <a href="../../index.html" class="back-home-btn">← Back to Home</a>
     <h1>Hangman Game</h1>
@@ -24,13 +26,53 @@
     <div class="container">
         <div class="hangman-box">
             <img src="#" draggable="false" alt="Hangman Image">
-            <h1>Hangman Game</h1>
+            <div class="top-controls">
+
+    <button class="rules-btn">
+        ❔ How To Play
+    </button>
+
+</div>
+
+<h1>Hangman Game</h1>
+
+
+<div class="rules-modal">
+
+    <div class="rules-content">
+
+        <span class="close-rules">
+            ×
+        </span>
+
+        <h2>How To Play</h2>
+
+        <ul>
+
+            <li>Guess letters to reveal the hidden word.</li>
+
+            <li>Wrong guesses increase the hangman count.</li>
+
+            <li>You lose after 6 incorrect attempts.</li>
+
+            <li>Reveal the complete word to win.</li>
+
+            <li>Use keyboard keys A–Z or click letters.</li>
+
+        </ul>
+
+    </div>
+
+</div>
         </div>
         <div class="game-box">
             <ul class="word-display"></ul>
             <h4 class="hint-text">Hint: <b></b></h4>
-            <h4 class="guesses-text">Incorrect guesses: <b></b></h4>
-            <div class="keyboard"></div>
+           <h4 class="guesses-text">Incorrect guesses: <b></b></h4>
+
+
+
+<div class="keyboard"></div>
         </div>
     </div>
 </body>
