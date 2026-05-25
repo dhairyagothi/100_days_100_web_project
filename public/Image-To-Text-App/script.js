@@ -125,27 +125,41 @@ if (copyBtn) {
       return;
     }
 
+    const textToCopy = outputText.replace(/\s+$/g, "");
+
     try {
-      await navigator.clipboard.writeText(outputText);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(textToCopy);
+      } else {
+        // Fallback for non-secure contexts / blocked clipboard API
+        const textarea = document.createElement("textarea");
+        textarea.value = textToCopy;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.top = "-9999px";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(textarea);
+        if (!ok) throw new Error("execCommand copy failed");
+      }
 
       copyBtn.innerHTML = "✅ Copied";
-
-      copyBtn.classList.add(
-        "bg-emerald-500/20",
-        "text-emerald-300"
-      );
+      copyBtn.classList.add("bg-emerald-500/20", "text-emerald-300");
 
       setTimeout(() => {
         copyBtn.innerHTML = "Copy";
-
-        copyBtn.classList.remove(
-          "bg-emerald-500/20",
-          "text-emerald-300"
-        );
+        copyBtn.classList.remove("bg-emerald-500/20", "text-emerald-300");
       }, 2000);
 
     } catch (error) {
       console.error("Copy failed:", error);
+      copyBtn.innerHTML = "⚠️ Copy failed";
+
+      setTimeout(() => {
+        copyBtn.innerHTML = "Copy";
+      }, 2000);
     }
   });
 }
