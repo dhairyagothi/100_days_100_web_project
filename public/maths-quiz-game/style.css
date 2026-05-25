@@ -1,35 +1,284 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #1a1a1a;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
-.quiz-container {
-    background: #2a2a2a;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    text-align: center;
-    width: 350px;
+
+body{
+
+    font-family:'Manrope',sans-serif;
+
+    background:
+    radial-gradient(circle at top,
+    #1e293b,
+    #0f172a 50%,
+    #020617);
+
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+
+    overflow:hidden;
 }
-.options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin: 20px 0;
+
+
+/* MAIN CARD */
+
+.quiz-container{
+
+    width:430px;
+
+    padding:40px;
+
+    border-radius:30px;
+
+    background:
+    rgba(255,255,255,.04);
+
+    backdrop-filter:blur(25px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+
+    0 25px 60px rgba(0,0,0,.5);
+
+    text-align:center;
+
+    transition:.35s;
 }
-button {
-    background: #4ab3f4;
-    border: none;
-    padding: 12px;
-    color: white;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
+
+.quiz-container:hover{
+
+    transform:
+    translateY(-5px);
+
+    box-shadow:
+    0 35px 80px rgba(0,0,0,.55);
 }
-button:hover { background: #359ad6; }
+
+
+/* TITLE */
+
+h1{
+
+    font-size:38px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+    line-height:1.2;
+
+    background:
+    linear-gradient(
+    120deg,
+    #c084fc,
+    #60a5fa,
+    #22d3ee
+    );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+}
+
+
+/* SUBTEXT */
+
+p{
+
+    color:#94a3b8;
+
+    margin-bottom:22px;
+
+    font-size:15px;
+}
+
+
+/* SCORE */
+
+#score-container{
+
+    margin:15px 0;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    color:#e2e8f0;
+}
+
+
+/* TIMER */
+
+#timer{
+
+    margin:20px 0;
+
+    font-size:19px;
+
+    font-weight:600;
+
+    color:#7dd3fc;
+}
+
+
+/* QUESTION */
+
+#question-box{
+
+    margin:35px 0;
+
+    font-size:24px;
+
+    line-height:1.5;
+
+    font-weight:600;
+
+    min-height:70px;
+}
+
+
+/* OPTIONS */
+
+.options-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:15px;
+}
+
+
+/* BUTTONS */
+
+button{
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:18px;
+
+    font-family:'Manrope';
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    color:white;
+
+    background:
+
+    linear-gradient(
+    135deg,
+    rgba(99,102,241,.85),
+    rgba(139,92,246,.85)
+    );
+
+    transition:.25s;
+
+    box-shadow:
+
+    0 10px 20px
+    rgba(99,102,241,.2);
+}
+
+
+button:hover{
+
+    transform:
+    translateY(-3px)
+    scale(1.02);
+
+    box-shadow:
+
+    0 15px 30px
+    rgba(99,102,241,.35);
+}
+
+
+button:active{
+
+    transform:
+    scale(.96);
+}
+
+
+/* DIFFICULTY BUTTONS */
+
+#difficulty-screen button{
+
+    margin:8px;
+}
+
+
+/* RESTART BUTTON */
+
+#restart-btn{
+
+    background:
+    linear-gradient(
+    135deg,
+    #ef4444,
+    #f97316
+    );
+
+    margin-bottom:20px;
+}
+
+
+/* GAME OVER */
+
+#gameover-screen p{
+
+    margin:15px;
+
+    color:#cbd5e1;
+}
+
+
+/* SOFT ENTRY ANIMATION */
+
+#difficulty-screen,
+#game-screen,
+#gameover-screen{
+
+    animation:
+    appear .45s ease;
+}
+
+
+@keyframes appear{
+
+from{
+
+opacity:0;
+
+transform:
+translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:
+translateY(0);
+
+}
+
+}

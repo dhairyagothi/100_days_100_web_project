@@ -2,56 +2,65 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta HTTP-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page </title>
-    <link rel="stylesheet" href="login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    <div class="image"><iframe
-            src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe></div>
-    <form>
-        <!-- Headings for the form -->
-        <div class="headingsContainer">
-            <h3>Log In
-            </h3>
-        </div>
 
         <!-- The Wrapper contains all the inputs -->
         <div class="mainContainer">
             <!-- Username -->
-             <div>
-            <label for="username">Username</label>
-            <input type="text" placeholder="Enter Your Username Here" name="username" id="username" autocomplete="username" required>
+            <div class="input-group">
+                <label for="username">Username</label>
 
-            <br><br>
+                <input type="text" placeholder="Enter Your Username Here" name="username" id="username"
+                    autocomplete="username" required>
+                <div class="error"></div>
+            </div>
 
             <!-- Password -->
-            <label for="password">Password</label>
-            <input type="password" placeholder="Enter Your Password Here" name="password" id="password" required autocomplete="current-password">
+
+            <div class="password-field">
+                <div class="input-group">
+                    <label for="password">Password</label>
+
+                    <div class="input-wrapper">
+                        <input type="password" placeholder="Enter Your Password Here" name="password" id="password"
+                            required autocomplete="current-password">
+
+                        <span id="togglePassword">👁️</span>
+                    </div>
+                    <div class="error"></div>
+                </div>
+            </div>
 
             <!-- sub-container for the checkbox and forgot password link -->
             <div class="subcontainer">
                 <label>
-                    <input type="checkbox" checked="checked" name="remember"><span>Keep me signed in</span>
+                    <input type="checkbox" checked="checked" name="remember">Keep me signed in
                 </label>
-                <a href="#">Forgot Password?</a>
+                <p class="forgotpsd"> <a href="#">Forgot Password?</a></p>
             </div>
 
 
             <!-- Submit button -->
             <button type="button" onclick="getDetails()">Login</button>
 
-             <p style="text-align:center; color:#888; font-size:13px;">or</p>
-            
-            <button type="button" class="google-btn"> <i class="fa-brands fa-google"></i>Continue with Google</button>
-
             <!-- Sign up link -->
             <p class="register">Not a member? <a href="/signup">Sign Up here!</a></p>
 
+      <div class="form-body">
+
+        <!-- Username -->
+        <div class="field-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username"
+            required>
         </div>
 
     </form>
@@ -67,40 +76,142 @@
 
             const text = await res.text();
 
-            if (!res.ok) {
-                alert(text);
-                return;
-            }
+            showMessage(text, !res.ok);
 
-            alert(text);
-            window.location.href = "/home";
+            if (res.ok) {
+
+                setTimeout(() => {
+                    window.location.href = "/home";
+                }, 1500);
+            }
 
         } catch (error) {
             console.log(error);
         }
     }
 
-    function getDetails() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    function showMessage(message, isError = false) {
 
-        postRequest({ username, password })
+    let messageBox = document.getElementById('messageBox');
+
+    if (!messageBox) {
+
+        messageBox = document.createElement('div');
+
+        messageBox.id = 'messageBox';
+
+        document.querySelector('.mainContainer')
+            .appendChild(messageBox);
     }
-    function togglePassword(id, element) {
 
-    const input = document.getElementById(id);
-    const icon = element.querySelector("i");
+    messageBox.innerText = message;
 
-    if (input.type === "password") {
-        input.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
-    } else {
-        input.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-    }
+    messageBox.className = isError
+        ? 'message error-message'
+        : 'message success-message';
 }
+
+    function setError(inputId, message) {
+
+        const input = document.getElementById(inputId);
+
+        const inputGroup = input.closest('.input-group');
+
+        const errorDisplay = inputGroup.querySelector('.error');
+
+        errorDisplay.innerText = message;
+    }
+
+    function clearErrors() {
+
+        document.querySelectorAll('.error').forEach(error => {
+            error.innerText = '';
+        });
+
+        document.querySelectorAll('input').forEach(input => {
+            input.classList.remove('input-error');
+        });
+    }
+
+    function getDetails() {
+
+        clearErrors();
+
+        const username = document.getElementById('username');
+
+        const password = document.getElementById('password');
+
+        let isValid = true;
+
+        // Username validation
+        if (!username.value.trim()) {
+
+            setError('username', 'Username is required');
+
+            username.classList.add('input-error');
+
+            isValid = false;
+        }
+
+        // Password validation
+        if (!password.value.trim()) {
+
+            setError('password', 'Password is required');
+
+            password.classList.add('input-error');
+
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        postRequest({
+            username: username.value,
+            password: password.value
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+
+        togglePassword.addEventListener("click", () => {
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.textContent = "🙈";
+            } else {
+                passwordInput.type = "password";
+                togglePassword.textContent = "👁️";
+            }
+
+        });
+
+        showToast(text, 'success');
+        setTimeout(() => window.location.href = '/home', 800);
+
+      } catch (err) {
+        console.error(err);
+        showToast('Something went wrong. Try again.', 'error');
+      }
+    }
+
+    document.querySelectorAll('input').forEach(input => {
+
+    input.addEventListener('input', () => {
+
+        input.classList.remove('input-error');
+
+        const inputGroup = input.closest('.input-group');
+
+        const error = inputGroup.querySelector('.error');
+
+        if (error) {
+            error.innerText = '';
+        }
+    });
+});
 
 
 </script>

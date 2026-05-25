@@ -166,12 +166,22 @@ class Calculator {
         const exponent = parseFloat(powerMatch[2]);
         this.currentOperand = Math.pow(base, exponent);
       } else {
-        this.currentOperand = eval(formattedExpression);
+        const result = eval(formattedExpression);
+        if (!isFinite(result)) {
+          this.currentOperand = 'Error';
+          this.expression = 'Error';
+          this.operation = undefined;
+          this.previousOperand = '';
+          this.updateDisplay();
+          return;
+        }
+        this.currentOperand = result;
       }
-      this.latestAnswer = this.currentOperand; // Store the latest answer
+      this.latestAnswer = this.currentOperand;
       this.expression = this.currentOperand.toString();
     } catch (error) {
       this.currentOperand = 'Error';
+      this.expression = 'Error';
     }
     this.operation = undefined;
     this.previousOperand = '';

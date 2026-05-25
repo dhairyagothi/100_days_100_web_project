@@ -6,105 +6,111 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: #f4f7fb;
-    color: #222;
-    padding: 20px;
+    background: #f4f9ff;
+    color: #1e293b;
+    line-height: 1.6;
 }
 
 .hero {
-    background: #0f172a;
+    background: linear-gradient(135deg, #2563eb, #0ea5e9);
     color: white;
     text-align: center;
-    padding: 30px;
-    border-radius: 12px;
-    margin-bottom: 20px;
+    padding: 40px 20px;
 }
 
 .hero h1 {
     font-size: 2.5rem;
+    margin-bottom: 10px;
 }
 
 .dashboard {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
     display: grid;
-    gap: 20px;
+    gap: 25px;
 }
 
 .card {
     background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .card h2 {
-    margin-bottom: 15px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    margin-bottom: 20px;
+    color: #2563eb;
 }
 
 input,
 textarea,
-select,
-button {
-    margin-top: 10px;
+select {
+    width: 100%;
     padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    margin-top: 8px;
+    margin-bottom: 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 1rem;
 }
 
-button {
+textarea {
+    resize: none;
+    min-height: 100px;
+}
+
+.primary-btn {
     background: #2563eb;
     color: white;
     border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
-button:hover {
+.primary-btn:hover {
     background: #1d4ed8;
+    transform: translateY(-2px);
 }
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-    gap: 15px;
+#loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color:#3498db;
+    font-weight: bold;
+}
+#statusMessage{
+    white-space: pre-line;
+    margin-top: 10px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
 }
 
 .stat-box {
     background: #eff6ff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 14px;
     text-align: center;
 }
-
-.stat-box h3 {
-    margin-bottom: 10px;
-}
-
-#recommendationBox {
-    margin-top: 15px;
-    padding: 15px;
-    background: #f8fafc;
-    border-left: 4px solid #2563eb;
-    border-radius: 6px;
+.feedbackmain p{
+    margin-left: 50px;
 }
 
 .disclaimer {
-    margin-top: 10px;
-    color: red;
+    margin-top: 15px;
     font-size: 0.9rem;
+    color: #dc2626;
 }
 
-#historyList li {
-    margin-bottom: 15px;
-    padding: 10px;
-    background: #f9fafb;
-    border-radius: 8px;
-    list-style: none;
+#historyList {
+    padding-left: 20px;
+}
+
+.feedback-card {
+    text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -113,56 +119,35 @@ button:hover {
         font-size: 2rem;
     }
 
-}
-
-.page-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 26px rgba(15, 111, 143, 0.28);
-}
-
-.warning-panel {
-    border-left: 6px solid #b42318;
-    background: #fff7ed;
-}
-
-.warning-panel h2 {
-    color: #9a3412;
-}
-
-.remedy-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-    margin-bottom: 20px;
-}
-
-.remedy-card {
-    background: rgba(255, 255, 255, 0.96);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
-    animation: cardRise 0.65s ease both;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.remedy-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(32, 180, 134, 0.45);
-    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
-}
-
-.remedy-card h2 {
-    font-size: 1.3rem;
-}
-
-.remedy-card p {
-    line-height: 1.6;
-    color: #334e68;
-}
-
-@media (max-width: 700px) {
-    .remedy-grid {
-        grid-template-columns: 1fr;
+    .dashboard {
+        width: 95%;
     }
+}
+
+#buttons {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.cancel {
+    background-color: rgb(218, 78, 18);
+}
+
+.cancel:hover {
+    background-color: #f10000;
+}
+
+#consultation-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cancel-appointment {
+    text-align: center;
+    font-size: 1.2rem;
+    color:#db4734;
+    font-weight: bold;
 }
