@@ -1,5 +1,6 @@
 // App configuration and state
 let activeTheme = localStorage.getItem("clockTheme") || "classic";
+if (activeTheme === "future") activeTheme = "futuristic";
 let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
 let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
 let worldClocks = JSON.parse(localStorage.getItem("clock_worldClocks")) || [];
@@ -10,6 +11,7 @@ let lastCheckedMinute = "";
 let ringInterval = null;
 let audioCtx = null;
 let triggeredAlarms = new Set();
+let editingAlarmId = null;
 
 // DOM Selectors
 const hoursEl = document.getElementById("hours");
@@ -26,6 +28,19 @@ const popupAlarmTitle = document.getElementById("popup-alarm-title");
 const popupAlarmTime = document.getElementById("popup-alarm-time");
 const popupAlarmLabel = document.getElementById("popup-alarm-label");
 const alarmSound = document.getElementById("alarm-sound");
+const alarmTimeInput = document.getElementById("alarm-time");
+const alarmLabelInput = document.getElementById("alarm-label");
+const alarmToneInput = document.getElementById("alarm-tone");
+const alarmSnoozeInput = document.getElementById("alarm-snooze");
+const alarmSnoozeCustomWrap = document.getElementById("alarm-snooze-custom-wrap");
+const alarmSnoozeCustomInput = document.getElementById("alarm-snooze-custom");
+const alarmForm = document.querySelector(".alarm-form");
+const alarmSubmitButton = document.getElementById("alarm-submit-btn");
+const alarmCancelButton = document.getElementById("alarm-cancel-btn");
+const clearAllButton = document.getElementById("clear-all-btn");
+const confirmModal = document.getElementById("confirm-modal");
+const confirmModalMessage = document.getElementById("confirm-modal-message");
+const confirmModalYes = document.getElementById("confirm-modal-yes");
 const historyHeader = document.getElementById("history-header");
 const historyChevron = document.getElementById("history-chevron");
 
@@ -34,6 +49,7 @@ const worldModal = document.getElementById("world-clock-modal");
 const worldSearchInput = document.getElementById("world-search-input");
 const worldTzOptionsList = document.getElementById("world-tz-options-list");
 let countriesDatabase = [];
+let confirmAction = null;
 
 // Supported timezones
 const TIMEZONES = [
@@ -48,6 +64,8 @@ const TIMEZONES = [
 // INIT
 document.addEventListener("DOMContentLoaded", () => {
   setTheme(activeTheme);
+  normalizeAlarms();
+  updateSnoozeCustomVisibility();
 
   populateTimezoneDropdown();
   renderAlarmsList();
@@ -70,6 +88,7 @@ function setTheme(theme) {
   localStorage.setItem("clockTheme", theme);
 
   document.body.className = `${theme}-theme`;
+  document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
 
   document.querySelectorAll(".theme-swatch").forEach(swatch => {
     swatch.classList.toggle("active", swatch.dataset.theme === theme);
@@ -79,7 +98,8 @@ function setTheme(theme) {
     classic: "CLASSIC",
     modern: "MODERN",
     futuristic: "CYBER",
-    nebula: "NEBULA"
+    nebula: "NEBULA",
+    dark: "MIDNIGHT"
   };
   const badge = document.getElementById("theme-label");
   if (badge) badge.textContent = labelMap[theme] || "CLASSIC";
@@ -119,45 +139,114 @@ function updateClock() {
 }
 
 // ================= ALARMS =================
-function addNewAlarm() {
-  const timeInput = document.getElementById("alarm-time");
-  const labelInput = document.getElementById("alarm-label");
+function normalizeAlarms() {
+  const now = Date.now();
+  alarms = alarms.map(alarm => {
+    const normalized = {
+      ...alarm,
+      tone: alarm.tone || "classic",
+      enabled: alarm.enabled !== false,
+      snoozeMinutes: Number(alarm.snoozeMinutes ?? alarm.snooze ?? 5) || 5,
+      snoozedUntil: alarm.snoozedUntil || null,
+      isRinging: false
+    };
 
-  if (!timeInput.value) {
+    if (normalized.snoozedUntil && normalized.snoozedUntil <= now) {
+      normalized.snoozedUntil = null;
+    }
+
+    normalized.nextTriggerAt = normalized.snoozedUntil || getNextTriggerTimestamp(normalized.time, now);
+    return normalized;
+  });
+  saveAlarms();
+}
+
+function getNextTriggerTimestamp(timeValue, baseTimestamp = Date.now()) {
+  if (!timeValue) return baseTimestamp;
+
+  const [hours, minutes] = timeValue.split(":").map(Number);
+  const nextTrigger = new Date(baseTimestamp);
+  nextTrigger.setSeconds(0, 0);
+  nextTrigger.setHours(hours, minutes, 0, 0);
+
+  if (nextTrigger.getTime() <= baseTimestamp) {
+    nextTrigger.setDate(nextTrigger.getDate() + 1);
+  }
+
+  return nextTrigger.getTime();
+}
+
+function getSelectedSnoozeMinutes() {
+  const selectedValue = alarmSnoozeInput ? alarmSnoozeInput.value : "5";
+  if (selectedValue === "custom") {
+    const customMinutes = parseInt(alarmSnoozeCustomInput?.value, 10);
+    return Number.isFinite(customMinutes) && customMinutes > 0 ? customMinutes : 5;
+  }
+
+  const presetMinutes = parseInt(selectedValue, 10);
+  return Number.isFinite(presetMinutes) && presetMinutes > 0 ? presetMinutes : 5;
+}
+
+function updateSnoozeCustomVisibility() {
+  if (!alarmSnoozeInput || !alarmSnoozeCustomWrap) return;
+  const shouldShow = alarmSnoozeInput.value === "custom";
+  alarmSnoozeCustomWrap.classList.toggle("hidden", !shouldShow);
+  if (shouldShow && !alarmSnoozeCustomInput.value) {
+    alarmSnoozeCustomInput.value = "5";
+  }
+}
+
+if (alarmSnoozeInput) {
+  alarmSnoozeInput.addEventListener("change", updateSnoozeCustomVisibility);
+}
+
+function addNewAlarm() {
+  if (!alarmTimeInput?.value) {
     showToast("Please select a time");
     return;
   }
 
-  const alarm = {
-    id: Date.now(),
-    time: timeInput.value,
-    label: labelInput.value || "Alarm",
-    enabled: true,
-    snooze: parseInt(document.getElementById("alarm-snooze").value) || 5,
-    snoozedTime: null,
-    snoozeCount: 0
+  const alarmData = {
+    id: editingAlarmId || Date.now(),
+    time: alarmTimeInput.value,
+    label: alarmLabelInput?.value || "Alarm",
+    tone: alarmToneInput?.value || "classic",
+    enabled: editingAlarmId ? alarms.find(alarm => alarm.id === editingAlarmId)?.enabled !== false : true,
+    snoozeMinutes: getSelectedSnoozeMinutes(),
+    snoozedUntil: null,
+    nextTriggerAt: getNextTriggerTimestamp(alarmTimeInput.value),
+    isRinging: false
   };
 
-  alarms.push(alarm);
+  if (editingAlarmId) {
+    const alarmIndex = alarms.findIndex(alarm => alarm.id === editingAlarmId);
+    if (alarmIndex !== -1) {
+      alarms[alarmIndex] = { ...alarms[alarmIndex], ...alarmData };
+    } else {
+      alarms.push(alarmData);
+    }
+    showToast("Alarm updated");
+  } else {
+    alarms.push(alarmData);
+    showToast("Alarm added");
+  }
+
   saveAlarms();
   renderAlarmsList();
   updateAlarmSummary();
-  showToast("Alarm added");
+  resetAlarmForm();
 }
 
 function checkAlarms(currentTime) {
-  // Clear triggered alarms set when the minute changes
-  if (currentTime !== lastCheckedMinute) {
-    triggeredAlarms = new Set();
-    lastCheckedMinute = currentTime;
-  }
+  const now = Date.now();
 
   alarms.forEach(alarm => {
     if (!alarm.enabled) return;
-    if (alarm.snoozedTime && Date.now() < alarm.snoozedTime) return;
-    if (alarm.snoozedTime) alarm.snoozedTime = null;
-    if (alarm.time === currentTime && !triggeredAlarms.has(alarm.id)) {
-      triggeredAlarms.add(alarm.id);
+    if (!alarm.nextTriggerAt) {
+      alarm.nextTriggerAt = alarm.snoozedUntil || getNextTriggerTimestamp(alarm.time, now);
+    }
+    if (alarm.isRinging) return;
+    if (now >= alarm.nextTriggerAt) {
       triggerAlarm(alarm);
     }
   });
@@ -175,10 +264,20 @@ function triggerAlarm(alarm) {
   addHistoryLog(`Alarm "${alarm.label}" rang at ${alarm.time}`);
   renderHistoryLogs();
 
-  startRinger();
+  alarm.isRinging = true;
+  alarm.snoozedUntil = null;
+  saveAlarms();
+  startRinger(alarm);
 }
 
 function stopActiveAlarm() {
+  if (ringingAlarm) {
+    ringingAlarm.isRinging = false;
+    ringingAlarm.snoozedUntil = null;
+    ringingAlarm.nextTriggerAt = getNextTriggerTimestamp(ringingAlarm.time);
+    saveAlarms();
+  }
+
   stopRinger();
   alarmPopup.classList.add("hidden");
   ringingAlarm = null;
@@ -187,11 +286,17 @@ function stopActiveAlarm() {
 function snoozeActiveAlarm() {
   if (!ringingAlarm) return;
 
-  ringingAlarm.snoozedTime = Date.now() + (ringingAlarm.snooze || 5) * 60000;
-  ringingAlarm.snoozeCount = (ringingAlarm.snoozeCount || 0) + 1;
-  showToast(`Snoozed for ${ringingAlarm.snooze || 5} min`);
-  stopActiveAlarm();
+  const snoozeMinutes = Number(ringingAlarm.snoozeMinutes || 5);
+  ringingAlarm.snoozedUntil = Date.now() + snoozeMinutes * 60000;
+  ringingAlarm.nextTriggerAt = ringingAlarm.snoozedUntil;
+  ringingAlarm.isRinging = false;
   saveAlarms();
+
+  stopRinger();
+  alarmPopup.classList.add("hidden");
+  ringingAlarm = null;
+
+  showToast(`Snoozed for ${snoozeMinutes} min`);
 }
 
 // ================= AUDIO =================
@@ -201,14 +306,30 @@ function initAudio() {
   }
 }
 
-function startRinger() {
+function startRinger(alarm) {
+  stopRinger();
   initAudio();
+
+  if (alarm?.tone === "mp3" && alarmSound) {
+    alarmSound.loop = true;
+    alarmSound.currentTime = 0;
+    alarmSound.play().catch(() => {});
+    return;
+  }
+
+  const toneMap = {
+    classic: { type: "sine", frequency: 800 },
+    cyber: { type: "square", frequency: 1020 },
+    retro: { type: "triangle", frequency: 640 },
+    default: { type: "sine", frequency: 800 }
+  };
+  const tone = toneMap[alarm?.tone] || toneMap.default;
 
   ringInterval = setInterval(() => {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = 800;
+    osc.type = tone.type;
+    osc.frequency.value = tone.frequency;
     gain.gain.value = 0.1;
     osc.connect(gain);
     gain.connect(audioCtx.destination);
@@ -219,6 +340,12 @@ function startRinger() {
 
 function stopRinger() {
   clearInterval(ringInterval);
+  ringInterval = null;
+  if (alarmSound) {
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+    alarmSound.loop = false;
+  }
 }
 
 // ================= WORLD CLOCKS =================
@@ -483,11 +610,12 @@ function renderAlarmsList() {
           </div>
         </div>
         <div class="alarm-item-right">
+          <button class="edit-btn" onclick="editAlarm(${alarm.id})" title="Edit alarm" aria-label="Edit alarm">&#9998;</button>
           <label class="toggle">
             <input type="checkbox" ${alarm.enabled ? "checked" : ""} onchange="toggleAlarmEnabled(${alarm.id}, this.checked)" />
             <span class="toggle-slider"></span>
           </label>
-          <button class="remove-btn" onclick="deleteAlarm(${alarm.id})" title="Delete">&times;</button>
+          <button class="remove-btn" onclick="deleteAlarm(${alarm.id})" title="Delete" ${editingAlarmId === alarm.id ? "disabled aria-disabled=\"true\"" : ""}> &times;</button>
         </div>
       </div>
     `;
@@ -504,35 +632,135 @@ function toggleAlarmEnabled(id, enabled) {
   }
 }
 
-function deleteAlarm(id) {
-  alarms = alarms.filter(a => a.id !== id);
-  saveAlarms();
+function editAlarm(id) {
+  const alarm = alarms.find(item => item.id === id);
+  if (!alarm) return;
+
+  editingAlarmId = alarm.id;
+  if (alarmTimeInput) alarmTimeInput.value = alarm.time;
+  if (alarmLabelInput) alarmLabelInput.value = alarm.label || "";
+  if (alarmToneInput) alarmToneInput.value = alarm.tone || "classic";
+
+  if (alarmSnoozeInput) {
+    const presetValue = [5, 10, 15].includes(Number(alarm.snoozeMinutes)) ? String(alarm.snoozeMinutes) : "custom";
+    alarmSnoozeInput.value = presetValue;
+  }
+
+  if (alarmSnoozeCustomInput) {
+    alarmSnoozeCustomInput.value = [5, 10, 15].includes(Number(alarm.snoozeMinutes)) ? "" : String(alarm.snoozeMinutes || 5);
+  }
+
+  updateSnoozeCustomVisibility();
+  if (alarmSubmitButton) alarmSubmitButton.textContent = "Update Alarm";
+  if (alarmCancelButton) alarmCancelButton.classList.remove("hidden");
+  if (clearAllButton) clearAllButton.classList.add("hidden");
+  if (alarmForm) {
+    alarmForm.classList.add("editing");
+    alarmForm.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  setTimeout(() => {
+    alarmTimeInput?.focus();
+    alarmTimeInput?.select?.();
+  }, 0);
+  showToast("Editing alarm");
   renderAlarmsList();
-  updateAlarmSummary();
-  showToast("Alarm deleted");
+}
+
+function resetAlarmForm() {
+  editingAlarmId = null;
+  alarmForm?.reset();
+  if (alarmSubmitButton) alarmSubmitButton.textContent = "Add Alarm";
+  if (alarmCancelButton) alarmCancelButton.classList.add("hidden");
+  if (clearAllButton) clearAllButton.classList.remove("hidden");
+  if (alarmForm) alarmForm.classList.remove("editing");
+  if (alarmSnoozeInput) alarmSnoozeInput.value = "5";
+  if (alarmSnoozeCustomInput) alarmSnoozeCustomInput.value = "";
+  updateSnoozeCustomVisibility();
+  renderAlarmsList();
+}
+
+function cancelAlarmEdit() {
+  resetAlarmForm();
+  showToast("Edit cancelled");
+}
+
+function deleteAlarm(id) {
+  if (editingAlarmId === id) return;
+  const alarm = alarms.find(item => item.id === id);
+  if (!alarm) return;
+
+  openConfirmModal(`Are you sure want to delete "${alarm.label || "Alarm"}"?`, () => {
+    if (ringingAlarm && ringingAlarm.id === id) {
+      stopRinger();
+      alarmPopup?.classList.add("hidden");
+      ringingAlarm = null;
+    }
+
+    alarms = alarms.filter(item => item.id !== id);
+    saveAlarms();
+    renderAlarmsList();
+    updateAlarmSummary();
+    showToast("Alarm deleted");
+  });
 }
 
 function clearAllAlarms() {
+  if (editingAlarmId) return;
   if (alarms.length === 0) {
     showToast("No alarms to clear");
     return;
   }
-  alarms = [];
-  saveAlarms();
-  renderAlarmsList();
-  updateAlarmSummary();
-  showToast("All alarms cleared");
+
+  openConfirmModal("Are you sure want to delete all alarms?", () => {
+    stopRinger();
+    alarmPopup?.classList.add("hidden");
+    ringingAlarm = null;
+    editingAlarmId = null;
+    alarms = [];
+    saveAlarms();
+    renderAlarmsList();
+    updateAlarmSummary();
+    resetAlarmForm();
+    showToast("All alarms cleared");
+  });
 }
 
 function toggleAlarmSection() {
   const controls = document.getElementById("alarm-controls");
   const btn = document.getElementById("alarm-section-toggle");
   controls.classList.toggle("hidden");
-  btn.classList.toggle("active", !controls.classList.contains("hidden"));
+  const isOpen = !controls.classList.contains("hidden");
+  btn.classList.toggle("active", isOpen);
+  btn.textContent = isOpen ? "×" : "Manage";
+  btn.setAttribute("aria-label", isOpen ? "Close alarm controls" : "Manage alarms");
 }
 
 function saveAlarms() {
   localStorage.setItem("clock_alarms", JSON.stringify(alarms));
+}
+
+function openConfirmModal(message, onConfirm) {
+  if (!confirmModal || !confirmModalMessage || !confirmModalYes) return;
+
+  confirmAction = onConfirm;
+  confirmModalMessage.textContent = message;
+  confirmModal.classList.remove("hidden");
+  confirmModalYes.focus();
+}
+
+function closeConfirmModal() {
+  if (!confirmModal) return;
+
+  confirmModal.classList.add("hidden");
+  confirmAction = null;
+}
+
+if (confirmModalYes) {
+  confirmModalYes.addEventListener("click", () => {
+    const action = confirmAction;
+    closeConfirmModal();
+    if (typeof action === "function") action();
+  });
 }
 
 function updateAlarmSummary() {
