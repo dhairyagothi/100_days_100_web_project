@@ -306,6 +306,7 @@ function removeTechFilter(tech) {
   techStackFilters = techStackFilters.filter(t => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
+  
 }
 
 /**
@@ -483,6 +484,93 @@ let sortOption = 'default';
 let techStackFilter = 'all';
 let difficultyFilter = 'all';
 
+const RECENT_PROJECTS_KEY = 'recentlyViewedProjects';
+const RECENT_PROJECTS_LIMIT = 6;
+
+function getRecentlyViewedProjects() {
+  return JSON.parse(localStorage.getItem(RECENT_PROJECTS_KEY)) || [];
+}
+
+function saveRecentlyViewedProjects(projects) {
+  localStorage.setItem(RECENT_PROJECTS_KEY, JSON.stringify(projects));
+}
+
+function addRecentlyViewed(project) {
+  const [day] = project;
+
+  let recentProjects = getRecentlyViewedProjects();
+
+  // Remove duplicates
+  recentProjects = recentProjects.filter(
+    (item) => item[0] !== day
+  );
+
+  // Add latest project at top
+  recentProjects.unshift(project);
+
+  // Limit recent items
+  recentProjects = recentProjects.slice(0, RECENT_PROJECTS_LIMIT);
+
+  saveRecentlyViewedProjects(recentProjects);
+
+  renderRecentlyViewedProjects();
+}
+
+function clearRecentlyViewedProjects() {
+  localStorage.removeItem(RECENT_PROJECTS_KEY);
+  renderRecentlyViewedProjects();
+}
+
+function renderRecentlyViewedProjects() {
+  const recentGrid = document.getElementById('recentGrid');
+  const recentSection = recentGrid?.closest('.projects-section');
+
+  if (!recentGrid || !recentSection) return;
+
+  const recentProjects = getRecentlyViewedProjects();
+
+  if (recentProjects.length === 0) {
+    recentSection.style.display = 'none';
+    return;
+  }
+
+  recentSection.style.display = 'block';
+  recentGrid.innerHTML = '';
+
+  recentProjects.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
+    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter(Boolean) : tags;
+    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+    const sourceUrl = getSourceUrl(url);
+
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.style.cursor = 'pointer';
+    card.onclick = () => window.open(url.trim(), '_blank');
+
+    card.innerHTML = `
+      <div class="card-meta">
+        <span class="card-day">${day}</span>
+        <span class="card-category">${category}</span>
+      </div>
+      <div class="card-name">${name}</div>
+      <div class="card-tags">${tagsHTML}</div>
+      <div class="card-footer">
+        <div class="card-actions-left">
+          <a href="${url.trim()}" target="_blank" class="card-link" rel="noopener noreferrer" onclick="event.stopPropagation();">
+            Demo <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation();">
+            <i class="fab fa-github"></i> Code
+          </a>
+        </div>
+      </div>
+    `;
+
+    recentGrid.appendChild(card);
+  });
+}
+
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
@@ -567,7 +655,10 @@ function renderGrid() {
     card.style.cursor = 'pointer';
 
     // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
+    card.onclick = () => {
+      addRecentlyViewed([day, name, url, tags]);
+      window.open(url.trim(), '_blank');
+    };
 
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
@@ -585,9 +676,14 @@ function renderGrid() {
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
+                     <a href="${url.trim()}" 
+                          target="_blank" 
+                          class="card-link open-project" 
+                          data-id="${day}" 
+                          rel="noopener noreferrer"
+                          onclick="event.stopPropagation(); addRecentlyViewed(['${day}', '${name}', '${url}', ${JSON.stringify(tags).replace(/"/g, '&quot;')}]);">
+                          Demo <i class="fas fa-arrow-right"></i>
+                      </a>
                     <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
                         <i class="fab fa-github"></i> Code
                     </a>
@@ -1277,8 +1373,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (hasProjectGrid()) {
     renderGrid();
+    renderRecentlyViewedProjects();
     renderBookmarks();
-    renderRecentProjects();
   }
 });
 
