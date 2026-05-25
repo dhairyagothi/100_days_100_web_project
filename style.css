@@ -318,6 +318,51 @@ body.light-mode .navbar {
   font-weight: 500;
 }
 
+
+
+.sort-filter-row {
+
+  display: flex;
+  gap: 12px;
+
+  flex-wrap: wrap;
+}
+
+.filter-select {
+
+  background: var(--bg-elevated);
+
+  border: 1px solid var(--border);
+
+  color: var(--text-primary);
+
+  padding: 0.7rem 1rem;
+
+  border-radius: var(--radius-md);
+
+  font-family: 'Inter Tight', sans-serif;
+
+  font-size: 0.85rem;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition: var(--t);
+}
+
+.filter-select:hover {
+
+  border-color: var(--border-hover);
+}
+
+.filter-select:focus {
+
+  border-color: var(--border-accent);
+
+  background: var(--bg-surface);
+}
+
 /* ============================================================
    HAMBURGER MENU
    ============================================================ */

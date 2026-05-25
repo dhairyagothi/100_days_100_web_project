@@ -147,6 +147,41 @@
               autocomplete="off"
             />
           </div>
+
+          <div class="sort-filter-row">
+
+  <select id="sortSelect" class="filter-select">
+    <option value="default">Sort By</option>
+    <option value="az">A-Z</option>
+    <option value="za">Z-A</option>
+  </select>
+
+  <select id="difficultySelect" class="filter-select">
+    <option value="all">All Difficulty</option>
+    <option value="beginner">Beginner</option>
+    <option value="intermediate">Intermediate</option>
+    <option value="advanced">Advanced</option>
+  </select>
+
+  <select id="techStackFilter" class="filter-select">
+  <option value="all">Filter by Tech Stack (All)</option>
+
+  <option value="html">HTML</option>
+  <option value="css">CSS</option>
+  <option value="javascript">JavaScript</option>
+  <option value="react">React</option>
+  <option value="node.js">Node.js</option>
+  <option value="express">Express</option>
+  <option value="mongodb">MongoDB</option>
+  <option value="python">Python</option>
+  <option value="tailwind">Tailwind</option>
+  <option value="firebase">Firebase</option>
+  <option value="next.js">Next.js</option>
+  <option value="typescript">TypeScript</option>
+</select>
+
+</div>
+
           <div class="filter-chips" id="filterChips">
             <button class="chip active" data-filter="all" id="filterAll">
               All <span class="chip-count" id="allCount">Projects</span>
