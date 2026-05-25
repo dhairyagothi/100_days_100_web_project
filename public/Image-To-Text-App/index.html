@@ -1,135 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image to Text Conversion</title>
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <!-- Include Tailwind CSS -->
+    
+    <link rel="icon" href="favv.png" type="image/x-icon" />
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', 
+        }
+    </script>
 </head>
 
-<body class="min-h-screen bg-[#0b1120] relative flex items-center justify-center px-4">
-
-    <!-- Animated Background -->
-    <div class="absolute inset-0 overflow-hidden">
-
-        <div
-            class="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] bg-cyan-500/30 rounded-full blur-3xl animate-pulse">
-        </div>
-
-        <div
-            class="absolute bottom-[-120px] right-[-120px] w-[320px] h-[320px] bg-emerald-500/30 rounded-full blur-3xl animate-pulse">
-        </div>
-
-        <div
-            class="absolute top-[40%] left-[60%] w-[220px] h-[220px] bg-purple-500/20 rounded-full blur-3xl animate-bounce">
-        </div>
-
+<body class="min-h-screen bg-gray-50 dark:bg-[#0b1120] relative flex items-center justify-center px-4 overflow-hidden transition-colors duration-300">
+    
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] bg-cyan-500/30 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-[-120px] right-[-120px] w-[320px] h-[320px] bg-emerald-500/30 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute top-[40%] left-[60%] w-[220px] h-[220px] bg-purple-500/20 rounded-full blur-3xl animate-bounce"></div>
     </div>
 
-    <!-- Main Card -->
-    <div
-        class="relative z-10 w-full max-w-6xl rounded-3xl border border-white/10 bg-white/10 backdrop-blur-2xl shadow-2xl p-8 md:p-10">
+    <button 
+      id="themeToggle" 
+      class="fixed top-6 right-6 z-50 p-3 rounded-full bg-white border border-gray-200 dark:bg-white/10 dark:border-white/20 backdrop-blur-md text-gray-800 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/20 transition-all duration-300 shadow-lg cursor-pointer"
+      aria-label="Toggle Dark Mode"
+    >
+      <svg id="sunIcon" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+      </svg>
+      <svg id="moonIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+      </svg>
+    </button>
 
-        <!-- Heading -->
+    <div class="relative z-10 w-full max-w-6xl rounded-3xl border border-gray-200 dark:border-white/10 bg-white/90 dark:bg-white/10 backdrop-blur-2xl shadow-2xl p-8 md:p-10 transition-colors duration-300">
+        
         <div class="text-center mb-10">
-
-            <h1
-                class="text-[2.25rem] md:text-[3rem] font-extrabold bg-gradient-to-r from-green-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent">
+            <h1 class="text-[2.25rem] md:text-[3rem] font-extrabold bg-gradient-to-r from-green-500 via-blue-500 to-emerald-500 dark:from-green-400 dark:via-blue-400 dark:to-emerald-400 bg-clip-text text-transparent">
                 Image to Text
             </h1>
-
-            <p class="text-gray-300 mt-4 text-sm md:text-base">
+            <p class="text-gray-600 dark:text-gray-300 mt-4 text-sm md:text-base">
                 Upload your image and instantly extract text with AI OCR.
             </p>
-
         </div>
 
-        <!-- Upload Section -->
         <div class="flex flex-col md:flex-row gap-4 mb-8">
-
-            <label
-                class="flex-1 flex items-center justify-center gap-3 px-6 py-5 rounded-2xl border border-dashed border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer">
-
+            <label class="flex-1 flex items-center justify-center gap-3 px-6 py-5 rounded-2xl border border-dashed border-gray-400 dark:border-white/20 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300 cursor-pointer">
                 <span class="text-3xl">📁</span>
-
                 <div>
-                    <p class="text-white font-medium">
-                        Choose an Image
-                    </p>
-
-                    <p class="text-xs text-gray-400">
-                        PNG, JPG, JPEG supported
-                    </p>
+                    <p class="text-gray-900 dark:text-white font-medium">Choose an Image</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, JPEG supported (or Ctrl+V to Paste)</p>
                 </div>
-
                 <input type="file" id="fileInput" accept="image/*" class="hidden">
             </label>
 
-            <button onclick="convertImage()"
-                class="px-8 py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300">
-                Convert Image
-            </button>
+            <div class="flex flex-col gap-3 min-w-[220px]">
+                
+                <select id="languageSelect" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-white/20 bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500 cursor-pointer transition-all duration-300">
+                    <option value="eng" class="text-black">🇺🇸 English</option>
+                    <option value="hin" class="text-black">🇮🇳 Hindi (हिन्दी)</option>
+                    <option value="eng+hin" class="text-black">🇺🇸 + 🇮🇳 English & Hindi</option>
+                </select>
 
+                <button onclick="convertImage()" class="w-full px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300">
+                    Convert Image
+                </button>
+                
+            </div>
         </div>
 
-        <!-- Content Area -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            <!-- OCR Output -->
-            <div
-                class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 min-h-[350px]">
-
+            
+            <div class="rounded-2xl border bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 backdrop-blur-xl p-6 min-h-[350px]">
                 <div class="flex items-center justify-between mb-5">
-
-                    <h2 class="text-xl font-semibold text-white">
-                        Extracted Text
-                    </h2>
-
-                    <button
-                        class="text-sm px-4 py-2 rounded-xl bg-white/10 text-gray-300 hover:bg-white/20 transition">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Extracted Text</h2>
+                    <button id="copyBtn" class="text-sm px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/20 transition">
                         Copy
                     </button>
-
                 </div>
-
-                <div id="output"
-                    class="text-gray-300 leading-relaxed text-center overflow-y-auto max-h-[260px]">
+                <div id="output" class="text-gray-800 dark:text-gray-300 leading-relaxed text-center overflow-y-auto max-h-[260px]">
                     Select an image and get started...
                 </div>
-
             </div>
 
-            <!-- Image Preview -->
-            <div
-                class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 flex items-center justify-center min-h-[350px]">
-
-                <img id="imagePreview"
-                    class="hidden rounded-2xl shadow-2xl max-h-[300px] object-contain"
-                    src="#"
-                    alt="Selected Image Preview">
-
+            <div class="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-xl p-6 flex items-center justify-center min-h-[350px]">
+                <img id="imagePreview" class="hidden rounded-2xl shadow-2xl max-h-[300px] object-contain" src="#" alt="Selected Image Preview">
                 <div id="placeholder" class="text-center">
-
-                    <div class="text-6xl mb-4">
-                        🖼️
-                    </div>
-
-                    <p class="text-gray-400">
-                        Image preview will appear here
-                    </p>
-
+                    <div class="text-6xl mb-4">🖼️</div>
+                    <p class="text-gray-500 dark:text-gray-400">Image preview will appear here</p>
                 </div>
-
             </div>
 
         </div>
     </div>
 
     <script src="https://unpkg.com/tesseract.js@4.0.1/dist/tesseract.min.js"></script>
-    <script src="script.js"></script>
+    <script src="./script.js"></script>
 </body>
-
 </html>
