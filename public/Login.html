@@ -6,16 +6,6 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="login.css" />
     <link rel="icon" href="favv.png" type="image/x-icon" />
-
-    <style>
-      /* Inline error styling (you can move to login.css if needed) */
-      .error-message {
-        color: #ff4d4d;
-        font-size: 14px;
-        margin-top: 8px;
-        min-height: 18px;
-      }
-    </style>
   </head>
 
   <body>
@@ -31,8 +21,7 @@
         <p class="subtitle">Welcome Back</p>
 
         <h1>
-          Build Something
-          <span class="highlight">Amazing</span>
+          Build Something <span class="highlight">Amazing</span>
         </h1>
 
         <p class="description">
@@ -47,7 +36,7 @@
         </div>
       </section>
 
-      <!-- Right Login Form -->
+      <!-- Right Form -->
       <section class="form-box">
         <button
           class="back-button"
@@ -58,38 +47,39 @@
         </button>
 
         <h2>Login</h2>
-        <p class="form-subtitle">
-          Enter your credentials to access your account.
-        </p>
+        <p class="form-subtitle">Enter your credentials to access your account.</p>
 
         <form id="loginForm">
           <div class="form-group">
-            <input type="text" id="username" placeholder="Username" required />
+            <input type="text" id="username" placeholder="Username" />
           </div>
 
           <div class="form-group">
-            <input
-              type="password"
-              id="password"
-              placeholder="Password"
-              required
-            />
+            <input type="password" id="password" placeholder="Password" />
           </div>
 
-          <!-- ✅ Inline error message -->
-          <p id="login-error" class="error-message"></p>
+          <!-- INLINE ERROR BOX -->
+          <p
+            id="errorBox"
+            style="
+              color: #ff4d4d;
+              font-size: 14px;
+              margin-top: 10px;
+              min-height: 18px;
+            "
+          ></p>
 
           <button type="submit" class="login-btn">Login</button>
         </form>
 
         <p class="signup-text">
-          New here?
-          <a href="./signup.html">Sign Up</a>
+          New here? <a href="./signup.html">Sign Up</a>
         </p>
       </section>
     </main>
 
     <script>
+      // Login form submission (NO alert, INLINE validation)
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (event) {
@@ -103,18 +93,14 @@
             .getElementById("password")
             .value.trim();
 
-          const errorEl = document.getElementById("login-error");
+          const errorBox = document.getElementById("errorBox");
 
           if (username && password) {
-            // clear error
-            errorEl.textContent = "";
-
             localStorage.setItem("username", username);
             window.location.pathname = "/index.html";
           } else {
-            // ✅ inline validation instead of alert
-            errorEl.textContent =
-              "Invalid credentials. Please try again.";
+            errorBox.textContent =
+              "⚠ Please enter both username and password";
           }
         });
     </script>
