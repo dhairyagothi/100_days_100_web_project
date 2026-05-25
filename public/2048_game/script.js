@@ -631,10 +631,15 @@ function showOverlay (type) {
     <button class="btn sm" id="ov-replay-btn2" style="margin-top:4px">▶ Watch Replay</button>
   `;
   ov.style.display = 'flex';
-  document.getElementById('ov-replay-btn').addEventListener('click', () => init());
-  document.getElementById('ov-replay-btn2').addEventListener('click', watchReplay);
-}
+// FIX: Clear out any previous listeners using a fresh replacement element reference
+  const replayBtn = document.getElementById('ov-replay-btn');
+  replayBtn.onclick = () => init();
 
+  // Keep incoming button 2 feature from main branch while maintaining memory leak safety
+  const replayBtn2 = document.getElementById('ov-replay-btn2');
+  if (replayBtn2) {
+    replayBtn2.onclick = watchReplay;
+  }
 function showToast (msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;

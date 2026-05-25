@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>AI Resume Analyzer</title>
+
+  <link rel="stylesheet" href="style.css"/>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="container">
+
+    <header class="hero">
+
+      <h1>🤖 AI Resume Analyzer</h1>
+
+      <p>
+        Analyze your resume and improve your ATS score
+      </p>
+
+    </header>
+
+    <section class="upload-section">
+
+      <div class="upload-card">
+
+        <h2>Upload Resume</h2>
+
+        <div class="upload-box">
+
+          <input
+            type="file"
+            id="resumeInput"
+            hidden
+          />
+
+          <button id="uploadBtn">
+            Upload Resume
+          </button>
+
+          <p id="fileName">
+            No file selected
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="dashboard-grid">
+
+      <div class="score-card">
+
+        <h2>ATS Score</h2>
+
+        <div class="meter-wrapper">
+
+          <div class="progress-ring">
+
+            <svg
+              class="progress-svg"
+              width="200"
+              height="200"
+            >
+
+              <circle
+                class="progress-bg"
+                cx="100"
+                cy="100"
+                r="85"
+              ></circle>
+
+              <circle
+                class="progress-circle"
+                id="progressCircle"
+                cx="100"
+                cy="100"
+                r="85"
+              ></circle>
+
+            </svg>
+
+            <div class="meter-content">
+
+              <h2 id="meterScore">
+                0%
+              </h2>
+
+              <p>
+                ATS Compatible
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="chart-card">
+
+        <h2>Resume Analysis</h2>
+
+        <canvas id="skillsChart"></canvas>
+
+      </div>
+
+    </section>
+
+    <section class="insights-section">
+
+      <h2>📊 Resume Insights</h2>
+
+      <div class="insights-grid">
+
+        <div class="insight-card">
+          <h3>Technical Skills</h3>
+          <div class="progress-bar">
+            <div class="progress-fill tech"></div>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <h3>Projects</h3>
+          <div class="progress-bar">
+            <div class="progress-fill projects"></div>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <h3>Communication</h3>
+          <div class="progress-bar">
+            <div class="progress-fill communication"></div>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <h3>Experience</h3>
+          <div class="progress-bar">
+            <div class="progress-fill experience"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="suggestions-section">
+
+      <h2>💡 AI Suggestions</h2>
+
+      <div class="suggestions-grid">
+
+        <div class="suggestion-card">
+          Add more quantified project achievements.
+        </div>
+
+        <div class="suggestion-card">
+          Include keywords like React, APIs, and Node.js.
+        </div>
+
+        <div class="suggestion-card">
+          Improve resume summary section.
+        </div>
+
+        <div class="suggestion-card">
+          Add GitHub and portfolio links.
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

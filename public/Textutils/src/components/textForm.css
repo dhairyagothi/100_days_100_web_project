@@ -1,0 +1,187 @@
+/* body{
+    background: #050816;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+} */
+
+.main-container{
+    display: flex;
+    gap: 30px;
+    padding: 40px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.left-panel{
+    flex: 2;
+    min-width: 650px;
+}
+
+.right-panel{
+    flex: 1;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.glass-card{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,255,255,0.15);
+    border-radius: 22px;
+    padding: 25px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 20px rgba(0,255,255,0.08);
+}
+
+.custom-textarea{
+    width: 100%;
+    height: 320px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(0,255,255,0.2);
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+    font-size: 18px;
+    resize: none;
+    outline: none;
+    margin-top: 20px;
+}
+
+.custom-textarea::placeholder{
+    color: rgba(255,255,255,0.45);
+}
+
+.button-grid{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.custom-btn{
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+    padding: 16px;
+    border-radius: 16px;
+    transition: 0.3s ease;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.custom-btn:hover{
+    transform: translateY(-3px);
+    border-color: cyan;
+    background: rgba(0,255,255,0.08);
+    box-shadow: 0 0 15px rgba(0,255,255,0.15);
+}
+
+.preview-box{
+    background: rgba(255,255,255,0.03);
+    padding: 18px;
+    border-radius: 16px;
+    min-height: 220px;
+    margin-top: 15px;
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-x: hidden;
+}
+
+h1{
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+
+h2{
+    margin-bottom: 18px;
+}
+
+p{
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+@media(max-width:1100px){
+
+    .main-container{
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .left-panel,
+    .right-panel{
+        min-width: 100%;
+    }
+
+    .button-grid{
+        grid-template-columns: 1fr;
+    }
+
+    h1{
+        font-size: 40px;
+    }
+}
+/* DARK MODE */
+
+.main-container.dark{
+    background:  #01030f;
+    color: white;
+    min-height: 100vh;
+}
+
+.glass-card.dark{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,255,255,0.15);
+    color: white;
+}
+
+.custom-textarea.dark{
+    background: rgba(255,255,255,0.03);
+    color: white;
+    border: 1px solid rgba(0,255,255,0.2);
+}
+
+.custom-btn.dark{
+    background: rgba(255,255,255,0.03);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.custom-btn.dark:hover{
+    background: rgba(0,255,255,0.08);
+    border-color: cyan;
+}
+
+
+/* LIGHT MODE */
+
+.main-container.light{
+    background: #f4f4f4;
+    color: black;
+}
+
+.glass-card.light{
+    background: white;
+    border: 1px solid #ddd;
+    color: black;
+}
+
+.custom-textarea.light{
+    background: white;
+    color: black;
+    border: 1px solid #ccc;
+}
+
+.custom-btn.light{
+    background: white;
+    color: black;
+    border: 1px solid #ccc;
+}
+
+.custom-btn.light:hover{
+    background: #f1f1f1;
+}

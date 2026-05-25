@@ -1,3 +1,4 @@
+
 import React, { useCallback, useEffect, useMemo, useRef } from 'https://esm.sh/react@18.3.1';
 import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
 // NOTE (difficulty): Some OGL CDN builds don't export `Triangle` — use `Geometry`.
@@ -539,26 +540,64 @@ if (!host) console.error('[hero-terminal] mount target #heroTerminal not found')
 
 if (host) {
   const root = createRoot(host);
-  root.render(
-    React.createElement(FaultyTerminal, {
-      scale: 1.5,
-      gridMul: [2, 1],
-      digitSize: 1.2,
+
+  const getBreakpoint = () => {
+    const screenWidth = window.innerWidth;
+    return screenWidth <= 600 ? 'small' : screenWidth <= 1024 ? 'medium' : 'large';
+  };
+
+  const getScreenSettings = () => {
+    const breakpoint = getBreakpoint();
+    const isSmallScreen = breakpoint === 'small';
+    const isMediumScreen = breakpoint === 'medium';
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+
+    return {
+      scale: isSmallScreen ? 1.05 : isMediumScreen ? 1.3 : 1.5,
+      gridMul: [isSmallScreen ? 1.6 : 2, 1],
+      digitSize: isSmallScreen ? 1 : isMediumScreen ? 1.1 : 1.2,
       timeScale: 1,
-      pause: false,
-      scanlineIntensity: 1,
+      scanlineIntensity: isSmallScreen ? 0.8 : 1,
       flickerAmount: 1,
-      noiseAmp: 1,
+      noiseAmp: isSmallScreen ? 0.6 : 1,
       chromaticAberration: 0,
       dither: 0,
       curvature: 0,
       tint: '#0066ff',
-      mouseReact: true,
-      mouseStrength: 0.5,
+      mouseReact: !isCoarsePointer,
+      mouseStrength: isSmallScreen ? 0.35 : 0.5,
       pageLoadAnimation: false,
-      brightness: 0.3,
+      brightness: isSmallScreen ? 0.25 : 0.3,
       glitchAmount: 1,
       style: { width: '100%', height: '100%' }
-    })
-  );
+    };
+  };
+
+  const getSizeKey = () => {
+    const size = getBreakpoint();
+    const pointer = window.matchMedia('(pointer: coarse)').matches ? 'coarse' : 'fine';
+    return `${size}-${pointer}`;
+  };
+
+  const renderTerminal = () => {
+    const terminalSettings = getScreenSettings();
+    root.render(
+      React.createElement(FaultyTerminal, {
+        ...terminalSettings,
+        pause: false
+      })
+    );
+  };
+
+  let sizeKey = getSizeKey();
+  renderTerminal();
+
+  const handleResize = () => {
+    const nextKey = getSizeKey();
+    if (nextKey === sizeKey) return;
+    sizeKey = nextKey;
+    renderTerminal();
+  };
+
+  window.addEventListener('resize', handleResize);
 }

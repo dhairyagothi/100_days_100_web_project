@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missionaries and Cannibals</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <h1>Missionaries and Cannibals</h1>
-    <div class="instructions">
-        <p>Use the boat to transfer missionaries and cannibals between the banks. The boat can carry two people at a time.</p>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+    <div class="top-bar">
+        <h1>MISSIONARIES AND CANNIBALS</h1>
+
+        <button id="instructions-btn" class="instructions-btn">
+            Instructions
+        </button>
     </div>
+
 
     <div class="game-container">
         <!-- Left Bank -->
@@ -40,11 +48,76 @@
 
     <div class="controls">
         <button id="start-reset">Start Game</button>
+        <button id="move-boat">Move Boat</button>
+        <button id="hint-btn" class="hint-btn">Hint (3 left)</button>
     </div>
 
+    <div class="stats-container">
+        <div class="move-counter">Moves: <span id="move-count">0</span></div>
+    </div>
+
+    <div id="guidance" class="guidance-text">Select passengers to board the boat.</div>
+
     <div id="message"></div>
+    <p id="hint-text" class="hint-display-text"></p>
+    <!-- Instructions/Welcome Modal -->
+    <div id="instructions-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal">&times;</span>
+
+            <div class="modal-header">
+                <h2>The River Crossing Challenge</h2>
+                <p class="story-text">Three <strong>Sheep (Missionaries)</strong> and three <strong>Tigers (Cannibals)</strong> must cross a dangerous river. Help them reach the other side safely!</p>
+            </div>
+
+            <div class="modal-section">
+                <h3><i class="icon">🎯</i> Objective</h3>
+                <p>Successfully move all <strong>6 travelers</strong> from the <strong>Left Bank</strong> to the <strong>Right Bank</strong>.</p>
+            </div>
+
+            <div class="modal-grid">
+                <div class="modal-section">
+                    <h3><i class="icon">🎮</i> Characters</h3>
+                    <ul>
+                        <li><span class="emoji-legend">🐑</span> <strong>Sheep:</strong> Peaceful travelers.</li>
+                        <li><span class="emoji-legend">🐯</span> <strong>Tigers:</strong> Hungry predators.</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3><i class="icon">⚠️</i> Survival Rules</h3>
+                    <ul>
+                        <li><strong>Safety:</strong> Never leave <strong>Sheep outnumbered</strong> by Tigers on either bank (unless no sheep are present).</li>
+                        <li><strong>Capacity:</strong> Max 2 people in the boat.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="modal-start-btn" class="primary-btn">Begin Journey</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal (Win/Loss) -->
+    <div id="results-modal" class="modal">
+        <div class="modal-content result-content">
+            <div id="result-icon" class="result-icon"></div>
+            <h2 id="result-title">Game Over</h2>
+            <p id="result-message"></p>
+            <div class="result-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Total Moves</span>
+                    <span id="final-move-count" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="restart-btn" class="primary-btn">Try Again</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
-</html>
 
+</html>
