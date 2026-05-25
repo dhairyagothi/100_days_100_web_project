@@ -1609,7 +1609,7 @@ video {
 }
 
 .bg-\[url\(\.\/Img\/feature-section-2BG\.svg\)\] {
-  background-image: url(./Img/feature-section-2BG.svg);
+  background-image: url(./Img/feature-section-2bg.svg);
 }
 
 .bg-\[url\(\/Images\/instant-settlement-bg\.svg\)\] {
@@ -1617,11 +1617,11 @@ video {
 }
 
 .bg-\[url\(\/Img\/core-features-sectionBg\.svg\)\] {
-  background-image: url(/Img/core-features-sectionBg.svg);
+  background-image: url(/Img/core-features-sectionbg.svg);
 }
 
 .bg-\[url\(\/img\/CTABg\.svg\)\] {
-  background-image: url(/img/CTABg.svg);
+  background-image: url(/img/ctabg.svg);
 }
 
 .bg-cover {

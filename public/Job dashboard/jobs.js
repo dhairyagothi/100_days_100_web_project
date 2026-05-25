@@ -119,12 +119,12 @@ function filterJobs() {
     const shift = form.shift.value.toLowerCase();
 
     const jobs = [
-        {company: 'IT Infosy co.', title: 'Senior Web Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '10k - 20k', jobType: 'part-time', education: 'bachelor\'s degree', shift: 'day shift', image: './image/html.webp', link: 'ITinfosy.html'},
-        {company: 'All Media Ltd.', title: 'Qualified Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '9000', jobType: 'full-time', education: 'master\'s degree', shift: 'flexible shift', image: './image/css3-logo-png-transparent.png', link: 'AllmediaLts.html'},
-        {company: 'Software Solution', title: 'Javascript Developer', location: 'mumbai, india', datePosted: 'posted today', salary: '10k - 20k', jobType: 'internship', education: 'bachelor\'s degree', shift: 'night shift', image: './image/java.jpg', link: 'softwareSolution.html'},
-        {company: 'IT World', title: 'Junior Front-End', location: 'mumbai, india', datePosted: '19 days ago', salary: '40k - 50k', jobType: 'contract', education: 'diploma', shift: 'fixed shift', image: 'https://static.vecteezy.com/system/resources/previews/001/198/090/non_2x/world-png.png', link: 'ITWorlds.html'},
-        {company: 'Info Statics', title: 'Junior Assistant', location: 'mumbai, india', datePosted: '2 days ago', salary: '5000', jobType: 'temporary', education: '10th pass', shift: 'flexible shift', image: 'https://th.bing.com/th/id/OIP.iJbuiX_YdBeTqI7wYawlwwHaHa?rs=1&pid=ImgDetMain', link: 'InfoStatics.html'},
-        {company: 'Mass Idea', title: 'PHP Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '50k - 1 lakh', jobType: 'fresher', education: 'bachelor\'s degree', shift: 'day shift', image: './image/php.jpg', link: 'massIdea.html'}
+        {company: 'IT Infosy co.', title: 'Senior Web Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '10k - 20k', jobType: 'part-time', education: 'bachelor\'s degree', shift: 'day shift', image: './image/html.webp', link: 'itinfosy.html'},
+        {company: 'All Media Ltd.', title: 'Qualified Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '9000', jobType: 'full-time', education: 'master\'s degree', shift: 'flexible shift', image: './image/css3-logo-png-transparent.png', link: 'allmedialts.html'},
+        {company: 'Software Solution', title: 'Javascript Developer', location: 'mumbai, india', datePosted: 'posted today', salary: '10k - 20k', jobType: 'internship', education: 'bachelor\'s degree', shift: 'night shift', image: './image/java.jpg', link: 'softwaresolution.html'},
+        {company: 'IT World', title: 'Junior Front-End', location: 'mumbai, india', datePosted: '19 days ago', salary: '40k - 50k', jobType: 'contract', education: 'diploma', shift: 'fixed shift', image: 'https://static.vecteezy.com/system/resources/previews/001/198/090/non_2x/world-png.png', link: 'itworlds.html'},
+        {company: 'Info Statics', title: 'Junior Assistant', location: 'mumbai, india', datePosted: '2 days ago', salary: '5000', jobType: 'temporary', education: '10th pass', shift: 'flexible shift', image: 'https://th.bing.com/th/id/OIP.iJbuiX_YdBeTqI7wYawlwwHaHa?rs=1&pid=ImgDetMain', link: 'infostatics.html'},
+        {company: 'Mass Idea', title: 'PHP Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '50k - 1 lakh', jobType: 'fresher', education: 'bachelor\'s degree', shift: 'day shift', image: './image/php.jpg', link: 'massidea.html'}
     ];
 
     const filteredJobs = jobs.filter(job => 

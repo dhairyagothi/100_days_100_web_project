@@ -121,7 +121,7 @@ make lint    # Run HTML linter
 │   │   ├── index.html    # Project entry point
 │   │   ├── style.css     # Project styles
 │   │   ├── script.js     # Project functionality
-│   │   └── README.md     # Project documentation
+│   │   └── readme.md     # Project documentation
 ├── contributors/          # Contributors showcase
 ├── .github/workflows/     # CI/CD pipelines
 ├── Dockerfile             # Docker container configuration
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 ```
 
-**README.md** (Required)
+**readme.md** (Required)
 ```markdown
 # Your Project Name
 
@@ -544,6 +544,19 @@ Thank you for considering contributing to our project! To ensure smooth collabor
 We look forward to your contributions and appreciate your effort in helping us improve the project!
 
 ## License 
+
+### Filename Conventions
+
+To keep the repository consistent and deployment-safe, please follow these filename conventions for new files and assets:
+
+- Use kebab-case for file and folder names (lowercase, words separated by `-`).
+- Avoid spaces, commas, multiple dots, and special characters in filenames.
+- Use meaningful names (e.g., `todo-list-screenshot-3.png`).
+- For environment example files use `.env.example` (no spaces).
+- When adding images or assets, reference them using relative paths in HTML/CSS/JS and ensure links are lowercase.
+
+Maintainers may run automated checks or rename files to enforce this convention; following it reduces merge conflicts and deployment issues.
+
 
 By contributing, you agree that your contributions will be licensed under the same license as the project.
 

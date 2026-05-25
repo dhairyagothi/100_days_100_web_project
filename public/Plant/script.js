@@ -53,7 +53,7 @@ function changeImage() {
     } else if (water === 4 && sunlight === 4) {
         
         updatePlant(
-            "images/R.png",
+            "images/r.png",
             "Tree",
             "Tree"
         );

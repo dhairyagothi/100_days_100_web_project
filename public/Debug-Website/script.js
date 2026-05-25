@@ -134,7 +134,7 @@ function triggerFullScreenImage() {
     videoOverlay.style.backgroundColor = "black";
 
     const videoElement = document.createElement("video");
-    videoElement.src = "Windows.mp4"; 
+    videoElement.src = "windows.mp4"; 
     videoElement.autoplay = true; 
     videoElement.loop = false; 
     videoElement.controls = false; 
@@ -446,7 +446,7 @@ function improveVanishingAct() {
         ghostImage.style.opacity = 1; 
     }, 100); 
 
-    const thunderSound = new Audio('card1Sound.mp3'); 
+    const thunderSound = new Audio('card1sound.mp3'); 
     thunderSound.play();
 
     setTimeout(() => {
@@ -656,7 +656,7 @@ document.addEventListener("mousemove", (e) => {
 });
 
 function playAmogus() {
-    const amogus = new Audio('Amongus.mp3');
+    const amogus = new Audio('amongus.mp3');
     const duration = 2; 
     const totalDuration = 10; 
     const loops = Math.ceil(totalDuration / duration); 

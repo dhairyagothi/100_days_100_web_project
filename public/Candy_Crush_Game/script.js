@@ -44,7 +44,7 @@ function startGame() {
     for (let r = 0; r < rows; r++) {
         let row = [];
         for (let c = 0; c < columns; c++) {
-            // <img id="0-0" src="./images/Red.png">
+            // <img id="0-0" src="./images/red.png">
             let candy;
             // keep picking until it doesn’t form a 3-in-a-row
             do {

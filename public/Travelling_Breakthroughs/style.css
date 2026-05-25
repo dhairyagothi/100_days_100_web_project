@@ -6,15 +6,15 @@
 
 @font-face {
     font-family: "Dongle-light";
-    src: url("Dongle-Light.ttf");
+    src: url("dongle-light.ttf");
 }
 @font-face {
     font-family: "Dongle-regular";
-    src: url("Dongle-Regular.ttf");
+    src: url("dongle-regular.ttf");
 }
 @font-face {
     font-family: "Dongle-bold";
-    src: url("Dongle-Bold.ttf");
+    src: url("dongle-bold.ttf");
 }
 
 /*Nav-Bar*/

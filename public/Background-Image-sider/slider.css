@@ -73,22 +73,22 @@ ul li:hover::after{
     background-image: url(images/iceland.jpg);
   }
   15%, 20%, 25% {
-    background-image: url(images/Brooke-Holm.jpeg);
+    background-image: url(images/brooke-holm.jpeg);
   }
   30%, 35%, 40% {
-    background-image: url(images/Jennifer.avif);
+    background-image: url(images/jennifer.avif);
   }
   45%, 50%, 55% {
-    background-image: url(images/Daniel.jpeg);
+    background-image: url(images/daniel.jpeg);
   }
   60%, 65%, 70% {
     background-image: url(images/kai.jpg);
   }
   75%, 80%, 85% {
-    background-image: url(images/Hannes-Becker4.jpg);
+    background-image: url(images/hannes-becker4.jpg);
   }
   90%, 95%, 100% {
-    background-image: url(images/Tobias-Hagg.jpg);
+    background-image: url(images/tobias-hagg.jpg);
   }
 }
 

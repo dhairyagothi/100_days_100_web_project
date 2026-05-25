@@ -30,7 +30,7 @@ const GameData = {
                 name: "Eiffel Tower, Paris",
                 country: "France",
                 coordinates: { lat: 48.8584, lng: 2.2945 },
-                image: "images/Eiffel Tower, Paris.jpg",
+                image: "images/eiffel-tower-paris.jpg",
                 hints: [
                     "🗼 This iconic iron lattice tower is one of the most recognizable landmarks in the world",
                     "🇫🇷 Located in the capital city of France",
@@ -42,7 +42,7 @@ const GameData = {
                 name: "Statue of Liberty, New York",
                 country: "United States",
                 coordinates: { lat: 40.6892, lng: -74.0445 },
-                image: "images/Statue of Liberty, New York.jpg",
+                image: "images/statue-of-liberty-new-york.jpg",
                 hints: [
                     "🗽 A colossal neoclassical sculpture symbolizing freedom",
                     "🇺🇸 Gift from France to the United States in 1886",
@@ -54,7 +54,7 @@ const GameData = {
                 name: "Big Ben, London",
                 country: "United Kingdom",
                 coordinates: { lat: 51.5007, lng: -0.1246 },
-                image: "images/Big Ben, London.jpg",
+                image: "images/big-ben-london.jpg",
                 hints: [
                     "🕰️ Famous clock tower officially known as Elizabeth Tower",
                     "🇬🇧 Located at the Palace of Westminster in London",
@@ -66,7 +66,7 @@ const GameData = {
                 name: "Great Wall of China",
                 country: "China",
                 coordinates: { lat: 40.4319, lng: 116.5704 },
-                image: "images/Great Wall of China.jpg",
+                image: "images/great-wall-of-china.jpg",
                 hints: [
                     "🏯 Ancient fortification stretching thousands of kilometers",
                     "🇨🇳 Built over centuries to protect Chinese states",
@@ -78,7 +78,7 @@ const GameData = {
                 name: "Sydney Opera House",
                 country: "Australia",
                 coordinates: { lat: -33.8568, lng: 151.2153 },
-                image: "images/Sydney Opera House.jpg",
+                image: "images/sydney-opera-house.jpg",
                 hints: [
                     "🎭 Iconic performing arts centre with unique shell-like design",
                     "🇦🇺 Located on Sydney Harbour in Australia",
@@ -90,7 +90,7 @@ const GameData = {
                 name: "Christ the Redeemer, Rio",
                 country: "Brazil",
                 coordinates: { lat: -22.9519, lng: -43.2105 },
-                image: "images/Christ the Redeemer, Rio.jpg",
+                image: "images/christ-the-redeemer-rio.jpg",
                 hints: [
                     "✝️ Massive Art Deco statue of Jesus Christ",
                     "🇧🇷 Overlooks Rio de Janeiro from Corcovado mountain",
@@ -102,7 +102,7 @@ const GameData = {
                 name: "Taj Mahal, Agra",
                 country: "India",
                 coordinates: { lat: 27.1751, lng: 78.0421 },
-                image: "images/Taj Mahal, Agra.jpg",
+                image: "images/taj-mahal-agra.jpg",
                 hints: [
                     "🕌 Magnificent white marble mausoleum",
                     "🇮🇳 Built by Mughal emperor Shah Jahan for his wife",
@@ -114,7 +114,7 @@ const GameData = {
                 name: "Colosseum, Rome",
                 country: "Italy",
                 coordinates: { lat: 41.8902, lng: 12.4922 },
-                image: "images/Colosseum, Rome.jpg",
+                image: "images/colosseum-rome.jpg",
                 hints: [
                     "🏛️ Ancient amphitheater built in 70-80 AD",
                     "🇮🇹 Located in the center of Rome, Italy",
@@ -126,7 +126,7 @@ const GameData = {
                 name: "Leaning Tower of Pisa",
                 country: "Italy",
                 coordinates: { lat: 43.7229, lng: 10.3966 },
-                image: "images/Leaning Tower of Pisa.jpg",
+                image: "images/leaning-tower-of-pisa.jpg",
                 hints: [
                     "🏛️ Famous freestanding bell tower known for its unintended tilt",
                     "🇮🇹 Located in Pisa, Italy",
@@ -138,7 +138,7 @@ const GameData = {
                 name: "Buckingham Palace, London",
                 country: "United Kingdom",
                 coordinates: { lat: 51.5014, lng: -0.1419 },
-                image: "images/Buckingham Palace, London.jpg",
+                image: "images/buckingham-palace-london.jpg",
                 hints: [
                     "🏰 Official residence of the British monarch",
                     "🇬🇧 Located in the City of Westminster, London",
@@ -150,7 +150,7 @@ const GameData = {
                 name: "Niagara Falls",
                 country: "Canada/United States",
                 coordinates: { lat: 43.0962, lng: -79.0377 },
-                image: "images/Niagara Falls.jpg",
+                image: "images/niagara-falls.jpg",
                 hints: [
                     "💦 Massive waterfalls on the border of Canada and the USA",
                     "🇨🇦🇺🇸 Famous for its powerful flow and boat tours",
@@ -165,7 +165,7 @@ const GameData = {
                 name: "Machu Picchu",
                 country: "Peru",
                 coordinates: { lat: -13.1631, lng: -72.5450 },
-                image: "images/Machu Picchu.jpg",
+                image: "images/machu-picchu.jpg",
                 hints: [
                     "🏔️ Ancient Incan citadel set high in the Andes Mountains",
                     "🇵🇪 Located above the Sacred Valley in Peru",
@@ -177,7 +177,7 @@ const GameData = {
                 name: "Petra, Jordan",
                 country: "Jordan",
                 coordinates: { lat: 30.3285, lng: 35.4444 },
-                image: "images/Petra, Jordan.jpg",
+                image: "images/petra-jordan.jpg",
                 hints: [
                     "🏜️ Ancient city carved into rose-red rock cliffs",
                     "🇯🇴 Archaeological site in southern Jordan",
@@ -189,7 +189,7 @@ const GameData = {
                 name: "Angkor Wat, Cambodia",
                 country: "Cambodia",
                 coordinates: { lat: 13.4125, lng: 103.8670 },
-                image: "images/Angkor Wat, Cambodia.jpg",
+                image: "images/angkor-wat-cambodia.jpg",
                 hints: [
                     "🛕 Largest religious monument in the world",
                     "🇰🇭 Hindu temple complex in Cambodia",
@@ -201,7 +201,7 @@ const GameData = {
                 name: "Stonehenge",
                 country: "United Kingdom",
                 coordinates: { lat: 51.1789, lng: -1.8262 },
-                image: "images/Stonehenge.jpg",
+                image: "images/stonehenge.jpg",
                 hints: [
                     "🗿 Prehistoric stone circle monument",
                     "🇬🇧 Located in Wiltshire, England",
@@ -213,7 +213,7 @@ const GameData = {
                 name: "Santorini, Greece",
                 country: "Greece",
                 coordinates: { lat: 36.3932, lng: 25.4615 },
-                image: "images/Santorini, Greece.jpg",
+                image: "images/santorini-greece.jpg",
                 hints: [
                     "🏝️ Stunning island with white-washed buildings",
                     "🇬🇷 Part of the Cyclades islands in the Aegean Sea",
@@ -225,7 +225,7 @@ const GameData = {
                 name: "Mount Fuji, Japan",
                 country: "Japan",
                 coordinates: { lat: 35.3606, lng: 138.7278 },
-                image: "images/Mount Fuji, Japan.jpg",
+                image: "images/mount-fuji-japan.jpg",
                 hints: [
                     "🗻 Iconic snow-capped stratovolcano",
                     "🇯🇵 Japan's highest mountain at 3,776 meters",
@@ -237,7 +237,7 @@ const GameData = {
                 name: "Golden Gate Bridge, San Francisco",
                 country: "United States",
                 coordinates: { lat: 37.8199, lng: -122.4783 },
-                image: "images/Golden Gate Bridge, San Francisco.jpg",
+                image: "images/golden-gate-bridge-san-francisco.jpg",
                 hints: [
                     "🌉 Iconic red suspension bridge spanning the Golden Gate Strait",
                     "🇺🇸 Located in San Francisco, California",
@@ -249,7 +249,7 @@ const GameData = {
                 name: "Table Mountain, Cape Town",
                 country: "South Africa",
                 coordinates: { lat: -33.9628, lng: 18.4098 },
-                image: "images/Table Mountain, Cape Town.jpg",
+                image: "images/table-mountain-cape-town.jpg",
                 hints: [
                     "⛰️ Flat-topped mountain overlooking Cape Town",
                     "🇿🇦 One of the New7Wonders of Nature",
@@ -261,7 +261,7 @@ const GameData = {
                 name: "Alhambra, Granada",
                 country: "Spain",
                 coordinates: { lat: 37.1761, lng: -3.5881 },
-                image: "images/Alhambra, Granada.jpg",
+                image: "images/alhambra-granada.jpg",
                 hints: [
                     "🏰 Palace and fortress complex of the Moorish monarchs",
                     "🇪🇸 Located in Granada, Andalusia, Spain",
@@ -273,7 +273,7 @@ const GameData = {
                 name: "Banff National Park",
                 country: "Canada",
                 coordinates: { lat: 51.4968, lng: -115.9281 },
-                image: "images/Banff National Park.jpg",
+                image: "images/Banff-national-park.jpg",
                 hints: [
                     "🏞️ Canada's oldest national park, established in 1885",
                     "🇨🇦 Located in the Rocky Mountains, Alberta",
@@ -285,7 +285,7 @@ const GameData = {
                 name: "Chichen Itza, Yucatán",
                 country: "Mexico",
                 coordinates: { lat: 20.6843, lng: -88.5678 },
-                image: "images/Chichen Itza, Yucatán.jpg",
+                image: "images/chichen-itza-yucat-n.jpg",
                 hints: [
                     "🗿 Large pre-Columbian archaeological site built by the Maya civilization",
                     "🇲🇽 Located in the Yucatán Peninsula, Mexico",
@@ -297,7 +297,7 @@ const GameData = {
                 name: "Neuschwanstein Castle",
                 country: "Germany",
                 coordinates: { lat: 47.5576, lng: 10.7498 },
-                image: "images/Neuschwanstein Castle.jpg",
+                image: "images/neuschwanstein-castle.jpg",
                 hints: [
                     "🏰 Fairytale castle that inspired Disney's Sleeping Beauty Castle",
                     "🇩🇪 Located in Bavaria, Germany",
@@ -312,7 +312,7 @@ const GameData = {
                 name: "Cappadocia, Turkey",
                 country: "Turkey",
                 coordinates: { lat: 38.6431, lng: 34.8289 },
-                image: "images/Cappadocia, Turkey.jpg",
+                image: "images/cappadocia-turkey.jpg",
                 hints: [
                     "🎈 Famous for hot air balloon rides over unique rock formations",
                     "🇹🇷 Historical region in Central Anatolia",
@@ -324,7 +324,7 @@ const GameData = {
                 name: "Moai Statues, Easter Island",
                 country: "Chile",
                 coordinates: { lat: -27.1127, lng: -109.3497 },
-                image: "images/Moai Statues, Easter Island.jpg",
+                image: "images/moai-statues-easter-island.jpg",
                 hints: [
                     "🗿 Mysterious giant stone head sculptures",
                     "🇨🇱 Remote Polynesian island in the Pacific Ocean",
@@ -336,7 +336,7 @@ const GameData = {
                 name: "Zhangjiajie National Forest",
                 country: "China",
                 coordinates: { lat: 29.3255, lng: 110.4798 },
-                image: "images/Zhangjiajie National Forest.jpg",
+                image: "images/zhangjiajie-national-forest.jpg",
                 hints: [
                     "🏞️ Pillar-like rock formations resembling floating mountains",
                     "🇨🇳 Inspired the Hallelujah Mountains in Avatar movie",
@@ -348,7 +348,7 @@ const GameData = {
                 name: "Salar de Uyuni, Bolivia",
                 country: "Bolivia",
                 coordinates: { lat: -20.3080, lng: -66.8250 },
-                image: "images/Salar de Uyuni, Bolivia.jpg",
+                image: "images/salar-de-uyuni-bolivia.jpg",
                 hints: [
                     "💎 World's largest salt flat spanning over 10,000 sq km",
                     "🇧🇴 Located in southwest Bolivia",
@@ -372,7 +372,7 @@ const GameData = {
                 name: "Plitvice Lakes, Croatia",
                 country: "Croatia",
                 coordinates: { lat: 44.8654, lng: 15.5820 },
-                image: "images/Plitvice Lakes, Croatia.jpg",
+                image: "images/plitvice-lakes-croatia.jpg",
                 hints: [
                     "💧 Series of 16 terraced lakes connected by waterfalls",
                     "🇭🇷 National park in Croatia",
@@ -384,7 +384,7 @@ const GameData = {
                 name: "Socotra Island, Yemen",
                 country: "Yemen",
                 coordinates: { lat: 12.4634, lng: 53.8236 },
-                image: "images/Socotra Island, Yemen.jpg",
+                image: "images/socotra-island-yemen.jpg",
                 hints: [
                     "🌳 Known for its alien-like Dragon's Blood trees",
                     "🇾🇪 Isolated island in the Arabian Sea",
@@ -396,7 +396,7 @@ const GameData = {
                 name: "Lake Baikal, Russia",
                 country: "Russia",
                 coordinates: { lat: 53.5587, lng: 108.1650 },
-                image: "images/Lake Baikal, Russia.jpg",
+                image: "images/lake-baikal-russia.jpg",
                 hints: [
                     "🌊 Deepest and oldest freshwater lake in the world",
                     "🇷🇺 Located in southern Siberia, Russia",
@@ -408,7 +408,7 @@ const GameData = {
                 name: "Mount Roraima, Venezuela",
                 country: "Venezuela",
                 coordinates: { lat: 5.1412, lng: -60.7636 },
-                image: "images/Mount Roraima, Venezuela.jpg",
+                image: "images/mount-roraima-venezuela.jpg",
                 hints: [
                     "⛰️ Flat-topped mountain (tepui) with sheer cliffs",
                     "🇻🇪 Located at the triple border point of Venezuela, Brazil, and Guyana",
@@ -420,7 +420,7 @@ const GameData = {
                 name: "Mount Erebus, Antarctica",
                 country: "Antarctica",
                 coordinates: { lat: -77.5300, lng: 167.1600 },
-                image: "images/Mount Erebus, Antarctica.jpg",
+                image: "images/mount-erebus-antarctica.jpg",
                 hints: [
                     "🌋 Southernmost active volcano on Earth",
                     "🇦🇶 Located on Ross Island, Antarctica",
@@ -432,7 +432,7 @@ const GameData = {
                 name: "Pamukkale, Turkey",
                 country: "Turkey",
                 coordinates: { lat: 37.9240, lng: 29.1187 },
-                image: "images/Pamukkale, Turkey.jpg",
+                image: "images/pamukkale-turkey.jpg",
                 hints: [
                     "🏞️ Terraced hot springs with white travertine formations",
                     "🇹🇷 Located in southwestern Turkey",

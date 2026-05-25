@@ -3,7 +3,7 @@
  * Open source under the BSD License.
  * Copyright © 2008 George McGinley Smith
  * All rights reserved.
- * https://raw.github.com/gdsmith/jquery-easing/master/LICENSE
+ * https://raw.github.com/gdsmith/jquery-easing/master/license
 */
 
 (function (factory) {

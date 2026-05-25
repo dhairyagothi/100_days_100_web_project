@@ -93,7 +93,7 @@ Six unlockable achievements pop up in-game when earned and persist across sessio
 2048-game/
 ├── game images/    # Assorted project assets
 ├── index.html      # Game structure and markup
-├── README.md       # Project documentation
+├── readme.md       # Project documentation
 ├── script.js       # Game logic, sound, achievements, persistence
 └── style.css       # All styles, themes, and animations
 ```
@@ -101,5 +101,5 @@ Six unlockable achievements pop up in-game when earned and persist across sessio
 This project was proudly built as part of GSSoC 2026 (GirlScript Summer of Code) under open source contribution guidelines.
 1. Issue addressed: UI enhancement, responsiveness, gameplay features, accessibility, and code quality improvements for the existing 2048 game:
     * Author : Pratham Srivastava GSSoC 2026 Contributor
-2. Documentation: Enhanced the Readme.md file:
+2. Documentation: Enhanced the readme.md file:
     * Author : Ananya Joshi

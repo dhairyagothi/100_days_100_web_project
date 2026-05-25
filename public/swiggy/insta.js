@@ -95,7 +95,7 @@ const footer = document.createElement("div");
 footer.classList.add("footer");
 
 const appBanner = document.createElement("img");
-appBanner.src = "image/App_download_banner.avif";
+appBanner.src = "image/app-download-banner.avif";
 
 const footerLogo = document.createElement("img");
 footerLogo.src = "image/swiggy_name.avif";

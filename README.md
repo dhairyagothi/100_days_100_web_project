@@ -10,7 +10,7 @@
 [![Forks](https://img.shields.io/github/forks/dhairyagothi/100_days_100_web_project?style=for-the-badge)](https://github.com/dhairyagothi/100_days_100_web_project/network/members)
 [![Stars](https://img.shields.io/github/stars/dhairyagothi/100_days_100_web_project?style=for-the-badge)](https://github.com/dhairyagothi/100_days_100_web_project/stargazers)
 [![Issues](https://img.shields.io/github/issues/dhairyagothi/100_days_100_web_project?style=for-the-badge)](https://github.com/dhairyagothi/100_days_100_web_project/issues)
-[![License](https://img.shields.io/github/license/dhairyagothi/100_days_100_web_project?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/github/license/dhairyagothi/100_days_100_web_project?style=for-the-badge)](license)
 
 </div>
 
@@ -116,13 +116,13 @@ The website features:
 | 42 | Amazon Clone | HTML, CSS, JS | 🛒 E-commerce | [View Demo](https://100-days-100-web-project.vercel.app/public/Amazon_Clone) |
 | 43 | Password Generator | HTML, CSS, JS | 🔐 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Password_Generator) |
 | 44 | BMI Calculator | HTML, CSS, JS | 🧮 Calculator | [View Demo](https://100-days-100-web-project.vercel.app/public/BMI_Calculator) |
-| 45 | BlackJack Game | HTML, CSS, JS | 🎰 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/BlackJack/blackJ.html) |
+| 45 | BlackJack Game | HTML, CSS, JS | 🎰 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/BlackJack/blackj.html) |
 | 46 | Palindrome Generator | HTML, CSS, JS | 📝 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/Palindrome_Generator) |
 | 47 | Ping Pong Game | HTML, CSS, JS | 🏓 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/ping) |
 | 48 | Text to Voice Converter | HTML, CSS, JS | 🔊 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/TextToVoiceConverter) |
 | 49 | URL Shortener | Node.js, Express | 🔗 Backend | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/url_shortener) |
 | 50 | Recipe Genie | React, Node.js | 🍳 Full-Stack | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe-Genie) |
-| 51 | Netflix Clone | HTML, CSS, JS | 🎬 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Netflix_Cloning/Index.html) |
+| 51 | Netflix Clone | HTML, CSS, JS | 🎬 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Netflix_Cloning/index.html) |
 | 52 | ClimaCode 2.0 | HTML, CSS, JS | 🌤️ App | [View Demo](https://100-days-100-web-project.vercel.app/public/ClimaCode%202.0/index.html) |
 | 53 | E-commerce Cart | HTML, CSS, JS | 🛒 E-commerce | [View Demo](https://100-days-100-web-project.vercel.app/public/e-commerce_cart/index.html) |
 | 54 | Budget Tracker | HTML, CSS, JS | 💰 Finance | [View Demo](https://100-days-100-web-project.vercel.app/public/Budget%20Tracker/index.html) |
@@ -303,7 +303,7 @@ The easiest way to explore all projects is through our **live website**:
 │   └── ...               # 112+ projects
 ├── contributors/          # Contributors page
 ├── vercel.json           # Deployment configuration
-└── README.md             # You are here!
+└── readme.md             # You are here!
 ```
 
 ## 🤝 Contributing

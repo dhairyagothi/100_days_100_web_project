@@ -59,7 +59,7 @@ FocusRoom/
 ├── index.html      # Main webpage structure
 ├── style.css       # Styling and animations
 ├── script.js       # Application logic and interactivity
-└── README.md       # Project documentation
+└── readme.md       # Project documentation
 ```
 
 ---

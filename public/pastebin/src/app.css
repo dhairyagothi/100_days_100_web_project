@@ -6,7 +6,7 @@
 
 @font-face {
 	font-family: 'font-exo2';
-	src: url('/Exo2-Medium.ttf') format('truetype');
+	src: url('/exo2-medium.ttf') format('truetype');
 }
 
 .font-exo2 {
@@ -15,7 +15,7 @@
 
 @font-face {
 	font-family: 'font-kode';
-	src: url('/KodeMono-Regular.ttf') format('truetype');
+	src: url('/kodemono-regular.ttf') format('truetype');
 }
 
 .font-kode {
@@ -24,7 +24,7 @@
 
 @font-face {
 	font-family: 'font-segoe';
-	src: url('/SegoeUI.ttf') format('truetype');
+	src: url('/segoeui.ttf') format('truetype');
 }
 
 .font-segoe {

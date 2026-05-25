@@ -24,7 +24,7 @@
 
 ✅ Corrected `vercel.json` configuration for static site hosting  
 ✅ Set proper output directory to root (`.`)  
-✅ Fixed absolute paths to relative paths in Login.html  
+✅ Fixed absolute paths to relative paths in login.html  
 ✅ Removed unnecessary rewrites that caused 404 errors  
 ✅ Added proper cache headers for static assets  
 
@@ -37,7 +37,7 @@
 ├── vercel.json             # Vercel configuration
 ├── contributors/           # Contributors page
 └── public/                 # All 142+ projects
-    ├── Login.html
+    ├── login.html
     ├── signup.html
     └── [project folders]/
 ```

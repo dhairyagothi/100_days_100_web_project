@@ -9,7 +9,7 @@ const line = ["The Fearsome Lion: A mighty lion ruled the forest, terrifying all
     "The Animals’ Celebration: The rabbit returned to the other animals and announced the lion’s demise. Overjoyed, the animals cheered and finally lived in peace, free from fear. THE END"
 ];
 
-const images = ["images/lion.webp", "images/second.webp", "images/lion+kill.jpg", "images/rabbit.png", "images/rabbit+thinking.avif", "images/well.jpg", "images/poster.jpeg", "images/lion+look.jpeg", "images/animal+happy.avif"];
+const images = ["images/lion.webp", "images/second.webp", "images/lion-kill.jpg", "images/rabbit.png", "images/rabbit-thinking.avif", "images/well.jpg", "images/poster.jpeg", "images/lion-look.jpeg", "images/animal-happy.avif"];
 const sceneLabels = [
     "The Fearsome Lion",
     "The Scared Animals",
