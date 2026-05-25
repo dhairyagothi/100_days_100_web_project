@@ -1,8 +1,69 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'https://esm.sh/react@18.3.1';
-import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
 // NOTE (difficulty): Some OGL CDN builds don't export `Triangle` — use `Geometry`.
 // Also shader outputs vary widely across GPUs; we keep a CSS fallback for visibility.
-import { Renderer, Program, Mesh, Color, Geometry } from 'https://cdn.jsdelivr.net/npm/ogl@0.0.32/dist/ogl.mjs';
+let React;
+let useCallback;
+let useEffect;
+let useMemo;
+let useRef;
+let createRoot;
+let Renderer;
+let Program;
+let Mesh;
+let Color;
+let Geometry;
+let moduleLoadPromise = null;
+
+async function ensureTerminalDependencies() {
+  if (moduleLoadPromise) return moduleLoadPromise;
+
+  moduleLoadPromise = Promise.all([
+    import('https://esm.sh/react@18.3.1'),
+    import('https://esm.sh/react-dom@18.3.1/client'),
+    import('https://cdn.jsdelivr.net/npm/ogl@0.0.32/dist/ogl.mjs')
+  ]).then(([reactModule, reactDomModule, oglModule]) => {
+    React = reactModule.default || reactModule;
+    ({ useCallback, useEffect, useMemo, useRef } = reactModule);
+    ({ createRoot } = reactDomModule);
+    ({ Renderer, Program, Mesh, Color, Geometry } = oglModule);
+  }).catch((error) => {
+    moduleLoadPromise = null;
+    throw error;
+  });
+
+  return moduleLoadPromise;
+}
+
+function prefersLiteTerminal() {
+  const isSmallScreen = window.innerWidth <= 768;
+  const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return isSmallScreen || isCoarsePointer || prefersReducedMotion;
+}
+
+function renderLiteTerminal(host, reason = 'lite') {
+  host.classList.add('hero-terminal-lite');
+  host.innerHTML = `
+    <div class="hero-terminal-shell" data-terminal-mode="${reason}">
+      <div class="hero-terminal-topbar" aria-hidden="true">
+        <span class="hero-terminal-dot"></span>
+        <span class="hero-terminal-dot"></span>
+        <span class="hero-terminal-dot"></span>
+      </div>
+      <div class="hero-terminal-line">
+        <span class="hero-terminal-prompt">archive:init</span>
+        <span class="hero-terminal-text">loading curated frontend builds...</span>
+      </div>
+      <div class="hero-terminal-line">
+        <span class="hero-terminal-prompt">archive:focus</span>
+        <span class="hero-terminal-text">optimized visuals are enabled for mobile and reduced-motion devices</span>
+      </div>
+      <div class="hero-terminal-line">
+        <span class="hero-terminal-prompt">archive:status</span>
+        <span class="hero-terminal-text">ready to browse projects, contributors, and featured tools.</span>
+      </div>
+    </div>
+  `;
+}
 
 const vertexShader = `
 attribute vec2 position;
@@ -533,11 +594,27 @@ function FaultyTerminal({
   });
 }
 
-const host = document.getElementById('heroTerminal');
+async function mountHeroTerminal() {
+  const host = document.getElementById('heroTerminal');
 
-if (!host) console.error('[hero-terminal] mount target #heroTerminal not found');
+  if (!host) {
+    console.error('[hero-terminal] mount target #heroTerminal not found');
+    return;
+  }
 
-if (host) {
+  if (prefersLiteTerminal()) {
+    renderLiteTerminal(host, 'lite');
+    return;
+  }
+
+  try {
+    await ensureTerminalDependencies();
+  } catch (error) {
+    console.warn('[hero-terminal] Failed to load interactive dependencies, using lite fallback', error);
+    renderLiteTerminal(host, 'fallback');
+    return;
+  }
+
   const root = createRoot(host);
 
   const getBreakpoint = () => {
@@ -552,22 +629,22 @@ if (host) {
     const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 
     return {
-      scale: isSmallScreen ? 1.05 : isMediumScreen ? 1.3 : 1.5,
-      gridMul: [isSmallScreen ? 1.6 : 2, 1],
-      digitSize: isSmallScreen ? 1 : isMediumScreen ? 1.1 : 1.2,
-      timeScale: 1,
-      scanlineIntensity: isSmallScreen ? 0.8 : 1,
-      flickerAmount: 1,
-      noiseAmp: isSmallScreen ? 0.6 : 1,
+      scale: isSmallScreen ? 1.02 : isMediumScreen ? 1.25 : 1.5,
+      gridMul: [isSmallScreen ? 1.45 : 2, 1],
+      digitSize: isSmallScreen ? 0.98 : isMediumScreen ? 1.08 : 1.2,
+      timeScale: isSmallScreen ? 0.8 : 1,
+      scanlineIntensity: isSmallScreen ? 0.68 : 0.95,
+      flickerAmount: isSmallScreen ? 0.65 : 1,
+      noiseAmp: isSmallScreen ? 0.24 : 0.85,
       chromaticAberration: 0,
       dither: 0,
       curvature: 0,
       tint: '#0066ff',
       mouseReact: !isCoarsePointer,
-      mouseStrength: isSmallScreen ? 0.35 : 0.5,
+      mouseStrength: isSmallScreen ? 0.2 : 0.45,
       pageLoadAnimation: false,
-      brightness: isSmallScreen ? 0.25 : 0.3,
-      glitchAmount: 1,
+      brightness: isSmallScreen ? 0.22 : 0.3,
+      glitchAmount: isSmallScreen ? 1 : 1.08,
       style: { width: '100%', height: '100%' }
     };
   };
@@ -592,6 +669,13 @@ if (host) {
   renderTerminal();
 
   const handleResize = () => {
+    if (prefersLiteTerminal()) {
+      root.unmount();
+      renderLiteTerminal(host, 'lite');
+      window.removeEventListener('resize', handleResize);
+      return;
+    }
+
     const nextKey = getSizeKey();
     if (nextKey === sizeKey) return;
     sizeKey = nextKey;
@@ -600,3 +684,5 @@ if (host) {
 
   window.addEventListener('resize', handleResize);
 }
+
+mountHeroTerminal();

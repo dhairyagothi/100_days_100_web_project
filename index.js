@@ -1037,7 +1037,7 @@ function initSearch() {
       searchQuery = input.value.trim();
       currentPage = 1;
       renderGrid();
-    }, 300)
+    }, 180)
   );
   input.addEventListener('input', () => {
     searchQuery = input.value.trim();
@@ -1264,8 +1264,7 @@ function initScrollBtn() {
   if (!btn) return;
 
   const circumference = 2 * Math.PI * 22;
-
-  window.addEventListener('scroll', () => {
+  const updateScrollProgress = () => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
@@ -1275,10 +1274,19 @@ function initScrollBtn() {
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
-  });
+  };
+
+  updateScrollProgress();
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
 
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+function initCurrentYear() {
+  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
+    node.textContent = new Date().getFullYear();
   });
 }
 
@@ -1293,6 +1301,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   updateNavbar();
 
+  initCurrentYear();
   initFilterChips();
   initSearch();
   initSorting();
@@ -1352,12 +1361,14 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener(
   'resize',
   debounce(() => {
-    renderGrid();
-  }, 200)
+    if (hasProjectGrid()) {
+      renderGrid();
+    }
+  }, 180)
 );
 window.addEventListener('resize', () => {
-  renderGrid();
   visibleProjects = INITIAL_RENDER_COUNT;
+
   if (hasProjectGrid()) {
     renderGrid();
   }
@@ -1373,89 +1384,195 @@ window.clearAllTechFilters = clearAllTechFilters;
 // Particle Network Background
 (function () {
   const canvas = document.getElementById('particleCanvas');
+  if (!canvas) return;
+
   const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-  const minParticles = 30;
-  const maxParticles = 120;
-  const areaPerParticle = 26000;
-  let particleCount = 60;
-  let linkDistance = 120;
+  if (!ctx) return;
+
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+  const palette = [220, 250, 280];
+  const DEFAULT_PARTICLE_FPS = 36;
+  let W = 0;
+  let H = 0;
   let dpr = 1;
+  let particles = [];
+  let particleCount = 0;
+  let linkDistance = 0;
+  let maxDistanceSq = 0;
+  let frameInterval = 1000 / DEFAULT_PARTICLE_FPS;
+  let animationFrame = 0;
+  let resizeFrame = 0;
+  let lastFrameTime = 0;
+
+  const getProfile = () => {
+    const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
+    const reducedMotion = reducedMotionQuery.matches;
+    const disableAnimation = smallScreen || reducedMotion;
+
+    return {
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 72,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 26000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 120,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.3,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
+      showLinks: !reducedMotion && !smallScreen,
+      disableAnimation,
+    };
+  };
+
+  let profile = getProfile();
 
   function resize() {
+    profile = getProfile();
     W = window.innerWidth;
     H = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, profile.showLinks ? 1.5 : 1);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
     canvas.style.width = `${W}px`;
     canvas.style.height = `${H}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particleCount = Math.min(
-      maxParticles,
-      Math.max(minParticles, Math.round((W * H) / areaPerParticle))
+      profile.maxParticles,
+      Math.max(profile.minParticles, Math.round((W * H) / profile.areaPerParticle))
     );
-    linkDistance = Math.max(90, Math.min(150, Math.round(Math.min(W, H) / 6)));
+    linkDistance = profile.linkDistance;
+    maxDistanceSq = linkDistance * linkDistance;
+    frameInterval = 1000 / profile.fps;
   }
 
   function init() {
-    particles = [];
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 3 + 1,
-        hue: [220, 260, 280][Math.floor(Math.random() * 3)],
-        alpha: Math.random() * 0.8 + 0.4,
-      });
-    }
+    particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * profile.velocity,
+      vy: (Math.random() - 0.5) * profile.velocity,
+      r: Math.random() * profile.radius + 0.8,
+      hue: palette[Math.floor(Math.random() * palette.length)],
+      alpha: Math.random() * 0.45 + 0.18,
+    }));
   }
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+  function stepParticles() {
+    particles.forEach((particle) => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+
+      if (particle.x < 0) particle.x = W;
+      else if (particle.x > W) particle.x = 0;
+
+      if (particle.y < 0) particle.y = H;
+      else if (particle.y > H) particle.y = 0;
     });
-    for (let i = 0; i < particleCount; i++) {
-      for (let j = i + 1; j < particleCount; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < linkDistance) {
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, W, H);
+    stepParticles();
+
+    if (profile.showLinks) {
+      for (let i = 0; i < particleCount; i += 1) {
+        for (let j = i + 1; j < particleCount; j += 1) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distanceSq = dx * dx + dy * dy;
+
+          if (distanceSq >= maxDistanceSq) continue;
+
+          const distance = Math.sqrt(distanceSq);
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(59,130,246,${(1 - d / linkDistance) * 0.35})`;
+          ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
       }
     }
-    particles.forEach(p => {
+
+    particles.forEach((particle) => {
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${p.hue},80%,72%,${p.alpha})`;
+      ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${particle.hue}, 80%, 72%, ${particle.alpha})`;
       ctx.fill();
     });
-    requestAnimationFrame(draw);
   }
 
-  let resizeFrame = null;
+  function draw(now = 0) {
+    animationFrame = requestAnimationFrame(draw);
+
+    if (document.hidden || now - lastFrameTime < frameInterval) {
+      return;
+    }
+
+    lastFrameTime = now;
+    drawFrame();
+  }
+
+  function stopAnimation() {
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+    }
+  }
+
+  function startAnimation() {
+    if (!animationFrame) {
+      animationFrame = requestAnimationFrame(draw);
+    }
+  }
+
+  const rebuild = () => {
+    resize();
+
+    if (profile.disableAnimation) {
+      stopAnimation();
+      ctx.clearRect(0, 0, W, H);
+      canvas.style.display = 'none';
+      return;
+    }
+
+    canvas.style.display = '';
+    init();
+    startAnimation();
+  };
+
   const handleResize = () => {
     if (resizeFrame) return;
     resizeFrame = requestAnimationFrame(() => {
-      resizeFrame = null;
-      resize();
-      init();
+      resizeFrame = 0;
+      rebuild();
     });
   };
 
-  window.addEventListener('resize', handleResize);
-  resize(); init(); draw();
+  const handleProfileChange = () => {
+    lastFrameTime = 0;
+    rebuild();
+  };
+
+  const bindMediaChange = (query, handler) => {
+    if (typeof query.addEventListener === 'function') {
+      query.addEventListener('change', handler);
+      return;
+    }
+    if (typeof query.addListener === 'function') {
+      query.addListener(handler);
+    }
+  };
+
+  window.addEventListener('resize', handleResize, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      lastFrameTime = 0;
+    }
+  });
+  bindMediaChange(reducedMotionQuery, handleProfileChange);
+  bindMediaChange(coarsePointerQuery, handleProfileChange);
+
+  rebuild();
 })();
 
 // =============================================
