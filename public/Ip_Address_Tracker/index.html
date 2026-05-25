@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IP Address Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="noise"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="tag">// network.tool</div>
+      <h1 class="title">IP <span class="accent">TRACER</span></h1>
+      <p class="subtitle">Locate any IP address or domain in real‑time</p>
+
+      <!-- Search Bar -->
+      <div class="search-wrap">
+        <div class="search-box">
+          <span class="search-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
+          </span>
+          <input
+            type="text"
+            id="ipInput"
+            class="search-input"
+            placeholder="Enter IP (e.g. 8.8.8.8) or domain…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="search-btn" id="searchBtn">
+            <span>Track</span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+        <div class="error-msg" id="errorMsg"></div>
+      </div>
+    </section>
+
+    <!-- Results Card -->
+    <section class="results" id="results">
+      <!-- IP Highlight -->
+      <div class="ip-display" id="ipDisplay">
+        <div class="ip-label">IP ADDRESS</div>
+        <div class="ip-value" id="ipValue">—</div>
+        <div class="ip-type" id="ipType"></div>
+      </div>
+
+      <!-- Info Grid -->
+      <div class="info-grid">
+        <div class="info-card" data-index="0">
+          <div class="info-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+              />
+              <circle cx="12" cy="9" r="2.5" />
+            </svg>
+          </div>
+          <div class="info-label">LOCATION</div>
+          <div class="info-value" id="location">—</div>
+          <div class="info-sub" id="region">—</div>
+        </div>
+
+        <div class="info-card" data-index="1">
+          <div class="info-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path
+                d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"
+              />
+            </svg>
+          </div>
+          <div class="info-label">TIMEZONE</div>
+          <div class="info-value" id="timezone">—</div>
+          <div class="info-sub" id="localTime">—</div>
+        </div>
+
+        <div class="info-card" data-index="2">
+          <div class="info-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M8 21h8M12 17v4" />
+            </svg>
+          </div>
+          <div class="info-label">ISP / ORG</div>
+          <div class="info-value" id="isp">—</div>
+          <div class="info-sub" id="org">—</div>
+        </div>
+
+        <div class="info-card" data-index="3">
+          <div class="info-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div class="info-label">COORDINATES</div>
+          <div class="info-value" id="lat">—</div>
+          <div class="info-sub" id="lon">—</div>
+        </div>
+      </div>
+
+      <!-- Map Embed -->
+      <div class="map-wrap" id="mapWrap">
+        <div class="map-header">
+          <span class="map-label">LIVE MAP</span>
+          <span class="map-coords" id="mapCoords"></span>
+        </div>
+        <div class="map-container">
+          <iframe
+            id="mapFrame"
+            class="map-frame"
+            frameborder="0"
+            scrolling="no"
+            marginheight="0"
+            marginwidth="0"
+            src=""
+            allowfullscreen
+          ></iframe>
+          <div class="map-pin">
+            <svg viewBox="0 0 24 24" fill="var(--accent)" stroke="none">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extra Details Strip -->
+      <div class="extra-strip">
+        <div class="extra-item">
+          <span class="extra-label">Postal Code</span>
+          <span class="extra-value" id="postal">—</span>
+        </div>
+        <div class="extra-item">
+          <span class="extra-label">Country Code</span>
+          <span class="extra-value" id="countryCode">—</span>
+        </div>
+        <div class="extra-item">
+          <span class="extra-label">AS Number</span>
+          <span class="extra-value" id="asn">—</span>
+        </div>
+        <div class="extra-item">
+          <span class="extra-label">Mobile</span>
+          <span class="extra-value" id="mobile">—</span>
+        </div>
+        <div class="extra-item">
+          <span class="extra-label">Proxy / VPN</span>
+          <span class="extra-value" id="proxy">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+      <div class="loader-ring"></div>
+      <span>Tracing…</span>
+    </div>
+
+    <footer class="footer">
+      <span>Built with HTML · CSS · JS</span>
+      <span class="dot">·</span>
+      <span>Powered by ip-api.com</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
