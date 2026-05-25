@@ -217,9 +217,6 @@ const PROJECT_DATA = [
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
-  
-
-
   ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
   ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
@@ -232,13 +229,15 @@ const PROJECT_DATA = [
   ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
   ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', 'simulation algorithm javascript', 'intermediate'],
   ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', 'html css javascript', 'intermediate'],
-  [ 'Day 161' , "Unit-Converter" , './public/Unit-Converter/index.html' , 'tool javascript html css' , 'intermediate' ],
-  [ 'Day 162' , 'Color Palette From Art Generator' , './public/ColorPaletteArtGenerator/index.html' , 'html css javascript' , 'intermediate' ],
-  [ 'Day 163' , 'Ai Image Editor' , './public/image-editor/index.html' , 'edits images' , 'advanced' ],
-  [ 'Day 164' , 'Code Visualizer Playground' , './public/code-visualizer-playground/index.html' , 'tool javascript html css' , 'advanced' ],
-  [ 'Day 165' , 'Amazon Clone' , './public/AmazonClone/index.html' , 'Amazon Clone HTML CSS JavaScript' , 'beginner' ],
-  [ "Day 166" , "Boredom Buster" , "./public/BoredomBuster/index.html" , "html css javascript" , 'advanced' ],
-   [ "Day 166" , "Color Sort Puzzle game" , "./public/colorsort/index.html" , "html css javascript" , 'advanced' ]
+  ['Day 161', "Unit-Converter", './public/Unit-Converter/index.html', 'tool javascript html css', 'intermediate'],
+  ['Day 162', 'Color Palette From Art Generator', './public/ColorPaletteArtGenerator/index.html', 'html css javascript', 'intermediate'],
+  ['Day 163', 'Ai Image Editor', './public/image-editor/index.html', 'edits images', 'advanced'],
+  ['Day 164', 'Code Visualizer Playground', './public/code-visualizer-playground/index.html', 'tool javascript html css', 'advanced'],
+  ['Day 165', 'Amazon Clone', './public/AmazonClone/index.html', 'Amazon Clone HTML CSS JavaScript', 'beginner'],
+  ["Day 166", "Boredom Buster", "./public/BoredomBuster/index.html", "html css javascript", 'advanced'],
+  ["Day 167", "scam-sms-detector", "/public/scam-sms-detector/index.html"],
+  ["Day 168", "Color Sort Puzzle game", "./public/colorsort/index.html", "html css javascript", 'advanced'],
+  ["Day 169", "Subscription Tracker", "./public/subscriptiontracker/tracker.html", "react typescript tailwindcss ui", 'advanced']
 ];
 const PROJECTS = PROJECT_DATA;
 const PROJECT_LOOKUP = new Map(PROJECTS.map((project) => [project[0], project]));
@@ -594,9 +593,9 @@ function renderGrid() {
 
     // Search filter
     const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term => 
-      name.toLowerCase().includes(term) || 
-      day.toLowerCase().includes(term) || 
+    const matchesSearch = !q || q.split(/\s+/).every(term =>
+      name.toLowerCase().includes(term) ||
+      day.toLowerCase().includes(term) ||
       (typeof tags === 'string' && tags.toLowerCase().includes(term))
     );
 
@@ -1048,7 +1047,7 @@ function initSearch() {
     currentPage = 1;
     renderGrid();
   });
-  
+
   // Tech stack dropdown filter listener
   const techStack = document.getElementById('techStackFilter');
   if (techStack) {
@@ -1131,15 +1130,15 @@ const clearSearchBtn = document.getElementById('clearSearch');
 
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
-  
+
   // Apply search filter
   if (searchQuery) {
-    filtered = filtered.filter(([day, name]) => 
+    filtered = filtered.filter(([day, name]) =>
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       day.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
-  
+
   const total = filtered.length.toLocaleString();
   const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
 
@@ -1496,7 +1495,7 @@ function applyFilters(search, category) {
   activeFilter = category || 'all';
   currentPage = 1;
   renderGrid();
-  
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {

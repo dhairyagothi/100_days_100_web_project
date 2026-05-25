@@ -167,6 +167,9 @@ body::after {
   animation: noiseShift 0.8s steps(2) infinite;
 }
 
+body > *:not(.ambient):not(.noise-layer) {
+    position: relative;
+  
 body>*:not(.ambient):not(.noise-layer):not(canvas):not(header) {
   position: relative;
   z-index: 1;
@@ -187,6 +190,25 @@ header {
    NAVBAR & RESPONSIVE DRAWER ARCHITECTURE
    ============================================================ */
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999999;
+    background: rgba(11, 13, 15, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 3rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: var(--t);
+}
+
+.navbar {
+    isolation: isolate;
   position: fixed;
   top: 0;
   width: 100%;
