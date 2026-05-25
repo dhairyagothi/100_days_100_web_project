@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Simple and accurate GPA calculator for students - Calculate your semester GPA instantly">
+    <title>GPA Calculator | Smart Semester Grade Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="title-section">
+                    <div class="icon">📊</div>
+                    <div>
+                        <h1>GPA Calculator</h1>
+                        <p>Calculate your semester GPA accurately & instantly</p>
+                    </div>
+                </div>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Form Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2>➕ Add New Subject</h2>
+                    <span class="subject-counter" id="subjectCounter">0 / 8</span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="subjectName">📖 Subject Name</label>
+                    <input type="text" id="subjectName" placeholder="e.g., Mathematics, Physics, Computer Science" maxlength="50">
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="gradeSelect">⭐ Grade</label>
+                        <select id="gradeSelect">
+                            <option value="4.0">A (4.0) - Excellent</option>
+                            <option value="3.7">A- (3.7) - Very Good</option>
+                            <option value="3.3">B+ (3.3) - Good Plus</option>
+                            <option value="3.0" selected>B (3.0) - Good</option>
+                            <option value="2.7">B- (2.7) - Fairly Good</option>
+                            <option value="2.3">C+ (2.3) - Average Plus</option>
+                            <option value="2.0">C (2.0) - Average</option>
+                            <option value="1.7">C- (1.7) - Below Average</option>
+                            <option value="1.3">D+ (1.3) - Poor Plus</option>
+                            <option value="1.0">D (1.0) - Poor</option>
+                            <option value="0.0">F (0.0) - Fail</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="creditHours">🎓 Credit Hours</label>
+                        <input type="number" id="creditHours" min="1" max="6" step="1" value="3">
+                    </div>
+                </div>
+
+                <button class="btn-primary" id="addSubjectBtn">
+                    <span>+</span> Add Subject
+                </button>
+            </div>
+
+            <!-- Subjects List Section -->
+            <div class="subjects-section">
+                <div class="section-header">
+                    <h2>📋 Your Subjects</h2>
+                    <button class="btn-reset" id="resetAllBtn">
+                        🗑️ Reset All
+                    </button>
+                </div>
+
+                <div id="subjectsList" class="subjects-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">📚</div>
+                        <p>No subjects added yet</p>
+                        <small>Add your first subject using the form above</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GPA Result Card -->
+            <div class="result-section">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3>📈 Semester GPA</h3>
+                        <div class="gpa-value" id="gpaValue">0.00</div>
+                    </div>
+                    <div class="result-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Total Credits</span>
+                            <span class="detail-value" id="totalCredits">0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Quality Points</span>
+                            <span class="detail-value" id="qualityPoints">0.00</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Subjects</span>
+                            <span class="detail-value" id="subjectCount">0</span>
+                        </div>
+                    </div>
+                    <div class="gpa-message" id="gpaMessage">
+                        Add subjects to see your GPA
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Grade Scale: A=4.0, B=3.0, C=2.0, D=1.0, F=0.0 | GPA = Σ(Grade × Credits) / Σ Credits</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
