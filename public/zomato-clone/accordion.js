@@ -8,3 +8,82 @@ accordion_containers.forEach((accordion_container) => {
     icon.classList.toggle("animate");
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const states = [
+    "Andhra Pradesh",
+    "Assam",
+    "Bihar",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Karnataka",
+    "Kerala",
+    "Maharashtra",
+    "Punjab",
+    "Rajasthan",
+    "Tamil Nadu",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal"
+  ];
+
+  const locationInput = document.querySelector(".location-input");
+  const dropdown = document.querySelector(".location-dropdown");
+  const toggleBtn = document.querySelector(".dropdown-toggle");
+
+  function renderDropdown(filteredStates) {
+
+    dropdown.innerHTML = "";
+
+    filteredStates.forEach((state) => {
+
+      const item = document.createElement("div");
+
+      item.classList.add("dropdown-item");
+
+      item.textContent = state;
+
+      item.addEventListener("click", () => {
+
+        locationInput.value = state;
+
+        dropdown.classList.add("hidden");
+      });
+
+      dropdown.appendChild(item);
+    });
+  }
+
+  toggleBtn.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    renderDropdown(states);
+
+    dropdown.classList.toggle("hidden");
+  });
+
+  locationInput.addEventListener("input", () => {
+
+    const value = locationInput.value.toLowerCase();
+
+    const filteredStates = states.filter((state) =>
+      state.toLowerCase().includes(value)
+    );
+
+    renderDropdown(filteredStates);
+
+    dropdown.classList.remove("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+
+    if (!e.target.closest(".location")) {
+
+      dropdown.classList.add("hidden");
+    }
+  });
+
+});

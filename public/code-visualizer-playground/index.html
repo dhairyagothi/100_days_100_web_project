@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Visualizer Playground</title>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/visualizer.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">CV</span>
+        <div>
+          <h1>Code Visualizer Playground</h1>
+          <p>Learn DSA through animated JavaScript sorting algorithms</p>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="Algorithm selector">
+        <button class="tab active" data-algo="bubble">Bubble Sort</button>
+        <button class="tab" data-algo="selection">Selection Sort</button>
+        <button class="tab" data-algo="insertion">Insertion Sort</button>
+        <button class="tab" data-algo="merge">Merge Sort</button>
+        <button class="tab" data-algo="quick">Quick Sort</button>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section class="panel controls-panel" aria-label="Controls">
+        <div class="controls-grid">
+          <button id="generate-btn" class="btn btn-secondary">Generate New Array</button>
+          <div class="speed-control">
+            <label for="speed-slider">Speed</label>
+            <input id="speed-slider" type="range" min="1" max="100" value="50" />
+            <span id="speed-label">275ms</span>
+          </div>
+          <div class="button-row">
+            <button id="play-btn" class="btn btn-primary">Play</button>
+            <button id="pause-btn" class="btn">Pause</button>
+            <button id="reset-btn" class="btn">Reset</button>
+            <button id="step-btn" class="btn">Step →</button>
+          </div>
+          <div class="stats" aria-live="polite">
+            <span id="comparisons-count">Comparisons: 0</span>
+            <span id="swaps-count">Swaps: 0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel visualizer-panel" aria-label="Sorting visualizer">
+        <div id="bars-container" class="bars-container"></div>
+      </section>
+
+      <aside class="panel explanation-panel" aria-live="polite">
+        <h2>Explanation</h2>
+        <p id="explanation-text">Generate an array and press Play to start learning.</p>
+      </aside>
+
+      <section class="panel guide-panel" aria-label="Algorithm guide">
+        <div class="guide-head">
+          <h2 id="guide-title">Bubble Sort Guide</h2>
+          <p>Learn both theory and implementation for the selected algorithm.</p>
+        </div>
+        <div class="guide-grid">
+          <article class="guide-card">
+            <h3>Theoretical Explanation</h3>
+            <p id="guide-theory"></p>
+            <p id="guide-complexity" class="guide-complexity"></p>
+          </article>
+          <article class="guide-card">
+            <h3>Code-Based Explanation</h3>
+            <pre id="guide-code" class="guide-code"></pre>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/algorithms/bubbleSort.js"></script>
+    <script src="js/algorithms/selectionSort.js"></script>
+    <script src="js/algorithms/insertionSort.js"></script>
+    <script src="js/algorithms/mergeSort.js"></script>
+    <script src="js/algorithms/quickSort.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

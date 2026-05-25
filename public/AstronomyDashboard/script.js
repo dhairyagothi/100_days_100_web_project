@@ -2036,20 +2036,807 @@ if (savedTheme === "dark") {
     updateMoon();
 }
 
-initDashboard();
+/*
+=======================================================================
+  ASTRONOMY DASHBOARD — JS ADDITIONS
+  PASTE THIS ENTIRE BLOCK at the END of your script.js file,
+  AFTER the initDashboard() function definition but BEFORE the
+  final initDashboard() call at the very bottom.
 
+  Then REPLACE the lone  initDashboard();  call at the bottom with:
+      initDashboard();
+      initFeatureAdditions();
+=======================================================================
+*/
 
-const toggleTheme = () => {
-  const current =
-    document.documentElement.getAttribute("data-theme");
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 1 — SHARED STATE & STORAGE HELPERS
+// ═══════════════════════════════════════════════════════════════════
 
-  const next = current === "dark" ? "light" : "dark";
-
-  document.documentElement.setAttribute("data-theme", next);
-
-  localStorage.setItem("theme", next);
+const LS_KEYS = {
+    theme:      "astro_theme",
+    favorites:  "astro_favorites",
+    obs:        "astro_obs_log",
+    quizScores: "astro_quiz_scores",
+    topicViews: "astro_topic_views"
 };
 
-// Run immediately on script load to prevent visual flashing
-const savedTheme = localStorage.getItem("theme") || "dark";
-document.documentElement.setAttribute("data-theme", savedTheme);
+function lsGet(key) {
+    try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
+}
+
+function lsSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 2 — DARK / LIGHT THEME TOGGLE
+// ═══════════════════════════════════════════════════════════════════
+
+function loadThemePreference() {
+    const saved = lsGet(LS_KEYS.theme);
+    if (saved === "light-mode") applyLightMode(true);
+}
+
+function applyLightMode(on) {
+    document.body.classList.toggle("light-mode", on);
+    const iconDark  = document.getElementById("themeIconDark");
+    const iconLight = document.getElementById("themeIconLight");
+    if (iconDark)  iconDark.hidden  = on;
+    if (iconLight) iconLight.hidden = !on;
+}
+
+function bindThemeToggle() {
+    const btn = document.getElementById("themeToggle");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+        const isLight = document.body.classList.toggle("light-mode");
+        applyLightMode(isLight);
+        lsSet(LS_KEYS.theme, isLight ? "light-mode" : "dark-mode");
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 3 — FAVORITES SYSTEM
+// ═══════════════════════════════════════════════════════════════════
+
+let favsState = { apod: [], news: [], scientists: [] };
+let favActiveTab = "apod";
+
+function loadFavoritesFromStorage() {
+    const saved = lsGet(LS_KEYS.favorites);
+    if (saved && typeof saved === "object") {
+        favsState = {
+            apod:       Array.isArray(saved.apod)       ? saved.apod       : [],
+            news:       Array.isArray(saved.news)        ? saved.news       : [],
+            scientists: Array.isArray(saved.scientists)  ? saved.scientists : []
+        };
+    }
+    syncApodFavBtn();
+    renderFavsList();
+    updateFavCount();
+}
+
+function saveFavoritesToStorage() {
+    lsSet(LS_KEYS.favorites, favsState);
+}
+
+function updateFavCount() {
+    const total = favsState.apod.length + favsState.news.length + favsState.scientists.length;
+    const el = document.getElementById("favCount");
+    if (el) el.textContent = `${total} saved`;
+}
+
+// ── APOD favorite ──────────────────────────────────────────────────
+
+function syncApodFavBtn() {
+    const btn = document.getElementById("apodFavBtn");
+    if (!btn) return;
+    const title   = document.getElementById("apodTitle")?.textContent || "";
+    const isSaved = favsState.apod.some(f => f.title === title);
+    btn.classList.toggle("saved", isSaved);
+    // Target the explicit <span class="fav-label"> — no text node hunting
+    const label = btn.querySelector(".fav-label");
+    if (label) label.textContent = isSaved ? "Saved!" : "Save to Favorites";
+}
+
+function toggleApodFavorite() {
+    const title = document.getElementById("apodTitle")?.textContent || "";
+    const imgSrc = document.getElementById("apodImg")?.src || "";
+    const date   = document.getElementById("apodDate")?.textContent || "";
+    const idx = favsState.apod.findIndex(f => f.title === title);
+
+    if (idx === -1) {
+        favsState.apod.unshift({ title, imgSrc, date, savedAt: new Date().toISOString() });
+        showNotif("⭐ APOD saved to favorites!");
+    } else {
+        favsState.apod.splice(idx, 1);
+        showNotif("Removed from favorites.");
+    }
+    saveFavoritesToStorage();
+    syncApodFavBtn();
+    renderFavsList();
+    updateFavCount();
+}
+
+function bindApodFavBtn() {
+    const btn = document.getElementById("apodFavBtn");
+    if (btn) btn.addEventListener("click", toggleApodFavorite);
+}
+
+// ── News / scientist star buttons ──────────────────────────────────
+
+function addNewsStarButtons() {
+    document.getElementById("newsList")?.addEventListener("click", e => {
+        const star = e.target.closest(".item-star-btn[data-news-index]");
+        if (!star) return;
+        e.stopPropagation();
+        const idx  = Number(star.dataset.newsIndex);
+        const item = newsState.items[idx];
+        if (!item) return;
+        const exists = favsState.news.findIndex(f => f.title === item.title);
+        if (exists === -1) {
+            favsState.news.unshift({ title: item.title, meta: item.meta, url: item.url, savedAt: new Date().toISOString() });
+            star.classList.add("saved");
+            star.textContent = "★";
+            showNotif("📰 Article bookmarked!");
+        } else {
+            favsState.news.splice(exists, 1);
+            star.classList.remove("saved");
+            star.textContent = "☆";
+        }
+        saveFavoritesToStorage();
+        renderFavsList();
+        updateFavCount();
+    });
+}
+
+// Patch renderNews to include star buttons
+const _origRenderNews = window._origRenderNews || null;
+function patchRenderNews() {
+    // Override the renderNews function defined earlier in script.js
+    // by wrapping newsList innerHTML injection
+    const origRenderNews = renderNews;
+    window.renderNews = function () {
+        newsList.innerHTML = newsState.items.map((item, index) => {
+            const isSaved = favsState.news.some(f => f.title === item.title);
+            return `
+            <button class="news-item" type="button" data-news-index="${index}">
+                <span class="news-thumb" style="--image:url('${escapeHtml(item.image)}')"></span>
+                <span style="flex:1">
+                    <span class="news-title">${escapeHtml(item.title)}</span>
+                    <span class="news-meta">${escapeHtml(item.meta)}</span>
+                </span>
+                <button class="item-star-btn ${isSaved ? "saved" : ""}" data-news-index="${index}" type="button" title="Save to favorites" aria-label="Bookmark article">${isSaved ? "★" : "☆"}</button>
+            </button>`;
+        }).join("");
+    };
+}
+
+function addScientistStarButtons() {
+    document.getElementById("scientistList")?.addEventListener("click", e => {
+        const star = e.target.closest(".item-star-btn[data-sci-name]");
+        if (!star) return;
+        e.stopPropagation();
+        const name = star.dataset.sciName;
+        const sci  = activeScientists.find(s => s.name === name);
+        if (!sci) return;
+        const exists = favsState.scientists.findIndex(f => f.name === name);
+        if (exists === -1) {
+            favsState.scientists.unshift({ name: sci.name, field: sci.field, url: sci.url, savedAt: new Date().toISOString() });
+            star.classList.add("saved"); star.textContent = "★";
+            showNotif("🔭 Scientist profile saved!");
+        } else {
+            favsState.scientists.splice(exists, 1);
+            star.classList.remove("saved"); star.textContent = "☆";
+        }
+        saveFavoritesToStorage();
+        renderFavsList();
+        updateFavCount();
+    });
+}
+
+// Patch renderScientists to include star buttons
+function patchRenderScientists() {
+    window.renderScientists = function () {
+        const visibleScientists = getWindowItems(activeScientists, scientistState.start, scientistState.size);
+        scientistList.innerHTML = visibleScientists.map(item => {
+            const isSaved = favsState.scientists.some(f => f.name === item.name);
+            return `
+            <button class="scientist-item" type="button" data-scientist-name="${escapeHtml(item.name)}">
+                <span class="scientist-avatar">${item.initials}</span>
+                <span style="flex:1">
+                    <span class="scientist-name">${item.name}</span>
+                    <span class="scientist-field">${item.field}</span>
+                </span>
+                <button class="item-star-btn ${isSaved ? "saved" : ""}" data-sci-name="${escapeHtml(item.name)}" type="button" title="Save to favorites">${isSaved ? "★" : "☆"}</button>
+            </button>`;
+        }).join("");
+    };
+}
+
+// ── Favorites list rendering ───────────────────────────────────────
+
+function renderFavsList() {
+    const list  = document.getElementById("favsList");
+    const empty = document.getElementById("favsEmpty");
+    if (!list) return;
+
+    const items = favsState[favActiveTab] || [];
+
+    if (!items.length) {
+        list.innerHTML = "";
+        if (empty) empty.style.display = "block";
+        return;
+    }
+    if (empty) empty.style.display = "none";
+
+    list.innerHTML = items.map((item, idx) => `
+        <div class="fav-item">
+            <span class="fav-item-title">${escapeHtml(item.title || item.name || "Untitled")}</span>
+            <span class="fav-item-date">${escapeHtml(item.date || item.savedAt?.slice(0,10) || "")}</span>
+            <button class="fav-remove-btn" data-fav-tab="${favActiveTab}" data-fav-idx="${idx}" title="Remove" aria-label="Remove from favorites">✕</button>
+        </div>
+    `).join("");
+
+    list.querySelectorAll(".fav-remove-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tab = btn.dataset.favTab;
+            const i   = Number(btn.dataset.favIdx);
+            favsState[tab].splice(i, 1);
+            saveFavoritesToStorage();
+            renderFavsList();
+            updateFavCount();
+            syncApodFavBtn();
+        });
+    });
+}
+
+function bindFavsTabs() {
+    document.querySelectorAll(".favs-tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+            favActiveTab = tab.dataset.favtab;
+            document.querySelectorAll(".favs-tab").forEach(t => t.classList.toggle("active", t === tab));
+            renderFavsList();
+        });
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 4 — OBSERVATION LOG
+// ═══════════════════════════════════════════════════════════════════
+
+let obsEntries = [];
+let editingObsId = null;
+
+function loadObservations() {
+    const saved = lsGet(LS_KEYS.obs);
+    obsEntries = Array.isArray(saved) ? saved : [];
+    renderObsList();
+}
+
+function saveObservations() { lsSet(LS_KEYS.obs, obsEntries); }
+
+function renderObsList() {
+    const list  = document.getElementById("obsList");
+    const empty = document.getElementById("obsEmpty");
+    if (!list) return;
+
+    if (!obsEntries.length) {
+        list.innerHTML = "";
+        if (empty) empty.style.display = "block";
+        return;
+    }
+    if (empty) empty.style.display = "none";
+
+    list.innerHTML = obsEntries.map((entry, idx) => `
+        <div class="obs-item" data-obs-id="${entry.id}">
+            <div class="obs-item-header">
+                <span class="obs-item-object">${escapeHtml(entry.object)}</span>
+                <div class="obs-item-actions">
+                    <button class="obs-action-btn edit" data-obs-idx="${idx}">Edit</button>
+                    <button class="obs-action-btn delete" data-obs-idx="${idx}">Delete</button>
+                </div>
+            </div>
+            <span class="obs-item-meta">${escapeHtml(entry.date)}${entry.location ? " · " + escapeHtml(entry.location) : ""}</span>
+            ${entry.notes ? `<p class="obs-item-notes">${escapeHtml(entry.notes)}</p>` : ""}
+        </div>
+    `).join("");
+
+    list.querySelectorAll(".obs-action-btn.delete").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const idx = Number(btn.dataset.obsIdx);
+            obsEntries.splice(idx, 1);
+            saveObservations();
+            renderObsList();
+            showNotif("Observation deleted.");
+        });
+    });
+
+    list.querySelectorAll(".obs-action-btn.edit").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const idx   = Number(btn.dataset.obsIdx);
+            const entry = obsEntries[idx];
+            document.getElementById("obsDate").value     = entry.date || "";
+            document.getElementById("obsLocation").value = entry.location || "";
+            document.getElementById("obsObject").value   = entry.object || "";
+            document.getElementById("obsNotes").value    = entry.notes || "";
+            editingObsId = entry.id;
+            const btn2 = document.getElementById("obsSubmitBtn");
+            if (btn2) btn2.textContent = "Update Observation";
+            document.getElementById("obsObject")?.focus();
+        });
+    });
+}
+
+function bindObsForm() {
+    const form = document.getElementById("obsForm");
+    if (!form) return;
+
+    // Set default date to today
+    const dateInput = document.getElementById("obsDate");
+    if (dateInput && !dateInput.value) dateInput.value = getIstDateInputValue(new Date());
+
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        const dateVal   = document.getElementById("obsDate")?.value || "";
+        const locVal    = document.getElementById("obsLocation")?.value?.trim() || "";
+        const objVal    = document.getElementById("obsObject")?.value?.trim() || "";
+        const notesVal  = document.getElementById("obsNotes")?.value?.trim() || "";
+
+        if (!objVal) { showNotif("⚠️ Please enter the object observed."); return; }
+
+        if (editingObsId !== null) {
+            const idx = obsEntries.findIndex(e => e.id === editingObsId);
+            if (idx !== -1) {
+                obsEntries[idx] = { ...obsEntries[idx], date: dateVal, location: locVal, object: objVal, notes: notesVal };
+            }
+            editingObsId = null;
+            const btn = document.getElementById("obsSubmitBtn");
+            if (btn) btn.textContent = "Log Observation";
+            showNotif("✅ Observation updated!");
+        } else {
+            obsEntries.unshift({ id: Date.now(), date: dateVal, location: locVal, object: objVal, notes: notesVal });
+            showNotif("✅ Observation logged!");
+        }
+
+        saveObservations();
+        renderObsList();
+        form.reset();
+        if (dateInput) dateInput.value = getIstDateInputValue(new Date());
+    });
+
+    const exportBtn = document.getElementById("exportObsBtn");
+    if (exportBtn) {
+        exportBtn.addEventListener("click", () => {
+            if (!obsEntries.length) { showNotif("No observations to export yet."); return; }
+            const blob = new Blob([JSON.stringify(obsEntries, null, 2)], { type: "application/json" });
+            const url  = URL.createObjectURL(blob);
+            const a    = document.createElement("a");
+            a.href = url;
+            a.download = `astronomy-observations-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotif("📥 Observations exported!");
+        });
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 5 — ASTRONOMY QUIZ
+// ═══════════════════════════════════════════════════════════════════
+
+const QUIZ_QUESTIONS = {
+    easy: [
+        { q: "Which is the largest planet in our Solar System?", options: ["Saturn","Jupiter","Neptune","Uranus"], correct: 1, explain: "Jupiter is the largest planet, with a mass more than twice all other planets combined." },
+        { q: "How long does light from the Sun take to reach Earth?", options: ["8 seconds","8 minutes","8 hours","8 days"], correct: 1, explain: "Sunlight travels ~150 million km to reach Earth in about 8 minutes and 20 seconds." },
+        { q: "What is the name of our galaxy?", options: ["Andromeda","Triangulum","Milky Way","Whirlpool"], correct: 2, explain: "We live in the Milky Way galaxy, a barred spiral galaxy." },
+        { q: "Which planet is known as the Red Planet?", options: ["Venus","Mercury","Mars","Jupiter"], correct: 2, explain: "Mars gets its reddish color from iron oxide (rust) on its surface." },
+        { q: "How many planets are in our Solar System?", options: ["7","8","9","10"], correct: 1, explain: "There are 8 planets. Pluto was reclassified as a dwarf planet in 2006." },
+        { q: "What is the closest star to Earth (other than the Sun)?", options: ["Sirius","Proxima Centauri","Betelgeuse","Vega"], correct: 1, explain: "Proxima Centauri is about 4.24 light-years away." },
+        { q: "What force keeps planets in orbit around the Sun?", options: ["Magnetism","Friction","Gravity","Nuclear force"], correct: 2, explain: "Gravity is the attractive force between masses that governs orbital motion." }
+    ],
+    medium: [
+        { q: "What is the name of Jupiter's largest moon?", options: ["Europa","Io","Ganymede","Callisto"], correct: 2, explain: "Ganymede is the largest moon in the Solar System, even bigger than Mercury." },
+        { q: "What phenomenon causes a star to appear to wobble, indicating an orbiting planet?", options: ["Doppler shift","Gravitational lensing","Radial velocity method","Transit photometry"], correct: 2, explain: "The radial velocity (Doppler wobble) method detects slight stellar motion caused by an orbiting planet." },
+        { q: "What is the Chandrasekhar limit?", options: ["Max mass of a neutron star","Max mass of a white dwarf","Min mass for nuclear fusion","Size of an event horizon"], correct: 1, explain: "The Chandrasekhar limit (~1.4 solar masses) is the maximum mass a white dwarf can have before collapsing." },
+        { q: "What is a parsec?", options: ["~3.26 light-years","~1 light-year","~10 light-years","~100 AU"], correct: 0, explain: "One parsec ≈ 3.26 light-years, defined by a parallax angle of one arcsecond." },
+        { q: "What powers a pulsar?", options: ["Nuclear fusion","Rotation of a neutron star","A black hole's accretion","Dark matter annihilation"], correct: 1, explain: "Pulsars are rapidly rotating neutron stars emitting beams of electromagnetic radiation." },
+        { q: "What type of spectrum does a cool, dense star produce?", options: ["Emission","Continuous","Absorption","X-ray"], correct: 2, explain: "Dense stellar photospheres produce absorption spectra — dark lines on a continuous background." }
+    ],
+    hard: [
+        { q: "What is the Tolman–Oppenheimer–Volkoff limit?", options: ["Max mass of a white dwarf","Max mass of a neutron star","Min mass for a black hole","Mass of a solar neutrino"], correct: 1, explain: "The TOV limit (~2–3 solar masses) sets the maximum mass a neutron star can have before collapsing into a black hole." },
+        { q: "Which effect causes photons to lose energy as they escape a gravitational well?", options: ["Doppler redshift","Gravitational redshift","Compton scattering","Lensing blueshift"], correct: 1, explain: "Gravitational redshift (Einstein shift) occurs because photons do work against gravity escaping a massive body." },
+        { q: "What is the approximate age of the Universe?", options: ["4.6 billion years","8.8 billion years","13.8 billion years","20 billion years"], correct: 2, explain: "Based on CMB data, the Universe is ~13.8 billion years old." },
+        { q: "What does the Hertzsprung–Russell diagram primarily plot?", options: ["Mass vs radius","Luminosity vs temperature","Age vs distance","Rotation vs metallicity"], correct: 1, explain: "The H-R diagram plots stellar luminosity (brightness) against surface temperature (spectral type)." },
+        { q: "What is baryonic matter estimated to make up of the total mass-energy of the Universe?", options: ["About 5%","About 27%","About 50%","About 68%"], correct: 0, explain: "Ordinary (baryonic) matter is ~5%; dark matter ~27%; dark energy ~68% of the Universe's total content." },
+        { q: "What causes frame dragging in general relativity?", options: ["Mass","Rotation of a massive body","Electric charge","Magnetic fields"], correct: 1, explain: "Frame dragging (Lense-Thirring effect) is caused by a rotating mass warping spacetime around it." }
+    ]
+};
+
+const quizState = {
+    difficulty: "easy",
+    questions:  [],
+    current:    0,
+    score:      0,
+    answered:   false,
+    history:    []   // { score, total, diff, date }
+};
+
+function shuffleArray(arr) {
+    return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function loadQuizHistory() {
+    const saved = lsGet(LS_KEYS.quizScores);
+    if (Array.isArray(saved)) quizState.history = saved;
+}
+
+function saveQuizHistory() { lsSet(LS_KEYS.quizScores, quizState.history); }
+
+function startQuiz() {
+    const pool  = shuffleArray(QUIZ_QUESTIONS[quizState.difficulty]).slice(0, 5);
+    quizState.questions = pool;
+    quizState.current   = 0;
+    quizState.score     = 0;
+    quizState.answered  = false;
+
+    document.getElementById("quizStart").hidden  = true;
+    document.getElementById("quizPlay").hidden   = false;
+    document.getElementById("quizResult").hidden = true;
+
+    renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+    const q = quizState.questions[quizState.current];
+    if (!q) { endQuiz(); return; }
+
+    const total = quizState.questions.length;
+    const num   = quizState.current + 1;
+
+    document.getElementById("quizQNum").textContent = `Question ${num} / ${total}`;
+    document.getElementById("quizQuestion").textContent = q.q;
+    document.getElementById("quizProgressFill").style.width = `${((num-1) / total) * 100}%`;
+    const explainEl = document.getElementById("quizExplain");
+    explainEl.hidden = true;
+    explainEl.textContent = "";
+
+    const nextBtn = document.getElementById("quizNextBtn");
+    nextBtn.hidden = true;
+
+    const optEl = document.getElementById("quizOptions");
+    const shuffledOpts = q.options.map((text, idx) => ({ text, origIdx: idx }));
+    // don't shuffle options to keep correct index consistent
+    optEl.innerHTML = q.options.map((text, idx) => `
+        <button class="quiz-option-btn" type="button" data-opt-idx="${idx}">${escapeHtml(text)}</button>
+    `).join("");
+
+    optEl.querySelectorAll(".quiz-option-btn").forEach(btn => {
+        btn.addEventListener("click", () => answerQuestion(Number(btn.dataset.optIdx), q));
+    });
+
+    // Update score pill
+    document.getElementById("quizScorePill").textContent = `Score: ${quizState.score}`;
+    quizState.answered = false;
+}
+
+function answerQuestion(chosenIdx, q) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+
+    const optEl   = document.getElementById("quizOptions");
+    const buttons = optEl.querySelectorAll(".quiz-option-btn");
+
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        const idx = Number(btn.dataset.optIdx);
+        if (idx === q.correct) btn.classList.add("correct");
+        else if (idx === chosenIdx) btn.classList.add("wrong");
+    });
+
+    if (chosenIdx === q.correct) {
+        quizState.score++;
+        showNotif("✅ Correct!");
+    } else {
+        showNotif("❌ Wrong — check the explanation below.");
+    }
+
+    document.getElementById("quizScorePill").textContent = `Score: ${quizState.score}`;
+
+    const explainEl = document.getElementById("quizExplain");
+    explainEl.textContent = q.explain;
+    explainEl.hidden = false;
+
+    const nextBtn = document.getElementById("quizNextBtn");
+    nextBtn.hidden = false;
+    nextBtn.textContent = quizState.current + 1 >= quizState.questions.length ? "See Results" : "Next Question";
+}
+
+function nextQuizQuestion() {
+    quizState.current++;
+    if (quizState.current >= quizState.questions.length) {
+        endQuiz();
+    } else {
+        renderQuizQuestion();
+    }
+}
+
+function endQuiz() {
+    const score = quizState.score;
+    const total = quizState.questions.length;
+
+    quizState.history.push({
+        score, total,
+        diff: quizState.difficulty,
+        date: new Date().toISOString().slice(0,10)
+    });
+    saveQuizHistory();
+
+    document.getElementById("quizPlay").hidden   = true;
+    document.getElementById("quizResult").hidden = false;
+    document.getElementById("quizFinalScore").textContent   = `${score} / ${total}`;
+    document.getElementById("quizResultLabel").textContent  =
+        score === total ? "🎉 Perfect!" :
+        score >= total * 0.8 ? "⭐ Excellent!" :
+        score >= total * 0.6 ? "👍 Good job!" :
+        score >= total * 0.4 ? "📚 Keep studying!" :
+        "🔭 Try again!";
+
+    showNotif(`Quiz done! You scored ${score}/${total}.`);
+}
+
+function resetQuiz() {
+    document.getElementById("quizResult").hidden = true;
+    document.getElementById("quizPlay").hidden   = true;
+    document.getElementById("quizStart").hidden  = false;
+}
+
+function bindQuiz() {
+    document.querySelectorAll(".quiz-diff-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            quizState.difficulty = btn.dataset.diff;
+            document.querySelectorAll(".quiz-diff-btn").forEach(b => b.classList.toggle("active", b === btn));
+        });
+    });
+
+    document.getElementById("startQuizBtn")?.addEventListener("click", startQuiz);
+    document.getElementById("quizNextBtn")?.addEventListener("click", nextQuizQuestion);
+    document.getElementById("quizRetryBtn")?.addEventListener("click", resetQuiz);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 6 — GLOBAL SEARCH
+// ═══════════════════════════════════════════════════════════════════
+
+function highlightMatch(text, query) {
+    if (!query) return escapeHtml(text);
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex   = new RegExp(`(${escaped})`, "gi");
+    return escapeHtml(text).replace(regex, '<mark class="search-highlight">$1</mark>');
+}
+
+function runSearch(query) {
+    const dropdown = document.getElementById("searchDropdown");
+    if (!dropdown) return;
+
+    const q = query.trim().toLowerCase();
+    if (q.length < 2) { dropdown.hidden = true; return; }
+
+    const results = [];
+
+    activeTopics.forEach(t => {
+        if (t.title.toLowerCase().includes(q) || (t.copy || "").toLowerCase().includes(q)) {
+            results.push({ type: "Topic", text: t.title, sub: t.copy, action: () => { renderTopicDetail(t); showNotif(`📖 Topic: ${t.title}`); } });
+        }
+    });
+
+    activeScientists.forEach(s => {
+        if (s.name.toLowerCase().includes(q) || (s.field || "").toLowerCase().includes(q)) {
+            results.push({ type: "Person", text: s.name, sub: s.field, action: () => { renderScientistDetail(s); showNotif(`🔭 ${s.name}`); } });
+        }
+    });
+
+    newsState.items.forEach((n, idx) => {
+        if (n.title.toLowerCase().includes(q) || (n.summary || "").toLowerCase().includes(q)) {
+            results.push({ type: "News", text: n.title, sub: n.meta, action: () => renderNewsDetail(n) });
+        }
+    });
+
+    if (!results.length) {
+        dropdown.innerHTML = `<p class="search-no-results">No results for "${escapeHtml(query)}"</p>`;
+        dropdown.hidden = false;
+        return;
+    }
+
+    dropdown.innerHTML = results.slice(0, 8).map((r, i) => `
+        <div class="search-result-item" data-result-idx="${i}" role="button" tabindex="0">
+            <span class="search-result-type">${r.type}</span>
+            <span class="search-result-text">${highlightMatch(r.text, query)}</span>
+        </div>
+    `).join("");
+
+    dropdown.hidden = false;
+
+    dropdown.querySelectorAll(".search-result-item").forEach((el, i) => {
+        el.addEventListener("click", () => {
+            results[i].action();
+            dropdown.hidden = true;
+            document.getElementById("globalSearch").value = "";
+        });
+        el.addEventListener("keydown", e => { if (e.key === "Enter") el.click(); });
+    });
+}
+
+function bindGlobalSearch() {
+    const input    = document.getElementById("globalSearch");
+    const dropdown = document.getElementById("searchDropdown");
+    if (!input) return;
+
+    input.addEventListener("input", e => runSearch(e.target.value));
+    input.addEventListener("keydown", e => { if (e.key === "Escape") { dropdown.hidden = true; input.value = ""; } });
+
+    document.addEventListener("click", e => {
+        if (!input.contains(e.target) && !dropdown.contains(e.target)) dropdown.hidden = true;
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 7 — STATS MODAL
+// ═══════════════════════════════════════════════════════════════════
+
+let topicViewsMap = {};
+
+function loadTopicViews() {
+    const saved = lsGet(LS_KEYS.topicViews);
+    if (saved && typeof saved === "object") topicViewsMap = saved;
+}
+
+function recordTopicView(topicTitle) {
+    topicViewsMap[topicTitle] = (topicViewsMap[topicTitle] || 0) + 1;
+    lsSet(LS_KEYS.topicViews, topicViewsMap);
+}
+
+// Patch renderTopicDetail to record views
+function patchRenderTopicDetail() {
+    const orig = renderTopicDetail;
+    window.renderTopicDetail = function(topic) {
+        orig(topic);
+        recordTopicView(topic.title);
+    };
+}
+
+function openStatsModal() {
+    const modal = document.getElementById("statsModal");
+    if (!modal) return;
+
+    const totalFavs = favsState.apod.length + favsState.news.length + favsState.scientists.length;
+    document.getElementById("statFavCount").textContent  = totalFavs;
+    document.getElementById("statObsCount").textContent  = obsEntries.length;
+    document.getElementById("statQuizTotal").textContent = quizState.history.length;
+
+    const best = quizState.history.reduce((acc, h) => {
+        const pct = h.score / h.total;
+        return pct > acc.pct ? { pct, label: `${h.score}/${h.total}` } : acc;
+    }, { pct: -1, label: "--" });
+    document.getElementById("statQuizBest").textContent = best.label;
+
+    const topTopics = Object.entries(topicViewsMap)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+    const topicListEl = document.getElementById("statTopTopics");
+    if (topicListEl) {
+        topicListEl.innerHTML = topTopics.length
+            ? topTopics.map(([name, views]) => `
+                <div class="stats-topic-row">
+                    <span class="stats-topic-name">${escapeHtml(name)}</span>
+                    <span class="stats-topic-views">${views} view${views === 1 ? "" : "s"}</span>
+                </div>`).join("")
+            : `<p style="color:var(--muted);font-size:13px;text-align:center;">No topics viewed yet.</p>`;
+    }
+
+    modal.showModal();
+}
+
+function bindStatsModal() {
+    document.getElementById("statsBtn")?.addEventListener("click", openStatsModal);
+    document.getElementById("statsClose")?.addEventListener("click", () => {
+        document.getElementById("statsModal")?.close();
+    });
+    document.getElementById("statsModal")?.addEventListener("click", e => {
+        if (e.target === e.currentTarget) e.currentTarget.close();
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 8 — TOAST NOTIFICATIONS
+// ═══════════════════════════════════════════════════════════════════
+
+let notifTimer = null;
+
+function showNotif(message, duration = 3800) {
+    const toast = document.getElementById("notifToast");
+    if (!toast) return;
+
+    if (notifTimer) { clearTimeout(notifTimer); toast.classList.remove("visible"); }
+
+    // tiny delay lets CSS transition retrigger cleanly
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            toast.textContent = message;
+            toast.classList.add("visible");
+            notifTimer = setTimeout(() => {
+                toast.classList.remove("visible");
+                notifTimer = null;
+            }, duration);
+        });
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 9 — ASTRONOMY EVENT NOTIFICATIONS
+//  (fires on page load to alert upcoming events within 3 days)
+// ═══════════════════════════════════════════════════════════════════
+
+function checkUpcomingEventNotifications() {
+    const events = buildUpcomingEvents();   // already defined in original script.js
+    const now    = new Date();
+
+    for (const ev of events) {
+        const evDate = new Date(`${ev.date} ${now.getFullYear()}`);
+        const diff   = (evDate - now) / (1000 * 60 * 60 * 24);
+        if (diff >= 0 && diff <= 3) {
+            setTimeout(() => showNotif(`🔭 Upcoming: ${ev.title} on ${ev.date}!`, 6000), 3000);
+            break; // only show one notification on load
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 10 — BOOTSTRAP ALL ADDITIONS
+// ═══════════════════════════════════════════════════════════════════
+
+function initFeatureAdditions() {
+    // Persistence
+    loadThemePreference();
+    loadFavoritesFromStorage();
+    loadObservations();
+    loadQuizHistory();
+    loadTopicViews();
+
+    // Patches (must run before first render of news/scientists)
+    patchRenderNews();
+    patchRenderScientists();
+    patchRenderTopicDetail();
+
+    // Bind all UI
+    bindThemeToggle();
+    bindApodFavBtn();
+    bindFavsTabs();
+    addNewsStarButtons();
+    addScientistStarButtons();
+    bindObsForm();
+    bindQuiz();
+    bindGlobalSearch();
+    bindStatsModal();
+
+    // Notifications after 3 s to not clash with page load
+    setTimeout(checkUpcomingEventNotifications, 3000);
+}
+
+/*
+=======================================================================
+  FINAL STEP — at the VERY BOTTOM of script.js, change:
+
+      initDashboard();
+
+  to:
+
+      initDashboard();
+      initFeatureAdditions();
+
+  That's it! All features are now active.
+=======================================================================
+*/
+initDashboard();
+initFeatureAdditions();
