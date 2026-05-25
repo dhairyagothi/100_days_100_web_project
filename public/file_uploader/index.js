@@ -29,7 +29,22 @@ var storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage: storage });
+
+// ✅ Updated Multer config with file size and type validation filters
+const upload = multer({ 
+    storage: storage,
+    limits: {
+        fileSize: 2 * 1024 * 1024 // 🔒 Hard stop at 2MB per file (Issue #1114)
+    },
+    fileFilter: function (req, file, cb) {
+        // 🔒 Only accept standard images (.jpg, .jpeg, .png, .webp)
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!allowedTypes.includes(file.mimetype)) {
+            return cb(new Error('Unsupported file format! Only .jpg, .jpeg, .png, and .webp are allowed.'), false);
+        }
+        cb(null, true);
+    }
+});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'file_uploader.html'));

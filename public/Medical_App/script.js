@@ -1,32 +1,116 @@
-const specialists = [
-    "Cardiologist",
-    "Neurologist",
-    "Dermatologist",
-    "Orthopedic",
-    "Pediatrician",
-    "Psychiatrist"
-];
+document.addEventListener('DOMContentLoaded', () => {
+    const requestForm = document.getElementById('requestForm');
+    const responseForm = document.getElementById('responseForm');
+    const feedbackForm = document.getElementById('feedbackForm');
+    const statusMessage = document.getElementById('statusMessage');
+    const loading = document.getElementById('loading');
+    const specialistResponseSection = document.getElementById('specialist-response');
+    const historyList = document.getElementById('historyList');
+    const specialistSearch = document.getElementById('specialistSearch');
+    const specialistTypeSelect = document.getElementById('specialistType');
+    const specialists = ['Allergist/Immunologist', 'Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Hematologist', 'Nephrologist', 'Neurologist', 'Oncologist', 'Ophthalmologist', 'Otolaryngologist (ENT)', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Rheumatologist', 'Urologist', 'Cardiothoracic Surgeon', 'General Surgeon', 'Neurosurgeon', 'Orthopedic Surgeon', 'Plastic Surgeon', 'Vascular Surgeon', 'Family Medicine Physician', 'General Practitioner (GP)', 'Internal Medicine Physician (Internist)'];
+    const consultationHistory = JSON.parse(localStorage.getItem('consultations')) || [];
 
-const specialistSelect = document.getElementById("specialistType");
-const specialistSearch = document.getElementById("specialistSearch");
-const requestForm = document.getElementById("requestForm");
-const historyList = document.getElementById("historyList");
-const recommendationBox = document.getElementById("recommendationBox");
-const symptomSelect = document.getElementById("symptomSelect");
+    if (consultationHistory.length > 0) renderHistory();
+
+    function updateSpecialistOptions(searchText) {
+        specialistTypeSelect.innerHTML = '';
+        const filteredSpecialists = specialists.filter(specialist => specialist.toLowerCase().includes(searchText.toLowerCase()));
+        filteredSpecialists.forEach(specialist => {
+            const option = document.createElement('option');
+            option.value = specialist;
+            option.textContent = specialist;
+            specialistTypeSelect.appendChild(option);
+        });
+    }
+
+    function renderHistory() {
+        if (!historyList) return;
+        historyList.innerHTML = '';
+        consultationHistory.forEach((historyItem) => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <strong>${historyItem.date}</strong><br>
+                Patient: ${historyItem.patientName} <br>
+                Doctor: ${historyItem.doctorName} <br>
+                Condition: ${historyItem.condition} <br>
+                Specialist: ${historyItem.specialist} <br>
+                Status: ${historyItem.status} <br>
+                <em>${historyItem.notes || ''}</em>
+                <br><br>
+                <div class="cancel-appointment" style="display:none;">Cancelling Appointment...</div>
+                <div id="buttons">
+                    <a href="reschedule.html"><button id="reschedule">Reschedule</button></a>
+                    <button class="cancel">Cancel</button>
+                </div>
+            `;
+            historyList.appendChild(listItem);
+        });
+
+        document.querySelectorAll('.cancel').forEach((button, index) => {
+            button.addEventListener('click', () => {
+                document.querySelector('.cancel-appointment').style.display = 'block';
+                setTimeout(() => {
+                    document.querySelector('.cancel-appointment').style.display = 'none';
+                    requestForm.reset();
+                    statusMessage.textContent = '';
+                    consultationHistory.splice(index, 1);
+                    localStorage.setItem('consultations', JSON.stringify(consultationHistory));
+                    renderHistory();
+                }, 2000);
+            })
+        });
+    }
 
 
-// Load specialists into dropdown
-function loadSpecialists(list) {
+    updateSpecialistOptions('');
 
-    specialistSelect.innerHTML =
-        `<option value="">Select Specialist</option>`;
+    requestForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const patientName = document.getElementById('patientName').value;
+        const doctorName = document.getElementById('doctorName').value;
+        const patientCondition = document.getElementById('patientCondition').value;
+        const specialistType = document.getElementById('specialistType').value;
+
+        loading.style.display = 'block';
+        statusMessage.textContent = '';
+
+        setTimeout(() => {
+            loading.style.display = 'none';
+            const currentDate = new Date().toLocaleString();
+            const newHistoryItem = {
+                date: currentDate,
+                patientName: patientName,
+                doctorName: doctorName,
+                condition: patientCondition,
+                specialist: specialistType,
+                status: 'Pending',
+                notes: ''
+            };
+            consultationHistory.push(newHistoryItem);
+            localStorage.setItem('consultations', JSON.stringify(consultationHistory));
+            renderHistory();
+
+            statusMessage.textContent = `Consultation requested for Dr.${doctorName} regarding ${patientCondition}.            
+            Specialist type: ${specialistType}.`;
+            specialistResponseSection.style.display = 'block';
+            buttons.style.display = 'flex';
+            requestForm.reset();
+        }, 2000);
+    });
+    
+    responseForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const consultationId = document.getElementById('consultationId').value;
+        const suggestion = document.getElementById('suggestion').value;
 
     list.forEach((specialist) => {
 
         const option = document.createElement("option");
 
-        option.value = specialist;
-        option.textContent = specialist;
+    feedbackForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const feedbackMessage = document.getElementById('feedbackMessage').value;
 
         specialistSelect.appendChild(option);
     });

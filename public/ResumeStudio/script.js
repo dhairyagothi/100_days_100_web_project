@@ -1184,6 +1184,36 @@ function initResumeStudio() {
     // Call once to initialize
     scaleResumePreview();
     window.addEventListener("resize", scaleResumePreview);
+
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+
+    let overlay = document.querySelector(".sidebar-overlay");
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.className = "sidebar-overlay";
+        document.body.appendChild(overlay);
+    }
+
+    function toggleSidebar() {
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("active");
+    }
+
+    sidebarToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        toggleSidebar();
+    });
+
+    overlay.addEventListener("click", toggleSidebar);
+
+    navItems.forEach(item => {
+        item.addEventListener("click", () => {
+            if (window.innerWidth <= 1024) {
+                toggleSidebar();
+            }
+        });
+    });
 }
 
 if (document.readyState === "loading") {

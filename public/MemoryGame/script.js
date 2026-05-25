@@ -38,13 +38,18 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
     difficulty = btn.dataset.diff;
     updateGridClass();
     updateBestDisplay();
-    startGame();
+    setupPreview();
   });
 });
 
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('hintBtn').addEventListener('click', useHint);
-document.getElementById('playAgainBtn').addEventListener('click', startGame);
+document.getElementById('playAgainBtn').addEventListener('click', () => {
+  winModal.classList.remove('visible');
+  setupPreview();
+});
+document.getElementById('restartBtn').addEventListener('click', setupPreview);
+
 
 // ── Utility Helpers ───────────────────────────────────────
 
@@ -125,64 +130,72 @@ function stopTimer() {
 }
 
 // ── Game Start ────────────────────────────────────────────
-
-/**
- * Initialise and start a fresh game
- */
-function startGame() {
+function setupPreview() {
   const cfg = DIFFICULTIES[difficulty];
 
-  // Stop any running timer and hide modal
   stopTimer();
   winModal.classList.remove('visible');
+
+  cards = [];
+  flipped = [];
+  matched = [];
+  moves = 0;
+  seconds = 0;
   hintUsed = false;
 
-  // Reset all state
-  cards     = [];
-  flipped   = [];
-  matched   = [];
-  moves     = 0;
   gameActive = false;
-  lockBoard  = false;
+  lockBoard = true;
 
-  // Reset UI
-  movesEl.textContent    = '0';
-  pairsEl.textContent    = `0/${cfg.pairs}`;
+  movesEl.textContent = '0';
+  timerEl.textContent = '0:00';
+  timerEl.className = 'stat-value';
+
+  pairsEl.textContent = `0/${cfg.pairs}`;
   progressEl.style.width = '0%';
-  timerEl.textContent    = '0:00';
-  timerEl.className      = 'stat-value';
 
   updateGridClass();
   updateBestDisplay();
 
-  // Build and shuffle deck
   const pool = shuffle(EMOJIS).slice(0, cfg.pairs);
   const deck = shuffle([...pool, ...pool]);
 
-  // Render cards
   grid.innerHTML = '';
+
   deck.forEach((emoji, i) => {
     const card = document.createElement('div');
-    card.className      = 'card';
-    card.dataset.emoji  = emoji;
-    card.dataset.idx    = i;
-    card.innerHTML      = `
+
+    card.className = 'card flipped';
+
+    card.dataset.emoji = emoji;
+    card.dataset.idx = i;
+
+    card.innerHTML = `
       <div class="card-inner">
         <div class="card-face card-back"></div>
         <div class="card-face card-front">${emoji}</div>
-      </div>`;
+      </div>
+    `;
+
     card.addEventListener('click', () => onCardClick(card));
+
     grid.appendChild(card);
     cards.push(card);
   });
+}
+/**
+ * Initialise and start a fresh game
+ */
+function startGame() {
+  cards.forEach(card => {
+    card.classList.remove('flipped');
+  });
 
-  // Brief peek — show all cards, then flip them back
-  cards.forEach(c => c.classList.add('flipped'));
-  setTimeout(() => {
-    cards.forEach(c => c.classList.remove('flipped'));
-    gameActive = true;
-    startTimer();
-  }, 900);
+  flipped = [];
+
+  gameActive = true;
+  lockBoard = false;
+
+  startTimer();
 }
 
 // ── Card Interaction ──────────────────────────────────────
@@ -356,4 +369,5 @@ function launchConfetti() {
 
 // ── Initialise ────────────────────────────────────────────
 updateBestDisplay();
-startGame();
+updateGridClass();
+setupPreview();
