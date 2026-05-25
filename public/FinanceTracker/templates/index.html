@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- ============================================================
+       FINTRACK - Finance Tracker Application
+       A modern, single-page finance dashboard application.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FinTrack - A modern personal finance tracker to manage transactions, budgets, and analytics.">
+  <title>FinTrack - Finance Tracker</title>
+
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       APP SHELL — Sidebar + Main Content Area
+       ============================================================ -->
+  <div class="app-container">
+
+    <!-- ======================== SIDEBAR ======================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">Finance Tracker</div>
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+      </div>
+      <nav class="sidebar-nav">
+        <!-- Each nav link has a data-section attribute matching a section ID -->
+        <a class="nav-link active" data-section="dashboard">
+          <span class="nav-icon"></span>Dashboard
+        </a>
+        <a class="nav-link" data-section="transactions">
+          <span class="nav-icon"></span>Transactions
+        </a>
+        <a class="nav-link" data-section="analytics">
+          <span class="nav-icon"></span>Analytics
+        </a>
+        <a class="nav-link" data-section="budgets">
+          <span class="nav-icon"></span>Budgets
+        </a>
+        <a class="nav-link" data-section="import">
+          <span class="nav-icon"></span>Import CSV
+        </a>
+        <a class="nav-link" data-section="export">
+          <span class="nav-icon"></span> Export Charts
+        </a>
+        <a class="nav-link" data-section="settings">
+          <span class="nav-icon"></span> Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT ====================== -->
+    <main class="main-content">
+
+      <!-- ========================================================
+           SECTION 1: DASHBOARD
+           Shows financial overview with stats, top category,
+           and recent transactions.
+           ======================================================== -->
+      <section class="section active" id="dashboard-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Financial Overview</p>
+          </div>
+        </div>
+
+        <!-- Stat Cards Grid -->
+        <div class="stats-grid">
+          <!-- Total Income -->
+          <div class="card stat-card stat-income">
+            <div class="stat-icon">📈</div>
+            <div class="stat-info">
+              <span class="stat-label">Total Income</span>
+              <span class="stat-value" id="total-income">$0.00</span>
+            </div>
+          </div>
+          <!-- Total Expense -->
+          <div class="card stat-card stat-expense">
+            <div class="stat-icon">📉</div>
+            <div class="stat-info">
+              <span class="stat-label">Total Expense</span>
+              <span class="stat-value" id="total-expense">$0.00</span>
+            </div>
+          </div>
+          <!-- Total Savings -->
+          <div class="card stat-card stat-savings">
+            <div class="stat-icon">💰</div>
+            <div class="stat-info">
+              <span class="stat-label">Total Savings</span>
+              <span class="stat-value" id="total-savings">$0.00</span>
+            </div>
+          </div>
+          <!-- Transaction Count -->
+          <div class="card stat-card stat-count">
+            <div class="stat-icon">📋</div>
+            <div class="stat-info">
+              <span class="stat-label">Transactions</span>
+              <span class="stat-value" id="transaction-count">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Spending Category -->
+        <div class="card top-category-card">
+          <h3 class="card-title">Top Spending Category</h3>
+          <div id="top-category">
+            <p class="empty-text">No data available</p>
+          </div>
+        </div>
+
+        <!-- Recent Transactions Table -->
+        <div class="card">
+          <h3 class="card-title">Recent Transactions</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Type</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody id="recent-transactions-body">
+                <!-- Populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: TRANSACTION -->
+      <section class="section" id="transactions-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Transactions</h1>
+            <p class="page-subtitle">Manage your transactions</p>
+          </div>
+          <button class="btn btn-primary" id="add-transaction-btn">+ Add Transaction</button>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="card filter-bar">
+          <div class="filter-group">
+            <input type="text" class="form-control" id="transaction-search" placeholder="Search transactions...">
+          </div>
+          <div class="filter-group">
+            <select class="form-control" id="transaction-category-filter">
+              <option value="">All Categories</option>
+              <!-- Populated by JavaScript -->
+            </select>
+          </div>
+          <div class="filter-group">
+            <select class="form-control" id="transaction-type-filter">
+              <option value="">All Types</option>
+              <option value="Income">Income</option>
+              <option value="Expense">Expense</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <select class="form-control" id="transaction-sort">
+              <option value="date-desc">Date (Newest)</option>
+              <option value="date-asc">Date (Oldest)</option>
+              <option value="amount-desc">Amount (High-Low)</option>
+              <option value="amount-asc">Amount (Low-High)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Type</th>
+                  <th>Category</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-table-body">
+                <!-- Populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Empty State -->
+          <div class="empty-state" id="transactions-empty" style="display:none;">
+            <div class="empty-icon">💳</div>
+            <p class="empty-text">No transactions found</p>
+            <p class="empty-subtext">Add your first transaction to get started!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+           SECTION 3: ANALYTICS
+           Chart.js visualizations for financial data.
+            -->
+      <section class="section" id="analytics-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Analytics</h1>
+            <p class="page-subtitle">Visual insights into your finances</p>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+          <!-- Expense by Category (Doughnut) -->
+          <div class="card chart-card">
+            <h3 class="card-title">Expense by Category</h3>
+            <div class="chart-container">
+              <canvas id="category-chart"></canvas>
+            </div>
+          </div>
+          <!-- Monthly Expenses (Bar) -->
+          <div class="card chart-card">
+            <h3 class="card-title">Monthly Expenses</h3>
+            <div class="chart-container">
+              <canvas id="monthly-chart"></canvas>
+            </div>
+          </div>
+          <!-- Income vs Expense (Grouped Bar) -->
+          <div class="card chart-card">
+            <h3 class="card-title">Income vs Expense</h3>
+            <div class="chart-container">
+              <canvas id="income-expense-chart"></canvas>
+            </div>
+          </div>
+          <!-- Savings Trend (Line) -->
+          <div class="card chart-card">
+            <h3 class="card-title">Savings Trend</h3>
+            <div class="chart-container">
+              <canvas id="savings-chart"></canvas>
+            </div>
+          </div>
+          <!-- Income Sources (Doughnut) -->
+          <div class="card chart-card">
+            <h3 class="card-title">Income Sources</h3>
+            <div class="chart-container">
+              <canvas id="income-sources-chart"></canvas>
+            </div>
+          </div>
+          <!-- Daily Spending (Line - Last 30 Days) -->
+          <div class="card chart-card">
+            <h3 class="card-title">Daily Spending (30 Days)</h3>
+            <div class="chart-container">
+              <canvas id="daily-spending-chart"></canvas>
+            </div>
+          </div>
+          <!-- Top 5 Spending Categories (Horizontal Bar) -->
+          <div class="card chart-card chart-card-wide">
+            <h3 class="card-title">Top 5 Spending Categories</h3>
+            <div class="chart-container">
+              <canvas id="top-categories-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--
+           SECTION 4: BUDGETS
+            -->
+      <section class="section" id="budgets-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Budget Manager</h1>
+            <p class="page-subtitle">Set and track your budgets</p>
+          </div>
+        </div>
+
+        <!-- Budget Form -->
+        <div class="card budget-form-card">
+          <h3 class="card-title">Set Budget</h3>
+          <form id="budget-form" class="budget-form">
+            <div class="form-group">
+              <label for="budget-category">Category</label>
+              <select class="form-control" id="budget-category" required>
+                <option value="">Select Category</option>
+                <!-- Populated by JavaScript -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="budget-amount">Budget Amount</label>
+              <input type="number" class="form-control" id="budget-amount" placeholder="Enter amount" step="0.01" min="0" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Set Budget</button>
+          </form>
+        </div>
+
+        <!-- Budget Cards List -->
+        <div id="budgets-list" class="budgets-grid">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="budgets-empty" style="display:none;">
+          <div class="empty-icon">🎯</div>
+          <p class="empty-text">No budgets set</p>
+          <p class="empty-subtext">Set your first budget to start tracking spending!</p>
+        </div>
+      </section>
+
+      <!-- SECTION 5: IMPORT CSV -->
+      <section class="section" id="import-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Import CSV</h1>
+            <p class="page-subtitle">Import transactions from a CSV file</p>
+          </div>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="card">
+          <h3 class="card-title">Upload CSV File</h3>
+          <div class="upload-area">
+            <div class="upload-icon">📁</div>
+            <p>Select a CSV file to import transactions</p>
+            <input type="file" class="form-control" id="csv-file-input" accept=".csv">
+            <button class="btn btn-primary" id="csv-upload-btn">Upload &amp; Import</button>
+          </div>
+          <div class="format-hint">
+            <p><strong>Expected CSV format:</strong></p>
+            <code>Date, Description, Amount, Type, Category</code>
+            <p class="hint-example">Example: 2024-01-15, Grocery Shopping, 45.50, Expense, Food</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+           SECTION 6: EXPORT CHARTS
+            -->
+      <section class="section" id="export-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Export Charts</h1>
+            <p class="page-subtitle">Download your financial charts as images</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Select Charts to Export</h3>
+          <p class="export-description">Choose which charts you'd like to download. Charts will be exported in the selected format.</p>
+
+          <!-- Checkbox Options -->
+          <div class="export-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="export-category" checked> Expense by Category
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="export-monthly" checked> Monthly Expenses
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="export-income-expense" checked> Income vs Expense
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="export-savings" checked> Savings Trend
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="export-income-sources" checked> Income Sources
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="export-daily-spending" checked> Daily Spending
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="export-top-categories" checked> Top 5 Categories
+            </label>
+          </div>
+
+          <!-- Select / Deselect All -->
+          <div class="export-actions">
+            <button class="btn btn-secondary" id="select-all-btn">Select All</button>
+            <button class="btn btn-secondary" id="deselect-all-btn">Deselect All</button>
+          </div>
+
+          <!-- Format -->
+          <div class="form-group">
+            <label for="export-format">Export Format</label>
+            <select class="form-control" id="export-format">
+              <option value="png">PNG</option>
+            </select>
+          </div>
+
+          <!-- Download Button -->
+          <button class="btn btn-primary" id="export-download-btn">📥 Download Charts</button>
+        </div>
+      </section>
+
+      <!-- 
+           SECTION 7: SETTINGS
+            -->
+      <section class="section" id="settings-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Customize your experience</p>
+          </div>
+        </div>
+
+        <!-- Theme Card -->
+        <div class="card settings-card">
+          <h3 class="card-title">Theme</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label">Dark Mode</span>
+              <span class="setting-description">Toggle between light and dark themes</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="theme-toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Currency Card -->
+        <div class="card settings-card">
+          <h3 class="card-title">Currency</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label">Display Currency</span>
+              <span class="setting-description">Choose your preferred currency symbol</span>
+            </div>
+            <select class="form-control" id="currency-select" style="width: auto; min-width: 140px;">
+              <option value="$">USD ($)</option>
+              <option value="€">EUR (€)</option>
+              <option value="£">GBP (£)</option>
+              <option value="₹">INR (₹)</option>
+              <option value="¥">JPY (¥)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Data Management Card -->
+        <div class="card settings-card">
+          <h3 class="card-title">Data Management</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label">Export Data</span>
+              <span class="setting-description">Download all your transaction data as CSV</span>
+            </div>
+            <button class="btn btn-primary" id="export-data-btn">📤 Export Data</button>
+          </div>
+          <div class="setting-row danger-zone">
+            <div class="setting-info">
+              <span class="setting-label">Reset All Data</span>
+              <span class="setting-description">⚠️ This will permanently delete all your transactions, budgets, and settings. This action cannot be undone.</span>
+            </div>
+            <button class="btn btn-danger" id="reset-data-btn">🗑️ Reset All Data</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 
+       TRANSACTION MODAL
+        -->
+  <div class="modal-overlay" id="transaction-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">Add Transaction</h3>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <form id="transaction-form">
+        <input type="hidden" id="transaction-id">
+        <div class="form-group">
+          <label for="form-date">Date</label>
+          <input type="date" id="form-date" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="form-description">Description</label>
+          <input type="text" id="form-description" class="form-control" placeholder="Enter description" required>
+        </div>
+        <div class="form-group">
+          <label for="form-amount">Amount</label>
+          <input type="number" id="form-amount" class="form-control" step="0.01" min="0" placeholder="0.00" required>
+        </div>
+        <div class="form-group">
+          <label for="form-type">Type</label>
+          <select id="form-type" class="form-control" required>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="form-category">Category</label>
+          <select id="form-category" class="form-control" required>
+            <!-- Populated by JavaScript based on selected type -->
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="modal-submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 
+       TOAST NOTIFICATION CONTAINER
+        -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- 
+       LOADING SPINNER OVERLAY-->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- 
+       CONFIRM DIALOG MODAL -->
+  <div class="modal-overlay" id="confirm-modal">
+    <div class="modal confirm-modal">
+      <div class="modal-header">
+        <h3>Confirm Action</h3>
+      </div>
+      <p id="confirm-message">Are you sure?</p>
+      <div class="form-actions">
+        <button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+        <button class="btn btn-danger" id="confirm-ok">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application JavaScript -->
+  <script src="/static/js/app.js" defer></script>
+</body>
+</html>
