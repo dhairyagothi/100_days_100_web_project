@@ -13,138 +13,218 @@
     rel="stylesheet"
   />
 
-  <body>
-    <div class="card">
-      <div class="container1">
-        <img
-          src="logo/Adobe Express - file.png"
-          alt="Profile picture"
-          class="image"
-        />
-      </div>
-      <div class="container2">
-        <h1 class="heading">Krishna Bhati</h1>
-        <p class="subhead">Ui/Ux Designer</p>
-        <p class="info">
-          Hardworking and reliable UI/UXdesigner focused on going above and
-          beyond to support teams and serve customers. Currently undergoing a
-          self-taught process to enable me offer top-notch abilities. Motivated
-          to continue to learn and grow as a product design professional.
-        </p>
+<body>
 
-        <div class="profile">
-          <a href="#">
-            <img
-              src="logo/facebook-logo.svg"
-              alt="Facebook Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/linkedin-svgrepo-com (1).svg"
-              alt="LinkedIn Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/github-142-svgrepo-com.svg"
-              alt="GitHub Profile"
-              class="logo git"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/twitter-svgrepo-com.svg"
-              alt="Twitter Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/leetcode-svgrepo-com.svg"
-              alt="LeetCode Profile"
-              class="logo leet"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/instagram-svgrepo-com.svg"
-              alt="Instagram Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/night-mode-svgrepo-com.svg"
-              alt="Enable Dark Mode"
-              class="logo darkmode"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/sun-svgrepo-com.svg"
-              alt="Enable Light Mode"
-              class="logo lightmode"
-            />
-          </a>
-        </div>
-        <button class="btn">Buy me a coffee</button>
-      </div>
+<nav class="navbar">
+    <div class="logo">
+        <h2>3D Profile Card Generator ✨</h2>
+        <p>Customize your profile, preview in real-time and download</p>
     </div>
-    <script>
-      let btn = document.querySelector('.darkmode');
-      let lightbtn = document.querySelector('.lightmode');
-      let currmode = 'light';
-      function changeMode() {
-        if (currmode == 'light') {
-          currmode = 'dark';
-          //    document.querySelector(".lightmode").style.display="block";
-          document.querySelector('.container1').style.backgroundColor = 'grey';
-          document.querySelector('.container2').style.backgroundColor = 'black';
-          document.querySelector('.image').style.backgroundColor = 'grey';
-          if (window.matchMedia('(max-width:1098px)').matches) {
-            document.querySelector('.image').style.background =
-              'linear-gradient(#222,#000)';
-          }
-          document.querySelector('.heading').style.color = 'white';
-          document.querySelector('.info').style.color = 'white';
-          document.querySelector('.btn').style.color = 'black';
-          document.querySelector('.git').style.filter = 'invert(1)';
-          document.querySelector('.leet').style.filter = 'invert(1)';
-          btn.style.display = 'none';
-          lightbtn.style.display = 'block';
-        } else {
-          currmode = 'light';
-          lightbtn.style.display = 'none';
-          btn.style.display = 'block';
-          // document.querySelector(".lightmode").style.display="none";
-          document.querySelector('.container1').style.backgroundColor =
-            '#f2d5ed';
-          document.querySelector('.container2').style.backgroundColor =
-            '#f5e0f2';
-          document.querySelector('.image').style.backgroundColor = '#f2d5ed';
-          if (window.matchMedia('(max-width:1098px)').matches) {
-            document.querySelector('.image').style.background =
-              'linear-gradient(#9ad7ff 0%, #fecfef 99%, #fecfef 100%)';
-          }
-          document.querySelector('.heading').style.color = 'black';
-          document.querySelector('.info').style.color = 'black';
-          document.querySelector('.btn').style.color = 'white';
-          document.querySelector('.git').style.filter = 'invert(0)';
-          document.querySelector('.leet').style.filter = 'invert(0)';
-        }
-      }
-      btn.addEventListener('click', changeMode);
-      lightbtn.addEventListener('click', changeMode);
-    </script>
+
+    <div class="nav-right">
+        <div class="theme-section">
+            <span>Theme</span>
+
+            <div class="theme pink"></div>
+            <div class="theme dark"></div>
+            <div class="theme blue"></div>
+            <div class="theme purple"></div>
+            <div class="theme green"></div>
+        </div>
+
+        <button class="mode-btn">☾</button>
+    </div>
+</nav>
+
+<div class="main-layout">
+<!-- card -->
+ <div class="left-section">
+    <div class="card">
+        <div class="container1">
+            <img src="logo/Adobe Express - file.png" alt="" class="image">
+        </div>
+        <div class="container2">
+            <h1 class="heading" id="card-name">Krishna Bhati</h1>
+            <p class="subhead" id="card-role">Ui/Ux Designer</p>
+            <p class="info" id="card-bio">Hardworking and reliable UI/UXdesigner focused on going above and beyond to support teams
+                and serve customers. Currently undergoing a self-taught process to enable me offer top-notch abilities.
+                Motivated to continue to learn and grow as a product design professional.</p>
+            <div class="profile">
+                <a href="#"><img src="logo/facebook-logo.svg" class="logo"></a>
+                <a href="#"><img src="logo/linkedin-svgrepo-com (1).svg" alt="" class="logo"></a>
+                <a href="#"><img src="logo/github-142-svgrepo-com.svg" alt="" class="logo git"></a>
+                <a href="#"><img src="logo/twitter-svgrepo-com.svg" alt="" class="logo"></a>
+                <a href="#"><img src="logo/leetcode-svgrepo-com.svg" alt="" class="logo leet"></a>
+                <a href="#"><img src="logo/instagram-svgrepo-com.svg" alt="" class="logo"></a>
+                <a href="#"><img src="logo/night-mode-svgrepo-com.svg" class="logo darkmode"></a>
+                <a href="#"><img src="logo/sun-svgrepo-com.svg" class="logo lightmode"></a>
+            </div>
+            <button class="btn">Lets Connect!!</button>
+        </div>
+    </div>
+
+        
+<!-- FEATURES SECTION -->
+<section class="features-section">
+
+    <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+
+        <h3>Theme Customization</h3>
+
+        <p>
+            Switch between beautiful themes and
+            personalize your profile card colors instantly.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+
+        <h3>Live Preview</h3>
+
+        <p>
+            See profile updates in real-time while editing
+            your information from the sidebar.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">📱</div>
+
+        <h3>Responsive Design</h3>
+
+        <p>
+            Fully optimized for desktop, tablet and mobile
+            devices with smooth layouts.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">💾</div>
+
+        <h3>Save Preferences</h3>
+
+        <p>
+            Store themes and profile details using
+            localStorage for a seamless experience.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🖼️</div>
+
+        <h3>Download Card</h3>
+
+        <p>
+            Export your beautiful profile card as an image
+            and share it anywhere easily.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+
+        <h3>Modern UI</h3>
+
+        <p>
+            Clean glassmorphism inspired design with
+            modern animations and effects.
+        </p>
+    </div>
+
+</section>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+ <h2>Customize Profile</h2>
+  <!-- NAME -->
+<div class="input-box">
+    <label>Full Name</label>
+    <input type="text" id="name-input" placeholder="Enter your name">
+</div>
+
+<!-- ROLE -->
+<div class="input-box">
+    <label>Role / Title</label>
+    <input type="text" id="role-input" placeholder="Frontend Developer">
+</div>
+
+<!-- BIO -->
+<div class="input-box">
+    <label>Bio</label>
+    <textarea id="bio-input"
+    placeholder="Write something about yourself"></textarea>
+</div>
+
+    <!-- IMAGE -->
+  <div class="input-box">
+    <label>Profile Image</label>
+ <div class="upload-section">
+ <!-- SIDEBAR IMAGE -->
+        <img src="https://i.pravatar.cc/100"
+        alt="profile"
+        id="preview-image">
+
+        <!-- BUTTON -->
+        <button id="upload-btn">
+            Upload Image
+        </button>
+
+        <!-- HIDDEN FILE INPUT -->
+        <input type="file"
+        id="image-input"
+        accept="image/*"
+        hidden>
+
+    </div>
+</div>
+
+    <!-- SOCIAL LINKS -->
+    <div class="input-box">
+        <label>Social Links</label>
+
+        <input type="text" placeholder="GitHub Link">
+        <input type="text" placeholder="LinkedIn Link">
+        <input type="text" placeholder="Instagram Link">
+    </div>
+
+    <!-- COLORS -->
+    <div class="input-box">
+        <label>Theme Color</label>
+        <div class="theme-colors">
+            <span class="color pink"></span>
+            <span class="color blue"></span>
+            <span class="color purple"></span>
+            <span class="color green"></span>
+            <span class="color orange"></span>
+        </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="sidebar-buttons">
+        <button class="reset-btn">Reset</button>
+        <button class="save-btn" id="save-btn">Save Changes</button>
+    </div>
+
+    <div class="feedback-section">
+    <h3>Rate this Generator</h3>
+    <div class="stars">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+    </div>
+    <textarea placeholder="Leave a quick feedback..."></textarea>
+    <button class="submit-feedback-btn">Submit Feedback</button>
+</div>
+</div>
+</div>
+
+      <script src="script.js"></script>
+  
   </body>
+
 </html>
