@@ -82,11 +82,8 @@ const PROJECT_DATA = [
   ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
   ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
   ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
-  ['Day 18',
-    'Carousel Solar System',
-    './public/Carousel%20Solar%20System/index.html',
-    'css canvas',
-    'intermediate'],
+
+  ['Day 18', 'Carousel Solar System', './public/Carousel%20Solar%20System/index.html', 'css canvas', 'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
   ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
   ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', 'javascript', 'intermediate'],
@@ -190,7 +187,7 @@ const PROJECT_DATA = [
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
   ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', 'tool', 'intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', 'html css javascript api-javascript', 'Advanced'],
+  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', 'html css javascript api-javascript', 'advanced'],
   ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
   ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
   ['Day 125', 'Snakeladder', './public/snakeladder/index.html', 'game', 'intermediate'],
@@ -475,6 +472,9 @@ function generateReadme() {
    ============================================================ */
 let activeFilter = 'all';
 let searchQuery = '';
+
+let activeDifficulty = 'all';
+
 let sortOption = 'default';
 let techStackFilter = 'all';
 let difficultyFilter = 'all';
@@ -484,8 +484,12 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
+
+  const filtered = PROJECTS.filter(([day, name, , tags, difficulty]) => {
+
   const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
+
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
     const matchesFilter = activeFilter === 'all' || category === targetCategory;
@@ -511,7 +515,20 @@ function renderGrid() {
       matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
     }
 
+
+    const matchesDifficulty =
+      activeDifficulty === 'all' ||
+      difficulty.toLowerCase() === activeDifficulty;
+
+    return (
+      matchesFilter &&
+      matchesSearch &&
+      matchesTech &&
+      matchesDifficulty
+    );
+
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
+
   });
 
   // Apply sorting
@@ -554,7 +571,7 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags]) => {
+  pageItems.forEach(([day, name, url, tags, difficulty]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
 
@@ -576,6 +593,9 @@ function renderGrid() {
             <div class="card-meta">
                 <span class="card-day">${day}</span>
                 <span class="card-category">${category}</span>
+<span class="card-difficulty ${difficulty}">
+  ${difficulty}
+</span>
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
@@ -978,6 +998,32 @@ function initFilterChips() {
 }
 
 /* ============================================================
+   DIFFICULTY FILTERS
+   ============================================================ */
+function initDifficultyFilters() {
+  const buttons = document.querySelectorAll('.difficulty-chip');
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+
+      buttons.forEach((btn) => {
+        btn.classList.remove('active');
+      });
+
+      button.classList.add('active');
+
+      activeDifficulty = button.dataset.difficulty.toLowerCase();
+
+      currentPage = 1;
+
+      renderGrid();
+    });
+  });
+}
+
+/* ============================================================
+   LIVE SEARCH
+
    LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
 function debounce(fn, delay = 300) {
@@ -1060,7 +1106,15 @@ function initTechStackSearch() {
 
       if (value) {
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+
+
+        techStackFilters = [...new Set(
+          techs.map(tech => normalizeTech(tech))
+        )];
+
+
         techStackFilters = [...new Set(techs)];
+
         updateTechFilterDisplay();
         currentPage = 1;
         renderGrid();
@@ -1253,10 +1307,11 @@ function hasProjectGrid() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  getAllTechnologies();
   initTheme();
   updateNavbar();
-
   initFilterChips();
+  initDifficultyFilters();
   initSearch();
   initSorting();
   initTechStackSearch();

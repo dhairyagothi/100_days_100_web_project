@@ -52,6 +52,12 @@
             <strong>100 Days · 100 Web Projects</strong>
           </span>
         </a>
+        <div class="nav-buttons" id="navButtons">
+            <!-- populated by JS -->
+        </div>
+    </nav>
+
+
 
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
           <i class="fas fa-bars" aria-hidden="true"></i>
@@ -61,6 +67,7 @@
       </div>
     </nav>
   </header>     
+
     <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
@@ -162,6 +169,96 @@
         <h2 class="section-title">Every experiment, catalogued.</h2>
       </div>
 
+
+        <div class="projects-header">
+          <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search projects…"
+              autocomplete="off"
+            />
+
+            <!-- ADD THIS BUTTON -->
+            <button
+              id="clearSearch"
+              class="clear-btn"
+              aria-label="Clear search"
+              type="button"
+            >
+              &times;
+            </button>
+          </div>
+
+          <!-- Technology Stack Search -->
+          <div class="search-bar tech-search-bar">
+            <i class="fas fa-code search-icon"></i>
+            <input
+              type="text"
+              id="techStackSearch"
+              class="search-input"
+              placeholder="Filter by tech stack (React, Node.js, Python...)"
+              autocomplete="off"
+            />
+            <button id="clearTechFilter" class="clear-filter-btn" style="display: none;" aria-label="Clear tech filters">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <!-- Active Tech Filters Display -->
+          <div id="activeTechFilters" class="active-tech-filters" style="display: none;">
+            <span class="filter-label">Active filters:</span>
+            <div id="techFilterTags"></div>
+          </div>
+
+          <div class="filter-chips" id="filterChips">
+            <button class="chip active" data-filter="all" id="filterAll">
+              All <span class="chip-count" id="allCount">Projects</span>
+            </button>
+            <button class="chip" data-filter="game" id="filterGame">
+              Games
+            </button>
+            <button class="chip" data-filter="clone" id="filterClone">
+              Clones
+            </button>
+            <button class="chip" data-filter="tool" id="filterTool">
+              Tools
+            </button>
+            <button class="chip" data-filter="ui" id="filterUI">
+              UI / Animation
+            </button>
+            <button class="chip" data-filter="api" id="filterAPI">APIs</button>
+          </div>
+          <div class="difficulty-filters" id="difficultyFilters">
+            <button class="chip difficulty-chip active" data-difficulty="all">
+              All Levels
+            </button>
+          
+            <button class="chip difficulty-chip" data-difficulty="beginner">
+              Beginner
+            </button>
+          
+            <button class="chip difficulty-chip" data-difficulty="intermediate">
+              Intermediate
+            </button>
+          
+            <button class="chip difficulty-chip" data-difficulty="advanced">
+              Advanced
+            </button>
+          </div>
+        </div>
+
+
+        <div class="project-grid" id="projectGrid"></div>
+
+      <div class="no-results" id="noResults">
+        <i class="fas fa-search"></i>
+        <p>No projects match your search.</p>
+      </div>
+
       <div class="projects-header">
         <div class="search-bar">
           <i class="fas fa-search search-icon"></i>
@@ -236,6 +333,7 @@
     <div class="no-results" id="noResults">
       <i class="fas fa-search"></i>
       <p>No projects match your search.</p>
+
     </div>
   </div>
 </section>

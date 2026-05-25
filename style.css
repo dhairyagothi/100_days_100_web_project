@@ -949,6 +949,33 @@ color: var(--text-primary);
   opacity: 0.7;
 }
 
+.chip-count {
+  margin-left: 0.45rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.12);
+  color: inherit;
+}
+
+
+.difficulty-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.difficulty-chip {
+  transition: all 0.2s ease;
+}
+
+.difficulty-chip.active {
+  background: var(--accent-color, #6366f1);
+  color: #fff;
+}
+
 /* ── Project Card Grid ── */
 .project-grid {
   display: grid;
