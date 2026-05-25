@@ -90,6 +90,19 @@ function setupDatePickerBehavior() {
     dateInput.addEventListener('click', function () {
         this.showPicker();
     });
+
+    // Prevent future dates immediately after selection
+    dateInput.addEventListener('change', function () {
+        const today = new Date().toISOString().split('T')[0];
+
+        if (this.value > today) {
+            this.value = '';
+            errorElements.date.textContent =
+                'Future dates are not allowed.';
+        } else {
+            errorElements.date.textContent = '';
+        }
+    });
 }
 
 // Format money with rupee symbol
