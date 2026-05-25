@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedConsult</title>
+    <title>MedConsult Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
+
 <body>
-    <header>
-        <br>
-        <br>
-        <h1>MedConsult</h1>
+
+<header class="hero">
+    <div class="hero-content">
+        <h1>🏥 MedConsult Dashboard</h1>
         <p>Connecting Local Doctors with Specialists</p>
     </header>
     <main>
         <section id="consultation-form">
             <h2 >Request a Consultation</h2>
             <form id="requestForm">
+                <label for="patientName">Patient's Name:</label>
+                <input type="text" id="patientName" name="patientName" required placeholder="Patient's Name">
                 <label for="doctorName">Doctor's Name:</label>
                 <input type="text" id="doctorName" name="doctorName" required placeholder="Doctor's Name">
 
@@ -45,7 +47,7 @@
                 <label for="suggestion">Your Suggestion:</label>
                 <textarea id="suggestion" name="suggestion" required></textarea>
 
-                <button type="submit">Submit Suggestion</button>
+                <button type="submit" class="feed">Submit Suggestion</button>
             </form>
         </section>
         <section id="consultation-history">
@@ -65,4 +67,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-<!-- 🧘🏼‍♀️🧘🏼‍♀️ 👨🏼‍⚕️👨🏼‍⚕️ -->

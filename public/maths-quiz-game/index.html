@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths Quiz Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="difficulty-screen">
+            <h1>Maths Quiz Game</h1>
+            <p>Select Difficulty:</p>
+            <button onclick="startGame('easy')">Easy</button>
+            <button onclick="startGame('medium')">Medium</button>
+            <button onclick="startGame('hard')">Hard</button>
+        </div>
+        <div id="game-screen" style="display: none;">
+            <h1>Maths Quiz Game</h1>
+            <div id="score-container">Score: <span id="score">0</span></div>
+            <div id="timer">Time: 30s</div>
+            <div id="question-box">Loading question...</div>
+            <div id="options-box" class="options-grid"></div>
+        </div>
+        <div id="gameover-screen" style="display: none;">
+            <h1>Game Over!</h1>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <p>High Score: <span id="final-high-score">0</span></p>
+            <button onclick="backToMenu()">Play Again</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

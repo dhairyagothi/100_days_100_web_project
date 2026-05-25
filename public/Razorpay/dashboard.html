@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Razorpay Merchant Analytics Dashboard</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            mullish: ["Mulish", "sans-serif"],
+          },
+          colors: {
+            deepBlue: "#02042a",
+            deepDark: "#090d22",
+            cardDark: "#11183c",
+            cardDarkHover: "#161f4c",
+            borderDark: "#232e60",
+            lightBlue: "#2b84ea",
+            lightBlue300: "#4b94ed",
+            lightBlue500: "#0b72e7",
+            greenLight: "#61cea6",
+            redLight: "#ff6b6b",
+            grayText: "#818597",
+            lightGray: "#e2e2e2",
+            grayBlue: "#344a6c",
+            deepBlueHead: "#162f56",
+            gray2: "#525a76",
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: 'Mulish', sans-serif;
+    }
+    /* Custom scrollbar for webkit */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090d22;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232e60;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2b84ea;
+    }
+  </style>
+</head>
+
+<body class="bg-deepDark text-slate-100 min-h-screen flex flex-col md:flex-row overflow-x-hidden">
+
+  <!-- Sidebar -->
+  <aside class="w-full md:w-64 bg-deepBlue border-b md:border-b-0 md:border-r border-borderDark flex flex-col justify-between shrink-0">
+    <div>
+      <!-- Brand Logo -->
+      <div class="p-6 border-b border-borderDark flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2">
+          <img src="./img/logo.svg" alt="Razorpay" class="h-8">
+          <span class="text-xs uppercase bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold tracking-wider">Live</span>
+        </a>
+        <button id="mobileMenuBtn" class="md:hidden text-slate-300 hover:text-white">
+          <i data-feather="menu"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav id="sidebarNav" class="hidden md:block p-4 space-y-1">
+        <button onclick="switchTab('overview')" id="btn-overview" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-cardDark transition-all duration-200 text-left font-semibold border-l-4 border-transparent">
+          <i data-feather="grid" class="w-5 h-5 text-lightBlue"></i>
+          Overview
+        </button>
+        <button onclick="switchTab('transactions')" id="btn-transactions" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-cardDark transition-all duration-200 text-left font-semibold border-l-4 border-transparent">
+          <i data-feather="list" class="w-5 h-5 text-lightBlue"></i>
+          Transactions
+        </button>
+        <button onclick="switchTab('simulator')" id="btn-simulator" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-cardDark transition-all duration-200 text-left font-semibold border-l-4 border-transparent">
+          <i data-feather="activity" class="w-5 h-5 text-lightBlue"></i>
+          Simulator
+        </button>
+        <button onclick="switchTab('insights')" id="btn-insights" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-cardDark transition-all duration-200 text-left font-semibold border-l-4 border-transparent">
+          <i data-feather="trending-up" class="w-5 h-5 text-lightBlue"></i>
+          Insights
+        </button>
+      </nav>
+    </div>
+
+    <!-- Quick Footer inside Sidebar -->
+    <div class="hidden md:block p-4 border-t border-borderDark text-xs text-grayText space-y-3">
+      <div class="flex items-center justify-between">
+        <span>API Sandbox</span>
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      </div>
+      <a href="index.html" class="flex items-center justify-center gap-2 w-full py-2 bg-cardDark hover:bg-cardDarkHover border border-borderDark text-slate-300 hover:text-white rounded-md text-xs transition-all duration-200">
+        <i data-feather="arrow-left" class="w-3.5 h-3.5"></i> Back to Landing Page
+      </a>
+    </div>
+  </aside>
+
+  <!-- Mobile menu dropdown -->
+  <div id="mobileMenu" class="hidden md:hidden bg-deepBlue border-b border-borderDark p-4 space-y-2">
+    <button onclick="switchTab('overview'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-4 py-2 text-slate-300 hover:text-white">
+      <i data-feather="grid" class="w-4 h-4"></i> Overview
+    </button>
+    <button onclick="switchTab('transactions'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-4 py-2 text-slate-300 hover:text-white">
+      <i data-feather="list" class="w-4 h-4"></i> Transactions
+    </button>
+    <button onclick="switchTab('simulator'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-4 py-2 text-slate-300 hover:text-white">
+      <i data-feather="activity" class="w-4 h-4"></i> Simulator
+    </button>
+    <button onclick="switchTab('insights'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-4 py-2 text-slate-300 hover:text-white">
+      <i data-feather="trending-up" class="w-4 h-4"></i> Insights
+    </button>
+    <div class="border-t border-borderDark pt-2 mt-2">
+      <a href="index.html" class="flex items-center gap-3 px-4 py-2 text-slate-400">
+        <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Landing Page
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col min-h-0 bg-deepDark p-6 lg:p-10 space-y-6 overflow-y-auto">
+
+    <!-- Header / Navbar details -->
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-borderDark pb-6">
+      <div>
+        <h1 class="text-2xl lg:text-3xl font-extrabold text-white tracking-tight">Payment Analytics</h1>
+        <p class="text-grayText text-sm mt-1">Get comprehensive reports and simulate payment pipelines instantly.</p>
+      </div>
+
+      <!-- Quick profile / Sandbox Selector -->
+      <div class="flex items-center gap-4">
+        <!-- Date indicator -->
+        <div class="bg-cardDark px-4 py-2 rounded-lg border border-borderDark flex items-center gap-2 text-xs">
+          <i data-feather="calendar" class="w-4 h-4 text-lightBlue"></i>
+          <span class="text-slate-200" id="currentDateRange">Last 7 Days</span>
+        </div>
+        <!-- Live status -->
+        <div class="flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-500/20 text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          Simulated Store Mode
+        </div>
+      </div>
+    </header>
+
+    <!-- TAB 1: OVERVIEW -->
+    <section id="tabContent-overview" class="tab-pane space-y-6">
+      
+      <!-- Statistics Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Stat Card 1 -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl hover:border-lightBlue/40 transition-all duration-300 hover:shadow-lg hover:shadow-lightBlue/5 group relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+            <i data-feather="indian-rupee" class="w-32 h-32 text-lightBlue"></i>
+          </div>
+          <div class="flex items-center justify-between text-grayText text-xs font-semibold uppercase tracking-wider">
+            <span>Total Revenue</span>
+            <span class="p-2 bg-lightBlue/10 rounded-lg text-lightBlue"><i data-feather="dollar-sign" class="w-4 h-4"></i></span>
+          </div>
+          <div class="mt-4 flex items-baseline gap-2">
+            <span class="text-3xl font-bold text-white tracking-tight" id="stat-totalRevenue">₹0.00</span>
+          </div>
+          <p class="text-xs text-emerald-400 mt-2 flex items-center gap-1">
+            <i data-feather="trending-up" class="w-3 h-3"></i>
+            <span>+15.4% vs last week</span>
+          </p>
+        </div>
+
+        <!-- Stat Card 2 -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl hover:border-lightBlue/40 transition-all duration-300 hover:shadow-lg hover:shadow-lightBlue/5 group relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+            <i data-feather="activity" class="w-32 h-32 text-lightBlue"></i>
+          </div>
+          <div class="flex items-center justify-between text-grayText text-xs font-semibold uppercase tracking-wider">
+            <span>Total Transactions</span>
+            <span class="p-2 bg-lightBlue/10 rounded-lg text-lightBlue"><i data-feather="activity" class="w-4 h-4"></i></span>
+          </div>
+          <div class="mt-4 flex items-baseline gap-2">
+            <span class="text-3xl font-bold text-white tracking-tight" id="stat-totalTransactions">0</span>
+          </div>
+          <p class="text-xs text-emerald-400 mt-2 flex items-center gap-1">
+            <i data-feather="trending-up" class="w-3 h-3"></i>
+            <span>+8.2% vs last week</span>
+          </p>
+        </div>
+
+        <!-- Stat Card 3 -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl hover:border-emerald-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/5 group relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+            <i data-feather="check-circle" class="w-32 h-32 text-emerald-400"></i>
+          </div>
+          <div class="flex items-center justify-between text-grayText text-xs font-semibold uppercase tracking-wider">
+            <span>Successful Payments</span>
+            <span class="p-2 bg-emerald-500/10 rounded-lg text-emerald-400"><i data-feather="check" class="w-4 h-4"></i></span>
+          </div>
+          <div class="mt-4 flex items-baseline gap-2">
+            <span class="text-3xl font-bold text-white tracking-tight" id="stat-successPayments">0</span>
+            <span class="text-xs text-emerald-400 font-semibold" id="stat-successRate">(0.0%)</span>
+          </div>
+          <div class="mt-3 w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
+            <div id="stat-successRateBar" class="bg-greenLight h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Stat Card 4 -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl hover:border-red-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/5 group relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+            <i data-feather="alert-circle" class="w-32 h-32 text-redLight"></i>
+          </div>
+          <div class="flex items-center justify-between text-grayText text-xs font-semibold uppercase tracking-wider">
+            <span>Failed Payments</span>
+            <span class="p-2 bg-red-500/10 rounded-lg text-redLight"><i data-feather="x" class="w-4 h-4"></i></span>
+          </div>
+          <div class="mt-4 flex items-baseline gap-2">
+            <span class="text-3xl font-bold text-white tracking-tight" id="stat-failedPayments">0</span>
+            <span class="text-xs text-redLight font-semibold" id="stat-failedRate">(0.0%)</span>
+          </div>
+          <div class="mt-3 w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
+            <div id="stat-failedRateBar" class="bg-redLight h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Charts Section Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Line Chart Container -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl lg:col-span-2">
+          <div class="flex items-center justify-between pb-4 border-b border-borderDark mb-4">
+            <h3 class="font-bold text-white text-lg">Transaction Trends</h3>
+            <div class="flex items-center gap-2">
+              <span class="flex items-center gap-1 text-xs text-lightBlue">
+                <span class="w-2.5 h-2.5 rounded-full bg-lightBlue inline-block"></span> Revenue (₹)
+              </span>
+            </div>
+          </div>
+          <div class="relative h-80">
+            <canvas id="revenueTrendChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Doughnut Chart Container -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl">
+          <div class="flex items-center justify-between pb-4 border-b border-borderDark mb-4">
+            <h3 class="font-bold text-white text-lg">Payment Methods</h3>
+            <span class="text-xs text-grayText">Distribution</span>
+          </div>
+          <div class="relative h-60 flex items-center justify-center">
+            <canvas id="paymentMethodsChart"></canvas>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-4 text-xs" id="paymentMethodLegend">
+            <!-- Dynamic legends go here -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Grid with Stacked Bar & Recent summary -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Stacked Bar Chart -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl">
+          <div class="flex items-center justify-between pb-4 border-b border-borderDark mb-4">
+            <h3 class="font-bold text-white text-lg">Daily Success vs Failure</h3>
+            <span class="text-xs text-grayText">Transaction Counts</span>
+          </div>
+          <div class="relative h-72">
+            <canvas id="statusBreakdownChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Quick Summary Table / List -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl flex flex-col">
+          <div class="flex items-center justify-between pb-4 border-b border-borderDark mb-4">
+            <h3 class="font-bold text-white text-lg">Recent Operations</h3>
+            <button onclick="switchTab('transactions')" class="text-xs text-lightBlue hover:underline flex items-center gap-1">
+              View All <i data-feather="chevron-right" class="w-3 h-3"></i>
+            </button>
+          </div>
+          <div class="flex-1 overflow-y-auto max-h-72 space-y-4" id="recentOperationsList">
+            <!-- Dynamic transaction rows go here -->
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TAB 2: TRANSACTIONS LOG -->
+    <section id="tabContent-transactions" class="tab-pane hidden space-y-6">
+      
+      <!-- Filters and Search panel -->
+      <div class="bg-cardDark border border-borderDark p-6 rounded-xl space-y-4">
+        <h3 class="font-bold text-white text-lg">Search & Filter Transactions</h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Search input -->
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-grayText">
+              <i data-feather="search" class="w-4 h-4"></i>
+            </span>
+            <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Search Name, Email, ID..." class="w-full bg-deepDark border border-borderDark rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+          </div>
+
+          <!-- Status filter -->
+          <div>
+            <select id="filter-status" onchange="applyFilters()" class="w-full bg-deepDark border border-borderDark rounded-lg px-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+              <option value="all">All Statuses</option>
+              <option value="Success">Success</option>
+              <option value="Failed">Failed</option>
+            </select>
+          </div>
+
+          <!-- Method filter -->
+          <div>
+            <select id="filter-method" onchange="applyFilters()" class="w-full bg-deepDark border border-borderDark rounded-lg px-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+              <option value="all">All Methods</option>
+              <option value="UPI">UPI</option>
+              <option value="Card">Credit/Debit Card</option>
+              <option value="Netbanking">Netbanking</option>
+              <option value="Wallet">Wallet</option>
+            </select>
+          </div>
+
+          <!-- Reset Filters -->
+          <div>
+            <button onclick="resetFilters()" class="w-full py-2.5 bg-borderDark hover:bg-borderDark/80 border border-slate-700 text-slate-200 hover:text-white rounded-lg text-sm transition-all duration-200 flex items-center justify-center gap-2">
+              <i data-feather="refresh-cw" class="w-4 h-4"></i> Reset Filters
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Transactions Table -->
+      <div class="bg-cardDark border border-borderDark rounded-xl overflow-hidden">
+        <div class="p-6 border-b border-borderDark flex items-center justify-between bg-cardDark">
+          <h3 class="font-bold text-white text-lg">Transaction Ledger</h3>
+          <span class="text-xs bg-borderDark text-slate-300 px-3 py-1 rounded-full font-medium" id="transactionCountLabel">Showing 0 transactions</span>
+        </div>
+        <div class="overflow-x-auto w-full">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-borderDark bg-deepDark/50 text-xs font-semibold text-grayText uppercase tracking-wider">
+                <th class="p-4">Transaction ID</th>
+                <th class="p-4">Customer Details</th>
+                <th class="p-4">Date & Time</th>
+                <th class="p-4">Method</th>
+                <th class="p-4 text-right">Amount</th>
+                <th class="p-4 text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody id="transactionTableBody" class="divide-y divide-borderDark/60 text-sm">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Empty State View -->
+        <div id="tableEmptyState" class="hidden p-12 text-center flex flex-col items-center justify-center">
+          <div class="p-4 bg-borderDark rounded-full text-slate-400 mb-4">
+            <i data-feather="inbox" class="w-8 h-8"></i>
+          </div>
+          <h4 class="font-bold text-white text-lg">No Transactions Found</h4>
+          <p class="text-grayText text-sm mt-1 max-w-sm">No transaction matches your search or filter configuration. Try adjusting filters or simulate new transactions.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 3: TRANSACTION SIMULATOR -->
+    <section id="tabContent-simulator" class="tab-pane hidden space-y-6">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left Side: Simulator Form -->
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl lg:col-span-2 space-y-6">
+          <div>
+            <h3 class="font-bold text-white text-lg">Simulate Single Transaction</h3>
+            <p class="text-grayText text-sm">Generate customized merchant logs instantly to inspect dynamic reports.</p>
+          </div>
+
+          <form id="simulatorForm" onsubmit="handleSimulationSubmit(event)" class="space-y-4">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Customer Name -->
+              <div class="space-y-1">
+                <label for="sim-name" class="text-xs font-semibold text-slate-300">Customer Name</label>
+                <input type="text" id="sim-name" required placeholder="John Doe" class="w-full bg-deepDark border border-borderDark rounded-lg px-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+              </div>
+              <!-- Customer Email -->
+              <div class="space-y-1">
+                <label for="sim-email" class="text-xs font-semibold text-slate-300">Customer Email</label>
+                <input type="email" id="sim-email" required placeholder="john@example.com" class="w-full bg-deepDark border border-borderDark rounded-lg px-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <!-- Amount -->
+              <div class="space-y-1">
+                <label for="sim-amount" class="text-xs font-semibold text-slate-300">Amount (₹)</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-grayText text-sm font-semibold">₹</span>
+                  <input type="number" step="0.01" min="1" id="sim-amount" required placeholder="499.00" class="w-full bg-deepDark border border-borderDark rounded-lg pl-8 pr-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+                </div>
+              </div>
+              
+              <!-- Payment Method -->
+              <div class="space-y-1">
+                <label for="sim-method" class="text-xs font-semibold text-slate-300">Payment Method</label>
+                <select id="sim-method" required class="w-full bg-deepDark border border-borderDark rounded-lg px-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+                  <option value="UPI">UPI</option>
+                  <option value="Card">Credit/Debit Card</option>
+                  <option value="Netbanking">Netbanking</option>
+                  <option value="Wallet">Wallet</option>
+                </select>
+              </div>
+
+              <!-- Status -->
+              <div class="space-y-1">
+                <label for="sim-status" class="text-xs font-semibold text-slate-300">Transaction Status</label>
+                <select id="sim-status" required class="w-full bg-deepDark border border-borderDark rounded-lg px-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+                  <option value="Success" class="text-emerald-400">Success</option>
+                  <option value="Failed" class="text-redLight">Failed</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Date Picker (Allows backdating logs for charts) -->
+            <div class="space-y-1">
+              <label for="sim-date" class="text-xs font-semibold text-slate-300">Transaction Time</label>
+              <input type="datetime-local" id="sim-date" class="w-full bg-deepDark border border-borderDark rounded-lg px-4 py-2.5 text-sm text-slate-100 outline-none focus:border-lightBlue transition-all">
+              <p class="text-[10px] text-grayText">Leave blank to simulate transaction at the current time.</p>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex gap-4 pt-2">
+              <button type="submit" class="flex-1 py-3 bg-lightBlue hover:bg-lightBlue500 text-white rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2">
+                <i data-feather="plus" class="w-4 h-4"></i> Trigger simulated payment
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Right Side: Bulk Generator & Database reset -->
+        <div class="space-y-6">
+          
+          <!-- Bulk Simulator Card -->
+          <div class="bg-cardDark border border-borderDark p-6 rounded-xl space-y-4">
+            <h3 class="font-bold text-white text-lg flex items-center gap-2">
+              <i data-feather="zap" class="text-amber-400 w-5 h-5"></i>
+              Bulk Simulator
+            </h3>
+            <p class="text-grayText text-sm">Simulate activity bursts to quickly populate the graphs and visualize data trends instantly.</p>
+            
+            <div class="space-y-3">
+              <button onclick="bulkSimulate(5)" class="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-borderDark text-slate-200 hover:text-white rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">
+                Simulate 5 Payments
+              </button>
+              <button onclick="bulkSimulate(10)" class="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-borderDark text-slate-200 hover:text-white rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">
+                Simulate 10 Payments (Burst)
+              </button>
+            </div>
+          </div>
+
+          <!-- Reset Database Card -->
+          <div class="bg-cardDark border border-borderDark p-6 rounded-xl space-y-4 border-red-500/20">
+            <h3 class="font-bold text-redLight text-lg flex items-center gap-2">
+              <i data-feather="trash-2" class="w-5 h-5"></i>
+              Danger Zone
+            </h3>
+            <p class="text-grayText text-sm">Wipe out simulated logs and reset database stats to start fresh or reload the standard 30 default mock payments.</p>
+            
+            <div class="flex gap-2">
+              <button onclick="clearLocalStorage()" class="flex-1 py-2.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-redLight rounded-lg text-xs font-bold transition-all duration-200">
+                Wipe Logs
+              </button>
+              <button onclick="loadDefaultMockData()" class="flex-1 py-2.5 bg-lightBlue/10 hover:bg-lightBlue/20 border border-lightBlue/30 text-lightBlue rounded-lg text-xs font-bold transition-all duration-200">
+                Reset & Load Defaults
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TAB 4: INSIGHTS -->
+    <section id="tabContent-insights" class="tab-pane hidden space-y-6">
+      
+      <!-- Automated Insights Container -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="insightsGrid">
+        <!-- Dynmically filled with insights cards -->
+      </div>
+
+      <!-- Recommendation Card -->
+      <div class="bg-cardDark border border-borderDark p-6 rounded-xl flex flex-col md:flex-row gap-6 items-center">
+        <div class="p-4 bg-lightBlue/10 rounded-full text-lightBlue">
+          <i data-feather="cpu" class="w-10 h-10"></i>
+        </div>
+        <div class="space-y-2 flex-1">
+          <h4 class="font-bold text-white text-lg">AI Smart Checkout Optimizer (Active)</h4>
+          <p class="text-grayText text-sm">Our automated optimizer scans payments failure indicators. UPI auto-retry policies have successfully prevented 4 failed transactions today. Sandbox AI models suggest promoting credit card transactions during checkout to capture larger basket values.</p>
+        </div>
+        <div class="shrink-0 w-full md:w-auto">
+          <button class="w-full md:w-auto px-6 py-3 bg-lightBlue hover:bg-lightBlue500 text-white rounded-lg text-sm font-semibold transition-all">
+            Optimize Rules
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- JS Implementation -->
+  <script>
+    // In-memory data store with LocalStorage fallbacks
+    let transactions = [];
+
+    // Names and emails lists for simulator helpers
+    const MOCK_NAMES = [
+      "Aarav Sharma", "Aditya Patel", "Ananya Verma", "Devendra Joshi", "Ishita Sen",
+      "Kabir Malhotra", "Neha Nair", "Pooja Gupta", "Rohan Mehta", "Siddharth Rao",
+      "Amit Trivedi", "Rajesh Kumar", "Sunita Rao", "Deepak Chawla", "Kiran Reddy",
+      "Priya Deshmukh", "Vikram Singh", "Sneha Iyer", "Arjun Bhat", "Kavitha Nair"
+    ];
+    const MOCK_EMAILS = [
+      "aarav@gmail.com", "aditya@yahoo.com", "ananya@verma.org", "dev@joshi.net", "ishita@sen.co.in",
+      "kabir@malhotra.com", "neha@nair.io", "pooja@gupta.com", "rohan@mehta.dev", "sid@rao.in",
+      "amit@trivedi.com", "rajesh@kumar.org", "sunita@rao.com", "deepak@chawla.net", "kiran@reddy.co.in",
+      "priya@deshmukh.org", "vikram@singh.com", "sneha@iyer.me", "arjun@bhat.com", "kavitha@nair.com"
+    ];
+
+    // Chart instances references
+    let revenueChartInstance = null;
+    let methodChartInstance = null;
+    let breakdownChartInstance = null;
+
+    // Mobile Menu Controls
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    function toggleMobileMenu() {
+      mobileMenu.classList.add('hidden');
+    }
+
+    // App Initialization
+    window.onload = function() {
+      // Setup Feather Icons
+      feather.replace();
+
+      // Load transactions from localStorage or load default mock dataset
+      const localData = localStorage.getItem('razorpay_mock_transactions');
+      if (localData) {
+        try {
+          transactions = JSON.parse(localData);
+        } catch (e) {
+          transactions = [];
+        }
+      }
+
+      if (transactions.length === 0) {
+        generateDefaultMockDataset();
+      }
+
+      // Initialize UI and render everything
+      switchTab('overview');
+      updateDashboardData();
+    };
+
+    // Tab switcher
+    function switchTab(tabId) {
+      // Hide all panes
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      // Show requested pane
+      document.getElementById('tabContent-' + tabId).classList.remove('hidden');
+
+      // Update sidebar styling
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-cardDark', 'text-white', 'border-lightBlue');
+        btn.classList.add('text-slate-300', 'border-transparent');
+      });
+
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300', 'border-transparent');
+        activeBtn.classList.add('bg-cardDark', 'text-white', 'border-lightBlue');
+      }
+
+      // Special resize trigger for Chart.js so standard viewport sizing triggers correctly
+      if (tabId === 'overview') {
+        setTimeout(redrawCharts, 50);
+      } else if (tabId === 'transactions') {
+        applyFilters();
+      } else if (tabId === 'insights') {
+        generateInsights();
+      }
+    }
+
+    // Reset localStorage & load defaults
+    function clearLocalStorage() {
+      localStorage.removeItem('razorpay_mock_transactions');
+      transactions = [];
+      updateDashboardData();
+      alert("All transaction logs cleared.");
+      switchTab('overview');
+    }
+
+    function loadDefaultMockData() {
+      localStorage.removeItem('razorpay_mock_transactions');
+      generateDefaultMockDataset();
+      updateDashboardData();
+      alert("Successfully loaded default 30 transaction entries.");
+      switchTab('overview');
+    }
+
+    // Generate random transaction history backfilled for 7 days
+    function generateDefaultMockDataset() {
+      const items = [];
+      const methods = ["UPI", "Card", "Netbanking", "Wallet"];
+      const statuses = ["Success", "Success", "Success", "Success", "Success", "Failed"]; // ~83% success rate
+      
+      const now = new Date();
+      
+      // We generate transactions distributed over the last 7 days
+      for (let i = 0; i < 30; i++) {
+        // Random amount between 99 and 15,000 INR
+        const amt = parseFloat((Math.random() * 4900 + 99).toFixed(2));
+        
+        // Random method and status
+        const method = methods[Math.floor(Math.random() * methods.length)];
+        const status = statuses[Math.floor(Math.random() * statuses.length)];
+        
+        // Random customer
+        const custIdx = Math.floor(Math.random() * MOCK_NAMES.length);
+        const name = MOCK_NAMES[custIdx];
+        const email = MOCK_EMAILS[custIdx];
+
+        // Distributed dates: random date subtraction in hours up to 168h (7 days)
+        const dateSubHrs = Math.random() * 168; 
+        const txnDate = new Date(now.getTime() - (dateSubHrs * 60 * 60 * 1000));
+        
+        items.push({
+          id: "pay_" + Math.random().toString(36).substring(2, 12).toUpperCase(),
+          name: name,
+          email: email,
+          amount: amt,
+          method: method,
+          status: status,
+          date: txnDate.toISOString()
+        });
+      }
+
+      // Sort chronological descending (latest first)
+      items.sort((a, b) => new Date(b.date) - new Date(a.date));
+      transactions = items;
+      saveData();
+    }
+
+    function saveData() {
+      localStorage.setItem('razorpay_mock_transactions', JSON.stringify(transactions));
+    }
+
+    // Recalculate everything and redraw UI
+    function updateDashboardData() {
+      // 1. Calculate general stats
+      let totalRev = 0;
+      let totalTxns = transactions.length;
+      let successCount = 0;
+      let failedCount = 0;
+
+      transactions.forEach(t => {
+        if (t.status === "Success") {
+          totalRev += parseFloat(t.amount);
+          successCount++;
+        } else {
+          failedCount++;
+        }
+      });
+
+      const successRate = totalTxns > 0 ? ((successCount / totalTxns) * 100).toFixed(1) : "0.0";
+      const failedRate = totalTxns > 0 ? ((failedCount / totalTxns) * 100).toFixed(1) : "0.0";
+
+      // 2. Populate stats in DOM
+      document.getElementById('stat-totalRevenue').innerText = "₹" + totalRev.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('stat-totalTransactions').innerText = totalTxns;
+      document.getElementById('stat-successPayments').innerText = successCount;
+      document.getElementById('stat-successRate').innerText = `(${successRate}%)`;
+      document.getElementById('stat-successRateBar').style.width = successRate + "%";
+      
+      document.getElementById('stat-failedPayments').innerText = failedCount;
+      document.getElementById('stat-failedRate').innerText = `(${failedRate}%)`;
+      document.getElementById('stat-failedRateBar').style.width = failedRate + "%";
+
+      // 3. Populate Recent Operations list (Last 5 transactions)
+      const recentList = document.getElementById('recentOperationsList');
+      recentList.innerHTML = "";
+
+      const lastFive = transactions.slice(0, 5);
+      if (lastFive.length === 0) {
+        recentList.innerHTML = `
+          <div class="text-center py-6 text-grayText text-sm">
+            No transactions recorded. Switch to simulator tab to populate.
+          </div>
+        `;
+      } else {
+        lastFive.forEach(t => {
+          const formattedDate = formatTxnDate(new Date(t.date));
+          const badgeClass = t.status === "Success" 
+            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
+            : "bg-red-500/10 text-redLight border-red-500/20";
+          
+          recentList.innerHTML += `
+            <div class="flex items-center justify-between p-3 bg-deepDark border border-borderDark/40 rounded-lg hover:border-lightBlue/20 transition-all duration-200">
+              <div class="flex items-center gap-3">
+                <div class="p-2 bg-cardDark text-lightBlue border border-borderDark rounded-lg">
+                  <i data-feather="${getMethodIcon(t.method)}" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-100 text-sm">${t.name}</h4>
+                  <p class="text-xs text-grayText">${formattedDate} • ${t.id}</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="font-bold text-white text-sm block">₹${parseFloat(t.amount).toFixed(2)}</span>
+                <span class="text-[10px] px-2 py-0.5 border rounded-full font-bold uppercase ${badgeClass}">${t.status}</span>
+              </div>
+            </div>
+          `;
+        });
+        feather.replace();
+      }
+
+      // Redraw charts with new data values
+      redrawCharts();
+    }
+
+    // Helper functions for formatting & icons
+    function getMethodIcon(method) {
+      switch (method) {
+        case "UPI": return "smartphone";
+        case "Card": return "credit-card";
+        case "Netbanking": return "globe";
+        case "Wallet": return "pocket";
+        default: return "credit-card";
+      }
+    }
+
+    function formatTxnDate(dateObj) {
+      const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return dateObj.toLocaleDateString('en-US', options);
+    }
+
+    // REDRAW CHARTS (ChartJS Setup)
+    function redrawCharts() {
+      // Safe guard checks: check if overview elements are visible
+      if (!document.getElementById('revenueTrendChart')) return;
+
+      // Group transactions by date for trend data (last 7 days)
+      const dates = [];
+      const revenueData = [];
+      const successCounts = [];
+      const failedCounts = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dayStr = d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' });
+        dates.push(dayStr);
+
+        // Calculate metrics for this calendar date
+        let rev = 0;
+        let succ = 0;
+        let fail = 0;
+        
+        const dateMatch = d.toDateString();
+
+        transactions.forEach(t => {
+          const tDate = new Date(t.date);
+          if (tDate.toDateString() === dateMatch) {
+            if (t.status === "Success") {
+              rev += parseFloat(t.amount);
+              succ++;
+            } else {
+              fail++;
+            }
+          }
+        });
+
+        revenueData.push(rev);
+        successCounts.push(succ);
+        failedCounts.push(fail);
+      }
+
+      // Group payments by Method
+      let upiVol = 0, cardVol = 0, netVol = 0, walletVol = 0;
+      transactions.forEach(t => {
+        if (t.status === "Success") {
+          const amt = parseFloat(t.amount);
+          if (t.method === "UPI") upiVol += amt;
+          else if (t.method === "Card") cardVol += amt;
+          else if (t.method === "Netbanking") netVol += amt;
+          else if (t.method === "Wallet") walletVol += amt;
+        }
+      });
+      const totalMethodVolume = upiVol + cardVol + netVol + walletVol;
+
+      // 1. REVENUE LINE CHART
+      const ctxLine = document.getElementById('revenueTrendChart').getContext('2d');
+      if (revenueChartInstance) revenueChartInstance.destroy();
+      revenueChartInstance = new Chart(ctxLine, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Daily Revenue',
+            data: revenueData,
+            borderColor: '#2b84ea',
+            backgroundColor: 'rgba(43, 132, 234, 0.1)',
+            fill: true,
+            tension: 0.3,
+            borderWidth: 3,
+            pointBackgroundColor: '#0b72e7',
+            pointHoverRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(35, 46, 96, 0.2)' }, ticks: { color: '#818597', font: { family: 'Mulish' } } },
+            y: { grid: { color: 'rgba(35, 46, 96, 0.2)' }, ticks: { color: '#818597', font: { family: 'Mulish' } } }
+          }
+        }
+      });
+
+      // 2. PAYMENT METHOD DOUGHNUT CHART
+      const ctxDoughnut = document.getElementById('paymentMethodsChart').getContext('2d');
+      if (methodChartInstance) methodChartInstance.destroy();
+
+      const methodLabels = ['UPI', 'Credit/Debit Card', 'Netbanking', 'Wallet'];
+      const methodValues = [upiVol, cardVol, netVol, walletVol];
+      const hasMethodVol = totalMethodVolume > 0;
+
+      methodChartInstance = new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+          labels: methodLabels,
+          datasets: [{
+            data: hasMethodVol ? methodValues : [1, 1, 1, 1], // fallback uniform if empty
+            backgroundColor: ['#61cea6', '#2b84ea', '#f59e0b', '#ec4899'],
+            borderWidth: 2,
+            borderColor: '#11183c',
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          cutout: '70%'
+        }
+      });
+
+      // Generate customized chart legend list
+      const legendDiv = document.getElementById('paymentMethodLegend');
+      legendDiv.innerHTML = "";
+      const colors = ['#61cea6', '#2b84ea', '#f59e0b', '#ec4899'];
+      methodLabels.forEach((lbl, idx) => {
+        const val = methodValues[idx];
+        const pct = hasMethodVol ? ((val / totalMethodVolume) * 100).toFixed(0) : "0";
+        legendDiv.innerHTML += `
+          <div class="flex items-center gap-1.5 justify-start">
+            <span class="w-2.5 h-2.5 rounded-full inline-block shrink-0" style="background-color: ${colors[idx]}"></span>
+            <span class="text-slate-300 font-semibold tracking-wide">${lbl}: ${pct}% (₹${Math.round(val)})</span>
+          </div>
+        `;
+      });
+
+      // 3. STATUS BAR CHART (Success vs Failure Daily)
+      const ctxBar = document.getElementById('statusBreakdownChart').getContext('2d');
+      if (breakdownChartInstance) breakdownChartInstance.destroy();
+      breakdownChartInstance = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: 'Successful',
+              data: successCounts,
+              backgroundColor: '#61cea6',
+              borderRadius: 4
+            },
+            {
+              label: 'Failed',
+              data: failedCounts,
+              backgroundColor: '#ff6b6b',
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true, grid: { display: false }, ticks: { color: '#818597' } },
+            y: { stacked: true, grid: { color: 'rgba(35, 46, 96, 0.2)' }, ticks: { color: '#818597', stepSize: 1 } }
+          },
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#818597', font: { family: 'Mulish' } } }
+          }
+        }
+      });
+    }
+
+    // SIMULATOR PANEL SUBMISSION
+    function handleSimulationSubmit(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('sim-name').value;
+      const email = document.getElementById('sim-email').value;
+      const amount = parseFloat(document.getElementById('sim-amount').value);
+      const method = document.getElementById('sim-method').value;
+      const status = document.getElementById('sim-status').value;
+      const customDateStr = document.getElementById('sim-date').value;
+      
+      const date = customDateStr ? new Date(customDateStr).toISOString() : new Date().toISOString();
+
+      const newTxn = {
+        id: "pay_" + Math.random().toString(36).substring(2, 12).toUpperCase(),
+        name: name,
+        email: email,
+        amount: amount,
+        method: method,
+        status: status,
+        date: date
+      };
+
+      transactions.unshift(newTxn);
+      // Sort chronologically descending
+      transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+      saveData();
+      updateDashboardData();
+
+      // Reset form
+      document.getElementById('simulatorForm').reset();
+      alert(`Payment of ₹${amount} simulated successfully for ${name}!`);
+      
+      // Send back to dashboard overview tab to view changes
+      switchTab('overview');
+    }
+
+    // Bulk Simulation
+    function bulkSimulate(count) {
+      const methods = ["UPI", "Card", "Netbanking", "Wallet"];
+      const statuses = ["Success", "Success", "Success", "Success", "Failed"]; // 80% Success rate
+      const now = new Date();
+
+      for (let i = 0; i < count; i++) {
+        const amt = parseFloat((Math.random() * 8000 + 49).toFixed(2));
+        const method = methods[Math.floor(Math.random() * methods.length)];
+        const status = statuses[Math.floor(Math.random() * statuses.length)];
+        
+        const custIdx = Math.floor(Math.random() * MOCK_NAMES.length);
+        const name = MOCK_NAMES[custIdx];
+        const email = MOCK_EMAILS[custIdx];
+
+        // Random dispersion over the last 3 days
+        const hoursAgo = Math.random() * 72;
+        const date = new Date(now.getTime() - (hoursAgo * 60 * 60 * 1000));
+
+        transactions.unshift({
+          id: "pay_" + Math.random().toString(36).substring(2, 12).toUpperCase(),
+          name: name,
+          email: email,
+          amount: amt,
+          method: method,
+          status: status,
+          date: date.toISOString()
+        });
+      }
+
+      transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+      saveData();
+      updateDashboardData();
+      alert(`Successfully simulated ${count} transaction logs.`);
+      switchTab('overview');
+    }
+
+    // TABLE SEARCH AND FILTERS (TAB 2)
+    function applyFilters() {
+      const query = document.getElementById('filter-search').value.toLowerCase();
+      const statusFilter = document.getElementById('filter-status').value;
+      const methodFilter = document.getElementById('filter-method').value;
+
+      const filtered = transactions.filter(t => {
+        const matchesSearch = t.name.toLowerCase().includes(query) || 
+                              t.email.toLowerCase().includes(query) || 
+                              t.id.toLowerCase().includes(query);
+        const matchesStatus = statusFilter === 'all' || t.status === statusFilter;
+        const matchesMethod = methodFilter === 'all' || t.method === methodFilter;
+
+        return matchesSearch && matchesStatus && matchesMethod;
+      });
+
+      // Populate Table Body
+      const tbody = document.getElementById('transactionTableBody');
+      const emptyState = document.getElementById('tableEmptyState');
+      tbody.innerHTML = "";
+
+      document.getElementById('transactionCountLabel').innerText = `Showing ${filtered.length} transactions`;
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        filtered.forEach(t => {
+          const dateStr = new Date(t.date).toLocaleString('en-IN', {
+            year: 'numeric', month: 'short', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+          });
+
+          const badgeClass = t.status === "Success" 
+            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
+            : "bg-red-500/10 text-redLight border-red-500/20";
+
+          tbody.innerHTML += `
+            <tr class="hover:bg-cardDarkHover/50 transition-colors duration-150">
+              <td class="p-4 font-mono text-lightBlue text-xs font-semibold">${t.id}</td>
+              <td class="p-4">
+                <div class="font-bold text-white">${t.name}</div>
+                <div class="text-xs text-grayText">${t.email}</div>
+              </td>
+              <td class="p-4 text-xs text-slate-300">${dateStr}</td>
+              <td class="p-4">
+                <span class="flex items-center gap-1.5 text-xs text-slate-300">
+                  <i data-feather="${getMethodIcon(t.method)}" class="w-3.5 h-3.5 text-lightBlue"></i>
+                  ${t.method}
+                </span>
+              </td>
+              <td class="p-4 text-right font-bold text-white text-sm">₹${parseFloat(t.amount).toFixed(2)}</td>
+              <td class="p-4 text-center">
+                <span class="inline-block text-xs px-2.5 py-1 border rounded-full font-bold uppercase tracking-wider ${badgeClass}">${t.status}</span>
+              </td>
+            </tr>
+          `;
+        });
+        feather.replace();
+      }
+    }
+
+    function resetFilters() {
+      document.getElementById('filter-search').value = "";
+      document.getElementById('filter-status').value = "all";
+      document.getElementById('filter-method').value = "all";
+      applyFilters();
+    }
+
+    // AUTOMATED INSIGHTS GENERATION (TAB 4)
+    function generateInsights() {
+      const container = document.getElementById('insightsGrid');
+      container.innerHTML = "";
+
+      if (transactions.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-2 text-center p-8 bg-cardDark border border-borderDark rounded-xl">
+            <h4 class="text-white font-bold">No insights available</h4>
+            <p class="text-grayText text-sm mt-2">Generate simulated logs to see insights.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Calculate distributions
+      let upiVol = 0, cardVol = 0, netVol = 0, walletVol = 0;
+      let upiCount = 0, cardCount = 0, netCount = 0, walletCount = 0;
+      let upiSuccess = 0, cardSuccess = 0, netSuccess = 0, walletSuccess = 0;
+      
+      transactions.forEach(t => {
+        const amt = parseFloat(t.amount);
+        if (t.method === 'UPI') {
+          upiCount++;
+          if (t.status === 'Success') { upiSuccess++; upiVol += amt; }
+        } else if (t.method === 'Card') {
+          cardCount++;
+          if (t.status === 'Success') { cardSuccess++; cardVol += amt; }
+        } else if (t.method === 'Netbanking') {
+          netCount++;
+          if (t.status === 'Success') { netSuccess++; netVol += amt; }
+        } else if (t.method === 'Wallet') {
+          walletCount++;
+          if (t.status === 'Success') { walletSuccess++; walletVol += amt; }
+        }
+      });
+
+      const totalSuccess = upiSuccess + cardSuccess + netSuccess + walletSuccess;
+      const totalCount = transactions.length;
+
+      // Insight 1: Most Popular Method
+      const methods = [
+        { name: 'UPI', count: upiCount, vol: upiVol, success: upiSuccess },
+        { name: 'Credit/Debit Cards', count: cardCount, vol: cardVol, success: cardSuccess },
+        { name: 'Netbanking', count: netCount, vol: netVol, success: netSuccess },
+        { name: 'Wallets', count: walletCount, vol: walletVol, success: walletSuccess }
+      ];
+
+      methods.sort((a, b) => b.count - a.count);
+      const topMethod = methods[0];
+      const topMethodPct = totalCount > 0 ? ((topMethod.count / totalCount) * 100).toFixed(0) : 0;
+
+      // Insight 2: High Failures Method detector
+      let problemMethodStr = "All channels operate at maximum nominal health.";
+      let problemMethodAlert = false;
+      
+      methods.forEach(m => {
+        if (m.count >= 4) {
+          const successRate = (m.success / m.count) * 100;
+          if (successRate < 75) {
+            problemMethodStr = `${m.name} transactions are seeing a lower success rate (${successRate.toFixed(0)}%). We recommend enabling Smart Retry router features.`;
+            problemMethodAlert = true;
+          }
+        }
+      });
+
+      // Insight 3: Revenue Concentration
+      methods.sort((a, b) => b.vol - a.vol);
+      const topVolMethod = methods[0];
+      const totalRevenue = upiVol + cardVol + netVol + walletVol;
+      const revSharePct = totalRevenue > 0 ? ((topVolMethod.vol / totalRevenue) * 100).toFixed(0) : 0;
+
+      // Card 1 - Preferred Payment Method
+      container.innerHTML += `
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-3 bg-greenLight/10 text-greenLight rounded-xl border border-greenLight/20">
+              <i data-feather="thumbs-up" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-base">UPI Preference Highlight</h4>
+              <p class="text-xs text-grayText">Based on ${totalCount} transactions</p>
+            </div>
+          </div>
+          <p class="text-sm text-slate-300 mt-4 leading-relaxed">
+            <strong>${topMethod.name}</strong> is the most preferred payment method on your storefront, accounting for <strong>${topMethodPct}%</strong> of total checkout volume.
+          </p>
+          <div class="mt-4 pt-4 border-t border-borderDark/40 flex items-center justify-between text-xs text-emerald-400 font-bold">
+            <span>Optimal integration detected</span>
+            <i data-feather="check" class="w-4 h-4"></i>
+          </div>
+        </div>
+      `;
+
+      // Card 2 - System Health Alert
+      const healthColor = problemMethodAlert ? "redLight" : "greenLight";
+      const healthBg = problemMethodAlert ? "red-500/10" : "greenLight/10";
+      const healthBorder = problemMethodAlert ? "red-500/20" : "greenLight/20";
+      const healthIcon = problemMethodAlert ? "alert-triangle" : "activity";
+
+      container.innerHTML += `
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-3 bg-${healthBg} text-${healthColor} rounded-xl border border-${healthBorder}">
+              <i data-feather="${healthIcon}" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-base">Channel Quality of Service</h4>
+              <p class="text-xs text-grayText">Success rate anomaly detector</p>
+            </div>
+          </div>
+          <p class="text-sm text-slate-300 mt-4 leading-relaxed">
+            ${problemMethodStr}
+          </p>
+          <div class="mt-4 pt-4 border-t border-borderDark/40 flex items-center justify-between text-xs text-${healthColor} font-bold">
+            <span>${problemMethodAlert ? "Optimization suggested" : "All routes healthy"}</span>
+            <i data-feather="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </div>
+      `;
+
+      // Card 3 - Revenue Concentration
+      container.innerHTML += `
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-3 bg-lightBlue/10 text-lightBlue rounded-xl border border-lightBlue/20">
+              <i data-feather="trending-up" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-base">Revenue Concentration</h4>
+              <p class="text-xs text-grayText">Volume metrics analysis</p>
+            </div>
+          </div>
+          <p class="text-sm text-slate-300 mt-4 leading-relaxed">
+            <strong>${topVolMethod.name}</strong> accounts for your highest single-source revenue share, driving <strong>${revSharePct}%</strong> (₹${Math.round(topVolMethod.vol).toLocaleString('en-IN')}) of total funds processed.
+          </p>
+          <div class="mt-4 pt-4 border-t border-borderDark/40 flex items-center justify-between text-xs text-lightBlue font-bold">
+            <span>Total processed: ₹${Math.round(totalRevenue).toLocaleString('en-IN')}</span>
+            <i data-feather="database" class="w-4 h-4"></i>
+          </div>
+        </div>
+      `;
+
+      // Card 4 - General recommendations
+      const overallSuccessRate = totalCount > 0 ? ((totalSuccess / totalCount) * 100) : 0;
+      let recText = "Your store's success rate is optimal. Maintain current checkout parameters.";
+      let recIcon = "check-circle";
+
+      if (overallSuccessRate < 80) {
+        recText = "Your overall success rate is below 80%. We suggest toggling Card Verification Checks and disabling experimental bank netbanking pathways.";
+        recIcon = "tool";
+      }
+
+      container.innerHTML += `
+        <div class="bg-cardDark border border-borderDark p-6 rounded-xl hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-3 bg-purple-500/10 text-purple-400 rounded-xl border border-purple-500/20">
+              <i data-feather="${recIcon}" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-base">Merchant Recommendations</h4>
+              <p class="text-xs text-grayText">Actionable merchant insight advice</p>
+            </div>
+          </div>
+          <p class="text-sm text-slate-300 mt-4 leading-relaxed">
+            ${recText}
+          </p>
+          <div class="mt-4 pt-4 border-t border-borderDark/40 flex items-center justify-between text-xs text-purple-400 font-bold">
+            <span>Overall Success: ${overallSuccessRate.toFixed(1)}%</span>
+            <i data-feather="sliders" class="w-4 h-4"></i>
+          </div>
+        </div>
+      `;
+
+      feather.replace();
+    }
+  </script>
+
+</body>
+</html>
