@@ -10,6 +10,8 @@ let attempts = 0;
 const maxAttempts = 3;
 let lockoutEndTime = 0;
 
+/* ---------------- CAPTCHA GENERATORS ---------------- */
+
 const generateTextCaptcha = () => {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
 };
@@ -26,11 +28,14 @@ const generateImageCaptcha = () => {
         { emoji: '🐼', name: 'panda' },
         { emoji: '🐨', name: 'koala' }
     ];
+
     const correctIndex = Math.floor(Math.random() * images.length);
     const shuffled = images.sort(() => 0.5 - Math.random()).slice(0, 6);
+
     if (!shuffled.includes(images[correctIndex])) {
         shuffled[Math.floor(Math.random() * 6)] = images[correctIndex];
     }
+
     return { images: shuffled, correct: images[correctIndex] };
 };
 
@@ -38,127 +43,184 @@ const generateMathCaptcha = () => {
     const num1 = Math.floor(Math.random() * 10) + 1;
     const num2 = Math.floor(Math.random() * 10) + 1;
     const operation = Math.random() < 0.5 ? '+' : '-';
+
     const question = `${num1} ${operation} ${num2}`;
     const answer = operation === '+' ? num1 + num2 : num1 - num2;
+
     return { question, answer };
 };
 
 const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
-  return new Promise((resolve) => {
-      const utterance = new SpeechSynthesisUtterance();
-      utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
-      utterance.rate = speed;
-      utterance.onend = resolve;
-      speechSynthesis.speak(utterance);
-  });
+    return new Promise((resolve) => {
+        const utterance = new SpeechSynthesisUtterance();
+        utterance.text = Array(repeat)
+            .fill(text.split('').join(' '))
+            .join('. . . ');
+
+        utterance.rate = speed;
+        utterance.onend = resolve;
+
+        speechSynthesis.speak(utterance);
+    });
 };
+
+/* ---------------- GENERATE CAPTCHA ---------------- */
 
 const generateCaptcha = () => {
     const type = captchaTypeSelect.value;
+
     switch (type) {
+
         case 'text':
             currentCaptcha = generateTextCaptcha();
-            captchaContainer.innerHTML = `<span style="font-size: 24px; letter-spacing: 5px;">${currentCaptcha}</span>`;
+            captchaContainer.innerHTML = `
+                <span style="font-size: 24px; letter-spacing: 5px;">
+                    ${currentCaptcha}
+                </span>`;
             break;
+
         case 'image':
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
+
             captchaContainer.innerHTML = `
                 <p>Select the ${correct.name}</p>
                 <div class="image-grid">
-                    ${images.map(img => `<div class="image-option">${img.emoji}</div>`).join('')}
+                    ${images.map(img =>
+                        `<div class="image-option">${img.emoji}</div>`
+                    ).join('')}
                 </div>
             `;
-            captchaContainer.querySelectorAll('.image-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    textInput.value = images.find(img => img.emoji === option.textContent).name;
+
+            captchaContainer.querySelectorAll('.image-option')
+                .forEach(option => {
+                    option.addEventListener('click', () => {
+                        textInput.value = images
+                            .find(img => img.emoji === option.textContent)
+                            .name;
+                    });
                 });
-            });
             break;
-            case 'audio':
+
+        case 'audio':
             currentCaptcha = generateTextCaptcha();
             captchaContainer.innerHTML = `
                 <p>Click play and enter the spoken characters:</p>
                 <button id="playAudio">Play Audio</button>
             `;
+
             const playButton = document.getElementById('playAudio');
+
             playButton.addEventListener('click', async () => {
                 playButton.disabled = true;
                 try {
                     await speakCaptcha(currentCaptcha);
                 } catch (error) {
-                    console.error('Speech synthesis failed:', error);
-                    alert('Audio playback failed. Please try again or use a different CAPTCHA type.');
+                    console.error(error);
+                    alert("Audio failed. Try again.");
                 } finally {
                     playButton.disabled = false;
                 }
             });
             break;
-              break;
+
         case 'math':
             const { question, answer } = generateMathCaptcha();
             currentCaptcha = answer.toString();
-            captchaContainer.innerHTML = `<span style="font-size: 24px;">${question} = ?</span>`;
+
+            captchaContainer.innerHTML = `
+                <span style="font-size: 24px;">
+                    ${question} = ?
+                </span>`;
             break;
     }
 };
 
+/* ---------------- LOCKOUT SYSTEM ---------------- */
+
 const lockoutUser = () => {
-  const lockoutDuration = 60; // 60 seconds lockout
-  lockoutEndTime = Date.now() + lockoutDuration * 1000;
-  updateLockoutUI();
+    const lockoutDuration = 60;
+    lockoutEndTime = Date.now() + lockoutDuration * 1000;
+    updateLockoutUI();
 };
 
 const updateLockoutUI = () => {
-  const now = Date.now();
-  if (now < lockoutEndTime) {
-      const remainingTime = Math.ceil((lockoutEndTime - now) / 1000);
-      submitButton.disabled = true;
-      resultMessage.textContent = `Too many attempts. Please wait ${remainingTime} seconds.`;
-      resultMessage.style.color = "red";
-      setTimeout(updateLockoutUI, 1000);
-  } else {
-      submitButton.disabled = false;
-      resultMessage.textContent = "";
-      attempts = 0;
-      generateCaptcha();
-  }
+    const now = Date.now();
+
+    if (now < lockoutEndTime) {
+        const remaining = Math.ceil((lockoutEndTime - now) / 1000);
+
+        submitButton.disabled = true;
+        resultMessage.textContent = `Too many attempts. Wait ${remaining}s`;
+        resultMessage.style.color = "red";
+
+        setTimeout(updateLockoutUI, 1000);
+    } else {
+        submitButton.disabled = false;
+        resultMessage.textContent = "";
+        attempts = 0;
+        generateCaptcha();
+    }
 };
+
+/* ---------------- FIXED VALIDATION ---------------- */
 
 const verifyCaptcha = () => {
-  if (Date.now() < lockoutEndTime) {
-      return;
-  }
+    if (Date.now() < lockoutEndTime) return;
 
-  const userInput = textInput.value.trim().toLowerCase();
-  const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
-  
-  if (isCorrect) {
-      resultMessage.textContent = "Correct! CAPTCHA solved.";
-      resultMessage.style.color = "green";
-      attempts = 0;
-      setTimeout(() => {
-          textInput.value = "";
-          resultMessage.textContent = "";
-          generateCaptcha();
-      }, 1500);
-  } else {
-      attempts++;
-      if (attempts >= maxAttempts) {
-          lockoutUser();
-      } else {
-          resultMessage.textContent = `Incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
-          resultMessage.style.color = "red";
-      }
-  }
+    const userInput = textInput.value.trim();
+
+    /* ✅ FIX: Math CAPTCHA strict numeric validation */
+    if (captchaTypeSelect.value === "math") {
+        if (!/^-?\d+$/.test(userInput)) {
+            attempts++;
+
+            resultMessage.textContent =
+                "Math CAPTCHA only accepts numbers!";
+
+            resultMessage.style.color = "red";
+
+            if (attempts >= maxAttempts) {
+                lockoutUser();
+            }
+            return;
+        }
+    }
+
+    const isCorrect =
+        userInput.toLowerCase() ===
+        currentCaptcha.toString().toLowerCase();
+
+    if (isCorrect) {
+        resultMessage.textContent = "Correct!";
+        resultMessage.style.color = "green";
+
+        attempts = 0;
+
+        setTimeout(() => {
+            textInput.value = "";
+            resultMessage.textContent = "";
+            generateCaptcha();
+        }, 1200);
+
+    } else {
+        attempts++;
+
+        if (attempts >= maxAttempts) {
+            lockoutUser();
+        } else {
+            resultMessage.textContent =
+                `Incorrect (${attempts}/${maxAttempts})`;
+
+            resultMessage.style.color = "red";
+        }
+    }
 };
 
+/* ---------------- EVENTS ---------------- */
+
 captchaTypeSelect.addEventListener('change', generateCaptcha);
-refreshButton.addEventListener("click", () => {
-  if (Date.now() >= lockoutEndTime) {
-      generateCaptcha();
-  }
-});
+refreshButton.addEventListener("click", generateCaptcha);
 submitButton.addEventListener("click", verifyCaptcha);
 
 generateCaptcha();
