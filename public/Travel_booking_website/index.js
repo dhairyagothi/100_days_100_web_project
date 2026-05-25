@@ -63,6 +63,14 @@ ScrollReveal().reveal(".offer_card", {
   interval: 500,
 });
 
+const faqItems = document.querySelectorAll(".faq_item");
+
+faqItems.forEach(item => {
+  const question = item.querySelector(".faq_question");
+
+  question.addEventListener("click", () => {
+    item.classList.toggle("active");
+  });
 // ================= CHATBOT =================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -243,3 +251,19 @@ userInput.addEventListener("keypress", (e) => {
     sendMessage();
   }
 });
+
+if (tabSignIn && tabSignUp && formSignInContainer && formSignUpContainer) {
+  tabSignIn.addEventListener("click", () => {
+    tabSignIn.classList.add("active");
+    tabSignUp.classList.remove("active");
+    formSignInContainer.classList.add("active");
+    formSignUpContainer.classList.remove("active");
+  });
+
+  tabSignUp.addEventListener("click", () => {
+    tabSignUp.classList.add("active");
+    tabSignIn.classList.remove("active");
+    formSignUpContainer.classList.add("active");
+    formSignInContainer.classList.remove("active");
+  });
+}

@@ -1,205 +1,253 @@
-EveSparks ✨
+# EveSparks ✨
 
-EveSparks is a modern event management and booking website built using HTML, CSS, and JavaScript. The project provides an elegant platform for discovering event services, wedding packages, corporate events, social gatherings, and budget planning solutions with a clean and responsive user interface.
+EveSparks is a modern event management and booking web application built using **React.js**, **CSS3**, and **JavaScript**. The project provides an elegant and responsive platform for discovering event services, wedding packages, corporate events, social gatherings, and budget planning solutions with an interactive user experience.
 
-This project focuses on frontend design, responsive layouts, service listings, and interactive UI components for modern event-based web applications.
+The project focuses on responsive frontend design, reusable UI components, theme customization, interactive layouts, and modern event-based web application interfaces.
 
-📌 Features
+---
 
-Responsive website design
-Modern event management UI
-Service and package listings
-Wedding and corporate event sections
-Interactive navigation bar
-Search functionality UI
-Event showcase banner
-Mobile-friendly layout
-Clean and elegant interface
-Pure HTML, CSS, and JavaScript
+# 📌 Features
 
+- Responsive website design
+- Modern event management UI
+- Wedding and corporate event sections
+- Service and package listings
+- Interactive navigation bar
+- Search functionality UI
+- Event showcase banner
+- Budget planning section
+- Mobile-friendly layout
+- Clean and elegant interface
+- Dynamic dark/light theme system
+- Persistent theme saving using localStorage
+- SVG-based theme toggle icons
+- Smooth UI transitions and hover effects
 
-🛠️ Tech Stack
+---
 
-| Technology | Usage |
-|------------|-------|
-| HTML5      | Structure |
-| CSS3       | Styling & Responsive Design |
-| JavaScript | Interactivity |
+# 🌙 Dark Mode & ☀️ Light Mode Support
 
+A complete theme-switching system has been implemented across the application.
 
-📂 Project Structure
+## Theme Features
+
+- Fully functional dark mode
+- Fully functional light mode
+- Responsive theme adaptation
+- Dynamic component styling
+- Persistent theme using localStorage
+- Smooth transition animations
+- Improved accessibility and readability
+- SVG-based theme toggle icons
+
+## Updated UI Components
+
+- Navbar
+- Hero Section
+- Footer
+- Event Cards
+- Buttons
+- Search Bar
+- Service Listings
+- Social Media Icons
+- Interactive Elements
+
+---
+
+# 🛠️ Tech Stack
+
+| Technology       | Usage                       |
+| ---------------- | --------------------------- |
+| React.js         | Frontend Framework          |
+| JavaScript (ES6) | Functionality & Logic       |
+| CSS3             | Styling & Responsive Design |
+| HTML5            | Structure                   |
+| LocalStorage API | Theme Persistence           |
+
+---
+
+# 📂 Project Structure
 
 ```text
-evesparks/
-├── assets/
-│   ├── logo.png
-│   ├── banner.jpg
-│   ├── wedding-pack.jpg
-│   ├── birthday-pack.jpg
-│   ├── preview-home.png
-│   └── preview-services.png
+Evesparks/
+├── public/
+│   ├── image/
+│   ├── index.html
+│   ├── manifest.json
+│   └── robots.txt
 │
-├── index.html
-├── style.css
-├── script.js
+├── src/
+│   ├── MyComponents/
+│   │   ├── complete.css
+│   │   ├── footer.js
+│   │   ├── header.js
+│   │   └── product.js
+│   │
+│   ├── App.js
+│   ├── App.css
+│   ├── index.js
+│   └── index.css
+│
+├── package.json
+├── package-lock.json
 └── README.md
 ```
 
-⚙️ Installation & Setup
+---
 
-1️⃣ Clone the Repository
+# ⚙️ Installation & Setup
+
+## 1️⃣ Clone the Repository
+
+```bash
 git clone https://github.com/your-username/evesparks.git
 cd evesparks
+```
 
-🚀 Run the Project
+## 2️⃣ Install Dependencies
 
-Open the index.html file directly in your browser.
+```bash
+npm install
+```
 
-You can also use a local development server such as:
+## 3️⃣ Start Development Server
 
-VS Code Live Server Extension
+```bash
+npm start
+```
 
+Open:
 
-🧠 Website Sections
+```text
+http://localhost:3000
+```
 
-The project includes the following UI sections:
+in your browser.
 
-| Section | Description |
-|----------|-------------|
-| Hero Banner | Promotional event showcase section |
-| Navigation Bar | Website navigation links and menu |
-| Search Bar | Search functionality for services and events |
-| Event Categories | Wedding, Birthday, Corporate, and Social Events |
-| Service Listings | Vendor and package display cards |
-| Budget Planner | Event budgeting and planning section |
-| Contact Buttons | Interactive call-to-action buttons |
-| Responsive Layout | Mobile-friendly adaptable interface |
+---
 
-🖥️ Homepage Preview
+# 🧠 Website Sections
 
-Add homepage screenshot inside:
+| Section           | Description                                     |
+| ----------------- | ----------------------------------------------- |
+| Hero Banner       | Promotional event showcase section              |
+| Navigation Bar    | Website navigation links and menu               |
+| Search Bar        | Search functionality for services and events    |
+| Event Categories  | Wedding, Birthday, Corporate, and Social Events |
+| Service Listings  | Vendor and package display cards                |
+| Budget Planner    | Event budgeting and planning section            |
+| Theme Toggle      | Dynamic dark/light mode switch                  |
+| Contact Buttons   | Interactive call-to-action buttons              |
+| Responsive Layout | Mobile-friendly adaptable interface             |
 
-assets/preview-home.png
+---
 
-📦 Services & Packages Preview
+# 🎨 UI/UX Improvements
 
-Add services section screenshot inside:
+The project includes several frontend and accessibility improvements:
 
-assets/preview-services.png
+- Responsive layouts using Flexbox/Grid
+- Theme-aware component styling
+- Improved contrast and readability
+- Hover effects and transitions
+- Modern card-based UI
+- Smooth theme animations
+- Adaptive icon styling
+- Improved footer consistency
+- Mobile responsiveness
 
+---
 
+# ⚡ Functionality Implemented
 
-🧠 HTML Structure
+## Theme System
 
-index.html
+- React state-based theme handling
+- Conditional theme rendering
+- Body class switching
+- localStorage persistence
+- SVG icon switching
 
-<header>
+## Interactive Features
 
-  <nav class="navbar">
-    
+- Dynamic navigation behavior
+- Search input UI
+- Responsive buttons
+- Adaptive layouts
+- Interactive hover animations
 
-    <input
-      type="text"
-      placeholder="Search for services..."
-    />
+---
 
-    
+# 🌐 Live Demo
 
-  <section class="hero-banner">
-    
+Add deployed project link here:
 
-</header>
-
-
-🎨 CSS Features
-
-The project styling includes:
-
-Responsive layouts using Flexbox
-Modern card UI
-Hover effects
-Clean typography
-Section spacing
-Banner overlays
-Interactive buttons
-Mobile responsiveness
-
-
-⚡ JavaScript Functionality
-
-script.js
-
-const buttons = document.querySelectorAll("button");
-
-buttons.forEach((button) => {
-  
-});
-
-
-🌟 Features Demonstrated
-
-
-| Feature | Description |
-|----------|-------------|
-| Responsive Layout | Adapts across devices |
-| Event Listings | Displays event packages |
-| Search UI | Service search section |
-| Interactive Buttons | User engagement |
-| Modern Design | Clean and elegant interface |
-
-
-🌐 Live Demo
-
-Add your deployed demo link here:
-
+```text
 https://your-demo-link.com
+```
 
-You can deploy using:
+Deployment platforms:
 
-Netlify
-Vercel
-GitHub Pages
+- Netlify
+- Vercel
+- GitHub Pages
 
+---
 
-🚀 Future Improvements
+# 🚀 Future Improvements
 
-Backend integration
-Authentication system
-Real-time booking system
-Payment gateway integration
-Dynamic service filtering
-User dashboard
-Admin panel
-Dark mode support
+- Backend integration
+- Authentication system
+- Real-time booking system
+- Payment gateway integration
+- Dynamic service filtering
+- User dashboard
+- Admin panel
+- System theme auto-detection
+- Multiple custom themes
+- Accessibility customization controls
 
+---
 
-🤝 Contributing
+# 🤝 Contributing
 
 Contributions are welcome.
 
-Fork the repository
+## Contribution Steps
 
-Create a feature branch
+1. Fork the repository
+2. Create a feature branch
 
+```bash
 git checkout -b feature/new-feature
+```
 
+3. Commit your changes
 
-Commit your changes
-
+```bash
 git commit -m "Add new feature"
+```
 
+4. Push to GitHub
 
-Push to GitHub
-
+```bash
 git push origin feature/new-feature
+```
 
-Open a Pull Request
+5. Open a Pull Request
 
+---
 
-⭐ Support
+# ⭐ Support
 
 If you found this project useful:
 
-Star the repository
-Fork the project
-Contribute to improve the project
+- Star the repository
+- Fork the project
+- Contribute to improve the project
+
+---
+
+# 📄 License
+
+This project is open-source and available under the MIT License.

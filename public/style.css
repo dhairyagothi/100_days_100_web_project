@@ -304,3 +304,10 @@ a {
     padding: 1rem;
   }
 }
+/* Custom focus rings for keyboard users */
+button:focus-visible,
+a:focus-visible,
+.form-input:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}

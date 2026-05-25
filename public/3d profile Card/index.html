@@ -3,148 +3,202 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile Card</title>
+    <title>3D Profile Card Generator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet"
-  />
 
-  <body>
-    <div class="card">
-      <div class="container1">
-        <img
-          src="logo/Adobe Express - file.png"
-          alt="Profile picture"
-          class="image"
-        />
-      </div>
-      <div class="container2">
-        <h1 class="heading">Krishna Bhati</h1>
-        <p class="subhead">Ui/Ux Designer</p>
-        <p class="info">
-          Hardworking and reliable UI/UXdesigner focused on going above and
-          beyond to support teams and serve customers. Currently undergoing a
-          self-taught process to enable me offer top-notch abilities. Motivated
-          to continue to learn and grow as a product design professional.
-        </p>
-
-        <div class="profile">
-          <a href="#">
-            <img
-              src="logo/facebook-logo.svg"
-              alt="Facebook Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/linkedin-svgrepo-com (1).svg"
-              alt="LinkedIn Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/github-142-svgrepo-com.svg"
-              alt="GitHub Profile"
-              class="logo git"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/twitter-svgrepo-com.svg"
-              alt="Twitter Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/leetcode-svgrepo-com.svg"
-              alt="LeetCode Profile"
-              class="logo leet"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/instagram-svgrepo-com.svg"
-              alt="Instagram Profile"
-              class="logo"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/night-mode-svgrepo-com.svg"
-              alt="Enable Dark Mode"
-              class="logo darkmode"
-            />
-          </a>
-
-          <a href="#">
-            <img
-              src="logo/sun-svgrepo-com.svg"
-              alt="Enable Light Mode"
-              class="logo lightmode"
-            />
-          </a>
+  <body class="is-dark">
+    <main class="app-shell">
+      <section class="editor-panel" aria-labelledby="editor-title">
+        <div class="panel-header">
+          <p class="eyebrow">Live profile builder</p>
+          <h1 id="editor-title">Create your 3D profile card</h1>
         </div>
-        <button class="btn">Buy me a coffee</button>
-      </div>
-    </div>
-    <script>
-      let btn = document.querySelector('.darkmode');
-      let lightbtn = document.querySelector('.lightmode');
-      let currmode = 'light';
-      function changeMode() {
-        if (currmode == 'light') {
-          currmode = 'dark';
-          //    document.querySelector(".lightmode").style.display="block";
-          document.querySelector('.container1').style.backgroundColor = 'grey';
-          document.querySelector('.container2').style.backgroundColor = 'black';
-          document.querySelector('.image').style.backgroundColor = 'grey';
-          if (window.matchMedia('(max-width:1098px)').matches) {
-            document.querySelector('.image').style.background =
-              'linear-gradient(#222,#000)';
-          }
-          document.querySelector('.heading').style.color = 'white';
-          document.querySelector('.info').style.color = 'white';
-          document.querySelector('.btn').style.color = 'black';
-          document.querySelector('.git').style.filter = 'invert(1)';
-          document.querySelector('.leet').style.filter = 'invert(1)';
-          btn.style.display = 'none';
-          lightbtn.style.display = 'block';
-        } else {
-          currmode = 'light';
-          lightbtn.style.display = 'none';
-          btn.style.display = 'block';
-          // document.querySelector(".lightmode").style.display="none";
-          document.querySelector('.container1').style.backgroundColor =
-            '#f2d5ed';
-          document.querySelector('.container2').style.backgroundColor =
-            '#f5e0f2';
-          document.querySelector('.image').style.backgroundColor = '#f2d5ed';
-          if (window.matchMedia('(max-width:1098px)').matches) {
-            document.querySelector('.image').style.background =
-              'linear-gradient(#9ad7ff 0%, #fecfef 99%, #fecfef 100%)';
-          }
-          document.querySelector('.heading').style.color = 'black';
-          document.querySelector('.info').style.color = 'black';
-          document.querySelector('.btn').style.color = 'white';
-          document.querySelector('.git').style.filter = 'invert(0)';
-          document.querySelector('.leet').style.filter = 'invert(0)';
-        }
-      }
-      btn.addEventListener('click', changeMode);
-      lightbtn.addEventListener('click', changeMode);
-    </script>
+
+        <form class="profile-form" id="profileForm" novalidate>
+          <div class="form-grid">
+            <label class="field">
+              <span>Name</span>
+              <input
+                type="text"
+                id="nameInput"
+                maxlength="40"
+                placeholder="Krishna Bhati"
+              />
+            </label>
+
+            <label class="field">
+              <span>Profession</span>
+              <input
+                type="text"
+                id="roleInput"
+                maxlength="44"
+                placeholder="UI/UX Designer"
+              />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Short bio</span>
+            <textarea
+              id="bioInput"
+              maxlength="220"
+              rows="4"
+              placeholder="Hardworking and reliable designer focused on thoughtful product experiences."
+            ></textarea>
+          </label>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Image URL</span>
+              <input
+                type="url"
+                id="imageUrlInput"
+                placeholder="https://example.com/profile.jpg"
+              />
+            </label>
+
+            <label class="field file-field">
+              <span>Upload image</span>
+              <input type="file" id="imageFileInput" accept="image/*" />
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>GitHub</span>
+              <input
+                type="url"
+                id="githubInput"
+                placeholder="https://github.com/username"
+              />
+            </label>
+
+            <label class="field">
+              <span>LinkedIn</span>
+              <input
+                type="url"
+                id="linkedinInput"
+                placeholder="https://linkedin.com/in/username"
+              />
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Twitter / X</span>
+              <input
+                type="url"
+                id="twitterInput"
+                placeholder="https://x.com/username"
+              />
+            </label>
+
+            <label class="field">
+              <span>Instagram</span>
+              <input
+                type="url"
+                id="instagramInput"
+                placeholder="https://instagram.com/username"
+              />
+            </label>
+          </div>
+
+          <div class="control-row">
+            <label class="color-picker">
+              <span>Theme</span>
+              <input type="color" id="themeInput" value="#2f80c9" />
+            </label>
+
+            <fieldset class="segmented-control" aria-label="Card layout">
+              <label>
+                <input type="radio" name="layout" value="classic" checked />
+                <span>Classic</span>
+              </label>
+              <label>
+                <input type="radio" name="layout" value="compact" />
+                <span>Compact</span>
+              </label>
+              <label>
+                <input type="radio" name="layout" value="poster" />
+                <span>Poster</span>
+              </label>
+            </fieldset>
+
+            <label class="mode-toggle" id="modeToggle" title="Switch to light mode">
+              <input type="checkbox" id="darkModeInput" checked />
+              <span class="toggle-face" aria-hidden="true"></span>
+              <span class="sr-only" id="modeToggleText">Switch to light mode</span>
+            </label>
+          </div>
+
+          <p class="validation-message" id="validationMessage" aria-live="polite"></p>
+
+          <div class="action-row">
+            <button type="button" class="secondary-btn" id="resetButton">
+              Reset
+            </button>
+            <button type="button" class="primary-btn" id="downloadButton">
+              Download card
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="preview-panel" aria-label="Generated profile card preview">
+        <article class="card layout-classic" id="profileCard">
+          <div class="container1">
+            <img
+              src="logo/Adobe Express - file.png"
+              alt="Profile picture"
+              class="image"
+              id="previewImage"
+            />
+          </div>
+          <div class="container2">
+            <p class="card-label">Digital profile</p>
+            <h2 class="heading" id="previewName">Krishna Bhati</h2>
+            <p class="subhead" id="previewRole">UI/UX Designer</p>
+            <p class="info" id="previewBio">
+              Hardworking and reliable UI/UX designer focused on going above and
+              beyond to support teams and serve customers.
+            </p>
+
+            <div class="profile" id="socialLinks">
+              <a href="#" data-platform="github" aria-label="GitHub profile">
+                <img
+                  src="logo/github-142-svgrepo-com.svg"
+                  alt=""
+                  class="logo monochrome"
+                />
+              </a>
+              <a href="#" data-platform="linkedin" aria-label="LinkedIn profile">
+                <img
+                  src="logo/linkedin-svgrepo-com (1).svg"
+                  alt=""
+                  class="logo"
+                />
+              </a>
+              <a href="#" data-platform="twitter" aria-label="Twitter profile">
+                <img src="logo/twitter-svgrepo-com.svg" alt="" class="logo" />
+              </a>
+              <a href="#" data-platform="instagram" aria-label="Instagram profile">
+                <img src="logo/instagram-svgrepo-com.svg" alt="" class="logo" />
+              </a>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="script.js"></script>
   </body>
+
 </html>
