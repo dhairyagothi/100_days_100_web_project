@@ -22,6 +22,22 @@ body {
     gap: 15px;
     margin: 20px 0;
 }
+#difficulty-screen p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+#difficulty-screen button {
+    margin: 0 8px;
+}
+#timer {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #f4a44a;
+}
+#gameover-screen p {
+    font-size: 18px;
+    margin: 10px 0;
+}
 button {
     background: #4ab3f4;
     border: none;
