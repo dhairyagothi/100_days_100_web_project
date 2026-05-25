@@ -20,5 +20,17 @@
  <div class="pong-wrapper">
   <canvas id="ping-pong" width="600px" height="400px"></canvas>
  </div>
+
+ <!-- Game Over Modal -->
+ <div id="gameModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="resultText">
+  <div class="modal-content">
+   <h2 id="resultText"></h2>
+   <p id="finalScore"></p>
+   <div class="modal-buttons">
+    <button id="playAgainBtn">Play Again</button>
+    <button id="closeBtn">Close</button>
+   </div>
+  </div>
+ </div>
 </body>
 </html>
