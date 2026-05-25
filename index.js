@@ -342,14 +342,22 @@ function updateTechFilterDisplay() {
   container.style.display = 'flex';
 
   // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters.map(tech => `
-    <span class="tech-filter-tag">
-      ${tech}
-      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
-        <i class="fas fa-times"></i>
-      </button>
-    </span>
-  `).join('');
+  tagsContainer.innerHTML = '';
+  techStackFilters.forEach(tech => {
+    const span = document.createElement('span');
+    span.className = 'tech-filter-tag';
+
+    const label = document.createTextNode(tech + ' ');
+    span.appendChild(label);
+
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-label', 'Remove ' + tech + ' filter');
+    btn.innerHTML = '<i class="fas fa-times"></i>';
+    btn.addEventListener('click', () => removeTechFilter(tech));
+    span.appendChild(btn);
+
+    tagsContainer.appendChild(span);
+  });
 }
 
 /**
@@ -397,34 +405,49 @@ const CATEGORY_LABEL = {
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
-
   const set = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   };
 
-  const setFallback = () => {
-    set('starCount', 'N/A');
-    set('forkCount', 'N/A');
-    set('issueCount', 'N/A');
-    set('prCount', 'N/A');
+  const setFallback = (label = 'N/A') => {
+    set('starCount', label);
+    set('forkCount', label);
+    set('issueCount', label);
+    set('prCount', label);
   };
 
+  // Show loading state
+  set('starCount', '…');
+  set('forkCount', '…');
+  set('issueCount', '…');
+  set('prCount', '…');
+
+  // Abort fetch if GitHub takes longer than 8 seconds
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+
   try {
-
-    // Optional loading state
-    set('starCount', 'Loading...');
-    set('forkCount', 'Loading...');
-    set('issueCount', 'Loading...');
-    set('prCount', 'Loading...');
-
     const [repoRes, prRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`, { signal: controller.signal }),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`, { signal: controller.signal })
     ]);
 
+    clearTimeout(timeout);
+
+    // Detect rate limiting (403 or 429)
+    if (repoRes.status === 403 || repoRes.status === 429) {
+      const retryAfter = repoRes.headers.get('X-RateLimit-Reset');
+      const resetTime = retryAfter
+        ? new Date(retryAfter * 1000).toLocaleTimeString()
+        : 'soon';
+      console.warn(`GitHub API rate limit reached. Resets at ${resetTime}.`);
+      setFallback('—');
+      return;
+    }
+
     if (!repoRes.ok || !prRes.ok) {
-      throw new Error("GitHub API request failed");
+      throw new Error(`GitHub API error: ${repoRes.status} / ${prRes.status}`);
     }
 
     const repo = await repoRes.json();
@@ -432,15 +455,21 @@ async function fetchRepoStats() {
 
     set('starCount', repo.stargazers_count.toLocaleString());
     set('forkCount', repo.forks_count.toLocaleString());
-    set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
+    set('issueCount', Math.max(0, repo.open_issues_count - prs.total_count).toLocaleString());
     set('prCount', prs.total_count.toLocaleString());
 
   } catch (e) {
+    clearTimeout(timeout);
 
-    console.warn("GitHub stats unavailable:", e.message);
+    if (e.name === 'AbortError') {
+      console.warn('GitHub stats: request timed out after 8s.');
+    } else if (!navigator.onLine) {
+      console.warn('GitHub stats: no internet connection.');
+    } else {
+      console.warn('GitHub stats unavailable:', e.message);
+    }
 
-    // Show fallback text instead of permanent dashes
-    setFallback();
+    setFallback('N/A');
   }
 }
 function generateReadme() {
@@ -632,6 +661,22 @@ function renderPagination(totalItems, totalPages) {
   const controlsDiv = document.createElement('div');
   controlsDiv.className = 'pagination-controls';
 
+  // FIRST button
+  const firstBtn = document.createElement('button');
+  firstBtn.className = 'first-btn';
+  firstBtn.innerHTML = '<i class="fas fa-angle-double-left"></i>';
+  firstBtn.disabled = currentPage === 1;
+  firstBtn.setAttribute('aria-label', 'First Page');
+  firstBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+  controlsDiv.appendChild(firstBtn);
+
   const prevBtn = document.createElement('button');
   prevBtn.className = 'prev-btn';
   prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
@@ -642,10 +687,7 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage > 1) {
       currentPage--;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
+      setTimeout(() => scrollToProjectSection(), 50);
     }
   });
   controlsDiv.appendChild(prevBtn);
@@ -696,13 +738,26 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage < totalPages) {
       currentPage++;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
+      setTimeout(() => scrollToProjectSection(), 50);
     }
   });
   controlsDiv.appendChild(nextBtn);
+
+  // LAST button
+  const lastBtn = document.createElement('button');
+  lastBtn.className = 'last-btn';
+  lastBtn.innerHTML = '<i class="fas fa-angle-double-right"></i>';
+  lastBtn.disabled = currentPage === totalPages;
+  lastBtn.setAttribute('aria-label', 'Last Page');
+  lastBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+  controlsDiv.appendChild(lastBtn);
 
   container.appendChild(controlsDiv);
 

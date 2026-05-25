@@ -172,14 +172,13 @@ body>*:not(.ambient):not(.noise-layer):not(canvas):not(header) {
   z-index: 1;
 }
 
-/* header wraps .navbar — needs its own stacking context above ALL
-   fixed overlay layers (body::before/after, ambient, noise, canvas) */
+/* header wraps .navbar — sits above all decorative layers */
 header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 10000;
+  z-index: 1000;
   pointer-events: auto;
 }
 
@@ -190,7 +189,7 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 100000;
+  z-index: 1000;
   background: rgba(11, 13, 15, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -212,7 +211,7 @@ body.light-mode .navbar {
   align-items: center;
   gap: 0.8rem;
   text-decoration: none;
-  z-index: 1002;
+  z-index: 1001;
 }
 
 .brand-mark {
@@ -277,7 +276,7 @@ body.light-mode .navbar {
   font-size: 1.25rem;
   cursor: pointer;
   padding: 0.5rem;
-  z-index: 1002;
+  z-index: 1001;
   transition: var(--t);
 }
 
@@ -1216,7 +1215,7 @@ color: var(--text-primary);
   opacity: 0;
   pointer-events: none;
   transition: 0.3s ease;
-  z-index: 9999;
+  z-index: 900;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
@@ -1466,12 +1465,12 @@ color: var(--text-primary);
     width: 100% !important;
     height: 60px !important;
     padding: 0 1.5rem !important;
-    z-index: 100000 !important;
+    z-index: 1000 !important;
   }
 
   .menu-toggle {
     display: block !important;
-    z-index: 100001 !important;
+    z-index: 1001 !important;
   }
 
   .menu-toggle.active i::before {
@@ -1491,7 +1490,7 @@ color: var(--text-primary);
     align-items: center !important;
     justify-content: flex-start !important;
     gap: 1.5rem !important;
-    z-index: 99999 !important;
+    z-index: 999 !important;
     box-sizing: border-box !important;
     overflow-y: auto !important;
   }
@@ -1869,7 +1868,9 @@ body.light-mode .pagination-controls button.page-num.active {
 }
 
 .pagination-controls button.prev-btn,
-.pagination-controls button.next-btn {
+.pagination-controls button.next-btn,
+.pagination-controls button.first-btn,
+.pagination-controls button.last-btn {
   width: 32px;
   height: 32px;
   border-radius: 6px;
@@ -1877,7 +1878,9 @@ body.light-mode .pagination-controls button.page-num.active {
 }
 
 .pagination-controls button.prev-btn:hover:not(:disabled),
-.pagination-controls button.next-btn:hover:not(:disabled) {
+.pagination-controls button.next-btn:hover:not(:disabled),
+.pagination-controls button.first-btn:hover:not(:disabled),
+.pagination-controls button.last-btn:hover:not(:disabled) {
   color: var(--text-primary);
   background: var(--bg-surface);
 }
@@ -2065,7 +2068,21 @@ body::after {
   pointer-events: none;
 }
 
-/* Toast sits above content */
+/* Toast sits above content but below navbar */
 .toast {
-  z-index: 100001;
+  z-index: 900;
+}
+
+/* ============================================================
+   ACCESSIBILITY — KEYBOARD FOCUS OUTLINES
+   Uses :focus-visible so mouse users are unaffected.
+   ============================================================ */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
