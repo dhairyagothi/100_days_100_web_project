@@ -286,12 +286,16 @@ function matchesTechStack(projectTags) {
   // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Convert to single lowercase string for efficient matching
-  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  const tagArray = (
+    typeof projectTags === 'string'
+      ? projectTags.split(/\s+/)
+      : projectTags
+  ).map(tag => tag.toLowerCase());
 
-  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
-  // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  // Check if ALL filters exist in tags (AND logic) using exact matching
+  return techStackFilters.every(filter =>
+    tagArray.some(tag => tag === filter.toLowerCase().trim())
+  );
 }
 
 
