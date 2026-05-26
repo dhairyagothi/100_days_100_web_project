@@ -612,6 +612,8 @@ const PROJECT_DESCRIPTIONS = {
   "Focus Timer":
     "A minimal Pomodoro-style productivity timer to boost focus with custom work and break intervals. Built with React, TypeScript and Tailwind CSS.",
 
+  "Train game":
+  "An endless train runner game where you switch tracks to dodge obstacles, collect coins, and survive as long as possible while speed increases over time.",
 };
 
 /* ============================================================
