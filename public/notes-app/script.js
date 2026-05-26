@@ -1,497 +1,268 @@
-const modal = document.getElementById("modal");
-const openModal = document.getElementById("openModal");
-const openCard = document.getElementById("openCard");
-const closeModal = document.getElementById("closeModal");
-const saveBtn = document.getElementById("saveBtn");
-const toast = document.getElementById("toast");
+// --- DOM Element Registrations ---
 const notesGrid = document.getElementById("notesGrid");
+const openModalBtn = document.getElementById("openModal");
+const openCardBtn = document.getElementById("openCard");
+const closeModalBtn = document.getElementById("closeModal");
+const modal = document.getElementById("modal");
+const saveBtn = document.getElementById("saveBtn");
 const searchInput = document.getElementById("searchInput");
 const noteCount = document.getElementById("noteCount");
 const greeting = document.getElementById("greeting");
+const themeToggle = document.getElementById("themeToggle");
+const themeText = document.getElementById("themeText");
 
-let notes = JSON.parse(localStorage.getItem("notes")) || [];
+// Input Form Registration References
+const titleInput = document.getElementById("title");
+const contentInput = document.getElementById("content");
+const tagInput = document.getElementById("tag");
 
-/* GREETING */
+// Setup overlay runtime dynamic dependencies
+const overlay = document.createElement("div");
+overlay.className = "modal-overlay";
+document.body.appendChild(overlay);
 
-function setGreeting() {
-  const hour = new Date().getHours();
+// --- Data Core Architecture State Initialization ---
+let notes = JSON.parse(localStorage.getItem("notes-app-data")) || [];
+let activeFilter = "all";
+let editingNoteId = null;
 
-  if (hour < 12) {
-    greeting.innerText = "Good Morning 👋";
-  } else if (hour < 18) {
-    greeting.innerText = "Good Afternoon 👋";
-  } else {
-    greeting.innerText = "Good Evening 👋";
-  }
+// --- Setup System Time-Contextual Dashboard Greeting ---
+function updateGreeting() {
+  const hours = new Date().getHours();
+  let msg = "Good Morning 🌅";
+  if (hours >= 12 && hours < 17) msg = "Good Afternoon ☀️";
+  if (hours >= 17) msg = "Good Evening 🌙";
+  greeting.textContent = msg;
 }
 
-setGreeting();
+// --- Local Storage Sync Engine ---
+function syncStorage() {
+  localStorage.setItem("notes-app-data", JSON.stringify(notes));
+  renderNotes();
+}
 
-/* OPEN */
+// --- System Core UI Render Framework ---
+function renderNotes() {
+  // Clear grid space except for the initial interactive template card
+  notesGrid.innerHTML = "";
+  notesGrid.appendChild(openCardBtn);
 
-openModal.addEventListener("click", () => {
-  modal.classList.add("active");
-});
+  const query = searchInput.value.toLowerCase().trim();
 
-// document.addEventListener("click", (e) => {
+  // Apply active system state filters
+  let filteredNotes = notes.filter(note => {
+    // Search constraints configuration fallback
+    const matchesSearch = note.title.toLowerCase().includes(query) || note.content.toLowerCase().includes(query);
+    if (!matchesSearch) return false;
 
-//   if(e.target.id === "openCard"){
-//     modal.classList.add("active");
-//   }
+    // View filter conditional matching blocks
+    if (activeFilter === "all") return !note.isTrash;
+    if (activeFilter === "favorites") return note.isFavorite && !note.isTrash;
+    if (activeFilter === "locked") return note.isLocked && !note.isTrash;
+    if (activeFilter === "trash") return note.isTrash;
 
-// });
+    // Tag structural matches selection check
+    return note.tag.toLowerCase() === activeFilter.toLowerCase() && !note.isTrash;
+  });
 
-document.addEventListener("click", (e) => {
-  if (e.target.id === "openCard" || e.target.closest("#openCard")) {
-    modal.classList.add("active");
-  }
-});
+  // Calculate note volumes dashboard metric tracking values
+  const activeTotal = notes.filter(n => !n.isTrash).length;
+  noteCount.textContent = `You have ${activeTotal} active note${activeTotal === 1 ? "" : "s"}`;
 
-/* CLOSE */
+  // Process item node creation markup pipeline loop
+  filteredNotes.forEach(note => {
+    const card = document.createElement("div");
+    card.className = "card";
 
-closeModal.addEventListener("click", () => {
-  modal.classList.remove("active");
-});
+    card.innerHTML = `
+      <div>
+        <div class="card-header">
+          <div class="card-title">${escapeHTML(note.title)}</div>
+          <div class="card-tag-indicator ${note.tag}">${note.tag}</div>
+        </div>
+        <div class="card-body">${escapeHTML(note.content)}</div>
+      </div>
+      <div class="card-footer">
+        <div>${note.date}</div>
+        <div class="card-actions">
+          ${note.isTrash ? `
+            <span title="Restore Note" onclick="restoreNote(${note.id})">🔄</span>
+            <span title="Delete Permanently" onclick="permaDeleteNote(${note.id})">❌</span>
+          ` : `
+            <span title="Toggle Favorite" onclick="toggleFavorite(${note.id})">${note.isFavorite ? "❤️" : "🤍"}</span>
+            <span title="Toggle Lock" onclick="toggleLock(${note.id})">${note.isLocked ? "🔒" : "🔓"}</span>
+            <span title="Edit Content" onclick="openEditModal(${note.id})">✏️</span>
+            <span title="Move to Trash" onclick="trashNote(${note.id})">🗑️</span>
+          `}
+        </div>
+      </div>
+    `;
+    notesGrid.appendChild(card);
+  });
+}
 
-/* SAVE */
+// Helper to escape characters and prevent XSS injections via input text injections
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[tag] || tag));
+}
 
-// saveBtn.addEventListener("click", () => {
+// --- Action Logic Operations (CRUD Model Implementations) ---
 
-//   const title = document.getElementById("title").value;
-//   const content = document.getElementById("content").value;
-//   const tag = document.getElementById("tag").value;
-//   const favorite = document.getElementById("favorite").checked;
-//   const locked = document.getElementById("locked").checked;
+function saveNote() {
+  const title = titleInput.value.trim();
+  const content = contentInput.value.trim();
+  const tag = tagInput.value;
 
-//   if(title === "" || content === ""){
-//     alert("Please fill all fields");
-//     return;
-//   }
-
-//   const note = {
-//     id: Date.now(),
-//     title,
-//     content,
-//     tag,
-//     favorite,
-//     locked,
-//     trash:false,
-//     date:new Date().toLocaleDateString()
-//   };
-
-//   notes.push(note);
-
-//   localStorage.setItem("notes", JSON.stringify(notes));
-
-//   renderNotes();
-
-//   modal.classList.remove("active");
-
-//   document.getElementById("title").value = "";
-//   document.getElementById("content").value = "";
-//   document.getElementById("favorite").checked = false;
-//   document.getElementById("locked").checked = false;
-
-//   showToast();
-
-// });
-
-// saveBtn.addEventListener("click", () => {
-
-//   const title = document.getElementById("title").value.trim();
-//   const content = document.getElementById("content").value.trim();
-//   const tag = document.getElementById("tag").value;
-
-//   const favorite =
-//     document.getElementById("favorite").checked;
-
-//   const locked =
-//     document.getElementById("locked").checked;
-
-//   if(title === "" || content === ""){
-//     alert("Please fill all fields");
-//     return;
-//   }
-
-//   const note = {
-//     id: Date.now(),
-//     title,
-//     content,
-//     tag,
-//     favorite,
-//     locked,
-//     trash:false,
-//     date:new Date().toLocaleDateString()
-//   };
-
-//   notes.push(note);
-
-//   localStorage.setItem(
-//     "notes",
-//     JSON.stringify(notes)
-//   );
-
-//   renderNotes(currentView);
-
-//   modal.classList.remove("active");
-
-//   document.getElementById("title").value = "";
-//   document.getElementById("content").value = "";
-
-//   document.getElementById("tag").selectedIndex = 0;
-
-//   document.getElementById("favorite").checked = false;
-//   document.getElementById("locked").checked = false;
-
-//   showToast();
-
-// });
-
-saveBtn.addEventListener("click", () => {
-  const title = document.getElementById("title").value.trim();
-
-  const content = document.getElementById("content").value.trim();
-
-  const tag = document.getElementById("tag").value;
-
-  if (title === "" || content === "") {
-    alert("Please fill all fields");
+  if (!title || !content) {
+    showToast("⚠️ Title and note content fields are required!");
     return;
   }
 
-  const note = {
-    id: Date.now(),
-    title,
-    content,
-    tag,
-    favorite: false,
-    locked: false,
-    trash: false,
-    date: new Date().toLocaleDateString(),
-  };
-
-  notes.push(note);
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes(currentView);
-
-  modal.classList.remove("active");
-
-  document.getElementById("title").value = "";
-  document.getElementById("content").value = "";
-  document.getElementById("tag").selectedIndex = 0;
-
-  showToast();
-});
-/* RENDER */
-
-function renderNotes(type = "all") {
-  notesGrid.innerHTML = `
-    <div class="card add-card" id="openCard">
-      <div class="plus">+</div>
-      <h2>Add New Note</h2>
-    </div>
-  `;
-
-  let filtered = notes;
-
-  if (type === "favorites") {
-    filtered = notes.filter((note) => note.favorite);
-  }
-
-  if (type === "locked") {
-    filtered = notes.filter((note) => note.locked);
-  }
-
-  if (type === "trash") {
-    filtered = notes.filter((note) => note.trash);
-  }
-
-  filtered.forEach((note) => {
-    if (type !== "trash" && note.trash) {
-      return;
-    }
-
-    notesGrid.innerHTML += `
-
-      <div class="card">
-
-        ${note.locked ? `<div class="lock-badge">🔒 Locked</div>` : ""}
-
-        <button
-          class="favorite-btn"
-          onclick="toggleFavorite(${note.id})"
-        >
-          ${note.favorite ? "⭐" : "☆"}
-        </button>
-
-
-        <button
-            class="lock-btn"
-            onclick="toggleLock(${note.id})"
-         >
-        ${note.locked ? "🔒" : "🔓"}
-        </button>
-
-        <h2>${note.title}</h2>
-
-        <p>
-${note.locked && currentView !== "locked" ? "🔒 Locked Note" : note.content}
-</p>
-
-        <div class="badge">${note.tag}</div>
-
-        
-
-       ${
-         type === "trash"
-           ? `
-  <div class="card-footer">
-
-      <div class="date">
-          ${note.date}
-      </div>
-
-      <div class="trash-actions">
-
-          <button
-              class="restore-btn"
-              onclick="restoreNote(${note.id})"
-          >
-              Restore
-          </button>
-
-          <button
-              class="delete-btn"
-              onclick="deleteForever(${note.id})"
-          >
-              Delete
-          </button>
-
-      </div>
-
-  </div>
-  `
-           : `
-  <div class="card-footer">
-
-      <div class="date">
-          ${note.date}
-      </div>
-
-      <button
-          class="delete-btn"
-          onclick="moveToTrash(${note.id})"
-      >
-          Trash
-      </button>
-
-  </div>
-  `
-       }
-
-      </div>
-    `;
-  });
-
-  //   noteCount.innerText = `You have ${filtered.length} notes`;
-  noteCount.innerText = `You have ${
-    filtered.filter((n) => !n.trash).length
-  } notes`;
-}
-
-/* FAVORITE */
-
-function toggleFavorite(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      note.favorite = !note.favorite;
-    }
-
-    return note;
-  });
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes(currentView);
-}
-
-function toggleLock(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      note.locked = !note.locked;
-    }
-
-    return note;
-  });
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes(currentView);
-}
-
-/* TRASH */
-
-function moveToTrash(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      note.trash = true;
-    }
-
-    return note;
-  });
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes(currentView);
-}
-function restoreNote(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      note.trash = false;
-    }
-    return note;
-  });
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes("trash");
-}
-
-/* DELETE */
-
-function deleteForever(id) {
-  notes = notes.filter((note) => note.id !== id);
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes("trash");
-}
-
-/* SEARCH */
-searchInput.addEventListener("keyup", () => {
-  const value = searchInput.value.toLowerCase();
-
-  const filtered = notes.filter(
-    (note) =>
-      !note.trash &&
-      (note.title.toLowerCase().includes(value) ||
-        note.content.toLowerCase().includes(value) ||
-        note.tag.toLowerCase().includes(value)),
-  );
-
-  notesGrid.innerHTML = `
-
-    <div class="card add-card" id="openCard">
-      <div class="plus">+</div>
-      <h2>Add New Note</h2>
-    </div>
-
-  `;
-
-  filtered.forEach((note) => {
-    notesGrid.innerHTML += `
-
-      <div class="card">
-
-        ${note.locked ? `<div class="lock-badge">🔒 Locked</div>` : ""}
-
-        <button
-          class="favorite-btn"
-          onclick="toggleFavorite(${note.id})"
-        >
-          ${note.favorite ? "⭐" : "☆"}
-        </button>
-
-        <h2>${note.title}</h2>
-
-        <p>${note.content}</p>
-
-        <div class="badge">${note.tag}</div>
-
-      </div>
-
-    `;
-  });
-});
-// searchInput.addEventListener("keyup", () => {
-
-//   const value = searchInput.value.toLowerCase();
-
-//   const filtered = notes.filter(note =>
-
-//     !note.trash &&
-
-//     (
-//       note.title.toLowerCase().includes(value)
-//       ||
-//       note.content.toLowerCase().includes(value)
-//       ||
-//       note.tag.toLowerCase().includes(value)
-//     )
-
-//   );
-
-//   notesGrid.innerHTML = "";
-
-//   filtered.forEach(note => {
-
-//     notesGrid.innerHTML += `
-//       <div class="card">
-//         <h2>${note.title}</h2>
-//         <p>${note.content}</p>
-//         <div class="badge">${note.tag}</div>
-//       </div>
-//     `;
-//   });
-
-// });
-
-/* TOAST */
-
-function showToast() {
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2500);
-}
-
-/* DARK MODE */
-
-const themeToggle = document.getElementById("themeToggle");
-
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("light");
-
-  const themeText = document.getElementById("themeText");
-
-  if (document.body.classList.contains("light")) {
-    themeText.innerHTML = "☀️ Light Mode";
+  if (editingNoteId) {
+    // Process existing record edits update routine mapping
+    notes = notes.map(note => note.id === editingNoteId ? {
+      ...note, title, content, tag, date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    } : note);
+    editingNoteId = null;
+    showToast("✔ Note updated successfully!");
   } else {
-    themeText.innerHTML = "🌙 Dark Mode";
+    // Construct fresh structural tracking record entity template definitions
+    const newNote = {
+      id: Date.now(),
+      title,
+      content,
+      tag,
+      isFavorite: false,
+      isLocked: false,
+      isTrash: false,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    };
+    notes.unshift(newNote);
+    showToast("✔ Note added successfully!");
   }
-});
 
-/* MENU */
+  closeModal();
+  syncStorage();
+}
 
-let currentView = "all";
+window.toggleFavorite = (id) => {
+  notes = notes.map(n => n.id === id ? { ...n, isFavorite: !n.isFavorite } : n);
+  syncStorage();
+};
 
-const menuItems = document.querySelectorAll(".menu-item");
+window.toggleLock = (id) => {
+  notes = notes.map(n => n.id === id ? { ...n, isLocked: !n.isLocked } : n);
+  syncStorage();
+};
 
-menuItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    menuItems.forEach((i) => i.classList.remove("active"));
+window.trashNote = (id) => {
+  notes = notes.map(n => n.id === id ? { ...n, isTrash: true } : n);
+  showToast("🗑️ Note moved to Trash container.");
+  syncStorage();
+};
 
-    item.classList.add("active");
+window.restoreNote = (id) => {
+  notes = notes.map(n => n.id === id ? { ...n, isTrash: false } : n);
+  showToast("🔄 Note restored back to active view.");
+  syncStorage();
+};
 
-    currentView = item.dataset.filter;
+window.permaDeleteNote = (id) => {
+  if (confirm("Are you sure you want to permanently delete this note? This action cannot be undone.")) {
+    notes = notes.filter(n => n.id !== id);
+    showToast("❌ Note purged permanently.");
+    syncStorage();
+  }
+};
 
-    renderNotes(currentView);
+// --- Modal Transitions Control Flow Mechanics ---
+
+function openCreateModal() {
+  editingNoteId = null;
+  document.querySelector(".modal h2").textContent = "Add New Note";
+  titleInput.value = "";
+  contentInput.value = "";
+  tagInput.value = "Work";
+
+  modal.classList.add("active");
+  overlay.classList.add("active");
+}
+
+window.openEditModal = (id) => {
+  const target = notes.find(n => n.id === id);
+  if (!target) return;
+
+  editingNoteId = id;
+  document.querySelector(".modal h2").textContent = "Edit Note Details";
+  titleInput.value = target.title;
+  contentInput.value = target.content;
+  tagInput.value = target.tag;
+
+  modal.classList.add("active");
+  overlay.classList.add("active");
+};
+
+function closeModal() {
+  modal.classList.remove("active");
+  overlay.classList.remove("active");
+}
+
+// --- Interactive Toast Engine Logic ---
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("active");
+  setTimeout(() => toast.classList.remove("active"), 3000);
+}
+
+// --- Active Theme Preference Engine Rules Engine ---
+function initThemeEngine() {
+  const userSelectedTheme = localStorage.getItem("notes-app-theme") || "light";
+  document.documentElement.setAttribute("data-theme", userSelectedTheme);
+  themeText.textContent = userSelectedTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+
+  themeToggle.addEventListener("click", () => {
+    const targetTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", targetTheme);
+    localStorage.setItem("notes-app-theme", targetTheme);
+    themeText.textContent = targetTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
   });
-});
+}
 
-/* START */
+// --- Navigation Layout Filter Event Listeners Setup ---
+function initNavigationFilters() {
+  const interactiveNavTargets = document.querySelectorAll(".menu-item, .tag");
 
+  interactiveNavTargets.forEach(element => {
+    element.addEventListener("click", (e) => {
+      // Clear dynamic layout class configurations across active state nodes
+      document.querySelectorAll(".menu-item").forEach(item => item.classList.remove("active"));
+
+      // Setup dynamic structural navigation elements highlight loops
+      const filterValue = element.getAttribute("data-filter") || element.textContent.replace(/[^\w]/g, '').trim();
+      activeFilter = filterValue.toLowerCase();
+
+      if (element.classList.contains("menu-item")) {
+        element.classList.add("active");
+      }
+
+      renderNotes();
+    });
+  });
+}
+
+// --- Global Tracking Action Binding Register Pipeline ---
+openModalBtn.addEventListener("click", openCreateModal);
+openCardBtn.addEventListener("click", openCreateModal);
+closeModalBtn.addEventListener("click", closeModal);
+overlay.addEventListener("click", closeModal);
+saveBtn.addEventListener("click", saveNote);
+searchInput.addEventListener("input", renderNotes);
+
+// Runtime Application Entry Point Initializations
+updateGreeting();
+initThemeEngine();
+initNavigationFilters();
 renderNotes();
