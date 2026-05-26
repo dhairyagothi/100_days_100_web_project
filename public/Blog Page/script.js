@@ -28,6 +28,7 @@ const themeToggle = document.getElementById("themeToggle");
 let darkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
 
 const updateTheme = () => {
+
     if (darkMode) {
         document.body.classList.add("dark-mode");
         themeToggle.textContent = "🌙";
@@ -37,9 +38,8 @@ const updateTheme = () => {
     }
 };
 
-updateTheme();
-
 themeToggle.addEventListener("click", () => {
+
     darkMode = !darkMode;
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
     updateTheme();

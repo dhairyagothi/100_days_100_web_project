@@ -236,7 +236,13 @@ document.addEventListener('keydown', e => {
   }
 
   const newDir = KEY_MAP[e.key];
-  if (newDir && running && !paused) {
+
+  if (newDir && !running) {
+    startGame();
+    if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+      nextDir = newDir;
+    }
+  } else if (newDir && running && !paused) {
     
     if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
       nextDir = newDir;
@@ -257,6 +263,11 @@ document.addEventListener('keydown', e => {
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
 
+document.addEventListener('mousedown', e => {
+  if (!running && e.target.id !== 'startBtn' && e.target.id !== 'restartBtn') {
+    startGame();
+  }
+});
 
 let animFrame;
 

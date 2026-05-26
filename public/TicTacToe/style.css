@@ -637,31 +637,73 @@ body[data-theme="mono"] {
         padding: 16px;
     }
 
-    .toolbar {
-        grid-template-columns: 1fr;
-    }
-
-    .toolbar-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .repeat,
-    .ghost {
-        width: 100%;
-    }
-
-    .game {
-        width: min(320px, 90vw);
-        height: min(320px, 90vw);
-        gap: 8px;
-    }
-
-    .box {
-        border-radius: 14px;
-    }
-
-    .history {
-        padding: 12px;
-    }
+  to {
+    transform: translateY(-120px);
+  }
 }
+
+/* ── Mode screen ─────────────────────────── */
+#mode-screen {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, #0f2bff22, transparent 40%),
+    radial-gradient(circle at top right, #ff00cc22, transparent 40%),
+    #050816;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+#mode-screen.show { display: flex; opacity: 1; }
+#mode-screen.hide { opacity: 0; }
+
+.mode-title {
+  font-family: var(--font);
+  font-size: 48px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.mode-sub {
+  color: #aaa;
+  font-family: var(--font);
+  font-size: 16px;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+}
+.mode-btns {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 170px;
+  padding: 32px 20px;
+  border-radius: 20px;
+  border: 2px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  font-family: var(--font);
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  backdrop-filter: blur(10px);
+}
+.mode-btn:hover {
+  transform: scale(1.07);
+  border-color: #ff2cdf;
+  box-shadow: 0 0 30px #ff2cdf88;
+}
+.mode-icon  { font-size: 40px; line-height: 1; }
+.mode-label { font-size: 20px; font-weight: 900; letter-spacing: 1px; }
+.mode-desc  { font-size: 12px; color: #aaa; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }

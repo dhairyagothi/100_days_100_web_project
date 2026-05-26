@@ -169,12 +169,11 @@ body.dark-mode .nav-toggle span {
 }
 
 .blog-category{
-    background:#dcfce7;
-  color:#15803d;
+    background:#15803d;
   padding:6px 12px;
   border-radius:20px;
   font-size:14px;
-    font-weight:600;
+font-weight:600;
 }
 
 .blog-title{
@@ -268,7 +267,7 @@ body.dark-mode .nav-toggle span {
 }
 
 .category-count{
-    background:#f3f4f6;
+    background:#15803d;
     padding:4px 10px;
     border-radius:20px;
     font-size:14px;
