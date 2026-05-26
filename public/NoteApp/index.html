@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Notes App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1 id="appTitle">Notes App</h1>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="add-btn" type="button" aria-controls="notesContainer">+ Add Note</button>
+        <div id="saveStatus" class="save-status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <main class="notes-container" id="notesContainer" aria-labelledby="appTitle"></main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
