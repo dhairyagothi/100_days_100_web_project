@@ -18,7 +18,7 @@ let currentFilter = "all";
 function addTask() {
   const text = taskInput.value.trim();
   const category = taskTypeSelect.value;
-  
+
   if (!text) {
     showToast("⚠️ Please enter a task description!");
     return;
@@ -40,7 +40,7 @@ function addTask() {
   tasks.push(newTask);
   taskInput.value = "";
   taskTypeSelect.value = ""; // Reset dropdown
-  
+
   renderTasks();
   showToast("✅ Task added successfully!");
 }
@@ -81,7 +81,7 @@ function filterTasks(buttonElement, filterValue) {
   // Update active states on filter row
   document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
   buttonElement.classList.add("active");
-  
+
   currentFilter = filterValue;
   renderTasks();
 }
@@ -164,17 +164,35 @@ function updateMetrics() {
 // }
 
 function showHome() {
+  document.getElementById("nav-home").classList.add("active");
+  document.getElementById("nav-documents").classList.remove("active");
+  document.getElementById("home-tab").removeAttribute("hidden");
   document.getElementById("home-tab").style.display = "block";
+  document.getElementById("documents-tab").setAttribute("hidden", "");
   document.getElementById("documents-tab").style.display = "none";
   document.getElementById("documents-tab").hidden = true;
   document.getElementById("home-tab").hidden = false;
 }
 
 function showDocuments() {
+  document.getElementById("nav-home").classList.remove("active");
+  document.getElementById("nav-documents").classList.add("active");
+  document.getElementById("home-tab").setAttribute("hidden", "");
   document.getElementById("home-tab").style.display = "none";
+  document.getElementById("documents-tab").removeAttribute("hidden");
   document.getElementById("documents-tab").style.display = "block";
   document.getElementById("home-tab").hidden = true;
   document.getElementById("documents-tab").hidden = false;
+}
+
+// Wire up nav link click listeners
+const navHome = document.getElementById("nav-home");
+const navDocuments = document.getElementById("nav-documents");
+if (navHome) {
+  navHome.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
+}
+if (navDocuments) {
+  navDocuments.addEventListener("click", (e) => { e.preventDefault(); showDocuments(); });
 }
 
 // 5. Theme Customization System
@@ -199,7 +217,7 @@ function applyTheme(themeName) {
   if (activeBtn) {
     activeBtn.classList.add("active");
   }
-  try { localStorage.setItem('todo-theme', themeName); } catch (e) {}
+  try { localStorage.setItem('todo-theme', themeName); } catch (e) { }
 }
 document.querySelectorAll(".theme-btn").forEach(button => {
   button.addEventListener("click", () => {
@@ -216,71 +234,90 @@ function saveAsPDF() {
     return;
   }
 
+  // Snapshot the current task list at this exact moment
+  const snapshot = [...tasks];
+  const doneCount = snapshot.filter(t => t.completed).length;
+  const pendingCount = snapshot.length - doneCount;
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
+  // jsPDF v2.x API: doc.text(text, x, y)
   doc.setFont("Helvetica", "bold");
   doc.setFontSize(22);
   doc.text("TaskFlow Agenda Report", 20, 24);
-  
+
   doc.setFont("Helvetica", "normal");
   doc.setFontSize(10);
   doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
-  doc.line(20, 36, 190, 36);
+  doc.text(`Tasks: ${snapshot.length} total  |  ${doneCount} done  |  ${pendingCount} pending`, 20, 38);
+  doc.line(20, 42, 190, 42);
 
-  let verticalCursor = 46;
+  let verticalCursor = 52;
   doc.setFontSize(12);
 
-  tasks.forEach((task, index) => {
+  snapshot.forEach((task, index) => {
+    if (verticalCursor > 270) { doc.addPage(); verticalCursor = 20; }
     const status = task.completed ? "[DONE]" : "[PENDING]";
     const printLine = `${index + 1}. ${status} (${task.category}) — ${task.text}`;
-    
-    doc.text(20, verticalCursor, printLine);
+    doc.text(printLine, 20, verticalCursor);
     verticalCursor += 10;
   });
 
+  const timeLabel = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const fileName = `TaskFlow_${Date.now()}.pdf`;
   const fileURL = URL.createObjectURL(doc.output("blob"));
-  
-  appendDocumentToList(fileName, fileURL);
-  showToast("📥 Exported list to Documents Tab!");
+
+  appendDocumentToList(fileName, fileURL, snapshot.length, doneCount, timeLabel);
+  showToast(`📥 Saved ${snapshot.length} task${snapshot.length !== 1 ? 's' : ''} to Documents!`);
+
+  // Auto-navigate to Documents tab so the user sees the new entry
+  showDocuments();
 }
 
-function appendDocumentToList(fileName, fileURL) {
-  // Clear out documents page empty layout placeholder if present
-  const docEmptyState = documentsList.querySelector(".empty-state");
-  if (docEmptyState) docEmptyState.remove();
+function appendDocumentToList(fileName, fileURL, taskCount, doneCount, timeLabel) {
+  // Hide the empty-state placeholder (it is a sibling of the ul, not inside it)
+  const docEmptyState = document.getElementById("emptyDocsState");
+  if (docEmptyState) docEmptyState.style.display = "none";
 
   const docItem = document.createElement("div");
   docItem.className = "doc-item";
   docItem.innerHTML = `
     <div class="doc-icon">📄</div>
-    <div class="doc-name">${fileName}</div>
-    <div class="doc-date">${new Date().toLocaleDateString()}</div>
+    <div class="doc-info">
+      <div class="doc-name">${fileName}</div>
+      <div class="doc-meta">
+        <span class="doc-date">${new Date().toLocaleDateString()} ${timeLabel || ''}</span>
+        <span class="doc-task-count">${taskCount} task${taskCount !== 1 ? 's' : ''} · ${doneCount} done</span>
+      </div>
+    </div>
     <div class="doc-actions">
       <button class="doc-btn" onclick="window.open('${fileURL}', '_blank')">View</button>
-      <a class="doc-btn" href="${fileURL}" download="${fileName}" style="text-decoration:none; display:inline-block; text-align:center;">Download</a>
+      <a class="doc-btn" href="${fileURL}" download="${fileName}" style="text-decoration:none;display:inline-block;text-align:center;">Download</a>
       <button class="doc-btn del" onclick="removeDocumentItem(this)">Delete</button>
     </div>
   `;
-  documentsList.appendChild(docItem);
+  // PREPEND so newest document is always at the TOP — prevents users from
+  // accidentally viewing an older document and thinking tasks are missing.
+  documentsList.prepend(docItem);
 }
 
 function removeDocumentItem(button) {
   button.closest(".doc-item").remove();
   if (documentsList.children.length === 0) {
-    documentsList.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🗂️</div>
-        <p>No documents saved yet. Export your tasks!</p>
-      </div>`;
+    // Restore the empty-state placeholder when all docs are deleted
+    const docEmptyState = document.getElementById("emptyDocsState");
+    if (docEmptyState) docEmptyState.style.display = "flex";
   }
 }
 
 // 7. Toast Alerts Notification System
 function showToast(message) {
-  const toast = document.getElementById("toast");
-  if (!toast) return;
+  const toast = document.getElementById("pdfMessage");
+  if (!toast) {
+    console.log('Toast:', message);
+    return;
+  }
   toast.innerText = message;
   toast.classList.add("show");
   setTimeout(() => {
@@ -304,16 +341,19 @@ taskInput.addEventListener("keydown", (e) => {
     addTask();
   }
 });
-
-// Load saved theme if present
-try {
-  const saved = localStorage.getItem('todo-theme');
-  if (saved) applyTheme(saved);
-} catch (e) {}
-
-// Save as PDF button click handler
-const savePdfBtn = document.getElementById("savepdf");
+// Wire up Save as PDF button click listener
+const savePdfBtn = document.getElementById('savepdf');
 if (savePdfBtn) {
-  savePdfBtn.addEventListener("click", saveAsPDF);
+  savePdfBtn.addEventListener('click', () => saveAsPDF());
 }
 
+// --- Page Initialisation ---
+// Set Home tab as active and apply default/saved theme on load
+showHome();
+
+try {
+  const saved = localStorage.getItem('todo-theme');
+  applyTheme(saved || 'theme1'); // fallback to theme1 if nothing saved
+} catch (e) {
+  applyTheme('theme1');
+}
