@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tech Stack Visualization | 100 Days 100 Projects</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>🚀 Technology Usage Across 100+ Projects</h1>
+    <p>Dynamic visualization of tech stacks used in this repository</p>
+  </header>
+
+  <section class="stats-grid" id="statsGrid"></section>
+
+  <section class="chart-section">
+    <h2>📊 Technology Distribution</h2>
+    <canvas id="techChart" width="400" height="300"></canvas>
+  </section>
+
+  <section class="filter-section">
+    <h2>🔍 Filter Projects by Technology</h2>
+    <div class="filter-buttons" id="filterButtons"></div>
+    <div class="projects-list" id="projectsList"></div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
