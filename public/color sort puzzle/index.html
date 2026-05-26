@@ -37,6 +37,55 @@ h1 span{color:var(--accent)}
 #arena{width:100%;max-width:760px;background:var(--surface);border:1px solid var(--border);
   border-radius:16px;padding:24px 16px;display:flex;flex-wrap:wrap;
   gap:14px;justify-content:center;align-items:flex-end;min-height:300px}
+  #helpOverlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+
+z-index:250;
+
+align-items:center;
+justify-content:center;
+}
+
+#helpOverlay.show{
+display:flex;
+}
+
+#helpCard{
+
+background:var(--surface2);
+
+border:1px solid rgba(255,255,255,.12);
+
+padding:2rem;
+
+border-radius:18px;
+
+max-width:420px;
+
+width:90%;
+}
+
+#helpCard h2{
+margin-bottom:18px;
+}
+
+#helpCard ul{
+
+color:var(--muted);
+
+padding-left:18px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+margin-bottom:20px;
+}
 
 /* ── Tube shell ──
    The tube is a POSITION:RELATIVE container.
@@ -127,10 +176,16 @@ h1 span{color:var(--accent)}
 
 <header>
   <h1>🧪 Color<span>Sort</span></h1>
-  <div class="stats">
-    <div class="pill">Moves: <b id="mc">0</b></div>
-    <div class="pill">Level: <b id="ld">1 — Easy</b></div>
+ <div class="stats">
+  <div class="pill">Moves: <b id="mc">0</b></div>
+
+  <div class="pill">
+      Time:
+      <b id="timer">00:00</b>
   </div>
+
+  <div class="pill">Level: <b id="ld">1 — Easy</b></div>
+</div>
 </header>
 
 <div id="lvlrow">
@@ -139,6 +194,7 @@ h1 span{color:var(--accent)}
   <button class="lbtn"    onclick="setLevel(2)">Medium</button>
   <button class="lbtn"    onclick="setLevel(3)">Hard</button>
   <div class="ctrls">
+    <button class="cbtn" onclick="openHelp()">❔ How To Play</button>
     <button class="cbtn" onclick="undo()">↩ Undo</button>
     <button class="cbtn" id="mutebtn" onclick="toggleMute()">🔊 Sound</button>
     <button class="cbtn" onclick="reset()">↺ Reset</button>
@@ -158,6 +214,38 @@ h1 span{color:var(--accent)}
       <button class="cbtn"   onclick="closeWin()">Close</button>
     </div>
   </div>
+</div>
+<div id="helpOverlay">
+
+<div id="helpCard">
+
+<h2>🎮 How To Play</h2>
+
+<ul>
+<li>Move colors between tubes.</li>
+
+<li>You can only pour onto
+same-colored liquid or empty tubes.</li>
+
+<li>Fill each tube with one color.</li>
+
+<li>Use Undo to reverse moves.</li>
+
+<li>Reset restarts current puzzle.</li>
+
+<li>New Game creates a new puzzle.</li>
+
+</ul>
+
+<button
+class="cbtn a"
+onclick="closeHelp()">
+
+Close
+
+</button>
+
+</div>
 </div>
 
 <script>
@@ -196,7 +284,17 @@ const PALETTE = [
 ];
 
 let NUM_C = 4, NUM_E = 2;
-let state = [], sel = null, moves = 0, hist = [], initSnap = null;
+let state=[],
+sel=null,
+moves=0,
+hist=[],
+initSnap=null;
+
+let timer=0;
+
+let timerInterval=null;
+
+let gameRunning=false;
 
 /* ── accessors ── */
 const topColor = t => t.length ? t[t.length - 1] : null;
@@ -256,13 +354,29 @@ function newGame() {
   for(let i=0;i<NUM_E;i++) state.push([]);
   sel=null; moves=0; hist=[];
   initSnap=JSON.stringify(state);
-  setMsg(''); updM(); render();
+  resetTimer();
+
+startTimer();
+
+setMsg('');
+
+updM();
+
+render();
 }
 
 function reset() {
   if(!initSnap) return;
   state=JSON.parse(initSnap); sel=null; moves=0; hist=[];
-  setMsg(''); updM(); render();
+ resetTimer();
+
+startTimer();
+
+setMsg('');
+
+updM();
+
+render();
 }
 
 function undo() {
@@ -369,6 +483,7 @@ function bubbles(seg, color) {
 
 /* ── win ── */
 function showWin() {
+  stopTimer();
   const ov=document.getElementById('overlay'), card=document.getElementById('wcard');
   document.getElementById('wmsg').textContent =
     `All tubes sorted in ${moves} move${moves!==1?'s':''}! 🏆`;
@@ -384,6 +499,56 @@ function showWin() {
   });
 }
 function closeWin(){document.getElementById('overlay').classList.remove('show')}
+function startTimer(){
+
+clearInterval(timerInterval);
+
+gameRunning=true;
+
+timerInterval=setInterval(()=>{
+
+timer++;
+
+const mins=
+String(
+Math.floor(timer/60)
+).padStart(2,"0");
+
+const secs=
+String(
+timer%60
+).padStart(2,"0");
+
+document
+.getElementById("timer")
+.textContent=
+`${mins}:${secs}`;
+
+},1000);
+}
+
+
+function stopTimer(){
+
+clearInterval(
+timerInterval
+);
+
+gameRunning=false;
+}
+
+
+function resetTimer(){
+
+stopTimer();
+
+timer=0;
+
+document
+.getElementById("timer")
+.textContent=
+"00:00";
+}
 function updM(){document.getElementById('mc').textContent=moves}
 function setMsg(t){const e=document.getElementById('msg');e.textContent=t;e.className=t.startsWith('❌')?'err':''}
 
@@ -486,7 +651,33 @@ function toggleMute(){
   const m=SFX.toggleMute();
   document.getElementById("mutebtn").textContent=m?"🔇 Muted":"🔊 Sound";
 }
+function openHelp(){
 
+document
+.getElementById(
+"helpOverlay"
+)
+.classList.add(
+"show"
+);
+
+stopTimer();
+}
+
+
+function closeHelp(){
+
+document
+.getElementById(
+"helpOverlay"
+)
+.classList.remove(
+"show"
+);
+
+if(!gameDone())
+startTimer();
+}
 newGame();
 </script>
 </body>

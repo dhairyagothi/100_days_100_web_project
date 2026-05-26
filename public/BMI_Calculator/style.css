@@ -219,6 +219,13 @@ select,
 input[type="text"],
 input[type="number"] {
   width: 100%;
+  background: var(--navy-3);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius-sm);
+  padding: .75rem 3rem .75rem 2.8rem;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
   padding: 10px 12px;
   background: var(--surface);
   border: 1px solid var(--rule);
@@ -238,6 +245,27 @@ select:hover,
 input:hover {
   border-color: var(--rule-strong);
 }
+.field-icon {
+  position: absolute;
+  left: .9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+.field-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+.field-unit {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .75rem;
+  color: var(--muted);
 
 select:focus,
 input:focus {
