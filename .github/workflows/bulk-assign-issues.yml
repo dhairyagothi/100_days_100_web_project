@@ -1,0 +1,108 @@
+name: Bulk Assign and Approve Issues
+
+on:
+  workflow_dispatch:
+    inputs:
+      from_issue:
+        description: "Starting issue number"
+        required: true
+        type: string
+      to_issue:
+        description: "Ending issue number"
+        required: true
+        type: string
+
+permissions:
+  issues: write
+
+jobs:
+  assign-issues-in-range:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign issues and add approval label
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PR_CHECKER }}
+          script: |
+            const fromIssue = Number.parseInt(`${{ inputs.from_issue }}`, 10);
+            const toIssue = Number.parseInt(`${{ inputs.to_issue }}`, 10);
+
+            if (Number.isNaN(fromIssue) || Number.isNaN(toIssue)) {
+              core.setFailed("Both from_issue and to_issue must be valid numbers.");
+              return;
+            }
+
+            let startIssue = fromIssue;
+            let endIssue = toIssue;
+
+            if (fromIssue > toIssue) {
+              startIssue = toIssue;
+              endIssue = fromIssue;
+              core.info(`Received reversed range (${fromIssue} -> ${toIssue}); processing as ${startIssue} -> ${endIssue}.`);
+            }
+
+            const approvedLabel = "gssoc:approved";
+
+            try {
+              await github.rest.issues.getLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: approvedLabel
+              });
+            } catch (error) {
+              if (error.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: approvedLabel,
+                  color: "0e8a16"
+                });
+              } else {
+                throw error;
+              }
+            }
+
+            for (let issueNumber = startIssue; issueNumber <= endIssue; issueNumber++) {
+              try {
+                const issueResponse = await github.rest.issues.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber
+                });
+
+                const issue = issueResponse.data;
+
+                if (issue.pull_request) {
+                  core.info(`#${issueNumber} is a pull request. Skipping.`);
+                  continue;
+                }
+
+                const issueCreator = issue.user?.login;
+                if (!issueCreator) {
+                  core.warning(`Could not determine creator for #${issueNumber}. Skipping assignment.`);
+                  continue;
+                }
+
+                await github.rest.issues.addAssignees({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  assignees: [issueCreator]
+                });
+
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  labels: [approvedLabel]
+                });
+
+                core.info(`Updated #${issueNumber}: assigned to @${issueCreator}, label '${approvedLabel}' added.`);
+              } catch (error) {
+                if (error.status === 404) {
+                  core.warning(`Issue #${issueNumber} not found. Skipping.`);
+                } else {
+                  core.warning(`Failed to update #${issueNumber}: ${error.message}`);
+                }
+              }
+            }
