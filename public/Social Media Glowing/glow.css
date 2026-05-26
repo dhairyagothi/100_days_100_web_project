@@ -1,141 +1,235 @@
-/* author: https://codepen.io/Sammy2400/pen/pogXVzy
-sam
- */
-
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
-html,body{
+
+html,
+body{
   display: grid;
-  height: 100%;
   place-items: center;
+  min-height: 100vh;
   background: #000;
 }
 
- .icons{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 45px;
-    flex-wrap: wrap;
-   margin-top: 90px;
-   position: relative;
-    z-index: 5;
+/* =========================
+   ICON WRAPPER
+========================= */
+
+.icons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  flex-wrap: wrap;
+
+  margin-top: 90px;
+
+  position: relative;
+  z-index: 5;
+
+  padding: 40px;
 }
+
+/* =========================
+   EACH ICON LINK
+========================= */
+
 .icons a{
-  margin: 0 25px;
+  position: relative;
+  display: block;
+
   text-decoration: none;
   color: #fff;
-  display: block;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.3s ease;
+}
+
+.icons a:hover{
+  transform: translateY(-12px) scale(1.08);
+}
+
+/* =========================
+   ICON LAYER
+========================= */
+
+.icons a .layer{
   position: relative;
+
+  width: 105px;
+  height: 105px;
+
+  transition:
+    transform 0.4s ease;
 }
 
- .icons a .layer{
-    width: 105px;
-    height: 105px;
-
-    transition: 0.4s ease;
-}
 .icons a:hover .layer{
   transform: rotate(-35deg) skew(20deg) scale(1.08);
 }
 
+/* =========================
+   LAYER SPANS
+========================= */
+
 .icons a .layer span{
-    position: absolute;
-    inset: 0;
-    border-radius: 24px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(14px);
-    transition: 0.35s ease;
+  position: absolute;
+  inset: 0;
+
+  border-radius: 24px;
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  background: rgba(255,255,255,0.03);
+
+  backdrop-filter: blur(14px);
+
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
 }
+
+/* =========================
+   FONT AWESOME ICON
+========================= */
+
 .icons a .layer span.fab{
-    font-size: 42px;
-    line-height: 105px;
-    text-align: center;
+  font-size: 42px;
+  line-height: 105px;
+  text-align: center;
 }
+
+/* =========================
+   STACKED ANIMATION
+========================= */
+
 .icons a:hover .layer span:nth-child(1){
   opacity: 0.2;
 }
+
 .icons a:hover .layer span:nth-child(2){
   opacity: 0.4;
   transform: translate(5px, -5px);
 }
+
 .icons a:hover .layer span:nth-child(3){
   opacity: 0.6;
   transform: translate(10px, -10px);
 }
+
 .icons a:hover .layer span:nth-child(4){
   opacity: 0.8;
   transform: translate(15px, -15px);
 }
+
 .icons a:hover .layer span:nth-child(5){
   opacity: 1;
-  transform: translate(20px, -20px);
+  transform: translate(24px, -24px);
 }
+
+/* =========================
+   BRAND COLORS
+========================= */
+
 .icons a:nth-child(1) .layer span,
 .icons a:nth-child(1) .text{
   color: #4267B2;
   border-color: #4267B2;
 }
+
 .icons a:nth-child(2) .layer span,
 .icons a:nth-child(2) .text{
   color: #1DA1F2;
   border-color: #1DA1F2;
 }
+
 .icons a:nth-child(3) .layer span,
 .icons a:nth-child(3) .text{
   color: #E1306C;
   border-color: #E1306C;
 }
+
 .icons a:nth-child(4) .layer span,
 .icons a:nth-child(4) .text{
   color: #2867B2;
   border-color: #2867B2;
 }
+
 .icons a:nth-child(5) .layer span,
 .icons a:nth-child(5) .text{
   color: #ff0000;
   border-color: #ff0000;
 }
+
+/* =========================
+   GLOW EFFECT
+========================= */
+
 .icons a:hover:nth-child(1) .layer span{
-  box-shadow: -1px 1px 3px #4267B2;
+  box-shadow: -1px 1px 10px #4267B2;
 }
+
 .icons a:hover:nth-child(2) .layer span{
-  box-shadow: -1px 1px 3px #1DA1F2;
+  box-shadow: -1px 1px 10px #1DA1F2;
 }
+
 .icons a:hover:nth-child(3) .layer span{
-  box-shadow: -1px 1px 3px #E1306C;
+  box-shadow: -1px 1px 10px #E1306C;
 }
+
 .icons a:hover:nth-child(4) .layer span{
-  box-shadow: -1px 1px 3px #2867B2;
+  box-shadow: -1px 1px 10px #2867B2;
 }
+
 .icons a:hover:nth-child(5) .layer span{
-  box-shadow: -1px 1px 3px #ff0000;
+  box-shadow: -1px 1px 10px #ff0000;
 }
-.icons a .text {
+
+/* =========================
+   LABEL TEXT
+========================= */
+
+.icons a .text{
   position: absolute;
+
   left: 50%;
   bottom: -20px;
+
   transform: translateX(-50%);
-  background: #111;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 12px;
+
+  padding: 4px 12px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  white-space: nowrap;
+
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s ease;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255,255,255,0.2);
+
+  background: rgba(255,255,255,0.05);
+
+  transition:
+    opacity 0.3s ease,
+    bottom 0.3s ease;
 }
-.icons a:hover .text {
-  bottom: -40px;
+
+.icons a:hover .text{
   opacity: 1;
+  bottom: -48px;
 }
-.icons a:hover {
-  transform: scale(1.1);
-  transition: 0.3s ease;
+
+.footer{
+  margin-top: 120px;
 }
