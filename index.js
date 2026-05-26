@@ -290,11 +290,11 @@ function matchesTechStack(projectTags) {
     typeof projectTags === 'string'
       ? projectTags.split(/\s+/)
       : projectTags
-  ).map(tag => tag.toLowerCase());
+  ).map(tag => normalizeTech(tag));
 
-  // Check if ALL filters exist in tags (AND logic) using exact matching
+  // Check if ALL filters exist in tags (AND logic) using normalized exact matching
   return techStackFilters.every(filter =>
-    tagArray.some(tag => tag === filter.toLowerCase().trim())
+    tagArray.some(tag => tag === normalizeTech(filter))
   );
 }
 
@@ -534,11 +534,12 @@ function renderGrid() {
     // Tech stack dropdown filter
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== 'all') {
-      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
-      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+      const tagArray = (typeof tags === 'string' ? tags.split(/\s+/) : tags || []).map(t => normalizeTech(t));
+      matchesTech = tagArray.includes(normalizeTech(techStackFilter));
     }
 
-    return matchesFilter && matchesSearch && matchesTech;
+    // Combine category, text search, dropdown tech filter, and multi-tag search filters
+    return matchesFilter && matchesSearch && matchesTech && matchesTechStack(tags);
   });
 
   // Apply sorting
@@ -1467,7 +1468,7 @@ function restoreStateFromURL() {
 }
 
 function applyFilters(search, category) {
-  earchQuery = search || '';
+  searchQuery = search || '';
   activeFilter = category || 'all';
   currentPage = 1;
   renderGrid();
