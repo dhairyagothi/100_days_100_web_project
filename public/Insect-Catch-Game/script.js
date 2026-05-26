@@ -9,7 +9,9 @@ let seconds = 0
 let score = 0
 let selected_insect = {}
 
-start_btn.addEventListener('click', () => screens[0].classList.add('up'))
+start_btn.addEventListener('click', () =>{
+screens[0].classList.add('up')
+})
 
 choose_insect_btns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -58,10 +60,13 @@ function getRandomLocation() {
 }
 
 function catchInsect() {
-    increaseScore()
-    this.classList.add('caught')
-    setTimeout(() => this.remove(), 2000)
-    addInsects()
+  increaseScore()
+  this.classList.add('caught')
+  this.style.pointerEvents = 'none'
+  setTimeout(() => {
+    this.remove()
+  }, 300)
+  addInsects()
 }
 
 function addInsects() {

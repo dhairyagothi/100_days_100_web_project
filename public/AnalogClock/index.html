@@ -4,115 +4,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A beautiful analog clock with an interactive countdown timer featuring pause, resume, and restart controls.">
-    <title>Analog Clock &amp; Countdown Timer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./index.css">
+    
+    <!-- SEO Optimization -->
+    <title>Chronos - Premium Analog Clock & World Time Dashboard</title>
+    <meta name="description" content="A premium, dynamic analog clock web application featuring a skeuomorphic-neumorphic hybrid design, continuous sweep motions, daylight-savings aware world clocks (New York, London, Tokyo), and a sleek countdown timer.">
+    
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <script src="index.js" defer></script>
 </head>
 
 <body>
-    <!-- Theme Toggle -->
-    <button id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark mode">
-        <span id="themeIcon">☀️</span>
-    </button>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-    <main id="appContainer">
-
-        <!-- ── LEFT: Analog Clock Panel ── -->
-        <section id="clockPanel" aria-label="Analog Clock">
-            <h1 id="clockTitle">Analog Clock</h1>
-
-            <div id="clockWrapper">
-                <!-- Decorative tick marks drawn via CSS -->
-                <div id="tickMarks">
-                    <span class="tick tick-major" style="--i:0"></span>
-                    <span class="tick tick-minor" style="--i:1"></span>
-                    <span class="tick tick-minor" style="--i:2"></span>
-                    <span class="tick tick-major" style="--i:3"></span>
-                    <span class="tick tick-minor" style="--i:4"></span>
-                    <span class="tick tick-minor" style="--i:5"></span>
-                    <span class="tick tick-major" style="--i:6"></span>
-                    <span class="tick tick-minor" style="--i:7"></span>
-                    <span class="tick tick-minor" style="--i:8"></span>
-                    <span class="tick tick-major" style="--i:9"></span>
-                    <span class="tick tick-minor" style="--i:10"></span>
-                    <span class="tick tick-minor" style="--i:11"></span>
-                </div>
-
-                <div id="clockContainer">
-                    <div id="hour"></div>
-                    <div id="minute"></div>
-                    <div id="second"></div>
-                    <div id="centerDot"></div>
-                </div>
+    <div class="app-container">
+        
+        <!-- Header Banner & Theme Toggle -->
+        <header>
+            <div class="brand-section">
+                <h1>Chronos</h1>
+                <p>Premium Local &amp; World Clock Dashboard</p>
             </div>
-
-            <!-- Live digital time display -->
-            <div id="digitalTime" aria-live="polite">00:00:00</div>
-            <div id="digitalDate"></div>
-        </section>
-
-        <!-- ── RIGHT: Countdown Timer Panel ── -->
-        <section id="timerPanel" aria-label="Countdown Timer">
-            <h2 id="timerTitle">Countdown Timer</h2>
-
-            <!-- SVG progress ring -->
-            <div id="progressRingWrapper" aria-hidden="true">
-                <svg id="progressRing" viewBox="0 0 200 200">
-                    <circle class="ring-track" cx="100" cy="100" r="88" />
-                    <circle id="ringFill" class="ring-fill" cx="100" cy="100" r="88" />
+            
+            <!-- Sleek Neumorphic Theme Switcher -->
+            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle visual theme">
+                <!-- Sun Icon (Dark Mode Active: click to go Light) -->
+                <svg id="sunIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                <div id="countdownDisplay" aria-live="polite" aria-atomic="true">00:00:00</div>
-                <div id="timerStatusLabel"></div>
-            </div>
-
-            <!-- Input row -->
-            <div id="timeInput">
-                <label class="time-input-group">
-                    <span class="time-label">HH</span>
-                    <input type="number" id="hours" placeholder="0" min="0" max="23" maxlength="2" aria-label="Hours" />
-                </label>
-                <span class="colon-sep">:</span>
-                <label class="time-input-group">
-                    <span class="time-label">MM</span>
-                    <input type="number" id="minutes" placeholder="0" min="0" max="59" maxlength="2" aria-label="Minutes" />
-                </label>
-                <span class="colon-sep">:</span>
-                <label class="time-input-group">
-                    <span class="time-label">SS</span>
-                    <input type="number" id="seconds" placeholder="0" min="0" max="59" maxlength="2" aria-label="Seconds" />
-                </label>
-            </div>
-
-            <!-- Primary action -->
-            <button id="startBtn" class="btn btn-primary" onclick="startCountdown()">
-                <span class="btn-icon">▶</span> Start
+                <!-- Moon Icon (Light Mode Active: click to go Dark) -->
+                <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
             </button>
+        </header>
 
-            <!-- Secondary controls -->
-            <div id="timerControls">
-                <button id="pausebtn" class="btn btn-secondary" onclick="pauseCountdown()">
-                    <span class="btn-icon">⏸</span> Pause
-                </button>
-                <button id="restartbtn" class="btn btn-ghost" onclick="restartCountdown()">
-                    <span class="btn-icon">↺</span> Restart
-                </button>
+        <!-- Main Workspace: Large Local Clock + Countdown Timer -->
+        <main class="main-dashboard">
+            
+            <!-- Large Local Time centerpiece with Taj Mahal banner -->
+            <section class="neumorphic-plate main-clock-section" aria-label="Local Time Clock">
+                <!-- Monument Banner Background (India / Local) -->
+                <div class="clock-banner" style="background-image: url('taj_mahal.png');"></div>
+                
+                <div class="clock-header">
+                    <h2 class="clock-label" id="local-title">Local Time</h2>
+                    <p class="clock-sublabel" id="local-tz-label">Your Location</p>
+                </div>
+                
+                <div class="clock-frame">
+                    <div class="clock-face">
+                        <!-- Curved sapphire reflection glare -->
+                        <div class="clock-glass"></div>
+                        
+                        <!-- Watch hands -->
+                        <div class="hand hour" id="local-hour"></div>
+                        <div class="hand minute" id="local-minute"></div>
+                        <div class="hand second" id="local-second"></div>
+                        
+                        <!-- Center metallic rivet cap -->
+                        <div class="center-pin"></div>
+                    </div>
+                </div>
+                
+                <!-- Precise digital and date confirmation -->
+                <div class="digital-readout" id="local-digital">00:00:00</div>
+                <div class="clock-date" id="local-date">Thu, May 21</div>
+            </section>
+
+            <!-- High-end interactive Countdown Timer -->
+            <section class="neumorphic-plate timer-section" aria-label="Countdown Timer Control">
+                <h2>Timer Console</h2>
+                <p class="subtitle">Set custom durations with skeuomorphic alerts</p>
+                
+                <div class="timer-inputs-wrapper">
+                    <div class="input-group">
+                        <label for="hours">Hrs</label>
+                        <input type="number" id="hours" class="timer-input" placeholder="00" min="0" max="23" />
+                    </div>
+                    <div class="input-group">
+                        <label for="minutes">Min</label>
+                        <input type="number" id="minutes" class="timer-input" placeholder="00" min="0" max="59" />
+                    </div>
+                    <div class="input-group">
+                        <label for="seconds">Sec</label>
+                        <input type="number" id="seconds" class="timer-input" placeholder="00" min="0" max="59" />
+                    </div>
+                </div>
+                
+                <div class="timer-display-box">
+                    <div id="countdownDisplay">00:00:00</div>
+                </div>
+                
+                <div class="timer-controls">
+                    <button class="btn btn-primary" onclick="startCountdown()" aria-label="Start timer countdown">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        Start
+                    </button>
+                    <button id="pausebtn" class="btn btn-secondary" onclick="pauseCountdown()" aria-label="Pause or resume timer">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                        Pause
+                    </button>
+                    <button id="restartbtn" class="btn btn-secondary" onclick="restartCountdown()" aria-label="Reset countdown timer">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                        </svg>
+                        Reset
+                    </button>
+                </div>
+                
+                <!-- Dynamic pulsing alert when finished -->
+                <div id="timerUpMsg" class="timer-up-container">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    <span>Time's Up! Alarm Active</span>
+                </div>
+            </section>
+        </main>
+
+        <!-- World Clocks Row -->
+        <section class="world-clocks-section" aria-label="World Location Clocks">
+            <h2>World Clocks</h2>
+            <div class="world-clocks-grid">
+                
+                <!-- New York Clock Card with NYC skyline banner -->
+                <div class="neumorphic-plate world-clock-card">
+                    <!-- Monument Banner Background (New York) -->
+                    <div class="clock-banner" style="background-image: url('new_york.png');"></div>
+                    
+                    <div class="clock-header">
+                        <h3 class="clock-label">New York</h3>
+                        <p class="clock-sublabel">EST / EDT</p>
+                    </div>
+                    
+                    <div class="clock-frame">
+                        <div class="clock-face">
+                            <div class="clock-glass"></div>
+                            
+                            <div class="hand hour" id="ny-hour"></div>
+                            <div class="hand minute" id="ny-minute"></div>
+                            <div class="hand second" id="ny-second"></div>
+                            
+                            <div class="center-pin"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="digital-readout" id="ny-digital">00:00:00</div>
+                    <div class="clock-date" id="ny-date">Thu, May 21</div>
+                </div>
+
+                <!-- London Clock Card with Big Ben banner -->
+                <div class="neumorphic-plate world-clock-card">
+                    <!-- Monument Banner Background (London) -->
+                    <div class="clock-banner" style="background-image: url('london.png');"></div>
+                    
+                    <div class="clock-header">
+                        <h3 class="clock-label">London</h3>
+                        <p class="clock-sublabel">GMT / BST</p>
+                    </div>
+                    
+                    <div class="clock-frame">
+                        <div class="clock-face">
+                            <div class="clock-glass"></div>
+                            
+                            <div class="hand hour" id="london-hour"></div>
+                            <div class="hand minute" id="london-minute"></div>
+                            <div class="hand second" id="london-second"></div>
+                            
+                            <div class="center-pin"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="digital-readout" id="london-digital">00:00:00</div>
+                    <div class="clock-date" id="london-date">Thu, May 21</div>
+                </div>
+
+                <!-- Tokyo Clock Card with Mt. Fuji banner -->
+                <div class="neumorphic-plate world-clock-card">
+                    <!-- Monument Banner Background (Tokyo) -->
+                    <div class="clock-banner" style="background-image: url('tokyo.png');"></div>
+                    
+                    <div class="clock-header">
+                        <h3 class="clock-label">Tokyo</h3>
+                        <p class="clock-sublabel">JST</p>
+                    </div>
+                    
+                    <div class="clock-frame">
+                        <div class="clock-face">
+                            <div class="clock-glass"></div>
+                            
+                            <div class="hand hour" id="tokyo-hour"></div>
+                            <div class="hand minute" id="tokyo-minute"></div>
+                            <div class="hand second" id="tokyo-second"></div>
+                            
+                            <div class="center-pin"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="digital-readout" id="tokyo-digital">00:00:00</div>
+                    <div class="clock-date" id="tokyo-date">Thu, May 21</div>
+                </div>
+                
             </div>
         </section>
-    </main>
-
-    <!-- Toast notification (replaces timerUpMsg) -->
-    <div id="toast" role="alert" aria-live="assertive">
-        <span id="toastIcon">🔔</span>
-        <span id="toastText">Time's Up!</span>
+        
     </div>
 
-    <!-- Audio Element -->
-    <audio id="timerSound" src="./timer.mp3" preload="auto"></audio>
-
-    <script src="./index.js" defer></script>
+    <!-- Audio Element for Alarm Alert -->
+    <audio id="timerSound" src="timer.mp3" preload="auto"></audio>
 </body>
 
 </html>
