@@ -65,181 +65,169 @@ ScrollReveal().reveal(".offer_card", {
 
 // ================= CHATBOT =================
 
+// ================= CHATBOT =================
+
 const chatToggle = document.getElementById("chat-toggle");
 const chatbotBox = document.getElementById("chatbot-box");
 const closeChat = document.getElementById("close-chat");
-
 const sendBtn = document.getElementById("send-btn");
 const userInput = document.getElementById("user-input");
 const chatMessages = document.getElementById("chat-messages");
 
-// OPEN / CLOSE CHATBOT
+// ---- STORAGE HELPERS ----
+const STORAGE_KEY = "flytravel_chat_history";
 
+function loadHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  } catch { return []; }
+}
+
+function saveHistory(history) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+}
+
+let chatHistory = loadHistory();
+
+// ---- RENDER SAVED MESSAGES ON PAGE LOAD ----
+function renderHistory() {
+  chatMessages.innerHTML = `
+    <div class="bot-message">
+      Hi! 👋<br>Ask me anything about destinations, hotels, flights, or travel planning.
+    </div>`;
+  chatHistory.forEach(({ role, text, time }) => {
+    const div = document.createElement("div");
+    div.classList.add(role === "user" ? "user-message" : "bot-message");
+    div.innerHTML = `${role === "bot" ? formatResponse(text) : escapeHTML(text)}
+      <div class="msg-timestamp">${time}</div>`;
+    chatMessages.appendChild(div);
+  });
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function getTimestamp() {
+  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+renderHistory();
+
+// ---- OPEN / CLOSE ----
 chatToggle.addEventListener("click", () => {
-  if (chatbotBox.style.display === "flex") {
-    chatbotBox.style.display = "none";
-  } else {
-    chatbotBox.style.display = "flex";
-  }
+  chatbotBox.style.display = chatbotBox.style.display === "flex" ? "none" : "flex";
 });
-
-// CLOSE CHATBOT
 
 closeChat.addEventListener("click", () => {
   chatbotBox.style.display = "none";
 });
 
-// SEND MESSAGE FUNCTION
+// ---- CLEAR CHAT ----
+document.getElementById("clear-chat-btn").addEventListener("click", () => {
+  if (confirm("Delete entire chat history? This cannot be undone.")) {
+    chatHistory = [];
+    localStorage.removeItem(STORAGE_KEY);
+    renderHistory();
+  }
+});
+
+// ---- EXPORT CHAT ----
+document.getElementById("export-chat-btn").addEventListener("click", () => {
+  if (chatHistory.length === 0) {
+    alert("No conversation to export yet.");
+    return;
+  }
+  const lines = chatHistory.map(({ role, text, time }) =>
+    `[${time}] ${role === "user" ? "You" : "Travel AI"}: ${text}`
+  );
+  const blob = new Blob(
+    ["FlyTravel Chat Export\n" + new Date().toLocaleString() + "\n\n" + lines.join("\n")],
+    { type: "text/plain" }
+  );
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "flytravel-chat.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+// ---- FORMAT & SEND ----
 function formatResponse(text) {
-
   return text
-
-    // Bold text
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-
-    // Bullet points
     .replace(/^\* (.*$)/gim, "• $1")
-
-    // Line breaks
     .replace(/\n/g, "<br>");
-
 }
+
 async function sendMessage() {
   const message = userInput.value.trim();
-
   if (message === "") return;
 
-  // USER MESSAGE
+  const time = getTimestamp();
 
-  const userMessage = document.createElement("div");
-
-  userMessage.classList.add("user-message");
-
-  userMessage.textContent = message;
-
-  chatMessages.appendChild(userMessage);
-
-  // CLEAR INPUT
+  // User bubble
+  const userDiv = document.createElement("div");
+  userDiv.classList.add("user-message");
+  userDiv.innerHTML = `${escapeHTML(message)}<div class="msg-timestamp">${time}</div>`;
+  chatMessages.appendChild(userDiv);
+  chatHistory.push({ role: "user", text: message, time });
+  saveHistory(chatHistory);
 
   userInput.value = "";
-
-  // AUTO SCROLL
-
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
-  // LOADING MESSAGE
-
-  const loadingMessage = document.createElement("div");
-
-  loadingMessage.classList.add("bot-message");
-
-  loadingMessage.textContent = "Thinking...";
-
-  chatMessages.appendChild(loadingMessage);
-
+  // Loading bubble
+  const loadingDiv = document.createElement("div");
+  loadingDiv.classList.add("bot-message");
+  loadingDiv.textContent = "Thinking...";
+  chatMessages.appendChild(loadingDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   try {
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-
-          Authorization: `Bearer ${GROQ_API_KEY}`,
-        },
-
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-
-          messages: [
-            {
-              role: "system",
-
-              content: `You are Travel AI, a modern and friendly travel assistant.
-
-Help users with:
-- travel destinations
-- trip planning
-- flights
-- hotels
-- budgeting
-- tourism
-- itineraries
-- local food
-- attractions
-- travel tips
-
-Response Rules:
-- Use short paragraphs
-- Use bullet points when useful
-- Keep responses clean and readable
-- Avoid huge text blocks
-- Give practical suggestions
-- Use friendly conversational tone
-- Format itineraries clearly
-- Use emojis occasionally for better UX
-
-Keep answers concise but informative.`,
-            },
-
-            {
-              role: "user",
-              content: message,
-            },
-          ],
-        }),
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GROQ_API_KEY}`,
       },
-    );
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [
+          {
+            role: "system",
+            content: `You are Travel AI, a modern and friendly travel assistant.
+Help users with travel destinations, trip planning, flights, hotels, budgeting, tourism, itineraries, local food, attractions, and travel tips.
+Use short paragraphs, bullet points when useful, friendly tone, and occasional emojis.`,
+          },
+          { role: "user", content: message },
+        ],
+      }),
+    });
 
     const data = await response.json();
+    loadingDiv.remove();
 
-    loadingMessage.remove();
+    const botTime = getTimestamp();
+    const botText = data.choices?.[0]?.message?.content || "Unable to get response right now.";
 
-    // HANDLE API ERROR
+    const botDiv = document.createElement("div");
+    botDiv.classList.add("bot-message");
+    botDiv.innerHTML = `${formatResponse(botText)}<div class="msg-timestamp">${botTime}</div>`;
+    chatMessages.appendChild(botDiv);
 
-    if (!data.choices) {
-      const errorMessage = document.createElement("div");
-
-      errorMessage.classList.add("bot-message");
-
-      errorMessage.textContent = "Unable to get response right now.";
-
-      chatMessages.appendChild(errorMessage);
-
-      return;
-    }
-
-    // BOT RESPONSE
-
-    const botMessage = document.createElement("div");
-
-    botMessage.classList.add("bot-message");
-
-    botMessage.innerHTML = formatResponse(data.choices[0].message.content);
-
-    chatMessages.appendChild(botMessage);
-
-    // AUTO SCROLL
+    chatHistory.push({ role: "bot", text: botText, time: botTime });
+    saveHistory(chatHistory);
 
     chatMessages.scrollTop = chatMessages.scrollHeight;
   } catch (error) {
-    loadingMessage.textContent = "Error getting response.";
-
+    loadingDiv.textContent = "Error getting response.";
     console.error(error);
   }
 }
 
-// SEND BUTTON
-
 sendBtn.addEventListener("click", sendMessage);
-
-// ENTER KEY SUPPORT
-
 userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    sendMessage();
-  }
+  if (e.key === "Enter") sendMessage();
 });

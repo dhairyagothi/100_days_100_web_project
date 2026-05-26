@@ -684,3 +684,24 @@ nav {
         grid-template-columns: 1fr 1fr 1fr auto;
     }
 }
+/* Action buttons in tab bar */
+#export-chat-btn,
+#clear-chat-btn {
+  flex: unset;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #aaa;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  transition: color 0.2s;
+}
+
+#export-chat-btn:hover { color: #a78bfa; }
+#clear-chat-btn:hover  { color: #f87171; }
+
+/* Timestamps on each message */
+.msg-timestamp {
+  font-size: 10px;
+  opacity: 0.45;
+  margin-top: 6px;
+  text-align: right;
+}
