@@ -283,16 +283,16 @@ function renderRowWeather(row, data, cachedHeaders = null) {
   
   // 1. Map API values directly to keys that match the exact HTML header text strings
   const weatherMap = {
-    'Cloud_pct': Number.isFinite(current.cloud_cover) ? `${Math.round(current.cloud_cover)}%` : '—',
-    'Feels_like' : formatTemperature(current.apparent_temperature),
+    'Cloud Cover': Number.isFinite(current.cloud_cover) ? `${Math.round(current.cloud_cover)}%` : '—',
+    'Feels Like' : formatTemperature(current.apparent_temperature),
     'Humidity' : Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—',
-    'Max_temp' : formatTemperature(daily.temperature_2m_max?.[0]),
-    'Min_temp' : formatTemperature(daily.temperature_2m_min?.[0]),
+    'Max Temp' : formatTemperature(daily.temperature_2m_max?.[0]),
+    'Min Temp' : formatTemperature(daily.temperature_2m_min?.[0]),
     'Sunrise' : formatTime(daily.sunrise?.[0]),
     'Sunset' : formatTime(daily.sunset?.[0]),
     'Temp' : formatTemperature(current.temperature_2m),
-    'Wind_degrees' : Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—',
-    'Wind_speed' : Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—'
+    'Wind Direction' : Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—',
+    'Wind Speed' : Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—'
   };  
 
   let headers = cachedHeaders;
