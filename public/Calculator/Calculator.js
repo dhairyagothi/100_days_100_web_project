@@ -1,5 +1,5 @@
 const input = document.getElementById('inputBox');
-const buttons = document.querySelectorAll('.calculator button');
+const buttons = document.querySelectorAll('.calculator-button');
 const STORAGE_KEY = 'calcHistory';
 const MAX_HISTORY_ENTRIES = 50;
 let string = "";
@@ -7,6 +7,40 @@ let calculated = false;
 let history = loadHistory();
 
 const pi = Math.PI;
+
+function showConfirmToast(message, onYes, onNo) {
+    const container = document.querySelector('.toast-container');
+
+    const toast = document.createElement('div');
+    toast.classList.add('toast');
+
+    toast.innerHTML = `
+        <div>${message}</div>
+        <div class="toast-actions">
+            <button class="yes">Yes</button>
+            <button class="no">No</button>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    const yesBtn = toast.querySelector('.yes');
+    const noBtn = toast.querySelector('.no');
+
+    const removeToast = () => {
+        toast.remove();
+    };
+
+    yesBtn.addEventListener('click', () => {
+        removeToast();
+        if (onYes) onYes();
+    });
+
+    noBtn.addEventListener('click', () => {
+        removeToast();
+        if (onNo) onNo();
+    });
+}
 
 function sin(value) {
     return Math.sin(Math.PI / 180 * Number(value));
@@ -205,17 +239,13 @@ arr.forEach(button => {
 });
 
 document.getElementById('clearHistory').addEventListener('click', () => {
-    const confirmed = window.confirm(
-        'Are you sure you want to clear calculation history?'
+    showConfirmToast(
+        "Are you sure you want to clear history?",
+        () => {
+            // YES action
+            history = [];
+            localStorage.removeItem(STORAGE_KEY);
+            renderHistory();
+        }
     );
-
-    if (!confirmed) {
-        return;
-    }
-
-    history = [];
-    localStorage.removeItem(STORAGE_KEY);
-    renderHistory();
 });
-
-renderHistory();

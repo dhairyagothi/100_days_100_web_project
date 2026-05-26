@@ -899,6 +899,147 @@ body {
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #005f8d, #0094c2);
+    transform: translateY(-3px);
+}
+
+.preview {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 2px dashed #ddd;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #f9f9f9;
+    transition: border-color 0.3s;
+}
+
+.preview:hover {
+    border-color: #0077b6;
+}
+
+.preview .placeholder {
+    color: #aaa;
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: #f0f8ff;
+    margin-top: 2rem;
+    border-top: 2px solid #0077b6;
+}
+
+footer p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Dark theme styles */
+body.dark {
+    background-color: #1e1e1e;
+    color: #ddd;
+}
+
+body.dark .header {
+    background: linear-gradient(135deg, #333, #555);
+}
+
+body.dark button {
+    color: #ddd;
+}
+
+body.dark section {
+    background: #2c2c2c;
+    color: #ddd;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .form-group input,
+body.dark .form-group textarea {
+    background: #333;
+    border-color: #555;
+    color: #ddd;
+}
+
+body.dark .form-group input:focus,
+body.dark .form-group textarea:focus {
+    border-color: #0077b6;
+    background: #444;
+}
+
+body.dark .preview {
+    background: #2c2c2c;
+    border-color: #555;
+}
+
+footer.dark {
+    background: #2c2c2c;
+    border-top: 2px solid #555;
+}
+/* ATS Score Box */
+#atsScoreBox {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1.5px solid #cfe8f5;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#atsScoreBox h3 {
+    color: #0077b6;
+    margin-bottom: 0.8rem;
+}
+
+#atsScore {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00b4d8;
+    margin-bottom: 1rem;
+}
+
+.ats-feedback h4 {
+    margin: 0.8rem 0 0.4rem;
+    color: #0077b6;
+    font-size: 0.9rem;
+}
+
+.ats-feedback ul {
+    padding-left: 1.2rem;
+}
+
+.ats-feedback li {
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* Dark mode ATS */
+body.dark #atsScoreBox {
+    background: #1e2235;
+    border-color: #2e3350;
+}
+
+body.dark #atsScoreBox h3,
+body.dark .ats-feedback h4 {
+    color: #00b4d8;
+}
+
+body.dark #atsScore {
+    color: #4dd0e1;
+}
+
+body.dark .ats-feedback li {
+    color: #d0d5e8;
+}
     transition: all 0.2s;
     border: none;
 }
@@ -1263,6 +1404,77 @@ body {
     border-radius: 20px;
 }
 
+/* Print CSS Styles */
+@media print {
+    .header, .builder, .btn-row, .template-selector, footer { display: none !important; }
+    main { display: block; }
+    .preview-section { position: static; max-height: none; padding: 0; background: #fff; }
+    #resumePreview { border: none; padding: 0; }
+}
+
+/* Dark mode */
+body.dark { background-color: #0f1117; color: #d0d5e8; }
+body.dark .header { background: linear-gradient(135deg, #091525, #0c1e38); }
+body.dark .builder { background: #14172a; border-right-color: #22263a; }
+body.dark .preview-section { background: #0f1117; }
+body.dark .builder h2, body.dark .preview-section h2 { color: #00b4d8; border-bottom-color: #00b4d8; }
+body.dark .form-group label { color: #6b7590; }
+body.dark .form-group input, body.dark .form-group textarea { background: #1e2235; border-color: #2e3350; color: #d0d5e8; }
+body.dark .form-group input:focus, body.dark .form-group textarea:focus { border-color: #00b4d8; background: #242840; }
+body.dark #resumePreview { background: #1e2235; border-color: #2e3350; }
+body.dark .tpl-btn { background: #1e2235; color: #00b4d8; border-color: #00b4d8; }
+body.dark .tpl-btn.active { background: #00b4d8; color: #111; }
+body.dark #downloadBtn { background: transparent; color: #00b4d8; border-color: #00b4d8; }
+body.dark .error-msg { background: #2e1215; border-color: #c0313c; color: #ff7b85; }
+body.dark footer { background: #0a0d1a; border-top-color: #1a1e30; color: #2e3550; }
+    body {
+        background-color: white !important;
+        color: black !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
+    
+    .sidebar, .workspace-panel, .preview-header, .loader-overlay {
+        display: none !important;
+    }
+    
+    .app-layout {
+        display: block !important;
+        height: auto !important;
+        width: auto !important;
+        overflow: visible !important;
+    }
+    
+    .preview-panel {
+        padding: 0 !important;
+        margin: 0 !important;
+        background-color: white !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
+    
+    .preview-sheet-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        display: block !important;
+    }
+    
+    #resumePreview {
+        zoom: 1 !important;
+        transform: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-height: 0 !important;
+        border: none !important;
+        background: white !important;
+        color: black !important;
+    }
+}
+
 /* PDF GENERATION LOADER OVERLAY */
 .loader-overlay {
     position: fixed;
@@ -1543,6 +1755,61 @@ body.dark #resumePreview {
 body.dark .modern-sidebar-col {
     background-color: #f8fafc !important;
 }
+/* ATS Score Box */
+#atsScoreBox {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1.5px solid #cfe8f5;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#atsScoreBox h3 {
+    color: #0077b6;
+    margin-bottom: 0.8rem;
+}
+
+#atsScore {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00b4d8;
+    margin-bottom: 1rem;
+}
+
+.ats-feedback h4 {
+    margin: 0.8rem 0 0.4rem;
+    color: #0077b6;
+    font-size: 0.9rem;
+}
+
+.ats-feedback ul {
+    padding-left: 1.2rem;
+}
+
+.ats-feedback li {
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* Dark mode ATS */
+body.dark #atsScoreBox {
+    background: #1e2235;
+    border-color: #2e3350;
+}
+
+body.dark #atsScoreBox h3,
+body.dark .ats-feedback h4 {
+    color: #00b4d8;
+}
+
+body.dark #atsScore {
+    color: #4dd0e1;
+}
+
+body.dark .ats-feedback li {
+    color: #d0d5e8;
 
 body.dark #resumePreview h1,
 body.dark #resumePreview h2,
