@@ -16,6 +16,8 @@ const REQUEST_TIMEOUT = 10000;
 
 const MAX_RETRIES = 3;
 
+const API_PAGE_SIZE = 100;
+
 closeModal?.addEventListener(
   'click',
 
@@ -126,6 +128,32 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
   } catch {
     return null;
   }
+}
+
+async function fetchAllGithubPages(endpoint) {
+  let page = 1;
+  const allItems = [];
+
+  while (true) {
+    const separator = endpoint.includes('?') ? '&' : '?';
+    const pageItems = await githubFetch(
+      `${GITHUB_API_BASE}${endpoint}${separator}per_page=${API_PAGE_SIZE}&page=${page}`
+    );
+
+    if (!Array.isArray(pageItems)) {
+      throw new Error('Unexpected API response format');
+    }
+
+    allItems.push(...pageItems);
+
+    if (pageItems.length < API_PAGE_SIZE) {
+      break;
+    }
+
+    page += 1;
+  }
+
+  return allItems;
 }
 
 async function openProfile(username){
@@ -257,7 +285,7 @@ async function fetchContributors() {
   contributorsContainer.innerHTML = '';
 
   try {
-    const cached = loadCache('contributors-cache');
+    const cached = loadCache('contributors-cache-v2');
 
     if (cached) {
       allContributors = cached;
@@ -266,6 +294,12 @@ async function fetchContributors() {
 
       contributorCountSpan.textContent = cached.length;
 
+      const totalCommitsEl = document.getElementById('totalCommits');
+      const totalCommits = cached.reduce((sum, c) => sum + c.contributions, 0);
+      if (totalCommitsEl) {
+        totalCommitsEl.textContent = totalCommits.toLocaleString();
+      }
+
       renderContributors(filteredContributors);
 
       loading.classList.add('hidden');
@@ -273,11 +307,11 @@ async function fetchContributors() {
       return;
     }
 
-    const contributors = await githubFetch(
-      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
+    const contributors = await fetchAllGithubPages(
+      `/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors`
     );
 
-    saveCache('contributors-cache', contributors);
+    saveCache('contributors-cache-v2', contributors);
 
     contributorCountSpan.textContent = contributors.length;
 
@@ -464,7 +498,7 @@ async function fetchStargazers() {
   stargazersContainer.innerHTML = '';
 
   try {
-    const cached = loadCache('stargazers-cache');
+    const cached = loadCache('stargazers-cache-v2');
 
     if (cached) {
       renderStargazers(cached);
@@ -474,11 +508,11 @@ async function fetchStargazers() {
       return;
     }
 
-    const stargazers = await githubFetch(
-      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`
+    const stargazers = await fetchAllGithubPages(
+      `/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers`
     );
 
-    saveCache('stargazers-cache', stargazers);
+    saveCache('stargazers-cache-v2', stargazers);
 
     renderStargazers(stargazers);
   } catch (error) {
