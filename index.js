@@ -242,6 +242,13 @@ const PROJECT_DATA = [
 ];
 const PROJECTS = PROJECT_DATA;
 
+// Placeholder for project descriptions.
+// This object should be populated with actual descriptions for each project.
+// Example: 'To-Do List': 'A simple task management application.',
+const PROJECT_DESCRIPTIONS = {
+  // Add descriptions here as needed
+};
+
 
 /* ============================================================
    SOURCE CODE URL GENERATOR
@@ -864,6 +871,10 @@ function renderBookmarks() {
     const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
 
+    const description =
+      PROJECT_DESCRIPTIONS[name] ||
+      'Explore this project to discover interactive functionality, frontend concepts and implementation details.';
+
     card.innerHTML = `
             <div class="card-meta">
                 <span class="card-day">${day}</span>
@@ -871,6 +882,7 @@ function renderBookmarks() {
             </div>
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
+            <p class="card-description">${description}</p>
             <div class="card-footer">
                 <div class="card-actions-left">
                     <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
