@@ -37,7 +37,8 @@ arr.forEach(button => {
 
     button.addEventListener('click',(e) => {
 
-        let value = e.target.innerHTML;
+        // ✅ ONLY FIX (mobile issue fix)
+        let value = e.target.innerText;
 
         /* Ignore Clear History button */
         if(value === "Clear History"){
