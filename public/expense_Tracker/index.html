@@ -5,125 +5,184 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="expense.js" defer></script>
+    <style>
+        /* Forces equal vertical alignment matching on the cards and their contents */
+        @media (min-width: 992px) {
+            .main-layout {
+                display: flex !important;
+                align-items: stretch !important; /* Forces uniform vertical card stretching */
+                gap: 24px; 
+            }
+            .content-card.form-section {
+                flex: 0 0 420px !important;     /* Increased from 350px for a bit more room */
+                max-width: 450px !important;    /* Increased from 380px */
+                margin: 0 !important;
+                height: auto !important;         /* Cancels out fit-content block from stylesheet */
+                display: flex !important;        
+                flex-direction: column !important;
+            }
+            .content-card.summary-section {
+                flex: 1 !important;             /* Let the summary panel stretch horizontally */
+                margin: 0 !important;
+                height: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            
+            /* Structural alignment mechanics to flush card bottoms identically */
+            #transactionForm {
+                display: flex !important;
+                flex-direction: column !important;
+                flex-grow: 1 !important;         /* Stretches form internally to fill card bottom space */
+            }
+            /* Pushes the primary action button exactly to the matching bottom floor */
+            #transactionForm .btn-primary {
+                margin-top: auto !important;     /* Locks button flush against the baseline */
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="Header">
-        <h1>Expense Tracker</h1>
-        <div class="taskbar">
-            <a href="index.html" style="text-decoration: none;">Home</a>
-            <a href="#" style="text-decoration: none;" id="profile">Profile</a>
-        </div>
-    </div>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-    <div class="main" id="main">
-        <div class="left" style="color: white;">
-            <h2 style="text-align: center; text-decoration: dotted;">Expense Categories</h2>
-            <a href="#">Income</a>
-            <a href="#" id="spending-link">Spending</a>
-        </div>
-
-        <div class="right">
-            <div class="income">
-                <h2>Income</h2>
-                <input type="text" id="income" placeholder="Enter your income" style="width: 100%; padding: 10px;">
-                <br><br>
-                <button id="submit-income" onclick="updatethemoney();">Submit</button>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-group">
+                <h1>Expense <span class="logo-accent">Tracker</span></h1>
+                <p class="logo-subtext">Your money, kept simple.</p>
             </div>
-        </div>
-    </div>
-
-    <div class="money">
-        <h2 style="text-align: center;">Budget Overview</h2>
-        <p style="font-weight: bold;">Total Money:</p><p id="total">₹0.00</p>
-        <p style="font-weight: bold;">Money Spent:</p><p id="spent">₹0.00</p>
-        <p style="font-weight: bold;">Money Left:</p><p id="moneyleft">₹0.00</p>
-    </div>
-    <script>
-        
-let totalincome = 0;
-let totalSpent = 0; 
-
-
-function formatmoney(amount) {
-    return '₹' + amount.toFixed(2);
-}
-
-
-function updatethemoney() {
-    const incomeInput = document.getElementById('income').value;
-    const income = parseFloat(incomeInput) || 0;
-
-    totalincome += income;
-    document.getElementById('total').textContent = formatmoney(totalincome);
-    document.getElementById('moneyleft').textContent = formatmoney(totalincome);
-
-    
-    document.getElementById('income').value = '';
-}
-
-
-function updateSpending() {
-    const spendingInput = document.getElementById('spending').value;
-    const spending = parseFloat(spendingInput) || 0;
-
-    
-    totalSpent += spending;
-
-    
-    totalincome -= spending;
-
-    
-    document.getElementById('spent').textContent = formatmoney(totalSpent);
-    document.getElementById('moneyleft').textContent = formatmoney(totalincome);
-
-    
-    document.getElementById('spending').value = '';
-}
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const spendingLink = document.getElementById('spending-link');
-    const mainContent = document.getElementById('main');
-
-    spendingLink.addEventListener('click', function (event) {
-        event.preventDefault();
-
-        
-        mainContent.innerHTML = `
-            <div class="left" style="color: white;">
-                <h2 style="text-align: center;text-decoration:dotted;">Expense Categories</h2>
-                <a href="index.html">Income</a>
-                <a href="#">Travel Expense</a>
-                <a href="#">Food</a>
-                <a href="#">Transport</a>
-                <a href="#">Utilities</a>
-                <a href="#">Personal</a>
-                <a href="#">EMI</a>
-                <a href="#">Credit Card</a>
-                <a href="#">Entertainment</a>
-                <a href="#">Health</a>
-                <a href="#">Miscellaneous</a>
-            </div>
-            <div class="right">
-                <div class="income">
-                    <h2>Money Spent</h2>
-                    <br>
-                    <input type="text" id="spending" placeholder="Money Spent" style="width: 100%; padding: 10px;">
-                    <br><br>
-                    <button id="submit-spending" class="submit-button">Submit</button>
+            
+            <div class="header-controls">
+                <nav class="nav-links-group">
+                    <a href="index.html" class="nav-link active">Transactions</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="history.html" class="nav-link">History Log</a>
+                </nav>
+                
+                <div class="utility-buttons">
+                    <button id="btnExport" class="btn-secondary" aria-label="Copy backup pack">Backup</button>
+                    <button id="btnReset" class="btn-danger" aria-label="Reset database data">Clear All</button>
                 </div>
             </div>
-        `;
+        </header>
 
-        
-        const submitSpendingButton = document.getElementById('submit-spending');
-        submitSpendingButton.addEventListener('click', updateSpending);
-    });
-});
+        <div class="main-layout">
+            <main class="content-card form-section">
+                <h2>Add New Entry</h2>
+                <form id="transactionForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-input-group">
+                            <label for="amount">Amount (₹) *</label>
+                            <input type="number" id="amount" placeholder="0.00" min="0.01" required>
+                            <span class="error-msg" id="amountError"></span>
+                        </div>
+                        <div class="form-input-group">
+                            <label for="date">Date *</label>
+                            <input type="date" id="date" required>
+                            <span class="error-msg" id="dateError"></span>
+                        </div>
+                    </div>
 
+                    <div class="form-input-group">
+                        <label>Transaction Type *</label>
+                        <div class="radio-switcher">
+                            <input type="radio" id="type-expense" name="type" value="Expense" checked required>
+                            <label for="type-expense" class="switch-label">Expense (Spent)</label>
+                            
+                            <input type="radio" id="type-income" name="type" value="Income" required>
+                            <label for="type-income" class="switch-label">Income (Earned)</label>
+                        </div>
+                    </div>
 
-    </script>
+                    <div class="form-input-group" id="categoryGroup">
+                        <label for="category">Category *</label>
+                        <select id="category" required>
+                            <option value="">Select a category...</option>
+                            <option value="Food">Food & Dining</option>
+                            <option value="Travel">Travel & Fuel</option>
+                            <option value="Shopping">Shopping & Clothes</option>
+                            <option value="Bills">Bills & Rent</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <span class="error-msg" id="categoryError"></span>
+                    </div>
+
+                    <div class="form-input-group">
+                        <label for="description">Description *</label>
+                        <input type="text" id="description" placeholder="What was this for? e.g., Grocery" required>
+                        <span class="error-msg" id="descriptionError"></span>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Add to My List</button>
+                </form>
+            </main>
+
+            <section class="content-card summary-section">
+                <h2>Your Summary</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-box balance-box">
+                        <span class="stat-title">Current Balance</span>
+                        <div id="accountBalance" class="stat-number color-neutral">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Total Earned</span>
+                        <div id="totalIncome" class="stat-number text-green">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Total Spent</span>
+                        <div id="totalExpense" class="stat-number text-red">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Average Entry</span>
+                        <div id="avgTransaction" class="stat-number">₹0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">Savings Rate</span>
+                        <div id="savingsRate" class="stat-number text-blue">0.0%</div>
+                    </div>
+                </div>
+
+                <div class="visual-chart-box">
+                    <div class="donut-visual">
+                        <svg viewBox="0 0 42 42" class="svg-circle" aria-hidden="true">
+                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--chart-track)" stroke-width="4"></circle>
+                            <circle id="donutSegment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#4F46E5" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="25"></circle>
+                        </svg>
+                        <div class="donut-text">
+                            <span id="highestExpensePct">0%</span>
+                            <small id="highestExpenseName">Top Category</small>
+                        </div>
+                    </div>
+
+                    <div class="progress-bars-container" id="categoriesList">
+                        <div class="progress-bar-item" data-category="Food">
+                            <div class="progress-text"><span>Food & Dining</span><span id="cat-Food">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #38BDF8;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Travel">
+                            <div class="progress-text"><span>Travel & Fuel</span><span id="cat-Travel">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #FB923C;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Shopping">
+                            <div class="progress-text"><span>Shopping & Clothes</span><span id="cat-Shopping">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #F43F5E;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Bills">
+                            <div class="progress-text"><span>Bills & Rent</span><span id="cat-Bills">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #34D399;"></div></div>
+                        </div>
+                        <div class="progress-bar-item" data-category="Others">
+                            <div class="progress-text"><span>Others</span><span id="cat-Others">₹0.00</span></div>
+                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #A78BFA;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌓</button>
+
+    <script src="expense.js" defer></script>
 </body>
 </html>

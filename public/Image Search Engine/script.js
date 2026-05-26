@@ -1,16 +1,16 @@
-const searchform = document.getElementById("searchaform");
+const searchform = document.getElementById("searchform");
 const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
-const showMoreBtn = document.getElementById("show-more-btn");
+const showMoreButton = document.getElementById("show-more-button");
 
 
 let keyword="";
 let page = 1;
+const accessKey=""; // Add your Unsplash Access Key here
 
 async function searchImages(){
     keyword = searchBox.value;
-    const url = https://api.unsplash.com/search/photos?page=1&query=office%3E&client_id=wAj8QISZk2cxBAnO3v0hIMMdWnjEbk5Lf4f61S8q7PE
-    {keyword}&client_id=${accesKey}&per_page=12;
+    const url = `https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${accessKey}&per_page=12`;
 
     const response = await fetch(url);
     const data = await response.json();
@@ -31,7 +31,7 @@ async function searchImages(){
         imageLink.appendChild(image);
         searchResult.appendChild(imageLink);
     })
-    showMoreBtn.style.display = "block"
+    showMoreButton.style.display = "block"
 }
 
 searchform.addEventListener("submit", (e) => {
@@ -40,7 +40,7 @@ searchform.addEventListener("submit", (e) => {
     searchImages();
 })
 
-showMoreBtn.addEventListener("click", () =>{
+showMoreButton.addEventListener("click", () =>{
     page++;
     searchImages();
 })

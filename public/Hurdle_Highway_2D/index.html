@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hurdle Highway 2D</title>
+    <base href="./">
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=BBH+Bogle&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+
+    <audio src="media/intro2.wav" id="intro2" loop></audio>
+    <audio src="media/timeraud.wav" id="timeraud"></audio>
+    <audio src="media/carmoveaudlatest.wav" id="carmoveaud"></audio>
+    <audio src="media/hornaud.wav" id="hornaud"></audio>
+    <audio src="media/crashaud.wav" id="crashaud"></audio>
+
+    <div class="game-shell">
+        <div id="gameStage" class="game-stage">
+            <div id="gametimercont">
+                <p id="gametimer">3</p>
+            </div>
+
+            <div id="mainMenu">
+                <div class="titleContainer">
+                    <p id="maintitle1">
+                        HURDLE
+                    </p>
+                    <p id="maintitle2">
+                        HIGHWAY
+                    </p>
+                    <p id="maintitle3">
+                        2D
+                    </p>
+                </div>
+                <div id="difficulty">
+                    <p id="difficultyTitle">SELECT DIFFICULTY</p>
+                    <div class="difficulty-options">
+                        <button type="button" class="difficulty-btn" data-difficulty="easy">EASY</button>
+                        <button type="button" class="difficulty-btn" data-difficulty="medium">MEDIUM</button>
+                        <button type="button" class="difficulty-btn" data-difficulty="hard">HARD</button>
+                    </div>
+                </div>
+                <div id="playbtn">
+                    PLAY NOW
+                </div>
+                <div id="credits">
+                    <p id="name1">
+                        BY
+                    </p>
+                    <p id="name2">
+                        ARJUN SHUKLA
+                    </p>
+                </div>
+            </div>
+
+            <div class="scoreboard">
+                <p id="scorepara1">
+                    SCORE - 0
+                </p>
+                <p id="scorepara2">
+                    SPEED - 0 KM/H
+                </p>
+            </div>
+
+            <div id="gameover">
+                <img src="media/Untitled_design-removebg-preview.png" alt="" srcset="" height="30%" width="30%">
+                <p id="scorepara">
+                    YOUR SCORE - 0
+                </p>
+                <div id="playagain">
+                    PLAY AGAIN
+                </div>
+                <div id="mainMenubtn">
+                    MAIN MENU
+                </div>
+            </div>
+
+            <div class="obstackle-conatiner">
+                <img src="media/cone2n.png" alt="obs1" id="obs1" class="obstacle" height="17%" width="8%">
+                <img src="media/hurdle.png" alt="" id="obs2" class="obstacle" height="20%" width="10%">
+                <img src="media/obs5-removebg-preview.png" alt="" id="obs9" class="obstacle" height="27%" width="13%">
+                <img src="media/stone2.png" alt="" id="obs3" class="obstacle" height="17%" width="10%">
+                <img src="media/obs4-removebg-preview.png" alt="" id="obs4" class="obstacle" height="20%" width="10%">
+                <img src="media/obs8.png" alt="" id="obs5" class="obstacle" height="18%" width="6%">
+                <img src="media/obs6-removebg-preview.png" alt="" id="obs6" class="obstacle" height="30%" width="10%">
+                <img src="media/obs7.png" alt="" id="obs7" class="obstacle" height="20%" width="10%">
+                <img src="media/obs6-removebg-preview.png" alt="" id="obs8" class="obstacle" height="30%" width="10%">
+            </div>
+
+            <div class="car-container">
+                <img src="media/formula1-removebg-preview.png" id="car" alt="racing car" height="30%" width="15%">
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>

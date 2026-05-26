@@ -1,27 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Typewriter</title>
-<link rel="stylesheet" href="typewriter.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typewriter-by @tanyaroy00</title>
+    <link href="typewriter.css" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="typewriter-container" aria-live="polite" aria-label="Typewriter text">
-        <span class="text1">I am a </span>
-        <span class="text"></span>
-        <span class="cursor"></span>
-    </div>
-    <div class="controls">
-        <input type="text" id="userInput" placeholder="Enter your text here" aria-label="User input for custom text">
-        <button id="addText">Add Text</button>
-        <button id="deleteText">Delete Latest Text</button>
-        <button id="pauseResume">Pause</button>
-        <label for="speedSlider">Speed:</label>
-        <input type="range" id="speedSlider" min="50" max="300" value="100" aria-label="Adjust typing speed">
-        <button id="toggleTheme">Toggle Theme</button>
-        <!-- <button id="changeBackground">Change Background</button> -->
+
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+    <div class="theme-toggle" id="themeToggle">🌙</div>
+    <div class="typewriter-machine">
+        <div id="pagesContainer">
+            <div class="paper-sheet page active-page">
+                <span class="typewriterText"></span>
+                <span class="cursor-paper"></span>
+            </div>
+        </div>
+        <div class="typewriter-body">
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Type here or click the keys below…">
+                    <div class="controls">
+                        <button id="soundToggle">🔊 Sound ON</button>
+                        <button id="copyBtn">📋 Copy</button>
+                        <button id="downloadPDF">📄 Download PDF</button>
+                        <span id="pageCounter">Page 1</span>
+                    </div>
+                    <div class="counters">
+                        <span id="wordCount">Words: 0</span>
+                        <span class="counter-separator">|</span>
+                        <span id="charCount">Characters: 0</span>
+                    </div>
+            </div>
+            <div class="keyboard">
+                <div class="keyboard-row" id="row-numbers">
+                    <button type="button" class="key" data-char="1">1</button>
+                    <button type="button" class="key" data-char="2">2</button>
+                    <button type="button" class="key" data-char="3">3</button>
+                    <button type="button" class="key" data-char="4">4</button>
+                    <button type="button" class="key" data-char="5">5</button>
+                    <button type="button" class="key" data-char="6">6</button>
+                    <button type="button" class="key" data-char="7">7</button>
+                    <button type="button" class="key" data-char="8">8</button>
+                    <button type="button" class="key" data-char="9">9</button>
+                    <button type="button" class="key" data-char="0">0</button>
+                </div>
+
+                <div class="keyboard-row" id="row1">
+                    <button type="button" class="key" data-char="q">Q</button>
+                    <button type="button" class="key" data-char="w">W</button>
+                    <button type="button" class="key" data-char="e">E</button>
+                    <button type="button" class="key" data-char="r">R</button>
+                    <button type="button" class="key" data-char="t">T</button>
+                    <button type="button" class="key" data-char="y">Y</button>
+                    <button type="button" class="key" data-char="u">U</button>
+                    <button type="button" class="key" data-char="i">I</button>
+                    <button type="button" class="key" data-char="o">O</button>
+                    <button type="button" class="key" data-char="p">P</button>
+                </div>
+
+                <div class="keyboard-row">
+                    <button type="button" class="key" data-char="a">A</button>
+                    <button type="button" class="key" data-char="s">S</button>
+                    <button type="button" class="key" data-char="d">D</button>
+                    <button type="button" class="key" data-char="f">F</button>
+                    <button type="button" class="key" data-char="g">G</button>
+                    <button type="button" class="key" data-char="h">H</button>
+                    <button type="button" class="key" data-char="j">J</button>
+                    <button type="button" class="key" data-char="k">K</button>
+                    <button type="button" class="key" data-char="l">L</button>
+                </div>
+
+                <div class="keyboard-row">
+                    <button type="button" class="key" data-char="z">Z</button>
+                    <button type="button" class="key" data-char="x">X</button>
+                    <button type="button" class="key" data-char="c">C</button>
+                    <button type="button" class="key" data-char="v">V</button>
+                    <button type="button" class="key" data-char="b">B</button>
+                    <button type="button" class="key" data-char="n">N</button>
+                    <button type="button" class="key" data-char="m">M</button>
+                </div>
+
+                <div class="keyboard-row keyboard-row--functions">
+                    <button type="button" class="key caps-lock" data-char="CAPSLOCK" aria-pressed="false">CAPS LOCK</button>
+                    <button type="button" class="key enter-key" data-char="ENTER">↵ RET</button>
+                    <button type="button" class="key space" data-char="SPACE">SPACE</button>
+                    <button type="button" class="key backspace" data-char="BACKSPACE">⌫ DEL</button>
+                </div>
+            </div>
+            <div class="cursor-controls">
+                <button class="cursor-btn" id="leftCursor">←</button>
+                <button class="cursor-btn" id="rightCursor">→</button>
+            </div>
+        </div>
     </div>
     <script src="typewriter.js"></script>
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    </body>
 </html>
