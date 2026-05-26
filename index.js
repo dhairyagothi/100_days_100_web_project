@@ -240,7 +240,7 @@ const PROJECT_DATA = [
   ['Day 173', 'AI-Resume-Analyzer', './public/AI-Resume-Analyzer/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 174', 'Unit Kitchen', './public/Unit-Kitchen/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
   ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
-  ['Day 176', 'Minesweeper', './public/Minesweeper/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
+  ['Day 176', 'Minesweeper', './public/Minesweeper/index.html'],
 ];
 const PROJECTS = PROJECT_DATA;
 const PROJECT_DESCRIPTIONS = {
@@ -766,6 +766,9 @@ const PROJECT_DESCRIPTIONS = {
 
 "Unit Kitchen":
 "Kitchen-focused converter simplifying ingredient and measurement transformations. Practical everyday utility.",
+
+"Minesweeper":
+"Classic minesweeper game with grid-based logic and interactive gameplay. Reinforces conditional rendering and state management.",
 
 };
 
