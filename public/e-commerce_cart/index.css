@@ -70,60 +70,28 @@ body.dark-mode .about p { color: rgba(255,255,255,0.35); }
 }
 
 .navbar {
-  display: flex; align-items: center;
+  display: flex; align-items: center; justify-content: space-between;
   max-width: 1280px; margin: 0 auto;
   height: 72px; padding: 0 32px;
 }
 
-.navbar {
-    display: flex;
-    align-items: center;
-    background-color: black;
-    height: clamp(3rem, 9vh, 6rem);
-    padding: 0 10px;
+.logo { text-decoration: none; flex: 1; }
+.logo-svg { display: block; }
+
+/* Central Navigation Menu */
+.nav-menu {
+  display: flex; justify-content: center; gap: 32px; list-style: none; margin: 0 24px; padding: 0;
 }
-
-.website_title {
-    color: #fff;
-    font-size: 35px;
-    flex-grow: 1;
-    margin-left: 40px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    }
-
-.button-container {
-    display: flex;
-    align-items: center;
+.nav-link {
+  text-decoration: none; color: rgba(255,255,255,0.65);
+  font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500;
+  transition: color 0.3s ease; letter-spacing: 0.3px;
 }
+.nav-link:hover { color: #fff; }
+.nav-link.sale { color: #ff6b81; font-weight: 600; }
 
-.button {
-    outline: 0 !important;
-    border: 0 !important;
-    width: 40px;
-    height: 40px;
-    margin-right: 3px;
-    border-radius: 50%;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    transition: all ease-in-out 0.3s;
-    cursor: pointer;
-}
-
-.button:hover {
-    transform: translateY(-3px);
-}
-
-    /* hero section*/
-.hero {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 50px 20px;
-    background-color: #f4f4f4;
-    min-height: 70vh;
+.nav-end {
+  display: flex; align-items: center; gap: 4px; flex: 1; justify-content: flex-end;
 }
 
 .hero-content {
@@ -220,7 +188,15 @@ body.dark-mode .about p { color: rgba(255,255,255,0.35); }
   width: 100%; max-width: 1200px; position: relative; z-index: 1; gap: 48px;
 }
 
-.hero-content { max-width: 420px; flex-shrink: 0; }
+.hero-content { max-width: 500px; flex-shrink: 0; }
+
+.hero-trust {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 24px;
+}
+.hero-trust .stars { color: #f59e0b; font-size: 1.15rem; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(245,158,11,0.2); }
+.hero-trust .trust-text { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+
+body.dark-mode .hero-trust .trust-text { color: #999; }
 
     /* nav bar cart icon- the display part before click on cart button */
 .box {
@@ -249,7 +225,22 @@ body.dark-mode .about p { color: rgba(255,255,255,0.35); }
 
 .hero-sub {
   font-size: 1rem; line-height: 1.7; color: inherit;
-  margin-bottom: 32px; opacity: 0.55; font-weight: 400;
+  margin-bottom: 24px; opacity: 0.55; font-weight: 400;
+}
+
+.hero-features {
+  display: flex; gap: 24px; margin-bottom: 36px;
+}
+.feature-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: #333;
+}
+.feature-item svg { width: 18px; height: 18px; color: #2ed573; stroke-width: 3; }
+
+body.dark-mode .feature-item { color: #d4d4d8; }
+
+.hero-actions {
+  display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
 }
 
 /* CTA Button */
@@ -277,6 +268,21 @@ body.dark-mode .about p { color: rgba(255,255,255,0.35); }
 .cta:active { transform: translateY(-1px) scale(0.97); }
 .cta svg { transition: transform 0.3s ease; }
 .cta:hover svg { transform: translateX(4px); }
+
+.cta-secondary {
+  background: transparent; color: #111;
+  border: 2px solid #ddd;
+  box-shadow: none;
+}
+.cta-secondary::before { display: none; }
+.cta-secondary:hover { 
+  background: transparent;
+  border-color: #111; 
+  box-shadow: 0 8px 16px rgba(0,0,0,0.04); 
+}
+
+body.dark-mode .cta-secondary { color: #fff; border-color: rgba(255,255,255,0.3); background: transparent; }
+body.dark-mode .cta-secondary:hover { border-color: #fff; box-shadow: 0 8px 16px rgba(255,255,255,0.05); }
 
 /* ===== SLIDER ===== */
 .hero-slider {
@@ -656,6 +662,7 @@ body.dark-mode .card-add:hover {
 }
 
 @media (max-width: 768px) {
+  .nav-menu { display: none; }
   .hero { min-height: auto; padding: 32px 20px; }
   .hero-inner { flex-direction: column; gap: 32px; }
   .hero-content { max-width: 100%; text-align: center; }

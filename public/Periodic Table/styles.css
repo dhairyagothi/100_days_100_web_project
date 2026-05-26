@@ -4,11 +4,11 @@ body {
     padding: 20px;
     background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     color: #333;
+    overflow-x: hidden;
 }
 
 .main-container {
@@ -16,6 +16,7 @@ body {
     flex-direction: column;
     align-items: center;   
     justify-content: center;
+    width: 100%;
 }
 
 .table-container {
@@ -32,9 +33,8 @@ body {
 .element {
     width: 65px;
     height: 85px;
-    box-sizing: border-box;
     background: rgba(255, 255, 255, 0.95);
-    border: 2px solid transparent;
+    border: none;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -101,15 +101,10 @@ body {
 }
 
 .element-name {
-    font-size: 9.5px;
+    font-size: 11px;
     color: #555;
     font-weight: 500;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 2px;
-    box-sizing: border-box;
+    letter-spacing: 0.5px;
 }
 
 .tooltip {
@@ -205,228 +200,6 @@ body {
         grid-template-columns: repeat(6, 65px);
         transform: scale(0.8);
     }
-}
-#theme-toggle {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    background: linear-gradient(135deg, #111, #333);
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#theme-toggle:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-}
-
-body.dark-mode #theme-toggle {
-    background: linear-gradient(135deg, #f0f0f0, #ffffff);
-    color: #111;
-    box-shadow: 0 4px 15px rgba(255,255,255,0.2);
-}
-
-body.dark-mode {
-    background-color: #121212;
-    color: white;
-    background-image: none;
-}
-
-body.dark-mode .element {
-    background: #222;
-    color: white;
-}
-
-body.dark-mode .element-symbol {
-    background: linear-gradient(45deg, #eee, #aaa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-body.dark-mode .element-number,
-body.dark-mode .element-name {
-    color: #ccc;
-}
-
-body.dark-mode .empty.placeholder {
-    color: white;
-}
-
-.placeholder-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
-    margin-top: 15px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-.placeholder-desc {
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.placeholder-side {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
-    margin-top: 30px;
-    text-align: right;
-    padding-right: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Control Panel */
-.controls-panel {
-    display: flex;
-    gap: 25px;
-    margin-bottom: 30px;
-    background: rgba(255, 255, 255, 0.25);
-    padding: 18px 30px;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    position: relative;
-    z-index: 100;
-}
-
-body.dark-mode .controls-panel {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.control-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 12px;
-    font-weight: 700;
-    color: #444;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-body.dark-mode .control-group {
-    color: #ddd;
-}
-
-.control-group select {
-    margin-top: 8px;
-    padding: 10px 35px 10px 15px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.85);
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    color: #222;
-    outline: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 14px;
-}
-
-.control-group select:hover, .control-group select:focus {
-    border-color: #667eea;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
-}
-
-body.dark-mode .control-group select {
-    background-color: rgba(30, 30, 30, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-}
-
-/* Custom Range Slider */
-.control-group input[type="range"] {
-    margin-top: 15px;
-    -webkit-appearance: none;
-    width: 160px;
-    height: 6px;
-    background: rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
-    outline: none;
-    transition: background 0.3s ease;
-}
-
-body.dark-mode .control-group input[type="range"] {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.control-group input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #667eea;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.control-group input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-}
-
-/* Dimming feature */
-.element.dimmed {
-    opacity: 0.15;
-    pointer-events: none;
-}
-
-/* State of Matter Styles */
-.element.state-solid {
-    border: 2px solid transparent;
-}
-.element.state-liquid {
-    border: 2px solid #2196f3;
-}
-.element.state-gas {
-    border: 2px dashed #9e9e9e;
-}
-.element.state-unknown {
-    opacity: 0.6;
-}
-
-/* Modal Background */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-
-.lanthanide {
-    background-color: #ffb3b3;
-}
-
-.actinide {
-    background-color: #ffcc99;
 }
 
 /* Legend Styling */
