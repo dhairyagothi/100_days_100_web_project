@@ -2401,3 +2401,54 @@ body::after {
 .toast {
   z-index: 100001;
 }
+.card-description{
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.6;
+
+    opacity: 0;
+    max-height: 0;
+
+    overflow: hidden;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity .25s ease,
+        max-height .35s ease,
+        transform .35s ease,
+        margin .35s ease;
+
+    margin-top: 0;
+}
+.project-card{
+
+    overflow:hidden;
+
+    min-height:220px;
+
+    transition:
+        transform .35s ease,
+        max-height .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease;
+
+}
+.project-card:hover{
+
+    transform: translateY(-4px);
+
+    box-shadow:
+      0 18px 40px rgba(59,130,246,.10);
+
+}
+.project-card:hover .card-description{
+
+    opacity:1;
+
+    max-height:100px;
+
+    transform:translateY(0);
+
+    margin-top:16px;
+}

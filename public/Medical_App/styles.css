@@ -4,18 +4,105 @@
     box-sizing: border-box;
 }
 
+:root {
+    --bg-primary: #f4f9ff;
+    --bg-card: #ffffff;
+    --bg-stat-box: #eff6ff;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-brand: #2563eb;
+    --border-color: #e2e8f0;
+    --border-dashed: #e2e8f0;
+    --input-bg: #ffffff;
+    --input-border: #cbd5e1;
+    --button-primary-bg: #2563eb;
+    --button-primary-hover: #1d4ed8;
+    --button-cancel-bg: #e2e8f0;
+    --button-cancel-hover: #cbd5e1;
+    --button-cancel-text: #475569;
+    --hero-bg: linear-gradient(135deg, #2563eb, #0ea5e9);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+    --modal-backdrop: rgba(0, 0, 0, 0.5);
+    --bg-available: #f0fdf4;
+    --text-available: #166534;
+    --bg-limited: #fef9c3;
+    --text-limited: #713f12;
+    --invalid-bg: #fef2f2;
+    --success-bg: #f0fdf4;
+    --success-border: #bbf7d0;
+    --success-text: #15803d;
+    --success-btn-bg: #15803d;
+    --success-btn-hover: #166534;
+    --btn-danger-bg: rgb(218, 78, 18);
+    --btn-danger-hover: #f10000;
+}
+
+body[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-card: #1e293b;
+    --bg-stat-box: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-brand: #38bdf8;
+    --border-color: #334155;
+    --border-dashed: #475569;
+    --input-bg: #1e293b;
+    --input-border: #475569;
+    --button-primary-bg: #0284c7;
+    --button-primary-hover: #0369a1;
+    --button-cancel-bg: #334155;
+    --button-cancel-hover: #475569;
+    --button-cancel-text: #f8fafc;
+    --hero-bg: linear-gradient(135deg, #1e3a8a, #0369a1);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    --modal-backdrop: rgba(0, 0, 0, 0.75);
+    --bg-available: #064e3b;
+    --text-available: #34d399;
+    --bg-limited: #78350f;
+    --text-limited: #fbbf24;
+    --invalid-bg: #450a0a;
+    --success-bg: #064e3b;
+    --success-border: #047857;
+    --success-text: #34d399;
+    --success-btn-bg: #059669;
+    --success-btn-hover: #047857;
+    --btn-danger-bg: #dc2626;
+    --btn-danger-hover: #b91c1c;
+}
+
+/* Restrict transitions to background-color, color, and border-color only */
+body, .card, .stat-box, input, textarea, select, .doctor-card, .booking-modal-content, .availability, .theme-toggle-btn, .primary-btn, .cancel-btn, .close-btn, .specialty-badge, #recommendationBox {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background: #f4f9ff;
-    color: #1e293b;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     line-height: 1.6;
 }
 
 .hero {
-    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    background: var(--hero-bg);
     color: white;
-    text-align: center;
     padding: 40px 20px;
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.hero-text-group {
+    text-align: left;
 }
 
 .hero h1 {
@@ -32,15 +119,16 @@ body {
 }
 
 .card {
-    background: white;
+    background: var(--bg-card);
     padding: 25px;
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
 }
 
 .card h2 {
     margin-bottom: 20px;
-    color: #2563eb;
+    color: var(--text-brand);
 }
 
 input,
@@ -50,7 +138,9 @@ select {
     padding: 12px;
     margin-top: 8px;
     margin-bottom: 18px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--text-primary);
     border-radius: 10px;
     font-size: 1rem;
 }
@@ -61,17 +151,17 @@ textarea {
 }
 
 .primary-btn {
-    background: #2563eb;
+    background: var(--button-primary-bg);
     color: white;
     border: none;
     padding: 12px 20px;
     border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .primary-btn:hover {
-    background: #1d4ed8;
+    background: var(--button-primary-hover);
     transform: translateY(-2px);
 }
 
@@ -90,7 +180,8 @@ textarea {
 }
 
 .stat-box {
-    background: #eff6ff;
+    background: var(--bg-stat-box);
+    color: var(--text-primary);
     padding: 20px;
     border-radius: 14px;
     text-align: center;
@@ -131,10 +222,10 @@ body.modal-open {
 }
 
 .doctor-card {
-    background: #ffffff;
+    background: var(--bg-card);
     padding: 25px;
     border-radius: 16px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -170,13 +261,13 @@ body.modal-open {
 }
 
 .availability.available {
-    background: #f0fdf4;
-    color: #166534;
+    background: var(--bg-available);
+    color: var(--text-available);
 }
 
 .availability.limited {
-    background: #fef9c3;
-    color: #713f12;
+    background: var(--bg-limited);
+    color: var(--text-limited);
 }
 
 .status-dot {
@@ -203,8 +294,8 @@ body.modal-open {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #eff6ff, #dbeafe);
-    border: 1px solid #bfdbfe;
+    background: var(--bg-stat-box);
+    border: 1px solid var(--border-color);
     font-size: 1.8rem;
 }
 
@@ -224,13 +315,13 @@ body.modal-open {
 
 .doctor-identity h3 {
     margin-bottom: 3px;
-    color: #1e293b;
+    color: var(--text-primary);
     font-size: 1.15rem;
 }
 
 .specialty-badge {
-    background: #eff6ff;
-    color: #2563eb;
+    background: var(--bg-stat-box);
+    color: var(--text-brand);
     font-size: 0.8rem;
     font-weight: 700;
     padding: 3px 10px;
@@ -245,15 +336,15 @@ body.modal-open {
     justify-content: space-between;
     gap: 10px;
     margin: 18px 0;
-    border-top: 1px dashed #e2e8f0;
-    border-bottom: 1px dashed #e2e8f0;
+    border-top: 1px dashed var(--border-dashed);
+    border-bottom: 1px dashed var(--border-dashed);
     padding: 12px 0;
     width: 100%;
 }
 
 .experience, .rating {
     font-size: 0.82rem;
-    color: #475569;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
@@ -290,7 +381,7 @@ body.modal-open {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--modal-backdrop);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -300,16 +391,17 @@ body.modal-open {
 
 /* Booking Modal Dialog */
 .booking-modal-content {
-    background: white;
+    background: var(--bg-card);
     padding: 30px;
     border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-lg);
     width: 100%;
     max-width: 500px;
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
     animation: modalSlideDown 0.3s ease;
+    color: var(--text-primary);
 }
 
 @keyframes modalSlideDown {
@@ -324,12 +416,12 @@ body.modal-open {
 }
 
 .booking-modal-content h2 {
-    color: #2563eb;
+    color: var(--text-brand);
     margin-bottom: 5px;
 }
 
 #modalSubtitle {
-    color: #64748b;
+    color: var(--text-secondary);
     font-size: 0.95rem;
     margin-bottom: 25px;
 }
@@ -341,7 +433,7 @@ body.modal-open {
     background: none;
     border: none;
     font-size: 1.8rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
     cursor: pointer;
     line-height: 1;
     transition: color 0.2s ease;
@@ -361,7 +453,7 @@ body.modal-open {
 .form-group label {
     font-weight: 600;
     font-size: 0.9rem;
-    color: #334155;
+    color: var(--text-secondary);
     margin-bottom: 6px;
 }
 
@@ -382,7 +474,7 @@ body.modal-open {
 
 .invalid-input {
     border-color: #ef4444 !important;
-    background-color: #fef2f2;
+    background-color: var(--invalid-bg) !important;
 }
 
 /* Modal Footer Buttons */
@@ -397,24 +489,24 @@ body.modal-open {
 }
 
 .cancel-btn {
-    background: #e2e8f0;
-    color: #475569;
+    background: var(--button-cancel-bg);
+    color: var(--button-cancel-text);
     border: none;
     padding: 12px 20px;
     border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     font-size: 1rem;
 }
 
 .cancel-btn:hover {
-    background: #cbd5e1;
+    background: var(--button-cancel-hover);
 }
 
 /* Success Banner */
 .success-message {
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 20px;
@@ -426,25 +518,34 @@ body.modal-open {
 }
 
 .success-text {
-    color: #15803d;
+    color: var(--success-text);
     font-weight: 600;
     font-size: 1rem;
     line-height: 1.5;
 }
 
 .success-close-btn {
-    background: #15803d;
+    background: var(--success-btn-bg);
     min-width: 120px;
 }
 
 .success-close-btn:hover {
-    background: #166534;
+    background: var(--success-btn-hover);
 }
 
 @media (max-width: 768px) {
 
     .hero h1 {
         font-size: 2rem;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text-group {
+        text-align: center;
     }
 
     .dashboard {
@@ -470,11 +571,12 @@ body.modal-open {
 }
 
 .cancel {
-    background-color: rgb(218, 78, 18);
+    background-color: var(--btn-danger-bg);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .cancel:hover {
-    background-color: #f10000;
+    background-color: var(--btn-danger-hover);
 }
 
 #consultation-status {
@@ -486,6 +588,62 @@ body.modal-open {
 .cancel-appointment {
     text-align: center;
     font-size: 1.2rem;
-    color:#db4734;
+    color: var(--btn-danger-bg);
     font-weight: bold;
+}
+
+/* Theme Toggle Button Style */
+.theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.theme-icon {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+}
+
+/* Explicit Dark Mode Coverage for Recommendation Box */
+#recommendationBox {
+    background: var(--bg-stat-box);
+    padding: 18px;
+    border-radius: 12px;
+    margin-top: 15px;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+#recommendationBox h3 {
+    color: var(--text-brand);
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#recommendationBox ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+#recommendationBox li {
+    margin-bottom: 6px;
+    color: var(--text-primary);
 }

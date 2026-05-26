@@ -8,11 +8,27 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+<script>
+    (function() {
+        const savedTheme = localStorage.getItem('medical-theme');
+        document.body.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light');
+    })();
+</script>
 
 <header class="hero">
     <div class="hero-content">
-        <h1>🏥 MedConsult Dashboard</h1>
-        <p>Connecting Local Doctors with Specialists</p>
+        <div class="hero-text-group">
+            <h1>🏥 MedConsult Dashboard</h1>
+            <p>Connecting Local Doctors with Specialists</p>
+        </div>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch to dark theme">
+            <!-- Inline Moon icon (Default for light mode) -->
+            <svg class="theme-icon moon-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
     </div>
 </header>
     <main>

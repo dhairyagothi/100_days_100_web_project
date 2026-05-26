@@ -98,7 +98,7 @@ jobs:
               if(changes < 75)
                 level = "level:beginner"
 
-              else if(changes <= 250)
+              else if(changes <= 850)
                 level = "level:intermediate"
 
               else

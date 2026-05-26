@@ -914,3 +914,55 @@ section {
   --accent: #ef4444;
   --accent-gradient: linear-gradient(135deg, #ef4444, #f97316);
 }
+/* Navigation wrapper */
+.nav{
+  position: relative;
+}
+
+/* Back to Home button — absolute on desktop so it doesn't affect navbar centering */
+.back-button{
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(124,99,255,0.12), rgba(79,141,255,0.08));
+  color: var(--text-primary);
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 20px rgba(12,18,40,0.35);
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  z-index: 105;
+}
+
+.back-button .back-text{ /* remove default paragraph spacing */
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.back-button:hover{
+  transform: translateY(-52%);
+  box-shadow: 0 12px 30px rgba(12,18,40,0.45);
+  background: linear-gradient(90deg, rgba(124,99,255,0.18), rgba(79,141,255,0.12));
+}
+
+.back-button:active{
+  transform: translateY(-50%);
+}
+
+@media (max-width: 480px) {
+  .back-button{
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  .back-button .back-text{ font-size: 13px; }
+}
