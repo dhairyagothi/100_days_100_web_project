@@ -1,173 +1,314 @@
+// ── STATE ──
+let notes = JSON.parse(localStorage.getItem('echo_notes') || '[]');
+let activeId = null;
+let unsaved = false;
+let isDark = localStorage.getItem('echo_theme') === 'dark';
 
+// ── INIT ──
+if (isDark) applyTheme(true);
+renderNotesList();
 
-const changeSizeBtn = document.getElementById("changeSizeBtn");
-const noteContent = document.getElementById("noteContent");
+// ── THEME ──
+function applyTheme(dark) {
+  isDark = dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+  document.getElementById('themeBtn').textContent = dark ? '☀️' : '🌙';
+  localStorage.setItem('echo_theme', dark ? 'dark' : 'light');
+}
 
-// Create dropdown dynamically
-const dropdown = document.createElement("div");
-dropdown.className = "size-dropdown";
-dropdown.innerHTML = `
-  <button data-size="14px">14</button>
-  <button data-size="16px">16</button>
-  <button data-size="22px">22</button>
-  <button data-size="26px">26</button>
-`;
-document.body.appendChild(dropdown);
+document.getElementById('themeBtn').onclick = () => applyTheme(!isDark);
 
-// Show/hide dropdown near the button
-changeSizeBtn.addEventListener("click", (e) => {
-  const rect = changeSizeBtn.getBoundingClientRect();
-  dropdown.style.left = `${rect.left}px`;
-  dropdown.style.top = `${rect.bottom + 5}px`;
-  dropdown.classList.toggle("visible");
-});
-
-// When user selects a size
-dropdown.addEventListener("click", (e) => {
-  if (e.target.tagName !== "BUTTON") return;
-
-  const size = e.target.dataset.size;
-  const selection = window.getSelection();
-  if (selection.rangeCount === 0) return;
-
-  const range = selection.getRangeAt(0);
-  const selectedText = selection.toString();
-
-  if (!selectedText) {
-    alert("Please select some text first!");
-    return;
-  }
-
-  const span = document.createElement("span");
-  span.style.fontSize = size;
-  span.textContent = selectedText;
-
-  range.deleteContents();
-  range.insertNode(span);
-
-  dropdown.classList.remove("visible"); // hide dropdown
-});
-
-
-const changeColorBtn = document.getElementById("changeColorBtn");
-
-// Create color dropdown dynamically
-const colorDropdown = document.createElement("div");
-colorDropdown.className = "color-dropdown";
-colorDropdown.innerHTML = `
-  <button data-color="black" style="color:black;">●</button>
-  <button data-color="red" style="color:red;">●</button>
-  <button data-color="purple" style="color:purple;">●</button>
-  <button data-color="green" style="color:green;">●</button>
-  <button data-color="blue" style="color:blue;">●</button>
-  <button data-color="brown" style="color:brown;">●</button>
-`;
-document.body.appendChild(colorDropdown);
-
-// Toggle color dropdown position
-changeColorBtn.addEventListener("click", (e) => {
-  const rect = changeColorBtn.getBoundingClientRect();
-  colorDropdown.style.left = `${rect.left}px`;
-  colorDropdown.style.top = `${rect.bottom + 5}px`;
-  colorDropdown.classList.toggle("visible");
-});
-
-// Apply selected color
-colorDropdown.addEventListener("click", (e) => {
-  if (e.target.tagName !== "BUTTON") return;
-
-  const color = e.target.dataset.color;
-  const selection = window.getSelection();
-  if (selection.rangeCount === 0) return;
-
-  const range = selection.getRangeAt(0);
-  const selectedText = selection.toString();
-
-  if (!selectedText) {
-    alert("Please select some text first!");
-    return;
-  }
-
-  const span = document.createElement("span");
-  span.style.color = color;
-  span.textContent = selectedText;
-
-  range.deleteContents();
-  range.insertNode(span);
-
-  colorDropdown.classList.remove("visible");
-});
-
-
-const saveNoteBtn = document.getElementById("saveNoteBtn");
-
-saveNoteBtn.addEventListener("click", async () => {
-  const noteSection = document.querySelector(".note-section");
-
-  // use html2canvas to capture the note area
-  const canvas = await html2canvas(noteSection, { scale: 2 });
-  const imgData = canvas.toDataURL("image/png");
-
-  // initialize jsPDF
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "pt", "a4");
-
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-
-  // calculate scaling to fit nicely in A4
-  const imgWidth = pageWidth - 40; // margins
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  pdf.addImage(imgData, "PNG", 20, 20, imgWidth, imgHeight);
-  pdf.save("MyNote.pdf");
-});
-
-const clearNoteBtn = document.getElementById("clearNoteBtn");
-clearNoteBtn.addEventListener("click", () => {
-  if (confirm("Are you sure you want to clear your note?")) {
-    noteTitle.value = "";
-    noteContent.innerHTML = "";
-    localStorage.removeItem("myNote");
-  }
-});
-
-
-
-
-// ---------------------------
-// 🔹 SAVE & LOAD NOTES
-// ---------------------------
-
-// Get references
-const noteTitle = document.getElementById("noteTitle");
-const noteContent_ = document.getElementById("noteContent");
-
-// Save note to localStorage (runs automatically whenever you type)
-function saveNoteToLocal() {
-  const noteData = {
-    title: noteTitle.value,
-    content: noteContent_.innerHTML, // include styles and formatting
+// ── CREATE NEW NOTE ──
+function createNewNote() {
+  const note = {
+    id: Date.now().toString(),
+    title: '',
+    content: '',
+    color: isDark ? '#f0ebe3' : '#2a2118',
+    size: '16',
+    created: new Date().toISOString(),
+    updated: new Date().toISOString()
   };
-  localStorage.setItem("myNote", JSON.stringify(noteData));
-  console.log("Note saved locally!");
+  notes.unshift(note);
+  saveAll();
+  openNote(note.id);
 }
 
-// Load saved note (if exists)
-function loadNoteFromLocal() {
-  const saved = localStorage.getItem("myNote");
-  if (saved) {
-    const noteData = JSON.parse(saved);
-    noteTitle.value = noteData.title;
-    noteContent_.innerHTML = noteData.content;
-    console.log("Note loaded from local storage!");
+// ── OPEN NOTE ──
+function openNote(id) {
+  activeId = id;
+  const note = notes.find(n => n.id === id);
+  if (!note) return;
+
+  document.getElementById('welcomeScreen').style.display = 'none';
+
+  const ew = document.getElementById('editorWrapper');
+  ew.style.display = 'flex';
+
+  document.getElementById('noteTitleInput').value = note.title;
+  document.getElementById('note-content').value = note.content;
+  document.getElementById('note-content').style.color = note.color || (isDark ? '#f0ebe3' : '#2a2118');
+  document.getElementById('note-content').style.fontSize = (note.size || '16') + 'px';
+  document.getElementById('textColorInput').value = note.color || '#2a2118';
+  document.getElementById('fontSizeSelect').value = note.size || '16';
+
+  updateWordCount();
+  markSaved();
+  renderNotesList();
+  document.getElementById('noteTitleInput').focus();
+}
+
+// ── SAVE NOTE ──
+function saveNote() {
+  if (!activeId) return;
+  const note = notes.find(n => n.id === activeId);
+  if (!note) return;
+
+  note.title = document.getElementById('noteTitleInput').value.trim() || 'Untitled Note';
+  note.content = document.getElementById('note-content').value;
+  note.updated = new Date().toISOString();
+
+  saveAll();
+  markSaved();
+  renderNotesList();
+  showToast('✅', 'Note saved!', 'success');
+}
+
+// ── DELETE NOTE ──
+function deleteNote(id, e) {
+  if (e) e.stopPropagation();
+  openModal('Delete Note', 'This note will be permanently deleted. Are you sure?', () => {
+    notes = notes.filter(n => n.id !== id);
+    saveAll();
+    if (activeId === id) {
+      activeId = null;
+      document.getElementById('welcomeScreen').style.display = 'flex';
+      document.getElementById('editorWrapper').style.display = 'none';
+    }
+    renderNotesList();
+    showToast('🗑️', 'Note deleted.', '');
+  });
+}
+
+// ── SAVE TO LOCALSTORAGE ──
+function saveAll() {
+  localStorage.setItem('echo_notes', JSON.stringify(notes));
+}
+
+// ── RENDER NOTES LIST ──
+function renderNotesList(filter = '') {
+  const list = document.getElementById('notesList');
+  const stats = document.getElementById('sidebarStats');
+
+  let filtered = notes;
+  if (filter) {
+    const q = filter.toLowerCase();
+    filtered = notes.filter(n =>
+      n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q)
+    );
   }
+
+  stats.textContent = `${filtered.length} note${filtered.length !== 1 ? 's' : ''}`;
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <div class="empty-notes">
+        <div class="empty-icon">${filter ? '🔎' : '🗒️'}</div>
+        <p>${filter
+          ? 'No notes match your search.'
+          : 'No notes yet.<br/>Click <strong>+ New Note</strong> to start!'
+        }</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(n => `
+    <div class="note-card ${n.id === activeId ? 'active' : ''}" onclick="openNote('${n.id}')">
+      <div class="note-card-title">${escHtml(n.title || 'Untitled Note')}</div>
+      <div class="note-card-preview">${escHtml(n.content || 'No content…')}</div>
+      <div class="note-card-date">${formatDate(n.updated)}</div>
+      <button class="note-delete-btn" onclick="deleteNote('${n.id}', event)" title="Delete">✕</button>
+    </div>
+  `).join('');
 }
 
-// Listen for typing changes
-noteTitle.addEventListener("input", saveNoteToLocal);
-noteContent_.addEventListener("input", saveNoteToLocal);
+// ── FILTER NOTES (SEARCH) ──
+function filterNotes(q) {
+  renderNotesList(q);
+}
 
-// Load when page opens
-window.addEventListener("load", loadNoteFromLocal);
+// ── HELPERS ──
+function escHtml(s) {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+// ── TEXT COLOR ──
+function applyTextColor(c) {
+  document.getElementById('note-content').style.color = c;
+  if (activeId) {
+    const n = notes.find(x => x.id === activeId);
+    if (n) n.color = c;
+  }
+  markUnsaved();
+}
+
+// ── FONT SIZE ──
+function applyFontSize(s) {
+  document.getElementById('note-content').style.fontSize = s + 'px';
+  if (activeId) {
+    const n = notes.find(x => x.id === activeId);
+    if (n) n.size = s;
+  }
+  markUnsaved();
+}
+
+// ── CLEAR NOTE ──
+function confirmClear() {
+  openModal('Clear Note', 'This will erase all content in the current note. Continue?', () => {
+    document.getElementById('note-content').value = '';
+    document.getElementById('noteTitleInput').value = '';
+    updateWordCount();
+    markUnsaved();
+  });
+}
+
+// ── EXPORT PDF ──
+function exportPDF() {
+  if (!activeId) return;
+  const title = document.getElementById('noteTitleInput').value || 'Untitled Note';
+  const content = document.getElementById('note-content').value;
+
+  if (!content.trim()) {
+    showToast('⚠️', 'Note is empty!', '');
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const marginL = 20, marginR = 20, marginT = 24;
+  const pageW = doc.internal.pageSize.getWidth();
+  const contentW = pageW - marginL - marginR;
+
+  // Header bar
+  doc.setFillColor(192, 98, 42);
+  doc.rect(0, 0, pageW, 18, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Echo Notes', marginL, 12);
+
+  // Note title
+  doc.setTextColor(42, 33, 24);
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text(title, marginL, marginT + 10);
+
+  // Export date
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(156, 143, 130);
+  doc.text('Exported: ' + new Date().toLocaleString('en-IN'), marginL, marginT + 17);
+
+  // Divider line
+  doc.setDrawColor(214, 207, 195);
+  doc.line(marginL, marginT + 20, pageW - marginR, marginT + 20);
+
+  // Note content
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(42, 33, 24);
+
+  const lines = doc.splitTextToSize(content, contentW);
+  let y = marginT + 28;
+  const lineH = 6;
+  const pageH = doc.internal.pageSize.getHeight();
+
+  lines.forEach(line => {
+    if (y + lineH > pageH - 16) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(line, marginL, y);
+    y += lineH;
+  });
+
+  doc.save((title.replace(/[^a-z0-9]/gi, '_') || 'note') + '.pdf');
+  showToast('📄', 'PDF exported!', 'success');
+}
+
+// ── SAVE STATUS ──
+function markUnsaved() {
+  unsaved = true;
+  document.getElementById('statusDot').className = 'status-dot unsaved';
+  document.getElementById('saveStatusText').textContent = 'Unsaved changes';
+}
+
+function markSaved() {
+  unsaved = false;
+  document.getElementById('statusDot').className = 'status-dot saved';
+  document.getElementById('saveStatusText').textContent = 'Saved';
+}
+
+// ── WORD COUNT ──
+function updateWordCount() {
+  const txt = document.getElementById('note-content').value;
+  const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  document.getElementById('wordCount').textContent =
+    `${words} word${words !== 1 ? 's' : ''} · ${txt.length} chars`;
+}
+
+// ── TOAST NOTIFICATION ──
+let toastTimer;
+function showToast(icon, msg, type) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.classList.remove('show'); }, 2400);
+}
+
+// ── MODAL ──
+let modalCallback = null;
+
+function openModal(title, msg, cb) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalMsg').textContent = msg;
+  modalCallback = cb;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+document.getElementById('modalConfirmBtn').onclick = () => {
+  closeModal();
+  if (modalCallback) modalCallback();
+};
+
+document.getElementById('modalOverlay').onclick = (e) => {
+  if (e.target === e.currentTarget) closeModal();
+};
+
+// ── KEYBOARD SHORTCUT: Ctrl+S to Save ──
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    saveNote();
+  }
+});

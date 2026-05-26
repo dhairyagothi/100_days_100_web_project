@@ -16,3 +16,11 @@ body{
     justify-content: center;
     gap: 10px;
 }
+#file-name,
+#message {
+    text-align: center;
+    font-size: medium;
+    color: #333;
+    margin-top: 10px;
+    word-break: break-word;
+}

@@ -137,7 +137,7 @@ ul li:hover::after{
 }
 
 .booking{
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.45);
   color: white;
   font-weight: bold;
   padding: 10px;
@@ -168,16 +168,10 @@ ul li:hover::after{
 }
 
 
-
-
-
-
-
-
 #placeDescription {
   font-size: 1.2em;
   margin-bottom: 50px; 
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.671);
 }
 
 #placeTitle {
@@ -187,8 +181,9 @@ ul li:hover::after{
   color: white;
   font-family: Georgia,serif;
   font-style: italic;
-  background-color: rgb(9, 5, 9);
+  background-color: rgba(0, 0, 0, 0.45);
   padding: 15px;
   border-radius: 10px;
-  border: solid 5px white;
+  border: solid 3px white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }

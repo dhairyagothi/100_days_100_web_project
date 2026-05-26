@@ -504,7 +504,7 @@ Thank you for considering contributing to our project! To ensure smooth collabor
 
 We look forward to your contributions and appreciate your effort in helping us improve the project!
 
-## License
+## License 
 
 By contributing, you agree that your contributions will be licensed under the same license as the project.
 

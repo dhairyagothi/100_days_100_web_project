@@ -16,7 +16,7 @@
  
   <div class="swiper mySwiper">
      <h1 class="title">IMAGE-SLIDER</h1>
-    <div class="swiper-wrapper">
+    <!--<div class="swiper-wrapper" id="slideshow">
       <div class="swiper-slide"><img src="public/images/i1.jpg" alt="ujjain" srcset=""><snap class="text">slide 1</snap></div>
       <div class="swiper-slide"><img src="public/images/i2.jpg" alt="ujjain" srcset=""><snap class="text">slide 2</snap></div>
       <div class="swiper-slide"><img src="public/images/i3.jpg" alt="ujjain" srcset=""><snap class="text">slide 3</snap></div>
@@ -30,6 +30,21 @@
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
     <div class="swiper-pagination"></div>
+  </div>-->
+
+  <!--Changes made here-->
+
+  <div id="slideshow">
+
+    <div class="slider-row">
+
+      <button onclick="prevPhoto()"><</button>
+
+      <img id="photo" src="public/images/i1.jpg">
+
+      <button onclick="nextPhoto()">></button>
+
+    </div>
   </div>
 
   <script src="swiper-bundle.min.js"></script>

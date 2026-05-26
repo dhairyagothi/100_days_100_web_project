@@ -74,10 +74,7 @@ body {
 }
 
 .flag {
-  margin-top: -320px;
-  height: 300px;
-  width: 500px;
-  box-shadow: 10px 10px 20px #959595;
+  margin-top: -400px;
   position: relative;
 }
 

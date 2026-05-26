@@ -1,136 +1,149 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // UI Elements
-    const chatMessages = document.getElementById('chat-messages');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
-    
-    // Modal Elements
-    const apiKeyModal = document.getElementById('api-key-modal');
-    const apiKeyInput = document.getElementById('api-key-input');
-    const saveKeyBtn = document.getElementById('save-key-btn');
-    const settingsBtn = document.getElementById('settings-btn');
+const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
 
-    // State
-    // Check if we already have a key saved in the current browser session
-    let GEMINI_API_KEY = sessionStorage.getItem('gemini_api_key') || '';
+const promptInput = document.getElementById('prompt-input');
+const sendBtn = document.getElementById('send-btn');
+const outputContainer = document.getElementById('output-container');
+const imageInput = document.getElementById('image-input');
+const previewImg = document.getElementById('preview-img');
+const apiKeyInput = document.getElementById('api-key-input');
+const saveKeyBtn = document.getElementById('save-key-btn');
 
-    // Initialize Modal
-    if (!GEMINI_API_KEY) {
-        apiKeyModal.style.display = 'flex';
+let geminiApiKey = localStorage.getItem('gemini_api_key') || '';
+if (geminiApiKey) {
+    apiKeyInput.value = geminiApiKey;
+}
+
+saveKeyBtn.addEventListener('click', () => {
+    geminiApiKey = apiKeyInput.value.trim();
+    if (geminiApiKey) {
+        localStorage.setItem('gemini_api_key', geminiApiKey);
+        alert('API Key saved!');
+    } else {
+        alert('Please enter a valid API key.');
+    }
+});
+
+let selectedImageBase64 = null;
+
+imageInput.addEventListener('change', () => {
+    const file = imageInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            selectedImageBase64 = e.target.result.split(',')[1];
+            previewImg.src = e.target.result;
+            previewImg.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+function appendMessage(role, text) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `${role}-message chat-message`;
+
+    if (role === 'ai') {
+        msgDiv.innerHTML = marked.parse(text);
+        // Add copy button to code blocks
+        msgDiv.querySelectorAll('pre').forEach(pre => {
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerText = 'Copy';
+            copyBtn.onclick = () => {
+                const code = pre.querySelector('code');
+                navigator.clipboard.writeText(code ? code.innerText : pre.innerText);
+                copyBtn.innerText = 'Copied!';
+                setTimeout(() => copyBtn.innerText = 'Copy', 2000);
+            };
+            pre.appendChild(copyBtn);
+        });
+    } else {
+        msgDiv.innerText = text;
     }
 
-    // Handle Saving API Key
-    saveKeyBtn.addEventListener('click', () => {
-        const key = apiKeyInput.value.trim();
-        if (key) {
-            GEMINI_API_KEY = key;
-            sessionStorage.setItem('gemini_api_key', key);
-            apiKeyModal.style.display = 'none';
-            apiKeyInput.value = ''; // Clear the input
-        } else {
-            alert('Please enter a valid API key.');
-        }
-    });
+    outputContainer.appendChild(msgDiv);
+    outputContainer.scrollTop = outputContainer.scrollHeight;
+    return msgDiv;
+}
 
-    // Handle reopening settings to change key
-    settingsBtn.addEventListener('click', () => {
-        apiKeyModal.style.display = 'flex';
-    });
-
-    // Helper to get current time
-    function getCurrentTime() {
-        const now = new Date();
-        return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+async function getAIResponse(prompt, imageBase64) {
+    if (!geminiApiKey) {
+        alert('Please enter your Gemini API Key first!');
+        return;
     }
 
-    // Enhanced Message Function (Matches new HTML structure)
-    function addMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', sender);
-        
-        // Decide icon based on sender
-        const iconClass = sender === 'bot' ? 'fa-robot' : 'fa-user';
-        
-        // Build the inner HTML structure
-        messageDiv.innerHTML = `
-            <div class="avatar"><i class="fa-solid ${iconClass}"></i></div>
-            <div class="message-wrapper">
-                <div class="message-content">
-                    <p>${text.replace(/\n/g, '<br>')}</p>
-                </div>
-                <span class="timestamp">${getCurrentTime()}</span>
-            </div>
-        `;
-        
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'loading chat-message ai-message';
+    loadingDiv.innerHTML = `
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+    `;
+    outputContainer.appendChild(loadingDiv);
+    outputContainer.scrollTop = outputContainer.scrollHeight;
 
-    // Handle AI API Call
-    async function fetchAIResponse(userMessage) {
-        if (!GEMINI_API_KEY) {
-            addMessage("Please click the gear icon to enter your Gemini API key first.", "bot");
-            return;
-        }
+    try {
+        const contents = [{
+            parts: [{ text: prompt || "What is in this image?" }]
+        }];
 
-        // Add a temporary loading indicator
-        addMessage("Thinking...", "bot");
-        const loadingMessage = chatMessages.lastElementChild;
-
-        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: `You are a helpful, friendly, and concise AI assistant. Respond to this: ${userMessage}`
-                        }]
-                    }]
-                })
+        if (imageBase64) {
+            contents[0].parts.push({
+                inline_data: {
+                    mime_type: "image/jpeg",
+                    data: imageBase64
+                }
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const aiText = data.candidates[0].content.parts[0].text;
-
-            // Remove loading and show actual response
-            loadingMessage.remove();
-            addMessage(aiText, "bot");
-
-        } catch (error) {
-            loadingMessage.remove();
-            
-            // Helpful error handling if the key is invalid
-            if (error.message.includes('400')) {
-                addMessage("API Error. Please check if your API key is correct in the settings.", "bot");
-            } else {
-                addMessage("Sorry, I encountered an error connecting to the server.", "bot");
-            }
-            console.error("Gemini API Error:", error);
         }
+
+        const response = await fetch(`${API_URL}?key=${geminiApiKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ contents })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (loadingDiv.parentNode) {
+            outputContainer.removeChild(loadingDiv);
+        }
+
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+            appendMessage('ai', data.candidates[0].content.parts[0].text);
+        } else {
+            throw new Error('No response from AI');
+        }
+    } catch (error) {
+        if (loadingDiv.parentNode) {
+            outputContainer.removeChild(loadingDiv);
+        }
+        appendMessage('ai', `**Error:** ${error.message}`);
+        console.error("Gemini API Error:", error);
     }
+}
 
-    // Event Listeners for Sending Messages
-    sendBtn.addEventListener('click', () => {
-        const text = userInput.value.trim();
-        if (text) {
-            addMessage(text, "user");
-            userInput.value = '';
-            fetchAIResponse(text);
-        }
-    });
+sendBtn.addEventListener('click', () => {
+    const text = promptInput.value.trim();
+    if (text || selectedImageBase64) {
+        appendMessage('user', text || 'Sent an image');
+        getAIResponse(text, selectedImageBase64);
 
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendBtn.click();
-        }
-    });
+        // Reset inputs
+        promptInput.value = '';
+        imageInput.value = '';
+        selectedImageBase64 = null;
+        previewImg.style.display = 'none';
+    }
+});
+
+promptInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendBtn.click();
+    }
 });

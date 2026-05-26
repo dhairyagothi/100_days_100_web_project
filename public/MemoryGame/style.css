@@ -24,6 +24,81 @@ h1 {
     color: #333;
 }
 
+/* Timer */
+#controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+#timer {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+#difficulty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#difficulty span {
+    color: #fff;
+    font-weight: bold;
+}
+
+#difficulty button {
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#difficulty button:hover,
+#difficulty button.active {
+    background-color: #2980b9;
+    border-color: #fff;
+}
+
+/* Restart Button */
+#restart-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #2980b9;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#restart-btn:hover {
+    background-color: #1a5276;
+}
+
+/* Congratulations */
+#congrats {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2ecc71;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hidden {
+    display: none;
+}
+
 /* Score Board */
 #score-board {
     text-align: center;

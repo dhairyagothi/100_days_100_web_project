@@ -298,7 +298,7 @@ body {
 
 .github-btn {
     background: var(--text-primary);
-    color: #000;
+    color: var(--bg-primary);
     padding: 0.8rem 1.6rem;
     border-radius: 14px;
     text-decoration: none;
@@ -397,4 +397,4 @@ body {
     .navbar { padding: 1rem 2rem; }
     .footer-content { grid-template-columns: 1fr; }
     .stats-overview { grid-template-columns: repeat(2, 1fr); }
-}
+}
