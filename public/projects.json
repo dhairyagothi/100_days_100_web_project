@@ -87,7 +87,7 @@
     "Day 13",
     "Login Form Using MERN",
     "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern",
-    ["api", "javascript"],
+    ["api", "javascript", "source-only"],
     "intermediate"
   ],
   [
@@ -488,7 +488,7 @@
     "Day 72",
     "Contact Book",
     "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book",
-    ["todo", "javascript"],
+    ["todo", "javascript", "source-only"],
     "intermediate"
   ],
   [
@@ -1221,9 +1221,16 @@
   ],
   [
     "Day 177",
+
     "Number guessing game",
     "./public/number-guessing-game/index.html",
     ["html", "css", "javascript", "game"],
     "beginner"
+
+    "Focus Timer",
+    "./public/focustimer/index.html",
+    ["tool", "productivity", "javascript"],
+    "intermediate"
+
   ]
 ]
