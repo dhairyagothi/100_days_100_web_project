@@ -4,51 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text to Voice Converter</title>
+    <!-- used the google inter fonts so telling it to load it earlier -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+    <!-- outer main class in which there is an intro section about the page and two articles for speech to text and text to speech-->
+    <main class="app-shell">
 
-    <div class="whole">
-    <div class="container">
-        <h1 class="title">Text to Voice Converter</h1>
+        <!-- section  for intro -->
+        <!-- added this hero-panel for better UI -->
+        <section class="hero-panel">
+            <div class="hero-copy">
+                <p class="eyebrow">Speech Studio</p>
+                <h1>Turn thoughts into voice, and voice back into text.</h1>
+                <p class="hero-text">A polished browser speech workspace for quick narration, note capture, and hands-free drafting.</p>
+            </div>
+            <!-- animated sound wave which is handled by css -->
+            <div class="sound-wave" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
 
-        <!-- Added multilingual feature (3 languages for now)-->
-        <label>Select Language:</label>
-        <select id="language">
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-        </select>
+        <section class="tool-grid" aria-label="Speech conversion tools">
+            <!-- article for text to voice-->
+            <article class="tool-card">
+                <div class="card-header">
+                    <div>
+                        <p class="card-kicker">Write</p>
+                        <h2>Text to Voice</h2>
+                    </div>
+                    <div class="icon-badge" aria-hidden="true">A</div>
+                </div>
 
-        <div class="input-area">
-            <textarea class="textarea1" id ="text-input" placeholder="Enter text here..."></textarea>
-            <button id="convert-btn">Convert to Speech</button>
+                <label for="text-input">Text input</label>
+                <textarea class="textarea1" id="text-input" placeholder="Paste or write something you want spoken aloud..."></textarea>
 
-            <!-- Changed Id for stop btn -->
-            <button id="stop-btn-text" disabled>Stop</button>
-        </div>
-    </div>
+                <div class="button-row">
+                    <button class="primary-btn" id="convert-btn" type="button">
+                        <span aria-hidden="true"> ▶ </span>
+                        Convert
+                    </button>
+                    <button class="danger-btn" id="speech-stop-btn" type="button" disabled>
+                        <span aria-hidden="true"> ◽️ </span>
+                        Stop
+                    </button>
+                </div>
+            </article>
 
-    <div class="container2">
-        <h1 class="title">Voice to Text Converter</h1>
+            <!-- article for voice to text -->
+            <article class="tool-card">
+                <div class="card-header">
+                    <div>
+                        <p class="card-kicker">Speak</p>
+                        <h2>Voice to Text</h2>
+                    </div>
+                    <div class="icon-badge mic" aria-hidden="true"></div>
+                </div>
 
-        <!-- Added multilingual feature (3 languages for now)-->
-        <label>Select Language:</label>
-        <select id="language">
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-        </select>
-        
-        <button id="start-btn">Speak</button>
+                <div class="button-row">
+                    <button class="primary-btn" id="start-btn" type="button">
+                        <span aria-hidden="true"> 🔘 </span>
+                        Speak
+                    </button>
+                    <button class="danger-btn" id="recognition-stop-btn" type="button">
+                        <span aria-hidden="true"> ◽️ </span>
+                        Stop
+                    </button>
+                </div>
 
-        <!-- Id matched with other Stop so changed this one too -->
-        <button id="stop-btn-voice" disabled>Stop</button> 
+                <label for="output">Transcript</label>
+                <textarea class="textarea2" id="output" placeholder="Your speech will appear here..."></textarea>
+            </article>
+        </section>
+    </main>
 
-        <textarea class="textarea2" id="output" placeholder="Your speech will appear here..."></textarea>
-    </div>
-</div>
+    <!-- to create decorative background shapes on the page which are fixed -->
+    <div class="ambient-shape shape-one" aria-hidden="true"></div>
+    <div class="ambient-shape shape-two" aria-hidden="true"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
