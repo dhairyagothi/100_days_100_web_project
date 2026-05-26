@@ -1770,5 +1770,14 @@
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
 "projectPath":"./public/InterviewPrepHub/index.html"
+},
+{
+"projectNo": 178,
+"projectName": "Kanban Task Board",
+"projectType": "Tool",
+"projectDesc": "Interactive Kanban board for organizing tasks across different workflow stages with drag-and-drop support.",
+"techStack": ["tool","html","css","javascript"],
+"difficulty": "intermediate",
+"projectPath": "./public/kanban_task_board/index.html"
 }
 ]
