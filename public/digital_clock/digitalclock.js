@@ -1,4 +1,7 @@
 // App configuration and state
+// Dark mode state
+let isDarkMode = localStorage.getItem("clockDarkMode") === "true";
+if (isDarkMode) document.body.classList.add("dark-mode");
 let activeTheme = localStorage.getItem("clockTheme") || "classic";
 let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
 let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
@@ -47,6 +50,9 @@ const TIMEZONES = [
 
 // INIT
 document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("dark-mode-toggle");
+  if (btn) btn.textContent = isDarkMode ? "☀️" : "🌙";
+  applyDarkMode(isDarkMode);
   setTheme(activeTheme);
 
   populateTimezoneDropdown();
@@ -69,7 +75,7 @@ function setTheme(theme) {
   activeTheme = theme;
   localStorage.setItem("clockTheme", theme);
 
-  document.body.className = `${theme}-theme`;
+  document.body.className = `${theme}-theme${isDarkMode ? " dark-mode" : ""}`;
 
   document.querySelectorAll(".theme-swatch").forEach(swatch => {
     swatch.classList.toggle("active", swatch.dataset.theme === theme);
@@ -554,4 +560,17 @@ function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text;
   return div.innerHTML;
+}
+
+// ================= DARK MODE =================
+function applyDarkMode(enabled) {
+  isDarkMode = enabled;
+  document.body.classList.toggle("dark-mode", enabled);
+  const btn = document.getElementById("dark-mode-toggle");
+  if (btn) btn.textContent = enabled ? "☀️" : "🌙";
+  localStorage.setItem("clockDarkMode", enabled);
+}
+
+function toggleDarkMode() {
+  applyDarkMode(!isDarkMode);
 }
