@@ -18,6 +18,8 @@ const MAX_RETRIES = 3;
 
 const API_PAGE_SIZE = 100;
 
+const MAX_API_PAGES = 20;
+
 closeModal?.addEventListener(
   'click',
 
@@ -134,14 +136,16 @@ async function fetchAllGithubPages(endpoint) {
   let page = 1;
   const allItems = [];
 
-  while (true) {
+  while (page <= MAX_API_PAGES) {
     const separator = endpoint.includes('?') ? '&' : '?';
     const pageItems = await githubFetch(
       `${GITHUB_API_BASE}${endpoint}${separator}per_page=${API_PAGE_SIZE}&page=${page}`
     );
 
     if (!Array.isArray(pageItems)) {
-      throw new Error('Unexpected API response format');
+      throw new Error(
+        `Expected array response from GitHub API endpoint "${endpoint}" but received: ${typeof pageItems}`
+      );
     }
 
     allItems.push(...pageItems);
@@ -151,6 +155,12 @@ async function fetchAllGithubPages(endpoint) {
     }
 
     page += 1;
+  }
+
+  if (page > MAX_API_PAGES) {
+    throw new Error(
+      `GitHub API pagination limit exceeded (${MAX_API_PAGES} pages) for endpoint "${endpoint}"`
+    );
   }
 
   return allItems;
@@ -295,7 +305,10 @@ async function fetchContributors() {
       contributorCountSpan.textContent = cached.length;
 
       const totalCommitsEl = document.getElementById('totalCommits');
-      const totalCommits = cached.reduce((sum, c) => sum + c.contributions, 0);
+      const totalCommits = cached.reduce(
+        (sum, contributor) => sum + contributor.contributions,
+        0
+      );
       if (totalCommitsEl) {
         totalCommitsEl.textContent = totalCommits.toLocaleString();
       }
