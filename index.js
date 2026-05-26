@@ -1,12 +1,12 @@
 /* ============================================================
    CONFIGURATION
    ============================================================ */
-if (typeof REPO_OWNER === 'undefined') {
-  window.REPO_OWNER = 'dhairyagothi';
-  window.REPO_NAME = '100_days_100_web_project';
+if (typeof REPO_OWNER === "undefined") {
+  window.REPO_OWNER = "dhairyagothi";
+  window.REPO_NAME = "100_days_100_web_project";
 }
-window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
-window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
+window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
+window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
 
 let currentPage = 1;
 //for the number of visible projects in one page.
@@ -14,34 +14,33 @@ let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
 
-
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
    ============================================================ */
 let techStackFilters = []; // Array of active tech filters
-let techSearchQuery = ''; // Current tech search input
+let techSearchQuery = ""; // Current tech search input
 
 // Technology normalization map (handles common variations)
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
-  'js': 'javascript',
-  'react': 'javascript',
-  'node': 'javascript',
-  'vue': 'javascript',
-  'python': 'api',
-  'flask': 'api',
-  'game': 'game',
-  'games': 'game',
+  js: "javascript",
+  react: "javascript",
+  node: "javascript",
+  vue: "javascript",
+  python: "api",
+  flask: "api",
+  game: "game",
+  games: "game",
 };
 
 /* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
-  'all': 'all',
-  'game': 'Games',
-  'clone': 'Clones',
-  'tool': 'Tools',
-  'ui': 'UI / Animation',
-  'api': 'APIs',
+  all: "all",
+  game: "Games",
+  clone: "Clones",
+  tool: "Tools",
+  ui: "UI / Animation",
+  api: "APIs",
 };
 
 /**
@@ -49,19 +48,26 @@ const FILTER_CATEGORY_MAP = {
  * Uses the existing tag structure so no new data field is needed.
  */
 function getCategoryFromTags(tags, name) {
-  const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
-  const nameStr = (name || '').toLowerCase();
+  const tagStr = (
+    Array.isArray(tags) ? tags.join(" ") : tags || ""
+  ).toLowerCase();
+  const nameStr = (name || "").toLowerCase();
 
-  if (tagStr.includes('game')) return 'Games';
-  if (tagStr.includes('clone')) return 'Clones';
-  if (tagStr.includes('tool')) return 'Tools';
-  if (tagStr.includes('ui')) return 'UI / Animation';
-  if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
+  if (tagStr.includes("game")) return "Games";
+  if (tagStr.includes("clone")) return "Clones";
+  if (tagStr.includes("tool")) return "Tools";
+  if (tagStr.includes("ui")) return "UI / Animation";
+  if (tagStr.includes("api") || tagStr.includes("weather")) return "APIs";
 
-  if (nameStr.includes('clone')) return 'Clones';
-  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+  if (nameStr.includes("clone")) return "Clones";
+  if (
+    nameStr.includes("game") ||
+    nameStr.includes("puzzle") ||
+    nameStr.includes("quiz")
+  )
+    return "Games";
 
-  return 'Tools';
+  return "Tools";
 }
 
 let PROJECTS = [];
@@ -70,9 +76,12 @@ let projectsPromise = null;
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
-      const isRoot = !window.location.pathname.includes('/contributors/');
-      const base = isRoot ? '' : '../';
-      const projectsUrl = new URL(`${base}public/projects.json`, window.location.href).toString();
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const base = isRoot ? "" : "../";
+      const projectsUrl = new URL(
+        `${base}public/projects.json`,
+        window.location.href,
+      ).toString();
       const response = await fetch(projectsUrl);
       if (!response.ok) {
         throw new Error(`Failed to load projects: ${response.statusText}`);
@@ -86,7 +95,6 @@ function loadProjects() {
 // Start fetching immediately
 loadProjects();
 const PROJECT_DESCRIPTIONS = {
-
   "To-Do List":
     "Manage daily tasks efficiently with an interactive checklist system. Add, track and organize activities using a simple productivity-focused interface.",
 
@@ -105,7 +113,7 @@ const PROJECT_DESCRIPTIONS = {
   "Auto Background Image Slider":
     "Automatically rotating image slider with smooth transitions. Introduces timing events and dynamic visual presentation.",
 
-  "Typewriter":
+  Typewriter:
     "Typing animation effect simulating text being written live. Great for learning intervals and DOM manipulation.",
 
   "Parallel-X Website":
@@ -141,10 +149,10 @@ const PROJECT_DESCRIPTIONS = {
   "Carousel Solar System":
     "Solar system themed rotating carousel with visual motion effects. Combines creativity with CSS animation.",
 
-  "Planto":
+  Planto:
     "Nature-inspired landing page emphasizing clean layouts and styling. Designed for frontend practice.",
 
-  "EveSparks":
+  EveSparks:
     "Interactive web experience featuring modern interface components. Focuses on responsiveness and usability.",
 
   "Video BG Slider Using React":
@@ -168,7 +176,7 @@ const PROJECT_DESCRIPTIONS = {
   "Memory Game":
     "Card matching challenge testing short-term memory skills. Introduces arrays and state tracking.",
 
-  "Wordle":
+  Wordle:
     "Word guessing game inspired by the popular puzzle format. Practices input handling and logic.",
 
   "Snake Game":
@@ -228,7 +236,7 @@ const PROJECT_DESCRIPTIONS = {
   "Ping Pong Game":
     "Arcade-style ping pong experience using movement and collision detection. Reinforces game physics concepts.",
 
-  "TextToVoiceConverter":
+  TextToVoiceConverter:
     "Converts typed text into spoken audio using browser capabilities. Explores accessibility and speech APIs.",
 
   "Url Shortener":
@@ -240,7 +248,7 @@ const PROJECT_DESCRIPTIONS = {
   "Netflix Landing Page Clone":
     "Replica of Netflix homepage design emphasizing layouts and responsiveness. Useful for frontend practice.",
 
-  "ClimaCode":
+  ClimaCode:
     "Weather-focused application presenting climate information elegantly. Combines APIs with modern UI patterns.",
 
   "E-Commerce Website with Simple Cart Functionality":
@@ -303,7 +311,7 @@ const PROJECT_DESCRIPTIONS = {
   "Contact Book":
     "Store, organize and manage contacts within a simple interface. Focuses on CRUD operations.",
 
-  "Candy_Crush_Game":
+  Candy_Crush_Game:
     "Puzzle matching game inspired by Candy Crush mechanics. Builds grid logic and state handling.",
 
   "Stock Profit Calculator":
@@ -363,7 +371,7 @@ const PROJECT_DESCRIPTIONS = {
   "Slide puzzle Game":
     "Tile sliding puzzle requiring logical movement strategies. Reinforces grid manipulation skills.",
 
-  "TextUtils":
+  TextUtils:
     "Utility tool performing text formatting and transformation operations. Demonstrates string processing concepts.",
 
   "Hangman Game":
@@ -405,16 +413,16 @@ const PROJECT_DESCRIPTIONS = {
   "Plants Website":
     "Nature-inspired website emphasizing clean visuals and aesthetic layouts. Focuses on frontend styling techniques.",
 
-  "DocNow":
+  DocNow:
     "Document-focused utility designed for managing or interacting with information efficiently. Prioritizes usability.",
 
-  "expense_Tracker":
+  expense_Tracker:
     "Track spending habits and monitor expenses through simple visual summaries. Useful for productivity workflows.",
 
   "Mood Tracker":
     "Record emotions over time and observe personal mood patterns. Combines wellness concepts with data tracking.",
 
-  "CRYPTOSHOW":
+  CRYPTOSHOW:
     "Displays cryptocurrency information dynamically with market-related insights. Introduces API usage and dashboards.",
 
   "Whack-a-Mole Game":
@@ -426,7 +434,7 @@ const PROJECT_DESCRIPTIONS = {
   "CPU Scheduler":
     "Visualizes CPU scheduling algorithms and execution behavior interactively. Useful for understanding operating system concepts.",
 
-  "EchoNotes":
+  EchoNotes:
     "Note-taking application focused on organizing thoughts and quick information capture. Emphasizes productivity.",
 
   "Event Registration System":
@@ -447,10 +455,10 @@ const PROJECT_DESCRIPTIONS = {
   "Typing Speed Test":
     "Measure typing speed and accuracy with real-time performance metrics. Useful for event-driven programming.",
 
-  "InterviewSimulator":
+  InterviewSimulator:
     "Simulates interview experiences to practice responses and preparation strategies. Focuses on utility design.",
 
-  "AstronomyDashboard":
+  AstronomyDashboard:
     "Dashboard presenting astronomy-related information through organized visuals and APIs. Combines science with UI.",
 
   "Pomodoro Timer":
@@ -459,7 +467,7 @@ const PROJECT_DESCRIPTIONS = {
   "Hurdle Highway 2D":
     "Obstacle avoidance game with side-scrolling movement mechanics. Strengthens animation and collision handling.",
 
-  "Snakeladder":
+  Snakeladder:
     "Digital adaptation of the classic Snake and Ladder board game. Introduces turn-based logic implementation.",
 
   "Temperature Converter":
@@ -480,7 +488,7 @@ const PROJECT_DESCRIPTIONS = {
   "Retro Highway Racer":
     "Retro-style racing game featuring speed and obstacle navigation. Reinforces animation loops and gameplay logic.",
 
-  "Pokedex":
+  Pokedex:
     "Browse Pokémon information through an interactive Pokédex interface. Combines APIs with engaging visuals.",
 
   "Stock Market Simulator":
@@ -525,7 +533,7 @@ const PROJECT_DESCRIPTIONS = {
   "Data Sructures Visualizer":
     "Visual representation of data structures and their operations. Useful for understanding algorithms conceptually.",
 
-  "Chronosphere":
+  Chronosphere:
     "Time-themed interactive experience with dynamic gameplay mechanics. Blends creativity with animation concepts.",
 
   "Contest Tracker":
@@ -546,7 +554,7 @@ const PROJECT_DESCRIPTIONS = {
   "Material3 Showcase":
     "Collection of Material Design inspired UI components and interactions. Focuses on modern interface patterns.",
 
-  "FocusRoom":
+  FocusRoom:
     "Productivity environment designed to support concentration and task completion. Combines timers and ambience.",
 
   "Hangman Game":
@@ -600,7 +608,7 @@ const PROJECT_DESCRIPTIONS = {
   "Glyph Pattern Maker":
     "Generate creative symbol-based patterns with customizable outputs. Explores procedural visual generation.",
 
-  "PlaceMate":
+  PlaceMate:
     "Utility designed to simplify location-related planning or organization tasks. Prioritizes usability and convenience.",
 
   "AI-Resume-Analyzer":
@@ -609,14 +617,27 @@ const PROJECT_DESCRIPTIONS = {
   "Unit Kitchen":
     "Kitchen-focused converter simplifying ingredient and measurement transformations. Practical everyday utility.",
 
+  "number-guessing-game":
+    "A fun interactive game where you guess a random number between 1 and 100. Get hints if your guess is too high or too low, track your attempts and beat your best score!",
+
+
   "Focus Timer":
     "A minimal Pomodoro-style productivity timer to boost focus with custom work and break intervals. Built with React, TypeScript and Tailwind CSS.",
+
 
 };
 
 /* ============================================================
    PROJECT LINK RESOLUTION (demo vs source / source-only)
    ============================================================ */
+
+function getSourceUrl(url) {
+  const trimmed = url.trim();
+  if (trimmed.startsWith("http")) return trimmed; // Already a full GitHub link
+  if (trimmed.startsWith("./")) {
+    // Converts "./public/folder/index.html" to "public/folder"
+    const folderPath = trimmed.substring(2, trimmed.lastIndexOf("/"));
+
 const SOURCE_ONLY_TAG = 'source-only';
 
 /** Live demos hosted outside the repo — Code links point to in-repo source folders */
@@ -658,10 +679,13 @@ function getSourceUrl(url, day) {
   if (trimmed.startsWith('http')) return trimmed;
   if (trimmed.startsWith('./')) {
     const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
+
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
   }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
+
+
 
 function resolveProjectUrls(day, name, url, tags) {
   const trimmed = (url || '').trim();
@@ -759,6 +783,7 @@ function attachProjectCardInteraction(card, demoUrl) {
 }
 
 
+
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
    ============================================================ */
@@ -789,20 +814,21 @@ function matchesTechStack(projectTags) {
   if (!projectTags) return false;
 
   // Convert to single lowercase string for efficient matching
-  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  const tagsLower = (
+    typeof projectTags === "string" ? projectTags : projectTags.join(" ")
+  ).toLowerCase();
 
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  return techStackFilters.every((filter) => tagsLower.includes(filter));
 }
-
 
 /**
  * Remove a specific technology filter
  * @param {string} tech - Technology to remove from filters
  */
 function removeTechFilter(tech) {
-  techStackFilters = techStackFilters.filter(t => t !== tech);
+  techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -812,10 +838,10 @@ function removeTechFilter(tech) {
  */
 function clearAllTechFilters() {
   techStackFilters = [];
-  techSearchQuery = '';
+  techSearchQuery = "";
 
-  const input = document.getElementById('techStackSearch');
-  if (input) input.value = '';
+  const input = document.getElementById("techStackSearch");
+  if (input) input.value = "";
 
   updateTechFilterDisplay();
   renderGrid();
@@ -825,34 +851,38 @@ function clearAllTechFilters() {
  * Update the visual display of active tech filters
  */
 function updateTechFilterDisplay() {
-  const container = document.getElementById('activeTechFilters');
-  const tagsContainer = document.getElementById('techFilterTags');
-  const clearBtn = document.getElementById('clearTechFilter');
+  const container = document.getElementById("activeTechFilters");
+  const tagsContainer = document.getElementById("techFilterTags");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!container || !tagsContainer) return;
 
   // Show/hide clear button in search input
   if (clearBtn) {
-    clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
+    clearBtn.style.display = techStackFilters.length > 0 ? "block" : "none";
   }
 
   // Show/hide active filters container
   if (techStackFilters.length === 0) {
-    container.style.display = 'none';
+    container.style.display = "none";
     return;
   }
 
-  container.style.display = 'flex';
+  container.style.display = "flex";
 
   // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters.map(tech => `
+  tagsContainer.innerHTML = techStackFilters
+    .map(
+      (tech) => `
     <span class="tech-filter-tag">
       ${tech}
       <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
         <i class="fas fa-times"></i>
       </button>
     </span>
-  `).join('');
+  `,
+    )
+    .join("");
 }
 
 /**
@@ -865,11 +895,10 @@ function getAllTechnologies() {
 
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string'
-        ? tags.split(/\s+/).filter(t => t)
-        : tags;
+      const tagArray =
+        typeof tags === "string" ? tags.split(/\s+/).filter((t) => t) : tags;
 
-      tagArray.forEach(tag => {
+      tagArray.forEach((tag) => {
         techSet.add(tag.toLowerCase());
       });
     }
@@ -882,8 +911,9 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
-let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+let bookmarkedProjects =
+  JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
+let recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -891,39 +921,41 @@ let showAllRecent = false;
 const INITIAL_VISIBLE_ITEMS = 3;
 
 const CATEGORY_LABEL = {
-  beginner: 'Beginner',
-  intermediate: 'Intermediate',
-  advanced: 'Advanced',
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
 };
 
 /* ============================================================
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
-
   const set = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   };
 
   const setFallback = () => {
-    set('starCount', 'N/A');
-    set('forkCount', 'N/A');
-    set('issueCount', 'N/A');
-    set('prCount', 'N/A');
+    set("starCount", "N/A");
+    set("forkCount", "N/A");
+    set("issueCount", "N/A");
+    set("prCount", "N/A");
   };
 
   try {
-
     // Optional loading state
-    set('starCount', 'Loading...');
-    set('forkCount', 'Loading...');
-    set('issueCount', 'Loading...');
-    set('prCount', 'Loading...');
+    set("starCount", "Loading...");
+    set("forkCount", "Loading...");
+    set("issueCount", "Loading...");
+    set("prCount", "Loading...");
 
     const [repoRes, prRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+      fetch(
+        `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`,
+      ),
+      fetch(
+        `https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`,
+      ),
     ]);
 
     if (!repoRes.ok || !prRes.ok) {
@@ -933,13 +965,14 @@ async function fetchRepoStats() {
     const repo = await repoRes.json();
     const prs = await prRes.json();
 
-    set('starCount', repo.stargazers_count.toLocaleString());
-    set('forkCount', repo.forks_count.toLocaleString());
-    set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
-    set('prCount', prs.total_count.toLocaleString());
-
+    set("starCount", repo.stargazers_count.toLocaleString());
+    set("forkCount", repo.forks_count.toLocaleString());
+    set(
+      "issueCount",
+      (repo.open_issues_count - prs.total_count).toLocaleString(),
+    );
+    set("prCount", prs.total_count.toLocaleString());
   } catch (e) {
-
     console.warn("GitHub stats unavailable:", e.message);
 
     // Show fallback text instead of permanent dashes
@@ -949,84 +982,103 @@ async function fetchRepoStats() {
 function generateReadme() {
   try {
     const lines = [];
-    lines.push('# 100 Days · 100 Web Projects');
-    lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
-    lines.push('');
-    lines.push('## Projects');
+    lines.push("# 100 Days · 100 Web Projects");
+    lines.push(
+      "A curated archive of frontend experiments — browse, fork, contribute.",
+    );
+    lines.push("");
+    lines.push("## Projects");
     PROJECTS.forEach(([day, name, url, tags]) => {
+
+      const safeUrl = url || "";
+
       const { demoUrl } = resolveProjectUrls(day, name, url, tags);
+
       const category = getCategoryFromTags(tags, name);
       lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
     });
 
-    const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
-    const a = document.createElement('a');
+    const blob = new Blob([lines.join("\n")], { type: "text/markdown" });
+    const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = 'README.md';
+    a.download = "README.md";
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(a.href);
   } catch (e) {
-    console.error('Failed to generate README:', e);
-    alert('Could not generate README. See console for details.');
+    console.error("Failed to generate README:", e);
+    alert("Could not generate README. See console for details.");
   }
 }
 
 /* ============================================================
    RENDER PROJECT GRID
    ============================================================ */
-let activeFilter = 'all';
-let searchQuery = '';
-let sortOption = 'default';
-let techStackFilter = 'all';
-let difficultyFilter = 'all';
+let activeFilter = "all";
+let searchQuery = "";
+let sortOption = "default";
+let techStackFilter = "all";
+let difficultyFilter = "all";
 
 function renderGrid() {
-  const grid = document.getElementById('projectGrid');
-  const noResults = document.getElementById('noResults');
+  const grid = document.getElementById("projectGrid");
+  const noResults = document.getElementById("noResults");
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
-    // Category filter
-    const category = getCategoryFromTags(tags, name);
-    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
-    const matchesFilter = activeFilter === 'all' || category === targetCategory;
+  const filtered = PROJECTS.filter(
+    ([day, name, url, tags, difficulty = ""]) => {
+      // Category filter
+      const category = getCategoryFromTags(tags, name);
+      const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
+      const matchesFilter =
+        activeFilter === "all" || category === targetCategory;
 
-    // Search filter
-    const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term =>
-      name.toLowerCase().includes(term) ||
-      day.toLowerCase().includes(term) ||
-      ((Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase().includes(term))
-    );
+      // Search filter
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        q
+          .split(/\s+/)
+          .every(
+            (term) =>
+              name.toLowerCase().includes(term) ||
+              day.toLowerCase().includes(term) ||
+              (Array.isArray(tags) ? tags.join(" ") : tags || "")
+                .toLowerCase()
+                .includes(term),
+          );
 
-    // Tech stack dropdown filter
-    let matchesTech = true;
-    if (techStackFilter && techStackFilter !== 'all') {
-      const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
-      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
-    }
+      // Tech stack dropdown filter
+      let matchesTech = true;
+      if (techStackFilter && techStackFilter !== "all") {
+        const tagStr = (
+          Array.isArray(tags) ? tags.join(" ") : tags || ""
+        ).toLowerCase();
+        matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+      }
 
-    // Difficulty filter
-    let matchesDifficulty = true;
-    if (difficultyFilter && difficultyFilter !== 'all') {
-      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
-    }
+      // Difficulty filter
+      let matchesDifficulty = true;
+      if (difficultyFilter && difficultyFilter !== "all") {
+        matchesDifficulty =
+          (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
+      }
 
-    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
-  });
+      return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
+    },
+  );
 
   // Apply sorting
-  if (sortOption === 'az') {
+  if (sortOption === "az") {
     filtered.sort((a, b) => a[1].localeCompare(b[1]));
-  } else if (sortOption === 'latest') {
+  } else if (sortOption === "latest") {
     filtered.sort((a, b) => {
-      const dayA = parseInt(a[0].replace('Day ', ''));
-      const dayB = parseInt(b[0].replace('Day ', ''));
+      const dayA = parseInt(a[0].replace("Day ", ""));
+      const dayB = parseInt(b[0].replace("Day ", ""));
       return dayB - dayA;
     });
-  } else if (sortOption === 'difficulty') {
+  } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
       const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
@@ -1035,18 +1087,18 @@ function renderGrid() {
     });
   }
 
-  grid.innerHTML = '';
+  grid.innerHTML = "";
 
   if (filtered.length === 0) {
-    grid.style.display = 'none';
-    if (noResults) noResults.style.display = 'block';
-    const container = document.getElementById('paginationContainer');
+    grid.style.display = "none";
+    if (noResults) noResults.style.display = "block";
+    const container = document.getElementById("paginationContainer");
     if (container) container.remove();
     return;
   }
 
-  grid.style.display = 'grid';
-  if (noResults) noResults.style.display = 'none';
+  grid.style.display = "grid";
+  if (noResults) noResults.style.display = "none";
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
   if (currentPage > totalPages) currentPage = totalPages;
@@ -1059,6 +1111,56 @@ function renderGrid() {
 
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
+
+    const card = document.createElement("div");
+
+    // FIX PART 1: Add a pointer cursor so users know it's clickable
+    card.className = "project-card";
+    card.style.cursor = "pointer";
+
+    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
+    card.onclick = () => window.open(url.trim(), "_blank");
+
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const tagsArray =
+      typeof tags === "string" ? tags.split(/\s+/).filter((t) => t) : tags;
+    const tagsHTML = tagsArray
+      .map((t) => `<span class="tag">${t}</span>`)
+      .join("");
+    const sourceUrl = getSourceUrl(url);
+    const description =
+      PROJECT_DESCRIPTIONS[name] ||
+      "Explore this project to discover interactive functionality, frontend concepts and implementation details.";
+
+    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
+    // This stops the click from "bubbling up" to the main card, preventing double-opening!
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${category}</span>
+            </div>
+            <div class="card-name">${name}</div>
+
+<div class="card-description">
+    ${description}
+</div>
+
+<div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
+                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+
     const card = document.createElement('div');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
@@ -1075,6 +1177,7 @@ function renderGrid() {
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl);
 
+
     fragment.appendChild(card);
   });
   grid.appendChild(fragment);
@@ -1082,17 +1185,17 @@ function renderGrid() {
 }
 
 function renderPagination(totalItems, totalPages) {
-  const grid = document.getElementById('projectGrid');
+  const grid = document.getElementById("projectGrid");
   if (!grid) return;
 
-  let container = document.getElementById('paginationContainer');
+  let container = document.getElementById("paginationContainer");
   if (!container) {
-    container = document.createElement('div');
-    container.id = 'paginationContainer';
-    container.className = 'pagination-container';
+    container = document.createElement("div");
+    container.id = "paginationContainer";
+    container.className = "pagination-container";
   }
 
-  container.innerHTML = '';
+  container.innerHTML = "";
 
   // If there is only 1 page of results, hide and detach the pagination block
   if (totalPages <= 1) {
@@ -1103,22 +1206,22 @@ function renderPagination(totalItems, totalPages) {
   }
 
   // Render showing info range (e.g. "Showing 1 to 9 of 100")
-  const infoDiv = document.createElement('div');
-  infoDiv.className = 'pagination-info';
+  const infoDiv = document.createElement("div");
+  infoDiv.className = "pagination-info";
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
   infoDiv.innerHTML = `Showing <strong>${startItem}</strong> to <strong>${endItem}</strong> of <strong>${totalItems}</strong> projects`;
   container.appendChild(infoDiv);
 
-  const controlsDiv = document.createElement('div');
-  controlsDiv.className = 'pagination-controls';
+  const controlsDiv = document.createElement("div");
+  controlsDiv.className = "pagination-controls";
 
-  const prevBtn = document.createElement('button');
-  prevBtn.className = 'prev-btn';
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "prev-btn";
   prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
   prevBtn.disabled = currentPage === 1;
-  prevBtn.setAttribute('aria-label', 'Previous Page');
-  prevBtn.addEventListener('click', (e) => {
+  prevBtn.setAttribute("aria-label", "Previous Page");
+  prevBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage > 1) {
       currentPage--;
@@ -1151,11 +1254,11 @@ function renderPagination(totalItems, totalPages) {
   }
 
   for (let i = startPage; i <= endPage; i++) {
-    const pageBtn = document.createElement('button');
-    pageBtn.className = `page-num ${currentPage === i ? 'active' : ''}`;
+    const pageBtn = document.createElement("button");
+    pageBtn.className = `page-num ${currentPage === i ? "active" : ""}`;
     pageBtn.textContent = i;
-    pageBtn.setAttribute('aria-label', `Page ${i}`);
-    pageBtn.addEventListener('click', (e) => {
+    pageBtn.setAttribute("aria-label", `Page ${i}`);
+    pageBtn.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = i;
       renderGrid();
@@ -1167,12 +1270,12 @@ function renderPagination(totalItems, totalPages) {
     controlsDiv.appendChild(pageBtn);
   }
 
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'next-btn';
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "next-btn";
   nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
   nextBtn.disabled = currentPage === totalPages;
-  nextBtn.setAttribute('aria-label', 'Next Page');
-  nextBtn.addEventListener('click', (e) => {
+  nextBtn.setAttribute("aria-label", "Next Page");
+  nextBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage < totalPages) {
       currentPage++;
@@ -1192,13 +1295,14 @@ function renderPagination(totalItems, totalPages) {
 }
 
 function scrollToProjectSection() {
-  const header = document.querySelector('.projects-header');
+  const header = document.querySelector(".projects-header");
   if (!header) return;
 
-  const navbar = document.querySelector('.navbar');
+  const navbar = document.querySelector(".navbar");
   // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
-  const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
+  const targetY =
+    header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
 
@@ -1210,7 +1314,12 @@ function scrollToProjectSection() {
     if (startTime === null) startTime = currentTime;
     const timeElapsed = currentTime - startTime;
     // Cap scroll position math exactly to distance to avoid landing slightly off target
-    const run = easeInOutQuad(Math.min(timeElapsed, duration), startY, distance, duration);
+    const run = easeInOutQuad(
+      Math.min(timeElapsed, duration),
+      startY,
+      distance,
+      duration,
+    );
     window.scrollTo(0, run);
     if (timeElapsed < duration) {
       requestAnimationFrame(animation);
@@ -1232,14 +1341,19 @@ function toggleBookmark(project) {
   const exists = bookmarkedProjects.find((item) => item[0] === project[0]);
 
   if (exists) {
-    bookmarkedProjects = bookmarkedProjects.filter((item) => item[0] !== project[0]);
-    showToast('Bookmark removed');
+    bookmarkedProjects = bookmarkedProjects.filter(
+      (item) => item[0] !== project[0],
+    );
+    showToast("Bookmark removed");
   } else {
     bookmarkedProjects.push(project);
-    showToast('Project bookmarked');
+    showToast("Project bookmarked");
   }
 
-  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  localStorage.setItem(
+    "bookmarkedProjects",
+    JSON.stringify(bookmarkedProjects),
+  );
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
@@ -1253,31 +1367,60 @@ function trackRecentProject(project) {
     recentProjects.pop();
   }
 
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
   renderRecentProjects();
 }
 
-const bookmarkGrid = document.getElementById('bookmarkGrid');
+const bookmarkGrid = document.getElementById("bookmarkGrid");
 
 function renderBookmarks() {
   if (!bookmarkGrid) return;
 
-  bookmarkGrid.innerHTML = '';
+  bookmarkGrid.innerHTML = "";
 
   if (bookmarkedProjects.length === 0) {
     bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
     return;
   }
 
-  const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+  const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
   if (bookmarkToggleBtn) {
-    bookmarkToggleBtn.style.display = bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    bookmarkToggleBtn.style.display =
+      bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS
+        ? "none"
+        : "inline-flex";
   }
 
-  const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleBookmarks = showAllBookmarks
+    ? bookmarkedProjects
+    : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
+
+    const card = document.createElement("div");
+    card.className = "project-card";
+    const tagsArray = Array.isArray(tags)
+      ? tags
+      : typeof tags === "string"
+        ? tags.split(/\s+/).filter((t) => t)
+        : [];
+    const tagsHTML = tagsArray
+      .map((tag) => `<span class="tag">${tag}</span>`)
+      .join("");
+    const sourceUrl = getSourceUrl(url);
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${category}</span>
+            </div>
+           <div class="card-name">${name}</div>
+
+<div class="card-description">
+    ${description}
+</div>
+
     const card = document.createElement('div');
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
@@ -1289,6 +1432,7 @@ function renderBookmarks() {
       showDescription: true,
     });
 
+
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl);
@@ -1297,28 +1441,44 @@ function renderBookmarks() {
   });
 }
 
-const recentGrid = document.getElementById('recentGrid');
+const recentGrid = document.getElementById("recentGrid");
 
 function renderRecentProjects() {
   if (!recentGrid) return;
 
-  recentGrid.innerHTML = '';
+  recentGrid.innerHTML = "";
 
   if (recentProjects.length === 0) {
     recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
     return;
   }
 
-  const recentToggleBtn = document.getElementById('recentToggleBtn');
+  const recentToggleBtn = document.getElementById("recentToggleBtn");
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display =
+      recentProjects.length <= INITIAL_VISIBLE_ITEMS ? "none" : "inline-flex";
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent
+    ? recentProjects
+    : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleRecent.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
+
+    const card = document.createElement("div");
+    card.className = "project-card";
+    const tagsArray = Array.isArray(tags)
+      ? tags
+      : typeof tags === "string"
+        ? tags.split(/\s+/).filter((t) => t)
+        : [];
+    const tagsHTML = tagsArray
+      .map((tag) => `<span class="tag">${tag}</span>`)
+      .join("");
+
     const card = document.createElement('div');
+
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
@@ -1330,9 +1490,33 @@ function renderRecentProjects() {
       showDescription: false,
     });
 
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${category}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
+                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl);
+
 
     recentGrid.appendChild(card);
   });
@@ -1342,24 +1526,33 @@ function renderRecentProjects() {
    VIEW ALL TOGGLE
    ============================================================ */
 
-const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
-const recentToggleBtn = document.getElementById('recentToggleBtn');
-const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
+const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
+const recentToggleBtn = document.getElementById("recentToggleBtn");
+const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
 
 if (bookmarkToggleBtn) {
-  bookmarkToggleBtn.addEventListener('click', () => {
+  bookmarkToggleBtn.addEventListener("click", () => {
     showAllBookmarks = !showAllBookmarks;
-    bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
+    bookmarkToggleBtn.textContent = showAllBookmarks ? "Show Less" : "View All";
     renderBookmarks();
   });
 }
 
 if (copyBookmarksBtn) {
-  copyBookmarksBtn.addEventListener('click', async () => {
+  copyBookmarksBtn.addEventListener("click", async () => {
     if (bookmarkedProjects.length === 0) {
-      showToast('No bookmarks to copy!');
+      showToast("No bookmarks to copy!");
       return;
     }
+
+    const textToCopy = bookmarkedProjects
+      .map((p) => {
+        const projectName = p[1];
+        const projectLink = new URL(p[2], window.location.href).href;
+        return `${projectName} - ${projectLink}`;
+      })
+      .join("\n");
+
     const textToCopy = bookmarkedProjects.map(p => {
       const projectName = p[1];
       const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
@@ -1369,37 +1562,38 @@ if (copyBookmarksBtn) {
       return `${projectName} - ${projectLink}`;
     }).join('\n');
 
+
     try {
       await navigator.clipboard.writeText(textToCopy);
-      showToast('Bookmarks copied to clipboard!');
+      showToast("Bookmarks copied to clipboard!");
     } catch (err) {
-      showToast('Failed to copy bookmarks.');
+      showToast("Failed to copy bookmarks.");
     }
   });
 }
 
 if (recentToggleBtn) {
-  recentToggleBtn.addEventListener('click', () => {
+  recentToggleBtn.addEventListener("click", () => {
     showAllRecent = !showAllRecent;
-    recentToggleBtn.textContent = showAllRecent ? 'Show Less' : 'View All';
+    recentToggleBtn.textContent = showAllRecent ? "Show Less" : "View All";
     renderRecentProjects();
   });
 }
 
 function showToast(message) {
-  const toast = document.getElementById('toast');
+  const toast = document.getElementById("toast");
   if (!toast) return;
 
   toast.textContent = message;
-  toast.classList.add('show');
+  toast.classList.add("show");
 
   setTimeout(() => {
-    toast.classList.remove('show');
+    toast.classList.remove("show");
   }, 3000);
 }
 
-document.addEventListener('click', (e) => {
-  const bookmarkBtn = e.target.closest('.bookmark-btn');
+document.addEventListener("click", (e) => {
+  const bookmarkBtn = e.target.closest(".bookmark-btn");
   if (!bookmarkBtn) return;
 
   e.preventDefault();
@@ -1410,8 +1604,8 @@ document.addEventListener('click', (e) => {
   toggleBookmark(project);
 });
 
-document.addEventListener('click', (e) => {
-  const projectLink = e.target.closest('.open-project');
+document.addEventListener("click", (e) => {
+  const projectLink = e.target.closest(".open-project");
   if (!projectLink) return;
 
   const projectDay = projectLink.dataset.id;
@@ -1425,11 +1619,11 @@ document.addEventListener('click', (e) => {
    FILTER CHIPS
    ============================================================ */
 function initFilterChips() {
-  const chips = document.querySelectorAll('.chip[data-filter]');
+  const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
+    chip.addEventListener("click", () => {
+      chips.forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
       activeFilter = chip.dataset.filter;
       currentPage = 1;
       renderGrid();
@@ -1453,22 +1647,22 @@ function debounce(fn, delay = 300) {
 }
 
 function initSearch() {
-  const input = document.getElementById('searchInput');
+  const input = document.getElementById("searchInput");
   if (!input) return;
 
   input.addEventListener(
-    'input',
+    "input",
     debounce(() => {
       searchQuery = input.value.trim();
       currentPage = 1;
       renderGrid();
-    }, 180)
+    }, 180),
   );
 
   // Tech stack dropdown filter listener
-  const techStack = document.getElementById('techStackFilter');
+  const techStack = document.getElementById("techStackFilter");
   if (techStack) {
-    techStack.addEventListener('change', () => {
+    techStack.addEventListener("change", () => {
       techStackFilter = techStack.value;
       currentPage = 1;
       renderGrid();
@@ -1476,9 +1670,9 @@ function initSearch() {
   }
 
   // Difficulty dropdown filter listener
-  const diffFilterElement = document.getElementById('difficultyFilter');
+  const diffFilterElement = document.getElementById("difficultyFilter");
   if (diffFilterElement) {
-    diffFilterElement.addEventListener('change', () => {
+    diffFilterElement.addEventListener("change", () => {
       difficultyFilter = diffFilterElement.value;
       currentPage = 1;
       renderGrid();
@@ -1487,10 +1681,10 @@ function initSearch() {
 }
 
 function initSorting() {
-  const sortSelect = document.getElementById('sortProjects');
+  const sortSelect = document.getElementById("sortProjects");
   if (!sortSelect) return;
 
-  sortSelect.addEventListener('change', (e) => {
+  sortSelect.addEventListener("change", (e) => {
     sortOption = e.target.value;
     currentPage = 1;
     renderGrid();
@@ -1501,20 +1695,20 @@ function initSorting() {
    TECH STACK SEARCH INITIALIZATION
    ============================================================ */
 function initTechStackSearch() {
-  const input = document.getElementById('techStackSearch');
-  const clearBtn = document.getElementById('clearTechFilter');
+  const input = document.getElementById("techStackSearch");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!input) return;
 
   let debounceTimer;
 
-  input.addEventListener('input', (e) => {
+  input.addEventListener("input", (e) => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       const value = e.target.value.trim().toLowerCase();
 
       if (value) {
-        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+        const techs = value.split(/[,\s]+/).filter((t) => t.length > 0);
         techStackFilters = [...new Set(techs)];
         updateTechFilterDisplay();
         currentPage = 1;
@@ -1526,13 +1720,13 @@ function initTechStackSearch() {
   });
 
   if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener("click", () => {
       clearAllTechFilters();
     });
   }
 
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
       e.preventDefault();
       input.blur();
     }
@@ -1542,13 +1736,13 @@ function initTechStackSearch() {
 /* ============================================================
    SEARCH CONTROLS
    ============================================================ */
-const searchInput = document.getElementById('searchInput');
-const clearSearchBtn = document.getElementById('clearSearch');
+const searchInput = document.getElementById("searchInput");
+const clearSearchBtn = document.getElementById("clearSearch");
 
 function updateCategoryCounts() {
   const counts = {};
   for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
-    if (key !== 'all') {
+    if (key !== "all") {
       counts[key] = 0;
     }
   }
@@ -1556,19 +1750,19 @@ function updateCategoryCounts() {
   PROJECTS.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
-      (key) => FILTER_CATEGORY_MAP[key] === category
+      (key) => FILTER_CATEGORY_MAP[key] === category,
     );
-    if (filterKey && filterKey !== 'all') {
+    if (filterKey && filterKey !== "all") {
       counts[filterKey]++;
     }
   });
 
   const categorySpans = {
-    'game': document.getElementById('gameCount'),
-    'clone': document.getElementById('cloneCount'),
-    'tool': document.getElementById('toolCount'),
-    'ui': document.getElementById('uiCount'),
-    'api': document.getElementById('apiCount')
+    game: document.getElementById("gameCount"),
+    clone: document.getElementById("cloneCount"),
+    tool: document.getElementById("toolCount"),
+    ui: document.getElementById("uiCount"),
+    api: document.getElementById("apiCount"),
   };
 
   for (const [key, span] of Object.entries(categorySpans)) {
@@ -1583,14 +1777,18 @@ function syncProjectCounts() {
 
   // Apply search filter
   if (searchQuery) {
-    filtered = filtered.filter(([day, name]) =>
-      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      day.toLowerCase().includes(searchQuery.toLowerCase())
+    filtered = filtered.filter(
+      ([day, name]) =>
+        name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        day.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }
 
   const total = filtered.length.toLocaleString();
-  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
+  const countNodes = [
+    document.getElementById("projectCount"),
+    document.getElementById("allCount"),
+  ];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
@@ -1627,16 +1825,16 @@ syncProjectCounts();
    NAVBAR — dynamic based on login state
    ============================================================ */
 function updateNavbar() {
-  const container = document.getElementById('navButtons');
+  const container = document.getElementById("navButtons");
   if (!container) return;
 
   const username = window.username || null;
-  const isRoot = !window.location.pathname.includes('/contributors/');
-  const base = isRoot ? '' : '../';
-  const isLight = document.body.classList.contains('light-mode');
+  const isRoot = !window.location.pathname.includes("/contributors/");
+  const base = isRoot ? "" : "../";
+  const isLight = document.body.classList.contains("light-mode");
   const themeButton = `
         <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
+          <i class="fas ${isLight ? "fa-sun" : "fa-moon"}"></i> Theme
         </button>
         `;
   const otherLink = isRoot
@@ -1654,7 +1852,7 @@ function updateNavbar() {
             </a>
             ${otherLink}
         `;
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+    document.getElementById("logoutBtn").addEventListener("click", () => {
       window.username = null;
       updateNavbar();
     });
@@ -1675,35 +1873,38 @@ function updateNavbar() {
    THEME TOGGLE
    ============================================================ */
 function initTheme() {
-  const saved = localStorage.getItem('theme') || 'dark';
+  const saved = localStorage.getItem("theme") || "dark";
   let transitionTimer = null;
 
   const syncThemeIcons = () => {
-    const isLight = document.body.classList.contains('light-mode');
-    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-      icon.className = iconClass;
-    });
+    const isLight = document.body.classList.contains("light-mode");
+    const iconClass = isLight ? "fas fa-sun" : "fas fa-moon";
+    document
+      .querySelectorAll("#themeToggle i, #themeToggleNav i")
+      .forEach((icon) => {
+        icon.className = iconClass;
+      });
   };
 
-  if (saved === 'light') {
-    document.body.classList.add('light-mode');
+  if (saved === "light") {
+    document.body.classList.add("light-mode");
   }
   syncThemeIcons();
 
-  document.body.addEventListener('click', (e) => {
-    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
+  document.body.addEventListener("click", (e) => {
+    const target =
+      e.target.closest("#themeToggle") || e.target.closest("#themeToggleNav");
     if (!target) return;
 
-    document.body.classList.toggle('light-mode');
-    const isLight = document.body.classList.contains('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    document.body.classList.toggle("light-mode");
+    const isLight = document.body.classList.contains("light-mode");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
     syncThemeIcons();
 
-    document.body.classList.add('theme-transitioning');
+    document.body.classList.add("theme-transitioning");
     if (transitionTimer) clearTimeout(transitionTimer);
     transitionTimer = setTimeout(() => {
-      document.body.classList.remove('theme-transitioning');
+      document.body.classList.remove("theme-transitioning");
     }, 400);
   });
 }
@@ -1712,17 +1913,18 @@ function initTheme() {
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-  const btn = document.getElementById('scrollBtn');
-  const ring = document.getElementById('ringFill');
+  const btn = document.getElementById("scrollBtn");
+  const ring = document.getElementById("ringFill");
   if (!btn) return;
 
   const circumference = 2 * Math.PI * 22;
   const updateScrollProgress = () => {
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-    btn.classList.toggle('show', scrollTop > 400);
+    btn.classList.toggle("show", scrollTop > 400);
 
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
@@ -1730,27 +1932,29 @@ function initScrollBtn() {
   };
 
   updateScrollProgress();
-  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  window.addEventListener("scroll", updateScrollProgress, { passive: true });
 
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 
 function initCurrentYear() {
-  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
-    node.textContent = new Date().getFullYear();
-  });
+  document
+    .querySelectorAll("[data-current-year], #Current-Year")
+    .forEach((node) => {
+      node.textContent = new Date().getFullYear();
+    });
 }
 
 /* ============================================================
    INIT
    ============================================================ */
 function hasProjectGrid() {
-  return Boolean(document.getElementById('projectGrid'));
+  return Boolean(document.getElementById("projectGrid"));
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   initTheme();
   updateNavbar();
 
@@ -1774,61 +1978,62 @@ document.addEventListener('DOMContentLoaded', async () => {
       renderRecentProjects();
     }
   } catch (error) {
-    console.error('Failed to load projects:', error);
-    const grid = document.getElementById('projectGrid');
+    console.error("Failed to load projects:", error);
+    const grid = document.getElementById("projectGrid");
     if (grid) {
-      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+      grid.innerHTML =
+        '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
     }
   }
 });
 
-
-
 (() => {
   const initDirectMobileMenu = () => {
-    const menuToggle = document.getElementById('menuToggle');
-    const navButtons = document.getElementById('navButtons');
+    const menuToggle = document.getElementById("menuToggle");
+    const navButtons = document.getElementById("navButtons");
 
     if (!menuToggle || !navButtons) return;
 
-    menuToggle.addEventListener('click', (e) => {
+    menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      menuToggle.classList.toggle('active');
-      navButtons.classList.toggle('active');
+      menuToggle.classList.toggle("active");
+      navButtons.classList.toggle("active");
     });
 
-    document.addEventListener('click', (e) => {
+    document.addEventListener("click", (e) => {
       if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        menuToggle.classList.remove("active");
+        navButtons.classList.remove("active");
       }
     });
 
-    navButtons.addEventListener('click', (e) => {
-      if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+    navButtons.addEventListener("click", (e) => {
+      if (
+        e.target.closest(".btn") ||
+        e.target.closest("a") ||
+        e.target.closest("button")
+      ) {
+        menuToggle.classList.remove("active");
+        navButtons.classList.remove("active");
       }
     });
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDirectMobileMenu);
   } else {
     initDirectMobileMenu();
   }
 })();
 
-
-
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener(
-  'resize',
+  "resize",
   debounce(() => {
     if (hasProjectGrid()) {
       renderGrid();
     }
-  }, 180)
+  }, 180),
 );
 
 /* ============================================================
@@ -1840,14 +2045,16 @@ window.clearAllTechFilters = clearAllTechFilters;
 
 // Particle Network Background
 (function () {
-  const canvas = document.getElementById('particleCanvas');
+  const canvas = document.getElementById("particleCanvas");
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+  const reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
   const palette = [220, 250, 280];
   const DEFAULT_PARTICLE_FPS = 36;
   let W = 0;
@@ -1894,7 +2101,10 @@ window.clearAllTechFilters = clearAllTechFilters;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particleCount = Math.min(
       profile.maxParticles,
-      Math.max(profile.minParticles, Math.round((W * H) / profile.areaPerParticle))
+      Math.max(
+        profile.minParticles,
+        Math.round((W * H) / profile.areaPerParticle),
+      ),
     );
     linkDistance = profile.linkDistance;
     maxDistanceSq = linkDistance * linkDistance;
@@ -1988,11 +2198,11 @@ window.clearAllTechFilters = clearAllTechFilters;
     if (profile.disableAnimation) {
       stopAnimation();
       ctx.clearRect(0, 0, W, H);
-      canvas.style.display = 'none';
+      canvas.style.display = "none";
       return;
     }
 
-    canvas.style.display = '';
+    canvas.style.display = "";
     init();
     startAnimation();
   };
@@ -2011,17 +2221,17 @@ window.clearAllTechFilters = clearAllTechFilters;
   };
 
   const bindMediaChange = (query, handler) => {
-    if (typeof query.addEventListener === 'function') {
-      query.addEventListener('change', handler);
+    if (typeof query.addEventListener === "function") {
+      query.addEventListener("change", handler);
       return;
     }
-    if (typeof query.addListener === 'function') {
+    if (typeof query.addListener === "function") {
       query.addListener(handler);
     }
   };
 
-  window.addEventListener('resize', handleResize, { passive: true });
-  document.addEventListener('visibilitychange', () => {
+  window.addEventListener("resize", handleResize, { passive: true });
+  document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
       lastFrameTime = 0;
     }
@@ -2039,74 +2249,76 @@ window.clearAllTechFilters = clearAllTechFilters;
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   return {
-    search: params.get('search') || '',
-    category: params.get('category') || 'all'
+    search: params.get("search") || "",
+    category: params.get("category") || "all",
   };
 }
 
 function updateURL(search, category) {
   const params = new URLSearchParams();
-  if (search) params.set('search', search);
-  if (category && category !== 'all') params.set('category', category);
+  if (search) params.set("search", search);
+  if (category && category !== "all") params.set("category", category);
   const newURL = params.toString()
     ? `${window.location.pathname}?${params.toString()}`
     : window.location.pathname;
-  history.pushState({ search, category }, '', newURL);
+  history.pushState({ search, category }, "", newURL);
 }
 
 function restoreStateFromURL() {
   const { search, category } = getQueryParams();
-  const searchInput = document.getElementById('searchInput') ||
+  const searchInput =
+    document.getElementById("searchInput") ||
     document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
+    document.querySelector(".search-input");
   if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.getElementById('category');
-  if (categoryFilter && category !== 'all') categoryFilter.value = category;
-  if (search || category !== 'all') applyFilters(search, category);
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter && category !== "all") categoryFilter.value = category;
+  if (search || category !== "all") applyFilters(search, category);
 }
 
 function applyFilters(search, category) {
-  searchQuery = search || '';
-  activeFilter = category || 'all';
+  searchQuery = search || "";
+  activeFilter = category || "all";
   currentPage = 1;
 
   // Sync active chip selection with URL state
-  const chips = document.querySelectorAll('.chip[data-filter]');
+  const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
     if (chip.dataset.filter === activeFilter) {
-      chip.classList.add('active');
+      chip.classList.add("active");
     } else {
-      chip.classList.remove('active');
+      chip.classList.remove("active");
     }
   });
 
   renderGrid();
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   try {
     await loadProjects();
     restoreStateFromURL();
   } catch (error) {
-    console.error('Failed to restore state or load projects:', error);
+    console.error("Failed to restore state or load projects:", error);
   }
-  const searchInput = document.getElementById('search') ||
+  const searchInput =
+    document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
+    document.querySelector(".search-input");
   if (searchInput) {
-    searchInput.addEventListener('input', () => {
+    searchInput.addEventListener("input", () => {
       const { category } = getQueryParams();
       updateURL(searchInput.value, category);
       applyFilters(searchInput.value, category);
     });
   }
-  const categoryFilter = document.getElementById('category');
+  const categoryFilter = document.getElementById("category");
   if (categoryFilter) {
-    categoryFilter.addEventListener('change', () => {
+    categoryFilter.addEventListener("change", () => {
       const { search } = getQueryParams();
       updateURL(search, categoryFilter.value);
       applyFilters(search, categoryFilter.value);
     });
   }
-  window.addEventListener('popstate', () => restoreStateFromURL());
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
