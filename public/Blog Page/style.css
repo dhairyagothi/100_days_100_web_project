@@ -4,6 +4,8 @@
     box-sizing:border-box;
 }
 
+/* sync */
+
 body{
     font-family:'Inter', sans-serif;
     background: linear-gradient(to bottom right, #f0fdf4, #f8fafc);
