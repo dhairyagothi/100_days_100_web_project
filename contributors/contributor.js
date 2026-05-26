@@ -136,7 +136,13 @@ async function fetchAllGithubPages(endpoint) {
   let page = 1;
   const allItems = [];
 
-  while (page <= MAX_API_PAGES) {
+  while (true) {
+    if (page > MAX_API_PAGES) {
+      throw new Error(
+        `GitHub API pagination limit exceeded (${MAX_API_PAGES} pages) for endpoint "${endpoint}". Try again later or use an authenticated token if rate-limited.`
+      );
+    }
+
     const separator = endpoint.includes('?') ? '&' : '?';
     const pageItems = await githubFetch(
       `${GITHUB_API_BASE}${endpoint}${separator}per_page=${API_PAGE_SIZE}&page=${page}`
@@ -144,7 +150,7 @@ async function fetchAllGithubPages(endpoint) {
 
     if (!Array.isArray(pageItems)) {
       throw new Error(
-        `Expected array response from GitHub API endpoint "${endpoint}" but received: ${typeof pageItems}`
+        `Unexpected response from GitHub endpoint "${endpoint}" (page ${page}). Expected an array but received ${typeof pageItems}. Check API rate limits or authentication.`
       );
     }
 
@@ -155,12 +161,6 @@ async function fetchAllGithubPages(endpoint) {
     }
 
     page += 1;
-  }
-
-  if (page > MAX_API_PAGES) {
-    throw new Error(
-      `GitHub API pagination limit exceeded (${MAX_API_PAGES} pages) for endpoint "${endpoint}"`
-    );
   }
 
   return allItems;
