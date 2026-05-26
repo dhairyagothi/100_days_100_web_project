@@ -288,7 +288,63 @@
             gap: 10px;
         }
 
-        input[type="text"], input[type="date"], select {
+        .task-input-group {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: white;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .task-input-group:focus-within {
+            border-color: #345edb;
+            box-shadow: 0 0 0 3px rgba(52, 94, 219, 0.1);
+        }
+
+        .task-input-group #taskInput {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 0;
+            width: auto;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .task-input-group #taskInput:placeholder-shown {
+            color: #999;
+        }
+
+        .task-input-group #taskPriority {
+            padding: 8px 10px;
+            border: none;
+            border-left: 1px solid #ccc;
+            border-radius: 0;
+            width: auto;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            outline: none;
+            margin: 0;
+            font-family: inherit;
+            transition: background-color 0.2s ease;
+        }
+
+        .task-input-group #taskPriority:hover {
+            background-color: #f0f0f0;
+        }
+
+        .task-input-group #taskPriority:focus {
+            background-color: white;
+        }
+
+        .task-input-group #taskPriority:active {
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"]:not(.task-input-group #taskInput), input[type="date"], select:not(.task-input-group #taskPriority) {
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -385,6 +441,30 @@
         body.dark-mode input, body.dark-mode select, body.dark-mode button {
             background-color: #555;
             color: #fff;
+        }
+
+        body.dark-mode .task-input-group {
+            background-color: #555;
+            border-color: #666;
+        }
+
+        body.dark-mode .task-input-group #taskInput {
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode .task-input-group #taskPriority {
+            background-color: #666;
+            color: #fff;
+            border-left-color: #666;
+        }
+
+        body.dark-mode .task-input-group #taskPriority:hover {
+            background-color: #777;
+        }
+
+        body.dark-mode .task-input-group #taskPriority:focus {
+            background-color: #555;
         }
 
         .dark-mode-toggle {

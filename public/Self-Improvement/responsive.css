@@ -53,4 +53,21 @@
         width: 100%;
         overflow: scroll; /* Enable horizontal scrolling if the table is too wide */
     }
+    
+    .input-section {
+        flex-direction: column;
+    }
+    
+    .task-input-group {
+        flex-direction: row;
+        width: 100%;
+    }
+    
+    .task-input-group #taskInput {
+        flex: 1;
+    }
+    
+    .task-input-group #taskPriority {
+        min-width: 120px;
+    }
 }

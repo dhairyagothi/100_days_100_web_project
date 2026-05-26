@@ -13,33 +13,41 @@ const progressText = document.getElementById("progressText");
 // Data State
 let tasks = [];
 let currentFilter = "all";
+let currentSearch = "";
 
 // 2. Core Task CRUD & Operations
 function addTask() {
   const text = taskInput.value.trim();
   const category = taskTypeSelect.value;
-  
+  // Capture priority choice safely
+  const priorityElement = document.getElementById("prioritySelect");
+  const priorityValue = priorityElement ? priorityElement.value : "medium";
+
   if (!text) {
     showToast("⚠️ Please enter a task description!");
     return;
   }
 
-  // Find category color from the dropdown configuration (fallback)
   const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
   const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
 
-  // Create local task object
   const newTask = {
-    id: Date.now(),
-    text: text,
-    category: category || "Misc",
-    color: color,
-    completed: false
+      id: Date.now(),
+      text: text,
+      category: category || "Misc",
+      color: color,
+      completed: false,
+      priority: priorityValue, // 📌 Saves priority data to item object
+      createdAt: new Date().toLocaleString("en-IN", {
+          dateStyle: "medium",
+          timeStyle: "short"
+      })
   };
 
   tasks.push(newTask);
   taskInput.value = "";
-  taskTypeSelect.value = ""; // Reset dropdown
+  taskTypeSelect.value = "";
+  if(priorityElement) priorityElement.value = "medium"; // Reset back to default
   
   renderTasks();
   showToast("✅ Task added successfully!");
@@ -89,10 +97,27 @@ function filterTasks(buttonElement, filterValue) {
 function renderTasks() {
   // Filter core task pool
   const filteredTasks = tasks.filter(task => {
-    if (currentFilter === "all") return true;
-    if (currentFilter === "pending") return !task.completed;
-    if (currentFilter === "done") return task.completed;
-    return task.category === currentFilter; // Matches Category Strings
+    // Apply main filter
+    let passesFilter = false;
+    if (currentFilter === "all") {
+      passesFilter = true;
+    } else if (currentFilter === "pending" || currentFilter === "active") {
+      passesFilter = !task.completed;
+    } else if (currentFilter === "done" || currentFilter === "completed") {
+      passesFilter = task.completed;
+    } else {
+      passesFilter = task.category === currentFilter; // Matches Category Strings
+    }
+    
+    // Apply search filter (only search task text, not buttons/metadata)
+    if (currentSearch.trim()) {
+      const searchLower = currentSearch.toLowerCase();
+      const taskTextMatch = task.text.toLowerCase().includes(searchLower);
+      const categoryMatch = task.category.toLowerCase().includes(searchLower);
+      passesFilter = passesFilter && (taskTextMatch || categoryMatch);
+    }
+    
+    return passesFilter;
   });
 
   // Toggle Visibility of Empty State Element
@@ -115,20 +140,25 @@ function renderTasks() {
       card.innerHTML = `
         <div class="note-row">
           <textarea class="note-text" onchange="updateTaskText(${task.id}, this.value)">${task.text}</textarea>
-          <div class="note-actions">
+          <div class="task-timestamp">📅 ${task.createdAt}</div>
+          <div class="task-meta-row">
             <div class="category-badge">${task.category}</div>
-            <div>
-              <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
-              <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
+            <div class="priority-badge ${task.priority}">
+              ${task.priority==="high"?"🔴 High":task.priority==="medium"?"🟡 Medium":"🟢 Low"}
             </div>
+          </div>
+          <div class="note-actions">
+            <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
+            <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
           </div>
         </div>
       `;
       taskList.appendChild(card);
-    });
-  }
+              });
+            }
 
-  updateMetrics();
+updateMetrics();
+updateTaskChart();
 }
 
 function updateTaskText(id, newText) {
@@ -138,15 +168,24 @@ function updateTaskText(id, newText) {
   });
 }
 
-function updateMetrics() {
-  const total = tasks.length;
-  const done = tasks.filter(t => t.completed).length;
-  const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+// UPDATE DASHBOARD METRICS
+function updateMetrics(){
+  const totalTasks=tasks.length;
+  const completedTasks=tasks.filter(task=>task.completed).length;
+  const inProgressTasks=totalTasks-completedTasks;
+  const overdueTasks=0;
+  
+  // Scans list items that are flagged high priority
+  const highPriorityCount = tasks.filter(task => task.priority === "high").length;
 
-  // Update progress UI (matches HTML)
-  if (progressFill) progressFill.style.width = `${pct}%`;
-  if (progressText) progressText.innerText = `${done} / ${total} done`;
+  document.getElementById("totalTasks").textContent=totalTasks;
+  document.getElementById("inProgressTasks").textContent=inProgressTasks;
+  document.getElementById("completedTasks").textContent=completedTasks;
+  document.getElementById("overdueTasks").textContent=overdueTasks;
+  document.getElementById("highPriorityTasks").textContent = highPriorityCount;
 }
+
+
 
 // 4. Tab Navigation System
 // function showHome() {
@@ -317,3 +356,66 @@ if (savePdfBtn) {
   savePdfBtn.addEventListener("click", saveAsPDF);
 }
 
+
+// TASK SEARCH FUNCTIONALITY - Search tasks in real-time
+const searchInput = document.getElementById("searchInput");
+if(searchInput){
+    searchInput.addEventListener("input", (e) => {
+        currentSearch = e.target.value;
+        renderTasks();
+    });
+}
+
+// TASK FILTER FUNCTIONALITY - Uses existing render system
+function applyTaskFilter(type){
+    if(type === "all"){
+        currentFilter = "all";
+    } else if(type === "active"){
+        currentFilter = "active";
+    } else if(type === "completed"){
+        currentFilter = "completed";
+    }
+    renderTasks();
+}
+
+// TASK ANALYTICS DOUGHNUT CHART - Displays completed vs pending tasks
+const ctx = document.getElementById("taskChart");
+let taskChart = null;
+
+function updateTaskChart(){
+  if(!ctx)return;
+  const completedTasks=tasks.filter(task=>task.completed).length;
+  const pendingTasks=tasks.length-completedTasks;
+  const totalTasks=tasks.length;
+  const percentage=totalTasks===0?0:Math.round((completedTasks/totalTasks)*100);
+  document.getElementById("completionPercent").innerText=`${percentage}%`;
+  document.getElementById("doneCount").innerText=completedTasks;
+  document.getElementById("activeCount").innerText=pendingTasks;
+  const statusBadge=document.getElementById("statusBadge");
+  if(completedTasks === totalTasks &&totalTasks > 0){
+    statusBadge.textContent="All done ✨";
+  }else{
+    statusBadge.textContent="In Progress";
+  }
+  if(taskChart){taskChart.destroy();}
+  taskChart=new Chart(ctx,{
+    type:"doughnut",
+    data:{
+      datasets:[{
+        data:[totalTasks === 0 ? 0 : completedTasks, totalTasks === 0 ? 1 : pendingTasks],
+        backgroundColor:["#62dbc9","#b06cff"],
+        borderWidth:0,
+        borderRadius:40
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      cutout:"78%",
+      plugins:{legend:{display:false}}
+    }
+  });
+}
+
+renderTasks();
+updateTaskChart();

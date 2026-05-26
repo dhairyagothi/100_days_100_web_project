@@ -65,24 +65,53 @@
       <form class="input-panel" id="task-form" novalidate>
         <div class="input-group">
           <label for="task-category" class="sr-only">Choose task category</label>
-          <select id="task-category" aria-label="Choose task category">
-            <option value="" disabled selected>📂 Category</option>
-            <option value="Work">💼 Work</option>
-            <option value="Personal">🧑 Personal</option>
-            <option value="Urgent">⚡ Urgent</option>
-            <option value="Fitness">💪 Fitness</option>
-            <option value="Miscellaneous">📌 Miscellaneous</option>
-          </select>
-          <label for="task" class="sr-only">Task description</label>
-          <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
-          <button type="submit" id="submittask">➕ Add Task</button>
+        <!-- Category -->
+            <select id="task-category">
+              <option value="" disabled selected>📂 Category</option>
+              <option value="Work">💼 Work</option>
+              <option value="Personal">🧑 Personal</option>
+              <option value="Urgent">⚡ Urgent</option>
+              <option value="Fitness">💪 Fitness</option>
+              <option value="Miscellaneous">📌 Miscellaneous</option>
+            </select>
+            
+            <!-- Task Name -->
+            <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off">
+            
+            <!-- Priority -->
+            <select id="prioritySelect" class="priority-select" aria-label="Task priority">
+              <option value="low">🟢 Low</option>
+              <option value="medium" selected>🟡 Medium</option>
+              <option value="high">🔴 High</option>
+            </select>
+
+<!-- Add Task -->
+            <button type="submit" id="submittask">➕ Add Task</button>
         </div>
         <div class="input-actions">
           <button type="button" id="savepdf">📥 Save as PDF</button>
         </div>
       </form>
 
-      <!-- Empty State -->
+      <!--  Search Bar Container -->
+      <div class="search-container">
+        <!--  Search Input Field -->
+        <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search tasks..." >
+      </div>
+
+      
+      <!--Filter tasks by status -->
+
+      <div class="filter-container">
+          <button type="button" onclick="applyTaskFilter('all')">All</button>
+          <button type="button" onclick="applyTaskFilter('active')">Active</button>
+          <button type="button" onclick="applyTaskFilter('completed')">Done</button>
+      </div>
+
+<!-- Empty State -->
       <div class="empty-state" id="emptyState" role="status">
         <div class="empty-icon" aria-hidden="true">📋</div>
         <p class="empty-title">No tasks yet</p>
@@ -90,9 +119,77 @@
       </div>
 
       <!-- Task List Container -->
-      <ul id="notes-container" aria-label="Task list"></ul>
-    </section>
+      <ul id="notes-container"></ul>
 
+    <!-- DASHBOARD LAYOUT -->
+    <div class="dashboard-layout">
+      <!-- LEFT : DONUT -->
+      <div class="analytics-card">
+        <div class="analytics-header">
+          <h3>COMPLETION</h3>
+          <span id="statusBadge" class="status-badge">In Progress</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="taskChart"></canvas>
+          <div class="chart-center">
+            <h2 id="completionPercent">0%</h2>
+            <span>COMPLETE</span>
+          </div>
+        </div>
+        <div class="analytics-footer">
+          <span>🔵 Done <strong id="doneCount">0</strong></span>
+          <span>🟡 Active <strong id="activeCount">0</strong></span>
+        </div>
+      </div>
+
+      <!-- TOTAL TASKS -->
+    <div class="overview-card total-card">
+      <div class="card-top">
+        <div class="overview-icon purple">📋</div>
+        <h2 id="totalTasks">0</h2>
+      </div>
+      <p>TOTAL TASKS</p>
+    </div>
+    
+    <!-- IN PROGRESS -->
+    <div class="overview-card progress-card">
+      <div class="card-top">
+        <div class="overview-icon yellow">⚡</div>
+        <h2 id="inProgressTasks">0</h2>
+      </div>
+      <p>IN PROGRESS</p>
+    </div>
+    
+    <!-- COMPLETED -->
+    <div class="overview-card completed-card">
+      <div class="card-top">
+        <div class="overview-icon green">✅</div>
+        <h2 id="completedTasks">0</h2>
+      </div>
+      <p>COMPLETED</p>
+    </div>
+    
+    <!-- OVERDUE -->
+    <div class="overview-card overdue-card">
+      <div class="card-top">
+        <div class="overview-icon orange">⏰</div>
+        <h2 id="overdueTasks">0</h2>
+      </div>
+      <p>OVERDUE</p>
+    </div>
+    
+    <!-- HIGH PRIORITY -->
+    <div class="high-priority-card">
+      <div class="card-top">
+        <div class="overview-icon orange">🔥</div>
+        <h2 id="highPriorityTasks">0</h2>
+      </div>
+      <p>HIGH PRIORITY TASKS</p>
+    </div>
+    </div>
+    <!-- End dashboard-layout -->
+      
+    </section>
     <!-- Documents Section -->
     <section id="documents-tab" aria-label="Documents tab" hidden>
       <div class="documents-header">
@@ -109,7 +206,8 @@
 
   <!-- PDF Notification -->
   <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
-
+  <!--Required for Doughnut Chart-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="todolist.js"></script>
 </body>
 </html>
