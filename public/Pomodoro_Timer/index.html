@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Timer Card -->
+        <div class="timer-card" id="timerCard">
+            <div class="modes">
+                <button id="pomodoroBtn" class="mode-btn active">Pomodoro</button>
+                <button id="shortBreakBtn" class="mode-btn">Short Break</button>
+                <button id="longBreakBtn" class="mode-btn">Long Break</button>
+            </div>
+            
+            <div class="time-display" id="timer">25:00</div>
+            
+            <div class="controls">
+                <button id="startBtn">START</button>
+            </div>
+        </div>
+
+        <!-- Task info (under timer) -->
+        <div class="task-info">
+            <div class="task-number">#1</div>
+            <div class="task-current" id="currentTaskDisplay">study</div>
+        </div>
+
+        <!-- Task Section -->
+        <div class="task-section">
+            <div class="task-header">
+                <h2>Tasks</h2>
+                <button class="options-btn" aria-label="Task options">⋮</button>
+            </div>
+            
+            <div class="task-list" id="taskList">
+                <!-- Example Task matching the image -->
+                <div class="task-item active-task">
+                    <div class="task-check">
+                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <span class="task-title">study</span>
+                    <span class="task-pomodoros">1 / 1</span>
+                    <button class="task-options-item">⋮</button>
+                </div>
+            </div>
+            
+            <button class="add-task-btn" id="addTaskBtn">
+                <span class="icon">+</span> Add Task
+            </button>
+        </div>
+    </div>
+
+    <audio id="tickSound" loop>
+        <source src="https://www.soundjay.com/clock/sounds/clock-ticking-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

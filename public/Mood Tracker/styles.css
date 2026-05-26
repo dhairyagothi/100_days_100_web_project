@@ -111,6 +111,17 @@ body.dark-theme .welcome-message {
     transform: translateY(-2px);
 }
 
+body.dark-theme .back-home-btn {
+    background: #333;
+    color: white;
+    border: 2px solid #777;
+}
+
+body.dark-theme .back-home-btn:hover {
+    background: #555;
+    color: #fff;
+}
+
 .intensity-slider {
     margin-top: 20px;
 }
@@ -177,8 +188,8 @@ body.dark-theme .notes-section textarea {
     overflow-y: auto;
 }
 
-#entries-list li, #entry-days-list li {
-    background-color: #e0e0e0;
+ #entries-list li,  #entry-days-list li {
+   background-color: #e0e0e0;
     margin: 5px 0;
     padding: 15px;
     border-radius: 5px;
@@ -191,6 +202,17 @@ body.dark-theme .notes-section textarea {
 
 #entries-list li:hover, #entry-days-list li:hover {
     background-color: #d0d0d0;
+}
+
+body.dark-theme #entries-list li,
+body.dark-theme #entry-days-list li {
+    background-color: #444;
+    color: #f1f1f1;
+}
+
+body.dark-theme #entries-list li:hover,
+body.dark-theme #entry-days-list li:hover {
+    background-color: #555;
 }
 
 .recommendations-section {
@@ -255,11 +277,9 @@ body.dark-theme #recommendations-content {
 /* Responsive - Mobile */
 @media (max-width: 480px) {
     .theme-toggle {
-        opacity: 0;
-    }
-    
-    .theme-toggle:active {
         opacity: 1;
+        visibility: visible;
+        display: block;
     }
     body {
         padding: 10px;

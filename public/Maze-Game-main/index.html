@@ -4,49 +4,70 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maze</title>
+  <title>Cyber Maze Runner</title>
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+  <div class="overlay-stars"></div>
 
   <div id="page">
-
-    <div id="Message-Container">
-      <div id="message">
-        <h1>Congratulations!</h1>
-        <p>You are done.</p>
-        <p id="moves"></p>
-        <input id="okBtn" type="button" onclick="toggleVisablity('Message-Container')" value="Cool!" />
+    <header class="game-header">
+      <div class="brand">
+        <span class="logo-badge">M</span>
+        <div>
+          <h1>Cyber Maze Runner</h1>
+          <p class="subtitle">Find the exit, beat the level, and conquer the neon labyrinth.</p>
+        </div>
       </div>
-    </div>
-
-    <br>
-    <div id="menu">
-      <div class="custom-select">
-        <select id="diffSelect">
-                  <option value="10">Easy</option>
-                  <option value="15">Medium</option>
-                  <option value="25">Hard</option>
-                  <option value="38">Extreme</option>                                      
-              </select>
+      <div class="status-panel">
+        <div class="status-pill">Status: <span id="statusText">Waiting to start</span></div>
+        <div class="status-pill">Level: <span id="levelText">Easy</span></div>
+        <div class="status-pill">Moves: <span id="moveCount">0</span></div>
+        <div class="status-pill">Time: <span id="timerText">00:00</span></div>
       </div>
-      <input id="startMazeBtn" type="button" onclick="makeMaze()" value="Start" />
-    </div>
+    </header>
 
-    <div id="view">
-      <div id="mazeContainer">
-        <canvas id="mazeCanvas" class="border" height="1100" width="1100"></canvas>
+    <section class="game-controls" id="menu">
+      <label class="control-group">
+        <span>Difficulty</span>
+        <div class="custom-select">
+          <select id="diffSelect">
+            <option value="10">Easy</option>
+            <option value="15">Medium</option>
+            <option value="25">Hard</option>
+          </select>
+        </div>
+      </label>
+      <div class="button-group">
+        <button id="startMazeBtn" type="button">Start Game</button>
+        <button id="restartMazeBtn" type="button" disabled>New Game</button>
       </div>
+    </section>
+
+    <section id="view" class="game-board">
+      <div id="mazeContainer" class="card">
+        <canvas id="mazeCanvas" class="border" width="1100" height="1100"></canvas>
+      </div>
+      <div class="game-instructions" id="instructions">Use arrow keys or swipe gestures to move the key toward the house.</div>
+    </section>
+  </div>
+
+  <div id="toastContainer" aria-live="polite"></div>
+
+  <div id="Message-Container" class="modal-overlay">
+    <div id="message" class="modal-card">
+      <h1 id="modalTitle">Victory</h1>
+      <p id="modalText">You completed the maze.</p>
+      <p id="moves"></p>
+      <button id="okBtn" type="button">Cool!</button>
     </div>
-
-    <p id="instructions">Use arrow keys to move the key to the house!</p>
-
   </div>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
-  
   <script src="./script.js"></script>
 </body>
 </html>

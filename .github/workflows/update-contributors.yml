@@ -1,25 +1,30 @@
 name: Update Contributors in README
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [closed]
-    branches:
-      - main
+
+permissions:
+  contents: write
 
 jobs:
   update-readme:
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == github.event.repository.default_branch)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Update Contributors
-        uses: akhilmhdh/contributors-readme-action@v2.3.10
+      - name: Update contributors section
+        uses: akhilmhdh/contributors-readme-action@v2.3.11
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          readme_path: "README.md"
-          commit_message: "docs(readme): auto-update contributor list [skip ci]"
+          readme_path: README.md
+          image_size: 96
+          columns_per_row: 5
+          use_username: true
+          commit_message: "docs(readme): refresh contributors section [skip ci]"

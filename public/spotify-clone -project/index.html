@@ -1,328 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Spotify - Web Player: Music for Everyone</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="shortcut icon" href="./images/Spotify_favicon.png" type="image/x-icon">
+    <link rel="icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-    <div class="sidebar">
-        <div class="logo">
-            <a href="">
-                <img src="./images/Spotify Logo.png" alt="Logo">
-            </a>
-        </div>
-
-        <div class="navigation">
-            <ul>
-                <li>
-                    <a href="">
-                        <span class="fa fa-home"></span>
-                        <span>Home</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <span class="fa fa-search"></span>
-                        <span>Search</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <span class="fa fas fa-book"></span>
-                        <span>Your Library</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="navigation">
-            <ul>
-                <li>
-                    <a href="">
-                        <span class="fa fa-home"></span>
-                        <span>Create Playlist</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <span class="fa fa-search"></span>
-                        <span>Liked Songs</span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-        <div class="policies">
-            <ul>
-                <li>
-                    <a href="">Cookies</a>
-                </li>
-                <li>
-                    <a href="">Privacy</a>
-                </li>
-            </ul>
-        </div>
-
-
-    </div>
-
-    <div class="main-container">
-        <div class="topbar">
-            <div class="prev-next-buttons">
-                <button type="button" class="fa fas fa-chevron-left"></button>
-                <button type="button" class="fa fas fa-chevron-right"></button>
+    <div class="main">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="nav">
+                <div class="nav-option">
+                    <i class="fa-solid fa-house"></i>
+                    <a href="#">Home</a>
+                </div>
+                <div class="nav-option">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <a href="#">Search</a>
+                </div>
             </div>
-
-            <div class="navbar">
-                <ul>
-                    <li>
-                        <a href="">Sign Up</a>
-                    </li>
-                </ul>
-              
-                <a href="#login"><button type="button">Login</button></a>
+            <div class="library">
+                <div class="options">
+                    <div class="lib-option nav-option">
+                        <img src="library_icon.png" width="24" height="24" loading="lazy">
+                        <a href="#"> Your Library</a>
+                    </div>
+                    <div class="icons">
+                        <i class="fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+                <div class="lib-box">
+                    <div class="box">
+                        <p class="box-p1">Create your own playlist</p>
+                        <p class="box-p2">It's easy, we'll help you</p>
+                        <button class="badge">Create Playlist</button>
+                    </div>
+                    <div class="box">
+                        <p class="box-p1">Let's find some Podcast to follow</p>
+                        <p class="box-p2">We'll keep you updated on new episodes</p>
+                        <button class="badge">Browse Podcast</button>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Main Content Section -->
+        <div class="main-content">
+            <div class="sticky-nav">
+                <div class="sticky-nav-icons">
+                    <img src="backward_icon.png" width="32" height="32" loading="lazy">
+                    <img src="forward_icon.png" class="hide" width="32" height="32" loading="lazy">
+                </div>
+                <div class="sticky-nav-options" id="auth-container">
+                    <button class="badge nav-items hide">Explore Premium</button>
+                    <button class="badge nav-items dark-badge"><i class="fa-regular fa-circle-down" style="margin-right: 3px;"></i>Install App</button>
+                    <!-- Dynamic Login Button -->
+                    <button class="badge login-btn" id="loginAuthBtn">Log in</button>
+                </div>
+            </div>
         
-        <div class="login-container" id="login">
-            <h2>Login</h2>
-            <input type="text" placeholder="Username">
-            <input type="password" placeholder="Password">
-            <input type="email" placeholder="Email">
-            <button>Submit</button>
-            <br><br>
-            <a href="#"><button>Close</button></a>
-        </div>
-
-        <div class="spotify-playlists">
-            <h2>Spotify Playlists</h2>
-
-            <div class="list">
-                <div class="item">
-                    <img src="./images/The Sound of Delhi.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Today's Top Hits</h4>
-                    <p>Olivia Rodrigo is on top of the Hottest 50!</p>
-                </div>
-
-
-                
-                    
-                  
-                <div class="item">
-                    <img src="./images/RapCaviar.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>RapCaviar</h4>
-                    <p>New Music from Cardi B, Megan Thee Stallion an...</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/All Out 2010s.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>All out 2010s</h4>
-                    <p>The biggest spmgs pf tje 2010s.</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/Rock Classics.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Rock Classics</h4>
-                    <p>Rock Legends & epic songs that continue to...</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/Chill Hits.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Chill Hits</h4>
-                    <p>Kick back to the best new and recent chill hits</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/Viva Latino.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Viva Latino</h4>
-                    <p>Today's top Latin hits elevando nuestra...</p>
-                </div>
-
-
-
-                <div class="item">
-                    <img src="./images/All Out 80s.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>All out 80s</h4>
-                    <p>The biggest songs of the 1980s. Cover: Michael...</p>
+            <h2>Recently Played</h2>
+            <div class="cards-container">
+                <div class="card" data-song="card1">
+                    <img src="card1img.jpeg" class="card-img" width="150" height="150" loading="lazy">
+                    <p class="card-title">Top 50 - Global</p>
+                    <p class="card-info">Your daily updates of the most played tracks...</p>
                 </div>
             </div>
-        </div>
-
-        <div class="spotify-playlists">
-            <h2>Focus</h2>
-            <div class="list">
-                <div class="item">
-                    <img src="./images/Peaceful Piano.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Peaceful Piano</h4>
-                    <p>Peaceful piano to help you slow down, breath...</p>
+              
+            <h2>Trending now near you</h2>
+            <div class="cards-container">
+                <div class="card" data-song="card2">
+                    <img src="card2img.jpeg" class="card-img" width="150" height="150" loading="lazy">
+                    <p class="card-title">Maiye Jitna Sohna</p>
+                    <p class="card-info">Darshan Raval Special Hits...</p>
                 </div>
-
-                <div class="item">
-                    <img src="./images/Deep Focus.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Deep Focus</h4>
-                    <p>Keep calm and focus with ambient and post-...</p>
+                <div class="card" data-song="card3">
+                    <img src="card3img.jpeg" class="card-img" width="150" height="150" loading="lazy">
+                    <p class="card-title">Trending India</p>
+                    <p class="card-info">Top charts breaking the internet right now...</p>
                 </div>
-
-                <div class="item">
-                    <img src="./images/Instrumental Study.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Instrumental Study</h4>
-                    <p>Focus with soft study music in the background.</p>
-                </div>
-
-
-
-                <div class="item">
-                    <img src="./images/Focus Flow.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Focus Flow</h4>
-                    <p>Uptempo instrumental hip hop beats</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/Beats to think to.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Beats to think to</h4>
-                    <p>Focus with melodic techno and tech house.</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/Reading Adventure.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Reading Adventure</h4>
-                    <p>Scores and soundtracks for daring quests, epic...</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/Workday Lounge.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>Workday Lounge</h4>
-                    <p>Lounge and chill out music for your workday</p>
+                <div class="card" data-song="card4">
+                    <img src="card4img.jpeg" class="card-img" width="150" height="150" loading="lazy">
+                    <p class="card-title">Global Beats</p>
+                    <p class="card-info">Listen to the rhythm of the world...</p>
                 </div>
             </div>
-        </div>
 
-        <div class="spotify-playlists">
-            <h2>Sound of India</h2>
-            <div class="list">
-                <div class="item">
-                    <img src="./images/The Sound of Mumbai.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>The Sound of Mum...</h4>
-                    <p>The songs that define, unite and distinguish...</p>
+            <h2>Featured Chart</h2>
+            <div class="cards-container">
+                <div class="card" data-song="card5">
+                    <img src="card5img.jpeg" class="card-img" width="150" height="150" loading="lazy">
+                    <p class="card-title">Top 50 - Global</p>
+                    <p class="card-info">The biggest tracks right now...</p>
                 </div>
-
-                <div class="item">
-                    <img src="./images/The Sound of Kolkata.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>The Sound of Kolka...</h4>
-                    <p>The songs that define, unite and distinguish...</p>
+                <div class="card" data-song="card6">
+                    <img src="card6img.jpeg" class="card-img" width="150" height="150" loading="lazy">
+                    <p class="card-title">Top Songs - India</p>
+                    <p class="card-info">Catch up with Indian blockbusters...</p>
                 </div>
-
-                <div class="item">
-                    <img src="./images/The Sound of Delhi.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>The Sound of Delhi...</h4>
-                    <p>The songs that define, unite and distinguish...</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/The Sound of Bengaluru.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>The Sound of Ben...</h4>
-                    <p>The songs that define, unite and distinguish...</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/The Sound of Chennai.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>The Sound of Chen...</h4>
-                    <p>The songs that define, unite and distinguish...</p>
-                </div>
-
-                <div class="item">
-                    <img src="./images/The Sound of Hyderabad.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
-                    <h4>The Sound of Hyde...</h4>
-                    <p>The songs that define, unite and distinguish...</p>
-                </div>
-
-
             </div>
-
-            <hr>
+            <div class="footer"><div class="line"></div></div>
         </div>
 
-    </div>
-
-    <div class="preview">
-        <div class="text">
-            <h6>Preview of Spotify</h6>
-            <p>Sign up to get unlimited songs and podcasts with occasional ads. No credit card needed.</p>
-        </div>
-        <div class="button">
-            <button type="button">Sign up free</button>
+        <!-- Bottom Music Player -->
+        <div class="music-player">
+            <div class="song-icon">
+                <img src="card2img.jpeg" alt="Song Cover" class="cover-image" width="56" height="56" loading="lazy">
+                <div class="song-info">
+                    <h3 class="song-title">Maiye Jitna Sohna</h3>
+                    <p class="song-author">Darshan Rawal</p>
+                </div>
+                <i class="fa-regular fa-heart icon-for-song"></i>
+            </div>
+            
+            <div class="player">
+                <div class="player-controls">
+                    <img src="player_icon1.png" class="player-control-icon" width="16" height="16" loading="lazy">
+                    <img src="player_icon2.png" class="player-control-icon" width="16" height="16" loading="lazy">
+                    <!-- Play/Pause Handler -->
+                    <i class="fa-solid fa-circle-play main-play-btn" id="ctrl-play-btn"></i>
+                    <img src="player_icon4.png" class="player-control-icon" width="16" height="16" loading="lazy">
+                    <img src="player_icon5.png" class="player-control-icon" width="16" height="16" loading="lazy">
+                </div>
+                <div class="playback-bar">
+                    <span class="curr-time">0:00</span>
+                    <input type="range" min="0" max="100" value="0" class="progress-bar" id="mainSeekbar">
+                    <span class="tot-time">3:33</span>
+                </div>
+            </div>
+            
+            <div class="diff-icons">
+                <i class="fa-solid fa-music"></i>
+                <i class="fa-brands fa-bluetooth-b"></i>
+                <i class="fa-solid fa-volume-low"></i>
+                <input type="range" min="0" max="100" class="volume-slider">
+                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+            </div>    
         </div>
     </div>
 
+   <!-- Login/Signup Modal (Popup) -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <i class="fa-solid fa-xmark modal-close" id="closeModal"></i>
+            <h2>Log in to Spotify</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="modal-submit-btn">Log In</button>
+            </form>
+        </div>
+    </div>
 
-    <script src="https://kit.fontawesome.com/ef9a692198.js" crossorigin="anonymous"></script>
+    <!-- CRITICAL FIX: Yeh script tag add hona zaroori hai -->
+    <script src="script.js"></script>
 </body>
-
 </html>

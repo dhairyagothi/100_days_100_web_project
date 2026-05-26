@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake & Ladder 🎮</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+
+  <!-- Confetti Container -->
+  <div id="confetti-container"></div>
+
+  <!-- Setup Screen -->
+  <div id="setup-screen" class="screen active">
+    <div class="setup-card">
+      <div class="logo-area">
+        <span class="logo-snake">🐍</span>
+        <h1>Snake & Ladder</h1>
+        <span class="logo-ladder">🪜</span>
+      </div>
+      <p class="subtitle">The Classic Board Game</p>
+      <div class="player-inputs">
+        <div class="input-group">
+          <label>🔴 Player 1 Name</label>
+          <input type="text" id="p1-name" placeholder="Enter name..." maxlength="12" />
+        </div>
+        <div class="input-group">
+          <label>🔵 Player 2 Name</label>
+          <input type="text" id="p2-name" placeholder="Enter name..." maxlength="12" />
+        </div>
+      </div>
+      <button class="btn-start" onclick="startGame()">🎲 Start Game</button>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <div class="game-layout">
+
+      <!-- Left Panel -->
+      <div class="left-panel">
+        <div class="player-card" id="p1-card">
+          <div class="player-token p1-token">🔴</div>
+          <div class="player-info">
+            <div class="player-name" id="p1-display-name">Player 1</div>
+            <div class="player-pos">Position: <span id="p1-pos">0</span></div>
+            <div class="player-moves">Moves: <span id="p1-moves">0</span></div>
+          </div>
+        </div>
+
+        <div class="player-card" id="p2-card">
+          <div class="player-token p2-token">🔵</div>
+          <div class="player-info">
+            <div class="player-name" id="p2-display-name">Player 2</div>
+            <div class="player-pos">Position: <span id="p2-pos">0</span></div>
+            <div class="player-moves">Moves: <span id="p2-moves">0</span></div>
+          </div>
+        </div>
+
+        <div class="turn-indicator" id="turn-indicator">
+          <div class="turn-text">🎯 Current Turn</div>
+          <div class="turn-name" id="turn-name">—</div>
+        </div>
+
+        <div class="dice-area">
+          <div class="dice" id="dice">🎲</div>
+          <button class="btn-roll" id="roll-btn" onclick="rollDice()">Roll Dice</button>
+        </div>
+
+        <button class="btn-restart" onclick="restartGame()">🔄 Restart</button>
+      </div>
+
+      <!-- Board -->
+      <div class="board-wrapper">
+        <canvas id="game-canvas" width="540" height="540"></canvas>
+        <div id="board-grid"></div>
+      </div>
+
+      <!-- Right Panel: History -->
+      <div class="right-panel">
+        <div class="history-header">📜 Game Log</div>
+        <div class="history-log" id="history-log"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Winner Screen -->
+  <div id="winner-screen" class="screen">
+    <div class="winner-card">
+      <div class="winner-trophy">🏆</div>
+      <h2>WINNER!</h2>
+      <div class="winner-name" id="winner-name"></div>
+      <div class="winner-stats" id="winner-stats"></div>
+      <button class="btn-start" onclick="newGame()">🎮 New Game</button>
+      <button class="btn-restart" onclick="restartGame()">🔄 Play Again</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
