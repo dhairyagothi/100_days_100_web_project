@@ -241,6 +241,7 @@ const PROJECT_DATA = [
   ['Day 170', 'Vector Flowchart Designer', './public/VectorFlowchartDesigner/index.html', ['html', 'css', 'javascript'], 'advanced'],
   ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", "html css javascript", 'advanced'],
   ['Day 172', 'PlaceMate', './public/PlaceMate/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
+  ["Day 173", "Minesweeper", "./public/Minesweeper/index.html", ['game', 'javascript','html','css'], 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
