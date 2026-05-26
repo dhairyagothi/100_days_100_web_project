@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper | GSSoC '26</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="game-container">
+        <h1>💣 Minesweeper</h1>
+
+        <div class="dashboard">
+            <div class="control-group">
+                <label for="difficulty">Level:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy (9x9)</option>
+                    <option value="medium">Medium (16x16)</option>
+                    <option value="hard">Hard (30x16)</option>
+                </select>
+            </div>
+
+            <div class="status-group">
+                <div class="stat-box">💣 <span id="mine-count">10</span></div>
+                <button id="reset-btn" class="reset-button">😊</button>
+                <div class="stat-box">⏱️ <span id="timer">0</span>s</div>
+            </div>
+        </div>
+
+        <div id="board" class="grid-board"></div>
+
+        <div class="instructions">
+            <p>🖱️ <strong>Left Click:</strong> Reveal Cell | 🚩 <strong>Right Click:</strong> Toggle Flag</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

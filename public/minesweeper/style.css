@@ -1,0 +1,163 @@
+:root {
+    --bg-color: #1e293b;
+    --container-bg: #0f172a;
+    --text-color: #f8fafc;
+    --cell-bg: #334155;
+    --cell-hover: #475569;
+    --cell-revealed: #64748b;
+    --border-color: #475569;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.game-container {
+    background-color: var(--container-bg);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 100%;
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+/* Dashboard Panel Layout */
+.dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1e293b;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    gap: 12px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+select {
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.status-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-box {
+    background-color: var(--container-bg);
+    border: 1px solid var(--border-color);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1.1rem;
+    min-width: 60px;
+}
+
+.reset-button {
+    background-color: #ef4444;
+    border: none;
+    font-size: 1.5rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.reset-button:active {
+    transform: scale(0.9);
+}
+
+/* Core Grid Engine Layout */
+.grid-board {
+    display: grid;
+    /* Injected globally via JS: standardizes 32px blocks */
+    grid-template-columns: repeat(var(--grid-cols, 9), 32px);
+    grid-template-rows: repeat(var(--grid-rows, 9), 32px);
+    gap: 2px;
+    background-color: var(--border-color);
+    padding: 4px;
+    border-radius: 6px;
+    margin: 0 auto;
+    overflow: auto; /* Handles massive boards smoothly */
+    max-width: 100%;
+}
+
+/* Base Coordinate Cells */
+.cell {
+    width: 32px;
+    height: 32px;
+    background-color: var(--cell-bg);
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.1s ease;
+}
+
+.cell:hover:not(.revealed):not(.flagged) {
+    background-color: var(--cell-hover);
+}
+
+/* Distinct State Variant Styles */
+.cell.revealed {
+    background-color: var(--cell-revealed);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cell.mine {
+    background-color: #b91c1c !important;
+}
+
+.cell.flagged {
+    background-color: #3b82f6;
+}
+
+/* Industry standard color mapping specs for surrounding numbers */
+.num-1 { color: #38bdf8; }
+.num-2 { color: #4ade80; }
+.num-3 { color: #f87171; }
+.num-4 { color: #818cf8; }
+.num-5 { color: #f43f5e; }
+.num-6 { color: #06b6d4; }
+.num-7 { color: #a855f7; }
+.num-8 { color: #e2e8f0; }
+
+.instructions {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
