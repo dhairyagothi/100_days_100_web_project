@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To-Do List | 100 Days 100 Projects</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="todolist.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
+
 <body>
   <!-- Floating decorative shapes -->
   <div class="floating-shapes" aria-hidden="true">
@@ -77,7 +80,7 @@
           <button type="submit" id="submittask">➕ Add Task</button>
         </div>
         <div class="input-actions">
-          <button type="button" id="savepdf">📥 Save as PDF</button>
+          <button type="button" onclick="saveAsPDF()" id="savepdf">📥 Save as PDF</button>
         </div>
       </form>
 
@@ -111,4 +114,5 @@
 
   <script src="todolist.js"></script>
 </body>
+
 </html>

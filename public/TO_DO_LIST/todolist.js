@@ -18,7 +18,7 @@ let currentFilter = "all";
 function addTask() {
   const text = taskInput.value.trim();
   const category = taskTypeSelect.value;
-  
+
   if (!text) {
     showToast("⚠️ Please enter a task description!");
     return;
@@ -40,7 +40,7 @@ function addTask() {
   tasks.push(newTask);
   taskInput.value = "";
   taskTypeSelect.value = ""; // Reset dropdown
-  
+
   renderTasks();
   showToast("✅ Task added successfully!");
 }
@@ -81,7 +81,7 @@ function filterTasks(buttonElement, filterValue) {
   // Update active states on filter row
   document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
   buttonElement.classList.add("active");
-  
+
   currentFilter = filterValue;
   renderTasks();
 }
@@ -185,7 +185,7 @@ function applyTheme(themeName) {
   if (activeBtn) {
     activeBtn.classList.add("active");
   }
-  try { localStorage.setItem('todo-theme', themeName); } catch (e) {}
+  try { localStorage.setItem('todo-theme', themeName); } catch (e) { }
 }
 document.querySelectorAll(".theme-btn").forEach(button => {
   button.addEventListener("click", () => {
@@ -202,13 +202,14 @@ function saveAsPDF() {
     return;
   }
 
+  // Safely grab jsPDF
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
   doc.setFont("Helvetica", "bold");
   doc.setFontSize(22);
   doc.text("TaskFlow Agenda Report", 20, 24);
-  
+
   doc.setFont("Helvetica", "normal");
   doc.setFontSize(10);
   doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
@@ -220,16 +221,21 @@ function saveAsPDF() {
   tasks.forEach((task, index) => {
     const status = task.completed ? "[DONE]" : "[PENDING]";
     const printLine = `${index + 1}. ${status} (${task.category}) — ${task.text}`;
-    
+
     doc.text(20, verticalCursor, printLine);
     verticalCursor += 10;
   });
 
   const fileName = `TaskFlow_${Date.now()}.pdf`;
+
+  // 🔥 FIX 1: Force an immediate browser download prompt
+  doc.save(fileName);
+
+  // Keep this part so it still shows up in your "Documents" tab UI
   const fileURL = URL.createObjectURL(doc.output("blob"));
-  
   appendDocumentToList(fileName, fileURL);
-  showToast("📥 Exported list to Documents Tab!");
+
+  showToast("📥 PDF Downloaded & Saved to Documents!");
 }
 
 function appendDocumentToList(fileName, fileURL) {
@@ -299,4 +305,4 @@ taskInput.addEventListener("keydown", (e) => {
 try {
   const saved = localStorage.getItem('todo-theme');
   if (saved) applyTheme(saved);
-} catch (e) {}
+} catch (e) { }
