@@ -1,164 +1,254 @@
-Plant Website 🌱
+# 🌱 TREE - Plant Tree Website
 
-A modern and responsive Plant Website built using HTML, CSS, and JavaScript. This project showcases a clean user interface for plant-related products and services with interactive sections, responsive layouts, smooth animations, and modern web design principles.
+A modern and responsive environmental awareness website built using HTML, CSS, JavaScript, and jQuery.
+This project promotes tree plantation and sustainability through an interactive and visually appealing user interface.
 
-📌 Features
+The website includes modern UI components, responsive layouts, smooth animations, FAQ interactions, statistics cards, and improved user experience across all devices.
 
-Responsive website design
-Modern landing page UI
-Interactive navigation menu
-Smooth scrolling effects
-Product showcase section
-Animated UI components
-Mobile-friendly layout
-Pure HTML, CSS, and JavaScript
+---
 
+# 📌 Features
 
-🛠️ Tech Stack
-| Technology | Usage |
-|------------|-------|
-| HTML5      | Structure |
-| CSS3       | Styling & Responsive Design |
-| JavaScript | Interactivity & Animations |
+* 🌿 Responsive Website Design
+* 🌎 Environmental Awareness Landing Page
+* 📱 Mobile-Friendly Layout
+* 🌱 Tree Plantation Information Section
+* 👨‍👩‍👧 Team Showcase Cards
+* 📊 Statistics/Impact Section
+* ❓ Interactive FAQ Accordion
+* 📬 Contact Form Section
+* ✨ Smooth Scrolling Effects
+* 🎨 Hover Animations & UI Enhancements
+* 🖼️ Favicon Support
+* ⚡ Scroll Reveal Animations
+* 🔥 Modern Hero Section Design
 
+---
 
-📂 Project Structure
+# 🛠️ Tech Stack
+
+| Technology      | Usage                          |
+| --------------- | ------------------------------ |
+| HTML5           | Website Structure              |
+| CSS3            | Styling & Responsive Design    |
+| JavaScript      | Website Interactivity          |
+| jQuery          | DOM Manipulation & FAQ Effects |
+| Font Awesome    | Icons                          |
+| ScrollReveal.js | Scroll Animations              |
+
+---
+
+# 📂 Project Structure
 
 ```text
-plant-website/
-├── assets/
-│   ├── hero-image.png
-│   ├── plant1.png
-│   ├── plant2.png
-│   ├── plant3.png
-│   └── preview.png
+
+Plant-Website/
+│
+├── README.md
+
+Plants-Website/
 │
 ├── index.html
 ├── style.css
 ├── script.js
-└── README.md
+│
+├── images/
+│   ├── about.png
+│   ├── home.jpg
+│   ├── plant-1.png
+│   ├── plant-2.png
+│   ├── plant-3.png
+│   ├── faq.png
+│   ├── contact.jpg
+│   ├── img-1.jpg
+│   ├── img-2.jpg
+│   ├── img-3.jpg
+│   └── img-4.jpg
+├── Preview/
+│   ├── Preview.mp4
 ```
 
+---
 
-⚙️ Installation & Setup
-1️⃣ Clone the Repository
-git clone https://github.com/your-username/plant-website.git
-cd plant-website
+# ⚙️ Installation & Setup
 
-🚀 Run the Project
+## 1️⃣ Clone the Repository
 
-Open the index.html file directly in your browser.
+```bash
+git clone https://github.com/your-username/tree-website.git
+```
 
-You can also use a local development server such as:
+## 2️⃣ Open Project Folder
 
-VS Code Live Server Extension
+```bash
+cd tree-website
+```
 
+## 3️⃣ Run the Project
 
-🧠 HTML Structure
-index.html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+Open `index.html` in your browser.
 
-  <title>Plant Website</title>
+You can also use:
 
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+* VS Code Live Server Extension
 
+---
 
-  <script src="script.js"></script>
-</body>
-</html>
+# 🧠 HTML Structure
 
+## index.html
 
-🎨 CSS Styling
+```html
+<header class="header">
+    <a href="#" class="logo">
+        <i class="fas fa-tree"></i>TREE.
+    </a>
+</header>
+```
 
-style.css
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+---
+
+# 🎨 CSS Styling
+
+## style.css
+
+```css
+:root{
+   --green: #65b741;
+   --black: #333;
+   --white: #fff;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #f4fff4;
-  color: #1f2937;
+body{
+   font-family: "Poppins", sans-serif;
 }
+```
 
+---
 
+# ⚡ JavaScript Functionality
 
-⚡ JavaScript Functionality
+## script.js
 
-script.js
+```javascript
+$('.subject-header').click(function(){
 
-const navLinks = document.querySelectorAll(".nav-links a");
+    $('.subject-body').slideUp();
 
-navLinks.forEach((link) => {
-  
+    $(this).next('.subject-body').slideDown();
 });
+```
 
-🌟 Features Demonstrated
+---
 
-| Feature | Description |
-|----------|-------------|
-| Responsive Layout | Adapts across devices |
-| Hero Section | Modern landing page section |
-| Navigation Bar | Interactive menu links |
-| Product Showcase | Plant product display |
-| Clean UI Design | Minimal and modern styling |
+# 🌟 Features Demonstrated
 
+| Feature            | Description                   |
+| ------------------ | ----------------------------- |
+| Responsive Layout  | Works across all screen sizes |
+| Hero Section       | Modern landing page UI        |
+| Navigation Bar     | Interactive navigation menu   |
+| Statistics Section | Environmental impact showcase |
+| FAQ Accordion      | Expand/collapse interaction   |
+| Team Cards         | Hover animation effects       |
+| Smooth Scrolling   | Better user experience        |
+| Contact Form       | Responsive contact section    |
 
-📸 Preview
+---
 
-Add project preview image inside:
+# ✨ UI Enhancements Added
 
-assets/preview.png
+* Improved button styling
+* Hover lift effects on cards
+* Dark overlay on hero background
+* Enhanced footer section
+* Better spacing and responsiveness
+* Smooth section transitions
+* Improved mobile compatibility
 
-🌐 Live Demo
+---
 
-Add your deployed demo link here:
+# 🐞 Bug Fixes
 
+* Fixed navbar toggle issue
+* Corrected typo:
+
+  * `servics` → `services`
+  * `fa-time` → `fa-times`
+* Removed unnecessary symbols and spacing issues
+* Improved responsive alignment
+* Fixed mobile overflow issues
+
+---
+
+# 🌐 Live Demo
+
+Add your deployed project link here:
+
+```text
 https://your-demo-link.com
+```
 
 You can deploy using:
 
-Netlify
-Vercel
-GitHub Pages
+* Netlify
+* Vercel
+* GitHub Pages
 
+---
 
-🚀 Future Improvements
-Shopping cart integration
-Product filtering system
-Dark mode support
-Contact form functionality
-Scroll animations
-Backend integration
-User authentication
+# 🚀 Future Improvements
 
+* 🌙 Dark Mode Support
+* 🛒 Donation/Support Section
+* 🌍 Live Tree Plantation Counter
+* 📍 Interactive Map Integration
+* 📬 Backend Contact Form
+* 🔐 User Authentication
+* 📈 Animated Statistics Counter
 
-🤝 Contributing
+---
+
+# 🤝 Contributing
 
 Contributions are welcome.
 
-Fork the repository
-Create a feature branch
+## Steps to Contribute
+
+1. Fork the repository
+2. Create a feature branch
+
+```bash
 git checkout -b feature/new-feature
-Commit your changes
+```
+
+3. Commit your changes
+
+```bash
 git commit -m "Add new feature"
-Push to GitHub
+```
+
+4. Push to GitHub
+
+```bash
 git push origin feature/new-feature
-Open a Pull Request
+```
 
+5. Open a Pull Request
 
-⭐ Support
+---
+
+# ⭐ Support
 
 If you found this project useful:
 
-Star the repository
-Fork the project
-Contribute to improve the project
+* Star the repository
+* Fork the project
+* Contribute to improve the project
+
+---
+
+# 👨‍💻 Author
+
+Created with 🌱 for a greener and healthier planet.
+
