@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    font-family: "Noto Sans", sans-serif;
+}
+body{
+    background-color: rgb(203, 235, 255);
+}
+.box{
+    border: 2px solid grey;
+    border-radius: 30px;
+    background-color: rgb(226, 244, 255);
+}
+.heading1{
+    font-size:xx-large;
+    font-weight: bold;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+.heading{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+}
+.input-val{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    gap: 100px;
+    padding: 50px;
+    font-size: xx-large;
+}
+.output{
+    border: 2px solid black;
+    margin: 50px;
+    margin-top: 0;
+    font-size: xx-large;
+    padding: 10px;
+    color: rgb(55, 223, 52);
+    border-radius: 40px;
+    background-color: rgb(234, 255, 233) ;
+    /* background-color: rgb(134, 203, 255); */
+}
+input{
+    font-size: xx-large;
+}
+.input-section{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+select{
+    font-size: x-large;
+}
+.result{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: xx-large;
+    color: rgb(0, 0, 69);
+}
+.to-input input{
+    color: rgb(56, 56, 227);
+}
+.category label{
+    font-size: xx-large;
+    color: rgb(50, 38, 76);
+}

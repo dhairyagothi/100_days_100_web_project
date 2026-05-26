@@ -4,53 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FeedBack</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="/public/Medical_App/styles.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15, 118, 110, 0.8),
+                    rgba(20, 184, 166, 0.8)
+                ),
+                url('pngtree-medical-device-line-draft-border-png-image_2392872.jpg')
+                center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            position: relative;
+        }
+
+        .feedbackmain {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .feedbackmain h2 {
+            font-size: 2rem;
+            color: #0f766e;
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .feedbackmain p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        #feedbackform label {
+            display: block;
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        #feedbackMessage {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        #feedbackMessage:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .btn-large {
+            display: inline-block;
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-back {
+            background: white;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+            margin-top: 15px;
+        }
+
+        .btn-back:hover {
+            background: #f8fafc;
+            color: #0f172a;
+            border-color: #cbd5e1;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .project-back-button {
+            position: fixed;
+            left: 18px;
+            top: 18px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: linear-gradient(
+                90deg,
+                rgba(124, 99, 255, 0.14),
+                rgba(79, 141, 255, 0.10)
+            );
+            color: white;
+            text-decoration: none;
+            z-index: 9999;
+            font-weight: 700;
+            font-family: Inter, system-ui, sans-serif;
+            box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+        }
+    </style>
 </head>
-<body style="background: url(pngtree-medical-device-line-draft-border-png-image_2392872.jpg);">
-    <div  class="feedbackmain">
+
+<body>
+    <a href="/" class="project-back-button">← Back to Home</a>
+
+    <div class="feedbackmain">
         <h2>FeedBack</h2>
         <p>Help us help you.</p>
 
-        
-            <form id="feedbackform">
-                <label for="feedbackMessage">Your Feedback:</label>
-                <br><br>
-                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
-                <br><br>
-                <button type="submit">Submit Feedback</button>
-            </form>
-           <button class="back" onclick="window.location.href='./index.html'">
-    Back To the Main
-</button>
+        <form id="feedbackform">
+            <label for="feedbackMessage">Your Feedback</label>
+
+            <textarea
+                id="feedbackMessage"
+                name="feedbackMessage"
+                placeholder="Tell us what you think..."
+                required
+            ></textarea>
+
+            <div class="button-group">
+                <button type="submit" class="btn-large btn-submit">
+                    Submit Feedback
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-large btn-back"
+                    onclick="window.location.href='/public/Medical_App/index.html'"
+                >
+                    Back To Dashboard
+                </button>
+            </div>
+        </form>
     </div>
 
     <div id="toast-container"></div>
 
-<script>
-function showToast(message, type = 'info') {
-    const container = document.getElementById('toast-container');
+    <script>
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
 
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
 
-    toast.innerHTML = `
-        <span>${message}</span>
-        <button onclick="this.parentElement.remove()">&times;</button>
-    `;
+            toast.innerHTML = `
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()">&times;</button>
+            `;
 
-    container.appendChild(toast);
+            container.appendChild(toast);
 
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
-}
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
 
-document.getElementById("feedbackform").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    showToast("Feedback submitted successfully!", "success");
-});
-</script>
+        document
+            .getElementById("feedbackform")
+            .addEventListener("submit", function(event) {
+                event.preventDefault();
+                showToast("Feedback submitted successfully!", "success");
+            });
+    </script>
 </body>
 </html>

@@ -309,6 +309,46 @@ body[data-theme="mono"] {
     animation: hintPulse 1s ease-in-out infinite;
 }
 
+/* ── Dynamic cell styles (built by JS) ── */
+.cell {
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    font-size: clamp(2.2rem, 8vw, 4rem);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell:hover:not(.taken) {
+    transform: translateY(-4px);
+    box-shadow: var(--glow);
+    background: rgba(64, 245, 210, 0.12);
+}
+
+.cell.x-mark {
+    color: var(--accent-2);
+    text-shadow:
+        0 0 8px rgba(255, 125, 125, 0.9),
+        0 0 18px rgba(255, 125, 125, 0.7);
+}
+
+.cell.o-mark {
+    color: var(--accent);
+    text-shadow:
+        0 0 8px rgba(64, 245, 210, 0.9),
+        0 0 18px rgba(64, 245, 210, 0.7);
+}
+
+.cell.win-cell {
+    background: rgba(64, 245, 210, 0.28);
+    box-shadow: 0 0 30px rgba(64, 245, 210, 0.45);
+    transform: translateY(-2px) scale(1.02);
+}
+
 .win-line {
     position: absolute;
     height: 6px;
@@ -636,32 +676,92 @@ body[data-theme="mono"] {
     .panel {
         padding: 16px;
     }
+}
 
-    .toolbar {
-        grid-template-columns: 1fr;
-    }
+/* ── Mode screen ─────────────────────────── */
+#mode-screen {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, #0f2bff22, transparent 40%),
+    radial-gradient(circle at top right, #ff00cc22, transparent 40%),
+    #050816;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+#mode-screen.show { display: flex; opacity: 1; }
+#mode-screen.hide { opacity: 0; }
 
-    .toolbar-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
+.mode-title {
+  font-family: var(--font);
+  font-size: 48px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.mode-sub {
+  color: #aaa;
+  font-family: var(--font);
+  font-size: 16px;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+}
+.mode-btns {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 170px;
+  padding: 32px 20px;
+  border-radius: 20px;
+  border: 2px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  font-family: var(--font);
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  backdrop-filter: blur(10px);
+}
+.mode-btn:hover {
+  transform: scale(1.07);
+  border-color: #ff2cdf;
+  box-shadow: 0 0 30px #ff2cdf88;
+}
+.mode-icon  { font-size: 40px; line-height: 1; }
+.mode-label { font-size: 20px; font-weight: 900; letter-spacing: 1px; }
+.mode-desc  { font-size: 12px; color: #aaa; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
 
-    .repeat,
-    .ghost {
-        width: 100%;
-    }
+/* ── Fixed: start-modal visible by default via .show class ── */
+.start-modal.show,
+.winner-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
 
-    .game {
-        width: min(320px, 90vw);
-        height: min(320px, 90vw);
-        gap: 8px;
-    }
+/* ── Fixed: win cell highlight ── */
+.box.win {
+    background: rgba(64, 245, 210, 0.28);
+    box-shadow: 0 0 30px rgba(64, 245, 210, 0.45);
+    transform: translateY(-2px) scale(1.02);
+}
 
-    .box {
-        border-radius: 14px;
-    }
-
-    .history {
-        padding: 12px;
-    }
+/* ── Fixed: score card X color ── */
+.score-card[data-player="X"] strong {
+    color: var(--accent-2);
+}
+.score-card[data-player="O"] strong {
+    color: var(--accent);
 }
