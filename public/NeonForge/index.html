@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeonForge | CSS Glow Effects Playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="workspace" aria-label="Neon glow generator">
+      <div class="preview-panel" id="previewPanel">
+        <div class="topbar" aria-label="Project toolbar">
+          <div>
+            <p class="eyebrow">CSS Glow Playground</p>
+            <h1>NeonForge</h1>
+          </div>
+          <button class="icon-button" id="downloadButton" type="button" aria-label="Download preview as PNG" title="Download PNG">
+            <span aria-hidden="true">PNG</span>
+          </button>
+        </div>
+
+        <div class="stage-wrap" id="stageWrap">
+          <div class="stage-grid" aria-hidden="true"></div>
+          <div class="stage-vignette" aria-hidden="true"></div>
+          <div class="neon-sign" id="neonPreview">NeonForge</div>
+          <div class="floor-glow" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <aside class="control-panel" aria-label="Glow controls">
+        <label class="field full">
+          <span>Text</span>
+          <input id="textInput" type="text" value="NeonForge" maxlength="36" autocomplete="off">
+        </label>
+
+        <div class="preset-row" aria-label="Neon presets">
+          <button class="preset is-active" type="button" data-preset="pink">
+            <span class="swatch pink"></span>Pulse
+          </button>
+          <button class="preset" type="button" data-preset="blue">
+            <span class="swatch blue"></span>Cyber
+          </button>
+          <button class="preset" type="button" data-preset="green">
+            <span class="swatch green"></span>Acid
+          </button>
+          <button class="preset" type="button" data-preset="red">
+            <span class="swatch red"></span>Inferno
+          </button>
+          <button class="preset" type="button" data-preset="white">
+            <span class="swatch white"></span>Ghost
+          </button>
+        </div>
+
+        <div class="control-grid">
+          <label class="field">
+            <span>Glow Color</span>
+            <input id="colorInput" type="color" value="#ff2bd6">
+          </label>
+
+          <label class="field">
+            <span>Edge Color</span>
+            <input id="secondaryColorInput" type="color" value="#25d8ff">
+          </label>
+
+          <label class="field">
+            <span>Font</span>
+            <select id="fontSelect">
+              <option value="'Arial Black', Impact, sans-serif">Arcade Bold</option>
+              <option value="Impact, 'Arial Narrow Bold', sans-serif">Impact</option>
+              <option value="'Trebuchet MS', Verdana, sans-serif">Trebuchet</option>
+              <option value="'Courier New', Courier, monospace">Mono Tube</option>
+              <option value="Georgia, 'Times New Roman', serif">Serif Glow</option>
+              <option value="Verdana, Geneva, sans-serif">Clean Sans</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Effect</span>
+            <select id="effectSelect">
+              <option value="tube">Glass Tube</option>
+              <option value="chrome">Chrome Edge</option>
+              <option value="glitch">Glitch Pulse</option>
+              <option value="solid">Clean Glow</option>
+            </select>
+          </label>
+
+          <label class="field range-field">
+            <span>Blur <output id="blurValue">24px</output></span>
+            <input id="blurInput" type="range" min="2" max="52" value="24">
+          </label>
+
+          <label class="field range-field">
+            <span>Spread <output id="spreadValue">6</output></span>
+            <input id="spreadInput" type="range" min="1" max="11" value="6">
+          </label>
+
+          <label class="field range-field">
+            <span>Font Size <output id="fontSizeValue">84px</output></span>
+            <input id="fontSizeInput" type="range" min="36" max="140" value="84">
+          </label>
+
+          <label class="field">
+            <span>Background</span>
+            <select id="backgroundSelect">
+              <option value="midnight">Dark Gradient</option>
+              <option value="black">Pure Black</option>
+              <option value="violet">Violet Grid</option>
+              <option value="teal">Teal Night</option>
+              <option value="custom">Custom Color</option>
+            </select>
+          </label>
+
+          <label class="field custom-bg" id="customBgField">
+            <span>Custom BG</span>
+            <input id="backgroundColorInput" type="color" value="#05050c">
+          </label>
+
+          <label class="toggle-field">
+            <input id="flickerInput" type="checkbox" checked>
+            <span class="toggle-track" aria-hidden="true"></span>
+            <span>Flicker</span>
+          </label>
+        </div>
+      </aside>
+    </section>
+
+    <section class="code-panel" aria-label="Generated CSS">
+      <div class="code-header">
+        <h2>Generated CSS</h2>
+        <button id="copyButton" type="button">Copy CSS</button>
+      </div>
+      <pre><code id="cssCode"></code></pre>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -238,6 +238,7 @@ const PROJECT_DATA = [
   [ 'Day 164' , 'Code Visualizer Playground' , './public/code-visualizer-playground/index.html' , 'tool javascript html css' , 'advanced' ],
   [ 'Day 165' , 'Amazon Clone' , './public/AmazonClone/index.html' , 'Amazon Clone HTML CSS JavaScript' , 'beginner' ],
   [ "Day 166" , "Boredom Buster" , "./public/BoredomBuster/index.html" , "html css javascript" , 'advanced' ],
+  [ "Day 167" , "Neon Forge" , "./public/NeonForge/index.html" , "html css javascript" , 'intermediate' ],
 ];
 const PROJECTS = PROJECT_DATA;
 
