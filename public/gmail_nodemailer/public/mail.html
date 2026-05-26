@@ -6,87 +6,61 @@
 <title>SEND-MAIL</title>
 <link rel="stylesheet" href="mail.css">
 <link rel="icon" href="../../favv.png" type="image/x-icon" />
-<style>* {
-    padding: 0;
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #000000;
-}
-.contact{
-    border-radius: 10px;
-    height: auto;
-    width: 330px;
-    background-color: white;
-    display: flex;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.914);
-    flex-direction: column;
-    gap: 0px;
-}
-.contact h3{
-font-weight: 400;
-padding: 25px;
-font-size: 24px;
-font-family: 'Segoe UI';
-text-align: center;
-color:#00b6d1;
-}
-.contact form {
-padding: 20px;
-font-size: 16px;
-text-align: center;
 
-}
-.email{
-display: block;
-border-radius: 5px;
-width: 100%;
-height: 50px;
-border: 2px solid rgba(0,0,0,.2);
-padding-left: 10px;
-}
-.submit {
-display: block;
-width: 100%;
-height: 40px;
-font-size: 20px;
-color: white;
-background-color: #00b6d1;
-border-color: rgb(51 51 51 / 16%);
-box-sizing: broder-box;
-cursor: pointer;
-}
-.submit:hover {
-    box-shadow: 0 0 10px #00b6d1;
-}
-.contact01 , .contact02 {
-padding: 8px;
-    display: flex;
-    gap: 12px;
-    flex-direction: column;
-}
-</style>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-    <div class="contact">
-        <h3>Subscribe to our emails</h3>
-        <form method="POST" action="/">
-            <div class="contact01">
-        <label>CONTACT-FORM</label>
-        <input class="email" name="name" type="text" placeholder="Enter your name " value required autocomplete="off" >
-            <input class="email" name="emailid" type="email" placeholder="Enter your email address" value required autocomplete="off" >
-            </div>
-            <div class="contact02">
-            <input class="submit" type="submit" name="submit" value="Sign Up">
-            </div>
-            </form>
-    </div>
- <script src="/app.js"></script>
+
+<div class="contact">
+    <h3>Subscribe to our emails</h3>
+
+    <p class="form-subtitle">
+        Stay updated with our latest news, updates, and exclusive content.
+    </p>
+
+    <form method="POST" action="/">
+
+        <div class="contact01">
+
+            <label for="name">Full Name</label>
+
+            <input
+                class="email"
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter your full name"
+                required
+                autocomplete="off"
+            >
+
+            <label for="email">Email Address</label>
+
+            <input
+                class="email"
+                id="email"
+                name="emailid"
+                type="email"
+                placeholder="Enter your email address"
+                required
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div class="contact02">
+            <input
+                class="submit"
+                type="submit"
+                name="submit"
+                value="Subscribe Now"
+            >
+        </div>
+
+    </form>
+</div>
+
+
 </body>
 </html>

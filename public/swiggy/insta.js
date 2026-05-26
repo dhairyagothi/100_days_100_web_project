@@ -91,6 +91,129 @@ categories.forEach((category) => {
 
 document.body.appendChild(itemsDiv);
 
+// COMMENTS SECTION
+
+const commentsSection = document.createElement("div");
+commentsSection.classList.add("comments_section");
+
+const commentsTitle = document.createElement("h2");
+commentsTitle.textContent = "Customer Reviews";
+
+commentsSection.appendChild(commentsTitle);
+
+// INPUT BOX
+
+const commentBox = document.createElement("div");
+commentBox.classList.add("comment_box");
+
+const nameInput = document.createElement("input");
+nameInput.type = "text";
+nameInput.placeholder = "Enter your name";
+
+const commentInput = document.createElement("textarea");
+commentInput.placeholder = "Write your review...";
+
+const commentButton = document.createElement("button");
+commentButton.textContent = "Post Comment";
+
+commentBox.appendChild(nameInput);
+commentBox.appendChild(commentInput);
+commentBox.appendChild(commentButton);
+
+commentsSection.appendChild(commentBox);
+
+// COMMENTS DISPLAY AREA
+
+const commentsContainer = document.createElement("div");
+commentsContainer.classList.add("comments_container");
+
+commentsSection.appendChild(commentsContainer);
+// DEFAULT CUSTOMER REVIEWS
+
+const defaultReviews = [
+    {
+        name: "Aarav",
+        review: "Very fast delivery and fresh products!"
+    },
+    {
+        name: "Diya",
+        review: "The vegetables were fresh and nicely packed."
+    },
+    {
+        name: "Rahul",
+        review: "Amazing discounts and smooth experience."
+    },
+    {
+        name: "Sneha",
+        review: "Loved the dairy products quality."
+    }
+];
+
+defaultReviews.forEach((item) => {
+
+    const commentCard = document.createElement("div");
+    commentCard.classList.add("comment_card");
+
+    const userName = document.createElement("h3");
+    userName.textContent = item.name;
+
+    const userComment = document.createElement("p");
+    userComment.textContent = item.review;
+
+    commentCard.appendChild(userName);
+    commentCard.appendChild(userComment);
+
+    commentsContainer.appendChild(commentCard);
+
+});
+
+// BUTTON FUNCTIONALITY
+
+commentButton.addEventListener("click", () => {
+
+    const name = nameInput.value.trim();
+    const comment = commentInput.value.trim();
+
+    if(name === "" || comment === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    const commentCard = document.createElement("div");
+    commentCard.classList.add("comment_card");
+
+    const userName = document.createElement("h3");
+    userName.textContent = name;
+
+    const userComment = document.createElement("p");
+    userComment.textContent = comment;
+
+    // DELETE BUTTON
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete_btn");
+
+    deleteBtn.addEventListener("click", () => {
+        commentCard.remove();
+    });
+
+    commentCard.appendChild(userName);
+    commentCard.appendChild(userComment);
+    commentCard.appendChild(deleteBtn);
+
+    commentsContainer.prepend(commentCard);
+
+    // CLEAR INPUTS
+
+    nameInput.value = "";
+    commentInput.value = "";
+});
+
+document.body.appendChild(commentsSection);
+
+
+
 const footer = document.createElement("div");
 footer.classList.add("footer");
 

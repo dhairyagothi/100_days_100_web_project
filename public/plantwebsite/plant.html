@@ -1,129 +1,301 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Planto</title>
-    <link rel="stylesheet" href="plant.css">
-    <link rel="shortcut icon" href="images/indoor-plants_5451442.png" type="image/x-icon">
-</head>
+    <link rel="stylesheet" href="plant.css" />
+    <link
+      rel="shortcut icon"
+      href="images/indoor-plants_5451442.png"
+      type="image/x-icon"
+    />
+  </head>
 
-<body>
+  <body>
     <nav class="navbar">
-        <div class="logo"><img src="images/indoor-plants_5451442.png" alt="Planto" srcset=""></div>
-        <button id="mobile-menu-button">☰</button>
-        <div class="items">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#plant-type">Plant Type</a></li>
-                <li><a href="#more">More</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <!-- dark mode -->
-                <li>
-                    <input type="checkbox" id="dark-mode-toggle"/>
-                    <label for="dark-mode-toggle" class="theme-label"></label>
-                </li>
-            </ul>
-        </div>
-        <div class="icons">
-            <ul>
-                <li><img src="images/search.svg" alt="search" srcset=""></li>
-                <li><img src="images/cart.svg" alt="cart" srcset=""></li>
-                <li><img src="images/ellipsis-v.svg" alt="More" srcset=""></li>
-            </ul>
-        </div>
+      <div class="logo">
+        <img src="images/indoor-plants_5451442.png" alt="Planto logo" />
+      </div>
+      <button id="mobile-menu-button">☰</button>
+      <div class="items">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#more">Plant Type</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="icons">
+        <ul>
+          <!-- Theme Toggle -->
+          <li class="theme-switch-wrapper">
+            <input type="checkbox" id="dark-mode-toggle" />
+
+            <label for="dark-mode-toggle" class="theme-label">
+              <span class="sun-icon">☀</span>
+              <span class="moon-icon">☾</span>
+            </label>
+          </li>
+
+          <!-- Search -->
+          <li>
+            <img src="images/search.svg" alt="Search icon" />
+          </li>
+
+          <!-- Cart -->
+          <li>
+            <img src="images/cart.svg" alt="Shopping cart icon" />
+          </li>
+
+          <!-- More -->
+          <li>
+            <img src="images/ellipsis-v.svg" alt="More options menu icon" />
+          </li>
+        </ul>
+      </div>
     </nav>
-    
+
     <main>
-        <div id="home" class="block1">
-            <div class="block1-text">
-                <h1>Breathe Natural</h1>
-                <p>Plants are mainly multicellular, predominantly photosynthetic eukaryotes of the kingdom Plantae.
-                    Historically, plants were treated as one of two kingdoms including all living things that were not
-                    animals, and all algae and fungi were treated as plants.</p>
-            </div>
-            <div class="block1-img">
-                <div> <img src="images/p2.png" alt="Trendy house plant" srcset=""></div>
-                <div>
-                    <h3>Trendy house plant</h3>
-                    <h2>Calathea Plant</h2>
-                </div>
-            </div>
+      <div id="home" class="block1">
+        <div class="block1-text">
+          <h1>Breathe Natural</h1>
+          <p>
+            Plants are mainly multicellular, predominantly photosynthetic
+            eukaryotes of the kingdom Plantae. Historically, plants were treated
+            as one of two kingdoms including all living things that were not
+            animals, and all algae and fungi were treated as plants.
+          </p>
+          <button id="quiz-cta" class="cta-button" style="margin-top: 20px">
+            Find Your Perfect Plant
+          </button>
         </div>
-        <div id="plant-type" class="block2-head">Our Trendy Plants</div>
-        <div id="more" class="block2">
-            <div class="block2-p1">
-                <div class="block2-img"><img src="images/p3.png" alt="Small desk plant" srcset=""></div>
-                <div class="block2-text">
-                    <h3>For small desk plant</h3>
-                    <p>Calathea is a genus of plants belonging to the family Marantaceae. There are several dozen
-                        species in this genus. Native to the tropical Americas, many of the species are popular as pot
-                        plants due to their decorative leaves and, in some species, colorful inflorescences.</p>
-                    <div class="buy-option">
-                        <h3>Rs.599</h3>
-                        <div class="button-container">
-                            <a href="https://www.amazon.com/s?k=calathea+plant" target="_blank" class="buy-button">Buy on Amazon</a>
-                            <a href="https://www.flipkart.com/search?q=calathea%20plant" target="_blank" class="buy-button">Buy on Flipkart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="block2-p2">
-                <div class="block2-img"><img src="images/p4.png" alt="Another small desk plant" srcset=""></div>
-                <div class="block2-text">
-                    <h3>For small desk plant</h3>
-                    <p>Calathea is a genus of plants belonging to the family Marantaceae. There are several dozen
-                        species in this genus. Native to the tropical Americas, many of the species are popular as pot
-                        plants due to their decorative leaves and, in some species, colorful inflorescences.</p>
-                    <div class="buy-option">
-                        <h3>Rs.599</h3>
-                        <div class="button-container">
-                            <a href="https://www.amazon.com/s?k=calathea+plant" target="_blank" class="buy-button">Buy on Amazon</a>
-                            <a href="https://www.flipkart.com/search?q=calathea%20plant" target="_blank" class="buy-button">Buy on Flipkart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="block1-img">
+          <div>
+            <img src="images/p2.png" alt="Trendy Calathea house plant" />
+          </div>
+          <div>
+            <h3>Trendy house plant</h3>
+            <h2>Calathea Plant</h2>
+          </div>
         </div>
-        <div id="about" class="about-section">
-            <h2>About Us</h2>
-            <p>We are passionate about bringing nature into your home. Our carefully curated selection of plants is designed to enhance your living space and improve your well-being. With years of experience in plant care, we provide not just plants, but a greener lifestyle.</p>
+      </div>
+      <div class="block2-head">Our Trendy Plants</div>
+      <div id="more" class="block2"></div>
+      <section id="about" class="about-section">
+        <div class="about-left">
+          <img
+            src="images/p2.png"
+            alt="About Planto - Decorative indoor plant"
+          />
         </div>
+
+        <div class="about-right">
+          <h2>About Planto</h2>
+
+          <p>
+            Planto helps people discover beautiful indoor plants, improve living
+            spaces and bring nature into everyday life. We believe plants create
+            healthier and happier homes.
+          </p>
+
+          <div class="about-cards">
+            <div class="about-card">
+              <h3>500+</h3>
+              <p>Happy Customers</p>
+            </div>
+
+            <div class="about-card">
+              <h3>100+</h3>
+              <p>Plant Types</p>
+            </div>
+
+            <div class="about-card">
+              <h3>24/7</h3>
+              <p>Support</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
     <section id="contact" class="newsletter">
-        <h2>Subscribe to Our Newsletter</h2>
-        <form>
-            <input type="email" placeholder="Enter your email">
-            <button type="submit">Subscribe</button>
-        </form>
+      <h2>Subscribe to Our Newsletter</h2>
+      <form>
+        <input type="email" placeholder="Enter your email" />
+        <button type="submit">Subscribe</button>
+      </form>
     </section>
     <footer>
-        <p>&copy; 2024 Planto. All rights reserved.</p>
+      <div class="footer-container">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <img src="images/indoor-plants_5451442.png" alt="Planto logo" />
+            <h3>Planto</h3>
+          </div>
+          <p>
+            We help you discover beautiful indoor plants to improve your living
+            spaces and bring nature into everyday life.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#more">Plant Type</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Customer Service</h3>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Shipping & Returns</a></li>
+            <li><a href="#">Store Policy</a></li>
+            <li><a href="#">Payment Methods</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">Twitter</a>
+            <a href="#">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          &copy; <span id="current-year">2024</span> Planto. All rights
+          reserved.
+        </p>
+      </div>
     </footer>
+
+    <!-- Plant Matchmaker Modal -->
+    <div id="quiz-modal" class="modal-overlay hidden">
+      <div class="modal-content glass-effect">
+        <button id="close-quiz" class="close-btn">&times;</button>
+
+        <div id="quiz-screen-start" class="quiz-screen active">
+          <h2>Find Your Perfect Plant</h2>
+          <p>Take our quick quiz to match with your ideal leafy companion.</p>
+          <button id="start-quiz-btn" class="quiz-btn">Start Quiz</button>
+        </div>
+
+        <div id="quiz-screen-1" class="quiz-screen hidden">
+          <h2>How much sunlight does your space get?</h2>
+          <div class="quiz-options">
+            <button
+              class="quiz-option"
+              data-question="sunlight"
+              data-value="low"
+            >
+              Low Light
+            </button>
+            <button
+              class="quiz-option"
+              data-question="sunlight"
+              data-value="medium"
+            >
+              Medium Light
+            </button>
+            <button
+              class="quiz-option"
+              data-question="sunlight"
+              data-value="bright"
+            >
+              Bright Direct Light
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-screen-2" class="quiz-screen hidden">
+          <h2>Do you have pets?</h2>
+          <div class="quiz-options">
+            <button
+              class="quiz-option"
+              data-question="petFriendly"
+              data-value="true"
+            >
+              Yes, plant needs to be safe!
+            </button>
+            <button
+              class="quiz-option"
+              data-question="petFriendly"
+              data-value="false"
+            >
+              No pets
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-screen-3" class="quiz-screen hidden">
+          <h2>How experienced are you with plants?</h2>
+          <div class="quiz-options">
+            <button
+              class="quiz-option"
+              data-question="careLevel"
+              data-value="easy"
+            >
+              I kill everything (Easy)
+            </button>
+            <button
+              class="quiz-option"
+              data-question="careLevel"
+              data-value="medium"
+            >
+              I can keep them alive (Medium)
+            </button>
+            <button
+              class="quiz-option"
+              data-question="careLevel"
+              data-value="hard"
+            >
+              I'm a pro (Hard)
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-screen-results" class="quiz-screen hidden">
+          <h2>Your Perfect Match</h2>
+          <div id="quiz-results-container"></div>
+          <button
+            id="restart-quiz-btn"
+            class="quiz-btn outline"
+            style="margin-top: 20px"
+          >
+            Retake Quiz
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
-   
 
-
-<script>
-document.getElementById('dark-mode-toggle').addEventListener('change', function() {
-    document.body.classList.toggle('dark-mode');
-    document.querySelector('.navbar').classList.toggle('dark-mode');
-    document.querySelector('.block1').classList.toggle('dark-mode');
-    document.querySelector('.block2').classList.toggle('dark-mode');
-    document.querySelector('.about-section').classList.toggle('dark-mode');
-    document.querySelector('.newsletter').classList.toggle('dark-mode');
-    document.querySelector('footer').classList.toggle('dark-mode');
-    document.querySelectorAll('.items ul li a').forEach(function(element) {
-        element.classList.toggle('dark-mode');
-    });
-    document.querySelectorAll('.buy-button').forEach(function(element) {
-        element.classList.toggle('dark-mode');
-    });
-});
-</script>
-
-</body>
-
+    <script>
+      document
+        .getElementById("dark-mode-toggle")
+        .addEventListener("change", function () {
+          document.body.classList.toggle("dark-mode");
+          document.querySelector(".navbar").classList.toggle("dark-mode");
+          document.querySelector(".block1").classList.toggle("dark-mode");
+          document.querySelector(".block2").classList.toggle("dark-mode");
+          document
+            .querySelector(".about-section")
+            .classList.toggle("dark-mode");
+          document.querySelector(".newsletter").classList.toggle("dark-mode");
+          document.querySelector("footer").classList.toggle("dark-mode");
+          document
+            .querySelectorAll(".items ul li a")
+            .forEach(function (element) {
+              element.classList.toggle("dark-mode");
+            });
+          document.querySelectorAll(".buy-button").forEach(function (element) {
+            element.classList.toggle("dark-mode");
+          });
+        });
+    </script>
+  </body>
 </html>

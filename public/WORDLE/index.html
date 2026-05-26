@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto+Slab:wght@600;700&family=Ubuntu:wght@700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/style.css">
     <script type='text/javascript' src='./assets/js/words.js'></script>
     <title>Wordle</title>
@@ -17,6 +16,8 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
     <ul class='navbar'>
         <li><img class='info navele nav__icon' src="img/information.png" alt=""></li>
         <li>
@@ -39,18 +40,18 @@
         <img class='example__img' src="img/rules.png" alt="">
         <p>The letter <strong>A</strong> is in the word and in the correct spot.</p>
         <p>The letters <strong>L</strong> and <strong>E</strong> are in the word but are not in the correct spot.</p>
-        <p>The letter <strong>F</strong> and <strong>E</strong> are not in the word.</p>
+        <p>The letter <strong>F</strong> and <strong>T</strong> are not in the word.</p>
         <hr>
         <p><strong>A new WORDLE will be available each day!</strong></p>
     </div>
-    <div class='infoCard hidden popup' id="stats">
+    <div class="infoCard hidden popup" id="stats">
         <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
         <p><strong>STATISTICS</strong></p>
         <p>0 &emsp;&emsp;0 &emsp;&emsp;0 &emsp;&emsp;0</p>
         <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
 
     </div>
-    <div class='infoCard hidden popup' id="result">
+    <div class="infoCard hidden popup" id="stats">
         <p class='crossOuter'><button class='cross' id='closeResult'>&#9587</button></p>
         <p><strong>RESULT</strong></p>
         <p>1 &emsp;&emsp;&emsp;100 &emsp;&emsp;&emsp;&emsp;1 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1</p>
