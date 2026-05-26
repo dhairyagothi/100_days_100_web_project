@@ -1,17 +1,14 @@
 
-// 1. DOM Element References
+// 1. DOM Element References (match HTML ids/classes)
 const taskInput = document.getElementById("task");
-const taskTypeSelect = document.getElementById("task-type-select");
-const taskList = document.getElementById("task-list");
-const emptyState = document.getElementById("empty-state");
-const documentsList = document.getElementById("documents-list");
+const taskTypeSelect = document.getElementById("task-category");
+const taskList = document.getElementById("notes-container");
+const emptyState = document.getElementById("emptyState");
+const documentsList = document.querySelector('.documents-list');
 
-// Stats counters
-const statTotal = document.getElementById("stat-total");
-const statDone = document.getElementById("stat-done");
-const statPending = document.getElementById("stat-pending");
-const progressFill = document.getElementById("progress-fill");
-const progressPct = document.getElementById("progress-pct");
+// Progress / stats elements present in HTML
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
 
 // Data State
 let tasks = [];
@@ -27,9 +24,9 @@ function addTask() {
     return;
   }
 
-  // Find category color from the dropdown configuration
+  // Find category color from the dropdown configuration (fallback)
   const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
-  const color = selectedOption.getAttribute("data-color") || "#ffffff";
+  const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
 
   // Create local task object
   const newTask = {
@@ -101,30 +98,31 @@ function renderTasks() {
   // Toggle Visibility of Empty State Element
   if (filteredTasks.length === 0) {
     taskList.innerHTML = "";
-    taskList.appendChild(emptyState);
-    emptyState.style.display = "flex";
+    if (emptyState) {
+      taskList.appendChild(emptyState);
+      emptyState.style.display = "flex";
+    }
   } else {
-    emptyState.style.display = "none";
+    if (emptyState) emptyState.style.display = "none";
     taskList.innerHTML = "";
 
-    filteredTasks.forEach(task => {
+    filteredTasks.forEach((task, idx) => {
       const card = document.createElement("div");
-      card.className = `task-card ${task.completed ? "done" : ""}`;
+      card.className = `notes` + (task.completed ? " completed" : "");
       card.setAttribute("data-id", task.id);
-      card.style.setProperty("--tag-color", task.color);
+      card.style.setProperty("--i", idx);
 
       card.innerHTML = `
-        <button class="task-check ${task.completed ? "checked" : ""}" onclick="toggleTask(${task.id})">
-          ${task.completed ? "&#10003;" : ""}
-        </button>
-        <input type="text" class="task-text" value="${task.text}" onchange="updateTaskText(${task.id}, this.value)" />
-        <span class="task-tag" style="background-color: ${task.color}">${task.category}</span>
-        <button class="task-del" onclick="deleteTask(${task.id})" title="Delete Task">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="3 6 5 6 21 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-          </svg>
-        </button>
+        <div class="note-row">
+          <textarea class="note-text" onchange="updateTaskText(${task.id}, this.value)">${task.text}</textarea>
+          <div class="note-actions">
+            <div class="category-badge">${task.category}</div>
+            <div>
+              <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
+              <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
+            </div>
+          </div>
+        </div>
       `;
       taskList.appendChild(card);
     });
@@ -143,32 +141,40 @@ function updateTaskText(id, newText) {
 function updateMetrics() {
   const total = tasks.length;
   const done = tasks.filter(t => t.completed).length;
-  const pending = total - done;
   const pct = total === 0 ? 0 : Math.round((done / total) * 100);
 
-  // Set standard string numbers
-  statTotal.innerText = total;
-  statDone.innerText = done;
-  statPending.innerText = pending;
-  
-  // Set styling properties for the track bar
-  progressFill.style.width = `${pct}%`;
-  progressPct.innerText = `${pct}%`;
+  // Update progress UI (matches HTML)
+  if (progressFill) progressFill.style.width = `${pct}%`;
+  if (progressText) progressText.innerText = `${done} / ${total} done`;
 }
 
 // 4. Tab Navigation System
+// function showHome() {
+//   document.getElementById("btn-home").classList.add("active");
+//   document.getElementById("btn-docs").classList.remove("active");
+//   document.getElementById("home-tab").style.display = "block";
+//   document.getElementById("documents-tab").style.display = "none";
+// }
+
+// function showDocuments() {
+//   document.getElementById("btn-home").classList.remove("active");
+//   document.getElementById("btn-docs").classList.add("active");
+//   document.getElementById("home-tab").style.display = "none";
+//   document.getElementById("documents-tab").style.display = "block";
+// }
+
 function showHome() {
-  document.getElementById("btn-home").classList.add("active");
-  document.getElementById("btn-docs").classList.remove("active");
   document.getElementById("home-tab").style.display = "block";
   document.getElementById("documents-tab").style.display = "none";
+  document.getElementById("documents-tab").hidden = true;
+  document.getElementById("home-tab").hidden = false;
 }
 
 function showDocuments() {
-  document.getElementById("btn-home").classList.remove("active");
-  document.getElementById("btn-docs").classList.add("active");
   document.getElementById("home-tab").style.display = "none";
   document.getElementById("documents-tab").style.display = "block";
+  document.getElementById("home-tab").hidden = true;
+  document.getElementById("documents-tab").hidden = false;
 }
 
 // 5. Theme Customization System
@@ -193,17 +199,14 @@ function applyTheme(themeName) {
   if (activeBtn) {
     activeBtn.classList.add("active");
   }
+  try { localStorage.setItem('todo-theme', themeName); } catch (e) {}
 }
 document.querySelectorAll(".theme-btn").forEach(button => {
-
   button.addEventListener("click", () => {
-
     const theme = button.dataset.theme;
-
+    if (!theme) return;
     applyTheme(theme);
-
   });
-
 });
 
 // 6. PDF System using jsPDF Global Library
@@ -277,6 +280,7 @@ function removeDocumentItem(button) {
 // 7. Toast Alerts Notification System
 function showToast(message) {
   const toast = document.getElementById("toast");
+  if (!toast) return;
   toast.innerText = message;
   toast.classList.add("show");
   setTimeout(() => {
@@ -285,6 +289,31 @@ function showToast(message) {
 }
 
 // Listen for enter key in the input element
+// Form submit handler + Enter key
+const taskForm = document.getElementById('task-form');
+if (taskForm) {
+  taskForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    addTask();
+  });
+}
+
 taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") addTask();
+  if (e.key === "Enter") {
+    e.preventDefault();
+    addTask();
+  }
 });
+
+// Load saved theme if present
+try {
+  const saved = localStorage.getItem('todo-theme');
+  if (saved) applyTheme(saved);
+} catch (e) {}
+
+// Save as PDF button click handler
+const savePdfBtn = document.getElementById("savepdf");
+if (savePdfBtn) {
+  savePdfBtn.addEventListener("click", saveAsPDF);
+}
+

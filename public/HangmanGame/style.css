@@ -100,6 +100,7 @@ header h1 {
     color: #ff0000;
 }
 
+
 .game-box .keyboard {
     display: flex;
     gap: 5px;
@@ -129,6 +130,9 @@ header h1 {
 
 .keyboard button:hover {
     background: #795615;
+}
+.keyboard button:active{
+    transform:scale(.95);
 }
 
 /* Modal Styling */
@@ -230,4 +234,153 @@ header h1 {
     .game-box h4 {
         font-size: 1rem;
     }
+}
+.top-controls{
+    width:100%;
+    display:flex;
+    justify-content:center;
+
+    margin-top:25px;
+}
+
+
+.rules-btn{
+
+    background:white;
+
+    border:none;
+
+    padding:12px 22px;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 4px 12px rgba(0,0,0,.15);
+
+    transition:.3s;
+}
+
+
+.rules-btn:hover{
+
+    background:#795615;
+
+    color:white;
+
+    transform:translateY(-2px);
+}
+
+
+
+.rules-modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.6);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.3s;
+
+    z-index:9999;
+}
+
+
+
+.rules-modal.show{
+
+    opacity:1;
+
+    pointer-events:auto;
+}
+
+
+
+.rules-content{
+
+    background:white;
+
+    width:420px;
+
+    padding:30px;
+
+    border-radius:16px;
+
+    position:relative;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+
+    border-top:
+    8px solid #e29d1d;
+}
+
+
+
+.rules-content h2{
+
+    color:#333;
+
+    margin-bottom:20px;
+
+    text-align:center;
+}
+
+
+
+.rules-content ul{
+
+    padding-left:18px;
+}
+
+
+
+.rules-content li{
+
+    margin-bottom:12px;
+
+    color:#444;
+
+    line-height:1.5;
+}
+
+
+
+.close-rules{
+
+    position:absolute;
+
+    right:18px;
+
+    top:12px;
+
+    font-size:30px;
+
+    cursor:pointer;
+
+    color:#777;
+}
+
+
+
+.close-rules:hover{
+
+    color:black;
 }
