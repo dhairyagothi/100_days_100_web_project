@@ -809,6 +809,8 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
     <button id="theme-toggle" aria-label="Toggle dark mode">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
@@ -855,6 +857,9 @@
                 <option value="other">Other</option>
             </select>
             <input type="submit" value="Add Transaction">
+            <button onclick="exportCSV()">
+    Export CSV
+</button>
         </form>
 
         <!-- ===== SAVINGS PROGRESS TRACKER ===== -->
@@ -902,6 +907,30 @@
         <button id="clear-storage">Clear All Data</button>
 
         <div id="transactions">
+            <section id="monthly-report">
+
+    <h2>Monthly Report</h2>
+
+    <div class="dashboard">
+
+        <div class="balance">
+            <h2>Total Income</h2>
+            <p id="monthlyIncome">₹0</p>
+        </div>
+
+        <div class="expense">
+            <h2>Total Expense</h2>
+            <p id="monthlyExpense">₹0</p>
+        </div>
+
+        <div class="income">
+            <h2>Monthly Balance</h2>
+            <p id="monthlyBalance">₹0</p>
+        </div>
+
+    </div>
+
+</section>
             <h2>Recent Transactions</h2>
             <table id="transactions-table">
                 <thead>
@@ -986,14 +1015,20 @@
             const category = document.getElementById('category').value;
             const date = new Date().toISOString().split('T')[0];
 
-            const transaction = { description, amount, type, category, date };
-            transactions.push(transaction);
+            const transaction = {
 
+    title,
+    amount,
+    type,
+    date: new Date()
+
+};
             localStorage.setItem('transactions', JSON.stringify(transactions));
 
             updateBalance();
             displayTransactions();
             updateChart();
+            generateMonthlyReport();
             updateSavingsAnalytics(); // update analytics on new transaction
 
             form.reset();
@@ -1448,6 +1483,59 @@
         // ---- Init savings on page load ----
         renderGoals();
     </script>
+    function exportCSV() {
+
+    let csv =
+        "Title,Amount,Type,Date\n";
+
+    transactions.forEach(transaction => {
+
+        csv +=
+            `${transaction.title},
+${transaction.amount},
+${transaction.type},
+${transaction.date}\n`;
+
+    });
+
+    const blob =
+        new Blob([csv], {
+            type: "text/csv"
+        });
+
+    const link =
+        document.createElement("a");
+
+    link.href =
+        URL.createObjectURL(blob);
+
+    link.download =
+        "finance-report.csv";
+
+    link.click();
+}
+    function generateMonthlyReport() {
+
+    let income = 0;
+    let expense = 0;
+
+    transactions.forEach(transaction => {
+
+        if (transaction.type === "income") {
+            income += Number(transaction.amount);
+        } else {
+            expense += Number(transaction.amount);
+        }
+
+    });
+
+    document.getElementById("monthlyIncome").innerText = `₹${income}`;
+
+    document.getElementById("monthlyExpense").innerText = `₹${expense}`;
+
+    document.getElementById("monthlyBalance").innerText =
+        `₹${income - expense}`;
+}
 </body>
 
 </html>

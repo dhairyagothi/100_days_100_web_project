@@ -4,7 +4,27 @@
   box-sizing:border-box;
   font-family:'Poppins',sans-serif;
 }
+.logo-box img{
+  width:40px;
+  height:40px;
+  object-fit:contain;
 
+  filter:
+    drop-shadow(0 0 8px #00e5ff)
+    drop-shadow(0 0 15px #7c4dff);
+
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoGlow{
+  0%,100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.08);
+  }
+}
 body{
   background:
   radial-gradient(circle at top right,#3b0066 0%,transparent 25%),
