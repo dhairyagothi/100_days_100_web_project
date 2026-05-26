@@ -309,6 +309,46 @@ body[data-theme="mono"] {
     animation: hintPulse 1s ease-in-out infinite;
 }
 
+/* ── Dynamic cell styles (built by JS) ── */
+.cell {
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    font-size: clamp(2.2rem, 8vw, 4rem);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell:hover:not(.taken) {
+    transform: translateY(-4px);
+    box-shadow: var(--glow);
+    background: rgba(64, 245, 210, 0.12);
+}
+
+.cell.x-mark {
+    color: var(--accent-2);
+    text-shadow:
+        0 0 8px rgba(255, 125, 125, 0.9),
+        0 0 18px rgba(255, 125, 125, 0.7);
+}
+
+.cell.o-mark {
+    color: var(--accent);
+    text-shadow:
+        0 0 8px rgba(64, 245, 210, 0.9),
+        0 0 18px rgba(64, 245, 210, 0.7);
+}
+
+.cell.win-cell {
+    background: rgba(64, 245, 210, 0.28);
+    box-shadow: 0 0 30px rgba(64, 245, 210, 0.45);
+    transform: translateY(-2px) scale(1.02);
+}
+
 .win-line {
     position: absolute;
     height: 6px;
@@ -636,10 +676,6 @@ body[data-theme="mono"] {
     .panel {
         padding: 16px;
     }
-
-  to {
-    transform: translateY(-120px);
-  }
 }
 
 /* ── Mode screen ─────────────────────────── */
@@ -707,3 +743,25 @@ body[data-theme="mono"] {
 .mode-icon  { font-size: 40px; line-height: 1; }
 .mode-label { font-size: 20px; font-weight: 900; letter-spacing: 1px; }
 .mode-desc  { font-size: 12px; color: #aaa; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── Fixed: start-modal visible by default via .show class ── */
+.start-modal.show,
+.winner-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── Fixed: win cell highlight ── */
+.box.win {
+    background: rgba(64, 245, 210, 0.28);
+    box-shadow: 0 0 30px rgba(64, 245, 210, 0.45);
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* ── Fixed: score card X color ── */
+.score-card[data-player="X"] strong {
+    color: var(--accent-2);
+}
+.score-card[data-player="O"] strong {
+    color: var(--accent);
+}
