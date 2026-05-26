@@ -251,3 +251,19 @@ userInput.addEventListener("keypress", (e) => {
     sendMessage();
   }
 });
+
+if (tabSignIn && tabSignUp && formSignInContainer && formSignUpContainer) {
+  tabSignIn.addEventListener("click", () => {
+    tabSignIn.classList.add("active");
+    tabSignUp.classList.remove("active");
+    formSignInContainer.classList.add("active");
+    formSignUpContainer.classList.remove("active");
+  });
+
+  tabSignUp.addEventListener("click", () => {
+    tabSignUp.classList.add("active");
+    tabSignIn.classList.remove("active");
+    formSignUpContainer.classList.add("active");
+    formSignInContainer.classList.remove("active");
+  });
+}

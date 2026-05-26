@@ -127,6 +127,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body class="dashboard-theme">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
     <div class="app-layout">
         <!-- 1. LEFT SIDEBAR: Navigation & ATS Score -->
         <aside class="sidebar">
@@ -269,13 +271,6 @@
         <!-- 2. CENTER PANEL: Form Workspace -->
         <main class="workspace-panel">
             <header class="panel-header">
-                <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Open Menu">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
                 <div class="header-title-container">
                     <span class="section-subtitle">Resume Builder</span>
                     <h2 id="currentSectionTitle">Personal Details</h2>
@@ -515,18 +510,6 @@
                     </div>
                 </div>
             </div>
-            <div id="atsScoreBox">
-    <h3>ATS Resume Score</h3>
-    <div id="atsScore">0/100</div>
-
-    <div class="ats-feedback">
-        <h4>Strengths</h4>
-        <ul id="atsStrengths"></ul>
-
-        <h4>Suggestions</h4>
-        <ul id="atsSuggestions"></ul>
-    </div>
-</div>
         </section>
     </div>
 

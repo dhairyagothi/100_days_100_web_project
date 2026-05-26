@@ -17,6 +17,9 @@ const products = [
     price: 599,
     originalPrice: 599,
     searchQuery: "calathea+plant",
+    sunlight: "medium",
+    petFriendly: true,
+    careLevel: "medium",
   },
   {
     image: "images/p4.png",
@@ -27,6 +30,23 @@ const products = [
     price: 799,
     originalPrice: 799,
     searchQuery: "monstera+plant",
+    sunlight: "bright",
+    petFriendly: false,
+    careLevel: "easy",
+  },
+  {
+    image: "images/p2.png",
+    alt: "Snake Plant",
+    title: "Snake Plant",
+    description:
+      "Snake plants are hardy and can survive low light and drought, making them perfect for beginners and virtually indestructible.",
+    price: 399,
+    originalPrice: 399,
+    searchQuery: "snake+plant",
+    sunlight: "low",
+    petFriendly: false,
+    careLevel: "easy",
+    fallback: true,
   },
 ];
 
@@ -176,3 +196,101 @@ const currentYearSpan = document.getElementById("current-year");
 if (currentYearSpan) {
   currentYearSpan.textContent = new Date().getFullYear();
 }
+
+// ========================= PLANT MATCHMAKER QUIZ =========================
+const quizData = {
+  sunlight: "",
+  petFriendly: "",
+  careLevel: "",
+};
+
+const quizModal = document.getElementById("quiz-modal");
+const startQuizBtn = document.getElementById("start-quiz-btn");
+const closeQuizBtn = document.getElementById("close-quiz");
+const restartQuizBtn = document.getElementById("restart-quiz-btn");
+const quizCtaBtn = document.getElementById("quiz-cta");
+const optionBtns = document.querySelectorAll(".quiz-option");
+
+function showScreen(screenId) {
+  document.querySelectorAll(".quiz-screen").forEach((screen) => {
+    screen.classList.remove("active");
+    screen.classList.add("hidden");
+  });
+  document.getElementById(screenId).classList.remove("hidden");
+  document.getElementById(screenId).classList.add("active");
+}
+
+function startQuiz() {
+  quizData.sunlight = "";
+  quizData.petFriendly = "";
+  quizData.careLevel = "";
+  showScreen("quiz-screen-1");
+}
+
+function processAnswer(e) {
+  const question = e.target.getAttribute("data-question");
+  const value = e.target.getAttribute("data-value");
+
+  if (value === "true") quizData[question] = true;
+  else if (value === "false") quizData[question] = false;
+  else quizData[question] = value;
+
+  if (question === "sunlight") {
+    showScreen("quiz-screen-2");
+  } else if (question === "petFriendly") {
+    showScreen("quiz-screen-3");
+  } else if (question === "careLevel") {
+    showResults();
+  }
+}
+
+function showResults() {
+  let bestMatch = null;
+  let highestScore = -1;
+
+  products.forEach((p) => {
+    let score = 0;
+
+    // If user needs a pet-friendly plant but this one is not, skip it completely
+    if (quizData.petFriendly === true && p.petFriendly !== true) {
+      return;
+    } else if (p.petFriendly === quizData.petFriendly) {
+      score += 1;
+    }
+
+    // Give points for matching sunlight and care level
+    if (p.sunlight === quizData.sunlight) score += 2;
+    if (p.careLevel === quizData.careLevel) score += 1;
+
+    if (score > highestScore) {
+      highestScore = score;
+      bestMatch = p;
+    }
+  });
+
+  let matchedPlant =
+    bestMatch || products.find((p) => p.fallback) || products[0];
+
+  const resultsContainer = document.getElementById("quiz-results-container");
+  resultsContainer.innerHTML = `
+    <img src="${matchedPlant.image}" alt="${matchedPlant.alt}" />
+    <h3>${matchedPlant.title}</h3>
+    <p>${matchedPlant.description}</p>
+    <a href="https://www.amazon.com/s?k=${matchedPlant.searchQuery}" target="_blank" class="buy-button" style="display:inline-block; margin-top: 15px;">Buy on Amazon</a>
+  `;
+  showScreen("quiz-screen-results");
+}
+
+if (quizCtaBtn)
+  quizCtaBtn.addEventListener("click", () => {
+    quizModal.classList.remove("hidden");
+    showScreen("quiz-screen-start");
+  });
+if (startQuizBtn) startQuizBtn.addEventListener("click", startQuiz);
+if (restartQuizBtn) restartQuizBtn.addEventListener("click", startQuiz);
+if (closeQuizBtn)
+  closeQuizBtn.addEventListener("click", () =>
+    quizModal.classList.add("hidden"),
+  );
+
+optionBtns.forEach((btn) => btn.addEventListener("click", processAnswer));

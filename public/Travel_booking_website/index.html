@@ -20,6 +20,8 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
   <div class="chatbot-container">
 
   <!-- Floating Button -->
@@ -92,7 +94,8 @@
         <li><a href="#service">SERVICE</a></li>
         <li><a href="#offer">OFFER</a></li>
         <li><a href="#client">CLIENT</a></li>
-        <li><button class="btn">Sign Up</button></li>
+        <li><a href="auth.html" class="btn" id="auth-open-btn">Sign In / Up</a></li> 
+</ul>
       </ul>
     </nav>
     <div class="section_container header_container" id="home">
@@ -524,5 +527,7 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="config.js"></script>
   <script src="index.js"></script>
+
+
 </body>
 </html>

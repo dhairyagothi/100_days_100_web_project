@@ -685,6 +685,22 @@ nav {
     }
 }
 
+
+/* Hide containers by default */
+.auth-form-container {
+    display: none;
+}
+
+/* Show only the active container */
+.auth-form-container.active {
+    display: block;
+    animation: fadeInForm 0.3s ease forwards;
+}
+
+@keyframes fadeInForm {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 .faq_container {
   background-color: var(--extra-light);
 }
