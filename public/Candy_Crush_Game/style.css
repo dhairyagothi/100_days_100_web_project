@@ -90,19 +90,65 @@ li:hover{
 
 
 #board {
-    width: 450px;
-    height: 450px;
+    width: 90vw;
+    max-width: 450px;
+    aspect-ratio: 1 / 1;
     background-color: lightblue;
     border: 5px solid slategray;
     border-radius: 10px;
     margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    touch-action: none;
 }
 
 #board img {
-    width: 50px;
-    height: 50px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+#combo-display {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 4em;
+    color: #ffeb3b;
+    text-shadow: 4px 4px 0px #e91e63;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+#combo-display.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+@media (max-width: 600px) {
+    .logo-container {
+        position: static;
+        margin-bottom: 20px;
+        padding: 10px 20px;
+    }
+    .logo-text {
+        font-size: 2em;
+    }
+    #rules {
+        position: static;
+        transform: none;
+        width: 80%;
+        margin: 20px auto;
+    }
+    h1 {
+        font-size: 2em;
+    }
 }
 button{
     padding: 10px 20px;

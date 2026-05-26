@@ -1,242 +1,381 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
     const requestForm = document.getElementById('requestForm');
     const responseForm = document.getElementById('responseForm');
-    const feedbackForm = document.getElementById('feedbackForm');
-    const statusMessage = document.getElementById('statusMessage');
-    const loading = document.getElementById('loading');
-    const historyList = document.getElementById('historyList');
+
     const specialistSearch = document.getElementById('specialistSearch');
     const specialistTypeSelect = document.getElementById('specialistType');
-    const statusFilter = document.getElementById('statusFilter');
-    const formError = document.getElementById('formError');
-    const responseError = document.getElementById('responseError');
 
-    const specialists = [
-        'Allergist/Immunologist',
-        'Anesthesiologist',
-        'Cardiologist',
-        'Dermatologist',
-        'Endocrinologist',
-        'Gastroenterologist',
-        'Hematologist',
-        'Nephrologist',
-        'Neurologist',
-        'Oncologist',
-        'Ophthalmologist',
-        'Otolaryngologist (ENT)',
-        'Pediatrician',
-        'Psychiatrist',
-        'Pulmonologist',
-        'Rheumatologist',
-        'Urologist',
-        'Cardiothoracic Surgeon',
-        'General Surgeon',
-        'Neurosurgeon',
-        'Orthopedic Surgeon',
-        'Plastic Surgeon',
-        'Vascular Surgeon',
-        'Family Medicine Physician',
-        'General Practitioner (GP)',
-        'Internal Medicine Physician (Internist)'
+    const statusMessage = document.getElementById('statusMessage');
+    const progressStepper = document.getElementById('progressStepper');
+    const specialistResponseSection = document.getElementById('specialist-response');
+
+    const historyList = document.getElementById('historyList');
+    const emptyHistoryState = document.getElementById('emptyHistoryState');
+    const toastContainer = document.getElementById('toast-container');
+
+    const toggleAdvancedBtn = document.getElementById('toggleAdvancedBtn');
+    const advancedFields = document.getElementById('advancedFields');
+    const resetRequestBtn = document.getElementById('resetRequestBtn');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+    const medicalFiles = document.getElementById('medicalFiles');
+    const fileList = document.getElementById('fileList');
+
+    const specialistCategories = [
+        {
+            category: "Cardiology & Vascular",
+            specialists: ['Cardiologist', 'Cardiothoracic Surgeon', 'Vascular Surgeon']
+        },
+        {
+            category: "Neurology & Head",
+            specialists: ['Neurologist', 'Neurosurgeon', 'Psychiatrist', 'Ophthalmologist', 'Otolaryngologist (ENT)']
+        },
+        {
+            category: "Internal Medicine",
+            specialists: ['Internal Medicine Physician', 'Endocrinologist', 'Gastroenterologist', 'Pulmonologist', 'Nephrologist', 'Rheumatologist', 'Hematologist', 'Oncologist', 'Allergist/Immunologist']
+        },
+        {
+            category: "General & Family",
+            specialists: ['General Practitioner (GP)', 'Family Medicine Physician', 'Pediatrician', 'General Surgeon']
+        },
+        {
+            category: "Other Specialties",
+            specialists: ['Dermatologist', 'Orthopedic Surgeon', 'Plastic Surgeon', 'Urologist', 'Anesthesiologist']
+        }
     ];
 
-    let consultationHistory = JSON.parse(localStorage.getItem('consultationHistory')) || [];
+    const statuses = ['Available 🟢', 'Busy 🟡', 'Offline 🔴'];
 
-    function saveHistory() {
-        localStorage.setItem('consultationHistory', JSON.stringify(consultationHistory));
+    let consultationHistory = JSON.parse(localStorage.getItem('medConsultHistoryV2')) || [];
+
+    init();
+
+    function init() {
+        const savedTheme = localStorage.getItem('medConsultTheme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggleBtn.innerHTML = '<i class="ph ph-sun"></i>';
+        }
+
+        updateSpecialistOptions('');
+        renderHistory();
+        setupEventListeners();
     }
 
-    function createConsultationId() {
-        return `CONS-${Date.now()}`;
+    function setupEventListeners() {
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+
+            localStorage.setItem('medConsultTheme', isDark ? 'dark' : 'light');
+            themeToggleBtn.innerHTML = isDark
+                ? '<i class="ph ph-sun"></i>'
+                : '<i class="ph ph-moon"></i>';
+        });
+
+        specialistSearch.addEventListener('input', (e) => {
+            updateSpecialistOptions(e.target.value);
+        });
+
+        toggleAdvancedBtn.addEventListener('click', () => {
+            advancedFields.classList.toggle('hidden');
+
+            const icon = advancedFields.classList.contains('hidden')
+                ? 'ph-caret-down'
+                : 'ph-caret-up';
+
+            const text = advancedFields.classList.contains('hidden')
+                ? 'Show Advanced Details'
+                : 'Hide Advanced Details';
+
+            toggleAdvancedBtn.innerHTML = `<i class="ph ${icon}"></i> ${text}`;
+        });
+
+        medicalFiles.addEventListener('change', handleFileSelection);
+
+        resetRequestBtn.addEventListener('click', () => {
+            requestForm.reset();
+            fileList.innerHTML = '';
+            showToast('Form cleared', 'success');
+        });
+
+        requestForm.addEventListener('submit', handleRequestSubmit);
+        responseForm.addEventListener('submit', handleResponseSubmit);
+    }
+
+    function handleFileSelection(e) {
+        fileList.innerHTML = '';
+
+        Array.from(e.target.files).forEach(file => {
+            const item = document.createElement('div');
+            item.className = 'file-item';
+            item.innerHTML = `
+                <i class="ph ph-file"></i>
+                ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+            `;
+            fileList.appendChild(item);
+        });
     }
 
     function updateSpecialistOptions(searchText) {
-        specialistTypeSelect.innerHTML = '';
+        specialistTypeSelect.innerHTML =
+            '<option value="">Select a Specialist...</option>';
 
-        const filteredSpecialists = specialists.filter((specialist) =>
-            specialist.toLowerCase().includes(searchText.toLowerCase())
-        );
+        let foundAny = false;
 
-        if (filteredSpecialists.length === 0) {
+        specialistCategories.forEach(group => {
+            const filtered = group.specialists.filter(s =>
+                s.toLowerCase().includes(searchText.toLowerCase())
+            );
+
+            if (filtered.length > 0) {
+                foundAny = true;
+
+                const optGroup = document.createElement('optgroup');
+                optGroup.label = group.category;
+
+                filtered.forEach(specialist => {
+                    const statusIndex = specialist.length % 3;
+                    const statusText = statuses[statusIndex];
+
+                    const option = document.createElement('option');
+                    option.value = specialist;
+                    option.textContent = `${specialist} - ${statusText}`;
+
+                    optGroup.appendChild(option);
+                });
+
+                specialistTypeSelect.appendChild(optGroup);
+            }
+        });
+
+        if (!foundAny) {
             const option = document.createElement('option');
             option.value = '';
-            option.textContent = 'No specialist found';
+            option.textContent = 'No specialists found...';
             specialistTypeSelect.appendChild(option);
-            return;
         }
-
-        filteredSpecialists.forEach((specialist) => {
-            const option = document.createElement('option');
-            option.value = specialist;
-            option.textContent = specialist;
-            specialistTypeSelect.appendChild(option);
-        });
     }
 
-    function renderHistory() {
-        const selectedStatus = statusFilter.value;
-        const filteredHistory = consultationHistory.filter((item) =>
-            selectedStatus === 'All' || item.status === selectedStatus
-        );
+    function handleRequestSubmit(e) {
+        e.preventDefault();
 
-        historyList.innerHTML = '';
-
-        if (filteredHistory.length === 0) {
-            const emptyItem = document.createElement('li');
-            emptyItem.className = 'empty-state';
-            emptyItem.textContent = 'No consultations found.';
-            historyList.appendChild(emptyItem);
-            return;
-        }
-
-        filteredHistory.forEach((item) => {
-            const listItem = document.createElement('li');
-            listItem.className = `history-card ${item.status.toLowerCase()}`;
-
-            const title = document.createElement('strong');
-            title.textContent = `${item.id} - ${item.status}`;
-
-            const details = document.createElement('p');
-            details.textContent = `Date: ${item.date}`;
-
-            const doctor = document.createElement('p');
-            doctor.textContent = `Doctor: ${item.doctorName}`;
-
-            const condition = document.createElement('p');
-            condition.textContent = `Condition: ${item.condition}`;
-
-            const specialist = document.createElement('p');
-            specialist.textContent = `Specialist: ${item.specialist}`;
-
-            const notes = document.createElement('p');
-            notes.textContent = item.notes ? `Suggestion: ${item.notes}` : 'Suggestion: Not provided yet';
-
-            listItem.append(title, details, doctor, condition, specialist, notes);
-            historyList.appendChild(listItem);
-        });
-    }
-
-    function validateConsultationForm(doctorName, patientCondition, specialistType) {
-        const namePattern = /^[A-Za-z .'-]{3,}$/;
-
-        if (!namePattern.test(doctorName)) {
-            return 'Please enter a valid doctor name with at least 3 letters.';
-        }
-
-        if (patientCondition.length < 10) {
-            return 'Please describe the patient condition in at least 10 characters.';
-        }
-
-        if (!specialistType) {
-            return 'Please select a valid specialist.';
-        }
-
-        return '';
-    }
-
-    specialistSearch.addEventListener('input', (event) => {
-        updateSpecialistOptions(event.target.value);
-    });
-
-    statusFilter.addEventListener('change', renderHistory);
-
-    requestForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
+        const patientName = document.getElementById('patientName').value.trim();
         const doctorName = document.getElementById('doctorName').value.trim();
-        const patientCondition = document.getElementById('patientCondition').value.trim();
-        const specialistType = specialistTypeSelect.value;
+        const condition = document.getElementById('patientCondition').value.trim();
+        const specialist = specialistTypeSelect.value;
 
-        const validationMessage = validateConsultationForm(doctorName, patientCondition, specialistType);
-
-        if (validationMessage) {
-            formError.textContent = validationMessage;
+        if (!patientName || !doctorName || !condition || !specialist) {
+            showToast('Please fill out all required core fields.', 'error');
             return;
         }
 
-        formError.textContent = '';
-        loading.hidden = false;
-        statusMessage.textContent = '';
+        const age = document.getElementById('patientAge').value;
+        const gender = document.getElementById('patientGender').value;
+        const contact = document.getElementById('contactInfo').value.trim();
+        const priority = document.getElementById('priorityLevel').value;
+        const apptDate = document.getElementById('appointmentDate').value;
+        const fileCount = medicalFiles.files.length;
+
+        const newConsultation = {
+            id: 'CONS-' + Math.floor(Math.random() * 10000),
+            date: new Date().toLocaleString(),
+            patientName,
+            doctorName,
+            condition,
+            specialist,
+            age,
+            gender,
+            contact,
+            priority,
+            apptDate: apptDate ? new Date(apptDate).toLocaleString() : 'Pending',
+            files: fileCount,
+            status: 'Pending'
+        };
+
+        const submitBtn = document.getElementById('submitRequestBtn');
+        submitBtn.disabled = true;
+
+        statusMessage.style.display = 'none';
+        progressStepper.classList.remove('hidden');
+
+        document.querySelectorAll('.step').forEach(s => {
+            s.classList.remove('active', 'completed');
+        });
+
+        document.getElementById('step1').classList.add('active');
 
         setTimeout(() => {
-            const newHistoryItem = {
-                id: createConsultationId(),
-                date: new Date().toLocaleString(),
-                doctorName,
-                condition: patientCondition,
-                specialist: specialistType,
-                status: 'Pending',
-                notes: ''
-            };
+            document.getElementById('step1').classList.replace('active', 'completed');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('assignedSpecialistName').textContent =
+                specialist.split(' - ')[0];
+        }, 1000);
 
-            consultationHistory.unshift(newHistoryItem);
+        setTimeout(() => {
+            document.getElementById('step2').classList.replace('active', 'completed');
+            document.getElementById('step3').classList.add('active');
+        }, 2000);
+
+        setTimeout(() => {
+            document.getElementById('step3').classList.replace('active', 'completed');
+            document.getElementById('step4').classList.add('completed');
+
+            submitBtn.disabled = false;
+
+            consultationHistory.unshift(newConsultation);
             saveHistory();
             renderHistory();
 
-            loading.hidden = true;
-            statusMessage.textContent =
-                `Consultation requested successfully.\nConsultation ID: ${newHistoryItem.id}\nSpecialist type: ${specialistType}`;
+            showToast('Consultation request completed successfully!', 'success');
+
+            specialistResponseSection.style.display = 'block';
+            document.getElementById('consultationId').value = newConsultation.id;
 
             requestForm.reset();
+            fileList.innerHTML = '';
             updateSpecialistOptions('');
-        }, 800);
-    });
+        }, 3000);
+    }
 
-    responseForm.addEventListener('submit', (event) => {
-        event.preventDefault();
+    function handleResponseSubmit(e) {
+        e.preventDefault();
 
-        const consultationId = document.getElementById('consultationId').value.trim();
+        const id = document.getElementById('consultationId').value.trim();
         const suggestion = document.getElementById('suggestion').value.trim();
-        const urgencyLevel = document.getElementById('urgencyLevel').value;
-        const recommendedTests = document.getElementById('recommendedTests').value.trim();
-        const followUpDate = document.getElementById('followUpDate').value;
 
-        if (suggestion.length < 10) {
-            responseError.textContent = 'Please enter a suggestion with at least 10 characters.';
+        if (!id || !suggestion) {
+            showToast('Please provide both Consultation ID and a Suggestion.', 'error');
             return;
         }
 
-        const historyItem = consultationHistory.find((item) => item.id === consultationId);
+        const index = consultationHistory.findIndex(c => c.id === id);
 
-        if (!historyItem) {
-            responseError.textContent = 'No consultation found with this ID.';
+        if (index !== -1) {
+            consultationHistory[index].status = 'Reviewed';
+            consultationHistory[index].notes = suggestion;
+
+            saveHistory();
+            renderHistory();
+
+            showToast('Suggestion added successfully!', 'success');
+
+            responseForm.reset();
+            specialistResponseSection.style.display = 'none';
+        } else {
+            showToast('Consultation ID not found.', 'error');
+        }
+    }
+
+    function renderHistory() {
+        historyList.innerHTML = '';
+
+        if (consultationHistory.length === 0) {
+            emptyHistoryState.style.display = 'flex';
             return;
         }
 
-        responseError.textContent = '';
-        historyItem.status = 'Completed';
-         historyItem.notes = suggestion;
-       historyItem.urgencyLevel = urgencyLevel;
-     historyItem.recommendedTests = recommendedTests || 'Not specified';
-      historyItem.followUpDate = followUpDate || 'Not specified';
+        emptyHistoryState.style.display = 'none';
 
-        saveHistory();
-        renderHistory();
+        consultationHistory.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.className = 'history-item';
 
-        statusMessage.textContent = `Suggestion submitted for Consultation ID ${consultationId}.`;
-        responseForm.reset();
-    });
+            const badgeClass = item.status === 'Pending' ? 'pending' : 'success';
+            const priorityClass = item.priority
+                ? `priority-${item.priority.toLowerCase()}`
+                : 'priority-normal';
 
-    feedbackForm.addEventListener('submit', (event) => {
-        event.preventDefault();
+            let advancedMeta = '';
 
-        const feedbackMessage = document.getElementById('feedbackMessage').value.trim();
-        const rating = document.getElementById('rating').value;
+            if (item.age || item.gender) {
+                advancedMeta += `${item.age ? item.age + ' yrs' : ''} ${item.gender || ''} • `;
+            }
 
-        const feedbackList = JSON.parse(localStorage.getItem('feedbackList')) || [];
+            li.innerHTML = `
+                <div class="history-meta">
+                    <span><i class="ph ph-calendar-blank"></i> ${item.date}</span>
+                    <div>
+                        ${item.priority ? `<span class="badge ${priorityClass}">${item.priority}</span>` : ''}
+                        <span class="badge ${badgeClass}">${item.status}</span>
+                    </div>
+                </div>
 
-        feedbackList.unshift({
-            message: feedbackMessage,
-            rating,
-            date: new Date().toLocaleString()
+                <div class="history-title">
+                    Patient: ${item.patientName}
+                    ${advancedMeta
+                        ? `<span style="font-weight:400;color:var(--clr-text-muted);font-size:0.8rem">(${advancedMeta.slice(0, -3)})</span>`
+                        : ''}
+                </div>
+
+                <div class="history-details">
+                    <strong>Doctor:</strong> ${item.doctorName}<br>
+                    <strong>Specialist:</strong> ${item.specialist.split(' - ')[0]}<br>
+                    <strong>Condition:</strong> ${item.condition}<br>
+                    <strong>Appt Date:</strong> ${item.apptDate}
+                    ${item.files > 0
+                        ? `<br><span style="color:var(--clr-text-muted);"><i class="ph ph-paperclip"></i> ${item.files} file(s) attached</span>`
+                        : ''}
+                    ${item.notes
+                        ? `<br><strong style="color:var(--clr-primary);">Suggestion:</strong> ${item.notes}`
+                        : ''}
+                </div>
+
+                <div class="history-actions">
+                    <a href="reschedule.html?id=${item.id}" class="btn btn-primary" style="padding:0.5rem 1rem;font-size:0.875rem;text-decoration:none;width:auto;">
+                        <i class="ph ph-calendar-plus"></i> Reschedule
+                    </a>
+
+                    <button class="btn btn-danger-outline" onclick="cancelConsultation(${index})">
+                        <i class="ph ph-trash"></i> Cancel
+                    </button>
+                </div>
+            `;
+
+            historyList.appendChild(li);
         });
+    }
 
-        localStorage.setItem('feedbackList', JSON.stringify(feedbackList));
+    window.cancelConsultation = function(index) {
+        if (confirm('Are you sure you want to cancel this consultation request?')) {
+            consultationHistory.splice(index, 1);
+            saveHistory();
+            renderHistory();
+            showToast('Consultation cancelled.', 'success');
+        }
+    };
 
-        statusMessage.textContent = `Thank you for your feedback. Rating received: ${rating}/5.`;
-        feedbackForm.reset();
-    });
+    function saveHistory() {
+        localStorage.setItem(
+            'medConsultHistoryV2',
+            JSON.stringify(consultationHistory)
+        );
+    }
 
-    updateSpecialistOptions('');
-    renderHistory();
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        const icon =
+            type === 'success'
+                ? 'ph-check-circle'
+                : 'ph-warning-circle';
+
+        toast.innerHTML = `
+            <i class="ph ${icon}"></i>
+            <span>${message}</span>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation =
+                'slideOut 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 3000);
+    }
 });

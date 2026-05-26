@@ -263,127 +263,69 @@ button:hover {
     font-size: 0.95rem;
   }
 }
-/* =========================
-   START SCREEN
-========================= */
 
-#start-screen {
+/* ── Mode screen ─────────────────────────── */
+#mode-screen {
   position: fixed;
   inset: 0;
   background:
     radial-gradient(circle at top left, #0f2bff22, transparent 40%),
     radial-gradient(circle at top right, #ff00cc22, transparent 40%),
     #050816;
-
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  z-index: 999;
-  overflow: hidden;
-  transition: all 0.6s ease;
-}
-
-.hide-screen {
+  z-index: 998;
   opacity: 0;
-  transform: scale(1.1);
+  transition: opacity 0.4s ease;
 }
+#mode-screen.show { display: flex; opacity: 1; }
+#mode-screen.hide { opacity: 0; }
 
-.game-title {
-  font-size: 92px;
+.mode-title {
+  font-family: var(--font);
+  font-size: 48px;
   font-weight: 900;
-  letter-spacing: 8px;
-  margin-bottom: 20px;
+  color: #fff;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  text-align: center;
 }
-
-.tic {
-  color: #00c3ff;
-  text-shadow: 0 0 20px #00c3ff;
-}
-
-.tac {
-  color: #ff2cdf;
-  text-shadow: 0 0 20px #ff2cdf;
-}
-
-.toe {
-  color: #ff8c00;
-  text-shadow: 0 0 20px #ff8c00;
-}
-
-.tag-line {
-  color: white;
-  letter-spacing: 6px;
+.mode-sub {
+  color: #aaa;
+  font-family: var(--font);
+  font-size: 16px;
   margin-bottom: 40px;
-  font-size: 18px;
+  letter-spacing: 2px;
 }
-
-#start-btn {
-  padding: 18px 60px;
-  border: 2px solid #ff2cdf;
-  background: transparent;
-  color: white;
-  font-size: 24px;
-  font-weight: 900;
-  border-radius: 14px;
+.mode-btns {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 170px;
+  padding: 32px 20px;
+  border-radius: 20px;
+  border: 2px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
   cursor: pointer;
-  transition: 0.3s;
-  box-shadow:
-    0 0 15px #ff2cdf,
-    inset 0 0 15px #ff2cdf44;
+  font-family: var(--font);
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  backdrop-filter: blur(10px);
 }
-
-#start-btn:hover {
-  transform: scale(1.08);
-  box-shadow:
-    0 0 30px #ff2cdf,
-    0 0 60px #ff2cdf;
+.mode-btn:hover {
+  transform: scale(1.07);
+  border-color: #ff2cdf;
+  box-shadow: 0 0 30px #ff2cdf88;
 }
-.hidden {
-  display: none !important;
-}
-
-.show-game {
-  animation: fadeGame 0.7s ease;
-}
-
-@keyframes fadeGame {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-body::before {
-  content: "";
-
-  position: fixed;
-  inset: 0;
-
-  background-image:
-    radial-gradient(#00c3ff55 1px, transparent 1px),
-    radial-gradient(#ff2cdf55 1px, transparent 1px);
-
-  background-size: 120px 120px;
-
-  animation: moveBg 18s linear infinite;
-
-  pointer-events: none;
-
-  opacity: 0.25;
-}
-
-@keyframes moveBg {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(-120px);
-  }
-}
+.mode-icon  { font-size: 40px; line-height: 1; }
+.mode-label { font-size: 20px; font-weight: 900; letter-spacing: 1px; }
+.mode-desc  { font-size: 12px; color: #aaa; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }

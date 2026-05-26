@@ -44,15 +44,43 @@ h3 {
   opacity: 0.8;
   transition: transform 0.2s, opacity 0.2s;
 }
-.btn:hover { transform: scale(1.05); }
 
-.red { background-color: #ff4c4c; }
-.yellow { background-color: #ffd93d; }
-.green { background-color: #4caf50; }
-.purple { background-color: #9c27b0; }
+.red:hover {
+  box-shadow: 0 0 20px #ff4500;
+}
+
+.yellow:hover {
+  box-shadow: 0 0 20px #ffd700;
+}
+
+.green:hover {
+  box-shadow: 0 0 20px #228B22;
+}
+
+.purple:hover {
+  box-shadow: 0 0 20px #800080;
+}
+
+.red { background-color: #ff4500; }
+.yellow { background-color: #ffd700; }
+.green { background-color: #228B22; }
+.purple { background-color: #800080; }
 
 /* Flash animations */
-.flash { opacity: 1 !important; box-shadow: 0 0 25px white; }
+.flash {
+  opacity: 1 !important;
+  transform: scale(1.08);
+  filter: brightness(1.2);
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+body.dark .flash {
+  filter: brightness(1.5);
+  box-shadow:
+    0 0 12px white,
+    0 0 25px white,
+    0 0 40px rgba(255,255,255,0.9);
+}
 .userflash { transform: scale(1.1); opacity: 1; }
 
 /* Level Up Animation */
@@ -145,23 +173,6 @@ body.dark {
 body.dark h3 {
   color: #cbd5e1;
 }
-
-body.dark .btn.red {
-  background-color: #ff6b6b;
-}
-
-body.dark .btn.yellow {
-  background-color: #ffd93d;
-}
-
-body.dark .btn.green {
-  background-color: #6bcB77;
-}
-
-body.dark .btn.purple {
-  background-color: #b784ff;
-}
-
 
 @media (max-width: 600px) {
 

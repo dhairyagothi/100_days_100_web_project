@@ -145,3 +145,79 @@ body{
     position: absolute;
     animation: move 5s linear infinite;
 }
+
+
+
+
+/* COMMENTS SECTION */
+
+.comments_section{
+    width: 90%;
+    margin: 40px auto;
+    padding: 30px;
+    background: #f8f8f8;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+.comments_section h2{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.comment_box{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment_box input,
+.comment_box textarea{
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    font-size: 16px;
+}
+
+.comment_box textarea{
+    min-height: 100px;
+    resize: vertical;
+}
+
+.comment_box button{
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: black;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.comments_container{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.comment_card{
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+}
+
+.comment_card h3{
+    margin: 0;
+}
+
+.delete_btn{
+    margin-top: 10px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    background: crimson;
+    color: white;
+    cursor: pointer;
+}
