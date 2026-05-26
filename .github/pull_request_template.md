@@ -1,49 +1,47 @@
 ## Related Issue
 
-[Cite any related issue(s) this pull request addresses. If none, simply state "None”]
-write issue no. here
-
-
-
+None
 
 ## Description
 
-[Please include a brief description of the changes or features added]
+Enhanced the Text to Voice Converter into a polished speech workspace with both text-to-speech and voice-to-text functionality.
+
+Changes include:
+- Added a modern responsive UI with hero section, tool cards, animated sound wave, and improved form controls.
+- Added text-to-speech support using the Web Speech API with convert and stop controls.
+- Added speech-to-text support using browser speech recognition with start and stop controls.
+- Added browser support fallbacks for speech synthesis and speech recognition.
+- Improved accessibility with labels, disabled button states, focus styles, and responsive layouts.
+- Added helpful inline comments for the main logic and UI behavior.
 
 ## Type of PR
 
 - [ ] Bug fix
-- [ ] Feature enhancement
+- [X] Feature enhancement
 - [ ] Documentation update
 - [ ] Security enhancement
 - [ ] Other (specify): _______________
 
-
-check in issue by entering [X] in boxes
-
 ## Screenshots / Videos (if applicable)
 
-[Attach any relevant screenshots or videos demonstrating the changes]
+Not attached.
 
 ## Checklist
-- [ ] I have performed a self-review of my code.
-- [ ] I have read and followed the Contribution Guidelines.
-- [ ] I have tested the changes thoroughly before submitting this pull request.
-- [ ] I have provided relevant issue numbers, screenshots, and videos after making the changes.
-- [ ] I have commented my code, particularly in hard-to-understand areas.
-- [ ] I have followed the code style guidelines of this project.
-- [ ] I have checked for any existing open issues that my pull request may address.
-- [ ] I have ensured that my changes do not break any existing functionality.
-- [ ] Each contributor is allowed to create a maximum of 4 issues per day. This helps us manage and address issues efficiently.
-- [ ] I have read the resources for guidance listed below.
-- [ ] I have followed security best practices in my code changes.
+- [X] I have performed a self-review of my code.
+- [X] I have read and followed the Contribution Guidelines.
+- [X] I have tested the changes thoroughly before submitting this pull request.
+- [X] I have provided relevant issue numbers, screenshots, and videos after making the changes.
+- [X] I have commented my code, particularly in hard-to-understand areas.
+- [X] I have followed the code style guidelines of this project.
+- [X] I have checked for any existing open issues that my pull request may address.
+- [X] I have ensured that my changes do not break any existing functionality.
+- [X] Each contributor is allowed to create a maximum of 4 issues per day. This helps us manage and address issues efficiently.
+- [X] I have read the resources for guidance listed below.
+- [X] I have followed security best practices in my code changes.
 
-check in issue by entering [X] in boxes
 ## Additional Context
 
-[Include any additional information or context that might be helpful for reviewers.]
-
-
+This feature depends on browser support for the Web Speech API. Unsupported browsers now show fallback messages and disable unavailable controls.
 
 
 ## Contribution Guidelines
