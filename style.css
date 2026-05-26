@@ -1262,6 +1262,77 @@ color: var(--text-primary);
   white-space: nowrap;
 }
 
+/* ── Project Health Status Badge ────────────────────────────── */
+.status-badge {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.16rem 0.44rem;
+  border-radius: 999px;
+  border: 1px solid;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18rem;
+  line-height: 1;
+}
+
+/* ✅ Live — green */
+.status-badge.live {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+/* ⚠️ Partial — amber */
+.status-badge.partial {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.28);
+}
+
+/* ❌ Broken — red */
+.status-badge.broken {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.28);
+}
+
+/* 🚧 In Progress — slate (default fallback) */
+.status-badge.in-progress {
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.07);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+/* Light-mode overrides */
+body.light-mode .status-badge.live {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.25);
+}
+
+body.light-mode .status-badge.partial {
+  color: #d97706;
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.25);
+}
+
+body.light-mode .status-badge.broken {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
+body.light-mode .status-badge.in-progress {
+  color: #64748b;
+  background: rgba(100, 116, 139, 0.08);
+  border-color: rgba(100, 116, 139, 0.2);
+}
+/* ────────────────────────────────────────────────────────────── */
+
 .project-card.source-only {
   border: 1px solid rgba(251, 146, 60, 0.14);
 }

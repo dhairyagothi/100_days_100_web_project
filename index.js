@@ -176,6 +176,20 @@ function getProjectDescription(project) {
   );
 }
 
+/* ============================================================
+   PROJECT HEALTH STATUS SYSTEM
+   ============================================================ */
+/**
+ * Maps status keys → display config.
+ * Add new statuses here to extend.
+ */
+const STATUS_CONFIG = {
+  live:          { icon: '✅', label: 'Live' },
+  partial:       { icon: '⚠️', label: 'Partial' },
+  broken:        { icon: '❌', label: 'Broken' },
+  'in-progress': { icon: '🚧', label: 'In Progress' },
+};
+
 function buildProjectCardHTML({
   day,
   name,
@@ -184,6 +198,7 @@ function buildProjectCardHTML({
   category,
   isBookmarked = false,
   showDescription = true,
+  status = 'in-progress',
 }) {
   const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(day, name, url, tags);
   const tagsArray = Array.isArray(tags)
@@ -200,6 +215,9 @@ getProjectDescription(project);
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : '';
+  const safeStatus = STATUS_CONFIG[status] ? status : 'in-progress';
+  const { icon: statusIcon, label: statusLabel } = STATUS_CONFIG[safeStatus];
+  const statusBadgeHTML = `<span class="status-badge ${safeStatus}" title="Project status: ${statusLabel}" aria-label="Status: ${statusLabel}">${statusIcon} ${statusLabel}</span>`;
   const primaryLink = sourceOnly
     ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Source
@@ -220,6 +238,7 @@ getProjectDescription(project);
                 <span class="card-category-wrap">
                   <span class="card-category">${category}</span>
                   ${sourceOnlyBadge}
+                  ${statusBadgeHTML}
                 </span>
             </div>
             <div class="card-name">${name}</div>
@@ -612,7 +631,7 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags]) => {
+  pageItems.forEach(([day, name, url, tags, , status]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -624,6 +643,7 @@ function renderGrid() {
       category,
       isBookmarked,
       showDescription: true,
+      status,
     });
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
@@ -869,7 +889,7 @@ function renderBookmarks() {
 
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags]) => {
+  visibleBookmarks.forEach(([day, name, url, tags, , status]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
@@ -880,6 +900,7 @@ function renderBookmarks() {
       category,
       isBookmarked: true,
       showDescription: true,
+      status,
     });
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
@@ -912,12 +933,13 @@ function renderRecentProjects() {
 
   const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach((projectObj) => {
+    visibleRecent.forEach((projectObj) => {
     // Handle both old array format and new object format
     const day = projectObj.day || projectObj[0];
     const name = projectObj.name || projectObj[1];
     const url = projectObj.url || projectObj[2];
     const tags = projectObj.tags || projectObj[3];
+    const status = projectObj.status || projectObj[5] || 'in-progress';
     
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
@@ -930,6 +952,7 @@ function renderRecentProjects() {
       category,
       isBookmarked,
       showDescription: false,
+      status,
     });
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
