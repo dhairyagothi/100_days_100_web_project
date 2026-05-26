@@ -20,9 +20,13 @@
   --page-bg-mid: #0f122a;
   --page-bg-end: #080a1e;
 
+  /* Glass panel base — overridden per theme */
   --glass-bg: rgba(18, 32, 58, 0.70);
   --glass-border: rgba(255, 255, 255, 0.10);
   --glass-shadow: 0 24px 60px rgba(5, 9, 25, 0.40);
+
+  /* Hero / input-panel tint — shifts with each theme */
+  --hero-tint: rgba(28, 20, 70, 0.72);
 
   --text-primary: #f7f8ff;
   --text-muted: rgba(247, 249, 255, 0.65);
@@ -125,10 +129,23 @@ body {
 }
 
 @keyframes floatShape {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(30px, -40px) scale(1.05); }
-  50% { transform: translate(-20px, 20px) scale(0.95); }
-  75% { transform: translate(40px, 30px) scale(1.02); }
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+
+  50% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+
+  75% {
+    transform: translate(40px, 30px) scale(1.02);
+  }
 }
 
 /* ---------- Header / Navigation ---------- */
@@ -196,6 +213,13 @@ header {
   background: rgba(255, 255, 255, 0.12);
 }
 
+/* Active nav tab — set by JS when switching Home / Documents */
+.navbar a.active {
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: 700;
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.08);
+}
+
 .theme-label {
   font-size: 13px;
   font-weight: 600;
@@ -216,16 +240,38 @@ header {
   position: relative;
 }
 
-#colour1 { background: #7c63ff; }
-#colour2 { background: #4f8dff; }
-#colour3 { background: #14b8a6; }
-#colour4 { background: #d57b1b; }
-#colour5 { background: #ef4444; }
+#colour1 {
+  background: #7c63ff;
+}
+
+#colour2 {
+  background: #4f8dff;
+}
+
+#colour3 {
+  background: #14b8a6;
+}
+
+#colour4 {
+  background: #d57b1b;
+}
+
+#colour5 {
+  background: #ef4444;
+}
 
 .theme-btn:hover {
   transform: scale(1.20);
   border-color: rgba(255, 255, 255, 0.80);
   box-shadow: 0 0 24px rgba(255, 255, 255, 0.15);
+}
+
+/* Active theme swatch — set by JS via applyTheme() */
+.theme-btn.active {
+  transform: scale(1.15);
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 0 20px rgba(255, 255, 255, 0.20);
+  outline: none;
 }
 
 /* ---------- Main Layout ---------- */
@@ -251,13 +297,15 @@ section {
 .hero {
   text-align: center;
   width: 100%;
+  margin-bottom: 1rem;
   padding: 36px 24px 28px;
-  background: var(--glass-bg);
+  background: var(--hero-tint);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-radius: 28px;
   box-shadow: var(--glass-shadow);
+  transition: background var(--transition), border-color var(--transition);
 }
 
 .hero-badge {
@@ -271,7 +319,8 @@ section {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 12px;
-  border: 1px solid rgba(124, 99, 255, 0.25);
+  border: 1px solid var(--accent-soft);
+  transition: background var(--transition), color var(--transition);
 }
 
 .heading {
@@ -332,13 +381,14 @@ section {
 /* ---------- Input Panel ---------- */
 .input-panel {
   width: 100%;
-  background: var(--glass-bg);
+  background: var(--hero-tint);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-radius: 24px;
   padding: 20px 24px;
   box-shadow: var(--glass-shadow);
+  transition: background var(--transition), border-color var(--transition);
 }
 
 .input-group {
@@ -515,6 +565,7 @@ section {
     opacity: 0;
     transform: translateY(16px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -588,8 +639,13 @@ section {
 }
 
 @keyframes strikeThrough {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
 }
 
 /* ---------- Actions (Dropdown + Buttons) ---------- */
@@ -682,6 +738,127 @@ section {
   list-style: none;
 }
 
+/* ---------- Document Card (.doc-item) — matches JS-generated HTML ---------- */
+.doc-item {
+  width: min(100%, 700px);
+  padding: 18px 22px;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform var(--transition), background var(--transition);
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.doc-item:hover {
+  transform: translateY(-3px);
+  background: rgba(23, 35, 68, 0.85);
+}
+
+.doc-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.doc-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-primary);
+  word-break: break-all;
+  margin-bottom: 4px;
+}
+
+.doc-info {
+  flex: 1 1 200px;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.doc-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.doc-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.doc-task-count {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 100px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.doc-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.doc-btn {
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  transition: background var(--transition), transform var(--transition);
+  text-align: center;
+}
+
+.doc-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.doc-btn.del {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.30);
+  color: #fca5a5;
+}
+
+.doc-btn.del:hover {
+  background: rgba(239, 68, 68, 0.30);
+}
+
+@media (max-width: 600px) {
+  .doc-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .doc-actions {
+    width: 100%;
+  }
+
+  .doc-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 .document-item {
   width: min(100%, 700px);
   padding: 18px 22px;
@@ -748,11 +925,16 @@ section {
   color: white;
   padding: 14px 24px;
   border-radius: 16px;
-  display: none;
+  /* display: none; */
   z-index: 1000;
   font-weight: 600;
   font-size: 15px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.30);
+}
+
+/* Show state — toggled by JS via classList.add("show") */
+.pdf-message.show {
+  display: block;
   animation: slideInRight 0.4s ease;
 }
 
@@ -761,6 +943,7 @@ section {
     opacity: 0;
     transform: translateX(40px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -880,7 +1063,11 @@ section {
   --page-bg-mid: #0f122a;
   --page-bg-end: #080a1e;
   --accent: #7c63ff;
+  --accent-soft: rgba(124, 99, 255, 0.18);
   --accent-gradient: linear-gradient(135deg, #7c63ff, #4f8dff);
+  --glass-bg: rgba(18, 32, 58, 0.70);
+  --glass-border: rgba(124, 99, 255, 0.15);
+  --hero-tint: rgba(28, 20, 70, 0.72);
 }
 
 .theme2 {
@@ -888,7 +1075,11 @@ section {
   --page-bg-mid: #0a3d62;
   --page-bg-end: #001219;
   --accent: #4f8dff;
+  --accent-soft: rgba(79, 141, 255, 0.18);
   --accent-gradient: linear-gradient(135deg, #4f8dff, #38bdf8);
+  --glass-bg: rgba(6, 30, 55, 0.72);
+  --glass-border: rgba(79, 141, 255, 0.18);
+  --hero-tint: rgba(8, 38, 70, 0.75);
 }
 
 .theme3 {
@@ -896,7 +1087,11 @@ section {
   --page-bg-mid: #14532d;
   --page-bg-end: #022c22;
   --accent: #14b8a6;
+  --accent-soft: rgba(20, 184, 166, 0.18);
   --accent-gradient: linear-gradient(135deg, #14b8a6, #22c55e);
+  --glass-bg: rgba(5, 40, 22, 0.72);
+  --glass-border: rgba(20, 184, 166, 0.18);
+  --hero-tint: rgba(5, 50, 28, 0.76);
 }
 
 .theme4 {
@@ -904,7 +1099,11 @@ section {
   --page-bg-mid: #9f4d21;
   --page-bg-end: #cb550c;
   --accent: #ffb86b;
+  --accent-soft: rgba(255, 184, 107, 0.18);
   --accent-gradient: linear-gradient(135deg, #ffb86b, #f59e0b);
+  --glass-bg: rgba(90, 35, 8, 0.72);
+  --glass-border: rgba(255, 184, 107, 0.20);
+  --hero-tint: rgba(110, 42, 6, 0.75);
 }
 
 .theme5 {
@@ -912,57 +1111,9 @@ section {
   --page-bg-mid: #7f1d1d;
   --page-bg-end: #cb0808;
   --accent: #ef4444;
+  --accent-soft: rgba(239, 68, 68, 0.18);
   --accent-gradient: linear-gradient(135deg, #ef4444, #f97316);
-}
-/* Navigation wrapper */
-.nav{
-  position: relative;
-}
-
-/* Back to Home button — absolute on desktop so it doesn't affect navbar centering */
-.back-button{
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: 12px;
-  background: linear-gradient(90deg, rgba(124,99,255,0.12), rgba(79,141,255,0.08));
-  color: var(--text-primary);
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 8px 20px rgba(12,18,40,0.35);
-  font-weight: 700;
-  font-size: 14px;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
-  z-index: 105;
-}
-
-.back-button .back-text{ /* remove default paragraph spacing */
-  margin: 0;
-  padding: 0;
-  font-size: 14px;
-  line-height: 1;
-}
-
-.back-button:hover{
-  transform: translateY(-52%);
-  box-shadow: 0 12px 30px rgba(12,18,40,0.45);
-  background: linear-gradient(90deg, rgba(124,99,255,0.18), rgba(79,141,255,0.12));
-}
-
-.back-button:active{
-  transform: translateY(-50%);
-}
-
-@media (max-width: 480px) {
-  .back-button{
-    padding: 6px 10px;
-    font-size: 13px;
-    border-radius: 10px;
-  }
-  .back-button .back-text{ font-size: 13px; }
+  --glass-bg: rgba(90, 14, 14, 0.72);
+  --glass-border: rgba(239, 68, 68, 0.22);
+  --hero-tint: rgba(110, 10, 10, 0.76);
 }

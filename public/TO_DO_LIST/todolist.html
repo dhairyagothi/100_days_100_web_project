@@ -26,8 +26,8 @@
       <ul class="navbar">
         <li class="nav-left">
           <ul>
-            <li><a href="#" id="nav-home" aria-current="page">🏠 Home</a></li>
-            <li><a href="#" id="nav-documents">📄 Documents</a></li>
+            <li><a href="#" id="nav-home" onclick="showHome(); return false;" aria-current="page">🏠 Home</a></li>
+            <li><a href="#" id="nav-documents" onclick="showDocuments(); return false;">📄 Documents</a></li>
           </ul>
         </li>
         <li class="nav-right">
@@ -108,7 +108,7 @@
   </main>
 
   <!-- PDF Notification -->
-  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite">✅ PDF Created Successfully!</div>
+  <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
 
   <script src="todolist.js"></script>
 </body>

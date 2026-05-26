@@ -857,6 +857,9 @@
                 <option value="other">Other</option>
             </select>
             <input type="submit" value="Add Transaction">
+            <button onclick="exportCSV()">
+    Export CSV
+</button>
         </form>
 
         <!-- ===== SAVINGS PROGRESS TRACKER ===== -->
@@ -1012,9 +1015,14 @@
             const category = document.getElementById('category').value;
             const date = new Date().toISOString().split('T')[0];
 
-            const transaction = { description, amount, type, category, date };
-            transactions.push(transaction);
+            const transaction = {
 
+    title,
+    amount,
+    type,
+    date: new Date()
+
+};
             localStorage.setItem('transactions', JSON.stringify(transactions));
 
             updateBalance();
@@ -1475,6 +1483,37 @@
         // ---- Init savings on page load ----
         renderGoals();
     </script>
+    function exportCSV() {
+
+    let csv =
+        "Title,Amount,Type,Date\n";
+
+    transactions.forEach(transaction => {
+
+        csv +=
+            `${transaction.title},
+${transaction.amount},
+${transaction.type},
+${transaction.date}\n`;
+
+    });
+
+    const blob =
+        new Blob([csv], {
+            type: "text/csv"
+        });
+
+    const link =
+        document.createElement("a");
+
+    link.href =
+        URL.createObjectURL(blob);
+
+    link.download =
+        "finance-report.csv";
+
+    link.click();
+}
     function generateMonthlyReport() {
 
     let income = 0;
