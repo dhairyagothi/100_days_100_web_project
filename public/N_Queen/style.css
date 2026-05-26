@@ -57,14 +57,21 @@ body {
     background-color: #6cde9b;
   }
 
-  #gameBoard {
-    display: grid;
-    margin: 20px auto;
-    border: 4px solid #ff6347;
-    background: #2c2f40;
-    width: fit-content;
-    border-radius: 10px;
-  }
+#gameBoard {
+  display: grid;
+  margin: 20px auto;
+  border: 4px solid #ff6347;
+  background: #2c2f40;
+  border-radius: 10px;
+  
+  /* --- Add/Update these lines --- */
+  width: fit-content;      /* Keeps it tight around small boards */
+  max-width: 95vw;        /* Prevents it from going off the screen edges */
+  max-height: 70vh;       /* Keeps it from being too tall on mobile */
+  overflow: auto;         /* Adds a scrollbar ONLY if the board is too big */
+  padding: 10px;          /* Adds some breathing room inside the border */
+  /* ------------------------------ */
+}
 
   .square {
     width: 60px;
@@ -76,6 +83,10 @@ body {
     border: 0.5px solid #e4806e;
     cursor: pointer;
     transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem; /* Makes the queen icon look bold and clear */
   }
 
   .square:nth-child(odd) {

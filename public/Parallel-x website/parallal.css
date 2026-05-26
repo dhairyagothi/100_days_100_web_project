@@ -398,49 +398,213 @@ nav ul li a:hover {
 .footer p { font-size: 0.85rem; }
 .footer-links { display:flex; gap:24px; }
 .footer-links a {
-  color: rgba(255,255,255,0.4);
-  text-decoration: none;
-  font-size: 0.85rem;
-  transition: color 0.3s;
-}
-.footer-links a:hover { color: var(--lime); }
-
-/* ══════════════════════════════════════
-   REVEAL ANIMATION
-══════════════════════════════════════ */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
 }
 
-/* ══════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════ */
-@media (max-width: 900px) {
-  .content-grid { grid-template-columns: 1fr; gap: 24px; }
+.footer-links a:hover {
+    color: gray;
 }
-@media (max-width: 768px) {
-  header { padding: 16px 5%; }
-  nav { display:none; position:absolute; top:100%; left:0; right:0; background:rgba(1,55,45,0.97); padding:20px 5%; }
-  nav.open { display:block; }
-  nav ul { flex-direction:column; gap:4px; }
-  nav ul li a { display:block; padding:12px 16px; }
-  .hamburger { display:flex; }
-  .text { font-size: clamp(2.5rem, 12vw, 5rem); }
-  .stats-band { padding:40px 5%; }
-  .content { padding:70px 5%; }
-  .eco-section { padding:70px 5%; }
-  .did-you-know { padding:60px 5%; }
-  .tracker-cta { padding:80px 5%; }
-  .footer { flex-direction:column; text-align:center; }
+
+/* ================= TABLET ================= */
+
+@media (max-width: 992px){
+
+
+header{
+    padding: 18px 5%;
 }
-@media (max-width: 480px) {
-  .text { font-size: 2.4rem; letter-spacing:1px; }
-  .section-heading { font-size:2rem; }
-  .eco-card { padding:28px 22px; }
+
+.name{
+    font-size: 1.7rem;
+}
+
+nav ul{
+    gap: 12px;
+}
+
+nav ul li{
+    padding: 7px 14px;
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 1000;
+}
+
+.content{
+    background: #01372d;
+    color: white;
+    font-size: 20px;
+    font-style: italic;
+    position: relative;
+    padding: 60px;
+    height: 100dvh;
+    cursor: default;
+}
+
+.content{
+    padding: 70px 6%;
+}
+
+.content div:first-child{
+    font-size: 2.5rem;
+}
+
+.content div{
+    font-size: 1rem;
+}
+
+
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px){
+
+
+header{
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+}
+
+.name{
+    font-size: 1.5rem;
+}
+
+nav ul{
+    justify-content: center;
+    gap: 10px;
+}
+
+nav ul li{
+    padding: 6px 12px;
+    font-size: 0.9rem;
+}
+
+.parallal{
+    height: 90vh;
+}
+
+.text{
+    font-size: clamp(2.2rem, 10vw, 4rem);
+    padding: 0 10px;
+}
+
+.content{
+    padding: 60px 5%;
+    height: auto;
+}
+
+.content div:first-child{
+    font-size: 2rem;
+}
+
+.content div{
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px){
+
+
+header{
+    padding: 15px 4%;
+}
+
+.name{
+    font-size: 1.3rem;
+}
+
+nav ul{
+    gap: 6px;
+}
+
+nav ul li{
+    font-size: 0.8rem;
+    padding: 5px 10px;
+}
+
+.text{
+    font-size: 2rem;
+}
+
+}
+/* ================= CONTACT SECTION ================= */
+
+.contact-section{
+    background: #022f27;
+    color: white;
+    padding: 80px 8%;
+    text-align: center;
+}
+
+.contact-section h2{
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #7fffd4;
+}
+
+.contact-section p{
+    margin-bottom: 35px;
+    font-size: 1.1rem;
+}
+
+.contact-form{
+    max-width: 700px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 1rem;
+    background: #f5f5f5;
+}
+
+.contact-form button{
+    background: #359381;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.contact-form button:hover{
+    background: #267364;
+    transform: scale(1.03);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px){
+
+.contact-section{
+    padding: 60px 5%;
+}
+
+.contact-section h2{
+    font-size: 2.2rem;
+}
+
+.contact-section p{
+    font-size: 1rem;
+}
+
 }
