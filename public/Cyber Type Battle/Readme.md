@@ -326,26 +326,6 @@ If enemy reaches player:
 
 ---
 
-# Why Separate Files Were Used
-
-The project was separated into:
-- HTML
-- CSS
-- JavaScript
-- Words file
-
-because it makes:
-- Code cleaner
-- Easier to maintain
-- Easier to debug
-- Easier to scale later
-
-This is standard frontend project structure.
-
----
-
-
-
 # Learning Outcome
 
 This project helped in learning:
