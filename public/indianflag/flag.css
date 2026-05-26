@@ -91,8 +91,9 @@ body {
 .flag {
   height: 300px;
   width: 450px;
-  position: relative; /* Kept from Main */
-  margin-top: -400px; /* Kept from Main */
+  position: absolute;
+  top: 0;
+  left: 12px;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
   transform-origin: left center;
   animation: wave 2.5s infinite ease-in-out;
@@ -254,8 +255,10 @@ body {
   /* Perfectly balances the 3:2 flag size aspect ratio on small screens */
   .flag {
     width: 210px;
-    height: 140px; 
-    margin-top: 4px;
+    height: 140px;
+    position: absolute;
+    top: 0;
+    left: 8px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
   }
 

@@ -11,6 +11,8 @@
   </head>
 
   <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
     <div class="background-video">
       <video autoplay muted loop id="bg-video">
         <source
@@ -131,11 +133,21 @@
       const patriotImage = document.getElementById("patriot-image");
 
       function displayQuote() {
-        quoteText.textContent = quotes[currentQuoteIndex].text;
-        quoteAuthor.textContent = quotes[currentQuoteIndex].author;
-        patriotImage.src = quotes[currentQuoteIndex].image;
-        patriotImage.alt = quotes[currentQuoteIndex].author;
-      }
+  const currentQuote = quotes[currentQuoteIndex];
+
+  // Preload image first
+  const img = new Image();
+
+  img.onload = () => {
+    patriotImage.src = currentQuote.image;
+    patriotImage.alt = currentQuote.author;
+
+    quoteText.textContent = currentQuote.text;
+    quoteAuthor.textContent = currentQuote.author;
+  };
+
+  img.src = currentQuote.image;
+}
 
       displayQuote();
 

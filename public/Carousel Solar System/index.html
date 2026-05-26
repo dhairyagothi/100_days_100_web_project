@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <title>Solar System Carousel</title>
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+  <div class="slider-container">
+    <nav class="navbar">
+      <div class="logo">CELESTIAL</div>
+      <div class="nav-right">
+        <div class="hamburger-container">
+          <div class="hamburger-icon">
+            <div class="line long"></div>
+            <div class="line medium"></div>
+            <div class="line short"></div>
+          </div>
+
+         <div class="planet-mini-list">
+
+<div class="planet-item">
+<img src="./images/sun-image.png"
+class="mini-planet"
+data-index="0">
+<span>Sun</span>
+</div>
+
+<div class="planet-item">
+<img src="./images/mercury-image.png"
+class="mini-planet"
+data-index="1">
+<span>Mercury</span>
+</div>
+
+<div class="planet-item">
+<img src="./images/venus-image.png"
+class="mini-planet"
+data-index="2">
+<span>Venus</span>
+</div>
+
+<div class="planet-item">
+<img src="./images/earth-image.png"
+class="mini-planet"
+data-index="3">
+<span>Earth</span>
+</div>
+
+<div class="planet-item">
+<img src="./images/mars-image.png"
+class="mini-planet"
+data-index="4">
+<span>Mars</span>
+</div>
+
+<div class="planet-item">
+<img src="./images/jupiter-image.png"
+class="mini-planet"
+data-index="5">
+<span>Jupiter</span>
+</div>
+
+<div class="planet-item">
+<img src="./images/saturn-image.png"
+class="mini-planet"
+data-index="6">
+<span>Saturn</span>
+</div>
+
+<div class="planet-item">
+<img src="./images/Uranus.png"
+class="mini-planet"
+data-index="7">
+<span>Uranus</span>
+</div>
+
+<div class="planet-item">
+<img src="./images/Neptune.png"
+class="mini-planet"
+data-index="8">
+<span>Neptune</span>
+</div>
+
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="slider">
+      <section class="slide active" data-planet="sun">
+        <!-- <div class="bg-layer" style="background-image: url('./images/sun-image.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">1 / 9</span>
+            <h2 class="planet-title">SUN</h2>
+            <p class="description">
+              The Sun is the star at the heart of our solar system. Its gravity holds the solar system together, keeping everything from the biggest planets to the smallest bits of debris in its orbit.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/sun/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/sun-image.png" alt="Sun" class="planet-img" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">STAR TYPE</span>
+              <span class="value">Yellow Dwarf</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">5,505 °C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" data-planet="mercury">
+        <!-- <div class="bg-layer" style="background-image: url('./images/mercury-image.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">2 / 9</span>
+            <h2 class="planet-title">MERCURY</h2>
+            <p class="description">
+              Mercury is the closest planet to the Sun, and the smallest planet in our solar system. It's only slightly larger than Earth's Moon.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/mercury/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/mercury-image.png" alt="Mercury" class="planet-img" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">PLANET TYPE</span>
+              <span class="value">Terrestrial</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">430°C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" data-planet="venus">
+        <!-- <div class="bg-layer" style="background-image: url('./images/venus-image.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">3 / 9</span>
+            <h2 class="planet-title">VENUS</h2>
+            <p class="description">
+              Venus is the second planet from the Sun and the hottest planet in our solar system.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/venus/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/venus-image.png" alt="Venus" class="planet-img" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">PLANET TYPE</span>
+              <span class="value">Terrestrial</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">471°C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" data-planet="earth">
+        <!-- <div class="bg-layer" style="background-image: url('./images/earth-image.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">4 / 9</span>
+            <h2 class="planet-title">EARTH</h2>
+            <p class="description">
+              Earth is the third planet from the Sun and the only astronomical object known to harbor life.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/earth/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/earth-image.png" alt="Earth" class="planet-img blue-glow" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">PLANET TYPE</span>
+              <span class="value">Terrestrial</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">15°C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" data-planet="mars">
+        <!-- <div class="bg-layer" style="background-image: url('./images/mars-image.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">5 / 9</span>
+            <h2 class="planet-title">MARS</h2>
+            <p class="description">
+              Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System. It’s the only planet we know of inhabited entirely by robots.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/mars/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/mars-image.png" alt="Mars" class="planet-img" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">PLANET TYPE</span>
+              <span class="value">Terrestrial</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">-63°C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" data-planet="jupiter">
+        <!-- <div class="bg-layer" style="background-image: url('./images/jupiter-image.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">6 / 9</span>
+            <h2 class="planet-title">JUPITER</h2>
+            <p class="description">
+              Jupiter is the fifth planet from the Sun and the largest in the Solar System. More than twice as massive as the other planets combined.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/jupiter/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/jupiter-image.png" alt="Jupiter" class="planet-img" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">PLANET TYPE</span>
+              <span class="value">Gas Giant</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">-108°C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" data-planet="saturn">
+        <!-- <div class="bg-layer" style="background-image: url('./images/saturn-image.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">7 / 9</span>
+            <h2 class="planet-title">SATURN</h2>
+            <p class="description">
+              Saturn is the sixth planet from the Sun and the second-largest in the Solar System.It’s surrounded by beautiful rings.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/saturn/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/saturn-image.png" alt="Saturn" class="planet-img planet-large" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">PLANET TYPE</span>
+              <span class="value">Gas Giant</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">-180°C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" data-planet="Uranus">
+        <!-- <div class="bg-layer" style="background-image: url('./images/Uranus.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">8 / 9</span>
+            <h2 class="planet-title">URANUS</h2>
+            <p class="description">
+              Uranus is the seventh planet from the Sun and the third-largest in the Solar System.  It appears to spin sideways.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/uranus/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/Uranus.png" alt="Uranus" class="planet-img blue-glow planet-large" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">PLANET TYPE</span>
+              <span class="value">Ice Giant</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">-224°C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <section class="slide" data-planet="neptune">
+        <!-- <div class="bg-layer" style="background-image: url('./images/Neptune.png');"></div> -->
+        
+        <div class="content-wrapper">
+          <div class="left-col">
+            <span class="slide-number">9 / 9</span>
+            <h2 class="planet-title">NEPTUNE</h2>
+            <p class="description">
+              Neptune is the eighth and farthest-known Solar planet from the Sun. It’s the fourth-largest, and the first planet discovered with mathematics.
+            </p>
+            <button class="learn-more" onclick="window.open('https://science.nasa.gov/neptune/', '_blank')">LEARN MORE</button>
+          </div>
+
+          <div class="center-col">
+            <img src="./images/Neptune.png" alt="Neptune" class="planet-img blue-glow planet-large" />
+          </div>
+
+          <div class="right-col">
+            <div class="stat">
+              <span class="label">AGE</span>
+              <span class="value">4.5 Billion Years</span>
+            </div>
+            <div class="stat">
+              <span class="label">PLANET TYPE</span>
+              <span class="value">Ice Giant</span>
+            </div>
+            <div class="stat">
+              <span class="label">TEMPERATURE</span>
+              <span class="value">-218°C</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      </div>
+
+    <div class="controls">
+      <button id="prev" class="control-btn">PREV</button>
+      <div class="scroll-indicator">SCROLL</div>
+      <button id="next" class="control-btn">NEXT</button>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>

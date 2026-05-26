@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedMood = null;
     let moodData = JSON.parse(localStorage.getItem('moodData')) || [];
+    const savedTheme = localStorage.getItem('theme');
+
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    themeIcon.classList.remove('fa-sun');
+    themeIcon.classList.add('fa-moon');
+}
     let moodChart;
     let moodStreak = 0;
     const achievements = {
@@ -88,16 +95,33 @@ document.addEventListener('DOMContentLoaded', () => {
         trackMoodGoals();
     });
 
+    // toggleThemeButton.addEventListener('click', () => {
+    //     document.body.classList.toggle('dark-theme');
+    //     if (document.body.classList.contains('dark-theme')) {
+    //         themeIcon.classList.remove('fa-sun');
+    //         themeIcon.classList.add('fa-moon');
+    //     } else {
+    //         themeIcon.classList.remove('fa-moon');
+    //         themeIcon.classList.add('fa-sun');
+    //     }
+    // }
     toggleThemeButton.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-        if (document.body.classList.contains('dark-theme')) {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-        } else {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
-    });
+    document.body.classList.toggle('dark-theme');
+
+    if (document.body.classList.contains('dark-theme')) {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+
+        // Save dark theme
+        localStorage.setItem('theme', 'dark');
+    } else {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+
+        // Save light theme
+        localStorage.setItem('theme', 'light');
+    }
+});
 
     function removeDefaultMessages() {
         const defaultEntryMessage = entriesList.querySelector('.collection-item');
@@ -127,18 +151,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function removeEntry(entry, listItem) {
-        // Remove the entry from the moodData array
-        const index = moodData.findIndex(e => e.date === entry.date && e.mood === entry.mood && e.intensity === entry.intensity && e.notes === entry.notes);
-        if (index !== -1) {
-            moodData.splice(index, 1);
-        }
+        // // Remove the entry from the moodData array
+        // const index = moodData.findIndex(e => e.date === entry.date && e.mood === entry.mood && e.intensity === entry.intensity && e.notes === entry.notes);
+        // if (index !== -1) {
+        //     moodData.splice(index, 1);
+        // }
 
-        // Remove the list item from the DOM
-        listItem.remove();
+        // // Remove the list item from the DOM
+        // listItem.remove();
 
-        // Update the chart and summary
-        updateMoodChart();
-        updateMoodSummary();
+        // // Update the chart and summary
+        // updateMoodChart();
+        // updateMoodSummary();
+
+         // Remove the entry from moodData
+    const index = moodData.findIndex(
+        e =>
+            e.date === entry.date &&
+            e.mood === entry.mood &&
+            e.intensity === entry.intensity &&
+            e.notes === entry.notes
+    );
+
+    if (index !== -1) {
+        moodData.splice(index, 1);
+    }
+
+    // Remove entry from UI
+    listItem.remove();
+
+    // Remove date from Entry Days list if no entries remain for that date
+    const stillExists = moodData.some(e => e.date === entry.date);
+
+    if (!stillExists) {
+        const dayItems = Array.from(entryDaysList.children);
+
+        dayItems.forEach(dayItem => {
+            if (dayItem.textContent === entry.date) {
+                dayItem.remove();
+            }
+        });
+    }
+
+    // Save updated data
+    saveMoodData();
+
+    // Update chart and summary
+    updateMoodChart();
+    updateMoodSummary();
     }
 
     function addEntryDay(entry) {
@@ -225,12 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             new Notification("Mood Tracker", {
                 body: "How are you feeling today?",
-                icon: "path/to/icon.png"
+                // icon: "path/to/icon.png"
             });
             setInterval(() => {
                 new Notification("Mood Tracker", {
                     body: "How are you feeling today?",
-                    icon: "path/to/icon.png"
+                    // icon: "path/to/icon.png"
                 });
             }, 24 * 60 * 60 * 1000);
         }, timeUntilReminder);
@@ -248,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if ('Notification' in window && Notification.permission === 'granted') {
             new Notification("Positive Vibes", {
                 body: randomQuote,
-                icon: "path/to/icon.png"
+                // icon: "path/to/icon.png"
             });
         }
     }
