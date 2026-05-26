@@ -136,13 +136,7 @@ async function fetchAllGithubPages(endpoint) {
   let page = 1;
   const allItems = [];
 
-  while (true) {
-    if (page > MAX_API_PAGES) {
-      throw new Error(
-        `GitHub API pagination limit exceeded (${MAX_API_PAGES} pages) for endpoint "${endpoint}". Try again later or use an authenticated token if rate-limited.`
-      );
-    }
-
+  while (page <= MAX_API_PAGES) {
     const separator = endpoint.includes('?') ? '&' : '?';
     const pageItems = await githubFetch(
       `${GITHUB_API_BASE}${endpoint}${separator}per_page=${API_PAGE_SIZE}&page=${page}`
@@ -157,13 +151,15 @@ async function fetchAllGithubPages(endpoint) {
     allItems.push(...pageItems);
 
     if (pageItems.length < API_PAGE_SIZE) {
-      break;
+      return allItems;
     }
 
-    page += 1;
+    page++;
   }
 
-  return allItems;
+  throw new Error(
+    `GitHub API pagination limit exceeded (${MAX_API_PAGES} pages) for endpoint "${endpoint}". Try again later or use an authenticated token if rate-limited.`
+  );
 }
 
 async function openProfile(username){
