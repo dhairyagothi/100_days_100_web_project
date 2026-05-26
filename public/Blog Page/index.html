@@ -6,7 +6,7 @@
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <title>Blog Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -18,34 +18,32 @@
     <div class="logo">
         GreenBlog
     </div>
- <!-- Navigation Links -->
-    <ul class="nav-links">
-   <li>
-            <a href="#">Home</a>
-        </li>
-        <li>
-            <a href="#">Categories</a>
-        </li>
-        <li>
-            <a href="#">Blogs</a>
-        </li>
-        <li>
-            <a href="#">About</a>
-        </li>
-    </ul>
-    <!-- Right Side -->
-    <div class="nav-right">
-        <!-- Search -->
-        <input
-            type="text"
-            placeholder="Search blogs...."
-            class="nav-search"
-        >
-        <!-- Dark Mode Button -->
-        <button id="themeToggle">
-            ☀️
-            <!-- 🌙 -->
-        </button>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="nav-collapse">
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">Blogs</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+        <!-- Right Side -->
+        <div class="nav-right">
+            <input
+                type="text"
+                placeholder="Search blogs...."
+                class="nav-search"
+            >
+            <button id="themeToggle" aria-label="Toggle dark mode">
+                ☀️
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -400,6 +398,38 @@
         <input type="email" placeholder="Enter your email" />
         <button type="submit">Subscribe</button>
       </form>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section footer-social">
+      <div class="footer-social-divider"></div>
+      <h3>Follow Us</h3>
+      <div class="social-row">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+          class="social-icon" aria-label="GitHub" data-tooltip="GitHub">
+          <i class="fab fa-github" aria-hidden="true"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+          class="social-icon" aria-label="LinkedIn" data-tooltip="LinkedIn">
+          <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+          class="social-icon" aria-label="Twitter" data-tooltip="Twitter / X">
+          <i class="fab fa-x-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+          class="social-icon" aria-label="Instagram" data-tooltip="Instagram">
+          <i class="fab fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a href="https://discord.com" target="_blank" rel="noopener noreferrer"
+          class="social-icon" aria-label="Discord" data-tooltip="Discord">
+          <i class="fab fa-discord" aria-hidden="true"></i>
+        </a>
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+          class="social-icon" aria-label="YouTube" data-tooltip="YouTube">
+          <i class="fab fa-youtube" aria-hidden="true"></i>
+        </a>
+      </div>
     </div>
 
   </div>
