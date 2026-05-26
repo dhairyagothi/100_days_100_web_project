@@ -679,6 +679,20 @@ color: black;
  .job-details .details .save:hover span{
     color:white; 
  }
+ .saved-jobs-section {
+    margin-top: 5rem;
+}
+
+.no-saved {
+    font-size: 2rem;
+    text-align: center;
+    padding: 2rem;
+    color: #444;
+}
+
+.fas.fa-heart {
+    color: red !important;
+}
 
 
 

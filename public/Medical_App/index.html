@@ -4,16 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedConsult Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/public/Medical_App/styles.css">
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+<script>
+    (function() {
+        const savedTheme = localStorage.getItem('medical-theme');
+        document.body.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light');
+    })();
+</script>
 
 <header class="hero">
     <div class="hero-content">
-        <h1>🏥 MedConsult Dashboard</h1>
-        <p>Connecting Local Doctors with Specialists</p>
-    </header>
+        <div class="hero-text-group">
+            <h1>🏥 MedConsult Dashboard</h1>
+            <p>Connecting Local Doctors with Specialists</p>
+        </div>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch to dark theme">
+            <!-- Inline Moon icon (Default for light mode) -->
+            <svg class="theme-icon moon-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+</header>
     <main>
         <section id="consultation-form">
             <h2 >Request a Consultation</h2>
@@ -30,40 +47,205 @@
                 <input type="text" id="specialistSearch" placeholder="Search Specialist...">
                 <select id="specialistType" name="specialistType" required></select>
 
-                <button type="submit">Submit</button>
-            </form>
-        </section>
-        <section id="consultation-status">
-            <h2>Consultation Status</h2>
-            <div id="statusMessage"></div>
-            <div id="loading" style="display:none;">Loading...</div>
-        </section>
-        <section id="specialist-response" style="display:none;">
-            <h2>Provide Your Suggestion</h2>
-            <form id="responseForm">
-                <label for="consultationId">Consultation ID:</label>
-                <input type="text" id="consultationId" name="consultationId" required>
+            <button type="submit" class="primary-btn">
+                Submit Consultation
+            </button>
 
-                <label for="suggestion">Your Suggestion:</label>
-                <textarea id="suggestion" name="suggestion" required></textarea>
+        </form>
+    </section>
 
-                <button type="submit" class="feed">Submit Suggestion</button>
-            </form>
-        </section>
-        <section id="consultation-history">
-            <h2>Consultation History</h2>
-            <ul id="historyList"></ul>
-        </section>
-        <section id="feedback">
+    <section class="card">
+        <h2>👨‍⚕️ Available Doctors</h2>
+        <div class="doctors-grid">
+            <!-- Card 1: Dr. Sarah Jenkins -->
+            <div class="doctor-card">
+                <div class="card-status-header">
+                    <span class="availability available" aria-label="Status: Available Today">
+                        <span class="status-dot green"></span> Available Today
+                    </span>
+                </div>
+                
+                <div class="doctor-profile">
+                    <div class="doctor-avatar">👩‍⚕️</div>
+                    <div class="doctor-identity">
+                        <h3>Dr. Sarah Jenkins</h3>
+                        <span class="specialty-badge">Cardiologist</span>
+                    </div>
+                </div>
+                
+                <div class="doctor-meta">
+                    <div class="experience">💼 12 Years Experience</div>
+                    <div class="rating" aria-label="Doctor rating 4.9 out of 5">⭐ 4.9 Rating</div>
+                </div>
+                
+                <button class="primary-btn book-btn" data-doctor="Dr. Sarah Jenkins" data-specialty="Cardiologist">Book Appointment</button>
+            </div>
+
+            <!-- Card 2: Dr. James Smith -->
+            <div class="doctor-card">
+                <div class="card-status-header">
+                    <span class="availability limited" aria-label="Status: Limited Slots Available">
+                        <span class="status-dot yellow"></span> Limited Slots
+                    </span>
+                </div>
+                
+                <div class="doctor-profile">
+                    <div class="doctor-avatar">👨‍⚕️</div>
+                    <div class="doctor-identity">
+                        <h3>Dr. James Smith</h3>
+                        <span class="specialty-badge">Neurologist</span>
+                    </div>
+                </div>
+                
+                <div class="doctor-meta">
+                    <div class="experience">💼 15 Years Experience</div>
+                    <div class="rating" aria-label="Doctor rating 4.8 out of 5">⭐ 4.8 Rating</div>
+                </div>
+                
+                <button class="primary-btn book-btn" data-doctor="Dr. James Smith" data-specialty="Neurologist">Book Appointment</button>
+            </div>
+
+            <!-- Card 3: Dr. Emily Watson -->
+            <div class="doctor-card">
+                <div class="card-status-header">
+                    <span class="availability available" aria-label="Status: Available Today">
+                        <span class="status-dot green"></span> Available Today
+                    </span>
+                </div>
+                
+                <div class="doctor-profile">
+                    <div class="doctor-avatar">👩‍⚕️</div>
+                    <div class="doctor-identity">
+                        <h3>Dr. Emily Watson</h3>
+                        <span class="specialty-badge">Pediatrician</span>
+                    </div>
+                </div>
+                
+                <div class="doctor-meta">
+                    <div class="experience">💼 8 Years Experience</div>
+                    <div class="rating" aria-label="Doctor rating 5.0 out of 5">⭐ 5.0 Rating</div>
+                </div>
+                
+                <button class="primary-btn book-btn" data-doctor="Dr. Emily Watson" data-specialty="Pediatrician">Book Appointment</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>📊 Health Monitoring</h2>
+
+        <div class="stats-grid">
+
+            <div class="stat-box">
+                <h3>❤️ Heart Rate</h3>
+                <p id="heartRate">78 BPM</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🩸 Blood Pressure</h3>
+                <p>120 / 80</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🌡️ Temperature</h3>
+                <p>98.4°F</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🫁 Oxygen</h3>
+                <p>98%</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>💊 Safe Medicine Recommendations</h2>
+
+        <select id="symptomSelect">
+            <option value="">Select Symptom</option>
+            <option value="cold">Cold</option>
+            <option value="headache">Headache</option>
+            <option value="fever">Fever</option>
+            <option value="fatigue">Fatigue</option>
+        </select>
+
+        <div id="recommendationBox"></div>
+
+        <p class="disclaimer">
+            ⚠️ Informational only. Consult a medical professional for diagnosis.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>🕒 Consultation History</h2>
+
+        <ul id="historyList"></ul>
+    </section>
+
+    <section class="card feedback-card">
+        <h2>⭐ Feedback</h2>
+
+        <a href="feedback.html">
+            <button class="primary-btn">Give Feedback</button>
+        </a>
+    </section>
+
+</main>
+
+<!-- Appointment Booking Modal -->
+<div id="bookingModal" class="booking-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="booking-modal-content">
+        <button id="closeModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+        <h2 id="modalTitle">Book Appointment</h2>
+        <p id="modalSubtitle"></p>
+        
+        <div id="modalSuccess" class="success-message hidden">
+            <span class="success-text"></span>
+            <button type="button" id="closeSuccessBtn" class="primary-btn success-close-btn">Close</button>
+        </div>
+        
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="patientName">Patient Name</label>
+                <input type="text" id="patientName" placeholder="Enter patient name" required>
+                <span id="nameError" class="error-message"></span>
+            </div>
             
-            <!-- <form id="feedbackForm">
-                <label for="feedbackMessage">Your Feedback:</label>
-                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
-                <button type="submit">Submit Feedback</button>
-            </form> -->
-            <a href="feedback.html" class="feed" ><button>Give Feedback</button></a>
-        </section>
-    </main>
-    <script src="script.js"></script>
+            <div class="form-group">
+                <label for="patientPhone">Phone Number</label>
+                <input type="tel" id="patientPhone" placeholder="Enter 10-digit phone number" maxlength="10" required>
+                <span id="phoneError" class="error-message"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="appointmentDate">Preferred Date</label>
+                <input type="date" id="appointmentDate" required>
+                <span id="dateError" class="error-message"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="appointmentTime">Preferred Time Slot</label>
+                <select id="appointmentTime" required>
+                    <option value="">Select a time slot</option>
+                    <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                    <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                    <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                    <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                    <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
+                </select>
+                <span id="timeError" class="error-message"></span>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="submit" class="primary-btn">Confirm Booking</button>
+                <button type="button" id="cancelModalBtn" class="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/public/Medical_App/script.js"></script>
+
 </body>
 </html>
