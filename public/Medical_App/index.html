@@ -4,103 +4,371 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedConsult Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/public/Medical_App/styles.css">
 </head>
 
 <body>
+    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">
+        ← Back to Home
+    </a>
 
-<header class="hero">
-    <h1>🏥 MedConsult Dashboard</h1>
-    <p>Connecting Local Doctors with Specialists</p>
-</header>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('medical-theme');
+            document.body.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light');
+        })();
+    </script>
 
-<main class="dashboard">
+    <!-- Main Navigation Navbar -->
+    <nav class="navbar">
+        <div class="brand">
+            <div class="brand-icon"><i class="ph ph-first-aid"></i></div>
+            <span>MedConsult</span>
+        </div>
 
-    <section class="card">
-        <h2>📋 Request Consultation</h2>
+        <div class="nav-links">
+            <a href="/public/Medical_App/index.html" class="active">
+                <i class="ph ph-squares-four"></i> Dashboard
+            </a>
+            <a href="/public/Medical_App/remedies.html">
+                <i class="ph ph-prescription"></i> Home Remedies
+            </a>
+            <a href="/public/Medical_App/feedback.html">
+                <i class="ph ph-chat-circle-text"></i> Feedback
+            </a>
 
-        <form id="requestForm">
+            <button class="btn-icon theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
+                <i class="ph ph-moon"></i>
+            </button>
+        </div>
+    </nav>
 
-            <label>Doctor Name</label>
-            <input type="text" id="doctorName" required>
+    <!-- Header -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Welcome, Healthcare Provider</h1>
+            <p>Connect patients with specialized medical professionals efficiently.</p>
+        </div>
+    </header>
 
-            <label>Patient Condition</label>
-            <textarea id="patientCondition" required></textarea>
+    <!-- Main Dashboard -->
+    <main class="dashboard-container">
 
-            <label>Specialist Needed</label>
+        <!-- Left Section -->
+        <div class="dashboard-left">
 
-            <input type="text" id="specialistSearch"
-                   placeholder="Search Specialist">
+            <!-- Consultation Request -->
+            <section class="card form-card">
+                <div class="card-header">
+                    <div class="icon-wrapper primary">
+                        <i class="ph ph-stethoscope"></i>
+                    </div>
+                    <h2>Request Consultation</h2>
+                </div>
 
-            <select id="specialistType"></select>
+                <form id="requestForm" class="medical-form" novalidate>
 
-            <button type="submit">Submit Consultation</button>
-        </form>
-    </section>
+                    <div class="input-group">
+                        <label for="patientName">Patient Full Name</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-user"></i>
+                            <input
+                                type="text"
+                                id="patientName"
+                                name="patientName"
+                                placeholder="e.g. Jane Doe"
+                                required
+                            >
+                        </div>
+                    </div>
 
-    <section class="card">
-        <h2>📊 Health Monitoring</h2>
+                    <div class="input-group">
+                        <label for="doctorName">Referring Doctor</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-user-md"></i>
+                            <input
+                                type="text"
+                                id="doctorName"
+                                name="doctorName"
+                                placeholder="e.g. Dr. Smith"
+                                required
+                            >
+                        </div>
+                    </div>
 
-        <div class="stats-grid">
+                    <div class="input-group">
+                        <label for="patientCondition">Patient Condition / Symptoms</label>
+                        <div class="input-icon-wrapper textarea-wrapper">
+                            <i class="ph ph-clipboard-text"></i>
+                            <textarea
+                                id="patientCondition"
+                                name="patientCondition"
+                                placeholder="Describe the condition briefly..."
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
 
-            <div class="stat-box">
-                <h3>❤️ Heart Rate</h3>
-                <p id="heartRate">78 BPM</p>
-            </div>
+                    <div class="input-group">
+                        <label for="specialistSearch">Required Specialist</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-magnifying-glass"></i>
+                            <input
+                                type="text"
+                                id="specialistSearch"
+                                placeholder="Search specialist types (e.g. Cardiologist)"
+                            >
+                        </div>
 
-            <div class="stat-box">
-                <h3>🩸 Blood Pressure</h3>
-                <p>120 / 80</p>
-            </div>
+                        <select id="specialistType" name="specialistType" class="mt-2" required>
+                        </select>
+                    </div>
 
-            <div class="stat-box">
-                <h3>🌡️ Temperature</h3>
-                <p>98.4°F</p>
-            </div>
+                    <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">
+                        <i class="ph ph-caret-down"></i>
+                        Show Advanced Details
+                    </button>
 
-            <div class="stat-box">
-                <h3>🫁 Oxygen</h3>
-                <p>98%</p>
-            </div>
+                    <div id="advancedFields" class="advanced-fields-container hidden">
+
+                        <div class="grid-2-cols">
+                            <div class="input-group">
+                                <label for="patientAge">Patient Age</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="ph ph-calendar-blank"></i>
+                                    <input
+                                        type="number"
+                                        id="patientAge"
+                                        name="patientAge"
+                                        placeholder="e.g. 45"
+                                        min="0"
+                                        max="120"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="patientGender">Patient Gender</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="ph ph-gender-intersex"></i>
+                                    <select id="patientGender" name="patientGender">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid-2-cols">
+                            <div class="input-group">
+                                <label for="contactInfo">Contact Phone / Email</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="ph ph-address-book"></i>
+                                    <input
+                                        type="text"
+                                        id="contactInfo"
+                                        name="contactInfo"
+                                        placeholder="For follow-ups"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="priorityLevel">Consultation Priority</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="ph ph-warning"></i>
+                                    <select id="priorityLevel" name="priorityLevel">
+                                        <option value="Normal">Normal</option>
+                                        <option value="Urgent">Urgent</option>
+                                        <option value="Emergency">Emergency</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="appointmentDate">Preferred Appointment Date & Time</label>
+                            <div class="input-icon-wrapper">
+                                <i class="ph ph-calendar-plus"></i>
+                                <input
+                                    type="datetime-local"
+                                    id="appointmentDate"
+                                    name="appointmentDate"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="medicalFiles">Attach Medical Reports (Optional)</label>
+                            <div class="file-upload-wrapper">
+                                <input
+                                    type="file"
+                                    id="medicalFiles"
+                                    name="medicalFiles"
+                                    multiple
+                                    class="file-input"
+                                >
+
+                                <div class="file-upload-ui">
+                                    <i class="ph ph-upload-simple"></i>
+                                    <span>Choose files or drag & drop</span>
+                                    <small>PDF, JPG, PNG up to 10MB</small>
+                                </div>
+
+                                <div id="fileList" class="file-list"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-neutral" id="resetRequestBtn">
+                            <i class="ph ph-arrow-counter-clockwise"></i>
+                            Clear
+                        </button>
+
+                        <button type="submit" class="btn btn-primary" id="submitRequestBtn">
+                            <i class="ph ph-paper-plane-right"></i>
+                            Submit Request
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- Specialist Response -->
+            <section id="specialist-response" class="card form-card" style="display:none;">
+                <div class="card-header">
+                    <div class="icon-wrapper accent">
+                        <i class="ph ph-lightbulb"></i>
+                    </div>
+                    <h2>Provide Suggestion</h2>
+                </div>
+
+                <form id="responseForm" class="medical-form" novalidate>
+
+                    <div class="input-group">
+                        <label for="consultationId">Consultation ID</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-identification-card"></i>
+                            <input
+                                type="text"
+                                id="consultationId"
+                                name="consultationId"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="suggestion">Medical Suggestion / Next Steps</label>
+                        <div class="input-icon-wrapper textarea-wrapper">
+                            <i class="ph ph-file-text"></i>
+                            <textarea
+                                id="suggestion"
+                                name="suggestion"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-accent">
+                        Submit Suggestion
+                    </button>
+
+                </form>
+            </section>
 
         </div>
-    </section>
 
-    <section class="card">
-        <h2>💊 Safe Medicine Recommendations</h2>
+        <!-- Right Section -->
+        <div class="dashboard-right">
 
-        <select id="symptomSelect">
-            <option value="">Select Symptom</option>
-            <option value="cold">Cold</option>
-            <option value="headache">Headache</option>
-            <option value="fever">Fever</option>
-            <option value="fatigue">Fatigue</option>
-        </select>
+            <section id="consultation-status" class="card status-card">
+                <div class="card-header">
+                    <div class="icon-wrapper success">
+                        <i class="ph ph-activity"></i>
+                    </div>
+                    <h2>Live Progress Status</h2>
+                </div>
 
-        <div id="recommendationBox"></div>
+                <div class="status-content">
+                    <div id="statusMessage" class="empty-status">
+                        No active operations
+                    </div>
 
-        <p class="disclaimer">
-            ⚠️ Informational only. Consult a medical professional for diagnosis.
-        </p>
-    </section>
+                    <div id="progressStepper" class="stepper-container hidden">
 
-    <section class="card">
-        <h2>🕒 Consultation History</h2>
+                        <div class="step" id="step1">
+                            <div class="step-icon">
+                                <i class="ph ph-paper-plane-right"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Request Submitted</h4>
+                                <p>System received your data</p>
+                            </div>
+                        </div>
 
-        <ul id="historyList"></ul>
-    </section>
+                        <div class="step" id="step2">
+                            <div class="step-icon">
+                                <i class="ph ph-user-md"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Specialist Assigned</h4>
+                                <p id="assignedSpecialistName">Pending assignment</p>
+                            </div>
+                        </div>
 
-    <section class="card">
-        <h2>⭐ Feedback</h2>
+                        <div class="step" id="step3">
+                            <div class="step-icon">
+                                <i class="ph ph-calendar-check"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Appointment Scheduled</h4>
+                                <p>Awaiting confirmation</p>
+                            </div>
+                        </div>
 
-        <a href="feedback.html">
-            <button>Give Feedback</button>
-        </a>
-    </section>
+                        <div class="step" id="step4">
+                            <div class="step-icon">
+                                <i class="ph ph-check-circle"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Completed</h4>
+                                <p>Ready for consultation</p>
+                            </div>
+                        </div>
 
-</main>
+                    </div>
+                </div>
+            </section>
 
-<script src="script.js"></script>
+            <section id="consultation-history" class="card history-card">
+                <div class="card-header">
+                    <div class="icon-wrapper neutral">
+                        <i class="ph ph-clock-counter-clockwise"></i>
+                    </div>
+                    <h2>Recent History</h2>
+                </div>
 
+                <div class="history-content">
+                    <ul id="historyList" class="history-list"></ul>
+
+                    <div id="emptyHistoryState" class="empty-state">
+                        <i class="ph ph-folder-open"></i>
+                        <p>No past consultations found.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/public/Medical_App/script.js"></script>
 </body>
 </html>

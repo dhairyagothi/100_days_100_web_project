@@ -2,18 +2,17 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <title>Register</title>
-    
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
     <div class="container">
-        <form>
+        <form id="registerForm">
             <h1>Register</h1>
             <div class="input-group">
                 <label for="username">Username</label>
@@ -21,15 +20,16 @@
                 <div class="error"></div>
             </div>
             <div class="input-group">
-                <label for="email" >Email</label>
+                <label for="email">Email</label>
                 <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter Email">
                 <div class="error"></div>
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
                 <div class="input-wrapper">
-                    <input type="password" id="password" name="password" autocomplete="new-password" placeholder="Enter Password?">
-                
+                    <input type="password" id="password" name="password" autocomplete="new-password"
+                        placeholder="Enter Password?">
+
                     <span id="togglePassword">👁️</span>
                 </div>
                 <div class="error"></div>
@@ -37,21 +37,16 @@
             <div class="input-group">
                 <label for="cpassword">Confirm Password</label>
                 <div class="input-wrapper">
-                    <input type="password" id="cpassword" name="cpassword" autocomplete="new-password" placeholder="Enter Password?">
-                
+                    <input type="password" id="cpassword" name="cpassword" autocomplete="new-password"
+                        placeholder="Enter Password?">
+
                     <span id="toggleConfirmPassword">👁️</span>
                 </div>
                 <div class="error"></div>
             </div>
-
             <button type="button" onclick="getDetails()">Register</button>
-            <p style="text-align:center; color:#888; font-size:13px;">or</p>
-            <button type="button" class="google-btn"><i class="fa-brands fa-google"></i>Continue with Google</button>
-            <p class="register">Already a member? <a href="/">Login here!</a></p>
-
-        
         </form>
-      
+        <p class="register">Already a member? <a href="/">Login here!</a></p>
 
     </div>
 </body>
@@ -68,92 +63,240 @@
 
             const text = await res.text();
 
+            const form = document.querySelector("form");
+
+            let messageBox = document.getElementById("messageBox");
+
+            if (!messageBox) {
+                messageBox = document.createElement("div");
+                messageBox.id = "messageBox";
+                form.appendChild(messageBox);
+            }
+
+            messageBox.innerText = text;
+
             if (!res.ok) {
-                alert(text);
+                messageBox.className = "message error-message";
                 return;
             }
 
-            alert(text);
+            messageBox.className = "message success-message";
+
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1500);
 
             window.location.href = "/";
 
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    
+    <!-- Signup Card -->
+    <div class="card">
+      <div class="card-header">
+        <h1>Create Account</h1>
+        <p>Join us today — it's free!</p>
+      </div>
 
+      <div class="form-body">
+
+        <!-- Username -->
+        <div class="field-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Choose a username" autocomplete="username"
+            required>
+          <span class="error" id="err-username"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+          <span class="error" id="err-email"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="field-group">
+          <label for="password">Password</label>
+          <div class="password-container">
+            <input type="password" id="password" name="password" placeholder="Create a strong password"
+              autocomplete="new-password" required>
+            <span class="toggle-password" onclick="togglePassword('password', this)">
+              <i class="fa-regular fa-eye"></i>
+            </span>
+          </div>
+          <span class="error" id="err-password"></span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="field-group">
+          <label for="cpassword">Confirm Password</label>
+          <div class="password-container">
+            <input type="password" id="cpassword" name="cpassword" placeholder="Re-enter your password"
+              autocomplete="new-password" required>
+            <span class="toggle-password" onclick="togglePassword('cpassword', this)">
+              <i class="fa-regular fa-eye"></i>
+            </span>
+          </div>
+          <span class="error" id="err-cpassword"></span>
+        </div>
+
+        <!-- Register Button -->
+        <button type="button" class="btn-primary" onclick="getDetails()">
+          Create Account
+        </button>
+
+        <!-- Divider -->
+        <div class="divider">or</div>
+
+        <!-- Google Button -->
+        <a href="/auth/google">
+          <button type="button" class="google-btn">
+            <i class="fa-brands fa-google"></i>
+            Continue with Google
+          </button>
+        </a>
+
+        <!-- Login Link -->
+        <p class="register">
+          Already a member? <a href="/">Login here!</a>
+        </p>
+
+      </div><!-- /.form-body -->
+    </div><!-- /.card -->
+
+  </div><!-- /.page-wrapper -->
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function showToast(msg, type = 'error') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast ${type} show`;
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+
+
+   function setError(inputId, message) {
+
+    const input = document.getElementById(inputId);
+
+    const inputGroup = input.closest('.input-group');
+
+    const errorDisplay = inputGroup.querySelector('.error');
+
+    errorDisplay.innerText = message;
+}
+
+    function clearErrors() {
+
+    document.querySelectorAll('.error').forEach(error => {
+        error.innerText = '';
+    });
+
+    document.querySelectorAll('input').forEach(input => {
+        input.classList.remove('input-error');
+    });
+}
 
     function getDetails() {
-  const username = document.getElementById('username').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const cpassword = document.getElementById('cpassword').value;
 
-  if (!username || !email || !password || !cpassword) {
-    alert("All fields are required");
-    return;
-  }
+        clearErrors();
 
-  if (password !== cpassword) {
-    alert("Passwords do not match");
-    return;
-  }
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const cpassword = document.getElementById('cpassword');
 
-  postRequest({ username, email, password });
-}
-function togglePassword(id, element) {
+        let isValid = true;
 
-    const input = document.getElementById(id);
-    const icon = element.querySelector("i");
+        if (!username.value.trim()) {
+            setError('username', 'Username is required');
+            username.classList.add('input-error');
+            isValid = false;
+        }
 
-    if (input.type === "password") {
+        if (!email.value.trim()) {
+            setError('email', 'Email is required');
+            email.classList.add('input-error');
+            isValid = false;
+        }
 
-        input.type = "text";
+        if (!password.value.trim()) {
+            setError('password', 'Password is required');
+            password.classList.add('input-error');
+            isValid = false;
+        }
 
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
+        if (!cpassword.value.trim()) {
+            setError('cpassword', 'Confirm Password is required');
+            cpassword.classList.add('input-error');
+            isValid = false;
+        }
 
-    } else {
+        if (
+            password.value &&
+            cpassword.value &&
+            password.value !== cpassword.value
+        ) {
+            setError('cpassword', 'Passwords do not match');
+            password.classList.add('input-error');
+            cpassword.classList.add('input-error');
+            isValid = false;
+        }
 
-        input.type = "password";
+        if (!isValid) return;
 
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-    }
-}
-
-function setupPasswordToggle(inputId, toggleId) {
-
-    const passwordInput = document.getElementById(inputId);
-    const togglePassword = document.getElementById(toggleId);
-
-    if (passwordInput && togglePassword) {
-
-        togglePassword.addEventListener("click", () => {
-
-            if (passwordInput.type === "password") {
-
-                passwordInput.type = "text";
-                togglePassword.textContent = "🙈";
-
-            } else {
-
-                passwordInput.type = "password";
-                togglePassword.textContent = "👁️";
-
-            }
-
+        postRequest({
+            username: username.value,
+            email: email.value,
+            password: password.value
         });
-
     }
-}
-
-setupPasswordToggle("password", "togglePassword");
-setupPasswordToggle("cpassword", "toggleConfirmPassword");
 
 
+    function setupPasswordToggle(inputId, toggleId) {
 
+        const passwordInput = document.getElementById(inputId);
+        const togglePassword = document.getElementById(toggleId);
+
+        if (passwordInput && togglePassword) {
+
+            togglePassword.addEventListener("click", () => {
+
+                if (passwordInput.type === "password") {
+
+                    passwordInput.type = "text";
+                    togglePassword.textContent = "🙈";
+
+                } else {
+
+                    passwordInput.type = "password";
+                    togglePassword.textContent = "👁️";
+
+                }
+
+            });
+
+        }
+    }
+
+    setupPasswordToggle("password", "togglePassword");
+    setupPasswordToggle("cpassword", "toggleConfirmPassword");
+
+    document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", () => {
+        input.classList.remove("input-error");
+
+        const error =
+            input.parentElement.parentElement.querySelector(".error");
+
+        if (error) {
+            error.innerText = "";
+        }
+    });
+});
+    
 </script>
 
 </html>
