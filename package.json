@@ -24,5 +24,10 @@
     "open-source",
     "frontend"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "react-shepherd": "^7.0.4",
+    "wouter": "^3.10.0"
+  }
 }
