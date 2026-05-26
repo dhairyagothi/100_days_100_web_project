@@ -235,7 +235,8 @@ const PROJECT_DATA = [
   ['Day 168', 'Color Sort Puzzle game', './public/colorsort/index.html', ['html', 'css', 'javascript'], 'advanced'],
   ['Day 169', 'Subscription Tracker', './public/subscriptiontracker/tracker.html', ['react', 'typescript', 'tailwindcss', 'ui'], 'advanced'],
   ['Day 170', 'Vector Flowchart Designer', './public/VectorFlowchartDesigner/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", "html css javascript", 'advanced']
+  ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", "html css javascript", 'advanced'],
+  ["Day 172", 'Dots and Boxes Game', './public/DotsAndBoxes/index.html', ['game', 'html', 'css', 'javascript'], 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
