@@ -4,7 +4,7 @@ import hardtoResistDeals from "./hardtoResistDeals.js";
 
 const btnPreve = document.querySelector(".btn-container-prev");
 const btnNext = document.querySelector(".btn-container-next");
-const ImageContainerSlider = document.querySelector("#imageSlideContaienr");
+const ImageContainerSlider = document.querySelector("#imageSlideContainer");
 
 // Balanced slider track navigation logic jump steps
 btnNext.addEventListener("click", () => {
@@ -22,21 +22,21 @@ let listofProductHTMl = "";
 
 for (let i = 0; i < listofProduct.length; i++) {
     listofProductHTMl += `
-    <a href="#">
-        <img src="${listofProduct[i].img}" alt="Product image"/>
+    <a href="#"> 
+        <img src="${listofProduct[i].img}" alt="${listofProduct[i].dis}"/>
         <p>${listofProduct[i].dis}</p>
     </a>`;
 }
 listofProductEL.innerHTML = listofProductHTMl;
 
-
+// Isolate data loop operations using cleanly scoped definitions 
 const brandTopproductEl = document.querySelector(".brandTopproduct");
 let brandTopproductHTML = "";
 
 for (let j = 0; j < topbrands.length; j++) { // Using distinct loop variable tracking
     brandTopproductHTML += `
-    <a href="#">
-        <img src="${topbrands[j].img}" alt="Brand asset"/>
+    <a href="#"> 
+        <img src="${topbrands[j].img}" alt="${topbrands[j].dis}"/>
         <p>${topbrands[j].dis}</p>
     </a>`;
 }

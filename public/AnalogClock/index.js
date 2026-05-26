@@ -218,6 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let countdownInterval = null;
     let countdownTime = 0; // remaining time in seconds
     let isPaused = false;
+    let timerStartTime = 0;
+    let initialTimeForLap = 0;
 
     const hoursInput = document.getElementById('hours');
     const minutesInput = document.getElementById('minutes');
@@ -255,6 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         isPaused = false;
+        initialTimeForLap = countdownTime;
+        timerStartTime = Date.now();
         pausebtn.innerText = 'Pause';
         
         updateTimerDisplay();
@@ -262,17 +266,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function tickCountdown() {
-    updateTimerDisplay();
+        countdownInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - timerStartTime) / 1000);
+            const remaining = initialTimeForLap - elapsed;
 
-    countdownInterval = setInterval(() => {
-        if (countdownTime <= 0) {
-            triggerTimerFinished();
-        } else {
-            countdownTime--;
-            updateTimerDisplay();
-        }
-    }, 1000);
-}
+            if (remaining <= 0) {
+                countdownTime = 0;
+                updateTimerDisplay();
+                triggerTimerFinished();
+            } else {
+                countdownTime = remaining;
+                updateTimerDisplay();
+            }
+        }, 500); // Higher frequency check ensures accuracy even if the CPU lags
+    }
     
 
     function updateTimerDisplay() {
@@ -315,9 +322,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             pausebtn.innerText = 'Pause';
             isPaused = false;
+            initialTimeForLap = countdownTime;
+            timerStartTime = Date.now();
             tickCountdown();
         }
     };
+
+    // Instantly sync the countdown when the user returns to the tab
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && countdownInterval && !isPaused) {
+            const elapsed = Math.floor((Date.now() - timerStartTime) / 1000);
+            countdownTime = Math.max(0, initialTimeForLap - elapsed);
+            updateTimerDisplay();
+        }
+    });
 
     window.restartCountdown = function() {
         clearInterval(countdownInterval);

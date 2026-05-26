@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeIcon = document.getElementById('theme-icon');
     const moodMessage = document.createElement('p');
     moodMessage.style.marginTop = '10px';
-    document.querySelector('.container').insertBefore(moodMessage, document.querySelector('.intensity-slider'));
+    document.querySelector('.container').insertBefore(moodMessage, document.querySelector('.intensity-slider')); // Ensure .container and .intensity-slider exist
 
     let selectedMood = null;
     let moodData = JSON.parse(localStorage.getItem('moodData')) || [];
@@ -23,8 +23,8 @@ if (savedTheme === 'dark') {
     themeIcon.classList.remove('fa-sun');
     themeIcon.classList.add('fa-moon');
 }
-    let moodChart;
-    let moodStreak = 0;
+    let moodChart; // Chart.js instance
+    let moodStreak = parseInt(localStorage.getItem('moodStreak')) || 0; // Initialize moodStreak from localStorage
     const achievements = {
         streaks: false,
         moodMaster: false
