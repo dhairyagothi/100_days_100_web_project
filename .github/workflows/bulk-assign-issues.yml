@@ -22,6 +22,7 @@ jobs:
       - name: Assign issues and add approval label
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.PR_CHECKER }}
           script: |
             const fromIssue = Number.parseInt(`${{ inputs.from_issue }}`, 10);
             const toIssue = Number.parseInt(`${{ inputs.to_issue }}`, 10);

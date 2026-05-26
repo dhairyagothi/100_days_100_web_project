@@ -31,7 +31,7 @@ It helps students and learners understand how process scheduling works internall
 6. Enter process details and run the simulation
 
 ## Screenshots
-![CPU Scheduler Project](<Screenshot 2026-05-24 230055.png>)
+![CPU Scheduler Project](<cpuscheduler.png>)
 
 ## Author
 @Ayontikapal
