@@ -910,6 +910,7 @@ function getAllTechnologies() {
 
 let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
 let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+let completedProjects = JSON.parse(localStorage.getItem('completedProjects')) || [];
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -1086,14 +1087,8 @@ function renderGrid() {
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-
-    // FIX PART 1: Add a pointer cursor so users know it's clickable
-    card.className = 'project-card';
-    card.style.cursor = 'pointer';
-
-    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
-
+    const isCompleted = completedProjects.includes(day);
+    card.className = `project-card${isCompleted ? ' completed' : ''}`;
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
@@ -1106,7 +1101,10 @@ function renderGrid() {
     // This stops the click from "bubbling up" to the main card, preventing double-opening!
     card.innerHTML = `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
+                <span class="card-day-wrapper">
+                    <span class="card-day">${day}</span>
+                    <span class="completion-tick" title="Completed"><i class="fas fa-check"></i></span>
+                </span>
                 <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
@@ -1125,9 +1123,14 @@ function renderGrid() {
                         <i class="fab fa-github"></i> Code
                     </a>
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
+                <div class="card-actions">
+                    <button class="complete-btn ${isCompleted ? 'active' : ''}" data-id="${day}" title="${isCompleted ? 'Mark as incomplete' : 'Mark as done'}">
+                        <i class="fas ${isCompleted ? 'fa-check' : 'fa-circle'}"></i>
+                    </button>
+                    <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                        <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                    </button>
+                </div>
             </div>
         `;
 
@@ -1335,14 +1338,17 @@ function renderBookmarks() {
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
-    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const isCompleted = completedProjects.includes(day);
+    card.className = `project-card${isCompleted ? ' completed' : ''}`;
+    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
+                <span class="card-day-wrapper">
+                    <span class="card-day">${day}</span>
+                    <span class="completion-tick" title="Completed"><i class="fas fa-check"></i></span>
+                </span>
                 <span class="card-category">${category}</span>
             </div>
            <div class="card-name">${name}</div>
@@ -1363,9 +1369,14 @@ function renderBookmarks() {
                         <i class="fab fa-github"></i> Code
                     </a>
                 </div>
-                <button class="bookmark-btn active" data-id="${day}">
-                    <i class="fa-solid fa-bookmark"></i>
-                </button>
+                <div class="card-actions">
+                    <button class="complete-btn ${isCompleted ? 'active' : ''}" data-id="${day}" title="${isCompleted ? 'Mark as incomplete' : 'Mark as done'}">
+                        <i class="fas ${isCompleted ? 'fa-check' : 'fa-circle'}"></i>
+                    </button>
+                    <button class="bookmark-btn active" data-id="${day}">
+                        <i class="fa-solid fa-bookmark"></i>
+                    </button>
+                </div>
             </div>
         `;
 
@@ -1395,15 +1406,18 @@ function renderRecentProjects() {
   visibleRecent.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
-    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const isCompleted = completedProjects.includes(day);
+    card.className = `project-card${isCompleted ? ' completed' : ''}`;
+    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
+                <span class="card-day-wrapper">
+                    <span class="card-day">${day}</span>
+                    <span class="completion-tick" title="Completed"><i class="fas fa-check"></i></span>
+                </span>
                 <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
@@ -1417,9 +1431,14 @@ function renderRecentProjects() {
                         <i class="fab fa-github"></i> Code
                     </a>
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
+                <div class="card-actions">
+                    <button class="complete-btn ${isCompleted ? 'active' : ''}" data-id="${day}" title="${isCompleted ? 'Mark as incomplete' : 'Mark as done'}">
+                        <i class="fas ${isCompleted ? 'fa-check' : 'fa-circle'}"></i>
+                    </button>
+                    <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                        <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                    </button>
+                </div>
             </div>
         `;
 
@@ -1506,6 +1525,52 @@ document.addEventListener('click', (e) => {
 
   trackRecentProject(project);
 });
+
+/* ============================================================
+   COMPLETION TRACKING
+   ============================================================ */
+function toggleCompletion(day) {
+  const idx = completedProjects.indexOf(day);
+  if (idx !== -1) {
+    completedProjects.splice(idx, 1);
+    showToast('Project marked as incomplete');
+  } else {
+    completedProjects.push(day);
+    showToast('🎉 Project completed!');
+  }
+  localStorage.setItem('completedProjects', JSON.stringify(completedProjects));
+  renderGrid();
+  renderBookmarks();
+  renderRecentProjects();
+  updateProgressBar();
+}
+
+document.addEventListener('click', (e) => {
+  const completeBtn = e.target.closest('.complete-btn');
+  if (!completeBtn) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const day = completeBtn.dataset.id;
+
+  // Add burst animation
+  completeBtn.classList.add('burst');
+  setTimeout(() => completeBtn.classList.remove('burst'), 600);
+
+  toggleCompletion(day);
+});
+
+function updateProgressBar() {
+  const total = PROJECTS.length;
+  const done = completedProjects.length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  const label = document.getElementById('progressLabel');
+  const fill = document.getElementById('progressFill');
+
+  if (label) label.innerHTML = `<strong>${done}</strong>/${total} Done`;
+  if (fill) fill.style.width = `${pct}%`;
+}
 
 /* ============================================================
    FILTER CHIPS
@@ -1849,12 +1914,7 @@ document.addEventListener('DOMContentLoaded', () => {
   syncProjectCounts();
   fetchRepoStats();
   initScrollBtn();
-
-  if (hasProjectGrid()) {
-    renderGrid();
-    renderBookmarks();
-    renderRecentProjects();
-  }
+  updateProgressBar();
 });
 
 

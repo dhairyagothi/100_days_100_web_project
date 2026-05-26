@@ -1241,6 +1241,12 @@ color: var(--text-primary);
   justify-content: space-between;
 }
 
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .card-link {
   font-size: 0.75rem;
   font-weight: 500;
@@ -1351,6 +1357,185 @@ color: var(--text-primary);
   padding: 2rem;
   color: var(--text-muted);
   text-align: center;
+}
+
+/* ============================================================
+   COMPLETION TRACKING
+   ============================================================ */
+
+/* ── Completion Toggle Button ── */
+.complete-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--t);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.complete-btn:hover {
+  border-color: rgba(34, 197, 94, 0.45);
+  background: rgba(34, 197, 94, 0.06);
+  color: #22c55e;
+  transform: translateY(-1px);
+}
+
+.complete-btn.active {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #22c55e;
+  box-shadow:
+    0 0 14px rgba(34, 197, 94, 0.18),
+    0 0 4px rgba(34, 197, 94, 0.1);
+}
+
+.complete-btn.active i {
+  animation: tickPop 0.35s var(--ease);
+}
+
+@keyframes tickPop {
+  0% { transform: scale(0.3) rotate(-15deg); opacity: 0; }
+  50% { transform: scale(1.25) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* ── Green Tick Badge next to Day label ── */
+.card-day-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.completion-tick {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-size: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 8px rgba(34, 197, 94, 0.35),
+    0 2px 6px rgba(34, 197, 94, 0.2);
+  animation: tickBadgePop 0.4s var(--ease);
+  flex-shrink: 0;
+}
+
+.project-card.completed .completion-tick {
+  display: inline-flex;
+}
+
+@keyframes tickBadgePop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Completed Card Visual Treatment ── */
+.project-card.completed {
+  opacity: 0.62;
+  transition:
+    opacity 0.35s var(--ease),
+    transform 0.24s var(--ease),
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.project-card.completed::before {
+  background: linear-gradient(180deg, #22c55e, #16a34a);
+  opacity: 0.6;
+}
+
+.project-card.completed .card-name {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+  text-decoration-color: rgba(34, 197, 94, 0.35);
+  text-decoration-thickness: 1.5px;
+}
+
+.project-card.completed .card-day {
+  color: #22c55e;
+}
+
+.project-card.completed:hover {
+  opacity: 0.85;
+}
+
+/* ── Progress Bar in Stats ── */
+.progress-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.progress-stat .progress-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.progress-stat .progress-label strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: #22c55e;
+  font-size: 0.86rem;
+}
+
+.progress-bar-track {
+  width: 80px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+body.light-mode .progress-bar-track {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+  transition: width 0.6s var(--ease);
+  min-width: 0;
+}
+
+/* ── Completion Confetti burst ── */
+@keyframes confettiBurst {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(34, 197, 94, 0.4),
+      0 0 0 0 rgba(74, 222, 128, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(34, 197, 94, 0),
+      0 0 0 16px rgba(74, 222, 128, 0);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(34, 197, 94, 0),
+      0 0 0 0 rgba(74, 222, 128, 0);
+  }
+}
+
+.complete-btn.burst {
+  animation: confettiBurst 0.6s ease-out;
 }
 
 /* ============================================================
