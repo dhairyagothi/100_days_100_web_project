@@ -359,3 +359,187 @@ main.container {
     font-size: 0.85rem;
   }
 }
+/* FIX: Dropdown should appear above all sections */
+.dropdown-menu {
+  z-index: 2000 !important;
+}
+
+/* FIX: Navbar stacking issue */
+.navbar {
+  position: relative;
+  z-index: 1050;
+}
+
+/* Usage Guide Modal */
+.guide-modal{
+
+display:none;
+position:fixed;
+inset:0;
+
+background:
+rgba(0,0,0,.55);
+
+backdrop-filter:
+blur(10px);
+
+z-index:3000;
+}
+
+/* C & F toggle button style */
+.unit-toggle-btn {
+    
+  white-space: nowrap;
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.unit-toggle-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: white;
+    transform: translateY(-1px);
+}
+
+.unit-toggle-btn:active {
+    transform: scale(0.98);
+}
+
+.guide-content{
+
+position:relative;
+
+width:min(90%,650px);
+
+margin:8vh auto;
+
+padding:40px;
+
+border-radius:28px;
+
+background:
+rgba(16,22,35,.92);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+backdrop-filter:
+blur(20px);
+
+box-shadow:
+0 25px 70px rgba(0,0,0,.35);
+
+color:white;
+}
+
+
+.guide-tag{
+
+font-size:.75rem;
+
+letter-spacing:2px;
+
+color:#7fa6ff;
+
+font-weight:600;
+}
+
+
+.guide-content h2{
+
+font-size:2rem;
+
+font-weight:700;
+
+margin:
+
+12px 0 18px;
+}
+
+
+.guide-desc{
+
+color:
+rgba(255,255,255,.72);
+
+line-height:1.7;
+
+margin-bottom:35px;
+}
+
+
+.guide-grid{
+
+display:grid;
+
+grid-template-columns:
+
+1fr 1fr;
+
+gap:40px;
+}
+
+
+.guide-grid h4{
+
+margin-bottom:18px;
+
+font-size:1rem;
+
+color:white;
+}
+
+
+.guide-grid p{
+
+color:
+rgba(255,255,255,.75);
+
+margin:10px 0;
+}
+
+
+.close-guide{
+
+position:absolute;
+
+top:20px;
+right:25px;
+
+background:none;
+
+border:none;
+
+font-size:30px;
+
+color:white;
+
+cursor:pointer;
+
+opacity:.7;
+}
+
+.close-guide:hover{
+
+opacity:1;
+
+transform:scale(1.1);
+}
+
+
+@media(max-width:700px){
+
+.guide-grid{
+
+grid-template-columns:
+1fr;
+
+}
+
+}

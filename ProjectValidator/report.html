@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project Validation Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #e0e0e0;
+      padding: 30px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+
+    header h1 { color: #00d4ff; font-size: 2rem; }
+    header p  { color: #aaa; margin-top: 8px; }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card .number { font-size: 2.5rem; font-weight: bold; }
+    .card .label  { color: #aaa; margin-top: 6px; font-size: 0.9rem; }
+    .total  .number { color: #00d4ff; }
+    .passed .number { color: #00ff88; }
+    .failed .number { color: #ff4757; }
+
+    .issues-section h2 { color: #fff; margin-bottom: 16px; }
+
+    .issue-card {
+      background: #1a1a2e;
+      border-left: 4px solid #ff4757;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .issue-card h3 { color: #ff4757; margin-bottom: 8px; }
+    .issue-card ul { padding-left: 20px; }
+    .issue-card li { color: #ffaa00; margin-top: 4px; font-size: 0.9rem; }
+
+    .no-issues {
+      text-align: center;
+      padding: 40px;
+      color: #00ff88;
+      font-size: 1.2rem;
+      background: #1a1a2e;
+      border-radius: 10px;
+    }
+
+    .timestamp { 
+      text-align: center; 
+      color: #555; 
+      font-size: 0.8rem; 
+      margin-top: 30px; 
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🔍 Project Validation Report</h1>
+    <p>Automated Demo & Path Validation — 100 Days 100 Projects</p>
+  </header>
+
+  <div class="summary">
+    <div class="card total">
+      <div class="number" id="total">0</div>
+      <div class="label">Total Projects</div>
+    </div>
+    <div class="card passed">
+      <div class="number" id="passed">0</div>
+      <div class="label">✅ Passed</div>
+    </div>
+    <div class="card failed">
+      <div class="number" id="failed">0</div>
+      <div class="label">❌ Failed</div>
+    </div>
+  </div>
+
+  <div class="issues-section">
+    <h2>⚠️ Projects with Issues</h2>
+    <div id="issuesList"></div>
+  </div>
+
+  <div class="timestamp" id="timestamp"></div>
+
+  <script>
+    // Load validation-report.json if available
+    fetch('./validation-report.json')
+      .then(res => res.json())
+      .then(data => {
+        const { summary } = data;
+        document.getElementById('total').textContent  = summary.total;
+        document.getElementById('passed').textContent = summary.passed;
+        document.getElementById('failed').textContent = summary.failed;
+        document.getElementById('timestamp').textContent = 'Last run: ' + new Date(data.timestamp).toLocaleString();
+
+        const list = document.getElementById('issuesList');
+        if (summary.issues.length === 0) {
+          list.innerHTML = '<div class="no-issues">🎉 All projects passed validation!</div>';
+        } else {
+          summary.issues.forEach(item => {
+            list.innerHTML += `
+              <div class="issue-card">
+                <h3>📁 ${item.project}</h3>
+                <ul>${item.issues.map(i => `<li>${i}</li>`).join('')}</ul>
+              </div>`;
+          });
+        }
+      })
+      .catch(() => {
+        // Demo data if report not generated yet
+        document.getElementById('total').textContent  = '112+';
+        document.getElementById('passed').textContent = '98';
+        document.getElementById('failed').textContent = '14';
+        document.getElementById('timestamp').textContent = 'Run validate.js to generate live report';
+        document.getElementById('issuesList').innerHTML = 
+          '<div class="no-issues" style="color:#ffaa00">⚡ Run: node validate.js to generate report</div>';
+      });
+  </script>
+
+</body>
+</html>

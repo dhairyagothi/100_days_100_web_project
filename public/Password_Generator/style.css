@@ -8,7 +8,6 @@
 }
 
 :root {
-
     --dk-violet: hsl(268, 75%, 9%);
     --lt-violet: hsl(268, 47%, 21%);
     --lt-violet2: hsl(281, 89%, 26%);
@@ -58,6 +57,64 @@ h1 {
     padding-top: 0.35rem;
 }
 
+.recent-container {
+    width: 100%;
+    background-color: var(--dk-violet);
+    border-radius: 1rem;
+    border-bottom: 0.35rem solid var(--lt-violet2);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.recent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.recent-header h2 {
+    color: var(--pl-white);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.history-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.history-item,
+.history-empty {
+    color: var(--vb-yellow);
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    word-break: break-all;
+}
+
+.history-empty {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.clearHistoryBtn {
+    background-color: transparent;
+    border: 1px solid var(--vb-cyan);
+    color: var(--vb-cyan);
+    border-radius: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.clearHistoryBtn:hover {
+    background-color: rgba(34, 211, 238, 0.08);
+}
 
 .display {
     width: 100%;
@@ -68,7 +125,7 @@ h1 {
     font-size: 1.5rem;
     line-height: 30px;
     letter-spacing: 1px;
-    padding-right: 3.25rem;
+    padding-right: 5.5rem;
     border: none;
 }
 
@@ -84,11 +141,27 @@ h1 {
     transform: translateY(-50%);
 }
 
-.display-container button {
+.display-container .btns {
     position: absolute;
     top: 50%;
-    right: 1.5rem;
+    right: 1.25rem;
     transform: translateY(-50%);
+    display: flex;
+    gap: 0.5rem;
+}
+.display-container .btns button {
+    background: transparent;
+    border: none;
+    padding: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.eyeBtn .eyeIcon {
+    display: block;
+    width: 22px;
+    height: 22px;
 }
 
 .input-container {
@@ -99,25 +172,21 @@ h1 {
     border-bottom: 0.35rem solid var(--lt-violet2);
 }
 
-
 .length-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-
 .length-container p:nth-child(1) {
     color: var(--pl-white);
     font-size: 1.5rem;
 }
 
-
 .length-container p:nth-child(2) {
     color: var(--vb-yellow);
     font-size: 1.5rem;
 }
-
 
 .strength-container {
     display: flex;
@@ -141,7 +210,7 @@ h1 {
 
 .generateButton {
     width: 100%;
-    padding: 1rem 0;
+    padding: 1.125rem 0;
     background-color: var(--vb-violet);
     text-align: center;
     border-radius: 0.75rem;
@@ -150,7 +219,7 @@ h1 {
     letter-spacing: 1px;
     color: var(--vb-yellow);
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.375rem;
 }
 
 .check {
@@ -174,7 +243,6 @@ h1 {
 .check input:checked {
     background-color: var(--vb-cyan);
 }
-
 
 .check input:checked::before {
     content: '✔';
@@ -203,20 +271,20 @@ h1 {
     position: absolute;
     background-color: var(--vb-violet2);
     color: var(--vb-yellow);
-    font-size: 1.25rem;
-    top: -35px;
-    left: -25px;
-    padding: 5px 10px;
+    font-size: 1.05rem;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    transform-origin: bottom center;
+    padding: 6px 10px;
     border-radius: 1rem;
     opacity: 0;
-    transform: scale(0);
-    transform-origin: bottom;
-    transition: all 250ms ease-in-out;
+    transition: all 200ms ease-in-out;
 }
 
 .tooltip.active {
     opacity: 1;
-    transform: scale(1);
+    transform: translateX(-50%) scale(1);
 }
 
 .slider {
@@ -232,7 +300,7 @@ h1 {
     background-repeat: no-repeat;
     border: none;
     outline: none;
-    z-index: -1;
+    z-index: 1;
 }
 
 .slider::-webkit-slider-thumb {
@@ -281,10 +349,13 @@ h1 {
 .copyBtn:hover {
     cursor: pointer;
     opacity: 0.9;
+    transform: scale(1.02);
     transition: all 0.1s ease;
 }
 
 /*Homework -> Explore below code */
+
+
 /* .slider::-moz-range-thumb {
     position: relative;
     z-index: 1;
@@ -308,15 +379,62 @@ h1 {
     text-align: center;
     margin-bottom: 1rem;
     font-size: 0.95rem;
+}
+
+.suggestion {
+    color: #ffd966;
+    text-align: center;
+    margin: 0.5rem 0 0.75rem 0;
+    font-size: 0.95rem;
+}
 
 .strength-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
 .strength-text {
+    color:white;
+    font-size:1rem;
+    font-weight:600;
+}
+.history-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.history-container h3 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.history-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.history-item {
+    color: #ffd700;
+    padding: 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    word-break: break-all;
+}
+
+.history-empty {
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+}
+
+.history-container button {
+    margin-top: 10px;
+    padding: 8px 20px;
+    background: #ff4444;
     color: white;
-    font-size: 1rem;
-    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }

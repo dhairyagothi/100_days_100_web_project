@@ -1,123 +1,172 @@
-const boxes = Array.from(document.querySelectorAll(".box"));
-const resetRoundBtn = document.querySelector("#resetRound");
-const resetAllBtn = document.querySelector("#resetAll");
-const statusText = document.querySelector("#statusText");
-const turnChip = document.querySelector("#turnChip");
-const scoreOEl = document.querySelector("#scoreO");
-const scoreXEl = document.querySelector("#scoreX");
-const scoreDEl = document.querySelector("#scoreD");
-const modeSelect = document.querySelector("#modeSelect");
-const themeSelect = document.querySelector("#themeSelect");
-const hintBtn = document.querySelector("#hintBtn");
-const undoBtn = document.querySelector("#undoBtn");
-const soundToggle = document.querySelector("#soundToggle");
-const turnTimer = document.querySelector("#turnTimer");
-const historyList = document.querySelector("#historyList");
-const boardEl = document.querySelector("#board");
-const winLine = document.querySelector("#winLine");
-const confettiCanvas = document.querySelector("#confetti");
-const winnerModal = document.querySelector("#winnerModal");
-const winnerTitle = document.querySelector("#winnerTitle");
-const winnerSubtitle = document.querySelector("#winnerSubtitle");
-const winnerBadge = document.querySelector("#winnerBadge");
-const winnerNextBtn = document.querySelector("#winnerNext");
-const winnerCloseBtn = document.querySelector("#winnerClose");
-const startModal = document.querySelector("#startModal");
-const startGameBtn = document.querySelector("#startGameBtn");
+(function () {
+  "use strict";
 
-let turnO = true;
-let boardLocked = false;
-let scores = { O: 0, X: 0, D: 0 };
-let boardState = Array(9).fill("");
-let moveHistory = [];
-let mode = "pvp";
-let soundEnabled = true;
-let currentResult = null;
-let confettiAnimId = null;
-let audioCtx;
-let gameStarted = false;
-const setTarget = 3;
-let turnTimerId = null;
-let turnStart = null;
+  var WIN_LINES = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
 
-// All winning triplets on the 3x3 grid.
-const winPatterns = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-];
+  var board     = Array(9).fill(null);
+  var current   = "X";
+  var gameOver  = false;
+  var scores    = { X: 0, O: 0, D: 0 };
+  var particles = [];
+  var animFrame = null;
 
-const updateStatus = (message) => {
-    statusText.textContent = message;
-    const turnLabel = turnO ? "O" : "X";
-    const cpuLabel = mode === "pvp" ? "" : turnO ? " (You)" : " (CPU)";
-    turnChip.textContent = `Turn: ${turnLabel}${cpuLabel}`;
-};
+  /* ── Bot state ──────────────────────────*/
+  var vsBot   = false;
+  var botMark = "O";
 
-const startTurnTimer = () => {
-    turnStart = Date.now();
-    if (turnTimerId) {
-        clearInterval(turnTimerId);
-    }
-    turnTimerId = setInterval(() => {
-        if (!turnStart) {
-            return;
-        }
-        const seconds = Math.floor((Date.now() - turnStart) / 1000);
-        if (turnTimer) {
-            turnTimer.textContent = `Time: ${seconds}s`;
-        }
-    }, 500);
-};
+  var boardEl  = document.getElementById("board");
+  var gameEl   = document.getElementById("game");
+  var statusEl = document.getElementById("status-bar");
+  var pillX    = document.getElementById("pill-x");
+  var pillO    = document.getElementById("pill-o");
+  var scoreX   = document.getElementById("score-x");
+  var scoreO   = document.getElementById("score-o");
+  var scoreD   = document.getElementById("score-d");
+  var overlay  = document.getElementById("win-overlay");
+  var winText  = document.getElementById("win-text");
+  var winSub   = document.getElementById("win-sub");
+  var winBtn   = document.getElementById("win-btn");
+  var canvas   = document.getElementById("confetti-canvas");
+  var ctx      = canvas.getContext("2d");
+  var startScreen = document.getElementById("start-screen");
+  var startBtn   = document.getElementById("start-btn");
 
-const stopTurnTimer = () => {
-    if (turnTimerId) {
-        clearInterval(turnTimerId);
-        turnTimerId = null;
-    }
-    turnStart = null;
-    if (turnTimer) {
-        turnTimer.textContent = "Time: 0s";
-    }
-};
+  // ── Mode screen (injected) ─────────────
+  var modeScreen = document.createElement("div");
+  modeScreen.id = "mode-screen";
+  modeScreen.innerHTML = `
+    <h2 class="mode-title">Choose Mode</h2>
+    <p class="mode-sub">How do you want to play?</p>
+    <div class="mode-btns">
+      <button class="mode-btn" id="btn-2p">
+        <span class="mode-icon">👥</span>
+        <span class="mode-label">2 Players</span>
+        <span class="mode-desc">Play with a friend</span>
+      </button>
+      <button class="mode-btn" id="btn-bot">
+        <span class="mode-icon">🤖</span>
+        <span class="mode-label">vs Bot</span>
+        <span class="mode-desc">Challenge the AI</span>
+      </button>
+    </div>
+  `;
+  document.body.appendChild(modeScreen);
 
-const updateScores = () => {
-    scoreOEl.textContent = scores.O;
-    scoreXEl.textContent = scores.X;
-    scoreDEl.textContent = scores.D;
-};
+  /* ── Build board ──────────────────────── */
+  function buildBoard() {
+    boardEl.innerHTML = "";
+    board.forEach(function (val, i) {
+      var cell = document.createElement("div");
+      cell.className = "cell";
+      if (val) {
+        cell.classList.add("taken", val === "X" ? "x-mark" : "o-mark");
+        cell.textContent = val === "X" ? "\u2715" : "\u25CB";
+      }
+      cell.addEventListener("click", function () { handleClick(i); });
+      boardEl.appendChild(cell);
+    });
+  }
 
-const setWinner = (winner, pattern) => {
-    boardLocked = true;
-    currentResult = { winner, pattern };
-    if (pattern.length) {
-        pattern.forEach((index) => boxes[index].classList.add("win"));
-        showWinLine(pattern);
-    }
-    statusText.textContent = winner === "D" ? "Round draw" : `${winner} wins the round`;
-    if (winner !== "D") {
-        scores[winner] += 1;
-        launchConfetti();
-        playTone(620, 0.15);
+  /* ── Handle cell click ────────────────── */
+  function handleClick(i) {
+    if (gameOver || board[i]) return;
+    if (vsBot && current === botMark) return;   // block clicks on bot's turn
+
+    board[i] = current;
+    buildBoard();
+
+    var win = checkWin();
+    if (win) {
+      highlightWin(win);
+      scores[current]++;
+      updateScores();
+      setTimeout(function () { showWinOverlay(current); }, 320);
+      gameOver = true;
+    } else if (board.every(Boolean)) {
+      scores.D++;
+      updateScores();
+      setTimeout(showDrawOverlay, 200);
+      gameOver = true;
     } else {
-        scores.D += 1;
-        playTone(260, 0.12);
+      current = current === "X" ? "O" : "X";
+      setUI(current);
+      if (vsBot && current === botMark) setTimeout(doBotMove, 480);
     }
-    updateScores();
-    if (winner !== "D") {
-        const isSetWin = scores[winner] >= setTarget;
-        showWinnerModal(winner, isSetWin);
+  }
+
+  /* ── Bot move ─────────────────────────── */
+  function doBotMove() {
+    if (gameOver) return;
+    var move = getBotMove();
+    if (move === -1) return;
+    board[move] = botMark;
+    buildBoard();
+
+    var win = checkWin();
+    if (win) {
+      highlightWin(win);
+      scores[botMark]++;
+      updateScores();
+      setTimeout(function () { showWinOverlay(botMark); }, 320);
+      gameOver = true;
+    } else if (board.every(Boolean)) {
+      scores.D++;
+      updateScores();
+      setTimeout(showDrawOverlay, 200);
+      gameOver = true;
+    } else {
+      current = current === "X" ? "O" : "X";
+      setUI(current);
     }
-    if (winner !== "D" && scores[winner] >= setTarget) {
-        statusText.textContent = `${winner} wins the set. Reset scores to play again.`;
+  }
+
+  /* ── Pick best move (minimax) ─────────── */
+  function getBotMove() {
+    var bestScore = -Infinity;
+    var bestMove  = -1;
+    for (var i = 0; i < 9; i++) {
+      if (!board[i]) {
+        board[i] = botMark;
+        var score = minimax(board, 0, false);
+        board[i] = null;
+        if (score > bestScore) { bestScore = score; bestMove = i; }
+      }
     }
-    stopTurnTimer();
-};
+    return bestMove;
+  }
+
+  /* ── Minimax ──────────────────────────── */
+  function minimax(b, depth, isMax) {
+    var human  = botMark === "O" ? "X" : "O";
+    var winner = scanWinner(b);
+    if (winner === botMark) return 10 - depth;
+    if (winner === human)   return depth - 10;
+    if (b.every(Boolean))   return 0;
+
+    var best = isMax ? -Infinity : Infinity;
+    for (var i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = isMax ? botMark : human;
+        var score = minimax(b, depth + 1, !isMax);
+        b[i] = null;
+        best = isMax ? Math.max(best, score) : Math.min(best, score);
+      }
+    }
+    return best;
+  }
+
+  /* ── Scan board for a winner ──────────── */
+  function scanWinner(b) {
+    for (var i = 0; i < WIN_LINES.length; i++) {
+      var l = WIN_LINES[i];
+      if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[0]] === b[l[2]]) return b[l[0]];
+    }
+    return null;
+  }
 
 const checkWinner = () => {
     for (const pattern of winPatterns) {
@@ -130,79 +179,67 @@ const checkWinner = () => {
             return true;
         }
     }
+    return null;
+  }
 
-    if (boardState.every((cell) => cell)) {
-        setWinner("D", []);
-        return true;
-    }
-    return false;
-};
+  /* ── Highlight winning cells ──────────── */
+  function highlightWin(line) {
+    var cells = boardEl.querySelectorAll(".cell");
+    line.forEach(function (i) { cells[i].classList.add("win-cell"); });
+  }
 
-// Handle a player click on a board cell.
-const handleTurn = (box) => {
-    if (!gameStarted || boardLocked || box.textContent) {
-        return;
-    }
-    if (mode !== "pvp" && !turnO) {
-        return;
-    }
-    const index = Number(box.dataset.index);
-    placeMark(index, turnO ? "O" : "X");
-};
+  /* ── Update turn UI + background ─────── */
+  function setUI(player) {
+    pillX.classList.toggle("active", player === "X");
+    pillO.classList.toggle("active", player === "O");
+    gameEl.className = player === "X" ? "turn-x" : "turn-o";
+    statusEl.className = player === "X" ? "sx" : "so";
+    var label = (vsBot && player === botMark) ? "Bot" : player;
+    statusEl.textContent = player ? label + "'s turn!" : "";
+  }
 
-// Place a mark and advance game flow (win check, CPU turn).
-const placeMark = (index, mark, isAuto = false) => {
-    const box = boxes[index];
-    if (!box || boardState[index]) {
-        return;
-    }
-    boardState[index] = mark;
-    box.textContent = mark;
-    box.classList.add(mark === "O" ? "mark-o" : "mark-x");
-    box.disabled = true;
-    clearHints();
-    moveHistory.push({ index, mark });
-    updateHistory();
-    if (!isAuto) {
-        playTone(mark === "O" ? 420 : 320, 0.08);
-    }
-    if (!checkWinner()) {
-        turnO = !turnO;
-        updateStatus("Make your move");
-        startTurnTimer();
-        triggerCpuMove();
-    }
-};
+  /* ── Update scoreboard ────────────────── */
+  function updateScores() {
+    scoreX.textContent = scores.X;
+    scoreO.textContent = scores.O;
+    scoreD.textContent = scores.D;
+  }
 
-const resetRound = () => {
-    if (scores.O >= setTarget || scores.X >= setTarget) {
-        updateStatus("Set is over. Reset scores to play again.");
-        return;
-    }
-    hideWinnerModal();
-    boardLocked = false;
-    currentResult = null;
-    boardState = Array(9).fill("");
-    moveHistory = [];
-    turnO = true;
-    boxes.forEach((box) => {
-        box.textContent = "";
-        box.disabled = false;
-        box.classList.remove("win", "mark-o", "mark-x", "hint");
-    });
-    hideWinLine();
-    updateHistory();
-    updateStatus("New round started");
-    if (gameStarted) {
-        startTurnTimer();
-    }
-    if (mode !== "pvp" && !turnO) {
-        triggerCpuMove();
-    }
-};
+  /* ── Win overlay ──────────────────────── */
+  function showWinOverlay(player) {
+    winText.className   = player === "X" ? "col-x" : "col-o";
+    winText.textContent = "CONGRATULATIONS!";
+    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
+    winSub.textContent  = label + " wins the round!";
+    winBtn.className    = player === "X" ? "btn-x" : "btn-o";
+    overlay.className   = "show " + (player === "X" ? "ov-x" : "ov-o");
+    launchConfetti(player);
+  }
 
-const resetAll = () => {
-    scores = { O: 0, X: 0, D: 0 };
+  /* ── Draw overlay ─────────────────────── */
+  function showDrawOverlay() {
+    winText.className   = "col-d";
+    winText.textContent = "IT'S A DRAW!";
+    winSub.textContent  = "Nobody wins this round.";
+    winBtn.className    = "btn-d";
+    overlay.className   = "show ov-d";
+  }
+
+  /* ── Next round ───────────────────────── */
+  function nextRound() {
+    board    = Array(9).fill(null);
+    current  = "X";
+    gameOver = false;
+    buildBoard();
+    setUI("X");
+    overlay.className = "";
+    stopConfetti();
+    if (vsBot && current === botMark) setTimeout(doBotMove, 480);
+  }
+
+  /* ── Reset all ────────────────────────── */
+  function resetAll() {
+    scores = { X: 0, O: 0, D: 0 };
     updateScores();
     turnO = true;
     resetRound();
@@ -348,242 +385,53 @@ const bestMoveFor = (state, player) => {
             move = index;
         }
     });
-    if (move === null) {
-        const available = getAvailableMoves(state);
-        return available.length ? randomMove(available) : null;
-    }
-    return move;
-};
+    animFrame = requestAnimationFrame(animateConfetti);
+  }
 
-// Minimax scoring for the hard CPU decision.
-const minimax = (state, isMax, player, opponent, depth) => {
-    const winner = evaluateWinner(state);
-    if (winner === player) {
-        return 10 - depth;
-    }
-    if (winner === opponent) {
-        return depth - 10;
-    }
-    if (state.every((cell) => cell)) {
-        return 0;
-    }
+  function stopConfetti() {
+    particles = [];
+    if (animFrame) cancelAnimationFrame(animFrame);
+    animFrame = null;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 
-    const moves = getAvailableMoves(state);
-    if (isMax) {
-        let best = -Infinity;
-        moves.forEach((index) => {
-            const next = [...state];
-            next[index] = player;
-            best = Math.max(best, minimax(next, false, player, opponent, depth + 1));
-        });
-        return best;
-    }
-    let best = Infinity;
-    moves.forEach((index) => {
-        const next = [...state];
-        next[index] = opponent;
-        best = Math.min(best, minimax(next, true, player, opponent, depth + 1));
-    });
-    return best;
-};
+  /* ── Button wiring ────────────────────── */
+  document.getElementById("btn-reset").addEventListener("click", resetAll);
+  document.getElementById("btn-restart").addEventListener("click", nextRound);
+  document.getElementById("win-btn").addEventListener("click", nextRound);
 
-const evaluateWinner = (state) => {
-    for (const pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (state[a] && state[a] === state[b] && state[a] === state[c]) {
-            return state[a];
-        }
-    }
-    return null;
-};
+  /* ── Start → mode screen ──────────────── */
+  startBtn.addEventListener("click", function () {
+    startScreen.classList.add("hide-screen");
+    setTimeout(function () {
+      startScreen.style.display = "none";
+      modeScreen.classList.add("show");
+    }, 600);
+  });
 
-const handleHint = () => {
-    if (boardLocked) {
-        return;
-    }
-    if (mode !== "pvp" && !turnO) {
-        updateStatus("CPU is thinking...");
-        return;
-    }
-    clearHints();
-    const player = turnO ? "O" : "X";
-    const index = bestMoveFor(boardState, player);
-    if (index !== null && boxes[index]) {
-        boxes[index].classList.add("hint");
-    }
-};
+  document.getElementById("btn-2p").addEventListener("click", function () {
+    vsBot = false;
+    launchGame();
+  });
 
-const setTheme = (value) => {
-    document.body.dataset.theme = value;
-};
+  document.getElementById("btn-bot").addEventListener("click", function () {
+    vsBot = true;
+    launchGame();
+  });
 
-const handleKeyShortcuts = (event) => {
-    const tag = event.target.tagName;
-    if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA" || tag === "BUTTON") {
-        return;
-    }
-    if (event.key >= "1" && event.key <= "9") {
-        const index = Number(event.key) - 1;
-        if (boxes[index]) {
-            handleTurn(boxes[index]);
-        }
-        return;
-    }
-    if (event.key === "r" || event.key === "R") {
-        resetRound();
-    }
-    if (event.key === "u" || event.key === "U") {
-        undoMove();
-    }
-    if (event.key === "h" || event.key === "H") {
-        handleHint();
-    }
-    if (event.key === "s" || event.key === "S") {
-        toggleSound();
-    }
-};
+  /* ── Mode screen → game ───────────────── */
+  function launchGame() {
+    modeScreen.classList.remove("show");
+    modeScreen.classList.add("hide");
+    setTimeout(function () {
+      modeScreen.style.display = "none";
+      gameEl.classList.remove("hidden");
+      gameEl.classList.add("show-game");
+    }, 400);
+  }
 
-const toggleSound = () => {
-    soundEnabled = !soundEnabled;
-    soundToggle.textContent = `Sound: ${soundEnabled ? "On" : "Off"}`;
-    soundToggle.setAttribute("aria-pressed", String(soundEnabled));
-};
+  /* ── Init ─────────────────────────────── */
+  buildBoard();
+  setUI("X");
 
-// Simple Web Audio beep for click feedback.
-const playTone = (freq, duration) => {
-    if (!soundEnabled) {
-        return;
-    }
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.frequency.value = freq;
-    osc.type = "sine";
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-};
-
-const showWinLine = (pattern) => {
-    const [start, , end] = pattern;
-    const startBox = boxes[start];
-    const endBox = boxes[end];
-    if (!startBox || !endBox) {
-        return;
-    }
-    const boardRect = boardEl.getBoundingClientRect();
-    const startRect = startBox.getBoundingClientRect();
-    const endRect = endBox.getBoundingClientRect();
-    const x1 = startRect.left + startRect.width / 2 - boardRect.left;
-    const y1 = startRect.top + startRect.height / 2 - boardRect.top;
-    const x2 = endRect.left + endRect.width / 2 - boardRect.left;
-    const y2 = endRect.top + endRect.height / 2 - boardRect.top;
-    const length = Math.hypot(x2 - x1, y2 - y1);
-    const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
-    winLine.style.left = `${x1}px`;
-    winLine.style.top = `${y1}px`;
-    winLine.style.width = `${length}px`;
-    winLine.style.transform = `rotate(${angle}deg)`;
-    winLine.classList.add("show");
-};
-
-const hideWinLine = () => {
-    winLine.classList.remove("show");
-    winLine.style.width = "0px";
-};
-
-const resizeConfetti = () => {
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
-};
-
-const launchConfetti = () => {
-    if (!confettiCanvas) {
-        return;
-    }
-    resizeConfetti();
-    const ctx = confettiCanvas.getContext("2d");
-    const pieces = Array.from({ length: 80 }, () => ({
-        x: Math.random() * confettiCanvas.width,
-        y: -20 - Math.random() * 200,
-        w: 6 + Math.random() * 6,
-        h: 10 + Math.random() * 10,
-        vx: -1 + Math.random() * 2,
-        vy: 2 + Math.random() * 3,
-        color: Math.random() > 0.5 ? "#40f5d2" : "#ff7d7d"
-    }));
-    const start = performance.now();
-    const draw = (now) => {
-        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-        pieces.forEach((p) => {
-            p.x += p.vx;
-            p.y += p.vy;
-            ctx.fillStyle = p.color;
-            ctx.fillRect(p.x, p.y, p.w, p.h);
-        });
-        if (now - start < 1200) {
-            confettiAnimId = requestAnimationFrame(draw);
-        } else {
-            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-            cancelAnimationFrame(confettiAnimId);
-        }
-    };
-    cancelAnimationFrame(confettiAnimId);
-    confettiAnimId = requestAnimationFrame(draw);
-};
-
-boxes.forEach((box) => {
-    box.addEventListener("click", () => handleTurn(box));
-});
-
-resetRoundBtn.addEventListener("click", resetRound);
-resetAllBtn.addEventListener("click", resetAll);
-hintBtn.addEventListener("click", handleHint);
-undoBtn.addEventListener("click", undoMove);
-soundToggle.addEventListener("click", toggleSound);
-winnerNextBtn.addEventListener("click", () => {
-    hideWinnerModal();
-    resetRound();
-});
-winnerCloseBtn.addEventListener("click", hideWinnerModal);
-winnerModal.addEventListener("click", (event) => {
-    if (event.target === winnerModal) {
-        hideWinnerModal();
-    }
-});
-startGameBtn.addEventListener("click", () => {
-    gameStarted = true;
-    hideStartModal();
-    resetRound();
-    updateStatus("Make your move");
-    startTurnTimer();
-});
-modeSelect.addEventListener("change", (event) => {
-    mode = event.target.value;
-    resetRound();
-    updateStatus("Mode updated. New round started");
-});
-themeSelect.addEventListener("change", (event) => {
-    setTheme(event.target.value);
-});
-document.addEventListener("keydown", handleKeyShortcuts);
-window.addEventListener("resize", () => {
-    if (winLine.classList.contains("show") && currentResult?.pattern?.length) {
-        showWinLine(currentResult.pattern);
-    }
-    resizeConfetti();
-});
-
-updateScores();
-updateStatus("Ready to play");
-setTheme("neon");
-resizeConfetti();
-updateHistory();
-if (!gameStarted) {
-    showStartModal();
-}
+})();
