@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VisionLocal – AI Image Predictor</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+    <canvas id="neural-bg"></canvas>
+
+    <div class="shell">
+
+      <!-- Top bar -->
+      <header class="topbar">
+        <span class="topbar-logo">⬡ VisionLocal</span>
+        <span class="topbar-badge">Neural Vision Engine</span>
+        <div class="topbar-status">
+          <span class="status-dot"></span>
+          <span>local inference</span>
+        </div>
+      </header>
+
+      <!-- Split layout -->
+      <div class="split">
+
+        <!-- LEFT: Upload Panel -->
+        <div class="left-panel">
+          <span class="panel-title">Upload</span>
+
+          <div class="upload-heading">
+            <h2>Image Predictor</h2>
+            <h4>Look Beyond Pixels</h4>
+          </div>
+
+          <!-- Dropzone -->
+          <div class="dropzone" id="dropzone">
+            <div id="dz-empty">
+              <div class="dz-icon">🤖</div>
+              <div class="dz-text">
+                <strong>Drop image here or click to browse</strong>
+                <span>Processes entirely on your device</span>
+              </div>
+            </div>
+            <div id="dz-preview" style="display:none;" class="preview-wrapper">
+              <img id="preview-img" src="" alt="Preview" class="preview-img" />
+              <div class="preview-overlay">
+                <span class="preview-badge">ready</span>
+                <button class="remove-btn" id="remove-btn">✕</button>
+              </div>
+            </div>
+            <input id="file-input" type="file" accept="image/*" style="display:none;" />
+          </div>
+
+          <!-- URL input -->
+          <div class="url-group">
+            <label class="url-label" for="ollama-url">Ollama Endpoint</label>
+            <input class="url-input" id="ollama-url" type="text"
+              placeholder="http://localhost:11434"
+              value="http://localhost:11434" />
+          </div>
+
+          <!-- Actions -->
+          <div class="actions">
+            <button class="btn-primary" id="analyze-btn" disabled>✦ Analyze Image</button>
+            <button class="btn-secondary" id="reset-btn" style="display:none;">Reset</button>
+          </div>
+
+          <!-- Info blocks -->
+          <div class="info-grid">
+            <div class="info-block">
+              <div class="info-block-label">Model</div>
+              <div class="info-block-value" style="font-size:14px;">moondream</div>
+              <div class="info-block-sub">vision · local</div>
+            </div>
+            <div class="info-block">
+              <div class="info-block-label">Engine</div>
+              <div class="info-block-value" style="font-size:14px;">Ollama</div>
+              <div class="info-block-sub">ollama.com</div>
+            </div>
+            <div class="info-block">
+              <div class="info-block-label">Privacy</div>
+              <div class="info-block-value" style="font-size:14px;">100%</div>
+              <div class="info-block-sub">no cloud upload</div>
+            </div>
+            <div class="info-block">
+              <div class="info-block-label">Max Size</div>
+              <div class="info-block-value" style="font-size:14px;">1024px</div>
+              <div class="info-block-sub">auto-resized</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: AI Output Panel -->
+        <div class="right-panel">
+          <span class="panel-title">AI Output</span>
+
+          <div class="output-card" id="output-card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <span class="status-indicator" id="status-indicator"></span>
+                <span class="card-label" id="card-label">Waiting</span>
+              </div>
+            </div>
+
+            <div class="card-body" id="card-body">
+              <!-- idle placeholder -->
+              <div class="placeholder" id="state-idle">
+                <div class="placeholder-prompt">
+                  <div class="prompt-line"></div>
+                  <div class="prompt-line"></div>
+                  <div class="prompt-line"></div>
+                  <div class="prompt-line"></div>
+                </div>
+              </div>
+              <!-- loading shimmer -->
+              <div class="shimmer-wrap" id="state-loading" style="display:none;">
+                <div class="shimmer"></div>
+                <div class="shimmer"></div>
+                <div class="shimmer"></div>
+                <div class="shimmer"></div>
+              </div>
+              <!-- result text -->
+              <p class="output-text" id="state-done" style="display:none;"></p>
+              <!-- error text -->
+              <p class="output-error" id="state-error" style="display:none;"></p>
+            </div>
+
+            <div class="card-tags" id="card-tags" style="display:none;"></div>
+
+            <div class="file-meta" id="file-meta" style="display:none;">
+              <span id="meta-name"></span>
+              <span id="meta-size"></span>
+              <span id="meta-type"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer-bar">
+        <span class="footer-text">powered by <span class="footer-accent">ollama</span> · local inference engine</span>
+        <span class="footer-text">VisionLocal <span class="footer-accent">v2.0</span></span>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
