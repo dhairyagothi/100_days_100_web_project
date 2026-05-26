@@ -64,181 +64,552 @@ function getCategoryFromTags(tags, name) {
   return 'Tools';
 }
 
-const PROJECT_DATA = [
-['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', ['javascript', 'todo'], 'beginner'],
-  ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', ['javascript'], 'beginner'],
-  ['Day 3', 'Indian Flag', './public/indianflag/flag.html', ['css'], 'beginner'],
-  ['Day 4', 'Dropdown Nav Bar', './public/dropdown_navbar/index.html', ['css'], 'beginner'],
-  ['Day 5', 'Animated Cursor', './public/Animated-cursor/animated-cursor.html', ['ui', 'javascript', 'css'], 'beginner'],
-  ['Day 6', 'Auto Background Image Slider', './public/Background-Image-sider/slider.html', ['javascript'], 'beginner'],
-  ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', ['css'], 'intermediate'],
-  ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', ['javascript'], 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 11', 'Serve Website Using Express', './public/index.html', ['javascript'], 'intermediate'],
-  ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', ['api', 'javascript'], 'intermediate'],
-  ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', ['javascript'], 'intermediate'],
-  ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', ['css'], 'beginner'],
-  ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 18', 'Carousel Solar System', './public/Carousel%20Solar%20System/index.html', ['css', 'canvas'], 'intermediate'],
-  ['Day 19', 'Planto', './public/plantwebsite/plant.html', ['css'], 'beginner'],
-  ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', ['javascript'], 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', ['javascript'], 'intermediate'],
-  ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', ['ui', 'css'], 'beginner'],
-  ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 25', 'Tic-Tac-Toe', './public/TicTacToe/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 26', 'Maze Game', './public/Maze-Game-main/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 27', 'Memory Game', './public/MemoryGame/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 28', 'Wordle', './public/WORDLE/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 29', 'Snake Game', './public/snake_game/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 30', 'Flappy-bird-game', './public/Flappy-bird-main/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 31', 'Password Manager', './public/password%20manager/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 32', 'Missionaries & Cannibals', './public/Missionaries&Cannibals/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 33', 'Weather Forecasting', './public/Weather%20Forcasting/index.html', ['weather', 'api'], 'intermediate'],
-  ['Day 34', 'Email Validator', './public/email%20validator/index.html', ['api', 'javascript'], 'beginner'],
-  ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 36', 'Medical App', './public/Medical_App/index.html', ['javascript'], 'intermediate'],
-  ['Day 37', '2048 Game', './public/2048_game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 38', 'Github Profile Finder', './public/github_profile_finder/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 39', 'Notes App', './public/notes-app/index.html', ['todo', 'javascript'], 'beginner'],
-  ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', ['javascript', 'css'], 'beginner'],
-  ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 42', 'Amazon App', './public/Amazon_Clone/index.html', ['clone', 'javascript'], 'intermediate'],
-  ['Day 43', 'Password Generator', './public/Password_Generator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 44', 'BMI Calculator', './public/BMI_Calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 45', 'Black Jack', './public/BlackJack/blackJ.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', ['javascript'], 'beginner'],
-  ['Day 47', 'Ping Pong Game', './public/ping/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 49', 'Url Shortener', './public/url_shortener/frontend/public/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 50', 'Recipe Genie', './public/Recipe%20Genie/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', ['clone', 'css'], 'beginner'],
-  ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', ['weather', 'api'], 'intermediate'],
-  ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', ['javascript'], 'intermediate'],
-  ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 55', 'Cricket Game', './public/cricket/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', './public/pastebin/src/app.html', ['javascript'], 'intermediate'],
-  ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 58', 'Music App', './public/Music%20App/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', ['css'], 'beginner'],
-  ['Day 60', 'Marketing template website', './public/marketing_website/index.html', ['css'], 'beginner'],
-  ['Day 61', 'Hologram Button', './public/Holo%20Button/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 62', 'Solar System Explorer', './public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html', ['css'], 'intermediate'],
-  ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', ['clone', 'css'], 'beginner'],
-  ['Day 65', 'The Cube', './public/The%20Cube/index.html', ['ui', 'canvas', 'css'], 'intermediate'],
-  ['Day 66', 'Flask Authentication App', './public/flask_auth_app/explain.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 67', 'Blog-Website', './public/blog/main.html', ['css'], 'beginner'],
-  ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', ['ui', 'css'], 'intermediate'],
-  ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', ['clone', 'api', 'javascript'], 'intermediate'],
-  ['Day 70', 'Insect-Catch_Game', './public/Insect-Catch-Game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 71', 'Quotely Laughs', './public/Quotely-Laughs/index.html', ['api', 'javascript'], 'beginner'],
-  ['Day 72', 'Contact Book', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book', ['todo', 'javascript'], 'intermediate'],
-  ['Day 73', 'Candy_Crush_Game', './public/Candy_Crush_Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 76', 'Animated Searchbar', './public/Animated%20Searchbar/index.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 78', 'NPM Package Search', './public/NPM%20Package%20Search/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 79', 'Linkedin Homepage Clone', './public/Linkedin-Clone/index.html', ['clone', 'css'], 'intermediate'],
-  ['Day 80', 'Resume Studio', './public/ResumeStudio/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 81', 'Simon Says Game', './public/Simon_Says_Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 82', 'Love Calculator Game', './public/Love-Calculator/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 83', 'Exchange Currency', './public/Exchange_Currency/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 84', 'Lights Out Puzzle', './public/Lights_Out_Puzzle/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 85', 'Image Search Engine', './public/Image Search Engine/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 86', 'Profile Card', './public/3d profile Card/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 87', 'Breakout game', './public/Breakout game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 88', 'Job dashboard', './public/Job dashboard/jobs.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 89', 'N-Queen', './public/N_Queen/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', ['javascript'], 'beginner'],
-  ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', ['api', 'javascript'], 'intermediate'],
-  ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 93', 'TextUtils', './public/Textutils/public/index.html', ['javascript'], 'beginner'],
-  ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 97', 'Time Capsule', './public/Time-Capsule/index.html', ['javascript'], 'intermediate'],
-  ['Day 98', 'Virtual Piano', './public/Virtual Piano/index.html', ['css', 'javascript'], 'intermediate'],
-  ['Day 99', 'NASA-APOD Extension', './public/NASA-APOD/popup.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 100', 'Text Saver Extension', './public/Text_Saver_Ext/popup.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 101', 'Personal Finance Tracker', './public/FinanceTracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 102', 'Travel Booking Website', './public/Travel_booking_website/index.html', ['javascript'], 'intermediate'],
-  ['Day 103', 'Drumkit Game', './public/Drumkit_Game/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', ['css'], 'beginner'],
-  ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', ['css', 'javascript'], 'beginner'],
-  ['Day 106', 'Plants Website', './public/Plants Website/index.html', ['css'], 'beginner'],
-  ['Day 107', 'DocNow', './public/DocNow/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 111', 'Whack-a-Mole Game', './public/Whack-a-Mole Game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 112', 'Nykaa Clone Website', './public/Nykaa-clone/index.html', ['clone', 'css'], 'intermediate'],
-  ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', ['api', 'javascript'], 'intermediate'],
-  ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', ['ui', 'tool', 'html', 'css', 'js'], 'intermediate'],
-  ['Day 118', 'Particle Effect', './public/particle-effect/index.html', ['ui', 'html', 'css', 'js', 'canvas'], 'intermediate'],
-  ['Day 119', 'Virtual Playground', './playground.html', ['ui', 'game', 'html', 'css', 'js'], 'intermediate'],
-  ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', ['html', 'css', 'js', 'game'], 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', ['tool'], 'intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', ['html', 'css', 'javascript', 'api-javascript'], 'Advanced'],
-  ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', ['productivity', 'tool'], 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', ['game'], 'intermediate'],
-  ['Day 125', 'Snakeladder', './public/snakeladder/index.html', ['game'], 'intermediate'],
-  ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', ['css', 'javascript'], 'intermediate'],
-  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', ['animation', 'simulation', 'html', 'css', 'js', 'javascript'], 'intermediate'],
-  ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', ['Html', 'CSS'], 'beginner'],
-  ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 131', 'Retro Highway Racer', './public/RetroHighwayRacer/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 132', 'Pokedex', './public/Pokedex/index.html', ['utility'], 'intermediate'],
-  ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', ['simulator'], 'intermediate'],
-  ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', ['asmr', 'game'], 'intermediate'],
-  ['Day 135', 'Shooting game', './public/shooting game/index.html', ['2d', 'game'], 'intermediate'],
-  ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 138', 'Age Calculator', './public/age-calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 139', 'Ludo game', './public/Ludo-game/index.html', ['Html', 'css', 'javascript'], 'intermediate'],
-  ['Day 140', 'Big Sales Prediction', './public/BigSales-Prediction/frontend/index.html', ['machine', 'learning', 'python', 'javascript'], 'advanced'],
-  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', ['map', 'game'], 'intermediate'],
-  ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', ['html', 'css', 'javascript'], 'beginner'],
-  ['Day 144', 'Car Racing game', './public/racing game/index.html', ['html', 'css', 'js'], 'intermediate'],
-  ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', ['simulation', 'html', 'css', 'javascript'], 'beginner'],
-  ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', ['visualizer'], 'intermediate'],
-  ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', ['tool', 'javascript'], 'advanced'],
-  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', ['tool', 'javascript'], 'advanced'],
-  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', ['html', 'css', 'javascript', 'canvas'], 'advanced'],
-  ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', ['html', 'css', 'javascript', 'productivity', 'timer', 'tasks', 'ambient'], 'intermediate'],
-  ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', ['react', 'typescript', 'game', 'hangman', 'vite'], 'advanced'],
-  ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
-  ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', ['simulation', 'algorithm', 'javascript'], 'intermediate'],
-  ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 161', 'Unit-Converter', './public/Unit-Converter/index.html', ['tool', 'javascript', 'html', 'css'], 'intermediate'],
-  ['Day 162', 'Color Palette From Art Generator', './public/ColorPaletteArtGenerator/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 163', 'Ai Image Editor', './public/image-editor/index.html', ['edits', 'images'], 'advanced'],
-  ['Day 164', 'Code Visualizer Playground', './public/code-visualizer-playground/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
-  ['Day 165', 'Amazon Clone', './public/AmazonClone/index.html', ['Amazon', 'Clone', 'HTML', 'CSS', 'JavaScript'], 'beginner'],
-  ['Day 166', 'Boredom Buster', './public/BoredomBuster/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 167', 'scam-sms-detector', '/public/scam-sms-detector/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 168', 'Color Sort Puzzle game', './public/colorsort/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 169', 'Subscription Tracker', './public/subscriptiontracker/tracker.html', ['react', 'typescript', 'tailwindcss', 'ui'], 'advanced'],
-  ['Day 170', 'Vector Flowchart Designer', './public/VectorFlowchartDesigner/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", "html css javascript", 'advanced']
-];
-const PROJECTS = PROJECT_DATA;
+let PROJECTS = [];
+let projectsPromise = null;
 
+function loadProjects() {
+  if (!projectsPromise) {
+    projectsPromise = (async () => {
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const base = isRoot ? '' : '../';
+      const projectsUrl = new URL(`${base}public/projects.json`, window.location.href).toString();
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
+      }
+      PROJECTS = await response.json();
+    })();
+  }
+  return projectsPromise;
+}
+
+// Start fetching immediately
+loadProjects();
+const PROJECT_DESCRIPTIONS = {
+
+  "To-Do List":
+    "Manage daily tasks efficiently with an interactive checklist system. Add, track and organize activities using a simple productivity-focused interface.",
+
+  "Digital Clock":
+    "Real-time digital clock displaying current time updates instantly. A beginner-friendly project exploring JavaScript timing functions.",
+
+  "Indian Flag":
+    "CSS recreation of the Indian national flag using shapes and positioning. Demonstrates layout precision and styling fundamentals.",
+
+  "Dropdown Nav Bar":
+    "Responsive navigation bar with expandable dropdown interactions. Useful for understanding hover states and menu structures.",
+
+  "Animated Cursor":
+    "Custom cursor animation adding engaging movement effects across the page. Focuses on interactivity and modern UI enhancements.",
+
+  "Auto Background Image Slider":
+    "Automatically rotating image slider with smooth transitions. Introduces timing events and dynamic visual presentation.",
+
+  "Typewriter":
+    "Typing animation effect simulating text being written live. Great for learning intervals and DOM manipulation.",
+
+  "Parallel-X Website":
+    "Parallax-inspired website showcasing layered scrolling effects. Designed to improve frontend animation techniques.",
+
+  "Captcha Generator":
+    "Generates random captcha strings for validation practice. Demonstrates input checking and security concepts.",
+
+  "QR Code Generator":
+    "Converts text or links into downloadable QR codes instantly. Integrates APIs with practical utility functionality.",
+
+  "Serve Website Using Express":
+    "Basic Express server setup for hosting web applications. Introduces backend routing fundamentals.",
+
+  "Nodemailer Contact Form":
+    "Email contact form capable of sending messages directly. Uses Nodemailer for backend communication.",
+
+  "Login Form Using MERN":
+    "Authentication workflow using MongoDB, Express, React and Node. Covers login handling and user validation.",
+
+  "File Uploader":
+    "Upload and manage files through a simple interface. Useful for understanding forms and storage workflows.",
+
+  "Progress Bar":
+    "Animated progress indicator tracking completion visually. Focuses on UI feedback and transitions.",
+
+  "Scroll Bar CSS":
+    "Custom scrollbar styling improving overall aesthetics. Demonstrates advanced CSS customization.",
+
+  "Slider Using Swiper API":
+    "Interactive content slider built with Swiper integration. Supports responsive navigation effects.",
+
+  "Carousel Solar System":
+    "Solar system themed rotating carousel with visual motion effects. Combines creativity with CSS animation.",
+
+  "Planto":
+    "Nature-inspired landing page emphasizing clean layouts and styling. Designed for frontend practice.",
+
+  "EveSparks":
+    "Interactive web experience featuring modern interface components. Focuses on responsiveness and usability.",
+
+  "Video BG Slider Using React":
+    "React-based slider with dynamic video backgrounds. Explores multimedia integration in interfaces.",
+
+  "Page Loader":
+    "Animated loading screen improving perceived performance. Useful for polished UI experiences.",
+
+  "Jarvis Virtual Assistant":
+    "Voice-enabled assistant inspired by AI interactions. Combines speech recognition and automation concepts.",
+
+  "Chat Bot":
+    "Conversational chatbot interface supporting user interactions. Demonstrates API integration and messaging flow.",
+
+  "Tic-Tac-Toe":
+    "Classic two-player game built with JavaScript logic. Strengthens conditional rendering skills.",
+
+  "Maze Game":
+    "Navigate through a maze while avoiding obstacles. Focuses on movement controls and game mechanics.",
+
+  "Memory Game":
+    "Card matching challenge testing short-term memory skills. Introduces arrays and state tracking.",
+
+  "Wordle":
+    "Word guessing game inspired by the popular puzzle format. Practices input handling and logic.",
+
+  "Snake Game":
+    "Classic snake gameplay with score tracking mechanics. Useful for learning loops and collision detection.",
+
+  "Flappy-bird-game":
+    "Obstacle avoidance game inspired by Flappy Bird. Covers animation timing and physics simulation.",
+
+  "Password Manager":
+    "Secure utility for storing and organizing passwords efficiently. Helps explore data handling and user-focused productivity features.",
+
+  "Missionaries & Cannibals":
+    "Logic puzzle based on the classic river crossing challenge. Strengthens problem-solving and conditional programming skills.",
+
+  "Weather Forecasting":
+    "Fetches and displays real-time weather information dynamically. Demonstrates API usage and responsive UI updates.",
+
+  "Email Validator":
+    "Checks whether email inputs follow valid formatting rules. Useful for learning regex and form validation techniques.",
+
+  "Vanilla-JavaScript-Calculator":
+    "Fully functional calculator handling arithmetic operations interactively. Reinforces DOM manipulation and event handling.",
+
+  "Medical App":
+    "Healthcare-themed interface designed for information display and accessibility. Focuses on practical frontend implementation.",
+
+  "2048 Game":
+    "Number-merging puzzle game inspired by the popular 2048 challenge. Builds logic handling and game state management.",
+
+  "Github Profile Finder":
+    "Search GitHub users and display profile information instantly. Uses APIs to retrieve and present live data.",
+
+  "Notes App":
+    "Create, edit and manage notes in a lightweight productivity environment. Useful for local storage concepts.",
+
+  "Analog Clock":
+    "Animated analog clock displaying real-time updates with rotating hands. Demonstrates transformations and timing functions.",
+
+  "Scroll Dark Game":
+    "Endless scrolling game with dark-themed visuals and interactive mechanics. Introduces animation loops and collision logic.",
+
+  "Amazon App":
+    "Frontend clone inspired by Amazon layouts and shopping interfaces. Improves responsive design and UI structuring skills.",
+
+  "Password Generator":
+    "Automatically generates strong passwords for better security practices. Combines randomness with utility design.",
+
+  "BMI Calculator":
+    "Computes body mass index based on user input values. Demonstrates calculations and dynamic output rendering.",
+
+  "Black Jack":
+    "Card game recreation implementing score logic and gameplay rules. Strengthens decision-making algorithms.",
+
+  "Palindrome Generator":
+    "Checks whether words or phrases read the same backwards. Introduces string manipulation techniques.",
+
+  "Ping Pong Game":
+    "Arcade-style ping pong experience using movement and collision detection. Reinforces game physics concepts.",
+
+  "TextToVoiceConverter":
+    "Converts typed text into spoken audio using browser capabilities. Explores accessibility and speech APIs.",
+
+  "Url Shortener":
+    "Transforms long links into shorter manageable URLs. Demonstrates backend communication and API workflows.",
+
+  "Recipe Genie":
+    "Searches or suggests recipes through an interactive cooking assistant interface. Focuses on API integration.",
+
+  "Netflix Landing Page Clone":
+    "Replica of Netflix homepage design emphasizing layouts and responsiveness. Useful for frontend practice.",
+
+  "ClimaCode":
+    "Weather-focused application presenting climate information elegantly. Combines APIs with modern UI patterns.",
+
+  "E-Commerce Website with Simple Cart Functionality":
+    "Online shopping interface featuring product listings and cart management. Introduces state handling concepts.",
+
+  "Budget Tracker":
+    "Tracks expenses and income to monitor financial habits efficiently. Designed for productivity and calculations.",
+
+  "Cricket Game":
+    "Interactive cricket-inspired game with score handling mechanics. Helps practice JavaScript game logic.",
+
+  "Pastebin using svelte":
+    "Simple text sharing platform built with Svelte technologies. Explores modern frontend frameworks.",
+
+  "Glowing Social Media Icons":
+    "Animated glowing icon effects enhancing social media sections visually. Focuses on CSS transitions and styling.",
+
+  "Music App":
+    "Music-themed interface supporting playback and interactive controls. Demonstrates multimedia integration concepts.",
+
+  "Blog Page":
+    "Responsive blog layout designed for article presentation and readability. Reinforces UI structuring principles.",
+
+  "Marketing template website":
+    "Landing page template optimized for promotions and product showcases. Emphasizes modern web design patterns.",
+
+  "Hologram Button":
+    "Futuristic button design featuring glowing holographic effects. Explores advanced CSS styling and animations.",
+
+  "Solar System Explorer":
+    "Interactive visualization of planets and orbital layouts using CSS. Combines creativity with motion effects.",
+
+  "Image to Text App":
+    "Extracts text content from uploaded images automatically. Demonstrates OCR concepts and API integration.",
+
+  "Zomato-clone":
+    "Restaurant platform inspired interface replicating browsing and discovery layouts. Improves frontend structuring skills.",
+
+  "The Cube":
+    "3D cube animation showcasing depth and motion interactions. Focuses on transforms and visual effects.",
+
+  "Flask Authentication App":
+    "Authentication workflow built around secure login concepts. Introduces backend validation and user management.",
+
+  "Blog-Website":
+    "Responsive blogging interface optimized for publishing content cleanly. Emphasizes readability and layout design.",
+
+  "3d Rotating Card":
+    "Animated rotating card effect creating depth and interactivity. Useful for modern UI experimentation.",
+
+  "Spotify Clone Project":
+    "Music streaming inspired interface replicating playlists and navigation patterns. Reinforces responsive layouts.",
+
+  "Insect-Catch_Game":
+    "Fast-paced insect catching game with score mechanics and movement. Practices event handling and gameplay logic.",
+
+  "Quotely Laughs":
+    "Generates random humorous quotes to entertain users instantly. Uses APIs and dynamic rendering.",
+
+  "Contact Book":
+    "Store, organize and manage contacts within a simple interface. Focuses on CRUD operations.",
+
+  "Candy_Crush_Game":
+    "Puzzle matching game inspired by Candy Crush mechanics. Builds grid logic and state handling.",
+
+  "Stock Profit Calculator":
+    "Calculates gains or losses from stock investments interactively. Useful for financial utility development.",
+
+  "code-space-game project":
+    "Space-themed gameplay with obstacles and movement controls. Strengthens animation and collision detection skills.",
+
+  "Animated Searchbar":
+    "Expandable search component with smooth transition effects. Improves understanding of interactive UI design.",
+
+  "Rock-Paper-Scissor-game project":
+    "Classic decision game implemented with score tracking logic. Ideal for beginners learning conditions.",
+
+  "NPM Package Search":
+    "Search and explore NPM packages dynamically through APIs. Demonstrates practical developer utilities.",
+
+  "Linkedin Homepage Clone":
+    "Frontend recreation of LinkedIn’s homepage structure and styling. Improves layout accuracy and responsiveness.",
+
+  "Resume Studio":
+    "Tool for creating and managing resumes with structured formatting. Focuses on productivity-oriented interfaces.",
+
+  "Simon Says Game":
+    "Memory-based game requiring players to repeat patterns correctly. Reinforces arrays and event sequences.",
+
+  "Love Calculator Game":
+    "Fun calculator estimating compatibility scores between names. Designed as a lightweight interactive project.",
+
+  "Exchange Currency":
+    "Converts currencies using real-time exchange values. Combines APIs with practical financial utilities.",
+
+  "Lights Out Puzzle":
+    "Logic puzzle where players switch lights off strategically. Builds reasoning and state management skills.",
+
+  "Image Search Engine":
+    "Searches and displays images dynamically from external sources. Demonstrates API integration workflows.",
+
+  "Profile Card":
+    "Stylized profile card showcasing user information creatively. Focuses on clean UI presentation.",
+
+  "Breakout game":
+    "Brick-breaking arcade game featuring collision and scoring systems. Reinforces game development fundamentals.",
+
+  "Job dashboard":
+    "Dashboard interface for managing or exploring job opportunities efficiently. Emphasizes organization and usability.",
+
+  "N-Queen":
+    "Classic N-Queen problem visualized through interactive implementation. Strengthens algorithmic thinking.",
+
+  "Quiz App Timer":
+    "Timed quiz application combining countdown logic with question handling. Useful for event-driven programming.",
+
+  "Voting Application Backend":
+    "Backend-focused project handling votes and user interactions securely. Introduces server-side concepts.",
+
+  "Slide puzzle Game":
+    "Tile sliding puzzle requiring logical movement strategies. Reinforces grid manipulation skills.",
+
+  "TextUtils":
+    "Utility tool performing text formatting and transformation operations. Demonstrates string processing concepts.",
+
+  "Hangman Game":
+    "Word guessing game with progressive hints and challenge mechanics. Strengthens conditional logic.",
+
+  "TodoList in React TS Tailwind":
+    "Modern to-do application built with React, TypeScript and Tailwind. Explores scalable frontend architecture.",
+
+  "HCL Color Generator":
+    "Generate HCL color values for design experimentation and palettes. Useful for UI customization projects.",
+
+  "Time Capsule":
+    "Store messages or memories intended for future viewing. Combines creativity with local storage concepts.",
+
+  "Virtual Piano":
+    "Playable piano simulation responding to keyboard or click inputs. Demonstrates multimedia interactions.",
+
+  "NASA-APOD Extension":
+    "Displays NASA’s Astronomy Picture of the Day automatically. Integrates external APIs into browser extensions.",
+
+  "Text Saver Extension":
+    "Browser extension for quickly saving and organizing text snippets. Focuses on productivity workflows.",
+
+  "Personal Finance Tracker":
+    "Monitor expenses, savings and financial habits through interactive tracking tools. Designed to improve budgeting awareness.",
+
+  "Travel Booking Website":
+    "Travel-focused interface for exploring destinations and booking experiences. Emphasizes responsive layouts and usability.",
+
+  "Drumkit Game":
+    "Virtual drum kit producing sounds through keyboard interactions. Demonstrates event handling and audio APIs.",
+
+  "Debug-Website":
+    "Practice environment for identifying and fixing frontend issues efficiently. Useful for improving debugging skills.",
+
+  "Periodic Table":
+    "Interactive periodic table displaying chemical elements and information. Combines education with engaging design.",
+
+  "Plants Website":
+    "Nature-inspired website emphasizing clean visuals and aesthetic layouts. Focuses on frontend styling techniques.",
+
+  "DocNow":
+    "Document-focused utility designed for managing or interacting with information efficiently. Prioritizes usability.",
+
+  "expense_Tracker":
+    "Track spending habits and monitor expenses through simple visual summaries. Useful for productivity workflows.",
+
+  "Mood Tracker":
+    "Record emotions over time and observe personal mood patterns. Combines wellness concepts with data tracking.",
+
+  "CRYPTOSHOW":
+    "Displays cryptocurrency information dynamically with market-related insights. Introduces API usage and dashboards.",
+
+  "Whack-a-Mole Game":
+    "Fast-paced reaction game requiring players to hit appearing targets quickly. Reinforces timing and score logic.",
+
+  "Nykaa Clone Website":
+    "Beauty and shopping platform clone inspired by Nykaa layouts. Strengthens frontend replication skills.",
+
+  "CPU Scheduler":
+    "Visualizes CPU scheduling algorithms and execution behavior interactively. Useful for understanding operating system concepts.",
+
+  "EchoNotes":
+    "Note-taking application focused on organizing thoughts and quick information capture. Emphasizes productivity.",
+
+  "Event Registration System":
+    "Manage event signups and participant information efficiently. Demonstrates forms and backend interactions.",
+
+  "AI Image Classifier":
+    "Classifies uploaded images using AI-based prediction concepts. Introduces machine learning integrations.",
+
+  "Habit Tracker Web App":
+    "Track routines and monitor consistency across personal habits over time. Encourages productivity and discipline.",
+
+  "Particle Effect":
+    "Interactive particle animation creating visually engaging motion effects. Focuses on graphics and performance.",
+
+  "Virtual Playground":
+    "Experimental environment featuring playful interactions and frontend concepts. Designed for exploration.",
+
+  "Typing Speed Test":
+    "Measure typing speed and accuracy with real-time performance metrics. Useful for event-driven programming.",
+
+  "InterviewSimulator":
+    "Simulates interview experiences to practice responses and preparation strategies. Focuses on utility design.",
+
+  "AstronomyDashboard":
+    "Dashboard presenting astronomy-related information through organized visuals and APIs. Combines science with UI.",
+
+  "Pomodoro Timer":
+    "Productivity timer implementing focused work sessions and breaks. Encourages time management habits.",
+
+  "Hurdle Highway 2D":
+    "Obstacle avoidance game with side-scrolling movement mechanics. Strengthens animation and collision handling.",
+
+  "Snakeladder":
+    "Digital adaptation of the classic Snake and Ladder board game. Introduces turn-based logic implementation.",
+
+  "Temperature Converter":
+    "Convert temperature values between multiple units instantly. Practical utility for calculations and form handling.",
+
+  "Particle Wave Animation":
+    "Animated wave effects created through particle systems and motion. Demonstrates creative frontend experimentation.",
+
+  "Reaction Time Test":
+    "Measures how quickly users respond to visual prompts interactively. Useful for timing logic and events.",
+
+  "YouTube Clone":
+    "Frontend recreation of YouTube layouts including navigation and content sections. Improves responsive design skills.",
+
+  "Dino Game":
+    "Endless runner inspired by the offline Chrome dinosaur game. Builds movement and collision mechanics.",
+
+  "Retro Highway Racer":
+    "Retro-style racing game featuring speed and obstacle navigation. Reinforces animation loops and gameplay logic.",
+
+  "Pokedex":
+    "Browse Pokémon information through an interactive Pokédex interface. Combines APIs with engaging visuals.",
+
+  "Stock Market Simulator":
+    "Simulate investment decisions and market behaviors without real risk. Introduces finance-focused logic.",
+
+  "Coin Scratch":
+    "Interactive scratch-card experience with satisfying reveal mechanics. Focuses on effects and user engagement.",
+
+  "Shooting game":
+    "Action game involving aiming, shooting and score progression. Strengthens gameplay mechanics implementation.",
+
+  "Sudoku Solver":
+    "Automatically solves Sudoku puzzles while demonstrating algorithmic reasoning. Useful for logic practice.",
+
+  "Maths Quiz Game":
+    "Interactive quiz testing mathematical knowledge under game-like conditions. Combines learning with engagement.",
+
+  "Age Calculator":
+    "Calculates age instantly from user-entered birth dates. Demonstrates date handling and calculations.",
+
+  "Ludo game":
+    "Digital version of the classic Ludo board game with turn-based mechanics. Reinforces logic and interactions.",
+
+  "Big Sales Prediction":
+    "Machine learning project predicting sales trends from input data. Combines analytics with practical AI concepts.",
+
+  "Dice Roller":
+    "Virtual dice simulator generating random outcomes instantly. Useful for games and probability demonstrations.",
+
+  "Geo Guesser game":
+    "Location guessing challenge testing geographical knowledge interactively. Combines maps with gameplay mechanics.",
+
+  "Morse Code Translator":
+    "Convert text into Morse code and decode messages seamlessly. Demonstrates string transformations and utilities.",
+
+  "Car Racing game":
+    "Fast-paced racing experience with movement controls and obstacles. Reinforces animation and collision handling.",
+
+  "Magic 8 Ball":
+    "Digital version of the classic prediction toy offering random responses. Focuses on interactivity and randomness.",
+
+  "Data Sructures Visualizer":
+    "Visual representation of data structures and their operations. Useful for understanding algorithms conceptually.",
+
+  "Chronosphere":
+    "Time-themed interactive experience with dynamic gameplay mechanics. Blends creativity with animation concepts.",
+
+  "Contest Tracker":
+    "Track coding contests and upcoming competitive programming events efficiently. Designed for productivity.",
+
+  "GitHub Profile Battle":
+    "Compare GitHub profiles using metrics and statistics interactively. Integrates APIs with developer-focused utilities.",
+
+  "App Privacy Policy Generator":
+    "Generate privacy policies for applications through structured inputs. Practical productivity-oriented utility.",
+
+  "Mini Carrom Game":
+    "Digital carrom simulation recreating board-game mechanics interactively. Reinforces physics and collision handling.",
+
+  "Physics Ball Simulation":
+    "Ball movement simulation demonstrating gravity and physical interactions. Useful for learning physics concepts.",
+
+  "Material3 Showcase":
+    "Collection of Material Design inspired UI components and interactions. Focuses on modern interface patterns.",
+
+  "FocusRoom":
+    "Productivity environment designed to support concentration and task completion. Combines timers and ambience.",
+
+  "Hangman Game":
+    "Advanced Hangman implementation using React and TypeScript architecture. Strengthens component-based thinking.",
+
+  "Placement Predictor":
+    "Predicts placement possibilities using user-provided academic information. Demonstrates logic and analytics concepts.",
+
+  "Map Route Tracker":
+    "Visualize routes and track paths using interactive map elements. Combines location services with frontend development.",
+
+  "GitHub Promo Maker":
+    "Create promotional GitHub banners or visuals quickly. Designed as a developer productivity utility.",
+
+  "Dining Philosophers Simulation":
+    "Simulation of the classic synchronization problem in computer science. Useful for understanding concurrency concepts.",
+
+  "Website Personalizer":
+    "Customize website appearance and behavior through user preferences dynamically. Emphasizes personalization features.",
+
+  "Unit-Converter":
+    "Convert values across multiple measurement units instantly. Practical tool demonstrating calculations and form handling.",
+
+  "Color Palette From Art Generator":
+    "Extract color palettes from artwork automatically for design inspiration. Combines creativity with utility.",
+
+  "Ai Image Editor":
+    "Edit and manipulate images using AI-assisted functionality. Explores machine learning and visual processing concepts.",
+
+  "Code Visualizer Playground":
+    "Interactive environment visualizing code behavior and execution flow. Useful for learning programming concepts.",
+
+  "Amazon Clone":
+    "Beginner-friendly clone inspired by Amazon’s interface and layouts. Reinforces frontend structure and styling.",
+
+  "Boredom Buster":
+    "Suggests activities or interactive ideas to reduce boredom instantly. Designed as a fun productivity utility.",
+
+  "scam-sms-detector":
+    "Detect potentially fraudulent SMS messages using analysis techniques. Introduces AI and security-focused concepts.",
+
+  "Color Sort Puzzle game":
+    "Puzzle game requiring players to organize colors strategically. Builds logical thinking and state management.",
+
+  "Subscription Tracker":
+    "Track recurring subscriptions and monitor expenses efficiently. Useful for budgeting and organization.",
+
+  "Vector Flowchart Designer":
+    "Design editable flowcharts visually through interactive components. Focuses on productivity and diagram creation.",
+
+  "Glyph Pattern Maker":
+    "Generate creative symbol-based patterns with customizable outputs. Explores procedural visual generation.",
+
+  "PlaceMate":
+    "Utility designed to simplify location-related planning or organization tasks. Prioritizes usability and convenience.",
+
+  "AI-Resume-Analyzer":
+    "Analyze resumes using AI concepts to provide insights and feedback. Combines machine learning with productivity.",
+
+  "Unit Kitchen":
+    "Kitchen-focused converter simplifying ingredient and measurement transformations. Practical everyday utility.",
+
+};
 
 /* ============================================================
    SOURCE CODE URL GENERATOR
@@ -568,6 +939,9 @@ function renderGrid() {
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
+    const description =
+      PROJECT_DESCRIPTIONS[name] ||
+      "Explore this project to discover interactive functionality, frontend concepts and implementation details.";
 
     // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
     // This stops the click from "bubbling up" to the main card, preventing double-opening!
@@ -577,7 +951,12 @@ function renderGrid() {
                 <span class="card-category">${category}</span>
             </div>
             <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
+
+<div class="card-description">
+    ${description}
+</div>
+
+<div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
                     <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
@@ -807,8 +1186,15 @@ function renderBookmarks() {
                 <span class="card-day">${day}</span>
                 <span class="card-category">${category}</span>
             </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
+           <div class="card-name">${name}</div>
+
+<div class="card-description">
+    ${description}
+</div>
+
+<div class="card-tags">
+    ${tagsHTML}
+</div>
             <div class="card-footer">
                 <div class="card-actions-left">
                     <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
@@ -1086,6 +1472,39 @@ function initTechStackSearch() {
 const searchInput = document.getElementById('searchInput');
 const clearSearchBtn = document.getElementById('clearSearch');
 
+function updateCategoryCounts() {
+  const counts = {};
+  for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
+    if (key !== 'all') {
+      counts[key] = 0;
+    }
+  }
+
+  PROJECTS.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
+    const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
+      (key) => FILTER_CATEGORY_MAP[key] === category
+    );
+    if (filterKey && filterKey !== 'all') {
+      counts[filterKey]++;
+    }
+  });
+
+  const categorySpans = {
+    'game': document.getElementById('gameCount'),
+    'clone': document.getElementById('cloneCount'),
+    'tool': document.getElementById('toolCount'),
+    'ui': document.getElementById('uiCount'),
+    'api': document.getElementById('apiCount')
+  };
+
+  for (const [key, span] of Object.entries(categorySpans)) {
+    if (span) {
+      span.textContent = counts[key].toLocaleString();
+    }
+  }
+}
+
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
 
@@ -1107,6 +1526,8 @@ function syncProjectCounts() {
   if (searchInput) {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
+
+  updateCategoryCounts();
 }
 
 // Clear button functionality
@@ -1256,7 +1677,7 @@ function hasProjectGrid() {
   return Boolean(document.getElementById('projectGrid'));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   updateNavbar();
 
@@ -1266,14 +1687,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initSorting();
   initTechStackSearch();
 
-  syncProjectCounts();
-  fetchRepoStats();
-  initScrollBtn();
+  try {
+    // Await the projects to be fetched
+    await loadProjects();
 
-  if (hasProjectGrid()) {
-    renderGrid();
-    renderBookmarks();
-    renderRecentProjects();
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+
+    if (hasProjectGrid()) {
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+    }
+  } catch (error) {
+    console.error('Failed to load projects:', error);
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+    }
   }
 });
 
@@ -1564,12 +1996,27 @@ function applyFilters(search, category) {
   searchQuery = search || '';
   activeFilter = category || 'all';
   currentPage = 1;
-  renderGrid();
 
+  // Sync active chip selection with URL state
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chip.classList.add('active');
+    } else {
+      chip.classList.remove('active');
+    }
+  });
+
+  renderGrid();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  restoreStateFromURL();
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await loadProjects();
+    restoreStateFromURL();
+  } catch (error) {
+    console.error('Failed to restore state or load projects:', error);
+  }
   const searchInput = document.getElementById('search') ||
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
