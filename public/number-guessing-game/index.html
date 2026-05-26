@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+    <div class="container">
+        <div class="card">
+
+            <div class="header">
+                <h1>🎯 Number Guessing Game</h1>
+                <p class="subtitle">Guess the number between <strong>1</strong> and <strong>100</strong></p>
+            </div>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-label">Attempts</span>
+                    <span class="stat-value" id="attempts">0</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Best Score</span>
+                    <span class="stat-value" id="bestScore">—</span>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <input type="number" id="guessInput" min="1" max="100" placeholder="Enter your guess..."
+                    autocomplete="off" />
+                <button id="guessBtn" onclick="makeGuess()">Guess</button>
+            </div>
+
+            <div class="hint-box" id="hintBox"></div>
+
+            <div class="range-hint" id="rangeHint"></div>
+
+            <div class="history-section" id="historySection" style="display:none;">
+                <p class="history-label">Your guesses:</p>
+                <div class="history-chips" id="historyChips"></div>
+            </div>
+
+            <button class="reset-btn" onclick="resetGame()">🔄 New Game</button>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

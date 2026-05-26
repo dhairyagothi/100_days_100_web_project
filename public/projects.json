@@ -1218,5 +1218,12 @@
     "./public/SVGPathBuilder/index.html",
     ["html", "css", "javascript"],
     "intermediate"
+  ],
+  [
+    "Day 177",
+    "Number guessing game",
+    "./public/number-guessing-game/index.html",
+    ["html", "css", "javascript", "game"],
+    "beginner"
   ]
 ]
