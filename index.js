@@ -239,7 +239,8 @@ const PROJECT_DATA = [
   ['Day 172', 'PlaceMate', './public/PlaceMate/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 173', 'AI-Resume-Analyzer', './public/AI-Resume-Analyzer/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 174', 'Unit Kitchen', './public/Unit-Kitchen/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
-   ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
+  ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
+  ['Day 176', 'Cyber Typing Battle', './public/Cyber%20Type%20Battle/index.html', ['game', 'html', 'css', 'js', 'ui'], 'advanced'],
 
 ];
 const PROJECTS = PROJECT_DATA;
@@ -766,6 +767,9 @@ const PROJECT_DESCRIPTIONS = {
 
 "Unit Kitchen":
 "Kitchen-focused converter simplifying ingredient and measurement transformations. Practical everyday utility.",
+
+"Cyber Typing Battle":
+"Futuristic typing battle interface with immersive cyberpunk HUD visuals, responsive layouts, and cinematic UI interactions.",
 
 };
 
@@ -1338,6 +1342,9 @@ function renderBookmarks() {
     const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
     const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
+    const description =
+      PROJECT_DESCRIPTIONS[name] ||
+      'Explore this project to discover interactive functionality, frontend concepts and implementation details.';
 
     card.innerHTML = `
             <div class="card-meta">

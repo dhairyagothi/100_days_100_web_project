@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Typing Battle</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a class="github-button" href="https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Cyber%20Type%20Battle" target="_blank" rel="noopener noreferrer" aria-label="Open Cyber Typing Battle repository">
+    <i class="fab fa-github" aria-hidden="true"></i>
+  </a>
+
+  <button class="back-button" id="backButton" type="button" aria-label="Go back to menu or home">
+    <span aria-hidden="true">&larr;</span>
+  </button>
+
+  <!-- START SCREEN -->
+
+  <div class="start-screen" id="startScreen">
+
+    <h1>CYBER TYPING BATTLE</h1>
+
+    <div class="difficulty-box">
+
+      <button class="difficulty active" data-mode="easy">
+        Easy
+      </button>
+
+      <button class="difficulty" data-mode="medium">
+        Medium
+      </button>
+
+      <button class="difficulty" data-mode="hard">
+        Hard
+      </button>
+
+    </div>
+
+    <button class="start-btn" id="startBtn">
+      START GAME
+    </button>
+
+  </div>
+
+  <!-- GAME UI -->
+
+  <div class="ui">
+
+    <div>Target : <span id="targetWord">None</span></div>
+    <div>Score : <span id="score">0</span></div>
+
+  </div>
+
+  <div class="gameover" id="gameOverScreen">
+
+    <h1>GAME OVER</h1>
+
+    <button onclick="location.reload()">
+      Restart
+    </button>
+
+  </div>
+
+  <canvas id="game"></canvas>
+
+  <script type="module" src="script.js"></script>
+
+</body>
+</html>
