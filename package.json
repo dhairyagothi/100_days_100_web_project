@@ -26,9 +26,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^17.4.2"
-  },
-  "devDependencies": {
-    "serve": "^14.2.6"
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "react-shepherd": "^7.0.4",
+    "wouter": "^3.10.0"
   }
 }
