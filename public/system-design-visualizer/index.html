@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Design Visualizer</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>🚀 System Design Visualizer</h1>
+
+        <div class="header-buttons">
+            <button id="themeToggle">🌙 Dark Mode</button>
+            <button id="exportBtn">📸 Export</button>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Components</h2>
+
+            <div class="component" draggable="true" data-type="Server">
+                🖥️ Server
+            </div>
+
+            <div class="component" draggable="true" data-type="Database">
+                🗄️ Database
+            </div>
+
+            <div class="component" draggable="true" data-type="Load Balancer">
+                ⚖️ Load Balancer
+            </div>
+
+            <div class="component" draggable="true" data-type="API Gateway">
+                🔌 API Gateway
+            </div>
+
+            <div class="component" draggable="true" data-type="Cache">
+                ⚡ Cache
+            </div>
+        </aside>
+
+        <!-- Canvas -->
+        <main id="canvas">
+
+            <svg id="connections"></svg>
+
+            <div class="canvas-text">
+                Drag components here
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f5f5f5;
+    color: #222;
+    transition: 0.3s;
+}
+
+body.dark {
+    background: #111827;
+    color: white;
+}
+
+header {
+    height: 70px;
+    background: #2563eb;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+}
+
+.header-buttons button {
+    margin-left: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    height: calc(100vh - 70px);
+}
+
+/* Sidebar */
+
+.sidebar {
+    width: 250px;
+    background: white;
+    padding: 20px;
+    border-right: 2px solid #ddd;
+}
+
+body.dark .sidebar {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.component {
+    background: #2563eb;
+    color: white;
+    padding: 14px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    cursor: grab;
+    transition: 0.3s;
+}
+
+.component:hover {
+    transform: scale(1.05);
+}
+
+/* Canvas */
+
+#canvas {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #e5e7eb;
+}
+
+body.dark #canvas {
+    background: #0f172a;
+}
+
+.canvas-text {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: gray;
+}
+
+/* Nodes */
+
+.node {
+    position: absolute;
+    width: 150px;
+    height: 70px;
+
+    background: white;
+    border: 3px solid #2563eb;
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: move;
+    user-select: none;
+
+    font-weight: bold;
+
+    z-index: 10;
+}
+
+body.dark .node {
+    background: #1e293b;
+    color: white;
+}
+
+.node.selected {
+    border-color: red;
+}
+
+/* SVG connections */
+
+#connections {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+line {
+    stroke: #111;
+    stroke-width: 3;
+}
+
+body.dark line {
+    stroke: white;
+}
+
+/* Responsive */
+
+@media(max-width: 768px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+    }
+
+    .component {
+        min-width: 160px;
+    }
+}
