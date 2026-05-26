@@ -149,18 +149,32 @@ function updateMetrics() {
 }
 
 // 4. Tab Navigation System
+// function showHome() {
+//   document.getElementById("btn-home").classList.add("active");
+//   document.getElementById("btn-docs").classList.remove("active");
+//   document.getElementById("home-tab").style.display = "block";
+//   document.getElementById("documents-tab").style.display = "none";
+// }
+
+// function showDocuments() {
+//   document.getElementById("btn-home").classList.remove("active");
+//   document.getElementById("btn-docs").classList.add("active");
+//   document.getElementById("home-tab").style.display = "none";
+//   document.getElementById("documents-tab").style.display = "block";
+// }
+
 function showHome() {
-  document.getElementById("btn-home").classList.add("active");
-  document.getElementById("btn-docs").classList.remove("active");
   document.getElementById("home-tab").style.display = "block";
   document.getElementById("documents-tab").style.display = "none";
+  document.getElementById("documents-tab").hidden = true;
+  document.getElementById("home-tab").hidden = false;
 }
 
 function showDocuments() {
-  document.getElementById("btn-home").classList.remove("active");
-  document.getElementById("btn-docs").classList.add("active");
   document.getElementById("home-tab").style.display = "none";
   document.getElementById("documents-tab").style.display = "block";
+  document.getElementById("home-tab").hidden = true;
+  document.getElementById("documents-tab").hidden = false;
 }
 
 // 5. Theme Customization System
@@ -266,11 +280,7 @@ function removeDocumentItem(button) {
 // 7. Toast Alerts Notification System
 function showToast(message) {
   const toast = document.getElementById("toast");
-  if (!toast) {
-    // Fallback for standalone page: simple console/log
-    console.log('Toast:', message);
-    return;
-  }
+  if (!toast) return;
   toast.innerText = message;
   toast.classList.add("show");
   setTimeout(() => {
@@ -300,3 +310,10 @@ try {
   const saved = localStorage.getItem('todo-theme');
   if (saved) applyTheme(saved);
 } catch (e) {}
+
+// Save as PDF button click handler
+const savePdfBtn = document.getElementById("savepdf");
+if (savePdfBtn) {
+  savePdfBtn.addEventListener("click", saveAsPDF);
+}
+
