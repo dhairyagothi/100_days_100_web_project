@@ -190,7 +190,7 @@ The website features:
 | 116 | AI Image Classifier | API, JavaScript | 🤖 AI Tool | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20Image%20Classifier/index.html) |
 | 117 | Habit Tracker Web App | HTML, CSS, JS | 📋 Productivity | [View Demo](https://100-days-100-web-project.vercel.app/public/Habit-Tracker-Web-App/index.html) |
 | 118 | Particle Effect | HTML, CSS, JS, Canvas | 🎨 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/particle-effect/index.html) |
-| 119 | Virtual Playground | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/playground.html) |
+| 119 | Virtual Playground | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/VirtualPlayground/index.html) |
 | 120 | Typing Speed Test | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/typing_test/index.html) |
 | 121 | InterviewSimulator | Tool | ⚙️ Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/InterviewSimulator/index.html) |
 | 122 | AstronomyDashboard | HTML, CSS, JS | 📗Education | [View Demo](https://100-days-100-web-project-m2op.vercel.app/index.html) |
