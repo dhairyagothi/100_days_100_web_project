@@ -790,3 +790,412 @@ body.dark-mode .card-add:hover {
         font-size: 1.3em;
     }
 }
+
+
+/* ============================================
+   RESPONSIVE ENHANCEMENTS
+   ============================================ */
+
+/* --- Improved base transitions & hover effects --- */
+.shoe-box {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.shoe-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.shoe-img {
+    border-radius: 6px;
+}
+
+.button1 {
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.button1:hover {
+    background-image: linear-gradient(#333, #333);
+    transform: translateY(-2px);
+    box-shadow: 1px 5px 0px #18cfe7;
+}
+
+/* --- Large Desktop (1200px+) --- */
+@media (min-width: 1200px) {
+    .shop-content {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* --- Tablet Landscape (992px – 1199px) --- */
+@media (max-width: 1199px) and (min-width: 992px) {
+    .shop-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+    }
+
+    .shoe-box {
+        width: 100%;
+        height: auto;
+        min-height: 280px;
+    }
+
+    .hero-text h1 {
+        font-size: 2.4em;
+    }
+
+    .hero-image img {
+        margin-left: 80px;
+        width: 80%;
+    }
+
+    .container {
+        padding: 2.5rem;
+    }
+
+    .container1 {
+        margin-left: 60px;
+    }
+}
+
+/* --- Tablet Portrait (768px – 991px) --- */
+@media (max-width: 991px) and (min-width: 768px) {
+    .navbar {
+        height: 68px;
+        padding: 0 16px;
+    }
+
+    .website_title {
+        font-size: 26px;
+        margin-left: 16px;
+    }
+
+    .hero {
+        padding: 100px 20px 40px;
+        min-height: auto;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+    }
+
+    .hero-text {
+        max-width: 100%;
+        padding-left: 0;
+    }
+
+    .hero-text h1 {
+        font-size: 2em;
+    }
+
+    .hero-text p {
+        font-size: 1em;
+    }
+
+    .button1 {
+        margin: 0 auto;
+    }
+
+    .hero-image img {
+        max-width: 55%;
+        margin: 0 auto;
+    }
+
+    .shop-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .shoe-box {
+        width: 100%;
+        height: auto;
+        min-height: 260px;
+    }
+
+    .container {
+        padding: 2rem 1.5rem;
+    }
+
+    .container1 {
+        margin-left: 0;
+        padding: 0 24px;
+    }
+
+    .footer-links {
+        margin-left: 0;
+    }
+
+    .trending-text {
+        font-size: 1.6em;
+    }
+
+    .cart {
+        width: 340px;
+    }
+}
+
+/* --- Mobile (480px – 767px) --- */
+@media (max-width: 767px) and (min-width: 481px) {
+    .navbar {
+        height: 60px;
+        padding: 0 12px;
+    }
+
+    .website_title {
+        font-size: 22px;
+        margin-left: 10px;
+    }
+
+    .button {
+        width: 34px;
+        height: 34px;
+        margin-right: 10px;
+    }
+
+    .hero {
+        padding: 80px 16px 36px;
+        min-height: auto;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .hero-text {
+        max-width: 100%;
+        padding-left: 0;
+    }
+
+    .hero-text h1 {
+        font-size: 1.7em;
+        margin-bottom: 12px;
+    }
+
+    .hero-text p {
+        font-size: 0.95em;
+        margin-bottom: 20px;
+    }
+
+    .button1 {
+        margin: 0 auto;
+        height: 44px;
+        width: 170px;
+        font-size: 0.88rem;
+    }
+
+    .hero-image img {
+        max-width: 65%;
+        margin: 0 auto;
+    }
+
+    .trending-section {
+        margin: 36px 0;
+    }
+
+    .trending-text {
+        font-size: 1.3em;
+    }
+
+    .shop-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .shoe-box {
+        width: 100%;
+        height: auto;
+        min-height: 240px;
+        padding: 8px;
+    }
+
+    .shoe-title {
+        font-size: 1rem;
+    }
+
+    .shoe-price {
+        font-size: 0.9rem;
+    }
+
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    .container1 {
+        margin-left: 0;
+        padding: 0 16px;
+        flex-direction: column;
+    }
+
+    .footer-about,
+    .footer-links,
+    .footer-contact {
+        min-width: 100%;
+        text-align: center;
+    }
+
+    .footer-links {
+        margin-left: 0;
+    }
+
+    .site-footer {
+        margin-top: 40px;
+    }
+
+    .cart {
+        width: 100%;
+        right: -100%;
+    }
+
+    .cart-active {
+        right: 0;
+    }
+}
+
+/* --- Small Mobile (max 480px) --- */
+@media (max-width: 480px) {
+    .navbar {
+        height: 56px;
+        padding: 0 10px;
+    }
+
+    .website_title {
+        font-size: 18px;
+        margin-left: 6px;
+    }
+
+    .button {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+    }
+
+    #cart-icon {
+        width: 70%;
+    }
+
+    .hero {
+        padding: 70px 14px 30px;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .hero-text {
+        max-width: 100%;
+        padding-left: 0;
+    }
+
+    .hero-text h1 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+    }
+
+    .hero-text p {
+        font-size: 0.88em;
+        margin-bottom: 16px;
+    }
+
+    .button1 {
+        margin: 0 auto;
+        height: 42px;
+        width: 155px;
+        font-size: 0.82rem;
+    }
+
+    .hero-image img {
+        max-width: 80%;
+        margin: 0 auto;
+    }
+
+    .trending-text {
+        font-size: 1.1em;
+        padding: 0 10px;
+    }
+
+    .trending-text::before,
+    .trending-text::after {
+        width: 40px;
+    }
+
+    .shop-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .shoe-box {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+        min-height: 220px;
+        margin: 0 auto;
+        padding: 8px;
+    }
+
+    .shoe-title {
+        font-size: 0.95rem;
+    }
+
+    .shoe-price {
+        font-size: 0.85rem;
+    }
+
+    .add-cart {
+        width: 18%;
+        padding: 8px;
+    }
+
+    .container {
+        padding: 1.2rem 0.8rem;
+    }
+
+    .container1 {
+        margin-left: 0;
+        padding: 0 14px;
+        flex-direction: column;
+    }
+
+    .footer-about,
+    .footer-links,
+    .footer-contact {
+        min-width: 100%;
+        text-align: center;
+    }
+
+    .footer-links {
+        margin-left: 0;
+    }
+
+    .footer-links ul li a {
+        font-size: 16px !important;
+        margin-left: 0 !important;
+    }
+
+    .site-footer {
+        margin-top: 30px;
+        padding: 16px 0;
+    }
+
+    .cart {
+        width: 100%;
+    }
+
+    .cart-shoe-title {
+        font-size: 1.4rem;
+    }
+
+    .cart-img {
+        width: 60px;
+        height: 60px;
+    }
+}
