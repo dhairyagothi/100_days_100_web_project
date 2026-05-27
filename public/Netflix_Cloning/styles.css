@@ -84,19 +84,21 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     color: white;
     padding: 100px 50px 50px;
     margin-top: 0;
 }
 
 .hero h1 {
-    font-size: 68px;
+    font-size: 4rem;
     font-weight: 700;
     margin-bottom: 20px;
-    max-width: 600px;
+    /* max-width: 600px; */
     line-height: 1.1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: rgba(0, 0, 0, 0.8) 2px 2px 4px;
+    width: 700px;
+    padding-left: 35px ;
 }
 
 .hero > p {
@@ -104,6 +106,11 @@ body {
     margin-bottom: 10px;
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.p1{
+    position: relative;
+    left: -10px;
 }
 
 .hero-form {
@@ -216,18 +223,18 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
     width: 100%;
     text-align: left;
 }
 
 .faq-question:hover {
     background: #3d3d3d;
-    padding: 24px;
+
 }
 
 .faq-question.active {
-    background: #3d3d3d;
+    margin-bottom: 0px;
 }
 
 .faq-question::after {
@@ -236,36 +243,34 @@ body {
     transition: transform 0.3s ease;
 }
 
-.faq-question.active::after {
+.faq-question.active::after{
     transform: rotate(45deg);
 }
 
 .faq-answer {
+    margin-top: 1px;
     background: #2d2d2d;
-    padding: 0 24px 24px;
+    padding: 0 24px 0px;
     color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
     line-height: 1.6;
-    display: none;
     border-bottom: 1px solid #1a1a1a;
-}
 
+    /* closed state */
+    max-height: 0;
+    /* opacity: 0; */
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height 0.3s ease, visibility 0.3s ease;
+}
 .faq-answer.active {
-    display: block;
-    animation: slideDown 0.3s ease;
+    /* open state */
+    max-height: 500px;
+    margin-bottom: 10px;
+    padding: 0 24px 24px;
+    /* opacity: 1; */
+    visibility: visible;
 }
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        max-height: 0;
-    }
-    to {
-        opacity: 1;
-        max-height: 500px;
-    }
-}
-
 /* ============= FOOTER ============= */
 footer {
     background: var(--dark-bg);

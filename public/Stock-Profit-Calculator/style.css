@@ -1,4 +1,5 @@
 body {
+   body {
     font-family: 'Arial', sans-serif;
     background-image: url('https://i.pinimg.com/736x/ce/7c/90/ce7c90925d736b364348f7e1895705d7.jpg');
     background-size: cover;
@@ -11,6 +12,8 @@ body {
     min-height: 100vh;
     padding: 20px;
     box-sizing: border-box;
+    overflow-x: hidden; /* FIX */
+}
 }
 
 .container {
@@ -20,8 +23,10 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    max-width: 800px;
-    width: 100%;
+
+    width: min(100%, 800px); /* FIX */
+    margin: auto;
+
     animation: fadeIn 1s ease-in-out;
 }
 
@@ -31,10 +36,10 @@ body {
 }
 
 .calculator, .results {
-    padding: 20px;
+     padding: 20px;
     flex: 1;
-    min-width: 300px;
-    transition: transform 0.3s ease-in-out;
+    min-width: 0; /* FIX */
+    width: 100%;
 }
 
 h1, h2 {
@@ -104,13 +109,23 @@ canvas {
 }
 
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
+
+    body {
+        padding: 10px;
     }
 
-    .calculator, .results {
-        min-width: 100%;
+    .container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .calculator,
+    .results {
+        width: 100%;
+        min-width: 0;
         flex: none;
+        padding: 15px;
+        box-sizing: border-box;
     }
 
     .results {
@@ -118,28 +133,9 @@ canvas {
         border-top: 2px solid #e9ecef;
     }
 
-    body {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 24px;
-    }
-
-    h2 {
-        font-size: 20px;
-    }
-
-    .input-group input, .input-group select {
-        font-size: 14px;
-    }
-
-    button {
-        font-size: 16px;
-    }
-
-    #result {
-        font-size: 16px;
+    canvas {
+        width: 100% !important;
+        height: auto !important;
     }
 }
 
