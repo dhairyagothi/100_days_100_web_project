@@ -411,6 +411,91 @@ Download PDF
 let allContributors = [];
 let filteredContributors = [];
 
+
+function generateHeatmap(contributors) {
+
+  const heatmap = document.getElementById("heatmapGrid");
+
+  if (!heatmap) return;
+
+  heatmap.innerHTML = "";
+
+  contributors.forEach((contributor) => {
+
+    const level =
+      contributor.contributions > 200 ? 4 :
+      contributor.contributions > 100 ? 3 :
+      contributor.contributions > 30 ? 2 : 1;
+
+    const cell = document.createElement("div");
+
+    cell.className = `heatmap-cell level-${level}`;
+
+    cell.title =
+      `${contributor.login}: ${contributor.contributions} commits`;
+
+    heatmap.appendChild(cell);
+  });
+}
+
+
+function renderLeaderboard(contributors) {
+
+  const container =
+    document.getElementById("leaderboardList");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  contributors
+    .slice(0,5)
+    .forEach((c,index)=>{
+
+      container.innerHTML += `
+        <div class="leaderboard-item">
+
+          <div>
+            #${index + 1} ${c.login}
+          </div>
+
+          <strong>
+            ${c.contributions} commits
+          </strong>
+
+        </div>
+      `;
+    });
+}
+
+
+function animateValue(id, end) {
+
+  const el = document.getElementById(id);
+
+  let start = 0;
+
+  const duration = 1200;
+
+  const increment = end / 60;
+
+  const counter = setInterval(()=>{
+
+    start += increment;
+
+    if(start >= end){
+
+      start = end;
+
+      clearInterval(counter);
+    }
+
+    el.textContent =
+      Math.floor(start).toLocaleString();
+
+  }, duration / 60);
+}
+
 async function fetchContributors() {
   const contributorsContainer = document.getElementById('contributors');
 
@@ -439,6 +524,8 @@ async function fetchContributors() {
       contributorCountSpan.textContent = cached.length;
 
       renderContributors(filteredContributors);
+      renderLeaderboard(contributors);
+      generateHeatmap(contributors);
 
       loading.classList.add('hidden');
 
@@ -451,7 +538,10 @@ async function fetchContributors() {
 
     saveCache('contributors-cache', contributors);
 
-    contributorCountSpan.textContent = contributors.length;
+    animateValue(
+  "contributorCount",
+  contributors.length
+);
 
     const totalCommits = contributors.reduce(
       (sum, c) => sum + c.contributions,
