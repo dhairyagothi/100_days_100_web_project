@@ -168,13 +168,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Body Fat Estimate -->
-          <div id="bf-section" class="bf-section hidden">
-            <div class="bf-header">
-              <div class="metric-label">Est. body fat</div>
-              <span class="bf-badge" id="bf-badge"></span>
-            </div>
             <div class="bf-body">
               <div class="bf-gauge-wrap">
                 <svg class="bf-gauge" viewBox="0 0 120 120">
@@ -223,47 +216,48 @@
           <p class="card-title">Reference chart</p>
         </div>
 
-        <table class="bmi-table">
-          <thead>
-            <tr>
-              <th>BMI</th>
-              <th>Category</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr id="underweight-row">
-              <td>&lt; 18.5</td>
-              <td>Underweight</td>
-              <td><span class="dot dot-blue"></span></td>
-            </tr>
-            <tr id="normal-row">
-              <td>18.5 – 24.9</td>
-              <td>Normal weight</td>
-              <td><span class="dot dot-green"></span></td>
-            </tr>
-            <tr id="overweight-row">
-              <td>25.0 – 29.9</td>
-              <td>Overweight</td>
-              <td><span class="dot dot-amber"></span></td>
-            </tr>
-            <tr id="obese1-row">
-              <td>30.0 – 34.9</td>
-              <td>Obese (Class I)</td>
-              <td><span class="dot dot-red1"></span></td>
-            </tr>
-            <tr id="obese2-row">
-              <td>35.0 – 39.9</td>
-              <td>Obese (Class II)</td>
-              <td><span class="dot dot-red2"></span></td>
-            </tr>
-            <tr id="obese3-row">
-              <td>≥ 40.0</td>
-              <td>Obese (Class III)</td>
-              <td><span class="dot dot-red3"></span></td>
-            </tr>
-          </tbody>
-        </table>
+          <table class="bmi-table">
+            <thead>
+              <tr>
+                <th>BMI</th>
+                <th>Category</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="underweight-row">
+                <td>&lt; 18.5</td>
+                <td>Underweight</td>
+                <td><span class="dot dot-blue"></span></td>
+              </tr>
+              <tr id="normal-row">
+                <td>18.5 – 24.9</td>
+                <td>Normal weight</td>
+                <td><span class="dot dot-green"></span></td>
+              </tr>
+              <tr id="overweight-row">
+                <td>25.0 – 29.9</td>
+                <td>Overweight</td>
+                <td><span class="dot dot-amber"></span></td>
+              </tr>
+              <tr id="obese1-row">
+                <td>30.0 – 34.9</td>
+                <td>Obese (Class I)</td>
+                <td><span class="dot dot-red1"></span></td>
+              </tr>
+              <tr id="obese2-row">
+                <td>35.0 – 39.9</td>
+                <td>Obese (Class II)</td>
+                <td><span class="dot dot-red2"></span></td>
+              </tr>
+              <tr id="obese3-row">
+                <td>≥ 40.0</td>
+                <td>Obese (Class III)</td>
+                <td><span class="dot dot-red3"></span></td>
+              </tr>
+            </tbody>
+          </table>
+
 
         <div class="chart-wrap">
           <canvas id="bmiChart"></canvas>

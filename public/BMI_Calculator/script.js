@@ -1,29 +1,28 @@
 // ─── Theme Toggle with localStorage persistence ───
 (function initTheme() {
-  const themeBtn = document.getElementById("theme-toggle");
-  const STORAGE_KEY = "bmi-theme";
 
-  // Resolve initial theme: saved preference → OS preference → light
-  function getPreferred() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return saved;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }
+    const themeBtn = document.getElementById("theme-toggle");
+    const STORAGE_KEY = "bmi-theme";
 
-  function applyTheme(theme) {
-    document.body.classList.toggle("dark", theme === "dark");
-  }
+    function getPreferred() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) return saved;
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+    }
 
-  // Apply on first load (runs synchronously before paint)
-  applyTheme(getPreferred());
+    function applyTheme(theme) {
+        document.body.classList.toggle("dark", theme === "dark");
+    }
 
-  // Toggle on click
-  themeBtn.addEventListener("click", () => {
-    const isDark = document.body.classList.toggle("dark");
-    localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
-  });
+    applyTheme(getPreferred());
+
+    themeBtn.addEventListener("click", () => {
+        const isDark = document.body.classList.toggle("dark");
+        localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
+    });
+
 })();
 
 const heightUnitEl = document.getElementById("height-unit");
@@ -146,10 +145,11 @@ function calcHealthyWeight(heightCm) {
 }
 
 function bmiToPercent(bmi) {
-  const MIN = 10,
-    MAX = 45;
-  const clamped = Math.min(Math.max(bmi, MIN), MAX);
-  return ((clamped - MIN) / (MAX - MIN)) * 100;
+
+    const MIN = 10, MAX = 45;
+    const clamped = Math.min(Math.max(bmi, MIN), MAX);
+    return ((clamped - MIN) / (MAX - MIN)) * 100;
+    
 }
 
 // ─── Chart.js setup ───
