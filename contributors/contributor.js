@@ -360,7 +360,15 @@ async function fetchContributors() {
     renderLeaderboard(filteredContributors);
 
     generateHeatmap(filteredContributors);
+      const totalCommits = cached.reduce(
+  (sum, c) => sum + c.contributions,
+  0
+);
 
+animateValue(
+  "totalCommits",
+  totalCommits
+);
     loading.classList.add('hidden');
 
     return;
@@ -385,7 +393,13 @@ async function fetchContributors() {
     const totalCommitsEl = document.getElementById('totalCommits');
 
     if (totalCommitsEl) {
-      totalCommitsEl.textContent = totalCommits.toLocaleString();
+
+      totalCommitsEl.id = "totalCommitsAnimated";
+
+      animateValue(
+        "totalCommitsAnimated",
+        totalCommits
+      );
     }
 
     allContributors = contributors;
