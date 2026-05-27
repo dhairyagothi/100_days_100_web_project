@@ -166,9 +166,14 @@ body::after {
   animation: noiseShift 0.8s steps(2) infinite;
 }
 
-body > *:not(.ambient):not(.noise-layer):not(.cursor-ring) {
+body > *:not(.ambient):not(.noise-layer):not(.cursor-ring):not(header):not(.hero) {
   position: relative;
   z-index: 1;
+}
+
+body > header {
+  position: relative;
+  z-index: 10;
 }
 
 .cursor-ring {
@@ -470,6 +475,7 @@ body.light-mode .navbar {
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 0;
   overflow: hidden;
   isolation: isolate;
 }
