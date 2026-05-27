@@ -2,8 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT_DIR = path.join(__dirname, '..');
-const INPUT_FILE = path.join(ROOT_DIR, 'public', 'projects.json');
-const OUTPUT_FILE = path.join(ROOT_DIR, 'public', 'generated', 'repository-stats.json');
+const INPUT_FILE = path.join(ROOT_DIR, 'projects.json');
+const LEGACY_INPUT_FILE = path.join(ROOT_DIR, 'public', 'projects.json');
+const LEGACY_PROJECTS_COPY_FILE = path.join(ROOT_DIR, 'public', 'projects.json');
+const OUTPUT_FILE = path.join(ROOT_DIR, 'repository-stats.json');
+const LEGACY_OUTPUT_FILE = path.join(ROOT_DIR, 'public', 'generated', 'repository-stats.json');
 
 const DIFFICULTY_ORDER = ['beginner', 'intermediate', 'advanced'];
 
@@ -68,6 +71,13 @@ function buildStats(projectRows) {
   }
 
   const countsByTag = Object.fromEntries([...tagCounts.entries()].sort(([a], [b]) => a.localeCompare(b)));
+  const topTags = [...tagCounts.entries()]
+    .sort(([tagA, countA], [tagB, countB]) => {
+      if (countB !== countA) return countB - countA;
+      return tagA.localeCompare(tagB);
+    })
+    .slice(0, 6)
+    .map(([tag, count]) => ({ tag, count }));
 
   return {
     totalProjects: projectRows.filter(isValidProjectRow).length,
@@ -76,15 +86,21 @@ function buildStats(projectRows) {
       return counts;
     }, {}),
     countsByTag,
+    topTags,
   };
 }
 
 function main() {
-  const projects = readProjects(INPUT_FILE);
+  const inputFile = fs.existsSync(INPUT_FILE) ? INPUT_FILE : LEGACY_INPUT_FILE;
+  const projects = readProjects(inputFile);
   const stats = buildStats(projects);
 
+  fs.writeFileSync(INPUT_FILE, `${JSON.stringify(projects, null, 2)}\n`, 'utf8');
+  fs.writeFileSync(LEGACY_PROJECTS_COPY_FILE, `${JSON.stringify(projects, null, 2)}\n`, 'utf8');
   fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
   fs.writeFileSync(OUTPUT_FILE, `${JSON.stringify(stats, null, 2)}\n`, 'utf8');
+  fs.mkdirSync(path.dirname(LEGACY_OUTPUT_FILE), { recursive: true });
+  fs.writeFileSync(LEGACY_OUTPUT_FILE, `${JSON.stringify(stats, null, 2)}\n`, 'utf8');
 
   console.log(`Wrote ${OUTPUT_FILE}`);
 }

@@ -712,6 +712,108 @@ body.light-mode .hero-terminal-text {
   animation: fadeUp 0.6s var(--ease) 0.5s forwards;
 }
 
+/* Repository statistics */
+.repository-stats-section {
+  padding-top: 1rem;
+}
+
+.repo-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.repo-stat-card {
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(17, 19, 21, 0.95), rgba(12, 14, 17, 0.88));
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+}
+
+.repo-stat-card-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.repo-stat-label {
+  display: block;
+  margin-bottom: 0.85rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.repo-stat-value {
+  display: block;
+  font-size: clamp(2rem, 5vw, 3.15rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--text-primary);
+}
+
+.repo-stat-copy {
+  margin-top: 0.9rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.repo-stat-list {
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.repo-stat-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.repo-stat-list li:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.repo-stat-list strong {
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.repo-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.repo-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: var(--accent-dim);
+  border: 1px solid var(--border-accent);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+.repo-tag-pill span {
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+}
+
 .stat-item {
   font-size: 0.78rem;
   color: var(--text-secondary);

@@ -67,28 +67,45 @@ function getCategoryFromTags(tags, name) {
 let PROJECTS = [];
 let projectsPromise = null;
 
+function getAssetUrl(relativePath) {
+  const isRoot = !window.location.pathname.includes('/contributors/');
+  const base = isRoot ? '' : '../';
+  return new URL(`${base}${relativePath}`, window.location.href).toString();
+}
+
+async function fetchJsonWithFallback(primaryPath, fallbackPath) {
+  const response = await fetch(getAssetUrl(primaryPath));
+
+  if (response.ok) {
+    return response.json();
+  }
+
+  if (response.status !== 404 || !fallbackPath) {
+    throw new Error(`Failed to load ${primaryPath}: ${response.statusText}`);
+  }
+
+  const fallbackResponse = await fetch(getAssetUrl(fallbackPath));
+
+  if (!fallbackResponse.ok) {
+    throw new Error(`Failed to load ${fallbackPath}: ${fallbackResponse.statusText}`);
+  }
+
+  return fallbackResponse.json();
+}
+
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
-      const isRoot = !window.location.pathname.includes('/contributors/');
-      const base = isRoot ? '' : '../';
-     const projectsUrl =
-new URL(`${base}projects.json`,
-window.location.href).toString();
-      const response = await fetch(projectsUrl);
-      if (!response.ok) {
-        throw new Error(`Failed to load projects: ${response.statusText}`);
-      }
-const data = await response.json();
+      const data = await fetchJsonWithFallback('projects.json', 'public/projects.json');
 
-PROJECTS = data.map(project => [
-   `Day ${project.projectNo}`,
-   project.projectName,
-   project.projectPath,
-   project.techStack,
-   project.difficulty,
-   project.projectDesc
-]);
+      PROJECTS = data.map((project) => [
+        `Day ${project.projectNo}`,
+        project.projectName,
+        project.projectPath,
+        project.techStack,
+        project.difficulty,
+        project.projectDesc,
+      ]);
     })();
   }
   return projectsPromise;
@@ -450,6 +467,86 @@ const CATEGORY_LABEL = {
   intermediate: 'Intermediate',
   advanced: 'Advanced',
 };
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function renderRepositoryStats(stats) {
+  const container = document.getElementById('repositoryStats');
+  if (!container) return;
+
+  if (!stats) {
+    container.innerHTML = '<p class="empty-state">Repository statistics are unavailable.</p>';
+    return;
+  }
+
+  const difficultyEntries = Object.entries(stats.countsByDifficulty || {});
+  const topTags = Array.isArray(stats.topTags) && stats.topTags.length
+    ? stats.topTags
+    : Object.entries(stats.countsByTag || {})
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 6)
+      .map(([tag, count]) => ({ tag, count }));
+
+  const difficultyMarkup = difficultyEntries.length
+    ? difficultyEntries.map(([difficulty, count]) => `
+        <li>
+          <span>${escapeHtml(CATEGORY_LABEL[difficulty] || difficulty)}</span>
+          <strong>${Number(count || 0).toLocaleString()}</strong>
+        </li>
+      `).join('')
+    : '<li><span>Difficulty data unavailable</span><strong>N/A</strong></li>';
+
+  const tagMarkup = topTags.length
+    ? topTags.map(({ tag, count }) => `
+        <span class="repo-tag-pill">
+          ${escapeHtml(tag)} <span>${Number(count || 0).toLocaleString()}</span>
+        </span>
+      `).join('')
+    : '<span class="repo-tag-pill">No tag data available</span>';
+
+  container.innerHTML = `
+    <article class="repo-stat-card repo-stat-card-total">
+      <p class="repo-stat-label">Total projects</p>
+      <strong class="repo-stat-value">${Number(stats.totalProjects || 0).toLocaleString()}</strong>
+      <p class="repo-stat-copy">Generated from <strong>projects.json</strong>.</p>
+    </article>
+
+    <article class="repo-stat-card">
+      <p class="repo-stat-label">By difficulty</p>
+      <ul class="repo-stat-list">${difficultyMarkup}</ul>
+    </article>
+
+    <article class="repo-stat-card">
+      <p class="repo-stat-label">Top technologies / tags</p>
+      <div class="repo-tag-list">${tagMarkup}</div>
+    </article>
+  `;
+}
+
+let repositoryStatsPromise = null;
+
+function loadRepositoryStats() {
+  if (!repositoryStatsPromise) {
+    repositoryStatsPromise = (async () => {
+      const stats = await fetchJsonWithFallback('repository-stats.json', 'public/generated/repository-stats.json');
+      renderRepositoryStats(stats);
+      return stats;
+    })().catch((error) => {
+      console.warn('Repository stats unavailable:', error.message);
+      renderRepositoryStats(null);
+      return null;
+    });
+  }
+
+  return repositoryStatsPromise;
+}
 
 /* ============================================================
    GITHUB REPO STATS
@@ -1387,6 +1484,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadProjects();
 
     syncProjectCounts();
+    loadRepositoryStats();
     fetchRepoStats();
     initScrollBtn();
 
