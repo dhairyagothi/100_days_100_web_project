@@ -869,7 +869,7 @@
 "projectDesc":"Brick-breaking arcade game featuring collision and scoring systems.",
 "techStack":["game","canvas"],
 "difficulty":"intermediate",
-"projectPath":"./public/Breakout game/index.html"
+"projectPath":"./public/Breakout-game/index.html"
 },
 
 {
@@ -1179,7 +1179,7 @@
 "projectDesc":"Interactive particle animation creating visually engaging effects.",
 "techStack":["ui","html","css","js","canvas"],
 "difficulty":"intermediate",
-"projectPath":"./public/particle-effect/index.html"
+"projectPath":"./public/Particle Wave Animation/index.html"
 },
 
 {
@@ -1654,12 +1654,12 @@
 
 {
 "projectNo":166,
-"projectName":"Boredom Buster",
+"projectName":"Bordom Buster",
 "projectType":"Tool",
 "projectDesc":"Suggests activities and interactive ideas to overcome boredom quickly.",
 "techStack":["tool","html","css","javascript"],
 "difficulty":"advanced",
-"projectPath":"./public/BoredomBuster/index.html"
+"projectPath":"./public/BoredemBuster/index.html"
 },
 
 {
@@ -1749,7 +1749,7 @@
 "projectDesc":"Generate developer portfolio layouts quickly from structured inputs.",
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
-"projectPath":"./public/DevPortfolioGenerator/index.html"
+"projectPath":"./public/Developer portfolio/index.html"
 },
 
 {
@@ -1779,5 +1779,37 @@
 "techStack": ["tool","html","css","javascript"],
 "difficulty": "intermediate",
 "projectPath": "./public/kanban_task_board/index.html"
+},
+
+{
+  "projectNo":179,
+  "projectName":"Plane Take Off Simulation",
+  "projectType":"Animation",
+  "projectDesc":"Interactive airplane take-off simulation built using pure HTML and CSS animations without JavaScript.",
+  "techStack":["html","css","animation","simulation"],
+  "difficulty":"intermediate",
+  "projectPath":"./public/Plane Take Off Simulation/index.html"
 }
+,
+{
+"projectNo":180,
+"projectName":"Cyber Type Battle",
+"projectType":"Game",
+"projectDesc":"Fast-paced cyber typing battle game with arcade-style gameplay.",
+"techStack":["game","html","css","javascript"],
+"difficulty":"intermediate",
+"projectPath":"./public/CYBER TYPE BATTLE/index.html"
+},
+
+{
+  "projectNo":181,
+  "projectName":"RouteMaster",
+  "projectType":"Tool",
+  "projectDesc":"Interactive route navigation and map tracking project with multiple navigation views and map interfaces.",
+  "techStack":["html","css","javascript","map"],
+  "difficulty":"intermediate",
+  "projectPath":"./public/RouteMaster/index.html"
+}
+
 ]
+
