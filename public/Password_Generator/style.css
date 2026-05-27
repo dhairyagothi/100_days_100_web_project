@@ -282,3 +282,24 @@ h1 {
 }
 
 .clear-btn:hover { opacity: 0.8; }
+
+.project-back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: var(--pl-white);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border: 1px solid var(--lt-violet2);
+    border-radius: 8px;
+    background-color: var(--dk-violet);
+    transition: color 0.2s ease;
+}
+
+.project-back-button:hover {
+    color: var(--vb-yellow);
+    border-color: var(--vb-yellow);
+    background-color: rgba(234, 179, 8, 0.1);
+}
