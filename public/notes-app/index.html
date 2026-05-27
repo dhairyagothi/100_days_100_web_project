@@ -2,170 +2,160 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A responsive notes app with local storage, tags, search, favorites, trash, and JSON backup support.">
   <title>Notes App</title>
-
-  <link rel="stylesheet" href="style.css">
-
+  <link rel="icon" href="NotesApp-Logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <a href="../../index.html" class="back-link" aria-label="Back to project gallery">Back</a>
 
-  <div class="app">
-
-    <!-- SIDEBAR -->
-
-    <div class="sidebar">
-
-      <div>
-
-        <div class="logo">
-          <div class="logo-box">📝</div>
-          Notes App
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Notes navigation">
+      <div class="brand">
+        <img src="NotesApp-Logo.png" alt="" class="brand-logo">
+        <div>
+          <span class="eyebrow">Local workspace</span>
+          <h1>Notes App</h1>
         </div>
-
-        <div class="menu">
-
-          <div class="menu-item active" data-filter="all">
-            📄 All Notes
-          </div>
-
-          <div class="menu-item" data-filter="favorites">
-            🤍 Favorites
-          </div>
-
-          <div class="menu-item" data-filter="locked">
-            🔒 Locked
-          </div>
-
-          <div class="menu-item" data-filter="trash">
-            🗑 Trash
-          </div>
-
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="tags">
-
-          <h3>Tags</h3>
-
-          <div class="tag">
-            <div class="dot blue"></div>Work
-          </div>
-          <div class="tag">
-            <div class="dot green"></div>Study
-          </div>
-          <div class="tag">
-            <div class="dot pink"></div>Personal
-          </div>
-          <div class="tag">
-            <div class="dot yellow"></div>Ideas
-          </div>
-
-        </div>
-
-        <div class="dark-toggle" id="themeToggle">
-
-          <span id="themeText">🌙 Dark Mode</span>
-
-          <div class="toggle">
-            <div class="toggle-circle"></div>
-          </div>
-
-        </div>
-
       </div>
 
-      <div class="quote">
-        ✨ <br><br>
-        Notes are the building blocks of brilliance.
+      <button class="primary-action" id="newNoteSidebar" type="button">New Note</button>
+
+      <nav class="nav-list" aria-label="Note filters">
+        <button class="nav-item active" type="button" data-filter="all">
+          <span>All notes</span>
+          <strong id="allCount">0</strong>
+        </button>
+        <button class="nav-item" type="button" data-filter="favorites">
+          <span>Favorites</span>
+          <strong id="favoriteCount">0</strong>
+        </button>
+        <button class="nav-item" type="button" data-filter="archived">
+          <span>Archived</span>
+          <strong id="archivedCount">0</strong>
+        </button>
+        <button class="nav-item" type="button" data-filter="trash">
+          <span>Trash</span>
+          <strong id="trashCount">0</strong>
+        </button>
+      </nav>
+
+      <div class="tag-panel">
+        <div class="panel-title">Tags</div>
+        <div class="tag-list" id="tagList"></div>
       </div>
 
-    </div>
-
-    <!-- MAIN -->
-
-    <div class="main">
-
-      <div class="topbar">
-
-        <!-- USERNAME HATA DIYA -->
-        <div class="welcome">
-          <h1 id="greeting">Welcome 👋</h1>
-          <p id="noteCount">You have 0 notes</p>
-        </div>
-
-        <div class="top-actions">
-
-          <input type="text" id="searchInput" class="search-input" placeholder="Search notes...">
-
-          <button class="new-btn" id="openModal">
-            + New Note
-          </button>
-
-        </div>
-
+      <div class="sidebar-actions">
+        <button class="ghost-action" id="exportBtn" type="button">Export JSON</button>
+        <label class="ghost-action file-action" for="importInput">Import JSON</label>
+        <input id="importInput" type="file" accept="application/json,.json">
       </div>
+    </aside>
 
-      <!-- NOTES -->
-
-      <div class="notes-grid" id="notesGrid">
-
-        <!-- ADD CARD -->
-
-        <div class="card add-card" id="openCard">
-          <div class="plus">+</div>
-          <h2>Add New Note</h2>
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow" id="todayLabel">Today</span>
+          <h2 id="viewTitle">All notes</h2>
+          <p id="summaryText">Your notes are saved in this browser.</p>
         </div>
 
-      </div>
+        <div class="topbar-actions">
+          <label class="search-box" for="searchInput">
+            <span aria-hidden="true">Search</span>
+            <input id="searchInput" type="search" placeholder="Search title, note, or tag">
+          </label>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">Light</button>
+          <button class="primary-action compact" id="newNoteTop" type="button">New</button>
+        </div>
+      </header>
 
-    </div>
+      <section class="quick-stats" aria-label="Note statistics">
+        <article>
+          <span>Total</span>
+          <strong id="statTotal">0</strong>
+        </article>
+        <article>
+          <span>Favorites</span>
+          <strong id="statFavorites">0</strong>
+        </article>
+        <article>
+          <span>Last edited</span>
+          <strong id="statEdited">None</strong>
+        </article>
+      </section>
 
+      <section class="notes-grid" id="notesGrid" aria-live="polite"></section>
+    </main>
   </div>
 
-  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" hidden>
+    <section class="note-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <form id="noteForm">
+        <div class="modal-header">
+          <div>
+            <span class="eyebrow">Note editor</span>
+            <h2 id="modalTitle">Create note</h2>
+          </div>
+          <button class="icon-button" id="closeModal" type="button" aria-label="Close editor">x</button>
+        </div>
 
-  <div class="modal" id="modal">
+        <label for="titleInput">Title</label>
+        <input id="titleInput" type="text" maxlength="80" placeholder="Project ideas" required>
 
-    <h2>Add New Note</h2>
+        <label for="contentInput">Note</label>
+        <textarea id="contentInput" rows="8" maxlength="1200" placeholder="Write the details here..." required></textarea>
 
-    <input type="text" id="title" placeholder="Title">
+        <div class="form-row">
+          <div>
+            <label for="tagInput">Tag</label>
+            <select id="tagInput">
+              <option value="Work">Work</option>
+              <option value="Study">Study</option>
+              <option value="Personal">Personal</option>
+              <option value="Ideas">Ideas</option>
+            </select>
+          </div>
+          <div>
+            <label for="colorInput">Color</label>
+            <select id="colorInput">
+              <option value="teal">Teal</option>
+              <option value="violet">Violet</option>
+              <option value="amber">Amber</option>
+              <option value="rose">Rose</option>
+            </select>
+          </div>
+        </div>
 
-    <textarea rows="5" id="content" placeholder="Write your note here..."></textarea>
+        <div class="checkbox-row">
+          <label>
+            <input id="favoriteInput" type="checkbox">
+            Mark as favorite
+          </label>
+          <label>
+            <input id="archivedInput" type="checkbox">
+            Archive note
+          </label>
+        </div>
 
-    <!-- <input type="text" id="tag" placeholder="Tag"> -->
-    <select id="tag" class="select-field">
-      <option value="Work">Work</option>
-      <option value="Study">Study</option>
-      <option value="Personal">Personal</option>
-      <option value="Ideas">Ideas</option>
-    </select>
-
-    <div class="modal-actions">
-      <button class="btn cancel" id="closeModal">
-        Cancel
-      </button>
-
-      <button class="btn save" id="saveBtn">
-        Save Note
-      </button>
-    </div>
-
+        <div class="modal-actions">
+          <button class="secondary-action" id="resetForm" type="button">Reset</button>
+          <button class="primary-action" type="submit">Save note</button>
+        </div>
+      </form>
+    </section>
   </div>
 
-  <!-- TOAST -->
-
-  <div class="toast" id="toast">
-    ✔ Note added successfully!
-  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="script.js"></script>
-
 </body>
 
 </html>
