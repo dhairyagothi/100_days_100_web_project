@@ -49,21 +49,27 @@
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
   <header>
       <nav class="navbar" id="navbar" aria-label="Main Navigation">
-        <a class="navbar-brand" href="index.html" style="text-decoration:none;">
+        <a class="navbar-brand" href="#hero" style="text-decoration:none;">
           <span class="brand-mark" aria-label="100 Days logo">100</span>
-            <span class="brand-copy">
+          <span class="brand-copy">
             <span class="brand-kicker">Open Source Archive</span>
             <strong>100 Days · 100 Web Projects</strong>
           </span>
         </a>
 
+        <div class="section-nav-links" aria-label="Homepage section navigation">
+          <a href="#continue-exploring" class="section-nav-link">Continue Exploring</a>
+          <a href="#saved-collection" class="section-nav-link">Saved Collection</a>
+          <a href="#project-archives" class="section-nav-link">Project Archives</a>
+          <a href="#about" class="section-nav-link">About</a>
+        </div>
+
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
           <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
 
-        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-      </div>
-    </nav>
+        <div class="nav-buttons mobile-drawer-layer" id="navButtons"></div>
+      </nav>
   </header>     
     <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
@@ -86,7 +92,7 @@
       </p>
 
       <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
+        <a href="#project-archives" class="btn btn-primary" id="heroBrowseBtn">
           Browse Projects <i class="fas fa-arrow-down"></i>
         </a>
         <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer"
@@ -119,7 +125,7 @@
     </div>
   </section>
 
-  <section class="projects-section">
+  <section class="projects-section" id="continue-exploring">
     <div class="projects-inner">
       <div class="projects-intro">
         <p class="section-label">Continue Exploring</p>
@@ -135,7 +141,7 @@
     </div>
   </section>
 
-  <section class="projects-section">
+  <section class="projects-section" id="saved-collection">
     <div class="projects-inner">
       <div class="projects-intro">
         <p class="section-label">Saved Collection</p>
@@ -159,7 +165,7 @@
   </section>
 
   <!-- ── PROJECTS ───────────────────────────────────────── -->
-  <section class="projects-section" id="projects">
+  <section class="projects-section" id="project-archives">
     <div class="projects-inner">
       <div class="projects-intro">
         <p class="section-label">Archive index</p>
@@ -240,7 +246,7 @@
 </section>
 
   <!-- ── FOOTER ─────────────────────────────────────────── -->
-  <footer class="footer homepage-footer">
+  <footer class="footer homepage-footer" id="about">
     <div class="homepage-footer-shell">
       <div class="homepage-footer-brand">
         <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
@@ -260,7 +266,7 @@
         <section class="homepage-footer-card" aria-labelledby="footerExploreTitle">
           <h3 id="footerExploreTitle">Explore</h3>
           <ul class="footer-link-list">
-            <li><a href="#projects">Browse all projects</a></li>
+            <li><a href="#project-archives">Browse all projects</a></li>
             <li><a href="contributors/contributor.html">Meet contributors</a></li>
             <li><a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">View repository</a></li>
           </ul>
