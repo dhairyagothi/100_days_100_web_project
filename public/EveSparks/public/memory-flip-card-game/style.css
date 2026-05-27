@@ -1,0 +1,231 @@
+:root {
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --badge-bg: #745cc9;
+    --badge-text: #ffffff;
+    --btn-bg: #4dc2ba;
+    --btn-hover: #3eaba4;
+    --btn-text: #ffffff;
+    --card-bg: #f3f4f6;
+    --card-border: #e5e7eb;
+    --card-front: #ffffff;
+    --card-matched: #10b981;
+    --font-family: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #5f6bdd 0%, #8b4bb3 100%);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 800px;
+    background: var(--container-bg);
+    padding: 24px 30px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    color: #374151;
+}
+
+.header-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.stats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.badge-purple {
+    background-color: var(--badge-bg);
+    color: var(--badge-text);
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 6px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    font-family: var(--font-family);
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn-teal {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+}
+
+.btn-teal:hover {
+    background-color: var(--btn-hover);
+}
+
+.board-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+    perspective: 1000px;
+}
+
+.card {
+    width: 100%;
+    aspect-ratio: 1 / 1.05;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+    cursor: pointer;
+}
+
+.card.flipped, .card.matched {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem;
+}
+
+.card-back {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+}
+
+.card-front {
+    background-color: var(--card-front);
+    border: 1px solid var(--card-border);
+    transform: rotateY(180deg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card.matched .card-front {
+    background-color: #d1fae5;
+    border-color: #34d399;
+}
+
+.game-message {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    z-index: 10;
+    backdrop-filter: blur(3px);
+}
+
+.game-message.hidden {
+    display: none;
+}
+
+.game-message h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+.game-message p {
+    font-size: 1.2rem;
+    color: #4b5563;
+    margin-bottom: 20px;
+}
+
+.play-again {
+    padding: 10px 24px;
+    font-size: 1.1rem;
+    background-color: var(--badge-bg);
+    color: white;
+}
+.play-again:hover {
+    background-color: #6146a8;
+}
+
+@media (max-width: 768px) {
+    .game-board {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+    }
+    .header-toolbar {
+        justify-content: center;
+    }
+}
+@media (max-width: 480px) {
+    .game-board {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .card-face {
+        font-size: 2rem;
+    }
+}
