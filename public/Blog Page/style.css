@@ -184,6 +184,13 @@ body{
     font-size: 14px;
 }
 
+body.dark-mode .blog-category,
+body.dark-mode .category-count,
+body.dark-mode .category-tag {
+    background: #10b981;
+    color: white !important;
+}
+
 .view-all{
     display: inline-block;
     margin-top: 20px;
@@ -365,12 +372,11 @@ body{
 }
 
 .blog-category{
-    background:#dcfce7;
-  color:#15803d;
+    background:#15803d;
   padding:6px 12px;
   border-radius:20px;
   font-size:14px;
-    font-weight:600;
+font-weight:600;
 }
 
 .blog-title{
@@ -464,7 +470,7 @@ body{
 }
 
 .category-count{
-    background:#f3f4f6;
+    background:#15803d;
     padding:4px 10px;
     border-radius:20px;
     font-size:14px;
@@ -823,3 +829,12 @@ body.dark-mode .text-gray-600,
 body.dark-mode .text-gray-500{
     color: #f3f4f6 !important;
 }
+
+@keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-25px); }
+    }
+
+    .float {
+      animation: float 8s ease-in-out infinite;
+    }

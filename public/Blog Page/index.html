@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="transition-all duration-300">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
 <!-- ---navbar-- -->
 <!-- Navbar -->
 <nav class="navbar">
@@ -21,7 +23,7 @@
  <!-- Navigation Links -->
     <ul class="nav-links">
    <li>
-            <a href="#">Home</a>
+            <a href="#home">Home</a>
         </li>
         <li>
             <a href="#">Categories</a>
@@ -42,15 +44,57 @@
             class="nav-search"
         >
         <!-- Dark Mode Button -->
-        <button id="themeToggle">
-            ☀️
-            <!-- 🌙 -->
-        </button>
+<button id="themeToggle">
+   <span id="themeIcon">☀️</span>
+</button>
     </div>
 </nav>
+<!-- Home -->
 
+<section class="relative min-h-[98vh] flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100" id="home">
 
+  <!-- Glow Blobs -->
+  <div class="absolute w-[300px] h-[300px] bg-green-500/40 blur-[120px] rounded-full top-10 left-10 float"></div>
+  <div class="absolute w-[300px] h-[300px] bg-green-500/40 blur-[120px] rounded-full bottom-10 right-10 float"></div>
 
+  <!-- Content -->
+  <div class="text-center max-w-3xl z-10 animate-[fadeUp_1s_ease-out]">
+
+    <!-- Badge -->
+    <div class="inline-block mb-5 px-4 py-2 rounded-full text-sm border border-green-400/30 bg-green-400/10 text-green-600">
+      ✨ New ideas everyday
+    </div>
+
+    <!-- Heading -->
+    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+      Write. Learn. Grow with <span class="text-green-400">GreenBlog</span>
+    </h1>
+
+    <!-- Subtext -->
+    <p class="mt-6 text-gray-500 text-lg leading-relaxed">
+      A modern space for thoughts on tech, productivity, and creativity.
+      Discover insights that help you build real skills.
+    </p>
+
+    <!-- Buttons -->
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+
+      <a class="px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-green-500 to-green-600 shadow-lg shadow-green-500/20 hover:scale-105 transition"
+         onclick="document.getElementById('blogCards').scrollIntoView({ behavior: 'smooth' })">
+        Explore Articles →
+      </a>
+
+      <a 
+         class="px-6 py-3 rounded-xl font-semibold bg-white/5 border backdrop-blur border-green-400 hover:text-green-400 hover:scale-105 transition"
+         onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' })">
+        Subscribe to Newsletter
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
     <div class="flex flex-col md:flex-row justify-center gap-10 md:gap-20 p-6 bg-gray-50 min-h-screen">
       
 <div class="blog-container" id="blogCards">
@@ -357,7 +401,7 @@
     <script src="script.js"></script>
 
 <!-- Footer Section -->
-<footer class="footer">
+<footer class="footer" id="footer">
   <div class="footer-container">
 
     <!-- Brand -->
