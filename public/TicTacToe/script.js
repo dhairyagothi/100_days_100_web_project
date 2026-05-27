@@ -20,20 +20,19 @@
 
   var boardEl  = document.getElementById("board");
   var gameEl   = document.getElementById("game");
-  var statusEl = document.getElementById("status-bar");
-  var pillX    = document.getElementById("pill-x");
-  var pillO    = document.getElementById("pill-o");
-  var scoreX   = document.getElementById("score-x");
-  var scoreO   = document.getElementById("score-o");
-  var scoreD   = document.getElementById("score-d");
-  var overlay  = document.getElementById("win-overlay");
-  var winText  = document.getElementById("win-text");
-  var winSub   = document.getElementById("win-sub");
-  var winBtn   = document.getElementById("win-btn");
-  var canvas   = document.getElementById("confetti-canvas");
+  var statusEl = document.getElementById("statusText");
+  var turnChip = document.getElementById("turnChip");
+  var scoreX   = document.getElementById("scoreX");
+  var scoreO   = document.getElementById("scoreO");
+  var scoreD   = document.getElementById("scoreD");
+  var overlay  = document.getElementById("winnerModal");
+  var winText  = document.getElementById("winnerTitle");
+  var winSub   = document.getElementById("winnerSubtitle");
+  var winBtn   = document.getElementById("winnerNext");
+  var canvas   = document.getElementById("confetti");
   var ctx      = canvas.getContext("2d");
-  var startScreen = document.getElementById("start-screen");
-  var startBtn   = document.getElementById("start-btn");
+  var startScreen = document.getElementById("startModal");
+  var startBtn   = document.getElementById("startGameBtn");
 
   // ── Mode screen (injected) ─────────────
   var modeScreen = document.createElement("div");
@@ -168,18 +167,11 @@
     return null;
   }
 
-const checkWinner = () => {
-    for (const pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        const pos1 = boardState[a];
-        const pos2 = boardState[b];
-        const pos3 = boardState[c];
-        if (pos1 && pos1 === pos2 && pos2 === pos3) {
-            setWinner(pos1, pattern);
-            return true;
-        }
-    }
-    return null;
+  /* ── Check win (uses scanWinner) ─────── */
+  function checkWin() {
+    return scanWinner(board) ? WIN_LINES.find(function (l) {
+      return board[l[0]] && board[l[0]] === board[l[1]] && board[l[0]] === board[l[2]];
+    }) : null;
   }
 
   /* ── Highlight winning cells ──────────── */
@@ -190,11 +182,8 @@ const checkWinner = () => {
 
   /* ── Update turn UI + background ─────── */
   function setUI(player) {
-    pillX.classList.toggle("active", player === "X");
-    pillO.classList.toggle("active", player === "O");
-    gameEl.className = player === "X" ? "turn-x" : "turn-o";
-    statusEl.className = player === "X" ? "sx" : "so";
-    var label = (vsBot && player === botMark) ? "Bot" : player;
+    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
+    turnChip.textContent = "Turn: " + (player ? label : "");
     statusEl.textContent = player ? label + "'s turn!" : "";
   }
 
@@ -207,22 +196,20 @@ const checkWinner = () => {
 
   /* ── Win overlay ──────────────────────── */
   function showWinOverlay(player) {
-    winText.className   = player === "X" ? "col-x" : "col-o";
-    winText.textContent = "CONGRATULATIONS!";
     var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
-    winSub.textContent  = label + " wins the round!";
-    winBtn.className    = player === "X" ? "btn-x" : "btn-o";
-    overlay.className   = "show " + (player === "X" ? "ov-x" : "ov-o");
+    winText.textContent = label + " wins the round!";
+    winSub.textContent  = "Great moves. Ready for the next round?";
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
     launchConfetti(player);
   }
 
   /* ── Draw overlay ─────────────────────── */
   function showDrawOverlay() {
-    winText.className   = "col-d";
-    winText.textContent = "IT'S A DRAW!";
+    winText.textContent = "It's a draw!";
     winSub.textContent  = "Nobody wins this round.";
-    winBtn.className    = "btn-d";
-    overlay.className   = "show ov-d";
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
   }
 
   /* ── Next round ───────────────────────── */
@@ -232,7 +219,8 @@ const checkWinner = () => {
     gameOver = false;
     buildBoard();
     setUI("X");
-    overlay.className = "";
+    overlay.classList.remove("show");
+    overlay.setAttribute("aria-hidden", "true");
     stopConfetti();
     if (vsBot && current === botMark) setTimeout(doBotMove, 480);
   }
@@ -241,149 +229,38 @@ const checkWinner = () => {
   function resetAll() {
     scores = { X: 0, O: 0, D: 0 };
     updateScores();
-    turnO = true;
-    resetRound();
-    updateStatus("Scores reset. Ready to play");
-};
+    nextRound();
+  }
 
-const setModalState = (modal, isOpen) => {
-    if (!modal) {
-        return;
+  /* ── Launch confetti ─────────────────── */
+  function launchConfetti(player) {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles = [];
+    var color = player === "X" ? "#ff7d7d" : "#40f5d2";
+    for (var i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 3,
+        d: Math.random() * 2 + 1,
+        color: Math.random() > 0.5 ? color : "#ffffff",
+        tilt: Math.random() * 10 - 5
+      });
     }
-    modal.classList.toggle("show", isOpen);
-    modal.setAttribute("aria-hidden", String(!isOpen));
-};
+    animFrame = requestAnimationFrame(animateConfetti);
+  }
 
-const showWinnerModal = (winner, isSetWin) => {
-    const winnerLabel = `Player ${winner}`;
-    winnerBadge.textContent = "Winner";
-    winnerTitle.textContent = isSetWin ? `${winnerLabel} wins the set!` : `${winnerLabel} wins the round!`;
-    winnerSubtitle.textContent = isSetWin
-        ? "Champion vibes. Reset scores to play a new set."
-        : "Great moves. Ready for the next round?";
-    setModalState(winnerModal, true);
-};
-
-const hideWinnerModal = () => {
-    setModalState(winnerModal, false);
-};
-
-const showStartModal = () => {
-    gameStarted = false;
-    setModalState(startModal, true);
-    boardLocked = true;
-    stopTurnTimer();
-};
-
-const hideStartModal = () => {
-    setModalState(startModal, false);
-};
-
-const updateHistory = () => {
-    historyList.innerHTML = "";
-    const recent = moveHistory.slice(-10);
-    recent.forEach((move, index) => {
-        const item = document.createElement("li");
-        const moveNumber = moveHistory.length - recent.length + index + 1;
-        item.textContent = `#${moveNumber} ${move.mark} to cell ${move.index + 1}`;
-        historyList.appendChild(item);
-    });
-};
-
-const clearHints = () => {
-    boxes.forEach((box) => box.classList.remove("hint"));
-};
-
-const syncTurnFromBoard = () => {
-    const countO = boardState.filter((cell) => cell === "O").length;
-    const countX = boardState.filter((cell) => cell === "X").length;
-    turnO = countO === countX;
-};
-
-const undoMove = () => {
-    if (!moveHistory.length) {
-        return;
-    }
-
-    if (currentResult) {
-        if (currentResult.winner && currentResult.winner !== "D") {
-            scores[currentResult.winner] = Math.max(0, scores[currentResult.winner] - 1);
-        }
-        if (currentResult.winner === "D") {
-            scores.D = Math.max(0, scores.D - 1);
-        }
-        currentResult = null;
-        updateScores();
-    }
-
-    const steps = mode === "pvp" ? 1 : 2;
-    for (let i = 0; i < steps; i += 1) {
-        const last = moveHistory.pop();
-        if (!last) {
-            break;
-        }
-        const box = boxes[last.index];
-        boardState[last.index] = "";
-        box.textContent = "";
-        box.disabled = false;
-        box.classList.remove("win", "mark-o", "mark-x");
-    }
-
-    boardLocked = false;
-    boxes.forEach((box) => box.classList.remove("win"));
-    hideWinLine();
-    clearHints();
-    syncTurnFromBoard();
-    updateHistory();
-    updateStatus("Undo applied");
-    triggerCpuMove();
-};
-
-// Run the CPU move with a short delay for pacing.
-const triggerCpuMove = () => {
-    if (mode === "pvp" || boardLocked || turnO) {
-        return;
-    }
-    const available = getAvailableMoves(boardState);
-    if (!available.length) {
-        return;
-    }
-    updateStatus("CPU is thinking...");
-    boardLocked = true;
-    boardEl.classList.add("thinking");
-    setTimeout(() => {
-        let bestMove = null;
-        if (mode === "cpu-easy") {
-            bestMove = randomMove(available);
-        } else if (mode === "cpu-medium") {
-            bestMove = Math.random() < 0.6 ? bestMoveFor(boardState, "X") : randomMove(available);
-        } else {
-            bestMove = bestMoveFor(boardState, "X");
-        }
-        boardLocked = false;
-        boardEl.classList.remove("thinking");
-        placeMark(bestMove, "X", true);
-    }, 450);
-};
-
-const getAvailableMoves = (state) => state
-    .map((cell, index) => (cell ? null : index))
-    .filter((value) => value !== null);
-
-const randomMove = (moves) => moves[Math.floor(Math.random() * moves.length)];
-
-const bestMoveFor = (state, player) => {
-    let bestScore = -Infinity;
-    let move = null;
-    const opponent = player === "O" ? "X" : "O";
-    getAvailableMoves(state).forEach((index) => {
-        const next = [...state];
-        next[index] = player;
-        const score = minimax(next, false, player, opponent, 0);
-        if (score > bestScore) {
-            bestScore = score;
-            move = index;
-        }
+  function animateConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(function (p) {
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.ellipse(p.x, p.y, p.r, p.r * 0.4, p.tilt, 0, Math.PI * 2);
+      ctx.fill();
+      p.y += p.d + 1;
+      p.tilt += 0.05;
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
     });
     animFrame = requestAnimationFrame(animateConfetti);
   }
@@ -396,17 +273,16 @@ const bestMoveFor = (state, player) => {
   }
 
   /* ── Button wiring ────────────────────── */
-  document.getElementById("btn-reset").addEventListener("click", resetAll);
-  document.getElementById("btn-restart").addEventListener("click", nextRound);
-  document.getElementById("win-btn").addEventListener("click", nextRound);
+  document.getElementById("resetAll").addEventListener("click", resetAll);
+  document.getElementById("resetRound").addEventListener("click", nextRound);
+  document.getElementById("winnerNext").addEventListener("click", nextRound);
+  document.getElementById("winnerClose").addEventListener("click", nextRound);
 
   /* ── Start → mode screen ──────────────── */
   startBtn.addEventListener("click", function () {
-    startScreen.classList.add("hide-screen");
-    setTimeout(function () {
-      startScreen.style.display = "none";
-      modeScreen.classList.add("show");
-    }, 600);
+    startScreen.classList.remove("show");
+    startScreen.setAttribute("aria-hidden", "true");
+    modeScreen.classList.add("show");
   });
 
   document.getElementById("btn-2p").addEventListener("click", function () {
@@ -425,8 +301,6 @@ const bestMoveFor = (state, player) => {
     modeScreen.classList.add("hide");
     setTimeout(function () {
       modeScreen.style.display = "none";
-      gameEl.classList.remove("hidden");
-      gameEl.classList.add("show-game");
     }, 400);
   }
 
