@@ -1,145 +1,301 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+
+:root {
+  --bg: #050a05;
+  --grid: #0d1f0d;
+  --snake-head: #39ff14;
+  --snake-body: #1aff1a;
+  --snake-tail: #0a8a0a;
+  --food: #ff3c3c;
+  --food-glow: #ff000088;
+  --accent: #39ff14;
+  --dim: #1a3a1a;
+  --text: #c8ffc8;
+  --score-bg: #061206;
+}
+
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
 }
 
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text);
   min-height: 100vh;
-  background: #0A0A23; /* Dark blue background */
-}
-
-.wrapper {
-  width: 65vmin;
-  height: 75vmin;
   display: flex;
-  overflow: hidden;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  border-radius: 5px;
-  background: #1E1E3F; /* Dark theme for game board */
-  box-shadow: 0 20px 40px rgba(52, 87, 220, 0.2);
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
 }
 
-.game-details {
-  color: #B8C6DC;
-  font-weight: 500;
-  font-size: 1.2rem;
-  padding: 20px 27px;
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 0, 0.015) 2px,
+    rgba(0, 255, 0, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+
+.title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  color: var(--accent);
+  letter-spacing: 0.3em;
+  text-shadow:
+    0 0 20px var(--accent),
+    0 0 40px var(--accent),
+    0 0 80px rgba(57, 255, 20, 0.3);
+  margin-bottom: 1.5rem;
+  animation: flicker 6s infinite;
+}
+
+@keyframes flicker {
+  0%, 96%, 98%, 100% { opacity: 1; }
+  97%  { opacity: 0.85; }
+  99%  { opacity: 0.92; }
+}
+
+
+.hud {
   display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 480px;
   justify-content: space-between;
-  width: 100%;
 }
 
-.play-board {
-  height: 100%;
-  width: 100%;
-  display: grid;
-  background: #000000; /* Black background for play board */
-  grid-template: repeat(30, 1fr) / repeat(30, 1fr);
+.stat-box {
+  background: var(--score-bg);
+  border: 1px solid var(--dim);
+  padding: 0.5rem 1rem;
+  flex: 1;
+  text-align: center;
+  position: relative;
+  clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
 }
 
-.play-board .food {
-  border-radius: 100%;
-  background: #ff0040; /* Contrasting red food */
+.stat-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.4;
 }
 
-.play-board .bonus-food {
-  border-radius: 100%;
-  background: #FFD700; /* Gold for bonus food */
+.stat-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: #4a8a4a;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.15rem;
 }
 
-.play-board .head {
-  border-radius: 5px;
-  background: #13f317; /* Light blue for snake */
+.stat-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 10px var(--accent);
+  transition: transform 0.1s;
 }
+
 
 .play-board .obstacle {
-  background: #0de6f1; /* Black for obstacles */
+  background: #ff6b6b;
 }
 
-.play-board .power-up {
-  background: #00FF00; /* Green for power-ups */
-}
-
-.controls {
-  display: none;
-  justify-content: space-between;
-}
-
-.controls i {
-  padding: 25px 0;
-  text-align: center;
-  font-size: 1.3rem;
-  color: #B8C6DC;
-  width: calc(100% / 4);
-  cursor: pointer;
-  border-right: 1px solid #171B26;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.new-game-button, .restart-game-button {
-  margin: 0 10px;
-  padding: 15px 25px;
-  font-size: 1.1rem;
+.stat-value.bump {
+  transform: scale(1.3);
   color: #fff;
-  background: linear-gradient(135deg, #FFD700, #FFB300); /* Yellow gradient background */
-  border: none;
-  border-radius: 8px; /* Rounded corners */
+  text-shadow: 0 0 15px #fff;
+
+}
+
+
+.canvas-wrapper {
+  position: relative;
+  border: 2px solid var(--dim);
+  box-shadow:
+    0 0 0 1px #0a2a0a,
+    0 0 30px rgba(57, 255, 20, 0.15),
+    inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+canvas {
+  display: block;
+  background: var(--bg);
+  image-rendering: pixelated;
+}
+
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 10, 5, 0.88);
+  gap: 1rem;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--accent);
+  letter-spacing: 0.2em;
+}
+
+.overlay-sub {
+  font-size: 0.75rem;
+  color: #4a8a4a;
+  letter-spacing: 0.15em;
+  text-align: center;
+  line-height: 1.8;
+}
+
+
+.btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.6rem 2rem;
   cursor: pointer;
-  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  font-weight: bold;
+  transition: all 0.15s;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-.new-game-button:hover, .restart-game-button:hover {
-  background: linear-gradient(135deg, #FFB300, #FFD700); /* Reverse gradient on hover */
-  transform: scale(1.1); /* Slightly enlarge on hover */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateX(-100%);
+  transition: transform 0.15s;
 }
 
-.new-game-button:active, .restart-game-button:active {
-  transform: scale(1); /* Return to normal size when clicked */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Smaller shadow when clicked */
+.btn:hover::before { transform: translateX(0); }
+.btn:hover         { color: var(--bg); text-shadow: none; }
+.btn:active        { transform: scale(0.97); }
+
+.btn span {
+  position: relative;
+  z-index: 1;
 }
 
-/* Button Focus Effects */
-.new-game-button:focus, .restart-game-button:focus {
-  outline: none;
-  border: 2px solid #FFD700; /* Yellow border on focus */
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Soft yellow glow */
+
+.controls-hint {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.8rem;
+  justify-content: center;
 }
 
-/* Media Queries for Responsiveness */
-@media screen and (max-width: 800px) {
-  .wrapper {
-    width: 90vmin;
-    height: 120vmin;
-  }
+.key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.6rem;
+  color: #3a6a3a;
+  letter-spacing: 0.1em;
+}
 
-  .game-details {
-    font-size: 1rem;
-    padding: 15px 27px;
-  }
+.key-symbol {
+  border: 1px solid #1a4a1a;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.65rem;
+  color: #4a9a4a;
+  background: #051005;
+}
 
-  .controls {
-    display: flex;
-  }
+
+.game-over-score {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  color: #4a9a4a;
+  letter-spacing: 0.1em;
+}
+
+
 
   .controls i {
     padding: 15px 0;
     font-size: 1rem;
   }
 }
+/* Improve mobile responsiveness */
+@media screen and (max-width: 500px) {
+  .wrapper {
+    width: 95vmin;
+    height: 110vmin;
+  }
+
+  .game-details {
+    font-size: 0.9rem;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .new-game-button,
+  .restart-game-button {
+    width: 90%;
+    margin: 5px 0;
+  }
+}
+
+#scanline {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(transparent, rgba(57, 255, 20, 0.03), transparent);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  to { top: 200%; }
+}
+

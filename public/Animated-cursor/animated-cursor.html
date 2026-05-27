@@ -9,11 +9,64 @@
 <title>Animated Cursor</title>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+
+<div class="background"></div>
+
+<div class="galaxy-glow"></div>
+
+<canvas id="stars"></canvas>
+
+<div class="glass-overlay"></div>
+
 <div class="cursor"></div>
-     <div class="content">
-        <div><h1>ANIMATED CURSOR</h1></div>
-        <div><h3>Move the Cursor on screen to see animation</h3></div>
-     </div>
- <script src="animated-cursor.js"></script>    
+
+<main class="content">
+    <h1>Animated Cursor</h1>
+    <p>Move around and hover the actions to feel the glowing comet trail.</p>
+    <div class="cursor-picker">
+        <span>Change Cursor Design</span>
+        <select id="cursor-design" class="native-select" aria-hidden="true" tabindex="-1">
+            <option value="orb">Glowing Orb</option>
+            <option value="ring">Neon Ring</option>
+            <option value="diamond">Crystal Diamond</option>
+            <option value="crosshair">Crosshair</option>
+        </select>
+        <div class="custom-select magnetic-control" data-select="cursor-design">
+            <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span>Glowing Orb</span>
+            </button>
+            <ul class="select-menu" role="listbox">
+                <li class="select-option is-selected" role="option" data-value="orb" aria-selected="true">Glowing Orb</li>
+                <li class="select-option" role="option" data-value="ring">Neon Ring</li>
+                <li class="select-option" role="option" data-value="diamond">Crystal Diamond</li>
+                <li class="select-option" role="option" data-value="crosshair">Crosshair</li>
+            </ul>
+        </div>
+    </div>
+    <div class="cursor-picker">
+        <span>Theme</span>
+        <select id="theme-design" class="native-select" aria-hidden="true" tabindex="-1">
+            <option value="galaxy">Galaxy</option>
+            <option value="aurora">Aurora</option>
+            <option value="neon">Neon</option>
+            <option value="firefly">Firefly</option>
+        </select>
+        <div class="custom-select magnetic-control" data-select="theme-design">
+            <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span>Galaxy</span>
+            </button>
+            <ul class="select-menu" role="listbox">
+                <li class="select-option is-selected" role="option" data-value="galaxy" aria-selected="true">Galaxy</li>
+                <li class="select-option" role="option" data-value="aurora">Aurora</li>
+                <li class="select-option" role="option" data-value="neon">Neon</li>
+                <li class="select-option" role="option" data-value="firefly">Firefly</li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<script src="animated-cursor.js"></script>
 </body>
 </html>

@@ -1,109 +1,1393 @@
-body {
-    font-family: Arial, sans-serif;
-    background-image: url(./budget.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+/* =========================================================
+   GOOGLE FONT
+========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* =========================================================
+   RESET
+========================================================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.main-container {
-    margin-bottom: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 80%;
-    max-width: 1200px;
-    height: 90vh;
+/* =========================================================
+   ROOT VARIABLES
+========================================================= */
+:root{
+
+  --bg:#eef2ff;
+
+  --card:rgba(255,255,255,0.72);
+
+  --text:#0f172a;
+
+  --muted:#64748b;
+
+  --primary:#6366f1;
+
+  --secondary:#8b5cf6;
+
+  --income:#00c853;
+
+  --expense:#ff4d4d;
+
+  --border:rgba(255,255,255,0.22);
+
+  --shadow:
+    0 12px 35px rgba(31,38,135,0.12);
 }
 
-.container {
-    margin-left: 30px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 48%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+/* =========================================================
+   BODY
+========================================================= */
+body{
+
+  background:
+    linear-gradient(
+      135deg,
+      #dbeafe,
+      #eef2ff,
+      #e0e7ff
+    );
+
+  min-height:100vh;
+
+  display:flex;
+
+  justify-content:center;
+
+  color:var(--text);
+
+  padding:32px 20px 40px;
+
+  overflow-x:hidden;
 }
 
-h1 {
-    text-align: center;
-    font-size: 53px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+/* =========================================================
+   PARTICLES
+========================================================= */
+body::before{
+
+  content:"";
+
+  position:fixed;
+
+  inset:0;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,0.3) 1px,
+      transparent 1px
+    );
+
+  background-size:40px 40px;
+
+  animation:particlesMove 20s linear infinite;
+
+  z-index:-2;
 }
 
-.budget-summary {
-    margin-bottom: 20px;
-    text-align: center;
+@keyframes particlesMove{
+
+  from{
+    transform:translateY(0);
+  }
+
+  to{
+    transform:translateY(-200px);
+  }
 }
 
-.budget-summary h3 {
-    margin: 5px 0;
+/* =========================================================
+   FLOATING BLOBS
+========================================================= */
+.bg-animation span{
+
+  position:fixed;
+
+  width:320px;
+  height:320px;
+
+  border-radius:50%;
+
+  filter:blur(90px);
+
+  z-index:-1;
+
+  animation:moveBlob 14s infinite alternate ease-in-out;
 }
 
-.expense-table {
-    margin-top: 20px;
-    overflow: auto; /* Scrollbar for the table */
-    max-height: 300px; /* Adjust the height as needed */
-    width: 97%;
+.bg-animation span:nth-child(1){
+
+  top:-120px;
+  left:-100px;
+
+  background:rgba(99,102,241,0.22);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+.bg-animation span:nth-child(2){
+
+  top:35%;
+  right:-120px;
+
+  background:rgba(139,92,246,0.18);
+
+  animation-delay:3s;
 }
 
-table th, table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.bg-animation span:nth-child(3){
+
+  bottom:-120px;
+  left:30%;
+
+  background:rgba(59,130,246,0.15);
+
+  animation-delay:6s;
 }
 
-table th {
-    background-color: #3498db;
-    color: #fff;
+@keyframes moveBlob{
+
+  from{
+    transform:translate(0,0) scale(1);
+  }
+
+  to{
+    transform:translate(90px,-60px) scale(1.2);
+  }
 }
 
-table tbody tr:hover {
-    background-color: #f9f9f9;
+/* =========================================================
+   MAIN
+========================================================= */
+.main{
+
+  width:min(1200px,100%);
+
+  max-width:1200px;
+
+  margin:0 auto;
+
+  animation:fadeUp 1s ease;
 }
 
-input[type="number"], input[type="text"], select, button {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+    transform:translateY(25px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
-button {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    
+/* =========================================================
+   GLASS CARDS
+========================================================= */
+.add-data,
+.summary,
+.insights,
+.recent-activity{
+
+  background:var(--card);
+
+  backdrop-filter:blur(18px);
+
+  border:1px solid var(--border);
+
+  border-radius:28px;
+
+  padding:clamp(22px,2.5vw,32px);
+
+  box-shadow:var(--shadow);
 }
 
-button:hover {
-    background-color: #2980b9;
+/* =========================================================
+   HEADER
+========================================================= */
+.header{
+
+  position:sticky;
+
+  top:10px;
+
+  z-index:100;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:30px;
+
+  padding:20px 28px;
+
+  border-radius:24px;
+
+  background:rgba(255,255,255,0.32);
+
+  backdrop-filter:blur(18px);
+
+  border:1px solid rgba(255,255,255,0.2);
 }
 
-.charts {
-    margin-top: 20px;
-    text-align: center;
-    overflow: auto; /* Add scrollbar */
-    max-height: calc(90vh - 80px); /* Adjust height as needed, considering margins and other container heights */
+.header-right{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:18px;
+}
+
+/* =========================================================
+   HEADING
+========================================================= */
+.main-heading{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  font-size:34px;
+
+  font-weight:700;
+
+  color:var(--primary);
+
+  text-shadow:
+    0 0 10px rgba(99,102,241,0.4);
+
+  animation:float 4s infinite ease-in-out;
+}
+
+.main-heading i{
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--secondary)
+    );
+
+  color:white;
+
+  padding:16px;
+
+  border-radius:18px;
+}
+
+/* =========================================================
+   LIVE CLOCK
+========================================================= */
+.live-clock{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  background:rgba(255,255,255,0.55);
+
+  padding:12px 18px;
+
+  border-radius:16px;
+
+  font-weight:600;
+
+  color:var(--primary);
+}
+
+/* =========================================================
+   TOGGLE
+========================================================= */
+.mode-toggle{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+}
+
+.toggle-switch{
+
+  position:relative;
+
+  width:60px;
+
+  height:30px;
+}
+
+.toggle-switch input{
+  opacity:0;
+}
+
+.slider{
+
+  position:absolute;
+
+  inset:0;
+
+  cursor:pointer;
+
+  background:#cbd5e1;
+
+  border-radius:50px;
+}
+
+.slider::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:22px;
+  height:22px;
+
+  left:4px;
+  bottom:4px;
+
+  background:white;
+
+  border-radius:50%;
+
+  transition:0.4s;
+}
+
+input:checked + .slider{
+
+  background:var(--primary);
+}
+
+input:checked + .slider::before{
+
+  transform:translateX(30px);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+.submit-btn,
+#resetBtn{
+
+  border:none;
+
+  outline:none;
+
+  cursor:pointer;
+
+  border-radius:16px;
+
+  font-weight:600;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:10px;
+
+  overflow:hidden;
+}
+
+.submit-btn{
+
+  padding:15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--secondary)
+    );
+
+  color:white;
+
+  font-size:15px;
+
+  animation:pulse 3s infinite;
+}
+
+.submit-btn:hover{
+
+  transform:translateY(-4px) scale(1.02);
+}
+
+#resetBtn{
+
+  padding:12px 18px;
+
+  background:#fff0f0;
+
+  color:#ef4444;
+}
+
+#resetBtn:hover{
+
+  background:#ef4444;
+
+  color:white;
+
+  transform:translateY(-3px);
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+.main-layout{
+
+  display:grid;
+
+  grid-template-columns:1fr 2fr;
+
+  gap:28px;
+
+  margin-bottom:30px;
+}
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+.section-title{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  margin-bottom:22px;
+}
+
+.section-title i{
+
+  color:var(--primary);
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+.add-transaction{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:16px;
+}
+
+.input-group{
+
+  position:relative;
+}
+
+.input-group i{
+
+  position:absolute;
+
+  top:50%;
+  left:16px;
+
+  transform:translateY(-50%);
+
+  color:var(--muted);
+}
+
+.input-group input,
+.input-group select{
+
+  width:100%;
+
+  padding:15px 15px 15px 48px;
+
+  border-radius:16px;
+
+  border:1px solid rgba(99,102,241,0.12);
+
+  background:rgba(255,255,255,0.75);
+
+  font-size:14px;
+}
+
+.input-group input:focus,
+.input-group select:focus{
+
+  outline:none;
+
+  border-color:var(--primary);
+
+  box-shadow:
+    0 0 0 5px rgba(99,102,241,0.12);
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+.summary{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:24px;
+}
+
+/* =========================================================
+   BALANCE CARD
+========================================================= */
+.acc-balance{
+
+  min-height:220px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  border-radius:28px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #8b5cf6
+    );
+
+  color:white;
+
+  text-align:center;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.acc-balance::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:220px;
+  height:220px;
+
+  background:
+    radial-gradient(
+      rgba(255,255,255,0.25),
+      transparent
+    );
+
+  top:-70px;
+  right:-70px;
+}
+
+.balance-header{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:20px;
+}
+
+.amount{
+
+  font-size:48px;
+
+  font-weight:700;
+
+  line-height:1.1;
+
+  word-break:break-word;
+}
+
+/* =========================================================
+   SUMMARY BODY
+========================================================= */
+.summary-body{
+
+  display:grid;
+
+  grid-template-columns:1.7fr 0.95fr;
+
+  gap:24px;
+
+  align-items:start;
+}
+
+.summary-left{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:24px;
+}
+
+/* =========================================================
+   INCOME EXPENSE
+========================================================= */
+.income-expense{
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:20px;
+
+  align-items:stretch;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+.card{
+
+  min-height:250px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
+
+  padding:30px;
+
+  border-radius:24px;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.card-header{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  margin-bottom:16px;
+
+  font-size:18px;
+}
+
+.income{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,200,83,0.15),
+      rgba(255,255,255,0.6)
+    );
+}
+
+.expense{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,77,77,0.15),
+      rgba(255,255,255,0.6)
+    );
+
+  border:1px solid rgba(255,77,77,0.12);
+
+  box-shadow:
+    0 18px 40px rgba(255,77,77,0.08);
+
+  justify-content:space-between;
+
+  gap:16px;
+}
+
+.expense::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:200px;
+  height:200px;
+
+  background:
+    radial-gradient(
+      rgba(255,255,255,0.25),
+      transparent
+    );
+
+  top:-60px;
+  right:-60px;
+}
+
+.income .amount{
+  color:var(--income);
+}
+
+.expense .amount{
+
+  font-size:clamp(24px,2vw,32px);
+
+  line-height:1;
+
+  letter-spacing:-0.04em;
+
+  white-space:nowrap;
+
+  overflow-wrap:normal;
+
+  align-self:flex-start;
+
+  margin-top:auto;
+
+  color:var(--expense);
+}
+
+.expense .card-header{
+
+  margin-bottom:0;
+
+  color:#1f2937;
+
+  align-items:flex-start;
+}
+
+.expense .card-header p{
+
+  line-height:1.05;
+}
+
+.income .amount,
+.expense .amount{
+
+  width:100%;
+
+  text-align:left;
+}
+
+.expense .card-header i{
+
+  color:#ef4444;
+}
+
+/* =========================================================
+   MONTHLY BUDGET
+========================================================= */
+.monthly-budget{
+
+  min-height:220px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  gap:20px;
+
+  padding:24px;
+
+  border-radius:24px;
+
+  background:rgba(255,255,255,0.55);
+}
+
+.budget-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:20px;
+}
+
+#budgetInput{
+
+  width:140px;
+
+  padding:10px;
+
+  border-radius:12px;
+
+  border:1px solid rgba(99,102,241,0.15);
+
+  outline:none;
+}
+
+.progress-bar{
+
+  height:14px;
+
+  border-radius:30px;
+
+  overflow:hidden;
+
+  background:#dbeafe;
+}
+
+.progress-fill{
+
+  height:100%;
+
+  width:0;
+
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--secondary)
+    );
+}
+
+/* =========================================================
+   CATEGORY BREAKDOWN
+========================================================= */
+.category-breakdown{
+
+  min-height:100%;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:flex-start;
+
+  padding:24px;
+
+  border-radius:24px;
+
+  background:rgba(255,255,255,0.55);
+}
+
+.category-item{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:16px 0;
+
+  font-size:18px;
+
+  border-bottom:
+    1px dashed rgba(99,102,241,0.12);
+}
+
+.category-item:last-child{
+  border-bottom:none;
+}
+
+/* =========================================================
+   INSIGHTS
+========================================================= */
+.insights-body{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:18px;
+}
+
+.insight-card{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:18px;
+
+  padding:18px;
+
+  border-radius:22px;
+
+  background:rgba(255,255,255,0.55);
+
+  backdrop-filter:blur(10px);
+}
+
+.insight-card:hover{
+
+  transform:translateY(-4px);
+
+  box-shadow:
+    0 0 25px rgba(99,102,241,0.15);
+}
+
+.insight-icon{
+
+  width:58px;
+  height:58px;
+
+  border-radius:18px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--secondary)
+    );
+
+  color:white;
+
+  font-size:20px;
+}
+
+.insight-label{
+
+  font-size:12px;
+
+  color:var(--muted);
+
+  margin-bottom:4px;
+}
+
+.insight-value{
+
+  font-size:15px;
+
+  font-weight:600;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+.table-container{
+  overflow-x:auto;
+}
+
+table{
+
+  width:100%;
+
+  border-collapse:collapse;
+}
+
+th{
+
+  padding:16px;
+
+  background:rgba(99,102,241,0.08);
+
+  color:var(--primary);
+
+  font-weight:600;
+}
+
+td{
+
+  padding:16px;
+
+  text-align:center;
+
+  border-bottom:
+    1px solid rgba(99,102,241,0.08);
+}
+
+tbody tr:hover{
+
+  transform:scale(1.01);
+
+  background:rgba(99,102,241,0.04);
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+.category-badge{
+
+  padding:8px 14px;
+
+  border-radius:30px;
+
+  color:white;
+
+  font-size:12px;
+
+  font-weight:600;
+}
+
+.food{
+  background:#ff9800;
+}
+
+.travel{
+  background:#2196f3;
+}
+
+.shopping{
+  background:#e91e63;
+}
+
+/* =========================================================
+   COLORS
+========================================================= */
+.income-text{
+  color:var(--income);
+  font-weight:600;
+}
+
+.expense-text{
+  color:var(--expense);
+  font-weight:600;
+}
+
+/* =========================================================
+   DELETE BTN
+========================================================= */
+.delete-btn{
+
+  width:40px;
+  height:40px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:#fff0f0;
+
+  color:#ef4444;
+
+  cursor:pointer;
+}
+
+.delete-btn:hover{
+
+  background:#ef4444;
+
+  color:white;
+
+  transform:scale(1.08);
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+.empty-state{
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:14px;
+
+  padding:45px 20px;
+
+  color:var(--muted);
+}
+
+.empty-state i{
+
+  font-size:55px;
+
+  color:var(--primary);
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+#toast{
+
+  position:fixed;
+
+  top:25px;
+  right:25px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--secondary)
+    );
+
+  color:white;
+
+  padding:16px 22px;
+
+  border-radius:18px;
+
+  font-weight:600;
+
+  transform:translateX(400px);
+
+  z-index:9999;
+}
+
+#toast.show{
+
+  transform:translateX(0);
+}
+
+/* =========================================================
+   LOADER
+========================================================= */
+.loader{
+
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(255,255,255,0.15);
+
+  backdrop-filter:blur(10px);
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  z-index:9999;
+}
+
+.hidden{
+  display:none;
+}
+
+.spinner{
+
+  width:65px;
+  height:65px;
+
+  border:
+    5px solid rgba(99,102,241,0.2);
+
+  border-top:
+    5px solid var(--primary);
+
+  border-radius:50%;
+
+  animation:spin 1s linear infinite;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+.footer{
+
+  margin-top:35px;
+
+  text-align:center;
+
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+    transform:translateY(25px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes float{
+
+  0%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-5px);
+  }
+
+  100%{
+    transform:translateY(0);
+  }
+}
+
+@keyframes pulse{
+
+  0%{
+    box-shadow:0 0 0 rgba(99,102,241,0.3);
+  }
+
+  50%{
+    box-shadow:0 0 25px rgba(99,102,241,0.3);
+  }
+
+  100%{
+    box-shadow:0 0 0 rgba(99,102,241,0.3);
+  }
+}
+
+@keyframes spin{
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+body.dark{
+
+  --bg:#020617;
+
+  --card:rgba(15,23,42,0.75);
+
+  --text:#f8fafc;
+
+  --muted:#94a3b8;
+
+  --border:rgba(255,255,255,0.08);
+}
+
+body.dark{
+
+  background:
+    linear-gradient(
+      135deg,
+      #020617,
+      #0f172a,
+      #111827
+    );
+}
+
+body.dark .header,
+body.dark .live-clock,
+body.dark .monthly-budget,
+body.dark .category-breakdown,
+body.dark .insight-card{
+
+  background:rgba(15,23,42,0.7);
+}
+
+body.dark input,
+body.dark select{
+
+  background:rgba(15,23,42,0.8);
+
+  color:white;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media(max-width:1100px){
+
+  .main-layout{
+    grid-template-columns:1fr;
+  }
+
+  .summary-body{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:768px){
+
+  body{
+    padding:15px;
+  }
+
+  .header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:20px;
+  }
+
+  .header-right{
+
+    width:100%;
+
+    justify-content:space-between;
+  }
+
+  .income-expense{
+    grid-template-columns:1fr;
+  }
+
+  .amount{
+    font-size:30px;
+  }
+}
+
+@media(max-width:500px){
+
+  .header-right{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .main-heading{
+    font-size:24px;
+  }
+
+  .amount{
+    font-size:30px;
+  }
+
+  .expense .amount{
+    font-size:28px;
+  }
+
+  .add-data,
+  .summary,
+  .insights,
+  .recent-activity{
+    padding:22px;
+  }
 }

@@ -1,187 +1,335 @@
-let BJgame = {
-    'you': {'scoreSpan': '#yourscore' , 'div': '#your-box', 'score': 0},
-    'dealer': {'scoreSpan': '#dealerscore' , 'div': '#dealer-box', 'score': 0},
-    
-    'cards': ['2C','3C','4C','5C','6C','7C','8C','9C','10C','KC','QC','JC','AC','2D','3D','4D','5D','6D','7D','8D','9D','10D','KD','QD','JD','AD','2H','3H','4H','5H','6H','7H','8H','9H','10H','KH','QH','JH','AH','2S','3S','4S','5S','6S','7S','8S','9S','10S','KS','QS','JS','AS'],
-    
-    'cardsmap': {'2C':2,'3C':3,'4C':4,'5C':5,'6C':6,'7C':7,'8C':8,'9C':9,'10C':10,'KC':10,'QC':10,'JC':10,'AC':[1, 11],'2D':2,'3D':3,'4D':4,'5D':5,'6D':6,'7D':7,'8D':8,'9D':9,'10D':10,'KD':10,'QD':10,'JD':10,'AD':[1, 11],'2H':2,'3H':3,'4H':4,'5H':5,'6H':6,'7H':7,'8H':8,'9H':9,'10H':10,'KH':10,'QH':10,'JH':10,'AH':[1, 11],'2S':2,'3S':3,'4S':4,'5S':5,'6S':6,'7S':7,'8S':8,'9S':9,'10S':10,'KS':10,'QS':10,'JS':10,'AS':[1, 11]},
+/**
+ * blackJ.js — BlackJack game logic, UI state, and event handling.
+ */
 
-    'wins':0,
-    'losses':0,
-    'draws':0
+/**
+ * Card face values for all four suits.
+ * Aces use [1, 11] — the higher value is applied unless it causes a bust.
+ * Defined at module level to prevent accidental mutation during resets.
+ */
+const CARD_VALUES = {
+  '2C':2,  '3C':3,  '4C':4,  '5C':5,  '6C':6,  '7C':7,  '8C':8,  '9C':9,
+  '10C':10,'KC':10, 'QC':10, 'JC':10, 'AC':[1,11],
+  '2D':2,  '3D':3,  '4D':4,  '5D':5,  '6D':6,  '7D':7,  '8D':8,  '9D':9,
+  '10D':10,'KD':10, 'QD':10, 'JD':10, 'AD':[1,11],
+  '2H':2,  '3H':3,  '4H':4,  '5H':5,  '6H':6,  '7H':7,  '8H':8,  '9H':9,
+  '10H':10,'KH':10, 'QH':10, 'JH':10, 'AH':[1,11],
+  '2S':2,  '3S':3,  '4S':4,  '5S':5,  '6S':6,  '7S':7,  '8S':8,  '9S':9,
+  '10S':10,'KS':10, 'QS':10, 'JS':10, 'AS':[1,11]
 };
-const You = BJgame['you'];
-const Dealer = BJgame['dealer'];
 
-const tink = new Audio('./static/sounds/tink.wav');
-
-function drawCard(activeplayer) {
-    const randomNumber = Math.floor(Math.random() * (BJgame['cards'].length));
-    const currentCard = BJgame['cards'].splice(randomNumber, 1);
-    let card = document.createElement('img');
-    card.src = `./static/${currentCard}.png`;
-    document.querySelector(activeplayer['div']).appendChild(card);
-    hitsound.play();
-    
-    // Update Score
-    updateScore(currentCard, activeplayer);
-
-    // Show Score
-    showScore(activeplayer);
-    
+/**
+ * Returns a fresh 52-card deck for the start of each round.
+ * @returns {string[]}
+ */
+function freshDeck() {
+  return [
+    '2C','3C','4C','5C','6C','7C','8C','9C','10C','KC','QC','JC','AC',
+    '2D','3D','4D','5D','6D','7D','8D','9D','10D','KD','QD','JD','AD',
+    '2H','3H','4H','5H','6H','7H','8H','9H','10H','KH','QH','JH','AH',
+    '2S','3S','4S','5S','6S','7S','8S','9S','10S','KS','QS','JS','AS'
+  ];
 }
 
-function updateScore(currentcard, activeplayer){
-    // For Ace
-    if(currentcard == 'AC' || currentcard == 'AD' || currentcard == 'AH' || currentcard == 'AS'){
-        if((activeplayer['score'] + BJgame['cardsmap'][currentcard][1]) <= 21){
+/** Central game state. CARD_VALUES is excluded to prevent reset overwrites. */
+const BJgame = {
+  you: {
+    scoreSpan:     '#yourscore',
+    cardContainer: '#your-cards',
+    score: 0
+  },
+  dealer: {
+    scoreSpan:     '#dealerscore',
+    cardContainer: '#dealer-cards',
+    score: 0
+  },
+  cards:  freshDeck(),
+  wins:   0,
+  losses: 0,
+  draws:  0
+};
 
-            activeplayer['score'] += BJgame['cardsmap'][currentcard][1];
-        }
-        else{
-            activeplayer['score'] += BJgame['cardsmap'][currentcard][0];
-        }
-    }
-    else{  //For Other Cases
-        activeplayer['score'] += BJgame['cardsmap'][currentcard];
-    }   
-}
+const You    = BJgame.you;
+const Dealer = BJgame.dealer;
 
-function showScore(activeplayer){
-    if(activeplayer['score']>21){
-        document.querySelector(activeplayer['scoreSpan']).textContent = 'BUST!';
-        document.querySelector(activeplayer['scoreSpan']).style.color = 'yellow';
-    }
-    else{
-        document.querySelector(activeplayer['scoreSpan']).textContent = activeplayer['score'];
-    }
-}
+/**
+ * Single source of truth for whether a round is in progress.
+ * Prevents duplicate findWinner() calls and stray Hit/Stand actions.
+ * true  → round active; false → awaiting Deal or Play Again.
+ */
+let gameActive = false;
 
-// Compute Winner Function
-function findwinner(){
-    let winner;
-
-    if(You['score']<=21){
-        if(Dealer['score']<You['score'] || Dealer['score']>21){
-            BJgame['wins']++;
-            winner = You;
-        }
-        else if(Dealer['score'] == You['score']){
-            BJgame['draws']++;
-        }
-        else{
-            BJgame['losses']++;
-            winner = Dealer;
-        }
-    }
-    else if(You['score']>21 && Dealer['score']<=21){
-        BJgame['losses']++;
-        winner = Dealer;
-    }
-    else if(You['score']>21 && Dealer['score']>21){
-        BJgame['draws']++;
-    }
-    return winner;
-}
-
-// Results
-const winSound = new Audio('./static/sounds/cash.mp3'); 
-const cheers = new Audio('./static/sounds/cheer.wav');
+// Audio — declared at module level; const is not hoisted so order matters.
+const hitsound  = new Audio('./static/sounds/swish.m4a');
+const tink      = new Audio('./static/sounds/tink.wav');
+const winSound  = new Audio('./static/sounds/cash.mp3');
+const cheers    = new Audio('./static/sounds/cheer.wav');
 const loseSound = new Audio('./static/sounds/aww.mp3');
 const drawSound = new Audio('./static/sounds/ohh.mp3');
 
-function showresults(winner){
-    if(winner == You){
-        document.querySelector('#command').textContent = 'You Won!';
-        document.querySelector('#command').style.color = 'green';
-        winSound.play();
-        cheers.play();
-        cheers.volume = 0.4;
-    }
-    else if(winner == Dealer){
-        document.querySelector('#command').textContent = "You Lost!";
-        document.querySelector('#command').style.color = 'red';
-        loseSound.play();
-    }
-    else{
-        document.querySelector('#command').textContent = 'You Drew!';
-        document.querySelector('#command').style.color = 'orange';
-        drawSound.play();
-    }
+/** @param {string} selector @returns {Element|null} */
+const $ = selector => document.querySelector(selector);
 
+// ── Button helpers ───────────────────────────────────────────────────────────
+
+/** Disables Hit and Stand at round end so stale clicks are rejected. */
+function disableGameButtons() {
+  ['#hit', '#stand'].forEach(sel => {
+    const btn = $(sel);
+    btn.disabled = true;
+    btn.setAttribute('aria-disabled', 'true');
+    btn.style.opacity = '0.4';
+    btn.style.cursor  = 'not-allowed';
+  });
 }
 
-// Scoreboard
-function scoreboard(){
-    document.querySelector('#wins').textContent = BJgame['wins'];
-    document.querySelector('#losses').textContent = BJgame['losses'];
-    document.querySelector('#draws').textContent = BJgame['draws'];
+/** Re-enables Hit and Stand at the start of each new round. */
+function enableGameButtons() {
+  ['#hit', '#stand'].forEach(sel => {
+    const btn = $(sel);
+    btn.disabled = false;
+    btn.setAttribute('aria-disabled', 'false');
+    btn.style.opacity = '';
+    btn.style.cursor  = '';
+  });
 }
 
-// Hit Button (starting)
-document.querySelector('#hit').addEventListener('click', BJhit);
+// ── Core logic ───────────────────────────────────────────────────────────────
 
-const hitsound = new Audio('./static/sounds/swish.m4a');
+/**
+ * Draws one card from the deck for the given player, renders its image,
+ * plays the deal sound, and updates the score.
+ * @param {Object} activePlayer - You or Dealer state object.
+ */
+function drawCard(activePlayer) {
+  const randomIndex   = Math.floor(Math.random() * BJgame.cards.length);
+  const [currentCard] = BJgame.cards.splice(randomIndex, 1);
 
-function BJhit(){
-    if(Dealer['score'] === 0){
-        if(You['score']<=21){
-            drawCard(You);
-        }
-    }
+  const cardImg = document.createElement('img');
+  cardImg.src   = `./static/${currentCard}.png`;
+  cardImg.alt   = currentCard;
+  cardImg.setAttribute('role', 'listitem');
+  $(activePlayer.cardContainer).appendChild(cardImg);
+
+  hitsound.currentTime = 0;
+  hitsound.play().catch(() => {});
+
+  updateScore(currentCard, activePlayer);
+  showScore(activePlayer);
 }
 
-// Deal Button
-document.querySelector('#deal').addEventListener('click', BJdeal);
+/**
+ * Adds the drawn card's value to the player's running total.
+ * Aces count as 11 only when that keeps the score at 21 or under.
+ * @param {string} card
+ * @param {Object} activePlayer
+ */
+function updateScore(card, activePlayer) {
+  const value = CARD_VALUES[card];
 
-function BJdeal(){
-
-    if(You['score']=== 0){
-        alert('Please Hit Some Cards First!');
-    }
-    else if(Dealer['score']===0){
-        alert('Please Press Stand Key Before Deal...');
-    }
-    else{
-
-    let yourimg = document.querySelector('#your-box').querySelectorAll('img');
-    let dealerimg = document.querySelector('#dealer-box').querySelectorAll('img');
-    
-    for(let i=0; i<yourimg.length; i++){
-        yourimg[i].remove();
-    }
-    for(let i=0; i<dealerimg.length; i++){
-        dealerimg[i].remove();
-    }
-
-    BJgame['cards'] = ['2C','3C','4C','5C','6C','7C','8C','9C','10C','KC','QC','JC','AC','2D','3D','4D','5D','6D','7D','8D','9D','10D','KD','QD','JD','AD','2H','3H','4H','5H','6H','7H','8H','9H','10H','KH','QH','JH','AH','2S','3S','4S','5S','6S','7S','8S','9S','10S','KS','QS','JS','AS'];
-
-    You['score'] = 0;
-    document.querySelector(You['scoreSpan']).textContent = You['score'];
-    document.querySelector(You['scoreSpan']).style.color = 'whitesmoke';
-    Dealer['score'] = 0;
-    document.querySelector(Dealer['scoreSpan']).textContent = Dealer['score'];
-    document.querySelector(Dealer['scoreSpan']).style.color = 'whitesmoke';
-
-    document.querySelector('#command').textContent = "Let's Play";
-    document.querySelector('#command').style.color = 'black';
-    }
+  if (Array.isArray(value)) {
+    activePlayer.score +=
+      (activePlayer.score + value[1] <= 21) ? value[1] : value[0];
+  } else {
+    activePlayer.score += value;
+  }
 }
 
-// Dealer's Logic (2nd player) OR Stand button
-document.querySelector('#stand').addEventListener('click', BJstand)
-
-function BJstand(){
-    if(You['score']===0){
-        alert('Please Hit Some Cards First!');
-    }
-    else{
-        while(Dealer['score']<16){
-            drawCard(Dealer);
-        }
-        setTimeout(function(){
-            showresults(findwinner());
-            scoreboard();
-        }, 800); 
-    }
+/**
+ * Renders the player's current score. Shows "BUST!" in red above 21.
+ * @param {Object} activePlayer
+ */
+function showScore(activePlayer) {
+  const el = $(activePlayer.scoreSpan);
+  if (activePlayer.score > 21) {
+    el.textContent = 'BUST!';
+    el.style.color = '#e05252';
+  } else {
+    el.textContent = activePlayer.score;
+    el.style.color = '';
+  }
 }
+
+// ── Round resolution ─────────────────────────────────────────────────────────
+
+/**
+ * Compares final scores and increments the matching lifetime counter.
+ * @returns {Object|undefined} Winning player object, or undefined on a draw.
+ */
+function findWinner() {
+  const youBust    = You.score > 21;
+  const dealerBust = Dealer.score > 21;
+
+  if (!youBust && (dealerBust || Dealer.score < You.score)) {
+    BJgame.wins++;
+    return You;
+  }
+  if (!youBust && !dealerBust && Dealer.score === You.score) {
+    BJgame.draws++;
+    return undefined;
+  }
+  if (!dealerBust && (youBust || You.score < Dealer.score)) {
+    BJgame.losses++;
+    return Dealer;
+  }
+  BJgame.draws++; // Both bust
+  return undefined;
+}
+
+/**
+ * Updates the status message and plays the matching sound for the outcome.
+ * @param {Object|undefined} winner
+ */
+function showResults(winner) {
+  const el = $('#command');
+
+  if (winner === You) {
+    el.textContent = '🏆 You Won!';
+    el.style.color = '#4caf7d';
+    winSound.play().catch(() => {});
+    cheers.volume = 0.4; // Must be set before play() to avoid volume spike
+    cheers.play().catch(() => {});
+  } else if (winner === Dealer) {
+    el.textContent = '😔 You Lost!';
+    el.style.color = '#e05252';
+    loseSound.play().catch(() => {});
+  } else {
+    el.textContent = "🤝 It's a Draw!";
+    el.style.color = '#f0b429';
+    drawSound.play().catch(() => {});
+  }
+}
+
+/** Animates the wins/losses/draws counters after each round. */
+function updateScoreboard() {
+  [
+    ['#wins',   BJgame.wins],
+    ['#losses', BJgame.losses],
+    ['#draws',  BJgame.draws]
+  ].forEach(([sel, val]) => {
+    const el = $(sel);
+    el.textContent     = val;
+    el.style.transform = 'scale(1.3)';
+    setTimeout(() => { el.style.transform = ''; }, 250);
+  });
+}
+
+/**
+ * Finalises a round: locks gameActive, disables actions, shows result.
+ * @param {Object|undefined} winner
+ */
+function endRound(winner) {
+  gameActive = false;
+  disableGameButtons();
+  showResults(winner);
+  updateScoreboard();
+}
+
+// ── Button handlers ──────────────────────────────────────────────────────────
+
+/**
+ * Draws one card for the player.
+ * Auto-resolves the round if the player busts — no Stand click required.
+ */
+function BJhit() {
+  if (!gameActive) return;
+
+  drawCard(You);
+
+  if (You.score > 21) {
+    setTimeout(() => endRound(findWinner()), 400);
+  }
+}
+
+/**
+ * Ends the player's turn and runs the dealer's automated draw.
+ * Dealer draws until reaching 17 or higher (standard Blackjack rules).
+ */
+function BJstand() {
+  if (!gameActive) return;
+
+  while (Dealer.score < 17) {
+    drawCard(Dealer);
+  }
+
+  setTimeout(() => endRound(findWinner()), 800);
+}
+
+/**
+ * Starts a new round if none is active.
+ * Blocks mid-round deal attempts with an alert.
+ */
+function BJdeal() {
+  if (gameActive) {
+    alert('Finish your current turn first — Hit or Stand before dealing.');
+    return;
+  }
+  if (You.score === 0 && Dealer.score === 0 &&
+      BJgame.wins === 0 && BJgame.losses === 0 && BJgame.draws === 0) {
+    alert('Hit some cards to start playing!');
+    return;
+  }
+  startNewRound();
+}
+
+/**
+ * Resets board state for a fresh round without clearing the scoreboard.
+ * Extracted from BJdeal() so Play Again can call it without triggering deal guards.
+ */
+function startNewRound() {
+  ['#your-cards', '#dealer-cards'].forEach(sel => {
+    $(sel).querySelectorAll('img').forEach(img => img.remove());
+  });
+
+  BJgame.cards = freshDeck();
+
+  [You, Dealer].forEach(player => {
+    player.score = 0;
+    const el = $(player.scoreSpan);
+    el.textContent = 0;
+    el.style.color = '';
+  });
+
+  const commandEl = $('#command');
+  commandEl.textContent = "Let's Play!";
+  commandEl.style.color = '';
+
+  enableGameButtons();
+  gameActive = true;
+}
+
+// ── Rules toggle ─────────────────────────────────────────────────────────────
+
+/** Toggles the rules panel and keeps aria-expanded in sync. */
+function toggleRules() {
+  const box      = $('#rules-box');
+  const btn      = $('#rules-btn');
+  const isHidden = box.hasAttribute('hidden');
+
+  box[isHidden ? 'removeAttribute' : 'setAttribute']('hidden', '');
+  btn.setAttribute('aria-expanded', String(isHidden));
+}
+
+// ── Event listeners ──────────────────────────────────────────────────────────
+
+$('#hit').addEventListener('click',   BJhit);
+$('#stand').addEventListener('click', BJstand);
+$('#deal').addEventListener('click',  BJdeal);
+$('#rules-btn').addEventListener('click', toggleRules);
+$('#play-again').addEventListener('click', startNewRound);
+
+$('#reset-score').addEventListener('click', () => {
+  BJgame.wins = BJgame.losses = BJgame.draws = 0;
+  updateScoreboard();
+});
+
+// Hover sound delegated to the button group to avoid per-button listeners
+document.querySelector('.action-buttons').addEventListener('mouseover', e => {
+  if (e.target.classList.contains('btn') && !e.target.disabled) {
+    tink.currentTime = 0;
+    tink.play().catch(() => {});
+  }
+});
+
+// Initialise with buttons disabled — Deal opens the first round
+disableGameButtons();

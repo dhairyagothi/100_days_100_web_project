@@ -1,33 +1,58 @@
 .heading {
     font-family: "Roboto Slab", serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #ffffff;
+    text-transform: uppercase;
 }
 
 .nav__icon {
     width: 2rem;
+
+    filter: brightness(0) invert(1);
+
+    transition: all 0.3s ease;
+}
+.nav__icon:hover {
+
+    transform: scale(1.12);
+
+    filter: brightness(0) invert(1)
+            drop-shadow(0 0 8px rgba(255,255,255,0.7));
+
+    cursor: pointer;
 }
 .navbar {
     list-style: none;
     display: flex;
-    flex-direction: row;
-    text-align: center;
     justify-content: space-between;
-    padding: 0 3rem;
+    align-items: center;
+    padding: 14px 28px;
+    background: rgba(10, 15, 35, 0.92);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 .navele {
     margin: 0;
 }
 .infoCard {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Poppins, sans-serif;
     font-size: 15px;
     text-align: left;
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    position: absolute;
-    left: 25%;
-    background-color: white;
-    z-index: 100;
+    width: 520px;
+    max-width: 90%;
+    padding: 24px;
+    background-color: #f8f8f8;
+    border-radius: 28px;
+    position: fixed;
+    top: 100px;
+    left: 100%;
+    transform: translateX(-50%);
+    z-index: 999;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: popupSlide 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .hidden {
     display: none;
@@ -59,8 +84,25 @@
     font-weight: bold;
     text-align: center;
     border: solid 2px rgb(182, 182, 182);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: all 0.2s ease;
+    background: rgba(255,255,255,0.95);
+
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+.inputBox:hover {
+    transform: scale(1.05);
+}
+.inputBox:focus {
+    transform: scale(1.08);
 }
 .button {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    background: #f8fafc;
     width: 40px;
     height: 60px;
     padding: 10px;
@@ -71,7 +113,9 @@
     font-weight: bold;
 }
 .button:hover {
-    background-color: rgb(207, 205, 205);
+    transform: translateY(-3px) scale(1.05);
+    background: #dbeafe;
+    box-shadow: 0 6px 20px rgba(255,255,255,0.2);
 }
 .keyboard {
     margin: auto;
@@ -111,18 +155,19 @@
     cursor: pointer;
 }
 .yellow {
-    background-color: rgb(205, 226, 16);
-    border-color: rgb(205, 226, 16);
+    background-color: #eab308;
+    border-color: #eab308;
     color: white;
 }
+
 .green {
-    background-color: rgb(21, 172, 89);
-    border-color: rgb(21, 172, 89);
+    background-color: #22c55e;
+    border-color: #22c55e;
     color: white;
 }
 .grey {
-    background-color: rgb(161, 161, 161);
-    border-color: rgb(161, 161, 161);
+    background-color: #6b7280;
+    border-color: #6b7280;
     color: white;
 }
 
@@ -136,12 +181,10 @@
         left: 8%;
     }
     .infoCard {
-        font-size: 12px;
-        margin: 0 auto;
-        padding: 15px;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        position: absolute;
-        background-color: white;
+    width: 90%;
+    top: 90px;
+    padding: 18px;
+    border-radius: 18px;
     }
     .example__img {
         width: 80%;
@@ -172,7 +215,10 @@
         font-size: 20px;
     }
     .navbar {
-        padding: 0 1rem;
+        padding: 1rem 2rem;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 }
 @media screen and (min-width: 1024px) {
@@ -228,7 +274,7 @@
 body{
     height: 100vh;
     width: 100%;
-    background: linear-gradient(45deg,#d2001a,#7462ff,#f48e21,#23d5ab);
+    background: linear-gradient(135deg, #0f172a, #16213e, #2b2f77);    
     background-size: 300%,300%;
     animation: color 12s ease-in-out infinite;
 }
@@ -242,4 +288,31 @@ body{
     0%{
         background-position: 0 50%;
     }
+}
+
+@keyframes popupSlide {
+
+    0% {
+        opacity: 0;
+        margin-top: -80px;
+    }
+
+    100% {
+        opacity: 1;
+        margin-top: 0px;
+    }
+
+}
+#reset {
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+#reset:hover {
+    transform: translateY(-3px) scale(1.02);
+    background: #dbeafe;
 }

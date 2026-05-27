@@ -1,60 +1,505 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Tracker</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Expense Tracker</title>
+
+  <!-- GOOGLE FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- FONT AWESOME -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <!-- STYLE -->
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <div class="main-container">
-        <div class="container">
-            <h1>Budget Tracker</h1>
-            <div class="budget-summary">
-                <h3>Main Salary: <span id="main-salary">₹0.00</span></h3>
-                <h3>Remaining Budget: <span id="remaining-budget">₹0.00</span></h3>
-            </div>
-            <form id="budget-form">
-                <input type="number" id="input-salary" placeholder="Enter Main Salary (₹)">
-                <input type="text" id="input-description" placeholder="Enter Description">
-                <input type="number" id="input-amount" placeholder="Enter Amount (₹)">
-                <select id="input-category">
-                    <option value="">Select Category</option>
-                    <option value="Food">Food</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Custom">Custom</option>
-                </select>
-                <input type="text" id="custom-category" placeholder="Enter Custom Category" style="display: none;">
-                <button type="submit">Add Expense</button>
-            </form>
-            <div class="expense-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Amount (₹)</th>
-                            <th>Category</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="expense-list">
-                        <!-- Expense items will be dynamically added here -->
-                    </tbody>
-                </table>
-            </div>
+
+  <!-- FLOATING BLOBS -->
+  <div class="bg-animation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <!-- LOADER -->
+  <div class="loader hidden">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- SUCCESS SOUND -->
+  <audio
+    id="successSound"
+    src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3">
+  </audio>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- HEADER -->
+    <header class="header">
+
+      <!-- LOGO -->
+      <h1 class="main-heading">
+        <i class="fa-solid fa-wallet"></i>
+        Expense Tracker
+      </h1>
+
+      <!-- RIGHT SIDE -->
+      <div class="header-right">
+
+        <!-- LIVE CLOCK -->
+        <div class="live-clock">
+          <i class="fa-regular fa-clock"></i>
+          <span id="clock"></span>
         </div>
-        <div class="container graphs-container">
-            <h1>Budget Analysis</h1>
-            <div class="charts">
-                <canvas id="category-chart" width="400" height="400"></canvas>
-                <canvas id="trend-chart" width="400" height="400"></canvas>
-            </div>
+
+        <!-- TOGGLE -->
+        <div class="mode-toggle">
+
+          <label class="toggle-switch">
+
+            <input type="checkbox" class="mode" />
+
+            <span class="slider"></span>
+
+          </label>
+
+          <!-- RESET -->
+          <button id="resetBtn">
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Reset
+
+          </button>
+
         </div>
+
+      </div>
+
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <div class="main-layout">
+
+      <!-- ADD TRANSACTION -->
+      <section class="add-data">
+
+        <div class="section-title">
+
+          <i class="fa-solid fa-plus"></i>
+
+          <h3>Add Transaction</h3>
+
+        </div>
+
+        <form class="add-transaction">
+
+          <!-- AMOUNT -->
+          <div class="input-group">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            <input
+              type="number"
+              id="amt"
+              placeholder="Enter Amount"
+              required
+            />
+
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div class="input-group">
+
+            <i class="fa-solid fa-pen"></i>
+
+            <input
+              type="text"
+              id="desc"
+              placeholder="Enter Description"
+              required
+            />
+
+          </div>
+
+          <!-- CATEGORY -->
+          <div class="input-group">
+
+            <i class="fa-solid fa-layer-group"></i>
+
+            <select id="cat" required>
+
+              <option value="">Select Category</option>
+
+              <option value="food">Food</option>
+
+              <option value="travel">Travel</option>
+
+              <option value="shopping">Shopping</option>
+
+              <option value="income">Income</option>
+
+              <option value="other">Others</option>
+
+            </select>
+
+          </div>
+
+          <!-- DATE -->
+          <div class="input-group">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+            <input type="date" id="date" required />
+
+          </div>
+
+          <!-- SUBMIT -->
+          <input
+            type="submit"
+            value="Add Transaction"
+            class="submit-btn"
+          />
+
+        </form>
+
+      </section>
+
+      <!-- INSIGHTS -->
+      <section class="insights">
+
+        <div class="section-title">
+
+          <i class="fa-solid fa-chart-line"></i>
+
+          <h3>Monthly Insights</h3>
+
+        </div>
+
+        <div class="insights-body">
+
+          <!-- HIGHEST -->
+          <div class="insight-card">
+
+            <span class="insight-icon">
+
+              <i class="fa-solid fa-fire"></i>
+
+            </span>
+
+            <div class="insight-info">
+
+              <p class="insight-label">
+                Highest Spending Category
+              </p>
+
+              <p
+                class="insight-value"
+                id="highest-spending-cat">
+
+                None
+
+              </p>
+
+            </div>
+
+          </div>
+
+          <!-- SMART -->
+          <div class="insight-card">
+
+            <span class="insight-icon">
+
+              <i class="fa-solid fa-lightbulb"></i>
+
+            </span>
+
+            <div class="insight-info">
+
+              <p class="insight-label">
+
+                Smart Suggestion
+
+              </p>
+
+              <p
+                class="insight-value"
+                id="smart-suggestion">
+
+                Add transactions to generate suggestions.
+
+              </p>
+
+            </div>
+
+          </div>
+
+          <!-- STATUS -->
+          <div class="insight-card">
+
+            <span class="insight-icon">
+
+              <i class="fa-solid fa-chart-pie"></i>
+
+            </span>
+
+            <div class="insight-info">
+
+              <p class="insight-label">
+
+                Financial Status
+
+              </p>
+
+              <p
+                class="insight-value"
+                id="financial-status">
+
+                No data available
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SUMMARY -->
+      <section class="summary">
+
+        <!-- BALANCE -->
+        <div class="acc-balance">
+
+          <div class="balance-header">
+
+            <i class="fa-solid fa-wallet"></i>
+
+            <p class="label">Account Balance</p>
+
+          </div>
+
+          <p class="amount" id="curramt">₹0</p>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="summary-body">
+
+          <!-- LEFT -->
+          <div class="summary-left">
+
+            <!-- INCOME EXPENSE -->
+            <div class="income-expense">
+
+              <!-- INCOME -->
+              <div class="income card">
+
+                <div class="card-header">
+
+                  <i class="fa-solid fa-arrow-trend-up"></i>
+
+                  <p class="label">Total Income</p>
+
+                </div>
+
+                <p class="amount" id="income">₹0</p>
+
+              </div>
+
+              <!-- EXPENSE -->
+              <div class="expense card">
+
+                <div class="card-header">
+
+                  <i class="fa-solid fa-arrow-trend-down"></i>
+
+                  <p class="label">Total Expenses</p>
+
+                </div>
+
+                <p class="amount" id="expense">₹0</p>
+
+              </div>
+
+            </div>
+
+            <!-- BUDGET -->
+            <div class="monthly-budget">
+
+              <div class="budget-header">
+
+                <div class="card-header">
+
+                  <i class="fa-solid fa-piggy-bank"></i>
+
+                  <p class="label">Monthly Budget</p>
+
+                </div>
+
+                <input
+                  type="number"
+                  id="budgetInput"
+                  placeholder="Set Budget"
+                />
+
+              </div>
+
+              <p class="amount" id="budget">
+
+                ₹0 / ₹0
+
+              </p>
+
+              <div class="progress-bar">
+
+                <div class="progress-fill"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- CATEGORY -->
+          <div class="category-breakdown">
+
+            <div class="section-title">
+
+              <i class="fa-solid fa-chart-column"></i>
+
+              <h3>Category Breakdown</h3>
+
+            </div>
+
+            <div class="category-item">
+
+              <p>🍔 Food</p>
+
+              <span data-cat="food">₹0</span>
+
+            </div>
+
+            <div class="category-item">
+
+              <p>✈️ Travel</p>
+
+              <span data-cat="travel">₹0</span>
+
+            </div>
+
+            <div class="category-item">
+
+              <p>🛍️ Shopping</p>
+
+              <span data-cat="shopping">₹0</span>
+
+            </div>
+
+            <div class="category-item">
+
+              <p>📦 Others</p>
+
+              <span data-cat="other">₹0</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <!-- RECENT -->
+    <section class="recent-activity">
+
+      <div class="section-title">
+
+        <i class="fa-solid fa-clock-rotate-left"></i>
+
+        <h3>Recent Transactions</h3>
+
+      </div>
+
+      <div class="table-container">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Date</th>
+
+              <th>Description</th>
+
+              <th>Category</th>
+
+              <th>Amount</th>
+
+              <th>Action</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="transaction-list"></tbody>
+
+        </table>
+
+        <!-- EMPTY -->
+        <div class="empty-state">
+
+          <i class="fa-solid fa-wallet"></i>
+
+          <p>No transactions added yet.</p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+      <p>
+
+        Made with ❤️ for better financial tracking
+
+      </p>
+
+    </footer>
+
+  </div>
+
+  <!-- CONFETTI -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- SCRIPT -->
+  <script src="script.js"></script>
+
 </body>
+
 </html>
