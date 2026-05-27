@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>CyberTrack 2077</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="background-grid"></div>
+
+    <div class="container">
+
+        <header class="topbar">
+
+            <div>
+                <h1>CYBERTRACK_2077</h1>
+                <p class="subtitle">
+                    Productivity Intelligence System
+                </p>
+            </div>
+
+            <div class="github-input">
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter GitHub Username"
+                />
+
+                <button id="fetchBtn">
+                    SCAN
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- PROFILE -->
+
+        <section class="profile-card">
+
+            <img
+                id="avatar"
+                src="https://avatars.githubusercontent.com/u/583231?v=4"
+                alt="avatar"
+            />
+
+            <div>
+
+                <h2 id="profileName">
+                    Unknown User
+                </h2>
+
+                <p id="bio">
+                    No bio detected.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATS -->
+
+        <section class="stats-grid">
+
+            <div class="card">
+                <h2>Total Repositories</h2>
+                <p id="commits">0</p>
+            </div>
+
+            <div class="card">
+                <h2>Current Streak</h2>
+                <p id="streak">0 Days</p>
+            </div>
+
+            <div class="card">
+                <h2>Focus Score</h2>
+                <p id="focus">0%</p>
+            </div>
+
+            <div class="card">
+                <h2>Consistency</h2>
+                <p id="consistency">0%</p>
+            </div>
+
+            <div class="card">
+                <h2>Active Days</h2>
+                <p id="activeDays">0</p>
+            </div>
+
+            <div class="card">
+                <h2>Dopamine Meter</h2>
+
+                <div class="meter">
+                    <div
+                        class="meter-fill"
+                        id="dopamineFill"
+                    ></div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CHART -->
+
+        <section class="chart-card">
+
+            <div class="chart-header">
+
+                <h2>Dopamine Graph</h2>
+
+                <p>
+                    Motivation & Activity Spikes
+                </p>
+
+            </div>
+
+            <canvas id="activityChart"></canvas>
+
+        </section>
+
+
+        <!-- HOURS -->
+
+        <section class="logger">
+
+            <h2>Daily Coding Hours</h2>
+
+            <div class="log-box">
+
+                <input
+                    type="number"
+                    id="hoursInput"
+                    placeholder="Hours"
+                />
+
+                <button id="saveHours">
+                    SAVE
+                </button>
+
+            </div>
+
+            <p id="savedHours">
+                Today's Hours: 0
+            </p>
+
+        </section>
+
+
+        <!-- ACHIEVEMENTS -->
+
+        <section class="achievements">
+
+            <h2>Achievements</h2>
+
+            <div class="badge-container">
+
+                <div class="badge unlocked">
+                    ⚡ First Scan
+                </div>
+
+                <div class="badge">
+                    🔥 7 Day Streak
+                </div>
+
+                <div class="badge">
+                    💀 Focus Master
+                </div>
+
+                <div class="badge">
+                    🚀 Consistency Beast
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
