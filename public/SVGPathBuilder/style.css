@@ -1,0 +1,182 @@
+:root {
+    --bg-color: #0A0A0A;
+    --card-bg: #141414;
+    --border-color: #2A2A2A;
+    --text-primary: #EDEDED;
+    --text-secondary: #A0A0A0;
+    --accent: #E3E3E3;
+    --accent-hover: #FFFFFF;
+    --node-color: #FFFFFF;
+    --grid-color: rgba(255, 255, 255, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+.app-container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.app-header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.app-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+@media (max-width: 900px) {
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 1.5rem;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.canvas-container {
+    min-height: 500px;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    background-image: radial-gradient(circle, var(--grid-color) 2px, transparent 2px);
+    background-size: 32px 32px;
+    cursor: crosshair;
+}
+
+#draw-canvas {
+    display: block;
+}
+
+.node {
+    fill: var(--card-bg);
+    stroke: var(--node-color);
+    stroke-width: 2.5;
+    cursor: grab;
+    transition: r 0.2s ease, stroke-width 0.2s ease;
+}
+
+.node:hover {
+    r: 8;
+    stroke-width: 4;
+}
+
+.node:active {
+    cursor: grabbing;
+}
+
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.code-header h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn.primary {
+    background: var(--text-primary);
+    color: var(--bg-color);
+    border-color: var(--text-primary);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn.primary:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+}
+
+.btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.code-block-wrapper {
+    background: #000000;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.2rem;
+    flex-grow: 1;
+    overflow-x: auto;
+}
+
+pre {
+    margin: 0;
+}
+
+code {
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-size: 0.9rem;
+    color: #A8C7FA;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
