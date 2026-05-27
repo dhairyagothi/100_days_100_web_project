@@ -1818,5 +1818,13 @@
 "techStack":["tool","javascript","html","css","visualizer","education"],
 "difficulty":"advanced",
 "projectPath":"./public/code-execution-visualizer/index.html"
+},
+{
+  "projectNo":183,
+  "projectName":"IP Address Tracker",
+  "projectPath":"./public/ip-address-tracker/index.html",
+  "techStack":["html","css","javascript","api"],
+  "difficulty":"beginner",
+  "projectDesc":"Tracks and displays IP address information."
 }
 ]
