@@ -414,7 +414,7 @@
 
 {
 "projectNo":42,
-"projectName":"Amazon App",
+"projectName":"Amazon Clone",
 "projectType":"Clone",
 "projectDesc":"Frontend clone inspired by Amazon layouts and shopping interfaces.",
 "techStack":["clone","javascript"],
@@ -1644,12 +1644,12 @@
 
 {
 "projectNo":165,
-"projectName":"Amazon Clone",
+"projectName":"Amazon App",
 "projectType":"Clone",
 "projectDesc":"Frontend clone inspired by Amazon with shopping UI and responsive layouts.",
 "techStack":["tool","Amazon","Clone","HTML","CSS","JavaScript"],
 "difficulty":"beginner",
-"projectPath":"./public/AmazonClone/index.html"
+"projectPath":"./public/Amazon-App/index.html"
 },
 
 {
