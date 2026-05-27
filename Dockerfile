@@ -3,7 +3,7 @@
 # Serves the static site using Nginx Alpine for minimal image size
 # ============================================================================
 
-FROM nginx:1.27-alpine AS production
+FROM nginx:1.31-alpine AS production
 
 LABEL maintainer="100 Days 100 Web Projects Contributors"
 LABEL description="Static site showcase of 100+ frontend web projects"
