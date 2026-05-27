@@ -1771,6 +1771,15 @@
 "difficulty":"advanced",
 "projectPath":"./public/InterviewPrepHub/index.html"
 },
+ {
+  "projectNo": 178,
+  "projectName": "System Design Visualizer",
+  "projectType": "Full Stack",
+  "projectDesc": "Interactive platform for designing and visualizing scalable system architecture diagrams using draggable components, real-time connections, and dynamic workflow interactions.",
+  "techStack": ["javascript", "react", "nodejs", "express", "socket.io"],
+  "difficulty": "advanced",
+  "projectPath": "./public/SystemDesignVisualizer/index.html"
+}
 
 {
   "projectNo":178,

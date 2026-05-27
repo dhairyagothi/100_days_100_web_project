@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>System Design Visualizer</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>System Design Visualizer</h1>
+
+  <div class="controls">
+    <button onclick="addNode('API')">API</button>
+    <button onclick="addNode('DB')">Database</button>
+    <button onclick="addNode('Cache')">Cache</button>
+    <button onclick="clearBoard()">Clear</button>
+  </div>
+</div>
+
+<div id="canvas"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
