@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Mood Board</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Emoji Mood Board</h1>
+        <p class="subtitle">How are you feeling today?</p>
+
+        <div class="mood-grid">
+            <button class="mood-btn" data-mood="Happy" data-emoji="😊" onclick="logMood('😊', 'Happy')">
+                <span class="emoji">😊</span>
+                <span class="label">Happy</span>
+            </button>
+            <button class="mood-btn" data-mood="Sad" data-emoji="😢" onclick="logMood('😢', 'Sad')">
+                <span class="emoji">😢</span>
+                <span class="label">Sad</span>
+            </button>
+            <button class="mood-btn" data-mood="Excited" data-emoji="🤩" onclick="logMood('🤩', 'Excited')">
+                <span class="emoji">🤩</span>
+                <span class="label">Excited</span>
+            </button>
+            <button class="mood-btn" data-mood="Angry" data-emoji="😠" onclick="logMood('😠', 'Angry')">
+                <span class="emoji">😠</span>
+                <span class="label">Angry</span>
+            </button>
+            <button class="mood-btn" data-mood="Tired" data-emoji="😴" onclick="logMood('😴', 'Tired')">
+                <span class="emoji">😴</span>
+                <span class="label">Tired</span>
+            </button>
+            <button class="mood-btn" data-mood="Anxious" data-emoji="😰" onclick="logMood('😰', 'Anxious')">
+                <span class="emoji">😰</span>
+                <span class="label">Anxious</span>
+            </button>
+            <button class="mood-btn" data-mood="Loved" data-emoji="🥰" onclick="logMood('🥰', 'Loved')">
+                <span class="emoji">🥰</span>
+                <span class="label">Loved</span>
+            </button>
+            <button class="mood-btn" data-mood="Bored" data-emoji="😑" onclick="logMood('😑', 'Bored')">
+                <span class="emoji">😑</span>
+                <span class="label">Bored</span>
+            </button>
+            <button class="mood-btn" data-mood="Grateful" data-emoji="🙏" onclick="logMood('🙏', 'Grateful')">
+                <span class="emoji">🙏</span>
+                <span class="label">Grateful</span>
+            </button>
+        </div>
+
+        <div class="log-section">
+            <div class="log-header">
+                <h2>Mood History</h2>
+                <button class="clear-btn" onclick="clearLog()">Clear All</button>
+            </div>
+            <div id="mood-log">
+                <p class="empty-msg">No moods logged yet. Click an emoji above!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
