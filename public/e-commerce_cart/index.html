@@ -4,617 +4,863 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeroStride — Premium Footwear</title>
+  <title>AeroStride</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red: #E8282A;
+      --red-dark: #B01E20;
+      --red-light: #FF4547;
+      --black: #0A0A0A;
+       background-color: #00000080;
+      --warm-gray: #E8E4DE;
+      --mid-gray: #8A8680;
+      --card-bg: #FFFFFF;
+      --text-primary: #0A0A0A;
+      --text-secondary: #5A5550;
+    }
+
+    body {
+      background-color: var(--off-white);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 999;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+    background-color: rgba(18, 168, 192, 0.2);
+      height: 72px;
+      padding: 0 40px;
+      border-bottom: 1px solid rgba(92, 184, 190, 0.548);
+    }
+
+    .website_title {
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px;
+      letter-spacing: 2px;
+      flex-grow: 1;
+      line-height: 1;
+    }
+    .website_title span { color: var(--red); }
+
+    .button-container { display: flex; align-items: center; gap: 4px; }
+
+    .button {
+      outline: none; border: none;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background-color: transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .button:hover { background-color: rgba(255,255,255,0.08); }
+    .button img { width: 18px; filter: invert(1); opacity: 0.8; }
+
+    .box {
+      position: relative;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .cart-count {
+      position: absolute;
+      background-color: var(--red);
+      top: 0; right: 0;
+      width: 18px; height: 18px;
+      line-height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 500;
+      text-align: center;
+      color: #fff;
+      display: none;
+      z-index: 10;
+    }
+
+    #cart-icon {
+      width: 20px;
+      filter: invert(1);
+      opacity: 0.85;
+      cursor: pointer;
+    }
+
+    /* ── OVERLAY ── */
+    .cart-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(144, 56, 56, 0.4);
+      z-index: 1000;
+    }
+    .cart-overlay.active { display: block; }
+
+    /* ── SIDE CART PANEL ── */
+    /* Fixed panel: header + scrollable body + footer — no overflow on the panel itself */
+    .cart-panel {
+      position: fixed;
+      top: 0; right: -440px;
+      width: 420px;
+      height: 100vh;
+      background: #ffffff;
+      border-left: 1px solid #e0ddd8;
+      box-shadow: -12px 0 40px rgba(0,0,0,0.12);
+      z-index: 1001;
+      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .cart-panel.active { right: 0; }
+
+    /* sticky header inside panel */
+    .cart-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid #eeebe6;
+      background: #ffffff;
+    }
+
+    .cart-header-left { display: flex; align-items: center; gap: 10px; }
+
+    .cart-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 2px;
+      color: var(--black);
+    }
+
+    .cart-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: #fff;
+      background: var(--red);
+      padding: 3px 9px;
+      border-radius: 20px;
+      display: none;
+    }
+
+    #cart-close {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: #f0ede8;
+      cursor: pointer;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    #cart-close:hover { background: #e0ddd8; }
+    #cart-close img { width: 12px; opacity: 0.5; }
+
+    /* scrollable middle */
+    .cart-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 4px 24px 8px;
+      background: #ffffff;
+    }
+
+    /* empty state */
+    .cart-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 0;
+      color: var(--mid-gray);
+      font-size: 14px;
+      gap: 12px;
+      background: #ffffff;
+    }
+    .cart-empty-icon { font-size: 44px; opacity: 0.25; }
+
+    /* cart item row */
+    .cart-box {
+      display: grid;
+      grid-template-columns: 76px 1fr 32px;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eeebe6;
+      background: #ffffff;
+      animation: slideIn 0.22s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .cart-img {
+      width: 76px; height: 76px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #eeebe6;
+      background: #f8f6f3;
+    }
+
+    .detail-box { display: flex; flex-direction: column; gap: 5px; }
+
+    .cart-shoe-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: var(--black);
+      line-height: 1;
+    }
+
+    .price-box { display: flex; align-items: center; gap: 8px; }
+
+    .cart-price { font-size: 12px; color: var(--mid-gray); }
+
+    .cart-amt { font-size: 14px; font-weight: 500; color: var(--red); }
+
+    /* quantity stepper */
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #e0ddd8;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .qty-btn {
+      width: 28px; height: 28px;
+      border: none;
+      background: #f5f2ee;
+      color: var(--text-primary);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .qty-btn:hover { background: #e8e4de; }
+
+    .cart-quantity {
+      width: 36px; height: 28px;
+      border: none;
+      border-left: 1px solid #e0ddd8;
+      border-right: 1px solid #e0ddd8;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      text-align: center;
+      color: var(--text-primary);
+      outline: none;
+      background: #ffffff;
+    }
+    .cart-quantity::-webkit-outer-spin-button,
+    .cart-quantity::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    /* remove button */
+    .cart-remove {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--mid-gray);
+      transition: background 0.15s, color 0.15s;
+      align-self: center;
+    }
+    .cart-remove:hover { background: #FEE8E8; color: var(--red); }
+    .cart-remove svg {
+      width: 15px; height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* sticky footer */
+    .cart-footer {
+      flex-shrink: 0;
+      padding: 16px 24px 28px;
+      border-top: 1px solid #eeebe6;
+      background: #ffffff;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+
+    .total-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .total-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: var(--black);
+    }
+
+    .btn-buy {
+      width: 100%;
+      padding: 15px;
+      background-color: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 2.5px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-buy:hover { background-color: var(--red-dark); }
+    .btn-buy:active { transform: scale(0.98); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background-color: var(--black);
+      padding: 100px 60px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,40,42,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: 'AEROSTRIDE';
+      position: absolute;
+      bottom: -40px; left: -20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 200px;
+      color: rgba(255,255,255,0.03);
+      letter-spacing: 10px;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text { max-width: 480px; }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid rgba(196, 56, 56, 0.4);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero-text h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 7vw, 90px);
+      color: #fff;
+      line-height: 0.95;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+    }
+    .hero-text h1 span { color: var(--red); }
+
+    .hero-text p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .button1 {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      height: 52px;
+      padding: 0 28px;
+      background-color: var(--red);
+      border-radius: 52px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .button1:hover { background-color: var(--red-light); transform: translateY(-2px); }
+    .button1 img { width: 16px; filter: invert(1); }
+
+    .hero-image img {
+      width: 520px;
+      max-width: 50vw;
+      filter: drop-shadow(0 30px 60px rgba(232,40,42,0.25));
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: rotate(-8deg) translateY(-20px); }
+      50%       { transform: rotate(-6deg) translateY(-40px); }
+    }
+
+    /* ── TRENDING ── */
+    .trending-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 60px 60px 0;
+      max-width: 1260px;
+      margin: 0 auto;
+    }
+    .trending-line { flex: 1; height: 1px; background: var(--warm-gray); }
+    .trending-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 4px;
+      color: var(--mid-black);
+      white-space: nowrap;
+    }
+
+    /* ── SHOE GRID ── */
+    .container { max-width: 1260px; padding: 40px 60px 80px; margin: 0 auto; }
+
+    .shop-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .shoe-box {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--warm-gray);
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+    }
+    .shoe-box:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.10); }
+
+    .pic { overflow: hidden; background-color: var(--off-white); aspect-ratio: 1/1; }
+    .pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .shoe-box:hover .pic img { transform: scale(1.08); }
+
+    .shoe-info { padding: 14px 16px 60px; }
+
+    .shoe-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .shoe-price { font-size: 14px; color: var(--text-secondary); font-weight: 300; }
+
+    .add-cart {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      width: 100%;
+      background-color: var(--white);
+      border: none;
+      padding: 12px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .add-cart:hover { background-color: blueviolet; }
+    .add-cart img { width: 18px; filter: invert(1); }
+
+    .remove_icon { display: none; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background-color: var(--black);
+      color: #ccc;
+      padding: 60px 60px 30px;
+    }
+
+    .container1 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+    }
+
+    .footer-about, .footer-links, .footer-contact { flex: 1; min-width: 200px; }
+
+    .footer-about h3, .footer-links h3, .footer-contact h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .footer-about p, .footer-contact p { font-size: 14px; line-height: 1.8; font-weight: 400; color: #ccc; }
+
+    .footer-links ul { list-style: none; }
+    .footer-links ul li { margin-bottom: 10px; }
+    .footer-links ul li a {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    .footer-links ul li a:hover { color: var(--red); }
+
+    .footer-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      max-width: 1200px;
+      margin: 0 auto 24px;
+    }
+
+    .copyright_part {
+      display: flex;
+      justify-content: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { padding: 100px 24px 60px; }
+      .hero-content { flex-direction: column; gap: 40px; }
+      .hero-image img { max-width: 80vw; animation: none; transform: none; }
+      .trending-section, .container { padding-left: 24px; padding-right: 24px; }
+      .site-footer { padding: 40px 24px 24px; }
+      .navbar { padding: 0 20px; }
+      .cart-panel { width: 100%; right: -100%; }
+    }
+  </style>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-
-  <!-- ===== NAVBAR ===== -->
-  <header class="header">
-    <nav class="navbar">
-      <a href="#" class="logo">
-        <svg viewBox="0 0 200 36" height="28" class="logo-svg">
-          <defs>
-            <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#2ed573"/>
-              <stop offset="100%" stop-color="#1a9e56"/>
-            </linearGradient>
-          </defs>
-          <path d="M4 24 Q12 6 32 4 Q18 12 8 22 Z" fill="url(#lg)"/>
-          <path d="M2 28 Q12 10 36 6 Q20 14 10 28 Z" fill="url(#lg)" opacity="0.5"/>
-          <text x="40" y="27" fill="#ffffff" font-family="'Inter',sans-serif" font-weight="800" font-size="21" letter-spacing="5">AEROSTRIDE</text>
-        </svg>
-      </a>
-
-      <!-- Main Navigation Menu -->
-      <ul class="nav-menu">
-        <li><a href="#" class="nav-link">Men</a></li>
-        <li><a href="#" class="nav-link">Women</a></li>
-        <li><a href="#" class="nav-link">Kids</a></li>
-        <li><a href="#" class="nav-link">Collections</a></li>
-        <li><a href="#" class="nav-link sale">Sale</a></li>
-      </ul>
-
-      <div class="nav-end">
-        <button class="nav-icon" aria-label="Search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-          </svg>
-        </button>
-        <button class="nav-icon" aria-label="Profile">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-          </svg>
-        </button>
-        <button class="nav-icon theme-btn" id="theme-toggle" aria-label="Toggle theme">
-          <svg id="sun-icon" style="display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-          </svg>
-          <svg id="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-          </svg>
-        </button>
-        <div class="cart-trigger" id="cart-icon">
-          <span class="cart-count">0</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
+  <!-- Navbar -->
+  <header>
+    <div class="navbar">
+      <div class="website_title">Aero<span>Stride</span></div>
+      <div class="button-container">
+        <button class="button"><img src="images_used/home_icon.png"/></button>
+        <button class="button"><img src="images_used/search_icon.png"/></button>
+        <button class="button"><img src="images_used/profile_icon.png"/></button>
+        <div class="box" id="open-cart">
+          <div class="cart-count">0</div>
+          <img src="images_used/cart_icon.png" id="cart-icon"/>
         </div>
-      </div>
-    </nav>
-
-    <!-- Cart Sidebar -->
-    <aside class="cart" id="cart">
-      <div class="cart-header">
-        <h2 class="cart-title">Cart</h2>
-        <img src="images_used/cross.png" id="cart-close" alt="Close"/>
-      </div>
-      <div class="cart-content"></div>
-      <div class="cart-footer">
-        <div class="cart-total">
-          <span class="cart-total-label">Total</span>
-          <span class="cart-total-price">Rs.0</span>
-        </div>
-        <button class="btn-checkout">Place Order</button>
-      </div>
-    </aside>
-  </header>
-
-  <!-- ===== HERO ===== -->
-  <section class="hero" id="hero">
-    <div class="hero-ambient">
-      <div class="ambient-glow g1"></div>
-      <div class="ambient-glow g2"></div>
-      <div class="ambient-glow g3"></div>
-    </div>
-
-    <!-- Floating Icons -->
-    <div class="hero-icons">
-      <svg class="hi hi-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">
-        <path d="M13 2L4 13h6l-1 9 9-11h-6l1-9z"/>
-      </svg>
-      <svg class="hi hi-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">
-        <path d="M3 8h14c2 0 3-1 3-2s-1-2-2-2"/>
-        <path d="M3 13h18c2 0 3 1 3 2s-1 2-2 2"/>
-        <path d="M3 18h12"/>
-      </svg>
-      <svg class="hi hi-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
-      </svg>
-      <svg class="hi hi-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <circle cx="12" cy="12" r="6"/>
-        <circle cx="12" cy="12" r="2"/>
-      </svg>
-      <svg class="hi hi-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 7 7 9 8.5V4a2.5 2.5 0 0 1 5 0v4.5C16 7 16 4 19.5 4a2.5 2.5 0 0 1 0 5H18"/>
-      </svg>
-    </div>
-
-    <div class="hero-inner">
-      <div class="hero-content">
-        <div class="hero-trust">
-          <span class="stars">✦</span>
-          <span class="trust-text">Crafted for the Perfect Stride</span>
-        </div>
-        <div class="hero-badge">New Collection</div>
-        <h1 class="hero-heading">Engineered for<br/>Everyday Comfort.</h1>
-        <p class="hero-sub">Incredibly lightweight. Insanely comfortable. Experience the premium footwear revolution designed for your daily hustle.</p>
-        
-        <div class="hero-features">
-          <div class="feature-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Breathable Mesh
-          </div>
-          <div class="feature-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Cloud Foam Sole
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <a class="cta" href="#shop">
-            <span>Shop Men</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-          <a class="cta cta-secondary" href="#shop">
-            <span>Shop Women</span>
-          </a>
-        </div>
-      </div>
-      <div class="hero-slider" id="slider">
-        <div class="slide active"><img src="images_used/hero_shoe.png" alt=""/></div>
-        <div class="slide"><img src="images_used/shoe2.png" alt=""/></div>
-        <div class="slide"><img src="images_used/shoe3.png" alt=""/></div>
-        <div class="slide"><img src="images_used/shoe4.png" alt=""/></div>
-        <div class="slide"><img src="images_used/shoe5.png" alt=""/></div>
-        <div class="slider-dots" id="slider-dots"></div>
-        <div class="slider-shadow"></div>
       </div>
     </div>
-  </section>
+  </header>  
 
-  <!-- ===== TRENDING DIVIDER ===== -->
-  <div class="divider" id="shop">
-    <div class="divider-line"></div>
-    <span class="divider-label">Trending Right Now</span>
-    <div class="divider-line"></div>
+  <!-- Overlay (dims page when cart is open) -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+
+  <!-- Cart panel — lives outside header so z-index stacking is clean -->
+  <div class="cart-panel" id="cart-panel">
+    <!-- sticky header -->
+    <div class="cart-header">
+      <div class="cart-header-left">
+        <span class="cart-title">Your Cart</span>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </div>
+      <div id="cart-close">
+        <img src="images_used/cross.png"/>
+      </div>
+    </div>
+
+    <!-- scrollable items -->
+    <div class="cart-body" id="cart-body">
+      <div class="cart-empty" id="cart-empty">
+        <span class="cart-empty-icon">🛒</span>
+        <span>Your cart is empty</span>
+      </div>
+    </div>
+
+    <!-- sticky footer -->
+    <div class="cart-footer">
+      <div class="total">
+        <span class="total-title">Total</span>
+        <span class="total-price" id="total-price">Rs.0</span>
+      </div>
+      <button class="btn-buy">Place Order</button>
+    </div>
   </div>
 
-  <!-- ===== PRODUCT GRID ===== -->
-  <main class="main">
-    <div class="grid" id="grid">
-      <!-- 1 GOAT -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/messi shoes 0.png" class="card-img" alt="GOAT"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">GOAT</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>5,000</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
+  <!-- Hero -->
+  <div class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-eyebrow">Exclusive Collection 2024</div>
+        <h1>Step Into <span>Legend</span></h1>
+        <p>Footwear designed for those who move with purpose. High-performance silhouettes built for every occasion.</p>
+        <a class="button1" href="#trending-section">
+          Shop Now
+          <img src="images_used/cart_icon.png"/>
+        </a>
       </div>
-      <!-- 2 CR7 -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/cristiano ronal 1.png" class="card-img" alt="CR7"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">CR7</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>3,000</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 3 The Greek Freak -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/giannis antetok 1.png" class="card-img" alt="The Greek Freak"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">The Greek Freak</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>2,500</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 4 Sewy -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/ishowspeed shoe 1.png" class="card-img" alt="Sewy"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Sewy</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>1,500</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 5 Black Mamba -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/kobe bryant sho 0.png" class="card-img" alt="Black Mamba"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Black Mamba</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>3,000</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 6 Jordan X -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/nike jordans 0.png" class="card-img" alt="Jordan X"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Jordan X</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>2,500</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 7 KING -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/virat_kohli.png" class="card-img" alt="KING"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">KING</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>5,000</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 8 Mr.360 -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/abd.png" class="card-img" alt="Mr.360"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Mr.360</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>5,000</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 9 Curry Splash -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/giannis antetok 1.png" class="card-img" alt="Curry Splash"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Curry Splash</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>4,000</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 10 Pele Magic -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/cristiano ronal 1.png" class="card-img" alt="Pele Magic"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Pele Magic</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>4,500</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 11 Bolt Speed -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/ishowspeed shoe 1.png" class="card-img" alt="Bolt Speed"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Bolt Speed</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>2,000</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 12 Serena Ace -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/nike jordans 0.png" class="card-img" alt="Serena Ace"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Serena Ace</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>3,500</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 13 Air Icon -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/hero_shoe.png" class="card-img" alt="Air Icon"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Air Icon</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>4,800</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 14 Torch Runner -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/messi shoes 0.png" class="card-img" alt="Torch Runner"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Torch Runner</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>3,200</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 15 Phantom Stride -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/kobe bryant sho 0.png" class="card-img" alt="Phantom Stride"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Phantom Stride</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>2,800</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
-      </div>
-      <!-- 16 Nova Dash -->
-      <div class="card">
-        <span class="card-brand">AeroStride</span>
-        <figure class="card-figure">
-          <img src="images_used/ishowspeed shoe 1.png" class="card-img" alt="Nova Dash"/>
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">Nova Dash</h3>
-          <div class="card-rating">
-            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-          </div>
-          <div class="card-price-container">
-            <span class="card-price"><span class="card-currency">Rs.</span>2,200</span>
-          </div>
-          <div class="card-actions">
-            <button class="btn-buy-now">Buy Now</button>
-            <div class="card-add" role="button" tabindex="0" aria-label="Add to cart">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <img src="images_used/cross.png" width="0" class="card-remove" alt="Remove"/>
+      <div class="hero-image">
+        <img src="images_used/hero_shoe.png" alt="AeroStride Hero Shoe">
       </div>
     </div>
-  </main>
+  </div>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-block about">
-        <h4>About Us</h4>
+  <!-- Trending -->
+  <div class="trending-section" id="trending-section">
+    <div class="trending-line"></div>
+    <div class="trending-text">Trending Right Now</div>
+    <div class="trending-line"></div>
+  </div>
+
+  <!-- Shoe Grid -->
+  <div class="container">
+    <div class="shop-content">
+
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/messi shoes 0.png" class="shoe-img"></div>
+        <div class="shoe-info"><h2 class="shoe-title">GOAT</h2><span class="shoe-price">Rs.5000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
+      </div>
+
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
+        <div class="shoe-info"><h2 class="shoe-title">CR7</h2><span class="shoe-price">Rs.3000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
+      </div>
+
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
+        <div class="shoe-info"><h2 class="shoe-title">The Greek Freak</h2><span class="shoe-price">Rs.2500</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
+      </div>
+
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
+        <div class="shoe-info"><h2 class="shoe-title">Sewy</h2><span class="shoe-price">Rs.1500</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
+      </div>
+
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
+        <div class="shoe-info"><h2 class="shoe-title">Black Mamba</h2><span class="shoe-price">Rs.3000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
+      </div>
+
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
+        <div class="shoe-info"><h2 class="shoe-title">Jordan X</h2><span class="shoe-price">Rs.2500</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
+      </div>
+
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
+        <div class="shoe-info"><h2 class="shoe-title">KING</h2><span class="shoe-price">Rs.5000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
+      </div>
+
+      <div class="shoe-box">
+        <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
+        <div class="shoe-info"><h2 class="shoe-title">Mr.360</h2><span class="shoe-price">Rs.5000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container1">
+      <div class="footer-about">
+        <h3>About Us</h3>
         <p>At AeroStride, we blend innovative design with exceptional comfort to create stylish, high-performance footwear. Our mission is to support your every step with shoes that fit seamlessly into your dynamic lifestyle.</p>
       </div>
-      <div class="footer-block links">
-        <h4>Quick Links</h4>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
         <ul>
           <li><a href="#hero">Home</a></li>
-          <li><a href="#shop">Shoes</a></li>
+          <li><a href="#trending-section">Shoes</a></li>
         </ul>
       </div>
-      <div class="footer-block contact">
-        <h4>Contact</h4>
-        <p>info@aerostride.com</p>
-        <p>+123 456 7890</p>
+      <div class="footer-contact">
+        <h3>Contact Us</h3>
+        <p>Email: info@aerostride.com</p>
+        <p>Phone: +123 456 7890</p>
       </div>
     </div>
-    <div class="footer-bottom">&copy; AeroStride 2024</div>
+    <div class="footer-divider"></div>
+    <div class="copyright_part">&copy; AeroStride 2024</div>
   </footer>
 
-  <script src="index.js"></script>
+  <script>
+    /* ── Elements ── */
+    const cartPanel   = document.getElementById('cart-panel');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartBody    = document.getElementById('cart-body');
+    const cartEmpty   = document.getElementById('cart-empty');
+    const cartBadge   = document.getElementById('cart-badge');
+    const cartCount   = document.querySelector('.cart-count');
+    const totalPrice  = document.getElementById('total-price');
+
+    /* ── Open / Close ── */
+    function openCart()  { cartPanel.classList.add('active'); cartOverlay.classList.add('active'); }
+    function closeCart() { cartPanel.classList.remove('active'); cartOverlay.classList.remove('active'); }
+
+    document.getElementById('open-cart').addEventListener('click', openCart);
+    document.getElementById('cart-close').addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    /* ── State ── */
+    let itemList = [];
+
+    /* ── Add to cart ── */
+    document.querySelectorAll('.add-cart').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const box   = this.closest('.shoe-box');
+        const title = box.querySelector('.shoe-title').textContent;
+        const price = box.querySelector('.shoe-price').textContent;
+        const img   = box.querySelector('.shoe-img').src;
+
+        if (itemList.find(i => i.title === title)) {
+          alert('Already in cart!');
+          return;
+        }
+
+        itemList.push({ title, price, img });
+
+        const row = document.createElement('div');
+        row.className = 'cart-box';
+        row.dataset.title = title;
+        row.innerHTML = cartRowHTML(title, price, img);
+        cartBody.appendChild(row);
+
+        bindRow(row);
+        updateUI();
+        openCart();
+      });
+    });
+
+    /* ── Row template ── */
+    function cartRowHTML(title, price, img) {
+      return `
+        <img src="${img}" class="cart-img">
+        <div class="detail-box">
+          <div class="cart-shoe-title">${title}</div>
+          <div class="price-box">
+            <span class="cart-price">${price}</span>
+            <span class="cart-amt">${price}</span>
+          </div>
+          <div class="qty-stepper">
+            <button class="qty-btn qty-down">−</button>
+            <input type="number" class="cart-quantity" value="1" min="1">
+            <button class="qty-btn qty-up">+</button>
+          </div>
+        </div>
+        <button class="cart-remove" title="Remove">
+          <svg viewBox="0 0 24 24">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14H6L5 6"/>
+            <path d="M10 11v6M14 11v6"/>
+            <path d="M9 6V4h6v2"/>
+          </svg>
+        </button>`;
+    }
+
+    /* ── Bind events on a row ── */
+    function bindRow(row) {
+      const qtyInput = row.querySelector('.cart-quantity');
+
+      row.querySelector('.qty-down').addEventListener('click', () => {
+        let v = parseInt(qtyInput.value) || 1;
+        if (v > 1) { qtyInput.value = v - 1; updateUI(); }
+      });
+
+      row.querySelector('.qty-up').addEventListener('click', () => {
+        qtyInput.value = (parseInt(qtyInput.value) || 1) + 1;
+        updateUI();
+      });
+
+      qtyInput.addEventListener('change', () => {
+        if (!qtyInput.value || qtyInput.value < 1) qtyInput.value = 1;
+        updateUI();
+      });
+
+      row.querySelector('.cart-remove').addEventListener('click', () => {
+        const title = row.dataset.title;
+        itemList = itemList.filter(i => i.title !== title);
+        row.remove();
+        updateUI();
+      });
+    }
+
+    /* ── Recalculate totals & badges ── */
+    function updateUI() {
+      let total = 0;
+      document.querySelectorAll('.cart-box').forEach(row => {
+        const priceStr = row.querySelector('.cart-price').textContent.replace('Rs.', '');
+        const price    = parseFloat(priceStr);
+        const qty      = parseInt(row.querySelector('.cart-quantity').value) || 1;
+        const sub      = price * qty;
+        row.querySelector('.cart-amt').textContent = 'Rs.' + sub;
+        total += sub;
+      });
+
+      totalPrice.textContent = 'Rs.' + total;
+
+      const count = itemList.length;
+      cartCount.textContent  = count;
+      cartCount.style.display = count ? 'block' : 'none';
+      cartBadge.textContent   = count;
+      cartBadge.style.display = count ? 'inline-block' : 'none';
+      cartEmpty.style.display = count ? 'none' : 'flex';
+    }
+  </script>
 </body>
 </html>

@@ -68,6 +68,7 @@ body {
     background 0.4s ease,
     color 0.4s ease;
   position: relative;
+  cursor: auto;
 }
 
 body::before,
@@ -161,58 +162,77 @@ body::after {
     5px 5px,
     11px 11px,
     13px 13px;
-  mix-blend-mode: screen;
+  /* mix-blend-mode: difference; */
   animation: noiseShift 0.8s steps(2) infinite;
 }
 
-body > *:not(.ambient):not(.noise-layer) {
-    position: relative;
-}
-
-body>*:not(.ambient):not(.noise-layer):not(canvas):not(header) {
+body > *:not(.ambient):not(.noise-layer):not(.cursor-ring):not(header):not(.hero) {
   position: relative;
   z-index: 1;
 }
 
-/* header wraps .navbar — needs its own stacking context above ALL
-   fixed overlay layers (body::before/after, ambient, noise, canvas) */
-header {
+body > header {
+  position: relative;
+  z-index: 10;
+}
+
+.cursor-ring {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  z-index: 10000;
-  pointer-events: auto;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transform: translate3d(0, 0, 0) translate(-50%, -50%);
+  transition: opacity 0.16s ease;
+  will-change: transform;
+  isolation: isolate;
+}
+
+.cursor-ring.is-visible {
+  opacity: 1;
+}
+
+.cursor-ring--outer {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: none;
+  backdrop-filter: blur(6px);
+  mix-blend-mode: multiply;
+}
+
+.cursor-ring--inner {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+
+  .cursor-ring {
+    display: none;
+  }
 }
 
 /* ============================================================
    NAVBAR & RESPONSIVE DRAWER ARCHITECTURE
    ============================================================ */
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999999;
-    background: rgba(11, 13, 15, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 3rem;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: var(--t);
-}
-
-.navbar {
-    isolation: isolate;
+  isolation: isolate;
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  z-index: 100000;
-  background: rgba(11, 13, 15, 0.88);
+  z-index: 100001;
+  background: rgba(11, 13, 15, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
@@ -222,6 +242,7 @@ header {
   align-items: center;
   justify-content: space-between;
   transition: var(--t);
+  isolation: isolate;
 }
 
 body.light-mode .navbar {
@@ -376,8 +397,30 @@ body.light-mode .navbar {
     height: auto;
   }
 
+  .navbar-brand {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .brand-copy {
+    overflow: hidden;
+  }
+
+  .brand-copy strong {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    display: block;
+    white-space: normal;
+  }
+
+  .brand-kicker {
+    font-size: 0.55rem;
+  }
+
   .menu-toggle {
     display: block;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
   }
 
   .menu-toggle i {
@@ -423,20 +466,28 @@ body.light-mode .navbar {
     text-align: center;
     width: 100%;
   }
+
+  .stats-strip {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem;
+  }
 }
 
 /* ============================================================
-   HERO — FIXED: removed min-height:100vh, reduced padding
+   HERO — Fixed: immediately visible, no blank viewport
    ============================================================ */
 .hero {
-  /* FIX: was min-height:100vh with padding:100px 2rem 6rem — caused huge dead space */
-  min-height: auto;
-  padding: 100px 2rem 5rem;
+  /* Fill viewport minus navbar without vertical centering */
+  min-height: 100vh;
+  padding: 60px 2rem 3rem;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 60px;
   position: relative;
+  z-index: 0;
   overflow: hidden;
   isolation: isolate;
 }
@@ -446,18 +497,19 @@ body.light-mode .navbar {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.55;
+  opacity: 0.35;
   mix-blend-mode: normal;
   overflow: hidden;
   background:
     radial-gradient(circle at 50% 42%,
-      rgba(56, 189, 248, 0.18),
+      rgba(56, 189, 248, 0.12),
       transparent 34%),
     radial-gradient(circle at 50% 72%,
-      rgba(14, 165, 233, 0.08),
+      rgba(14, 165, 233, 0.05),
       transparent 28%),
-    linear-gradient(180deg, rgba(4, 8, 18, 0.2), rgba(2, 6, 23, 0.78));
-  filter: saturate(1.3) contrast(1.08) brightness(1.05);
+    linear-gradient(180deg, rgba(4, 8, 18, 0.15), rgba(2, 6, 23, 0.6));
+  filter: saturate(1.1) contrast(1.02) brightness(1.02);
+  will-change: auto;
 }
 
 .hero-terminal,
@@ -583,8 +635,9 @@ body.light-mode .hero-terminal-text {
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 1.5rem;
-  opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.1s forwards;
+  opacity: 1;
+  animation: fadeUp 0.6s var(--ease) 0.1s both;
+  will-change: auto;
 }
 
 .hero-headline {
@@ -594,8 +647,9 @@ body.light-mode .hero-terminal-text {
   letter-spacing: -0.07em;
   color: var(--text-primary);
   margin-bottom: 1.25rem;
-  opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.2s forwards;
+  opacity: 1;
+  animation: fadeUp 0.6s var(--ease) 0.2s both;
+  will-change: auto;
 }
 
 .hero-line {
@@ -622,7 +676,7 @@ body.light-mode .hero-terminal-text {
       rgba(59, 130, 246, 0.95),
       rgba(139, 92, 246, 0.65),
       transparent);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.26);
+  box-shadow: none;
   opacity: 0.9;
 }
 
@@ -632,8 +686,9 @@ body.light-mode .hero-terminal-text {
   font-weight: 400;
   line-height: 1.65;
   margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.3s forwards;
+  opacity: 1;
+  animation: fadeUp 0.6s var(--ease) 0.3s both;
+  will-change: auto;
 }
 
 .hero-extra {
@@ -642,8 +697,9 @@ body.light-mode .hero-terminal-text {
   font-weight: 400;
   line-height: 1.65;
   margin-bottom: 2.5rem;
-  opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.3s forwards;
+  opacity: 1;
+  animation: fadeUp 0.6s var(--ease) 0.3s both;
+  will-change: auto;
 }
 
 .hero-actions {
@@ -652,8 +708,9 @@ body.light-mode .hero-terminal-text {
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 3rem;
-  opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.4s forwards;
+  opacity: 1;
+  animation: fadeUp 0.6s var(--ease) 0.4s both;
+  will-change: auto;
 }
 
 .hero-actions .btn {
@@ -675,8 +732,8 @@ body.light-mode .hero-terminal-text {
     0 18px 60px rgba(59, 130, 246, 0.08);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.5s forwards;
+  opacity: 1;
+  animation: fadeUp 0.6s var(--ease) 0.5s both;
 }
 
 .stat-item {
@@ -2333,7 +2390,7 @@ body.light-mode .noise-layer {
   .projects-header {
     align-items: stretch;
   }
-
+}
 body.light-mode .stats-strip {
   background: rgba(255, 255, 255, 0.85);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 18px 60px rgba(0, 0, 0, 0.02);
@@ -2445,13 +2502,13 @@ body.light-mode .brand-mark {
    position:fixed takes it out of flow as a pure background layer.
    ============================================================ */
 #particleCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  display: block !important;
 }
 
 /* ============================================================
@@ -2528,3 +2585,98 @@ body::after {
     margin-top:16px;
 }
 
+.clear-filters-btn:hover {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+}
+
+.clear-filters-btn:active {
+  transform: scale(0.97);
+}
+
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+/* Nav Link Styling */
+.nav-links a {
+  text-decoration: none;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+/* Better Hover Effect */
+.nav-links a:hover {
+  opacity: 0.8;
+}
+
+/* Tablet Responsiveness */
+@media screen and (max-width: 992px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .nav-links {
+    gap: 1rem;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .nav-links {
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 0.8rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+}
+
+/* Small Mobile Devices */
+@media screen and (max-width: 480px) {
+
+  .navbar {
+    padding: 0.8rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links a {
+    width: 100%;
+    display: block;
+    padding: 0.5rem 0;
+  }
+  }

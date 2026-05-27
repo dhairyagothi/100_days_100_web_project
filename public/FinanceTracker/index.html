@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Finance Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -860,6 +861,9 @@
             <button onclick="exportCSV()">
     Export CSV
 </button>
+<button onclick="exportPDF()">
+    Export PDF
+</button>
         </form>
 
         <!-- ===== SAVINGS PROGRESS TRACKER ===== -->
@@ -1483,6 +1487,36 @@
         // ---- Init savings on page load ----
         renderGoals();
     </script>
+    async function exportPDF() {
+
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF();
+
+    doc.text("Finance Report", 20, 20);
+
+    let y = 40;
+
+    transactions.forEach((transaction, index) => {
+
+        doc.text(
+
+            `${index + 1}. 
+${transaction.title} 
+- ₹${transaction.amount} 
+(${transaction.type})`,
+
+            20,
+            y
+
+        );
+
+        y += 10;
+
+    });
+
+    doc.save("finance-report.pdf");
+}
     function exportCSV() {
 
     let csv =

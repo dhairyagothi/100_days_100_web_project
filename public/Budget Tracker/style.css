@@ -1391,3 +1391,16 @@ body.dark select{
     padding:22px;
   }
 }
+.home-btn{
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:14px;
+    background:rgba(255,255,255,.5);
+    color:var(--primary);
+    font-weight:600;
+    border:1px solid rgba(99,102,241,.15);
+}
+
+.home-btn:hover{
+    transform:translateY(-2px);
+}

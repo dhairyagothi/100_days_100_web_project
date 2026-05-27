@@ -153,8 +153,8 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 16px 20px 0;
-}
+  padding: 20px 20px 0;
+  }
 
 .navbar {
   display: flex;
@@ -170,7 +170,7 @@ header {
   box-shadow: var(--glass-shadow);
   border-radius: 20px;
   padding: 12px 20px;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -610,6 +610,8 @@ section {
   border: 1px solid rgba(16, 24, 56, 0.06);
   outline: none;
   min-height: 44px;
+  /* FIX 2: textarea elements show a browser resized handle by default. resize: none removes it entirely. */
+  resize: none;
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
@@ -619,33 +621,18 @@ section {
 }
 
 /* ---------- Completed Animation ---------- */
-.completed {
+
+/* FIX 3: Previously .completed was on the card element, so text-decoration and
+   opacity affected the entire card, including button labels and the category badge.
+   Changed to .completed, .note-text so only the task text gets the strikethrough
+*/
+.completed .note-text {
   text-decoration: line-through;
-  opacity: 0.60;
-  position: relative;
-}
-
-.completed::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 2px;
-  background: var(--success);
-  border-radius: 2px;
-  animation: strikeThrough 0.35s ease forwards;
-  transform-origin: left;
-}
-
-@keyframes strikeThrough {
-  from {
-    transform: scaleX(0);
-  }
-
-  to {
-    transform: scaleX(1);
-  }
+  text-decoration-color: var(--success);
+  text-decoration-thickness: 2px;
+  text-decoration-skip-ink: none;
+  opacity: 0.55;
+  transition: opacity var(--transition), text-decoration-color var(--transition);
 }
 
 /* ---------- Actions (Dropdown + Buttons) ---------- */
