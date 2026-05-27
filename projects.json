@@ -1790,6 +1790,16 @@
 "techStack":["game","html","css","javascript"],
 "difficulty":"intermediate",
 "projectPath":"./public/CYBER TYPE BATTLE/index.html"
+},
+
+{
+"projectNo":180,
+"projectName":"CGPA calculator",
+"projectType":"Tool",
+"projectDesc":"GPA calculator web app with real-time calculation, dark/light theme, and localStorage support.",
+"techStack":["tool","html","css","javascript"],
+"difficulty":"advance",
+"projectPath":"./public/CGPA_calculator/index.html"
 }
 
 ]
