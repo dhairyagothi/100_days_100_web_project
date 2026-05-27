@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
     <div class="background-glow"></div>
     
     <div class="container">
@@ -28,6 +30,9 @@
                 </button>
                 <button class="selector-btn" data-structure="queue">
                     <span class="btn-label">Queue</span>
+                </button>
+                <button class="selector-btn" data-structure="linkedlist">
+                    <span class="btn-label">Linked List</span>
                 </button>
             </div>
             <div id="comingSoonToast" class="toast"></div>
@@ -259,6 +264,134 @@
                 </div>
                 <div class="info-panel hidden" id="queueLearnPanel"></div>
             </div>
+        </section>
+
+        <!-- Linked List Visualizer -->
+        <section class="visualizer-section" data-structure="linkedlist">
+
+            <!-- Header -->
+            <div class="visualizer-header ll-header">
+                <h2>Linked List Visualization</h2>
+                <p class="structure-summary ll-definition-panel" id="llDefinitionText"></p>
+            </div>
+
+            <!-- Sticky Visualization Panel -->
+            <div class="ll-visualization-panel">
+                <div class="ll-node-meta">
+                    <span class="ll-meta-label">Node Count</span>
+                    <span class="ll-meta-value" id="llNodeCount">0 / 7</span>
+                </div>
+                <div class="ll-head-tail-display" id="llHeadTailDisplay">
+                    <div class="ll-ht-item">
+                        <span class="ll-ht-name">Head</span>
+                        <span class="ll-ht-arrow">&rarr;</span>
+                        <span class="ll-ht-value ll-ht-null">null</span>
+                    </div>
+                    <div class="ll-ht-sep">&middot;</div>
+                    <div class="ll-ht-item">
+                        <span class="ll-ht-name">Tail</span>
+                        <span class="ll-ht-arrow">&rarr;</span>
+                        <span class="ll-ht-value ll-ht-null">null</span>
+                    </div>
+                </div>
+                <div class="ll-stage">
+                    <div class="ll-node-list" id="llNodeList"></div>
+                    <div class="ll-empty-state" id="llEmptyState">
+                        <div class="ll-empty-display">
+                            <span class="ll-pointer-badge">Head &rarr; null</span>
+                            <span class="ll-pointer-separator">&middot;</span>
+                            <span class="ll-pointer-badge">Tail &rarr; null</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operations -->
+            <div class="ll-operations-grid">
+
+                <!-- Insert at Head -->
+                <div class="ll-operation-card">
+                    <h3>Insert at Head</h3>
+                    <div class="ll-input-group">
+                        <input type="number" id="llHeadInput" placeholder="Enter value..." class="ll-input" aria-label="Value for head insertion">
+                        <button class="operation-btn" id="llInsertHeadBtn"><span>Insert Head</span></button>
+                    </div>
+                    <div id="llHeadError" class="error-message"></div>
+                </div>
+
+                <!-- Insert at Tail -->
+                <div class="ll-operation-card">
+                    <h3>Insert at Tail</h3>
+                    <div class="ll-input-group">
+                        <input type="number" id="llTailInput" placeholder="Enter value..." class="ll-input" aria-label="Value for tail insertion">
+                        <button class="operation-btn" id="llInsertTailBtn"><span>Insert Tail</span></button>
+                    </div>
+                    <div id="llTailError" class="error-message"></div>
+                </div>
+
+                <!-- Insert at Index -->
+                <div class="ll-operation-card">
+                    <h3>Insert at Index</h3>
+                    <div class="ll-input-row">
+                        <input type="number" id="llIndexInput" placeholder="Index" class="ll-input ll-input-small" aria-label="Index position" min="0">
+                        <input type="number" id="llIndexValueInput" placeholder="Value" class="ll-input" aria-label="Value for index insertion">
+                        <button class="operation-btn" id="llInsertIndexBtn"><span>Insert</span></button>
+                    </div>
+                    <div id="llIndexError" class="error-message"></div>
+                </div>
+
+                <!-- Delete at Head -->
+                <div class="ll-operation-card">
+                    <h3>Delete at Head</h3>
+                    <div class="ll-input-group">
+                        <button class="operation-btn ll-delete-btn" id="llDeleteHeadBtn"><span>Delete Head</span></button>
+                    </div>
+                    <div id="llDeleteHeadError" class="error-message"></div>
+                </div>
+
+                <!-- Delete at Tail -->
+                <div class="ll-operation-card">
+                    <h3>Delete at Tail</h3>
+                    <div class="ll-input-group">
+                        <button class="operation-btn ll-delete-btn" id="llDeleteTailBtn"><span>Delete Tail</span></button>
+                    </div>
+                    <div id="llDeleteTailError" class="error-message"></div>
+                </div>
+
+                <!-- Delete at Index -->
+                <div class="ll-operation-card">
+                    <h3>Delete at Index</h3>
+                    <div class="ll-input-row">
+                        <input type="number" id="llDeleteIndexInput" placeholder="Index" class="ll-input ll-input-small" aria-label="Index position for deletion" min="0">
+                        <button class="operation-btn ll-delete-btn" id="llDeleteIndexBtn"><span>Delete</span></button>
+                    </div>
+                    <div id="llDeleteIndexError" class="error-message"></div>
+                </div>
+
+            </div>
+
+            <!-- Status Display -->
+            <div id="llStatus" class="status-display hidden"></div>
+
+            <!-- Learn Section -->
+            <div class="info-section">
+                <h3>Learn Linked List</h3>
+                <div class="info-buttons ll-learn-buttons">
+                    <button class="info-btn ll-learn-btn" data-ll-learn="linkedlist">Linked List</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="node">Node</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="head">Head</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="tail">Tail</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="insertHead">Insert Head</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="insertTail">Insert Tail</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="insertIndex">Insert at Index</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="deleteHead">Delete Head</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="deleteTail">Delete Tail</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="deleteIndex">Delete at Index</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="pointer">Pointer</button>
+                </div>
+                <div class="info-panel hidden" id="llLearnPanel"></div>
+            </div>
+
         </section>
     </div>
 

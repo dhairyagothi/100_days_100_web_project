@@ -9,36 +9,81 @@ accordion_containers.forEach((accordion_container) => {
   });
 });
 
-const locationInput = document.querySelector(".location-input");
-const locationContainer = document.querySelector(".location");
+document.addEventListener("DOMContentLoaded", () => {
 
-const cities = [
-  "Delhi NCR",
-  "Mumbai",
-  "Kolkata",
-  "Bangalore",
-  "Chennai"
-];
+  const states = [
+    "Andhra Pradesh",
+    "Assam",
+    "Bihar",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Karnataka",
+    "Kerala",
+    "Maharashtra",
+    "Punjab",
+    "Rajasthan",
+    "Tamil Nadu",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal"
+  ];
 
-const dropdown = document.createElement("div");
-dropdown.classList.add("location-dropdown");
+  const locationInput = document.querySelector(".location-input");
+  const dropdown = document.querySelector(".location-dropdown");
+  const toggleBtn = document.querySelector(".dropdown-toggle");
 
-cities.forEach((city) => {
-  const option = document.createElement("div");
-  option.classList.add("dropdown-item");
-  option.innerText = city;
+  function renderDropdown(filteredStates) {
 
-  option.addEventListener("click", () => {
-    locationInput.value = city;
-    dropdown.style.display = "none";
+    dropdown.innerHTML = "";
+
+    filteredStates.forEach((state) => {
+
+      const item = document.createElement("div");
+
+      item.classList.add("dropdown-item");
+
+      item.textContent = state;
+
+      item.addEventListener("click", () => {
+
+        locationInput.value = state;
+
+        dropdown.classList.add("hidden");
+      });
+
+      dropdown.appendChild(item);
+    });
+  }
+
+  toggleBtn.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    renderDropdown(states);
+
+    dropdown.classList.toggle("hidden");
   });
 
-  dropdown.appendChild(option);
-});
+  locationInput.addEventListener("input", () => {
 
-locationContainer.appendChild(dropdown);
+    const value = locationInput.value.toLowerCase();
 
-locationContainer.addEventListener("click", () => {
-  dropdown.style.display =
-    dropdown.style.display === "block" ? "none" : "block";
+    const filteredStates = states.filter((state) =>
+      state.toLowerCase().includes(value)
+    );
+
+    renderDropdown(filteredStates);
+
+    dropdown.classList.remove("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+
+    if (!e.target.closest(".location")) {
+
+      dropdown.classList.add("hidden");
+    }
+  });
+
 });

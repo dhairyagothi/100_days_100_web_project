@@ -799,15 +799,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function tickCountdown() {
-        countdownInterval = setInterval(() => {
-            if (countdownTime <= 0) {
-                triggerTimerFinished();
-            } else {
-                countdownTime--;
-                updateTimerDisplay();
-            }
-        }, 1000);
-    }
+    updateTimerDisplay();
+
+    countdownInterval = setInterval(() => {
+        if (countdownTime <= 0) {
+            triggerTimerFinished();
+        } else {
+            countdownTime--;
+            updateTimerDisplay();
+        }
+    }, 1000);
+}
+    
 
     function updateTimerDisplay() {
         const leftH = Math.floor(countdownTime / 3600);
@@ -856,11 +859,11 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(countdownInterval);
         countdownTime = 0;
         countdownDisplay.textContent = '00:00:00';
-        
+
         hoursInput.value = '';
         minutesInput.value = '';
         secondsInput.value = '';
-        
+
         pausebtn.innerText = 'Pause';
         isPaused = false;
         timerUpMsg.style.display = 'none';
@@ -870,4 +873,5 @@ document.addEventListener('DOMContentLoaded', () => {
             timerSound.currentTime = 0;
         }
     };
+
 });
