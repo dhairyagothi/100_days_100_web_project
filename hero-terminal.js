@@ -242,7 +242,13 @@ function FaultyTerminal({
   // mouse reactions can be expensive on touch devices; we'll auto-disable below
   mouseReact = true,
   mouseStrength = 0.2,
-  dpr = Math.min(window.devicePixelRatio || 1, 2),
+  // On mobile/touch, clamp DPR to 1 to reduce GPU load and memory usage
+  dpr = (() => {
+    if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches)) {
+      return 1;
+    }
+    return Math.min(window.devicePixelRatio || 1, 2);
+  })(),
   pageLoadAnimation = true,
   brightness = 1,
   className,
@@ -264,6 +270,8 @@ function FaultyTerminal({
 
   // basic touch/mobile detection
   const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches);
+  // Cap max canvas size to avoid mobile GPU memory issues (e.g., 2048x2048)
+  const MAX_CANVAS_SIZE = 2048;
 
   const handleMouseMove = useCallback(event => {
     const container = containerRef.current;
@@ -281,17 +289,28 @@ function FaultyTerminal({
 
     // On small screens / mobile, reduce DPR and throttle frames to improve performance
     const smallScreen = typeof window !== 'undefined' && window.innerWidth <= 720;
-    const useDpr = smallScreen ? Math.min(dpr, 1) : dpr;
+    const useDpr = dpr;
     let renderer;
     let gl;
     let fallbackCleanup = null;
 
     try {
-      renderer = new Renderer({ dpr: useDpr });
+      renderer = new Renderer({ dpr: useDpr, alpha: false }); // alpha: false for better mobile compositing
       rendererRef.current = renderer;
       gl = renderer.gl;
       if (!gl) throw new Error('No GL context');
+      // Clamp renderer size via setSize() with clamped CSS dimensions to keep canvas, viewport, and renderer state in sync
+      // This avoids direct gl.canvas width/height manipulation which can cause viewport/uniform desync
+      const cssWidth = Math.max(1, container.clientWidth || container.offsetWidth || 1);
+      const cssHeight = Math.max(1, container.clientHeight || container.offsetHeight || 1);
+      const maxCssWidth = Math.max(1, Math.floor(MAX_CANVAS_SIZE / useDpr));
+      const maxCssHeight = Math.max(1, Math.floor(MAX_CANVAS_SIZE / useDpr));
+      const clampedCssWidth = Math.min(cssWidth, maxCssWidth);
+      const clampedCssHeight = Math.min(cssHeight, maxCssHeight);
+      renderer.setSize(clampedCssWidth, clampedCssHeight);
       gl.clearColor(0, 0, 0, 1);
+      // iOS/Safari: force context loss handler for quirks
+      gl.getExtension('WEBGL_lose_context');
       console.log('[hero-terminal] WebGL renderer initialized', { dpr: useDpr, width: gl.canvas.width, height: gl.canvas.height });
     } catch (err) {
       console.warn('[hero-terminal] WebGL init failed, falling back to 2D canvas', err);
@@ -387,30 +406,36 @@ function FaultyTerminal({
 
     let program;
     try {
-      program = new Program(gl, {
-      vertex: vertexShader,
-      fragment: fragmentShader,
-      uniforms: {
-        iTime: { value: 0 },
-        iResolution: { value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height) },
-        uScale: { value: scale },
-        uGridMul: { value: new Float32Array(gridMul) },
-        uDigitSize: { value: digitSize },
-        uScanlineIntensity: { value: scanlineIntensity },
-        uGlitchAmount: { value: glitchAmount },
-        uFlickerAmount: { value: flickerAmount },
-        uNoiseAmp: { value: noiseAmp },
-        uChromaticAberration: { value: chromaticAberration },
-        uDither: { value: ditherValue },
-        uCurvature: { value: curvature },
-        uTint: { value: new Color(tintVec[0], tintVec[1], tintVec[2]) },
-        uMouse: { value: new Float32Array([smoothMouseRef.current.x, smoothMouseRef.current.y]) },
-        uMouseStrength: { value: mouseStrength },
-        uUseMouse: { value: mouseReact ? 1 : 0 },
-        uPageLoadProgress: { value: pageLoadAnimation ? 0 : 1 },
-        uUsePageLoadAnimation: { value: pageLoadAnimation ? 1 : 0 },
-        uBrightness: { value: brightness }
+      // On mobile, force mediump precision for fragment shader for compatibility
+      let fragShader = fragmentShader;
+      if (isTouchDevice && !/precision highp float/.test(fragmentShader)) {
+        fragShader = fragmentShader.replace('precision mediump float;', 'precision mediump float;');
       }
+      program = new Program(gl, {
+        vertex: vertexShader,
+        fragment: fragShader,
+        uniforms: {
+          iTime: { value: 0 },
+          iResolution: { value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height) },
+          uScale: { value: scale },
+          // Lower grid/digit density and noise on mobile for perf
+          uGridMul: { value: new Float32Array(isTouchDevice ? [1.2, 0.8] : gridMul) },
+          uDigitSize: { value: isTouchDevice ? Math.max(1, digitSize * 0.9) : digitSize },
+          uScanlineIntensity: { value: scanlineIntensity },
+          uGlitchAmount: { value: glitchAmount },
+          uFlickerAmount: { value: flickerAmount },
+          uNoiseAmp: { value: isTouchDevice ? Math.max(0.2, noiseAmp * 0.7) : noiseAmp },
+          uChromaticAberration: { value: chromaticAberration },
+          uDither: { value: ditherValue },
+          uCurvature: { value: curvature },
+          uTint: { value: new Color(tintVec[0], tintVec[1], tintVec[2]) },
+          uMouse: { value: new Float32Array([smoothMouseRef.current.x, smoothMouseRef.current.y]) },
+          uMouseStrength: { value: mouseStrength },
+          uUseMouse: { value: mouseReact ? 1 : 0 },
+          uPageLoadProgress: { value: pageLoadAnimation ? 0 : 1 },
+          uUsePageLoadAnimation: { value: pageLoadAnimation ? 1 : 0 },
+          uBrightness: { value: brightness }
+        }
       });
       programRef.current = program;
     } catch (err) {
@@ -429,28 +454,43 @@ function FaultyTerminal({
     gl.canvas.style.display = 'block';
     gl.canvas.style.pointerEvents = 'none';
 
+    // Debounce resize to avoid resize observer loops on mobile Safari
+    let resizeTimeout;
     const resize = () => {
-      if (renderer && renderer.setSize) {
-        renderer.setSize(container.offsetWidth, container.offsetHeight);
-        program.uniforms.iResolution.value = new Color(
-          gl.canvas.width,
-          gl.canvas.height,
-          gl.canvas.width / gl.canvas.height
-        );
-      }
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (renderer && renderer.setSize) {
+          // Clamp CSS dimensions passed to setSize() to respect mobile GPU memory limits
+          // This keeps canvas size, viewport, and renderer state in sync
+          const cssWidth = Math.max(1, container.clientWidth || container.offsetWidth || 1);
+          const cssHeight = Math.max(1, container.clientHeight || container.offsetHeight || 1);
+          const maxCssWidth = Math.max(1, Math.floor(MAX_CANVAS_SIZE / useDpr));
+          const maxCssHeight = Math.max(1, Math.floor(MAX_CANVAS_SIZE / useDpr));
+          const clampedCssWidth = Math.min(cssWidth, maxCssWidth);
+          const clampedCssHeight = Math.min(cssHeight, maxCssHeight);
+          renderer.setSize(clampedCssWidth, clampedCssHeight);
+          program.uniforms.iResolution.value = new Color(
+            gl.canvas.width,
+            gl.canvas.height,
+            gl.canvas.width / gl.canvas.height
+          );
+        }
+      }, 100); // 100ms debounce
     };
-
     const resizeObserver = new ResizeObserver(() => resize());
     resizeObserver.observe(container);
     resize();
 
-    // FPS throttling: full RAF on desktop, limited on mobile
+    // FPS throttling: full RAF on desktop, 30fps on mobile, pause if tab is hidden
     const minFrameInterval = smallScreen ? (1000 / 30) : (1000 / 60);
     let lastRenderTime = 0;
+    let isTabVisible = true;
+    const handleVisibility = () => { isTabVisible = !document.hidden; };
+    document.addEventListener('visibilitychange', handleVisibility);
 
     const update = now => {
       rafRef.current = requestAnimationFrame(update);
-
+      if (!isTabVisible) return; // Pause rendering if tab is hidden
       // throttle rendering to target FPS
       if (now - lastRenderTime < minFrameInterval) return;
       lastRenderTime = now;
@@ -497,6 +537,8 @@ function FaultyTerminal({
     return () => {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
+      clearTimeout(resizeTimeout);
+      document.removeEventListener('visibilitychange', handleVisibility);
       if (mouseReact && !isTouchDevice && fallbackCleanup === null) container.removeEventListener('mousemove', handleMouseMove);
       if (gl && gl.canvas && gl.canvas.parentElement === container) container.removeChild(gl.canvas);
       if (gl) gl.getExtension('WEBGL_lose_context')?.loseContext();

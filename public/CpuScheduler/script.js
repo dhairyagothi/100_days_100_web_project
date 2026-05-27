@@ -11,6 +11,7 @@ const elements = {
   timeQuantum: document.getElementById("timeQuantum"),
   timeQuantumDiv: document.getElementById("timeQuantumDiv"),
   processForm: document.getElementById("processForm"),
+  processFormContainer: document.getElementById("processFormContainer"),
   sampleBtn: document.getElementById("sampleBtn"),
   runSimulation: document.getElementById("runSimulation"),
 
@@ -105,7 +106,10 @@ elements.algorithm.addEventListener("change", () => {
   generateProcessForm();
 });
 
-elements.numProcesses.addEventListener("input", generateProcessForm);
+elements.numProcesses.addEventListener("input", () => {
+  generateProcessForm();
+});
+
 elements.sampleBtn.addEventListener("click", loadSampleData);
 elements.runSimulation.addEventListener("click", runSimulation);
 
@@ -140,11 +144,16 @@ function generateProcessForm() {
   const numProcesses = parseInt(elements.numProcesses.value) || 0;
   const fields = algorithmFields[algorithm];
 
+  if (numProcesses < 1 || numProcesses > 20) {
+    elements.processForm.innerHTML = "";
+    return;
+  }
+
   elements.processForm.innerHTML = "";
 
   for (let i = 1; i <= numProcesses; i++) {
     const card = document.createElement("div");
-    card.className = "process-card p-6";
+    card.className = "process-card";
 
     let fieldsHTML = "";
 
@@ -153,14 +162,14 @@ function generateProcessForm() {
 
       fieldsHTML += `
                 <div>
-                    <label class="block text-sm font-semibold text-slate-300 mb-2">
+                    <label class="block text-xs font-semibold text-slate-400 mb-2 uppercase">
                         ${fieldLabels[field]}
                     </label>
                     <input
                         type="number"
                         name="${field}"
                         min="${min}"
-                        class="w-full p-3 rounded-xl bg-white/10 border border-white/10 text-white"
+                        class="input-small"
                         placeholder="${fieldLabels[field]}"
                     />
                 </div>
@@ -168,16 +177,16 @@ function generateProcessForm() {
     });
 
     card.innerHTML = `
-            <h3 class="text-xl font-bold mb-4 text-white">
-                Process P${i}
-            </h3>
-            <div class="grid md:grid-cols-2 gap-4">
+            <h3>Process P${i}</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
                 ${fieldsHTML}
             </div>
         `;
 
     elements.processForm.appendChild(card);
   }
+
+  hideError();
 }
 
 function showError(message) {
@@ -209,7 +218,7 @@ function collectInputData() {
   const numProcesses = parseInt(elements.numProcesses.value);
 
   if (!numProcesses || numProcesses < 1 || numProcesses > 20) {
-    showError("Number of processes must be between 1 and 20.");
+    showError("Please set the number of processes between 1 and 20.");
     return null;
   }
 
@@ -227,12 +236,12 @@ function collectInputData() {
       const value = parseInt(input.value);
 
       if (isNaN(value)) {
-        showError(`Please fill all fields for Process P${i + 1}.`);
+        showError(`Please fill all required fields for Process P${i + 1}.`);
         return null;
       }
 
       if (field === "burst" && value < 1) {
-        showError(`Burst time must be at least 1 for Process P${i + 1}.`);
+        showError(`Burst time for Process P${i + 1} must be at least 1.`);
         return null;
       }
 
@@ -253,7 +262,7 @@ function collectInputData() {
     timeQuantum = parseInt(elements.timeQuantum.value);
 
     if (!timeQuantum || timeQuantum < 1) {
-      showError("Time quantum must be a positive integer.");
+      showError("Time quantum must be a positive number for Round Robin scheduling.");
       return null;
     }
   }
@@ -611,39 +620,35 @@ function displayGanttChart(timeline) {
 
   if (current) blocks.push(current);
 
-  const blockWidth = 60;
+  const blockMinWidth = 80;
 
   const ganttHTML = `
-        <div class="flex items-end gap-1 min-w-max">
-            ${blocks
-              .map((block) => {
-                const index = currentProcesses.findIndex(
-                  (p) => p.pid === block.process,
-                );
+        <div style="overflow-x: auto;">
+            <div class="gantt-timeline">
+                ${blocks
+                  .map((block) => {
+                    const index = currentProcesses.findIndex(
+                      (p) => p.pid === block.process,
+                    );
 
-                const colorClass =
-                  block.process === "IDLE"
-                    ? "idle-block"
-                    : `process-color-${index % 10}`;
+                    const colorClass =
+                      block.process === "IDLE"
+                        ? "idle-block"
+                        : `process-color-${index % 10}`;
 
-                return `
-                        <div class="flex flex-col items-center">
-                            <div class="text-xs text-slate-400 mb-1">
-                                ${block.start}
-                            </div>
+                    return `
                             <div
                                 class="gantt-block ${colorClass}"
-                                style="width: ${blockWidth * block.duration}px;"
+                                style="min-width: ${blockMinWidth}px;"
+                                title="${block.process} (${block.start}-${block.start + block.duration})"
                             >
-                                ${block.process}
+                                <div>${block.process}</div>
+                                <div class="gantt-timing">${block.start}-${block.start + block.duration}</div>
                             </div>
-                            <div class="text-xs text-slate-400 mt-1">
-                                ${block.start + block.duration}
-                            </div>
-                        </div>
-                    `;
-              })
-              .join("")}
+                        `;
+                  })
+                  .join("")}
+            </div>
         </div>
     `;
 

@@ -30,6 +30,23 @@
   --purple:
     #7c3aed;
 }
+body.light-mode {
+
+  --bg-gradient:
+    linear-gradient(135deg, #dbeafe, #f8fafc);
+
+  --card-bg:
+    rgba(255,255,255,0.95);
+
+  --border:
+    rgba(0,0,0,0.08);
+
+  --text:
+    #0f172a;
+
+  --subtitle:
+    #475569;
+}
 
 body {
   min-height: 100vh;
@@ -168,7 +185,7 @@ body {
 .progress-bg {
   fill: none;
 
-  stroke: rgba(255,255,255,0.1);
+  stroke: rgba(148,163,184,0.25);
 
   stroke-width: 14;
 }
@@ -225,7 +242,7 @@ body {
 
   border-radius: 50%;
 
-  background: #111827;
+  background: var(--card-bg);
 
   z-index: -1;
 }
@@ -266,7 +283,7 @@ body {
 
   height: 14px;
 
-  background: rgba(255,255,255,0.08);
+  background: rgba(148,163,184,0.2);
 
   border-radius: 10px;
 
@@ -347,4 +364,47 @@ body {
   .meter-content h2 {
     font-size: 34px;
   }
+}
+.theme-toggle {
+
+  position: fixed;
+
+  top: 20px;
+  right: 20px;
+
+  width: 55px;
+  height: 55px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: white;
+
+  color: black;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,0.25);
+
+  transition: 0.3s ease;
+
+  z-index: 999;
+}
+
+body.light-mode .theme-toggle {
+
+  background: #0f172a;
+
+  color: white;
+}
+
+.theme-toggle:hover {
+
+  transform:
+    scale(1.08)
+    rotate(8deg);
 }
