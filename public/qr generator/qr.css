@@ -208,19 +208,13 @@ body {
 
   text-decoration: none;
 
-  color: var(--text);
-
   padding: 12px 16px;
 
   border-radius: 999px;
 
-  background: var(--glass-bg);
+  background: white;
 
-  border: 1px solid var(--glass-border);
-
-  backdrop-filter: blur(18px);
-
-  box-shadow: var(--card-shadow);
+  box-shadow: 0 8px 20px rgba(0, 0, 0);
 
   font-weight: 600;
 }
@@ -228,7 +222,7 @@ body {
 .project-back-button:hover {
   transform: translateY(-2px);
 
-  background: rgba(255, 255, 255, 0.08);
+  background: #f5f5f5;
 }
 
 /* =========================================================
