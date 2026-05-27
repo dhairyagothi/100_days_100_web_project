@@ -10,16 +10,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Unbounded:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 <header class="hero">
     <h1 class="heading">TIC TAC TOE</h1>
     <p class="subheading">Neon grid. Smart moves. First to three wins the set.</p>
 </header>
 
-<main class="container">
+<main class="container" id="game">
     <section class="panel">
         <div class="status-row">
             <div class="status" id="statusText">Ready to play</div>
-            <div class="turn-chip" id="turnChip">Turn: O</div>
+            <div class="turn-chip" id="turnChip">Turn: X</div>
             <div class="timer-chip" id="turnTimer">Time: 0s</div>
         </div>
 
@@ -49,13 +50,13 @@
         </div>
 
         <div class="scoreboard">
-            <div class="score-card" data-player="O">
-                <span>Player O</span>
-                <strong id="scoreO">0</strong>
-            </div>
             <div class="score-card" data-player="X">
                 <span>Player X</span>
                 <strong id="scoreX">0</strong>
+            </div>
+            <div class="score-card" data-player="O">
+                <span>Player O</span>
+                <strong id="scoreO">0</strong>
             </div>
             <div class="score-card" data-player="D">
                 <span>Draws</span>
@@ -91,7 +92,7 @@
     </section>
 </main>
 
-<div class="start-modal" id="startModal" aria-hidden="false" role="dialog" aria-modal="true" aria-labelledby="startTitle">
+<div class="start-modal show" id="startModal" aria-hidden="false" role="dialog" aria-modal="true" aria-labelledby="startTitle">
     <div class="start-card" role="document">
         <div class="start-badge">Start Game</div>
         <h2 class="start-title" id="startTitle">Ready to glow?</h2>
@@ -105,7 +106,7 @@
 <div class="winner-modal" id="winnerModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="winnerTitle">
     <div class="winner-card" role="document">
         <div class="winner-badge" id="winnerBadge">Winner</div>
-        <h2 class="winner-title" id="winnerTitle">Player O wins!</h2>
+        <h2 class="winner-title" id="winnerTitle">Player X wins!</h2>
         <p class="winner-subtitle" id="winnerSubtitle">Great moves. Ready for the next round?</p>
         <div class="winner-actions">
             <button class="repeat" id="winnerNext">Play Next Round</button>
