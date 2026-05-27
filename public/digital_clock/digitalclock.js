@@ -1,5 +1,5 @@
 // App configuration and state
-let activeTheme = localStorage.getItem("clockTheme") || "classic";
+let activeAccent = localStorage.getItem("clockAccent") || "classic";
 let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
 let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
 let worldClocks = JSON.parse(localStorage.getItem("clock_worldClocks")) || [];
@@ -10,6 +10,7 @@ let lastCheckedMinute = "";
 let ringInterval = null;
 let audioCtx = null;
 let triggeredAlarms = new Set();
+let currentTimeTheme = "";
 
 // DOM Selectors
 const hoursEl = document.getElementById("hours");
@@ -45,9 +46,40 @@ const TIMEZONES = [
   { id: "America/New_York", name: "New York", code: "EST" }
 ];
 
+// TIME-BASED THEME FUNCTIONS
+function getTimeBasedTheme(hour) {
+  if (hour >= 5 && hour < 11) {
+    return "morning";
+  } else if (hour >= 11 && hour < 17) {
+    return "afternoon";
+  } else if (hour >= 17 && hour < 20) {
+    return "evening";
+  } else {
+    return "night";
+  }
+}
+
+function applyTimeBasedTheme() {
+  const now = new Date();
+  const hour = now.getHours();
+  const newTimeTheme = getTimeBasedTheme(hour);
+  
+  if (newTimeTheme !== currentTimeTheme) {
+    currentTimeTheme = newTimeTheme;
+    
+    // Remove only time-based theme classes, keep manual theme class
+    document.body.classList.remove("morning-theme", "afternoon-theme", "evening-theme", "night-theme");
+    // Add the new time-based theme class
+    document.body.classList.add(`${currentTimeTheme}-theme`);
+  }
+}
+
 // INIT
 document.addEventListener("DOMContentLoaded", () => {
-  setTheme(activeTheme);
+  // Initialize time-based theme first
+  applyTimeBasedTheme();
+  // Then apply manual accent color
+  setAccentColor(activeAccent);
 
   populateTimezoneDropdown();
   renderAlarmsList();
@@ -61,30 +93,23 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => {
     updateClock();
     tickWorldClocks();
+    applyTimeBasedTheme();
   }, 1000);
 });
 
-// ================= THEME =================
-function setTheme(theme) {
-  activeTheme = theme;
-  localStorage.setItem("clockTheme", theme);
+// ================= ACCENT COLOR =================
+function setAccentColor(accent) {
+  activeAccent = accent;
+  localStorage.setItem("clockAccent", accent);
 
-  document.body.className = `${theme}-theme`;
+  // Remove only manual accent classes, keep time-based theme class
+  document.body.classList.remove("classic-theme", "modern-theme", "future-theme", "nebula-theme");
+  // Add the selected manual accent class
+  document.body.classList.add(`${accent}-theme`);
 
   document.querySelectorAll(".theme-swatch").forEach(swatch => {
-    swatch.classList.toggle("active", swatch.dataset.theme === theme);
+    swatch.classList.toggle("active", swatch.dataset.theme === accent);
   });
-
-  const labelMap = {
-    classic: "CLASSIC",
-    modern: "MODERN",
-    futuristic: "CYBER",
-    nebula: "NEBULA"
-  };
-  const badge = document.getElementById("theme-label");
-  if (badge) badge.textContent = labelMap[theme] || "CLASSIC";
-
-  showToast(`Theme: ${labelMap[theme] || theme}`);
 }
 
 // ================= CLOCK =================
@@ -331,7 +356,10 @@ function renderWorldClocks() {
       <div class="world-clock-left">
         <img src="${clock.flag}" alt="${clock.name}" class="flag-img" loading="lazy" />
         <div>
-          <div class="world-city-name">${clock.name}</div>
+          <div class="world-city-name">
+            ${clock.name}
+            <span class="time-of-day-badge" data-offset="${clock.offset}"></span>
+          </div>
           <div class="world-offset-label">${clock.offset}</div>
         </div>
       </div>
@@ -350,8 +378,59 @@ function removeWorldClock(index) {
   renderWorldClocks();
 }
 
+function getTimeOfDayInfo(hour) {
+  if (hour >= 5 && hour < 12) {
+    return {
+      label: "Morning",
+      emoji: "🌅",
+      class: "tod-morning"
+    };
+  } else if (hour >= 12 && hour < 16) {
+    return {
+      label: "Afternoon",
+      emoji: "☀️",
+      class: "tod-afternoon"
+    };
+  } else if (hour >= 16 && hour < 19) {
+    return {
+      label: "Evening",
+      emoji: "🌇",
+      class: "tod-evening"
+    };
+  } else {
+    return {
+      label: "Night",
+      emoji: "🌙",
+      class: "tod-night"
+    };
+  }
+}
+
 function tickWorldClocks() {
   const liveNodes = document.querySelectorAll(".ticking-world-time");
+  const badgeNodes = document.querySelectorAll(".time-of-day-badge");
+
+  badgeNodes.forEach(node => {
+    const offsetStr = node.getAttribute("data-offset");
+    const now = new Date();
+    const utcTimeMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+
+    let mathematicalHoursOffset = 0;
+    if (offsetStr.includes("+") || offsetStr.includes("-")) {
+      const modifier = offsetStr.includes("+") ? 1 : -1;
+      const cleanSegments = offsetStr.replace("UTC", "").replace("+", "").replace("-", "").split(":");
+      const hoursSegment = parseInt(cleanSegments[0]) || 0;
+      const minutesSegment = parseInt(cleanSegments[1]) || 0;
+      mathematicalHoursOffset = modifier * (hoursSegment + (minutesSegment / 60));
+    }
+
+    const targetedTime = new Date(utcTimeMs + (3600000 * mathematicalHoursOffset));
+    const hour = targetedTime.getHours();
+    const info = getTimeOfDayInfo(hour);
+
+    node.textContent = `${info.emoji} ${info.label}`;
+    node.className = `time-of-day-badge ${info.class}`;
+  });
 
   liveNodes.forEach(node => {
     const offsetStr = node.getAttribute("data-offset");

@@ -222,6 +222,27 @@
     height:3.2rem;
     font-size:1.2rem;
     box-shadow: 2px 2px 2px 2px grey;
+    background-color: rgb(42, 3, 31);
+  }
+  .chart-container {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid #eae2d5;
+  border-radius: 1rem;
+  background-color: #faf6f0;
+}
+
+.chart-container h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #513a29;
+  font-size: 1rem;
+}
+
+#historyChart {
+  width: 100% !important;
+  max-height: 250px;
+}
     background-color: #513a29;
   }
 
