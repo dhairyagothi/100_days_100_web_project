@@ -1,100 +1,389 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Interview Simulator - Voice Assist</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Include FontAwesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Interview Simulator - AI Voice Assist
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
 </head>
+
 <body>
-  <!-- Ambient background blobs -->
+
+  <!-- Back Button -->
+
+  <a
+    href="/"
+    class="project-back-button"
+    style="
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: linear-gradient(
+        90deg,
+        rgba(124, 99, 255, 0.14),
+        rgba(79, 141, 255, 0.1)
+      );
+      color: #fff;
+      text-decoration: none;
+      z-index: 9999;
+      font-weight: 700;
+      font-family: Inter, system-ui, sans-serif;
+      box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+    "
+  >
+    ← Back to Home
+  </a>
+
+  <!-- Background -->
+
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
 
+  <!-- Main Container -->
+
   <div class="container glass-panel">
+
+    <!-- Top Bar -->
+
     <div class="top-bar">
-      <h1><i class="fa-solid fa-user-tie"></i> Interview Simulator</h1>
+
+      <h1>
+        <i class="fa-solid fa-user-tie"></i>
+        AI Interview Simulator
+      </h1>
 
       <div class="stats">
-        <div class="card glass-card">
-          <div class="card-header">
-            <span><i class="fa-solid fa-clipboard-list"></i> Question</span>
-          </div>
-          <h2 id="question-count">1/5</h2>
-          <div class="progress-bar-container">
-            <div id="question-progress" class="progress-fill info"></div>
-          </div>
-        </div>
+
+        <!-- Question -->
 
         <div class="card glass-card">
+
           <div class="card-header">
-            <span><i class="fa-solid fa-heart-pulse"></i> Stress Level</span>
+
+            <span>
+              <i class="fa-solid fa-clipboard-list"></i>
+              Question
+            </span>
+
           </div>
-          <h2 id="stress-level">0%</h2>
+
+          <h2 id="question-count">
+            1/5
+          </h2>
+
           <div class="progress-bar-container">
-            <div id="stress-progress" class="progress-fill success"></div>
+
+            <div
+              id="question-progress"
+              class="progress-fill info"
+            ></div>
+
           </div>
+
         </div>
 
+        <!-- Stress -->
+
         <div class="card glass-card">
+
           <div class="card-header">
-            <span><i class="fa-solid fa-stopwatch"></i> Timer</span>
+
+            <span>
+              <i class="fa-solid fa-heart-pulse"></i>
+              Stress Level
+            </span>
+
           </div>
-          <h2 id="timer">60s</h2>
+
+          <h2 id="stress-level">
+            0%
+          </h2>
+
           <div class="progress-bar-container">
-            <div id="timer-progress" class="progress-fill warning"></div>
+
+            <div
+              id="stress-progress"
+              class="progress-fill success"
+            ></div>
+
           </div>
+
         </div>
+
+        <!-- Timer -->
+
+        <div class="card glass-card">
+
+          <div class="card-header">
+
+            <span>
+              <i class="fa-solid fa-stopwatch"></i>
+              Timer
+            </span>
+
+          </div>
+
+          <h2 id="timer">
+            60s
+          </h2>
+
+          <div class="progress-bar-container">
+
+            <div
+              id="timer-progress"
+              class="progress-fill warning"
+            ></div>
+
+          </div>
+
+        </div>
+
       </div>
+
     </div>
+
+    <!-- Setup Panel -->
+
+    <div class="role-selection glass-card">
+
+      <h3>
+        Configure Your AI Interview
+      </h3>
+
+      <div class="role-controls">
+
+        <!-- Role -->
+
+        <select id="role-select">
+
+          <option value="Frontend Developer">
+            Frontend Developer
+          </option>
+
+          <option value="Backend Developer">
+            Backend Developer
+          </option>
+
+          <option value="React Developer">
+            React Developer
+          </option>
+
+          <option value="Java Developer">
+            Java Developer
+          </option>
+
+          <option value="Python Developer">
+            Python Developer
+          </option>
+
+          <option value="AIML Engineer">
+            AIML Engineer
+          </option>
+
+          <option value="HR Interview">
+            HR Interview
+          </option>
+
+        </select>
+
+        <!-- Difficulty -->
+
+        <select id="difficulty-select">
+
+          <option value="Beginner">
+            Beginner
+          </option>
+
+          <option value="Intermediate">
+            Intermediate
+          </option>
+
+          <option value="Advanced">
+            Advanced
+          </option>
+
+        </select>
+
+        <!-- Interview Type -->
+
+        <select id="interview-type">
+
+          <option value="Technical">
+            Technical Interview
+          </option>
+
+          <option value="HR">
+            HR Interview
+          </option>
+
+          <option value="Behavioral">
+            Behavioral Interview
+          </option>
+
+        </select>
+
+        <!-- Start Button -->
+
+        <button
+          id="start-ai-btn"
+          class="btn primary-btn"
+        >
+
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+          Start AI Interview
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Interview Section -->
 
     <div class="interview-box glass-card">
+
+      <!-- AI Interviewer -->
+
       <div class="interviewer">
+
         <div class="avatar-container">
+
           <div class="avatar">
+
             <i class="fa-solid fa-robot"></i>
+
           </div>
+
           <div class="pulse-ring"></div>
+
         </div>
-        
+
+        <!-- Conversation -->
+
         <div class="dialogue">
-          <h3>AI Interviewer</h3>
-          <p id="question">Loading question...</p>
+
+          <h3>
+            AI Interviewer
+          </h3>
+
+          <div
+            id="chat-container"
+            class="chat-container"
+          >
+
+          </div>
+
         </div>
+
       </div>
+
+      <!-- Input -->
 
       <div class="answer-section">
+
         <div class="voice-controls">
-          <button id="mic-btn" class="mic-btn" title="Toggle Voice Input">
+
+          <button
+            id="mic-btn"
+            class="mic-btn"
+            title="Toggle Voice Input"
+          >
+
             <i class="fa-solid fa-microphone"></i>
+
           </button>
-          <span id="mic-status" class="mic-status">Click mic to speak</span>
-          <div id="recording-indicator" class="recording-indicator hidden">
+
+          <span
+            id="mic-status"
+            class="mic-status"
+          >
+            Click mic to speak
+          </span>
+
+          <div
+            id="recording-indicator"
+            class="recording-indicator hidden"
+          >
+
             <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
+
           </div>
+
         </div>
-        <textarea 
+
+        <textarea
           id="answer"
-          placeholder="Type your answer here or click the microphone to speak..."
+          placeholder="Type your answer here or use voice input..."
         ></textarea>
+
       </div>
+
+      <!-- Buttons -->
 
       <div class="buttons">
-        <button id="next-btn" class="btn primary-btn">
-          <span>Next Question</span> <i class="fa-solid fa-arrow-right"></i>
+
+        <button
+          id="next-btn"
+          class="btn primary-btn"
+        >
+
+          <span>
+            Send Answer
+          </span>
+
+          <i class="fa-solid fa-paper-plane"></i>
+
         </button>
-        <button id="restart-btn" class="btn secondary-btn">
-          <i class="fa-solid fa-rotate-right"></i> <span>Restart</span>
+
+        <button
+          id="restart-btn"
+          class="btn secondary-btn"
+        >
+
+          <i class="fa-solid fa-rotate-right"></i>
+
+          <span>
+            Restart
+          </span>
+
         </button>
+
       </div>
+
     </div>
+
   </div>
 
+  <!-- Scripts -->
+
+  <script src="config.js"></script>
   <script src="app.js"></script>
+
 </body>
+
 </html>
