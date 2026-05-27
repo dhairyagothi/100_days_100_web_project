@@ -213,6 +213,11 @@ function applyTheme(themeName) {
     `[data-theme="${themeName}"]`
   );
 
+
+  const activeBtn = document.querySelector(
+    `[data-theme="${themeName}"]`
+  );
+
   if (activeBtn) {
     activeBtn.classList.add("active");
   }
@@ -356,3 +361,5 @@ try {
 } catch (e) {
   applyTheme('theme1');
 }
+}
+

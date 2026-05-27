@@ -27,5 +27,8 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "serve": "^14.2.6"
   }
 }

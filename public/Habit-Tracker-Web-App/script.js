@@ -10,6 +10,9 @@ let editingIndex = null;
 let habitToDeleteIndex = null;
 let quill;
 
+// NEW: Calendar state
+let currentCalendarDate = new Date();
+
 // DOM Elements
 const habitList = document.getElementById("habitList");
 const emptyState = document.getElementById("emptyState");
@@ -31,6 +34,12 @@ const habitDetailsSection = document.getElementById("habitDetailsSection");
 const closeDetailsBtn = document.getElementById("closeDetailsBtn");
 const detailsTitle = document.getElementById("detailsTitle");
 const detailsStatus = document.getElementById("detailsStatus");
+
+// NEW: Calendar Elements
+const calendarGrid = document.getElementById("calendarGrid");
+const calendarMonth = document.getElementById("calendarMonthLabel");
+const prevMonthBtn = document.getElementById("prevMonthBtn");
+const nextMonthBtn = document.getElementById("nextMonthBtn");
 
 // Modals / Drawers
 const fabAdd = document.getElementById("fabAdd");
@@ -160,6 +169,72 @@ function generateHistoryDots(history) {
   return html;
 }
 
+/* NEW: CALENDAR VIEW */
+function renderCalendar() {
+  if (!calendarGrid || !calendarMonth) return;
+
+  calendarGrid.innerHTML = "";
+
+  const year = currentCalendarDate.getFullYear();
+  const month = currentCalendarDate.getMonth();
+
+  calendarMonth.textContent = currentCalendarDate.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric"
+  });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const totalDays = new Date(year, month + 1, 0).getDate();
+
+  // Empty cells before first day
+  for (let i = 0; i < firstDay; i++) {
+    const emptyCell = document.createElement("div");
+    emptyCell.className = "calendar-day empty";
+    calendarGrid.appendChild(emptyCell);
+  }
+
+  // Real dates
+  for (let day = 1; day <= totalDays; day++) {
+    const date = new Date(year, month, day);
+
+    // FIXED DATE FORMAT
+    const localDate = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    );
+
+    const dateStr = localDate.toISOString().split("T")[0];
+
+    const completedCount = habits.filter(h =>
+      h.history.includes(dateStr)
+    ).length;
+
+    const dayCell = document.createElement("div");
+    dayCell.className = "calendar-day";
+
+    if (completedCount > 0) {
+      dayCell.classList.add("completed-day");
+    }
+
+    // TODAY HIGHLIGHT
+    if (dateStr === getTodayStr()) {
+      dayCell.classList.add("today");
+    }
+
+    dayCell.innerHTML = `
+      <div class="calendar-date">${day}</div>
+      ${
+        completedCount > 0
+          ? `<div class="calendar-count">${completedCount}</div>`
+          : ""
+      }
+    `;
+
+    dayCell.title = `${completedCount} habits completed on ${dateStr}`;
+
+    calendarGrid.appendChild(dayCell);
+  }
+}
+
 /* RENDER DASHBOARD */
 function renderDashboard() {
   const todayStr = getTodayStr();
@@ -213,6 +288,9 @@ function renderDashboard() {
   renderHeatmap();
   renderWeeklyChart();
   renderAchievements(maxStreak, totalHistoricalCompletions, totalHabits);
+
+  // NEW
+  renderCalendar();
 
   const filteredHabits = habits
     .map((habit, index) => ({ ...habit, originalIndex: index }))
@@ -377,6 +455,17 @@ document.querySelectorAll(".filter-chip").forEach(chip => {
 searchInput?.addEventListener("input", e => {
   searchQuery = e.target.value.toLowerCase();
   renderDashboard();
+});
+
+/* NEW: CALENDAR NAVIGATION */
+prevMonthBtn?.addEventListener("click", () => {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+  renderCalendar();
+});
+
+nextMonthBtn?.addEventListener("click", () => {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+  renderCalendar();
 });
 
 /* DETAILS PANEL */

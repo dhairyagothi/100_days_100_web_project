@@ -1,96 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro Timer</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-    <div class="theme-toggle">
-        <button id="themeBtn" aria-label="Toggle light/dark theme">🌙</button>
-    </div>
-
-    <div class="title">
-        POMODORO TIMER
-    </div>
-
-    <div class="container">
-
-        <div class="top-section">
-
-            <input
-                type="text"
-                id="taskInput"
-                placeholder="What are you working on?"
-                aria-label="Enter your current task"
-            >
-
-            <div class="task-display">
-                <input type="checkbox" id="taskCheck" aria-label="Mark task as complete">
-                <span id="currentTask">No current task</span>
+    <div class="app-container">
+        <!-- Main Timer Card -->
+        <div class="timer-card" id="timerCard">
+            <div class="modes">
+                <button id="pomodoroBtn" class="mode-btn active">Pomodoro</button>
+                <button id="shortBreakBtn" class="mode-btn">Short Break</button>
+                <button id="longBreakBtn" class="mode-btn">Long Break</button>
             </div>
-
+            
+            <div class="time-display" id="timer">25:00</div>
+            
+            <div class="controls">
+                <button id="startBtn">START</button>
+            </div>
         </div>
 
-        <div class="center-section">
-
-            <div class="mode">
-                <button id="workBtn" class="active" aria-label="Switch to Work mode">Work</button>
-                <button id="breakBtn" aria-label="Switch to Break mode">Break</button>
-            </div>
-
-            <button id="focusModeBtn" aria-label="Toggle Focus Mode">Focus Mode</button>
-            <div class="custom-time">
-    <input
-        type="number"
-        id="customInput"
-        placeholder="Custom mins"
-        min="1"
-        max="120"
-        aria-label="Set custom timer in minutes"
-    >
-    <button id="setTimeBtn" aria-label="Set custom time">Set</button>
-</div>
-            <div class="circle">
-
-                <svg aria-hidden="true">
-                    <circle class="bg" cx="160" cy="160" r="100"></circle>
-                    <circle class="progress" id="progressCircle" cx="160" cy="160" r="100"></circle>
-                </svg>
-
-                <div
-                    id="timer"
-                    role="timer"
-                    aria-live="polite"
-                    aria-atomic="true"
-                    aria-label="Countdown timer"
-                >25:00</div>
-
-            </div>
-
-            <div class="buttons">
-                <button id="start" aria-label="Start the timer">Start</button>
-                <button id="pause" aria-label="Pause the timer" disabled>Pause</button>
-                <button id="reset" aria-label="Reset the timer">Reset</button>
-            </div>
-
+        <!-- Task info (under timer) -->
+        <div class="task-info">
+            <div class="task-number">#1</div>
+            <div class="task-current" id="currentTaskDisplay">study</div>
         </div>
 
+        <!-- Task Section -->
+        <div class="task-section">
+            <div class="task-header">
+                <h2>Tasks</h2>
+                <button class="options-btn" aria-label="Task options">⋮</button>
+            </div>
+            
+            <div class="task-list" id="taskList">
+                <!-- Example Task matching the image -->
+                <div class="task-item active-task">
+                    <div class="task-check">
+                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <span class="task-title">study</span>
+                    <span class="task-pomodoros">1 / 1</span>
+                    <button class="task-options-item">⋮</button>
+                </div>
+            </div>
+            
+            <button class="add-task-btn" id="addTaskBtn">
+                <span class="icon">+</span> Add Task
+            </button>
+        </div>
     </div>
-
-    <div class="quote-banner">
-      <marquee id="quoteText" scrollamount="3">Stay focused and never give up</marquee>
-    </div> 
 
     <audio id="tickSound" loop>
         <source src="https://www.soundjay.com/clock/sounds/clock-ticking-2.mp3" type="audio/mpeg">
     </audio>
 
     <script src="script.js"></script>
-
 </body>
 </html>
