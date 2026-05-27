@@ -15,6 +15,8 @@
   />
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
 
   <main class="clock-app">
 
@@ -82,23 +84,15 @@
         <header class="card-header">
           <h2 class="card-title" id="controls-heading">
             <span class="card-title-dot" aria-hidden="true"></span>
-            Theme
+            Accent Color
           </h2>
         </header>
 
-        <nav class="theme-selector" aria-label="Theme selection">
-          <button class="theme-swatch swatch-classic active" data-theme="classic" onclick="setTheme('classic')" title="Classic Orange" aria-label="Classic Orange theme">
-            <span class="theme-swatch-label">Classic</span>
-          </button>
-          <button class="theme-swatch swatch-modern" data-theme="modern" onclick="setTheme('modern')" title="Modern Blue" aria-label="Modern Blue theme">
-            <span class="theme-swatch-label">Modern</span>
-          </button>
-          <button class="theme-swatch swatch-futuristic" data-theme="futuristic" onclick="setTheme('futuristic')" title="Futuristic Pink" aria-label="Cyber Pink theme">
-            <span class="theme-swatch-label">Cyber</span>
-          </button>
-          <button class="theme-swatch swatch-nebula" data-theme="nebula" onclick="setTheme('nebula')" title="Nebula Purple" aria-label="Nebula Purple theme">
-            <span class="theme-swatch-label">Nebula</span>
-          </button>
+        <nav class="theme-selector" aria-label="Accent color selection">
+          <button class="theme-swatch swatch-classic active" data-theme="classic" onclick="setAccentColor('classic')" title="Classic Orange" aria-label="Classic Orange accent"></button>
+          <button class="theme-swatch swatch-modern" data-theme="modern" onclick="setAccentColor('modern')" title="Modern Blue" aria-label="Modern Blue accent"></button>
+          <button class="theme-swatch swatch-futuristic" data-theme="futuristic" onclick="setAccentColor('futuristic')" title="Cyber Pink" aria-label="Cyber Pink accent"></button>
+          <button class="theme-swatch swatch-nebula" data-theme="nebula" onclick="setAccentColor('nebula')" title="Nebula Purple" aria-label="Nebula Purple accent"></button>
         </nav>
 
         <hr class="mt-2" aria-hidden="true" />
