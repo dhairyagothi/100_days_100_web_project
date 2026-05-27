@@ -42,6 +42,11 @@ const FILTER_CATEGORY_MAP = {
   'tool': 'Tools',
   'ui': 'UI / Animation',
   'api': 'APIs',
+  // Additional category keys supported by the new dropdown
+  'react': 'React',
+  'backend': 'Backend',
+  'apps': 'Apps',
+  'utilities': 'Utilities',
 };
 
 /**
@@ -543,23 +548,36 @@ function renderGrid() {
   if (!grid) return;
 
   const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
-    // Category filter
+    // Normalize strings used for multiple checks
+    const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
+    const nameStr = (name || '').toLowerCase();
+
+    // Category filter: supports existing chips (using getCategoryFromTags)
+    // and the new dropdown values which match tag keywords (e.g. 'react', 'backend').
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
-    const matchesFilter = activeFilter === 'all' || category === targetCategory;
+    let matchesFilter = false;
+    if (activeFilter === 'all') {
+      matchesFilter = true;
+    } else if (targetCategory !== 'all' && category === targetCategory) {
+      // Matches existing derived categories (Games, Tools, etc.)
+      matchesFilter = true;
+    } else {
+      // Fallback: match by tag or name keyword (supports React, Backend, Apps, Utilities)
+      matchesFilter = tagStr.includes(activeFilter) || nameStr.includes(activeFilter);
+    }
 
-    // Search filter
+    // Search filter (preserve existing behavior)
     const q = searchQuery.toLowerCase().trim();
     const matchesSearch = !q || q.split(/\s+/).every(term =>
-      name.toLowerCase().includes(term) ||
+      nameStr.includes(term) ||
       day.toLowerCase().includes(term) ||
-      ((Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase().includes(term))
+      tagStr.includes(term)
     );
 
     // Tech stack dropdown filter
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== 'all') {
-      const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
 
@@ -1033,6 +1051,9 @@ function initFilterChips() {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
       activeFilter = chip.dataset.filter;
+      // Keep category dropdown in sync when a chip is used
+      const catSelect = document.getElementById('categoryFilter');
+      if (catSelect) catSelect.value = activeFilter;
       currentPage = 1;
       renderGrid();
     });
@@ -1066,6 +1087,19 @@ function initSearch() {
       renderGrid();
     }, 180)
   );
+
+  // Category dropdown beside search bar
+  const categorySelect = document.getElementById('categoryFilter');
+  if (categorySelect) {
+    categorySelect.addEventListener('change', () => {
+      activeFilter = categorySelect.value || 'all';
+      // Update chips active state if the selected value matches an existing chip
+      const chips = document.querySelectorAll('.chip[data-filter]');
+      chips.forEach((c) => c.classList.toggle('active', c.dataset.filter === activeFilter));
+      currentPage = 1;
+      renderGrid();
+    });
+  }
 
   // Tech stack dropdown filter listener
   const techStack = document.getElementById('techStackFilter');
@@ -1741,7 +1775,7 @@ function restoreStateFromURL() {
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.getElementById('category');
+  const categoryFilter = document.getElementById('categoryFilter');
   if (categoryFilter && category !== 'all') categoryFilter.value = category;
   if (search || category !== 'all') applyFilters(search, category);
 }
@@ -1781,7 +1815,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       applyFilters(searchInput.value, category);
     });
   }
-  const categoryFilter = document.getElementById('category');
+  const categoryFilter = document.getElementById('categoryFilter');
   if (categoryFilter) {
     categoryFilter.addEventListener('change', () => {
       const { search } = getQueryParams();

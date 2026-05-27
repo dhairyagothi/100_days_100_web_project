@@ -34,7 +34,7 @@ body.light-mode {
   --accent: #2563eb;
   --accent-dim: rgba(37, 99, 235, 0.08);
   --accent-hover: #3b82f6;
-  --border-accent: rgba(37, 99, 235, 0.3);
+  --border-accent: rgba(71, 111, 196, 0.3);
 }
 
 /* ============================================================
@@ -824,6 +824,39 @@ body.light-mode .hero-terminal-text {
   cursor: pointer;
   outline: none;
   flex-shrink: 0;
+}
+
+/* Category dropdown styling (matches other selects) */
+#categoryFilter {
+  min-width: 160px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  flex-shrink: 0;
+}
+
+#categoryFilter option {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+/* Responsive: stack controls on narrow viewports */
+@media (max-width: 720px) {
+  .search-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  #sortProjects,
+  #difficultyFilter,
+  #categoryFilter {
+    min-width: 100%;
+    width: 100%;
+  }
 }
 
 #sortProjects option,
