@@ -316,6 +316,49 @@ select {
 .ob-skip:hover {
   color: var(--text-secondary);
 }
+.ob-default-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #1a1200 0%, #2a1f00 100%);
+  color: #fbbf24;
+  border: 1.5px solid #d97706;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+[data-theme="light"] .ob-default-btn {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  border-color: #d97706;
+}
+.ob-default-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.25);
+}
+.ob-default-status {
+  color: #4ade80;
+  font-size: 0.82rem;
+  margin-bottom: 14px;
+  padding: 8px 12px;
+  background: #0a1f0a;
+  border-radius: var(--radius-xs);
+  border: 1px solid #16a34a33;
+}
+[data-theme="light"] .ob-default-status {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.ob-default-status.hidden {
+  display: none;
+}
 .ob-steps-list {
   display: flex;
   flex-direction: column;

@@ -110,6 +110,9 @@
             <button class="ob-next-btn" onclick="nextStep(3)">
               I Have My Key <span>→</span>
             </button>
+            <button class="ob-default-btn" onclick="useDefaultApiKey(); nextStep(4)">
+              🔑 Use Default Key (No API key needed)
+            </button>
             <button class="ob-skip" onclick="nextStep(3)">Skip for now</button>
           </div>
 
@@ -157,8 +160,14 @@
             <div id="ob-key-error" class="ob-error hidden">
               Please enter a valid Gemini API key (starts with AIza)
             </div>
+            <div id="ob-default-key-status" class="ob-default-status hidden">
+              ✓ Default key active — you can skip this step!
+            </div>
             <button class="ob-next-btn" onclick="nextStep(4)">
               Next <span>→</span>
+            </button>
+            <button class="ob-default-btn" onclick="useDefaultApiKey(); nextStep(4)">
+              🔑 Use Default Key Instead
             </button>
             <button class="ob-skip" onclick="nextStep(4)">
               Skip — I'll add it later
@@ -311,6 +320,22 @@
                 Google AI Studio
               </a>
             </div>
+
+            <div class="settings-toggle-row" style="margin-top: 10px;">
+              <span>Use default Gemini API key</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="default-key-toggle" onchange="this.checked ? useDefaultApiKey() : useOwnApiKey()" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="settings-hint" style="margin-top: 4px; font-size: 11px; opacity: 0.6;">
+              Enable this if you don't have your own API key.
+            </div>
+
+            <div
+              id="default-key-status"
+              class="settings-key-status hidden"
+            ></div>
 
             <div
               id="settings-key-status"

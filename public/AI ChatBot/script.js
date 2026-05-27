@@ -1,4 +1,6 @@
 /* CONFIG & CONSTANTS */
+const DEFAULT_GEMINI_API_KEY = "AIzaSyA6HRBDQuJhoAk0JxOmsmpW8glVpv1zMp8";
+
 const STORAGE = {
   API_KEY: "gc_api_key",
   SESSIONS: "gc_sessions",
@@ -9,6 +11,7 @@ const STORAGE = {
   VOICE_LANG: "gc_voice_lang",
   ONBOARDED: "gc_onboarded",
   HF_KEY: "gc_hf_key",
+  USE_DEFAULT_KEY: "gc_use_default_key",
 };
 
 const MODEL_NAMES = {
@@ -20,6 +23,14 @@ const MODEL_NAMES = {
 /* STATE */
 let apiKey = localStorage.getItem(STORAGE.API_KEY) || "";
 let hfKey = localStorage.getItem(STORAGE.HF_KEY) || "";
+let useDefaultKey = localStorage.getItem(STORAGE.USE_DEFAULT_KEY) === "true";
+
+/* Returns the effective API key: user's own key or the default */
+function getEffectiveKey() {
+  if (apiKey) return apiKey;
+  if (useDefaultKey) return DEFAULT_GEMINI_API_KEY;
+  return "";
+}
 let sessions = loadSessions();
 let activeSessionId = null;
 let chatHistory = [];
@@ -170,7 +181,9 @@ function finishOnboarding() {
   errEl.classList.add("hidden");
   if (val) {
     apiKey = val;
+    useDefaultKey = false;
     localStorage.setItem(STORAGE.API_KEY, apiKey);
+    localStorage.setItem(STORAGE.USE_DEFAULT_KEY, "false");
     $("settings-api-input").value = apiKey;
   }
 
@@ -183,6 +196,52 @@ function finishOnboarding() {
 
   localStorage.setItem(STORAGE.ONBOARDED, "1");
   $("onboarding").classList.add("hidden");
+  updateDefaultKeyUI();
+}
+
+function useDefaultApiKey() {
+  useDefaultKey = true;
+  apiKey = "";
+  localStorage.setItem(STORAGE.USE_DEFAULT_KEY, "true");
+  localStorage.removeItem(STORAGE.API_KEY);
+  $("settings-api-input").value = "";
+  $("ob-api-input").value = "";
+  updateDefaultKeyUI();
+}
+
+function useOwnApiKey() {
+  useDefaultKey = false;
+  localStorage.setItem(STORAGE.USE_DEFAULT_KEY, "false");
+  updateDefaultKeyUI();
+}
+
+function updateDefaultKeyUI() {
+  const settingsStatus = $("default-key-status");
+  const obStatus = $("ob-default-key-status");
+  const settingsToggle = $("default-key-toggle");
+
+  if (settingsStatus) {
+    if (useDefaultKey && !apiKey) {
+      settingsStatus.classList.remove("hidden");
+      settingsStatus.innerHTML = '✓ Using default Gemini API key';
+      settingsStatus.className = "settings-key-status success";
+    } else {
+      settingsStatus.classList.add("hidden");
+    }
+  }
+
+  if (obStatus) {
+    if (useDefaultKey && !apiKey) {
+      obStatus.classList.remove("hidden");
+      obStatus.textContent = '✓ Default key active — you can skip this step!';
+    } else {
+      obStatus.classList.add("hidden");
+    }
+  }
+
+  if (settingsToggle) {
+    settingsToggle.checked = useDefaultKey && !apiKey;
+  }
 }
 
 function skipOnboarding() {
@@ -371,7 +430,9 @@ function saveAllSettings() {
   const keyVal = $("settings-api-input").value.trim();
   if (keyVal) {
     apiKey = keyVal;
+    useDefaultKey = false;
     localStorage.setItem(STORAGE.API_KEY, apiKey);
+    localStorage.setItem(STORAGE.USE_DEFAULT_KEY, "false");
   }
 
   const hfVal = $("settings-hf-input").value.trim();
@@ -395,6 +456,7 @@ function saveAllSettings() {
   // Voice lang
   localStorage.setItem(STORAGE.VOICE_LANG, $("voice-lang-select").value);
 
+  updateDefaultKeyUI();
   closeSettings();
 }
 
@@ -789,7 +851,7 @@ function togglePinnedView() {
 
 /* VOICE INPUT */
 function toggleVoice() {
-  if (!apiKey) {
+  if (!getEffectiveKey()) {
     openSettings();
     return;
   } // add this guard
@@ -1098,7 +1160,7 @@ function handleSend() {
     return;
   }
 
-  if (!apiKey) {
+  if (!getEffectiveKey()) {
     openSettings();
     return;
   }
@@ -1150,7 +1212,8 @@ async function getAIResponse() {
   if (sysProm) body.systemInstruction = { parts: [{ text: sysProm }] };
 
   try {
-    const res = await fetch(`${API_URL}?key=${apiKey}`, {
+    const effectiveKey = getEffectiveKey();
+    const res = await fetch(`${API_URL}?key=${effectiveKey}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -1480,3 +1543,4 @@ function escapeRegex(str) {
 
 /* START */
 init();
+updateDefaultKeyUI();
