@@ -71,6 +71,7 @@ faqItems.forEach(item => {
   question.addEventListener("click", () => {
     item.classList.toggle("active");
   });
+});
 // ================= CHATBOT =================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -80,6 +81,11 @@ const closeChat = document.getElementById("close-chat");
 const sendBtn = document.getElementById("send-btn");
 const userInput = document.getElementById("user-input");
 const chatMessages = document.getElementById("chat-messages");
+const savedChat = localStorage.getItem("travel_chat");
+
+if (savedChat) {
+  chatMessages.innerHTML = savedChat;
+}
 
 // OPEN / CLOSE CHATBOT
 
@@ -96,6 +102,15 @@ chatToggle.addEventListener("click", () => {
 closeChat.addEventListener("click", () => {
   chatbotBox.style.display = "none";
 });
+
+function getTime() {
+
+  return new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+}
 
 // SEND MESSAGE FUNCTION
 function formatResponse(text) {
@@ -123,9 +138,16 @@ async function sendMessage() {
 
   userMessage.classList.add("user-message");
 
-  userMessage.textContent = message;
+  userMessage.innerHTML = `
+  ${message}
+  <div class="msg-timestamp">${getTime()}</div>
+`;
 
   chatMessages.appendChild(userMessage);
+  localStorage.setItem(
+  "travel_chat",
+  chatMessages.innerHTML
+);
 
   // CLEAR INPUT
 
@@ -144,6 +166,7 @@ async function sendMessage() {
   loadingMessage.textContent = "Thinking...";
 
   chatMessages.appendChild(loadingMessage);
+
 
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
@@ -226,9 +249,16 @@ Keep answers concise but informative.`,
 
     botMessage.classList.add("bot-message");
 
-    botMessage.innerHTML = formatResponse(data.choices[0].message.content);
+    botMessage.innerHTML = `
+  ${formatResponse(data.choices[0].message.content)}
+  <div class="msg-timestamp">${getTime()}</div>
+`;
 
     chatMessages.appendChild(botMessage);
+    localStorage.setItem(
+  "travel_chat",
+  chatMessages.innerHTML
+);
 
     // AUTO SCROLL
 
@@ -252,18 +282,41 @@ userInput.addEventListener("keypress", (e) => {
   }
 });
 
-if (tabSignIn && tabSignUp && formSignInContainer && formSignUpContainer) {
-  tabSignIn.addEventListener("click", () => {
-    tabSignIn.classList.add("active");
-    tabSignUp.classList.remove("active");
-    formSignInContainer.classList.add("active");
-    formSignUpContainer.classList.remove("active");
-  });
 
-  tabSignUp.addEventListener("click", () => {
-    tabSignUp.classList.add("active");
-    tabSignIn.classList.remove("active");
-    formSignUpContainer.classList.add("active");
-    formSignInContainer.classList.remove("active");
-  });
-}
+document
+  .getElementById("export-chat")
+  .addEventListener("click", () => {
+
+    const blob = new Blob(
+      [chatMessages.innerText],
+      { type: "text/plain" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = "travel-chat.txt";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+});
+document
+  .getElementById("clear-chat")
+  .addEventListener("click", () => {
+
+    if (confirm("Clear all chat history?")) {
+
+      chatMessages.innerHTML = `
+<div class="bot-message">
+  Hi! 👋<br>
+  Ask me anything about destinations, hotels, flights, or travel planning.
+</div>
+`;
+
+      localStorage.removeItem("travel_chat");
+    }
+});
