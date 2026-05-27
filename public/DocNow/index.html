@@ -4,173 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DocNow</title>
-    <link rel="stylesheet" href="docstyle.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./docstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css">
 </head>
 <body>
-    <div class="wrapper">
-        <div class="nav">
-            <div class="logo">
-                <img src="images\docnow.png" alt="DocNow Logo">
-            </div>
-            <div class="link">
-                <a href="#" class="mainlink">Home</a>
-                <a href="pages/about.html">About</a>
-                <a href="pages/services.html">Services</a>
-                <a href="#">Chat</a>
-                <a href="#">News</a>
-                <a href="pages/contact.html">Contact-us</a>
-                <a href="#" class="button">Learn more</a>
-            </div>
-        </div>
-        <!-- Landing page -->
-        <div class="landing">
-            <div class="landingtext" data-aos="fade-up" data-aos-duration="2000">
-                <h1>
-                    Your<span style="color:rgb(9, 87, 150);font-size: 35px;"> Health</span>.Our <span style="color:rgb(9, 87, 150);font-size: 35px;">Priority</span>
-                </h1>
-                <h3>Connecting You to Better Health</h3>
-                <div class="btn">
-                    <a href="#">Read more</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+    <header class="nav">
+        <a class="logo" href="index.html"><img src="./images/docnow.png" alt="DocNow logo"></a>
+        <nav class="link">
+            <a href="./pages/about.html">About</a>
+            <a href="./pages/services.html">Services</a>
+            <a href="./pages/appointment.html">Appointment</a>
+            <a href="./pages/doctors.html">Doctors</a>
+            <a href="./pages/contact.html">Contact</a>
+            <a href="./pages/contact.html" class="button">Chat now</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-copy" data-aos="fade-right" data-aos-duration="1200">
+                <span class="eyebrow">Book instantly. Consult confidently.</span>
+                <h1>Smart care for every moment.</h1>
+                <p>DocNow connects you to experienced doctors, fast appointment booking, and secure medical records — all in one polished healthcare experience.</p>
+                <div class="hero-actions">
+                    <a href="./pages/appointment.html" class="btn primary">Book an appointment</a>
+                    <a href="./pages/services.html" class="btn secondary">Explore services</a>
+                </div>
+                <div class="stats">
+                    <div class="stat-card"><strong>24/7</strong><span>Live support</span></div>
+                    <div class="stat-card"><strong>120+</strong><span>Specialists</span></div>
+                    <div class="stat-card"><strong>99%</strong><span>Satisfaction</span></div>
+                    <div class="stat-card"><strong>30+</strong><span>Care services</span></div>
                 </div>
             </div>
-            <div class="landingImage" data-aos="fade-down" data-aos-duration="2000">
-                <img src="images/banner_img.jpg" alt="Banner Image">
+            <div class="hero-visual" data-aos="fade-left" data-aos-duration="1200">
+                <img src="./images/banner_img.jpg" alt="DocNow patient dashboard">
             </div>
-        </div>
-        <!-- Service section -->
-        <div class="about">
-            <div class="abouttext" data-aos="fade-down" data-aos-duration="2000">
-                <h1>Our patients are everything to us. They are the <span style="color: darkslateblue; font-size: 3px;">center of everything</span></h1>
-                <img src="images/ability_img.png" alt="Ability Image" style="height: 500px;width: 500px;">
+        </section>
+
+        <section class="section section-light">
+            <div class="section-heading" data-aos="fade-up" data-aos-duration="1200">
+                <h2>Healthy care, simplified.</h2>
+                <p>DocNow makes it easy to schedule appointments, manage records, and stay connected with your medical team from a single trusted hub.</p>
             </div>
-            <div class="aboutlist" data-aos="fade-left" data-aos-duration="1500">
-                <ol>
-                    <li>
-                        <span style="color:darkblue">01</span>
-                        
-                        <p>Modern Technology</p>
-                    </li>
-                    
-                    <li>
-                        <span style="color:darkblue">02</span>
-                        <p>Experienced Doctors</p>
-                    </li>
-                    <li>
-                        <span style="color:darkblue">03</span>
-                        <p>Record of Medical history</p>
-                    </li>
-                    <li>
-                        <span style="color:darkblue">04</span>
-                        <p>Chat facility</p>
-                    </li>
-                    <li>
-                        
-                    </li>
-                </ol>
+            <div class="hero-row">
+                <div class="info-panel" data-aos="fade-right" data-aos-duration="1200">
+                    <h3>Your health journey in one place.</h3>
+                    <p>Whether it is specialist appointments, medical history access, or direct doctor chat, DocNow keeps every care step smooth and reliable.</p>
+                    <ul>
+                        <li><strong>01</strong> Fast appointment booking</li>
+                        <li><strong>02</strong> Trusted specialist directory</li>
+                        <li><strong>03</strong> Secure medical record access</li>
+                        <li><strong>04</strong> Easy patient-doctor communication</li>
+                    </ul>
+                    <a href="./pages/services.html" class="button">View services</a>
+                </div>
+                <div data-aos="fade-left" data-aos-duration="1200">
+                    <img src="./images/ability_img.png" alt="DocNow healthcare illustration">
+                </div>
             </div>
-        </div>
-        <!-- Info section -->
-        <div class="infosection">
-            <div class="infoheader" data-aos="fade-up" data-aos-duration="1000">
-                <h1>Our <span style="color: dodgerblue;">Services</span></h1>
+        </section>
+
+        <section class="section">
+            <div class="section-heading" data-aos="fade-up" data-aos-duration="1200">
+                <h2>Care services for every need.</h2>
+                <p>Choose the service that fits your situation and connect with doctors, records, and support instantly.</p>
             </div>
-            <div class="infocards">
-                <div class="card one" data-aos="fade-up" data-aos-duration="2000">
-                    <img src="images/banner_img.jpg" class="cardone" data-aos="fade-up" data-aos-duration="1100" alt="Card One">
-                    <div class="cardbgone"></div>
-                    <div class="cardcontent">
-                        <h2>Health Service</h2>
-                        <p>The best services in the area </p>
-                        <a href="services.html">
-                            <div class="cardbtn">
-                                <img src="images/next.png" class="cardicon" alt="Next Icon">
-                            </div>
-                        </a>
+            <div class="grid grid-3" data-aos="fade-up" data-aos-duration="1200">
+                <article class="service-card">
+                    <div class="icon"><img src="./images/banner_1.svg" alt="Appointment icon"></div>
+                    <h3>Appointment booking</h3>
+                    <p>Reserve time with top specialists across dentistry, cardiology, dermatology, and more.</p>
+                    <div class="card-footer"><a href="./pages/appointment.html">Book now</a></div>
+                </article>
+                <article class="service-card">
+                    <div class="icon"><img src="./images/banner_1.svg" alt="Doctor icon"></div>
+                    <h3>Doctor directory</h3>
+                    <p>Browse experienced doctors by specialty, availability, and patient reviews.</p>
+                    <div class="card-footer"><a href="./pages/doctors.html">See doctors</a></div>
+                </article>
+                <article class="service-card">
+                    <div class="icon"><img src="./images/banner_1.svg" alt="Record icon"></div>
+                    <h3>Medical records</h3>
+                    <p>Keep your history organized and share records easily during consultations.</p>
+                    <div class="card-footer"><a href="./pages/contact.html">Get support</a></div>
+                </article>
+                <article class="service-card">
+                    <div class="icon"><img src="./images/banner_1.svg" alt="Chat icon"></div>
+                    <h3>Patient chat</h3>
+                    <p>Send quick messages to your care team and get guidance on your health questions.</p>
+                    <div class="card-footer"><a href="./pages/contact.html">Start chat</a></div>
+                </article>
+                <article class="service-card">
+                    <div class="icon"><img src="./images/banner_1.svg" alt="Support icon"></div>
+                    <h3>Health tracking</h3>
+                    <p>Monitor your progress with easy access to appointments, notes, and follow-up care.</p>
+                    <div class="card-footer"><a href="./pages/contact.html">Learn more</a></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section section-light">
+            <div class="cta-banner" data-aos="fade-up" data-aos-duration="1200">
+                <div>
+                    <h2>Download the DocNow companion app.</h2>
+                    <p>Keep appointments, records, and care conversations with you everywhere you go.</p>
+                    <div class="download-links">
+                        <img src="./images/AndroidPNG.png" alt="Download on Android">
+                        <img src="./images/iosPNG.png" alt="Download on iOS">
                     </div>
                 </div>
-                <div class="card two" data-aos="fade-up" data-aos-duration="2200">
-                    <img src="images/banner_img.jpg" class="cardtwo" data-aos="fade-up" data-aos-duration="1100" alt="Card Two">
-                    <div class="cardbgtwo"></div>
-                    <div class="cardcontent">
-                        <h2>Appointment</h2>
-                        <p>Book an appointment</p>
-                        <a href="appointment.html">
-                            <div class="cardbtn">
-                                <img src="images/next.png" class="cardicon" alt="Next Icon">
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="card three" data-aos="fade-up" data-aos-duration="2400">
-                    <img src="images/banner_img.jpg" class="cardthree" data-aos="fade-up" data-aos-duration="1100" alt="Card Three">
-                    <div class="cardbgthree"></div>
-                    <div class="cardcontent">
-                        <h2>List of Doctors</h2>
-                        <p>List of the best doctors in the region.</p>
-                        <a href="doctors.html">
-                            <div class="cardbtn">
-                                <img src="images/next.png" class="cardicon" alt="Next Icon">
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="card four" data-aos="fade-up" data-aos-duration="2000">
-                    <img src="images/banner_img.jpg" class="cardfour" data-aos="fade-up" data-aos-duration="1100" alt="Card Four">
-                    <div class="cardbgfour"></div>
-                    <div class="cardcontent">
-                        <h2>Chat</h2>
-                        <p>Chat with our experts 24/7</p>
-                        <a href="#">
-                            <div class="cardbtn">
-                                <img src="images/next.png" class="cardicon" alt="Next Icon">
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="card five" data-aos="fade-up" data-aos-duration="2000">
-                    <img src="images/banner_img.jpg" class="cardfive" data-aos="fade-up" data-aos-duration="1100" alt="Card Five">
-                    <div class="cardbgfive"></div>
-                    <div class="cardcontent">
-                        <h2>Medical Records</h2>
-                        <p>Access your medical records with ease</p>
-                        <a href="#">
-                            <div class="cardbtn">
-                                <img src="images/next.png" class="cardicon" alt="Next Icon">
-                            </div>
-                        </a>
-                    </div>
+                <div>
+                    <img src="./images/app.png" alt="DocNow mobile app">
                 </div>
             </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="./pages/about.html">About</a>
+            <a href="./pages/services.html">Services</a>
+            <a href="./pages/doctors.html">Doctors</a>
+            <a href="./pages/contact.html">Contact</a>
         </div>
-        <!-- Banner and footer -->
-        <div class="banner">
-            <div class="bannertext" data-aos="fade-right" data-aos-duration="1000">
-                <h1>Download <span style="color:blue; font-size: 1.4px;">today</span></h1>
-                <a href="#"><img src="images/AndroidPNG.png" alt="Android Download"></a>
-                <a href="#"><img src="images/iosPNG.png" alt="iOS Download"></a>
-            </div>
-            <div class="bannerimg" data-aos="fade-up" data-aos-duration="1300">
-                <img src="images/app.png" alt="App Image">
-            </div>
-        </div>
-        <div class="footer">
-            <h1>DocNow</h1>
-            <div class="footerlink">
-                <a href="#" class="mainlink">Home</a>
-                <a href="#">About</a>
-                <a href="#">Services</a>
-                <a href="#">Chat</a>
-                <a href="#">News</a>
-                <a href="#">Contact-us</a>
-                <a href="#" class="button">Learn more</a>
-            </div>
-        </div>
-    </div>
+        <div class="footer-copy">© 2026 DocNow — Virtual healthcare that feels human.</div>
+    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
+    <script>AOS.init();</script>
 </body>
 </html>

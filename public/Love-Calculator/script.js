@@ -3,53 +3,173 @@ window.onload = function () {
     const button = document.getElementById("calculate");
     button.addEventListener("click", calculateLove);
 };
+/* Enter key support */
 
-document.getElementById("reset").addEventListener("click", function() {
-    document.getElementById("fname").value = "";
-    document.getElementById("cname").value = "";
-    document.getElementById("result-message").textContent = "";
-    document.getElementById("result-percentage").textContent = "";
-    document.getElementById("calculate").classList.remove("hidden");
-    document.getElementById("reset").classList.add("hidden");
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+
+        calculateLove();
+    }
 });
 
+
+
+/* Main Love Calculator Function */
+
 function calculateLove() {
+
+    // Get input values
     const yourName = document.getElementById("fname").value.trim();
     const crushName = document.getElementById("cname").value.trim();
 
-    if (yourName && crushName) {
-        // Use the provided formula to calculate the love index
-        const combined = yourName + crushName;
-        const letterCounts = {};
+    // Footer section for animation
+    const footer = document.querySelector(".footer");
 
-        for (const letter of combined) {
-            letterCounts[letter] = (letterCounts[letter] || 0) + 1;
-        }
+    // Loading text element
+    const loading = document.getElementById("loading");
 
-        // Sum of all letter counts
-        const sum = Object.values(letterCounts).reduce((a, b) => a + b, 0);
+    // Input validation
+    const namePattern = /^[A-Za-z\s]+$/;
 
-        // Convert sum to a percentage
-        const loveIndex = sum % 101;
+    // Empty input validation
+    if (!yourName || !crushName) {
 
-        // Display the result
-        let emoji = "";
-        let msg = "";
-        if (loveIndex <= 30) { emoji = "💔"; msg = "Not a great match!"; }
-        else if (loveIndex <= 60) { emoji = "💛"; msg = "There's potential!"; }
-        else if (loveIndex <= 90) { emoji = "💕"; msg = "Great match!"; }
-        else { emoji = "❤️‍🔥"; msg = "Soulmates!"; }
-
-        document.getElementById("result-message").textContent = 
-        `${emoji} ${loveIndex}% ${emoji}`;
-        document.getElementById("result-percentage").textContent = 
-        `${yourName} & ${crushName} — ${msg}`;
-
-        document.getElementById("calculate").classList.add("hidden");
-        document.getElementById("reset").classList.remove("hidden");
-    } else{
-        document.getElementById("result-message").textContent = 
+        document.getElementById("result-message").textContent =
             "Please enter both names!";
+
+        footer.classList.add("show-result");
+
+        return;
     }
 
+    // Invalid character validation
+    if (!namePattern.test(yourName) || !namePattern.test(crushName)) {
+
+        document.getElementById("result-message").textContent =
+            "Please enter valid names only!";
+
+        footer.classList.add("show-result");
+
+        return;
+    }
+
+    // Show loading animation
+    loading.classList.remove("hidden");
+
+    // Hide previous result
+    footer.classList.remove("show-result");
+
+    // Delay for loading effect
+    setTimeout(() => {
+
+        // Hide loading
+        loading.classList.add("hidden");
+
+        // Combine names
+        const combined = (yourName + crushName).toLowerCase();
+
+        // Store character frequencies
+        const letterCounts = {};
+
+        // Count repeated letters
+        for (const letter of combined) {
+
+            if (letter !== " ") {
+
+                letterCounts[letter] =
+                    (letterCounts[letter] || 0) + 1;
+            }
+        }
+
+        // Improved compatibility score
+        let weightedScore = 0;
+
+        // Repeated characters matter more
+        Object.values(letterCounts).forEach(count => {
+
+            weightedScore += count * count;
+        });
+
+        // Add name length factor
+        weightedScore += combined.length * 3;
+
+        // Final percentage
+        const loveIndex = weightedScore % 101;
+
+        // Romantic dynamic messages
+        const lowMessages = [
+            "Better as friends maybe 💔",
+            "This could be difficult!",
+            "Not the strongest match!"
+        ];
+
+        const mediumMessages = [
+            "There's potential 💛",
+            "Cute connection detected!",
+            "Interesting chemistry!"
+        ];
+
+        const highMessages = [
+            "Great match 💕",
+            "You both look adorable together!",
+            "Strong compatibility!"
+        ];
+
+        const soulmateMessages = [
+            "Soulmates ❤️‍🔥",
+            "A match made in heaven!",
+            "Destiny brought you together 💖"
+        ];
+
+        let emoji = "";
+        let msg = "";
+
+        // Result categories
+        if (loveIndex <= 30) {
+
+            emoji = "💔";
+
+            msg = lowMessages[
+                Math.floor(Math.random() * lowMessages.length)
+            ];
+
+        } else if (loveIndex <= 60) {
+
+            emoji = "💛";
+
+            msg = mediumMessages[
+                Math.floor(Math.random() * mediumMessages.length)
+            ];
+
+        } else if (loveIndex <= 90) {
+
+            emoji = "💕";
+
+            msg = highMessages[
+                Math.floor(Math.random() * highMessages.length)
+            ];
+
+        } else {
+
+            emoji = "❤️‍🔥";
+
+            msg = soulmateMessages[
+                Math.floor(Math.random() * soulmateMessages.length)
+            ];
+        }
+
+        // Display result
+        document.getElementById("result-message").textContent =
+            `${emoji} ${loveIndex}% ${emoji}`;
+
+        document.getElementById("result-percentage").textContent =
+            `${yourName} & ${crushName} — ${msg}`;
+
+        // Show animated result
+        footer.classList.add("show-result");
+
+        // Toggle buttons
+        
+    }, 1800);
 }

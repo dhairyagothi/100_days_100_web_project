@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/public/Todolist-React-TS-Tailwind/',
+  base: './',
   css: {
     postcss: './postcss.config.js',
   },

@@ -34,6 +34,7 @@ const TILE_STYLES = {
   2048: { fontSize: '22px' },
 };
 
+
 const PARTICLE_COLORS = ['#ff6b6b', '#ffd54f', '#69f0ae', '#4fc3f7', '#e040fb', '#ff9800'];
 
 const ACHIEVEMENTS = [
@@ -58,8 +59,8 @@ let N        = 4;       // grid size
 let TS       = 94;      // tile size in px
 let GAP      = 10;      // gap between tiles
 let PAD      = 12;      // board padding
-
-let board, score, best, prevBoard, prevScore;
+let paused = false;
+let board, score, best, prevBoard, prevScore; 
 let moves    = 0;
 let combo    = 0;
 let over     = false;
@@ -136,7 +137,18 @@ function addTile (b = board) {
 }
 
 function tilePos (r, c) {
-  return { top: PAD + r * (TS + GAP), left: PAD + c * (TS + GAP) };
+
+  let scale = 1;
+
+  if (window.innerWidth <= 415) scale = 0.88;
+  if (window.innerWidth <= 390) scale = 0.82;
+
+  const step = (TS + GAP) * scale;
+
+  return {
+    top:  PAD * scale + r * step,
+    left: PAD * scale + c * step
+  };
 }
 
 /* =========================================================
@@ -144,10 +156,21 @@ function tilePos (r, c) {
    ========================================================= */
 
 function applyGridDimensions () {
-  if (mode === 'zen') { N = 5; TS = 74; GAP = 8; PAD = 10; }
-  else                { N = 4; TS = 94; GAP = 10; PAD = 12; }
+
+  if (mode === 'zen') {
+    N = 5;
+  } else {
+    N = 4;
+  }
+
+  const styles = getComputedStyle(document.documentElement);
+
+  TS  = parseInt(styles.getPropertyValue('--tile-size'));
+  GAP = parseInt(styles.getPropertyValue('--tile-gap'));
+  PAD = parseInt(styles.getPropertyValue('--board-pad'));
 
   const bd = document.getElementById('bd');
+
   bd.style.gridTemplateColumns = `repeat(${N}, ${TS}px)`;
   bd.style.gridTemplateRows    = `repeat(${N}, ${TS}px)`;
 }
@@ -193,7 +216,7 @@ function doMove (dir) {
   prevBoard = copyBoard(board);
   prevScore = score;
 
-  const rotTurns = { right: 0, down: 1, left: 2, up: 3 };
+  const rotTurns = { left: 0, down: 1, right: 2, up: 3 };
   let tmp = rotateBoard(board, rotTurns[dir]);
   let pts = 0;
   let moved = false;
@@ -247,10 +270,16 @@ function doMove (dir) {
 
   if (isLost()) {
     over = true;
+    showToast(
+      reviveChance > 0
+      ? `Chance left: ${reviveChance}`
+      : 'No chances left'
+    );
     if (mode === 'timed') clearInterval(timerInterval);
     stats.games++;
     stats.best = Math.max(stats.best, score);
     stats.bestTile = Math.max(stats.bestTile, mt);
+    logGameScore(score); 
     saveStats();
     clearSavedGame();
     setTimeout(() => showOverlay('lose'), 350);
@@ -331,16 +360,17 @@ function updateTimerBar () {
   fill.className = 'timer-fill' + (timeLeft <= 15 ? ' danger' : '');
 }
 
+
+
 /* =========================================================
    Rendering
    ========================================================= */
-
 function renderBoard () {
   const bd = document.getElementById('bd');
   bd.innerHTML = '';
   const size = PAD * 2 + N * TS + (N - 1) * GAP;
   bd.style.width = size + 'px';
-
+  bd.style.height = size + 'px';
   const tl = document.getElementById('tl');
   tl.style.width  = size + 'px';
   tl.style.height = size + 'px';
@@ -627,16 +657,19 @@ document.getElementById('nb').addEventListener('click', () => {
 
 document.getElementById('ub').addEventListener('click', () => {
   if (!prevBoard) { showToast('Nothing to undo'); return; }
+
   board     = prevBoard;
   score     = prevScore;
   prevBoard = null;
   moves     = Math.max(0, moves - 1);
   over      = false;
   won       = false;
+
   renderBoard();
   renderTiles();
   updateUI();
   document.getElementById('ov').style.display = 'none';
+
   showToast('Undone!');
 });
 
@@ -675,7 +708,7 @@ const KEY_MAP = {
 };
 
 document.addEventListener('keydown', e => {
-  const dir = KEY_MAP[e.key];
+ const dir = KEY_MAP[e.key];
   if (dir) { e.preventDefault(); doMove(dir); }
 });
 

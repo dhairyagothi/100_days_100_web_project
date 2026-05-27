@@ -1,47 +1,999 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI ChatBot - Gemini</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Code+Pro&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="chat-container">
-        <header>
-            <h1>Gemini AI</h1>
-            <div class="api-settings">
-                <input type="password" id="api-key-input" placeholder="Enter Gemini API Key">
-                <button id="save-key-btn">Save</button>
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lumix Chat</title>
+    <link rel="shortcut icon" href="./logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body>
+    <!-- ONBOARDING OVERLAY (first visit) -->
+    <div id="onboarding" class="onboarding hidden">
+      <div class="onboarding-card">
+        <div class="ob-steps">
+          <!-- Step 1 -->
+          <div class="ob-step active" data-step="1">
+            <div class="ob-icon">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
             </div>
-        </header>
-
-        <div id="output-container">
-            <div class="ai-message chat-message">
-                Hello! I am your AI assistant powered by Gemini. Please enter your API key above to start chatting!
+            <h2>Welcome to Lumix Chat</h2>
+            <p>
+              A powerful, privacy-first AI chat interface. Your data never
+              leaves your browser — no accounts, no servers, just you and Lumix.
+            </p>
+            <div class="ob-features">
+              <div class="ob-feature">
+                <span class="ob-dot"></span>Multi-session chat history
+              </div>
+              <div class="ob-feature">
+                <span class="ob-dot"></span>Voice input & output
+              </div>
+              <div class="ob-feature">
+                <span class="ob-dot"></span>Image analysis & generation
+              </div>
+              <div class="ob-feature">
+                <span class="ob-dot"></span>Export conversations
+              </div>
             </div>
-        </div>
-
-        <div id="image-preview-container">
-            <img id="preview-img" class="image-preview" src="#" alt="Preview">
-        </div>
-
-        <div class="input-group">
-            <label for="image-input" class="input-group-text" title="Upload Image">
-                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            </label>
-            <input type="file" id="image-input" accept="image/*">
-            <input type="text" id="prompt-input" placeholder="Type your message here...">
-            <button id="send-btn">
-                <i class="fas fa-paper-plane"></i>
+            <button class="ob-next-btn" onclick="nextStep(2)">
+              Get Started <span>→</span>
             </button>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="ob-step" data-step="2">
+            <div class="ob-icon key-icon">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"
+                />
+              </svg>
+            </div>
+            <h2>Get Your Gemini API Key</h2>
+            <p>
+              Lumix Chat uses Google's Gemini API for chat. Getting a free key
+              takes under 2 minutes.
+            </p>
+            <div class="ob-steps-list">
+              <div class="ob-list-item">
+                <span class="ob-num">1</span>
+                <div>
+                  <strong>Go to Google AI Studio</strong><br />
+                  <a
+                    href="https://aistudio.google.com/app/apikey"
+                    target="_blank"
+                    rel="noopener"
+                    >aistudio.google.com/app/apikey</a
+                  >
+                </div>
+              </div>
+              <div class="ob-list-item">
+                <span class="ob-num">2</span>
+                <div>
+                  <strong>Click "Create API Key"</strong><br />Sign in with your
+                  Google account if prompted
+                </div>
+              </div>
+              <div class="ob-list-item">
+                <span class="ob-num">3</span>
+                <div>
+                  <strong>Copy your key</strong><br />It starts with
+                  <code>AIza...</code>
+                </div>
+              </div>
+            </div>
+            <button class="ob-next-btn" onclick="nextStep(3)">
+              I Have My Key <span>→</span>
+            </button>
+            <button class="ob-skip" onclick="nextStep(3)">Skip for now</button>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="ob-step" data-step="3">
+            <div class="ob-icon success-icon">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h2>Enter Your Gemini API Key</h2>
+            <p>
+              Your key is stored only in your browser's local storage. It is
+              never sent to any server other than Google's API.
+            </p>
+            <div class="ob-input-wrap">
+              <input
+                type="password"
+                id="ob-api-input"
+                placeholder="AIzaSy..."
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button id="ob-toggle-key" onclick="toggleObKey()">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
+            </div>
+            <div id="ob-key-error" class="ob-error hidden">
+              Please enter a valid Gemini API key (starts with AIza)
+            </div>
+            <button class="ob-next-btn" onclick="nextStep(4)">
+              Next <span>→</span>
+            </button>
+            <button class="ob-skip" onclick="nextStep(4)">
+              Skip — I'll add it later
+            </button>
+          </div>
+
+          <!-- Step 4 (NEW) -->
+          <div class="ob-step" data-step="4">
+            <div
+              class="ob-icon"
+              style="background: linear-gradient(135deg, #ffd54f22, #ffa72622)"
+            >
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#ffb300"
+                stroke-width="1.5"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+            </div>
+            <h2>Image Generation (Optional)</h2>
+            <p>
+              Use <code>/imagine</code> to generate images. This requires a free
+              Hugging Face API key.
+            </p>
+            <div class="ob-steps-list">
+              <div class="ob-list-item">
+                <span class="ob-num">1</span>
+                <div>
+                  <strong>Go to Hugging Face</strong><br />
+                  <a
+                    href="https://huggingface.co/settings/tokens"
+                    target="_blank"
+                    rel="noopener"
+                    >huggingface.co/settings/tokens</a
+                  >
+                </div>
+              </div>
+              <div class="ob-list-item">
+                <span class="ob-num">2</span>
+                <div>
+                  <strong>Create a token</strong><br />Click "New token" — a
+                  Read token is enough
+                </div>
+              </div>
+              <div class="ob-list-item">
+                <span class="ob-num">3</span>
+                <div>
+                  <strong>Copy your token</strong><br />It starts with
+                  <code>hf_...</code>
+                </div>
+              </div>
+            </div>
+            <div class="ob-input-wrap">
+              <input
+                type="password"
+                id="ob-hf-input"
+                placeholder="hf_..."
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button onclick="toggleObHfKey()">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
+            </div>
+            <button class="ob-next-btn" onclick="finishOnboarding()">
+              Start Chatting <span>→</span>
+            </button>
+            <button class="ob-skip" onclick="finishOnboarding()">
+              Skip — chat only
+            </button>
+          </div>
         </div>
+
+        <!-- Progress dots — now 4 -->
+        <div class="ob-progress">
+          <span class="ob-prog-dot active" data-dot="1"></span>
+          <span class="ob-prog-dot" data-dot="2"></span>
+          <span class="ob-prog-dot" data-dot="3"></span>
+          <span class="ob-prog-dot" data-dot="4"></span>
+        </div>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="modal-backdrop hidden">
+      <div class="modal settings-modal">
+        <div class="modal-header">
+          <h3>Settings</h3>
+          <button class="modal-close" onclick="closeSettings()">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- API Key -->
+          <div class="settings-section">
+            <div class="settings-label">API Key</div>
+
+            <div class="settings-input-row">
+              <input
+                type="password"
+                id="settings-api-input"
+                placeholder="AIzaSy..."
+                autocomplete="off"
+              />
+
+              <button
+                class="settings-eye-btn"
+                onclick="toggleKey(this, 'settings-api-input')"
+              >
+                <span class="eye-icon"></span>
+              </button>
+
+              <button class="settings-save-key-btn" onclick="saveKey('gemini')">
+                Save
+              </button>
+            </div>
+
+            <div class="settings-hint">
+              Free at
+              <a
+                href="https://aistudio.google.com/app/api-keys"
+                target="_blank"
+              >
+                Google AI Studio
+              </a>
+            </div>
+
+            <div
+              id="settings-key-status"
+              class="settings-key-status hidden"
+            ></div>
+          </div>
+
+          <div class="settings-section">
+            <div class="settings-label">
+              Hugging Face API Key <span class="settings-badge">Image Gen</span>
+            </div>
+
+            <div class="settings-input-row">
+              <input
+                type="password"
+                id="settings-hf-input"
+                placeholder="hf_..."
+                autocomplete="off"
+              />
+
+              <button
+                class="settings-eye-btn"
+                onclick="toggleKey(this, 'settings-hf-input')"
+              >
+                <span class="eye-icon"></span>
+              </button>
+
+              <button class="settings-save-key-btn" onclick="saveKey('hf')">
+                Save
+              </button>
+            </div>
+
+            <div class="settings-hint">
+              Free at
+              <a href="https://huggingface.co/settings/tokens" target="_blank">
+                huggingface.co/settings/tokens
+              </a>
+            </div>
+
+            <div
+              id="settings-hf-status"
+              class="settings-key-status hidden"
+            ></div>
+          </div>
+
+          <!-- Model -->
+          <div class="settings-section">
+            <div class="settings-label">AI Model</div>
+            <select id="model-select" class="settings-select">
+              <option value="gemini-2.5-flash">
+                Gemini 2.5 Flash (Fastest)
+              </option>
+              <option value="gemini-2.5-pro">Gemini 2.5 Pro (Smartest)</option>
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+            </select>
+          </div>
+
+          <!-- System Prompt -->
+          <div class="settings-section">
+            <div class="settings-label">
+              System Prompt <span class="settings-badge">Custom Persona</span>
+            </div>
+            <textarea
+              id="system-prompt-input"
+              class="settings-textarea"
+              placeholder="You are a helpful assistant..."
+              rows="4"
+            ></textarea>
+            <div class="settings-hint">
+              Sets the AI's behavior and persona for all new conversations.
+            </div>
+          </div>
+
+          <!-- Voice -->
+          <div class="settings-section">
+            <div class="settings-label">Voice & Speech</div>
+            <div class="settings-toggle-row">
+              <span>Auto-read AI responses aloud</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="auto-speak-toggle" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="settings-toggle-row">
+              <span>Voice input language</span>
+              <select id="voice-lang-select" class="settings-select-sm">
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="hi-IN">Hindi</option>
+                <option value="es-ES">Spanish</option>
+                <option value="fr-FR">French</option>
+                <option value="de-DE">German</option>
+                <option value="ja-JP">Japanese</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Theme -->
+          <div class="settings-section">
+            <div class="settings-label">Appearance</div>
+            <div class="settings-theme-row">
+              <button
+                class="theme-option"
+                data-theme="light"
+                onclick="setTheme('light')"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="5" />
+                  <line x1="12" y1="1" x2="12" y2="3" />
+                  <line x1="12" y1="21" x2="12" y2="23" />
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                  <line x1="1" y1="12" x2="3" y2="12" />
+                  <line x1="21" y1="12" x2="23" y2="12" />
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+                Light
+              </button>
+              <button
+                class="theme-option"
+                data-theme="dark"
+                onclick="setTheme('dark')"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+                Dark
+              </button>
+              <button
+                class="theme-option"
+                data-theme="system"
+                onclick="setTheme('system')"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="2" y="3" width="20" height="14" rx="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+                System
+              </button>
+            </div>
+          </div>
+
+          <button class="settings-save-btn" onclick="saveAllSettings()">
+            Save All Settings
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div id="search-modal" class="modal-backdrop hidden">
+      <div class="modal search-modal">
+        <div class="search-input-row">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search messages..."
+            oninput="doSearch(this.value)"
+          />
+          <button onclick="closeSearch()">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div id="search-results" class="search-results"></div>
+      </div>
+    </div>
+
+    <!-- EXPORT MODAL -->
+    <div id="export-modal" class="modal-backdrop hidden">
+      <div class="modal export-modal">
+        <div class="modal-header">
+          <h3>Export Conversation</h3>
+          <button class="modal-close" onclick="closeExport()">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="export-options">
+            <button class="export-option-btn" onclick="exportAs('txt')">
+              <div class="export-icon">📄</div>
+              <div>
+                <strong>Plain Text</strong>
+                <span>Simple .txt file</span>
+              </div>
+            </button>
+            <button class="export-option-btn" onclick="exportAs('md')">
+              <div class="export-icon">📝</div>
+              <div>
+                <strong>Markdown</strong>
+                <span>Formatted .md file</span>
+              </div>
+            </button>
+            <button class="export-option-btn" onclick="exportAs('json')">
+              <div class="export-icon">🗂️</div>
+              <div><strong>JSON</strong> <span>Raw data format</span></div>
+            </button>
+            <button class="export-option-btn" onclick="exportAs('html')">
+              <div class="export-icon">🌐</div>
+              <div><strong>HTML</strong> <span>Styled web page</span></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RENAME MODAL -->
+    <div id="rename-modal" class="modal-backdrop hidden">
+      <div class="modal small-modal">
+        <h3>Rename Chat</h3>
+
+        <input
+          id="rename-input"
+          type="text"
+          placeholder="Enter new title..."
+          autocomplete="off"
+        />
+
+        <div class="modal-actions">
+          <button class="btn secondary" onclick="closeRenameModal()">
+            Cancel
+          </button>
+          <button class="btn primary" onclick="confirmRename()">Rename</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div id="delete-modal" class="modal-backdrop hidden">
+      <div class="modal small-modal">
+        <h3>Delete Chat?</h3>
+        <p>This action cannot be undone.</p>
+
+        <div class="modal-actions">
+          <button class="btn secondary" onclick="closeDeleteModal()">
+            Cancel
+          </button>
+          <button class="btn danger" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLEAR HISTORY MODAL -->
+    <div id="clear-modal" class="modal-backdrop hidden">
+      <div class="modal small-modal">
+        <h3>Clear All History?</h3>
+        <p>This will remove all chats permanently.</p>
+
+        <div class="modal-actions">
+          <button class="btn secondary" onclick="closeClearModal()">
+            Cancel
+          </button>
+          <button class="btn danger" onclick="confirmClear()">Clear All</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN APP SHELL -->
+    <div class="app-shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar compact" id="sidebar">
+        <div class="sidebar-top">
+          <div class="logo">
+            <div class="logo-mark">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style="overflow: visible"
+              >
+                <path
+                  d="M6 38 L6 10 L14 10 L24 30 L34 10 L42 10 L42 38 L35 38 L35 17 L26 36 L22 36 L13 17 L13 38 Z"
+                  fill="currentColor"
+                />
+                <circle cx="51" cy="3" r="6" fill="#7F77DD" />
+              </svg>
+            </div>
+            <span>Lumix</span>
+          </div>
+          <button
+            class="icon-btn"
+            id="sidebar-toggle"
+            onclick="toggleSidebar()"
+            aria-label="Toggle sidebar"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <button
+          aria-label="New Chat"
+          class="new-chat-btn label-btn"
+          id="new-chat-btn"
+          onclick="startNewChat()"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          New Chat
+        </button>
+
+        <div class="sidebar-search-row">
+          <button
+            aria-label="Search"
+            class="sidebar-icon-btn label-btn"
+            title="Search messages"
+            onclick="openSearch()"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Search
+          </button>
+        </div>
+
+        <div class="history-label">Recent</div>
+        <div class="history-list" id="history-list"></div>
+
+        <div class="sidebar-footer">
+          <a href="/" class="sidebar-back-btn">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
+            </svg>
+
+            <span>Back to Home</span>
+          </a>
+          <button
+            aria-label="Settings"
+            class="footer-btn label-btn"
+            onclick="openSettings()"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 64 64"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M45,14.67l-2.76,2a1,1,0,0,1-1,.11L37.65,15.3a1,1,0,0,1-.61-.76l-.66-3.77a1,1,0,0,0-1-.84H30.52a1,1,0,0,0-1,.77l-.93,3.72a1,1,0,0,1-.53.65l-3.3,1.66a1,1,0,0,1-1-.08l-3-2.13a1,1,0,0,0-1.31.12l-3.65,3.74a1,1,0,0,0-.13,1.26l1.87,2.88a1,1,0,0,1,.1.89L16.34,27a1,1,0,0,1-.68.63l-3.85,1.06a1,1,0,0,0-.74,1v4.74a1,1,0,0,0,.8,1l3.9.8a1,1,0,0,1,.72.57l1.42,3.15a1,1,0,0,1-.05.92l-2.13,3.63a1,1,0,0,0,.17,1.24L19.32,49a1,1,0,0,0,1.29.09L23.49,47a1,1,0,0,1,1-.1l3.74,1.67a1,1,0,0,1,.59.75l.66,3.79a1,1,0,0,0,1,.84h4.89a1,1,0,0,0,1-.86l.58-4a1,1,0,0,1,.58-.77l3.58-1.62a1,1,0,0,1,1,.09l3.14,2.12a1,1,0,0,0,1.3-.15L50,45.06a1,1,0,0,0,.09-1.27l-2.08-3a1,1,0,0,1-.09-1l1.48-3.43a1,1,0,0,1,.71-.59L53.77,35a1,1,0,0,0,.8-1V29.42a1,1,0,0,0-.8-1l-3.72-.78a1,1,0,0,1-.73-.62l-1.45-3.65a1,1,0,0,1,.11-.94l2.15-3.14A1,1,0,0,0,50,18l-3.71-3.25A1,1,0,0,0,45,14.67Z"
+              />
+
+              <circle cx="32.82" cy="31.94" r="9.94" />
+            </svg>
+            Settings & API Key
+          </button>
+          <button
+            aria-label="Export"
+            class="footer-btn label-btn"
+            onclick="openExport()"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export Chat
+          </button>
+          <button
+            aria-label="Clear History"
+            class="footer-btn danger label-btn"
+            onclick="confirmClearHistory()"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14H6L5 6" />
+              <path d="M10 11v6M14 11v6" />
+              <path d="M9 6V4h6v2" />
+            </svg>
+            Clear All History
+          </button>
+        </div>
+      </aside>
+
+      <!-- SIDEBAR OVERLAY (mobile) -->
+      <div
+        class="sidebar-overlay"
+        id="sidebar-overlay"
+        onclick="closeSidebar()"
+      ></div>
+
+      <!-- CHAT MAIN -->
+      <main class="chat-main">
+        <!-- HEADER -->
+        <header class="chat-header">
+          <div class="header-left">
+            <button
+              class="icon-btn"
+              id="mobile-menu-btn"
+              onclick="toggleSidebar()"
+              aria-label="Open menu"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+            <div class="header-title" id="header-title">New Chat</div>
+          </div>
+          <div class="header-right">
+            <div class="model-pill" id="model-pill">
+              <span id="model-display">Gemini 2.5 Flash</span>
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <button
+              class="icon-btn"
+              onclick="toggleTheme()"
+              title="Toggle theme"
+            >
+              <svg
+                class="sun-icon"
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+              <svg
+                class="moon-icon"
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <!-- MESSAGES -->
+        <div class="messages-viewport" id="messages-viewport">
+          <div class="messages-inner" id="messages-inner">
+            <!-- Empty state injected by JS -->
+          </div>
+        </div>
+
+        <!-- PINNED BANNER (shows when chat has pins) -->
+        <div class="pinned-banner hidden" id="pinned-banner">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z" />
+          </svg>
+          <span id="pinned-count">0 pinned messages</span>
+          <button onclick="togglePinnedView()">View</button>
+        </div>
+
+        <!-- INPUT AREA -->
+        <div class="input-area">
+          <div id="image-preview-wrap" class="image-preview-wrap hidden">
+            <img id="preview-img" src="#" alt="Preview" />
+            <button id="remove-image-btn" onclick="clearImage()">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="input-box" id="input-box">
+            <label
+              for="image-input"
+              class="input-icon-btn"
+              title="Attach image"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+            </label>
+            <input type="file" id="image-input" accept="image/*" />
+
+            <button
+              class="input-icon-btn"
+              id="voice-btn"
+              title="Voice input"
+              onclick="toggleVoice()"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+                />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="12" y1="19" x2="12" y2="23" />
+                <line x1="8" y1="23" x2="16" y2="23" />
+              </svg>
+            </button>
+
+            <textarea
+              id="prompt-input"
+              placeholder="Message Lumix... or /imagine a scene"
+              rows="1"
+              aria-label="Message input"
+            ></textarea>
+
+            <button
+              id="send-btn"
+              class="send-btn"
+              disabled
+              onclick="handleSend()"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="input-footer">
+            <span class="input-disclaimer"
+              >Lumix can make mistakes. Verify important info.</span
+            >
+            <span id="char-counter" class="char-counter"></span>
+          </div>
+        </div>
+      </main>
+    </div>
+
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

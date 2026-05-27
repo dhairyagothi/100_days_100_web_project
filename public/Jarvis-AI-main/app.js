@@ -1,6 +1,7 @@
 const btn = document.querySelector('.talk');
 const content = document.querySelector('.content');
-
+const status = document.querySelector('.status-text');
+const wave =document.querySelector('.wave-container');
 function speak(text) {
     const text_speak = new SpeechSynthesisUtterance(text);
 
@@ -30,7 +31,12 @@ window.addEventListener('load', () => {
 });
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
+
+if (!SpeechRecognition) {
+    alert("Speech Recognition is not supported in this browser.");
+    status.textContent = "Speech Recognition not supported";
+} else {
+    const recognition = new SpeechRecognition();
 
 recognition.onresult = (event) => {
     const currentIndex = event.resultIndex;
@@ -40,9 +46,20 @@ recognition.onresult = (event) => {
 };
 
 btn.addEventListener('click', () => {
+    btn.classList.add('active');
+    wave.classList.add('active');
     content.textContent = "Listening...";
+    status.textContent ="Jarvis is listening";
     recognition.start();
 });
+}
+
+recognition.onend = () => {
+    btn.classList.remove('active');
+    wave.classList.remove('active');
+    content.textContent ="Click here to speak";
+    status.textContent ="Idle";
+};
 
 function takeCommand(message) {
     if (message.includes('hey') || message.includes('hello')) {
@@ -86,65 +103,30 @@ function takeCommand(message) {
 particlesJS("particles-js", {
 
     particles: {
-
-        number: {
-            value: 45,
-            density: {
-                enable: true,
-                value_area: 800
-            }
-        },
-
-        color: {
-            value: "#00bcd4"
-        },
-
-        shape: {
-            type: "circle"
-        },
-
-        opacity: {
-            value: 0.25
-        },
-
-        size: {
-            value: 2
-        },
-
+        number: {value: 45,density: {enable: true,value_area: 800}},
+        color: {value: "#00bcd4"},
+        shape: {type: "circle"},
+        opacity: {value: 0.25},
+        size: { value: 2},
         line_linked: {
-
             enable: true,
-
             distance: 140,
-
             color: "#00bcd4",
-
             opacity: 0.08,
-
             width: 1
         },
-
         move: {
-
             enable: true,
-
             speed: 0.4
         }
     },
 
     interactivity: {
-
         detect_on: "canvas",
-
         events: {
-
-            onhover: {
-                enable: false
-            },
-
+            onhover: {enable: false},
             resize: true
         }
     },
-
     retina_detect: true
 });

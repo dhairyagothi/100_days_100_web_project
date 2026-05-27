@@ -1,352 +1,840 @@
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
 const qrType = document.getElementById("qr-type");
-const themeBtns = document.querySelectorAll(".theme-btn");
+
 const inputText = document.getElementById("inputtext");
 const inputLabel = document.getElementById("main-input-label");
+
 const wifiInputs = document.getElementById("wifi-inputs");
 const vcardInputs = document.getElementById("vcard-inputs");
+
 const qrColor = document.getElementById("qr-color");
 const qrShape = document.getElementById("qr-shape");
 const errorCorrection = document.getElementById("error-correction");
 const logoUpload = document.getElementById("logo-upload");
-const generateBtn = document.querySelector(".submit");
+
+const generateBtn = document.getElementById("generate-btn");
+
 const qrcodeDiv = document.getElementById("qrcode");
+
 const downloadBtn = document.getElementById("download-qr");
 const scanBtn = document.getElementById("scan-qr");
+
+const copyBtn = document.getElementById("copy-btn");
+const shareBtn = document.getElementById("share-btn");
+const resetBtn = document.getElementById("reset-btn");
+
+const qrReader = document.getElementById("qr-reader");
 const qrReaderResults = document.getElementById("qr-reader-results");
+
 const statusMessage = document.getElementById("status-message");
 
 const wifiSSID = document.getElementById("wifi-ssid");
 const wifiPassword = document.getElementById("wifi-password");
 const wifiEncryption = document.getElementById("wifi-encryption");
+
 const vcardName = document.getElementById("vcard-name");
 const vcardPhone = document.getElementById("vcard-phone");
 const vcardEmail = document.getElementById("vcard-email");
 const vcardWebsite = document.getElementById("vcard-website");
 
-let realtimeTimer = null;
-let currentTheme = "aurora";
+const colorValue = document.querySelector(".color-value");
+
+const themeBtns = document.querySelectorAll(".theme-btn");
+
+/* =========================================================
+   GLOBALS
+========================================================= */
+
+let qrCode = null;
+
 let lastGeneratedData = "";
 
+let scanner = null;
+
+let scannerRunning = false;
+
+let uploadedLogo = null;
+
+/* =========================================================
+   THEME COLORS
+========================================================= */
+
 const themeColors = {
-    aurora: "#a78bfa",
-    neon: "#00ff88",
-    dark: "#d4d4d4",
-    candy: "#e91e8c"
+  aurora: "#a78bfa",
+
+  neon: "#00ff88",
+
+  dark: "#d4d4d4",
+
+  candy: "#ff0080",
 };
 
-function setStatus(message, isError = false) {
-    statusMessage.textContent = message;
-    statusMessage.style.color = isError ? "#f87171" : "";
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(message, error = false) {
+  statusMessage.textContent = message;
+
+  statusMessage.style.color = error ? "#ff6b6b" : "";
 }
 
-function escapeText(text) {
-    return text.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "");
+/* =========================================================
+   ESCAPE TEXT
+========================================================= */
+
+function escapeText(text = "") {
+  return text.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,");
 }
+
+/* =========================================================
+   UPDATE INPUTS
+========================================================= */
 
 function updateInputFields() {
-    const selectedType = qrType.value;
-    const showMainInput = selectedType === "text" || selectedType === "url";
-    const showWifi = selectedType === "wifi";
-    const showVcard = selectedType === "vcard";
+  const type = qrType.value;
 
-    inputText.style.display = showMainInput ? "block" : "none";
-    inputLabel.style.display = showMainInput ? "block" : "none";
-    wifiInputs.style.display = showWifi ? "block" : "none";
-    vcardInputs.style.display = showVcard ? "block" : "none";
+  const showMainInput = type === "text" || type === "url";
 
-    if (selectedType === "url") {
-        inputLabel.textContent = "Enter URL";
-        inputText.placeholder = "https://example.com";
-    } else if (selectedType === "text") {
-        inputLabel.textContent = "Enter text";
-        inputText.placeholder = "Enter your text";
-    }
+  inputLabel.classList.toggle("hidden", !showMainInput);
+
+  wifiInputs.classList.toggle("hidden", type !== "wifi");
+
+  vcardInputs.classList.toggle("hidden", type !== "vcard");
+
+  updatePlaceholder(type);
 }
+
+/* =========================================================
+   PLACEHOLDERS
+========================================================= */
+
+function updatePlaceholder(type) {
+  const placeholders = {
+    text: "Enter any text here...",
+
+    url: "https://example.com",
+
+    wifi: "",
+
+    vcard: "",
+  };
+
+  inputText.placeholder = placeholders[type] || "";
+}
+
+/* =========================================================
+   VALIDATION
+========================================================= */
+
+function validateInput(data) {
+  if (!data || data.trim() === "") {
+    return "Please enter some data";
+  }
+
+  if (data.length > 2000) {
+    return "Data is too large";
+  }
+
+  return null;
+}
+
+/* =========================================================
+   COLLECT QR DATA
+========================================================= */
 
 function collectQrData() {
-    const selectedType = qrType.value;
+  const type = qrType.value;
 
-    if (selectedType === "text") {
-        const value = inputText.value.trim();
-        if (!value) {
-            return { error: "Enter some text to generate a QR code." };
-        }
-        return { data: value };
+  /* ===== TEXT ===== */
+
+  if (type === "text") {
+    return {
+      data: inputText.value.trim(),
+    };
+  }
+
+  /* ===== URL ===== */
+
+  if (type === "url") {
+    let url = inputText.value.trim();
+
+    if (url && !url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "https://" + url;
     }
 
-    if (selectedType === "url") {
-        const value = inputText.value.trim();
-        if (!value) {
-            return { error: "Enter a URL to generate a QR code." };
-        }
-        const normalized = /^(https?:\/\/)/i.test(value) ? value : `https://${value}`;
-        return { data: normalized };
+    return { data: url };
+  }
+
+  /* ===== WIFI ===== */
+
+  if (type === "wifi") {
+    const ssid = escapeText(wifiSSID.value.trim());
+
+    const password = escapeText(wifiPassword.value);
+
+    const encryption = wifiEncryption.value;
+
+    if (!ssid) {
+      return {
+        error: "WiFi SSID required",
+      };
     }
 
-    if (selectedType === "wifi") {
-        const ssid = wifiSSID.value.trim();
-        if (!ssid) {
-            return { error: "WiFi SSID is required." };
-        }
-        const password = wifiPassword.value;
-        const encryption = wifiEncryption.value;
-        const wifiPayload = `WIFI:T:${encryption};S:${escapeText(ssid)};P:${escapeText(password)};;`;
-        return { data: wifiPayload };
+    return {
+      data: `WIFI:T:${encryption};S:${ssid};P:${password};;`,
+    };
+  }
+
+  /* ===== VCARD ===== */
+
+  if (type === "vcard") {
+    if (!vcardName.value.trim()) {
+      return {
+        error: "Full name required",
+      };
     }
 
-    if (selectedType === "vcard") {
-        const name = vcardName.value.trim();
-        const phone = vcardPhone.value.trim();
-        const email = vcardEmail.value.trim();
-        const website = vcardWebsite.value.trim();
+    return {
+      data: `BEGIN:VCARD
+VERSION:3.0
+FN:${vcardName.value.trim()}
+TEL:${vcardPhone.value.trim()}
+EMAIL:${vcardEmail.value.trim()}
+URL:${vcardWebsite.value.trim()}
+END:VCARD`,
+    };
+  }
 
-        if (!name && !phone && !email && !website) {
-            return { error: "Fill at least one vCard field." };
-        }
-
-        const lines = [
-            "BEGIN:VCARD",
-            "VERSION:3.0",
-            `FN:${escapeText(name)}`,
-            `TEL:${escapeText(phone)}`,
-            `EMAIL:${escapeText(email)}`,
-            `URL:${escapeText(website)}`,
-            "END:VCARD"
-        ];
-        return { data: lines.join("\n") };
-    }
-
-    return { error: "Unsupported QR type selected." };
+  return {
+    error: "Invalid QR type",
+  };
 }
 
-function drawDotsStyle(baseImage, color) {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = baseImage.width;
-    canvas.height = baseImage.height;
-    ctx.drawImage(baseImage, 0, 0);
+/* =========================================================
+   CLEAR QR
+========================================================= */
 
-    const source = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = color;
-
-    for (let i = 0; i < source.data.length; i += 4) {
-        const isDark = source.data[i] < 170 && source.data[i + 1] < 170 && source.data[i + 2] < 170;
-        if (!isDark) {
-            continue;
-        }
-
-        const x = (i / 4) % canvas.width;
-        const y = Math.floor((i / 4) / canvas.width);
-        ctx.beginPath();
-        ctx.arc(x + 0.5, y + 0.5, 0.65, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    return canvas;
+function clearQRCode() {
+  qrcodeDiv.innerHTML = "";
 }
 
-function placeLogo(baseCanvas, imageUrl) {
-    return new Promise((resolve) => {
-        const logo = new Image();
-        logo.onload = () => {
-            const ctx = baseCanvas.getContext("2d");
-            const correction = errorCorrection.value;
-            const sizeRatioMap = {
-                L: 0.11,
-                M: 0.13,
-                Q: 0.15,
-                H: 0.17
-            };
-            const logoSize = Math.floor(baseCanvas.width * (sizeRatioMap[correction] || 0.13));
-            const x = (baseCanvas.width - logoSize) / 2;
-            const y = (baseCanvas.height - logoSize) / 2;
-            const pad = Math.max(2, Math.floor(logoSize * 0.12));
+/* =========================================================
+   GENERATE QR
+========================================================= */
 
-            ctx.fillStyle = "rgba(255,255,255,0.98)";
-            ctx.fillRect(x - pad, y - pad, logoSize + (pad * 2), logoSize + (pad * 2));
-            ctx.drawImage(logo, x, y, logoSize, logoSize);
-            resolve(baseCanvas);
-        };
-        logo.onerror = () => resolve(baseCanvas);
-        logo.src = imageUrl;
-    });
-}
+function generateQRCode() {
+  clearQRCode();
 
-async function styleAndMaybeLogo() {
-    const qrImg = qrcodeDiv.querySelector("img");
-    if (!qrImg) {
-        return;
-    }
+  const result = collectQrData();
 
-    if (!qrImg.complete || qrImg.naturalWidth === 0) {
-        await new Promise((resolve) => {
-            qrImg.onload = resolve;
-            qrImg.onerror = resolve;
-        });
-    }
+  if (result.error) {
+    setStatus(result.error, true);
+
+    shakeElement(generateBtn);
+
+    return;
+  }
+
+  const validationError = validateInput(result.data);
+
+  if (validationError) {
+    setStatus(validationError, true);
+
+    shakeElement(generateBtn);
+
+    return;
+  }
+
+  lastGeneratedData = result.data;
+
+  /* =========================================
+       QR GENERATION
+    ========================================= */
+
+  qrCode = new QRCode(
+    qrcodeDiv,
+
+    {
+      text: result.data,
+
+      width: 240,
+
+      height: 240,
+
+      colorDark: qrColor.value,
+
+      colorLight: "#ffffff",
+
+      correctLevel: QRCode.CorrectLevel[errorCorrection.value],
+    },
+  );
+
+  /* =========================================
+       ROUNDED STYLE
+    ========================================= */
+
+  setTimeout(() => {
+    const img = qrcodeDiv.querySelector("img");
+
+    const canvas = qrcodeDiv.querySelector("canvas");
 
     if (qrShape.value === "rounded") {
-        qrImg.style.borderRadius = "14px";
-    } else {
-        qrImg.style.borderRadius = "0";
+      if (img) {
+        img.style.borderRadius = "24px";
+      }
+
+      if (canvas) {
+        canvas.style.borderRadius = "24px";
+      }
     }
 
-    let canvas = document.createElement("canvas");
-    canvas.width = qrImg.width;
-    canvas.height = qrImg.height;
-    canvas.getContext("2d").drawImage(qrImg, 0, 0);
+    /* =====================================
+           ADD LOGO
+        ===================================== */
 
-    if (qrShape.value === "dots") {
-        canvas = drawDotsStyle(qrImg, qrColor.value);
+    if (uploadedLogo) {
+      addLogoToQR();
     }
+  }, 100);
 
-    const logoFile = logoUpload.files[0];
-    if (logoFile) {
-        if (errorCorrection.value === "L") {
-            setStatus("Logo added. For best scan reliability, use Q or H error correction.", true);
-        }
-        const logoDataUrl = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => resolve(e.target.result);
-            reader.readAsDataURL(logoFile);
-        });
-        canvas = await placeLogo(canvas, logoDataUrl);
-    }
+  animateQR();
 
-    qrImg.src = canvas.toDataURL("image/png");
-    qrImg.style.display = "block";
-    qrImg.style.margin = "0 auto";
+  setStatus("QR generated successfully");
 }
 
-async function generateQRCode() {
-    qrcodeDiv.innerHTML = "";
-    const result = collectQrData();
-    if (result.error) {
-        lastGeneratedData = "";
-        setStatus(result.error, true);
-        return;
-    }
-    lastGeneratedData = result.data;
+/* =========================================================
+   LOGO OVERLAY
+========================================================= */
 
-    new QRCode(qrcodeDiv, {
-        text: result.data,
-        width: 200,
-        height: 200,
-        colorDark: qrColor.value || themeColors[currentTheme],
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel[errorCorrection.value]
+function addLogoToQR() {
+  const qrCanvas = qrcodeDiv.querySelector("canvas");
+
+  if (!qrCanvas) return;
+
+  const ctx = qrCanvas.getContext("2d");
+
+  const logo = new Image();
+
+  logo.src = uploadedLogo;
+
+  logo.onload = () => {
+    const size = 52;
+
+    const x = (qrCanvas.width - size) / 2;
+
+    const y = (qrCanvas.height - size) / 2;
+
+    /* ===== WHITE BACKGROUND ===== */
+
+    ctx.fillStyle = "#ffffff";
+
+    ctx.beginPath();
+
+    ctx.roundRect(x - 8, y - 8, size + 16, size + 16, 14);
+
+    ctx.fill();
+
+    /* ===== DRAW LOGO ===== */
+
+    ctx.drawImage(logo, x, y, size, size);
+  };
+}
+
+/* =========================================================
+   ANIMATE QR
+========================================================= */
+
+function animateQR() {
+  gsap.fromTo(
+    "#qrcode",
+
+    {
+      scale: 0.7,
+      opacity: 0,
+      rotate: -5,
+    },
+
+    {
+      scale: 1,
+      opacity: 1,
+      rotate: 0,
+      duration: 0.7,
+      ease: "back.out(1.8)",
+    },
+  );
+}
+
+/* =========================================================
+   SHAKE EFFECT
+========================================================= */
+
+function shakeElement(element) {
+  gsap.fromTo(
+    element,
+
+    { x: -5 },
+
+    {
+      x: 5,
+
+      duration: 0.08,
+
+      repeat: 5,
+
+      yoyo: true,
+    },
+  );
+}
+
+/* =========================================================
+   DOWNLOAD QR
+========================================================= */
+
+function downloadQRCode() {
+  const img = qrcodeDiv.querySelector("img");
+
+  const canvas = qrcodeDiv.querySelector("canvas");
+
+  let source = null;
+
+  if (img) {
+    source = img.src;
+  }
+
+  if (canvas) {
+    source = canvas.toDataURL("image/png");
+  }
+
+  if (!source) {
+    setStatus("Generate QR first", true);
+
+    return;
+  }
+
+  const link = document.createElement("a");
+
+  link.href = source;
+
+  link.download = `quantumqr-${Date.now()}.png`;
+
+  link.click();
+
+  setStatus("QR downloaded");
+}
+
+/* =========================================================
+   COPY QR DATA
+========================================================= */
+
+async function copyQRData() {
+  if (!lastGeneratedData) {
+    setStatus("Nothing to copy", true);
+
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(lastGeneratedData);
+
+    setStatus("Copied to clipboard");
+  } catch {
+    setStatus("Copy failed", true);
+  }
+}
+
+/* =========================================================
+   SHARE QR
+========================================================= */
+
+async function shareQRCode() {
+  const canvas = qrcodeDiv.querySelector("canvas");
+
+  if (!canvas) {
+    setStatus("Generate QR first", true);
+
+    return;
+  }
+
+  try {
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve));
+
+    const file = new File([blob], "quantumqr.png", {
+      type: "image/png",
     });
 
-    if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-            qrcodeDiv,
-            { scale: 0.9, opacity: 0.2 },
-            { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(1.6)" }
-        );
+    if (navigator.share) {
+      await navigator.share({
+        title: "QuantumQR",
+
+        text: "Scan this QR code",
+
+        files: [file],
+      });
+
+      setStatus("Shared successfully");
     }
-
-    setTimeout(async () => {
-        await styleAndMaybeLogo();
-        setStatus("QR code generated.");
-    }, 40);
+  } catch {
+    setStatus("Sharing cancelled", true);
+  }
 }
 
-function scheduleGenerate() {
-    clearTimeout(realtimeTimer);
-    realtimeTimer = setTimeout(() => {
-        generateQRCode();
-    }, 280);
+/* =========================================================
+   RESET APP
+========================================================= */
+
+function resetApp() {
+  clearQRCode();
+
+  inputText.value = "";
+
+  wifiSSID.value = "";
+  wifiPassword.value = "";
+
+  vcardName.value = "";
+  vcardPhone.value = "";
+  vcardEmail.value = "";
+  vcardWebsite.value = "";
+
+  qrReaderResults.innerHTML = "";
+
+  lastGeneratedData = "";
+
+  uploadedLogo = null;
+
+  setStatus("Reset complete");
+
+  qrcodeDiv.innerHTML = `
+<div class="placeholder-state">
+    <i class="fas fa-qrcode"></i>
+    <p>Your QR code will appear here</p>
+</div>
+`;
 }
 
-function setTheme(theme) {
-    currentTheme = theme;
-    themeBtns.forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.theme === theme);
-    });
+/* =========================================================
+   SCANNER
+========================================================= */
+
+async function startScanner() {
+  if (scannerRunning) {
+    stopScanner();
+
+    return;
+  }
+
+  try {
+    qrReader.classList.remove("hidden");
+
+    scanner = new Html5Qrcode("qr-reader");
+
+    scannerRunning = true;
+
+    scanBtn.innerHTML = `
+<i class="fas fa-stop"></i>
+<span>Stop</span>
+`;
+
+    await scanner.start(
+      {
+        facingMode: "environment",
+      },
+
+      {
+        fps: 10,
+        qrbox: 250,
+      },
+
+      (decodedText) => {
+        qrReaderResults.innerHTML = `
+<div class="glass-card">
+    <h3>Scanned Result</h3>
+    <p>${decodedText}</p>
+</div>
+`;
+
+        setStatus("QR scanned");
+
+        navigator.vibrate?.(120);
+
+        stopScanner();
+      },
+    );
+  } catch (error) {
+    console.error(error);
+
+    setStatus("Camera access denied", true);
+
+    stopScanner();
+  }
 }
 
-themeBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        setTheme(btn.dataset.theme);
-        qrColor.value = themeColors[btn.dataset.theme];
-        scheduleGenerate();
-    });
-});
+/* =========================================================
+   STOP SCANNER
+========================================================= */
 
-qrType.addEventListener("change", () => {
-    updateInputFields();
-    scheduleGenerate();
-});
+async function stopScanner() {
+  if (!scannerRunning || !scanner) {
+    qrReader.classList.add("hidden");
 
-[
+    return;
+  }
+
+  try {
+    await scanner.stop();
+
+    await scanner.clear();
+  } catch {}
+
+  scannerRunning = false;
+
+  qrReader.classList.add("hidden");
+
+  scanBtn.innerHTML = `
+<i class="fas fa-camera"></i>
+<span>Scan</span>
+`;
+}
+
+/* =========================================================
+   THEME SWITCHER
+========================================================= */
+
+function switchTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+
+  localStorage.setItem("qr-theme", theme);
+
+  if (themeColors[theme]) {
+    qrColor.value = themeColors[theme];
+
+    updateColorText();
+  }
+
+  themeBtns.forEach((btn) => {
+    btn.classList.remove("active");
+
+    if (btn.dataset.theme === theme) {
+      btn.classList.add("active");
+    }
+  });
+
+  setStatus(`${theme} theme activated`);
+}
+
+/* =========================================================
+   LOAD SAVED THEME
+========================================================= */
+
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem("qr-theme");
+
+  if (savedTheme) {
+    switchTheme(savedTheme);
+  }
+}
+
+/* =========================================================
+   LIVE PREVIEW
+========================================================= */
+
+function setupLivePreview() {
+  const fields = [
     inputText,
+
     wifiSSID,
     wifiPassword,
-    wifiEncryption,
+
     vcardName,
     vcardPhone,
     vcardEmail,
     vcardWebsite,
-    qrColor,
-    qrShape,
-    errorCorrection,
-    logoUpload
-].forEach((el) => {
-    const eventName = el.tagName === "SELECT" || el.type === "file" ? "change" : "input";
-    el.addEventListener(eventName, scheduleGenerate);
-});
+  ];
 
-generateBtn.addEventListener("click", () => {
-    generateQRCode();
-});
+  fields.forEach((field) => {
+    if (!field) return;
 
-downloadBtn.addEventListener("click", () => {
-    const qrImage = qrcodeDiv.querySelector("img");
-    if (!qrImage) {
-        setStatus("Generate a QR code before downloading.", true);
-        return;
+    field.addEventListener(
+      "input",
+
+      debounce(() => {
+        const result = collectQrData();
+
+        if (result.data && result.data.trim() !== "") {
+          generateQRCode();
+        }
+      }, 450),
+    );
+  });
+}
+
+/* =========================================================
+   COLOR TEXT
+========================================================= */
+
+function updateColorText() {
+  colorValue.textContent = qrColor.value.toUpperCase();
+}
+
+/* =========================================================
+   DEBOUNCE
+========================================================= */
+
+function debounce(callback, delay) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => callback(...args), delay);
+  };
+}
+
+/* =========================================================
+   LOGO UPLOAD
+========================================================= */
+
+logoUpload.addEventListener(
+  "change",
+
+  (event) => {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      uploadedLogo = e.target.result;
+
+      setStatus("Logo uploaded");
+
+      if (lastGeneratedData) {
+        generateQRCode();
+      }
+    };
+
+    reader.readAsDataURL(file);
+  },
+);
+
+/* =========================================================
+   EVENT LISTENERS
+========================================================= */
+
+qrType.addEventListener("change", updateInputFields);
+
+generateBtn.addEventListener("click", generateQRCode);
+
+downloadBtn.addEventListener("click", downloadQRCode);
+
+copyBtn.addEventListener("click", copyQRData);
+
+shareBtn.addEventListener("click", shareQRCode);
+
+resetBtn.addEventListener("click", resetApp);
+
+scanBtn.addEventListener("click", startScanner);
+
+qrColor.addEventListener("input", updateColorText);
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+
+  (event) => {
+    if (event.ctrlKey && event.key === "Enter") {
+      generateQRCode();
     }
+  },
+);
 
-    const link = document.createElement("a");
-    link.download = "qrcode.png";
-    link.href = qrImage.src;
-    link.click();
-    setStatus("Download started.");
+/* =========================================================
+   THEME BUTTONS
+========================================================= */
 
-    if (typeof gsap !== "undefined") {
-        gsap.to(downloadBtn, { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1 });
-    }
+themeBtns.forEach((button) => {
+  button.addEventListener(
+    "click",
+
+    () => {
+      const theme = button.dataset.theme;
+
+      switchTheme(theme);
+    },
+  );
 });
 
-scanBtn.addEventListener("click", () => {
-    if (!lastGeneratedData) {
-        qrReaderResults.style.display = "block";
-        qrReaderResults.innerHTML = "<p>No QR content available. Generate one first.</p>";
-        setStatus("Generate a QR code first.", true);
-        return;
-    }
+/* =========================================================
+   GSAP ANIMATIONS
+========================================================= */
 
-    qrReaderResults.style.display = "block";
-    qrReaderResults.innerHTML = `<p><strong>QR Content:</strong></p><pre>${lastGeneratedData}</pre>`;
-    setStatus("QR content is visible below.");
-});
+window.addEventListener(
+  "load",
 
-window.addEventListener("DOMContentLoaded", () => {
-    setTheme(currentTheme);
-    qrColor.value = themeColors[currentTheme];
-    updateInputFields();
+  () => {
+    gsap.from(
+      ".reveal",
 
-    if (typeof gsap !== "undefined") {
-        gsap.from(".glass-card", {
-            opacity: 0,
-            y: 26,
-            duration: 0.55,
-            stagger: 0.08,
-            ease: "power2.out",
-            delay: 0.05
-        });
-    }
-});
+      {
+        y: 40,
+
+        opacity: 0,
+
+        duration: 0.9,
+
+        stagger: 0.12,
+
+        ease: "power3.out",
+      },
+    );
+
+    gsap.from(
+      ".hero",
+
+      {
+        y: -20,
+
+        opacity: 0,
+
+        duration: 1,
+
+        ease: "power3.out",
+      },
+    );
+
+    gsap.from(
+      ".topbar",
+
+      {
+        y: -30,
+
+        opacity: 0,
+
+        duration: 1,
+
+        ease: "power3.out",
+      },
+    );
+  },
+);
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateInputFields();
+
+loadSavedTheme();
+
+setupLivePreview();
+
+updateColorText();
+
+setStatus("Ready to generate");

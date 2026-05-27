@@ -121,10 +121,16 @@ body::before {
   transition: transform 0.1s;
 }
 
+
+.play-board .obstacle {
+  background: #ff6b6b;
+}
+
 .stat-value.bump {
   transform: scale(1.3);
   color: #fff;
   text-shadow: 0 0 15px #fff;
+
 }
 
 
@@ -247,6 +253,37 @@ canvas {
 }
 
 
+
+  .controls i {
+    padding: 15px 0;
+    font-size: 1rem;
+  }
+}
+/* Improve mobile responsiveness */
+@media screen and (max-width: 500px) {
+  .wrapper {
+    width: 95vmin;
+    height: 110vmin;
+  }
+
+  .game-details {
+    font-size: 0.9rem;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .new-game-button,
+  .restart-game-button {
+    width: 90%;
+    margin: 5px 0;
+  }
+}
+
 #scanline {
   position: absolute;
   top: -100%;
@@ -261,3 +298,4 @@ canvas {
 @keyframes scan {
   to { top: 200%; }
 }
+
