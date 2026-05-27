@@ -231,6 +231,7 @@ The website features:
 | 157 | Map Route Tracker | HTML, CSS, JavaScript | 🗺️ Tracker | [View Demo](https://100-days-100-web-project.vercel.app/public/Vector-Map-Route-Tracer/index.html) |
 | 158 | GitHub Promo Maker | HTML, CSS, JavaScript | 🚀 Generator | [View Demo](https://100-days-100-web-project.vercel.app/public/GitHubPromoMaker/index.html) |
 | 159 | Dining Philosophers Simulation | JavaScript | 🔮 Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/Dining Philosophers Simulation/index.html) |
+| 182 | Code Execution Visualizer | HTML, CSS, JavaScript | 🧠 Visualizer | [View Demo](https://100-days-100-web-project.vercel.app/public/code-execution-visualizer/index.html) |
 
 
 

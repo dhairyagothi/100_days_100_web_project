@@ -6,15 +6,15 @@
     <title>Sign Up · 100 Days 100 Web Projects</title>
 
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+      rel="stylesheet"
     />
 
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
@@ -26,6 +26,7 @@
 
     <section class="hero-section">
       <h1 class="hero-title">100 Days 100 Web Projects</h1>
+
       <p class="auth-title">
         Thank you for joining us on this exciting journey of creativity and
         learning. Over the next 100 days, we will embark on a web development
@@ -38,24 +39,33 @@
         <div class="auth-card">
           <h2 class="auth-title-1">Sign Up</h2>
 
-          <div id="authMessage" class="auth-message auth-message--error" hidden role="alert"></div>
+          <div
+            id="authMessage"
+            class="auth-message auth-message--error"
+            hidden
+            role="alert"
+          ></div>
 
           <div class="oauth-buttons">
             <a href="/api/auth/google" class="oauth-btn oauth-btn--google">
               <i class="fa-brands fa-google" aria-hidden="true"></i>
               Continue with Google
             </a>
+
             <a href="/api/auth/github" class="oauth-btn oauth-btn--github">
               <i class="fa-brands fa-github" aria-hidden="true"></i>
               Continue with GitHub
             </a>
           </div>
 
-          <div class="auth-divider" aria-hidden="true"><span>or create an account</span></div>
+          <div class="auth-divider" aria-hidden="true">
+            <span>or create an account</span>
+          </div>
 
           <form id="signupForm" class="auth-form">
             <div class="form-group">
               <i class="fa-solid fa-user"></i>
+
               <input
                 type="text"
                 id="name"
@@ -68,6 +78,7 @@
 
             <div class="form-group">
               <i class="fa-solid fa-user-tag"></i>
+
               <input
                 type="text"
                 id="username"
@@ -80,6 +91,7 @@
 
             <div class="form-group">
               <i class="fa-solid fa-envelope"></i>
+
               <input
                 type="email"
                 id="email"
@@ -92,6 +104,7 @@
 
             <div class="form-group">
               <i class="fa-solid fa-lock"></i>
+
               <input
                 type="password"
                 id="password"
@@ -100,7 +113,15 @@
                 autocomplete="new-password"
                 required
               />
-              <span class="toggle-password" role="button" tabindex="0" aria-label="Toggle password visibility">👁</span>
+
+              <span
+                class="toggle-password"
+                role="button"
+                tabindex="0"
+                aria-label="Toggle password visibility"
+              >
+                👁
+              </span>
             </div>
 
             <button type="submit" class="button home-btn signup-btn">
@@ -110,54 +131,84 @@
           </form>
 
           <p class="already-signed-up">
-            Already signed up? <a href="Login.html">Login</a>
+            Already signed up?
+            <a href="Login.html">Login</a>
           </p>
         </div>
       </div>
     </section>
 
     <script src="auth-common.js"></script>
+
     <script>
-      document.querySelector('.toggle-password')?.addEventListener('click', togglePasswordField);
-      document.querySelector('.toggle-password')?.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          togglePasswordField();
-        }
-      });
+      document
+        .querySelector(".toggle-password")
+        ?.addEventListener("click", togglePasswordField);
 
-      document.getElementById('signupForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        hideAuthMessage();
-
-        const name = document.getElementById('name').value.trim();
-        const username = document.getElementById('username').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-
-        try {
-          const res = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ name, username, email, password }),
-          });
-
-          const data = await res.json().catch(() => ({}));
-
-          if (!res.ok) {
-            showAuthMessage(data.message || 'Sign up failed. Please try again.', 'error');
-            return;
+      document
+        .querySelector(".toggle-password")
+        ?.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            togglePasswordField();
           }
+        });
 
-          showAuthMessage(data.message || 'Sign up successful!', 'success');
-          setTimeout(() => {
-            window.location.href = '../index.html';
-          }, 800);
-        } catch {
-          showAuthMessage('Unable to reach the auth server. Run npm run dev and try again.', 'error');
-        }
-      });
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          hideAuthMessage();
+
+          const name = document.getElementById("name").value.trim();
+          const username = document
+            .getElementById("username")
+            .value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+
+          try {
+            const res = await fetch("/api/auth/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+              body: JSON.stringify({
+                name,
+                username,
+                email,
+                password,
+              }),
+            });
+
+            const data = await res.json().catch(() => ({}));
+
+            if (!res.ok) {
+              showAuthMessage(
+                data.message || "Sign up failed. Please try again.",
+                "error"
+              );
+
+              return;
+            }
+
+            showAuthMessage(
+              data.message || "Sign up successful!",
+              "success"
+            );
+
+            setTimeout(() => {
+              window.location.href = "../index.html";
+            }, 800);
+          } catch {
+            showAuthMessage(
+              "Unable to reach the auth server. Run npm run dev and try again.",
+              "error"
+            );
+          }
+        });
     </script>
   </body>
 </html>
