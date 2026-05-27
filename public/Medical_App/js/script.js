@@ -346,6 +346,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+<<<<<<< HEAD:public/Medical_App/js/script.js
+            statusMessage.textContent = `Consultation requested for Dr.${doctorName} regarding ${patientCondition}.            
+            Specialist type: ${specialistType}.`;
+            specialistResponseSection.style.display = 'block';
+            buttons.style.display = 'flex';
+            requestForm.reset();
+        }, 2000);
+    });
+    if(responseForm){    
+        responseForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const consultationId = document.getElementById('consultationId').value;
+            const suggestion = document.getElementById('suggestion').value;
+
+            // Simulating response submission
+            loading.style.display = 'block';
+            statusMessage.textContent = '';
+
+            setTimeout(() => {
+                loading.style.display = 'none';
+                const consultation = consultationHistory.find(c => c.date === consultationId);
+                if (consultation) {
+                    consultation.status = 'Completed';
+                    consultation.notes = suggestion;
+                    localStorage.setItem('consultations', JSON.stringify(consultationHistory));
+                    renderHistory();
+                    statusMessage.textContent = `Response submitted for Consultation ID: ${consultationId}`;
+                } else {
+                    statusMessage.textContent = `Consultation ID: ${consultationId} not found.`;
+                }
+                responseForm.reset();
+            }, 2000);
+        });
+    }
+    
+    feedbackForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const feedbackMessage = document.getElementById('feedbackMessage').value;
+=======
     function saveHistory() {
         localStorage.setItem(
             'medConsultHistoryV2',
@@ -372,10 +411,150 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             toast.style.animation =
                 'slideOut 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+>>>>>>> 9398ffd3b288433a29a8baedf3de5c3e4ed2a480:public/Medical_App/script.js
 
             setTimeout(() => {
                 toast.remove();
             }, 300);
         }, 3000);
     }
+<<<<<<< HEAD:public/Medical_App/js/script.js
+}
+
+// Bind open events to booking buttons
+bookBtns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        const doctor = btn.getAttribute("data-doctor");
+        const specialty = btn.getAttribute("data-specialty");
+        openModal(doctor, specialty, btn);
+    });
+});
+
+// Bind close button actions
+closeModalBtn.addEventListener("click", closeModal);
+cancelModalBtn.addEventListener("click", closeModal);
+closeSuccessBtn.addEventListener("click", closeModal);
+
+// Close on backdrop overlay click (only when clicking overlay specifically)
+bookingModal.addEventListener("click", (e) => {
+    if (e.target === bookingModal) {
+        closeModal();
+    }
+});
+
+// Close on Escape key press
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !bookingModal.classList.contains("hidden")) {
+        closeModal();
+    }
+});
+
+// Real-time input clearing of invalid state
+const setupRealTimeClear = (input, errorSpan) => {
+    input.addEventListener("input", () => {
+        if (input.value.trim() !== "") {
+            input.classList.remove("invalid-input");
+            errorSpan.textContent = "";
+        }
+    });
+};
+
+setupRealTimeClear(patientNameInput, nameError);
+setupRealTimeClear(patientPhoneInput, phoneError);
+setupRealTimeClear(appointmentDateInput, dateError);
+setupRealTimeClear(appointmentTimeInput, timeError);
+
+// Submit form & validate
+bookingForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const nameVal = patientNameInput.value.trim();
+    const phoneVal = patientPhoneInput.value.trim();
+    const dateVal = appointmentDateInput.value;
+    const timeVal = appointmentTimeInput.value;
+
+    let isValid = true;
+
+    // Validate Name
+    if (nameVal === "") {
+        nameError.textContent = "Patient name is required.";
+        patientNameInput.classList.add("invalid-input");
+        isValid = false;
+    }
+
+    // Validate Phone (10 digits numeric)
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phoneVal)) {
+        phoneError.textContent = "Please enter a valid 10-digit phone number.";
+        patientPhoneInput.classList.add("invalid-input");
+        isValid = false;
+    }
+
+    // Validate Date
+    if (!dateVal) {
+        dateError.textContent = "Preferred date is required.";
+        appointmentDateInput.classList.add("invalid-input");
+        isValid = false;
+    } else {
+        // Enforce today or future date in JS validation as well
+        const parts = dateVal.split('-');
+        const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
+        selectedDate.setHours(0,0,0,0);
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        if (selectedDate < today) {
+            dateError.textContent = "Date cannot be in the past.";
+            appointmentDateInput.classList.add("invalid-input");
+            isValid = false;
+        }
+    }
+
+    // Validate Time Slot
+    if (timeVal === "") {
+        timeError.textContent = "Please select an available time slot.";
+        appointmentTimeInput.classList.add("invalid-input");
+        isValid = false;
+    }
+
+    if (!isValid) {
+        return;
+    }
+
+    // Dynamic History Item Addition matching existing format
+    const listItem = document.createElement("li");
+    listItem.innerHTML = `
+        <strong>${nameVal}</strong> scheduled appointment with 
+        <strong>${currentDoctor}</strong> (${currentSpecialty}) on 
+        <strong>${dateVal}</strong> at <strong>${timeVal}</strong>
+    `;
+    historyList.prepend(listItem);
+
+    // Render persistent success banner
+    const successText = modalSuccess.querySelector(".success-text");
+    successText.innerHTML = `✅ <strong>Success!</strong> Appointment booked for <strong>${nameVal}</strong> with <strong>${currentDoctor}</strong> on <strong>${dateVal}</strong> at <strong>${timeVal}</strong>.`;
+    
+    bookingForm.classList.add("hidden");
+    modalSuccess.classList.remove("hidden");
+    
+    // Focus the Success Close button for accessibility
+    closeSuccessBtn.focus();
+});
+const doctorSearch = document.getElementById("doctorSearch");
+
+doctorSearch.addEventListener("input", () => {
+
+    const value = doctorSearch.value.toLowerCase();
+
+    document.querySelectorAll(".doctor-card").forEach(card => {
+
+        const name = card.innerText.toLowerCase();
+
+        card.style.display = name.includes(value)
+            ? "block"
+            : "none";
+    });
+=======
+>>>>>>> 9398ffd3b288433a29a8baedf3de5c3e4ed2a480:public/Medical_App/script.js
 });

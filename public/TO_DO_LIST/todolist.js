@@ -112,15 +112,14 @@ function renderTasks() {
       card.setAttribute("data-id", task.id);
       card.style.setProperty("--i", idx);
 
+      // FIX 1: Buttons now sit directly in .note-actions as proper flex siblings (no wrapper, no line.)
       card.innerHTML = `
         <div class="note-row">
           <textarea class="note-text" onchange="updateTaskText(${task.id}, this.value)">${task.text}</textarea>
           <div class="note-actions">
             <div class="category-badge">${task.category}</div>
-            <div>
-              <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
-              <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
-            </div>
+            <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
+            <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
           </div>
         </div>
       `;

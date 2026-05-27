@@ -68,6 +68,7 @@ body {
     background 0.4s ease,
     color 0.4s ease;
   position: relative;
+  cursor: none;
 }
 
 body::before,
@@ -161,28 +162,60 @@ body::after {
     5px 5px,
     11px 11px,
     13px 13px;
-  mix-blend-mode: screen;
+  /* mix-blend-mode: difference; */
   animation: noiseShift 0.8s steps(2) infinite;
 }
 
-body > *:not(.ambient):not(.noise-layer) {
-    position: relative;
-}
-
-body>*:not(.ambient):not(.noise-layer):not(canvas):not(header) {
+body > *:not(.ambient):not(.noise-layer):not(.cursor-ring) {
   position: relative;
   z-index: 1;
 }
 
-/* header wraps .navbar — needs its own stacking context above ALL
-   fixed overlay layers (body::before/after, ambient, noise, canvas) */
-header {
+.cursor-ring {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  z-index: 10000;
-  pointer-events: auto;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transform: translate3d(0, 0, 0) translate(-50%, -50%);
+  transition: opacity 0.16s ease;
+  will-change: transform;
+  isolation: isolate;
+}
+
+.cursor-ring.is-visible {
+  opacity: 1;
+}
+
+.cursor-ring--outer {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 0 10px rgba(255, 255, 255, 0.06),
+    0 0 24px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  mix-blend-mode: multiply;
+}
+
+.cursor-ring--inner {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 0 18px rgba(191, 219, 254, 0.9);
+}
+
+@media (hover: none), (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+
+  .cursor-ring {
+    display: none;
+  }
 }
 
 /* ============================================================
