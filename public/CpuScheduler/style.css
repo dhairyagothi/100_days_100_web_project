@@ -1,34 +1,27 @@
 :root {
-  --bg-1: #020617;
-  --bg-2: #0f172a;
-  --bg-3: #1e293b;
-
-  --card-bg: rgba(15, 23, 42, 0.75);
-  --card-border: rgba(148, 163, 184, 0.12);
-
-  --text-primary: #f8fafc;
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  
+  --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
-
-  --accent-cyan: #22d3ee;
+  
+  --border-color: rgba(148, 163, 184, 0.15);
+  --border-color-hover: rgba(148, 163, 184, 0.25);
+  
   --accent-blue: #3b82f6;
+  --accent-blue-dark: #2563eb;
   --accent-purple: #8b5cf6;
-  --accent-pink: #ec4899;
-  --accent-emerald: #10b981;
-
+  --accent-cyan: #06b6d4;
+  
+  --success: #10b981;
   --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.12);
-  --danger-border: rgba(239, 68, 68, 0.35);
-
-  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.35);
-  --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.45);
-
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  --radius-2xl: 2rem;
+  --danger-bg: rgba(239, 68, 68, 0.1);
+  --danger-border: rgba(239, 68, 68, 0.2);
 }
 
-/* ---------- Global Styles ---------- */
+/* ==================== Global ==================== */
 * {
   box-sizing: border-box;
 }
@@ -37,253 +30,625 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ==================== Tailwind Replacements for Offline ==================== */
+.hidden {
+  display: none !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+}
+
+.border-white\/10 {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.max-w-sm {
+  max-width: 24rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.max-w-2xl {
+  max-width: 42rem;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
+}
+
+.max-w-5xl {
+  max-width: 64rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.leading-tight {
+  line-height: 1.25;
+}
+
+.leading-relaxed {
+  line-height: 1.625;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   color: var(--text-primary);
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(34, 211, 238, 0.08),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at top right,
-      rgba(139, 92, 246, 0.08),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at bottom,
-      rgba(236, 72, 153, 0.06),
-      transparent 40%
-    ),
-    linear-gradient(135deg, #020617 0%, #0f172a 50%, #111827 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  display: block;
 }
 
-/* ---------- Decorative Glow ---------- */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(34, 211, 238, 0.08),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 80% 15%,
-      rgba(139, 92, 246, 0.08),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 50% 80%,
-      rgba(16, 185, 129, 0.06),
-      transparent 30%
-    );
-  pointer-events: none;
-  z-index: -1;
+/* ==================== Layout Container ==================== */
+header,
+main {
+  display: block;
+  box-sizing: border-box;
 }
 
-/* ---------- Header Gradient ---------- */
 header {
-  background:
-    linear-gradient(
-      135deg,
-      rgba(6, 182, 212, 0.18),
-      rgba(59, 130, 246, 0.15),
-      rgba(139, 92, 246, 0.15)
-    ),
-    rgba(2, 6, 23, 0.7);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  width: 100%;
+  background: rgba(15, 23, 42, 0.5);
+  border-color: var(--border-color);
+  padding: 2.5rem 1rem;
+  margin: 0;
 }
 
-/* ---------- Cards ---------- */
-.algorithm-card,
-.results-table,
-.gantt-container,
-#analysisPanel {
-  background: var(--card-bg);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-lg);
+main {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  box-sizing: border-box;
+}
+.back-button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.5rem;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--text-primary);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: inherit;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
 }
 
-/* ---------- Process Cards ---------- */
-.process-card {
-  background: linear-gradient(
-    135deg,
-    rgba(30, 41, 59, 0.9),
-    rgba(15, 23, 42, 0.95)
-  );
-  border: 1px solid rgba(34, 211, 238, 0.12);
-  border-radius: 1.5rem;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
-  transition: all 0.35s ease;
+.back-button:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
 }
 
-.process-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(34, 211, 238, 0.25);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+/* ==================== Header Styling ==================== */
+header > div {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* ---------- Inputs & Selects ---------- */
+header h1 {
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem 0;
+}
+
+header p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* ==================== Cards ==================== */
+.card {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 2rem 1.5rem;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.card > div:first-child {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.card:hover {
+  border-color: var(--border-color-hover);
+  background: rgba(30, 41, 59, 0.5);
+}
+
+/* ==================== Sections ==================== */
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+section.text-center {
+  text-align: center;
+}
+
+section.card {
+  align-items: stretch;
+}
 input,
 select {
-  transition: all 0.25s ease;
-  color: #ffffff;
+  width: 100%;
+  color: var(--text-primary);
+  background: rgba(51, 65, 85, 0.3);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: block;
 }
 
-input::placeholder {
-  color: #94a3b8;
+/* Centered Input Containers */
+[class*="max-w-s"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+div:has(> input),
+div:has(> select),
+div:has(> label:first-child + input),
+div:has(> label:first-child + select) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+label {
+  display: block;
+  text-align: left;
+  width: 100%;
+}
+
+input.input-small {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+input::placeholder,
+select {
+  color: var(--text-muted);
 }
 
 input:focus,
 select:focus {
-  border-color: rgba(34, 211, 238, 0.35) !important;
-  box-shadow:
-    0 0 0 4px rgba(34, 211, 238, 0.12),
-    0 8px 30px rgba(34, 211, 238, 0.08);
+  outline: none;
+  border-color: var(--accent-blue);
+  background: rgba(51, 65, 85, 0.4);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* ---------- Buttons ---------- */
+/* Improved Select Styling */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgb(148,163,184)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+select option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 0.75rem;
+}
+
+select option:hover {
+  background: var(--accent-blue);
+  color: white;
+}
+
+/* ==================== Buttons ==================== */
 .btn-primary {
-  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+  display: inline-block;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
   border: none;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.35s ease;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
 }
 
-.btn-primary:hover {
-  transform: translateY(-3px) scale(1.01);
-  box-shadow:
-    0 15px 35px rgba(59, 130, 246, 0.35),
-    0 0 40px rgba(34, 211, 238, 0.15);
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
 }
 
-.btn-primary:active {
+.btn-primary:active:not(:disabled) {
   transform: translateY(0);
 }
 
-/* Sample Data Button */
-#sampleBtn {
-  background: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
-  transition: all 0.35s ease;
-  border: none;
+.btn-secondary {
+  display: inline-block;
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--text-primary);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-#sampleBtn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(16, 185, 129, 0.35);
+.btn-secondary:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-1px);
 }
 
-/* ---------- Loading Spinner ---------- */
-.loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.25);
-  border-top: 3px solid #ffffff;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  vertical-align: middle;
+/* ==================== Results Section ==================== */
+#results {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+#results > div {
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
 }
 
-/* ---------- Error Message ---------- */
+#results > div:first-child {
+  margin-bottom: 2rem;
+}
+
+#results section {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#metricsPanel {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==================== Main Content Wrapper ==================== */
+main > section,
+main > div {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==================== Error Message ==================== */
 #errorMessage {
   background: var(--danger-bg);
   border: 1px solid var(--danger-border);
-  color: #fecaca;
-  backdrop-filter: blur(12px);
-}
-
-/* ---------- Metrics Cards ---------- */
-.metric-card {
-  background: linear-gradient(
-    145deg,
-    rgba(15, 23, 42, 0.85),
-    rgba(30, 41, 59, 0.92)
-  );
-  border: 1px solid rgba(34, 211, 238, 0.12);
-  border-radius: 1.5rem;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.28);
-  transition: all 0.35s ease;
-}
-
-.metric-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(34, 211, 238, 0.25);
-  box-shadow:
-    0 18px 45px rgba(0, 0, 0, 0.35),
-    0 0 20px rgba(34, 211, 238, 0.08);
-}
-
-/* ---------- Tables ---------- */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  overflow: hidden;
-  border-radius: 1rem;
-}
-
-thead tr {
-  background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6);
-}
-
-th,
-td {
+  border-radius: 0.5rem;
   padding: 1rem;
-  text-align: left;
+  width: 100%;
+  margin: 0 auto 2rem auto;
+  max-width: 100%;
 }
 
-tbody tr {
-  background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
-  transition: background 0.25s ease;
+#errorMessage h3,
+#errorMessage p {
+  margin: 0;
 }
 
-tbody tr:hover {
-  background: rgba(34, 211, 238, 0.05);
+#errorText {
+  color: rgba(239, 68, 68, 0.9);
 }
 
-/* ---------- Gantt Chart ---------- */
-.gantt-block {
-  min-height: 56px;
+/* ==================== Process Cards ==================== */
+#processFormContainer {
+  width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: white;
-  border-radius: 0.75rem;
-  margin-right: 4px;
-  transition: all 0.25s ease;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  margin-bottom: 2rem;
 }
 
-.gantt-block:hover {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.35),
-    0 0 15px rgba(255, 255, 255, 0.06);
+#processFormContainer > div:first-child {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
-.gantt-time {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+.process-card {
+  background: rgba(51, 65, 85, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.process-card:hover {
+  border-color: var(--border-color-hover);
+  background: rgba(51, 65, 85, 0.35);
+}
+
+.process-card h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+  font-size: 1rem;
   font-weight: 600;
 }
 
-/* ---------- Process Colors ---------- */
+.process-card input {
+  margin-bottom: 0.5rem;
+}
+
+/* ==================== Sections ==================== */
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+section.text-center {
+  text-align: center;
+}
+
+/* ==================== Metrics Cards ==================== */
+.metric-card {
+  background: rgba(51, 65, 85, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+}
+
+.metric-card:hover {
+  border-color: var(--border-color-hover);
+  transform: translateY(-2px);
+  background: rgba(51, 65, 85, 0.35);
+}
+
+.metric-card > div:first-child {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 0.5rem;
+}
+
+.metric-card > div:last-child {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+/* ==================== Tables ==================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(51, 65, 85, 0.15);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+thead {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+}
+
+th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-color);
+}
+
+td {
+  padding: 0.875rem 1rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+tbody tr:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* ==================== Gantt Chart ==================== */
+#ganttChart {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: rgba(15, 23, 42, 0.3) !important;
+  padding: 2rem !important;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color) !important;
+}
+
+.gantt-timeline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 1rem;
+  background: rgba(51, 65, 85, 0.15);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.gantt-block {
+  min-height: 48px;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: white;
+  border-radius: 0.375rem;
+  margin-right: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  padding: 0.5rem;
+  flex-shrink: 0;
+}
+
+.gantt-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.gantt-timing {
+  font-size: 0.65rem;
+  opacity: 0.8;
+  margin-top: 0.25rem;
+}
+
+/* Process Colors */
 .process-color-0 {
   background: linear-gradient(135deg, #06b6d4, #0891b2);
 }
@@ -324,58 +689,43 @@ tbody tr:hover {
   background: linear-gradient(135deg, #6366f1, #4f46e5);
 }
 
-/* ---------- Idle Block ---------- */
 .idle-block {
   background: repeating-linear-gradient(
     45deg,
-    #334155,
-    #334155 10px,
-    #475569 10px,
-    #475569 20px
+    #475569,
+    #475569 8px,
+    #64748b 8px,
+    #64748b 16px
   );
   color: #cbd5e1;
   font-style: italic;
 }
 
-/* ---------- Tooltip ---------- */
-.gantt-tooltip {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 9999;
-  background: rgba(2, 6, 23, 0.96);
-  color: #ffffff;
-  border: 1px solid rgba(34, 211, 238, 0.18);
-  border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
-  font-size: 0.8rem;
-  line-height: 1.5;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(12px);
-  transition: opacity 0.2s ease;
+/* ==================== Loading Spinner ==================== */
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-/* ---------- Analysis Cards ---------- */
-#analysisContent > div > div {
-  background: linear-gradient(
-    145deg,
-    rgba(15, 23, 42, 0.82),
-    rgba(30, 41, 59, 0.9)
-  );
-  border: 1px solid rgba(148, 163, 184, 0.08);
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* ---------- Fade Animation ---------- */
+/* ==================== Animations ==================== */
 .fade-in {
-  animation: fadeInUp 0.6s ease both;
+  animation: fadeIn 0.4s ease-out;
 }
 
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -383,42 +733,98 @@ tbody tr:hover {
   }
 }
 
-/* ---------- Scrollbar ---------- */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #06b6d4, #3b82f6, #8b5cf6);
-  border-radius: 999px;
-}
-
-/* ---------- Responsive ---------- */
+/* ==================== Responsive ==================== */
 @media (max-width: 768px) {
+  header {
+    padding: 2rem 1rem;
+  }
+
   header h1 {
-    font-size: 2.5rem !important;
+    font-size: 1.75rem;
   }
 
-  .algorithm-card,
-  .results-table,
-  .gantt-container,
-  #analysisPanel {
-    padding: 1.5rem !important;
+  header p {
+    font-size: 0.95rem;
   }
 
-  .gantt-block {
-    min-height: 48px;
-    font-size: 0.75rem;
+  main {
+    padding: 1.5rem 1rem;
+  }
+
+  .card {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card > div:first-child {
+    margin-bottom: 1.25rem;
   }
 
   th,
   td {
-    padding: 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .metric-card {
+    padding: 1rem;
+    min-height: 120px;
+  }
+
+  .gantt-block {
+    min-height: 40px;
+    font-size: 0.75rem;
+  }
+
+  input,
+  select {
+    font-size: 16px;
+  }
+
+  section {
+    align-items: center;
   }
 }
+
+@media (max-width: 480px) {
+  header {
+    padding: 1.5rem 1rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  header p {
+    font-size: 0.9rem;
+  }
+
+  main {
+    padding: 1rem 0.75rem;
+  }
+
+  .card {
+    padding: 1.25rem 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .card > div:first-child {
+    margin-bottom: 1rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+
+  table {
+    font-size: 0.8rem;
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+  }
+}
+

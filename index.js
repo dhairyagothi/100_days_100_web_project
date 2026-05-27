@@ -64,194 +64,200 @@ function getCategoryFromTags(tags, name) {
   return 'Tools';
 }
 
-const PROJECT_DATA = [
-['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', ['javascript', 'todo'], 'beginner'],
-  ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', ['javascript'], 'beginner'],
-  ['Day 3', 'Indian Flag', './public/indianflag/flag.html', ['css'], 'beginner'],
-  ['Day 4', 'Dropdown Nav Bar', './public/dropdown_navbar/index.html', ['css'], 'beginner'],
-  ['Day 5', 'Animated Cursor', './public/Animated-cursor/animated-cursor.html', ['ui', 'javascript', 'css'], 'beginner'],
-  ['Day 6', 'Auto Background Image Slider', './public/Background-Image-sider/slider.html', ['javascript'], 'beginner'],
-  ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', ['css'], 'intermediate'],
-  ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', ['javascript'], 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 11', 'Serve Website Using Express', './public/index.html', ['javascript'], 'intermediate'],
-  ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', ['api', 'javascript'], 'intermediate'],
-  ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', ['javascript'], 'intermediate'],
-  ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', ['css'], 'beginner'],
-  ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 18', 'Carousel Solar System', './public/Carousel%20Solar%20System/index.html', ['css', 'canvas'], 'intermediate'],
-  ['Day 19', 'Planto', './public/plantwebsite/plant.html', ['css'], 'beginner'],
-  ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', ['javascript'], 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', ['javascript'], 'intermediate'],
-  ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', ['ui', 'css'], 'beginner'],
-  ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 25', 'Tic-Tac-Toe', './public/TicTacToe/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 26', 'Maze Game', './public/Maze-Game-main/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 27', 'Memory Game', './public/MemoryGame/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 28', 'Wordle', './public/WORDLE/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 29', 'Snake Game', './public/snake_game/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 30', 'Flappy-bird-game', './public/Flappy-bird-main/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 31', 'Password Manager', './public/password%20manager/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 32', 'Missionaries & Cannibals', './public/Missionaries&Cannibals/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 33', 'Weather Forecasting', './public/Weather%20Forcasting/index.html', ['weather', 'api'], 'intermediate'],
-  ['Day 34', 'Email Validator', './public/email%20validator/index.html', ['api', 'javascript'], 'beginner'],
-  ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 36', 'Medical App', './public/Medical_App/index.html', ['javascript'], 'intermediate'],
-  ['Day 37', '2048 Game', './public/2048_game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 38', 'Github Profile Finder', './public/github_profile_finder/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 39', 'Notes App', './public/notes-app/index.html', ['todo', 'javascript'], 'beginner'],
-  ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', ['javascript', 'css'], 'beginner'],
-  ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 42', 'Amazon App', './public/Amazon_Clone/index.html', ['clone', 'javascript'], 'intermediate'],
-  ['Day 43', 'Password Generator', './public/Password_Generator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 44', 'BMI Calculator', './public/BMI_Calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 45', 'Black Jack', './public/BlackJack/blackJ.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', ['javascript'], 'beginner'],
-  ['Day 47', 'Ping Pong Game', './public/ping/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 49', 'Url Shortener', './public/url_shortener/frontend/public/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 50', 'Recipe Genie', './public/Recipe%20Genie/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', ['clone', 'css'], 'beginner'],
-  ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', ['weather', 'api'], 'intermediate'],
-  ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', ['javascript'], 'intermediate'],
-  ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 55', 'Cricket Game', './public/cricket/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', './public/pastebin/src/app.html', ['javascript'], 'intermediate'],
-  ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 58', 'Music App', './public/Music%20App/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', ['css'], 'beginner'],
-  ['Day 60', 'Marketing template website', './public/marketing_website/index.html', ['css'], 'beginner'],
-  ['Day 61', 'Hologram Button', './public/Holo%20Button/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 62', 'Solar System Explorer', './public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html', ['css'], 'intermediate'],
-  ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', ['clone', 'css'], 'beginner'],
-  ['Day 65', 'The Cube', './public/The%20Cube/index.html', ['ui', 'canvas', 'css'], 'intermediate'],
-  ['Day 66', 'Flask Authentication App', './public/flask_auth_app/explain.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 67', 'Blog-Website', './public/blog/main.html', ['css'], 'beginner'],
-  ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', ['ui', 'css'], 'intermediate'],
-  ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', ['clone', 'api', 'javascript'], 'intermediate'],
-  ['Day 70', 'Insect-Catch_Game', './public/Insect-Catch-Game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 71', 'Quotely Laughs', './public/Quotely-Laughs/index.html', ['api', 'javascript'], 'beginner'],
-  ['Day 72', 'Contact Book', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book', ['todo', 'javascript'], 'intermediate'],
-  ['Day 73', 'Candy_Crush_Game', './public/Candy_Crush_Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 76', 'Animated Searchbar', './public/Animated%20Searchbar/index.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 78', 'NPM Package Search', './public/NPM%20Package%20Search/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 79', 'Linkedin Homepage Clone', './public/Linkedin-Clone/index.html', ['clone', 'css'], 'intermediate'],
-  ['Day 80', 'Resume Studio', './public/ResumeStudio/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 81', 'Simon Says Game', './public/Simon_Says_Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 82', 'Love Calculator Game', './public/Love-Calculator/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 83', 'Exchange Currency', './public/Exchange_Currency/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 84', 'Lights Out Puzzle', './public/Lights_Out_Puzzle/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 85', 'Image Search Engine', './public/Image Search Engine/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 86', 'Profile Card', './public/3d profile Card/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 87', 'Breakout game', './public/Breakout game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 88', 'Job dashboard', './public/Job dashboard/jobs.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 89', 'N-Queen', './public/N_Queen/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', ['javascript'], 'beginner'],
-  ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', ['api', 'javascript'], 'intermediate'],
-  ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 93', 'TextUtils', './public/Textutils/public/index.html', ['javascript'], 'beginner'],
-  ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 97', 'Time Capsule', './public/Time-Capsule/index.html', ['javascript'], 'intermediate'],
-  ['Day 98', 'Virtual Piano', './public/Virtual Piano/index.html', ['css', 'javascript'], 'intermediate'],
-  ['Day 99', 'NASA-APOD Extension', './public/NASA-APOD/popup.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 100', 'Text Saver Extension', './public/Text_Saver_Ext/popup.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 101', 'Personal Finance Tracker', './public/FinanceTracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 102', 'Travel Booking Website', './public/Travel_booking_website/index.html', ['javascript'], 'intermediate'],
-  ['Day 103', 'Drumkit Game', './public/Drumkit_Game/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', ['css'], 'beginner'],
-  ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', ['css', 'javascript'], 'beginner'],
-  ['Day 106', 'Plants Website', './public/Plants Website/index.html', ['css'], 'beginner'],
-  ['Day 107', 'DocNow', './public/DocNow/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 111', 'Whack-a-Mole Game', './public/Whack-a-Mole Game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 112', 'Nykaa Clone Website', './public/Nykaa-clone/index.html', ['clone', 'css'], 'intermediate'],
-  ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', ['api', 'javascript'], 'intermediate'],
-  ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', ['ui', 'tool', 'html', 'css', 'js'], 'intermediate'],
-  ['Day 118', 'Particle Effect', './public/particle-effect/index.html', ['ui', 'html', 'css', 'js', 'canvas'], 'intermediate'],
-  ['Day 119', 'Virtual Playground', './playground.html', ['ui', 'game', 'html', 'css', 'js'], 'intermediate'],
-  ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', ['html', 'css', 'js', 'game'], 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', ['tool'], 'intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', ['html', 'css', 'javascript', 'api-javascript'], 'Advanced'],
-  ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', ['productivity', 'tool'], 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', ['game'], 'intermediate'],
-  ['Day 125', 'Snakeladder', './public/snakeladder/index.html', ['game'], 'intermediate'],
-  ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', ['css', 'javascript'], 'intermediate'],
-  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', ['animation', 'simulation', 'html', 'css', 'js', 'javascript'], 'intermediate'],
-  ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', ['Html', 'CSS'], 'beginner'],
-  ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 131', 'Retro Highway Racer', './public/RetroHighwayRacer/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 132', 'Pokedex', './public/Pokedex/index.html', ['utility'], 'intermediate'],
-  ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', ['simulator'], 'intermediate'],
-  ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', ['asmr', 'game'], 'intermediate'],
-  ['Day 135', 'Shooting game', './public/shooting game/index.html', ['2d', 'game'], 'intermediate'],
-  ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 138', 'Age Calculator', './public/age-calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 139', 'Ludo game', './public/Ludo-game/index.html', ['Html', 'css', 'javascript'], 'intermediate'],
-  ['Day 140', 'Big Sales Prediction', './public/BigSales-Prediction/frontend/index.html', ['machine', 'learning', 'python', 'javascript'], 'advanced'],
-  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', ['map', 'game'], 'intermediate'],
-  ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', ['html', 'css', 'javascript'], 'beginner'],
-  ['Day 144', 'Car Racing game', './public/racing game/index.html', ['html', 'css', 'js'], 'intermediate'],
-  ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', ['simulation', 'html', 'css', 'javascript'], 'beginner'],
-  ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', ['visualizer'], 'intermediate'],
-  ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', ['tool', 'javascript'], 'advanced'],
-  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', ['tool', 'javascript'], 'advanced'],
-  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', ['html', 'css', 'javascript', 'canvas'], 'advanced'],
-  ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', ['html', 'css', 'javascript', 'productivity', 'timer', 'tasks', 'ambient'], 'intermediate'],
-  ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', ['react', 'typescript', 'game', 'hangman', 'vite'], 'advanced'],
-  ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
-  ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', ['simulation', 'algorithm', 'javascript'], 'intermediate'],
-  ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 161', 'Unit-Converter', './public/Unit-Converter/index.html', ['tool', 'javascript', 'html', 'css'], 'intermediate'],
-  ['Day 162', 'Color Palette From Art Generator', './public/ColorPaletteArtGenerator/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 163', 'Ai Image Editor', './public/image-editor/index.html', ['edits', 'images'], 'advanced'],
-  ['Day 164', 'Code Visualizer Playground', './public/code-visualizer-playground/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
-  ['Day 165', 'Amazon Clone', './public/AmazonClone/index.html', ['Amazon', 'Clone', 'HTML', 'CSS', 'JavaScript'], 'beginner'],
-  ['Day 166', 'Boredom Buster', './public/BoredomBuster/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 167', 'scam-sms-detector', '/public/scam-sms-detector/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 168', 'Color Sort Puzzle game', './public/colorsort/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 169', 'Subscription Tracker', './public/subscriptiontracker/tracker.html', ['react', 'typescript', 'tailwindcss', 'ui'], 'advanced'],
-  ['Day 170', 'Vector Flowchart Designer', './public/VectorFlowchartDesigner/index.html', ['html', 'css', 'javascript'], 'advanced'],
-  ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", "html css javascript", 'advanced']
-];
-const PROJECTS = PROJECT_DATA;
+let PROJECTS = [];
+let projectsPromise = null;
+
+function loadProjects() {
+  if (!projectsPromise) {
+    projectsPromise = (async () => {
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const base = isRoot ? '' : '../';
+     const projectsUrl =
+new URL(`${base}projects.json`,
+window.location.href).toString();
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
+      }
+const data = await response.json();
+
+PROJECTS = data.map(project => [
+   `Day ${project.projectNo}`,
+   project.projectName,
+   project.projectPath,
+   project.techStack,
+   project.difficulty,
+   project.projectDesc
+]);
+    })();
+  }
+  return projectsPromise;
+}
+
+// Start fetching immediately
+loadProjects();
 
 
 /* ============================================================
-   SOURCE CODE URL GENERATOR
+   PROJECT LINK RESOLUTION (demo vs source / source-only)
    ============================================================ */
-function getSourceUrl(url) {
-  const trimmed = url.trim();
-  if (trimmed.startsWith('http')) return trimmed; // Already a full GitHub link
+const SOURCE_ONLY_TAG = 'source-only';
+
+/** Live demos hosted outside the repo — Code links point to in-repo source folders */
+const EXTERNAL_DEMO_SOURCE_FOLDERS = {
+  'Day 20': 'public/EveSparks',
+  'Day 115': 'public/event-registration-system',
+};
+
+function isGithubTreeUrl(url) {
+  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(String(url || '').trim());
+}
+
+function parseGithubTreePath(url) {
+  const match = String(url || '').trim().match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
+  return match ? decodeURIComponent(match[1].replace(/\/$/, '')) : null;
+}
+
+function isSourceOnlyProject(day, tags) {
+  if (day === 'Day 13' || day === 'Day 72') return true;
+  const tagList = Array.isArray(tags)
+    ? tags
+    : String(tags || '').split(/\s+/).filter(Boolean);
+  return tagList.includes(SOURCE_ONLY_TAG);
+}
+
+function githubTreeToLocalDemo(url) {
+  const folderPath = parseGithubTreePath(url);
+  if (!folderPath) return null;
+  return `./${folderPath}/index.html`;
+}
+
+function getSourceUrl(url, day) {
+  const trimmed = (url || '').trim();
+  const repoSourceFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
+  if (repoSourceFolder) {
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${repoSourceFolder}`;
+  }
+  if (isGithubTreeUrl(trimmed)) return trimmed;
+  if (trimmed.startsWith('http')) return trimmed;
   if (trimmed.startsWith('./')) {
-    // Converts "./public/folder/index.html" to "public/folder"
     const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
   }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
+}
+
+function resolveProjectUrls(day, name, url, tags) {
+  const trimmed = (url || '').trim();
+  const sourceOnly = isSourceOnlyProject(day, tags);
+  let demoUrl = trimmed;
+  let sourceUrl = getSourceUrl(trimmed, day);
+
+  if (isGithubTreeUrl(trimmed)) {
+    sourceUrl = trimmed;
+    demoUrl = sourceOnly ? trimmed : (githubTreeToLocalDemo(trimmed) || trimmed);
+  }
+
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
+    try {
+      demoUrl = new URL(demoUrl, window.location.href).href;
+    } catch (error) {
+      // Keep the original path if URL normalization fails.
+    }
+  }
+
+  return { demoUrl, sourceUrl, sourceOnly };
+}
+
+function getProjectDescription(project) {
+  return (
+      project[5] ||
+      'Explore this project to discover interactive functionality.'
+  );
+}
+
+function buildProjectCardHTML({
+  day,
+  name,
+  url,
+  tags,
+  category,
+  isBookmarked = false,
+  showDescription = true,
+}) {
+  const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(day, name, url, tags);
+  const tagsArray = Array.isArray(tags)
+    ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+    : String(tags || '')
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+  const project =
+PROJECTS.find(p => p[1] === name);
+
+const description =
+getProjectDescription(project);
+  const sourceOnlyBadge = sourceOnly
+    ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
+    : '';
+  const primaryLink = sourceOnly
+    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Source
+                    </a>`
+    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>`;
+  const codeLink = sourceOnly
+    ? ''
+    : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Code
+                    </a>`;
+
+  return {
+    html: `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category-wrap">
+                  <span class="card-category">${category}</span>
+                  ${sourceOnlyBadge}
+                </span>
+            </div>
+            <div class="card-name">${name}</div>
+            ${
+              showDescription
+                ? `<div class="card-description">
+    ${description}
+</div>`
+                : ''
+            }
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    ${primaryLink}
+                    ${codeLink}
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `,
+    demoUrl,
+    sourceOnly,
+  };
+}
+
+function attachProjectCardInteraction(card, demoUrl, projectData = null) {
+  card.style.cursor = 'pointer';
+  card.onclick = (e) => {
+    if (e.target.closest('a, button')) return;
+    
+    // Track the project visit if projectData is provided
+    if (projectData) {
+      trackRecentProject(projectData);
+    }
+    
+    window.open(demoUrl, '_blank', 'noopener');
+  };
 }
 
 
@@ -385,6 +391,59 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
+const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
+
+/**
+ * Migrates old recent projects format (array) to new format (object with timestamp)
+ * If stored format doesn't have timestamps, it's likely the old format
+ */
+function migrateRecentProjects() {
+  if (recentProjects.length === 0) return;
+  
+  // Check if already in new format (has timestamp)
+  if (typeof recentProjects[0] === 'object' && recentProjects[0].timestamp) {
+    return; // Already migrated
+  }
+  
+  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
+  recentProjects = recentProjects.map((project) => {
+    if (Array.isArray(project)) {
+      return {
+        day: project[0],
+        name: project[1],
+        url: project[2],
+        tags: project[3],
+        timestamp: Date.now() - (ONE_HOUR_MS / 2) // Set to 30 mins ago to preserve them initially
+      };
+    }
+    return project;
+  });
+  
+  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+}
+
+// Migrate on load
+migrateRecentProjects();
+
+/**
+ * Cleans up recent projects older than 1 hour
+ * Called periodically and on page load
+ */
+function cleanupExpiredRecentProjects() {
+  const initialLength = recentProjects.length;
+  recentProjects = getRecentProjectsWithinWindow();
+  
+  if (recentProjects.length !== initialLength) {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    renderRecentProjects();
+  }
+}
+
+// Clean up on page load
+cleanupExpiredRecentProjects();
+
+// Clean up every 5 minutes
+setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
 
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
@@ -450,9 +509,9 @@ function generateReadme() {
     lines.push('');
     lines.push('## Projects');
     PROJECTS.forEach(([day, name, url, tags]) => {
-      const safeUrl = url || '';
+      const { demoUrl } = resolveProjectUrls(day, name, url, tags);
       const category = getCategoryFromTags(tags, name);
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${category}_`);
+      lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
     });
 
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
@@ -556,42 +615,20 @@ function renderGrid() {
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-
-    // FIX PART 1: Add a pointer cursor so users know it's clickable
-    card.className = 'project-card';
-    card.style.cursor = 'pointer';
-
-    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
-
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
 
-    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
-    // This stops the click from "bubbling up" to the main card, preventing double-opening!
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     fragment.appendChild(card);
   });
@@ -763,11 +800,49 @@ function toggleBookmark(project) {
   renderRecentProjects();
 }
 
-function trackRecentProject(project) {
-  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
-  recentProjects.unshift(project);
+/**
+ * Removes projects older than 1 hour from the recent projects list
+ * @returns {array} Filtered recent projects within the 1-hour window
+ */
+function getRecentProjectsWithinWindow() {
+  const now = Date.now();
+  return recentProjects.filter((item) => {
+    const timestamp = item.timestamp || Date.now();
+    const age = now - timestamp;
+    return age <= ONE_HOUR_MS;
+  });
+}
 
-  if (recentProjects.length > 10) {
+/**
+ * Tracks a recently viewed project with a timestamp
+ * @param {array} project - Project data [day, name, url, tags]
+ */
+function trackRecentProject(project) {
+  // Convert old format to new format if needed
+  let projectObj;
+  if (Array.isArray(project)) {
+    projectObj = {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+      timestamp: Date.now()
+    };
+  } else {
+    projectObj = {
+      ...project,
+      timestamp: Date.now()
+    };
+  }
+
+  // Remove duplicate if exists
+  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  
+  // Add to front
+  recentProjects.unshift(projectObj);
+
+  // Keep only the 20 most recent entries (not filtered by time yet)
+  if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
@@ -797,32 +872,19 @@ function renderBookmarks() {
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
-    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked: true,
+      showDescription: true,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn active" data-id="${day}">
-                    <i class="fa-solid fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     bookmarkGrid.appendChild(card);
   });
@@ -835,48 +897,44 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = '';
 
-  if (recentProjects.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+  // Filter projects within the 1-hour window
+  const validRecent = getRecentProjectsWithinWindow();
+
+  if (validRecent.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
     return;
   }
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display = validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
+  visibleRecent.forEach((projectObj) => {
+    // Handle both old array format and new object format
+    const day = projectObj.day || projectObj[0];
+    const name = projectObj.name || projectObj[1];
+    const url = projectObj.url || projectObj[2];
+    const tags = projectObj.tags || projectObj[3];
+    
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
-    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: false,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     recentGrid.appendChild(card);
   });
@@ -906,7 +964,10 @@ if (copyBookmarksBtn) {
     }
     const textToCopy = bookmarkedProjects.map(p => {
       const projectName = p[1];
-      const projectLink = new URL(p[2], window.location.href).href;
+      const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
+      const projectLink = demoUrl.startsWith('http')
+        ? demoUrl
+        : new URL(demoUrl, window.location.href).href;
       return `${projectName} - ${projectLink}`;
     }).join('\n');
 
@@ -1086,6 +1147,39 @@ function initTechStackSearch() {
 const searchInput = document.getElementById('searchInput');
 const clearSearchBtn = document.getElementById('clearSearch');
 
+function updateCategoryCounts() {
+  const counts = {};
+  for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
+    if (key !== 'all') {
+      counts[key] = 0;
+    }
+  }
+
+  PROJECTS.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
+    const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
+      (key) => FILTER_CATEGORY_MAP[key] === category
+    );
+    if (filterKey && filterKey !== 'all') {
+      counts[filterKey]++;
+    }
+  });
+
+  const categorySpans = {
+    'game': document.getElementById('gameCount'),
+    'clone': document.getElementById('cloneCount'),
+    'tool': document.getElementById('toolCount'),
+    'ui': document.getElementById('uiCount'),
+    'api': document.getElementById('apiCount')
+  };
+
+  for (const [key, span] of Object.entries(categorySpans)) {
+    if (span) {
+      span.textContent = counts[key].toLocaleString();
+    }
+  }
+}
+
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
 
@@ -1107,6 +1201,8 @@ function syncProjectCounts() {
   if (searchInput) {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
+
+  updateCategoryCounts();
 }
 
 // Clear button functionality
@@ -1146,8 +1242,10 @@ function updateNavbar() {
         </button>
         `;
   const otherLink = isRoot
-    ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>`;
+    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
+       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
 
   if (username) {
     container.innerHTML = `
@@ -1233,6 +1331,24 @@ function initScrollBtn() {
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
+
+    // Footer collision avoidance
+    const footer = document.querySelector('.footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        // Cap the upward movement to a maximum of 120px.
+        // This ensures it dodges the important bottom footer links but 
+        // doesn't fly completely off the top of the screen when the footer is huge.
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = '2rem';
+      }
+    }
   };
 
   updateScrollProgress();
@@ -1256,7 +1372,7 @@ function hasProjectGrid() {
   return Boolean(document.getElementById('projectGrid'));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   updateNavbar();
 
@@ -1266,14 +1382,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initSorting();
   initTechStackSearch();
 
-  syncProjectCounts();
-  fetchRepoStats();
-  initScrollBtn();
+  try {
+    // Await the projects to be fetched
+    await loadProjects();
 
-  if (hasProjectGrid()) {
-    renderGrid();
-    renderBookmarks();
-    renderRecentProjects();
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+
+    if (hasProjectGrid()) {
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+    }
+  } catch (error) {
+    console.error('Failed to load projects:', error);
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+    }
   }
 });
 
@@ -1286,23 +1413,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!menuToggle || !navButtons) return;
 
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      menuToggle.classList.toggle('active');
-      navButtons.classList.toggle('active');
+      const isOpen = navButtons.classList.toggle('active');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
     document.addEventListener('click', (e) => {
       if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        closeMenu();
+        menuToggle.focus();
       }
     });
 
     navButtons.addEventListener('click', (e) => {
       if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
       }
     });
   };
@@ -1332,6 +1471,53 @@ window.addEventListener(
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
+
+// Custom cursor
+(function () {
+  const outerCursor = document.querySelector('.cursor-ring--outer');
+  const innerCursor = document.querySelector('.cursor-ring--inner');
+
+  if (!outerCursor || !innerCursor) return;
+
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  const speed = 0.18;
+
+  const update = () => {
+    current.x += (target.x - current.x) * speed;
+    current.y += (target.y - current.y) * speed;
+
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+
+    requestAnimationFrame(update);
+  };
+
+  const showCursor = () => {
+    outerCursor.classList.add('is-visible');
+    innerCursor.classList.add('is-visible');
+  };
+
+  const hideCursor = () => {
+    outerCursor.classList.remove('is-visible');
+    innerCursor.classList.remove('is-visible');
+  };
+
+  window.addEventListener(
+    'mousemove',
+    (event) => {
+      target.x = event.clientX;
+      target.y = event.clientY;
+      showCursor();
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('mouseleave', hideCursor);
+  window.addEventListener('mouseenter', showCursor);
+
+  requestAnimationFrame(update);
+})();
 
 // Particle Network Background
 (function () {
@@ -1564,12 +1750,27 @@ function applyFilters(search, category) {
   searchQuery = search || '';
   activeFilter = category || 'all';
   currentPage = 1;
-  renderGrid();
 
+  // Sync active chip selection with URL state
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chip.classList.add('active');
+    } else {
+      chip.classList.remove('active');
+    }
+  });
+
+  renderGrid();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  restoreStateFromURL();
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await loadProjects();
+    restoreStateFromURL();
+  } catch (error) {
+    console.error('Failed to restore state or load projects:', error);
+  }
   const searchInput = document.getElementById('search') ||
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');

@@ -276,6 +276,7 @@ body{
 
     box-shadow:
         0 0 20px rgba(64,245,210,0.5);
+
 }
 
 .controls{
@@ -472,5 +473,6 @@ body{
     .box{
         border-radius:14px;
     }
+
 
 }

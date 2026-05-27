@@ -1,3 +1,4 @@
+
 const boxes = document.querySelectorAll(".box");
 
 const statusText = document.getElementById("statusText");
@@ -99,6 +100,7 @@ function handleClick(event){
 
     if(board[index] !== "" || gameOver){
         return;
+
     }
 
     makeMove(index,currentPlayer);
@@ -130,6 +132,7 @@ function makeMove(index,player){
         boxes[index].classList.add("mark-x");
 
     }
+
 
     checkWinner();
 
@@ -312,7 +315,10 @@ function findWinningMove(player){
 
         }
 
+
     }
+    animFrame = requestAnimationFrame(animateConfetti);
+  }
 
     return null;
 
@@ -398,3 +404,4 @@ function closeWinnerModal(){
     );
 
 }
+
