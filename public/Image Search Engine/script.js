@@ -1,12 +1,16 @@
-const searchform = document.getElementById("searchform");
+
+const searchForm = document.getElementById("search-form");
+
 const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
-const showMoreButton = document.getElementById("show-more-button");
+const showMoreButton = document.getElementById("show-more-btn");
+
+const accessKey = "YOUR_UNSPLASH_ACCESS_KEY"
 
 
 let keyword="";
 let page = 1;
-const accessKey=""; // Add your Unsplash Access Key here
+
 
 async function searchImages(){
     keyword = searchBox.value;
@@ -21,7 +25,7 @@ async function searchImages(){
 
     const results = data.results
 
-    results.map((result) =>{
+    results.forEach((result) =>{
         const image = document.createElement("img");
         image.src = result.urls.small;
         const imageLink = document.createElement("a");
@@ -34,7 +38,7 @@ async function searchImages(){
     showMoreButton.style.display = "block"
 }
 
-searchform.addEventListener("submit", (e) => {
+searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     page = 1;
     searchImages();
