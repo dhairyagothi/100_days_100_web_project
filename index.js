@@ -1228,6 +1228,30 @@ syncProjectCounts();
 /* ============================================================
    NAVBAR — dynamic based on login state
    ============================================================ */
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+async function fetchSession() {
+  try {
+    const res = await fetch('/api/auth/me', { credentials: 'include' });
+    if (res.ok) {
+      const data = await res.json();
+      window.username = data.username || null;
+    } else {
+      window.username = null;
+    }
+  } catch {
+    window.username = null;
+  }
+  updateNavbar();
+}
+
 function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
@@ -1248,9 +1272,10 @@ function updateNavbar() {
        <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
 
   if (username) {
+    const safeUsername = escapeHtml(username);
     container.innerHTML = `
             ${themeButton}
-            <span class="welcome-text">Hi, ${username}</span>
+            <span class="welcome-text">Hi, ${safeUsername}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
             <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
@@ -1258,7 +1283,12 @@ function updateNavbar() {
             </a>
             ${otherLink}
         `;
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+      } catch {
+        // Still clear local state if the request fails.
+      }
       window.username = null;
       updateNavbar();
     });
@@ -1374,7 +1404,12 @@ function hasProjectGrid() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
-  updateNavbar();
+  await fetchSession();
+
+  if (new URLSearchParams(window.location.search).get('auth') === 'success') {
+    showToast('Signed in successfully');
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
 
   initCurrentYear();
   initFilterChips();

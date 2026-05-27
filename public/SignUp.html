@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sammu Trial Login Page</title>
+    <title>Sign Up · 100 Days 100 Web Projects</title>
 
     <link
       rel="stylesheet"
@@ -38,6 +38,21 @@
         <div class="auth-card">
           <h2 class="auth-title-1">Sign Up</h2>
 
+          <div id="authMessage" class="auth-message auth-message--error" hidden role="alert"></div>
+
+          <div class="oauth-buttons">
+            <a href="/api/auth/google" class="oauth-btn oauth-btn--google">
+              <i class="fa-brands fa-google" aria-hidden="true"></i>
+              Continue with Google
+            </a>
+            <a href="/api/auth/github" class="oauth-btn oauth-btn--github">
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
+              Continue with GitHub
+            </a>
+          </div>
+
+          <div class="auth-divider" aria-hidden="true"><span>or create an account</span></div>
+
           <form id="signupForm" class="auth-form">
             <div class="form-group">
               <i class="fa-solid fa-user"></i>
@@ -46,6 +61,7 @@
                 id="name"
                 placeholder="Full Name"
                 class="form-input"
+                autocomplete="name"
                 required
               />
             </div>
@@ -57,6 +73,7 @@
                 id="username"
                 placeholder="Username"
                 class="form-input"
+                autocomplete="username"
                 required
               />
             </div>
@@ -68,6 +85,7 @@
                 id="email"
                 placeholder="Email Address"
                 class="form-input"
+                autocomplete="email"
                 required
               />
             </div>
@@ -79,9 +97,10 @@
                 id="password"
                 placeholder="Password"
                 class="form-input"
+                autocomplete="new-password"
                 required
               />
-              <span class="toggle-password" onclick="togglePassword()">👁</span>
+              <span class="toggle-password" role="button" tabindex="0" aria-label="Toggle password visibility">👁</span>
             </div>
 
             <button type="submit" class="button home-btn signup-btn">
@@ -93,70 +112,52 @@
           <p class="already-signed-up">
             Already signed up? <a href="Login.html">Login</a>
           </p>
-          
         </div>
       </div>
     </section>
 
+    <script src="auth-common.js"></script>
     <script>
-      // Show password toggle
-      function togglePassword() {
-        const passwordInput = document.getElementById("password");
-        const toggleIcon = document.querySelector(".toggle-password");
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            toggleIcon.classList.add("active");
-            // toggleIcon.textContent = "..";
-        } else {
-            passwordInput.type = "password";
-            toggleIcon.classList.remove("active");
-            // toggleIcon.textContent = "👁";
+      document.querySelector('.toggle-password')?.addEventListener('click', togglePasswordField);
+      document.querySelector('.toggle-password')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          togglePasswordField();
         }
-      }
+      });
 
-      document
-        .getElementById("signupForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
+      document.getElementById('signupForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideAuthMessage();
 
-          const name = document.getElementById("name").value.trim();
-          const username = document.getElementById("username").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value.trim();
+        const name = document.getElementById('name').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
-          // Existing user validation
-          const existingUser = localStorage.getItem(username);
+        try {
+          const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ name, username, email, password }),
+          });
 
-          if (existingUser) {
-            alert("Username already exists.");
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            showAuthMessage(data.message || 'Sign up failed. Please try again.', 'error');
             return;
           }
 
-
-          // Strong password validation
-          const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
-
-          if (!passwordRegex.test(password)) {
-            alert(
-              "Password must contain:\n- 1 uppercase letter\n- 1 number\n- 1 special character\n- Minimum 6 characters",
-            );
-            return;
-          }
-
-          // Save user
-          const userData = {
-            name,
-            email,
-            password,
-          };
-
-          localStorage.setItem(username, JSON.stringify(userData));
-
-          alert("Signup successful!");
-
-          window.location.href = "Login.html";
-        });
+          showAuthMessage(data.message || 'Sign up successful!', 'success');
+          setTimeout(() => {
+            window.location.href = '../index.html';
+          }, 800);
+        } catch {
+          showAuthMessage('Unable to reach the auth server. Run npm run dev and try again.', 'error');
+        }
+      });
     </script>
   </body>
 </html>

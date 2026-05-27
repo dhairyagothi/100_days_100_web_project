@@ -272,17 +272,19 @@ The easiest way to explore all projects is through our **live website**:
    cd 100_days_100_web_project
    ```
 
-3. **Open the main website:**
-   - Simply open `index.html` in your browser
-   - Or use a local server (recommended):
+3. **Run the site locally (with authentication):**
    ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve .
-   
-   # Using VS Code Live Server extension
+   npm install
+   cp .env.example .env
+   # Edit .env — set MONGODB_URI, JWT_SECRET, SESSION_SECRET, and OAuth keys
+   npm run dev
+   ```
+   Then open [http://localhost:3000/index.html](http://localhost:3000/index.html) and sign in at [http://localhost:3000/public/Login.html](http://localhost:3000/public/Login.html).
+
+   For static-only browsing (no login/OAuth):
+   ```bash
+   npm run dev:static
+   # or: npx serve .
    ```
 
 4. **For individual projects:**
@@ -302,9 +304,40 @@ The easiest way to explore all projects is through our **live website**:
 │   ├── snake_game/       # Day 29: Snake Game
 │   └── ...               # 112+ projects
 ├── contributors/          # Contributors page
+├── server/               # Auth API (Express + MongoDB + OAuth)
+├── api/                  # Vercel serverless entry for /api/*
+├── AUTH.md               # Full authentication setup guide
 ├── vercel.json           # Deployment configuration
 └── README.md             # You are here!
 ```
+
+## 🔐 Authentication (Google, GitHub & Local Login)
+
+The main site supports **Google OAuth**, **GitHub OAuth**, and **username/password** sign-in via [`public/Login.html`](public/Login.html).
+
+### Quick setup for contributors
+
+1. Copy environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+2. Set `MONGODB_URI` (MongoDB Atlas or local MongoDB).
+3. Generate secrets:
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   ```
+   Use the output for `JWT_SECRET` and `SESSION_SECRET`.
+4. Create OAuth apps and add credentials to `.env`:
+   - **Google redirect URI:** `{BASE_URL}/api/auth/google/callback`
+   - **GitHub callback URL:** `{BASE_URL}/api/auth/github/callback`
+5. Start the server (if you have not installed yet, run `npm install` first):
+   ```bash
+   npm run dev
+   ```
+
+See **[AUTH.md](AUTH.md)** for the full guide (scopes, Vercel deployment, troubleshooting, and API reference).
+
+> **Production note:** Sign-in on the live Vercel site only works after project maintainers add the env vars from `.env.example` (MongoDB URI, secrets, and OAuth credentials). Static browsing of projects works without auth.
 
 ## 🤝 Contributing
 
