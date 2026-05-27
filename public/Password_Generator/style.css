@@ -210,10 +210,9 @@ h1 {
 
 #hideTimer, #warningMsg {
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
     font-size: 0.95rem;
     min-height: 1.2rem;
-    display: none;
 }
 #hideTimer { color: var(--vb-yellow); }
 #warningMsg { color: #ff4d4d; }
