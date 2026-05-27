@@ -187,3 +187,7 @@ ul li:hover::after{
   border: solid 3px white;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
+#placeSelector{
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}

@@ -198,12 +198,12 @@
     <h1 id="placeTitle">Iceland</h1>
     
     <select id="placeSelector">
-        <option value="Iceland">Iceland</option>
-        <option value="Switzerland">Switzerland</option>
-        <option value="Scotland">Scotland</option>
-        <option value="Ireland">Ireland</option>
-        <option value="Germany">Germany</option>
-    </select>
+    <option value="Iceland">Iceland</option>
+    <option value="Switzerland">Switzerland</option>
+    <option value="Scotland">Scotland</option>
+    <option value="Ireland">Ireland</option>
+    <option value="Germany">Germany</option>
+</select>
     <br>
     <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
 </div>
@@ -230,11 +230,18 @@
     const placeTitle = document.getElementById('placeTitle');
     const placeDescription = document.getElementById('placeDescription');
     const body = document.body;
+    const flags = {
+    "Iceland": "🇮🇸",
+    "Switzerland": "🇨🇭",
+    "Scotland": "🏴",
+    "Ireland": "🇮🇪",
+    "Germany": "🇩🇪"
+};
 
     // Function to update the UI
     function updatePlace(place) {
         body.style.backgroundImage = placeBackgrounds[place];
-        placeTitle.textContent = place;
+        placeTitle.textContent = `${flags[place]} ${place}`;
         placeDescription.textContent = placeDescriptions[place];
         bookingButton.textContent = `Book a Trip to ${place}`;
     }
