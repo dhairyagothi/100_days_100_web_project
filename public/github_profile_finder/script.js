@@ -9,7 +9,12 @@ const UI = {
   themeToggle: document.getElementById("themeToggle"),
   themeIcon: document.getElementById("themeIcon"),
   offlineIndicator: document.getElementById("offlineIndicator"),
-  exportPdfBtn: document.getElementById("exportPdfBtn")
+  exportPdfBtn: document.getElementById("exportPdfBtn"),
+  compareForm: document.getElementById("compareForm"),
+  compareA: document.getElementById("compareA"),
+  compareB: document.getElementById("compareB"),
+  comparisonPanel: document.getElementById("comparisonPanel"),
+  comparisonContainer: document.getElementById("comparisonContainer")
 };
 
 const Nodes = {
@@ -170,10 +175,215 @@ function hideStatus() {
 
 function showLoading() {
   showStatus("Syncing workspace records and evaluating analytics models...", "success");
+  document.body.classList.remove("compare-mode");
   if (UI.profileCard) UI.profileCard.classList.add("hidden");
   if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
   if (UI.reposSection) UI.reposSection.classList.add("hidden");
+  if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
   searchResultsContainer.style.display = "none";
+}
+
+function showCompareLoading() {
+  document.body.classList.add("compare-mode");
+  if (UI.profileCard) UI.profileCard.classList.add("hidden");
+  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
+  if (UI.reposSection) UI.reposSection.classList.add("hidden");
+  if (UI.comparisonPanel) UI.comparisonPanel.classList.remove("hidden");
+  if (UI.comparisonContainer) {
+    UI.comparisonContainer.innerHTML = `
+      <div class="compare-loading-state" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <div>
+          <strong>Preparing comparison</strong>
+          <p>Loading both profiles, repository summaries, and language breakdowns.</p>
+        </div>
+      </div>`;
+  }
+  UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function getMetricHighlights(user) {
+  const total = Math.max(user.followers + user.public_repos, 1);
+  return [
+    {
+      label: "Followers",
+      value: user.followers,
+      percent: Math.round((user.followers / total) * 100)
+    },
+    {
+      label: "Repos",
+      value: user.public_repos,
+      percent: Math.round((user.public_repos / total) * 100)
+    }
+  ];
+}
+
+function computeMetricsForRepos(repos) {
+  return new Promise((resolve) => {
+    const worker = new Worker(URL.createObjectURL(blob));
+    worker.onmessage = (event) => {
+      resolve(event.data);
+      worker.terminate();
+    };
+    worker.postMessage(repos || []);
+  });
+}
+
+async function fetchProfileData(username) {
+  const cleanName = username.trim().replace(/^@/, "");
+
+  if (!cleanName) {
+    throw new Error("A GitHub username is required.");
+  }
+
+  const cachedProfile = DataCacheEngine.get(`profile_${cleanName}`);
+  const cachedRepos = DataCacheEngine.get(`repos_${cleanName}`);
+  const cachedMetrics = DataCacheEngine.get(`metrics_${cleanName}`);
+
+  if (cachedProfile && cachedRepos && cachedMetrics) {
+    return { user: cachedProfile, repos: cachedRepos, metrics: cachedMetrics };
+  }
+
+  if (!navigator.onLine) {
+    throw new Error(`Offline mode cannot fetch ${cleanName}.`);
+  }
+
+  const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
+  if (!userResponse.ok) {
+    throw new Error(`GitHub user not found: ${cleanName}`);
+  }
+
+  const user = await userResponse.json();
+  const repoResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`);
+  const repos = await repoResponse.json();
+  const verifiedRepos = Array.isArray(repos) ? repos : [];
+  const sortedRepos = verifiedRepos.sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count).slice(0, 6);
+  const metrics = await computeMetricsForRepos(sortedRepos);
+
+  DataCacheEngine.set(`profile_${cleanName}`, user);
+  DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
+  DataCacheEngine.set(`metrics_${cleanName}`, metrics);
+
+  return { user, repos: sortedRepos, metrics };
+}
+
+function buildRepoListSmall(repos) {
+  if (!Array.isArray(repos) || repos.length === 0) {
+    return '<div class="empty-state-inline">No repositories available.</div>';
+  }
+
+  return `
+    <div class="repo-mini-list">
+      ${repos.map((repo) => `
+        <article class="repo-mini-card">
+          <div class="repo-mini-title-row">
+            <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noreferrer">${repo.name}</a>
+            <span class="repo-mini-stars">★ ${repo.stargazers_count}</span>
+          </div>
+          <p class="repo-mini-description">${safeText(repo.description, "No description provided.")}</p>
+          <div class="repo-mini-meta">
+            ${repo.language ? `<span class="badge-chip">${repo.language}</span>` : ""}
+            <span class="badge-chip">Forks ${repo.forks_count}</span>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderComparisonCard(profileData, compareType, peerData) {
+  const leadFollowers = profileData.user.followers > peerData.user.followers;
+  const leadRepos = profileData.user.public_repos > peerData.user.public_repos;
+  const primaryBadge = leadFollowers ? "Leader in followers" : leadRepos ? "Leader in repos" : "Balanced profile";
+  const repoHighlights = getMetricHighlights(profileData.user);
+
+  return `
+    <article class="compare-panel compare-panel-${compareType}">
+      <div class="compare-panel-top">
+        <div class="panel-head">
+          <img src="${profileData.user.avatar_url}" alt="${profileData.user.login} avatar" loading="lazy" />
+          <div class="compare-identity">
+            <div class="compare-title-row">
+              <strong class="compare-name">${safeText(profileData.user.name, profileData.user.login)}</strong>
+              <span class="badge-strong">${primaryBadge}</span>
+            </div>
+            <p class="compare-handle">@${profileData.user.login}</p>
+          </div>
+        </div>
+
+        <p class="compare-bio">${safeText(profileData.user.bio, "No bio provided.")}</p>
+
+        <div class="compare-badges">
+          <span class="badge-chip ${leadRepos ? "badge-chip-accent" : ""}">Repos ${profileData.user.public_repos}</span>
+          <span class="badge-chip ${leadFollowers ? "badge-chip-accent" : ""}">Followers ${profileData.user.followers}</span>
+          <span class="badge-chip">Following ${profileData.user.following}</span>
+          <span class="badge-chip">Joined ${formatDate(profileData.user.created_at)}</span>
+        </div>
+
+        <div class="compare-actions">
+          <a class="compare-action-btn" href="${profileData.user.html_url}" target="_blank" rel="noreferrer">
+            View GitHub Profile
+          </a>
+          <button class="compare-action-btn compare-action-btn-secondary" type="button" data-export-brief="${profileData.user.login}">
+            Export Executive Brief
+          </button>
+        </div>
+
+        <div class="compare-metric-grid">
+          ${repoHighlights.map((item) => `
+            <div class="compare-metric-card">
+              <span>${item.label}</span>
+              <strong>${item.value}</strong>
+              <div class="mini-bar"><i style="width:${Math.min(item.percent, 100)}%"></i></div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="compare-section">
+        <div class="section-title-row">
+          <h4>Language Statistics</h4>
+          <span class="section-subtitle">Top languages in public repositories</span>
+        </div>
+        <div class="lang-distribution">
+          ${profileData.metrics.distribution.length ? profileData.metrics.distribution.map((item) => `
+            <div class="lang-row">
+              <div class="lang-labels">
+                <strong>${item.language}</strong>
+                <span>${item.percentage}%</span>
+              </div>
+              <div class="lang-bar"><i style="width:${item.percentage}%"></i></div>
+            </div>
+          `).join("") : `<div class="empty-state-inline">No language data available.</div>`}
+        </div>
+      </div>
+
+      <div class="compare-section">
+        <div class="section-title-row">
+          <h4>Top Repositories</h4>
+          <span class="section-subtitle">Sorted by stars and update activity</span>
+        </div>
+        ${buildRepoListSmall(profileData.repos)}
+      </div>
+    </article>
+  `;
+}
+
+function renderComparison(leftData, rightData) {
+  if (!UI.comparisonContainer) return;
+
+  document.body.classList.add("compare-mode");
+  if (UI.profileCard) UI.profileCard.classList.add("hidden");
+  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
+  if (UI.reposSection) UI.reposSection.classList.add("hidden");
+
+  UI.comparisonContainer.innerHTML = `
+    ${renderComparisonCard(leftData, "left", rightData)}
+    ${renderComparisonCard(rightData, "right", leftData)}
+  `;
+
+  UI.comparisonPanel?.classList.remove("hidden");
+  UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function formatDate(dateString) {
@@ -274,6 +484,8 @@ function animateCounter(element, targetValue) {
 }
 
 function renderProfile(user, metrics) {
+  document.body.classList.remove("compare-mode");
+  if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
   Nodes.avatar.src = user.avatar_url;
   Nodes.avatar.alt = `${user.login} workflow footprint`;
   Nodes.name.textContent = safeText(user.name, user.login);
@@ -535,6 +747,7 @@ if (UI.input) {
 
 document.querySelectorAll(".tag-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
+    if (!btn.dataset.user) return;
     if (UI.input) {
       UI.input.value = btn.dataset.user;
     }
@@ -559,6 +772,57 @@ document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(tabBtn =>
     const targetPane = document.getElementById(activePaneId);
     if (targetPane) targetPane.classList.add("active");
   });
+});
+
+if (UI.compareForm) {
+  UI.compareForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const leftUsername = UI.compareA ? UI.compareA.value : "";
+    const rightUsername = UI.compareB ? UI.compareB.value : "";
+
+    if (!leftUsername.trim() || !rightUsername.trim()) {
+      showStatus("Enter two GitHub usernames to compare.", "error");
+      return;
+    }
+
+    hideStatus();
+    showCompareLoading();
+
+    try {
+      const [leftData, rightData] = await Promise.all([
+        fetchProfileData(leftUsername),
+        fetchProfileData(rightUsername)
+      ]);
+
+      renderComparison(leftData, rightData);
+    } catch (error) {
+      document.body.classList.add("compare-mode");
+      if (UI.profileCard) UI.profileCard.classList.add("hidden");
+      if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
+      if (UI.reposSection) UI.reposSection.classList.add("hidden");
+      if (UI.comparisonPanel) UI.comparisonPanel.classList.remove("hidden");
+      if (UI.comparisonContainer) {
+        UI.comparisonContainer.innerHTML = `<div class="status-banner error">${safeText(error.message, "Unable to compare profiles.")}</div>`;
+      }
+      UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+}
+
+document.querySelectorAll(".compare-tag-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    const [leftUsername, rightUsername] = String(button.dataset.compare || "").split(",");
+    if (UI.compareA) UI.compareA.value = leftUsername || "";
+    if (UI.compareB) UI.compareB.value = rightUsername || "";
+    UI.compareForm?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  });
+});
+
+document.addEventListener("click", (event) => {
+  const exportButton = event.target.closest("[data-export-brief]");
+  if (!exportButton) return;
+  window.print();
 });
 
 if (UI.exportPdfBtn) {
