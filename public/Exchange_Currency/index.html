@@ -38,6 +38,15 @@
                     </div>
                 </div>
             </div>
+           <div class="msg">1 USD = 86.58 INR</div>
+
+<!-- Historical Exchange Rate Chart -->
+<div class="chart-container">
+    <h3>7-Day Exchange History</h3>
+    <canvas id="historyChart"></canvas>
+</div>
+
+<button type="button" class="reset-btn">Reset</button>
             <div class="converted-amount">
                 <p>Converted Amount</p>
                 <input type="text" readonly>
@@ -48,6 +57,9 @@
         </form>
     </div>
     <script src="data.js"></script>
-    <script src="app.js"></script>
+    <!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="app.js"></script>
 </body>
 </html>
