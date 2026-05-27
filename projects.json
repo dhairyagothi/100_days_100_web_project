@@ -1770,5 +1770,14 @@
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
 "projectPath":"./public/InterviewPrepHub/index.html"
+},
+ {
+"projectNo":179,
+"projectName":"Endless train game",
+"projectType":"Game",
+"projectDesc":"endless train game with coins and levels .",
+"techStack":["game","html","css","javascript"],
+"difficulty":"intermediate",
+"projectPath":"./public/traingame/index.html"
 }
 ]
