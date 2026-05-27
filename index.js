@@ -49,7 +49,7 @@ const FILTER_CATEGORY_MAP = {
  * Uses the existing tag structure so no new data field is needed.
  */
 function getCategoryFromTags(tags, name) {
-  const tagStr = (tags || '').toLowerCase();
+  const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
   const nameStr = (name || '').toLowerCase();
 
   if (tagStr.includes('game')) return 'Games';
@@ -343,41 +343,200 @@ const PROJECT_DATA = [
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
   
 
+let PROJECTS = [];
+let projectsPromise = null;
 
-  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
-  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
-  ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
-  ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
-  ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
-  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
-  ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', 'react typescript game hangman vite', 'advanced'],
-  ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
-  ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
-  ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
-  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', 'simulation algorithm javascript', 'intermediate'],
-  ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', 'html css javascript', 'intermediate'],
-  [ 'Day 161' , "Unit-Converter" , './public/Unit-Converter/index.html' , 'tool javascript html css' , 'intermediate' ],
-  [ 'Day 162' , 'Color Palette From Art Generator' , './public/ColorPaletteArtGenerator/index.html' , 'html css javascript' , 'intermediate' ],
-  [ 'Day 163' , 'Ai Image Editor' , './public/image-editor/index.html' , 'edits images' , 'advanced' ],
-  [ 'Day 164' , 'Code Visualizer Playground' , './public/code-visualizer-playground/index.html' , 'tool javascript html css' , 'advanced' ],
-  [ 'Day 165' , 'Amazon Clone' , './public/AmazonClone/index.html' , 'Amazon Clone HTML CSS JavaScript' , 'beginner' ],
-  [ "Day 166" , "Boredom Buster" , "./public/BoredomBuster/index.html" , "html css javascript" , 'advanced' ],
-];
-const PROJECTS = PROJECT_DATA;
+function loadProjects() {
+  if (!projectsPromise) {
+    projectsPromise = (async () => {
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const base = isRoot ? '' : '../';
+     const projectsUrl =
+new URL(`${base}projects.json`,
+window.location.href).toString();
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
+      }
+const data = await response.json();
+
+PROJECTS = data.map(project => [
+   `Day ${project.projectNo}`,
+   project.projectName,
+   project.projectPath,
+   project.techStack,
+   project.difficulty,
+   project.projectDesc
+]);
+    })();
+  }
+  return projectsPromise;
+}
+
+// Start fetching immediately
+loadProjects();
 
 
 /* ============================================================
-   SOURCE CODE URL GENERATOR
+   PROJECT LINK RESOLUTION (demo vs source / source-only)
    ============================================================ */
-function getSourceUrl(url) {
-  const trimmed = url.trim();
-  if (trimmed.startsWith('http')) return trimmed; // Already a full GitHub link
+const SOURCE_ONLY_TAG = 'source-only';
+
+/** Live demos hosted outside the repo — Code links point to in-repo source folders */
+const EXTERNAL_DEMO_SOURCE_FOLDERS = {
+  'Day 20': 'public/EveSparks',
+  'Day 115': 'public/event-registration-system',
+};
+
+function isGithubTreeUrl(url) {
+  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(String(url || '').trim());
+}
+
+function parseGithubTreePath(url) {
+  const match = String(url || '').trim().match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
+  return match ? decodeURIComponent(match[1].replace(/\/$/, '')) : null;
+}
+
+function isSourceOnlyProject(day, tags) {
+  if (day === 'Day 13' || day === 'Day 72') return true;
+  const tagList = Array.isArray(tags)
+    ? tags
+    : String(tags || '').split(/\s+/).filter(Boolean);
+  return tagList.includes(SOURCE_ONLY_TAG);
+}
+
+function githubTreeToLocalDemo(url) {
+  const folderPath = parseGithubTreePath(url);
+  if (!folderPath) return null;
+  return `./${folderPath}/index.html`;
+}
+
+function getSourceUrl(url, day) {
+  const trimmed = (url || '').trim();
+  const repoSourceFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
+  if (repoSourceFolder) {
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${repoSourceFolder}`;
+  }
+  if (isGithubTreeUrl(trimmed)) return trimmed;
+  if (trimmed.startsWith('http')) return trimmed;
   if (trimmed.startsWith('./')) {
-    // Converts "./public/folder/index.html" to "public/folder"
     const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
   }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
+}
+
+function resolveProjectUrls(day, name, url, tags) {
+  const trimmed = (url || '').trim();
+  const sourceOnly = isSourceOnlyProject(day, tags);
+  let demoUrl = trimmed;
+  let sourceUrl = getSourceUrl(trimmed, day);
+
+  if (isGithubTreeUrl(trimmed)) {
+    sourceUrl = trimmed;
+    demoUrl = sourceOnly ? trimmed : (githubTreeToLocalDemo(trimmed) || trimmed);
+  }
+
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
+    try {
+      demoUrl = new URL(demoUrl, window.location.href).href;
+    } catch (error) {
+      // Keep the original path if URL normalization fails.
+    }
+  }
+
+  return { demoUrl, sourceUrl, sourceOnly };
+}
+
+function getProjectDescription(project) {
+  return (
+      project[5] ||
+      'Explore this project to discover interactive functionality.'
+  );
+}
+
+function buildProjectCardHTML({
+  day,
+  name,
+  url,
+  tags,
+  category,
+  isBookmarked = false,
+  showDescription = true,
+}) {
+  const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(day, name, url, tags);
+  const tagsArray = Array.isArray(tags)
+    ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+    : String(tags || '')
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+  const project =
+PROJECTS.find(p => p[1] === name);
+
+const description =
+getProjectDescription(project);
+  const sourceOnlyBadge = sourceOnly
+    ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
+    : '';
+  const primaryLink = sourceOnly
+    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Source
+                    </a>`
+    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>`;
+  const codeLink = sourceOnly
+    ? ''
+    : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Code
+                    </a>`;
+
+  return {
+    html: `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category-wrap">
+                  <span class="card-category">${category}</span>
+                  ${sourceOnlyBadge}
+                </span>
+            </div>
+            <div class="card-name">${name}</div>
+            ${
+              showDescription
+                ? `<div class="card-description">
+    ${description}
+</div>`
+                : ''
+            }
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    ${primaryLink}
+                    ${codeLink}
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `,
+    demoUrl,
+    sourceOnly,
+  };
+}
+
+function attachProjectCardInteraction(card, demoUrl, projectData = null) {
+  card.style.cursor = 'pointer';
+  card.onclick = (e) => {
+    if (e.target.closest('a, button')) return;
+    
+    // Track the project visit if projectData is provided
+    if (projectData) {
+      trackRecentProject(projectData);
+    }
+    
+    window.open(demoUrl, '_blank', 'noopener');
+  };
 }
 
 
@@ -511,6 +670,59 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
+const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
+
+/**
+ * Migrates old recent projects format (array) to new format (object with timestamp)
+ * If stored format doesn't have timestamps, it's likely the old format
+ */
+function migrateRecentProjects() {
+  if (recentProjects.length === 0) return;
+  
+  // Check if already in new format (has timestamp)
+  if (typeof recentProjects[0] === 'object' && recentProjects[0].timestamp) {
+    return; // Already migrated
+  }
+  
+  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
+  recentProjects = recentProjects.map((project) => {
+    if (Array.isArray(project)) {
+      return {
+        day: project[0],
+        name: project[1],
+        url: project[2],
+        tags: project[3],
+        timestamp: Date.now() - (ONE_HOUR_MS / 2) // Set to 30 mins ago to preserve them initially
+      };
+    }
+    return project;
+  });
+  
+  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+}
+
+// Migrate on load
+migrateRecentProjects();
+
+/**
+ * Cleans up recent projects older than 1 hour
+ * Called periodically and on page load
+ */
+function cleanupExpiredRecentProjects() {
+  const initialLength = recentProjects.length;
+  recentProjects = getRecentProjectsWithinWindow();
+  
+  if (recentProjects.length !== initialLength) {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    renderRecentProjects();
+  }
+}
+
+// Clean up on page load
+cleanupExpiredRecentProjects();
+
+// Clean up every 5 minutes
+setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
 
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
@@ -576,9 +788,9 @@ function generateReadme() {
     lines.push('');
     lines.push('## Projects');
     PROJECTS.forEach(([day, name, url, tags]) => {
-      const safeUrl = url || '';
+      const { demoUrl } = resolveProjectUrls(day, name, url, tags);
       const category = getCategoryFromTags(tags, name);
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${category}_`);
+      lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
     });
 
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
@@ -602,13 +814,14 @@ let activeFilter = 'all';
 let searchQuery = '';
 let sortOption = 'default';
 let techStackFilter = 'all';
+let difficultyFilter = 'all';
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, url, tags]) => {
+  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
@@ -616,20 +829,26 @@ function renderGrid() {
 
     // Search filter
     const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term => 
-      name.toLowerCase().includes(term) || 
-      day.toLowerCase().includes(term) || 
-      (typeof tags === 'string' && tags.toLowerCase().includes(term))
+    const matchesSearch = !q || q.split(/\s+/).every(term =>
+      name.toLowerCase().includes(term) ||
+      day.toLowerCase().includes(term) ||
+      ((Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase().includes(term))
     );
 
     // Tech stack dropdown filter
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== 'all') {
-      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
+      const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
 
-    return matchesFilter && matchesSearch && matchesTech;
+    // Difficulty filter
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== 'all') {
+      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
+    }
+
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
 
   // Apply sorting
@@ -670,49 +889,29 @@ function renderGrid() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
+  const fragment = document.createDocumentFragment();
 
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-
-    // FIX PART 1: Add a pointer cursor so users know it's clickable
-    card.className = 'project-card';
-    card.style.cursor = 'pointer';
-
-    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
-
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
 
-    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
-    // This stops the click from "bubbling up" to the main card, preventing double-opening!
-    card.innerHTML = `
-      <div class="card-meta">
-        <span class="card-day">${day}</span>
-        <span class="card-category">${category}</span>
-      </div>
-      <div class="card-name">${name}</div>
-      <div class="card-tags">${tagsHTML}</div>
-      <div class="card-footer">
-        <div class="card-actions-left">
-          <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}">
-            Demo <i class="fas fa-arrow-right"></i>
-          </a>
-          <a href="${sourceUrl}" target="_blank" class="card-link view-code-link">
-            <i class="fab fa-github"></i> Code
-          </a>
-        </div>
-        <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-          <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-        </button>
-      </div>
-    `;
-    grid.appendChild(card);
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
+
+    fragment.appendChild(card);
   });
-
+  grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
@@ -880,11 +1079,49 @@ function toggleBookmark(project) {
   renderRecentProjects();
 }
 
-function trackRecentProject(project) {
-  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
-  recentProjects.unshift(project);
+/**
+ * Removes projects older than 1 hour from the recent projects list
+ * @returns {array} Filtered recent projects within the 1-hour window
+ */
+function getRecentProjectsWithinWindow() {
+  const now = Date.now();
+  return recentProjects.filter((item) => {
+    const timestamp = item.timestamp || Date.now();
+    const age = now - timestamp;
+    return age <= ONE_HOUR_MS;
+  });
+}
 
-  if (recentProjects.length > 10) {
+/**
+ * Tracks a recently viewed project with a timestamp
+ * @param {array} project - Project data [day, name, url, tags]
+ */
+function trackRecentProject(project) {
+  // Convert old format to new format if needed
+  let projectObj;
+  if (Array.isArray(project)) {
+    projectObj = {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+      timestamp: Date.now()
+    };
+  } else {
+    projectObj = {
+      ...project,
+      timestamp: Date.now()
+    };
+  }
+
+  // Remove duplicate if exists
+  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  
+  // Add to front
+  recentProjects.unshift(projectObj);
+
+  // Keep only the 20 most recent entries (not filtered by time yet)
+  if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
@@ -914,31 +1151,19 @@ function renderBookmarks() {
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked: true,
+      showDescription: true,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn active" data-id="${day}">
-                    <i class="fa-solid fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     bookmarkGrid.appendChild(card);
   });
@@ -951,47 +1176,44 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = '';
 
-  if (recentProjects.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+  // Filter projects within the 1-hour window
+  const validRecent = getRecentProjectsWithinWindow();
+
+  if (validRecent.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
     return;
   }
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display = validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
+  visibleRecent.forEach((projectObj) => {
+    // Handle both old array format and new object format
+    const day = projectObj.day || projectObj[0];
+    const name = projectObj.name || projectObj[1];
+    const url = projectObj.url || projectObj[2];
+    const tags = projectObj.tags || projectObj[3];
+    
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: false,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     recentGrid.appendChild(card);
   });
@@ -1021,7 +1243,10 @@ if (copyBookmarksBtn) {
     }
     const textToCopy = bookmarkedProjects.map(p => {
       const projectName = p[1];
-      const projectLink = new URL(p[2], window.location.href).href;
+      const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
+      const projectLink = demoUrl.startsWith('http')
+        ? demoUrl
+        : new URL(demoUrl, window.location.href).href;
       return `${projectName} - ${projectLink}`;
     }).join('\n');
 
@@ -1096,22 +1321,46 @@ function initFilterChips() {
 /* ============================================================
    LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
+function debounce(fn, delay = 300) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
 
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
 
-  input.addEventListener('input', () => {
-    searchQuery = input.value.trim();
-    currentPage = 1;
-    renderGrid();
-  });
-  
+  input.addEventListener(
+    'input',
+    debounce(() => {
+      searchQuery = input.value.trim();
+      currentPage = 1;
+      renderGrid();
+    }, 180)
+  );
+
   // Tech stack dropdown filter listener
   const techStack = document.getElementById('techStackFilter');
   if (techStack) {
     techStack.addEventListener('change', () => {
       techStackFilter = techStack.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+
+  // Difficulty dropdown filter listener
+  const diffFilterElement = document.getElementById('difficultyFilter');
+  if (diffFilterElement) {
+    diffFilterElement.addEventListener('change', () => {
+      difficultyFilter = diffFilterElement.value;
       currentPage = 1;
       renderGrid();
     });
@@ -1177,17 +1426,50 @@ function initTechStackSearch() {
 const searchInput = document.getElementById('searchInput');
 const clearSearchBtn = document.getElementById('clearSearch');
 
+function updateCategoryCounts() {
+  const counts = {};
+  for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
+    if (key !== 'all') {
+      counts[key] = 0;
+    }
+  }
+
+  PROJECTS.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
+    const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
+      (key) => FILTER_CATEGORY_MAP[key] === category
+    );
+    if (filterKey && filterKey !== 'all') {
+      counts[filterKey]++;
+    }
+  });
+
+  const categorySpans = {
+    'game': document.getElementById('gameCount'),
+    'clone': document.getElementById('cloneCount'),
+    'tool': document.getElementById('toolCount'),
+    'ui': document.getElementById('uiCount'),
+    'api': document.getElementById('apiCount')
+  };
+
+  for (const [key, span] of Object.entries(categorySpans)) {
+    if (span) {
+      span.textContent = counts[key].toLocaleString();
+    }
+  }
+}
+
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
-  
+
   // Apply search filter
   if (searchQuery) {
-    filtered = filtered.filter(([day, name]) => 
+    filtered = filtered.filter(([day, name]) =>
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       day.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
-  
+
   const total = filtered.length.toLocaleString();
   const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
 
@@ -1198,6 +1480,8 @@ function syncProjectCounts() {
   if (searchInput) {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
+
+  updateCategoryCounts();
 }
 
 // Clear button functionality
@@ -1237,8 +1521,10 @@ function updateNavbar() {
         </button>
         `;
   const otherLink = isRoot
-    ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>`;
+    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
+       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
 
   if (username) {
     container.innerHTML = `
@@ -1314,8 +1600,7 @@ function initScrollBtn() {
   if (!btn) return;
 
   const circumference = 2 * Math.PI * 22;
-
-  window.addEventListener('scroll', () => {
+  const updateScrollProgress = () => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
@@ -1325,10 +1610,37 @@ function initScrollBtn() {
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
-  });
+
+    // Footer collision avoidance
+    const footer = document.querySelector('.footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        // Cap the upward movement to a maximum of 120px.
+        // This ensures it dodges the important bottom footer links but 
+        // doesn't fly completely off the top of the screen when the footer is huge.
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = '2rem';
+      }
+    }
+  };
+
+  updateScrollProgress();
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
 
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+function initCurrentYear() {
+  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
+    node.textContent = new Date().getFullYear();
   });
 }
 
@@ -1339,23 +1651,35 @@ function hasProjectGrid() {
   return Boolean(document.getElementById('projectGrid'));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   updateNavbar();
 
+  initCurrentYear();
   initFilterChips();
   initSearch();
   initSorting();
   initTechStackSearch();
 
-  syncProjectCounts();
-  fetchRepoStats();
-  initScrollBtn();
+  try {
+    // Await the projects to be fetched
+    await loadProjects();
 
-  if (hasProjectGrid()) {
-    renderGrid();
-    renderBookmarks();
-    renderRecentProjects();
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+
+    if (hasProjectGrid()) {
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+    }
+  } catch (error) {
+    console.error('Failed to load projects:', error);
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+    }
   }
 });
 
@@ -1368,23 +1692,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!menuToggle || !navButtons) return;
 
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      menuToggle.classList.toggle('active');
-      navButtons.classList.toggle('active');
+      const isOpen = navButtons.classList.toggle('active');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
     document.addEventListener('click', (e) => {
       if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        closeMenu();
+        menuToggle.focus();
       }
     });
 
     navButtons.addEventListener('click', (e) => {
       if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
       }
     });
   };
@@ -1399,11 +1735,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
-window.addEventListener('resize', () => {
-  if (hasProjectGrid()) {
-    renderGrid();
-  }
-});
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    if (hasProjectGrid()) {
+      renderGrid();
+    }
+  }, 180)
+);
 
 /* ============================================================
    EXPOSE FUNCTIONS TO GLOBAL SCOPE
@@ -1412,92 +1751,245 @@ window.addEventListener('resize', () => {
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
+// Custom cursor
+(function () {
+  const outerCursor = document.querySelector('.cursor-ring--outer');
+  const innerCursor = document.querySelector('.cursor-ring--inner');
+
+  if (!outerCursor || !innerCursor) return;
+
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  const speed = 0.18;
+
+  const update = () => {
+    current.x += (target.x - current.x) * speed;
+    current.y += (target.y - current.y) * speed;
+
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+
+    requestAnimationFrame(update);
+  };
+
+  const showCursor = () => {
+    outerCursor.classList.add('is-visible');
+    innerCursor.classList.add('is-visible');
+  };
+
+  const hideCursor = () => {
+    outerCursor.classList.remove('is-visible');
+    innerCursor.classList.remove('is-visible');
+  };
+
+  window.addEventListener(
+    'mousemove',
+    (event) => {
+      target.x = event.clientX;
+      target.y = event.clientY;
+      showCursor();
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('mouseleave', hideCursor);
+  window.addEventListener('mouseenter', showCursor);
+
+  requestAnimationFrame(update);
+})();
+
 // Particle Network Background
 (function () {
   const canvas = document.getElementById('particleCanvas');
+  if (!canvas) return;
+
   const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-  const minParticles = 30;
-  const maxParticles = 120;
-  const areaPerParticle = 26000;
-  let particleCount = 60;
-  let linkDistance = 120;
+  if (!ctx) return;
+
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+  const palette = [220, 250, 280];
+  const DEFAULT_PARTICLE_FPS = 36;
+  let W = 0;
+  let H = 0;
   let dpr = 1;
+  let particles = [];
+  let particleCount = 0;
+  let linkDistance = 0;
+  let maxDistanceSq = 0;
+  let frameInterval = 1000 / DEFAULT_PARTICLE_FPS;
+  let animationFrame = 0;
+  let resizeFrame = 0;
+  let lastFrameTime = 0;
+
+  const getProfile = () => {
+    const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
+    const reducedMotion = reducedMotionQuery.matches;
+    const disableAnimation = smallScreen || reducedMotion;
+
+    return {
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 72,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 26000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 120,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.3,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
+      showLinks: !reducedMotion && !smallScreen,
+      disableAnimation,
+    };
+  };
+
+  let profile = getProfile();
 
   function resize() {
+    profile = getProfile();
     W = window.innerWidth;
     H = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, profile.showLinks ? 1.5 : 1);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
     canvas.style.width = `${W}px`;
     canvas.style.height = `${H}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particleCount = Math.min(
-      maxParticles,
-      Math.max(minParticles, Math.round((W * H) / areaPerParticle))
+      profile.maxParticles,
+      Math.max(profile.minParticles, Math.round((W * H) / profile.areaPerParticle))
     );
-    linkDistance = Math.max(90, Math.min(150, Math.round(Math.min(W, H) / 6)));
+    linkDistance = profile.linkDistance;
+    maxDistanceSq = linkDistance * linkDistance;
+    frameInterval = 1000 / profile.fps;
   }
 
   function init() {
-    particles = [];
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 3 + 1,
-        hue: [220, 260, 280][Math.floor(Math.random() * 3)],
-        alpha: Math.random() * 0.8 + 0.4,
-      });
-    }
+    particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * profile.velocity,
+      vy: (Math.random() - 0.5) * profile.velocity,
+      r: Math.random() * profile.radius + 0.8,
+      hue: palette[Math.floor(Math.random() * palette.length)],
+      alpha: Math.random() * 0.45 + 0.18,
+    }));
   }
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+  function stepParticles() {
+    particles.forEach((particle) => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+
+      if (particle.x < 0) particle.x = W;
+      else if (particle.x > W) particle.x = 0;
+
+      if (particle.y < 0) particle.y = H;
+      else if (particle.y > H) particle.y = 0;
     });
-    for (let i = 0; i < particleCount; i++) {
-      for (let j = i + 1; j < particleCount; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < linkDistance) {
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, W, H);
+    stepParticles();
+
+    if (profile.showLinks) {
+      for (let i = 0; i < particleCount; i += 1) {
+        for (let j = i + 1; j < particleCount; j += 1) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distanceSq = dx * dx + dy * dy;
+
+          if (distanceSq >= maxDistanceSq) continue;
+
+          const distance = Math.sqrt(distanceSq);
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(59,130,246,${(1 - d / linkDistance) * 0.35})`;
+          ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
       }
     }
-    particles.forEach(p => {
+
+    particles.forEach((particle) => {
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${p.hue},80%,72%,${p.alpha})`;
+      ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${particle.hue}, 80%, 72%, ${particle.alpha})`;
       ctx.fill();
     });
-    requestAnimationFrame(draw);
   }
 
-  let resizeFrame = null;
+  function draw(now = 0) {
+    animationFrame = requestAnimationFrame(draw);
+
+    if (document.hidden || now - lastFrameTime < frameInterval) {
+      return;
+    }
+
+    lastFrameTime = now;
+    drawFrame();
+  }
+
+  function stopAnimation() {
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+    }
+  }
+
+  function startAnimation() {
+    if (!animationFrame) {
+      animationFrame = requestAnimationFrame(draw);
+    }
+  }
+
+  const rebuild = () => {
+    resize();
+
+    if (profile.disableAnimation) {
+      stopAnimation();
+      ctx.clearRect(0, 0, W, H);
+      canvas.style.display = 'none';
+      return;
+    }
+
+    canvas.style.display = '';
+    init();
+    startAnimation();
+  };
+
   const handleResize = () => {
     if (resizeFrame) return;
     resizeFrame = requestAnimationFrame(() => {
-      resizeFrame = null;
-      resize();
-      init();
+      resizeFrame = 0;
+      rebuild();
     });
   };
 
-  window.addEventListener('resize', handleResize);
-  resize(); init(); draw();
+  const handleProfileChange = () => {
+    lastFrameTime = 0;
+    rebuild();
+  };
+
+  const bindMediaChange = (query, handler) => {
+    if (typeof query.addEventListener === 'function') {
+      query.addEventListener('change', handler);
+      return;
+    }
+    if (typeof query.addListener === 'function') {
+      query.addListener(handler);
+    }
+  };
+
+  window.addEventListener('resize', handleResize, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      lastFrameTime = 0;
+    }
+  });
+  bindMediaChange(reducedMotionQuery, handleProfileChange);
+  bindMediaChange(coarsePointerQuery, handleProfileChange);
+
+  rebuild();
 })();
 
 // =============================================
@@ -1534,15 +2026,30 @@ function restoreStateFromURL() {
 }
 
 function applyFilters(search, category) {
-  earchQuery = search || '';
+  searchQuery = search || '';
   activeFilter = category || 'all';
   currentPage = 1;
+
+  // Sync active chip selection with URL state
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chip.classList.add('active');
+    } else {
+      chip.classList.remove('active');
+    }
+  });
+
   renderGrid();
-  
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  restoreStateFromURL();
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await loadProjects();
+    restoreStateFromURL();
+  } catch (error) {
+    console.error('Failed to restore state or load projects:', error);
+  }
   const searchInput = document.getElementById('search') ||
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');

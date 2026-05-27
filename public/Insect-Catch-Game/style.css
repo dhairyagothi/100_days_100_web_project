@@ -233,6 +233,55 @@ h1 {
 }
 
 .insect img {
+<<<<<<< HEAD
+  width: 100px;
+  height: 100px;
+}
+
+.sound-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+}
+
+#mute-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid #fff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+#mute-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+#volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px;
+    height: 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.4);
+    outline: none;
+    cursor: pointer;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+=======
   width: 120px;
   height: 120px;
   filter: drop-shadow(0 0 12px rgba(255,140,0,0.8));
@@ -312,4 +361,5 @@ h1 {
   bottom: -100px;
   right: -100px;
   border-radius: 100% 0 0 0;
+>>>>>>> upstream/main
 }
