@@ -4,339 +4,736 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eco Habit Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #f0f7f4;
-            --bg-card: #ffffff;
-            --text-main: #2d3748;
-            --text-muted: #718096;
-            --emerald: #10b981;
-            --emerald-light: #d1fae5;
-            --emerald-dark: #065f46;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --radius: 12px;
-            --transition: all 0.3s ease;
+            --bg: #f4f6f3;
+            --surface: #ffffff;
+            --surface-2: #f9faf8;
+            --border: #e4e8e1;
+            --border-focus: #4a7c59;
+            --text: #1a2318;
+            --text-muted: #6b7c66;
+            --text-placeholder: #9aaa94;
+            --green: #3d6b4f;
+            --green-mid: #4a7c59;
+            --green-light: #eaf2ec;
+            --green-accent: #5a9a6e;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.14), 0 8px 20px rgba(0,0,0,0.08);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --transition: 0.2s ease;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-main);
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
-            padding: 20px;
+            min-height: 100vh;
         }
+        .project-back-button {
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  z-index: 9999;
 
-        .container {
-            max-width: 1100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255,255,255,0.14);
+
+  color: var(--white);
+  text-decoration: none;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+
+  transition:
+    transform 0.28s ease,
+    background 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.project-back-button:hover {
+  transform: translateY(-2px);
+
+  background: rgba(255,255,255,0.14);
+
+  border-color: rgba(255,255,255,0.24);
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.project-back-button:active {
+  transform: translateY(0);
+}
+
+        /* ── Layout ── */
+        .app-shell {
+            max-width: 1080px;
             margin: 0 auto;
+            padding: 40px 24px 80px;
         }
 
-        /* Header Styling */
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px 0;
+        /* ── Header ── */
+        .app-header {
+            margin-bottom: 40px;
         }
-
-        header h1 {
-            color: var(--emerald-dark);
-            font-size: 2.5rem;
-            margin-bottom: 8px;
+        .app-header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 16px;
         }
-
-        header p {
+        .app-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--text);
+        }
+        .app-header h1 span {
+            color: var(--green-mid);
+        }
+        .app-header p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        #date-display {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 20px;
         }
 
-        /* Dashboard Grid Layout */
-        .dashboard-grid {
+        /* ── Stats row ── */
+        .stats-row {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
         }
+        @media (max-width: 680px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
 
-        @media (min-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 2fr 1fr;
-            }
-        }
-
-        /* Card Base Styling */
-        .card {
-            background: var(--bg-card);
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: var(--shadow);
+            padding: 18px 20px;
+            transition: box-shadow var(--transition);
+        }
+        .stat-card:hover { box-shadow: var(--shadow); }
+        .stat-card .stat-val {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--green);
+            font-family: 'DM Mono', monospace;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            margin-top: 5px;
         }
 
-        .card-title {
-            font-size: 1.25rem;
-            color: var(--text-main);
-            margin-bottom: 20px;
-            font-weight: 600;
+        /* ── Main grid ── */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+        @media (max-width: 820px) { .main-grid { grid-template-columns: 1fr; } }
+
+        /* ── Card ── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
         }
-
-        /* Impact Dashboard Widgets */
-        .impact-panel {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+        .card-header h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.01em;
         }
+        .card-body { padding: 0; }
 
-        .stat-box {
-            background: var(--emerald-light);
-            color: var(--emerald-dark);
-            padding: 20px;
-            border-radius: var(--radius);
-            text-align: center;
-            transition: var(--transition);
+        /* ── Add habit button in header ── */
+        .btn-add-habit {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--green);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 7px 14px;
+            cursor: pointer;
+            transition: background var(--transition), transform var(--transition);
+            letter-spacing: 0.01em;
         }
+        .btn-add-habit:hover { background: var(--green-mid); transform: translateY(-1px); }
+        .btn-add-habit svg { flex-shrink: 0; }
 
-        .stat-box:hover {
-            transform: translateY(-2px);
-        }
-
-        .stat-box .value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .stat-box .label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        /* Habit List Styling */
-        .habit-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
+        /* ── Habit list ── */
         .habit-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius);
-            transition: var(--transition);
+            gap: 16px;
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
+            transition: background var(--transition);
         }
+        .habit-item:last-child { border-bottom: none; }
+        .habit-item:hover { background: var(--surface-2); }
+        .habit-item.is-done { background: #fafcfa; }
 
-        .habit-item:hover {
-            border-color: var(--emerald);
-            background-color: #fcfdfd;
+        .habit-meta { flex: 1; min-width: 0; }
+        .habit-meta h3 {
+            font-size: 0.93rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        .habit-details h3 {
-            font-size: 1.1rem;
-            margin-bottom: 4px;
+        .habit-item.is-done .habit-meta h3 {
+            color: var(--text-muted);
+            text-decoration: line-through;
         }
-
-        .habit-details p {
-            font-size: 0.85rem;
+        .habit-meta p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .habit-pts {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--green-mid);
+            background: var(--green-light);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .habit-item.is-done .habit-pts {
+            background: #f0f2ef;
             color: var(--text-muted);
         }
 
-        /* Custom Checkbox Button */
-        .action-btn {
-            background-color: transparent;
-            border: 2px solid var(--emerald);
-            color: var(--emerald);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
+        .btn-toggle {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: transparent;
             cursor: pointer;
-            transition: var(--transition);
-            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color var(--transition), background var(--transition);
+            color: transparent;
+        }
+        .btn-toggle:hover { border-color: var(--green-mid); }
+        .habit-item.is-done .btn-toggle {
+            border-color: var(--green);
+            background: var(--green);
+            color: #fff;
+        }
+        .btn-toggle svg { width: 14px; height: 14px; }
+
+        .empty-habits {
+            padding: 40px 22px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.88rem;
         }
 
-        .action-btn.completed {
-            background-color: var(--emerald);
-            color: white;
+        /* ── Milestones ── */
+        .milestone-list { padding: 6px 0; }
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 22px;
+            border-bottom: 1px solid var(--border);
+            opacity: 0.42;
+            transition: opacity var(--transition);
+        }
+        .milestone-item:last-child { border-bottom: none; }
+        .milestone-item.unlocked { opacity: 1; }
+        .milestone-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: var(--green-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .milestone-item:not(.unlocked) .milestone-icon { background: #f1f3f0; }
+        .milestone-item:not(.unlocked) .milestone-icon svg { color: var(--text-muted); }
+        .milestone-text h4 { font-size: 0.85rem; font-weight: 600; }
+        .milestone-text p { font-size: 0.75rem; color: var(--text-muted); }
+        .milestone-check {
+            margin-left: auto;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .milestone-item.unlocked .milestone-check {
+            background: var(--green);
+            border-color: var(--green);
+            color: #fff;
+        }
+        .milestone-check svg { width: 10px; height: 10px; }
+
+        /* ── History ── */
+        .history-card { grid-column: 1 / -1; }
+        .history-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+        .history-table th {
+            padding: 11px 22px;
+            text-align: left;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        .history-table td { padding: 13px 22px; border-bottom: 1px solid var(--border); }
+        .history-table tr:last-child td { border-bottom: none; }
+        .history-table tr:hover td { background: var(--surface-2); }
+        .history-table .impact-tag {
+            display: inline-block;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--green);
+            background: var(--green-light);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .history-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 32px 22px;
+            font-size: 0.875rem;
         }
 
-        .action-btn:active {
-            transform: scale(0.95);
+        /* ─────────────────────────────────────────
+           MODAL — Add New Habit
+        ───────────────────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 16, 10, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal {
+            background: var(--surface);
+            border-radius: 14px;
+            width: 100%;
+            max-width: 560px;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(16px) scale(0.98);
+            transition: transform 0.25s ease;
+            overflow: hidden;
+        }
+        .modal-overlay.open .modal {
+            transform: translateY(0) scale(1);
         }
 
-        /* Badges & Achievements Grid */
-        .badge-grid {
+        .modal-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 26px 18px;
+            border-bottom: 1px solid var(--border);
+        }
+        .modal-top h2 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .modal-top p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: background var(--transition), color var(--transition);
+            flex-shrink: 0;
+        }
+        .modal-close:hover { background: var(--border); color: var(--text); }
+        .modal-close svg { width: 14px; height: 14px; }
+
+        .modal-body { padding: 24px 26px; }
+
+        /* Form fields */
+        .form-row { margin-bottom: 18px; }
+        .form-row:last-child { margin-bottom: 0; }
+        .form-row-2 {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+        .field-hint {
+            font-size: 0.72rem;
+            color: var(--text-placeholder);
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            margin-left: 6px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            background: var(--surface);
+            transition: border-color var(--transition), box-shadow var(--transition);
+            outline: none;
+            -moz-appearance: textfield;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+        input::placeholder { color: var(--text-placeholder); }
+        input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.12);
+        }
+        input.error { border-color: #c0392b; }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
-
-        .badge-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius);
-            padding: 16px;
-            text-align: center;
-            opacity: 0.4;
-            filter: grayscale(100%);
-            transition: var(--transition);
-        }
-
-        .badge-item.unlocked {
-            opacity: 1;
-            filter: grayscale(0%);
-            border-color: var(--emerald-light);
-            background: var(--bg-card);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
-        }
-
-        .badge-icon {
-            font-size: 2rem;
+        .impact-field label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             margin-bottom: 6px;
-            display: block;
+        }
+        .impact-badge {
+            display: inline-block;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            background: var(--green-light);
+            color: var(--green);
+            padding: 1px 6px;
+            border-radius: 3px;
         }
 
-        .badge-item h4 {
-            font-size: 0.9rem;
-            margin-bottom: 2px;
+        .modal-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 6px -26px 20px;
         }
 
-        .badge-item p {
-            font-size: 0.75rem;
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 16px 26px 22px;
+            border-top: 1px solid var(--border);
+        }
+        .btn-cancel {
+            padding: 9px 18px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            background: transparent;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
             color: var(--text-muted);
+            cursor: pointer;
+            transition: border-color var(--transition), color var(--transition);
         }
-
-        /* History Log Container */
-        .history-section {
-            grid-column: 1 / -1;
-        }
-
-        .history-table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        th {
-            background-color: #f8fafc;
-            color: var(--text-muted);
+        .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
+        .btn-submit {
+            padding: 9px 22px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: var(--green);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.875rem;
             font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
         }
+        .btn-submit:hover {
+            background: var(--green-mid);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(61, 107, 79, 0.3);
+        }
+        .btn-submit:active { transform: translateY(0); }
 
-        .empty-state {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 20px 0;
-            font-style: italic;
+        /* Validation message */
+        .form-error {
+            font-size: 0.78rem;
+            color: #b83c30;
+            margin-top: 5px;
+            display: none;
         }
+        .form-error.show { display: block; }
     </style>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="parallal.html" class="project-back-button">← Back to Home</a>
 
+<div class="app-shell">
 
-    <div class="container">
-        <header>
-            <h1>Eco Habit Tracker</h1>
-            <p>Small daily shifts build a sustainable future</p>
-        </header>
-
-        <div class="dashboard-grid">
-            
-            <!-- Impact Scoreboard Section -->
-            <div class="impact-panel">
-                <div class="stat-box">
-                    <div class="value" id="stat-score">0</div>
-                    <div class="label">Eco Score</div>
-                </div>
-                <div class="stat-box">
-                    <div class="value" id="stat-co2">0g</div>
-                    <div class="label">CO₂ Offset</div>
-                </div>
-                <div class="stat-box">
-                    <div class="value" id="stat-water">0L</div>
-                    <div class="label">Water Saved</div>
-                </div>
-                <div class="stat-box">
-                    <div class="value" id="stat-plastic">0</div>
-                    <div class="label">Plastics Avoided</div>
-                </div>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="app-header-inner">
+            <div>
+                <h1>Eco Habit <span>Tracker</span></h1>
+                <p>Small daily actions build a sustainable future.</p>
             </div>
+            <div id="date-display"></div>
+        </div>
+    </header>
 
-            <!-- Active Habits Panel -->
-            <main class="card">
-                <div class="card-title">
-                    <span>Today's Habits</span>
-                    <span id="date-display" style="font-size: 0.9rem; color: var(--text-muted);"></span>
-                </div>
-                <div class="habit-list" id="habit-list-container">
-                    <!-- Dynamic rendering via JavaScript -->
-                </div>
-            </main>
-
-            <!-- Accomplishments Panel -->
-            <aside class="card">
-                <div class="card-title">Milestones</div>
-                <div class="badge-grid" id="badge-container">
-                    <!-- Dynamic rendering via JavaScript -->
-                </div>
-            </aside>
-
-            <!-- History Section -->
-            <section class="card history-section">
-                <div class="card-title">Completed Logs</div>
-                <div class="history-table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Action Taken</th>
-                                <th>Environmental Impact Saved</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-log-rows">
-                            <!-- Dynamic rendering via JavaScript -->
-                        </tbody>
-                    </table>
-                    <div id="history-empty" class="empty-state">No historical entries recorded yet. Complete an action to log history!</div>
-                </div>
-            </section>
-
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-val" id="stat-score">0</div>
+            <div class="stat-label">Eco Score</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stat-co2">0g</div>
+            <div class="stat-label">CO&#8322; Offset</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stat-water">0L</div>
+            <div class="stat-label">Water Saved</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stat-plastic">0</div>
+            <div class="stat-label">Plastics Avoided</div>
         </div>
     </div>
 
-    <script>
-        // Core Habit Dataset with specific impact weight configurations
-        const habitTemplate = [
-            { id: 'water', title: 'Bring a Reusable Bottle', desc: 'Avoid single-use plastic production cycles.', points: 10, co2: 80, water: 3, plastic: 1 },
-            { id: 'meat', title: 'Plant-Based Meals Only', desc: 'Significantly reduce dietary carbon footprint.', points: 25, co2: 1200, water: 540, plastic: 0 },
-            { id: 'commute', title: 'Active or Public Transit', desc: 'Walk, cycle, or take a bus instead of driving.', points: 20, co2: 900, water: 0, plastic: 0 },
-            { id: 'bags', title: 'Utilize Reusable Bags', desc: 'Keep microplastics out of ocean environments.', points: 10, co2: 30, water: 1, plastic: 2 },
-            { id: 'energy', title: 'Unplug Standby Electronics', desc: 'Curtail subtle vampire power consumption.', points: 15, co2: 150, water: 0, plastic: 0 }
-        ];
+    <!-- Main grid -->
+    <div class="main-grid">
 
-        // Milestone configuration targets based on Cumulative Eco Score
+        <!-- Today's Habits -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Today's Habits</h2>
+                <button class="btn-add-habit" id="open-modal-btn">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                        <line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/>
+                    </svg>
+                    Add Habit
+                </button>
+            </div>
+            <div class="card-body" id="habit-list-container"></div>
+        </div>
+
+       
+    <!-- Milestones -->
+<div class="card">
+    <div class="card-header">
+        <h2>Milestones</h2>
+    </div>
+
+    <div class="card-body">
+        <div class="milestone-list" id="badge-container"></div>
+    </div>
+</div>
+
+        <!-- History -->
+        <div class="card history-card">
+            <div class="card-header"><h2>Completed Log</h2></div>
+            <div class="card-body">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Habit</th>
+                            <th>Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-log-rows"></tbody>
+                </table>
+                <div id="history-empty" class="history-empty">No entries yet. Complete a habit to begin logging.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── ADD HABIT MODAL ── -->
+<div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+        <div class="modal-top">
+            <div>
+                <h2 id="modal-title">Log a New Habit</h2>
+                <p>Define the action and its environmental impact.</p>
+            </div>
+            <button class="modal-close" id="close-modal-btn" aria-label="Close">
+                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Habit name -->
+            <div class="form-row">
+                <label for="new-habit-title">Habit Title</label>
+                <input type="text" id="new-habit-title" placeholder="e.g. Bring a reusable bottle" maxlength="60" autocomplete="off">
+                <span class="form-error" id="err-title">Please enter a habit title.</span>
+            </div>
+
+            <!-- Description -->
+            <div class="form-row">
+                <label for="new-habit-desc">Description <span class="field-hint">Optional</span></label>
+                <input type="text" id="new-habit-desc" placeholder="e.g. Avoid single-use plastic production" maxlength="120" autocomplete="off">
+            </div>
+
+            <!-- Points -->
+            <div class="form-row">
+                <label for="new-habit-points">Eco Points</label>
+                <input type="number" id="new-habit-points" placeholder="e.g. 10" value="10" min="1" max="500">
+                <span class="form-error" id="err-points">Enter a valid point value (1–500).</span>
+            </div>
+
+            <div class="modal-divider"></div>
+
+            <!-- Impact metrics -->
+            <div class="form-row">
+                <label>Environmental Impact <span class="field-hint">Estimated values per completion</span></label>
+                <div class="impact-grid">
+                    <div class="impact-field">
+                        <label for="new-habit-co2">CO&#8322; Offset <span class="impact-badge">g</span></label>
+                        <input type="number" id="new-habit-co2" placeholder="80" value="80" min="0">
+                    </div>
+                    <div class="impact-field">
+                        <label for="new-habit-water">Water Saved <span class="impact-badge">L</span></label>
+                        <input type="number" id="new-habit-water" placeholder="3" value="3" min="0">
+                    </div>
+                    <div class="impact-field">
+                        <label for="new-habit-plastic">Plastics <span class="impact-badge">units</span></label>
+                        <input type="number" id="new-habit-plastic" placeholder="1" value="1" min="0">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancel" id="cancel-modal-btn">Cancel</button>
+            <button class="btn-submit" id="submit-habit-btn">Save Habit</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ── Data ──
+    let habitTemplate = JSON.parse(localStorage.getItem('user_habits')) || [
+        { id: 'water',   title: 'Bring a Reusable Bottle',      desc: 'Avoid single-use plastic production cycles.',    points: 10, co2: 80,   water: 3,   plastic: 1 },
+        { id: 'meat',    title: 'Plant-Based Meals Only',        desc: 'Reduce dietary carbon footprint significantly.', points: 25, co2: 1200, water: 540, plastic: 0 },
+        { id: 'commute', title: 'Active or Public Transit',      desc: 'Walk, cycle, or take a bus instead of driving.', points: 20, co2: 900,  water: 0,   plastic: 0 },
+        { id: 'bags',    title: 'Utilize Reusable Bags',         desc: 'Keep microplastics out of ocean environments.',  points: 10, co2: 30,   water: 1,   plastic: 2 },
+        { id: 'energy',  title: 'Unplug Standby Electronics',    desc: 'Curtail vampire power consumption.',             points: 15, co2: 150,  water: 0,   plastic: 0 }
+    ];
+    // Milestone configuration targets based on Cumulative Eco Score
         const milestoneBadges = [
             { id: 'b1', title: 'Green Seedling', desc: 'Earn 15 Eco Points', target: 15, icon: '🌱' },
             { id: 'b2', title: 'Wave Maker', desc: 'Save 10L of Water', target: 10, type: 'water', icon: '💧' },
@@ -344,154 +741,224 @@
             { id: 'b4', title: 'Eco Guardian', desc: 'Earn 100 Eco Points', target: 100, icon: '🌳' }
         ];
 
-        // State Architecture setup with LocalStorage fallbacks
-        let appState = {
-            totals: JSON.parse(localStorage.getItem('eco_totals')) || { score: 0, co2: 0, water: 0, plastic: 0 },
-            completedToday: JSON.parse(localStorage.getItem('eco_completed_today')) || [],
-            historyLog: JSON.parse(localStorage.getItem('eco_history_log')) || [],
-            lastSavedDate: localStorage.getItem('eco_last_date') || ""
+    let appState = {
+        totals: JSON.parse(localStorage.getItem('eco_totals')) || { score: 0, co2: 0, water: 0, plastic: 0 },
+        completedToday: JSON.parse(localStorage.getItem('eco_completed_today')) || [],
+        historyLog: JSON.parse(localStorage.getItem('eco_history_log')) || [],
+        lastSavedDate: localStorage.getItem('eco_last_date') || ""
+    };
+
+    // ── DOM refs ──
+    const habitContainer  = document.getElementById('habit-list-container');
+    const badgeContainer  = document.getElementById('badge-container');
+    const historyRows     = document.getElementById('history-log-rows');
+    const historyEmpty    = document.getElementById('history-empty');
+    const dateDisplay     = document.getElementById('date-display');
+    const modalOverlay    = document.getElementById('modal-overlay');
+
+    // ── Modal controls ──
+    document.getElementById('open-modal-btn').addEventListener('click', openModal);
+    document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+    document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+    document.getElementById('submit-habit-btn').addEventListener('click', submitHabit);
+    modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    function openModal() {
+        clearErrors();
+        modalOverlay.classList.add('open');
+        document.getElementById('new-habit-title').focus();
+    }
+    function closeModal() {
+        modalOverlay.classList.remove('open');
+    }
+
+    function clearErrors() {
+        document.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
+        document.querySelectorAll('input.error').forEach(el => el.classList.remove('error'));
+    }
+
+    function submitHabit() {
+        clearErrors();
+        let valid = true;
+
+        const titleEl  = document.getElementById('new-habit-title');
+        const pointsEl = document.getElementById('new-habit-points');
+        const title  = titleEl.value.trim();
+        const desc   = document.getElementById('new-habit-desc').value.trim();
+        const points = parseInt(pointsEl.value);
+        const co2    = Math.max(0, parseInt(document.getElementById('new-habit-co2').value) || 0);
+        const water  = Math.max(0, parseInt(document.getElementById('new-habit-water').value) || 0);
+        const plastic = Math.max(0, parseInt(document.getElementById('new-habit-plastic').value) || 0);
+
+        if (!title) {
+            titleEl.classList.add('error');
+            document.getElementById('err-title').classList.add('show');
+            valid = false;
+        }
+        if (!points || points < 1 || points > 500) {
+            pointsEl.classList.add('error');
+            document.getElementById('err-points').classList.add('show');
+            valid = false;
+        }
+        if (!valid) return;
+
+        const newHabit = {
+            id: 'habit_' + Date.now(),
+            title, desc: desc || 'Custom habit.',
+            points, co2, water, plastic
         };
 
-        // UI Element Direct References
-        const habitContainer = document.getElementById('habit-list-container');
-        const badgeContainer = document.getElementById('badge-container');
-        const historyRows = document.getElementById('history-log-rows');
-        const historyEmptyState = document.getElementById('history-empty');
-        const dateDisplay = document.getElementById('date-display');
+        habitTemplate.push(newHabit);
+        localStorage.setItem('user_habits', JSON.stringify(habitTemplate));
 
-        // Dynamic metrics interface updater
-        function updateDashboardMetrics() {
-            document.getElementById('stat-score').innerText = appState.totals.score;
-            document.getElementById('stat-co2').innerText = `${appState.totals.co2}g`;
-            document.getElementById('stat-water').innerText = `${appState.totals.water}L`;
-            document.getElementById('stat-plastic').innerText = appState.totals.plastic;
-            
-            localStorage.setItem('eco_totals', JSON.stringify(appState.totals));
-            evaluateMilestones();
-        }
+        // Reset form
+        ['new-habit-title','new-habit-desc'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('new-habit-points').value = '10';
+        document.getElementById('new-habit-co2').value    = '80';
+        document.getElementById('new-habit-water').value  = '3';
+        document.getElementById('new-habit-plastic').value = '1';
 
-        // Daily structural reset validation checking calendar cross-over
-        function checkDailyReset() {
-            const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-            dateDisplay.innerText = todayStr;
+        closeModal();
+        renderHabits();
+    }
 
-            if (appState.lastSavedDate !== todayStr) {
-                appState.completedToday = [];
-                appState.lastSavedDate = todayStr;
-                localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
-                localStorage.setItem('eco_last_date', todayStr);
-            }
-        }
-
-        // Execution of completion toggle toggling system state array strings
-        function toggleHabit(habitId) {
-            const targetHabit = habitTemplate.find(h => h.id === habitId);
-            if (!targetHabit) return;
-
-            const index = appState.completedToday.indexOf(habitId);
-            const isAdding = index === -1;
-
-            if (isAdding) {
-                // Add to daily list
-                appState.completedToday.push(habitId);
-                
-                // Update metrics
-                appState.totals.score += targetHabit.points;
-                appState.totals.co2 += targetHabit.co2;
-                appState.totals.water += targetHabit.water;
-                appState.totals.plastic += targetHabit.plastic;
-
-                // Push an entry out to historical logger array string format
-                const logEntry = {
-                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                    title: targetHabit.title,
-                    impact: `+${targetHabit.points} Pts, -${targetHabit.co2}g CO₂`
-                };
-                appState.historyLog.unshift(logEntry); // Top entry insertion 
-            } else {
-                // Subtract execution logic
-                appState.completedToday.splice(index, 1);
-                
-                appState.totals.score = Math.max(0, appState.totals.score - targetHabit.points);
-                appState.totals.co2 = Math.max(0, appState.totals.co2 - targetHabit.co2);
-                appState.totals.water = Math.max(0, appState.totals.water - targetHabit.water);
-                appState.totals.plastic = Math.max(0, appState.totals.plastic - targetHabit.plastic);
-
-                // Clean entry from log for the current instance
-                const logIndex = appState.historyLog.findIndex(entry => entry.title === targetHabit.title);
-                if (logIndex !== -1) appState.historyLog.splice(logIndex, 1);
-            }
-
-            // Sync structural arrays out onto LocalStorage strings
+    // ── Core logic ──
+    function checkDailyReset() {
+        const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        dateDisplay.innerText = todayStr;
+        if (appState.lastSavedDate !== todayStr) {
+            appState.completedToday = [];
+            appState.lastSavedDate = todayStr;
             localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
-            localStorage.setItem('eco_history_log', JSON.stringify(appState.historyLog));
+            localStorage.setItem('eco_last_date', todayStr);
+        }
+    }
 
-            updateDashboardMetrics();
-            renderHabits();
-            renderHistory();
+    function toggleHabit(habitId) {
+        const habit = habitTemplate.find(h => h.id === habitId);
+        if (!habit) return;
+        const idx = appState.completedToday.indexOf(habitId);
+        const adding = idx === -1;
+
+        if (adding) {
+            appState.completedToday.push(habitId);
+            appState.totals.score   += habit.points;
+            appState.totals.co2     += habit.co2;
+            appState.totals.water   += habit.water;
+            appState.totals.plastic += habit.plastic;
+            appState.historyLog.unshift({
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                title: habit.title,
+                impact: `+${habit.points} pts  /  -${habit.co2}g CO\u2082`
+            });
+        } else {
+            appState.completedToday.splice(idx, 1);
+            appState.totals.score   = Math.max(0, appState.totals.score   - habit.points);
+            appState.totals.co2     = Math.max(0, appState.totals.co2     - habit.co2);
+            appState.totals.water   = Math.max(0, appState.totals.water   - habit.water);
+            appState.totals.plastic = Math.max(0, appState.totals.plastic - habit.plastic);
+            const li = appState.historyLog.findIndex(e => e.title === habit.title);
+            if (li !== -1) appState.historyLog.splice(li, 1);
         }
 
-        // Render functions constructing raw component string structures
-        function renderHabits() {
-            habitContainer.innerHTML = habitTemplate.map(habit => {
-                const isDone = appState.completedToday.includes(habit.id);
-                return `
-                    <div class="habit-item">
-                        <div class="habit-details">
-                            <h3>${habit.title}</h3>
-                            <p>${habit.desc}</p>
-                        </div>
-                        <button class="action-btn ${isDone ? 'completed' : ''}" onclick="toggleHabit('${habit.id}')">
-                            ${isDone ? '✓ Logged' : `+ ${habit.points} pts`}
-                        </button>
+        localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
+        localStorage.setItem('eco_history_log',     JSON.stringify(appState.historyLog));
+        updateStats();
+        renderHabits();
+        renderHistory();
+    }
+
+    function updateStats() {
+        document.getElementById('stat-score').innerText   = appState.totals.score;
+        document.getElementById('stat-co2').innerText     = `${appState.totals.co2}g`;
+        document.getElementById('stat-water').innerText   = `${appState.totals.water}L`;
+        document.getElementById('stat-plastic').innerText = appState.totals.plastic;
+        localStorage.setItem('eco_totals', JSON.stringify(appState.totals));
+        renderMilestones();
+    }
+
+    // ── Render ──
+    function renderHabits() {
+        if (habitTemplate.length === 0) {
+            habitContainer.innerHTML = '<div class="empty-habits">No habits added yet. Click "Add Habit" to get started.</div>';
+            return;
+        }
+        habitContainer.innerHTML = habitTemplate.map(habit => {
+            const done = appState.completedToday.includes(habit.id);
+            return `
+                <div class="habit-item ${done ? 'is-done' : ''}">
+                    <button class="btn-toggle" onclick="toggleHabit('${habit.id}')" title="${done ? 'Mark incomplete' : 'Mark complete'}">
+                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="2,7 5.5,10.5 12,3.5"/>
+                        </svg>
+                    </button>
+                    <div class="habit-meta">
+                        <h3>${escHtml(habit.title)}</h3>
+                        <p>${escHtml(habit.desc)}</p>
                     </div>
-                `;
-            }).join('');
+                    <span class="habit-pts">${done ? 'Logged' : '+' + habit.points + ' pts'}</span>
+                </div>`;
+        }).join('');
+    }
+
+  function renderMilestones() {
+    badgeContainer.innerHTML = milestoneBadges.map(b => {
+        const val = b.type === 'water' ? appState.totals.water
+                  : b.type === 'co2'   ? appState.totals.co2
+                  : appState.totals.score;
+
+        const unlocked = val >= b.target;
+
+        const checkSvg = unlocked
+            ? `<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <polyline points="1.5,5 4,7.5 8.5,2.5"/>
+               </svg>`
+            : '';
+
+        return `
+            <div class="milestone-item ${unlocked ? 'unlocked' : ''}">
+                <div class="milestone-icon">
+                    <span style="font-size:16px;">${b.icon}</span>
+                </div>
+
+                <div class="milestone-text">
+                    <h4>${b.title}</h4>
+                    <p>${b.desc}</p>
+                </div>
+
+                <div class="milestone-check">${checkSvg}</div>
+            </div>`;
+    }).join('');
+}
+
+    function renderHistory() {
+        if (appState.historyLog.length === 0) {
+            historyRows.innerHTML = '';
+            historyEmpty.style.display = 'block';
+            return;
         }
+        historyEmpty.style.display = 'none';
+        historyRows.innerHTML = appState.historyLog.map(e => `
+            <tr>
+                <td style="color:var(--text-muted);font-family:'DM Mono',monospace;font-size:0.8rem;">${e.date}</td>
+                <td style="font-weight:500;">${escHtml(e.title)}</td>
+                <td><span class="impact-tag">${e.impact}</span></td>
+            </tr>`).join('');
+    }
 
-        function evaluateMilestones() {
-            badgeContainer.innerHTML = milestoneBadges.map(badge => {
-                let currentVal = appState.totals.score; // Default evaluation property setup
-                if (badge.type === 'water') currentVal = appState.totals.water;
-                if (badge.type === 'co2') currentVal = appState.totals.co2;
+    function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
 
-                const isUnlocked = currentVal >= badge.target;
-                return `
-                    <div class="badge-item ${isUnlocked ? 'unlocked' : ''}">
-                        <span class="badge-icon">${badge.icon}</span>
-                        <h4>${badge.title}</h4>
-                        <p>${badge.desc}</p>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderHistory() {
-            if (appState.historyLog.length === 0) {
-                historyRows.innerHTML = '';
-                historyEmptyState.style.display = 'block';
-                return;
-            }
-
-            historyEmptyState.style.display = 'none';
-            historyRows.innerHTML = appState.historyLog.map(entry => `
-                <tr>
-                    <td>${entry.date}</td>
-                    <td><strong>${entry.title}</strong></td>
-                    <td><span style="color: var(--emerald-dark); font-weight:500;">${entry.impact}</span></td>
-                </tr>
-            `).join('');
-        }
-
-        // Application Lifecyle initializer execution
-        function initApp() {
-            checkDailyReset();
-            updateDashboardMetrics();
-            renderHabits();
-            renderHistory();
-        }
-
-        window.onload = initApp;
-    </script>
+    // ── Init ──
+    function init() {
+        checkDailyReset();
+        updateStats();
+        renderHabits();
+        renderHistory();
+    }
+    window.onload = init;
+</script>
 </body>
 </html>

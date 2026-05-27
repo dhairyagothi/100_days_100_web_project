@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 :root {
   --green-deep:   #01372d;
   --green-mid:    #1a5c48;
@@ -17,7 +16,7 @@
 html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'inter', sans-serif;
   background: #f5f2eb;
   color: var(--text-dark);
   overflow-x: hidden;
@@ -37,29 +36,77 @@ body {
 .cursor-ring { width:36px; height:36px; border:2px solid var(--green-accent); transform:translate(-50%,-50%); opacity:.5; transition:all 0.25s ease; }
 
 /* ══════════════════════════════════════
+   BACK BUTTON
+══════════════════════════════════════ */
+
+.project-back-button {
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  z-index: 9999;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 12px 18px;
+
+  border-radius: 50px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  color: var(--white);
+  text-decoration: none;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.project-back-button:hover {
+  transform: translateY(-2px);
+
+  background: rgba(255,255,255,0.14);
+
+  border-color: rgba(255,255,255,0.22);
+}
+
+/* ══════════════════════════════════════
    HEADER / NAV
 ══════════════════════════════════════ */
 header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0; left: 0; right: 0 ;
   z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 5%;
+  padding: 28px 5%;
   background: rgba(1, 57, 47, 0.5);
   backdrop-filter: blur(14px);
   transition: background 0.4s, padding 0.3s;
 }
 header.scrolled {
   background: rgba(1,55,45,0.98);
-  padding: 14px 5%;
+  padding: 18px 5%;
 }
 
 .name {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1.8rem;
-  font-weight: 900;
+  font-weight: 9000;
   color: var(--white);
   letter-spacing: 2px;
   text-shadow: 0 2px 12px rgba(0,0,0,0.4);
@@ -110,17 +157,25 @@ nav ul li a:hover {
   width: 100%;
   top: 0; left: 0;
 }
-.text {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(4rem, 10vw, 9rem);
+.text{
+  font-family: 'Cormorant Garamond ', serif;
+  font-size: clamp(4.5rem, 10vw, 9rem);
   font-weight: 900;
   position: relative;
   z-index: 10;
   color: var(--white);
-  letter-spacing: 4px;
-  text-shadow: 0 4px 32px rgba(0,0,0,0.5), 0 0 80px rgba(53,147,129,0.4);
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  line-height: 1;
+  text-align: center;
+  text-shadow:
+    0 4px 30px rgba(0,0,0,0.45),
+    0 0 60px rgba(53,147,129,0.18);
   animation: heroFadeIn 1.2s ease forwards;
 }
+
+
+
 @keyframes heroFadeIn {
   from { opacity:0; transform:translateY(30px); }
   to   { opacity:1; transform:translateY(0); }
@@ -222,7 +277,7 @@ nav ul li a:hover {
 .content-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  gap: 28px;
   margin-bottom: 64px;
 }
 .content-grid p {
@@ -338,7 +393,7 @@ nav ul li a:hover {
 ══════════════════════════════════════ */
 .tracker-cta {
   background: var(--green-deep);
-  padding: 100px 8%;
+  padding: 20px 5% 50px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -383,6 +438,124 @@ nav ul li a:hover {
 .cta-btn:hover .arrow { transform: translateX(4px); }
 
 /* ══════════════════════════════════════
+   SERVICE SECTION 
+══════════════════════════════════════ */
+.service-parallax {
+  position: relative;
+  background: var(--green-deep);
+  padding: 100px 8%;
+  overflow: hidden;
+}
+
+.service-parallax::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(53,147,129,0.15), transparent 70%);
+  top: -200px;
+  right: -200px;
+  pointer-events: none;
+}
+
+.service-content {
+  position: relative;
+  z-index: 2;
+}
+
+.service-parallax .section-label {
+  color: var(--lime);
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.service-parallax .section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 60px;
+  color: var(--white);
+}
+
+.service-parallax .section-heading span {
+  color: var(--lime);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 48px;
+}
+
+.service-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  position: relative;
+  overflow: visible;
+  cursor: default;
+  backdrop-filter: none;
+  transform-style: unset;
+}
+
+.service-card::before {
+  display: none;
+}
+
+.service-card:hover {
+  background: transparent;
+  border-color: transparent;
+  transform: none;
+  box-shadow: none;
+}
+
+.service-card:hover::before {
+  opacity: 0;
+}
+
+.service-icon {
+  display: none;
+}
+
+.service-card:hover .service-icon {
+  transform: none;
+}
+
+.service-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 12px;
+  letter-spacing: 0;
+}
+
+.service-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.service-tag {
+  display: none;
+}
+
+.service-card:hover .service-tag {
+  background: transparent;
+  border-color: transparent;
+  transform: none;
+}
+
+/* ══════════════════════════════════════
    FOOTER
 ══════════════════════════════════════ */
 .footer {
@@ -410,7 +583,6 @@ nav ul li a:hover {
 /* ================= TABLET ================= */
 
 @media (max-width: 992px){
-
 
 header{
     padding: 18px 5%;
@@ -454,13 +626,20 @@ nav ul li{
     font-size: 1rem;
 }
 
+.service-parallax {
+  padding: 70px 6%;
+}
+
+.services-grid {
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
 
 }
 
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px){
-
 
 header{
     flex-direction: column;
@@ -506,12 +685,33 @@ nav ul li{
     line-height: 1.7;
 }
 
+.service-parallax {
+  padding: 60px 5%;
+}
+
+.service-parallax .section-heading {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin-bottom: 40px;
+}
+
+.services-grid {
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.service-card h3 {
+  font-size: 1.1rem;
+}
+
+.service-card p {
+  font-size: 0.9rem;
+}
+
 }
 
 /* ================= SMALL MOBILE ================= */
 
 @media (max-width: 480px){
-
 
 header{
     padding: 15px 4%;
@@ -532,6 +732,34 @@ nav ul li{
 
 .text{
     font-size: 2rem;
+}
+
+.service-parallax {
+  padding: 50px 4%;
+}
+
+.service-parallax .section-heading {
+  font-size: 1.6rem;
+  margin-bottom: 32px;
+}
+
+.services-grid {
+  gap: 20px;
+}
+
+.service-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.service-card h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.service-card p {
+  font-size: 0.85rem;
+  line-height: 1.6;
 }
 
 }
