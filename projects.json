@@ -1809,5 +1809,14 @@
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
 "projectPath":"./public/Share_Byte/index.html"
+},
+{
+"projectNo":182,
+"projectName":"CyberTrack 2077",
+"projectType":"Tool",
+"projectDesc":"A cyberpunk-style productivity dashboard that gamifies coding activity with GitHub analytics, streak tracking, dopamine graphs, focus scoring, and achievement systems.",
+"techStack":["tool","javascript","html","css","chartjs","github-api"],
+"difficulty":"advanced",
+"projectPath":"./public/cyberpunk-productivity-dashboard/index.html"
 }
 ]
