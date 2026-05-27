@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Due Date Tracker</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Add Assignment Form */
+.add-assignment {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.add-assignment input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    min-width: 150px;
+}
+
+.add-assignment input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+#addBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+#addBtn:hover {
+    transform: scale(1.05);
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+/* Assignments List */
+.assignments-list {
+    min-height: 300px;
+    margin-bottom: 30px;
+}
+
+.assignment-item {
+    background: #f8f9fa;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.assignment-info {
+    flex: 1;
+}
+
+.assignment-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.due-date {
+    font-size: 14px;
+    color: #666;
+}
+
+.days-left {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 15px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.days-left.urgent {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.days-left.warning {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.days-left.safe {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.assignment-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.complete-btn, .delete-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+    white-space: nowrap;
+}
+
+.complete-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.complete-btn:hover {
+    transform: scale(1.05);
+}
+
+.delete-btn {
+    background: #f44336;
+    color: white;
+}
+
+.delete-btn:hover {
+    transform: scale(1.05);
+}
+
+.completed-assignment {
+    opacity: 0.7;
+}
+
+.completed-assignment .assignment-name {
+    text-decoration: line-through;
+    color: #999;
+}
+
+/* Statistics */
+.stats {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    text-align: center;
+    flex: 1;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    min-width: 100px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+}
+
+.empty-message {
+    text-align: center;
+    color: #999;
+    padding: 50px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .assignment-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .assignment-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .add-assignment {
+        flex-direction: column;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📅 Assignment Due Date Tracker</h1>
+        
+        <!-- Add Assignment Form -->
+        <div class="add-assignment">
+            <input type="text" id="assignmentName" placeholder="Assignment name..." maxlength="50">
+            <input type="date" id="dueDate">
+            <button id="addBtn">➕ Add Assignment</button>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+        </div>
+
+        <!-- Assignments List -->
+        <div class="assignments-list" id="assignmentsList">
+            <p class="empty-message">No assignments yet. Add one above! ✨</p>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats">
+            <div class="stat-card">
+                <span class="stat-number" id="totalCount">0</span>
+                <span class="stat-label">Total</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="pendingCount">0</span>
+                <span class="stat-label">Pending</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="completedCount">0</span>
+                <span class="stat-label">Completed</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// Load assignments from localStorage
+let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
+let currentFilter = 'all';
+
+// DOM Elements
+const assignmentsList = document.getElementById('assignmentsList');
+const assignmentNameInput = document.getElementById('assignmentName');
+const dueDateInput = document.getElementById('dueDate');
+const addBtn = document.getElementById('addBtn');
+
+// Set min date to today
+const today = new Date().toISOString().split('T')[0];
+dueDateInput.min = today;
+dueDateInput.value = today;
+
+// Add assignment
+addBtn.addEventListener('click', () => {
+    const name = assignmentNameInput.value.trim();
+    const dueDate = dueDateInput.value;
+    
+    if (!name) {
+        alert('Please enter assignment name!');
+        return;
+    }
+    
+    if (!dueDate) {
+        alert('Please select due date!');
+        return;
+    }
+    
+    const newAssignment = {
+        id: Date.now(),
+        name: name,
+        dueDate: dueDate,
+        completed: false,
+        createdAt: new Date().toISOString()
+    };
+    
+    assignments.push(newAssignment);
+    saveAndRender();
+    assignmentNameInput.value = '';
+});
+
+// Save to localStorage and render
+function saveAndRender() {
+    localStorage.setItem('assignments', JSON.stringify(assignments));
+    render();
+}
+
+// Calculate days remaining
+function getDaysRemaining(dueDate) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
+    
+    const diffTime = due - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+}
+
+// Get status class based on days remaining
+function getDaysLeftClass(daysRemaining) {
+    if (daysRemaining < 0) return 'urgent';
+    if (daysRemaining === 0) return 'urgent';
+    if (daysRemaining <= 2) return 'warning';
+    return 'safe';
+}
+
+// Get formatted days left text
+function getDaysLeftText(daysRemaining) {
+    if (daysRemaining < 0) return `⚠️ Overdue by ${Math.abs(daysRemaining)} days`;
+    if (daysRemaining === 0) return '⚠️ Due Today!';
+    if (daysRemaining === 1) return '📅 Due tomorrow!';
+    return `📅 ${daysRemaining} days left`;
+}
+
+// Format date
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+    });
+}
+
+// Toggle complete status
+function toggleComplete(id) {
+    const assignment = assignments.find(a => a.id === id);
+    if (assignment) {
+        assignment.completed = !assignment.completed;
+        saveAndRender();
+    }
+}
+
+// Delete assignment
+function deleteAssignment(id) {
+    if (confirm('Are you sure you want to delete this assignment?')) {
+        assignments = assignments.filter(a => a.id !== id);
+        saveAndRender();
+    }
+}
+
+// Render assignments based on current filter
+function render() {
+    // Filter assignments
+    let filteredAssignments = assignments;
+    if (currentFilter === 'pending') {
+        filteredAssignments = assignments.filter(a => !a.completed);
+    } else if (currentFilter === 'completed') {
+        filteredAssignments = assignments.filter(a => a.completed);
+    }
+    
+    // Sort by due date (earliest first for pending, latest first for completed)
+    if (currentFilter !== 'completed') {
+        filteredAssignments.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    } else {
+        filteredAssignments.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
+    }
+    
+    // Render to DOM
+    if (filteredAssignments.length === 0) {
+        assignmentsList.innerHTML = '<p class="empty-message">✨ No assignments here! ✨</p>';
+    } else {
+        assignmentsList.innerHTML = filteredAssignments.map(assignment => {
+            const daysRemaining = getDaysRemaining(assignment.dueDate);
+            const daysLeftClass = getDaysLeftClass(daysRemaining);
+            const daysLeftText = getDaysLeftText(daysRemaining);
+            
+            return `
+                <div class="assignment-item ${assignment.completed ? 'completed-assignment' : ''}">
+                    <div class="assignment-info">
+                        <div class="assignment-name">${escapeHtml(assignment.name)}</div>
+                        <div class="due-date">📅 Due: ${formatDate(assignment.dueDate)}</div>
+                        <div class="days-left ${daysLeftClass}">${daysLeftText}</div>
+                    </div>
+                    <div class="assignment-actions">
+                        ${!assignment.completed ? 
+                            `<button class="complete-btn" onclick="toggleComplete(${assignment.id})">✅ Complete</button>` : 
+                            `<button class="complete-btn" onclick="toggleComplete(${assignment.id})">🔄 Undo</button>`
+                        }
+                        <button class="delete-btn" onclick="deleteAssignment(${assignment.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    // Update statistics
+    updateStats();
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Update statistics
+function updateStats() {
+    const total = assignments.length;
+    const completed = assignments.filter(a => a.completed).length;
+    const pending = total - completed;
+    
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('pendingCount').textContent = pending;
+    document.getElementById('completedCount').textContent = completed;
+}
+
+// Filter button handlers
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        render();
+    });
+});
+
+// Initial render
+render();
+    </script>
+</body>
+</html>

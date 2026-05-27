@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Add Assignment Form */
+.add-assignment {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.add-assignment input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.add-assignment input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+#addBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+#addBtn:hover {
+    transform: scale(1.05);
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+/* Assignments List */
+.assignments-list {
+    min-height: 300px;
+    margin-bottom: 30px;
+}
+
+.assignment-item {
+    background: #f8f9fa;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.assignment-info {
+    flex: 1;
+}
+
+.assignment-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.due-date {
+    font-size: 14px;
+    color: #666;
+}
+
+.days-left {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 15px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.days-left.urgent {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.days-left.warning {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.days-left.safe {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.assignment-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.complete-btn, .delete-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.complete-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.complete-btn:hover {
+    transform: scale(1.05);
+}
+
+.delete-btn {
+    background: #f44336;
+    color: white;
+}
+
+.delete-btn:hover {
+    transform: scale(1.05);
+}
+
+.completed-assignment {
+    opacity: 0.7;
+}
+
+.completed-assignment .assignment-name {
+    text-decoration: line-through;
+    color: #999;
+}
+
+/* Statistics */
+.stats {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.stat-card {
+    text-align: center;
+    flex: 1;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+}
+
+.empty-message {
+    text-align: center;
+    color: #999;
+    padding: 50px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .assignment-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .assignment-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .add-assignment {
+        flex-direction: column;
+    }
+}
