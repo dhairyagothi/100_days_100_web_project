@@ -21,7 +21,7 @@ body {
 
 
 .main {
-    min-height: 100vh;
+    height: 100vh;
     position: relative;
     z-index: 2;
     width: 100%;
@@ -29,7 +29,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
 }
 
 
@@ -63,24 +63,26 @@ body {
 }
 
 .main .image-container .image img {
-    width: 350px;
+    width: 320px;
     max-width: 90%;
+    max-height: 40vh;
+    object-fit: contain;
     align-items: center;
 }
 
 .main .image-container h1 {
     color: #00bcd4;
     text-align: center;
-    margin-top: 35px;
-    margin-bottom: 10px;
-    font-size: 48px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 38px;
     letter-spacing: 12px;
 }
 
 .main .image-container p {
     color: #7f8c8d;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-size: 15px;
     max-width: 500px;
     margin-left: auto;
@@ -92,14 +94,14 @@ body {
     display: flex;
     align-items: center;
     width: min(500px, 90%);
-    min-height: 70px;
-    padding: 10px 20px;
+    min-height: 90px;
+    padding: 20px 25px;
     border-radius: 40px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(0, 188, 212, 0.2);
     backdrop-filter: blur(10px);
     gap: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .main .input .talk {

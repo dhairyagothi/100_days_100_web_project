@@ -11,6 +11,8 @@ canvas.height = ROWS * CELL;
 let snake, dir, nextDir, food, score, level, speed, gameLoop, running, paused;
 
 let highScore = 0;
+let isGameOver = false; // FIX 1: new flag — single source of truth for dead state
+let finalScore = 0;     // FIX 2: captures score the instant collision occurs 
 
 function initGame() {
   
@@ -188,6 +190,14 @@ function startGame() {
   document.getElementById('startOverlay').classList.add('hidden');
   document.getElementById('gameOverOverlay').classList.add('hidden');
   cancelAnimationFrame(animFrame); // stop idle animation
+
+  isGameOver = false; // FIX 1: clear the flag so inputs can be taken again
+ 
+  // FIX 3: re-attach the listener as the player has restarted the game
+  document.removeEventListener('keydown', handleKeyDown);
+  document.addEventListener('keydown', handleKeyDown);
+
+  
   initGame();
   running = true;
   draw();
@@ -195,8 +205,16 @@ function startGame() {
 }
 
 function endGame() {
+
+  // FIX 2: Changes finalScore early
+  finalScore = score;
+
   running = false;
+  isGameOver = true; // FIX 1: raises the dead flag
   clearInterval(gameLoop);
+
+  // FIX 3: remove the listener when game ends so no more inputs are taken after death
+  document.removeEventListener('keydown', handleKeyDown);
 
   
   let flashes = 0;
@@ -207,7 +225,7 @@ function endGame() {
       clearInterval(flash);
       draw();
       document.getElementById('finalScore').textContent =
-        `SCORE: ${score}  |  BEST: ${highScore}`;
+        `SCORE: ${finalScore}  |  BEST: ${highScore}`; // FIX 2: Chooses between finalScore and highScore (Not score, which could have changed at death)
       document.getElementById('gameOverOverlay').classList.remove('hidden');
     }
   }, 80);
@@ -228,8 +246,11 @@ const KEY_MAP = {
   A: { x: -1, y:  0 },
   D: { x:  1, y:  0 },
 };
+function handleKeyDown(e) { // FIX 3: Named the function so it can be added/removed cleanly
 
-document.addEventListener('keydown', e => {
+  // FIX 1: If the game is over, dont take any key input
+  if (isGameOver) return;
+
   
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     e.preventDefault();
@@ -257,17 +278,21 @@ document.addEventListener('keydown', e => {
       restartLoop();
     }
   }
-});
+};
 
+// Attach the named listener on start screen
+document.addEventListener('keydown', handleKeyDown);
 
+// FIX 4: Play Again button is the only restart path
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
 
-document.addEventListener('mousedown', e => {
-  if (!running && e.target.id !== 'startBtn' && e.target.id !== 'restartBtn') {
-    startGame();
-  }
-});
+//NOTE: the mousedown "click anywhere to start" listener has been intentionally removed.
+// document.addEventListener('mousedown', e => {
+//   if (!running && e.target.id !== 'startBtn' && e.target.id !== 'restartBtn') {
+//     startGame();
+//   }
+// });
 
 let animFrame;
 

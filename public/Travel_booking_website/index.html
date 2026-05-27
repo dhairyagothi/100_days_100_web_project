@@ -20,6 +20,8 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
   <div class="chatbot-container">
 
   <!-- Floating Button -->
@@ -92,7 +94,7 @@
         <li><a href="#service">SERVICE</a></li>
         <li><a href="#offer">OFFER</a></li>
         <li><a href="#client">CLIENT</a></li>
-        <li><button class="btn">Sign Up</button></li>
+        <li><button class="btn" id="signUpBtn">Sign Up</button></li>
       </ul>
     </nav>
     <div class="section_container header_container" id="home">
@@ -406,6 +408,47 @@
       </div>
     </div>
   </section>
+
+  <section class="section_container faq_container" id="faq">
+  <h2 class="section_header">Frequently Asked Questions</h2>
+  <p class="section_description">
+    Quick answers to common questions about booking, payments, and cancellations.
+  </p>
+
+  <div class="faq_grid">
+
+    <div class="faq_item">
+      <button class="faq_question">How do I book a trip?</button>
+      <div class="faq_answer">
+        Enter your departure, destination, and date, then click “Search Flights” to view available options and proceed with booking.
+      </div>
+    </div>
+
+    <div class="faq_item">
+      <button class="faq_question">Can I cancel or modify my booking?</button>
+      <div class="faq_answer">
+        Yes, you can manage cancellations or modifications from your booking dashboard based on airline or hotel policies.
+      </div>
+    </div>
+
+    <div class="faq_item">
+      <button class="faq_question">Are there any hidden charges?</button>
+      <div class="faq_answer">
+        No hidden charges are applied. All prices shown include applicable taxes and fees.
+      </div>
+    </div>
+
+    <div class="faq_item">
+      <button class="faq_question">How do I confirm payment?</button>
+      <div class="faq_answer">
+        Payment confirmation is sent instantly via email and also shown on the booking confirmation page.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
   <footer class="footer">
     <div class="section_container footer_container">
       <div class="footer_col">
@@ -479,9 +522,42 @@
     </div>
   </footer>
   
+  <div id="authModal" class="modal-overlay hidden" aria-hidden="true" role="dialog">
+      <div class="modal-container">
+          <button id="closeModalBtn" class="modal-close-x" aria-label="Close Modal">&times;</button>
+          
+          <div class="modal-header">
+              <h2>Create an Account</h2>
+              <p>Join us to manage and book your dream destinations.</p>
+          </div>
+
+          <form id="signUpForm" novalidate>
+              <div class="input-group">
+                  <label for="regEmail">Email Address</label>
+                  <input type="email" id="regEmail" required placeholder="name@example.com">
+                  <span class="error-msg" id="emailError"></span>
+              </div>
+              
+              <div class="input-group">
+                  <label for="regPassword">Password</label>
+                  <input type="password" id="regPassword" required placeholder="••••••••" minlength="8">
+                  <span class="error-msg" id="passwordError"></span>
+              </div>
+
+              <button type="submit" id="submitAuthBtn" class="btn submit-btn">
+                  <span class="btn-text">Register</span>
+                  <div class="spinner hidden"></div>
+              </button>
+          </form>
+          <div id="authSuccessMsg" class="success-banner hidden"></div>
+      </div>
+  </div>
+
   <script src="https://unpkg.com/scrollreveal"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="config.js"></script>
   <script src="index.js"></script>
+
+
 </body>
 </html>

@@ -9,47 +9,43 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
     <div class="container">
         <div class="heading">
-            <div class="heading1">
-                    Unit Converter
-            </div>
-            <div>
-                <p>Convert between different units easily and accurately</p>
-            </div>
+            <h1>Unit Converter</h1>
+            <p>Convert between different units easily and accurately</p>
         </div>
 
         <div class="box">
-            <div class="category">
-                <label for="categoryList">Category:</label>
-                <select id="categoryList">
-                    <option value="length">Length</option>
-                    <option value="weight">Weight</option>
-                    <option value="temperature">Temperature</option>
-                    <option value="time">Time</option>
-                    <option value="speed">Speed</option>
-                </select>
-            </div>
+            <div class="category" id="category">
+                <button class="categories active" data-cat="length">Length</button>
+                <button class="categories" data-cat="weight">Weight</button>
+                <button class="categories" data-cat="temperature">Temperature</button>
+                <button class="categories" data-cat="time">Time</button>
+                <button class="categories" data-cat="speed">Speed</button>
+            </div> 
 
             <div class="input-val">
                 <div>
-                    From:
+                <div class="input-label">From:</div>
                     <div class="input-section">
-                        <input type="number" id="fromInput">
-                        <select id="fromUnit"></select>
+                        <input type="number" id="fromInput" class="input-value">
+                        <select id="fromUnit" class="unit-select"></select>
                     </div>
+                    <div class="input-hint"></div>
                 </div>
-
                 <div>
-                    To:
+                <div class="input-label">To:</div>
                     <div class="input-section to-input">
-                        <input type="number" id="toInput" readonly>
-                        <select id="toUnit"></select>
+                        <input type="number" id="toInput" readonly class="input-value">
+                        <select id="toUnit" class="unit-select"></select>
                     </div>
+                    <div class="input-hint"></div>
                 </div>
             </div>
                 <div class="result">
-                    Result:
+                    Result: 
                     <div id="output" class="output"></div>
                 </div>
         </div>
