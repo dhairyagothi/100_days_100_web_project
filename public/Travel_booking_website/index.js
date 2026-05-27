@@ -63,6 +63,14 @@ ScrollReveal().reveal(".offer_card", {
   interval: 500,
 });
 
+const faqItems = document.querySelectorAll(".faq_item");
+
+faqItems.forEach(item => {
+  const question = item.querySelector(".faq_question");
+
+  question.addEventListener("click", () => {
+    item.classList.toggle("active");
+  });
 // ================= CHATBOT =================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -140,77 +148,21 @@ async function sendMessage() {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   try {
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-
-          Authorization: `Bearer ${GROQ_API_KEY}`,
-        },
-
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-
-          messages: [
-            {
-              role: "system",
-
-              content: `You are Travel AI, a modern and friendly travel assistant.
-
-Help users with:
-- travel destinations
-- trip planning
-- flights
-- hotels
-- budgeting
-- tourism
-- itineraries
-- local food
-- attractions
-- travel tips
-
-Response Rules:
-- Use short paragraphs
-- Use bullet points when useful
-- Keep responses clean and readable
-- Avoid huge text blocks
-- Give practical suggestions
-- Use friendly conversational tone
-- Format itineraries clearly
-- Use emojis occasionally for better UX
-
-Keep answers concise but informative.`,
-            },
-
-            {
-              role: "user",
-              content: message,
-            },
-          ],
-        }),
+    const response = await fetch("http://localhost:5000/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ message: message }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
     const data = await response.json();
 
     loadingMessage.remove();
-
-    // HANDLE API ERROR
-
-    if (!data.choices) {
-      const errorMessage = document.createElement("div");
-
-      errorMessage.classList.add("bot-message");
-
-      errorMessage.textContent = "Unable to get response right now.";
-
-      chatMessages.appendChild(errorMessage);
-
-      return;
-    }
 
     // BOT RESPONSE
 
@@ -218,7 +170,7 @@ Keep answers concise but informative.`,
 
     botMessage.classList.add("bot-message");
 
-    botMessage.innerHTML = formatResponse(data.choices[0].message.content);
+    botMessage.innerHTML = formatResponse(data.reply);
 
     chatMessages.appendChild(botMessage);
 
@@ -228,7 +180,7 @@ Keep answers concise but informative.`,
   } catch (error) {
     loadingMessage.textContent = "Error getting response.";
 
-    console.error(error);
+    console.error("Frontend Error:", error);
   }
 }
 
@@ -243,3 +195,136 @@ userInput.addEventListener("keypress", (e) => {
     sendMessage();
   }
 });
+
+// ==========================================================================
+// AUTHENTICATION ENGINE CONTROLLER (#3793)
+// ==========================================================================
+const AuthController = {
+  // Elements targeting our updated DOM structural layouts
+  signUpBtn: document.getElementById("signUpBtn"),
+  authModal: document.getElementById("authModal"),
+  closeModalBtn: document.getElementById("closeModalBtn"),
+  signUpForm: document.getElementById("signUpForm"),
+  emailInput: document.getElementById("regEmail"),
+  passwordInput: document.getElementById("regPassword"),
+
+  init() {
+    if (!this.signUpBtn || !this.authModal) return; // Guard clause against missing DOM nodes
+    this.bindEvents();
+    this.checkExistingSession();
+  },
+
+  bindEvents() {
+    // Open/Close Actions
+    this.signUpBtn.addEventListener("click", () => this.toggleModal(true));
+    this.closeModalBtn.addEventListener("click", () => this.toggleModal(false));
+    
+    // Backdrop click container event delegation
+    this.authModal.addEventListener("click", (e) => {
+      if (e.target === this.authModal) this.toggleModal(false);
+    });
+
+    // Handle authentication form submissions
+    this.signUpForm.addEventListener("submit", (e) => this.handleRegistration(e));
+  },
+
+  toggleModal(show) {
+    if (show) {
+      this.authModal.classList.remove("hidden");
+      this.authModal.setAttribute("aria-hidden", "false");
+    } else {
+      this.authModal.classList.add("hidden");
+      this.authModal.setAttribute("aria-hidden", "true");
+      this.signUpForm.reset();
+      this.clearErrors();
+    }
+  },
+
+  validateEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  },
+
+  clearErrors() {
+    document.getElementById("emailError").textContent = "";
+    document.getElementById("passwordError").textContent = "";
+  },
+
+  checkExistingSession() {
+    const session = localStorage.getItem("user_session");
+    if (session) {
+      try {
+        const userData = JSON.parse(session);
+        if (userData && userData.authenticated) {
+          this.signUpBtn.textContent = "Profile";
+        }
+      } catch (e) {
+        localStorage.removeItem("user_session");
+      }
+    }
+  },
+
+  async handleRegistration(e) {
+    e.preventDefault();
+    this.clearErrors();
+
+    const email = this.emailInput.value.trim();
+    const password = this.passwordInput.value;
+    let isValid = true;
+
+    // Rigid pattern constraint processing
+    if (!this.validateEmail(email)) {
+      document.getElementById("emailError").textContent = "Please enter a valid email structure.";
+      isValid = false;
+    }
+    if (password.length < 8) {
+      document.getElementById("passwordError").textContent = "Security validation error: Password must be ≥ 8 characters.";
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
+    // Micro-interaction asynchronous execution state updates
+    const submitBtn = document.getElementById("submitAuthBtn");
+    const btnText = submitBtn.querySelector(".btn-text");
+    const spinner = submitBtn.querySelector(".spinner");
+
+    submitBtn.disabled = true;
+    if (btnText) btnText.style.opacity = "0.5";
+    if (spinner) spinner.classList.remove("hidden");
+
+    try {
+      // Emulating a real network wire connection latency delay
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+
+      // Persist user context profile state in local machine cache
+      localStorage.setItem("user_session", JSON.stringify({ email, authenticated: true }));
+      
+      const successBanner = document.getElementById("authSuccessMsg");
+      if (successBanner) {
+        successBanner.textContent = "Account successfully registered! Welcome to FlyTravel.";
+        successBanner.classList.remove("hidden");
+      }
+
+      setTimeout(() => {
+        this.toggleModal(false);
+        if (successBanner) successBanner.classList.add("hidden");
+        this.signUpBtn.textContent = "Profile";
+      }, 1500);
+
+    } catch (err) {
+      document.getElementById("emailError").textContent = "Internal engine processing exception error.";
+    } finally {
+      submitBtn.disabled = false;
+      if (btnText) btnText.style.opacity = "1";
+      if (spinner) spinner.classList.add("hidden");
+    }
+  }
+};
+
+// Defensive Initialization Routine
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => AuthController.init());
+} else {
+  AuthController.init();
+}

@@ -1,5 +1,3 @@
-// app.js
-
 const questions = [
   "Tell me about yourself.",
   "Why should we hire you?",
@@ -8,251 +6,748 @@ const questions = [
   "Where do you see yourself in 5 years?"
 ];
 
+let selectedRole = "";
+let aiQuestions = [];
 let currentQuestion = 0;
 let stress = 0;
 let timeLeft = 60;
-const totalTime = 60;
 let timer;
+let userAnswers = [];
 
-// DOM Elements
-const questionText = document.getElementById("question");
-const questionCount = document.getElementById("question-count");
-const stressLevel = document.getElementById("stress-level");
-const timerText = document.getElementById("timer");
-const answerBox = document.getElementById("answer");
+const totalTime = 60;
 
-const nextBtn = document.getElementById("next-btn");
-const restartBtn = document.getElementById("restart-btn");
+const questionCount =
+  document.getElementById("question-count");
 
-// Progress bars
-const questionProgress = document.getElementById("question-progress");
-const stressProgress = document.getElementById("stress-progress");
-const timerProgress = document.getElementById("timer-progress");
+const stressLevel =
+  document.getElementById("stress-level");
 
-// Voice Control Elements
-const micBtn = document.getElementById("mic-btn");
-const micStatus = document.getElementById("mic-status");
-const recordingIndicator = document.getElementById("recording-indicator");
+const timerText =
+  document.getElementById("timer");
 
-// Speech Recognition Setup
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const answerBox =
+  document.getElementById("answer");
+
+const nextBtn =
+  document.getElementById("next-btn");
+
+const restartBtn =
+  document.getElementById("restart-btn");
+
+const roleSelect =
+  document.getElementById("role-select");
+
+const startAiBtn =
+  document.getElementById("start-ai-btn");
+
+const difficultySelect =
+  document.getElementById("difficulty-select");
+
+const interviewType =
+  document.getElementById("interview-type");
+
+const chatContainer =
+  document.getElementById("chat-container");
+
+const questionProgress =
+  document.getElementById("question-progress");
+
+const stressProgress =
+  document.getElementById("stress-progress");
+
+const timerProgress =
+  document.getElementById("timer-progress");
+
+const micBtn =
+  document.getElementById("mic-btn");
+
+const micStatus =
+  document.getElementById("mic-status");
+
+const recordingIndicator =
+  document.getElementById("recording-indicator");
+
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
 let recognition;
+
 let isRecording = false;
-let finalTranscriptState = '';
+
+let finalTranscriptState = "";
+
+function addAIMessage(message) {
+
+  const msg =
+    document.createElement("div");
+
+  msg.className =
+    "ai-message";
+
+  msg.innerHTML =
+    `
+      <div class="message-label">
+        🤖 AI Interviewer
+      </div>
+
+      <div class="message-content">
+        ${formatMarkdown(message)}
+      </div>
+    `;
+
+  chatContainer.appendChild(msg);
+
+  chatContainer.scrollTop =
+    chatContainer.scrollHeight;
+
+}
+
+function addUserMessage(message) {
+
+  const msg =
+    document.createElement("div");
+
+  msg.className =
+    "user-message";
+
+  msg.innerHTML =
+    `
+      <div class="message-label">
+        👤 You
+      </div>
+
+      <div class="message-content">
+        ${formatMarkdown(message)}
+      </div>
+    `;
+
+  chatContainer.appendChild(msg);
+
+  chatContainer.scrollTop =
+    chatContainer.scrollHeight;
+
+}
+
+function addThinkingMessage() {
+
+  const msg =
+    document.createElement("div");
+
+  msg.className =
+    "thinking-message";
+
+  msg.id =
+    "thinking-message";
+
+  msg.innerHTML =
+    `
+      <div class="message-label">
+        🤖 AI Interviewer
+      </div>
+
+      <div class="message-content">
+        AI is analyzing...
+      </div>
+    `;
+
+  chatContainer.appendChild(msg);
+
+  chatContainer.scrollTop =
+    chatContainer.scrollHeight;
+
+}
+
+function removeThinkingMessage() {
+
+  const thinking =
+    document.getElementById(
+      "thinking-message"
+    );
+
+  if (thinking) {
+    thinking.remove();
+  }
+
+}
+
+async function generateAIQuestions() {
+
+  selectedRole =
+    roleSelect.value;
+
+  const difficulty =
+    difficultySelect.value;
+
+  const type =
+    interviewType.value;
+
+  startAiBtn.innerHTML =
+    "Generating...";
+
+  startAiBtn.disabled = true;
+
+  chatContainer.innerHTML = "";
+
+  addThinkingMessage();
+
+  try {
+
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+
+        method: "POST",
+
+        headers: {
+
+          "Content-Type":
+            "application/json",
+
+          "Authorization":
+            `Bearer ${GROQ_API_KEY}`
+
+        },
+
+        body: JSON.stringify({
+
+          model:
+            "llama-3.1-8b-instant",
+
+          messages: [
+
+            {
+
+              role: "system",
+
+              content:
+`You are a professional interviewer conducting a realistic ${type} interview for a ${selectedRole} role.
+
+Difficulty level: ${difficulty}
+
+Generate exactly 5 conversational interview questions.
+
+Structure:
+1. Friendly introduction
+2. Experience/project discussion
+3. Practical field-related question
+4. Scenario/problem-solving question
+5. Career/behavioral closing question
+
+Rules:
+- Human-like tone
+- Conversational style
+- Questions should smoothly transition naturally
+- Avoid textbook theory questions
+- Focus on realistic interviews
+- One question per line
+- No numbering
+- No explanations`
+
+            }
+
+          ]
+
+        })
+
+      }
+    );
+
+    const data =
+      await response.json();
+
+    removeThinkingMessage();
+
+    const content =
+      data.choices[0].message.content;
+
+    aiQuestions =
+      content
+      .split("\n")
+      .filter(q => q.trim() !== "");
+
+    questions.length = 0;
+
+    aiQuestions.forEach(q => {
+      questions.push(q);
+    });
+
+    currentQuestion = 0;
+
+    stress = 0;
+
+    userAnswers = [];
+
+    updateStress();
+
+    loadQuestion();
+
+    startAiBtn.innerHTML =
+      "Interview Ready";
+
+  }
+
+  catch(error) {
+
+    removeThinkingMessage();
+
+    console.error(error);
+
+    alert(
+      "Failed to generate AI questions."
+    );
+
+    startAiBtn.innerHTML =
+      "Start AI Interview";
+
+  }
+
+}
 
 if (SpeechRecognition) {
-  recognition = new SpeechRecognition();
+
+  recognition =
+    new SpeechRecognition();
+
   recognition.continuous = true;
+
   recognition.interimResults = true;
-  recognition.lang = 'en-US';
+
+  recognition.lang = "en-US";
 
   recognition.onstart = () => {
+
     isRecording = true;
-    micBtn.classList.add("recording");
-    micStatus.innerText = "Listening...";
-    recordingIndicator.classList.remove("hidden");
+
+    micBtn.classList.add(
+      "recording"
+    );
+
+    micStatus.innerText =
+      "Listening...";
+
+    recordingIndicator.classList.remove(
+      "hidden"
+    );
+
     answerBox.focus();
+
   };
 
-  recognition.onresult = (event) => {
-    let interimTranscript = '';
-    let currentFinal = '';
+  recognition.onresult =
+    (event) => {
 
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      const transcript = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        currentFinal += transcript + ' ';
-      } else {
-        interimTranscript += transcript;
+      let interimTranscript = "";
+
+      let currentFinal = "";
+
+      for (
+        let i = event.resultIndex;
+        i < event.results.length;
+        i++
+      ) {
+
+        const transcript =
+          event.results[i][0].transcript;
+
+        if (
+          event.results[i].isFinal
+        ) {
+
+          currentFinal +=
+            transcript + " ";
+
+        }
+
+        else {
+
+          interimTranscript +=
+            transcript;
+
+        }
+
       }
-    }
 
-    finalTranscriptState += currentFinal;
-    answerBox.value = finalTranscriptState + interimTranscript;
-  };
+      finalTranscriptState +=
+        currentFinal;
 
-  recognition.onerror = (event) => {
-    console.error("Speech recognition error", event.error);
-    stopRecording();
-    if(event.error === 'not-allowed') {
-      micStatus.innerText = "Microphone access denied";
-    } else if (event.error === 'network') {
-      micStatus.innerText = "Network/Security error";
-      alert("Speech Recognition failed with a 'network' error. This usually happens if you are accessing the site via an IP address (like 192.168.x.x) over HTTP instead of localhost or HTTPS. The Web Speech API requires a secure context (HTTPS or localhost) to function.");
-    } else {
-      micStatus.innerText = `Error: ${event.error}`;
-    }
-  };
+      answerBox.value =
+        finalTranscriptState +
+        interimTranscript;
+
+    };
 
   recognition.onend = () => {
+
     stopRecording();
+
   };
+
 }
 
 function stopRecording() {
-  if (isRecording && recognition) {
+
+  if (
+    isRecording &&
+    recognition
+  ) {
+
     recognition.stop();
+
   }
+
   isRecording = false;
-  micBtn.classList.remove("recording");
-  micStatus.innerText = "Click mic to speak";
-  recordingIndicator.classList.add("hidden");
+
+  micBtn.classList.remove(
+    "recording"
+  );
+
+  micStatus.innerText =
+    "Click mic to speak";
+
+  recordingIndicator.classList.add(
+    "hidden"
+  );
+
 }
 
-micBtn.addEventListener("click", () => {
-  if (!SpeechRecognition) {
-    alert("Speech Recognition API is not supported in this browser. Please use Chrome or Edge.");
-    return;
-  }
+micBtn.addEventListener(
+  "click",
+  () => {
 
-  if (isRecording) {
-    stopRecording();
-  } else {
-    // Save current text area content so we append to it
-    finalTranscriptState = answerBox.value;
-    if (finalTranscriptState.length > 0 && !finalTranscriptState.endsWith(' ')) {
-      finalTranscriptState += ' ';
+    if (!SpeechRecognition) {
+
+      alert(
+        "Speech Recognition is not supported."
+      );
+
+      return;
+
     }
-    try {
+
+    if (isRecording) {
+
+      stopRecording();
+
+    }
+
+    else {
+
+      finalTranscriptState =
+        answerBox.value;
+
+      if (
+        finalTranscriptState.length > 0 &&
+        !finalTranscriptState.endsWith(" ")
+      ) {
+
+        finalTranscriptState += " ";
+
+      }
+
       recognition.start();
-    } catch(e) {
-      console.log("Recognition already started or error:", e);
+
     }
+
   }
-});
+);
 
 function startTimer() {
-  timer = setInterval(() => {
-    timeLeft--;
-    timerText.innerText = `${timeLeft}s`;
 
-    // Update progress bar
-    let timePercent = (timeLeft / totalTime) * 100;
-    timerProgress.style.width = `${timePercent}%`;
-    
-    timerProgress.className = "progress-fill";
-    if (timeLeft > 15) {
-      timerProgress.classList.add("success");
-    } else if (timeLeft > 5) {
-      timerProgress.classList.add("warning");
-    } else {
-      timerProgress.classList.add("danger");
-    }
+  timer =
+    setInterval(() => {
 
-    if (timeLeft <= 10) {
-      stress += 2;
-      updateStress();
-    }
+      timeLeft--;
 
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      stopRecording();
-      
-      let answerLength = answerBox.value.trim().length;
-      if (answerLength < 20) {
-        alert("Time's up! The interviewer looks disappointed with your short answer.");
-      } else {
-        alert("Time's up! Moving to the next question.");
+      timerText.innerText =
+        `${timeLeft}s`;
+
+      let timePercent =
+        (timeLeft / totalTime) * 100;
+
+      timerProgress.style.width =
+        `${timePercent}%`;
+
+      if (timeLeft <= 10) {
+
+        stress += 2;
+
+        updateStress();
+
       }
-      
-      nextQuestion();
-    }
 
-  }, 1000);
+      if (timeLeft <= 0) {
+
+        clearInterval(timer);
+
+        nextQuestion();
+
+      }
+
+    }, 1000);
+
 }
 
 function resetTimer() {
+
   clearInterval(timer);
+
   timeLeft = totalTime;
-  timerText.innerText = `${timeLeft}s`;
-  timerProgress.style.width = "100%";
-  timerProgress.className = "progress-fill success";
+
+  timerText.innerText =
+    `${timeLeft}s`;
+
+  timerProgress.style.width =
+    "100%";
+
   startTimer();
+
 }
 
 function updateStress() {
-  if (stress > 100) stress = 100;
-  if (stress < 0) stress = 0;
 
-  stressLevel.innerText = `${stress}%`;
-  stressProgress.style.width = `${stress}%`;
+  if (stress > 100)
+    stress = 100;
 
-  // Change color based on stress
-  stressProgress.className = "progress-fill";
-  if (stress < 40) {
-    stressProgress.classList.add("success");
-  } else if (stress < 70) {
-    stressProgress.classList.add("warning");
-  } else {
-    stressProgress.classList.add("danger");
-  }
+  if (stress < 0)
+    stress = 0;
 
-  // Visual background feedback
-  if (stress >= 70) {
-    document.body.style.background = "linear-gradient(135deg, #450a0a, #0f172a)";
-  } else {
-    document.body.style.background = "var(--bg-color)";
-  }
+  stressLevel.innerText =
+    `${stress}%`;
+
+  stressProgress.style.width =
+    `${stress}%`;
+
 }
 
 function loadQuestion() {
-  questionText.innerText = questions[currentQuestion];
-  questionCount.innerText = `${currentQuestion + 1}/${questions.length}`;
-  
-  let qPercent = ((currentQuestion + 1) / questions.length) * 100;
-  questionProgress.style.width = `${qPercent}%`;
+
+  addAIMessage(
+    questions[currentQuestion]
+  );
+
+  questionCount.innerText =
+    `${currentQuestion + 1}/${questions.length}`;
+
+  let qPercent =
+    (
+      (currentQuestion + 1)
+      /
+      questions.length
+    ) * 100;
+
+  questionProgress.style.width =
+    `${qPercent}%`;
 
   answerBox.value = "";
+
   finalTranscriptState = "";
+
   stopRecording();
+
   resetTimer();
+
+}
+function formatMarkdown(text) {
+
+  return text
+
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+
+    .replace(/\n/g, "<br>");
+
+}
+async function generateFinalReport() {
+
+  addThinkingMessage();
+
+  try {
+
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+
+        method: "POST",
+
+        headers: {
+
+          "Content-Type":
+            "application/json",
+
+          "Authorization":
+            `Bearer ${GROQ_API_KEY}`
+
+        },
+
+        body: JSON.stringify({
+
+          model:
+            "llama-3.1-8b-instant",
+
+          messages: [
+
+            {
+
+              role: "system",
+
+              content:
+`You are an expert interview evaluator.
+
+Analyze this mock interview.
+
+Give:
+1. Communication Score (/10)
+2. Technical Confidence (/10)
+3. Strengths
+4. Weaknesses
+5. Final Hiring Recommendation
+
+Rules:
+- concise
+- professional
+- realistic
+- recruiter-like
+- easy to read`
+
+            },
+
+            {
+
+              role: "user",
+
+              content:
+`
+Role: ${selectedRole}
+
+Answers:
+${userAnswers.join("\n\n")}
+`
+
+            }
+
+          ]
+
+        })
+
+      }
+    );
+
+    const data =
+      await response.json();
+
+    removeThinkingMessage();
+
+    addAIMessage(
+      data.choices[0].message.content
+    );
+
+  }
+
+  catch(error) {
+
+    removeThinkingMessage();
+
+    addAIMessage(
+      "Unable to generate final report."
+    );
+
+  }
+
 }
 
-function nextQuestion() {
-  let answerLength = answerBox.value.trim().length;
+async function nextQuestion() {
+
+  const answer =
+    answerBox.value.trim();
+
+  if (answer === "") return;
+
+  userAnswers.push(answer);
+
+  addUserMessage(answer);
+
+  let answerLength =
+    answer.length;
 
   if (answerLength < 20) {
+
     stress += 15;
-  } else {
+
+  }
+
+  else {
+
     stress -= 5;
+
   }
 
   updateStress();
 
   currentQuestion++;
 
-  if (currentQuestion >= questions.length) {
+  answerBox.value = "";
+
+  if (
+    currentQuestion >= questions.length
+  ) {
+
     clearInterval(timer);
+
     stopRecording();
 
-    let finalMessage = "";
-    if (stress < 30) {
-      finalMessage = "Excellent performance. You stayed calm under pressure.";
-    } else if (stress < 70) {
-      finalMessage = "Decent performance, but pressure affected your answers.";
-    } else {
-      finalMessage = "You panicked. Your communication collapsed under stress.";
-    }
+    addThinkingMessage();
 
-    setTimeout(() => {
-      alert(`Interview Complete!\n\nFinal Stress Level: ${stress}%\n${finalMessage}`);
-    }, 100);
+    setTimeout(async () => {
+
+      removeThinkingMessage();
+
+      addAIMessage(
+        "Interview completed successfully. Generating your final AI evaluation report..."
+      );
+
+      await generateFinalReport();
+
+    }, 1500);
 
     return;
+
   }
 
-  loadQuestion();
+  setTimeout(() => {
+
+    loadQuestion();
+
+  }, 1200);
+
 }
 
-nextBtn.addEventListener("click", nextQuestion);
+restartBtn.addEventListener(
+  "click",
+  () => {
 
-restartBtn.addEventListener("click", () => {
-  currentQuestion = 0;
-  stress = 0;
-  updateStress();
-  loadQuestion();
-});
+    currentQuestion = 0;
 
-// Initialize
+    stress = 0;
+
+    userAnswers = [];
+
+    chatContainer.innerHTML = "";
+
+    updateStress();
+
+    loadQuestion();
+
+  }
+);
+
+nextBtn.addEventListener(
+  "click",
+  nextQuestion
+);
+
+startAiBtn.addEventListener(
+  "click",
+  generateAIQuestions
+);
+
 updateStress();
-loadQuestion();
