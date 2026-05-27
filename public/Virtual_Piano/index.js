@@ -5,7 +5,6 @@ var recordStart  = null;
 var recording    = [];
 var playbackTimers = [];
 var keysHeld     = {};
-var numOfKeys = $(".key").length; 
 
 // Load saved recording from localStorage on startup
 var saved = localStorage.getItem("pianoRecording");
@@ -14,28 +13,29 @@ if (saved) {
     $("#btn-play, #btn-clear, #btn-export").prop("disabled", false);
     $("#speed-slider").prop("disabled", false);
 }
+
+
+var numOfKeys = $(".key").length;
 function handleKey(note) {
-        playNote(note);
-        pressAnimation(note);
+    playNote(note);
+    pressAnimation(note);
 
-        if (isRecording) {
-            recording.push({
-                key: note.toUpperCase(),
-                time: Date.now() - recordStart
-            });
-        }
+    if (isRecording) {
+        recording.push({
+            key: note.toUpperCase(),
+            time: Date.now() - recordStart
+        });
     }
-
+}
 for(var i=0; i<numOfKeys; i++) {
     $(".key")[i].addEventListener("click", function() {
         var keyInnerHTML = this.innerHTML;
-       handleKey(keyInnerHTML);
+        handleKey(keyInnerHTML);
     })
 }
 
-
 $(document).keydown(function(event) {
-    if (keysHeld[event.key]) return; // prevent hold-key repeat
+    if (keysHeld[event.key]) return; 
     keysHeld[event.key] = true;
     handleKey(event.key);
 });
@@ -44,15 +44,9 @@ $(document).keyup(function(event) {
     delete keysHeld[event.key];
 });
 
-$(document).keyup(function(event) {
-    delete keysHeld[event.key];
-});
-
-// ── Speed label sync ──────────────────────────────────────
 $("#speed-slider").on("input", function() {
     $("#speed-label").text($(this).val() + "×");
 });
-
 
 function playNote(note) {
 

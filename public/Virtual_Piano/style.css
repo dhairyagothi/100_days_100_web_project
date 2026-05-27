@@ -311,6 +311,7 @@ body::selection {
 
     z-index: -1;
 }
+
 .controls {
     display: flex;
     gap: 12px;
@@ -354,7 +355,6 @@ body::selection {
 .controls-secondary {
     display: flex;
     align-items: center;
-    justify-content: center;  /* ← add this */
     gap: 12px;
     margin-top: 10px;
     color: #b3b3c2;
