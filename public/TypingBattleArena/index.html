@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typing Battle Arena</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Animated background canvas -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-brand">
+    <span class="brand-icon">⚡</span>
+    <span class="brand-name">TYPING<span class="brand-accent">ARENA</span></span>
+  </div>
+  <div class="nav-actions">
+    <button class="nav-btn" id="leaderboardNavBtn" aria-label="Leaderboard">🏆 <span>BOARD</span></button>
+    <button class="nav-btn" id="settingsNavBtn" aria-label="Settings">⚙️ <span>CONFIG</span></button>
+    <button class="nav-btn mute-btn" id="muteBtn" aria-label="Toggle sound">🔊</button>
+  </div>
+</nav>
+
+<!-- ===================== HERO SECTION ===================== -->
+<section class="hero" id="heroSection">
+  <div class="hero-content">
+    <div class="hero-badge">🎮 COMPETITIVE TYPING GAME</div>
+    <h1 class="hero-title">
+      <span class="title-line1">TYPING</span>
+      <span class="title-line2">BATTLE <span class="title-accent">ARENA</span></span>
+    </h1>
+    <p class="hero-sub">Dominate the keyboard. Climb the ranks. Become a legend.</p>
+
+    <!-- Player Setup -->
+    <div class="player-setup" id="playerSetup">
+      <div class="input-group">
+        <input type="text" id="usernameInput" placeholder="ENTER YOUR CALLSIGN" maxlength="20" autocomplete="off" aria-label="Username" />
+        <span class="input-glow"></span>
+      </div>
+      <div class="rank-display" id="playerRankDisplay">
+        <span class="rank-label">CURRENT RANK</span>
+        <span class="rank-badge" id="currentRankBadge">🥉 BRONZE TYPIST</span>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar" id="xpBar" style="width:0%"></div>
+        </div>
+        <span class="xp-label" id="xpLabel">0 / 500 XP</span>
+      </div>
+    </div>
+
+    <!-- Mode Selection -->
+    <div class="mode-select" id="modeSelect" role="group" aria-label="Game mode selection">
+      <button class="mode-btn active" data-mode="sprint" aria-pressed="true">
+        <span class="mode-icon">⚡</span>
+        <span class="mode-name">SPRINT</span>
+        <span class="mode-desc">30 seconds</span>
+      </button>
+      <button class="mode-btn" data-mode="ranked" aria-pressed="false">
+        <span class="mode-icon">🏆</span>
+        <span class="mode-name">RANKED</span>
+        <span class="mode-desc">60 seconds</span>
+      </button>
+      <button class="mode-btn" data-mode="survival" aria-pressed="false">
+        <span class="mode-icon">💀</span>
+        <span class="mode-name">SURVIVAL</span>
+        <span class="mode-desc">5 lives</span>
+      </button>
+      <button class="mode-btn" data-mode="zen" aria-pressed="false">
+        <span class="mode-icon">🌌</span>
+        <span class="mode-name">ZEN</span>
+        <span class="mode-desc">No timer</span>
+      </button>
+    </div>
+
+    <button class="start-btn" id="startBtn" aria-label="Start typing battle">
+      <span class="btn-text">ENTER BATTLE</span>
+      <span class="btn-glow"></span>
+    </button>
+  </div>
+
+  <!-- Floating stats preview -->
+  <div class="hero-stats-preview" aria-hidden="true">
+    <div class="preview-stat"><span class="ps-val">142</span><span class="ps-lbl">WPM</span></div>
+    <div class="preview-stat"><span class="ps-val">99%</span><span class="ps-lbl">ACC</span></div>
+    <div class="preview-stat"><span class="ps-val">x47</span><span class="ps-lbl">COMBO</span></div>
+  </div>
+</section>
+
+<!-- ===================== COUNTDOWN OVERLAY ===================== -->
+<div class="countdown-overlay" id="countdownOverlay" aria-live="assertive" aria-atomic="true">
+  <div class="countdown-num" id="countdownNum">3</div>
+  <div class="countdown-sub">PREPARE FOR BATTLE</div>
+</div>
+
+<!-- ===================== GAME ARENA ===================== -->
+<section class="arena" id="arenaSection" style="display:none" aria-label="Typing arena">
+
+  <!-- HUD Top Bar -->
+  <div class="hud-top">
+    <div class="hud-left">
+      <div class="hud-stat" id="hudWpm">
+        <span class="hud-val" id="wpmVal">0</span>
+        <span class="hud-lbl">WPM</span>
+      </div>
+      <div class="hud-stat" id="hudAcc">
+        <span class="hud-val" id="accVal">100</span>
+        <span class="hud-lbl">ACC%</span>
+      </div>
+    </div>
+
+    <div class="hud-center">
+      <!-- Timer / Survival Health -->
+      <div class="hud-timer" id="hudTimer">
+        <svg class="timer-ring" viewBox="0 0 80 80" aria-hidden="true">
+          <circle class="ring-bg" cx="40" cy="40" r="34"/>
+          <circle class="ring-fg" id="timerRingFg" cx="40" cy="40" r="34"/>
+        </svg>
+        <span class="timer-val" id="timerVal">30</span>
+      </div>
+      <!-- Survival health -->
+      <div class="health-bar-wrap" id="healthBarWrap" style="display:none">
+        <span class="health-label">LIVES</span>
+        <div class="health-hearts" id="healthHearts">
+          <span class="heart">❤️</span><span class="heart">❤️</span><span class="heart">❤️</span>
+          <span class="heart">❤️</span><span class="heart">❤️</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hud-right">
+      <div class="hud-stat">
+        <span class="hud-val" id="streakVal">0</span>
+        <span class="hud-lbl">STREAK</span>
+      </div>
+      <div class="hud-stat">
+        <span class="hud-val" id="mistakesVal">0</span>
+        <span class="hud-lbl">ERRORS</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Combo Display -->
+  <div class="combo-display" id="comboDisplay" aria-live="polite">
+    <span id="comboText">🔥 COMBO x0</span>
+  </div>
+
+  <!-- Typing Area -->
+  <div class="typing-box" role="main">
+    <div class="words-display" id="wordsDisplay" aria-label="Words to type"></div>
+    <div class="input-wrap">
+      <input
+        type="text"
+        id="typingInput"
+        class="typing-input"
+        placeholder="Start typing here..."
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        aria-label="Type here"
+        disabled
+      />
+      <div class="input-indicator" id="inputIndicator"></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar" style="width:0%"></div>
+      <span class="progress-label" id="progressLabel">0%</span>
+    </div>
+  </div>
+
+  <!-- HUD Bottom -->
+  <div class="hud-bottom">
+    <div class="hud-stat-sm">
+      <span id="charsVal">0</span> CHARS
+    </div>
+    <button class="restart-btn" id="restartBtn" aria-label="Restart game">↺ RESTART</button>
+    <button class="quit-btn" id="quitBtn" aria-label="Quit to menu">✕ QUIT</button>
+    <div class="hud-stat-sm">
+      MAX <span id="maxStreakVal">0</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== RESULTS SCREEN ===================== -->
+<section class="results-screen" id="resultsSection" style="display:none" aria-label="Results">
+  <div class="results-card">
+    <div class="results-header">
+      <div class="results-icon" id="resultsIcon">🏆</div>
+      <h2 class="results-title">BATTLE COMPLETE</h2>
+      <p class="results-message" id="resultsMessage">Legendary speed!</p>
+    </div>
+
+    <div class="results-grid">
+      <div class="result-item">
+        <span class="result-val" id="resWpm">0</span>
+        <span class="result-lbl">WPM</span>
+      </div>
+      <div class="result-item highlight">
+        <span class="result-val" id="resAcc">0%</span>
+        <span class="result-lbl">ACCURACY</span>
+      </div>
+      <div class="result-item">
+        <span class="result-val" id="resMistakes">0</span>
+        <span class="result-lbl">MISTAKES</span>
+      </div>
+      <div class="result-item">
+        <span class="result-val" id="resStreak">0</span>
+        <span class="result-lbl">BEST STREAK</span>
+      </div>
+      <div class="result-item">
+        <span class="result-val" id="resChars">0</span>
+        <span class="result-lbl">CHARACTERS</span>
+      </div>
+      <div class="result-item">
+        <span class="result-val" id="resTime">0s</span>
+        <span class="result-lbl">TIME USED</span>
+      </div>
+    </div>
+
+    <!-- XP Gained -->
+    <div class="xp-gained-wrap">
+      <div class="xp-gained-label">XP EARNED</div>
+      <div class="xp-gained-val" id="xpGainedVal">+0 XP</div>
+      <div class="xp-gained-bar-wrap">
+        <div class="xp-gained-bar" id="xpGainedBar" style="width:0%"></div>
+      </div>
+      <div class="rank-result">
+        <span class="rank-result-label">RANK</span>
+        <span class="rank-result-val" id="rankResultVal">🥉 BRONZE TYPIST</span>
+      </div>
+    </div>
+
+    <div class="results-actions">
+      <button class="action-btn primary" id="playAgainBtn">⚡ PLAY AGAIN</button>
+      <button class="action-btn secondary" id="mainMenuBtn">🏠 MAIN MENU</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LEADERBOARD MODAL ===================== -->
+<div class="modal-overlay" id="leaderboardModal" style="display:none" role="dialog" aria-modal="true" aria-label="Leaderboard">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2>🏆 BATTLE LEADERBOARD</h2>
+      <button class="modal-close" id="closeLeaderboard" aria-label="Close leaderboard">✕</button>
+    </div>
+    <div class="leaderboard-filters">
+      <button class="lb-filter active" data-sort="wpm">WPM</button>
+      <button class="lb-filter" data-sort="accuracy">ACCURACY</button>
+      <button class="lb-filter" data-sort="streak">STREAK</button>
+    </div>
+    <div class="leaderboard-table" id="leaderboardTable" role="list">
+      <!-- Populated by JS -->
+    </div>
+    <button class="action-btn secondary sm" id="clearLeaderboardBtn">🗑 CLEAR ALL</button>
+  </div>
+</div>
+
+<!-- ===================== SETTINGS MODAL ===================== -->
+<div class="modal-overlay" id="settingsModal" style="display:none" role="dialog" aria-modal="true" aria-label="Settings">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2>⚙️ CONFIGURATION</h2>
+      <button class="modal-close" id="closeSettings" aria-label="Close settings">✕</button>
+    </div>
+    <div class="settings-grid">
+      <div class="setting-row">
+        <label for="difficultySelect">DIFFICULTY</label>
+        <select id="difficultySelect" aria-label="Difficulty level">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <label for="fontSizeRange">FONT SIZE</label>
+        <div class="range-wrap">
+          <input type="range" id="fontSizeRange" min="14" max="28" value="20" aria-label="Font size" />
+          <span id="fontSizeVal">20px</span>
+        </div>
+      </div>
+      <div class="setting-row">
+        <span>SOUND FX</span>
+        <div class="toggle-wrap">
+          <button class="toggle-btn active" id="soundToggle" role="switch" aria-checked="true">ON</button>
+        </div>
+      </div>
+      <div class="setting-row">
+          <span>TYPING FEEDBACK</span> 
+                 <div class="toggle-wrap"> 
+          <button class="toggle-btn active" id="typingFeedbackToggle" role="switch" aria-checked="true">ON</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <span>SHOW CURSOR</span>
+        <div class="toggle-wrap">
+          <button class="toggle-btn active" id="cursorToggle" role="switch" aria-checked="true">ON</button>
+        </div>
+      </div>
+    </div>
+    <div class="settings-footer">
+      <button class="action-btn primary sm" id="saveSettingsBtn">💾 SAVE</button>
+      <button class="action-btn secondary sm" id="resetProgressBtn">⚠️ RESET PROGRESS</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
