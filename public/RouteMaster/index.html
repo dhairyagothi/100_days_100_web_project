@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RouteMaster – Amity University Campus Navigation</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  :root {
+    --primary: #2563EB;
+    --primary-light: #3B82F6;
+    --primary-dark: #1D4ED8;
+    --accent: #8B5CF6;
+    --accent2: #06B6D4;
+    --glass-bg: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.18);
+    --text-primary: #F8FAFC;
+    --text-muted: rgba(248,250,252,0.6);
+    --card-bg: rgba(15,23,42,0.55);
+    --sidebar-w: 240px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    background: #060D1F;
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  /* ── BG MESH ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(37,99,235,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 10%, rgba(139,92,246,0.28) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 90%, rgba(6,182,212,0.18) 0%, transparent 60%),
+      linear-gradient(160deg, #060D1F 0%, #0F172A 50%, #0A0F2E 100%);
+    pointer-events: none;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; gap: 0;
+    height: 64px; padding: 0 32px;
+    background: rgba(6,13,31,0.55);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px;
+    text-decoration: none; color: var(--text-primary);
+    margin-right: auto;
+  }
+  .nav-logo .logo-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; box-shadow: 0 0 18px rgba(37,99,235,0.5);
+  }
+  .nav-logo span.brand { color: #fff; }
+  .nav-logo span.dot { color: var(--accent2); }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    padding: 8px 18px; border-radius: 8px;
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.875rem; font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+  }
+  .nav-links a.active { color: var(--accent2); }
+  .nav-right { display: flex; align-items: center; gap: 12px; margin-left: 24px; }
+  .nav-btn {
+    padding: 8px 20px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff; border: none; cursor: pointer;
+    font-size: 0.82rem; font-weight: 600; font-family: 'Poppins', sans-serif;
+    box-shadow: 0 0 20px rgba(37,99,235,0.35);
+    transition: all 0.25s;
+  }
+  .nav-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(37,99,235,0.5); }
+  .nav-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, #8B5CF6, #2563EB);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.15);
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page { position: relative; z-index: 1; padding-top: 64px; display: flex; flex-direction: column; min-height: 100vh; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 60px 40px 48px;
+    text-align: center;
+    position: relative;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 100px;
+    background: rgba(37,99,235,0.15); border: 1px solid rgba(37,99,235,0.35);
+    font-size: 0.75rem; font-weight: 600; color: var(--accent2);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 20px;
+    animation: fadeDown 0.6s ease both;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.15;
+    letter-spacing: -1px; margin-bottom: 14px;
+    background: linear-gradient(135deg, #fff 0%, rgba(139,92,246,0.9) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+  .hero p {
+    color: var(--text-muted); font-size: 1rem; max-width: 520px; margin: 0 auto 36px;
+    line-height: 1.7;
+    animation: fadeDown 0.6s 0.2s ease both;
+  }
+
+  /* ── SEARCH BAR ── */
+  .search-wrap {
+    max-width: 680px; margin: 0 auto 0;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .search-bar {
+    display: flex; align-items: center; gap: 0;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px; padding: 6px 6px 6px 20px;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(37,99,235,0.1);
+    transition: box-shadow 0.3s, border-color 0.3s;
+  }
+  .search-bar:focus-within {
+    border-color: rgba(37,99,235,0.5);
+    box-shadow: 0 8px 48px rgba(0,0,0,0.5), 0 0 0 3px rgba(37,99,235,0.15);
+  }
+  .search-bar i { color: var(--accent2); font-size: 1rem; margin-right: 12px; flex-shrink: 0; }
+  .search-bar input {
+    flex: 1; background: none; border: none; outline: none;
+    color: #fff; font-family: 'Poppins', sans-serif; font-size: 0.9rem;
+    padding: 10px 0;
+  }
+  .search-bar input::placeholder { color: rgba(255,255,255,0.35); }
+  .search-divider {
+    width: 1px; height: 28px; background: rgba(255,255,255,0.12); margin: 0 12px;
+  }
+  .search-bar select {
+    background: none; border: none; outline: none; color: rgba(255,255,255,0.6);
+    font-family: 'Poppins', sans-serif; font-size: 0.82rem; cursor: pointer;
+    padding: 0 8px;
+  }
+  .search-bar select option { background: #0F172A; color: #fff; }
+  .search-btn {
+    padding: 12px 28px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff; border: none; cursor: pointer;
+    font-family: 'Poppins', sans-serif; font-size: 0.875rem; font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.4);
+    transition: all 0.25s;
+  }
+  .search-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(37,99,235,0.55); }
+  .search-suggestions {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 14px;
+  }
+  .suggestion-chip {
+    padding: 5px 14px; border-radius: 100px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.75rem; color: var(--text-muted); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .suggestion-chip:hover {
+    background: rgba(37,99,235,0.15); border-color: rgba(37,99,235,0.4); color: #fff;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr 300px;
+    gap: 20px;
+    padding: 32px 40px;
+    flex: 1;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .sidebar-title {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); padding: 0 4px; margin-bottom: 8px; font-weight: 600;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: 12px;
+    background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.07);
+    cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
+  }
+  .sidebar-item::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+    border-radius: 0 2px 2px 0; opacity: 0; transition: opacity 0.2s;
+  }
+  .sidebar-item:hover { background: rgba(255,255,255,0.10); transform: translateX(4px); }
+  .sidebar-item:hover::before { opacity: 1; }
+  .sidebar-item.active { background: rgba(37,99,235,0.15); border-color: rgba(37,99,235,0.3); }
+  .sidebar-item.active::before { opacity: 1; }
+  .sidebar-icon {
+    width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+  }
+  .sidebar-icon.blue { background: rgba(37,99,235,0.2); color: #60A5FA; }
+  .sidebar-icon.purple { background: rgba(139,92,246,0.2); color: #A78BFA; }
+  .sidebar-icon.cyan { background: rgba(6,182,212,0.2); color: #22D3EE; }
+  .sidebar-icon.green { background: rgba(16,185,129,0.2); color: #34D399; }
+  .sidebar-icon.orange { background: rgba(245,158,11,0.2); color: #FCD34D; }
+  .sidebar-info { flex: 1; }
+  .sidebar-info h4 { font-size: 0.82rem; font-weight: 600; color: #fff; }
+  .sidebar-info span { font-size: 0.7rem; color: var(--text-muted); }
+  .sidebar-arrow { font-size: 0.65rem; color: var(--text-muted); }
+  .sidebar-sep { height: 1px; background: rgba(255,255,255,0.06); margin: 8px 0; }
+  .sidebar-stats {
+    display: flex; gap: 8px; margin-top: 4px;
+  }
+  .stat-mini {
+    flex: 1; padding: 12px; border-radius: 12px;
+    background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.07);
+    text-align: center;
+  }
+  .stat-mini .val { font-size: 1.1rem; font-weight: 700; color: var(--accent2); display: block; }
+  .stat-mini .lbl { font-size: 0.65rem; color: var(--text-muted); }
+
+  /* ── MAP PANEL ── */
+  .map-panel {
+    border-radius: 20px; overflow: hidden;
+    background: rgba(10,18,42,0.8);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative; min-height: 420px;
+  }
+  .map-topbar {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    background: rgba(6,13,31,0.7); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .map-topbar h3 { font-size: 0.82rem; font-weight: 600; color: #fff; }
+  .map-topbar span { font-size: 0.72rem; color: var(--accent2); }
+  .map-controls { display: flex; gap: 8px; }
+  .map-ctrl-btn {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    color: #fff; font-size: 0.75rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .map-ctrl-btn:hover { background: rgba(37,99,235,0.25); border-color: rgba(37,99,235,0.4); }
+
+  /* ── SVG MAP ── */
+  .map-svg-wrap { position: absolute; inset: 0; padding-top: 56px; }
+  .map-svg-wrap svg { width: 100%; height: 100%; }
+
+  /* ── ROUTE CARDS PANEL ── */
+  .right-panel { display: flex; flex-direction: column; gap: 16px; }
+  .panel-card {
+    background: var(--card-bg); backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 18px; padding: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  }
+  .panel-card h3 {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--text-muted); margin-bottom: 14px; font-weight: 600;
+  }
+  .route-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; border-radius: 12px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer; margin-bottom: 8px; transition: all 0.25s;
+  }
+  .route-item:last-child { margin-bottom: 0; }
+  .route-item:hover { background: rgba(37,99,235,0.12); border-color: rgba(37,99,235,0.25); }
+  .route-icon-wrap {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  }
+  .route-details { flex: 1; min-width: 0; }
+  .route-details h4 { font-size: 0.8rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .route-details span { font-size: 0.68rem; color: var(--text-muted); }
+  .route-meta { text-align: right; }
+  .route-meta .dist { font-size: 0.72rem; font-weight: 600; color: var(--accent2); display: block; }
+  .route-meta .time { font-size: 0.65rem; color: var(--text-muted); }
+
+  /* live badge */
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.65rem; font-weight: 600; color: #34D399;
+    background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.25);
+    padding: 3px 10px; border-radius: 100px;
+  }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #34D399; animation: pulse 1.5s infinite; }
+
+  /* occupancy bar */
+  .occ-row { margin-bottom: 10px; }
+  .occ-row h4 { font-size: 0.78rem; font-weight: 500; margin-bottom: 4px; }
+  .occ-bar { height: 5px; border-radius: 100px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .occ-fill { height: 100%; border-radius: 100px; transition: width 0.5s ease; }
+  .occ-fill.low { background: linear-gradient(90deg, #34D399, #10B981); }
+  .occ-fill.med { background: linear-gradient(90deg, #FCD34D, #F59E0B); }
+  .occ-fill.high { background: linear-gradient(90deg, #F87171, #EF4444); }
+  .occ-label { display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── RECENT SEARCHES ── */
+  .recent-section { padding: 0 40px 40px; }
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+  }
+  .section-header h2 { font-size: 1rem; font-weight: 700; }
+  .section-header a { font-size: 0.78rem; color: var(--accent2); text-decoration: none; }
+  .recent-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .recent-card {
+    background: var(--card-bg); backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 18px;
+    cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .recent-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(139,92,246,0.05));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .recent-card:hover { transform: translateY(-3px); border-color: rgba(37,99,235,0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+  .recent-card:hover::after { opacity: 1; }
+  .rc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .rc-icon {
+    width: 40px; height: 40px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+  }
+  .rc-time { font-size: 0.65rem; color: var(--text-muted); }
+  .rc-route { font-size: 0.82rem; font-weight: 600; margin-bottom: 4px; }
+  .rc-path {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.7rem; color: var(--text-muted);
+  }
+  .rc-path i { font-size: 0.6rem; }
+  .rc-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .rc-tag { font-size: 0.65rem; padding: 3px 10px; border-radius: 100px; font-weight: 500; }
+  .rc-tag.walk { background: rgba(52,211,153,0.12); color: #34D399; }
+  .rc-tag.indoor { background: rgba(6,182,212,0.12); color: #22D3EE; }
+  .rc-tag.fast { background: rgba(139,92,246,0.12); color: #A78BFA; }
+  .rc-go { width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes pinBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes routeGlow { 0%,100% { filter: drop-shadow(0 0 4px #3B82F6); } 50% { filter: drop-shadow(0 0 12px #3B82F6) drop-shadow(0 0 20px rgba(139,92,246,0.5)); } }
+
+  .pin-anim { animation: pinBounce 2s ease-in-out infinite; }
+  .pin-anim:nth-child(2) { animation-delay: 0.4s; }
+  .pin-anim:nth-child(3) { animation-delay: 0.8s; }
+  .route-line { animation: routeGlow 2.5s ease-in-out infinite; }
+
+  /* Floating action button */
+  .fab {
+    position: fixed; bottom: 32px; right: 32px; z-index: 200;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: #fff; cursor: pointer;
+    box-shadow: 0 8px 32px rgba(37,99,235,0.5);
+    border: none; transition: all 0.3s;
+  }
+  .fab:hover { transform: scale(1.1) rotate(15deg); box-shadow: 0 12px 40px rgba(37,99,235,0.65); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="logo-icon"><i class="fas fa-location-crosshairs"></i></div>
+    <span class="brand">Route<span class="dot">Master</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#" class="active"><i class="fas fa-house" style="margin-right:6px;font-size:0.75rem;"></i>Home</a>
+    <a href="map.html"><i class="fas fa-map" style="margin-right:6px;font-size:0.75rem;"></i>Map</a>
+    <a href="#"><i class="fas fa-compass" style="margin-right:6px;font-size:0.75rem;"></i>Explore</a>
+    <a href="#"><i class="fas fa-circle-question" style="margin-right:6px;font-size:0.75rem;"></i>Help</a>
+  </div>
+  <div class="nav-right">
+    <span class="live-badge"><span class="live-dot"></span>Campus Live</span>
+    <button class="nav-btn"><i class="fas fa-route" style="margin-right:6px;"></i>Navigate Now</button>
+    <div class="nav-avatar">SU</div>
+  </div>
+</nav>
+
+<div class="page">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge"><i class="fas fa-graduation-cap"></i> Amity University · Greater Noida</div>
+    <h1>Navigate Campus<br/>Like Never Before</h1>
+    <p>Find any block, lab, office, or facility instantly. Smart indoor & outdoor navigation built for Amity University students.</p>
+
+    <div class="search-wrap">
+      <div class="search-bar">
+        <i class="fas fa-location-dot"></i>
+        <input type="text" id="searchInput" placeholder="Where do you want to go? (e.g. Block A, Library...)" />
+        <div class="search-divider"></div>
+        <select>
+          <option>From: My Location</option>
+          <option>From: Boys Hostel</option>
+          <option>From: Girls Hostel</option>
+          <option>From: Main Gate</option>
+        </select>
+        <button class="search-btn" onclick="navigate()"><i class="fas fa-arrow-right" style="margin-right:8px;"></i>Navigate</button>
+      </div>
+      <div class="search-suggestions">
+        <span class="suggestion-chip"><i class="fas fa-book" style="margin-right:4px;"></i>Central Library</span>
+        <span class="suggestion-chip"><i class="fas fa-building" style="margin-right:4px;"></i>Block A</span>
+        <span class="suggestion-chip"><i class="fas fa-flask" style="margin-right:4px;"></i>CS Lab</span>
+        <span class="suggestion-chip"><i class="fas fa-utensils" style="margin-right:4px;"></i>Cafeteria</span>
+        <span class="suggestion-chip"><i class="fas fa-hospital" style="margin-right:4px;"></i>Medical Centre</span>
+        <span class="suggestion-chip"><i class="fas fa-dumbbell" style="margin-right:4px;"></i>Gymnasium</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <p class="sidebar-title">Campus Zones</p>
+
+      <div class="sidebar-item active">
+        <div class="sidebar-icon blue"><i class="fas fa-chalkboard-user"></i></div>
+        <div class="sidebar-info"><h4>Classrooms</h4><span>Blocks A, B, C, D</span></div>
+        <i class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon purple"><i class="fas fa-flask"></i></div>
+        <div class="sidebar-info"><h4>Laboratories</h4><span>CS, EC, ME Labs</span></div>
+        <i class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon cyan"><i class="fas fa-building-columns"></i></div>
+        <div class="sidebar-info"><h4>Admin Office</h4><span>Ground Floor</span></div>
+        <i class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon green"><i class="fas fa-book-open"></i></div>
+        <div class="sidebar-info"><h4>Central Library</h4><span>Open · 8AM–10PM</span></div>
+        <i class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon orange"><i class="fas fa-utensils"></i></div>
+        <div class="sidebar-info"><h4>Cafeteria</h4><span>2 Locations</span></div>
+        <i class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+
+      <div class="sidebar-sep"></div>
+      <p class="sidebar-title">Hostels</p>
+      <div class="sidebar-item">
+        <div class="sidebar-icon blue"><i class="fas fa-bed"></i></div>
+        <div class="sidebar-info"><h4>Boys Hostel</h4><span>H1 – H4 Blocks</span></div>
+        <i class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon purple"><i class="fas fa-bed"></i></div>
+        <div class="sidebar-info"><h4>Girls Hostel</h4><span>GH1 – GH3 Blocks</span></div>
+        <i class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-stats">
+        <div class="stat-mini"><span class="val">42</span><span class="lbl">Buildings</span></div>
+        <div class="stat-mini"><span class="val" style="color:#A78BFA;">1.2k</span><span class="lbl">Rooms</span></div>
+      </div>
+    </aside>
+
+    <!-- MAP PANEL -->
+    <div class="map-panel">
+      <div class="map-topbar">
+        <div>
+          <h3><i class="fas fa-map" style="margin-right:8px;color:var(--accent2);"></i>Amity University Campus</h3>
+          <span style="font-size:0.68rem;">Greater Noida, UP · 63 acre campus</span>
+        </div>
+        <div class="map-controls">
+          <button class="map-ctrl-btn" title="Satellite"><i class="fas fa-satellite"></i></button>
+          <button class="map-ctrl-btn" title="3D View"><i class="fas fa-cube"></i></button>
+          <button class="map-ctrl-btn" title="Layers"><i class="fas fa-layer-group"></i></button>
+        </div>
+      </div>
+
+      <div class="map-svg-wrap">
+        <svg viewBox="0 0 700 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:linear-gradient(160deg,#0A1628 0%,#0D1F3C 100%);">
+          <!-- Grid lines -->
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            </pattern>
+            <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#2563EB" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#3B82F6"/>
+              <stop offset="70%" stop-color="#8B5CF6"/>
+              <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <rect width="700" height="380" fill="url(#grid)"/>
+
+          <!-- Roads -->
+          <path d="M 0 200 H 700" stroke="rgba(255,255,255,0.06)" stroke-width="24"/>
+          <path d="M 350 0 V 380" stroke="rgba(255,255,255,0.06)" stroke-width="20"/>
+          <path d="M 0 120 H 700" stroke="rgba(255,255,255,0.04)" stroke-width="14"/>
+
+          <!-- Grounds/grass areas -->
+          <rect x="260" y="155" width="180" height="90" rx="12" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.12)" stroke-width="1"/>
+          <text x="350" y="204" text-anchor="middle" fill="rgba(52,211,153,0.4)" font-size="9" font-family="Poppins">◆ Central Ground</text>
+
+          <!-- Buildings -->
+          <!-- Block A -->
+          <rect x="60" y="60" width="110" height="80" rx="8" fill="rgba(37,99,235,0.18)" stroke="rgba(59,130,246,0.45)" stroke-width="1.5"/>
+          <text x="115" y="95" text-anchor="middle" fill="#93C5FD" font-size="11" font-family="Poppins" font-weight="600">Block A</text>
+          <text x="115" y="112" text-anchor="middle" fill="rgba(147,197,253,0.55)" font-size="8" font-family="Poppins">Rooms 101–420</text>
+
+          <!-- Block B -->
+          <rect x="530" y="60" width="110" height="80" rx="8" fill="rgba(139,92,246,0.18)" stroke="rgba(167,139,250,0.45)" stroke-width="1.5"/>
+          <text x="585" y="95" text-anchor="middle" fill="#C4B5FD" font-size="11" font-family="Poppins" font-weight="600">Block B</text>
+          <text x="585" y="112" text-anchor="middle" fill="rgba(196,181,253,0.55)" font-size="8" font-family="Poppins">Rooms 101–320</text>
+
+          <!-- Block C -->
+          <rect x="60" y="280" width="110" height="80" rx="8" fill="rgba(6,182,212,0.15)" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
+          <text x="115" y="315" text-anchor="middle" fill="#67E8F9" font-size="11" font-family="Poppins" font-weight="600">Block C</text>
+          <text x="115" y="332" text-anchor="middle" fill="rgba(103,232,249,0.55)" font-size="8" font-family="Poppins">Science & Tech</text>
+
+          <!-- Library -->
+          <rect x="530" y="260" width="120" height="90" rx="8" fill="rgba(16,185,129,0.15)" stroke="rgba(52,211,153,0.4)" stroke-width="1.5"/>
+          <text x="590" y="298" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Poppins" font-weight="600">Central</text>
+          <text x="590" y="312" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Poppins" font-weight="600">Library</text>
+
+          <!-- Admin -->
+          <rect x="280" y="30" width="140" height="55" rx="8" fill="rgba(245,158,11,0.12)" stroke="rgba(252,211,77,0.35)" stroke-width="1.5"/>
+          <text x="350" y="60" text-anchor="middle" fill="#FCD34D" font-size="10" font-family="Poppins" font-weight="600">Admin Office</text>
+          <text x="350" y="76" text-anchor="middle" fill="rgba(252,211,77,0.55)" font-size="8" font-family="Poppins">Amity University HQ</text>
+
+          <!-- Cafeteria -->
+          <rect x="450" y="160" width="80" height="60" rx="8" fill="rgba(239,68,68,0.12)" stroke="rgba(248,113,113,0.35)" stroke-width="1.5"/>
+          <text x="490" y="192" text-anchor="middle" fill="#FCA5A5" font-size="9" font-family="Poppins" font-weight="600">Cafeteria</text>
+
+          <!-- Hostel -->
+          <rect x="170" y="260" width="75" height="90" rx="8" fill="rgba(168,85,247,0.12)" stroke="rgba(196,181,253,0.35)" stroke-width="1.5"/>
+          <text x="207" y="308" text-anchor="middle" fill="#DDD6FE" font-size="9" font-family="Poppins" font-weight="600">Boys</text>
+          <text x="207" y="322" text-anchor="middle" fill="#DDD6FE" font-size="9" font-family="Poppins" font-weight="600">Hostel</text>
+
+          <!-- Animated route line -->
+          <path d="M 207 260 Q 207 220 260 210 Q 310 200 350 200 Q 420 200 450 190" stroke="url(#pathGrad)" stroke-width="3" stroke-dasharray="6 4" class="route-line" filter="url(#glow)"/>
+
+          <!-- Map Pins -->
+          <!-- Pin Block A -->
+          <g class="pin-anim" style="transform-origin:115px 60px">
+            <circle cx="115" cy="55" r="10" fill="rgba(37,99,235,0.3)" stroke="none"/>
+            <circle cx="115" cy="55" r="6" fill="#3B82F6" stroke="white" stroke-width="1.5"/>
+            <circle cx="115" cy="55" r="18" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+          </g>
+          <!-- Pin Library -->
+          <g class="pin-anim" style="transform-origin:590px 258px">
+            <circle cx="590" cy="258" r="10" fill="rgba(16,185,129,0.3)"/>
+            <circle cx="590" cy="258" r="6" fill="#10B981" stroke="white" stroke-width="1.5"/>
+            <circle cx="590" cy="258" r="18" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+          </g>
+          <!-- Pin Hostel -->
+          <g class="pin-anim" style="transform-origin:207px 258px">
+            <circle cx="207" cy="258" r="10" fill="rgba(168,85,247,0.3)"/>
+            <circle cx="207" cy="258" r="6" fill="#A855F7" stroke="white" stroke-width="1.5"/>
+          </g>
+          <!-- You are here -->
+          <g>
+            <circle cx="350" cy="200" r="14" fill="rgba(37,99,235,0.2)" stroke="rgba(59,130,246,0.5)" stroke-width="1.5"/>
+            <circle cx="350" cy="200" r="6" fill="#60A5FA" stroke="white" stroke-width="2"/>
+            <circle cx="350" cy="200" r="22" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.2)" stroke-width="1" style="animation:pulse 2s infinite"/>
+          </g>
+          <text x="350" y="230" text-anchor="middle" fill="rgba(96,165,250,0.8)" font-size="8" font-family="Poppins">You are here</text>
+
+          <!-- Compass -->
+          <g transform="translate(654,30)">
+            <circle cx="0" cy="0" r="16" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="0" y="-4" text-anchor="middle" fill="#fff" font-size="8" font-family="Poppins" font-weight="700">N</text>
+            <line x1="0" y1="5" x2="0" y2="10" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+          </g>
+
+          <!-- Scale bar -->
+          <line x1="30" y1="360" x2="130" y2="360" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <line x1="30" y1="355" x2="30" y2="365" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <line x1="130" y1="355" x2="130" y2="365" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <text x="80" y="358" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" font-family="Poppins">200m</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="panel-card">
+        <h3><i class="fas fa-route" style="margin-right:6px;color:var(--accent2);"></i>Quick Routes</h3>
+        <div class="route-item">
+          <div class="route-icon-wrap"><i class="fas fa-book-open"></i></div>
+          <div class="route-details">
+            <h4>Library → Block A</h4>
+            <span>Via Main Road</span>
+          </div>
+          <div class="route-meta"><span class="dist">350m</span><span class="time">4 min</span></div>
+        </div>
+        <div class="route-item">
+          <div class="route-icon-wrap" style="background:linear-gradient(135deg,#8B5CF6,#06B6D4);"><i class="fas fa-bed"></i></div>
+          <div class="route-details">
+            <h4>Hostel → Cafeteria</h4>
+            <span>Shortcut path</span>
+          </div>
+          <div class="route-meta"><span class="dist">180m</span><span class="time">2 min</span></div>
+        </div>
+        <div class="route-item">
+          <div class="route-icon-wrap" style="background:linear-gradient(135deg,#10B981,#06B6D4);"><i class="fas fa-building-columns"></i></div>
+          <div class="route-details">
+            <h4>Block C → Admin</h4>
+            <span>Via Central Ground</span>
+          </div>
+          <div class="route-meta"><span class="dist">420m</span><span class="time">5 min</span></div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h3><i class="fas fa-chart-simple" style="margin-right:6px;color:var(--accent2);"></i>Live Occupancy</h3>
+        <div class="occ-row">
+          <h4>Central Library</h4>
+          <div class="occ-bar"><div class="occ-fill high" style="width:82%"></div></div>
+          <div class="occ-label"><span>82% full</span><span style="color:#F87171;">Busy</span></div>
+        </div>
+        <div class="occ-row">
+          <h4>Cafeteria (Main)</h4>
+          <div class="occ-bar"><div class="occ-fill med" style="width:55%"></div></div>
+          <div class="occ-label"><span>55% full</span><span style="color:#FCD34D;">Moderate</span></div>
+        </div>
+        <div class="occ-row">
+          <h4>CS Lab – Block A</h4>
+          <div class="occ-bar"><div class="occ-fill low" style="width:30%"></div></div>
+          <div class="occ-label"><span>30% full</span><span style="color:#34D399;">Available</span></div>
+        </div>
+        <div class="occ-row" style="margin-bottom:0;">
+          <h4>Block B Classrooms</h4>
+          <div class="occ-bar"><div class="occ-fill low" style="width:18%"></div></div>
+          <div class="occ-label"><span>18% full</span><span style="color:#34D399;">Open</span></div>
+        </div>
+      </div>
+
+      <div class="panel-card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:rgba(245,158,11,0.15);display:flex;align-items:center;justify-content:center;color:#FCD34D;font-size:1rem;"><i class="fas fa-triangle-exclamation"></i></div>
+          <div><p style="font-size:0.78rem;font-weight:600;">Campus Notice</p><p style="font-size:0.68rem;color:var(--text-muted);">Block D entrance under maintenance</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT SEARCHES -->
+  <div class="recent-section">
+    <div class="section-header">
+      <h2><i class="fas fa-clock-rotate-left" style="margin-right:10px;color:var(--accent2);font-size:0.9rem;"></i>Recent Searches</h2>
+      <a href="#">Clear all</a>
+    </div>
+    <div class="recent-grid">
+      <div class="recent-card">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(37,99,235,0.15);color:#60A5FA;"><i class="fas fa-book-open"></i></div>
+          <span class="rc-time">10 min ago</span>
+        </div>
+        <div class="rc-route">Library → Block A Room 101</div>
+        <div class="rc-path"><span>Central Library</span><i class="fas fa-arrow-right"></i><span>Block A, F1</span></div>
+        <div class="rc-footer">
+          <span class="rc-tag walk"><i class="fas fa-person-walking" style="margin-right:3px;"></i>Walk</span>
+          <div class="rc-go"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+
+      <div class="recent-card">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(139,92,246,0.15);color:#A78BFA;"><i class="fas fa-bed"></i></div>
+          <span class="rc-time">1 hr ago</span>
+        </div>
+        <div class="rc-route">Hostel → Cafeteria</div>
+        <div class="rc-path"><span>Boys Hostel H2</span><i class="fas fa-arrow-right"></i><span>Main Cafeteria</span></div>
+        <div class="rc-footer">
+          <span class="rc-tag fast"><i class="fas fa-bolt" style="margin-right:3px;"></i>Fastest</span>
+          <div class="rc-go"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+
+      <div class="recent-card">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(6,182,212,0.15);color:#22D3EE;"><i class="fas fa-flask"></i></div>
+          <span class="rc-time">Yesterday</span>
+        </div>
+        <div class="rc-route">Block B → CS Lab</div>
+        <div class="rc-path"><span>Block B, Room 201</span><i class="fas fa-arrow-right"></i><span>CS Lab 3</span></div>
+        <div class="rc-footer">
+          <span class="rc-tag indoor"><i class="fas fa-building" style="margin-right:3px;"></i>Indoor</span>
+          <div class="rc-go"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+
+      <div class="recent-card">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(245,158,11,0.15);color:#FCD34D;"><i class="fas fa-building-columns"></i></div>
+          <span class="rc-time">2 days ago</span>
+        </div>
+        <div class="rc-route">Main Gate → Admin Office</div>
+        <div class="rc-path"><span>Main Gate</span><i class="fas fa-arrow-right"></i><span>Admin Block, GF</span></div>
+        <div class="rc-footer">
+          <span class="rc-tag walk"><i class="fas fa-person-walking" style="margin-right:3px;"></i>Walk</span>
+          <div class="rc-go"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" title="Quick Navigate"><i class="fas fa-location-crosshairs"></i></button>
+
+<script>
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.suggestion-chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+      document.getElementById('searchInput').value = this.textContent.trim();
+    });
+  });
+  function navigate() {
+    const val = document.getElementById('searchInput').value;
+    if(val) window.location.href = 'navigation.html';
+  }
+</script>
+</body>
+</html>

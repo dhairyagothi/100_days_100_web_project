@@ -8,7 +8,6 @@
 }
 
 :root {
-
     --dk-violet: hsl(268, 75%, 9%);
     --lt-violet: hsl(268, 47%, 21%);
     --lt-violet2: hsl(281, 89%, 26%);
@@ -58,6 +57,64 @@ h1 {
     padding-top: 0.35rem;
 }
 
+.recent-container {
+    width: 100%;
+    background-color: var(--dk-violet);
+    border-radius: 1rem;
+    border-bottom: 0.35rem solid var(--lt-violet2);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.recent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.recent-header h2 {
+    color: var(--pl-white);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.history-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.history-item,
+.history-empty {
+    color: var(--vb-yellow);
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    word-break: break-all;
+}
+
+.history-empty {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.clearHistoryBtn {
+    background-color: transparent;
+    border: 1px solid var(--vb-cyan);
+    color: var(--vb-cyan);
+    border-radius: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.clearHistoryBtn:hover {
+    background-color: rgba(34, 211, 238, 0.08);
+}
 
 .display {
     width: 100%;
@@ -115,25 +172,21 @@ h1 {
     border-bottom: 0.35rem solid var(--lt-violet2);
 }
 
-
 .length-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-
 .length-container p:nth-child(1) {
     color: var(--pl-white);
     font-size: 1.5rem;
 }
 
-
 .length-container p:nth-child(2) {
     color: var(--vb-yellow);
     font-size: 1.5rem;
 }
-
 
 .strength-container {
     display: flex;
@@ -190,7 +243,6 @@ h1 {
 .check input:checked {
     background-color: var(--vb-cyan);
 }
-
 
 .check input:checked::before {
     content: '✔';
@@ -302,6 +354,8 @@ h1 {
 }
 
 /*Homework -> Explore below code */
+
+
 /* .slider::-moz-range-thumb {
     position: relative;
     z-index: 1;
@@ -344,4 +398,43 @@ h1 {
     color:white;
     font-size:1rem;
     font-weight:600;
+}
+.history-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.history-container h3 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.history-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.history-item {
+    color: #ffd700;
+    padding: 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    word-break: break-all;
+}
+
+.history-empty {
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+}
+
+.history-container button {
+    margin-top: 10px;
+    padding: 8px 20px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }

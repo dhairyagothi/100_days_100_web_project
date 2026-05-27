@@ -1,243 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Neon Digital Clock & Alarm Center</title>
-
+  <title>Digital Clock</title>
   <link rel="stylesheet" href="digitalclock.css" />
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 
-  <!-- Fonts Support for all premium themes -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Audiowide&family=Syncopate:wght@700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Audiowide&family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 </head>
-
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-  <div class="background-glow" id="theme-glow"></div>
 
   <main class="clock-app">
 
-    <!-- Live Status Top Bar -->
-    <div class="top-bar">
-      <div class="live-dot"></div>
-      <p>NEON CLOCK & ALARM NETWORK</p>
+    <!-- Status Chip -->
+    <div class="status-chip" role="status" aria-live="polite">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>Live &middot; Synchronized</span>
     </div>
 
     <!-- Main Clock Card -->
-    <div class="clock-card" id="main-clock-card">
-      <div class="theme-badge" id="theme-label">
-        CLASSIC MODE
-      </div>
+    <article class="clock-card" aria-label="Current time display">
+      <span class="theme-badge" id="theme-label" aria-live="polite">CLASSIC</span>
 
-      <h1 id="day-name">Wednesday</h1>
-      <p id="full-date">20 May 2026</p>
-
-      <div class="clock-time">
-        <span id="hours">12</span>
-        <span class="colon">:</span>
-        <span id="minutes">00</span>
-        <span class="colon">:</span>
-        <span id="seconds">00</span>
-        <span id="ampm" class="ampm">PM</span>
-      </div>
-
-      <div class="bottom-info">
-        <div class="info-box">
-          <span class="info-title">Primary Timezone</span>
-          <span id="timezone-label">Local Time</span>
+      <header class="clock-top-row">
+        <div class="date-block">
+          <p id="day-name" aria-label="Current day of the week">Wednesday</p>
+          <time id="full-date">20 May 2026</time>
         </div>
+      </header>
 
-        <div class="info-box">
-          <span class="info-title">Alarms Active</span>
-          <span id="alarm-status">None Active</span>
+      <section class="clock-time" aria-label="Current time">
+        <span id="hours" aria-hidden="true">12</span>
+        <span class="colon" aria-hidden="true">:</span>
+        <span id="minutes" aria-hidden="true">00</span>
+        <span class="colon" aria-hidden="true">:</span>
+        <span id="seconds" aria-hidden="true">00</span>
+        <span id="ampm" class="ampm" aria-label="AM or PM">PM</span>
+      </section>
+
+      <footer class="bottom-info">
+        <div class="info-tag">
+          <span class="info-tag-dot" aria-hidden="true"></span>
+          <span class="info-tag-label">Timezone</span>
+          <span class="info-tag-value" id="timezone-label">Local Time</span>
         </div>
-      </div>
-    </div>
-
-    <!-- World Clocks Section -->
-    <div class="world-clocks-section">
-      <div class="section-header">
-        <h2>🌍 World Clocks</h2>
-        <button class="add-world-btn" onclick="toggleWorldClockModal()">
-          <span>+ Add Clock</span>
-        </button>
-      </div>
-      <div class="world-clocks-grid" id="world-clocks-list">
-        <!-- World clock cards will be rendered dynamically here -->
-      </div>
-    </div>
-
-    <!-- Control Center Panel -->
-    <div class="controls-container">
-
-      <!-- Theme Selector Buttons -->
-      <div class="theme-group">
-        <label class="control-label">Select Visual Theme</label>
-        <div class="theme-buttons">
-          <button class="theme-btn classic-btn active" onclick="setTheme('classic')">
-            Classic Green
-          </button>
-          <button class="theme-btn modern-btn" onclick="setTheme('modern')">
-            Modern Blue
-          </button>
-          <button class="theme-btn futuristic-btn" onclick="setTheme('futuristic')">
-            Neon Cyber
-          </button>
-          <button class="theme-btn nebula-btn" onclick="setTheme('nebula')">
-            Nebula Violet
-          </button>
+        <div class="info-tag">
+          <span class="info-tag-dot" aria-hidden="true"></span>
+          <span class="info-tag-label">Alarms</span>
+          <span class="info-tag-value" id="alarm-status">None Active</span>
         </div>
-      </div>
+      </footer>
+    </article>
 
-      <!-- Custom Searchable Timezone Dropdown -->
-      <div class="select-group">
-        <label class="control-label">Search & Set Primary Timezone</label>
-        <div class="custom-select-wrapper" id="primary-timezone-wrapper">
-          <div class="custom-select-trigger" onclick="toggleTimezoneDropdown(event)">
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+
+      <!-- World Clocks Section -->
+      <section class="card" aria-labelledby="world-clocks-heading">
+        <header class="card-header">
+          <h2 class="card-title" id="world-clocks-heading">
+            <span class="card-title-dot" aria-hidden="true"></span>
+            World Clocks
+          </h2>
+          <button class="btn btn-sm btn-outline" onclick="toggleWorldClockModal()" aria-label="Add world clock">
+            + Add
+          </button>
+        </header>
+        <div class="world-clocks-grid" id="world-clocks-list" role="list">
+          <p class="empty-state" role="status">No secondary clocks added yet.</p>
+        </div>
+      </section>
+
+      <!-- Controls Section -->
+      <section class="card" aria-labelledby="controls-heading">
+        <header class="card-header">
+          <h2 class="card-title" id="controls-heading">
+            <span class="card-title-dot" aria-hidden="true"></span>
+            Accent Color
+          </h2>
+        </header>
+
+        <nav class="theme-selector" aria-label="Accent color selection">
+          <button class="theme-swatch swatch-classic active" data-theme="classic" onclick="setAccentColor('classic')" title="Classic Orange" aria-label="Classic Orange accent"></button>
+          <button class="theme-swatch swatch-modern" data-theme="modern" onclick="setAccentColor('modern')" title="Modern Blue" aria-label="Modern Blue accent"></button>
+          <button class="theme-swatch swatch-futuristic" data-theme="futuristic" onclick="setAccentColor('futuristic')" title="Cyber Pink" aria-label="Cyber Pink accent"></button>
+          <button class="theme-swatch swatch-nebula" data-theme="nebula" onclick="setAccentColor('nebula')" title="Nebula Purple" aria-label="Nebula Purple accent"></button>
+        </nav>
+
+        <hr class="mt-2" aria-hidden="true" />
+
+        <h3 class="card-title" style="margin-bottom:8px;">
+          <span class="card-title-dot" aria-hidden="true"></span>
+          Timezone
+        </h3>
+        <div class="select-group" id="primary-timezone-wrapper">
+          <button class="timezone-trigger" onclick="toggleTimezoneDropdown(event)" aria-haspopup="listbox" aria-expanded="false" aria-label="Select timezone">
             <span id="selected-tz-display">Local Time</span>
-            <div class="arrow"></div>
-          </div>
-          <div class="custom-options-container hidden" id="tz-options-container" onclick="event.stopPropagation()">
-            <input type="text" class="timezone-search" id="tz-search-input" placeholder="Type city or region (e.g. London)..." oninput="filterTimezones()" />
-            <div class="custom-options" id="tz-options-list">
-              <!-- Dynamically populated timezone choices -->
+            <span class="tz-arrow" aria-hidden="true"></span>
+          </button>
+          <div class="tz-dropdown hidden" id="tz-options-container" onclick="event.stopPropagation()" role="listbox" aria-label="Available timezones">
+            <input
+              type="text"
+              class="tz-search"
+              id="tz-search-input"
+              placeholder="Search city or region..."
+              oninput="filterTimezones()"
+              aria-label="Search timezone"
+            />
+            <div class="tz-options" id="tz-options-list" role="group">
+              <!-- Populated by JS -->
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Advanced Alarms Control Center -->
-      <div class="alarm-section">
-        <button class="alarm-toggle-btn" id="alarm-section-toggle" onclick="toggleAlarmSection()">
-          <b>🔔 Manage Alarms</b>
-        </button>
+        <hr class="mt-2" aria-hidden="true" />
 
-        <div class="alarm-controls hidden" id="alarm-controls">
-          <div class="alarm-input-card">
-            <h3>Set New Alarm</h3>
-            
-            <div class="input-row">
-              <div class="input-field">
-                <label>Alarm Time</label>
-                <input type="time" id="alarm-time" required />
-              </div>
-              <div class="input-field">
-                <label>Label</label>
-                <input type="text" id="alarm-label" placeholder="e.g. Gym, Wake Up" />
-              </div>
+        <!-- Alarms Section -->
+        <div class="alarm-header-row">
+          <h3 class="card-title">
+            <span class="card-title-dot" aria-hidden="true"></span>
+            Alarms
+          </h3>
+          <button class="alarm-toggle" id="alarm-section-toggle" onclick="toggleAlarmSection()" aria-expanded="false" aria-controls="alarm-controls">
+            Manage
+          </button>
+        </div>
+
+        <div class="alarm-controls hidden" id="alarm-controls" role="region" aria-label="Alarm management controls">
+
+          <!-- Add Alarm Form -->
+          <form class="alarm-form" onsubmit="event.preventDefault(); addNewAlarm();" novalidate>
+            <div class="form-field">
+              <label for="alarm-time">Time</label>
+              <input type="time" id="alarm-time" required />
             </div>
-
-            <div class="input-row">
-              <div class="input-field">
-                <label>Alarm Tone</label>
-                <select id="alarm-tone">
-                  <option value="classic">Classic Digital Beep</option>
-                  <option value="cyber">Cyber Synth Pulse</option>
-                  <option value="retro">Retro Chiptune</option>
-                  <option value="mp3">Standard Tone (MP3)</option>
-                </select>
-              </div>
-              <div class="input-field">
-                <label>Snooze Interval</label>
-                <select id="alarm-snooze">
-                  <option value="5">5 Minutes</option>
-                  <option value="10">10 Minutes</option>
-                  <option value="15">15 Minutes</option>
-                </select>
-              </div>
+            <div class="form-field">
+              <label for="alarm-label">Label</label>
+              <input type="text" id="alarm-label" placeholder="e.g. Wake Up" />
             </div>
-
-            <div class="alarm-actions">
-              <button onclick="addNewAlarm()" class="confirm-btn">
-                Add Alarm
-              </button>
-              <button onclick="clearAllAlarms()" class="clear-btn">
-                Clear All
-              </button>
+            <div class="form-field">
+              <label for="alarm-tone">Tone</label>
+              <select id="alarm-tone">
+                <option value="classic">Classic Beep</option>
+                <option value="cyber">Cyber Pulse</option>
+                <option value="retro">Retro Chiptune</option>
+                <option value="mp3">MP3 Tone</option>
+              </select>
             </div>
-          </div>
-
-          <!-- Alarms List Container -->
-          <div class="alarms-list-container">
-            <h3>Your Alarms</h3>
-            <div class="alarms-list" id="alarms-list">
-              <p class="empty-list-placeholder">No alarms set. Add one above!</p>
+            <div class="form-field">
+              <label for="alarm-snooze">Snooze</label>
+              <select id="alarm-snooze">
+                <option value="5">5 min</option>
+                <option value="10">10 min</option>
+                <option value="15">15 min</option>
+              </select>
             </div>
-          </div>
-
-          <!-- Alarm History Logs Section -->
-          <div class="alarm-history-container">
-            <div class="history-header" onclick="toggleHistoryLogs()">
-              <h3>Alarm History Logs</h3>
-              <span class="chevron" id="history-chevron">▼</span>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Add Alarm</button>
+              <button type="button" onclick="clearAllAlarms()" class="btn btn-danger">Clear All</button>
             </div>
-            <div class="history-logs hidden" id="history-logs">
-              <!-- Logs appended dynamically -->
-              <p class="empty-logs-placeholder">History is currently empty.</p>
+          </form>
+
+          <!-- Alarms List -->
+          <section aria-label="Your alarms">
+            <h4 style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Your Alarms</h4>
+            <div class="alarms-list" id="alarms-list" role="list">
+              <p class="empty-state" role="status">No alarms set. Add one above!</p>
+            </div>
+          </section>
+
+          <!-- History -->
+          <div>
+            <div class="history-header" onclick="toggleHistoryLogs()" aria-label="Toggle alarm history" role="button" tabindex="0">
+              <span style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">History</span>
+              <span class="history-chevron" id="history-chevron" aria-hidden="true">&#9660;</span>
+            </div>
+            <div class="history-logs hidden" id="history-logs" role="log" aria-label="Alarm history logs">
+              <div class="log-entry" style="justify-content:center;">History is empty.</div>
             </div>
           </div>
 
         </div>
-      </div>
+      </section>
 
     </div>
 
   </main>
 
-  <!-- World Clock Timezone Picker Modal -->
-  <div id="world-clock-modal" class="world-modal hidden" onclick="closeWorldClockModal()">
-    <div class="world-modal-card" onclick="event.stopPropagation()">
-      <div class="world-modal-header">
-        <h3>Add Secondary Clock</h3>
-        <button class="close-modal-btn" onclick="closeWorldClockModal()">&times;</button>
-      </div>
-      <div class="world-modal-body">
-        <label>Select Timezone to Add</label>
-        <input type="text" class="timezone-search" id="world-search-input" placeholder="Type city or region to search..." oninput="filterWorldTimezones()" />
-        <div class="world-tz-options" id="world-tz-options-list">
-          <!-- Dynamically populated world timezone choices -->
-        </div>
+  <!-- World Clock Modal -->
+  <div id="world-clock-modal" class="world-modal hidden" onclick="closeWorldClockModal()" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <header class="modal-header">
+        <h3 id="modal-heading">Add Secondary Clock</h3>
+        <button class="modal-close" onclick="closeWorldClockModal()" aria-label="Close modal">&times;</button>
+      </header>
+      <input
+        type="text"
+        class="modal-search"
+        id="world-search-input"
+        placeholder="Search country..."
+        aria-label="Search country"
+      />
+      <div class="country-options" id="world-tz-options-list" role="listbox" aria-label="Available countries">
+        <p style="color:var(--text-muted);padding:12px;text-align:center;font-size:13px;" role="status">Loading countries...</p>
       </div>
     </div>
   </div>
 
-  <!-- Smooth Toast Notification System -->
-  <div id="toast" class="toast">
-    Alarm Set Successfully
-  </div>
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive">Alarm set</div>
 
-  <!-- Alarm Ringing Overlay Popup -->
-  <div id="alarm-popup" class="alarm-popup hidden">
+  <!-- Alarm Ringing Popup -->
+  <div id="alarm-popup" class="alarm-popup hidden" role="alertdialog" aria-modal="true" aria-labelledby="popup-alarm-title">
     <div class="popup-card">
-      <div class="ringing-icon">⏰</div>
-      <h2 id="popup-alarm-title">Alarm Ringing!</h2>
-      <p id="popup-alarm-time">00:00 AM</p>
+      <div class="ringing-icon" aria-hidden="true">&#9202;</div>
+      <h2 id="popup-alarm-title">Alarm!</h2>
+      <p id="popup-alarm-time">00:00</p>
       <p id="popup-alarm-label">Your alarm is ready.</p>
-
       <div class="popup-actions">
-        <button onclick="snoozeActiveAlarm()" class="snooze-popup-btn">
-          Snooze
-        </button>
-        <button onclick="stopActiveAlarm()" class="stop-popup-btn">
-          Stop Alarm
-        </button>
+        <button onclick="snoozeActiveAlarm()" class="btn btn-ghost">Snooze</button>
+        <button onclick="stopActiveAlarm()" class="btn btn-danger">Stop Alarm</button>
       </div>
     </div>
   </div>
 
-  <!-- Audio Fallback -->
-  <audio id="alarm-sound" src="alarm.mp3"></audio>
+  <audio id="alarm-sound" src="alarm.mp3" preload="auto" aria-hidden="true"></audio>
 
-  <!-- Script Load -->
   <script src="digitalclock.js"></script>
-
 </body>
 </html>

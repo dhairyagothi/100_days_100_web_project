@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+    <div class="ambient ambient-right" aria-hidden="true"></div>
+    <div class="noise-layer" aria-hidden="true"></div>
+
     <div class="bg-blur"></div>
 
     <nav class="navbar">
@@ -57,6 +61,7 @@
                 autocomplete="current-password"
                 required
               />
+              <span class="toggle-password" onclick="togglePassword()">👁</span>
             </div>
 
             <button type="submit" class="button home-btn">
@@ -66,6 +71,10 @@
           </form>
 
           <p class="already-signed-up">
+            <a href="./ForgotPassword.html" id="forgotPasswordLink">Forgot Password?</a>
+          </p>
+
+          <p class="already-signed-up">
             Not signed up? <a href="./SignUp.html">Sign Up</a>
           </p>
         </div>
@@ -73,6 +82,22 @@
     </section>
 
     <script>
+      // Show password toggle
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.querySelector(".toggle-password");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.add("active");
+            // toggleIcon.textContent = "..";
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("active");
+            // toggleIcon.textContent = "👁";
+        }
+      }
+      
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (event) {
