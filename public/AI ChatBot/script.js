@@ -1,5 +1,4 @@
-/* CONFIG & CONSTANTS */
-const DEFAULT_GEMINI_API_KEY = "AIzaSyA6HRBDQuJhoAk0JxOmsmpW8glVpv1zMp8";
+
 
 const STORAGE = {
   API_KEY: "gc_api_key",
