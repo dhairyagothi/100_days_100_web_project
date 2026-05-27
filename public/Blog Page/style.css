@@ -1,0 +1,840 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to bottom right, #f0fdf4, #f8fafc);
+    color: #111827;
+    overflow-x: hidden;
+}
+
+/* NAVBAR */
+.navbar{
+    width: 100%;
+    height: 85px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 70px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+    position: sticky;
+    top:0;
+    z-index:1000;
+}
+.logo{
+    font-size: 32px;
+    font-weight: 800;
+    color: #16a34a;
+}
+.nav-links a{
+    position: relative;
+    text-decoration:none;
+    color:#1f2937;
+    font-size:15px;
+    font-weight:600;
+    transition:0.3s ease;
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-6px;
+
+    width:0%;
+    height:2px;
+
+    background:#22c55e;
+
+    transition:0.3s;
+}
+
+.nav-links a:hover::after{
+    width:100%;
+}
+
+.nav-right{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.nav-search{
+    width:240px;
+    padding:12px 18px 12px 45px;
+    border:none;
+    background:#ffffff;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+ font-size:14px;
+}
+
+#themeToggle{
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    background: #15803d;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#themeToggle:hover{
+    background: #166534;
+}
+
+/* SIDEBAR CARDS */
+
+.sidebar-card{
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    margin-bottom: 25px;
+}
+
+.sidebar-title{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+/* SEARCH */
+/* SEARCH BOX FIXED & POLISHED */
+
+.search-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Slightly wider gap for a cleaner, modern look */
+    box-sizing: border-box;
+}
+
+.sidebar-search {
+    flex: 1; 
+    min-width: 0; 
+    padding: 12px 16px; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    color: #334155; 
+    background-color: #ffffff;
+    box-sizing: border-box; 
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Subtle focus state so the user knows they are typing */
+.sidebar-search:focus {
+    border-color: #15803d; 
+    box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15); 
+}
+
+.search-btn {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+
+    background: #15803d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.search-btn:hover {
+    background: #166534;
+}
+
+/* Adds a nice, tactile click response */
+.search-btn:active {
+    transform: scale(0.95);
+}
+
+/* CATEGORY */
+
+.category-list{
+    display: flex;
+ flex-direction: column;
+    gap: 18px;
+}
+
+.category-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+}
+
+.category-count{
+    background: #f3f4f6;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+body.dark-mode .blog-category,
+body.dark-mode .category-count,
+body.dark-mode .category-tag {
+    background: #10b981;
+    color: white !important;
+}
+
+.view-all{
+    display: inline-block;
+    margin-top: 20px;
+    color: #15803d;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* NEWSLETTER */
+
+.newsletter-text{
+    color: #666;
+    margin-bottom: 18px;
+    line-height: 1.5;
+}
+
+.newsletter-input{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+.subscribe-btn{
+    width: 100%;
+    background: #15803d;
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.subscribe-btn:hover{
+    background: #166534;
+}
+
+
+
+/* =========================
+   GLOBAL STYLES
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f5f7f6;
+    color:#222;
+}
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px 60px;
+
+    background:white;
+
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+    color:#15803d;
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#333;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#15803d;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.nav-search{
+    padding:10px 15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+}
+
+#themeToggle{
+    border:none;
+    background:#15803d;
+    color:white;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#themeToggle:hover{
+    background:#166534;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.main-layout{
+    display:flex;
+    gap:40px;
+
+    padding:40px 60px;
+
+    align-items:flex-start;
+}
+
+/* =========================
+   BLOG SECTION
+========================= */
+
+.blog-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* BLOG CARD */
+
+.blog-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+}
+
+.blog-card img {
+    width: 100%;
+    height: 220px;       
+    object-fit: cover;   
+}
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.blog-content{
+    padding:25px;
+}
+
+.blog-category{
+    background:#15803d;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:14px;
+font-weight:600;
+}
+
+.blog-title{
+    margin-top:18px;
+    font-size:28px;
+    font-weight:800;
+  line-height:1.3;
+}
+
+.blog-description{
+    margin-top:15px;
+    color:#666;
+   line-height:1.7;
+}
+
+.read-more-btn{
+    margin-top:20px;
+    background:#15803d;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+   cursor:pointer;
+   font-weight:600;
+    transition:0.3s;
+}
+
+.read-more-btn:hover{
+    background:#166534;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:320px;
+    display:flex;
+    flex-direction:column;
+   gap:25px;
+}
+
+/* SIDEBAR CARD */
+.sidebar-card{ background:white;
+     padding:22px; 
+     border-radius:18px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+
+.sidebar-title{
+    font-size:24px;
+   font-weight:bold;
+   margin-bottom:20px;
+}
+
+/* SEARCH */
+
+.search-wrapper{
+    display:flex;
+    gap:10px;
+}
+
+.sidebar-search{
+    flex:1;
+    padding:12px;
+    border:1px solid #ddd;
+   border-radius:10px;
+   outline:none;
+}
+
+.search-btn{
+    background:#15803d;
+    color:white;
+    border:none;
+    padding:12px 16px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* CATEGORY */
+
+.category-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.category-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.category-count{
+    background:#15803d;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:14px;
+}
+
+.view-all{
+    display:inline-block;
+    margin-top:20px;
+    color:#15803d;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* NEWSLETTER */
+
+.newsletter-text{
+    color:#666;
+    margin-bottom:18px;
+    line-height:1.5;
+}
+
+.newsletter-input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:15px;
+    outline:none;
+}
+
+.subscribe-btn{
+    width:100%;
+    background:#15803d;
+    color:white;
+    border:none;
+    padding:13px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.subscribe-btn:hover{
+    background:#166534;
+}
+
+/* =========================
+   COMMENTS
+========================= */
+
+textarea{
+    width:100%;
+    min-height:100px;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    resize:none;
+    outline:none;
+}
+
+.submit-btn{
+    margin-top:15px;
+    background:#15803d;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media(max-width:992px){
+
+    .main-layout{
+        flex-direction:column;
+    }
+    .sidebar{
+        width:100%;
+    }
+    .navbar{
+        padding:20px;
+        flex-wrap:wrap;
+        gap:20px;
+    }
+    .nav-links{
+        gap:15px;
+    }
+
+    .blog-title{
+        font-size:26px;
+    }
+}
+
+@media(max-width:768px){
+    .navbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+    .nav-right{
+        width:100%;
+    }
+    .nav-search{
+        width:100%;
+    }
+    .main-layout{
+        padding:20px;
+    }
+    .blog-image{
+        height:220px;
+    }
+}
+
+/* FOOTER */
+
+.footer {
+  background: #111827;
+  color: #ffffff;
+  padding: 60px 10%;
+  margin-top: 60px;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+}
+
+.footer-section h2,
+.footer-section h3 {
+  margin-bottom: 18px;
+}
+
+.logo {
+  color: #22c55e;
+  font-size: 28px;
+}
+
+.footer-section p {
+  color: #cbd5e1;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #cbd5e1;
+  transition: 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #22c55e;
+  padding-left: 5px;
+}
+
+/* Newsletter */
+
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.newsletter input {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.newsletter button {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 600;
+}
+
+.newsletter button:hover {
+  background: #16a34a;
+}
+
+/* Bottom Footer */
+
+.footer-bottom {
+  border-top: 1px solid #374151;
+  margin-top: 40px;
+  padding-top: 20px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 50px 6%;
+  }
+
+  .footer-container {
+    gap: 30px;
+  }
+}
+
+/* =========================
+   GLOBAL STYLES
+========================= */
+
+*{
+    transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+body{
+    background: #f3f4f6;
+    color: #111827;
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark-mode{
+    background: #111827;
+    color: #f9fafb;
+}
+
+/* Navbar */
+body.dark-mode .navbar{
+    background: #1f2937;
+    color: white;
+}
+
+/* Nav Links */
+body.dark-mode .nav-links a{
+    color: white;
+}
+
+/* Search Inputs */
+body.dark-mode .nav-search,
+body.dark-mode .sidebar-search,
+body.dark-mode .newsletter-input,
+body.dark-mode textarea{
+    background: #374151;
+    color: white;
+    border: 1px solid #4b5563;
+}
+
+/* Blog Cards */
+body.dark-mode .blog-card{
+    background: #1f2937;
+    color: white;
+}
+
+/* Blog Content */
+body.dark-mode .blog-title,
+body.dark-mode .blog-description,
+body.dark-mode .blog-category{
+    color: white;
+}
+
+/* Sidebar */
+body.dark-mode .sidebar-card{
+    background: #1f2937;
+    color: white;
+}
+
+/* Sidebar Main Box */
+body.dark-mode .md\:w-\[320px\]{
+    background: #1f2937;
+}
+
+/* Category Items */
+body.dark-mode .category-item{
+    background: #374151;
+    color: white;
+}
+
+/* Comments Box */
+body.dark-mode #comments div{
+    background: #374151;
+}
+
+/* Comment Text */
+body.dark-mode #comments p,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode .newsletter-text,
+body.dark-mode .view-all{
+    color: white;
+}
+
+
+/* Footer */
+body.dark-mode .footer{
+    background: #1f2937;
+    color: white;
+}
+
+body.dark-mode .footer a{
+    color: #d1d5db;
+}
+
+/* Buttons */
+body.dark-mode .read-more-btn,
+body.dark-mode .subscribe-btn,
+body.dark-mode .search-btn{
+    background: #10b981;
+    color: white;
+}
+
+/* Toggle Button */
+#themeToggle{
+    background: #10b981;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+}
+
+/* Main Background Section */
+body.dark-mode .bg-gray-50{
+    background: #111827 !important;
+}
+
+/* Sidebar White Background */
+body.dark-mode .bg-white{
+    background: #1f2937 !important;
+}
+
+/* Tailwind Text Fixes */
+body.dark-mode .text-gray-800,
+body.dark-mode .text-gray-700,
+body.dark-mode .text-gray-600,
+body.dark-mode .text-gray-500{
+    color: #f3f4f6 !important;
+}
+
+@keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-25px); }
+    }
+
+    .float {
+      animation: float 8s ease-in-out infinite;
+    }

@@ -9,10 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <style id="theme-style"></style>
 </head>
 
 <body class="light">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
 
   <div id="g">
     <!-- Animated background blobs -->
@@ -48,8 +49,6 @@
         <div class="btns">
           <button class="btn" id="nb" aria-label="New Game">New Game</button>
           <button class="btn sm" id="ub" aria-label="Undo last move">↩ Undo</button>
-          <button class="btn sm" id="pausebtn" aria-label="Pause game" style="display:none">⏸ Pause</button>
-          <button class="btn sm" id="hintbtn" aria-label="Hint">💡 Hint</button>
         </div>
         <div class="top-icons">
           <button class="icon-btn" id="stbtn" title="View Stats" aria-label="View Stats">📊</button>
@@ -60,18 +59,9 @@
 
       <!-- Mode selector -->
       <div class="mode-row" role="group" aria-label="Game mode">
-  <div class="theme-row" role="group" aria-label="Tile theme">
-    <span class="theme-label">Theme:</span>
-    <button class="theme-btn active" data-theme="classic">Classic</button>
-    <button class="theme-btn" data-theme="ocean">🌊 Ocean</button>
-    <button class="theme-btn" data-theme="neon">⚡ Neon</button>
-    <button class="theme-btn" data-theme="retro">🎮 Retro</button>
-  </div>
-  <div class="mode-btns-row">
-    <button class="mode-btn active" data-mode="classic">Classic</button>
-    <button class="mode-btn" data-mode="timed">⏱ 60s</button>
-    <button class="mode-btn" data-mode="zen">Zen 5×5</button>
-  </div>
+  <button class="mode-btn active" data-mode="classic">Classic</button>
+  <button class="mode-btn" data-mode="timed">⏱ 60s</button>
+  <button class="mode-btn" data-mode="zen">Zen 5×5</button>
 </div>
 
       <!-- Timer bar (timed mode only) -->
@@ -120,11 +110,6 @@
         <div class="stat-card"><div class="lbl">Best Tile</div><div class="val" id="st-tile">2</div></div>
       </div>
 
-      <div class="graph-section">
-        <div class="ach-list-title">Last 10 Games</div>
-        <canvas id="score-graph" style="width:100%;height:80px;"></canvas>
-      </div>
-
       <div class="ach-list">
         <div class="ach-list-title">Achievements</div>
         <div id="ach-badges"></div>
@@ -136,7 +121,6 @@
 
 </div><!-- /.wrap -->
 
-      <p class="hint">Arrow keys · WASD · Swipe to play</p>
     </div><!-- /#inner -->
   </div><!-- /#g -->
 

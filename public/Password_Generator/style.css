@@ -399,3 +399,42 @@ h1 {
     font-size:1rem;
     font-weight:600;
 }
+.history-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.history-container h3 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.history-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.history-item {
+    color: #ffd700;
+    padding: 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    word-break: break-all;
+}
+
+.history-empty {
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+}
+
+.history-container button {
+    margin-top: 10px;
+    padding: 8px 20px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

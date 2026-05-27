@@ -27,6 +27,8 @@
 </head>
 
 <body background="weather.jpg">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
     
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -53,18 +55,22 @@
                             <li><a class="dropdown-item" href="#" data-city="Bengaluru">Bangalore</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link">Usage Guide</a>
-                    </li>
+                   <li class="nav-item">
+    <a class="nav-link" id="openGuide" href="#">
+        Usage Guide
+    </a>
+</li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input  id="city" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required>
                     <button class="btn btn-outline-light" type="submit" id="submit">Search</button>
+                    <button id="unit-toggle" class="unit-toggle-btn">
+    Switch to °F
+</button>
                 </form>
-            </div>
-          </div>
-                </div>
-        </nav>
+                   </div>
+    </div>
+</nav>
 
     <section class="hero container weather-status-wrap">
         <div class="weather-status" id="statusMessage" aria-live="polite"></div>
@@ -87,8 +93,9 @@
                             <h4 class="my-0 fw-normal">Temperatures</h4>
                         </div>
                         <div class="card-body">
-                            <h1 class="card-title pricing-card-title"><span id="temp2"></span><small
-                                    class="text-body-secondary fw-light"><span>&#8451;</span></small></h1>
+                            <h1 class="card-title pricing-card-title">
+                            <span id="temp2"></span>
+                            </h1>
                             <ul class="list-unstyled mt-3 mb-4">
                                 <li>Temperature is <span id="temp"></span></li>
                                 <li>Min Temperature is <span id="min_temp"></span></li>
@@ -268,12 +275,58 @@
                 </table>
             </div>
         </main>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
-    <script src="script.js"></script>
-    <script>
+        <!-- Usage Guide Modal -->
+
+<div id="guideModal" class="guide-modal">
+
+  <div class="guide-content">
+
+    <button class="close-guide">&times;</button>
+
+    <span class="guide-tag">
+      WEATHER APP GUIDE
+    </span>
+
+    <h2>
+      Everything you need to know
+    </h2>
+
+    <p class="guide-desc">
+      Search any city worldwide and instantly access live weather insights,
+      temperature trends, wind conditions, humidity levels and sunrise/sunset data.
+    </p>
+
+    <div class="guide-grid">
+
+      <div>
+        <h4>Features</h4>
+
+        <p>Real-time weather search</p>
+        <p>Temperature + feels like</p>
+        <p>Humidity & wind information</p>
+        <p>Sunrise / sunset timings</p>
+        <p>6 city comparison table</p>
+      </div>
+
+      <div>
+        <h4>How to use</h4>
+
+        <p>1. Enter city name</p>
+        <p>2. Press Search</p>
+        <p>3. View live data instantly</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+   <script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
@@ -284,7 +337,7 @@
   }
 </script>
 
-        <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 
 </html>
