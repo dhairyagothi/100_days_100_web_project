@@ -345,20 +345,26 @@ async function fetchContributors() {
     const cached = loadCache('contributors-cache');
 
     if (cached) {
-      allContributors = cached;
 
-      filteredContributors = [...cached];
+    allContributors = cached;
 
-      contributorCountSpan.textContent = cached.length;
+    filteredContributors = [...cached];
 
-      renderContributors(filteredContributors);
-      renderLeaderboard(contributors);
-      generateHeatmap(contributors);
+    animateValue(
+      "contributorCount",
+      cached.length
+    );
 
-      loading.classList.add('hidden');
+    renderContributors(filteredContributors);
 
-      return;
-    }
+    renderLeaderboard(filteredContributors);
+
+    generateHeatmap(filteredContributors);
+
+    loading.classList.add('hidden');
+
+    return;
+  }
 
     const contributors = await githubFetch(
       `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
@@ -385,6 +391,9 @@ async function fetchContributors() {
     allContributors = contributors;
 
     filteredContributors = [...contributors];
+     renderContributors(filteredContributors);
+      renderLeaderboard(filteredContributors);
+      generateHeatmap(filteredContributors);
 
     renderContributors(filteredContributors);
   } catch (error) {
