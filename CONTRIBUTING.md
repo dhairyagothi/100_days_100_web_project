@@ -75,6 +75,15 @@ git checkout -b fix/bug-description
 git checkout -b add/project-name
 ```
 
+### 3.1 Issue First & Assignment (Recommended)
+
+Before implementing larger changes, please open an issue describing your planned contribution and wait for maintainer assignment or approval. This prevents duplicate work and ensures your change aligns with project goals.
+
+- Create an issue with the problem statement, proposed solution, and expected outcome.
+- Wait for a maintainer to assign the issue or confirm it's OK to proceed.
+
+This project follows a single-focused-PR approach: one issue → one branch → one PR.
+
 ### 4. Run Locally
 
 Choose the method that works best for you:
@@ -140,6 +149,26 @@ make lint    # Run HTML linter
 mkdir public/YourProjectName
 cd public/YourProjectName
 ```
+
+## Branch Naming Guidelines
+
+Use descriptive, lowercase, hyphen-separated branch names that reflect a single scope. Examples:
+
+- `feature/improve-navbar-animation`
+- `fix/mobile-sidebar-overflow`
+- `docs/update-installation-guide`
+
+Avoid working directly on `main`/`Main`/`master`.
+
+## PR Checklist (Please ensure before opening PR)
+
+- [ ] Issue exists and is assigned (for non-trivial changes)
+- [ ] Branch created only for this issue
+- [ ] Changes are limited and focused
+- [ ] Code follows style guidelines
+- [ ] Tested locally and linted where applicable
+- [ ] No secrets or credentials committed
+
 
 ### Step 2: Project Files
 Create these essential files:
