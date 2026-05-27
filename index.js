@@ -34,10 +34,6 @@ const TECH_ALIASES = {
   'games': 'game',
 };
 
-
-// Alias for consistency
-const PROJECTS = PROJECT_DATA;
-console.log('PROJECTS defined:', PROJECTS.length, 'items');
 /* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
   'all': 'all',
