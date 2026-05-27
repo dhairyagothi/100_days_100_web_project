@@ -99,6 +99,57 @@
     </section>
 
     <script>
+      // Toast System
+      function showToast(message, type = 'info') {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+          container = document.createElement('div');
+          container.className = 'toast-container';
+          container.style.cssText = 'position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 12px; max-width: 380px; width: calc(100% - 48px); pointer-events: none;';
+          document.body.appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        const iconMap = {
+          success: '<i class="fa-solid fa-circle-check"></i>',
+          error: '<i class="fa-solid fa-circle-exclamation"></i>',
+          warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
+          info: '<i class="fa-solid fa-circle-info"></i>'
+        };
+
+        toast.innerHTML = `
+          <div class="toast-icon">${iconMap[type] || iconMap.info}</div>
+          <div class="toast-message">${message}</div>
+          <button class="toast-close" aria-label="Close message">&times;</button>
+        `;
+
+        container.appendChild(toast);
+
+        // Close on button click
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+          removeToast(toast);
+        });
+
+        // Auto remove
+        const autoRemoveTimeout = setTimeout(() => {
+          removeToast(toast);
+        }, 4000);
+
+        function removeToast(el) {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(-10px) scale(0.95)';
+          setTimeout(() => {
+            el.remove();
+            if (container.childNodes.length === 0) {
+              container.remove();
+            }
+          }, 300);
+          clearTimeout(autoRemoveTimeout);
+        }
+      }
+
       // Show password toggle
       function togglePassword() {
         const passwordInput = document.getElementById("password");
@@ -129,7 +180,7 @@
           const existingUser = localStorage.getItem(username);
 
           if (existingUser) {
-            alert("Username already exists.");
+            showToast("Username already exists.", "error");
             return;
           }
 
@@ -138,8 +189,9 @@
           const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
 
           if (!passwordRegex.test(password)) {
-            alert(
-              "Password must contain:\n- 1 uppercase letter\n- 1 number\n- 1 special character\n- Minimum 6 characters",
+            showToast(
+              "Password must contain:<br>• 1 uppercase letter<br>• 1 number<br>• 1 special character<br>• Minimum 6 characters",
+              "error"
             );
             return;
           }
@@ -153,9 +205,12 @@
 
           localStorage.setItem(username, JSON.stringify(userData));
 
-          alert("Signup successful!");
+          showToast("Signup successful!", "success");
 
-          window.location.href = "Login.html";
+          // Delay redirect slightly for premium toast visibility
+          setTimeout(() => {
+            window.location.href = "Login.html";
+          }, 1200);
         });
     </script>
   </body>
