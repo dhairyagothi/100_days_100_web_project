@@ -45,6 +45,44 @@ function backToMenu() {
     document.getElementById('gameover-screen').style.display = 'none';
     document.getElementById('difficulty-screen').style.display = 'block';
 }
+function restartQuiz() {
+
+    let confirmRestart =
+        confirm(
+        "Are you sure?\nYour current score and progress will be lost."
+        );
+
+    if (!confirmRestart) {
+        return;
+    }
+
+    clearInterval(timerInterval);
+
+    score = 0;
+    timeLeft = 0;
+    correctAnswer = 0;
+    currentDifficulty = null;
+
+    document.getElementById('score').innerText = '0';
+
+    document.getElementById('timer').innerText =
+        'Time: 0s';
+
+    document.getElementById('options-box').innerHTML =
+        '';
+
+    document.getElementById('question-box').innerText =
+        'Loading question...';
+
+    document.getElementById('game-screen').style.display =
+        'none';
+
+    document.getElementById('gameover-screen').style.display =
+        'none';
+
+    document.getElementById('difficulty-screen').style.display =
+        'block';
+}
 
 function generateQuestion() {
     let num1, num2, answer, question;
