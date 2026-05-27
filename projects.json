@@ -105,9 +105,9 @@
 "projectName":"Serve Website Using Express",
 "projectType":"Backend",
 "projectDesc":"Basic Express server setup for hosting web applications.",
-"techStack":["javascript"],
+"techStack":["javascript","source-only"],
 "difficulty":"intermediate",
-"projectPath":"./public/index.html"
+"projectPath":"https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Express%20Server"
 },
 
 {
@@ -499,7 +499,7 @@
 "projectDesc":"Searches or suggests recipes through an interactive cooking assistant interface.",
 "techStack":["api","javascript"],
 "difficulty":"intermediate",
-"projectPath":"./public/Recipe%20Genie/index.html"
+"projectPath":"./public/recipe/main.html"
 },
 
 {
@@ -979,7 +979,7 @@
 "projectDesc":"Playable piano simulation responding to keyboard or click inputs.",
 "techStack":["css","javascript"],
 "difficulty":"intermediate",
-"projectPath":"./public/Virtual Piano/index.html"
+"projectPath":"./public/Virtual_Piano/index.html"
 },
 
 {
@@ -1659,7 +1659,7 @@
 "projectDesc":"Suggests activities and interactive ideas to overcome boredom quickly.",
 "techStack":["tool","html","css","javascript"],
 "difficulty":"advanced",
-"projectPath":"./public/BoredemBuster/index.html"
+"projectPath":"./public/BordemBuster/index.html"
 },
 
 {
@@ -1729,7 +1729,7 @@
 "projectDesc":"Analyze resumes using AI techniques and provide structured feedback.",
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
-"projectPath":"./public/AI-Resume-Analyzer/index.html"
+"projectPath":"./public/AI-Resume-Analyser/index.html"
 },
 
 {
