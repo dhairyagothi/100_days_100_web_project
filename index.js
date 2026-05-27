@@ -72,12 +72,23 @@ function loadProjects() {
     projectsPromise = (async () => {
       const isRoot = !window.location.pathname.includes('/contributors/');
       const base = isRoot ? '' : '../';
-      const projectsUrl = new URL(`${base}public/projects.json`, window.location.href).toString();
+     const projectsUrl =
+new URL(`${base}projects.json`,
+window.location.href).toString();
       const response = await fetch(projectsUrl);
       if (!response.ok) {
         throw new Error(`Failed to load projects: ${response.statusText}`);
       }
-      PROJECTS = await response.json();
+const data = await response.json();
+
+PROJECTS = data.map(project => [
+   `Day ${project.projectNo}`,
+   project.projectName,
+   project.projectPath,
+   project.techStack,
+   project.difficulty,
+   project.projectDesc
+]);
     })();
   }
   return projectsPromise;
@@ -85,534 +96,7 @@ function loadProjects() {
 
 // Start fetching immediately
 loadProjects();
-const PROJECT_DESCRIPTIONS = {
 
-  "To-Do List":
-    "Manage daily tasks efficiently with an interactive checklist system. Add, track and organize activities using a simple productivity-focused interface.",
-
-  "Digital Clock":
-    "Real-time digital clock displaying current time updates instantly. A beginner-friendly project exploring JavaScript timing functions.",
-
-  "Indian Flag":
-    "CSS recreation of the Indian national flag using shapes and positioning. Demonstrates layout precision and styling fundamentals.",
-
-  "Dropdown Nav Bar":
-    "Responsive navigation bar with expandable dropdown interactions. Useful for understanding hover states and menu structures.",
-
-  "Animated Cursor":
-    "Custom cursor animation adding engaging movement effects across the page. Focuses on interactivity and modern UI enhancements.",
-
-  "Auto Background Image Slider":
-    "Automatically rotating image slider with smooth transitions. Introduces timing events and dynamic visual presentation.",
-
-  "Typewriter":
-    "Typing animation effect simulating text being written live. Great for learning intervals and DOM manipulation.",
-
-  "Parallel-X Website":
-    "Parallax-inspired website showcasing layered scrolling effects. Designed to improve frontend animation techniques.",
-
-  "Captcha Generator":
-    "Generates random captcha strings for validation practice. Demonstrates input checking and security concepts.",
-
-  "QR Code Generator":
-    "Converts text or links into downloadable QR codes instantly. Integrates APIs with practical utility functionality.",
-
-  "Serve Website Using Express":
-    "Basic Express server setup for hosting web applications. Introduces backend routing fundamentals.",
-
-  "Nodemailer Contact Form":
-    "Email contact form capable of sending messages directly. Uses Nodemailer for backend communication.",
-
-  "Login Form Using MERN":
-    "Authentication workflow using MongoDB, Express, React and Node. Covers login handling and user validation.",
-
-  "File Uploader":
-    "Upload and manage files through a simple interface. Useful for understanding forms and storage workflows.",
-
-  "Progress Bar":
-    "Animated progress indicator tracking completion visually. Focuses on UI feedback and transitions.",
-
-  "Scroll Bar CSS":
-    "Custom scrollbar styling improving overall aesthetics. Demonstrates advanced CSS customization.",
-
-  "Slider Using Swiper API":
-    "Interactive content slider built with Swiper integration. Supports responsive navigation effects.",
-
-  "Carousel Solar System":
-    "Solar system themed rotating carousel with visual motion effects. Combines creativity with CSS animation.",
-
-  "Planto":
-    "Nature-inspired landing page emphasizing clean layouts and styling. Designed for frontend practice.",
-
-  "EveSparks":
-    "Interactive web experience featuring modern interface components. Focuses on responsiveness and usability.",
-
-  "Video BG Slider Using React":
-    "React-based slider with dynamic video backgrounds. Explores multimedia integration in interfaces.",
-
-  "Page Loader":
-    "Animated loading screen improving perceived performance. Useful for polished UI experiences.",
-
-  "Jarvis Virtual Assistant":
-    "Voice-enabled assistant inspired by AI interactions. Combines speech recognition and automation concepts.",
-
-  "Chat Bot":
-    "Conversational chatbot interface supporting user interactions. Demonstrates API integration and messaging flow.",
-
-  "Tic-Tac-Toe":
-    "Classic two-player game built with JavaScript logic. Strengthens conditional rendering skills.",
-
-  "Maze Game":
-    "Navigate through a maze while avoiding obstacles. Focuses on movement controls and game mechanics.",
-
-  "Memory Game":
-    "Card matching challenge testing short-term memory skills. Introduces arrays and state tracking.",
-
-  "Wordle":
-    "Word guessing game inspired by the popular puzzle format. Practices input handling and logic.",
-
-  "Snake Game":
-    "Classic snake gameplay with score tracking mechanics. Useful for learning loops and collision detection.",
-
-  "Flappy-bird-game":
-    "Obstacle avoidance game inspired by Flappy Bird. Covers animation timing and physics simulation.",
-
-  "Password Manager":
-    "Secure utility for storing and organizing passwords efficiently. Helps explore data handling and user-focused productivity features.",
-
-  "Missionaries & Cannibals":
-    "Logic puzzle based on the classic river crossing challenge. Strengthens problem-solving and conditional programming skills.",
-
-  "Weather Forecasting":
-    "Fetches and displays real-time weather information dynamically. Demonstrates API usage and responsive UI updates.",
-
-  "Email Validator":
-    "Checks whether email inputs follow valid formatting rules. Useful for learning regex and form validation techniques.",
-
-  "Vanilla-JavaScript-Calculator":
-    "Fully functional calculator handling arithmetic operations interactively. Reinforces DOM manipulation and event handling.",
-
-  "Medical App":
-    "Healthcare-themed interface designed for information display and accessibility. Focuses on practical frontend implementation.",
-
-  "2048 Game":
-    "Number-merging puzzle game inspired by the popular 2048 challenge. Builds logic handling and game state management.",
-
-  "Github Profile Finder":
-    "Search GitHub users and display profile information instantly. Uses APIs to retrieve and present live data.",
-
-  "Notes App":
-    "Create, edit and manage notes in a lightweight productivity environment. Useful for local storage concepts.",
-
-  "Analog Clock":
-    "Animated analog clock displaying real-time updates with rotating hands. Demonstrates transformations and timing functions.",
-
-  "Scroll Dark Game":
-    "Endless scrolling game with dark-themed visuals and interactive mechanics. Introduces animation loops and collision logic.",
-
-  "Amazon App":
-    "Frontend clone inspired by Amazon layouts and shopping interfaces. Improves responsive design and UI structuring skills.",
-
-  "Password Generator":
-    "Automatically generates strong passwords for better security practices. Combines randomness with utility design.",
-
-  "BMI Calculator":
-    "Computes body mass index based on user input values. Demonstrates calculations and dynamic output rendering.",
-
-  "Black Jack":
-    "Card game recreation implementing score logic and gameplay rules. Strengthens decision-making algorithms.",
-
-  "Palindrome Generator":
-    "Checks whether words or phrases read the same backwards. Introduces string manipulation techniques.",
-
-  "Ping Pong Game":
-    "Arcade-style ping pong experience using movement and collision detection. Reinforces game physics concepts.",
-
-  "TextToVoiceConverter":
-    "Converts typed text into spoken audio using browser capabilities. Explores accessibility and speech APIs.",
-
-  "Url Shortener":
-    "Transforms long links into shorter manageable URLs. Demonstrates backend communication and API workflows.",
-
-  "Recipe Genie":
-    "Searches or suggests recipes through an interactive cooking assistant interface. Focuses on API integration.",
-
-  "Netflix Landing Page Clone":
-    "Replica of Netflix homepage design emphasizing layouts and responsiveness. Useful for frontend practice.",
-
-  "ClimaCode":
-    "Weather-focused application presenting climate information elegantly. Combines APIs with modern UI patterns.",
-
-  "E-Commerce Website with Simple Cart Functionality":
-    "Online shopping interface featuring product listings and cart management. Introduces state handling concepts.",
-
-  "Budget Tracker":
-    "Tracks expenses and income to monitor financial habits efficiently. Designed for productivity and calculations.",
-
-  "Cricket Game":
-    "Interactive cricket-inspired game with score handling mechanics. Helps practice JavaScript game logic.",
-
-  "Pastebin using svelte":
-    "Simple text sharing platform built with Svelte technologies. Explores modern frontend frameworks.",
-
-  "Glowing Social Media Icons":
-    "Animated glowing icon effects enhancing social media sections visually. Focuses on CSS transitions and styling.",
-
-  "Music App":
-    "Music-themed interface supporting playback and interactive controls. Demonstrates multimedia integration concepts.",
-
-  "Blog Page":
-    "Responsive blog layout designed for article presentation and readability. Reinforces UI structuring principles.",
-
-  "Marketing template website":
-    "Landing page template optimized for promotions and product showcases. Emphasizes modern web design patterns.",
-
-  "Hologram Button":
-    "Futuristic button design featuring glowing holographic effects. Explores advanced CSS styling and animations.",
-
-  "Solar System Explorer":
-    "Interactive visualization of planets and orbital layouts using CSS. Combines creativity with motion effects.",
-
-  "Image to Text App":
-    "Extracts text content from uploaded images automatically. Demonstrates OCR concepts and API integration.",
-
-  "Zomato-clone":
-    "Restaurant platform inspired interface replicating browsing and discovery layouts. Improves frontend structuring skills.",
-
-  "The Cube":
-    "3D cube animation showcasing depth and motion interactions. Focuses on transforms and visual effects.",
-
-  "Flask Authentication App":
-    "Authentication workflow built around secure login concepts. Introduces backend validation and user management.",
-
-  "Blog-Website":
-    "Responsive blogging interface optimized for publishing content cleanly. Emphasizes readability and layout design.",
-
-  "3d Rotating Card":
-    "Animated rotating card effect creating depth and interactivity. Useful for modern UI experimentation.",
-
-  "Spotify Clone Project":
-    "Music streaming inspired interface replicating playlists and navigation patterns. Reinforces responsive layouts.",
-
-  "Insect-Catch_Game":
-    "Fast-paced insect catching game with score mechanics and movement. Practices event handling and gameplay logic.",
-
-  "Quotely Laughs":
-    "Generates random humorous quotes to entertain users instantly. Uses APIs and dynamic rendering.",
-
-  "Contact Book":
-    "Store, organize and manage contacts within a simple interface. Focuses on CRUD operations.",
-
-  "Candy_Crush_Game":
-    "Puzzle matching game inspired by Candy Crush mechanics. Builds grid logic and state handling.",
-
-  "Stock Profit Calculator":
-    "Calculates gains or losses from stock investments interactively. Useful for financial utility development.",
-
-  "code-space-game project":
-    "Space-themed gameplay with obstacles and movement controls. Strengthens animation and collision detection skills.",
-
-  "Animated Searchbar":
-    "Expandable search component with smooth transition effects. Improves understanding of interactive UI design.",
-
-  "Rock-Paper-Scissor-game project":
-    "Classic decision game implemented with score tracking logic. Ideal for beginners learning conditions.",
-
-  "NPM Package Search":
-    "Search and explore NPM packages dynamically through APIs. Demonstrates practical developer utilities.",
-
-  "Linkedin Homepage Clone":
-    "Frontend recreation of LinkedIn’s homepage structure and styling. Improves layout accuracy and responsiveness.",
-
-  "Resume Studio":
-    "Tool for creating and managing resumes with structured formatting. Focuses on productivity-oriented interfaces.",
-
-  "Simon Says Game":
-    "Memory-based game requiring players to repeat patterns correctly. Reinforces arrays and event sequences.",
-
-  "Love Calculator Game":
-    "Fun calculator estimating compatibility scores between names. Designed as a lightweight interactive project.",
-
-  "Exchange Currency":
-    "Converts currencies using real-time exchange values. Combines APIs with practical financial utilities.",
-
-  "Lights Out Puzzle":
-    "Logic puzzle where players switch lights off strategically. Builds reasoning and state management skills.",
-
-  "Image Search Engine":
-    "Searches and displays images dynamically from external sources. Demonstrates API integration workflows.",
-
-  "Profile Card":
-    "Stylized profile card showcasing user information creatively. Focuses on clean UI presentation.",
-
-  "Breakout game":
-    "Brick-breaking arcade game featuring collision and scoring systems. Reinforces game development fundamentals.",
-
-  "Job dashboard":
-    "Dashboard interface for managing or exploring job opportunities efficiently. Emphasizes organization and usability.",
-
-  "N-Queen":
-    "Classic N-Queen problem visualized through interactive implementation. Strengthens algorithmic thinking.",
-
-  "Quiz App Timer":
-    "Timed quiz application combining countdown logic with question handling. Useful for event-driven programming.",
-
-  "Voting Application Backend":
-    "Backend-focused project handling votes and user interactions securely. Introduces server-side concepts.",
-
-  "Slide puzzle Game":
-    "Tile sliding puzzle requiring logical movement strategies. Reinforces grid manipulation skills.",
-
-  "TextUtils":
-    "Utility tool performing text formatting and transformation operations. Demonstrates string processing concepts.",
-
-  "Hangman Game":
-    "Word guessing game with progressive hints and challenge mechanics. Strengthens conditional logic.",
-
-  "TodoList in React TS Tailwind":
-    "Modern to-do application built with React, TypeScript and Tailwind. Explores scalable frontend architecture.",
-
-  "HCL Color Generator":
-    "Generate HCL color values for design experimentation and palettes. Useful for UI customization projects.",
-
-  "Time Capsule":
-    "Store messages or memories intended for future viewing. Combines creativity with local storage concepts.",
-
-  "Virtual Piano":
-    "Playable piano simulation responding to keyboard or click inputs. Demonstrates multimedia interactions.",
-
-  "NASA-APOD Extension":
-    "Displays NASA’s Astronomy Picture of the Day automatically. Integrates external APIs into browser extensions.",
-
-  "Text Saver Extension":
-    "Browser extension for quickly saving and organizing text snippets. Focuses on productivity workflows.",
-
-  "Personal Finance Tracker":
-    "Monitor expenses, savings and financial habits through interactive tracking tools. Designed to improve budgeting awareness.",
-
-  "Travel Booking Website":
-    "Travel-focused interface for exploring destinations and booking experiences. Emphasizes responsive layouts and usability.",
-
-  "Drumkit Game":
-    "Virtual drum kit producing sounds through keyboard interactions. Demonstrates event handling and audio APIs.",
-
-  "Debug-Website":
-    "Practice environment for identifying and fixing frontend issues efficiently. Useful for improving debugging skills.",
-
-  "Periodic Table":
-    "Interactive periodic table displaying chemical elements and information. Combines education with engaging design.",
-
-  "Plants Website":
-    "Nature-inspired website emphasizing clean visuals and aesthetic layouts. Focuses on frontend styling techniques.",
-
-  "DocNow":
-    "Document-focused utility designed for managing or interacting with information efficiently. Prioritizes usability.",
-
-  "expense_Tracker":
-    "Track spending habits and monitor expenses through simple visual summaries. Useful for productivity workflows.",
-
-  "Mood Tracker":
-    "Record emotions over time and observe personal mood patterns. Combines wellness concepts with data tracking.",
-
-  "CRYPTOSHOW":
-    "Displays cryptocurrency information dynamically with market-related insights. Introduces API usage and dashboards.",
-
-  "Whack-a-Mole Game":
-    "Fast-paced reaction game requiring players to hit appearing targets quickly. Reinforces timing and score logic.",
-
-  "Nykaa Clone Website":
-    "Beauty and shopping platform clone inspired by Nykaa layouts. Strengthens frontend replication skills.",
-
-  "CPU Scheduler":
-    "Visualizes CPU scheduling algorithms and execution behavior interactively. Useful for understanding operating system concepts.",
-
-  "EchoNotes":
-    "Note-taking application focused on organizing thoughts and quick information capture. Emphasizes productivity.",
-
-  "Event Registration System":
-    "Manage event signups and participant information efficiently. Demonstrates forms and backend interactions.",
-
-  "AI Image Classifier":
-    "Classifies uploaded images using AI-based prediction concepts. Introduces machine learning integrations.",
-
-  "Habit Tracker Web App":
-    "Track routines and monitor consistency across personal habits over time. Encourages productivity and discipline.",
-
-  "Particle Effect":
-    "Interactive particle animation creating visually engaging motion effects. Focuses on graphics and performance.",
-
-  "Virtual Playground":
-    "Experimental environment featuring playful interactions and frontend concepts. Designed for exploration.",
-
-  "Typing Speed Test":
-    "Measure typing speed and accuracy with real-time performance metrics. Useful for event-driven programming.",
-
-  "InterviewSimulator":
-    "Simulates interview experiences to practice responses and preparation strategies. Focuses on utility design.",
-
-  "AstronomyDashboard":
-    "Dashboard presenting astronomy-related information through organized visuals and APIs. Combines science with UI.",
-
-  "Pomodoro Timer":
-    "Productivity timer implementing focused work sessions and breaks. Encourages time management habits.",
-
-  "Hurdle Highway 2D":
-    "Obstacle avoidance game with side-scrolling movement mechanics. Strengthens animation and collision handling.",
-
-  "Snakeladder":
-    "Digital adaptation of the classic Snake and Ladder board game. Introduces turn-based logic implementation.",
-
-  "Temperature Converter":
-    "Convert temperature values between multiple units instantly. Practical utility for calculations and form handling.",
-
-  "Particle Wave Animation":
-    "Animated wave effects created through particle systems and motion. Demonstrates creative frontend experimentation.",
-
-  "Reaction Time Test":
-    "Measures how quickly users respond to visual prompts interactively. Useful for timing logic and events.",
-
-  "YouTube Clone":
-    "Frontend recreation of YouTube layouts including navigation and content sections. Improves responsive design skills.",
-
-  "Dino Game":
-    "Endless runner inspired by the offline Chrome dinosaur game. Builds movement and collision mechanics.",
-
-  "Retro Highway Racer":
-    "Retro-style racing game featuring speed and obstacle navigation. Reinforces animation loops and gameplay logic.",
-
-  "Pokedex":
-    "Browse Pokémon information through an interactive Pokédex interface. Combines APIs with engaging visuals.",
-
-  "Stock Market Simulator":
-    "Simulate investment decisions and market behaviors without real risk. Introduces finance-focused logic.",
-
-  "Coin Scratch":
-    "Interactive scratch-card experience with satisfying reveal mechanics. Focuses on effects and user engagement.",
-
-  "Shooting game":
-    "Action game involving aiming, shooting and score progression. Strengthens gameplay mechanics implementation.",
-
-  "Sudoku Solver":
-    "Automatically solves Sudoku puzzles while demonstrating algorithmic reasoning. Useful for logic practice.",
-
-  "Maths Quiz Game":
-    "Interactive quiz testing mathematical knowledge under game-like conditions. Combines learning with engagement.",
-
-  "Age Calculator":
-    "Calculates age instantly from user-entered birth dates. Demonstrates date handling and calculations.",
-
-  "Ludo game":
-    "Digital version of the classic Ludo board game with turn-based mechanics. Reinforces logic and interactions.",
-
-  "Big Sales Prediction":
-    "Machine learning project predicting sales trends from input data. Combines analytics with practical AI concepts.",
-
-  "Dice Roller":
-    "Virtual dice simulator generating random outcomes instantly. Useful for games and probability demonstrations.",
-
-  "Geo Guesser game":
-    "Location guessing challenge testing geographical knowledge interactively. Combines maps with gameplay mechanics.",
-
-  "Morse Code Translator":
-    "Convert text into Morse code and decode messages seamlessly. Demonstrates string transformations and utilities.",
-
-  "Car Racing game":
-    "Fast-paced racing experience with movement controls and obstacles. Reinforces animation and collision handling.",
-
-  "Magic 8 Ball":
-    "Digital version of the classic prediction toy offering random responses. Focuses on interactivity and randomness.",
-
-  "Data Sructures Visualizer":
-    "Visual representation of data structures and their operations. Useful for understanding algorithms conceptually.",
-
-  "Chronosphere":
-    "Time-themed interactive experience with dynamic gameplay mechanics. Blends creativity with animation concepts.",
-
-  "Contest Tracker":
-    "Track coding contests and upcoming competitive programming events efficiently. Designed for productivity.",
-
-  "GitHub Profile Battle":
-    "Compare GitHub profiles using metrics and statistics interactively. Integrates APIs with developer-focused utilities.",
-
-  "App Privacy Policy Generator":
-    "Generate privacy policies for applications through structured inputs. Practical productivity-oriented utility.",
-
-  "Mini Carrom Game":
-    "Digital carrom simulation recreating board-game mechanics interactively. Reinforces physics and collision handling.",
-
-  "Physics Ball Simulation":
-    "Ball movement simulation demonstrating gravity and physical interactions. Useful for learning physics concepts.",
-
-  "Material3 Showcase":
-    "Collection of Material Design inspired UI components and interactions. Focuses on modern interface patterns.",
-
-  "FocusRoom":
-    "Productivity environment designed to support concentration and task completion. Combines timers and ambience.",
-
-  "Hangman Game":
-    "Advanced Hangman implementation using React and TypeScript architecture. Strengthens component-based thinking.",
-
-  "Placement Predictor":
-    "Predicts placement possibilities using user-provided academic information. Demonstrates logic and analytics concepts.",
-
-  "Map Route Tracker":
-    "Visualize routes and track paths using interactive map elements. Combines location services with frontend development.",
-
-  "GitHub Promo Maker":
-    "Create promotional GitHub banners or visuals quickly. Designed as a developer productivity utility.",
-
-  "Dining Philosophers Simulation":
-    "Simulation of the classic synchronization problem in computer science. Useful for understanding concurrency concepts.",
-
-  "Website Personalizer":
-    "Customize website appearance and behavior through user preferences dynamically. Emphasizes personalization features.",
-
-  "Unit-Converter":
-    "Convert values across multiple measurement units instantly. Practical tool demonstrating calculations and form handling.",
-
-  "Color Palette From Art Generator":
-    "Extract color palettes from artwork automatically for design inspiration. Combines creativity with utility.",
-
-  "Ai Image Editor":
-    "Edit and manipulate images using AI-assisted functionality. Explores machine learning and visual processing concepts.",
-
-  "Code Visualizer Playground":
-    "Interactive environment visualizing code behavior and execution flow. Useful for learning programming concepts.",
-
-  "Amazon Clone":
-    "Beginner-friendly clone inspired by Amazon’s interface and layouts. Reinforces frontend structure and styling.",
-
-  "Boredom Buster":
-    "Suggests activities or interactive ideas to reduce boredom instantly. Designed as a fun productivity utility.",
-
-  "scam-sms-detector":
-    "Detect potentially fraudulent SMS messages using analysis techniques. Introduces AI and security-focused concepts.",
-
-  "Color Sort Puzzle game":
-    "Puzzle game requiring players to organize colors strategically. Builds logical thinking and state management.",
-
-  "Subscription Tracker":
-    "Track recurring subscriptions and monitor expenses efficiently. Useful for budgeting and organization.",
-
-  "Vector Flowchart Designer":
-    "Design editable flowcharts visually through interactive components. Focuses on productivity and diagram creation.",
-
-  "Glyph Pattern Maker":
-    "Generate creative symbol-based patterns with customizable outputs. Explores procedural visual generation.",
-
-  "PlaceMate":
-    "Utility designed to simplify location-related planning or organization tasks. Prioritizes usability and convenience.",
-
-  "AI-Resume-Analyzer":
-    "Analyze resumes using AI concepts to provide insights and feedback. Combines machine learning with productivity.",
-
-  "Unit Kitchen":
-    "Kitchen-focused converter simplifying ingredient and measurement transformations. Practical everyday utility.",
-
-  "Focus Timer":
-    "A minimal Pomodoro-style productivity timer to boost focus with custom work and break intervals. Built with React, TypeScript and Tailwind CSS.",
-
-};
 
 /* ============================================================
    PROJECT LINK RESOLUTION (demo vs source / source-only)
@@ -674,13 +158,21 @@ function resolveProjectUrls(day, name, url, tags) {
     demoUrl = sourceOnly ? trimmed : (githubTreeToLocalDemo(trimmed) || trimmed);
   }
 
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
+    try {
+      demoUrl = new URL(demoUrl, window.location.href).href;
+    } catch (error) {
+      // Keep the original path if URL normalization fails.
+    }
+  }
+
   return { demoUrl, sourceUrl, sourceOnly };
 }
 
-function getProjectDescription(name) {
+function getProjectDescription(project) {
   return (
-    PROJECT_DESCRIPTIONS[name] ||
-    'Explore this project to discover interactive functionality, frontend concepts and implementation details.'
+      project[5] ||
+      'Explore this project to discover interactive functionality.'
   );
 }
 
@@ -700,7 +192,11 @@ function buildProjectCardHTML({
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
   const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-  const description = getProjectDescription(name);
+  const project =
+PROJECTS.find(p => p[1] === name);
+
+const description =
+getProjectDescription(project);
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : '';
@@ -750,10 +246,16 @@ function buildProjectCardHTML({
   };
 }
 
-function attachProjectCardInteraction(card, demoUrl) {
+function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = 'pointer';
   card.onclick = (e) => {
     if (e.target.closest('a, button')) return;
+    
+    // Track the project visit if projectData is provided
+    if (projectData) {
+      trackRecentProject(projectData);
+    }
+    
     window.open(demoUrl, '_blank', 'noopener');
   };
 }
@@ -889,6 +391,59 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
+const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
+
+/**
+ * Migrates old recent projects format (array) to new format (object with timestamp)
+ * If stored format doesn't have timestamps, it's likely the old format
+ */
+function migrateRecentProjects() {
+  if (recentProjects.length === 0) return;
+  
+  // Check if already in new format (has timestamp)
+  if (typeof recentProjects[0] === 'object' && recentProjects[0].timestamp) {
+    return; // Already migrated
+  }
+  
+  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
+  recentProjects = recentProjects.map((project) => {
+    if (Array.isArray(project)) {
+      return {
+        day: project[0],
+        name: project[1],
+        url: project[2],
+        tags: project[3],
+        timestamp: Date.now() - (ONE_HOUR_MS / 2) // Set to 30 mins ago to preserve them initially
+      };
+    }
+    return project;
+  });
+  
+  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+}
+
+// Migrate on load
+migrateRecentProjects();
+
+/**
+ * Cleans up recent projects older than 1 hour
+ * Called periodically and on page load
+ */
+function cleanupExpiredRecentProjects() {
+  const initialLength = recentProjects.length;
+  recentProjects = getRecentProjectsWithinWindow();
+  
+  if (recentProjects.length !== initialLength) {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    renderRecentProjects();
+  }
+}
+
+// Clean up on page load
+cleanupExpiredRecentProjects();
+
+// Clean up every 5 minutes
+setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
 
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
@@ -1073,7 +628,7 @@ function renderGrid() {
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl);
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     fragment.appendChild(card);
   });
@@ -1245,11 +800,49 @@ function toggleBookmark(project) {
   renderRecentProjects();
 }
 
-function trackRecentProject(project) {
-  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
-  recentProjects.unshift(project);
+/**
+ * Removes projects older than 1 hour from the recent projects list
+ * @returns {array} Filtered recent projects within the 1-hour window
+ */
+function getRecentProjectsWithinWindow() {
+  const now = Date.now();
+  return recentProjects.filter((item) => {
+    const timestamp = item.timestamp || Date.now();
+    const age = now - timestamp;
+    return age <= ONE_HOUR_MS;
+  });
+}
 
-  if (recentProjects.length > 10) {
+/**
+ * Tracks a recently viewed project with a timestamp
+ * @param {array} project - Project data [day, name, url, tags]
+ */
+function trackRecentProject(project) {
+  // Convert old format to new format if needed
+  let projectObj;
+  if (Array.isArray(project)) {
+    projectObj = {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+      timestamp: Date.now()
+    };
+  } else {
+    projectObj = {
+      ...project,
+      timestamp: Date.now()
+    };
+  }
+
+  // Remove duplicate if exists
+  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  
+  // Add to front
+  recentProjects.unshift(projectObj);
+
+  // Keep only the 20 most recent entries (not filtered by time yet)
+  if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
@@ -1291,7 +884,7 @@ function renderBookmarks() {
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl);
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     bookmarkGrid.appendChild(card);
   });
@@ -1304,19 +897,28 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = '';
 
-  if (recentProjects.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+  // Filter projects within the 1-hour window
+  const validRecent = getRecentProjectsWithinWindow();
+
+  if (validRecent.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
     return;
   }
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display = validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
+  visibleRecent.forEach((projectObj) => {
+    // Handle both old array format and new object format
+    const day = projectObj.day || projectObj[0];
+    const name = projectObj.name || projectObj[1];
+    const url = projectObj.url || projectObj[2];
+    const tags = projectObj.tags || projectObj[3];
+    
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -1332,7 +934,7 @@ function renderRecentProjects() {
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl);
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     recentGrid.appendChild(card);
   });
@@ -1640,8 +1242,10 @@ function updateNavbar() {
         </button>
         `;
   const otherLink = isRoot
-    ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>`;
+    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
+       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
 
   if (username) {
     container.innerHTML = `
@@ -1727,6 +1331,24 @@ function initScrollBtn() {
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
+
+    // Footer collision avoidance
+    const footer = document.querySelector('.footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        // Cap the upward movement to a maximum of 120px.
+        // This ensures it dodges the important bottom footer links but 
+        // doesn't fly completely off the top of the screen when the footer is huge.
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = '2rem';
+      }
+    }
   };
 
   updateScrollProgress();
@@ -1791,23 +1413,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!menuToggle || !navButtons) return;
 
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      menuToggle.classList.toggle('active');
-      navButtons.classList.toggle('active');
+      const isOpen = navButtons.classList.toggle('active');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
     document.addEventListener('click', (e) => {
       if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        closeMenu();
+        menuToggle.focus();
       }
     });
 
     navButtons.addEventListener('click', (e) => {
       if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
       }
     });
   };
@@ -1837,6 +1471,53 @@ window.addEventListener(
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
+
+// Custom cursor
+(function () {
+  const outerCursor = document.querySelector('.cursor-ring--outer');
+  const innerCursor = document.querySelector('.cursor-ring--inner');
+
+  if (!outerCursor || !innerCursor) return;
+
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  const speed = 0.18;
+
+  const update = () => {
+    current.x += (target.x - current.x) * speed;
+    current.y += (target.y - current.y) * speed;
+
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+
+    requestAnimationFrame(update);
+  };
+
+  const showCursor = () => {
+    outerCursor.classList.add('is-visible');
+    innerCursor.classList.add('is-visible');
+  };
+
+  const hideCursor = () => {
+    outerCursor.classList.remove('is-visible');
+    innerCursor.classList.remove('is-visible');
+  };
+
+  window.addEventListener(
+    'mousemove',
+    (event) => {
+      target.x = event.clientX;
+      target.y = event.clientY;
+      showCursor();
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('mouseleave', hideCursor);
+  window.addEventListener('mouseenter', showCursor);
+
+  requestAnimationFrame(update);
+})();
 
 // Particle Network Background
 (function () {

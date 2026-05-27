@@ -1371,4 +1371,130 @@ body.teal-mode {
         line-height: 1;
     }
 }
-/*
+
+/* ==========================================
+   ASTRONOMY DASHBOARD — SKELETON LOADERS CSS
+   ========================================== */
+
+:root {
+    --skeleton-bg: rgba(255, 255, 255, 0.05);
+    --skeleton-shimmer: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.07) 20%,
+        rgba(255, 255, 255, 0.15) 60%,
+        rgba(255, 255, 255, 0) 100%
+    );
+}
+
+body.light-theme {
+    --skeleton-bg: rgba(0, 0, 0, 0.06);
+    --skeleton-shimmer: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.04) 20%,
+        rgba(0, 0, 0, 0.08) 60%,
+        rgba(0, 0, 0, 0) 100%
+    );
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--skeleton-bg) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: var(--skeleton-shimmer);
+    animation: shimmer 1.6s infinite ease-in-out;
+}
+
+.skeleton-text {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    color: transparent !important;
+    background-color: var(--skeleton-bg) !important;
+    border-radius: 4px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.skeleton-text::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: var(--skeleton-shimmer);
+    animation: shimmer 1.6s infinite ease-in-out;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton::after,
+    .skeleton-text::after {
+        animation: none !important;
+        display: none !important;
+    }
+}
+
+/* Precise dynamic widths */
+.s-w-30 { width: 30%; }
+.s-w-35 { width: 35%; }
+.s-w-45 { width: 45%; }
+.s-w-50 { width: 50%; }
+.s-w-55 { width: 55%; }
+.s-w-60 { width: 60%; }
+.s-w-65 { width: 65%; }
+.s-w-75 { width: 75%; }
+.s-w-80 { width: 80%; }
+.s-w-85 { width: 85%; }
+.s-w-68 { width: 68px; }
+
+/* Precise heights and margins */
+.s-h-10 { height: 10px; }
+.s-h-12 { height: 12px; }
+.s-h-14 { height: 14px; }
+.s-h-36 { height: 36px; }
+
+.s-mb-6 { margin-bottom: 6px; }
+.s-mb-8 { margin-bottom: 8px; }
+.s-mt-10 { margin-top: 10px; }
+.s-mt-12 { margin-top: 12px; }
+
+/* Layout utility classes */
+.s-pointer-none { pointer-events: none; }
+.s-opacity-85 { opacity: 0.85; }
+.s-no-border { border: none !important; }
+.s-flex-col-gap6 { display: flex; flex-direction: column; gap: 6px; }
+.s-ml-14 { margin-left: 14px; }
+.s-circle-23 { width: 23px; height: 23px; border-radius: 50%; }
+.s-rounded-999 { border-radius: 999px; }
+.s-color-soft { color: var(--soft) !important; }
+.s-flex-1 { flex: 1 !important; }
+

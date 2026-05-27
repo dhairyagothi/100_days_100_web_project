@@ -68,6 +68,7 @@ body {
     background 0.4s ease,
     color 0.4s ease;
   position: relative;
+  cursor: none;
 }
 
 body::before,
@@ -161,28 +162,60 @@ body::after {
     5px 5px,
     11px 11px,
     13px 13px;
-  mix-blend-mode: screen;
+  /* mix-blend-mode: difference; */
   animation: noiseShift 0.8s steps(2) infinite;
 }
 
-body > *:not(.ambient):not(.noise-layer) {
-    position: relative;
-}
-
-body>*:not(.ambient):not(.noise-layer):not(canvas):not(header) {
+body > *:not(.ambient):not(.noise-layer):not(.cursor-ring) {
   position: relative;
   z-index: 1;
 }
 
-/* header wraps .navbar — needs its own stacking context above ALL
-   fixed overlay layers (body::before/after, ambient, noise, canvas) */
-header {
+.cursor-ring {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  z-index: 10000;
-  pointer-events: auto;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transform: translate3d(0, 0, 0) translate(-50%, -50%);
+  transition: opacity 0.16s ease;
+  will-change: transform;
+  isolation: isolate;
+}
+
+.cursor-ring.is-visible {
+  opacity: 1;
+}
+
+.cursor-ring--outer {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 0 10px rgba(255, 255, 255, 0.06),
+    0 0 24px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  mix-blend-mode: multiply;
+}
+
+.cursor-ring--inner {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 0 18px rgba(191, 219, 254, 0.9);
+}
+
+@media (hover: none), (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+
+  .cursor-ring {
+    display: none;
+  }
 }
 
 /* ============================================================
@@ -2516,3 +2549,88 @@ body::after {
 
     margin-top:16px;
 }
+
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+/* Nav Link Styling */
+.nav-links a {
+  text-decoration: none;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+/* Better Hover Effect */
+.nav-links a:hover {
+  opacity: 0.8;
+}
+
+/* Tablet Responsiveness */
+@media screen and (max-width: 992px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .nav-links {
+    gap: 1rem;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .nav-links {
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 0.8rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+}
+
+/* Small Mobile Devices */
+@media screen and (max-width: 480px) {
+
+  .navbar {
+    padding: 0.8rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links a {
+    width: 100%;
+    display: block;
+    padding: 0.5rem 0;
+  }
+  }
