@@ -289,6 +289,7 @@ h1 {
 }
 
 .card {
+  
   --rotate-x: 0deg;
   --rotate-y: 0deg;
   display: grid;
@@ -566,9 +567,28 @@ h1 {
 
 @media (hover: none), (pointer: coarse) {
   .card {
+    
     transform: rotateX(0deg) rotateY(0deg);
   }
 
+}
+
+@media (max-width: 1280px) {
+  .app-shell {
+    grid-template-columns: minmax(300px, 0.85fr) minmax(360px, 1.15fr);
+    align-items: center;
+    width: min(100% - 24px, 1240px);
+  }
+
+  .card {
+
+    min-height: auto;
+  }
+
+  .layout-poster,
+  .layout-poster .container2 {
+    min-height: 520px;
+  }
 }
 
 @media (max-width: 980px) {
@@ -642,6 +662,15 @@ h1 {
     width: 100%;
     height: 100%;
     border-radius: 0;
+  }
+}
+
+@media (min-width: 981px) {
+  /* For larger screens, fix the preview card to 1000px wide and center it */
+  .preview-panel .card {
+    width: 1000px;
+    max-width: 100%;
+    margin: 0 auto;
   }
 }
 
