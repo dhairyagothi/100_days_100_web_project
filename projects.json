@@ -1791,6 +1791,16 @@
 "difficulty":"intermediate",
 "projectPath":"./public/CYBER TYPE BATTLE/index.html"
 }
+,
+{
+  "projectNo": 179,
+  "projectName": "NeonForge",
+  "projectType": "Tool",
+  "projectDesc": "Neon-themed design tool for creating and customizing glowing visual elements.",
+  "techStack": ["tool", "html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/NeonForge/index.html"
+}
 
 ]
 
