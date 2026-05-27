@@ -1811,12 +1811,12 @@
 "projectPath":"./public/Share_Byte/index.html"
 },
 {
- "projectNo":182,
-"projectName":"Web Kernal Simulator",
-"projectType":"Simulator",
-"projectDesc":"A linux based web kernal simulator allowing to perform basic tasks",
-"techStack":["javascript","html","css"],
+"projectNo":182,
+"projectName":"Code Execution Visualizer",
+"projectType":"Tool",
+"projectDesc":"Premium interactive visualizer to simulate C++ execution with step-by-step memory, stack, loop, sorting, and recursion insights.",
+"techStack":["tool","javascript","html","css","visualizer","education"],
 "difficulty":"advanced",
-"projectPath":"./public/Web-Kernal-simulator/index.html"
+"projectPath":"./public/code-execution-visualizer/index.html"
 }
 ]
