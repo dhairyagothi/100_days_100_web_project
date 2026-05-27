@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>🎲 Ludo 4 Player</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -353,12 +354,12 @@ h1{
 <!-- ④ WIN OVERLAY -->
 <div id="win-ov">
   <div id="wcard">
-    <span id="w-trophy">🏆</span>
+    <span id="w-trophy"><i class="fas fa-trophy fa-bounce" style="color: #FFD700; font-size: 5rem; display: block; margin-bottom: 12px;"></i></span>
     <div id="w-congrats">Congratulations!</div>
     <div id="w-name">Player 1</div>
     <span id="w-color-badge">🔴 Red</span>
     <div class="w-stars">⭐⭐⭐</div>
-    <div id="w-subtitle">All tokens recieved<br>Congratulations you win the game🎉</div>
+    <div id="w-subtitle">All tokens received<br>Congratulations you win the game!</div>
     <div class="w-btns">
       <button class="w-btn" id="w-play-again" onclick="playAgain()">🔄 Play Again</button>
       <button class="w-btn" id="w-menu" onclick="backToMenu()">🏠 Menu</button>

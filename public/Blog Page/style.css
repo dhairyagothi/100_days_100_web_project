@@ -829,3 +829,12 @@ body.dark-mode .text-gray-600,
 body.dark-mode .text-gray-500{
     color: #f3f4f6 !important;
 }
+
+@keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-25px); }
+    }
+
+    .float {
+      animation: float 8s ease-in-out infinite;
+    }
