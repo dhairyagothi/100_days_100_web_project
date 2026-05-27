@@ -97,10 +97,10 @@ class VirtualPlayground {
 
     async loadProjects() {
         try {
-            const response = await fetch('projects.json');
+            const response = await fetch('../../projects.json');
             if (!response.ok) throw new Error('Failed to load projects');
             const data = await response.json();
-            this.projects = data.projects;
+            this.projects = data.projects || [];
             this.populateProjectSelect();
         } catch (error) {
             console.log('Projects file not found, using empty list');
@@ -115,7 +115,7 @@ class VirtualPlayground {
         this.projects.forEach((project, index) => {
             const option = document.createElement('option');
             option.value = index;
-            option.textContent = project.name;
+            option.textContent = project.projectName || project.name || `Project ${index+1}`;
             select.appendChild(option);
         });
     }
@@ -138,7 +138,7 @@ class VirtualPlayground {
 
         this.updateLineNumbers();
         this.runCode();
-        this.showToast(`Loaded: ${project.name}`);
+        this.showToast(`Loaded: ${project.projectName || project.name}`);
     }
 
     switchTab(btn) {
@@ -197,7 +197,7 @@ class VirtualPlayground {
                 ${html}
                 <script>
                     ${js}
-                </script>
+                <\/script>
             </body>
             </html>
         `;
