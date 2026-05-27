@@ -3,54 +3,44 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Image Slider Gallery</title>
+  <title>Image Slider</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-
   <link rel="stylesheet" href="swiper-bundle.min.css" />
   <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-  <main class="gallery-app">
-    <section class="gallery-panel">
-      <header class="gallery-header">
-        <div>
-          <p class="eyebrow">Curated visual library</p>
-          <h1 class="title">Image Slider</h1>
-        </div>
-        <div class="slide-counter" aria-live="polite">
-          <span id="currentSlide">01</span>
-          <span>/</span>
-          <span id="totalSlides">40</span>
-        </div>
-      </header>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-      <nav class="category-filter" aria-label="Image categories">
-        <button class="category-btn active" type="button" data-category="all">All</button>
-        <button class="category-btn" type="button" data-category="cars">Cars</button>
-        <button class="category-btn" type="button" data-category="animals">Animals</button>
-        <button class="category-btn" type="button" data-category="landscapes">Landscapes</button>
-        <button class="category-btn" type="button" data-category="bungalows">Bungalows</button>
-      </nav>
 
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper" id="sliderWrapper"></div>
-        <button class="swiper-button-next" aria-label="Next slide"></button>
-        <button class="swiper-button-prev" aria-label="Previous slide"></button>
+  <h1>IMAGE SLIDER</h1>
+
+  <div id="slideshow">
+
+    <div class="slider-row">
+      <button onclick="prevPhoto()" aria-label="Previous image">&#8249;</button>
+
+      <div class="image-wrapper">
+        <img id="photo" src="public/images/i1.jpg" alt="Mahakaleshwar Temple" />
       </div>
-    </section>
-  </main>
 
-  <template id="slideTemplate">
-    <div class="swiper-slide">
-      <div class="media-frame"></div>
-      <div class="slide-details">
-        <span class="slide-category"></span>
-        <h2 class="slide-title"></h2>
-        <p class="slide-description"></p>
-      </div>
+      <button onclick="nextPhoto()" aria-label="Next image">&#8250;</button>
     </div>
-  </template>
+
+    <!-- Caption box: place name + location -->
+    <div class="caption-box">
+      <p id="place-name" class="place-name">Mahakaleshwar Temple</p>
+      <p id="place-location" class="place-location">📍 Ujjain, Madhya Pradesh, India</p>
+    </div>
+
+    <!-- Slide counter e.g. 1 / 9 -->
+    <p id="counter" class="counter">1 / 9</p>
+
+    <!-- Dot indicators -->
+    <div id="dots" class="dots"></div>
+
+  </div>
+ 
 
   <script src="swiper-bundle.min.js"></script>
   <script src="index.js"></script>
