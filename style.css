@@ -167,6 +167,15 @@ body::after {
   animation: noiseShift 0.8s steps(2) infinite;
 }
 
+body > *:not(.ambient):not(.noise-layer):not(.cursor-ring):not(header):not(.hero) {
+  position: relative;
+  z-index: 1;
+}
+
+body > header {
+  position: relative;
+  z-index: 10;
+}
 
 .cursor-ring {
   position: fixed;
@@ -219,6 +228,7 @@ body::after {
    NAVBAR & RESPONSIVE DRAWER ARCHITECTURE
    ============================================================ */
 .navbar {
+  isolation: isolate;
   position: fixed;
   top: 0;
   left: 0;
@@ -395,8 +405,30 @@ body.light-mode .navbar {
     height: auto;
   }
 
+  .navbar-brand {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .brand-copy {
+    overflow: hidden;
+  }
+
+  .brand-copy strong {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    display: block;
+    white-space: normal;
+  }
+
+  .brand-kicker {
+    font-size: 0.55rem;
+  }
+
   .menu-toggle {
     display: block;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
   }
 
   .menu-toggle i {
@@ -442,6 +474,12 @@ body.light-mode .navbar {
     text-align: center;
     width: 100%;
   }
+
+  .stats-strip {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem;
+  }
 }
 
 /* ============================================================
@@ -456,6 +494,7 @@ body.light-mode .navbar {
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 0;
   overflow: hidden;
   isolation: isolate;
 }
@@ -2536,6 +2575,53 @@ body::after {
     margin-top:16px;
 }
 
+.clear-filters-btn:hover {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+}
+
+.clear-filters-btn:active {
+  transform: scale(0.97);
+}
+
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+/* Nav Link Styling */
+.nav-links a {
+  text-decoration: none;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+/* Better Hover Effect */
+.nav-links a:hover {
+  opacity: 0.8;
+}
+
+/* Tablet Responsiveness */
+@media screen and (max-width: 992px) {
+  .navbar {
+    padding: 1rem;
+  }
 
 
   .nav-links {
