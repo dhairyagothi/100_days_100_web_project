@@ -259,6 +259,7 @@ function checkMatch() {
   }
 }
 
+
 // ── Hint ──────────────────────────────────────────────────
 
 /**
@@ -298,6 +299,7 @@ function useHint() {
       pair[1].classList.remove('flipped');
     }
   }, 1200);
+
 }
 
 // ── Win Condition ─────────────────────────────────────────
