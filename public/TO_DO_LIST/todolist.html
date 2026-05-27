@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To-Do List | 100 Days 100 Projects</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="todolist.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
+
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
   <!-- Floating decorative shapes -->
   <div class="floating-shapes" aria-hidden="true">
@@ -23,24 +25,27 @@
 
   <!-- Header with Navigation -->
   <header>
-      <ul class="navbar">
-        <li class="nav-left">
-          <ul>
-            <li><a href="#" id="nav-home" onclick="showHome(); return false;" aria-current="page">🏠 Home</a></li>
-            <li><a href="#" id="nav-documents" onclick="showDocuments(); return false;">📄 Documents</a></li>
-          </ul>
-        </li>
-        <li class="nav-right">
-          <span class="theme-label">Theme</span>
-          <ul>
-            <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1"></button></li>
-            <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button></li>
-            <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button></li>
-            <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button></li>
-            <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button></li>
-          </ul>
-        </li>
-      </ul>
+    <a href="/" class="project-back-button"
+      style="position:relative;left:-10px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">←
+      Back to Home</a>
+    <ul class="navbar">
+      <li class="nav-left">
+        <ul>
+          <li><a href="#" id="nav-home" onclick="showHome(); return false;" aria-current="page">🏠 Home</a></li>
+          <li><a href="#" id="nav-documents" onclick="showDocuments(); return false;">📄 Documents</a></li>
+        </ul>
+      </li>
+      <li class="nav-right">
+        <span class="theme-label">Theme</span>
+        <ul>
+          <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1"></button></li>
+          <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button></li>
+          <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button></li>
+          <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button></li>
+          <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button></li>
+        </ul>
+      </li>
+    </ul>
     </nav>
   </header>
 
@@ -112,4 +117,5 @@
 
   <script src="todolist.js"></script>
 </body>
+
 </html>
