@@ -4,6 +4,7 @@ class VirtualPlayground {
         this.projects = [];
         this.currentProjectIndex = -1;
         this.originalCode = { html: '', css: '', js: '' };
+        this._lastPreviewUrl = null;
         
         this.initElements();
         this.initEventListeners();
@@ -40,41 +41,51 @@ class VirtualPlayground {
 
     initEventListeners() {
         // Tab switching
-        this.elements.tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => this.switchTab(btn));
-        });
+        if (this.elements.tabBtns && this.elements.tabBtns.forEach) {
+            this.elements.tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => this.switchTab(btn));
+            });
+        }
 
         // Editor input
-        this.elements.htmlEditor.addEventListener('input', (e) => {
-            this.updateLineNumbers();
-            this.autoRun();
-        });
-        this.elements.cssEditor.addEventListener('input', (e) => {
-            this.updateLineNumbers();
-            this.autoRun();
-        });
-        this.elements.jsEditor.addEventListener('input', (e) => {
-            this.updateLineNumbers();
-            this.autoRun();
-        });
+        if (this.elements.htmlEditor) {
+            this.elements.htmlEditor.addEventListener('input', () => {
+                this.updateLineNumbers();
+                this.autoRun();
+            });
+        }
+        if (this.elements.cssEditor) {
+            this.elements.cssEditor.addEventListener('input', () => {
+                this.updateLineNumbers();
+                this.autoRun();
+            });
+        }
+        if (this.elements.jsEditor) {
+            this.elements.jsEditor.addEventListener('input', () => {
+                this.updateLineNumbers();
+                this.autoRun();
+            });
+        }
 
         // Control buttons
-        this.elements.runBtn.addEventListener('click', () => this.runCode());
-        this.elements.resetBtn.addEventListener('click', () => this.resetCode());
-        this.elements.copyBtn.addEventListener('click', () => this.copyCode());
-        this.elements.shareBtn.addEventListener('click', () => this.shareCode());
-        this.elements.fullscreenBtn.addEventListener('click', () => this.enterFullscreen());
-        this.elements.refreshBtn.addEventListener('click', () => this.runCode());
-        this.elements.exitFullscreen.addEventListener('click', () => this.exitFullscreenMode());
+        if (this.elements.runBtn) this.elements.runBtn.addEventListener('click', () => this.runCode());
+        if (this.elements.resetBtn) this.elements.resetBtn.addEventListener('click', () => this.resetCode());
+        if (this.elements.copyBtn) this.elements.copyBtn.addEventListener('click', () => this.copyCode());
+        if (this.elements.shareBtn) this.elements.shareBtn.addEventListener('click', () => this.shareCode());
+        if (this.elements.fullscreenBtn) this.elements.fullscreenBtn.addEventListener('click', () => this.enterFullscreen());
+        if (this.elements.refreshBtn) this.elements.refreshBtn.addEventListener('click', () => this.runCode());
+        if (this.elements.exitFullscreen) this.elements.exitFullscreen.addEventListener('click', () => this.exitFullscreenMode());
 
         // Project select
-        this.elements.projectSelect.addEventListener('change', (e) => {
-            this.loadProject(parseInt(e.target.value));
-        });
+        if (this.elements.projectSelect) {
+            this.elements.projectSelect.addEventListener('change', (e) => {
+                this.loadProject(parseInt(e.target.value));
+            });
+        }
 
         // Mobile panel toggle
-        this.elements.toggleEditorBtn.addEventListener('click', () => this.togglePanel('editor'));
-        this.elements.togglePreviewBtn.addEventListener('click', () => this.togglePanel('preview'));
+        if (this.elements.toggleEditorBtn) this.elements.toggleEditorBtn.addEventListener('click', () => this.togglePanel('editor'));
+        if (this.elements.togglePreviewBtn) this.elements.togglePreviewBtn.addEventListener('click', () => this.togglePanel('preview'));
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
@@ -199,7 +210,12 @@ class VirtualPlayground {
         try {
             const blob = new Blob([html], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
-            frame.src = url;
+            // Revoke previous preview URL to avoid memory leaks
+            if (this._lastPreviewUrl) {
+                try { URL.revokeObjectURL(this._lastPreviewUrl); } catch (e) {}
+            }
+            this._lastPreviewUrl = url;
+            if (frame) frame.src = url;
         } catch (error) {
             console.error('Error rendering preview:', error);
             this.showToast('Error rendering preview', 'error');
@@ -225,13 +241,24 @@ class VirtualPlayground {
 
         const combinedCode = `<!-- HTML -->\n${html}\n\n<!-- CSS -->\n<style>\n${css}\n</style>\n\n<!-- JavaScript -->\n<script>\n${js}\n</script>`;
 
-        navigator.clipboard.writeText(combinedCode)
-            .then(() => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(combinedCode)
+                .then(() => this.showToast('Code copied to clipboard!', 'success'))
+                .catch(() => this.showToast('Failed to copy code', 'error'));
+        } else {
+            // Fallback for older browsers
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = combinedCode;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
                 this.showToast('Code copied to clipboard!', 'success');
-            })
-            .catch(() => {
+            } catch (e) {
                 this.showToast('Failed to copy code', 'error');
-            });
+            }
+        }
     }
 
     shareCode() {
@@ -241,13 +268,23 @@ class VirtualPlayground {
 
         const shareUrl = `${window.location.origin}${window.location.pathname}?html=${html}&css=${css}&js=${js}`;
 
-        navigator.clipboard.writeText(shareUrl)
-            .then(() => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareUrl)
+                .then(() => this.showToast('Share link copied!', 'success'))
+                .catch(() => this.showToast('Failed to copy link', 'error'));
+        } else {
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = shareUrl;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
                 this.showToast('Share link copied!', 'success');
-            })
-            .catch(() => {
+            } catch (e) {
                 this.showToast('Failed to copy link', 'error');
-            });
+            }
+        }
     }
 
     enterFullscreen() {

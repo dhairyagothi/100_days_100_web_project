@@ -25,7 +25,8 @@
                 </div>
             </div>
             <div class="header-right">
-                <select id="projectSelect" class="project-select">
+                <label for="projectSelect" class="visually-hidden">Select project</label>
+                <select id="projectSelect" class="project-select" aria-label="Select project">
                     <option value="">Select a project...</option>
                 </select>
             </div>
@@ -48,24 +49,24 @@
                 </div>
 
                 <div class="editor-wrapper">
-                    <textarea id="htmlEditor" class="code-editor active" placeholder="Enter HTML..."></textarea>
-                    <textarea id="cssEditor" class="code-editor" placeholder="Enter CSS..."></textarea>
-                    <textarea id="jsEditor" class="code-editor" placeholder="Enter JavaScript..."></textarea>
+                    <textarea id="htmlEditor" class="code-editor active" placeholder="Enter HTML..." aria-label="HTML editor"></textarea>
+                    <textarea id="cssEditor" class="code-editor" placeholder="Enter CSS..." aria-label="CSS editor"></textarea>
+                    <textarea id="jsEditor" class="code-editor" placeholder="Enter JavaScript..." aria-label="JavaScript editor"></textarea>
                     
                     <div class="line-numbers" id="lineNumbers"></div>
                 </div>
 
                 <div class="editor-controls">
-                    <button id="runBtn" class="btn-control btn-run">
+                    <button id="runBtn" class="btn-control btn-run" title="Run code" aria-label="Run code">
                         <i class="fas fa-play"></i> Run
                     </button>
-                    <button id="resetBtn" class="btn-control btn-reset">
+                    <button id="resetBtn" class="btn-control btn-reset" title="Reset code" aria-label="Reset code">
                         <i class="fas fa-redo"></i> Reset
                     </button>
-                    <button id="copyBtn" class="btn-control btn-copy">
+                    <button id="copyBtn" class="btn-control btn-copy" title="Copy code" aria-label="Copy code">
                         <i class="fas fa-copy"></i> Copy Code
                     </button>
-                    <button id="shareBtn" class="btn-control btn-share">
+                    <button id="shareBtn" class="btn-control btn-share" title="Share code" aria-label="Share code">
                         <i class="fas fa-share"></i> Share
                     </button>
                 </div>
