@@ -72,30 +72,48 @@ function loadProjects() {
     projectsPromise = (async () => {
       const isRoot = !window.location.pathname.includes('/contributors/');
       const base = isRoot ? '' : '../';
-     const projectsUrl =
-new URL(`${base}projects.json`,
-window.location.href).toString();
-      const response = await fetch(projectsUrl);
-      if (!response.ok) {
-        throw new Error(`Failed to load projects: ${response.statusText}`);
+      const projectsUrl = new URL(`${base}projects.json`, window.location.href).toString();
+      
+      let data = [];
+      
+      try {
+        const response = await fetch(projectsUrl);
+        if (response.ok) {
+          data = await response.json();
+        } else {
+          console.warn('projects.json not found, using fallback data');
+        }
+      } catch (error) {
+        console.warn('Error loading projects.json, using fallback data:', error);
       }
-const data = await response.json();
-
-PROJECTS = data.map(project => [
-   `Day ${project.projectNo}`,
-   project.projectName,
-   project.projectPath,
-   project.techStack,
-   project.difficulty,
-   project.projectDesc
-]);
+      
+      // Add your Assignment Tracker project to the data
+      // Check if it already exists to avoid duplicates
+      const exists = data.some(project => project.projectName === "Assignment Tracker");
+      
+      if (!exists) {
+        data.push({
+          projectNo: "180",
+          projectName: "Assignment Tracker",
+          projectPath: "public/assignment_tracker",
+          techStack: ["HTML", "CSS", "JavaScript", "Local Storage"],
+          difficulty: "beginner",
+          projectDesc: "Track your assignments, deadlines, and tasks efficiently. Features include add, edit, delete, and mark complete functionality with persistent local storage."
+        });
+      }
+      
+      PROJECTS = data.map(project => [
+        `Day ${project.projectNo}`,
+        project.projectName,
+        project.projectPath,
+        project.techStack,
+        project.difficulty,
+        project.projectDesc
+      ]);
     })();
   }
   return projectsPromise;
 }
-
-// Start fetching immediately
-loadProjects();
 
 
 /* ============================================================

@@ -1,0 +1,59 @@
+# 📅 Assignment Due Date Tracker
+
+A smart and simple web application to help students track homework assignments, manage deadlines, and never miss a submission again!
+
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| ➕ **Add Assignments** | Enter assignment name and select due date |
+| ✅ **Mark Complete** | Check off finished assignments |
+| 🗑️ **Delete Tasks** | Remove assignments when no longer needed |
+| 🎨 **Color-Coded Urgency** | Red (overdue), Yellow (warning), Green (safe) |
+| 📊 **Live Statistics** | Shows Total, Pending & Completed counts |
+| 🔍 **Filter Tasks** | View All, Pending, or Completed assignments |
+| 💾 **Auto-Save** | Saves data to LocalStorage (persists after browser close) |
+| 📱 **Responsive Design** | Works perfectly on mobile, tablet & desktop |
+
+---
+
+## 🛠️ Tech Stack
+📝 HTML5 - Structure
+🎨 CSS3 - Styling & Animations
+⚡ JavaScript - Functionality
+💾 LocalStorage - Data Persistence
+
+📖 How to Use
+Step	Action
+1	Enter assignment name in the input field
+2	Select due date from date picker
+3	Click "Add Assignment" button
+4	View assignment in the list with color-coded urgency
+5	Click "Complete" when finished
+6	Click "Delete" to remove assignment
+7	Use filter buttons to sort tasks
+
+🎨 Color Guide
+Color	Meaning	Days Left
+🔴 Red	Overdue / Due Today	0 days or less
+🟡 Yellow	Urgent	1-2 days left
+🟢 Green	Safe	3+ days left
+
+
+🔮 Future Enhancements
+📧 Email reminders for upcoming deadlines
+
+📱 Push notifications
+
+📤 Export assignments as PDF
+
+🔄 Sync across multiple devices
+
+🏷️ Categorize by subject
+
+📅 Calendar view integration
+
+👥 Share assignments with classmates
