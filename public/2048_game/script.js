@@ -34,6 +34,7 @@ const TILE_STYLES = {
   2048: { fontSize: '22px' },
 };
 
+
 const PARTICLE_COLORS = ['#ff6b6b', '#ffd54f', '#69f0ae', '#4fc3f7', '#e040fb', '#ff9800'];
 
 const ACHIEVEMENTS = [
@@ -58,8 +59,8 @@ let N        = 4;       // grid size
 let TS       = 94;      // tile size in px
 let GAP      = 10;      // gap between tiles
 let PAD      = 12;      // board padding
-
-let board, score, best, prevBoard, prevScore;
+let paused = false;
+let board, score, best, prevBoard, prevScore; 
 let moves    = 0;
 let combo    = 0;
 let over     = false;
@@ -87,6 +88,73 @@ function loadStats () {
 function saveStats () {
   try { localStorage.setItem('2048stats', JSON.stringify(stats)); } catch (_) {}
 }
+
+function logGameScore(s) {
+  stats.scoreHistory = stats.scoreHistory || [];
+  stats.scoreHistory.push(s);
+  if (stats.scoreHistory.length > 10) stats.scoreHistory.shift();
+  saveStats();
+}
+
+function togglePause() {
+  if (mode !== 'timed' || over) return;
+  paused = !paused;
+  const btn = document.getElementById('pausebtn');
+  if (paused) {
+    clearInterval(timerInterval);
+    btn.textContent = '▶ Resume';
+    showOverlayPause();
+  } else {
+    startTimer();
+    btn.textContent = '⏸ Pause';
+    document.getElementById('ov').style.display = 'none';
+  }
+
+// REPLACE this entire function:
+function showOverlayPause() {
+  const ov = document.getElementById('ov');
+  ov.className = 'ov';
+  ov.innerHTML = `
+    <div class="ov-title" style="color:#4fc3f7">⏸ Paused</div>
+    <div class="ov-sub">Game is paused</div>
+    <button class="btn" id="ov-resume-btn">▶ Resume</button>
+  `;
+  ov.style.display = 'flex';
+  document.getElementById('ov-resume-btn').addEventListener('click', togglePause);
+}
+}x
+
+
+function drawScoreGraph() {
+  const history = stats.scoreHistory || [];
+  const cv = document.getElementById('score-graph');
+  if (!cv || history.length < 2) return;
+  const ctx = cv.getContext('2d');
+  const W = cv.width = cv.offsetWidth || 260;
+  const H = cv.height = 80;
+  ctx.clearRect(0, 0, W, H);
+  const max = Math.max(...history, 1);
+  const step = W / (history.length - 1);
+  ctx.beginPath();
+  ctx.strokeStyle = '#ff9800';
+  ctx.lineWidth = 2.5;
+  history.forEach((v, i) => {
+    const x = i * step;
+    const y = H - (v / max) * (H - 8) - 4;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  // Dots
+  history.forEach((v, i) => {
+    const x = i * step;
+    const y = H - (v / max) * (H - 8) - 4;
+    ctx.beginPath();
+    ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffd54f';
+    ctx.fill();
+  });
+}
+
 
 function loadBest () {
   try { return parseInt(localStorage.getItem('2048best'), 10) || 0; } catch (_) { return 0; }
@@ -136,7 +204,18 @@ function addTile (b = board) {
 }
 
 function tilePos (r, c) {
-  return { top: PAD + r * (TS + GAP), left: PAD + c * (TS + GAP) };
+
+  let scale = 1;
+
+  if (window.innerWidth <= 415) scale = 0.88;
+  if (window.innerWidth <= 390) scale = 0.82;
+
+  const step = (TS + GAP) * scale;
+
+  return {
+    top:  PAD * scale + r * step,
+    left: PAD * scale + c * step
+  };
 }
 
 /* =========================================================
@@ -144,10 +223,21 @@ function tilePos (r, c) {
    ========================================================= */
 
 function applyGridDimensions () {
-  if (mode === 'zen') { N = 5; TS = 74; GAP = 8; PAD = 10; }
-  else                { N = 4; TS = 94; GAP = 10; PAD = 12; }
+
+  if (mode === 'zen') {
+    N = 5;
+  } else {
+    N = 4;
+  }
+
+  const styles = getComputedStyle(document.documentElement);
+
+  TS  = parseInt(styles.getPropertyValue('--tile-size'));
+  GAP = parseInt(styles.getPropertyValue('--tile-gap'));
+  PAD = parseInt(styles.getPropertyValue('--board-pad'));
 
   const bd = document.getElementById('bd');
+
   bd.style.gridTemplateColumns = `repeat(${N}, ${TS}px)`;
   bd.style.gridTemplateRows    = `repeat(${N}, ${TS}px)`;
 }
@@ -247,10 +337,16 @@ function doMove (dir) {
 
   if (isLost()) {
     over = true;
+    showToast(
+      reviveChance > 0
+      ? `Chance left: ${reviveChance}`
+      : 'No chances left'
+    );
     if (mode === 'timed') clearInterval(timerInterval);
     stats.games++;
     stats.best = Math.max(stats.best, score);
     stats.bestTile = Math.max(stats.bestTile, mt);
+    logGameScore(score); 
     saveStats();
     clearSavedGame();
     setTimeout(() => showOverlay('lose'), 350);
@@ -331,16 +427,17 @@ function updateTimerBar () {
   fill.className = 'timer-fill' + (timeLeft <= 15 ? ' danger' : '');
 }
 
+
+
 /* =========================================================
    Rendering
    ========================================================= */
-
 function renderBoard () {
   const bd = document.getElementById('bd');
   bd.innerHTML = '';
   const size = PAD * 2 + N * TS + (N - 1) * GAP;
   bd.style.width = size + 'px';
-
+  bd.style.height = size + 'px';
   const tl = document.getElementById('tl');
   tl.style.width  = size + 'px';
   tl.style.height = size + 'px';
@@ -460,9 +557,16 @@ function showOverlay (type) {
     <button class="btn" id="ov-replay-btn">Play Again</button>
   `;
   ov.style.display = 'flex';
-  document.getElementById('ov-replay-btn').addEventListener('click', () => init());
-}
+// FIX: Clear out any previous listeners using a fresh replacement element reference
+  const replayBtn = document.getElementById('ov-replay-btn');
+  replayBtn.onclick = () => init();
 
+  // Keep incoming button 2 feature from main branch while maintaining memory leak safety
+  const replayBtn2 = document.getElementById('ov-replay-btn2');
+  if (replayBtn2) {
+    replayBtn2.onclick = watchReplay;
+  }
+}
 function showToast (msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -627,16 +731,19 @@ document.getElementById('nb').addEventListener('click', () => {
 
 document.getElementById('ub').addEventListener('click', () => {
   if (!prevBoard) { showToast('Nothing to undo'); return; }
+
   board     = prevBoard;
   score     = prevScore;
   prevBoard = null;
   moves     = Math.max(0, moves - 1);
   over      = false;
   won       = false;
+
   renderBoard();
   renderTiles();
   updateUI();
   document.getElementById('ov').style.display = 'none';
+
   showToast('Undone!');
 });
 
@@ -675,7 +782,7 @@ const KEY_MAP = {
 };
 
 document.addEventListener('keydown', e => {
-  const dir = KEY_MAP[e.key];
+ const dir = KEY_MAP[e.key];
   if (dir) { e.preventDefault(); doMove(dir); }
 });
 

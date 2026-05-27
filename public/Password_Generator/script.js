@@ -1,7 +1,6 @@
-// ── DOM Selectors ──
-const warningMsg      = document.getElementById("warningMsg");
-const inputSlider     = document.querySelector("[data-lengthSlider]");
-const lengthDisplay   = document.querySelector("[data-lengthNumber]");
+const warningMsg = document.getElementById("warningMsg");
+const inputSlider = document.querySelector("[data-lengthSlider]");
+const lengthDisplay = document.querySelector("[data-lengthNumber]");
 const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn         = document.querySelector("[data-copy]");
 const copyMsg         = document.querySelector("[data-copyMsg]");
@@ -61,10 +60,14 @@ function generateUpperCase() { return String.fromCharCode(getRndInteger(65, 91))
 function generateSymbol() { return symbols.charAt(getRndInteger(0, symbols.length)); }
 
 function calcStrength() {
-    const hasUpper = uppercaseCheck.checked;
-    const hasLower = lowercaseCheck.checked;
-    const hasNum   = numbersCheck.checked;
-    const hasSym   = symbolsCheck.checked;
+    let hasUpper = false;
+    let hasLower = false;
+    let hasNum = false;
+    let hasSym = false;
+    if (uppercaseCheck.checked) hasUpper = true;
+    if (lowercaseCheck.checked) hasLower = true;
+    if (numbersCheck.checked) hasNum = true;
+    if (symbolsCheck.checked) hasSym = true;
 
     if (hasUpper && hasLower && (hasNum || hasSym) && passwordLength >= 8) {
         setIndicator("#0f0"); strengthText.innerText = "Strong";
@@ -89,6 +92,41 @@ function updateSuggestions() {
         suggestionsText.innerText = "Suggestions: Include " + missing.join(", ");
         suggestionsText.style.color = "var(--vb-yellow)";
     }
+    updateSuggestions();
+}
+
+function updateSuggestions() {
+    if (!suggestionBox) return;
+    const hasUpper = uppercaseCheck.checked;
+    const hasLower = lowercaseCheck.checked;
+    const hasNum = numbersCheck.checked;
+    const hasSym = symbolsCheck.checked;
+    const suggestions = [];
+    const strength = (strengthText && strengthText.innerText) ? strengthText.innerText : '';
+
+    if (strength === 'Strong') {
+        suggestionBox.innerText = '';
+        return;
+    }
+    if (strength === 'Medium') {
+        if (!(hasUpper && hasLower)) {
+            if (!hasUpper) suggestions.push('Include uppercase letters');
+            if (!hasLower) suggestions.push('Include lowercase letters');
+        }
+        if (!(hasNum || hasSym)) suggestions.push('Include numbers or symbols');
+        if (passwordLength < 8) suggestions.push('Increase length to at least 8');
+    } else {
+        if (!(hasLower || hasUpper)) {
+            suggestions.push('Include lowercase or uppercase letters');
+        } else {
+            if (!hasLower) suggestions.push('Include lowercase letters');
+            if (!hasUpper) suggestions.push('Include uppercase letters');
+        }
+        if (!(hasNum || hasSym)) suggestions.push('Include numbers or symbols');
+        if (passwordLength < 6) suggestions.push('Increase length to at least 6');
+    }
+    if (suggestions.length === 0) suggestionBox.innerText = '';
+    else suggestionBox.innerText = 'Suggestions: ' + suggestions.join(', ');
 }
 
 async function copyContent() {
@@ -97,15 +135,21 @@ async function copyContent() {
         copyMsg.innerText = "Copied!";
     } catch (e) { copyMsg.innerText = "Failed"; }
     copyMsg.classList.add("active");
-    setTimeout(() => copyMsg.classList.remove("active"), 2000);
+    setTimeout(() => {
+        copyMsg.classList.remove("active");
+    }, 2000);
 }
 
 function shufflePassword(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
     }
-    return array.join("");
+    let str = "";
+    array.forEach((el) => (str += el));
+    return str;
 }
 
 function handleCheckBoxChange() {
@@ -153,6 +197,7 @@ useCustomWordCheck.addEventListener("change", () => {
 inputSlider.addEventListener("input", (e) => {
     passwordLength = parseInt(e.target.value);
     handleSlider();
+    calcStrength();
 });
 
 copyBtn.addEventListener("click", () => { if (passwordDisplay.value) copyContent(); });
@@ -196,7 +241,6 @@ generateBtn.addEventListener("click", () => {
 
     clearTimeout(hideTimeout);
     clearInterval(countdownInterval);
-
     let timeLeft = 10;
     if (hideTimerText) hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
 
@@ -215,3 +259,7 @@ generateBtn.addEventListener("click", () => {
 
     calcStrength();
 });
+
+if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener('click', clearPasswordHistory);
+}

@@ -13,8 +13,7 @@ let currentPage = 1;
 let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
-let currentCategory = 'all';
-let currentDifficulty = 'all';
+
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
@@ -26,185 +25,239 @@ let techSearchQuery = ''; // Current tech search input
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
   'js': 'javascript',
-  'react': 'javascript', // React projects are tagged as 'javascript'
-  'node': 'javascript',  // Node projects are tagged as 'javascript'
+  'react': 'javascript',
+  'node': 'javascript',
   'vue': 'javascript',
-  'python': 'api',       // Python/Flask projects are tagged as 'api javascript'
+  'python': 'api',
   'flask': 'api',
   'game': 'game',
   'games': 'game',
 };
 
-const PROJECT_DATA = [
-  ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
-  ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', 'javascript', 'beginner'],
-  ['Day 3', 'Indian Flag', './public/indianflag/flag.html', 'css', 'beginner'],
-  ['Day 4', 'Dropdown Nav Bar', './public/dropdown_navbar/index.html', 'css', 'beginner'],
-  ['Day 5', 'Animated Cursor', './public/Animated-cursor/animated-cursor.html', 'ui javascript css', 'beginner'],
-  ['Day 6', 'Auto Background Image Slider', './public/Background-Image-sider/slider.html', 'javascript', 'beginner'],
-  ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'html css javascript', 'advanced'],
-  ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', 'css', 'intermediate'],
-  ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', 'javascript', 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr_generator/qr.html', 'api javascript', 'intermediate'],
-  ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
-  ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
-  ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
-  ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
-  ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
-  ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
-  ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
-  ['Day 18',
- 'Carousel Solar System',
- './public/Carousel%20Solar%20System/index.html',
- 'css canvas',
- 'intermediate'],
-  ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
-  ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website', 'javascript', 'intermediate'],
-  ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'ui css', 'beginner'],
-  ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
-  ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'intermediate'],
-  ['Day 25', 'Tic-Tac-Toe', './public/TicTacToe/index.html', 'game javascript', 'beginner'],
-  ['Day 26', 'Maze Game', './public/Maze-Game-main/index.html', 'game javascript', 'intermediate'],
-  ['Day 27', 'Memory Game', './public/MemoryGame/index.html', 'game javascript', 'beginner'],
-  ['Day 28', 'Wordle', './public/WORDLE/index.html', 'game javascript', 'intermediate'],
-  ['Day 29', 'Snake Game', './public/snake_game/index.html', 'game javascript', 'beginner'],
-  ['Day 30', 'Flappy-bird-game', './public/Flappy-bird-main/index.html', 'game canvas', 'intermediate'],
-  ['Day 31', 'Password Manager', './public/password%20manager/index.html', 'tool javascript', 'intermediate'],
-  ['Day 32', 'Missionaries & Cannibals', './public/Missionaries&Cannibals/index.html', 'game javascript', 'intermediate'],
-  ['Day 33', 'Weather Forecasting', './public/Weather%20Forcasting/index.html', 'weather api', 'intermediate'],
-  ['Day 34', 'Email Validator', './public/email%20validator/index.html', 'api javascript', 'beginner'],
-  ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', 'tool javascript', 'beginner'],
-  ['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
-  ['Day 37', '2048 Game', './public/2048_game/index.html', 'game javascript', 'intermediate'],
-  ['Day 38', 'Github Profile Finder', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder', 'api javascript', 'intermediate'],
-  ['Day 39', 'Notes App', './public/notes-app/index.html', 'todo javascript', 'beginner'],
-  ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', 'javascript css', 'beginner'],
-  ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', 'game canvas', 'intermediate'],
-  ['Day 42', 'Amazon App', './public/Amazon_Clone/index.html', 'clone javascript', 'intermediate'],
-  ['Day 43', 'Password Generator', './public/Password_Generator/index.html', 'tool javascript', 'beginner'],
-  ['Day 44', 'BMI Calculator', './public/BMI_Calculator/index.html', 'tool javascript', 'beginner'],
-  ['Day 45', 'Black Jack', './public/BlackJack/blackJ.html', 'game javascript', 'intermediate'],
-  ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', 'javascript', 'beginner'],
-  ['Day 47', 'Ping Pong Game', './public/ping/index.html', 'game canvas', 'intermediate'],
-  ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', 'api javascript', 'intermediate'],
-  ['Day 49', 'Url Shortener', 'https://github.com/chandankoranga02/100_days_100_web_project/tree/Main/public/url_shortener', 'api javascript', 'intermediate'],
-  ['Day 50', 'Recipe Genie', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe%20Genie', 'api javascript', 'intermediate'],
-  ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', 'clone css', 'beginner'],
-  ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', 'weather api', 'intermediate'],
-  ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', 'javascript', 'intermediate'],
-  ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 55', 'Cricket Game', './public/cricket/index.html', 'game javascript', 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/pastebin', 'javascript', 'intermediate'],
-  ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', 'ui css', 'beginner'],
-  ['Day 58', 'Music App', './public/Music%20App/index.html', 'api javascript', 'intermediate'],
-  ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', 'css', 'beginner'],
-  ['Day 60', 'Marketing template website', './public/marketing_website/index.html', 'css', 'beginner'],
-  ['Day 61', 'Hologram Button', './public/Holo%20Button/index.html', 'ui css', 'beginner'],
-  ['Day 62', 'Solar System Explorer', './public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html', 'css', 'intermediate'],
-  ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', 'api javascript', 'intermediate'],
-  ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', 'clone css', 'beginner'],
-  ['Day 65', 'The Cube', './public/The%20Cube/index.html', 'ui canvas css', 'intermediate'],
-  ['Day 66', 'Flask Authentication App', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app', 'api javascript', 'intermediate'],
-  ['Day 67', 'Blog-Website', './public/blog/main.html', 'css', 'beginner'],
-  ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
-  ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
-  ['Day 70', 'Insect-Catch_Game', './public/Insect-Catch-Game/index.html', 'game canvas', 'intermediate'],
-  ['Day 71', 'Quotely Laughs', './public/Quotely-Laughs/index.html', 'api javascript', 'beginner'],
-  ['Day 72', 'Contact Book', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book', 'todo javascript', 'intermediate'],
-  ['Day 73', 'Candy_Crush_Game', './public/Candy_Crush_Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', 'tool javascript', 'beginner'],
-  ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', 'game canvas', 'intermediate'],
-  ['Day 76', 'Animated Searchbar', './public/Animated%20Searchbar/index.html', 'ui css javascript', 'beginner'],
-  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', 'game javascript', 'intermediate'],
-  ['Day 78', 'NPM Package Search', './public/NPM%20Package%20Search/index.html', 'tool api javascript', 'intermediate'],
-  ['Day 79', 'Linkedin Homepage Clone', './public/Linkedin-Clone/index.html', 'clone css', 'intermediate'],
-  ['Day 80', 'Resume Studio', './public/ResumeStudio/index.html', 'tool javascript', 'intermediate'],
-  ['Day 81', 'Simon Says Game', './public/Simon_Says_Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 82', 'Love Calculator Game', './public/Love-Calculator/index.html', 'game javascript', 'beginner'],
-  ['Day 83', 'Exchange Currency', './public/Exchange_Currency/index.html', 'tool api javascript', 'intermediate'],
-  ['Day 84', 'Lights Out Puzzle', './public/Lights_Out_Puzzle/index.html', 'game javascript', 'intermediate'],
-  ['Day 85', 'Image Search Engine', './public/Image Search Engine/index.html', 'api javascript', 'intermediate'],
-  ['Day 86', 'Profile Card', './public/3d profile Card/index.html', 'ui css', 'beginner'],
-  ['Day 87', 'Breakout game', './public/Breakout game/index.html', 'game canvas', 'intermediate'],
-  ['Day 88', 'Job dashboard', './public/Job dashboard/jobs.html', 'tool javascript', 'intermediate'],
-  ['Day 89', 'N-Queen', './public/N_Queen/index.html', 'game javascript', 'intermediate'],
-  ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', 'javascript', 'beginner'],
-  ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', 'api javascript', 'intermediate'],
-  ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 93', 'TextUtils', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils', 'javascript', 'beginner'],
-  ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', 'game javascript', 'intermediate'],
-  ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', 'todo javascript', 'intermediate'],
-  ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', 'ui css javascript', 'beginner'],
-  ['Day 97', 'Time Capsule', './public/Time-Capsule/index.html', 'javascript', 'intermediate'],
-  ['Day 98', 'Virtual Piano', './public/Virtual Piano/index.html', 'css javascript', 'intermediate'],
-  ['Day 99', 'NASA-APOD Extension', './public/NASA-APOD/popup.html', 'api javascript', 'intermediate'],
-  ['Day 100', 'Text Saver Extension', './public/Text_Saver_Ext/popup.html', 'todo javascript', 'intermediate'],
-  ['Day 101', 'Personal Finance Tracker', './public/FinanceTracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 102', 'Travel Booking Website', './public/Travel_booking_website/index.html', 'javascript', 'intermediate'],
-  ['Day 103', 'Drumkit Game', './public/Drumkit_Game/index.html', 'game javascript', 'beginner'],
-  ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
-  ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
-  ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-  ['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
-  ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
-  ['Day 111', 'Whack-a-Mole Game', './public/Whack-a-Mole Game/index.html', 'game canvas', 'intermediate'],
-  ['Day 112', 'Nykaa Clone Website', './public/Nykaa-clone/index.html', 'clone css', 'intermediate'],
-  ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'tool javascript', 'intermediate'],
-  ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
-  ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-  ['Day 116', 'AI Image Classifier', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AI Image Classifier/', 'api javascript', 'intermediate'],
-  ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'ui tool html css js', 'intermediate'],
-  ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
-  ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
-  ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
-  ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
-  ['Day 125', 'Snakeladder',   './public/snakeladder/index.html', 'game', 'intermediate'],
-  ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
-  ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
-  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
-  ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
-  ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
-  ["Day 131", "Retro Highway Racer", "/public/RetroHighwayRacer/index.html", 'game javascript', 'intermediate'],
-  ['Day 132', 'Pokedex', './public/Pokedex/index.html', 'utility', 'intermediate'],
-  ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
-  ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
-  ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
-  ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', 'game javascript', 'intermediate'],
-  ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
-  ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
-  ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
-  ['Day 140', 'Big Sales Prediction',
- 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
-  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
-  ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
-  ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
-  ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
-  ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
-  ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
-];
-// Alias for consistency
-const PROJECTS = PROJECT_DATA;
-console.log('PROJECTS defined:', PROJECTS.length, 'items');
+/* Maps data-filter values on chip buttons to display category names */
+const FILTER_CATEGORY_MAP = {
+  'all': 'all',
+  'game': 'Games',
+  'clone': 'Clones',
+  'tool': 'Tools',
+  'ui': 'UI / Animation',
+  'api': 'APIs',
+};
+
+/**
+ * Derive a display category from a project's tags and name.
+ * Uses the existing tag structure so no new data field is needed.
+ */
+function getCategoryFromTags(tags, name) {
+  const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
+  const nameStr = (name || '').toLowerCase();
+
+  if (tagStr.includes('game')) return 'Games';
+  if (tagStr.includes('clone')) return 'Clones';
+  if (tagStr.includes('tool')) return 'Tools';
+  if (tagStr.includes('ui')) return 'UI / Animation';
+  if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
+
+  if (nameStr.includes('clone')) return 'Clones';
+  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+
+  return 'Tools';
+}
+
+let PROJECTS = [];
+let projectsPromise = null;
+
+function loadProjects() {
+  if (!projectsPromise) {
+    projectsPromise = (async () => {
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const base = isRoot ? '' : '../';
+     const projectsUrl =
+new URL(`${base}projects.json`,
+window.location.href).toString();
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
+      }
+const data = await response.json();
+
+PROJECTS = data.map(project => [
+   `Day ${project.projectNo}`,
+   project.projectName,
+   project.projectPath,
+   project.techStack,
+   project.difficulty,
+   project.projectDesc
+]);
+    })();
+  }
+  return projectsPromise;
+}
+
+// Start fetching immediately
+loadProjects();
 
 
 /* ============================================================
-   SOURCE CODE URL GENERATOR
+   PROJECT LINK RESOLUTION (demo vs source / source-only)
    ============================================================ */
-function getSourceUrl(url) {
-  const trimmed = url.trim();
-  if (trimmed.startsWith('http')) return trimmed; // Already a full GitHub link
+const SOURCE_ONLY_TAG = 'source-only';
+
+/** Live demos hosted outside the repo — Code links point to in-repo source folders */
+const EXTERNAL_DEMO_SOURCE_FOLDERS = {
+  'Day 20': 'public/EveSparks',
+  'Day 115': 'public/event-registration-system',
+};
+
+function isGithubTreeUrl(url) {
+  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(String(url || '').trim());
+}
+
+function parseGithubTreePath(url) {
+  const match = String(url || '').trim().match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
+  return match ? decodeURIComponent(match[1].replace(/\/$/, '')) : null;
+}
+
+function isSourceOnlyProject(day, tags) {
+  if (day === 'Day 13' || day === 'Day 72') return true;
+  const tagList = Array.isArray(tags)
+    ? tags
+    : String(tags || '').split(/\s+/).filter(Boolean);
+  return tagList.includes(SOURCE_ONLY_TAG);
+}
+
+function githubTreeToLocalDemo(url) {
+  const folderPath = parseGithubTreePath(url);
+  if (!folderPath) return null;
+  return `./${folderPath}/index.html`;
+}
+
+function getSourceUrl(url, day) {
+  const trimmed = (url || '').trim();
+  const repoSourceFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
+  if (repoSourceFolder) {
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${repoSourceFolder}`;
+  }
+  if (isGithubTreeUrl(trimmed)) return trimmed;
+  if (trimmed.startsWith('http')) return trimmed;
   if (trimmed.startsWith('./')) {
-    // Converts "./public/folder/index.html" to "public/folder"
     const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
   }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
+}
+
+function resolveProjectUrls(day, name, url, tags) {
+  const trimmed = (url || '').trim();
+  const sourceOnly = isSourceOnlyProject(day, tags);
+  let demoUrl = trimmed;
+  let sourceUrl = getSourceUrl(trimmed, day);
+
+  if (isGithubTreeUrl(trimmed)) {
+    sourceUrl = trimmed;
+    demoUrl = sourceOnly ? trimmed : (githubTreeToLocalDemo(trimmed) || trimmed);
+  }
+
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
+    try {
+      demoUrl = new URL(demoUrl, window.location.href).href;
+    } catch (error) {
+      // Keep the original path if URL normalization fails.
+    }
+  }
+
+  return { demoUrl, sourceUrl, sourceOnly };
+}
+
+function getProjectDescription(project) {
+  return (
+      project[5] ||
+      'Explore this project to discover interactive functionality.'
+  );
+}
+
+function buildProjectCardHTML({
+  day,
+  name,
+  url,
+  tags,
+  category,
+  isBookmarked = false,
+  showDescription = true,
+}) {
+  const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(day, name, url, tags);
+  const tagsArray = Array.isArray(tags)
+    ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+    : String(tags || '')
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+  const project =
+PROJECTS.find(p => p[1] === name);
+
+const description =
+getProjectDescription(project);
+  const sourceOnlyBadge = sourceOnly
+    ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
+    : '';
+  const primaryLink = sourceOnly
+    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Source
+                    </a>`
+    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>`;
+  const codeLink = sourceOnly
+    ? ''
+    : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Code
+                    </a>`;
+
+  return {
+    html: `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category-wrap">
+                  <span class="card-category">${category}</span>
+                  ${sourceOnlyBadge}
+                </span>
+            </div>
+            <div class="card-name">${name}</div>
+            ${
+              showDescription
+                ? `<div class="card-description">
+    ${description}
+</div>`
+                : ''
+            }
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    ${primaryLink}
+                    ${codeLink}
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `,
+    demoUrl,
+    sourceOnly,
+  };
+}
+
+function attachProjectCardInteraction(card, demoUrl, projectData = null) {
+  card.style.cursor = 'pointer';
+  card.onclick = (e) => {
+    if (e.target.closest('a, button')) return;
+    
+    // Track the project visit if projectData is provided
+    if (projectData) {
+      trackRecentProject(projectData);
+    }
+    
+    window.open(demoUrl, '_blank', 'noopener');
+  };
 }
 
 
@@ -233,13 +286,13 @@ function normalizeTech(tech) {
 function matchesTechStack(projectTags) {
   // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-  
+
   // Handle empty or missing tags
   if (!projectTags) return false;
-  
+
   // Convert to single lowercase string for efficient matching
   const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
-  
+
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
   return techStackFilters.every(filter => tagsLower.includes(filter));
@@ -262,10 +315,10 @@ function removeTechFilter(tech) {
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = '';
-  
+
   const input = document.getElementById('techStackSearch');
   if (input) input.value = '';
-  
+
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -277,22 +330,22 @@ function updateTechFilterDisplay() {
   const container = document.getElementById('activeTechFilters');
   const tagsContainer = document.getElementById('techFilterTags');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!container || !tagsContainer) return;
-  
+
   // Show/hide clear button in search input
   if (clearBtn) {
     clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
   }
-  
+
   // Show/hide active filters container
   if (techStackFilters.length === 0) {
     container.style.display = 'none';
     return;
   }
-  
+
   container.style.display = 'flex';
-  
+
   // Render filter tags with remove buttons
   tagsContainer.innerHTML = techStackFilters.map(tech => `
     <span class="tech-filter-tag">
@@ -311,22 +364,20 @@ function updateTechFilterDisplay() {
  */
 function getAllTechnologies() {
   const techSet = new Set();
-  
+
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string' 
-        ? tags.split(/\s+/).filter(t => t) 
+      const tagArray = typeof tags === 'string'
+        ? tags.split(/\s+/).filter(t => t)
         : tags;
-      
+
       tagArray.forEach(tag => {
         techSet.add(tag.toLowerCase());
       });
     }
   });
-  
-  const techs = Array.from(techSet).sort();
-  console.log('Available technologies:', techs); // Debug: show available techs
-  return techs;
+
+  return Array.from(techSet).sort();
 }
 
 /* ============================================================
@@ -340,40 +391,116 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
+const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
 
-// Category labels mapping
+/**
+ * Migrates old recent projects format (array) to new format (object with timestamp)
+ * If stored format doesn't have timestamps, it's likely the old format
+ */
+function migrateRecentProjects() {
+  if (recentProjects.length === 0) return;
+  
+  // Check if already in new format (has timestamp)
+  if (typeof recentProjects[0] === 'object' && recentProjects[0].timestamp) {
+    return; // Already migrated
+  }
+  
+  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
+  recentProjects = recentProjects.map((project) => {
+    if (Array.isArray(project)) {
+      return {
+        day: project[0],
+        name: project[1],
+        url: project[2],
+        tags: project[3],
+        timestamp: Date.now() - (ONE_HOUR_MS / 2) // Set to 30 mins ago to preserve them initially
+      };
+    }
+    return project;
+  });
+  
+  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+}
+
+// Migrate on load
+migrateRecentProjects();
+
+/**
+ * Cleans up recent projects older than 1 hour
+ * Called periodically and on page load
+ */
+function cleanupExpiredRecentProjects() {
+  const initialLength = recentProjects.length;
+  recentProjects = getRecentProjectsWithinWindow();
+  
+  if (recentProjects.length !== initialLength) {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    renderRecentProjects();
+  }
+}
+
+// Clean up on page load
+cleanupExpiredRecentProjects();
+
+// Clean up every 5 minutes
+setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
-console.log('CATEGORY_LABEL defined:', CATEGORY_LABEL);
 
 /* ============================================================
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
+
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+
+  const setFallback = () => {
+    set('starCount', 'N/A');
+    set('forkCount', 'N/A');
+    set('issueCount', 'N/A');
+    set('prCount', 'N/A');
+  };
+
   try {
+
+    // Optional loading state
+    set('starCount', 'Loading...');
+    set('forkCount', 'Loading...');
+    set('issueCount', 'Loading...');
+    set('prCount', 'Loading...');
+
     const [repoRes, prRes] = await Promise.all([
       fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`),
+      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
     ]);
-    if (!repoRes.ok || !prRes.ok) throw new Error('Stats fetch failed');
+
+    if (!repoRes.ok || !prRes.ok) {
+      throw new Error("GitHub API request failed");
+    }
+
     const repo = await repoRes.json();
     const prs = await prRes.json();
 
-    const set = (id, val) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = Number(val).toLocaleString();
-    };
-    set('starCount', repo.stargazers_count);
-    set('forkCount', repo.forks_count);
-    set('issueCount', repo.open_issues_count - prs.total_count);
-    set('prCount', prs.total_count);
+    set('starCount', repo.stargazers_count.toLocaleString());
+    set('forkCount', repo.forks_count.toLocaleString());
+    set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
+    set('prCount', prs.total_count.toLocaleString());
+
   } catch (e) {
-    console.warn('GitHub stats unavailable:', e.message);
+
+    console.warn("GitHub stats unavailable:", e.message);
+
+    // Show fallback text instead of permanent dashes
+    setFallback();
   }
 }
-
 function generateReadme() {
   try {
     const lines = [];
@@ -381,9 +508,10 @@ function generateReadme() {
     lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
     lines.push('');
     lines.push('## Projects');
-    PROJECTS.forEach(([day, name, url, tags, cat]) => {
-      const safeUrl = url || '';
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${cat}_`);
+    PROJECTS.forEach(([day, name, url, tags]) => {
+      const { demoUrl } = resolveProjectUrls(day, name, url, tags);
+      const category = getCategoryFromTags(tags, name);
+      lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
     });
 
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
@@ -405,88 +533,110 @@ function generateReadme() {
    ============================================================ */
 let activeFilter = 'all';
 let searchQuery = '';
+let sortOption = 'default';
+let techStackFilter = 'all';
+let difficultyFilter = 'all';
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, , tags, cat]) => {
-    // 1. Category filter (beginner/intermediate)
-    const matchesFilter = activeFilter === 'all' || cat === activeFilter;
-    
-    // 2. Name/Day search
-    const q = searchQuery.toLowerCase();
-    const matchesSearch =
-      !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
-    
-    // 3. Technology stack filter (NEW)
-    const matchesTech = matchesTechStack(tags);
-    
-    // Combine all three filters
-    return matchesFilter && matchesSearch && matchesTech;
+  if (typeof updateClearFiltersBtnVisibility === 'function') {
+    updateClearFiltersBtnVisibility();
+  }
+
+  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
+    // Category filter
+    const category = getCategoryFromTags(tags, name);
+    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
+    const matchesFilter = activeFilter === 'all' || category === targetCategory;
+
+    // Search filter
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch = !q || q.split(/\s+/).every(term =>
+      name.toLowerCase().includes(term) ||
+      day.toLowerCase().includes(term) ||
+      ((Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase().includes(term))
+    );
+
+    // Tech stack dropdown filter
+    let matchesTech = true;
+    if (techStackFilter && techStackFilter !== 'all') {
+      const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
+      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+    }
+
+    // Difficulty filter
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== 'all') {
+      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
+    }
+
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
 
-  console.log('Filtered projects:', filtered.length, 'out of', PROJECTS.length); // Debug log
+  // Apply sorting
+  if (sortOption === 'az') {
+    filtered.sort((a, b) => a[1].localeCompare(b[1]));
+  } else if (sortOption === 'latest') {
+    filtered.sort((a, b) => {
+      const dayA = parseInt(a[0].replace('Day ', ''));
+      const dayB = parseInt(b[0].replace('Day ', ''));
+      return dayB - dayA;
+    });
+  } else if (sortOption === 'difficulty') {
+    const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
+    filtered.sort((a, b) => {
+      const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
+      const diffB = b[4] ? difficultyOrder[b[4].toLowerCase()] || 0 : 0;
+      return diffA - diffB;
+    });
+  }
 
   grid.innerHTML = '';
 
   if (filtered.length === 0) {
     grid.style.display = 'none';
-    noResults.style.display = 'block';
+    if (noResults) noResults.style.display = 'block';
     const container = document.getElementById('paginationContainer');
-    if (container) container.innerHTML = '';
+    if (container) container.remove();
     return;
   }
 
   grid.style.display = 'grid';
-  noResults.style.display = 'none';
+  if (noResults) noResults.style.display = 'none';
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-  if (currentPage > totalPages) {
-    currentPage = totalPages;
-  }
-  if (currentPage < 1) {
-    currentPage = 1;
-  }
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
+  const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags, cat]) => {
+  pageItems.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category ${cat}">${CATEGORY_LABEL[cat] || cat}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
-    grid.appendChild(card);
+    fragment.appendChild(card);
   });
-
+  grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
@@ -595,7 +745,7 @@ function renderPagination(totalItems, totalPages) {
   controlsDiv.appendChild(nextBtn);
 
   container.appendChild(controlsDiv);
-  
+
   // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
@@ -610,9 +760,9 @@ function scrollToProjectSection() {
   const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
-  
+
   // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
-  const duration = 100; 
+  const duration = 100;
   let startTime = null;
 
   function animation(currentTime) {
@@ -654,11 +804,49 @@ function toggleBookmark(project) {
   renderRecentProjects();
 }
 
-function trackRecentProject(project) {
-  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
-  recentProjects.unshift(project);
+/**
+ * Removes projects older than 1 hour from the recent projects list
+ * @returns {array} Filtered recent projects within the 1-hour window
+ */
+function getRecentProjectsWithinWindow() {
+  const now = Date.now();
+  return recentProjects.filter((item) => {
+    const timestamp = item.timestamp || Date.now();
+    const age = now - timestamp;
+    return age <= ONE_HOUR_MS;
+  });
+}
 
-  if (recentProjects.length > 10) {
+/**
+ * Tracks a recently viewed project with a timestamp
+ * @param {array} project - Project data [day, name, url, tags]
+ */
+function trackRecentProject(project) {
+  // Convert old format to new format if needed
+  let projectObj;
+  if (Array.isArray(project)) {
+    projectObj = {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+      timestamp: Date.now()
+    };
+  } else {
+    projectObj = {
+      ...project,
+      timestamp: Date.now()
+    };
+  }
+
+  // Remove duplicate if exists
+  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  
+  // Add to front
+  recentProjects.unshift(projectObj);
+
+  // Keep only the 20 most recent entries (not filtered by time yet)
+  if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
@@ -685,33 +873,22 @@ function renderBookmarks() {
 
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
+  visibleBookmarks.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked: true,
+      showDescription: true,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn active" data-id="${day}">
-                    <i class="fa-solid fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     bookmarkGrid.appendChild(card);
   });
@@ -724,46 +901,44 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = '';
 
-  if (recentProjects.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+  // Filter projects within the 1-hour window
+  const validRecent = getRecentProjectsWithinWindow();
+
+  if (validRecent.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
     return;
   }
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display = validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags, cat]) => {
+  visibleRecent.forEach((projectObj) => {
+    // Handle both old array format and new object format
+    const day = projectObj.day || projectObj[0];
+    const name = projectObj.name || projectObj[1];
+    const url = projectObj.url || projectObj[2];
+    const tags = projectObj.tags || projectObj[3];
+    
+    const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: false,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${CATEGORY_LABEL[cat]}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     recentGrid.appendChild(card);
   });
@@ -775,12 +950,37 @@ function renderRecentProjects() {
 
 const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
 const recentToggleBtn = document.getElementById('recentToggleBtn');
+const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener('click', () => {
     showAllBookmarks = !showAllBookmarks;
     bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
     renderBookmarks();
+  });
+}
+
+if (copyBookmarksBtn) {
+  copyBookmarksBtn.addEventListener('click', async () => {
+    if (bookmarkedProjects.length === 0) {
+      showToast('No bookmarks to copy!');
+      return;
+    }
+    const textToCopy = bookmarkedProjects.map(p => {
+      const projectName = p[1];
+      const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
+      const projectLink = demoUrl.startsWith('http')
+        ? demoUrl
+        : new URL(demoUrl, window.location.href).href;
+      return `${projectName} - ${projectLink}`;
+    }).join('\n');
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      showToast('Bookmarks copied to clipboard!');
+    } catch (err) {
+      showToast('Failed to copy bookmarks.');
+    }
   });
 }
 
@@ -794,6 +994,8 @@ if (recentToggleBtn) {
 
 function showToast(message) {
   const toast = document.getElementById('toast');
+  if (!toast) return;
+
   toast.textContent = message;
   toast.classList.add('show');
 
@@ -809,6 +1011,8 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   const projectDay = bookmarkBtn.dataset.id;
   const project = PROJECTS.find((item) => item[0] === projectDay);
+  if (!project) return;
+
   toggleBookmark(project);
 });
 
@@ -822,6 +1026,77 @@ document.addEventListener('click', (e) => {
 
   trackRecentProject(project);
 });
+
+/* ============================================================
+   CLEAR ALL FILTERS SYSTEM
+   ============================================================ */
+function updateClearFiltersBtnVisibility() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (!btn) return;
+
+  const input = document.getElementById('searchInput');
+  const techStack = document.getElementById('techStackFilter');
+  const difficultyElement = document.getElementById('difficultyFilter');
+
+  const hasSearch = input && input.value.trim() !== '';
+  const hasTech = techStack && techStack.value !== 'all';
+  const hasDiff = difficultyElement && difficultyElement.value !== 'all';
+  const hasCategory = activeFilter && activeFilter !== 'all';
+
+  if (hasSearch || hasTech || hasDiff || hasCategory) {
+    btn.style.display = 'inline-flex';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+function resetAllFilters() {
+  // 1. Reset Category filter chips
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((c) => c.classList.remove('active'));
+  const allChip = document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
+  if (allChip) allChip.classList.add('active');
+  activeFilter = 'all';
+
+  // 2. Clear Search input
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  searchQuery = '';
+
+  // 3. Reset Tech Stack dropdown select
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) techStack.value = 'all';
+  techStackFilter = 'all';
+
+  // 4. Reset Difficulty dropdown select
+  const difficultyElement = document.getElementById('difficultyFilter');
+  if (difficultyElement) difficultyElement.value = 'all';
+  difficultyFilter = 'all';
+
+  // 5. Reset Sorting to default
+  const sortSelect = document.getElementById('sortProjects');
+  if (sortSelect) sortSelect.value = 'default';
+  sortOption = 'default';
+
+  // 6. Sync URL
+  if (typeof updateURL === 'function') {
+    updateURL('', 'all');
+  }
+
+  // 7. Refresh grid and pagination
+  currentPage = 1;
+  renderGrid();
+  syncProjectCounts();
+
+  showToast('Filters cleared!');
+}
+
+function initClearAllFilters() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (btn) {
+    btn.addEventListener('click', resetAllFilters);
+  }
+}
 
 /* ============================================================
    FILTER CHIPS
@@ -840,14 +1115,60 @@ function initFilterChips() {
 }
 
 /* ============================================================
-   LIVE SEARCH
+   LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
+function debounce(fn, delay = 300) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
 
-  input.addEventListener('input', () => {
-    searchQuery = input.value.trim();
+  input.addEventListener(
+    'input',
+    debounce(() => {
+      searchQuery = input.value.trim();
+      currentPage = 1;
+      renderGrid();
+    }, 180)
+  );
+
+  // Tech stack dropdown filter listener
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) {
+    techStack.addEventListener('change', () => {
+      techStackFilter = techStack.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+
+  // Difficulty dropdown filter listener
+  const diffFilterElement = document.getElementById('difficultyFilter');
+  if (diffFilterElement) {
+    diffFilterElement.addEventListener('change', () => {
+      difficultyFilter = diffFilterElement.value;
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+}
+
+function initSorting() {
+  const sortSelect = document.getElementById('sortProjects');
+  if (!sortSelect) return;
+
+  sortSelect.addEventListener('change', (e) => {
+    sortOption = e.target.value;
     currentPage = 1;
     renderGrid();
   });
@@ -859,51 +1180,38 @@ function initSearch() {
 function initTechStackSearch() {
   const input = document.getElementById('techStackSearch');
   const clearBtn = document.getElementById('clearTechFilter');
-  
+
   if (!input) return;
-  
-  // Debounce timer for performance
+
   let debounceTimer;
-  
-  // Listen for input changes
+
   input.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
-    
-    // Debounce: wait 300ms after user stops typing
     debounceTimer = setTimeout(() => {
       const value = e.target.value.trim().toLowerCase();
-      
+
       if (value) {
-        // Split by comma or space to support multiple technologies
-        // More efficient: direct lowercase conversion
         const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-        
-        // Update filters array (already lowercase, no need to normalize yet)
-        techStackFilters = [...new Set(techs)]; // Remove duplicates efficiently
-        
-        console.log('Tech filters active:', techStackFilters); // Debug log
-        
+        techStackFilters = [...new Set(techs)];
         updateTechFilterDisplay();
+        currentPage = 1;
         renderGrid();
       } else {
-        // Empty input = clear all filters
         clearAllTechFilters();
       }
-    }, 300); // 300ms debounce delay
+    }, 300);
   });
-  
-  // Clear button functionality
+
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       clearAllTechFilters();
     });
   }
-  
-  // Optional: Add Enter key support
+
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      input.blur(); // Trigger the debounced input event
+      input.blur();
     }
   });
 }
@@ -912,28 +1220,69 @@ function initTechStackSearch() {
    SEARCH CONTROLS
    ============================================================ */
 const searchInput = document.getElementById('searchInput');
-const clearBtn = document.getElementById('clearSearch');
+const clearSearchBtn = document.getElementById('clearSearch');
+
+function updateCategoryCounts() {
+  const counts = {};
+  for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
+    if (key !== 'all') {
+      counts[key] = 0;
+    }
+  }
+
+  PROJECTS.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
+    const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
+      (key) => FILTER_CATEGORY_MAP[key] === category
+    );
+    if (filterKey && filterKey !== 'all') {
+      counts[filterKey]++;
+    }
+  });
+
+  const categorySpans = {
+    'game': document.getElementById('gameCount'),
+    'clone': document.getElementById('cloneCount'),
+    'tool': document.getElementById('toolCount'),
+    'ui': document.getElementById('uiCount'),
+    'api': document.getElementById('apiCount')
+  };
+
+  for (const [key, span] of Object.entries(categorySpans)) {
+    if (span) {
+      span.textContent = counts[key].toLocaleString();
+    }
+  }
+}
 
 function syncProjectCounts() {
-  const total = PROJECTS.length.toLocaleString();
+  let filtered = [...PROJECTS];
 
-  const countNodes = [
-    document.getElementById('projectCount'),
-    document.getElementById('allCount')
-  ];
+  // Apply search filter
+  if (searchQuery) {
+    filtered = filtered.filter(([day, name]) =>
+      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      day.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  const total = filtered.length.toLocaleString();
+  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
   });
 
   if (searchInput) {
-    searchInput.placeholder = `Search ${total} projects…`;
+    searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
+
+  updateCategoryCounts();
 }
 
 // Clear button functionality
-if (searchInput && clearBtn) {
-  clearBtn.addEventListener("click", () => {
+if (searchInput && clearSearchBtn) {
+  clearSearchBtn.addEventListener("click", () => {
     searchInput.value = "";
     searchInput.dispatchEvent(new Event("input"));
     searchInput.focus();
@@ -948,7 +1297,7 @@ if (searchInput && clearBtn) {
   });
 }
 
-// initialize
+// Initialize
 syncProjectCounts();
 
 /* ============================================================
@@ -958,45 +1307,46 @@ function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
 
-    const username = window.username || null;
-    const isRoot   = !window.location.pathname.includes('/contributors/');
-    const base     = isRoot ? '' : '../';
-    const isLight  = document.body.classList.contains('light-mode');
-    const themeButton = `
-            <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-                <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
-            </button>
+  const username = window.username || null;
+  const isRoot = !window.location.pathname.includes('/contributors/');
+  const base = isRoot ? '' : '../';
+  const isLight = document.body.classList.contains('light-mode');
+  const themeButton = `
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
+        </button>
         `;
+  const otherLink = isRoot
+    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
+       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
 
-    if (username) {
-        container.innerHTML = `
+  if (username) {
+    container.innerHTML = `
             ${themeButton}
             <span class="welcome-text">Hi, ${username}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            ${otherLink}
+        `;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.username = null;
+      updateNavbar();
+    });
+  } else {
+    container.innerHTML = `
+            ${themeButton}
+            ${otherLink}
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-        `;
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            window.username = null;
-            updateNavbar();
-        });
-        const gen = document.getElementById('generateReadmeBtn');
-        if (gen) gen.addEventListener('click', generateReadme);
-    } else {
-        container.innerHTML = `
-            ${themeButton}
-            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
             <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
         `;
-    const gen2 = document.getElementById('generateReadmeBtn');
-    if (gen2) gen2.addEventListener('click', generateReadme);
   }
 }
 
@@ -1004,97 +1354,192 @@ function updateNavbar() {
    THEME TOGGLE
    ============================================================ */
 function initTheme() {
-    const saved = localStorage.getItem('theme') || 'dark';
-    let transitionTimer = null;
+  const saved = localStorage.getItem('theme') || 'dark';
+  let transitionTimer = null;
 
-    const syncThemeIcons = () => {
-        const isLight = document.body.classList.contains('light-mode');
-        const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-        document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-            icon.className = iconClass;
-        });
-    };
+  const syncThemeIcons = () => {
+    const isLight = document.body.classList.contains('light-mode');
+    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
+      icon.className = iconClass;
+    });
+  };
 
-    if (saved === 'light') {
-        document.body.classList.add('light-mode');
-    }
+  if (saved === 'light') {
+    document.body.classList.add('light-mode');
+  }
+  syncThemeIcons();
+
+  document.body.addEventListener('click', (e) => {
+    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
+    if (!target) return;
+
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
     syncThemeIcons();
 
-    document.body.addEventListener('click', (e) => {
-        const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-        if (!target) return;
-
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        syncThemeIcons();
-
-        document.body.classList.add('theme-transitioning');
-        if (transitionTimer) clearTimeout(transitionTimer);
-        transitionTimer = setTimeout(() => {
-            document.body.classList.remove('theme-transitioning');
-        }, 400);
-    });
+    document.body.classList.add('theme-transitioning');
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      document.body.classList.remove('theme-transitioning');
+    }, 400);
+  });
 }
 
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-    const btn = document.getElementById('scrollBtn');
-    const ring = document.getElementById('ringFill');
-    if (!btn) return;
+  const btn = document.getElementById('scrollBtn');
+  const ring = document.getElementById('ringFill');
+  if (!btn) return;
 
-    const circumference = 2 * Math.PI * 22;
+  const circumference = 2 * Math.PI * 22;
+  const updateScrollProgress = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+    btn.classList.toggle('show', scrollTop > 400);
 
-        btn.classList.toggle('show', scrollTop > 400);
+    if (ring) {
+      ring.style.strokeDashoffset = circumference * (1 - progress);
+    }
 
-        if (ring) {
-            ring.style.strokeDashoffset = circumference * (1 - progress);
-        }
-    });
+    // Footer collision avoidance
+    const footer = document.querySelector('.footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        // Cap the upward movement to a maximum of 120px.
+        // This ensures it dodges the important bottom footer links but 
+        // doesn't fly completely off the top of the screen when the footer is huge.
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = '2rem';
+      }
+    }
+  };
 
-    btn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  updateScrollProgress();
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+function initCurrentYear() {
+  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
+    node.textContent = new Date().getFullYear();
+  });
 }
 
 /* ============================================================
    INIT
    ============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired');
-  console.log(
-    'PROJECTS:',
-    typeof PROJECTS,
-    PROJECTS ? PROJECTS.length : 'undefined'
-  );
-  
-  // Show available technologies for debugging
-  getAllTechnologies();
-  
+function hasProjectGrid() {
+  return Boolean(document.getElementById('projectGrid'));
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   updateNavbar();
+
+  initCurrentYear();
   initFilterChips();
   initSearch();
-  initTechStackSearch(); // Initialize tech stack search
-  syncProjectCounts();
-  renderGrid();
-  renderBookmarks();
-  renderRecentProjects();
-  fetchRepoStats();
-  initScrollBtn();
+  initSorting();
+  initTechStackSearch();
+  initClearAllFilters();
+
+  try {
+    // Await the projects to be fetched
+    await loadProjects();
+
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+
+    if (hasProjectGrid()) {
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+    }
+  } catch (error) {
+    console.error('Failed to load projects:', error);
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+    }
+  }
 });
 
+
+
+(() => {
+  const initDirectMobileMenu = () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const navButtons = document.getElementById('navButtons');
+
+    if (!menuToggle || !navButtons) return;
+
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = navButtons.classList.toggle('active');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        closeMenu();
+        menuToggle.focus();
+      }
+    });
+
+    navButtons.addEventListener('click', (e) => {
+      if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+        closeMenu();
+      }
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+  } else {
+    initDirectMobileMenu();
+  }
+})();
+
+
+
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
-window.addEventListener('resize', () => {
-  renderGrid();
-});
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    if (hasProjectGrid()) {
+      renderGrid();
+    }
+  }, 180)
+);
 
 /* ============================================================
    EXPOSE FUNCTIONS TO GLOBAL SCOPE
@@ -1102,3 +1547,323 @@ window.addEventListener('resize', () => {
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
+
+// Custom cursor
+(function () {
+  const outerCursor = document.querySelector('.cursor-ring--outer');
+  const innerCursor = document.querySelector('.cursor-ring--inner');
+
+  if (!outerCursor || !innerCursor) return;
+
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  const speed = 0.18;
+
+  const update = () => {
+    current.x += (target.x - current.x) * speed;
+    current.y += (target.y - current.y) * speed;
+
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+
+    requestAnimationFrame(update);
+  };
+
+  const showCursor = () => {
+    outerCursor.classList.add('is-visible');
+    innerCursor.classList.add('is-visible');
+  };
+
+  const hideCursor = () => {
+    outerCursor.classList.remove('is-visible');
+    innerCursor.classList.remove('is-visible');
+  };
+
+  window.addEventListener(
+    'mousemove',
+    (event) => {
+      target.x = event.clientX;
+      target.y = event.clientY;
+      showCursor();
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('mouseleave', hideCursor);
+  window.addEventListener('mouseenter', showCursor);
+
+  requestAnimationFrame(update);
+})();
+
+// Particle Network Background
+(function () {
+  const canvas = document.getElementById('particleCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+  const palette = [220, 250, 280];
+  const DEFAULT_PARTICLE_FPS = 36;
+  let W = 0;
+  let H = 0;
+  let dpr = 1;
+  let particles = [];
+  let particleCount = 0;
+  let linkDistance = 0;
+  let maxDistanceSq = 0;
+  let frameInterval = 1000 / DEFAULT_PARTICLE_FPS;
+  let animationFrame = 0;
+  let resizeFrame = 0;
+  let lastFrameTime = 0;
+
+  const getProfile = () => {
+    const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
+    const reducedMotion = reducedMotionQuery.matches;
+    const disableAnimation = smallScreen || reducedMotion;
+
+    return {
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 72,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 26000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 120,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.3,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
+      showLinks: !reducedMotion && !smallScreen,
+      disableAnimation,
+    };
+  };
+
+  let profile = getProfile();
+
+  function resize() {
+    profile = getProfile();
+    W = window.innerWidth;
+    H = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, profile.showLinks ? 1.5 : 1);
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    canvas.style.width = `${W}px`;
+    canvas.style.height = `${H}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    particleCount = Math.min(
+      profile.maxParticles,
+      Math.max(profile.minParticles, Math.round((W * H) / profile.areaPerParticle))
+    );
+    linkDistance = profile.linkDistance;
+    maxDistanceSq = linkDistance * linkDistance;
+    frameInterval = 1000 / profile.fps;
+  }
+
+  function init() {
+    particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * profile.velocity,
+      vy: (Math.random() - 0.5) * profile.velocity,
+      r: Math.random() * profile.radius + 0.8,
+      hue: palette[Math.floor(Math.random() * palette.length)],
+      alpha: Math.random() * 0.45 + 0.18,
+    }));
+  }
+
+  function stepParticles() {
+    particles.forEach((particle) => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+
+      if (particle.x < 0) particle.x = W;
+      else if (particle.x > W) particle.x = 0;
+
+      if (particle.y < 0) particle.y = H;
+      else if (particle.y > H) particle.y = 0;
+    });
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, W, H);
+    stepParticles();
+
+    if (profile.showLinks) {
+      for (let i = 0; i < particleCount; i += 1) {
+        for (let j = i + 1; j < particleCount; j += 1) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distanceSq = dx * dx + dy * dy;
+
+          if (distanceSq >= maxDistanceSq) continue;
+
+          const distance = Math.sqrt(distanceSq);
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles.forEach((particle) => {
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${particle.hue}, 80%, 72%, ${particle.alpha})`;
+      ctx.fill();
+    });
+  }
+
+  function draw(now = 0) {
+    animationFrame = requestAnimationFrame(draw);
+
+    if (document.hidden || now - lastFrameTime < frameInterval) {
+      return;
+    }
+
+    lastFrameTime = now;
+    drawFrame();
+  }
+
+  function stopAnimation() {
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+    }
+  }
+
+  function startAnimation() {
+    if (!animationFrame) {
+      animationFrame = requestAnimationFrame(draw);
+    }
+  }
+
+  const rebuild = () => {
+    resize();
+
+    if (profile.disableAnimation) {
+      stopAnimation();
+      ctx.clearRect(0, 0, W, H);
+      canvas.style.display = 'none';
+      return;
+    }
+
+    canvas.style.display = '';
+    init();
+    startAnimation();
+  };
+
+  const handleResize = () => {
+    if (resizeFrame) return;
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = 0;
+      rebuild();
+    });
+  };
+
+  const handleProfileChange = () => {
+    lastFrameTime = 0;
+    rebuild();
+  };
+
+  const bindMediaChange = (query, handler) => {
+    if (typeof query.addEventListener === 'function') {
+      query.addEventListener('change', handler);
+      return;
+    }
+    if (typeof query.addListener === 'function') {
+      query.addListener(handler);
+    }
+  };
+
+  window.addEventListener('resize', handleResize, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      lastFrameTime = 0;
+    }
+  });
+  bindMediaChange(reducedMotionQuery, handleProfileChange);
+  bindMediaChange(coarsePointerQuery, handleProfileChange);
+
+  rebuild();
+})();
+
+// =============================================
+// PERSISTENT FILTERS & SEARCH — Issue #3320
+// =============================================
+
+function getQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    search: params.get('search') || '',
+    category: params.get('category') || 'all'
+  };
+}
+
+function updateURL(search, category) {
+  const params = new URLSearchParams();
+  if (search) params.set('search', search);
+  if (category && category !== 'all') params.set('category', category);
+  const newURL = params.toString()
+    ? `${window.location.pathname}?${params.toString()}`
+    : window.location.pathname;
+  history.pushState({ search, category }, '', newURL);
+}
+
+function restoreStateFromURL() {
+  const { search, category } = getQueryParams();
+  const searchInput = document.getElementById('searchInput') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('.search-input');
+  if (searchInput && search) searchInput.value = search;
+  const categoryFilter = document.getElementById('category');
+  if (categoryFilter && category !== 'all') categoryFilter.value = category;
+  if (search || category !== 'all') applyFilters(search, category);
+}
+
+function applyFilters(search, category) {
+  searchQuery = search || '';
+  activeFilter = category || 'all';
+  currentPage = 1;
+
+  // Sync active chip selection with URL state
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chip.classList.add('active');
+    } else {
+      chip.classList.remove('active');
+    }
+  });
+
+  renderGrid();
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await loadProjects();
+    restoreStateFromURL();
+  } catch (error) {
+    console.error('Failed to restore state or load projects:', error);
+  }
+  const searchInput = document.getElementById('search') ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector('.search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const { category } = getQueryParams();
+      updateURL(searchInput.value, category);
+      applyFilters(searchInput.value, category);
+    });
+  }
+  const categoryFilter = document.getElementById('category');
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener('popstate', () => restoreStateFromURL());
+});

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ScamShield Lite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>🛡️ ScamShield Lite</h1>
+    <p class="subtitle">Detect suspicious SMS messages instantly</p>
+
+    <textarea id="smsInput" placeholder="Paste your SMS here..."></textarea>
+
+    <button onclick="analyzeSMS()">Analyze Message</button>
+
+    <div class="output">
+
+      <div class="meter">
+        <div id="bar"></div>
+      </div>
+
+      <h2 id="result">Result will appear here</h2>
+      <p id="score"></p>
+      <div id="tags"></div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

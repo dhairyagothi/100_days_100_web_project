@@ -62,7 +62,7 @@ h1 {
     font-size: 1.5rem;
     line-height: 30px;
     letter-spacing: 1px;
-    padding-right: 3.25rem;
+    padding-right: 5.5rem;
     border: none;
     outline: none;
 }
@@ -73,7 +73,7 @@ h1 {
     text-transform: uppercase;
 }
 
-.display-container button {
+.display-container .btns {
     position: absolute;
     right: 1.5rem;
     background-color: transparent;
