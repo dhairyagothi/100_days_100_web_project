@@ -1567,6 +1567,7 @@ color: var(--text-primary);
   gap: 0.85rem;
 }
 
+
 .footer.homepage-footer .social-btn {
   width: 46px;
   height: 46px;
@@ -1582,10 +1583,14 @@ color: var(--text-primary);
 }
 
 .footer.homepage-footer .social-btn:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-  transform: translateY(-2px);
+   background: #ffffff;
+  border-color: #cfcfcf;
+  color: #000;
+
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+  transition: all 0.25s ease;
 }
 
 .footer.homepage-footer .featured-btn {
@@ -2669,3 +2674,4 @@ body::after {
     padding: 0.5rem 0;
   }
   }
+}
