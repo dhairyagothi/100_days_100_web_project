@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Express Server — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:       #08090d;
+      --surface:  #0f1117;
+      --border:   #1e2130;
+      --accent:   #00e5a0;
+      --accent2:  #7c6cfc;
+      --text:     #e8eaf2;
+      --muted:    #5a5f7a;
+      --ok:       #00e5a0;
+      --warn:     #f5a623;
+      --err:      #ff4f6a;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-mono);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Grid noise background ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,229,160,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,160,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* ── Glowing orbs ── */
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(120px);
+      pointer-events: none; z-index: 0; opacity: .18;
+    }
+    .orb-1 { width: 500px; height: 500px; background: var(--accent2); top: -150px; left: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: var(--accent);  bottom: -100px; right: -80px; }
+
+    /* ── Layout ── */
+    .shell { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    /* ── Header ── */
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; }
+
+    .logo {
+      font-family: var(--font-head);
+      font-size: 1.1rem; font-weight: 800;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text);
+    }
+    .logo span { color: var(--accent); }
+
+    .status-pill {
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 8px 16px; border-radius: 999px;
+      font-size: .72rem; letter-spacing: .05em;
+    }
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 8px var(--ok);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    /* ── Hero ── */
+    .hero { margin-bottom: 64px; }
+    .hero-eyebrow {
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 32px; height: 1px; background: var(--accent);
+    }
+    h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -.02em; color: var(--text);
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub {
+      margin-top: 16px; font-size: .82rem;
+      color: var(--muted); max-width: 520px; line-height: 1.7;
+    }
+
+    /* ── Cards grid ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px;
+      transition: border-color .25s, transform .25s;
+      cursor: default;
+      animation: fadeUp .5s ease both;
+    }
+    .card:hover { border-color: var(--accent2); transform: translateY(-3px); }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+    .card:nth-child(1){animation-delay:.05s}
+    .card:nth-child(2){animation-delay:.12s}
+    .card:nth-child(3){animation-delay:.19s}
+    .card:nth-child(4){animation-delay:.26s}
+
+    .card-label {
+      font-size: .65rem; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 12px;
+    }
+    .card-value {
+      font-family: var(--font-head);
+      font-size: 1.8rem; font-weight: 700; color: var(--text);
+    }
+    .card-value.accent { color: var(--accent); }
+    .card-desc { margin-top: 6px; font-size: .72rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Routes table ── */
+    .section-title {
+      font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+      color: var(--text); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    .routes-table {
+      width: 100%; border-collapse: collapse;
+      background: var(--surface); border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--border); margin-bottom: 40px;
+    }
+    .routes-table th {
+      text-align: left; padding: 14px 20px;
+      font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+    .routes-table td {
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      font-size: .78rem; vertical-align: middle;
+    }
+    .routes-table tr:last-child td { border-bottom: none; }
+    .routes-table tr:hover td { background: rgba(255,255,255,.025); }
+
+    .method {
+      display: inline-block; padding: 3px 10px; border-radius: 6px;
+      font-size: .65rem; font-weight: 500; letter-spacing: .06em;
+    }
+    .method.get  { background: rgba(0,229,160,.12); color: var(--ok); border: 1px solid rgba(0,229,160,.2); }
+
+    .endpoint-path { color: var(--accent2); font-size: .78rem; }
+    .endpoint-desc { color: var(--muted); font-size: .72rem; }
+
+    .try-btn {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 5px 12px; border-radius: 8px;
+      font-family: var(--font-mono); font-size: .7rem; cursor: pointer;
+      transition: all .2s;
+    }
+    .try-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Response viewer ── */
+    .response-viewer {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; margin-bottom: 40px;
+    }
+    .viewer-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px; border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+    .viewer-bar-title { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .viewer-status { font-size: .72rem; }
+    .viewer-status.ok { color: var(--ok); }
+    .viewer-status.err { color: var(--err); }
+    .viewer-status.loading { color: var(--warn); }
+
+    #response-output {
+      padding: 24px; font-size: .76rem; line-height: 1.8;
+      color: #a8b2d8; white-space: pre-wrap; word-break: break-all;
+      min-height: 120px; max-height: 360px; overflow-y: auto;
+    }
+    .placeholder-text { color: var(--muted); font-style: italic; }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 64px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    footer p { font-size: .7rem; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── 404 page ── */
+    .page-404 {
+      display: none; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 80vh; text-align: center;
+    }
+    .page-404.active { display: flex; }
+    .num-404 {
+      font-family: var(--font-head); font-size: clamp(6rem,18vw,10rem);
+      font-weight: 800; color: var(--accent2);
+      line-height: 1; letter-spacing: -.04em;
+      text-shadow: 0 0 80px rgba(124,108,252,.4);
+      animation: fadeUp .6s ease both;
+    }
+    .rocket { font-size: 3rem; margin: 16px 0; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    .page-404 h2 {
+      font-family: var(--font-head); font-size: 1.6rem; font-weight: 700;
+      margin-bottom: 10px; animation: fadeUp .6s .1s ease both; opacity:0;
+    }
+    .page-404 p {
+      color: var(--muted); font-size: .82rem; max-width: 360px; line-height: 1.7;
+      animation: fadeUp .6s .2s ease both; opacity:0;
+    }
+    .quote-box {
+      margin: 24px 0; padding: 18px 28px;
+      background: rgba(124,108,252,.08); border: 1px solid rgba(124,108,252,.2);
+      border-radius: 12px; font-style: italic; font-size: .8rem;
+      color: var(--accent2); max-width: 440px; line-height: 1.7;
+      animation: fadeUp .6s .3s ease both; opacity:0;
+    }
+    .btns-row { display: flex; gap: 12px; margin-top: 8px; animation: fadeUp .6s .4s ease both; opacity:0; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: var(--accent2); color: #fff;
+      border: none; padding: 12px 24px; border-radius: 10px;
+      font-family: var(--font-mono); font-size: .8rem; cursor: pointer;
+      font-weight: 500; transition: opacity .2s;
+    }
+    .btn-primary:hover { opacity: .85; }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px;
+      font-family: var(--font-mono); font-size: .8rem; cursor: pointer;
+      transition: border-color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- ── DASHBOARD ── -->
+<div class="shell" id="dashboard">
+  <header>
+    <div class="logo">Express<span>Server</span></div>
+    <div class="status-pill"><span class="dot"></span> API Online</div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-eyebrow">Live Dashboard</div>
+    <h1>Your <em>Express</em><br/>Server, running.</h1>
+    <p class="hero-sub">Monitor endpoints, inspect responses, and explore your API — all from one place.</p>
+  </section>
+
+  <!-- Stat cards -->
+  <div class="cards" id="stat-cards">
+    <div class="card">
+      <div class="card-label">Status</div>
+      <div class="card-value accent" id="stat-status">—</div>
+      <div class="card-desc">Current server health</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Uptime</div>
+      <div class="card-value" id="stat-uptime">—</div>
+      <div class="card-desc">Seconds since last restart</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Environment</div>
+      <div class="card-value" id="stat-env">—</div>
+      <div class="card-desc">Node.js runtime environment</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Version</div>
+      <div class="card-value" id="stat-version">—</div>
+      <div class="card-desc">Application version</div>
+    </div>
+  </div>
+
+  <!-- Routes -->
+  <div class="section-title">Available Routes</div>
+  <table class="routes-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Endpoint</th>
+        <th>Description</th>
+        <th>Try</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="method get">GET</span></td>
+        <td class="endpoint-path">/</td>
+        <td class="endpoint-desc">Root — serves dashboard UI</td>
+        <td><button class="try-btn" onclick="callEndpoint('/api')">→ Run</button></td>
+      </tr>
+      <tr>
+        <td><span class="method get">GET</span></td>
+        <td class="endpoint-path">/api/health</td>
+        <td class="endpoint-desc">Health check with uptime & memory</td>
+        <td><button class="try-btn" onclick="callEndpoint('/api/health')">→ Run</button></td>
+      </tr>
+      <tr>
+        <td><span class="method get">GET</span></td>
+        <td class="endpoint-path">/api/info</td>
+        <td class="endpoint-desc">Server metadata & environment</td>
+        <td><button class="try-btn" onclick="callEndpoint('/api/info')">→ Run</button></td>
+      </tr>
+      <tr>
+        <td><span class="method get">GET</span></td>
+        <td class="endpoint-path">/api/users</td>
+        <td class="endpoint-desc">Fetch all mock users</td>
+        <td><button class="try-btn" onclick="callEndpoint('/api/users')">→ Run</button></td>
+      </tr>
+      <tr>
+        <td><span class="method get">GET</span></td>
+        <td class="endpoint-path">/api/users/:id</td>
+        <td class="endpoint-desc">Fetch single user by ID</td>
+        <td><button class="try-btn" onclick="callEndpoint('/api/users/1')">→ Run (id=1)</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Response viewer -->
+  <div class="section-title">Response Viewer</div>
+  <div class="response-viewer">
+    <div class="viewer-bar">
+      <span class="viewer-bar-title">JSON Output</span>
+      <span class="viewer-status" id="viewer-status">—</span>
+    </div>
+    <pre id="response-output"><span class="placeholder-text">// Click "→ Run" on any route above to see the response here.</span></pre>
+  </div>
+
+  <footer>
+    <p>© 2026 <strong>Express Server</strong> — Built with Express.js</p>
+    <p>Node <span id="node-ver">—</span> · <a href="/api/health" target="_blank">/api/health</a></p>
+  </footer>
+</div>
+
+<script>
+  // ── Load stats on page init ──
+  async function loadStats() {
+    try {
+      const [health, info] = await Promise.all([
+        fetch('/api/health').then(r => r.json()),
+        fetch('/api/info').then(r => r.json())
+      ]);
+      if (health.success) {
+        document.getElementById('stat-status').textContent = 'Healthy ✓';
+        document.getElementById('stat-uptime').textContent = health.data.uptime;
+      }
+      if (info.success) {
+        document.getElementById('stat-env').textContent = info.data.environment;
+        document.getElementById('stat-version').textContent = 'v' + info.data.version;
+        document.getElementById('node-ver').textContent = info.data.nodeVersion;
+      }
+    } catch (e) {
+      document.getElementById('stat-status').textContent = 'Offline';
+    }
+  }
+
+  // ── Call any endpoint ──
+  async function callEndpoint(path) {
+    const output = document.getElementById('response-output');
+    const statusEl = document.getElementById('viewer-status');
+    statusEl.textContent = 'Loading…';
+    statusEl.className = 'viewer-status loading';
+    output.textContent = '// Fetching ' + path + '…';
+
+    try {
+      const res = await fetch(path, {
+        headers: { 'Accept': 'application/json' }
+      });
+      const contentType = res.headers.get('content-type') || '';
+      statusEl.textContent = res.status + ' ' + (res.ok ? 'OK' : 'Error');
+      statusEl.className = 'viewer-status ' + (res.ok ? 'ok' : 'err');
+
+      if (contentType.includes('application/json')) {
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } else {
+        const text = await res.text();
+        output.textContent = '// Non-JSON response:\n' + text.slice(0, 500);
+      }
+    } catch (err) {
+      output.textContent = '// Network Error: ' + err.message;
+      statusEl.textContent = 'Network Error';
+      statusEl.className = 'viewer-status err';
+    }
+  }
+
+  loadStats();
+</script>
+</body>
+</html>
