@@ -1,47 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: #1a1a1a;
-    color: #fff;
-    font-family: sans-serif;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    padding: 20px;
+    font-family: 'Fira Code', monospace; /* Sharp developer font */
+    background-color: #030712; /* Deep space black */
+    /* Cosmic multi-layer background glow effects */
+    background-image: 
+        radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 45%);
+    background-attachment: fixed;
+    overflow-x: hidden;
 }
-.container { text-align: center; }
+
+/* Glass panel design */
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.45); /* Highly transparent deep blue-slate tint */
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Clean, subtle frosted glass edge */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    color: #64748b; /* Soft slate text */
+    margin-bottom: 25px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Sci-fi Terminal Grid Overlay */
 .sudoku-grid {
     display: grid;
-    grid-template-columns: repeat(9, 40px);
-    grid-template-rows: repeat(9, 40px);
-    gap: 1px;
-    background: #444;
-    padding: 2px;
-    border: 3px solid #fff;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(9, 1fr);
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 12px;
+    background: rgba(3, 7, 18, 0.6); /* Internal darkened contrast panel */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .sudoku-grid input {
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: transparent;
+    color: #e2e8f0; /* Default readable clean text */
+    font-family: 'Fira Code', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
     text-align: center;
-    font-size: 18px;
-    background: #2a2a2a;
-    color: #fff;
-    border: none;
+    outline: none;
+    transition: all 0.15s ease;
 }
-.sudoku-grid input:nth-child(3n) { border-right: 2px solid #fff; }
-.sudoku-grid input:nth-child(9n) { border-right: none; }
-/* Row grouping borders */
+
+/* Hover state over cell matrix */
+.sudoku-grid input:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.sudoku-grid input:focus {
+    background: rgba(99, 102, 241, 0.15);
+    box-shadow: inset 0 0 0 1px #6366f1; /* Sharp structural accent edge instead of bleed glow */
+}
+
+/* Clear 3x3 Box Segregations (Crisp sharp line breaks) */
+.sudoku-grid input:nth-child(3n):not(:nth-child(9n)) {
+    border-right: 2px solid rgba(255, 255, 255, 0.25);
+}
+
 .sudoku-grid input:nth-child(n+19):nth-child(-n+27),
 .sudoku-grid input:nth-child(n+46):nth-child(-n+54) {
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.25);
 }
+
+/* --- SEPARATED CODER COLORS (MAX READABILITY) --- */
+
+/* Generated/Initial layout numbers: Sharp Cyber Cyan */
+.user-input {
+    color: #00f0ff !important;
+    font-weight: 700;
+}
+
+/* Solved algorithm numbers: Bright Matrix Green/Yellow */
+.solved-cell {
+    color: #39ff14 !important;
+    font-weight: 700;
+}
+
+/* Current processing block step: Inverted white panel block */
+.active-cell {
+    background: #ffffff !important;
+    color: #030712 !important;
+}
+
+/* Controls layout styling */
+.controls {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .controls button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 16px;
+    padding: 12px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
-    background: #4ab3f4;
-    border: none;
-    color: white;
-    border-radius: 4px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.2s ease;
+}
+
+/* Primary Action Button Details */
+.controls button:nth-child(1) {
+    background: #6366f1; /* Clean Solid Indigo */
+    border-color: #818cf8;
+}
+.controls button:nth-child(1):hover:not(:disabled) {
+    background: #4f46e5;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+}
+
+/* Alternative Action Button Details */
+.controls button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.controls button:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.controls button:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    border-color: transparent;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 1.3rem;
+    }
+    .sudoku-grid input {
+        font-size: 1rem;
+    }
+    .controls button {
+        width: 100%;
+    }
 }

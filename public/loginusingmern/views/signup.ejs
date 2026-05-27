@@ -33,6 +33,22 @@
                     <span id="togglePassword">👁️</span>
                 </div>
                 <div class="error"></div>
+
+                <div class="password-strength">
+                    <progress id="strengthBar" value="0" max="5"></progress>
+
+                    <p id="strengthText" aria-live="polite">
+                        Password strength
+                    </p>
+
+                    <ul class="password-hints">
+                        <li id="lengthHint">At least 8 characters</li>
+                        <li id="upperHint">One uppercase letter</li>
+                        <li id="lowerHint">One lowercase letter</li>
+                        <li id="numberHint">One number</li>
+                        <li id="specialHint">One special character</li>
+                    </ul>
+                </div>
             </div>
             <div class="input-group">
                 <label for="cpassword">Confirm Password</label>
@@ -177,27 +193,27 @@
 
 
 
-   function setError(inputId, message) {
+    function setError(inputId, message) {
 
-    const input = document.getElementById(inputId);
+        const input = document.getElementById(inputId);
 
-    const inputGroup = input.closest('.input-group');
+        const inputGroup = input.closest('.input-group');
 
-    const errorDisplay = inputGroup.querySelector('.error');
+        const errorDisplay = inputGroup.querySelector('.error');
 
-    errorDisplay.innerText = message;
-}
+        errorDisplay.innerText = message;
+    }
 
     function clearErrors() {
 
-    document.querySelectorAll('.error').forEach(error => {
-        error.innerText = '';
-    });
+        document.querySelectorAll('.error').forEach(error => {
+            error.innerText = '';
+        });
 
-    document.querySelectorAll('input').forEach(input => {
-        input.classList.remove('input-error');
-    });
-}
+        document.querySelectorAll('input').forEach(input => {
+            input.classList.remove('input-error');
+        });
+    }
 
     function getDetails() {
 
@@ -284,19 +300,94 @@
     setupPasswordToggle("password", "togglePassword");
     setupPasswordToggle("cpassword", "toggleConfirmPassword");
 
-    document.querySelectorAll("input").forEach(input => {
-    input.addEventListener("input", () => {
-        input.classList.remove("input-error");
+    const passwordInput = document.getElementById("password");
 
-        const error =
-            input.parentElement.parentElement.querySelector(".error");
+    const strengthBar = document.getElementById("strengthBar");
+    const strengthText = document.getElementById("strengthText");
 
-        if (error) {
-            error.innerText = "";
+    passwordInput.addEventListener("input", () => {
+
+        const password = passwordInput.value;
+
+        let score = 0;
+
+        const checks = {
+            length: password.length >= 8,
+            upper: /[A-Z]/.test(password),
+            lower: /[a-z]/.test(password),
+            number: /[0-9]/.test(password),
+            special: /[^A-Za-z0-9]/.test(password)
+        };
+
+        if (checks.length) score++;
+        if (checks.upper) score++;
+        if (checks.lower) score++;
+        if (checks.number) score++;
+        if (checks.special) score++;
+
+        strengthBar.value = score;
+
+        document.getElementById("lengthHint").style.color =
+            checks.length ? "#86efac" : "#fca5a5";
+
+        document.getElementById("upperHint").style.color =
+            checks.upper ? "#86efac" : "#fca5a5";
+
+
+        document.getElementById("lowerHint").style.color =
+            checks.lower ? "#86efac" : "#fca5a5";
+
+        document.getElementById("numberHint").style.color =
+            checks.number ? "#86efac" : "#fca5a5";
+
+        document.getElementById("specialHint").style.color =
+            checks.special  ? "#86efac" : "#fca5a5";
+
+        if (score <= 2) {
+
+            strengthText.textContent = "Weak Password";
+            strengthText.style.color = "#ef4444";
+
+            strengthBar.style.setProperty(
+                "--progress-color",
+                "#ef4444"
+            );
+
+        } else if (score <= 4) {
+
+            strengthText.textContent = "Medium Password";
+            strengthText.style.color = "#f59e0b";
+
+            strengthBar.style.setProperty(
+                "--progress-color",
+                "#f59e0b"
+            );
+
+        } else {
+
+            strengthText.textContent = "Strong Password";
+            strengthText.style.color = "#22c55e";
+
+            strengthBar.style.setProperty(
+                "--progress-color",
+                "#22c55e"
+            );
         }
     });
-});
-    
+
+    document.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", () => {
+            input.classList.remove("input-error");
+
+            const error =
+                input.parentElement.parentElement.querySelector(".error");
+
+            if (error) {
+                error.innerText = "";
+            }
+        });
+    });
+
 </script>
 
 </html>

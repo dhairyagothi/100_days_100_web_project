@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Dashboard · 100 Days · 100 Web Projects</title>
+  <link rel="icon" type="image/x-icon" href="../fav.ico" />
+  <meta name="description" content="A dynamic markdown-powered learning portal for HTML, CSS, and JavaScript. Scale up your frontend skills with high-quality step-by-step guides, flowcharts, code examples, and best practices." />
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+  <!-- Prism.js Tomorrow Theme for premium dark syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+
+  <!-- Style Sheets -->
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="learning.css" />
+</head>
+
+<body>
+  <!-- Ambient & Noise backgrounds -->
+  <div class="ambient ambient-left" aria-hidden="true"></div>
+  <div class="ambient ambient-right" aria-hidden="true"></div>
+  <div class="noise-layer" aria-hidden="true"></div>
+  <canvas id="particleCanvas" style="position: fixed; inset: 0; z-index: 0; pointer-events: none;"></canvas>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress-container">
+    <div id="readingProgress" class="reading-progress-bar"></div>
+  </div>
+
+  <!-- ── NAVBAR ──────────────────────────────────────────── -->
+  <header>
+    <nav class="navbar" id="navbar">
+      <a class="navbar-brand" href="../index.html" style="text-decoration:none;">
+        <span class="brand-mark" aria-label="100 Days logo">100</span>
+        <span class="brand-copy">
+          <span class="brand-kicker">Open Source Archive</span>
+          <strong>100 Days · 100 Web Projects</strong>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+        <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
+        <a class="btn btn-primary btn-sm active" href="learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+        <a class="btn btn-ghost btn-sm" href="../contributors/contributor.html">Contributors</a>
+        <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer">Generate README</a>
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i> Theme
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── MAIN CONTAINER ─────────────────────────────────── -->
+  <main class="learning-container">
+    <!-- Sidebar / Navigation Panel -->
+    <aside class="learning-sidebar" id="learningSidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-search">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="topicSearch" placeholder="Search topics..." autocomplete="off" />
+          <button id="clearSearch" class="clear-btn">&times;</button>
+        </div>
+      </div>
+
+      <nav class="sidebar-tree" id="sidebarTree" aria-label="Learning curriculum tree">
+        <div class="sidebar-loading">Loading curriculum...</div>
+      </nav>
+    </aside>
+
+    <!-- Content Display Panel -->
+    <section class="learning-content">
+      <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle curriculum sidebar">
+        <i class="fas fa-chevron-right"></i> Curriculum Menu
+      </button>
+
+      <article class="content-viewport" id="contentViewport">
+        <div class="loading-article">
+          <i class="fas fa-circle-notch fa-spin"></i>
+          <p>Fetching tutorial content...</p>
+        </div>
+      </article>
+
+      <!-- Topic Navigation Footer -->
+      <nav class="topic-navigation" id="topicNavigation" aria-label="Previous and Next topic navigation">
+        <a href="#" class="nav-prev" id="prevTopic">
+          <span class="nav-dir"><i class="fas fa-arrow-left"></i> Previous</span>
+          <span class="nav-title" id="prevTopicTitle">...</span>
+        </a>
+        <a href="#" class="nav-next" id="nextTopic">
+          <span class="nav-dir">Next <i class="fas fa-arrow-right"></i></span>
+          <span class="nav-title" id="nextTopicTitle">...</span>
+        </a>
+      </nav>
+    </section>
+  </main>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h3>About the Portal</h3>
+        <p>
+          A scalable, dynamic, markdown-powered education system inside the 100 Days · 100 Web Projects project, designed to teach HTML, CSS, and JS best practices.
+        </p>
+        <p style="margin-top: 1rem;">
+          <strong>&copy; <span id="Current-Year"></span> 100 Days, 100 Projects</strong> by Dhairya and Contributors.
+        </p>
+      </div>
+      <div>
+        <h3>Connect With Us</h3>
+        <div class="social-links">
+          <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" class="social-btn" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" class="social-btn" aria-label="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h3>Featured Project</h3>
+        <p>Create stunning GitHub README profiles in minutes with the featured generator.</p>
+        <a href="https://www.github-readme.tech" target="_blank" class="button featured-btn" style="margin-top: 1rem; text-decoration: none;">
+          <i class="fas fa-magic"></i> Try README Generator
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollBtn" aria-label="Back to top">
+    <svg class="progress-ring" viewBox="0 0 48 48">
+      <circle class="ring-track" cx="24" cy="24" r="22" />
+      <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
+    </svg>
+    <i class="fas fa-arrow-up scroll-arrow"></i>
+    <span class="scroll-tooltip">Back to top</span>
+  </button>
+  <div class="toast" id="toast"></div>
+
+  <!-- Third-party Markdown parser and Prism.js for syntax highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <!-- Languages for Prism syntax highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+
+  <!-- Interactive Scripts -->
+  <script src="learning.js"></script>
+  <script>
+    document.getElementById("Current-Year").textContent = new Date().getFullYear();
+  </script>
+</body>
+
+</html>

@@ -728,66 +728,201 @@ const PROJECT_DESCRIPTIONS = {
 
   "Dining Philosophers Simulation":
     "Simulation of the classic synchronization problem in computer science. Useful for understanding concurrency concepts.",
+  
+let PROJECTS = [];
+let projectsPromise = null;
 
-  "Website Personalizer":
-    "Customize website appearance and behavior through user preferences dynamically. Emphasizes personalization features.",
+function loadProjects() {
+  if (!projectsPromise) {
+    projectsPromise = (async () => {
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const base = isRoot ? '' : '../';
+     const projectsUrl =
+new URL(`${base}projects.json`,
+window.location.href).toString();
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
+      }
+const data = await response.json();
 
-  "Unit-Converter":
-    "Convert values across multiple measurement units instantly. Practical tool demonstrating calculations and form handling.",
+PROJECTS = data.map(project => [
+   `Day ${project.projectNo}`,
+   project.projectName,
+   project.projectPath,
+   project.techStack,
+   project.difficulty,
+   project.projectDesc
+]);
+    })();
+  }
+  return projectsPromise;
+}
 
-  "Color Palette From Art Generator":
-    "Extract color palettes from artwork automatically for design inspiration. Combines creativity with utility.",
+// Start fetching immediately
+loadProjects();
 
-  "Ai Image Editor":
-    "Edit and manipulate images using AI-assisted functionality. Explores machine learning and visual processing concepts.",
-
-  "Code Visualizer Playground":
-    "Interactive environment visualizing code behavior and execution flow. Useful for learning programming concepts.",
-
-  "Amazon Clone":
-    "Beginner-friendly clone inspired by Amazon’s interface and layouts. Reinforces frontend structure and styling.",
-
-  "Boredom Buster":
-    "Suggests activities or interactive ideas to reduce boredom instantly. Designed as a fun productivity utility.",
-
-  "scam-sms-detector":
-    "Detect potentially fraudulent SMS messages using analysis techniques. Introduces AI and security-focused concepts.",
-
-  "Color Sort Puzzle game":
-    "Puzzle game requiring players to organize colors strategically. Builds logical thinking and state management.",
-
-  "Subscription Tracker":
-    "Track recurring subscriptions and monitor expenses efficiently. Useful for budgeting and organization.",
-
-  "Vector Flowchart Designer":
-    "Design editable flowcharts visually through interactive components. Focuses on productivity and diagram creation.",
-
-  "Glyph Pattern Maker":
-    "Generate creative symbol-based patterns with customizable outputs. Explores procedural visual generation.",
-
-  "PlaceMate":
-    "Utility designed to simplify location-related planning or organization tasks. Prioritizes usability and convenience.",
-
-  "AI-Resume-Analyzer":
-    "Analyze resumes using AI concepts to provide insights and feedback. Combines machine learning with productivity.",
-
-  "Unit Kitchen":
-    "Kitchen-focused converter simplifying ingredient and measurement transformations. Practical everyday utility.",
-
-};
 
 /* ============================================================
-   SOURCE CODE URL GENERATOR
+   PROJECT LINK RESOLUTION (demo vs source / source-only)
    ============================================================ */
-function getSourceUrl(url) {
-  const trimmed = url.trim();
-  if (trimmed.startsWith('http')) return trimmed; // Already a full GitHub link
+const SOURCE_ONLY_TAG = 'source-only';
+
+/** Live demos hosted outside the repo — Code links point to in-repo source folders */
+const EXTERNAL_DEMO_SOURCE_FOLDERS = {
+  'Day 20': 'public/EveSparks',
+  'Day 115': 'public/event-registration-system',
+};
+
+function isGithubTreeUrl(url) {
+  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(String(url || '').trim());
+}
+
+function parseGithubTreePath(url) {
+  const match = String(url || '').trim().match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
+  return match ? decodeURIComponent(match[1].replace(/\/$/, '')) : null;
+}
+
+function isSourceOnlyProject(day, tags) {
+  if (day === 'Day 13' || day === 'Day 72') return true;
+  const tagList = Array.isArray(tags)
+    ? tags
+    : String(tags || '').split(/\s+/).filter(Boolean);
+  return tagList.includes(SOURCE_ONLY_TAG);
+}
+
+function githubTreeToLocalDemo(url) {
+  const folderPath = parseGithubTreePath(url);
+  if (!folderPath) return null;
+  return `./${folderPath}/index.html`;
+}
+
+function getSourceUrl(url, day) {
+  const trimmed = (url || '').trim();
+  const repoSourceFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
+  if (repoSourceFolder) {
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${repoSourceFolder}`;
+  }
+  if (isGithubTreeUrl(trimmed)) return trimmed;
+  if (trimmed.startsWith('http')) return trimmed;
   if (trimmed.startsWith('./')) {
-    // Converts "./public/folder/index.html" to "public/folder"
     const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
   }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
+}
+
+function resolveProjectUrls(day, name, url, tags) {
+  const trimmed = (url || '').trim();
+  const sourceOnly = isSourceOnlyProject(day, tags);
+  let demoUrl = trimmed;
+  let sourceUrl = getSourceUrl(trimmed, day);
+
+  if (isGithubTreeUrl(trimmed)) {
+    sourceUrl = trimmed;
+    demoUrl = sourceOnly ? trimmed : (githubTreeToLocalDemo(trimmed) || trimmed);
+  }
+
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
+    try {
+      demoUrl = new URL(demoUrl, window.location.href).href;
+    } catch (error) {
+      // Keep the original path if URL normalization fails.
+    }
+  }
+
+  return { demoUrl, sourceUrl, sourceOnly };
+}
+
+function getProjectDescription(project) {
+  return (
+      project[5] ||
+      'Explore this project to discover interactive functionality.'
+  );
+}
+
+function buildProjectCardHTML({
+  day,
+  name,
+  url,
+  tags,
+  category,
+  isBookmarked = false,
+  showDescription = true,
+}) {
+  const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(day, name, url, tags);
+  const tagsArray = Array.isArray(tags)
+    ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+    : String(tags || '')
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+  const project =
+PROJECTS.find(p => p[1] === name);
+
+const description =
+getProjectDescription(project);
+  const sourceOnlyBadge = sourceOnly
+    ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
+    : '';
+  const primaryLink = sourceOnly
+    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Source
+                    </a>`
+    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>`;
+  const codeLink = sourceOnly
+    ? ''
+    : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Code
+                    </a>`;
+
+  return {
+    html: `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category-wrap">
+                  <span class="card-category">${category}</span>
+                  ${sourceOnlyBadge}
+                </span>
+            </div>
+            <div class="card-name">${name}</div>
+            ${
+              showDescription
+                ? `<div class="card-description">
+    ${description}
+</div>`
+                : ''
+            }
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    ${primaryLink}
+                    ${codeLink}
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `,
+    demoUrl,
+    sourceOnly,
+  };
+}
+
+function attachProjectCardInteraction(card, demoUrl, projectData = null) {
+  card.style.cursor = 'pointer';
+  card.onclick = (e) => {
+    if (e.target.closest('a, button')) return;
+    
+    // Track the project visit if projectData is provided
+    if (projectData) {
+      trackRecentProject(projectData);
+    }
+    
+    window.open(demoUrl, '_blank', 'noopener');
+  };
 }
 
 
@@ -921,6 +1056,59 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
+const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
+
+/**
+ * Migrates old recent projects format (array) to new format (object with timestamp)
+ * If stored format doesn't have timestamps, it's likely the old format
+ */
+function migrateRecentProjects() {
+  if (recentProjects.length === 0) return;
+  
+  // Check if already in new format (has timestamp)
+  if (typeof recentProjects[0] === 'object' && recentProjects[0].timestamp) {
+    return; // Already migrated
+  }
+  
+  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
+  recentProjects = recentProjects.map((project) => {
+    if (Array.isArray(project)) {
+      return {
+        day: project[0],
+        name: project[1],
+        url: project[2],
+        tags: project[3],
+        timestamp: Date.now() - (ONE_HOUR_MS / 2) // Set to 30 mins ago to preserve them initially
+      };
+    }
+    return project;
+  });
+  
+  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+}
+
+// Migrate on load
+migrateRecentProjects();
+
+/**
+ * Cleans up recent projects older than 1 hour
+ * Called periodically and on page load
+ */
+function cleanupExpiredRecentProjects() {
+  const initialLength = recentProjects.length;
+  recentProjects = getRecentProjectsWithinWindow();
+  
+  if (recentProjects.length !== initialLength) {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    renderRecentProjects();
+  }
+}
+
+// Clean up on page load
+cleanupExpiredRecentProjects();
+
+// Clean up every 5 minutes
+setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
 
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
@@ -986,9 +1174,9 @@ function generateReadme() {
     lines.push('');
     lines.push('## Projects');
     PROJECTS.forEach(([day, name, url, tags]) => {
-      const safeUrl = url || '';
+      const { demoUrl } = resolveProjectUrls(day, name, url, tags);
       const category = getCategoryFromTags(tags, name);
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${category}_`);
+      lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
     });
 
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
@@ -1092,50 +1280,20 @@ function renderGrid() {
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-
-    // FIX PART 1: Add a pointer cursor so users know it's clickable
-    card.className = 'project-card';
-    card.style.cursor = 'pointer';
-
-    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
-
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
-    const description =
-      PROJECT_DESCRIPTIONS[name] ||
-      "Explore this project to discover interactive functionality, frontend concepts and implementation details.";
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
 
-    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
-    // This stops the click from "bubbling up" to the main card, preventing double-opening!
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-
-<div class="card-description">
-    ${description}
-</div>
-
-<div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     fragment.appendChild(card);
   });
@@ -1307,11 +1465,49 @@ function toggleBookmark(project) {
   renderRecentProjects();
 }
 
-function trackRecentProject(project) {
-  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
-  recentProjects.unshift(project);
+/**
+ * Removes projects older than 1 hour from the recent projects list
+ * @returns {array} Filtered recent projects within the 1-hour window
+ */
+function getRecentProjectsWithinWindow() {
+  const now = Date.now();
+  return recentProjects.filter((item) => {
+    const timestamp = item.timestamp || Date.now();
+    const age = now - timestamp;
+    return age <= ONE_HOUR_MS;
+  });
+}
 
-  if (recentProjects.length > 10) {
+/**
+ * Tracks a recently viewed project with a timestamp
+ * @param {array} project - Project data [day, name, url, tags]
+ */
+function trackRecentProject(project) {
+  // Convert old format to new format if needed
+  let projectObj;
+  if (Array.isArray(project)) {
+    projectObj = {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+      timestamp: Date.now()
+    };
+  } else {
+    projectObj = {
+      ...project,
+      timestamp: Date.now()
+    };
+  }
+
+  // Remove duplicate if exists
+  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  
+  // Add to front
+  recentProjects.unshift(projectObj);
+
+  // Keep only the 20 most recent entries (not filtered by time yet)
+  if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
@@ -1341,39 +1537,19 @@ function renderBookmarks() {
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
-    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked: true,
+      showDescription: true,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-           <div class="card-name">${name}</div>
-
-<div class="card-description">
-    ${description}
-</div>
-
-<div class="card-tags">
-    ${tagsHTML}
-</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn active" data-id="${day}">
-                    <i class="fa-solid fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     bookmarkGrid.appendChild(card);
   });
@@ -1386,48 +1562,44 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = '';
 
-  if (recentProjects.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+  // Filter projects within the 1-hour window
+  const validRecent = getRecentProjectsWithinWindow();
+
+  if (validRecent.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
     return;
   }
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display = validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
+  visibleRecent.forEach((projectObj) => {
+    // Handle both old array format and new object format
+    const day = projectObj.day || projectObj[0];
+    const name = projectObj.name || projectObj[1];
+    const url = projectObj.url || projectObj[2];
+    const tags = projectObj.tags || projectObj[3];
+    
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
-    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const sourceUrl = getSourceUrl(url);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: false,
+    });
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     recentGrid.appendChild(card);
   });
@@ -1457,7 +1629,10 @@ if (copyBookmarksBtn) {
     }
     const textToCopy = bookmarkedProjects.map(p => {
       const projectName = p[1];
-      const projectLink = new URL(p[2], window.location.href).href;
+      const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
+      const projectLink = demoUrl.startsWith('http')
+        ? demoUrl
+        : new URL(demoUrl, window.location.href).href;
       return `${projectName} - ${projectLink}`;
     }).join('\n');
 
@@ -1732,8 +1907,10 @@ function updateNavbar() {
         </button>
         `;
   const otherLink = isRoot
-    ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>`;
+    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
+       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
 
   if (username) {
     container.innerHTML = `
@@ -1819,6 +1996,24 @@ function initScrollBtn() {
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
+
+    // Footer collision avoidance
+    const footer = document.querySelector('.footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        // Cap the upward movement to a maximum of 120px.
+        // This ensures it dodges the important bottom footer links but 
+        // doesn't fly completely off the top of the screen when the footer is huge.
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = '2rem';
+      }
+    }
   };
 
   updateScrollProgress();
@@ -1842,7 +2037,7 @@ function hasProjectGrid() {
   return Boolean(document.getElementById('projectGrid'));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   updateNavbar();
 
@@ -1852,14 +2047,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initSorting();
   initTechStackSearch();
 
-  syncProjectCounts();
-  fetchRepoStats();
-  initScrollBtn();
+  try {
+    // Await the projects to be fetched
+    await loadProjects();
 
-  if (hasProjectGrid()) {
-    renderGrid();
-    renderBookmarks();
-    renderRecentProjects();
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+
+    if (hasProjectGrid()) {
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+    }
+  } catch (error) {
+    console.error('Failed to load projects:', error);
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+    }
   }
 });
 
@@ -1872,23 +2078,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!menuToggle || !navButtons) return;
 
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      menuToggle.classList.toggle('active');
-      navButtons.classList.toggle('active');
+      const isOpen = navButtons.classList.toggle('active');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
     document.addEventListener('click', (e) => {
       if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        closeMenu();
+        menuToggle.focus();
       }
     });
 
     navButtons.addEventListener('click', (e) => {
       if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
       }
     });
   };
@@ -1918,6 +2136,53 @@ window.addEventListener(
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
+
+// Custom cursor
+(function () {
+  const outerCursor = document.querySelector('.cursor-ring--outer');
+  const innerCursor = document.querySelector('.cursor-ring--inner');
+
+  if (!outerCursor || !innerCursor) return;
+
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  const speed = 0.18;
+
+  const update = () => {
+    current.x += (target.x - current.x) * speed;
+    current.y += (target.y - current.y) * speed;
+
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+
+    requestAnimationFrame(update);
+  };
+
+  const showCursor = () => {
+    outerCursor.classList.add('is-visible');
+    innerCursor.classList.add('is-visible');
+  };
+
+  const hideCursor = () => {
+    outerCursor.classList.remove('is-visible');
+    innerCursor.classList.remove('is-visible');
+  };
+
+  window.addEventListener(
+    'mousemove',
+    (event) => {
+      target.x = event.clientX;
+      target.y = event.clientY;
+      showCursor();
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('mouseleave', hideCursor);
+  window.addEventListener('mouseenter', showCursor);
+
+  requestAnimationFrame(update);
+})();
 
 // Particle Network Background
 (function () {
@@ -2164,8 +2429,13 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  restoreStateFromURL();
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await loadProjects();
+    restoreStateFromURL();
+  } catch (error) {
+    console.error('Failed to restore state or load projects:', error);
+  }
   const searchInput = document.getElementById('search') ||
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
