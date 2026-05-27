@@ -214,6 +214,28 @@
         </div>
       </div>
 
+      <!-- Tech Stack Dropdown & Clear Filters -->
+      <div style="margin: 20px 0 10px 0; display: flex; justify-content: flex-start; align-items: center; gap: 15px; width: 100%; flex-wrap: wrap;">
+        <select id="techStackFilter" style="width: 280px; padding: 12px 20px; border-radius: 30px; border: 1px solid #333; background: #1a1a1a; color: white; cursor: pointer; font-size: 14px;">
+          <option value="all">Filter by Tech Stack (All)</option>
+          <option value="HTML"> HTML</option>
+          <option value="CSS"> CSS</option>
+          <option value="JavaScript"> JavaScript</option>
+          <option value="React"> React</option>
+          <option value="Node.js"> Node.js</option>
+          <option value="Express"> Express</option>
+          <option value="MongoDB"> MongoDB</option>
+          <option value="Python"> Python</option>
+          <option value="Tailwind"> Tailwind</option>
+          <option value="Firebase"> Firebase</option>
+          <option value="Next.js"> Next.js</option>
+          <option value="TypeScript"> TypeScript</option>
+        </select>
+        <button id="clearAllFiltersBtn" class="clear-filters-btn" style="display: none; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 30px; border: 1px dashed var(--accent); background: var(--accent-dim); color: var(--accent); font-weight: 500; font-size: 14px; cursor: pointer; transition: var(--t);">
+          <i class="fas fa-filter-circle-xmark"></i> Clear Filters
+        </button>
+      </div>
+
 <!-- Tech Stack Dropdown - Only technologies that exist in projects -->
 <div style="margin: 20px 0 10px 0; display: flex; justify-content: flex-start; width: 100%;">
   <select id="techStackFilter" style="width: 280px; padding: 12px 20px; border-radius: 30px; border: 1px solid #333; background: #1a1a1a; color: white; cursor: pointer; font-size: 14px;">
