@@ -447,9 +447,72 @@ body {
 .hero { animation: fadeIn .5s ease both; }
 
 /* ─── Responsive ─────────────────────────────── */
-@media (max-width: 540px) {
-  .info-grid { grid-template-columns: 1fr; }
-  .title { font-size: 2.8rem; }
-  .ip-value { font-size: 1.5rem; }
-  .extra-strip { flex-direction: column; }
+@media (max-width: 768px) {
+
+  body {
+    padding: 0 0.8rem 3rem;
+  }
+
+  .hero {
+    padding: 2.5rem 0.5rem 2rem;
+  }
+
+  .hero-glow {
+    width: 320px;
+    height: 220px;
+  }
+
+  .title {
+    font-size: 2.4rem;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    font-size: 0.78rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-box {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 20px;
+    padding: 0.8rem;
+  }
+
+  .search-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ip-display {
+    padding: 1.2rem;
+  }
+
+  .ip-value {
+    font-size: 1.4rem;
+  }
+
+  .map-container {
+    height: 220px;
+  }
+
+  .map-header {
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: flex-start;
+  }
+
+  .extra-strip {
+    flex-direction: column;
+  }
+
+  .footer {
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
