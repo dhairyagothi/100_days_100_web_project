@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="color-scheme" content="dark light" />
+	<title>Canvas Multi-Track Sequencer</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="dark">
+	<div class="app-shell">
+		<header class="topbar">
+			<div class="brand-block">
+				<p class="eyebrow">Canvas Studio</p>
+				<h1>Multi-Track Sequencer</h1>
+				<p class="subtitle">Load audio and video assets, shape the mix, and render a master canvas output.</p>
+			</div>
+
+<div class="action-bar" role="toolbar" aria-label="Sequencer actions">
+	<button id="transportToggle" type="button" class="ghost-button primary transport-toggle" aria-pressed="false">Play</button>
+	<button id="grabFrameBtn" type="button" class="ghost-button capture-frame-button">
+		<svg class="button-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+			<path d="M9.5 4.5 8 7H5.25A2.25 2.25 0 0 0 3 9.25v7.5A2.25 2.25 0 0 0 5.25 19h13.5A2.25 2.25 0 0 0 21 16.75v-7.5A2.25 2.25 0 0 0 18.75 7H16l-1.5-2.5h-5Zm2.5 11.75a4.25 4.25 0 1 1 0-8.5 4.25 4.25 0 0 1 0 8.5Zm0-1.75a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="currentColor"/>
+		</svg>
+		<span>Grab Frame</span>
+	</button>
+	<label class="file-loader" for="mediaAssets">
+		<span>Load assets</span>
+		<input id="mediaAssets" type="file" multiple accept="video/*,audio/*" />
+	</label>
+	<button id="exportSessionBtn" type="button" class="ghost-button primary">Export Video</button>
+</div>
+		</header>
+
+		<main class="workspace">
+			<section class="preview-panel" aria-labelledby="previewHeading">
+				<div class="section-head">
+					<div>
+						<p class="section-kicker">Master output</p>
+						<h2 id="previewHeading">Composite canvas</h2>
+					</div>
+					<div class="status-chip" aria-live="polite">Ready for media</div>
+				</div>
+
+                <div class="preview-stage" aria-label="Primary video output canvas" style="position: relative;">
+					<canvas id="masterCanvas" width="1280" height="720" aria-label="Master video output canvas"></canvas>
+
+                    <div class="hover-transport-bar" id="hoverTransportBar" style="display: none;">
+						<button id="hoverPlayPauseBtn" type="button" class="ghost-button primary mini">Play</button>
+						<div class="hover-timeline-track" id="hoverTimelineTrack">
+							<div class="hover-timeline-progress" id="hoverTimelineProgress"></div>
+						</div>
+						<span id="hoverTimeDisplay" class="hover-time-display">00:00</span>
+					</div>
+
+					<div class="preview-overlay" id="previewOverlay" style="flex-direction: column; gap: 1rem;">
+						<p>Drop in clips, then play back the composite here.</p>
+						<label class="file-loader primary" for="overlayMediaAssets" style="background: var(--accent); color: #fff; border-color: var(--accent);">
+							<span>Load assets</span>
+							<input id="overlayMediaAssets" type="file" multiple accept="video/*,audio/*" />
+						</label>
+					</div>
+				</div>
+			</section>
+
+			<aside class="control-panel tools-sidebar" aria-labelledby="controlHeading">
+				<div class="section-head compact">
+					<div>
+						<p class="section-kicker">Configuration</p>
+						<h2 id="controlHeading">Tool sidebar</h2>
+					</div>
+				</div>
+
+				<div class="tools-grid" aria-label="Multi-tool configuration controls">
+                    <section class="tool-section" aria-labelledby="framingHeading">
+    <div class="tool-section-header">
+        <h3 id="framingHeading">Transform</h3>
+        <p>Rotate the source frame in discrete steps.</p>
+    </div>
+    <div class="field-row field-row-inline">
+        <div class="field-stack">
+            <span class="field-label">Rotation</span>
+            <strong class="field-value" id="rotationDisplay">0°</strong>
+        </div>
+        <button type="button" class="ghost-button rotation-step">Rotate CCW</button>
+    </div>
+</section>
+
+
+					<section class="tool-section" aria-labelledby="speedHeading">
+						<div class="tool-section-header">
+							<h3 id="speedHeading">Timeline Speed Control</h3>
+							<p>Choose a playback velocity multiplier for quick previews.</p>
+						</div>
+						<label class="select-field" for="timelineSpeed">
+							<span class="field-label">Playback speed</span>
+							<select id="timelineSpeed" name="timelineSpeed">
+								<option value="0.5">0.5x</option>
+								<option value="1" selected>1.0x</option>
+								<option value="1.5">1.5x</option>
+								<option value="2">2.0x</option>
+							</select>
+						</label>
+					</section>
+				</div>
+			</aside>
+
+			<section class="timeline-panel" aria-labelledby="timelineHeading">
+				<div class="section-head">
+					<div>
+						<p class="section-kicker">Sequencer</p>
+						<h2 id="timelineHeading">Multi-track timeline</h2>
+					</div>
+					<p class="timeline-note">Responsive high-DPI canvas for clip placement and transport markers.</p>
+				</div>
+
+				<div class="timeline-shell">
+					<div class="timeline-ruler" aria-hidden="true">
+						<span>00:00</span>
+						<span>00:15</span>
+						<span>00:30</span>
+						<span>00:45</span>
+						<span>01:00</span>
+					</div>
+					<div class="timeline-canvas-wrap">
+						<canvas id="timelineCanvas" aria-label="Multi-track timeline sequencer canvas"></canvas>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+	<script src="script.js" defer></script>
+</body>
+</html>
