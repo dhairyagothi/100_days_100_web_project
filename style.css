@@ -116,7 +116,7 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 .ambient::before {
@@ -407,9 +407,8 @@ body.light-mode .navbar {
    HERO — FIXED: removed min-height:100vh, reduced padding
    ============================================================ */
 .hero {
-  /* FIX: was min-height:100vh with padding:100px 2rem 6rem — caused huge dead space */
-  min-height: auto;
-  padding: 100px 2rem 5rem;
+  min-height: 100vh;
+  padding: 60px 2rem 2rem;
 
   display: flex;
   align-items: center;
@@ -2036,7 +2035,7 @@ body.light-mode .brand-mark {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 /* ============================================================

@@ -1519,13 +1519,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   window.addEventListener('popstate', () => restoreStateFromURL());
-});onst categoryFilter = document.getElementById('category');
-  if (categoryFilter) {
-    categoryFilter.addEventListener('change', () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
-  }
-  window.addEventListener('popstate', () => restoreStateFromURL());
 });
