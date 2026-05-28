@@ -161,7 +161,7 @@ canvas {
   gap: 1rem;
 }
 
-.overlay.hidden {
+.hidden {
   display: none;
 }
 

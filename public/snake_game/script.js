@@ -131,8 +131,8 @@ function draw() {
   });
 }
 
-
-function tick() {
+function tick()
+ {
   if (!running || paused) return;
 
   dir = { ...nextDir };
@@ -189,6 +189,7 @@ function restartLoop() {
 function startGame() {
   document.getElementById('startOverlay').classList.add('hidden');
   document.getElementById('gameOverOverlay').classList.add('hidden');
+  document.getElementById('gameControls').classList.remove('hidden');
   cancelAnimationFrame(animFrame); // stop idle animation
 
   isGameOver = false; // FIX 1: clear the flag so inputs can be taken again
@@ -306,3 +307,41 @@ function animateIdle() {
 
 initGame();
 animateIdle();
+
+
+//added
+initGame();
+animateIdle();
+
+const pauseBtn = document.getElementById('pauseBtn');
+const exitBtn = document.getElementById('exitBtn');
+
+pauseBtn.addEventListener('click', () => {
+
+  if (!running) return;
+
+  paused = !paused;
+
+  pauseBtn.querySelector('span').textContent =
+    paused ? 'RESUME' : 'PAUSE';
+});
+
+
+exitBtn.addEventListener('click', () => {
+
+  clearInterval(gameLoop);
+
+  running = false;
+  paused = false;
+
+  document.getElementById('startOverlay')
+    .classList.remove('hidden');
+
+  document.getElementById('gameOverOverlay')
+    .classList.add('hidden');
+
+  initGame();
+  draw();
+
+  pauseBtn.querySelector('span').textContent = 'PAUSE';
+});
