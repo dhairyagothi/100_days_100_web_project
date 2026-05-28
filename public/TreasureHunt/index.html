@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIPHER // Treasure Hunt Coding Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- BOOT SCREEN -->
+  <div id="boot-screen">
+    <div class="boot-content">
+      <div class="boot-logo">C I P H E R</div>
+      <div class="boot-tagline"> Treasure Hunt Coding Game</div>
+      <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
+      <div class="boot-status" id="boot-status">INITIALIZING SYSTEM...</div>
+      <button id="boot-enter" class="hidden">[ ENTER THE VAULT ]</button>
+    </div>
+    <canvas id="boot-canvas"></canvas>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app" class="hidden">
+
+    <!-- TOP NAV -->
+    <nav id="topnav">
+      <div class="nav-brand">
+        <span class="nav-logo">◈ CIPHER</span>
+        <span class="nav-sub">// Treasure Hunt</span>
+      </div>
+      <div class="nav-score-wrap">
+        <div class="nav-score">
+          <span class="score-label">SCORE</span>
+          <span id="nav-score-val">000</span>
+        </div>
+        <div class="nav-frags-count">
+          <span class="score-label">FRAGMENTS</span>
+          <span id="nav-frags-val">0/4</span>
+        </div>
+      </div>
+      <button id="clue-panel-toggle" class="btn-icon" title="Open Fragment Log">
+        <span>◈</span> FRAGMENT LOG
+        <span id="clue-badge" class="badge hidden">0</span>
+      </button>
+    </nav>
+    <aside id="clue-panel">
+      <div class="panel-header">
+        <h2>◈ FRAGMENT LOG</h2>
+        <button id="clue-panel-close">✕</button>
+      </div>
+      <div class="panel-progress">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span id="progress-label">0 of 4 fragments spotted</span>
+      </div>
+
+      <div class="panel-hint">
+        💡 Solve challenges in each zone. After solving, <strong>search the page</strong> for a hidden glowing fragment. Spot it and click it to add it here.
+      </div>
+
+      <div id="clue-list">
+        <div class="clue-slot empty" id="clue-slot-0">
+          <span class="clue-num">01</span>
+          <div class="clue-info">
+            <span class="clue-zone">Debug Lab</span>
+            <span class="clue-text">[ not yet spotted ]</span>
+          </div>
+        </div>
+        <div class="clue-slot empty" id="clue-slot-1">
+          <span class="clue-num">02</span>
+          <div class="clue-info">
+            <span class="clue-zone">DOM City</span>
+            <span class="clue-text">[ not yet spotted ]</span>
+          </div>
+        </div>
+        <div class="clue-slot empty" id="clue-slot-2">
+          <span class="clue-num">03</span>
+          <div class="clue-info">
+            <span class="clue-zone">Logic Forest</span>
+            <span class="clue-text">[ not yet spotted ]</span>
+          </div>
+        </div>
+        <div class="clue-slot empty" id="clue-slot-3">
+          <span class="clue-num">04</span>
+          <div class="clue-info">
+            <span class="clue-zone">Async Vault</span>
+            <span class="clue-text">[ not yet spotted ]</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final vault entry — shown when all 4 collected -->
+      <div id="final-vault-entry" class="hidden">
+        <div class="vault-entry-title">★ ALL FRAGMENTS COLLECTED</div>
+        <p class="vault-entry-hint">Go to the <strong>Final Vault</strong> zone and enter the 4-part code to claim the treasure.</p>
+        <button class="btn-go-vault" id="go-vault-btn">→ OPEN FINAL VAULT</button>
+      </div>
+    </aside>
+
+    <!-- HUB / WORLD MAP -->
+    <section id="hub" class="page active">
+      <div class="hub-bg-grid"></div>
+      <div class="hub-title-wrap">
+        <h1 class="hub-title">THE CIPHER WORLD</h1>
+        <p class="hub-subtitle"> Solve challenges → find hidden fragments → enter the vault</p>
+      </div>
+      <div class="zone-map">
+        <div class="zone-card" id="zone-debug" data-zone="debug">
+          <div class="zone-glow"></div>
+          <div class="zone-icon">🐛</div>
+          <div class="zone-name">DEBUG LAB</div>
+          <div class="zone-desc">Fix the bugs. Then search the lab for what appears.</div>
+          <div class="zone-status" id="zs-debug">[ ENTER ]</div>
+        </div>
+        <div class="zone-card" id="zone-dom" data-zone="dom">
+          <div class="zone-glow"></div>
+          <div class="zone-icon">🌆</div>
+          <div class="zone-name">DOM CITY</div>
+          <div class="zone-desc">Inspect the elements. Something hides in the markup.</div>
+          <div class="zone-status" id="zs-dom">[ ENTER ]</div>
+        </div>
+        <div class="zone-card" id="zone-logic" data-zone="logic">
+          <div class="zone-glow"></div>
+          <div class="zone-icon">🌲</div>
+          <div class="zone-name">LOGIC FOREST</div>
+          <div class="zone-desc">Trace the code. A fragment drifts among the trees.</div>
+          <div class="zone-status" id="zs-logic">[ ENTER ]</div>
+        </div>
+        <div class="zone-card" id="zone-async" data-zone="async">
+          <div class="zone-glow"></div>
+          <div class="zone-icon">⚡</div>
+          <div class="zone-name">ASYNC VAULT</div>
+          <div class="zone-desc">Await the answer. The fragment resolves when you do.</div>
+          <div class="zone-status" id="zs-async">[ ENTER ]</div>
+        </div>
+        <!-- Final Vault — locked until all 4 fragments found -->
+        <div class="zone-card zone-final locked-zone" id="zone-final" data-zone="final">
+          <div class="zone-glow gold"></div>
+          <div class="zone-icon">🏛️</div>
+          <div class="zone-name">FINAL VAULT</div>
+          <div class="zone-desc">Enter all four fragments to claim the treasure. Collect them first.</div>
+          <div class="zone-status" id="zs-final">[ 🔒 LOCKED ]</div>
+        </div>
+      </div>
+      <div class="hub-hint">↓ EXPLORE ZONES — SOLVE → SEARCH → COLLECT ↓</div>
+    </section>
+
+    <!-- DEBUG LAB -->
+    <section id="page-debug" class="page hidden zone-page">
+      <div class="zone-topbar">
+        <button class="btn-back" data-target="hub">← BACK TO MAP</button>
+        <span class="zone-topbar-title">🐛 DEBUG LAB</span>
+        <span class="zone-topbar-hint">Solve → then search the page for a glowing word</span>
+      </div>
+      <div class="zone-content">
+        <div class="zone-intro">
+          <h2 class="zone-h2">Welcome to the <span class="accent">Debug Lab</span></h2>
+          <p>The code has been corrupted. Fix both bugs — then <strong>look carefully around the page</strong> for something that appears.</p>
+        </div>
+
+        <div class="terminal-env">
+          <div class="terminal-header">
+            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+            <span class="t-title">debug_lab.js — CORRUPTED</span>
+            <span class="hidden-fragment" id="frag-debug" data-fragment="QzBERQ==" data-index="0"></span>
+          </div>
+          <div class="terminal-body">
+            <div class="code-display">
+              <div class="code-line"><span class="ln">1</span> <span class="kw">function</span> <span class="fn">calculateTotal</span>(items) {</div>
+              <div class="code-line"><span class="ln">2</span>   <span class="kw">let</span> total <span class="op">=</span> <span class="num">0</span>;</div>
+              <div class="code-line bug-line" id="bug-line-3"><span class="ln">3</span>   <span class="kw">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="num">0</span>; i <span class="op">&lt;=</span> items.length; i++) {</div>
+              <div class="code-line"><span class="ln">4</span>     total <span class="op">+=</span> items[i];</div>
+              <div class="code-line"><span class="ln">5</span>   }</div>
+              <div class="code-line bug-line" id="bug-line-6"><span class="ln">6</span>   <span class="kw">return</span> totall;</div>
+              <div class="code-line"><span class="ln">7</span> }</div>
+            </div>
+            <div class="terminal-prompt">
+              <span class="prompt-sym">$</span>
+              <span class="terminal-cursor-blink">_</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-cards">
+          <div class="chal-card" id="debug-chal-1">
+            <div class="chal-glow"></div>
+            <div class="chal-header">
+              <span class="chal-num">BUG #1</span>
+              <span class="chal-tag">Off-by-One Error</span>
+            </div>
+            <p class="chal-desc">Line 3 causes an <strong>index out of bounds</strong> error. What should the loop condition be?</p>
+            <div class="chal-options" id="debug-opts-1">
+              <button class="opt-btn" data-correct="false">i &lt;= items.length</button>
+              <button class="opt-btn" data-correct="true">i &lt; items.length</button>
+              <button class="opt-btn" data-correct="false">i &gt; items.length</button>
+              <button class="opt-btn" data-correct="false">i !== items.length</button>
+            </div>
+            <div class="chal-result hidden" id="debug-result-1"></div>
+          </div>
+
+          <div class="chal-card locked" id="debug-chal-2">
+            <div class="chal-glow"></div>
+            <div class="chal-header">
+              <span class="chal-num">BUG #2</span>
+              <span class="chal-tag">Typo Bug</span>
+            </div>
+            <p class="chal-desc">Line 6 has a typo. What is the correct variable name to return?</p>
+            <div class="chal-options" id="debug-opts-2">
+              <button class="opt-btn" data-correct="false">totall</button>
+              <button class="opt-btn" data-correct="true">total</button>
+              <button class="opt-btn" data-correct="false">sum</button>
+              <button class="opt-btn" data-correct="false">result</button>
+            </div>
+            <div class="chal-result hidden" id="debug-result-2"></div>
+          </div>
+        </div>
+        <div class="fragment-hint hidden" id="debug-frag-hint">
+          🔍 Both bugs fixed! <strong>A fragment has appeared somewhere on this page...</strong> Look carefully and click it when you find it.
+        </div>
+      </div>
+    </section>
+
+    <!-- DOM CITY -->
+    <section id="page-dom" class="page hidden zone-page">
+      <div class="zone-topbar">
+        <button class="btn-back" data-target="hub">← BACK TO MAP</button>
+        <span class="zone-topbar-title">🌆 DOM CITY</span>
+        <span class="zone-topbar-hint">Solve → then inspect elements for a hidden fragment</span>
+      </div>
+      <div class="zone-content">
+        <div class="zone-intro">
+          <h2 class="zone-h2">Welcome to <span class="accent">DOM City</span></h2>
+          <p>Answer both DOM challenges. Then <strong>inspect the city's elements</strong> — a fragment is hiding inside a tag.</p>
+        </div>
+
+        <div class="dom-city-visual">
+          <div class="city-building" id="building-html">
+            <div class="building-label">&lt;html&gt;</div>
+            <div class="building-inner">
+              <div class="city-building b2" id="building-body">
+                <div class="building-label">&lt;body&gt;</div>
+                <div class="building-inner">
+                  <div class="city-building b3 clickable" id="building-div">
+                    <div class="building-label">&lt;div class="vault"&gt;</div>
+                    <div class="building-secret">🔒 CLICK TO INSPECT</div>
+                  </div>
+                  <!-- Fragment hidden here as a data attribute — revealed after solving -->
+                  <div class="city-building b3 clickable" id="building-nav"
+                       data-fragment="HUNT" data-index="1">
+                    <div class="building-label">&lt;nav id="cipher" <span class="frag-attr hidden" id="dom-frag-attr">data-key="<span class="hidden-fragment" id="frag-dom" data-fragment="SFVOVA=="></span>"</span>&gt;</div>
+                    <div class="building-secret" id="nav-building-secret">🔒 CLICK TO INSPECT</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dom-quiz" id="dom-quiz-area">
+          <div class="quiz-prompt hidden" id="dom-q1">
+            <h3>⚡ DOM CHALLENGE #1</h3>
+            <p>Which method selects an element by its <strong>id</strong>?</p>
+            <div class="chal-options">
+              <button class="opt-btn" data-correct="false">document.querySelector(".cipher")</button>
+              <button class="opt-btn" data-correct="true">document.getElementById("cipher")</button>
+              <button class="opt-btn" data-correct="false">document.getElement("cipher")</button>
+              <button class="opt-btn" data-correct="false">document.find("#cipher")</button>
+            </div>
+            <div class="chal-result hidden" id="dom-result-1"></div>
+          </div>
+          <div class="quiz-prompt hidden" id="dom-q2">
+            <h3>⚡ DOM CHALLENGE #2</h3>
+            <p>What does <code>element.innerHTML</code> return?</p>
+            <div class="chal-options">
+              <button class="opt-btn" data-correct="false">Only the text content</button>
+              <button class="opt-btn" data-correct="false">The element's CSS styles</button>
+              <button class="opt-btn" data-correct="true">The HTML markup inside the element</button>
+              <button class="opt-btn" data-correct="false">The element's tag name</button>
+            </div>
+            <div class="chal-result hidden" id="dom-result-2"></div>
+          </div>
+        </div>
+
+        <div class="fragment-hint hidden" id="dom-frag-hint">
+          🔍 Challenges solved! <strong>Something appeared inside a tag in the city above...</strong> Inspect the elements — click on the nav building.
+        </div>
+      </div>
+    </section>
+     <!-- LOGIC FOREST -->
+    <section id="page-logic" class="page hidden zone-page">
+      <div class="zone-topbar">
+        <button class="btn-back" data-target="hub">← BACK TO MAP</button>
+        <span class="zone-topbar-title">🌲 LOGIC FOREST</span>
+        <span class="zone-topbar-hint">Solve → then scroll — a fragment drifts in the forest</span>
+      </div>
+      <div class="zone-content">
+        <div class="zone-intro">
+          <h2 class="zone-h2">Welcome to the <span class="accent">Logic Forest</span></h2>
+          <p>Trace both code paths. After you do, <strong>scroll through the forest</strong> — a fragment is drifting somewhere below.</p>
+        </div>
+
+        <div class="forest-paths">
+          <div class="forest-tree" id="tree-1">
+            <div class="tree-trunk">
+              <div class="tree-code">
+                <pre><code><span class="kw">function</span> <span class="fn">mystery</span>(x) {
+  <span class="kw">if</span> (x <span class="op">></span> <span class="num">10</span>) {
+    <span class="kw">return</span> x <span class="op">*</span> <span class="num">2</span>;
+  } <span class="kw">else</span> {
+    <span class="kw">return</span> x <span class="op">+</span> <span class="num">5</span>;
+  }
+}
+<span class="fn">mystery</span>(<span class="num">8</span>);</code></pre>
+              </div>
+            </div>
+            <div class="tree-challenge">
+              <p>What does <code>mystery(8)</code> return?</p>
+              <div class="chal-options">
+                <button class="opt-btn" data-correct="false">16</button>
+                <button class="opt-btn" data-correct="true">13</button>
+                <button class="opt-btn" data-correct="false">8</button>
+                <button class="opt-btn" data-correct="false">10</button>
+              </div>
+              <div class="chal-result hidden" id="logic-result-1"></div>
+            </div>
+          </div>
+
+          <div class="forest-tree locked" id="tree-2">
+            <div class="tree-trunk">
+              <div class="tree-code">
+                <pre><code><span class="kw">const</span> arr <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+<span class="kw">const</span> result <span class="op">=</span> arr
+  .filter(n <span class="op">=></span> n <span class="op">%</span> <span class="num">2</span> <span class="op">===</span> <span class="num">0</span>)
+  .map(n <span class="op">=></span> n <span class="op">*</span> <span class="num">3</span>);
+console.<span class="fn">log</span>(result);</code></pre>
+              </div>
+            </div>
+            <div class="tree-challenge">
+              <p>What does <code>console.log(result)</code> output?</p>
+              <div class="chal-options">
+                <button class="opt-btn" data-correct="false">[2, 4]</button>
+                <button class="opt-btn" data-correct="true">[6, 12]</button>
+                <button class="opt-btn" data-correct="false">[3, 6, 9, 12, 15]</button>
+                <button class="opt-btn" data-correct="false">[1, 3, 5]</button>
+              </div>
+              <div class="chal-result hidden" id="logic-result-2"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="forest-floor" id="logic-forest-floor">
+          <div class="forest-floor-text">// end of traceable path...</div>
+          <div class="floating-fragment-wrap hidden" id="logic-frag-wrap">
+            <div class="floating-fragment-hint">Something glows among the roots...</div>
+            <span class="hidden-fragment floating" id="frag-logic" data-fragment="VFJVRQ==" data-index="2">>TRUE</span>
+          </div>
+        </div>
+
+        <div class="fragment-hint hidden" id="logic-frag-hint">
+          🔍 Both trees decoded! — something is in the page.
+        </div>
+      </div>
+    </section>
+
+    <section id="page-async" class="page hidden zone-page">
+      <div class="zone-topbar">
+        <button class="btn-back" data-target="hub">← BACK TO MAP</button>
+        <span class="zone-topbar-title">⚡ ASYNC VAULT</span>
+        <span class="zone-topbar-hint">Solve → wait for the Promise to resolve a fragment</span>
+      </div>
+      <div class="zone-content">
+        <div class="zone-intro">
+          <h2 class="zone-h2">Welcome to the <span class="accent">Async Vault</span></h2>
+          <p>Answer both async challenges. Then <strong>watch the console output below</strong> — a fragment will resolve like a Promise.</p>
+        </div>
+
+        <div class="async-visualizer">
+          <div class="async-timeline" id="async-timeline">
+            <div class="timeline-step" id="ts-0"><div class="ts-icon">📋</div><div class="ts-label">CALL STACK</div></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-step" id="ts-1"><div class="ts-icon">⏳</div><div class="ts-label">WEB API</div></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-step" id="ts-2"><div class="ts-icon">📥</div><div class="ts-label">CALLBACK QUEUE</div></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-step" id="ts-3"><div class="ts-icon">🔄</div><div class="ts-label">EVENT LOOP</div></div>
+          </div>
+          <button class="btn-animate" id="async-animate-btn">▶ ANIMATE EVENT LOOP</button>
+        </div>
+
+        <div class="async-challenge">
+          <div class="chal-card" id="async-chal-1">
+            <div class="chal-glow"></div>
+            <div class="chal-header">
+              <span class="chal-num">VAULT CHALLENGE #1</span>
+              <span class="chal-tag">Output Order</span>
+            </div>
+            <div class="tree-code" style="margin:1rem 0;">
+              <pre><code>console.<span class="fn">log</span>(<span class="str">"A"</span>);
+setTimeout(() <span class="op">=></span> console.<span class="fn">log</span>(<span class="str">"B"</span>), <span class="num">0</span>);
+console.<span class="fn">log</span>(<span class="str">"C"</span>);</code></pre>
+            </div>
+            <p>What is the correct output order?</p>
+            <div class="chal-options">
+              <button class="opt-btn" data-correct="false">A, B, C</button>
+              <button class="opt-btn" data-correct="true">A, C, B</button>
+              <button class="opt-btn" data-correct="false">B, A, C</button>
+              <button class="opt-btn" data-correct="false">C, A, B</button>
+            </div>
+            <div class="chal-result hidden" id="async-result-1"></div>
+          </div>
+
+          <div class="chal-card locked" id="async-chal-2">
+            <div class="chal-glow"></div>
+            <div class="chal-header">
+              <span class="chal-num">VAULT CHALLENGE #2</span>
+              <span class="chal-tag">Promise Knowledge</span>
+            </div>
+            <p>What does <code>async/await</code> actually do under the hood?</p>
+            <div class="chal-options">
+              <button class="opt-btn" data-correct="false">Creates multiple threads</button>
+              <button class="opt-btn" data-correct="false">Pauses the entire JavaScript runtime</button>
+              <button class="opt-btn" data-correct="true">Syntactic sugar over Promises</button>
+              <button class="opt-btn" data-correct="false">Converts async code to synchronous</button>
+            </div>
+            <div class="chal-result hidden" id="async-result-2"></div>
+          </div>
+        </div>
+
+        <div class="async-console hidden" id="async-console">
+          <div class="terminal-header">
+            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+            <span class="t-title">async_vault.js — live output</span>
+          </div>
+          <div class="async-console-body" id="async-console-body">
+            <div class="console-line dim">&gt; resolving Promise...</div>
+            <div class="console-line dim">&gt; awaiting fragment...</div>
+            <div class="console-line typing" id="async-console-typing"></div>
+          </div>
+        </div>
+
+        <div class="fragment-hint hidden" id="async-frag-hint">
+          🔍 Challenges solved! something is resolving...
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL VAULT -->
+    <section id="page-final" class="page hidden zone-page">
+      <div class="zone-topbar">
+        <button class="btn-back" data-target="hub">← BACK TO MAP</button>
+        <span class="zone-topbar-title">🏛️ FINAL VAULT</span>
+        <span class="zone-topbar-hint">Enter the 4 fragments in order</span>
+      </div>
+      <div class="zone-content">
+        <div class="zone-intro">
+          <h2 class="zone-h2">The <span class="accent">Final Vault</span></h2>
+          <p>You have collected all four fragments. Enter them below in the correct order to crack the cipher and claim the treasure.</p>
+        </div>
+
+        <div class="vault-input-zone">
+          <div class="vault-door-anim" id="vault-door-anim">
+            <div class="vault-ring r1"></div>
+            <div class="vault-ring r2"></div>
+            <div class="vault-ring r3"></div>
+            <div class="vault-center" id="vault-center-icon">🔒</div>
+          </div>
+
+          <div class="vault-form">
+            <div class="vault-form-label">Enter 4 fragments separated by hyphens:</div>
+            <div class="vault-form-hint">Format: XXXX-XXXX-XXXX-XXXX</div>
+            <div class="vault-input-row">
+              <input type="text" id="vault-code-input"
+                     placeholder="????-????-????-????"
+                     maxlength="19"
+                     autocomplete="off"
+                     spellcheck="false" />
+              <button id="vault-submit-btn" class="btn-vault-submit">UNLOCK</button>
+            </div>
+            <div class="vault-input-result hidden" id="vault-input-result"></div>
+            <div class="vault-attempts">Attempts: <span id="vault-attempt-count">0</span></div>
+          </div>
+        </div>
+
+        <div class="treasure-reveal hidden" id="treasure-reveal">
+          <div class="treasure-stars">★ ★ ★</div>
+          <div class="treasure-title">VAULT CRACKED</div>
+          <div class="treasure-code-display" id="treasure-code-display"></div>
+          <div class="treasure-subtitle">You cracked the CIPHER. The vault is yours.</div>
+          <div class="treasure-score">Final Score: <span id="treasure-final-score"></span> pts</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="modal-overlay" class="hidden">
+    <div id="modal-box">
+      <div id="modal-header">
+        <span id="modal-title">INFO</span>
+        <button id="modal-close">✕</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden">
+    <span id="toast-icon">✓</span>
+    <span id="toast-msg">Message</span>
+  </div>
+
+  <canvas id="ambient-canvas"></canvas>
+  <script src="script.js"></script>
+</body>
+</html>

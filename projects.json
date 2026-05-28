@@ -1824,25 +1824,35 @@
   "projectName": "LeetCode Progress Tracker",
   "projectType": "Tool",
   "projectDesc": "Track solved LeetCode problems, coding streaks, difficulty-wise progress and coding analytics through an interactive dashboard.",
-  "techStack": ["tool","javascript","html","css","api"],
+  "techStack": ["tool", "javascript", "html", "css", "api"],
   "difficulty": "advanced",
   "projectPath": "./public/leetcode-progress-tracker/index.html"
 },
 {
-  "projectNo":184,
-  "projectName":"Minesweeper",
-  "projectType":"Game",
-  "projectDesc":"Classic Minesweeper game with a modern twist.",
-  "techStack":["game","html","css","javascript"],
-  "difficulty":"intermediate",
-  "projectPath":"./public/Minesweeper/index.html"
-},{
-  "projectNo":184,
-  "projectName":"GitHub Repository Analyser",
-  "projectType":"tool",
-  "projectDesc":"A modern tool to quickly analyse a github repo , provides detail stats about repo.",
-  "techStack":["tool","html","css","javascript"],
-  "difficulty":"intermediate",
-  "projectPath":"./public/github-repository-analyser/index.html"
+  "projectNo": 184,
+  "projectName": "Minesweeper",
+  "projectType": "Game",
+  "projectDesc": "Classic Minesweeper game with a modern twist.",
+  "techStack": ["game", "html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Minesweeper/index.html"
+},
+{
+  "projectNo": 185,
+  "projectName": "GitHub Repository Analyser",
+  "projectType": "Tool",
+  "projectDesc": "A modern tool to quickly analyse a github repo, provides detail stats about repo.",
+  "techStack": ["tool", "html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/github-repository-analyser/index.html"
+},
+{
+  "projectNo": 186,
+  "projectName": "Cipher",
+  "projectType": "Game",
+  "projectDesc": "An interactive treasure hunt puzzle game where players solve coding challenges to uncover clues and unlock the final treasure.",
+  "techStack": ["game", "html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/TreasureHunt/index.html"
 }
 ]
