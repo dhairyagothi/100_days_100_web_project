@@ -2,6 +2,7 @@
 // 1. DOM Element References (match HTML ids/classes)
 const taskInput = document.getElementById("task");
 const taskTypeSelect = document.getElementById("task-category");
+const eisenhowerSelect = document.getElementById("eisenhower-select");
 const taskList = document.getElementById("notes-container");
 const emptyState = document.getElementById("emptyState");
 const documentsList = document.querySelector('.documents-list');
@@ -18,6 +19,7 @@ let currentFilter = "all";
 function addTask() {
   const text = taskInput.value.trim();
   const category = taskTypeSelect.value;
+  const eisenhower = eisenhowerSelect.value;
 
   if (!text) {
     showToast("⚠️ Please enter a task description!");
@@ -33,6 +35,7 @@ function addTask() {
     id: Date.now(),
     text: text,
     category: category || "Misc",
+    eisenhower: eisenhower || "",
     color: color,
     completed: false
   };
@@ -40,6 +43,7 @@ function addTask() {
   tasks.push(newTask);
   taskInput.value = "";
   taskTypeSelect.value = ""; // Reset dropdown
+  eisenhowerSelect.value = ""; // Reset Eisenhower dropdown
 
   renderTasks();
   showToast("✅ Task added successfully!");
@@ -112,15 +116,17 @@ function renderTasks() {
       card.setAttribute("data-id", task.id);
       card.style.setProperty("--i", idx);
 
+      // FIX 1: Buttons now sit directly in .note-actions as proper flex siblings (no wrapper, no line.)
       card.innerHTML = `
         <div class="note-row">
           <textarea class="note-text" onchange="updateTaskText(${task.id}, this.value)">${task.text}</textarea>
           <div class="note-actions">
             <div class="category-badge">${task.category}</div>
-            <div>
-              <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
-              <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
-            </div>
+            ${task.eisenhower ? `<span class="priority-tag ${task.eisenhower}">${
+              {"urgent-important":"Urgent & Important","important-only":"Important Only","urgent-only":"Urgent Only","neither":"Neither"}[task.eisenhower]
+            }</span>` : ""}
+            <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
+            <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
           </div>
         </div>
       `;

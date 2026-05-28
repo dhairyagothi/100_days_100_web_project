@@ -246,10 +246,16 @@ getProjectDescription(project);
   };
 }
 
-function attachProjectCardInteraction(card, demoUrl) {
+function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = 'pointer';
   card.onclick = (e) => {
     if (e.target.closest('a, button')) return;
+    
+    // Track the project visit if projectData is provided
+    if (projectData) {
+      trackRecentProject(projectData);
+    }
+    
     window.open(demoUrl, '_blank', 'noopener');
   };
 }
@@ -272,8 +278,9 @@ function normalizeTech(tech) {
 }
 
 /**
- * Check if project matches the active tech stack filters
- * EFFICIENT APPROACH: Direct string matching without complex transformations
+ * Check if project matches the active tech stack filters.
+ * Each filter must match a complete tag token, not a substring of another tag.
+ * Example: searching "java" must not return projects tagged "javascript".
  * @param {string|array} projectTags - Project tags (space-separated string or array)
  * @returns {boolean} True if project matches all active filters
  */
@@ -284,12 +291,17 @@ function matchesTechStack(projectTags) {
   // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Convert to single lowercase string for efficient matching
-  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  // Normalize to a set of individual lowercase tokens for whole-word matching.
+  // Using a Set avoids repeated linear scans for each filter.
+  const tagSet = new Set(
+    (Array.isArray(projectTags) ? projectTags : String(projectTags).split(/\s+/))
+      .map((t) => t.toLowerCase().trim())
+      .filter(Boolean)
+  );
 
-  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
-  // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  // Every active filter must match an exact token in the tag set (AND logic).
+  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
+  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
 
@@ -378,13 +390,73 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
-let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+let bookmarkedProjects = [];
+let recentProjects = [];
+
+try {
+  bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
+  recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+} catch (error) {
+  console.warn('localStorage is not available or access is denied:', error.message);
+}
 
 let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
+const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
+
+/**
+ * Migrates old recent projects format (array) to new format (object with timestamp)
+ * If stored format doesn't have timestamps, it's likely the old format
+ */
+function migrateRecentProjects() {
+  if (recentProjects.length === 0) return;
+  
+  // Check if already in new format (has timestamp)
+  if (typeof recentProjects[0] === 'object' && recentProjects[0].timestamp) {
+    return; // Already migrated
+  }
+  
+  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
+  recentProjects = recentProjects.map((project) => {
+    if (Array.isArray(project)) {
+      return {
+        day: project[0],
+        name: project[1],
+        url: project[2],
+        tags: project[3],
+        timestamp: Date.now() - (ONE_HOUR_MS / 2) // Set to 30 mins ago to preserve them initially
+      };
+    }
+    return project;
+  });
+  
+  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+}
+
+// Migrate on load
+migrateRecentProjects();
+
+/**
+ * Cleans up recent projects older than 1 hour
+ * Called periodically and on page load
+ */
+function cleanupExpiredRecentProjects() {
+  const initialLength = recentProjects.length;
+  recentProjects = getRecentProjectsWithinWindow();
+  
+  if (recentProjects.length !== initialLength) {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    renderRecentProjects();
+  }
+}
+
+// Clean up on page load
+cleanupExpiredRecentProjects();
+
+// Clean up every 5 minutes
+setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
 
 const CATEGORY_LABEL = {
   beginner: 'Beginner',
@@ -478,10 +550,61 @@ let sortOption = 'default';
 let techStackFilter = 'all';
 let difficultyFilter = 'all';
 
+function syncStateToURL() {
+  const url = new URL(window.location);
+  
+  if (searchQuery) {
+    url.searchParams.set('search', searchQuery);
+  } else {
+    url.searchParams.delete('search');
+  }
+
+  if (activeFilter && activeFilter !== 'all') {
+    url.searchParams.set('category', activeFilter);
+  } else {
+    url.searchParams.delete('category');
+  }
+
+  if (currentPage > 1) {
+    url.searchParams.set('page', currentPage);
+  } else {
+    url.searchParams.delete('page');
+  }
+
+  window.history.replaceState({}, '', url);
+}
+
+function readStateFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (urlParams.has('search')) {
+    searchQuery = urlParams.get('search');
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.value = searchQuery;
+    }
+  }
+  
+  if (urlParams.has('category')) {
+    activeFilter = urlParams.get('category');
+  }
+  
+  if (urlParams.has('page')) {
+    const page = parseInt(urlParams.get('page'), 10);
+    if (!isNaN(page) && page > 0) {
+      currentPage = page;
+    }
+  }
+}
+
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
+
+  if (typeof updateClearFiltersBtnVisibility === 'function') {
+    updateClearFiltersBtnVisibility();
+  }
 
   const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
@@ -569,12 +692,14 @@ function renderGrid() {
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl);
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     fragment.appendChild(card);
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
+  
+  syncStateToURL();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -735,21 +860,67 @@ function toggleBookmark(project) {
     showToast('Project bookmarked');
   }
 
-  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  try {
+    localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  } catch (error) {
+    console.warn('Could not save bookmark due to localStorage restrictions');
+  }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
 }
 
-function trackRecentProject(project) {
-  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
-  recentProjects.unshift(project);
+/**
+ * Removes projects older than 1 hour from the recent projects list
+ * @returns {array} Filtered recent projects within the 1-hour window
+ */
+function getRecentProjectsWithinWindow() {
+  const now = Date.now();
+  return recentProjects.filter((item) => {
+    const timestamp = item.timestamp || Date.now();
+    const age = now - timestamp;
+    return age <= ONE_HOUR_MS;
+  });
+}
 
-  if (recentProjects.length > 10) {
+/**
+ * Tracks a recently viewed project with a timestamp
+ * @param {array} project - Project data [day, name, url, tags]
+ */
+function trackRecentProject(project) {
+  // Convert old format to new format if needed
+  let projectObj;
+  if (Array.isArray(project)) {
+    projectObj = {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+      timestamp: Date.now()
+    };
+  } else {
+    projectObj = {
+      ...project,
+      timestamp: Date.now()
+    };
+  }
+
+  // Remove duplicate if exists
+  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  
+  // Add to front
+  recentProjects.unshift(projectObj);
+
+  // Keep only the 20 most recent entries (not filtered by time yet)
+  if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn('Could not save recent projects due to localStorage restrictions');
+  }
   renderRecentProjects();
 }
 
@@ -787,7 +958,7 @@ function renderBookmarks() {
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl);
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     bookmarkGrid.appendChild(card);
   });
@@ -800,19 +971,28 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = '';
 
-  if (recentProjects.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+  // Filter projects within the 1-hour window
+  const validRecent = getRecentProjectsWithinWindow();
+
+  if (validRecent.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
     return;
   }
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display = validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
+  visibleRecent.forEach((projectObj) => {
+    // Handle both old array format and new object format
+    const day = projectObj.day || projectObj[0];
+    const name = projectObj.name || projectObj[1];
+    const url = projectObj.url || projectObj[2];
+    const tags = projectObj.tags || projectObj[3];
+    
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -823,12 +1003,12 @@ function renderRecentProjects() {
       tags,
       category,
       isBookmarked,
-      showDescription: false,
+      showDescription: true,
     });
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl);
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     recentGrid.appendChild(card);
   });
@@ -918,11 +1098,87 @@ document.addEventListener('click', (e) => {
 });
 
 /* ============================================================
+   CLEAR ALL FILTERS SYSTEM
+   ============================================================ */
+function updateClearFiltersBtnVisibility() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (!btn) return;
+
+  const input = document.getElementById('searchInput');
+  const techStack = document.getElementById('techStackFilter');
+  const difficultyElement = document.getElementById('difficultyFilter');
+
+  const hasSearch = input && input.value.trim() !== '';
+  const hasTech = techStack && techStack.value !== 'all';
+  const hasDiff = difficultyElement && difficultyElement.value !== 'all';
+  const hasCategory = activeFilter && activeFilter !== 'all';
+
+  if (hasSearch || hasTech || hasDiff || hasCategory) {
+    btn.style.display = 'inline-flex';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+function resetAllFilters() {
+  // 1. Reset Category filter chips
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((c) => c.classList.remove('active'));
+  const allChip = document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
+  if (allChip) allChip.classList.add('active');
+  activeFilter = 'all';
+
+  // 2. Clear Search input
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  searchQuery = '';
+
+  // 3. Reset Tech Stack dropdown select
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) techStack.value = 'all';
+  techStackFilter = 'all';
+
+  // 4. Reset Difficulty dropdown select
+  const difficultyElement = document.getElementById('difficultyFilter');
+  if (difficultyElement) difficultyElement.value = 'all';
+  difficultyFilter = 'all';
+
+  // 5. Reset Sorting to default
+  const sortSelect = document.getElementById('sortProjects');
+  if (sortSelect) sortSelect.value = 'default';
+  sortOption = 'default';
+
+  // 6. Sync URL
+  if (typeof updateURL === 'function') {
+    updateURL('', 'all');
+  }
+
+  // 7. Refresh grid and pagination
+  currentPage = 1;
+  renderGrid();
+  syncProjectCounts();
+
+  showToast('Filters cleared!');
+}
+
+function initClearAllFilters() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (btn) {
+    btn.addEventListener('click', resetAllFilters);
+  }
+}
+
+/* ============================================================
    FILTER CHIPS
    ============================================================ */
 function initFilterChips() {
   const chips = document.querySelectorAll('.chip[data-filter]');
   chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+
     chip.addEventListener('click', () => {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
@@ -1002,24 +1258,20 @@ function initTechStackSearch() {
 
   if (!input) return;
 
-  let debounceTimer;
+  // Use the shared debounce utility instead of a manual inline timer
+  input.addEventListener('input', debounce((e) => {
+    const value = e.target.value.trim().toLowerCase();
 
-  input.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      const value = e.target.value.trim().toLowerCase();
-
-      if (value) {
-        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-        techStackFilters = [...new Set(techs)];
-        updateTechFilterDisplay();
-        currentPage = 1;
-        renderGrid();
-      } else {
-        clearAllTechFilters();
-      }
-    }, 300);
-  });
+    if (value) {
+      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+      techStackFilters = [...new Set(techs)];
+      updateTechFilterDisplay();
+      currentPage = 1;
+      renderGrid();
+    } else {
+      clearAllTechFilters();
+    }
+  }, 300));
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -1125,8 +1377,7 @@ syncProjectCounts();
 function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
-
-  const username = window.username || null;
+  const username = window.username || localStorage.getItem('loggedInUser') || null;   // Read logged-in user from localStorage so navbar consists of logged in user when page reloads
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
   const isLight = document.body.classList.contains('light-mode');
@@ -1152,10 +1403,11 @@ function updateNavbar() {
             </a>
             ${otherLink}
         `;
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+      document.getElementById('logoutBtn').addEventListener('click', () => {
       window.username = null;
+      localStorage.removeItem('loggedInUser');  // cleared logged in info on logout
       updateNavbar();
-    });
+      });
   } else {
     container.innerHTML = `
             ${themeButton}
@@ -1163,8 +1415,11 @@ function updateNavbar() {
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
+          <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+           <div class="auth-buttons">
+           <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
+           <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
+          </div>
         `;
   }
 }
@@ -1225,6 +1480,24 @@ function initScrollBtn() {
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
+
+    // Footer collision avoidance
+    const footer = document.querySelector('.footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        // Cap the upward movement to a maximum of 120px.
+        // This ensures it dodges the important bottom footer links but 
+        // doesn't fly completely off the top of the screen when the footer is huge.
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = '2rem';
+      }
+    }
   };
 
   updateScrollProgress();
@@ -1249,6 +1522,8 @@ function hasProjectGrid() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  readStateFromURL();
+
   initTheme();
   updateNavbar();
 
@@ -1257,6 +1532,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSearch();
   initSorting();
   initTechStackSearch();
+  initClearAllFilters();
 
   try {
     // Await the projects to be fetched
@@ -1289,23 +1565,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!menuToggle || !navButtons) return;
 
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      menuToggle.classList.toggle('active');
-      navButtons.classList.toggle('active');
+      const isOpen = navButtons.classList.toggle('active');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
     document.addEventListener('click', (e) => {
       if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        closeMenu();
+        menuToggle.focus();
       }
     });
 
     navButtons.addEventListener('click', (e) => {
       if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
       }
     });
   };
@@ -1335,6 +1623,53 @@ window.addEventListener(
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
+
+// Custom cursor
+(function () {
+  const outerCursor = document.querySelector('.cursor-ring--outer');
+  const innerCursor = document.querySelector('.cursor-ring--inner');
+
+  if (!outerCursor || !innerCursor) return;
+
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  const speed = 0.18;
+
+  const update = () => {
+    current.x += (target.x - current.x) * speed;
+    current.y += (target.y - current.y) * speed;
+
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+
+    requestAnimationFrame(update);
+  };
+
+  const showCursor = () => {
+    outerCursor.classList.add('is-visible');
+    innerCursor.classList.add('is-visible');
+  };
+
+  const hideCursor = () => {
+    outerCursor.classList.remove('is-visible');
+    innerCursor.classList.remove('is-visible');
+  };
+
+  window.addEventListener(
+    'mousemove',
+    (event) => {
+      target.x = event.clientX;
+      target.y = event.clientY;
+      showCursor();
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('mouseleave', hideCursor);
+  window.addEventListener('mouseenter', showCursor);
+
+  requestAnimationFrame(update);
+})();
 
 // Particle Network Background
 (function () {
@@ -1592,11 +1927,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput) {
-    searchInput.addEventListener('input', () => {
+    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
+    searchInput.addEventListener('input', debounce(() => {
       const { category } = getQueryParams();
       updateURL(searchInput.value, category);
       applyFilters(searchInput.value, category);
-    });
+    }, 200));
   }
   const categoryFilter = document.getElementById('category');
   if (categoryFilter) {
