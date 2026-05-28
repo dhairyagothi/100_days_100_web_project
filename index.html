@@ -126,12 +126,14 @@
           <h2 class="section-title">Bookmarked Projects</h2>
 
           <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <button class="view-all-btn" id="copyBookmarksBtn" title="Copy Bookmarks" aria-label="Copy bookmarks">
-              <i class="fas fa-copy"></i>
-            </button>
-            <button class="view-all-btn" id="bookmarkToggleBtn" aria-label="View bookmarked projects">
-              View All
-            </button>
+            <button 
+  class="view-all-btn" 
+  id="copyBookmarksBtn" 
+  title="Copy Bookmarks" 
+  aria-label="Copy bookmarked projects"
+>
+  <i class="fas fa-copy" aria-hidden="true"></i>
+</button>
           </div>
         </div>
       </div>
@@ -211,9 +213,13 @@
           <option value="typescript">TypeScript</option>
           <option value="tailwindcss">Tailwind CSS</option>
         </select>
-        <button id="clearAllFiltersBtn" class="clear-filters-btn" style="display: none; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 30px; border: 1px dashed var(--accent); background: var(--accent-dim); color: var(--accent); font-weight: 500; font-size: 14px; cursor: pointer; transition: var(--t);">
-          <i class="fas fa-filter-circle-xmark"></i> Clear Filters
-        </button>
+        <button 
+  id="clearAllFiltersBtn" 
+  class="clear-filters-btn"
+  aria-label="Clear all applied filters"
+>
+  <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
+</button>
       </div>
 
     <!-- Project Grid -->
@@ -318,14 +324,23 @@
   </footer>
 
   <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
-  <button id="scrollBtn" aria-label="Back to top">
-    <svg class="progress-ring" viewBox="0 0 48 48">
-      <circle class="ring-track" cx="24" cy="24" r="22" />
-      <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
-    </svg>
-    <i class="fas fa-arrow-up scroll-arrow"></i>
-    <span class="scroll-tooltip">Back to top</span>
-  </button>
+  <button 
+  id="scrollBtn" 
+  aria-label="Scroll back to top"
+  title="Back to top"
+  type="button"
+>
+  <svg class="progress-ring" viewBox="0 0 48 48" aria-hidden="true">
+    <circle class="ring-track" cx="24" cy="24" r="22" />
+    <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
+  </svg>
+
+  <i class="fas fa-arrow-up scroll-arrow" aria-hidden="true"></i>
+
+  <span class="scroll-tooltip" aria-hidden="true">
+    Back to top
+  </span>
+</button>
   <div class="toast" id="toast"></div>
   <script type="module" src="hero-terminal.js"></script>
   <script src="index.js?v=3"></script>
