@@ -17,8 +17,8 @@ function updateUI(id, cssClass, label) {
 }
 
 function tryPickupForks(id) {
-    var left  = id;
-    var right = (id + 1) % 5;
+    var left  = (id + 4) % 5;
+var right = id;
     var deadlockMode = document.getElementById('deadlockMode').checked;
 
     // ── DEADLOCK MODE LOGIC ──
@@ -58,8 +58,8 @@ function tryPickupForks(id) {
 }
 
 function releaseForks(id) {
-    var left  = id;
-    var right = (id + 1) % 5;
+    var left  = (id + 4) % 5;
+    var right = id;
     forks[left]  = true;
     forks[right] = true;
     document.getElementById('f' + left).className  = 'fork';
