@@ -7,35 +7,17 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="shortcut icon" href="./image/Spotify_favicon.png" type="image/x-icon">
 </head>
-<script>
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.querySelector(".sidebar");
-    const overlay = document.getElementById("sidebar-overlay");
-
-    menuToggle.addEventListener("click", () => {
-
-        sidebar.classList.toggle("active");
-        overlay.classList.toggle("active");
-
-    });
-
-    overlay.addEventListener("click", () => {
-
-        sidebar.classList.remove("active");
-        overlay.classList.remove("active");
-
-    });
-
-</script>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <button class="menu-toggle" id="menu-toggle">
         <i class="fa fa-bars"></i>
     </button>
     <div class="sidebar">
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <div class="logo">
-            <a href="">
+            <a href="#">
                 <img src="./image/Spotify Logo.png" alt="Logo">
             </a>
         </div>
@@ -43,19 +25,19 @@
         <div class="navigation">
             <ul>
                 <li>
-                    <a href="">
+                    <a href="#" id="nav-home">
                         <span class="fa fa-home"></span>
                         <span>Home</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="#" id="nav-search">
                         <span class="fa fa-search"></span>
                         <span>Search</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="#" id="nav-library">
                         <span class="fa fas fa-book"></span>
                         <span>Your Library</span>
                     </a>
@@ -66,32 +48,26 @@
         <div class="navigation">
             <ul>
                 <li>
-                    <a href="">
-                        <span class="fa fa-home"></span>
+                    <a href="#" id="nav-create-playlist">
+                        <span class="fa fa-plus-square"></span>
                         <span>Create Playlist</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
-                        <span class="fa fa-search"></span>
+                    <a href="#" id="nav-liked">
+                        <span class="fa fa-heart"></span>
                         <span>Liked Songs</span>
                     </a>
                 </li>
-
             </ul>
         </div>
 
         <div class="policies">
             <ul>
-                <li>
-                    <a href="">Cookies</a>
-                </li>
-                <li>
-                    <a href="">Privacy</a>
-                </li>
+                <li><a href="#">Cookies</a></li>
+                <li><a href="#">Privacy</a></li>
             </ul>
         </div>
-
     </div>
 
     <div class="main-container">
@@ -101,26 +77,23 @@
             </button>
             <div class="search">
                 <div class="prev-next-buttons" style="height: 35px;width: 350px;">
-                    <input type="text" placeholder="What do you want to play?"
+                    <input type="text" id="searchInput" placeholder="What do you want to play?"
                         style="height: 35px;width: 350px; background-color:black; color: white;">
                 </div>
             </div>
 
             <div class="navbar">
                 <ul>
-                    <li>
-                        <a href="login.html">Sign Up</a>
-                    </li>
+                    <li><a href="login.html">Sign Up</a></li>
                 </ul>
-                <button type="button">Login</button>
+                <button type="button" id="loginBtn">Login</button>
             </div>
         </div>
 
         <div class="spotify-playlists">
             <h2>Popular artists</h2>
-
             <div class="list">
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" data-title="Pritam" data-artist="Pritam">
                     <img src="./image/Pritam.png" style="border-radius: 50%;" />
                     <div class="play">
                         <span class="fa fa-play"></span>
@@ -128,7 +101,7 @@
                     <h4>Pritam</h4>
                     <p>Artist</p>
                 </div>
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" data-title="Arijit Singh" data-artist="Arijit Singh">
                     <img src="./image/Arijit Singh.png" style="border-radius: 50%;" />
                     <div class="play">
                         <span class="fa fa-play"></span>
@@ -136,8 +109,7 @@
                     <h4>Arijit Singh</h4>
                     <p>Artist</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" data-title="Sachin-Jigar" data-artist="Sachin-Jigar">
                     <img src="./image/Sachin-Jigar.png" style="border-radius: 50%;" />
                     <div class="play">
                         <span class="fa fa-play"></span>
@@ -145,8 +117,7 @@
                     <h4>Sachin-Jigar</h4>
                     <p>Artist</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" data-title="A.R. Rahman" data-artist="A.R. Rahman">
                     <img src="./image/A.R. Rahman.png" style="border-radius: 50%;" />
                     <div class="play">
                         <span class="fa fa-play"></span>
@@ -154,8 +125,7 @@
                     <h4>A.R. Rahman</h4>
                     <p>Artist</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" data-title="Vishal-Shekhar" data-artist="Vishal-Shekhar">
                     <img src="./image/Vishal-Shekhar.png" style="border-radius: 50%;" />
                     <div class="play">
                         <span class="fa fa-play"></span>
@@ -163,72 +133,51 @@
                     <h4>Vishal-Shekhar</h4>
                     <p>Artist</p>
                 </div>
-
             </div>
         </div>
 
         <div class="spotify-playlists">
             <h2>Focus</h2>
             <div class="list">
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" data-title="Peaceful Piano" data-artist="Focus">
                     <img src="./image/Peaceful Piano.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>Peaceful Piano</h4>
                     <p>Peaceful piano to help you slow down, breath...</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" data-title="Deep Focus" data-artist="Focus">
                     <img src="./image/Deep Focus.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>Deep Focus</h4>
                     <p>Keep calm and focus with ambient and post-...</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" data-title="Instrumental Study" data-artist="Focus">
                     <img src="./image/Instrumental Study.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>Instrumental Study</h4>
                     <p>Focus with soft study music in the background.</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" data-title="Focus Flow" data-artist="Focus">
                     <img src="./image/Focus Flow.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>Focus Flow</h4>
                     <p>Uptempo instrumental hip hop beats</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" data-title="Beats to think to" data-artist="Focus">
                     <img src="./image/Beats to think to.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>Beats to think to</h4>
                     <p>Focus with melodic techno and tech house.</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3" data-title="Reading Adventure" data-artist="Focus">
                     <img src="./image/Reading Adventure.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>Reading Adventure</h4>
                     <p>Scores and soundtracks for daring quests, epic...</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3" data-title="Workday Lounge" data-artist="Focus">
                     <img src="./image/Workday Lounge.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>Workday Lounge</h4>
                     <p>Lounge and chill out music for your workday</p>
                 </div>
@@ -238,66 +187,64 @@
         <div class="spotify-playlists">
             <h2>Sound of India</h2>
             <div class="list">
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3" data-title="The Sound of Mumbai" data-artist="India">
                     <img src="./image/The Sound of Mumbai.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>The Sound of Mum...</h4>
                     <p>The songs that define, unite and distinguish...</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3" data-title="The Sound of Kolkata" data-artist="India">
                     <img src="./image/The Sound of Kolkata.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>The Sound of Kolka...</h4>
                     <p>The songs that define, unite and distinguish...</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" data-title="The Sound of Delhi" data-artist="India">
                     <img src="./image/The Sound of Delhi.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>The Sound of Delhi...</h4>
                     <p>The songs that define, unite and distinguish...</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3" data-title="The Sound of Bengaluru" data-artist="India">
                     <img src="./image/The Sound of Bengaluru.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>The Sound of Ben...</h4>
                     <p>The songs that define, unite and distinguish...</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" data-title="The Sound of Chennai" data-artist="India">
                     <img src="./image/The Sound of Chennai.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>The Sound of Chen...</h4>
                     <p>The songs that define, unite and distinguish...</p>
                 </div>
-
-                <div class="item">
+                <div class="item" data-song="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" data-title="The Sound of Hyderabad" data-artist="India">
                     <img src="./image/The Sound of Hyderabad.jpg" />
-                    <div class="play">
-                        <span class="fa fa-play"></span>
-                    </div>
+                    <div class="play"><span class="fa fa-play"></span></div>
                     <h4>The Sound of Hyde...</h4>
                     <p>The songs that define, unite and distinguish...</p>
                 </div>
-
-
             </div>
-
             <hr>
         </div>
+    </div>
 
+    <!-- Music Player Bar -->
+    <div class="music-player" id="musicPlayer" style="display:none; position:fixed; bottom:0; width:100%; background:#181818; color:white; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; z-index:1000;">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span id="playerTitle" style="font-weight:bold;">Song Title</span>
+            <span id="playerArtist" style="color:#b3b3b3; font-size:12px;">Artist</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <button id="prevBtn" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">⏮</button>
+            <button id="playPauseBtn" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">▶</button>
+            <button id="nextBtn" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">⏭</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span id="currentTime">0:00</span>
+            <input type="range" id="progressBar" value="0" min="0" max="100" style="width:200px; cursor:pointer;">
+            <span id="duration">0:00</span>
+            <input type="range" id="volumeBar" value="1" min="0" max="1" step="0.01" style="width:80px; cursor:pointer;">
+        </div>
     </div>
 
     <div class="preview">
@@ -309,26 +256,173 @@
             <a href="login.html" target="_blank">
                 <button type="button">Sign up free</button>
             </a>
-
         </div>
     </div>
+
+    <audio id="audioPlayer"></audio>
 
     <script src="https://kit.fontawesome.com/ef9a692198.js" crossorigin="anonymous"></script>
 
     <script>
+        // Sidebar toggle
+        const menuToggle = document.getElementById("menu-toggle");
+        const sidebar = document.querySelector(".sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
         const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const sidebare1 = document.querySelector('.sidebar');
+
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+        });
+
+        overlay.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        });
 
         hamburgerBtn.addEventListener('click', () => {
-            sidebare1.classList.toggle('active');
+            sidebar.classList.toggle('active');
         });
 
         document.addEventListener('click', (e) => {
-            if (!sidebare1.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-                sidebare1.classList.remove('active');
+            if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target) && !menuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
             }
+        });
+
+        // Sidebar navigation
+        document.getElementById('nav-home').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('.main-container').scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.getElementById('nav-search').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+        });
+
+        document.getElementById('nav-library').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Your Library: No playlists yet. Start by liking some songs!');
+        });
+
+        document.getElementById('nav-create-playlist').addEventListener('click', (e) => {
+            e.preventDefault();
+            const name = prompt('Enter playlist name:');
+            if (name) alert(`Playlist "${name}" created successfully!`);
+        });
+
+        document.getElementById('nav-liked').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Liked Songs: You have not liked any songs yet!');
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            window.location.href = 'login.html';
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.item');
+            items.forEach(item => {
+                const title = item.querySelector('h4').textContent.toLowerCase();
+                item.style.display = title.includes(query) ? 'block' : 'none';
+            });
+        });
+
+        // Audio player
+        const audio = document.getElementById('audioPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const volumeBar = document.getElementById('volumeBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const playerTitle = document.getElementById('playerTitle');
+        const playerArtist = document.getElementById('playerArtist');
+        const musicPlayer = document.getElementById('musicPlayer');
+
+        const allItems = Array.from(document.querySelectorAll('.item[data-song]'));
+        let currentIndex = 0;
+
+        function formatTime(secs) {
+            if (!isFinite(secs)) return '0:00';
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function loadAndPlay(index) {
+            currentIndex = index;
+            const item = allItems[index];
+            audio.src = item.dataset.song;
+            playerTitle.textContent = item.dataset.title;
+            playerArtist.textContent = item.dataset.artist;
+            musicPlayer.style.display = 'flex';
+            audio.play();
+            playPauseBtn.textContent = '⏸';
+
+            // Update active state
+            allItems.forEach(i => i.querySelector('.play span').className = 'fa fa-play');
+            item.querySelector('.play span').className = 'fa fa-pause';
+        }
+
+        // Play button on each item
+        allItems.forEach((item, index) => {
+            item.querySelector('.play').addEventListener('click', () => {
+                if (currentIndex === index && !audio.paused) {
+                    audio.pause();
+                    playPauseBtn.textContent = '▶';
+                    item.querySelector('.play span').className = 'fa fa-play';
+                } else {
+                    loadAndPlay(index);
+                }
+            });
+        });
+
+        // Player controls
+        playPauseBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playPauseBtn.textContent = '⏸';
+            } else {
+                audio.pause();
+                playPauseBtn.textContent = '▶';
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            loadAndPlay((currentIndex - 1 + allItems.length) % allItems.length);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            loadAndPlay((currentIndex + 1) % allItems.length);
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            if (isFinite(audio.duration)) {
+                progressBar.value = (audio.currentTime / audio.duration) * 100;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+        });
+
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+
+        audio.addEventListener('ended', () => {
+            loadAndPlay((currentIndex + 1) % allItems.length);
+        });
+
+        progressBar.addEventListener('input', () => {
+            audio.currentTime = (progressBar.value / 100) * audio.duration;
+        });
+
+        volumeBar.addEventListener('input', () => {
+            audio.volume = volumeBar.value;
         });
     </script>
 </body>
-
 </html>

@@ -1,84 +1,29 @@
-/* ============================================
-   ELEMENTS
-   ============================================ */
-
-const noteTitle = document.getElementById("noteTitle");
-const noteContent = document.getElementById("noteContent");
-const charCount = document.getElementById("charCount");
-const wordCount = document.getElementById("wordCount");
-const savedIndicator = document.getElementById("savedIndicator");
-const toast = document.getElementById("toast");
-
-// Dropdown Elements
-const colorDropdown = document.getElementById("colorDropdown");
-const highlightDropdown = document.getElementById("highlightDropdown");
-const sizeDropdown = document.getElementById("sizeDropdown");
-const shapesDropdown = document.getElementById("shapesDropdown");
-const shapeColorDropdown = document.getElementById("shapeColorDropdown");
-
-// Button Elements
-const boldBtn = document.getElementById("boldBtn");
-const italicBtn = document.getElementById("italicBtn");
-const underlineBtn = document.getElementById("underlineBtn");
-const changeColorBtn = document.getElementById("changeColorBtn");
-const highlightBtn = document.getElementById("highlightBtn");
-const changeSizeBtn = document.getElementById("changeSizeBtn");
-const shapesBtn = document.getElementById("shapesBtn");
-const undoBtn = document.getElementById("undoBtn");
-const redoBtn = document.getElementById("redoBtn");
-const saveNoteBtn = document.getElementById("saveNoteBtn");
-const clearNoteBtn = document.getElementById("clearNoteBtn");
-
-/* ============================================
-   UNDO/REDO SYSTEM
-   ============================================ */
-
-class UndoRedoManager {
-  constructor() {
-    this.history = [];
-    this.historyIndex = -1;
-    this.maxHistorySize = 50;
-  }
-
-  save(content) {
-    this.historyIndex++;
-    if (this.historyIndex < this.history.length) {
-      this.history = this.history.slice(0, this.historyIndex);
-    }
-    this.history.push(content);
-    if (this.history.length > this.maxHistorySize) {
-      this.history.shift();
-      this.historyIndex--;
-    }
-    updateHistoryButtons();
-  }
-
-  undo() {
-    if (this.historyIndex > 0) {
-      this.historyIndex--;
-      return this.history[this.historyIndex];
-    }
-    return null;
-  }
-
-  redo() {
-    if (this.historyIndex < this.history.length - 1) {
-      this.historyIndex++;
-      return this.history[this.historyIndex];
-    }
-    return null;
-  }
-
-  canUndo() {
-    return this.historyIndex > 0;
-  }
+// ==========================================================================
+// APPLICATION STATE
+// ==========================================================================
+let notes = JSON.parse(localStorage.getItem('echo_notes') || '[]');
+let folders = JSON.parse(localStorage.getItem('echo_folders') || '[]');
+let activeFilters = new Set();
+const defaultFolders = [
+  { id: 'personal', name: 'Personal', icon: '👤' },
+  { id: 'work', name: 'Work', icon: '💼' },
+  { id: 'ideas', name: 'Ideas', icon: '💡' }
+];
 
   canRedo() {
     return this.historyIndex < this.history.length - 1;
   }
 }
 
-const undoRedoManager = new UndoRedoManager();
+let activeFolderId = 'all';
+let activeId = null;
+let unsaved = false;
+let isDark = localStorage.getItem('echo_theme') === 'dark';
+let currentMobileView = 'list';
+let autosaveTimeout = null;
+let trashedNotes = JSON.parse(localStorage.getItem('echo_trash') || '[]');
+let versionHistory = JSON.parse(localStorage.getItem('echo_versions') || '{}');
+const MAX_VERSIONS = 10;
 
 /* ============================================
    UTILITY FUNCTIONS
@@ -119,6 +64,61 @@ function markAsUnsaved() {
 function markAsSaved() {
   savedIndicator.textContent = "✓ Saved";
   savedIndicator.classList.remove("unsaved");
+  html += folders.map(f => {
+    const count = notes.filter(n => n.folderId === f.id).length;
+    const isDefault = f.id === 'personal' || f.id === 'work' || f.id === 'ideas';
+
+    return `
+      <div class="folder-item ${activeFolderId === f.id ? 'active' : ''}" onclick="selectFolder('${f.id}')">
+        <div class="folder-item-left">
+          <span class="folder-item-icon">${f.icon || '📂'}</span>
+          <span class="folder-item-name">${escHtml(f.name)}</span>
+        </div>
+        <div class="folder-item-right">
+          <span class="folder-count">${count}</span>
+          ${!isDefault ? `<button class="folder-delete-btn" onclick="deleteFolder('${f.id}', event)" title="Delete Folder">✕</button>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  html += `
+    <div class="folder-item ${activeFolderId === 'trash' ? 'active' : ''}" onclick="selectFolder('trash')">
+      <div class="folder-item-left">
+        <span class="folder-item-icon">🗑️</span>
+        <span class="folder-item-name">Trash</span>
+      </div>
+      <span class="folder-count">${trashedNotes.length}</span>
+    </div>
+    <div class="folder-item" onclick="openAnalytics()">
+      <div class="folder-item-left">
+        <span class="folder-item-icon">📊</span>
+        <span class="folder-item-name">Analytics</span>
+      </div>
+    </div>
+    <div class="folder-item" onclick="openBackupRestore()">
+      <div class="folder-item-left">
+        <span class="folder-item-icon">☁️</span>
+        <span class="folder-item-name">Backup & Restore</span>
+      </div>
+    </div>
+  `;
+
+  list.innerHTML = html;
+  populateFolderFilter();
+  
+}
+
+
+function selectFolder(folderId) {
+  activeFolderId = folderId;
+  renderFoldersList();
+  renderNotesList();
+  
+  // Close mobile sidebar drawer and return to list
+  if (window.innerWidth <= 768) {
+    setMobileView('list');
+  }
 }
 
 function getCaretCoordinates() {
@@ -363,6 +363,68 @@ function createNewNote() {
   hideAllDropdowns();
   showToast("Highlight applied");
 });
+}
+
+// ==========================================================================
+// DEBOUNCED AUTOSAVE & ACTIONS
+// ==========================================================================
+function triggerAutosave() {
+  markUnsaved();
+  clearTimeout(autosaveTimeout);
+  autosaveTimeout = setTimeout(() => {
+    if (activeId && unsaved) {
+      saveNoteSilently();
+    }
+  }, 1200); // Trigger saving 1.2s after inactivity
+}
+
+function saveNoteSilently() {
+  if (!activeId) return;
+  const note = notes.find(n => n.id === activeId);
+  if (!note) return;
+
+  note.title = document.getElementById('noteTitleInput').value.trim() || 'Untitled Note';
+  note.content = document.getElementById('note-content').innerHTML;
+  note.color = document.getElementById('textColorInput').value;
+  note.size = document.getElementById('fontSizeSelect').value;
+  note.updated = new Date().toISOString();
+  // Save version snapshot
+  if (!versionHistory[note.id]) versionHistory[note.id] = [];
+  versionHistory[note.id].unshift({
+    title: note.title,
+    content: note.content,
+    savedAt: new Date().toISOString()
+  });
+  // Keep only last MAX_VERSIONS
+  versionHistory[note.id] = versionHistory[note.id].slice(0, MAX_VERSIONS);
+  localStorage.setItem('echo_versions', JSON.stringify(versionHistory));
+
+  saveAll();
+  markSaved();
+  renderNotesList();
+  renderFoldersList();
+}
+
+function saveNote() {
+  if (!activeId) return;
+  saveNoteSilently();
+  showToast('✅', 'Note saved!', 'success');
+}
+
+function deleteNote(id, e) {
+  if (e) e.stopPropagation();
+  const note = notes.find(n => n.id === id);
+  const noteTitle = note ? (note.title || 'Untitled Note') : 'this note';
+
+  openModal('Delete Note', `Are you sure you want to permanently delete "${noteTitle}"? This action cannot be undone.`, () => {
+    const noteToTrash = notes.find(n => n.id === id);
+    if (noteToTrash) {
+      noteToTrash.deletedAt = new Date().toISOString();
+      trashedNotes.unshift(noteToTrash);
+      localStorage.setItem('echo_trash', JSON.stringify(trashedNotes));
+    }
+    notes = notes.filter(n => n.id !== id);
+    saveAll();
 
 /* ============================================
    TEXT SIZE
@@ -395,6 +457,32 @@ undoBtn.addEventListener("click", () => {
     updateCharAndWordCount();
     updateHistoryButtons();
     showToast("Undo");
+  // 1. Filter by Folder
+  let filtered = sortedNotes;
+  if (activeFolderId === 'trash') {
+  stats.textContent = `${trashedNotes.length} deleted note${trashedNotes.length !== 1 ? 's' : ''}`;
+  list.innerHTML = trashedNotes.length === 0
+    ? `<div class="empty-notes"><div class="empty-icon">🗑️</div><p>Trash is empty.</p></div>`
+    : trashedNotes.map(n => `
+        <div class="note-card">
+          <div class="note-card-title">${escHtml(n.title || 'Untitled Note')}</div>
+          <div class="note-card-preview">${escHtml(stripHtml(n.content || ''))}</div>
+          <div class="note-card-footer">
+            <div class="note-card-date">Deleted: ${formatDate(n.deletedAt)}</div>
+            <div style="display:flex;gap:6px;">
+              <button class="editor-action-btn" style="height:26px;font-size:11px;" onclick="restoreNote('${n.id}')">↩ Restore</button>
+              <button class="editor-action-btn danger icon-btn" style="height:26px;" onclick="permanentDelete('${n.id}')">✕</button>
+            </div>
+          </div>
+        </div>`).join('');
+  return;
+}
+  if (activeFolderId === 'favorites') {
+    filtered = sortedNotes.filter(n => n.isFavorite);
+  } else if (activeFolderId === 'pinned') {
+    filtered = sortedNotes.filter(n => n.isPinned);
+  } else if (activeFolderId !== 'all') {
+    filtered = sortedNotes.filter(n => n.folderId === activeFolderId);
   }
 });
 
@@ -407,6 +495,16 @@ redoBtn.addEventListener("click", () => {
     showToast("Redo");
   }
 });
+  // Advanced filters
+if (activeFilters.has('favorites')) filtered = filtered.filter(n => n.isFavorite);
+if (activeFilters.has('pinned')) filtered = filtered.filter(n => n.isPinned);
+const folderFilter = document.getElementById('folderFilter')?.value;
+if (folderFilter) filtered = filtered.filter(n => n.folderId === folderFilter);
+// Tag search: if query starts with #
+if (q.startsWith('#')) {
+  const tag = q.slice(1).toLowerCase();
+  filtered = filtered.filter(n => n.tags && n.tags.some(t => t.toLowerCase().includes(tag)));
+}
 
 /* ============================================
    SAVE AS PDF
@@ -425,6 +523,51 @@ saveNoteBtn.addEventListener("click", async () => {
       scale: 2,
       backgroundColor: "#ffffff",
     });
+  list.innerHTML = filtered.map(n => {
+    const preview = stripHtml(n.content || '');
+    return `
+      <div class="note-card ${n.id === activeId ? 'active' : ''}" onclick="openNote('${n.id}')">
+        <div class="note-card-title">${escHtml(n.title || 'Untitled Note')}</div>
+        <div class="note-card-preview">${escHtml(preview || 'No content…')}</div>
+        <div class="note-card-footer">
+          <div class="note-card-date">
+            ${formatDate(n.updated)}
+            <div class="note-indicators">
+              ${n.isPinned ? '📌' : ''}
+              ${n.isFavorite ? '⭐' : ''}
+            </div>
+          </div>
+          <button class="note-delete-btn" onclick="deleteNote('${n.id}', event)" title="Delete note">✕</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function filterNotes(q) {
+  renderNotesList(q);
+}
+
+
+function toggleFilter(type) {
+  activeFilters.has(type) ? activeFilters.delete(type) : activeFilters.add(type);
+  renderNotesList(document.getElementById('searchInput').value);
+}
+
+// Populate folder filter dropdown
+function populateFolderFilter() {
+  const sel = document.getElementById('folderFilter');
+  if (!sel) return;
+  sel.innerHTML = `<option value="">All Folders</option>` +
+    folders.map(f => `<option value="${f.id}">${escHtml(f.name)}</option>`).join('');
+}
+// ==========================================================================
+// TYPOGRAPHY / COLOR SELECTIONS
+// ==========================================================================
+function applyTextColor(c) {
+  document.getElementById('note-content').style.color = c;
+  triggerAutosave();
+}
 
     const imgData = canvas.toDataURL("image/png");
     const { jsPDF } = window.jspdf;
@@ -638,7 +781,182 @@ document.getElementById('note-content').addEventListener('input', () => {
 });
 document.getElementById('textColorInput').addEventListener('input', triggerAutosave);
 document.getElementById('fontSizeSelect').addEventListener('change', triggerAutosave);
+function restoreNote(id) {
+  const note = trashedNotes.find(n => n.id === id);
+  if (!note) return;
+  delete note.deletedAt;
+  notes.unshift(note);
+  trashedNotes = trashedNotes.filter(n => n.id !== id);
+  localStorage.setItem('echo_trash', JSON.stringify(trashedNotes));
+  saveAll();
+  renderFoldersList();
+  renderNotesList();
+  showToast('↩', 'Note restored!', 'success');
+}
 
+function permanentDelete(id) {
+  openModal('Permanently Delete', 'This cannot be undone. Delete forever?', () => {
+    trashedNotes = trashedNotes.filter(n => n.id !== id);
+    localStorage.setItem('echo_trash', JSON.stringify(trashedNotes));
+    renderFoldersList();
+    renderNotesList();
+    showToast('🗑️', 'Permanently deleted', '');
+  });
+}
+
+// ===================== VERSION HISTORY =====================
+function openVersionHistory() {
+  if (!activeId) return showToast('⚠️', 'Open a note first', 'error');
+  const versions = versionHistory[activeId] || [];
+  const note = notes.find(n => n.id === activeId);
+  document.getElementById('versionModalSub').textContent =
+    `${versions.length} saved version${versions.length !== 1 ? 's' : ''} for "${note?.title || 'Untitled'}"`;
+  document.getElementById('versionList').innerHTML = versions.length === 0
+    ? '<p style="color:var(--text-tertiary);font-size:13px;">No versions saved yet. Versions are saved automatically.</p>'
+    : versions.map((v, i) => `
+        <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-primary);">
+              ${i === 0 ? '⭐ Latest — ' : ''}${v.title || 'Untitled'}
+            </span>
+            <span style="font-size:11px;color:var(--text-tertiary);">${formatDate(v.savedAt)}</span>
+          </div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;overflow:hidden;max-height:40px;">
+            ${escHtml(stripHtml(v.content || '').slice(0, 120))}...
+          </div>
+          ${i > 0 ? `<button class="btn" style="margin-top:8px;height:28px;font-size:12px;" onclick="restoreVersion(${i})">↩ Restore this version</button>` : ''}
+        </div>`).join('');
+  document.getElementById('versionModal').classList.add('show');
+}
+
+function restoreVersion(index) {
+  if (!activeId) return;
+  const v = (versionHistory[activeId] || [])[index];
+  if (!v) return;
+  openModal('Restore Version', 'This will overwrite your current note content. Continue?', () => {
+    document.getElementById('noteTitleInput').value = v.title || '';
+    document.getElementById('note-content').innerHTML = v.content || '';
+    updateWordCount();
+    triggerAutosave();
+    closeVersionModal();
+    showToast('↩', 'Version restored!', 'success');
+  });
+}
+
+function closeVersionModal() {
+  document.getElementById('versionModal').classList.remove('show');
+}
+
+// ===================== ANALYTICS =====================
+function openAnalytics() {
+  const total = notes.length;
+  const totalWords = notes.reduce((sum, n) => {
+    const txt = stripHtml(n.content || '').trim();
+    return sum + (txt ? txt.split(/\s+/).length : 0);
+  }, 0);
+  const avgWords = total ? Math.round(totalWords / total) : 0;
+
+  const folderCounts = {};
+  folders.forEach(f => { folderCounts[f.name] = notes.filter(n => n.folderId === f.id).length; });
+  const topFolder = Object.entries(folderCounts).sort((a,b) => b[1]-a[1])[0];
+
+  const now = new Date();
+  const last7 = notes.filter(n => (now - new Date(n.created)) < 7*86400000).length;
+  const last30 = notes.filter(n => (now - new Date(n.created)) < 30*86400000).length;
+
+  const colors = ['#5B5BD6','#3B82F6','#10B981','#F59E0B','#EF4444','#8B5CF6'];
+  const maxFolderCount = Math.max(...Object.values(folderCounts), 1);
+
+  document.getElementById('analyticsContent').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      ${[
+        ['📝','Total Notes', total],
+        ['📖','Total Words', totalWords.toLocaleString()],
+        ['📏','Avg Words/Note', avgWords],
+        ['⭐','Favorites', notes.filter(n=>n.isFavorite).length],
+        ['📌','Pinned', notes.filter(n=>n.isPinned).length],
+        ['🗑️','In Trash', trashedNotes.length]
+      ].map(([icon, label, val]) => `
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;text-align:center;">
+          <div style="font-size:1.5rem;">${icon}</div>
+          <div style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin:4px 0;">${val}</div>
+          <div style="font-size:11px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.05em;">${label}</div>
+        </div>`).join('')}
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;">📅 Notes Created</div>
+      <div style="display:flex;gap:16px;">
+        <span style="font-size:13px;color:var(--text-secondary);">Last 7 days: <strong style="color:var(--text-primary);">${last7}</strong></span>
+        <span style="font-size:13px;color:var(--text-secondary);">Last 30 days: <strong style="color:var(--text-primary);">${last30}</strong></span>
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;">📁 Notes per Folder</div>
+      ${Object.entries(folderCounts).map(([name, count], i) => `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="width:80px;font-size:12px;color:var(--text-secondary);text-align:right;">${name}</span>
+          <div style="flex:1;background:var(--bg-app);border-radius:99px;height:18px;overflow:hidden;">
+            <div style="height:100%;border-radius:99px;background:${colors[i%colors.length]};width:${Math.max(4,(count/maxFolderCount)*100).toFixed(1)}%;transition:width 0.5s ease;display:flex;align-items:center;padding-left:6px;">
+              <span style="font-size:10px;font-weight:700;color:#fff;">${count}</span>
+            </div>
+          </div>
+        </div>`).join('')}
+      ${topFolder ? `<div style="margin-top:10px;font-size:12px;color:var(--text-tertiary);">🏆 Most active: <strong style="color:var(--text-primary);">${topFolder[0]}</strong> (${topFolder[1]} notes)</div>` : ''}
+    </div>`;
+  document.getElementById('analyticsModal').classList.add('show');
+}
+
+function closeAnalytics() {
+  document.getElementById('analyticsModal').classList.remove('show');
+}
+
+// ===================== BACKUP & RESTORE =====================
+function openBackupRestore() {
+  document.getElementById('backupModal').classList.add('show');
+}
+
+function closeBackupModal() {
+  document.getElementById('backupModal').classList.remove('show');
+}
+
+function exportBackup() {
+  const backup = {
+    exportedAt: new Date().toISOString(),
+    notes, folders, trashedNotes, versionHistory
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `echonotes-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('⬇️', 'Backup exported!', 'success');
+}
+
+function importBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      openModal('Restore Backup', 'This will replace all current notes, folders, and history. Continue?', () => {
+        if (data.notes) { notes = data.notes; localStorage.setItem('echo_notes', JSON.stringify(notes)); }
+        if (data.folders) { folders = data.folders; localStorage.setItem('echo_folders', JSON.stringify(folders)); }
+        if (data.trashedNotes) { trashedNotes = data.trashedNotes; localStorage.setItem('echo_trash', JSON.stringify(trashedNotes)); }
+        if (data.versionHistory) { versionHistory = data.versionHistory; localStorage.setItem('echo_versions', JSON.stringify(versionHistory)); }
+        renderFoldersList();
+        renderNotesList();
+        closeBackupModal();
+        showToast('⬆️', 'Workspace restored!', 'success');
+      });
+    } catch {
+      showToast('⚠️', 'Invalid backup file', 'error');
+    }
+  };
+  reader.readAsText(file);
+}
 // ==========================================================================
 // KEYBOARD SHORTCUTS
 // ==========================================================================
