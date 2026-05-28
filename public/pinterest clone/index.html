@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinspire | Visual Board</title>
+    <link rel="icon" href="logo_p.jpg" type="image/jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <img class="logo-img" src="logo_p.jpg" alt="Pinspire logo" />
+        </div>
+        <nav class="nav">
+          <button class="nav-btn is-active" type="button" aria-label="Home">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button class="nav-btn" type="button" aria-label="Explore">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm3.6 5.4-2.1 5.3-5.3 2.1 2.1-5.3 5.3-2.1Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button class="nav-btn" type="button" aria-label="Create">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 5v14M5 12h14"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+          <button class="nav-btn" type="button" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 3a5 5 0 0 1 5 5v2.3c0 1.1.4 2.1 1.1 2.9l1.4 1.5H4.5l1.4-1.5a4.4 4.4 0 0 0 1.1-2.9V8a5 5 0 0 1 5-5Z"
+                fill="currentColor"
+              />
+              <path d="M9.5 19a2.5 2.5 0 0 0 5 0" fill="currentColor" />
+            </svg>
+          </button>
+          <button class="nav-btn" type="button" aria-label="Messages">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6 6h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3v-3H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button class="nav-btn" type="button" aria-label="Profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm-7 9a7 7 0 0 1 14 0"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </nav>
+        <button class="nav-btn settings-btn" type="button" aria-label="Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4Zm8 4a8 8 0 0 0-.1-1.2l2-1.6-2-3.4-2.5 1a8 8 0 0 0-2.1-1.2l-.4-2.7H9.1l-.4 2.7a8 8 0 0 0-2.1 1.2l-2.5-1-2 3.4 2 1.6A8 8 0 0 0 4 12c0 .4 0 .8.1 1.2l-2 1.6 2 3.4 2.5-1a8 8 0 0 0 2.1 1.2l.4 2.7h5.8l.4-2.7a8 8 0 0 0 2.1-1.2l2.5 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+      </aside>
+
+      <div class="main-area">
+        <header class="topbar">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true">
+              <path
+                d="M11 4a7 7 0 1 0 4.2 12.6l3.2 3.2 1.4-1.4-3.2-3.2A7 7 0 0 0 11 4Zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z"
+                fill="currentColor"
+              />
+            </svg>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search"
+              aria-label="Search pins"
+            />
+          </div>
+          <div class="top-actions">
+            <button class="pill-btn" id="savedFilter" type="button">Saved</button>
+            <button
+              class="pill-btn subtle"
+              id="themeToggle"
+              type="button"
+              aria-pressed="false"
+            >
+              Theme
+            </button>
+            <button class="icon-btn" type="button" aria-label="Notifications">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 3a5 5 0 0 1 5 5v2.3c0 1.1.4 2.1 1.1 2.9l1.4 1.5H4.5l1.4-1.5a4.4 4.4 0 0 0 1.1-2.9V8a5 5 0 0 1 5-5Z"
+                  fill="currentColor"
+                />
+                <path d="M9.5 19a2.5 2.5 0 0 0 5 0" fill="currentColor" />
+              </svg>
+            </button>
+            <button class="icon-btn" type="button" aria-label="Messages">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M6 6h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3v-3H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+            <div class="profile-pill">
+              <span class="avatar">KS</span>
+              <span class="profile-name">Krish</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M5 7l5 6 5-6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="pin-gallery" aria-live="polite">
+            <div id="masonryGrid" class="masonry"></div>
+            <div id="sentinel" class="sentinel">
+              <div class="loader"></div>
+              <p>Loading more inspiration...</p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="pinModal" class="modal" aria-hidden="true" role="dialog">
+      <div class="modal-backdrop" data-close="true"></div>
+      <div class="modal-card" role="document">
+        <button class="icon-btn close-btn" data-close="true" aria-label="Close">
+          ✕
+        </button>
+        <div class="modal-media">
+          <img id="modalImage" alt="" />
+        </div>
+        <div class="modal-content">
+          <p id="modalTag" class="modal-tag"></p>
+          <h2 id="modalTitle"></h2>
+          <p id="modalMeta" class="modal-meta"></p>
+          <div class="modal-actions">
+            <button id="modalSave" class="primary-btn">Save</button>
+            <button id="modalShare" class="ghost-btn">Share</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

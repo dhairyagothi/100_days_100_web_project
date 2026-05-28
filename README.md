@@ -230,6 +230,7 @@ The website features:
 | 158 | GitHub Promo Maker | HTML, CSS, JavaScript | 🚀 Generator | [View Demo](https://100-days-100-web-project.vercel.app/public/GitHubPromoMaker/index.html) |
 | 159 | Dining Philosophers Simulation | JavaScript | 🔮 Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/Dining Philosophers Simulation/index.html) |
 | 182 | Code Execution Visualizer | HTML, CSS, JavaScript | 🧠 Visualizer | [View Demo](https://100-days-100-web-project.vercel.app/public/code-execution-visualizer/index.html) |
+| 189 | Pinterest Clone | HTML, CSS, JS | 🎬 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/pinterest%20clone/index.html) |
 
 
 

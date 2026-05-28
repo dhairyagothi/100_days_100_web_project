@@ -1861,5 +1861,14 @@
       "techStack": ["tool", "html", "css", "javascript"],
       "difficulty": "advanced",
       "projectPath": "./public/Streak-Visualizer/index.html"
-    }
+      },
+      {
+        "projectNo": 189,
+        "projectName": "Pinterest Clone",
+        "projectType": "Clone",
+        "projectDesc": "Pinterest-style moodboard with masonry grid, infinite scroll, saved pins, and modal previews.",
+        "techStack": ["clone", "html", "css", "javascript", "ui"],
+        "difficulty": "intermediate",
+        "projectPath": "./public/pinterest clone/index.html"
+      }
 ]
