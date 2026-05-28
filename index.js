@@ -1951,3 +1951,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   window.addEventListener('popstate', () => restoreStateFromURL());
 });
+
+
+{
+  id: 160,  // use the next available number
+  title: "Password Generator & Saver",
+  description: "Generate strong passwords with custom options, strength indicator, copy to clipboard, and save passwords locally with labels.",
+  tags: ["HTML", "CSS", "JS", "Utility", "Security"],
+  path: "public/PasswordGenerator/index.html",
+  icon: "🔐"
+},
