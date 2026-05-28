@@ -1818,5 +1818,14 @@
 "techStack":["tool","javascript","html","css","visualizer","education"],
 "difficulty":"advanced",
 "projectPath":"./public/code-execution-visualizer/index.html"
+},
+{
+"projectNo":183,
+"projectName":"Cipher",
+"projectType":"Game",
+"projectDesc":"An interactive treasure hunt puzzle game where players solve coding challenges to uncover clues and unlock the final treasure.",
+"techStack":["game","html","css","javascript"],
+"difficulty":"intermediate",
+"projectPath":"./public/TreasureHunt/index.html"
 }
 ]
