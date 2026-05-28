@@ -918,9 +918,14 @@ function trackRecentProject(project) {
   // Add to front
   recentProjects.unshift(projectObj);
 
-  // Keep only the 20 most recent entries (not filtered by time yet)
-  if (recentProjects.length > 20) {
-    recentProjects.pop();
+  // Clean up any elements with corrupted properties or invalid timestamps
+  recentProjects = recentProjects.filter(item => {
+    return item && typeof item === 'object' && item.day && !isNaN(new Date(item.timestamp).getTime());
+  });
+
+  // Keep only the 10 most recent entries (not filtered by time yet)
+  if (recentProjects.length > 10) {
+    recentProjects = recentProjects.slice(0, 10);
   }
 
   try {
