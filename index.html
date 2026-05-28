@@ -47,24 +47,7 @@
   <canvas id="particleCanvas" aria-hidden="true" style="position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; z-index: 0 !important; display: block !important;"></canvas>
 
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
-  <header>
-      <nav class="navbar" id="navbar" aria-label="Main Navigation">
-        <a class="navbar-brand" href="index.html" style="text-decoration:none;">
-          <span class="brand-mark" aria-label="100 Days logo">100</span>
-            <span class="brand-copy">
-            <span class="brand-kicker">Open Source Archive</span>
-            <strong>100 Days · 100 Web Projects</strong>
-          </span>
-        </a>
-
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-          <i class="fas fa-bars" aria-hidden="true"></i>
-        </button>
-
-        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-      </div>
-    </nav>
-  </header>     
+  <div id="navbar-container"></div>     
     <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
@@ -347,6 +330,7 @@
   <div class="toast" id="toast"></div>
   <script type="module" src="hero-terminal.js"></script>
   <script src="index.js?v=3"></script>
-</body>
+  <script src="navbar.js"></script>
+  </body>
 
 </html>
