@@ -294,6 +294,103 @@ function FaultyTerminal({
     let gl;
     let fallbackCleanup = null;
 
+    // Tech-themed animated canvas fallback — used when WebGL is unavailable
+    const create2DFallback = (parent, tintColor = '#38bdf8') => {
+      const canvas = document.createElement('canvas');
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.display = 'block';
+      canvas.style.pointerEvents = 'none';
+      const d = window.devicePixelRatio || 1;
+      canvas.width = (parent.offsetWidth || 400) * d;
+      canvas.height = (parent.offsetHeight || 300) * d;
+      const ctx = canvas.getContext('2d');
+
+      const TECH_TERMS = [
+        'React', 'JavaScript', 'TypeScript', 'CSS', 'HTML',
+        'Node.js', 'REST API', 'WebGL', 'Canvas', 'SVG',
+        'Git', 'npm', 'ES6+', 'DOM', 'JSON',
+        'Tailwind', 'PWA', 'UI/UX', 'open source', 'frontend'
+      ];
+
+      let tr = 56, tg = 189, tb = 248;
+      const rgb = hexToRgb(tintColor);
+      if (rgb) { tr = Math.round(rgb[0] * 255); tg = Math.round(rgb[1] * 255); tb = Math.round(rgb[2] * 255); }
+
+      const particles = TECH_TERMS.map((term, i) => ({
+        term,
+        x: 0.05 + Math.random() * 0.9,
+        y: Math.random(),
+        opacity: 0.1 + Math.random() * 0.5,
+        speed: 0.00008 + Math.random() * 0.00012,
+        fontSize: (11 + Math.random() * 7) * d,
+        phase: (i / TECH_TERMS.length) * Math.PI * 2
+      }));
+
+      let rafId = 0;
+      let last = 0;
+      const fpsInterval = 1000 / 30;
+
+      function draw(now) {
+        rafId = requestAnimationFrame(draw);
+        if (now - last < fpsInterval) return;
+        last = now;
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const grad = ctx.createLinearGradient(0, 0, 0, h);
+        grad.addColorStop(0, 'rgba(4,8,18,0.3)');
+        grad.addColorStop(1, 'rgba(2,6,23,0.85)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = `rgba(${tr},${tg},${tb},0.04)`;
+        ctx.lineWidth = 1;
+        const gs = Math.floor(h / 12);
+        for (let gy = 0; gy < h; gy += gs) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
+        const gsx = Math.floor(w / 16);
+        for (let gx = 0; gx < w; gx += gsx) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
+
+        ctx.textBaseline = 'middle';
+        for (const p of particles) {
+          p.y -= p.speed;
+          if (p.y < -0.05) p.y = 1.05;
+          const alpha = p.opacity * (0.55 + 0.45 * Math.sin(now * 0.001 + p.phase));
+          ctx.font = `500 ${p.fontSize}px 'JetBrains Mono', 'Courier New', monospace`;
+          ctx.fillStyle = `rgba(${tr},${tg},${tb},${alpha.toFixed(3)})`;
+          ctx.fillText(p.term, p.x * w, p.y * h);
+        }
+
+        ctx.fillStyle = 'rgba(255,255,255,0.015)';
+        const sl = Math.max(3, Math.floor(h / 200)) * d;
+        for (let sy = 0; sy < h; sy += sl * 2) { ctx.fillRect(0, sy, w, 1); }
+
+        const glow = ctx.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.45, w * 0.45);
+        glow.addColorStop(0, `rgba(${tr},${tg},${tb},0.07)`);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      parent.appendChild(canvas);
+      rafId = requestAnimationFrame(draw);
+
+      const resize = () => {
+        const rd = window.devicePixelRatio || 1;
+        canvas.width = (parent.offsetWidth || 400) * rd;
+        canvas.height = (parent.offsetHeight || 300) * rd;
+      };
+      const ro = new ResizeObserver(resize);
+      ro.observe(parent);
+
+      return () => {
+        cancelAnimationFrame(rafId);
+        ro.disconnect();
+        if (canvas.parentElement === parent) parent.removeChild(canvas);
+      };
+    };
+
     try {
       renderer = new Renderer({ dpr: useDpr, alpha: false }); // alpha: false for better mobile compositing
       rendererRef.current = renderer;
@@ -313,85 +410,7 @@ function FaultyTerminal({
       gl.getExtension('WEBGL_lose_context');
       console.log('[hero-terminal] WebGL renderer initialized', { dpr: useDpr, width: gl.canvas.width, height: gl.canvas.height });
     } catch (err) {
-      console.warn('[hero-terminal] WebGL init failed, falling back to 2D canvas', err);
-      // WebGL failed — create a lightweight 2D fallback canvas to keep the hero visible
-      const create2DFallback = (parent, tintColor = '#38bdf8') => {
-        const canvas = document.createElement('canvas');
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        canvas.style.display = 'block';
-        canvas.style.pointerEvents = 'none';
-        canvas.width = parent.offsetWidth * (window.devicePixelRatio || 1);
-        canvas.height = parent.offsetHeight * (window.devicePixelRatio || 1);
-        const ctx = canvas.getContext('2d');
-
-        let rafId = 0;
-        let last = 0;
-        const fpsInterval = 1000 / 30; // throttle to 30fps
-
-        function draw(now) {
-          rafId = requestAnimationFrame(draw);
-          if (now - last < fpsInterval) return;
-          last = now;
-          const w = canvas.width;
-          const h = canvas.height;
-          ctx.clearRect(0, 0, w, h);
-
-          // background gradient
-          const grad = ctx.createLinearGradient(0, 0, 0, h);
-          grad.addColorStop(0, 'rgba(4,8,18,0.25)');
-          grad.addColorStop(1, 'rgba(2,6,23,0.8)');
-          ctx.fillStyle = grad;
-          ctx.fillRect(0, 0, w, h);
-
-          // subtle tint overlay
-          ctx.fillStyle = tintColor;
-          ctx.globalAlpha = 0.06 + 0.02 * Math.sin(now * 0.002);
-          ctx.fillRect(0, 0, w, h);
-          ctx.globalAlpha = 1;
-
-          // scanlines
-          ctx.fillStyle = 'rgba(255,255,255,0.02)';
-          const step = Math.max(3, Math.floor(h / 200));
-          for (let y = 0; y < h; y += step * (window.devicePixelRatio || 1)) {
-            ctx.fillRect(0, y, w, 1);
-          }
-        }
-
-        parent.appendChild(canvas);
-
-        // visible label so users can see fallback is active
-        const label = document.createElement('div');
-        label.style.position = 'absolute';
-        label.style.right = '8px';
-        label.style.top = '8px';
-        label.style.padding = '4px 8px';
-        label.style.background = 'rgba(0,0,0,0.45)';
-        label.style.color = '#cfefff';
-        label.style.fontFamily = 'JetBrains Mono, monospace';
-        label.style.fontSize = '11px';
-        label.style.borderRadius = '6px';
-        label.style.zIndex = '2';
-        label.style.pointerEvents = 'none';
-        label.textContent = 'Terminal: fallback';
-        parent.appendChild(label);
-        rafId = requestAnimationFrame(draw);
-
-        const resize = () => {
-          canvas.width = parent.offsetWidth * (window.devicePixelRatio || 1);
-          canvas.height = parent.offsetHeight * (window.devicePixelRatio || 1);
-        };
-
-        const ro = new ResizeObserver(resize);
-        ro.observe(parent);
-
-        return () => {
-          cancelAnimationFrame(rafId);
-          ro.disconnect();
-          if (canvas.parentElement === parent) parent.removeChild(canvas);
-          if (label.parentElement === parent) parent.removeChild(label);
-        };
-      };
+      console.warn('[hero-terminal] WebGL init failed, falling back to tech animation canvas', err);
 
       fallbackCleanup = create2DFallback(container, tint);
       return () => {

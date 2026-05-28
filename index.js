@@ -542,6 +542,10 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
+  if (typeof updateClearFiltersBtnVisibility === 'function') {
+    updateClearFiltersBtnVisibility();
+  }
+
   const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
     const category = getCategoryFromTags(tags, name);
@@ -1024,6 +1028,77 @@ document.addEventListener('click', (e) => {
 });
 
 /* ============================================================
+   CLEAR ALL FILTERS SYSTEM
+   ============================================================ */
+function updateClearFiltersBtnVisibility() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (!btn) return;
+
+  const input = document.getElementById('searchInput');
+  const techStack = document.getElementById('techStackFilter');
+  const difficultyElement = document.getElementById('difficultyFilter');
+
+  const hasSearch = input && input.value.trim() !== '';
+  const hasTech = techStack && techStack.value !== 'all';
+  const hasDiff = difficultyElement && difficultyElement.value !== 'all';
+  const hasCategory = activeFilter && activeFilter !== 'all';
+
+  if (hasSearch || hasTech || hasDiff || hasCategory) {
+    btn.style.display = 'inline-flex';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+function resetAllFilters() {
+  // 1. Reset Category filter chips
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((c) => c.classList.remove('active'));
+  const allChip = document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
+  if (allChip) allChip.classList.add('active');
+  activeFilter = 'all';
+
+  // 2. Clear Search input
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  searchQuery = '';
+
+  // 3. Reset Tech Stack dropdown select
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) techStack.value = 'all';
+  techStackFilter = 'all';
+
+  // 4. Reset Difficulty dropdown select
+  const difficultyElement = document.getElementById('difficultyFilter');
+  if (difficultyElement) difficultyElement.value = 'all';
+  difficultyFilter = 'all';
+
+  // 5. Reset Sorting to default
+  const sortSelect = document.getElementById('sortProjects');
+  if (sortSelect) sortSelect.value = 'default';
+  sortOption = 'default';
+
+  // 6. Sync URL
+  if (typeof updateURL === 'function') {
+    updateURL('', 'all');
+  }
+
+  // 7. Refresh grid and pagination
+  currentPage = 1;
+  renderGrid();
+  syncProjectCounts();
+
+  showToast('Filters cleared!');
+}
+
+function initClearAllFilters() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (btn) {
+    btn.addEventListener('click', resetAllFilters);
+  }
+}
+
+/* ============================================================
    FILTER CHIPS
    ============================================================ */
 function initFilterChips() {
@@ -1269,8 +1344,11 @@ function updateNavbar() {
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
+          <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+           <div class="auth-buttons">
+           <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
+           <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
+          </div>
         `;
   }
 }
@@ -1381,6 +1459,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSearch();
   initSorting();
   initTechStackSearch();
+  initClearAllFilters();
 
   try {
     // Await the projects to be fetched
@@ -1413,23 +1492,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!menuToggle || !navButtons) return;
 
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      menuToggle.classList.toggle('active');
-      navButtons.classList.toggle('active');
+      const isOpen = navButtons.classList.toggle('active');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
     document.addEventListener('click', (e) => {
       if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        closeMenu();
+        menuToggle.focus();
       }
     });
 
     navButtons.addEventListener('click', (e) => {
       if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+        closeMenu();
       }
     });
   };
