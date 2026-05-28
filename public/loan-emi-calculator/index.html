@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan EMI Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="../../index.html" class="back-button">← Back to Home</a>
+    
+    <div class="container">
+        <div class="calculator-card">
+            <h1>Loan EMI Calculator</h1>
+            <p class="subtitle">Calculate your monthly loan payments</p>
+            
+            <form id="emiForm">
+                <div class="input-group">
+                    <label for="loanAmount">Loan Amount (₹)</label>
+                    <input 
+                        type="number" 
+                        id="loanAmount" 
+                        placeholder="Enter loan amount"
+                        min="1000"
+                        step="1000"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="interestRate">Annual Interest Rate (%)</label>
+                    <input 
+                        type="number" 
+                        id="interestRate" 
+                        placeholder="Enter interest rate"
+                        min="0.1"
+                        max="50"
+                        step="0.1"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="loanTenure">Loan Tenure</label>
+                    <div class="tenure-input-wrapper">
+                        <input 
+                            type="number" 
+                            id="loanTenure" 
+                            placeholder="Enter tenure"
+                            min="1"
+                            required
+                        >
+                        <div class="toggle-wrapper">
+                            <button type="button" class="toggle-btn active" data-value="months">Months</button>
+                            <button type="button" class="toggle-btn" data-value="years">Years</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">Calculate EMI</button>
+                    <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+                </div>
+            </form>
+
+            <div class="results" id="results">
+                <h2>Results</h2>
+                <div class="result-card">
+                    <div class="result-item">
+                        <span class="result-label">Monthly EMI</span>
+                        <span class="result-value" id="monthlyEmi">₹0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Amount Payable</span>
+                        <span class="result-value" id="totalAmount">₹0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Interest Payable</span>
+                        <span class="result-value" id="totalInterest">₹0</span>
+                    </div>
+                </div>
+                <div class="breakdown">
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Principal Amount:</span>
+                        <span class="breakdown-value" id="principalAmount">₹0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
