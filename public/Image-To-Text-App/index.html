@@ -11,7 +11,7 @@
 </head>
 
 <body class="min-h-screen bg-[#0b1120] relative flex items-center justify-center px-4">
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
 
     <!-- Animated Background -->
@@ -81,24 +81,21 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             <!-- OCR Output -->
-            <div
-                class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 min-h-[350px]">
+            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 min-h-[350px]">
 
                 <div class="flex items-center justify-between mb-5">
 
                     <h2 class="text-xl font-semibold text-white">
                         Extracted Text
                     </h2>
-
-                    <button
+                    <button id="copyBtn"
                         class="text-sm px-4 py-2 rounded-xl bg-white/10 text-gray-300 hover:bg-white/20 transition">
                         Copy
                     </button>
 
                 </div>
 
-                <div id="output"
-                    class="text-gray-300 leading-relaxed text-center overflow-y-auto max-h-[260px]">
+                <div id="output" class="text-gray-300 leading-relaxed text-center overflow-y-auto max-h-[260px]">
                     Select an image and get started...
                 </div>
 
@@ -108,9 +105,7 @@
             <div
                 class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 flex items-center justify-center min-h-[350px]">
 
-                <img id="imagePreview"
-                    class="hidden rounded-2xl shadow-2xl max-h-[300px] object-contain"
-                    src="#"
+                <img id="imagePreview" class="hidden rounded-2xl shadow-2xl max-h-[300px] object-contain" src="#"
                     alt="Selected Image Preview">
 
                 <div id="placeholder" class="text-center">

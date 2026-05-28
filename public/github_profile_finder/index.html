@@ -1,117 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GitHub Profile Finder</title>
+  <title>GitHub Profile Finder — Developer Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
-
-  <main class="app">
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">GitHub Explorer</p>
-        <h1>Profile Finder</h1>
+  <main class="app-container">
+    <header class="dashboard-header">
+      <div class="brand-group">
+        <div id="offlineIndicator" class="badge hidden" style="background: rgba(245, 158, 11, 0.15); color: var(--text); border-color: #f59e0b;">Offline Mode</div>
+        <h1>GitHub Profile Finder</h1>
         <p class="subtitle">
-          Search any GitHub username and inspect their profile, stats, and recent repositories.
+          Search any GitHub username to inspect active metrics, structural data, and repository highlights.
         </p>
       </div>
 
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-        <span id="themeIcon">☾</span>
+      <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Toggle visual theme">
+        <span id="themeIcon" class="toggle-icon">☾</span>
       </button>
     </header>
 
-    <section class="search-panel">
-      <form id="searchForm" class="search-form" autocomplete="off">
+    <section class="search-workspace">
+      <form id="searchForm" class="modern-search-form" autocomplete="off">
         <label class="sr-only" for="usernameInput">GitHub username</label>
-        <div class="input-wrap">
-          <span class="input-icon">⌕</span>
+        <div class="search-input-container">
+          <span class="search-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
           <input
             id="usernameInput"
             type="text"
-            placeholder="Search GitHub username..."
+            placeholder="Search GitHub handle (e.g., torvalds)..."
             spellcheck="false"
           />
         </div>
-        <button type="submit" class="search-btn">Search</button>
+        <button type="submit" class="primary-search-btn">Analyze Profile</button>
       </form>
 
-      <p class="hint">
-        Try:
-        <button class="quick-btn" data-user="torvalds" type="button">torvalds</button>,
-        <button class="quick-btn" data-user="gaearon" type="button">gaearon</button>
-      </p>
+      <div class="quick-suggestions">
+        <span class="suggestion-label">Quick search:</span>
+        <div class="suggestion-tags">
+          <button class="tag-btn" data-user="torvalds" type="button">torvalds</button>
+          <button class="tag-btn" data-user="gaearon" type="button">gaearon</button>
+        </div>
+      </div>
     </section>
 
-    <section id="statusBox" class="status hidden" aria-live="polite"></section>
+    <section id="statusBox" class="status-banner hidden" aria-live="polite"></section>
 
-    <section id="profileCard" class="profile-card hidden">
-      <div class="profile-head">
-        <img id="avatar" class="avatar" src="" alt="Profile avatar" />
-        <div class="profile-main">
-          <div class="name-row">
-            <div>
-              <h2 id="name">Name</h2>
-              <p id="username" class="username">@username</p>
-            </div>
-            <a id="profileLink" class="visit-link" href="#" target="_blank" rel="noreferrer">View GitHub</a>
+    <div class="dashboard-grid">
+      <section id="profileCard" class="profile-sidebar-card hidden">
+        <div class="profile-banner-hero"></div>
+        
+        <div class="profile-essence">
+          <div class="avatar-wrapper">
+            <img id="avatar" class="dashboard-avatar" src="" alt="GitHub avatar representation" />
           </div>
-          <p id="bio" class="bio"></p>
-        </div>
-      </div>
+          
+          <div class="identity-block">
+            <h2 id="name" class="user-fullname">Name</h2>
+            <p id="username" class="user-handle">@username</p>
+          </div>
 
-      <div class="meta-grid">
-        <div class="meta-item">
-          <span class="meta-label">Location</span>
-          <span id="location" class="meta-value">—</span>
+          <p id="bio" class="user-biography"></p>
+          
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a id="profileLink" class="external-profile-btn" href="#" target="_blank" rel="noreferrer">
+              <span>View GitHub Profile</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+            <button id="exportPdfBtn" class="external-profile-btn" type="button" style="background: transparent; border-style: dashed; width: 100%;">
+              <span>Export Executive Brief</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </button>
+          </div>
         </div>
-        <div class="meta-item">
-          <span class="meta-label">Company</span>
-          <span id="company" class="meta-value">—</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Website</span>
-          <span id="website" class="meta-value">—</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Joined</span>
-          <span id="joined" class="meta-value">—</span>
-        </div>
-      </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-label">Repos</span>
-          <strong id="repoCount">0</strong>
+        <div class="detailed-metadata-list">
+          <div class="meta-row">
+            <div class="meta-icon-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>Location</span>
+            </div>
+            <span id="location" class="meta-output">—</span>
+          </div>
+          
+          <div class="meta-row">
+            <div class="meta-icon-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              <span>Company</span>
+            </div>
+            <span id="company" class="meta-output">—</span>
+          </div>
+          
+          <div class="meta-row">
+            <div class="meta-icon-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+              <span>Website</span>
+            </div>
+            <span id="website" class="meta-output">—</span>
+          </div>
+          
+          <div class="meta-row">
+            <div class="meta-icon-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>Joined</span>
+            </div>
+            <span id="joined" class="meta-output">—</span>
+          </div>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">Followers</span>
-          <strong id="followers">0</strong>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">Following</span>
-          <strong id="following">0</strong>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">Gists</span>
-          <strong id="gists">0</strong>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="reposSection" class="repos-section hidden">
-      <div class="section-title">
-        <h3>Popular Repositories</h3>
-        <p>Sorted by stars and recent activity</p>
+      <div class="main-dashboard-content">
+        <section id="metricsPanel" class="metrics-overview-strip hidden">
+          <div class="metric-dashboard-card">
+            <div class="metric-card-inner">
+              <span class="metric-title">Public Repos</span>
+              <strong id="repoCount" class="metric-value">0</strong>
+            </div>
+          </div>
+          <div class="metric-dashboard-card">
+            <div class="metric-card-inner">
+              <span class="metric-title">Followers</span>
+              <strong id="followers" class="metric-value">0</strong>
+            </div>
+          </div>
+          <div class="metric-dashboard-card">
+            <div class="metric-card-inner">
+              <span class="metric-title">Following</span>
+              <strong id="following" class="metric-value">0</strong>
+            </div>
+          </div>
+          <div class="metric-dashboard-card">
+            <div class="metric-card-inner">
+              <span class="metric-title">Public Gists</span>
+              <strong id="gists" class="metric-value">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <section id="reposSection" class="repositories-showcase-panel hidden">
+          <div class="panel-header-block">
+            <div class="workspace-tabs-nav">
+              <button class="tab-nav-item active" type="button" data-pane="repositoriesPane">Overview &amp; Repos</button>
+              <button class="tab-nav-item" type="button" data-pane="insightsPane">Distribution Charts</button>
+            </div>
+            <div class="title-meta" style="margin-top: 16px;">
+              <h3>Popular Repositories</h3>
+              <p>Top performance metrics classified by star evaluation and recent updates</p>
+            </div>
+          </div>
+
+          <div id="repositoriesPane" class="tab-pane active">
+            <div id="reposList" class="repositories-bento-grid"></div>
+          </div>
+
+          <div id="insightsPane" class="tab-pane">
+            <div class="chart-layout-wrapper">
+              <div class="chart-canvas-card">
+                <div class="title-meta" style="margin-bottom: 16px;">
+                  <h4 style="margin: 0; font-size: 1rem;">Language Distribution</h4>
+                  <p style="font-size: 0.8rem;">Relative ecosystem density by tracking public asset storage footprints</p>
+                </div>
+                <div id="languageDistributionChart" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;"></div>
+              </div>
+              
+              <div class="chart-canvas-card">
+                <div class="title-meta" style="margin-bottom: 16px;">
+                  <h4 style="margin: 0; font-size: 1rem;">System Traction Evaluation</h4>
+                  <p style="font-size: 0.8rem;">Relative star weight balance vs repository fragmentation</p>
+                </div>
+                <div id="systemTractionChart" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;"></div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-      <div id="reposList" class="repos-list"></div>
-    </section>
+    </div>
   </main>
 
   <script src="script.js"></script>
