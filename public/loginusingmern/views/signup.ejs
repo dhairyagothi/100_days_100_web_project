@@ -11,13 +11,98 @@
 </head>
 
 <body>
+    <div class="container">
+        <form id="registerForm">
+            <h1>Register</h1>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter Username">
+                <div class="error"></div>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter Email">
+                <div class="error"></div>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" autocomplete="new-password"
+                        placeholder="Enter Password?">
 
-  <div class="page-wrapper">
+                    <span id="togglePassword">👁️</span>
+                </div>
+                <div class="error"></div>
 
-    <!-- Lottie Animation -->
-    <div class="image">
-      <iframe src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe>
+                <div class="password-strength">
+                    <progress id="strengthBar" value="0" max="5"></progress>
+
+                    <p id="strengthText" aria-live="polite">
+                        Password strength
+                    </p>
+
+                    <ul class="password-hints">
+                        <li id="lengthHint">At least 8 characters</li>
+                        <li id="upperHint">One uppercase letter</li>
+                        <li id="lowerHint">One lowercase letter</li>
+                        <li id="numberHint">One number</li>
+                        <li id="specialHint">One special character</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="cpassword">Confirm Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="cpassword" name="cpassword" autocomplete="new-password"
+                        placeholder="Enter Password?">
+
+                    <span id="toggleConfirmPassword">👁️</span>
+                </div>
+                <div class="error"></div>
+            </div>
+            <button type="button" onclick="getDetails()">Register</button>
+        </form>
+        <p class="register">Already a member? <a href="/">Login here!</a></p>
+
     </div>
+</body>
+
+<script>
+
+    async function postRequest(data) {
+        try {
+            const res = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const text = await res.text();
+
+            const form = document.querySelector("form");
+
+            let messageBox = document.getElementById("messageBox");
+
+            if (!messageBox) {
+                messageBox = document.createElement("div");
+                messageBox.id = "messageBox";
+                form.appendChild(messageBox);
+            }
+
+            messageBox.innerText = text;
+
+            if (!res.ok) {
+                messageBox.className = "message error-message";
+                return;
+            }
+
+            messageBox.className = "message success-message";
+
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1500);
+
+            window.location.href = "/";
 
     <!-- Signup Card -->
     <div class="card">
@@ -106,77 +191,203 @@
       setTimeout(() => t.classList.remove('show'), 3500);
     }
 
-    function setError(id, msg) {
-      document.getElementById(id).textContent = msg;
+
+
+    function setError(inputId, message) {
+
+        const input = document.getElementById(inputId);
+
+        const inputGroup = input.closest('.input-group');
+
+        const errorDisplay = inputGroup.querySelector('.error');
+
+        errorDisplay.innerText = message;
     }
 
     function clearErrors() {
-      ['err-username', 'err-email', 'err-password', 'err-cpassword']
-        .forEach(id => setError(id, ''));
-    }
 
-    async function getDetails() {
-      clearErrors();
-
-      const username = document.getElementById('username').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const cpassword = document.getElementById('cpassword').value;
-
-      let valid = true;
-
-      if (!username) { setError('err-username', 'Username is required'); valid = false; }
-      if (!email) { setError('err-email', 'Email is required'); valid = false; }
-      if (!password) { setError('err-password', 'Password is required'); valid = false; }
-
-      if (password && cpassword && password !== cpassword) {
-        setError('err-cpassword', 'Passwords do not match');
-        valid = false;
-      }
-
-      if (!valid) return;
-
-      try {
-        const res = await fetch('/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password })
+        document.querySelectorAll('.error').forEach(error => {
+            error.innerText = '';
         });
 
-        const text = await res.text();
+        document.querySelectorAll('input').forEach(input => {
+            input.classList.remove('input-error');
+        });
+    }
 
-        if (!res.ok) {
-          showToast(text, 'error');
-          return;
+    function getDetails() {
+
+        clearErrors();
+
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const cpassword = document.getElementById('cpassword');
+
+        let isValid = true;
+
+        if (!username.value.trim()) {
+            setError('username', 'Username is required');
+            username.classList.add('input-error');
+            isValid = false;
         }
 
-        showToast(text, 'success');
-        setTimeout(() => window.location.href = '/', 800);
+        if (!email.value.trim()) {
+            setError('email', 'Email is required');
+            email.classList.add('input-error');
+            isValid = false;
+        }
 
-      } catch (err) {
-        console.error(err);
-        showToast('Something went wrong. Try again.', 'error');
-      }
+        if (!password.value.trim()) {
+            setError('password', 'Password is required');
+            password.classList.add('input-error');
+            isValid = false;
+        }
+
+        if (!cpassword.value.trim()) {
+            setError('cpassword', 'Confirm Password is required');
+            cpassword.classList.add('input-error');
+            isValid = false;
+        }
+
+        if (
+            password.value &&
+            cpassword.value &&
+            password.value !== cpassword.value
+        ) {
+            setError('cpassword', 'Passwords do not match');
+            password.classList.add('input-error');
+            cpassword.classList.add('input-error');
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        postRequest({
+            username: username.value,
+            email: email.value,
+            password: password.value
+        });
     }
 
-    function togglePassword(id, el) {
-      const input = document.getElementById(id);
-      const icon = el.querySelector('i');
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-      } else {
-        input.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-      }
+
+    function setupPasswordToggle(inputId, toggleId) {
+
+        const passwordInput = document.getElementById(inputId);
+        const togglePassword = document.getElementById(toggleId);
+
+        if (passwordInput && togglePassword) {
+
+            togglePassword.addEventListener("click", () => {
+
+                if (passwordInput.type === "password") {
+
+                    passwordInput.type = "text";
+                    togglePassword.textContent = "🙈";
+
+                } else {
+
+                    passwordInput.type = "password";
+                    togglePassword.textContent = "👁️";
+
+                }
+
+            });
+
+        }
     }
 
-    // Allow Enter key to submit
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Enter') getDetails();
+    setupPasswordToggle("password", "togglePassword");
+    setupPasswordToggle("cpassword", "toggleConfirmPassword");
+
+    const passwordInput = document.getElementById("password");
+
+    const strengthBar = document.getElementById("strengthBar");
+    const strengthText = document.getElementById("strengthText");
+
+    passwordInput.addEventListener("input", () => {
+
+        const password = passwordInput.value;
+
+        let score = 0;
+
+        const checks = {
+            length: password.length >= 8,
+            upper: /[A-Z]/.test(password),
+            lower: /[a-z]/.test(password),
+            number: /[0-9]/.test(password),
+            special: /[^A-Za-z0-9]/.test(password)
+        };
+
+        if (checks.length) score++;
+        if (checks.upper) score++;
+        if (checks.lower) score++;
+        if (checks.number) score++;
+        if (checks.special) score++;
+
+        strengthBar.value = score;
+
+        document.getElementById("lengthHint").style.color =
+            checks.length ? "#86efac" : "#fca5a5";
+
+        document.getElementById("upperHint").style.color =
+            checks.upper ? "#86efac" : "#fca5a5";
+
+
+        document.getElementById("lowerHint").style.color =
+            checks.lower ? "#86efac" : "#fca5a5";
+
+        document.getElementById("numberHint").style.color =
+            checks.number ? "#86efac" : "#fca5a5";
+
+        document.getElementById("specialHint").style.color =
+            checks.special  ? "#86efac" : "#fca5a5";
+
+        if (score <= 2) {
+
+            strengthText.textContent = "Weak Password";
+            strengthText.style.color = "#ef4444";
+
+            strengthBar.style.setProperty(
+                "--progress-color",
+                "#ef4444"
+            );
+
+        } else if (score <= 4) {
+
+            strengthText.textContent = "Medium Password";
+            strengthText.style.color = "#f59e0b";
+
+            strengthBar.style.setProperty(
+                "--progress-color",
+                "#f59e0b"
+            );
+
+        } else {
+
+            strengthText.textContent = "Strong Password";
+            strengthText.style.color = "#22c55e";
+
+            strengthBar.style.setProperty(
+                "--progress-color",
+                "#22c55e"
+            );
+        }
     });
-  </script>
 
-</body>
+    document.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", () => {
+            input.classList.remove("input-error");
+
+            const error =
+                input.parentElement.parentElement.querySelector(".error");
+
+            if (error) {
+                error.innerText = "";
+            }
+        });
+    });
+
+</script>
 
 </html>
