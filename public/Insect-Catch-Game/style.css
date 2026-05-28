@@ -235,7 +235,11 @@ h1 {
 .insect img {
   width: 120px;
   height: 120px;
-  filter: drop-shadow(0 0 12px rgba(255,140,0,0.8));
+}
+
+.insect:hover img,
+.insect:active img {
+  filter: drop-shadow(0 0 6px rgba(255,140,0,0.6));
 }
 
 .sound-controls {

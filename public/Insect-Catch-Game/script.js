@@ -28,30 +28,43 @@ let seconds = 0
 let score = 0
 let selected_insect = {}
 
-start_btn.addEventListener('click', () => {
-    buttonClickSound.currentTime = 0
-    buttonClickSound.onended = null // clear any previous onended
-    buttonClickSound.play()
+function playButtonClickSound(onComplete) {
+    let completed = false
 
-    // Wait for sound to finish, then show next screen
-    buttonClickSound.onended = () => {
-        screens[0].classList.add('up')
+    const finish = () => {
+        if (completed) return
+        completed = true
+        buttonClickSound.removeEventListener('ended', finish)
+        onComplete()
     }
+
+    buttonClickSound.addEventListener('ended', finish, { once: true })
+
+    try {
+        buttonClickSound.currentTime = 0
+        const playPromise = buttonClickSound.play()
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(finish)
+        }
+    } catch (error) {
+        finish()
+    }
+}
+
+start_btn.addEventListener('click', () => {
+    playButtonClickSound(() => {
+        screens[0].classList.add('up')
+    })
 })
 
 choose_insect_btns.forEach(btn => {
     btn.addEventListener('click', () => {
-        buttonClickSound.currentTime = 0
-        buttonClickSound.onended = null // clear any previous onended
-        buttonClickSound.play()
-
         const img = btn.querySelector('img')
         const src = img.getAttribute('src')
         const alt = img.getAttribute('alt')
         selected_insect = { src, alt }
 
-        // Wait for sound to finish, then show game screen
-        buttonClickSound.onended = () => {
+        playButtonClickSound(() => {
             screens[1].classList.add('up')
             setTimeout(createInsect, 1000)
             startGame()
@@ -60,7 +73,7 @@ choose_insect_btns.forEach(btn => {
             setTimeout(() => {
                 backgroundMusic.play()
             }, 500)
-        }
+        })
     })
 })
 
