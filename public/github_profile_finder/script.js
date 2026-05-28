@@ -60,47 +60,7 @@ if (!searchResultsContainer) {
 const CACHE_DURATION = 300000;
 let liveSearchDebounceTimer = null;
 
-const workerScript = `
-  self.onmessage = function(e) {
-    const repositories = e.data;
-    const distribution = {};
-    const metricsMapping = [];
-    let accumulatedStars = 0;
-    let totalForks = 0;
-
-    repositories.forEach(repo => {
-      accumulatedStars += repo.stargazers_count;
-      totalForks += repo.forks_count;
-      if (repo.language) {
-        distribution[repo.language] = (distribution[repo.language] || 0) + 1;
-      }
-      metricsMapping.push({
-        name: repo.name,
-        stars: repo.stargazers_count,
-        forks: repo.forks_count
-      });
-    });
-
-    const totalLanguagesCount = Object.values(distribution).reduce((a, b) => a + b, 0);
-    const formattedDistribution = Object.entries(distribution).map(([lang, count]) => ({
-      language: lang,
-      percentage: Math.round((count / totalLanguagesCount) * 100)
-    })).sort((a, b) => b.percentage - a.percentage);
-
-    const topLanguages = formattedDistribution.slice(0, 3).map(node => node.language);
-
-    self.postMessage({
-      languages: topLanguages,
-      distribution: formattedDistribution.slice(0, 4),
-      rawMetrics: metricsMapping.slice(0, 4),
-      stars: accumulatedStars,
-      forks: totalForks
-    });
-  };
-`;
-
-const blob = new Blob([workerScript], { type: "application/javascript" });
-const metricsWorker = new Worker(URL.createObjectURL(blob));
+// Removed inlined worker and synthetic analytics to keep comparisons data-driven
 
 class DataCacheEngine {
   static get(storageKey) {
@@ -195,39 +155,14 @@ function showCompareLoading() {
         <div class="spinner" aria-hidden="true"></div>
         <div>
           <strong>Preparing comparison</strong>
-          <p>Loading both profiles, repository summaries, and language breakdowns.</p>
+          <p>Loading both profiles and repository summaries.</p>
         </div>
       </div>`;
   }
   UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function getMetricHighlights(user) {
-  const total = Math.max(user.followers + user.public_repos, 1);
-  return [
-    {
-      label: "Followers",
-      value: user.followers,
-      percent: Math.round((user.followers / total) * 100)
-    },
-    {
-      label: "Repos",
-      value: user.public_repos,
-      percent: Math.round((user.public_repos / total) * 100)
-    }
-  ];
-}
-
-function computeMetricsForRepos(repos) {
-  return new Promise((resolve) => {
-    const worker = new Worker(URL.createObjectURL(blob));
-    worker.onmessage = (event) => {
-      resolve(event.data);
-      worker.terminate();
-    };
-    worker.postMessage(repos || []);
-  });
-}
+// computeMetricsForRepos removed — no derived/fake analytics required
 
 async function fetchProfileData(username) {
   const cleanName = username.trim().replace(/^@/, "");
@@ -238,10 +173,9 @@ async function fetchProfileData(username) {
 
   const cachedProfile = DataCacheEngine.get(`profile_${cleanName}`);
   const cachedRepos = DataCacheEngine.get(`repos_${cleanName}`);
-  const cachedMetrics = DataCacheEngine.get(`metrics_${cleanName}`);
 
-  if (cachedProfile && cachedRepos && cachedMetrics) {
-    return { user: cachedProfile, repos: cachedRepos, metrics: cachedMetrics };
+  if (cachedProfile && cachedRepos) {
+    return { user: cachedProfile, repos: cachedRepos };
   }
 
   if (!navigator.onLine) {
@@ -258,13 +192,11 @@ async function fetchProfileData(username) {
   const repos = await repoResponse.json();
   const verifiedRepos = Array.isArray(repos) ? repos : [];
   const sortedRepos = verifiedRepos.sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count).slice(0, 6);
-  const metrics = await computeMetricsForRepos(sortedRepos);
 
   DataCacheEngine.set(`profile_${cleanName}`, user);
   DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
-  DataCacheEngine.set(`metrics_${cleanName}`, metrics);
 
-  return { user, repos: sortedRepos, metrics };
+  return { user, repos: sortedRepos };
 }
 
 function buildRepoListSmall(repos) {
@@ -295,8 +227,6 @@ function renderComparisonCard(profileData, compareType, peerData) {
   const leadFollowers = profileData.user.followers > peerData.user.followers;
   const leadRepos = profileData.user.public_repos > peerData.user.public_repos;
   const primaryBadge = leadFollowers ? "Leader in followers" : leadRepos ? "Leader in repos" : "Balanced profile";
-  const repoHighlights = getMetricHighlights(profileData.user);
-
   return `
     <article class="compare-panel compare-panel-${compareType}">
       <div class="compare-panel-top">
@@ -310,8 +240,7 @@ function renderComparisonCard(profileData, compareType, peerData) {
             <p class="compare-handle">@${profileData.user.login}</p>
           </div>
         </div>
-
-        <p class="compare-bio">${safeText(profileData.user.bio, "No bio provided.")}</p>
+        <p class="compare-bio">${safeText(profileData.user.bio, "—")}</p>
 
         <div class="compare-badges">
           <span class="badge-chip ${leadRepos ? "badge-chip-accent" : ""}">Repos ${profileData.user.public_repos}</span>
@@ -324,40 +253,9 @@ function renderComparisonCard(profileData, compareType, peerData) {
           <a class="compare-action-btn" href="${profileData.user.html_url}" target="_blank" rel="noreferrer">
             View GitHub Profile
           </a>
-          <button class="compare-action-btn compare-action-btn-secondary" type="button" data-export-brief="${profileData.user.login}">
-            Export Executive Brief
-          </button>
-        </div>
-
-        <div class="compare-metric-grid">
-          ${repoHighlights.map((item) => `
-            <div class="compare-metric-card">
-              <span>${item.label}</span>
-              <strong>${item.value}</strong>
-              <div class="mini-bar"><i style="width:${Math.min(item.percent, 100)}%"></i></div>
-            </div>
-          `).join("")}
         </div>
       </div>
-
-      <div class="compare-section">
-        <div class="section-title-row">
-          <h4>Language Statistics</h4>
-          <span class="section-subtitle">Top languages in public repositories</span>
-        </div>
-        <div class="lang-distribution">
-          ${profileData.metrics.distribution.length ? profileData.metrics.distribution.map((item) => `
-            <div class="lang-row">
-              <div class="lang-labels">
-                <strong>${item.language}</strong>
-                <span>${item.percentage}%</span>
-              </div>
-              <div class="lang-bar"><i style="width:${item.percentage}%"></i></div>
-            </div>
-          `).join("") : `<div class="empty-state-inline">No language data available.</div>`}
-        </div>
-      </div>
-
+      
       <div class="compare-section">
         <div class="section-title-row">
           <h4>Top Repositories</h4>
@@ -398,63 +296,7 @@ function safeText(value, fallback = "—") {
   return value && String(value).trim() ? value : fallback;
 }
 
-function computeAccountHealthIndex(user, metrics) {
-  const repoFactor = user.public_repos * 1.5;
-  const tractionFactor = (metrics.stars * 2.5) + (metrics.forks * 1.2);
-  const networkFactor = user.followers * 0.8;
-  const matrixScore = Math.min(100, Math.round((repoFactor + tractionFactor + networkFactor) / 12));
-  
-  if (matrixScore > 75) return "Enterprise Authority";
-  if (matrixScore > 40) return "Core Contributor";
-  return "Active Developer";
-}
-
-function renderVisualInsightsCharts(metrics) {
-  const langContainer = document.getElementById("languageDistributionChart");
-  const tractionContainer = document.getElementById("systemTractionChart");
-  
-  if (langContainer) {
-    langContainer.innerHTML = "";
-    if (metrics.distribution.length === 0) {
-      langContainer.innerHTML = '<span class="meta-output" style="text-align:left;">Insufficient environment distribution metrics.</span>';
-    } else {
-      metrics.distribution.forEach(item => {
-        const layoutRow = document.createElement("div");
-        layoutRow.style.cssText = "display:flex; flex-direction:column; gap:4px; width:100%;";
-        layoutRow.innerHTML = `
-          <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600;">
-            <span>${item.language}</span>
-            <span class="user-handle">${item.percentage}%</span>
-          </div>
-          <div style="width:100%; height:6px; background:var(--bg-secondary); border-radius:99px; overflow:hidden;">
-            <div style="width:${item.percentage}%; height:100%; background:var(--accent); border-radius:99px;"></div>
-          </div>
-        `;
-        langContainer.appendChild(layoutRow);
-      });
-    }
-  }
-
-  if (tractionContainer) {
-    tractionContainer.innerHTML = "";
-    if (metrics.rawMetrics.length === 0) {
-      tractionContainer.innerHTML = '<span class="meta-output" style="text-align:left;">No tracking metrics registered.</span>';
-    } else {
-      metrics.rawMetrics.forEach(repo => {
-        const layoutRow = document.createElement("div");
-        layoutRow.style.cssText = "display:flex; align-items:center; justify-content:space-between; font-size:0.85rem; padding: 4px 0;";
-        layoutRow.innerHTML = `
-          <span style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px;">${repo.name}</span>
-          <div style="display:flex; gap:8px;">
-            <span class="pill" style="padding:2px 6px;">★ ${repo.stars}</span>
-            <span class="pill" style="padding:2px 6px;">⑂ ${repo.forks}</span>
-          </div>
-        `;
-        tractionContainer.appendChild(layoutRow);
-      });
-    }
-  }
-}
+// Removed synthetic analytics chart rendering — charts are not populated here to keep UI simple
 
 function animateCounter(element, targetValue) {
   if (!element) return;
@@ -483,24 +325,17 @@ function animateCounter(element, targetValue) {
   requestAnimationFrame(updateNumber);
 }
 
-function renderProfile(user, metrics) {
+function renderProfile(user, repos = []) {
   document.body.classList.remove("compare-mode");
   if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
   Nodes.avatar.src = user.avatar_url;
-  Nodes.avatar.alt = `${user.login} workflow footprint`;
+  Nodes.avatar.alt = `${user.login} avatar`;
   Nodes.name.textContent = safeText(user.name, user.login);
   Nodes.username.textContent = `@${user.login}`;
 
-  const architectureClassification = computeAccountHealthIndex(user, metrics);
-  const ecosystemSummary = metrics.languages.length > 0 
-    ? `Specializes in ${metrics.languages.join(", ")} environments.`
-    : "Maintains a diversified structural codebase.";
-
-  const baselineBio = user.bio ? user.bio : "Independent open source developer profile dashboard.";
-  Nodes.bio.textContent = `${baselineBio} [Rank: ${architectureClassification}] — ${ecosystemSummary}`;
-  
-  Nodes.location.textContent = safeText(user.location, "Distributed/Remote");
-  Nodes.company.textContent = safeText(user.company, "Independent Workspace");
+  Nodes.bio.textContent = safeText(user.bio, "—");
+  Nodes.location.textContent = safeText(user.location, "—");
+  Nodes.company.textContent = safeText(user.company, "—");
 
   if (user.blog) {
     const blogUrl = user.blog.startsWith("http") ? user.blog : `https://${user.blog}`;
@@ -517,8 +352,7 @@ function renderProfile(user, metrics) {
   animateCounter(Nodes.following, user.following);
   animateCounter(Nodes.gists, user.public_gists);
 
-  renderVisualInsightsCharts(metrics);
-
+  // Keep profile and metrics panels visible
   if (UI.profileCard) UI.profileCard.classList.remove("hidden");
   if (UI.metricsPanel) UI.metricsPanel.classList.remove("hidden");
 }
@@ -548,7 +382,7 @@ function renderRepos(repos) {
         </h4>
         <span class="badge" style="margin:0; padding:2px 8px; font-size:0.7rem;">${engineeringStatus}</span>
       </div>
-      <p class="repo-description">${repo.description || "No structural layout documentation provided for this ecosystem."}</p>
+      <p class="repo-description">${repo.description || "No description."}</p>
       <div class="repo-meta">
         ${repo.language ? `<span class="pill">● ${repo.language}</span>` : ""}
         <span class="pill">★ ${repo.stargazers_count}</span>
@@ -680,19 +514,12 @@ async function fetchUser(username) {
         .sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count)
         .slice(0, 6);
 
-      metricsWorker.onmessage = function(e) {
-        const structuralMetrics = e.data;
-        
-        DataCacheEngine.set(`profile_${cleanName}`, user);
-        DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
-        DataCacheEngine.set(`metrics_${cleanName}`, structuralMetrics);
+      DataCacheEngine.set(`profile_${cleanName}`, user);
+      DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
 
-        renderProfile(user, structuralMetrics);
-        renderRepos(sortedRepos);
-        hideStatus();
-      };
-
-      metricsWorker.postMessage(sortedRepos);
+      renderProfile(user, sortedRepos);
+      renderRepos(sortedRepos);
+      hideStatus();
     } else {
       const searchResponse = await fetch(
         `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`
@@ -819,17 +646,7 @@ document.querySelectorAll(".compare-tag-btn").forEach((button) => {
   });
 });
 
-document.addEventListener("click", (event) => {
-  const exportButton = event.target.closest("[data-export-brief]");
-  if (!exportButton) return;
-  window.print();
-});
-
-if (UI.exportPdfBtn) {
-  UI.exportPdfBtn.addEventListener("click", () => {
-    window.print();
-  });
-}
+// Export functionality removed — keep UI focused on fetched data only
 
 if (UI.themeToggle) {
   UI.themeToggle.addEventListener("click", () => {

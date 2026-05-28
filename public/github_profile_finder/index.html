@@ -94,10 +94,7 @@
               <span>View GitHub Profile</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
             </a>
-            <button id="exportPdfBtn" class="external-profile-btn" type="button" style="background: transparent; border-style: dashed; width: 100%;">
-              <span>Export Executive Brief</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            </button>
+            <!-- Export removed to keep feature minimal and data-driven -->
           </div>
         </div>
 
@@ -137,38 +134,12 @@
       </section>
 
       <div class="main-dashboard-content">
-        <section id="metricsPanel" class="metrics-overview-strip hidden">
-          <div class="metric-dashboard-card">
-            <div class="metric-card-inner">
-              <span class="metric-title">Public Repos</span>
-              <strong id="repoCount" class="metric-value">0</strong>
-            </div>
-          </div>
-          <div class="metric-dashboard-card">
-            <div class="metric-card-inner">
-              <span class="metric-title">Followers</span>
-              <strong id="followers" class="metric-value">0</strong>
-            </div>
-          </div>
-          <div class="metric-dashboard-card">
-            <div class="metric-card-inner">
-              <span class="metric-title">Following</span>
-              <strong id="following" class="metric-value">0</strong>
-            </div>
-          </div>
-          <div class="metric-dashboard-card">
-            <div class="metric-card-inner">
-              <span class="metric-title">Public Gists</span>
-              <strong id="gists" class="metric-value">0</strong>
-            </div>
-          </div>
-        </section>
+        <!-- metrics panel removed to keep UI minimal and data-driven -->
 
         <section id="reposSection" class="repositories-showcase-panel hidden">
           <div class="panel-header-block">
             <div class="workspace-tabs-nav">
               <button class="tab-nav-item active" type="button" data-pane="repositoriesPane">Overview &amp; Repos</button>
-              <button class="tab-nav-item" type="button" data-pane="insightsPane">Distribution Charts</button>
             </div>
             <div class="title-meta" style="margin-top: 16px;">
               <h3>Popular Repositories</h3>
@@ -180,25 +151,7 @@
             <div id="reposList" class="repositories-bento-grid"></div>
           </div>
 
-          <div id="insightsPane" class="tab-pane">
-            <div class="chart-layout-wrapper">
-              <div class="chart-canvas-card">
-                <div class="title-meta" style="margin-bottom: 16px;">
-                  <h4 style="margin: 0; font-size: 1rem;">Language Distribution</h4>
-                  <p style="font-size: 0.8rem;">Relative ecosystem density by tracking public asset storage footprints</p>
-                </div>
-                <div id="languageDistributionChart" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;"></div>
-              </div>
-              
-              <div class="chart-canvas-card">
-                <div class="title-meta" style="margin-bottom: 16px;">
-                  <h4 style="margin: 0; font-size: 1rem;">System Traction Evaluation</h4>
-                  <p style="font-size: 0.8rem;">Relative star weight balance vs repository fragmentation</p>
-                </div>
-                <div id="systemTractionChart" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;"></div>
-              </div>
-            </div>
-          </div>
+          <!-- insights pane removed to simplify UI -->
         </section>
 
         <!-- Comparison container -->

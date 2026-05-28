@@ -464,51 +464,7 @@ h1 {
     min-width: 0;
 }
 
-.metrics-overview-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
-.metric-dashboard-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s ease;
-}
-
-.metric-dashboard-card:hover {
-    transform: translateY(-2px);
-}
-
-.metric-card-inner {
-    display: flex;
-    flex-direction: column;
-}
-
-.metric-title {
-    color: var(--muted);
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 6px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.metric-value {
-    font-size: 1.8rem;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.02em;
-}
+/* Metrics and insights styles removed to keep UI minimal */
 
 .repositories-showcase-panel {
     background: var(--card);
@@ -520,7 +476,6 @@ h1 {
 }
 
 .compare-mode .profile-sidebar-card,
-.compare-mode .metrics-overview-strip,
 .compare-mode #reposSection {
     display: none !important;
 }
@@ -922,20 +877,7 @@ h1 {
     font-size: 0.9rem;
 }
 
-.chart-layout-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 12px;
-}
-
-.chart-canvas-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    min-height: 260px;
-}
+/* Chart layout styles removed (insights pane simplified) */
 
 .repositories-bento-grid {
     display: grid;
@@ -1112,16 +1054,10 @@ h1 {
 }
 
 @media (max-width: 768px) {
-    .metrics-overview-strip {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
     .repositories-bento-grid {
         grid-template-columns: 1fr;
     }
-    .chart-layout-wrapper {
-        grid-template-columns: 1fr;
-    }
+    /* Removed metrics and chart layout styles for simplified UI */
     .repositories-showcase-panel {
         padding: 20px;
     }
