@@ -170,12 +170,47 @@ margin-bottom:20px;
 }
 .conf{position:absolute;width:9px;height:9px;border-radius:2px;
   animation:cfall 2s ease-in forwards;pointer-events:none}
+  .home-btn{
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+padding:8px 14px;
+
+border-radius:10px;
+
+color:var(--text);
+
+text-decoration:none;
+
+font-size:14px;
+
+transition:.15s;
+}
+
+.home-btn:hover{
+
+border-color:var(--accent);
+
+color:var(--accent);
+}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🧪 Color<span>Sort</span></h1>
+
+<a href="../../index.html"
+class="home-btn">
+
+← Home
+
+</a>
+
+<h1>
+🧪 Color<span>Sort</span>
+</h1>
  <div class="stats">
   <div class="pill">Moves: <b id="mc">0</b></div>
 
