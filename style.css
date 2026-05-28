@@ -476,7 +476,10 @@ body.light-mode .navbar {
 
 .hero-terminal {
   position: absolute;
-  inset: 0;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 0;
   pointer-events: none;
   opacity: 0.55;
@@ -617,7 +620,7 @@ body.light-mode .hero-terminal-text {
   color: var(--accent);
   margin-bottom: 1.5rem;
   opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.1s forwards;
+  animation: fadeUp 0.6s var(--ease) 0.1s both;
 }
 
 .hero-headline {
@@ -628,7 +631,7 @@ body.light-mode .hero-terminal-text {
   color: var(--text-primary);
   margin-bottom: 1.25rem;
   opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.2s forwards;
+  animation: fadeUp 0.6s var(--ease) 0.2s both;
 }
 
 .hero-line {
@@ -666,7 +669,7 @@ body.light-mode .hero-terminal-text {
   line-height: 1.65;
   margin-bottom: 2rem;
   opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.3s forwards;
+  animation: fadeUp 0.6s var(--ease) 0.3s both;
 }
 
 .hero-extra {
@@ -676,7 +679,7 @@ body.light-mode .hero-terminal-text {
   line-height: 1.65;
   margin-bottom: 2.5rem;
   opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.3s forwards;
+  animation: fadeUp 0.6s var(--ease) 0.3s both;
 }
 
 .hero-actions {
@@ -686,7 +689,7 @@ body.light-mode .hero-terminal-text {
   flex-wrap: wrap;
   margin-bottom: 3rem;
   opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.4s forwards;
+  animation: fadeUp 0.6s var(--ease) 0.4s both;
 }
 
 .hero-actions .btn {
@@ -709,7 +712,7 @@ body.light-mode .hero-terminal-text {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   opacity: 0;
-  animation: fadeUp 0.6s var(--ease) 0.5s forwards;
+  animation: fadeUp 0.6s var(--ease) 0.5s both;
 }
 
 .stat-item {
@@ -2382,6 +2385,16 @@ body.light-mode .brand-mark {
   .hero-actions,
   .stats-strip {
     animation: none !important;
+  }
+
+  .hero-overline,
+  .hero-headline,
+  .hero-sub,
+  .hero-extra,
+  .hero-actions,
+  .stats-strip {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .hero-terminal {
