@@ -1,0 +1,23 @@
+body.light {
+  --bg-color: #ffffff;
+  --text-color: #111827;
+  --card-bg: #ffffff;
+  --header-bg: #ffffff;
+  --border-color: #e5e7eb;
+}
+
+body.dark {
+  --bg-color: #0f172a;
+  --text-color: #f8fafc;
+  --card-bg: #1e293b;
+  --header-bg: #111827;
+  --border-color: #334155;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
+}

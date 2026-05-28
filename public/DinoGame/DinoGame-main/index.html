@@ -7,22 +7,97 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div class="game-container">
-        <h1>Dino Game</h1>
-        <div class="game-info">
-            <div>Score: <span id="score">0</span></div>
-            <div>Press SPACE to jump!</div>
+        <div class="title-row">
+            <div>
+                <h1>Dino Dash</h1>
+                <p class="subtitle">Survive the cactus rush and beat your best!</p>
+            </div>
+            <button id="soundToggle" class="ghost" aria-pressed="true">Sound: On</button>
         </div>
-        <div id="gameCanvas">
+        <div class="game-info">
+            <div class="stat">
+                <span class="label">Score</span>
+                <span id="score" class="value">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Best</span>
+                <span id="bestScore" class="value">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Level</span>
+                <span id="level" class="value">1</span>
+            </div>
+            <div class="stat">
+                <span class="label">Speed</span>
+                <span id="speed" class="value">1.0x</span>
+            </div>
+            <div class="stat">
+                <span class="label">Combo</span>
+                <span id="combo" class="value">0x</span>
+            </div>
+            <div class="stat">
+                <span class="label">Power</span>
+                <span id="powerStatus" class="value">None</span>
+            </div>
+            <div class="stat">
+                <span class="label">Coins</span>
+                <span id="coins" class="value">0</span>
+            </div>
+            <div class="hint">Press SPACE or tap to jump. Press P to pause</div>
+        </div>
+        <div id="gameCanvas" aria-live="polite">
+            <div id="bossBanner" class="boss-banner">Boss Wave Incoming!</div>
+            <div class="parallax">
+                <div class="layer layer-far"></div>
+                <div class="layer layer-mid"></div>
+                <div class="layer layer-near"></div>
+                <div class="layer layer-ground"></div>
+            </div>
+            <div class="sky">
+                <span class="cloud c1"></span>
+                <span class="cloud c2"></span>
+                <span class="cloud c3"></span>
+            </div>
+            <div id="particles" class="particles"></div>
             <div id="dino"></div>
             <div id="gameover">
                 Game Over!<br>
                 Final Score: <span id="finalScore">0</span>
             </div>
         </div>
+        <div class="mission-bar">
+            <div class="mission-title">Mission</div>
+            <div id="missionText" class="mission-text">Jump 5 times</div>
+            <div class="mission-track">
+                <span id="missionProgress"></span>
+            </div>
+        </div>
         <div class="controls">
             <button id="startBtn">Start Game</button>
             <button id="restartBtn">Restart</button>
+            <button id="pauseBtn" class="ghost">Pause</button>
+            <button id="shopBtn" class="ghost">Shop / Skins</button>
+            <label class="select-wrap" for="difficulty">
+                <span>Difficulty</span>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </label>
+        </div>
+        <div id="shopModal" class="shop-modal" aria-hidden="true">
+            <div class="shop-card">
+                <div class="shop-header">
+                    <h2>Skin Shop</h2>
+                    <button id="shopClose" class="ghost">Close</button>
+                </div>
+                <div class="shop-coins">Coins: <span id="coinCount">0</span></div>
+                <div id="shopList" class="shop-list"></div>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
