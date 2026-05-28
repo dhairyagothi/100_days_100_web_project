@@ -89,6 +89,73 @@ function saveStats () {
   try { localStorage.setItem('2048stats', JSON.stringify(stats)); } catch (_) {}
 }
 
+function logGameScore(s) {
+  stats.scoreHistory = stats.scoreHistory || [];
+  stats.scoreHistory.push(s);
+  if (stats.scoreHistory.length > 10) stats.scoreHistory.shift();
+  saveStats();
+}
+
+function togglePause() {
+  if (mode !== 'timed' || over) return;
+  paused = !paused;
+  const btn = document.getElementById('pausebtn');
+  if (paused) {
+    clearInterval(timerInterval);
+    btn.textContent = '▶ Resume';
+    showOverlayPause();
+  } else {
+    startTimer();
+    btn.textContent = '⏸ Pause';
+    document.getElementById('ov').style.display = 'none';
+  }
+
+// REPLACE this entire function:
+function showOverlayPause() {
+  const ov = document.getElementById('ov');
+  ov.className = 'ov';
+  ov.innerHTML = `
+    <div class="ov-title" style="color:#4fc3f7">⏸ Paused</div>
+    <div class="ov-sub">Game is paused</div>
+    <button class="btn" id="ov-resume-btn">▶ Resume</button>
+  `;
+  ov.style.display = 'flex';
+  document.getElementById('ov-resume-btn').addEventListener('click', togglePause);
+}
+}x
+
+
+function drawScoreGraph() {
+  const history = stats.scoreHistory || [];
+  const cv = document.getElementById('score-graph');
+  if (!cv || history.length < 2) return;
+  const ctx = cv.getContext('2d');
+  const W = cv.width = cv.offsetWidth || 260;
+  const H = cv.height = 80;
+  ctx.clearRect(0, 0, W, H);
+  const max = Math.max(...history, 1);
+  const step = W / (history.length - 1);
+  ctx.beginPath();
+  ctx.strokeStyle = '#ff9800';
+  ctx.lineWidth = 2.5;
+  history.forEach((v, i) => {
+    const x = i * step;
+    const y = H - (v / max) * (H - 8) - 4;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  // Dots
+  history.forEach((v, i) => {
+    const x = i * step;
+    const y = H - (v / max) * (H - 8) - 4;
+    ctx.beginPath();
+    ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffd54f';
+    ctx.fill();
+  });
+}
+
+
 function loadBest () {
   try { return parseInt(localStorage.getItem('2048best'), 10) || 0; } catch (_) { return 0; }
 }
@@ -490,9 +557,16 @@ function showOverlay (type) {
     <button class="btn" id="ov-replay-btn">Play Again</button>
   `;
   ov.style.display = 'flex';
-  document.getElementById('ov-replay-btn').addEventListener('click', () => init());
-}
+// FIX: Clear out any previous listeners using a fresh replacement element reference
+  const replayBtn = document.getElementById('ov-replay-btn');
+  replayBtn.onclick = () => init();
 
+  // Keep incoming button 2 feature from main branch while maintaining memory leak safety
+  const replayBtn2 = document.getElementById('ov-replay-btn2');
+  if (replayBtn2) {
+    replayBtn2.onclick = watchReplay;
+  }
+}
 function showToast (msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;

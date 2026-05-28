@@ -95,9 +95,10 @@ color: var(--text-primary);
 }
 
 .horizontal-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
+  align-items: stretch;
 }
 
 .horizontal-info-card {
@@ -113,6 +114,11 @@ color: var(--text-primary);
   gap: 20px;
 
   border: 1px solid rgba(255,255,255,0.06);
+}
+
+.horizontal-info-card .modern-btn {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .info-content {
@@ -141,10 +147,18 @@ color: var(--text-primary);
 
 @media (max-width: 768px) {
 
-  .horizontal-info-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.horizontal-info-card {
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  height: 100%;
+  align-items: flex-start
+}
 
   .modern-btn {
     width: 100%;
