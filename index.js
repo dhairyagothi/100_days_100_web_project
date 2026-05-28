@@ -737,6 +737,22 @@ function renderPagination(totalItems, totalPages) {
   const controlsDiv = document.createElement('div');
   controlsDiv.className = 'pagination-controls';
 
+  const firstBtn = document.createElement('button');
+  firstBtn.className = 'first-btn';
+  firstBtn.innerHTML = '⏮ First';
+  firstBtn.disabled = currentPage === 1;
+
+  firstBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(firstBtn);
+
   const prevBtn = document.createElement('button');
   prevBtn.className = 'prev-btn';
   prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
@@ -808,6 +824,21 @@ function renderPagination(totalItems, totalPages) {
     }
   });
   controlsDiv.appendChild(nextBtn);
+  const lastBtn = document.createElement('button');
+  lastBtn.className = 'last-btn';
+  lastBtn.innerHTML =  'Last ⏭';
+  lastBtn.disabled = currentPage === totalPages;
+
+  lastBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(lastBtn);
 
   container.appendChild(controlsDiv);
 
@@ -818,6 +849,10 @@ function renderPagination(totalItems, totalPages) {
 function scrollToProjectSection() {
   const header = document.querySelector('.projects-header');
   if (!header) return;
+
+  // Only scroll if the projects section is fully below the viewport.
+  // If the user is already within or past the project grid, don't move them.
+  if (header.getBoundingClientRect().top < window.innerHeight) return;
 
   const navbar = document.querySelector('.navbar');
   // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
