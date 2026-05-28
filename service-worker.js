@@ -15,6 +15,21 @@ self.addEventListener('install', (event) => {
   );
 });
 
+// Delete any caches whose name does not match the current CACHE_NAME.
+// Without this handler, old caches accumulate across deployments and
+// returning users continue to receive stale assets indefinitely.
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
+      );
+    })
+  );
+});
+
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
