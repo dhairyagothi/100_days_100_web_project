@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe</title>
+    <title>TicTacToe - Neon</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Unbounded:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 <header class="hero">
-    <h1 class="heading">TIC TAC TOE</h1>
+    <h1 class="heading">Tic<span>Tac</span>Toe</h1>
     <p class="subheading">Neon grid. Smart moves. First to three wins the set.</p>
 </header>
 
@@ -25,27 +23,26 @@
         </div>
 
         <div class="toolbar">
-            <label class="field">
+            <div class="field">
                 <span>Mode</span>
                 <select id="modeSelect">
-                    <option value="pvp" selected>Player vs Player</option>
+                    <option value="pvp">Player vs Player</option>
                     <option value="cpu-easy">Vs CPU (Easy)</option>
                     <option value="cpu-medium">Vs CPU (Medium)</option>
                     <option value="cpu-hard">Vs CPU (Hard)</option>
                 </select>
-            </label>
-            <label class="field">
+            </div>
+            <div class="field">
                 <span>Theme</span>
                 <select id="themeSelect">
-                    <option value="neon" selected>Neon</option>
+                    <option value="neon">Neon</option>
                     <option value="pastel">Pastel</option>
                     <option value="mono">Mono</option>
                 </select>
-            </label>
+            </div>
             <div class="toolbar-actions">
-                <button class="ghost" id="hintBtn">Hint</button>
-                <button class="ghost" id="undoBtn">Undo</button>
-                <button class="ghost" id="soundToggle" aria-pressed="true">Sound: On</button>
+                <button class="btn-ghost" id="hintBtn">Hint</button>
+                <button class="btn-ghost" id="undoBtn">Undo</button>
             </div>
         </div>
 
@@ -64,28 +61,17 @@
             </div>
         </div>
 
-        <div class="game" id="board" aria-label="Tic tac toe board">
-            <button class="box" data-index="0" aria-label="cell 1"></button>
-            <button class="box" data-index="1" aria-label="cell 2"></button>
-            <button class="box" data-index="2" aria-label="cell 3"></button>
-            <button class="box" data-index="3" aria-label="cell 4"></button>
-            <button class="box" data-index="4" aria-label="cell 5"></button>
-            <button class="box" data-index="5" aria-label="cell 6"></button>
-            <button class="box" data-index="6" aria-label="cell 7"></button>
-            <button class="box" data-index="7" aria-label="cell 8"></button>
-            <button class="box" data-index="8" aria-label="cell 9"></button>
-            <div class="win-line" id="winLine" aria-hidden="true"></div>
-        </div>
+        <div class="board" id="board"></div>
 
         <div class="controls">
-            <button class="repeat" id="resetRound">New Round</button>
-            <button class="ghost" id="resetAll">Reset Scores</button>
+            <button class="btn-primary" id="newRoundBtn">New Round</button>
+            <button class="btn-ghost" id="resetAllBtn">Reset Scores</button>
         </div>
 
         <div class="history">
-            <div class="history-header">
+            <div class="history-hdr">
                 <h3>Move History</h3>
-                <span id="historyHint">Last 10 moves</span>
+                <span>Last 10 moves</span>
             </div>
             <ol id="historyList"></ol>
         </div>
@@ -118,9 +104,9 @@
 <canvas id="confetti" aria-hidden="true"></canvas>
 
 <footer class="footer">
-       <span>A TIC TAC TOE GAME TO PLAY WHEN BORED</span>
+    <span>A TIC TAC TOE GAME TO PLAY WHEN BORED</span>
 </footer>
-    
-    <script src="script.js"></script>
+
+<script src="script.js"></script>
 </body>
 </html>
