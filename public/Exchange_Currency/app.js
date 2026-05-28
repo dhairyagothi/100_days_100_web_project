@@ -235,6 +235,25 @@ swapIcon.addEventListener("click", () => {
   updateExchangeRate();
   loadHistoricalChart();
 });
+// ===============================
+// 📊 HISTORICAL DATA PROCESSING
+// ===============================
+
+const formatHistoricalData = (data) => {
+    let labels = [];
+    let values = [];
+
+    // Convert API object → chart arrays
+    for (let date in data) {
+        labels.push(date);
+        values.push(data[date]);
+    }
+
+    return {
+        labels: labels,
+        values: values
+    };
+};
 
 resetBtn.addEventListener("click", () => {
   clearError();
