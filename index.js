@@ -160,9 +160,12 @@ function resolveProjectUrls(day, name, url, tags) {
 
   if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
     try {
-      demoUrl = new URL(demoUrl, window.location.href).href;
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const basePrefix = isRoot ? '' : '../';
+      if (demoUrl.startsWith('./')) {
+        demoUrl = basePrefix + demoUrl.substring(2);
+      }
     } catch (error) {
-      // Keep the original path if URL normalization fails.
     }
   }
 
@@ -171,8 +174,8 @@ function resolveProjectUrls(day, name, url, tags) {
 
 function getProjectDescription(project) {
   return (
-      project[5] ||
-      'Explore this project to discover interactive functionality.'
+    (project && project[5]) ||
+    'Explore this project to discover interactive functionality.'
   );
 }
 
@@ -278,8 +281,9 @@ function normalizeTech(tech) {
 }
 
 /**
- * Check if project matches the active tech stack filters
- * EFFICIENT APPROACH: Direct string matching without complex transformations
+ * Check if project matches the active tech stack filters.
+ * Each filter must match a complete tag token, not a substring of another tag.
+ * Example: searching "java" must not return projects tagged "javascript".
  * @param {string|array} projectTags - Project tags (space-separated string or array)
  * @returns {boolean} True if project matches all active filters
  */
@@ -290,12 +294,17 @@ function matchesTechStack(projectTags) {
   // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Convert to single lowercase string for efficient matching
-  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  // Normalize to a set of individual lowercase tokens for whole-word matching.
+  // Using a Set avoids repeated linear scans for each filter.
+  const tagSet = new Set(
+    (Array.isArray(projectTags) ? projectTags : String(projectTags).split(/\s+/))
+      .map((t) => t.toLowerCase().trim())
+      .filter(Boolean)
+  );
 
-  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
-  // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  // Every active filter must match an exact token in the tag set (AND logic).
+  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
+  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
 
@@ -384,8 +393,15 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
-let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+let bookmarkedProjects = [];
+let recentProjects = [];
+
+try {
+  bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
+  recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+} catch (error) {
+  console.warn('localStorage is not available or access is denied:', error.message);
+}
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -537,6 +553,53 @@ let sortOption = 'default';
 let techStackFilter = 'all';
 let difficultyFilter = 'all';
 
+function syncStateToURL() {
+  const url = new URL(window.location);
+  
+  if (searchQuery) {
+    url.searchParams.set('search', searchQuery);
+  } else {
+    url.searchParams.delete('search');
+  }
+
+  if (activeFilter && activeFilter !== 'all') {
+    url.searchParams.set('category', activeFilter);
+  } else {
+    url.searchParams.delete('category');
+  }
+
+  if (currentPage > 1) {
+    url.searchParams.set('page', currentPage);
+  } else {
+    url.searchParams.delete('page');
+  }
+
+  window.history.replaceState({}, '', url);
+}
+
+function readStateFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (urlParams.has('search')) {
+    searchQuery = urlParams.get('search');
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.value = searchQuery;
+    }
+  }
+  
+  if (urlParams.has('category')) {
+    activeFilter = urlParams.get('category');
+  }
+  
+  if (urlParams.has('page')) {
+    const page = parseInt(urlParams.get('page'), 10);
+    if (!isNaN(page) && page > 0) {
+      currentPage = page;
+    }
+  }
+}
+
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
@@ -638,6 +701,8 @@ function renderGrid() {
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
+  
+  syncStateToURL();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -754,6 +819,10 @@ function scrollToProjectSection() {
   const header = document.querySelector('.projects-header');
   if (!header) return;
 
+  // Only scroll if the projects section is fully below the viewport.
+  // If the user is already within or past the project grid, don't move them.
+  if (header.getBoundingClientRect().top < window.innerHeight) return;
+
   const navbar = document.querySelector('.navbar');
   // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
@@ -798,7 +867,11 @@ function toggleBookmark(project) {
     showToast('Project bookmarked');
   }
 
-  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  try {
+    localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  } catch (error) {
+    console.warn('Could not save bookmark due to localStorage restrictions');
+  }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
@@ -850,7 +923,11 @@ function trackRecentProject(project) {
     recentProjects.pop();
   }
 
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn('Could not save recent projects due to localStorage restrictions');
+  }
   renderRecentProjects();
 }
 
@@ -933,7 +1010,7 @@ function renderRecentProjects() {
       tags,
       category,
       isBookmarked,
-      showDescription: false,
+      showDescription: true,
     });
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
@@ -1104,6 +1181,11 @@ function initClearAllFilters() {
 function initFilterChips() {
   const chips = document.querySelectorAll('.chip[data-filter]');
   chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+
     chip.addEventListener('click', () => {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
@@ -1183,24 +1265,20 @@ function initTechStackSearch() {
 
   if (!input) return;
 
-  let debounceTimer;
+  // Use the shared debounce utility instead of a manual inline timer
+  input.addEventListener('input', debounce((e) => {
+    const value = e.target.value.trim().toLowerCase();
 
-  input.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      const value = e.target.value.trim().toLowerCase();
-
-      if (value) {
-        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-        techStackFilters = [...new Set(techs)];
-        updateTechFilterDisplay();
-        currentPage = 1;
-        renderGrid();
-      } else {
-        clearAllTechFilters();
-      }
-    }, 300);
-  });
+    if (value) {
+      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+      techStackFilters = [...new Set(techs)];
+      updateTechFilterDisplay();
+      currentPage = 1;
+      renderGrid();
+    } else {
+      clearAllTechFilters();
+    }
+  }, 300));
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -1306,8 +1384,7 @@ syncProjectCounts();
 function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
-
-  const username = window.username || null;
+  const username = window.username || localStorage.getItem('loggedInUser') || null;   // Read logged-in user from localStorage so navbar consists of logged in user when page reloads
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
   const isLight = document.body.classList.contains('light-mode');
@@ -1333,10 +1410,11 @@ function updateNavbar() {
             </a>
             ${otherLink}
         `;
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+      document.getElementById('logoutBtn').addEventListener('click', () => {
       window.username = null;
+      localStorage.removeItem('loggedInUser');  // cleared logged in info on logout
       updateNavbar();
-    });
+      });
   } else {
     container.innerHTML = `
             ${themeButton}
@@ -1344,8 +1422,11 @@ function updateNavbar() {
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
+          <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+           <div class="auth-buttons">
+           <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
+           <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
+          </div>
         `;
   }
 }
@@ -1448,6 +1529,8 @@ function hasProjectGrid() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  readStateFromURL();
+
   initTheme();
   updateNavbar();
 
@@ -1851,11 +1934,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput) {
-    searchInput.addEventListener('input', () => {
+    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
+    searchInput.addEventListener('input', debounce(() => {
       const { category } = getQueryParams();
       updateURL(searchInput.value, category);
       applyFilters(searchInput.value, category);
-    });
+    }, 200));
   }
   const categoryFilter = document.getElementById('category');
   if (categoryFilter) {
