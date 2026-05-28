@@ -136,6 +136,7 @@ body {
   font-weight: 400;
   letter-spacing: 0.01em;
   color: var(--ink);
+  margin: 0;
 }
 
 .theme-toggle {
@@ -194,6 +195,11 @@ body.dark .icon-moon {
 /* =========================================
    Forms
    ========================================= */
+.bmi-form {
+  display: flex;
+  flex-direction: column;
+}
+
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -219,13 +225,6 @@ select,
 input[type="text"],
 input[type="number"] {
   width: 100%;
-  background: var(--navy-3);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--radius-sm);
-  padding: .75rem 3rem .75rem 2.8rem;
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .95rem;
   padding: 10px 12px;
   background: var(--surface);
   border: 1px solid var(--rule);
@@ -245,27 +244,6 @@ select:hover,
 input:hover {
   border-color: var(--rule-strong);
 }
-.field-icon {
-  position: absolute;
-  left: .9rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted);
-}
-.field-icon svg {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-}
-.field-unit {
-  position: absolute;
-  right: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: .75rem;
-  color: var(--muted);
 
 select:focus,
 input:focus {
@@ -273,7 +251,7 @@ input:focus {
   background: var(--card);
 }
 
-button#btn {
+.calculate-btn {
   width: 100%;
   padding: 12px;
   margin-top: 14px;
@@ -292,10 +270,11 @@ button#btn {
     transform 0.1s;
 }
 
-button#btn:hover {
+.calculate-btn:hover {
   opacity: 0.8;
 }
-button#btn:active {
+
+.calculate-btn:active {
   transform: scale(0.997);
 }
 
@@ -331,11 +310,6 @@ button#btn:active {
 
 .metric-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-}
-
-body.dark .metric-card:hover {
-  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.05);
 }
 
 .metric-card + .metric-card {
@@ -649,19 +623,67 @@ body.dark .metric-card:hover {
   margin-top: 14px;
 }
 
-* {
-  scrollbar-width: none; /* Firefox */
+.clear-history-btn {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  transition: all 0.15s;
+  font-family: var(--f-mono);
 }
 
-*::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+.clear-history-btn:hover {
+  border-color: var(--ink);
+  background: var(--surface);
 }
 
+/* =========================================
+   Animations
+   ========================================= */
+.result-row,
+.range-vis,
+.bf-section {
+  animation: fadeSlide 0.5s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.active-row {
+  background: rgba(100, 100, 255, 0.08);
+  transition: background 0.3s ease;
+}
+
+input::placeholder {
+  opacity: 1;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+  transform: translateX(6px);
+}
+
+/* =========================================
+   Responsive Design
+   ========================================= */
 @media (max-width: 768px) {
-  /* =========================
-     Page spacing fix
-  ========================= */
   body {
     padding: 16px 10px;
   }
@@ -705,7 +727,7 @@ body.dark .metric-card:hover {
     padding: 12px;
   }
 
-  button#btn {
+  .calculate-btn {
     font-size: 11px;
     padding: 14px;
   }
@@ -723,11 +745,6 @@ body.dark .metric-card:hover {
 
   .metric-value {
     font-size: 34px;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  }
-
-  body.dark .metric-value {
-    text-shadow: 0 2px 14px rgba(255, 255, 255, 0.06);
   }
 
   .range-val {
@@ -742,9 +759,6 @@ body.dark .metric-card:hover {
     font-size: 10px;
   }
 
-  /* =========================
-     TABLE scroll fix
-  ========================= */
   .bmi-table {
     font-size: 11px;
   }
@@ -784,295 +798,12 @@ body.dark .metric-card:hover {
   }
 }
 
-input::placeholder {
-  opacity: 1;
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
+/* Remove scrollbar */
+* {
+  scrollbar-width: none; /* Firefox */
 }
 
-input:focus::placeholder {
-  opacity: 0;
-  transform: translateX(6px);
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
-
-.result-row,
-.range-vis,
-.bf-section {
-  animation: fadeSlide 0.5s ease;
-}
-
-@keyframes fadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.active-row {
-  background: rgba(100, 100, 255, 0.08);
-  transition: background 0.3s ease;
-}
-
-.card, .full-card, .hero-text { animation: fadeUp .5s ease both; }
-.main-grid .card:nth-child(2) { animation-delay: .1s; }
-.main-grid .card:nth-child(3) { animation-delay: .15s; }
-.main-grid .card:nth-child(4) { animation-delay: .2s; }
-
-/* ===============================
-   GLASSMORPHISM ENHANCEMENT
-================================= */
-
-.card,
-.full-card,
-.body-card {
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow:
-    0 10px 40px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.03);
-  transition:
-    transform .3s ease,
-    border-color .3s ease,
-    box-shadow .3s ease;
-}
-
-.card:hover,
-.full-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(15,191,173,.35);
-  box-shadow:
-    0 14px 45px rgba(0,0,0,.45),
-    0 0 0 1px rgba(15,191,173,.1);
-}
-
-/* ===============================
-   BUTTON GLOW EFFECT
-================================= */
-
-.calc-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.calc-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      120deg,
-      transparent 20%,
-      rgba(255,255,255,.25) 50%,
-      transparent 80%
-    );
-  transform: translateX(-120%);
-  transition: transform .7s ease;
-}
-
-.calc-btn:hover::before {
-  transform: translateX(120%);
-}
-
-.calc-btn:hover {
-  box-shadow:
-    0 10px 30px rgba(15,191,173,.35);
-}
-
-/* ===============================
-   INPUT HOVER EFFECT
-================================= */
-
-.field input:hover {
-  border-color: rgba(15,191,173,.25);
-  background: rgba(255,255,255,.02);
-}
-
-/* ===============================
-   FLOATING CARD ANIMATION
-================================= */
-
-@keyframes floatCard {
-  0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
-}
-
-.body-card {
-  animation:
-    fadeUp .6s ease,
-    floatCard 5s ease-in-out infinite;
-}
-
-/* ===============================
-   HERO TITLE EFFECT
-================================= */
-
-.hero-text h1 {
-  position: relative;
-  display: inline-block;
-}
-
-.hero-text h1::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-  width: 60%;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    var(--teal),
-    transparent
-  );
-}
-
-/* ===============================
-   TABLE ROW HOVER
-================================= */
-
-.bmi-table tbody tr {
-  transition:
-    background .2s ease,
-    transform .2s ease;
-}
-
-.bmi-table tbody tr:hover {
-  background: rgba(255,255,255,.02);
-  transform: scale(1.01);
-}
-
-/* ===============================
-   SCROLLBAR STYLING
-================================= */
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--navy);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(15,191,173,.35);
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(15,191,173,.55);
-}
-
-/* ===============================
-   SOFT PULSE EFFECT
-================================= */
-
-@keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 0 rgba(15,191,173,.0);
-  }
-  50% {
-    box-shadow: 0 0 18px rgba(15,191,173,.18);
-  }
-  100% {
-    box-shadow: 0 0 0 rgba(15,191,173,.0);
-  }
-}
-
-.gauge-center {
-  animation: pulseGlow 3s infinite ease-in-out;
-}
-
-/* ===============================
-   RESPONSIVE IMPROVEMENTS
-================================= */
-
-@media (max-width: 900px) {
-
-  .main-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .hero-text p {
-    margin: 0 auto;
-  }
-
-  .body-stats {
-    flex-direction: column;
-  }
-
-  .human-figures {
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 500px) {
-
-  .page {
-    padding: 1.2rem;
-  }
-
-  .card,
-  .full-card {
-    padding: 1.2rem;
-  }
-
-  .hero-text h1 {
-    font-size: 1.8rem;
-  }
-
-  .gauge-bmi {
-    font-size: 2rem;
-  }
-
-  .calc-btn {
-    font-size: .9rem;
-    padding: .9rem;
-  }
-
-  .field input {
-    font-size: .88rem;
-  }
-}
-
-/* ===============================
-   DARK/LIGHT MODE SUPPORT
-================================= */
-
-@media (prefers-color-scheme: light) {
-
-  :root {
-    --navy: #f4f7fb;
-    --navy-2: #ffffff;
-    --navy-3: #edf2f7;
-    --card: #ffffff;
-    --card2: #f6f9fc;
-    --text: #081120;
-    --muted: #5b6b84;
-    --border: rgba(0,0,0,.08);
-  }
-
-  body {
-    background: var(--navy);
-    color: var(--text);
-  }
-
-  .field input {
-    color: #081120;
-  }
-
-  .hero-text h1 {
-    color: #081120;
-  }
-}
-
