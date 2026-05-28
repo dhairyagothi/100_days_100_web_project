@@ -1051,9 +1051,6 @@ function initFilterChips() {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
       activeFilter = chip.dataset.filter;
-      // Keep category dropdown in sync when a chip is used
-      const catSelect = document.getElementById('categoryFilter');
-      if (catSelect) catSelect.value = activeFilter;
       currentPage = 1;
       renderGrid();
     });
@@ -1087,19 +1084,6 @@ function initSearch() {
       renderGrid();
     }, 180)
   );
-
-  // Category dropdown beside search bar
-  const categorySelect = document.getElementById('categoryFilter');
-  if (categorySelect) {
-    categorySelect.addEventListener('change', () => {
-      activeFilter = categorySelect.value || 'all';
-      // Update chips active state if the selected value matches an existing chip
-      const chips = document.querySelectorAll('.chip[data-filter]');
-      chips.forEach((c) => c.classList.toggle('active', c.dataset.filter === activeFilter));
-      currentPage = 1;
-      renderGrid();
-    });
-  }
 
   // Tech stack dropdown filter listener
   const techStack = document.getElementById('techStackFilter');
@@ -1775,8 +1759,6 @@ function restoreStateFromURL() {
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.getElementById('categoryFilter');
-  if (categoryFilter && category !== 'all') categoryFilter.value = category;
   if (search || category !== 'all') applyFilters(search, category);
 }
 
@@ -1813,14 +1795,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const { category } = getQueryParams();
       updateURL(searchInput.value, category);
       applyFilters(searchInput.value, category);
-    });
-  }
-  const categoryFilter = document.getElementById('categoryFilter');
-  if (categoryFilter) {
-    categoryFilter.addEventListener('change', () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
     });
   }
   window.addEventListener('popstate', () => restoreStateFromURL());
