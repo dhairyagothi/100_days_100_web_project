@@ -172,6 +172,13 @@ function resolveProjectUrls(day, name, url, tags) {
   return { demoUrl, sourceUrl, sourceOnly };
 }
 
+function highlightText(text, query) {
+  if (!query) return text;
+  const escapedQuery = String(query).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const regex = new RegExp(`(${escapedQuery})`, 'gi');
+  return String(text).replace(regex, '<mark class="search-highlight">$1</mark>');
+}
+
 function getProjectDescription(project) {
   return (
     (project && project[5]) ||
@@ -194,12 +201,14 @@ function buildProjectCardHTML({
     : String(tags || '')
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
-  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+  const tagsHTML = tagsArray.map((t) => `<span class="tag">${highlightText(t, searchQuery)}</span>`).join('');
   const project =
 PROJECTS.find(p => p[1] === name);
 
-const description =
-getProjectDescription(project);
+  const description = getProjectDescription(project);
+  const highlightedName = highlightText(name, searchQuery);
+  const highlightedDesc = highlightText(description, searchQuery);
+
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : '';
@@ -225,11 +234,11 @@ getProjectDescription(project);
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <div class="card-name">${name}</div>
+            <div class="card-name">${highlightedName}</div>
             ${
               showDescription
                 ? `<div class="card-description">
-    ${description}
+    ${highlightedDesc}
 </div>`
                 : ''
             }
