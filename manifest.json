@@ -1,0 +1,21 @@
+{
+  "short_name": "100DaysWeb",
+  "name": "100 Days 100 Web Projects Hub",
+  "icons": [
+    {
+      "src": "public/images/imageloader.gif",
+      "type": "image/gif",
+      "sizes": "192x192"
+    },
+    {
+      "src": "public/images/imageloader.gif",
+      "type": "image/gif",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#111111",
+  "theme_color": "#007bcc",
+  "display": "standalone",
+  "orientation": "portrait"
+}
