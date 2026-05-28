@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Password Generator & Saver</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Warning Banner -->
+  <div class="warning-banner" id="warningBanner">
+    <span class="warning-icon">⚠️</span>
+    <span>Passwords are stored in this browser only. Do <strong>not</strong> use on shared or public devices.</span>
+    <button class="warning-close" onclick="document.getElementById('warningBanner').style.display='none'">✕</button>
+  </div>
+
+  <div class="app-wrapper">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🔐</span>
+        <div>
+          <h1>PassForge</h1>
+          <p class="tagline">Generate · Protect · Save</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-grid">
+
+      <!-- Generator Panel -->
+      <section class="panel generator-panel">
+        <h2 class="panel-title">Generate Password</h2>
+
+        <!-- Password Display -->
+        <div class="password-display-wrap">
+          <div class="password-display" id="passwordDisplay">
+            <span id="passwordText" class="password-text">Click Generate →</span>
+          </div>
+          <button class="btn-copy" id="copyBtn" title="Copy to clipboard" onclick="copyPassword()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+
+        <!-- Strength Indicator -->
+        <div class="strength-wrap">
+          <span class="strength-label">Strength:</span>
+          <div class="strength-bar-track">
+            <div class="strength-bar" id="strengthBar"></div>
+          </div>
+          <span class="strength-text" id="strengthText">—</span>
+        </div>
+
+        <!-- Length Slider -->
+        <div class="control-row">
+          <label class="control-label">
+            Length
+            <span class="length-badge" id="lengthBadge">16</span>
+          </label>
+          <input type="range" class="slider" id="lengthSlider" min="8" max="32" value="16"
+            oninput="document.getElementById('lengthBadge').textContent=this.value"/>
+        </div>
+
+        <!-- Options Grid -->
+        <div class="options-grid">
+          <label class="toggle-option">
+            <input type="checkbox" id="optUppercase" checked/>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="option-label">Uppercase <small>A–Z</small></span>
+          </label>
+          <label class="toggle-option">
+            <input type="checkbox" id="optLowercase" checked/>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="option-label">Lowercase <small>a–z</small></span>
+          </label>
+          <label class="toggle-option">
+            <input type="checkbox" id="optNumbers" checked/>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="option-label">Numbers <small>0–9</small></span>
+          </label>
+          <label class="toggle-option">
+            <input type="checkbox" id="optSymbols"/>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="option-label">Symbols <small>!@#…</small></span>
+          </label>
+        </div>
+
+        <button class="btn-generate" onclick="generatePassword()">
+          <span class="btn-icon">⚡</span> Generate Password
+        </button>
+
+        <!-- Save Section -->
+        <div class="save-section">
+          <div class="save-row">
+            <input type="text" class="label-input" id="saveLabel" placeholder="Label (e.g. Gmail, Netflix)"/>
+            <button class="btn-save" onclick="savePassword()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save
+            </button>
+          </div>
+          <div class="toast" id="toast"></div>
+        </div>
+      </section>
+
+      <!-- Saved Passwords Panel -->
+      <section class="panel saved-panel">
+        <div class="saved-header">
+          <h2 class="panel-title">Saved Passwords</h2>
+          <span class="saved-count" id="savedCount">0</span>
+        </div>
+
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="search-input" id="searchInput" placeholder="Search saved passwords…" oninput="renderSaved()"/>
+        </div>
+
+        <div class="saved-list" id="savedList">
+          <div class="empty-state">
+            <span class="empty-icon">🗝️</span>
+            <p>No passwords saved yet.</p>
+            <small>Generate one and hit Save!</small>
+          </div>
+        </div>
+
+        <div class="danger-zone" id="dangerZone" style="display:none;">
+          <button class="btn-clear-all" onclick="clearAll()">🗑️ Clear All Saved</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
