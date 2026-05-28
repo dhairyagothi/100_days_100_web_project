@@ -481,7 +481,6 @@
             background: var(--surface);
             transition: border-color var(--transition), box-shadow var(--transition);
             outline: none;
-            -moz-appearance: textfield;
         }
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
@@ -570,7 +569,10 @@
     </style>
 </head>
 <body>
-<a href="parallal.html" class="project-back-button">← Back to Home</a>
+
+<a href="/" class="project-back-button">
+    ← Back to Home
+</a>
 
 <div class="app-shell">
 
@@ -581,6 +583,7 @@
                 <h1>Eco Habit <span>Tracker</span></h1>
                 <p>Small daily actions build a sustainable future.</p>
             </div>
+
             <div id="date-display"></div>
         </div>
     </header>
