@@ -107,7 +107,7 @@
 "projectDesc":"Basic Express server setup for hosting web applications.",
 "techStack":["javascript"],
 "difficulty":"intermediate",
-"projectPath":"./public/index.html"
+"projectPath":"./public/Express%20Server/public/index.html"
 },
 
 {
@@ -499,7 +499,7 @@
 "projectDesc":"Searches or suggests recipes through an interactive cooking assistant interface.",
 "techStack":["api","javascript"],
 "difficulty":"intermediate",
-"projectPath":"./public/Recipe%20Genie/index.html"
+"projectPath":"./public/recipe/main.html"
 },
 
 {
@@ -979,7 +979,7 @@
 "projectDesc":"Playable piano simulation responding to keyboard or click inputs.",
 "techStack":["css","javascript"],
 "difficulty":"intermediate",
-"projectPath":"./public/Virtual Piano/index.html"
+"projectPath":"./public/Virtual_Piano/index.html"
 },
 
 {
@@ -1189,7 +1189,7 @@
 "projectDesc":"Experimental environment featuring playful interactions and frontend concepts.",
 "techStack":["ui","game","html","css","js"],
 "difficulty":"intermediate",
-"projectPath":"./playground.html"
+"projectPath":"./public/code-visualizer-playground/index.html"
 },
 
 {
@@ -1649,7 +1649,7 @@
 "projectDesc":"Frontend clone inspired by Amazon with shopping UI and responsive layouts.",
 "techStack":["tool","Amazon","Clone","HTML","CSS","JavaScript"],
 "difficulty":"beginner",
-"projectPath":"./public/AmazonClone/index.html"
+"projectPath":"./public/New-AmazonClone/index.html"
 },
 
 {
@@ -1659,7 +1659,7 @@
 "projectDesc":"Suggests activities and interactive ideas to overcome boredom quickly.",
 "techStack":["tool","html","css","javascript"],
 "difficulty":"advanced",
-"projectPath":"./public/BoredemBuster/index.html"
+"projectPath":"./public/BordemBuster/index.html"
 },
 
 {
@@ -1729,7 +1729,7 @@
 "projectDesc":"Analyze resumes using AI techniques and provide structured feedback.",
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
-"projectPath":"./public/AI-Resume-Analyzer/index.html"
+"projectPath":"./public/AI-Resume-Analyser/index.html"
 },
 
 {
@@ -1739,7 +1739,7 @@
 "projectDesc":"Split shared expenses automatically and simplify cost calculations.",
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
-"projectPath":"./public/SmartExpenseSplitter/index.html"
+"projectPath":"./public/SpendSense/index.html"
 },
 
 {
@@ -1759,7 +1759,7 @@
 "projectDesc":"Generate creative stories automatically using AI-assisted text generation.",
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
-"projectPath":"./public/AIStoryGenerator/index.html"
+"projectPath":"./public/story/main.html"
 },
 
 {
@@ -1769,7 +1769,7 @@
 "projectDesc":"Centralized platform for interview preparation resources and practice tools.",
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
-"projectPath":"./public/InterviewPrepHub/index.html"
+"projectPath":"./public/InterviewSimulator/index.html"
 },
 
 {
@@ -1790,8 +1790,8 @@
 "techStack":["game","html","css","javascript"],
 "difficulty":"intermediate",
 "projectPath":"./public/CYBER TYPE BATTLE/index.html"
-},
-
+}
+,
 {
   "projectNo":180,
   "projectName":"RouteMaster",
@@ -1818,5 +1818,31 @@
 "techStack":["tool","javascript","html","css","visualizer","education"],
 "difficulty":"advanced",
 "projectPath":"./public/code-execution-visualizer/index.html"
+},
+{
+  "projectNo": 183,
+  "projectName": "LeetCode Progress Tracker",
+  "projectType": "Tool",
+  "projectDesc": "Track solved LeetCode problems, coding streaks, difficulty-wise progress and coding analytics through an interactive dashboard.",
+  "techStack": ["tool","javascript","html","css","api"],
+  "difficulty": "advanced",
+  "projectPath": "./public/leetcode-progress-tracker/index.html"
+},
+{
+  "projectNo":184,
+  "projectName":"Minesweeper",
+  "projectType":"Game",
+  "projectDesc":"Classic Minesweeper game with a modern twist.",
+  "techStack":["game","html","css","javascript"],
+  "difficulty":"intermediate",
+  "projectPath":"./public/Minesweeper/index.html"
+},{
+  "projectNo":184,
+  "projectName":"GitHub Repository Analyser",
+  "projectType":"tool",
+  "projectDesc":"A modern tool to quickly analyse a github repo , provides detail stats about repo.",
+  "techStack":["tool","html","css","javascript"],
+  "difficulty":"intermediate",
+  "projectPath":"./public/github-repository-analyser/index.html"
 }
 ]
