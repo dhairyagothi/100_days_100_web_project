@@ -148,7 +148,14 @@ function getSourceUrl(url, day) {
 }
 
 function resolveProjectUrls(day, name, url, tags) {
-  const trimmed = (url || '').trim();
+  // Gracefully handle empty or malformed urls
+  let trimmed = String(url || '').trim().replace(/\\/g, '/');
+  
+  // Clean double leading slashes if absolute schema is not present
+  if (trimmed.startsWith('//') && !trimmed.startsWith('//github.com')) {
+    trimmed = '/' + trimmed.substring(2);
+  }
+  
   const sourceOnly = isSourceOnlyProject(day, tags);
   let demoUrl = trimmed;
   let sourceUrl = getSourceUrl(trimmed, day);
@@ -158,12 +165,14 @@ function resolveProjectUrls(day, name, url, tags) {
     demoUrl = sourceOnly ? trimmed : (githubTreeToLocalDemo(trimmed) || trimmed);
   }
 
-  if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith('http') && !demoUrl.startsWith('/')) {
     try {
       const isRoot = !window.location.pathname.includes('/contributors/');
       const basePrefix = isRoot ? '' : '../';
       if (demoUrl.startsWith('./')) {
         demoUrl = basePrefix + demoUrl.substring(2);
+      } else {
+        demoUrl = basePrefix + demoUrl;
       }
     } catch (error) {
     }
