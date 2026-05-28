@@ -1843,5 +1843,25 @@
     "techStack": ["tool", "html", "css", "javascript"],
     "difficulty": "advanced",
     "projectPath": "./public/canvas_multitrack_sequencer/index.html"
+  },
+
+  {
+    "projectNo": 187,
+    "projectName": "Loan EMI Calculator",
+    "projectType": "Tool",
+    "projectDesc": "Calculate monthly loan payments with detailed breakdown of EMI, total amount payable, and interest. Features toggle between months and years for loan tenure.",
+    "techStack": ["tool", "javascript"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/loan-emi-calculator/index.html"
+  },
+
+  {
+    "projectNo": 188,
+    "projectName": "Flashcard Study App",
+    "projectType": "Tool",
+    "projectDesc": "Create and study flashcards with flip animations. Features localStorage persistence, card management, and interactive learning interface.",
+    "techStack": ["tool", "javascript"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/flashcard-study-app/index.html"
   }
 ]
