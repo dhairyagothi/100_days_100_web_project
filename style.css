@@ -949,7 +949,7 @@ color: var(--text-primary);
 /* ── Project Card Grid ── */
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1px;
   background:
     linear-gradient(180deg,
@@ -1680,10 +1680,6 @@ color: var(--text-primary);
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
-  .project-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .footer-inner {
     grid-template-columns: 1fr 1fr;
   }

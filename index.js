@@ -9,8 +9,9 @@ window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
 window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
 let currentPage = 1;
-//for the number of visible projects in one page.
-let itemsPerPage = 9;
+// Increased items per page to better utilize vertical space on larger displays
+// A multiple of 2, 3, and 4 ensures clean rows across most common column counts.
+let itemsPerPage = 12;
 let projectData = [];
 let filteredProjectData = [];
 
@@ -783,10 +784,19 @@ function scrollToProjectSection() {
   const header = document.querySelector('.projects-header');
   if (!header) return;
 
+  const rect = header.getBoundingClientRect();
   const navbar = document.querySelector('.navbar');
+  const navHeight = navbar ? navbar.offsetHeight : 0;
+
+  // Check if the header is already visible within the viewport (accounting for the navbar)
+  // If it's already in view, we skip the scroll to avoid an unnecessary jumpy UX.
+  if (rect.top >= navHeight - 10 && rect.top <= window.innerHeight * 0.8) {
+    return;
+  }
+
   // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
-  const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
+  const targetY = rect.top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
 
@@ -1501,6 +1511,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   const categoryFilter = document.getElementById('category');
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener('popstate', () => restoreStateFromURL());
+});onst categoryFilter = document.getElementById('category');
   if (categoryFilter) {
     categoryFilter.addEventListener('change', () => {
       const { search } = getQueryParams();
