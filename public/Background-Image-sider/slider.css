@@ -20,8 +20,8 @@ body {
 /* ───── BACK BUTTON ───── */
 .project-back-button {
   position: fixed;
-  left: 20px;
-  top: 20px;
+  right: 5px;
+  top: 12px;
   z-index: 9999;
   padding: 10px 16px;
   border-radius: 10px;
