@@ -5,168 +5,862 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AeroStride</title>
-  <link rel="stylesheet" href="index.css">
-  <script type="module" src="index.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red: #E8282A;
+      --red-dark: #B01E20;
+      --red-light: #FF4547;
+      --black: #0A0A0A;
+       background-color: #00000080;
+      --warm-gray: #E8E4DE;
+      --mid-gray: #8A8680;
+      --card-bg: #FFFFFF;
+      --text-primary: #0A0A0A;
+      --text-secondary: #5A5550;
+    }
+
+    body {
+      background-color: var(--off-white);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 999;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+    background-color: rgba(18, 168, 192, 0.2);
+      height: 72px;
+      padding: 0 40px;
+      border-bottom: 1px solid rgba(92, 184, 190, 0.548);
+    }
+
+    .website_title {
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px;
+      letter-spacing: 2px;
+      flex-grow: 1;
+      line-height: 1;
+    }
+    .website_title span { color: var(--red); }
+
+    .button-container { display: flex; align-items: center; gap: 4px; }
+
+    .button {
+      outline: none; border: none;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background-color: transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .button:hover { background-color: rgba(255,255,255,0.08); }
+    .button img { width: 18px; filter: invert(1); opacity: 0.8; }
+
+    .box {
+      position: relative;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .cart-count {
+      position: absolute;
+      background-color: var(--red);
+      top: 0; right: 0;
+      width: 18px; height: 18px;
+      line-height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 500;
+      text-align: center;
+      color: #fff;
+      display: none;
+      z-index: 10;
+    }
+
+    #cart-icon {
+      width: 20px;
+      filter: invert(1);
+      opacity: 0.85;
+      cursor: pointer;
+    }
+
+    /* ── OVERLAY ── */
+    .cart-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(144, 56, 56, 0.4);
+      z-index: 1000;
+    }
+    .cart-overlay.active { display: block; }
+
+    /* ── SIDE CART PANEL ── */
+    /* Fixed panel: header + scrollable body + footer — no overflow on the panel itself */
+    .cart-panel {
+      position: fixed;
+      top: 0; right: -440px;
+      width: 420px;
+      height: 100vh;
+      background: #ffffff;
+      border-left: 1px solid #e0ddd8;
+      box-shadow: -12px 0 40px rgba(0,0,0,0.12);
+      z-index: 1001;
+      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .cart-panel.active { right: 0; }
+
+    /* sticky header inside panel */
+    .cart-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid #eeebe6;
+      background: #ffffff;
+    }
+
+    .cart-header-left { display: flex; align-items: center; gap: 10px; }
+
+    .cart-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 2px;
+      color: var(--black);
+    }
+
+    .cart-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: #fff;
+      background: var(--red);
+      padding: 3px 9px;
+      border-radius: 20px;
+      display: none;
+    }
+
+    #cart-close {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: #f0ede8;
+      cursor: pointer;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    #cart-close:hover { background: #e0ddd8; }
+    #cart-close img { width: 12px; opacity: 0.5; }
+
+    /* scrollable middle */
+    .cart-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 4px 24px 8px;
+      background: #ffffff;
+    }
+
+    /* empty state */
+    .cart-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 0;
+      color: var(--mid-gray);
+      font-size: 14px;
+      gap: 12px;
+      background: #ffffff;
+    }
+    .cart-empty-icon { font-size: 44px; opacity: 0.25; }
+
+    /* cart item row */
+    .cart-box {
+      display: grid;
+      grid-template-columns: 76px 1fr 32px;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eeebe6;
+      background: #ffffff;
+      animation: slideIn 0.22s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .cart-img {
+      width: 76px; height: 76px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #eeebe6;
+      background: #f8f6f3;
+    }
+
+    .detail-box { display: flex; flex-direction: column; gap: 5px; }
+
+    .cart-shoe-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: var(--black);
+      line-height: 1;
+    }
+
+    .price-box { display: flex; align-items: center; gap: 8px; }
+
+    .cart-price { font-size: 12px; color: var(--mid-gray); }
+
+    .cart-amt { font-size: 14px; font-weight: 500; color: var(--red); }
+
+    /* quantity stepper */
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #e0ddd8;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .qty-btn {
+      width: 28px; height: 28px;
+      border: none;
+      background: #f5f2ee;
+      color: var(--text-primary);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .qty-btn:hover { background: #e8e4de; }
+
+    .cart-quantity {
+      width: 36px; height: 28px;
+      border: none;
+      border-left: 1px solid #e0ddd8;
+      border-right: 1px solid #e0ddd8;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      text-align: center;
+      color: var(--text-primary);
+      outline: none;
+      background: #ffffff;
+    }
+    .cart-quantity::-webkit-outer-spin-button,
+    .cart-quantity::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    /* remove button */
+    .cart-remove {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--mid-gray);
+      transition: background 0.15s, color 0.15s;
+      align-self: center;
+    }
+    .cart-remove:hover { background: #FEE8E8; color: var(--red); }
+    .cart-remove svg {
+      width: 15px; height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* sticky footer */
+    .cart-footer {
+      flex-shrink: 0;
+      padding: 16px 24px 28px;
+      border-top: 1px solid #eeebe6;
+      background: #ffffff;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+
+    .total-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .total-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: var(--black);
+    }
+
+    .btn-buy {
+      width: 100%;
+      padding: 15px;
+      background-color: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 2.5px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-buy:hover { background-color: var(--red-dark); }
+    .btn-buy:active { transform: scale(0.98); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background-color: var(--black);
+      padding: 100px 60px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,40,42,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: 'AEROSTRIDE';
+      position: absolute;
+      bottom: -40px; left: -20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 200px;
+      color: rgba(255,255,255,0.03);
+      letter-spacing: 10px;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text { max-width: 480px; }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid rgba(196, 56, 56, 0.4);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero-text h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 7vw, 90px);
+      color: #fff;
+      line-height: 0.95;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+    }
+    .hero-text h1 span { color: var(--red); }
+
+    .hero-text p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .button1 {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      height: 52px;
+      padding: 0 28px;
+      background-color: var(--red);
+      border-radius: 52px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .button1:hover { background-color: var(--red-light); transform: translateY(-2px); }
+    .button1 img { width: 16px; filter: invert(1); }
+
+    .hero-image img {
+      width: 520px;
+      max-width: 50vw;
+      filter: drop-shadow(0 30px 60px rgba(232,40,42,0.25));
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: rotate(-8deg) translateY(-20px); }
+      50%       { transform: rotate(-6deg) translateY(-40px); }
+    }
+
+    /* ── TRENDING ── */
+    .trending-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 60px 60px 0;
+      max-width: 1260px;
+      margin: 0 auto;
+    }
+    .trending-line { flex: 1; height: 1px; background: var(--warm-gray); }
+    .trending-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 4px;
+      color: var(--mid-black);
+      white-space: nowrap;
+    }
+
+    /* ── SHOE GRID ── */
+    .container { max-width: 1260px; padding: 40px 60px 80px; margin: 0 auto; }
+
+    .shop-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .shoe-box {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--warm-gray);
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+    }
+    .shoe-box:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.10); }
+
+    .pic { overflow: hidden; background-color: var(--off-white); aspect-ratio: 1/1; }
+    .pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .shoe-box:hover .pic img { transform: scale(1.08); }
+
+    .shoe-info { padding: 14px 16px 60px; }
+
+    .shoe-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .shoe-price { font-size: 14px; color: var(--text-secondary); font-weight: 300; }
+
+    .add-cart {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      width: 100%;
+      background-color: var(--white);
+      border: none;
+      padding: 12px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .add-cart:hover { background-color: blueviolet; }
+    .add-cart img { width: 18px; filter: invert(1); }
+
+    .remove_icon { display: none; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background-color: var(--black);
+      color: #ccc;
+      padding: 60px 60px 30px;
+    }
+
+    .container1 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+    }
+
+    .footer-about, .footer-links, .footer-contact { flex: 1; min-width: 200px; }
+
+    .footer-about h3, .footer-links h3, .footer-contact h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .footer-about p, .footer-contact p { font-size: 14px; line-height: 1.8; font-weight: 400; color: #ccc; }
+
+    .footer-links ul { list-style: none; }
+    .footer-links ul li { margin-bottom: 10px; }
+    .footer-links ul li a {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    .footer-links ul li a:hover { color: var(--red); }
+
+    .footer-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      max-width: 1200px;
+      margin: 0 auto 24px;
+    }
+
+    .copyright_part {
+      display: flex;
+      justify-content: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { padding: 100px 24px 60px; }
+      .hero-content { flex-direction: column; gap: 40px; }
+      .hero-image img { max-width: 80vw; animation: none; transform: none; }
+      .trending-section, .container { padding-left: 24px; padding-right: 24px; }
+      .site-footer { padding: 40px 24px 24px; }
+      .navbar { padding: 0 20px; }
+      .cart-panel { width: 100%; right: -100%; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Nav bar and the cart window-->
+  <!-- Navbar -->
   <header>
     <div class="navbar">
-      <div class="website_title">AeroStride</div>
+      <div class="website_title">Aero<span>Stride</span></div>
       <div class="button-container">
-        <button class="button">
-          <img src="images_used/home_icon.png" width="17px"/>
-        </button>
-        <button class="button">
-          <img src="images_used/search_icon.png" width="17px"/>
-        </button>
-        <button class="button">
-          <img src="images_used/profile_icon.png" width="19px"/>
-        </button>
-        <div class="box">
+        <button class="button"><img src="images_used/home_icon.png"/></button>
+        <button class="button"><img src="images_used/search_icon.png"/></button>
+        <button class="button"><img src="images_used/profile_icon.png"/></button>
+        <div class="box" id="open-cart">
           <div class="cart-count">0</div>
-          <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
+          <img src="images_used/cart_icon.png" id="cart-icon"/>
         </div>
       </div>
     </div>
+  </header>  
 
-    <div class="nav">
-      <div class="cart">
-        <div class="cart-title">Cart Items</div>
-        <div class="cart-content">
-          <!-- Cart items will be dynamically inserted here -->
-        </div>
-        <div class="total">
-          <div class="total-title">Total</div>
-          <div class="total-price">Rs.0</div>
-        </div>
-        <button class="btn-buy">Place Order</button>
-        <img src="images_used/cross.png" name="close" id="cart-close"/>
+  <!-- Overlay (dims page when cart is open) -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+
+  <!-- Cart panel — lives outside header so z-index stacking is clean -->
+  <div class="cart-panel" id="cart-panel">
+    <!-- sticky header -->
+    <div class="cart-header">
+      <div class="cart-header-left">
+        <span class="cart-title">Your Cart</span>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </div>
+      <div id="cart-close">
+        <img src="images_used/cross.png"/>
       </div>
     </div>
-  </header>
 
+    <!-- scrollable items -->
+    <div class="cart-body" id="cart-body">
+      <div class="cart-empty" id="cart-empty">
+        <span class="cart-empty-icon">🛒</span>
+        <span>Your cart is empty</span>
+      </div>
+    </div>
 
-  <!-- hero section of the website-->
+    <!-- sticky footer -->
+    <div class="cart-footer">
+      <div class="total">
+        <span class="total-title">Total</span>
+        <span class="total-price" id="total-price">Rs.0</span>
+      </div>
+      <button class="btn-buy">Place Order</button>
+    </div>
+  </div>
+
+  <!-- Hero -->
   <div class="hero" id="hero">
     <div class="hero-content">
       <div class="hero-text">
-        <h1>Exclusive Collections 2024</h1>
-        <p>Discover our latest range of stylish and comfortable footwear, designed for every occasion.</p>
+        <div class="hero-eyebrow">Exclusive Collection 2024</div>
+        <h1>Step Into <span>Legend</span></h1>
+        <p>Footwear designed for those who move with purpose. High-performance silhouettes built for every occasion.</p>
         <a class="button1" href="#trending-section">
-          Shop now
+          Shop Now
           <img src="images_used/cart_icon.png"/>
         </a>
       </div>
       <div class="hero-image">
-        <img src="images_used/hero_shoe.png" alt="Shoe" width="70%">
+        <img src="images_used/hero_shoe.png" alt="AeroStride Hero Shoe">
       </div>
     </div>
   </div>
 
-  <!-- Trending Right Now section-->
+  <!-- Trending -->
   <div class="trending-section" id="trending-section">
     <div class="trending-line"></div>
-    <div class="trending-text">
-        <span>Trending Right Now</span>
-    </div>
+    <div class="trending-text">Trending Right Now</div>
     <div class="trending-line"></div>
-</div>
+  </div>
 
-  <!--Shoe cards (contains same code repeated 8 times)-->
+  <!-- Shoe Grid -->
   <div class="container">
     <div class="shop-content">
+
       <div class="shoe-box">
         <div class="pic"><img src="images_used/messi shoes 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">GOAT</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        <div class="shoe-info"><h2 class="shoe-title">GOAT</h2><span class="shoe-price">Rs.5000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
+
       <div class="shoe-box">
         <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">CR7</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        <div class="shoe-info"><h2 class="shoe-title">CR7</h2><span class="shoe-price">Rs.3000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
+
       <div class="shoe-box">
         <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">The Greek Freak</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        <div class="shoe-info"><h2 class="shoe-title">The Greek Freak</h2><span class="shoe-price">Rs.2500</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
+
       <div class="shoe-box">
         <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Sewy</h2>
-        <span class="shoe-price">Rs.1500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        <div class="shoe-info"><h2 class="shoe-title">Sewy</h2><span class="shoe-price">Rs.1500</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
+
       <div class="shoe-box">
         <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Black Mamba</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        <div class="shoe-info"><h2 class="shoe-title">Black Mamba</h2><span class="shoe-price">Rs.3000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
+
       <div class="shoe-box">
         <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Jordan X</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        <div class="shoe-info"><h2 class="shoe-title">Jordan X</h2><span class="shoe-price">Rs.2500</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
+
       <div class="shoe-box">
         <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
-        <h2 class="shoe-title">KING</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        <div class="shoe-info"><h2 class="shoe-title">KING</h2><span class="shoe-price">Rs.5000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
+
       <div class="shoe-box">
         <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Mr.360</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+        <div class="shoe-info"><h2 class="shoe-title">Mr.360</h2><span class="shoe-price">Rs.5000</span></div>
+        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
+
     </div>
   </div>
 
-  <!--footer section of the website-->
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container1">
       <div class="footer-about">
         <h3>About Us</h3>
-        <p style="margin-top:15px;">At AeroStride, we blend innovative design with exceptional comfort
-          to create stylish, high-performance footwear. Our mission is to 
-          support your every step with shoes that fit seamlessly into your 
-          dynamic lifestyle. Discover the perfect balance of style and 
-          functionality with AeroStride.
-        </p>
+        <p>At AeroStride, we blend innovative design with exceptional comfort to create stylish, high-performance footwear. Our mission is to support your every step with shoes that fit seamlessly into your dynamic lifestyle.</p>
       </div>
       <div class="footer-links">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="#hero" style="margin-left:15px;font-size:18px;">Home</a></li>
-          <li><a href="#trending-section" style="margin-left:15px;font-size:18px;">Shoes</a></li>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#trending-section">Shoes</a></li>
         </ul>
       </div>
-      <div class="footer-contact" id="footer">
+      <div class="footer-contact">
         <h3>Contact Us</h3>
-        <p style="margin-top:15px;">Email: info@example.com</p>
+        <p>Email: info@aerostride.com</p>
         <p>Phone: +123 456 7890</p>
       </div>
     </div>
-    <div class="copyright_part"><span style="margin-right:10px;">&copy;</span>AeroStride 2024</div>
+    <div class="footer-divider"></div>
+    <div class="copyright_part">&copy; AeroStride 2024</div>
   </footer>
 
-  
+  <script>
+    /* ── Elements ── */
+    const cartPanel   = document.getElementById('cart-panel');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartBody    = document.getElementById('cart-body');
+    const cartEmpty   = document.getElementById('cart-empty');
+    const cartBadge   = document.getElementById('cart-badge');
+    const cartCount   = document.querySelector('.cart-count');
+    const totalPrice  = document.getElementById('total-price');
 
-  <script src="js/script.js"></script>
+    /* ── Open / Close ── */
+    function openCart()  { cartPanel.classList.add('active'); cartOverlay.classList.add('active'); }
+    function closeCart() { cartPanel.classList.remove('active'); cartOverlay.classList.remove('active'); }
+
+    document.getElementById('open-cart').addEventListener('click', openCart);
+    document.getElementById('cart-close').addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    /* ── State ── */
+    let itemList = [];
+
+    /* ── Add to cart ── */
+    document.querySelectorAll('.add-cart').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const box   = this.closest('.shoe-box');
+        const title = box.querySelector('.shoe-title').textContent;
+        const price = box.querySelector('.shoe-price').textContent;
+        const img   = box.querySelector('.shoe-img').src;
+
+        if (itemList.find(i => i.title === title)) {
+          alert('Already in cart!');
+          return;
+        }
+
+        itemList.push({ title, price, img });
+
+        const row = document.createElement('div');
+        row.className = 'cart-box';
+        row.dataset.title = title;
+        row.innerHTML = cartRowHTML(title, price, img);
+        cartBody.appendChild(row);
+
+        bindRow(row);
+        updateUI();
+        openCart();
+      });
+    });
+
+    /* ── Row template ── */
+    function cartRowHTML(title, price, img) {
+      return `
+        <img src="${img}" class="cart-img">
+        <div class="detail-box">
+          <div class="cart-shoe-title">${title}</div>
+          <div class="price-box">
+            <span class="cart-price">${price}</span>
+            <span class="cart-amt">${price}</span>
+          </div>
+          <div class="qty-stepper">
+            <button class="qty-btn qty-down">−</button>
+            <input type="number" class="cart-quantity" value="1" min="1">
+            <button class="qty-btn qty-up">+</button>
+          </div>
+        </div>
+        <button class="cart-remove" title="Remove">
+          <svg viewBox="0 0 24 24">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14H6L5 6"/>
+            <path d="M10 11v6M14 11v6"/>
+            <path d="M9 6V4h6v2"/>
+          </svg>
+        </button>`;
+    }
+
+    /* ── Bind events on a row ── */
+    function bindRow(row) {
+      const qtyInput = row.querySelector('.cart-quantity');
+
+      row.querySelector('.qty-down').addEventListener('click', () => {
+        let v = parseInt(qtyInput.value) || 1;
+        if (v > 1) { qtyInput.value = v - 1; updateUI(); }
+      });
+
+      row.querySelector('.qty-up').addEventListener('click', () => {
+        qtyInput.value = (parseInt(qtyInput.value) || 1) + 1;
+        updateUI();
+      });
+
+      qtyInput.addEventListener('change', () => {
+        if (!qtyInput.value || qtyInput.value < 1) qtyInput.value = 1;
+        updateUI();
+      });
+
+      row.querySelector('.cart-remove').addEventListener('click', () => {
+        const title = row.dataset.title;
+        itemList = itemList.filter(i => i.title !== title);
+        row.remove();
+        updateUI();
+      });
+    }
+
+    /* ── Recalculate totals & badges ── */
+    function updateUI() {
+      let total = 0;
+      document.querySelectorAll('.cart-box').forEach(row => {
+        const priceStr = row.querySelector('.cart-price').textContent.replace('Rs.', '');
+        const price    = parseFloat(priceStr);
+        const qty      = parseInt(row.querySelector('.cart-quantity').value) || 1;
+        const sub      = price * qty;
+        row.querySelector('.cart-amt').textContent = 'Rs.' + sub;
+        total += sub;
+      });
+
+      totalPrice.textContent = 'Rs.' + total;
+
+      const count = itemList.length;
+      cartCount.textContent  = count;
+      cartCount.style.display = count ? 'block' : 'none';
+      cartBadge.textContent   = count;
+      cartBadge.style.display = count ? 'inline-block' : 'none';
+      cartEmpty.style.display = count ? 'none' : 'flex';
+    }
+  </script>
 </body>
 </html>

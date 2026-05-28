@@ -1,130 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aura — Music Player</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pulse Music</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;color:black ;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-  <!-- Aurora background layers -->
-  <div class="aurora">
-    <div class="aurora__layer aurora__layer--1"></div>
-    <div class="aurora__layer aurora__layer--2"></div>
-    <div class="aurora__layer aurora__layer--3"></div>
-  </div>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Music categories">
+            <a class="brand" href="#" aria-label="Pulse Music home">
+                <span class="brand-mark">P</span>
+                <span>
+                    <strong>Pulse</strong>
+                    <small>Music App</small>
+                </span>
+            </a>
 
-  <div class="app">
+            <nav class="category-nav" id="categoryNav" aria-label="Browse by category"></nav>
+        </aside>
 
-    <!-- ── LEFT PANEL ── -->
-    <div class="panel panel--player">
+        <main class="main-view">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Now streaming</p>
+                    <h1>Discover your next favorite track</h1>
+                </div>
 
-      <!-- Top bar -->
-      <div class="panel__topbar">
-        <span class="logo">◈ aura</span>
-        <button id="likeBtn" class="icon-btn" title="Like">
-          <i class="far fa-heart"></i>
-        </button>
-      </div>
+                <div class="topbar-actions">
+                    <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme">Light</button>
+                    <label class="search-box" for="searchInput">
+                        <span aria-hidden="true">Search</span>
+                        <input id="searchInput" type="search" placeholder="Song, artist, album..." autocomplete="off" />
+                    </label>
+                </div>
+            </header>
 
-      <!-- Cover art -->
-      <div class="cover-wrap" id="coverWrap">
-        <img id="cover" src="https://via.placeholder.com/400/1a1a2e/0fd5ca?text=♫" alt="Album Art" />
-        <div class="cover-ring cover-ring--outer"></div>
-        <div class="cover-ring cover-ring--inner"></div>
-        <!-- Equalizer bars (visible while playing) -->
-        <div class="eq" id="eq">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
-      </div>
+            <section class="hero-player" aria-label="Featured track">
+                <div class="hero-copy">
+                    <p class="eyebrow" id="heroCategory">Trending</p>
+                    <h2 id="heroTitle">Select a track</h2>
+                    <p id="heroMeta">Choose any song from the library to start listening.</p>
+                </div>
+                <img id="heroCover" class="hero-cover" src="" alt="" />
+            </section>
 
-      <!-- Track info -->
-      <div class="track-info">
-        <h2 id="title" class="track-title">Loading…</h2>
-        <p id="artist" class="track-artist">Artist</p>
-      </div>
+            <section class="library-section" aria-label="Song library">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow" id="libraryLabel">All songs</p>
+                        <h2>Library</h2>
+                    </div>
+                    <p id="resultCount">0 songs</p>
+                </div>
 
-      <!-- Progress bar -->
-      <div class="progress-wrap" id="progressContainer">
-        <div class="progress-track">
-          <div class="progress-fill" id="progress"></div>
-          <div class="progress-thumb" id="progressThumb"></div>
-        </div>
-      </div>
-      <div class="time-row">
-        <span id="currentTime">0:00</span>
-        <span id="duration">0:00</span>
-      </div>
+                <div class="song-grid" id="songGrid"></div>
+                <p class="empty-state" id="emptyState">No songs match your search.</p>
+            </section>
+        </main>
 
-      <!-- Controls -->
-      <div class="controls">
-        <button class="ctrl-btn ctrl-btn--sm" id="prev" title="Previous">
-          <i class="fas fa-backward-step"></i>
-        </button>
-        <button class="ctrl-btn ctrl-btn--lg" id="play" title="Play/Pause">
-          <i class="fas fa-play"></i>
-        </button>
-        <button class="ctrl-btn ctrl-btn--sm" id="next" title="Next">
-          <i class="fas fa-forward-step"></i>
-        </button>
-      </div>
+        <footer class="player-bar" aria-label="Music player">
+            <div class="track-summary">
+                <img id="playerCover" src="" alt="" />
+                <div>
+                    <strong id="playerTitle">Nothing playing</strong>
+                    <span id="playerArtist">Pick a track to begin</span>
+                </div>
+                <button class="like-button player-like" id="playerLikeBtn" type="button" aria-label="Like current song">♡</button>
+            </div>
 
-      <!-- Volume -->
-      <div class="volume-row">
-        <i class="fas fa-volume-low vol-icon"></i>
-        <div class="slider-track">
-          <input type="range" id="volume" min="0" max="1" step="0.01" value="1" />
-        </div>
-        <i class="fas fa-volume-high vol-icon"></i>
-      </div>
+            <div class="player-center">
+                <div class="controls">
+                    <button class="icon-button mode-button" id="shuffleBtn" type="button" aria-label="Turn shuffle on">Shuffle</button>
+                    <button class="icon-button" id="prevBtn" type="button" aria-label="Previous song">Prev</button>
+                    <button class="play-button" id="playBtn" type="button" aria-label="Play song">Play</button>
+                    <button class="icon-button" id="nextBtn" type="button" aria-label="Next song">Next</button>
+                    <button class="icon-button mode-button" id="repeatBtn" type="button" aria-label="Turn repeat on">Repeat</button>
+                </div>
 
-    </div><!-- /panel--player -->
+                <div class="timeline">
+                    <span id="currentTime">0:00</span>
+                    <input id="progressInput" type="range" min="0" max="100" value="0" step="0.1" aria-label="Song progress" />
+                    <span id="durationTime">0:00</span>
+                </div>
+            </div>
 
-    <!-- ── RIGHT PANEL ── -->
-    <div class="panel panel--side">
+            <div class="volume-control">
+                <button class="icon-button" id="muteBtn" type="button" aria-label="Mute volume">Vol</button>
+                <input id="volumeInput" type="range" min="0" max="1" value="0.8" step="0.01" aria-label="Volume" />
+            </div>
+        </footer>
+    </div>
 
-      <!-- Search -->
-      <div class="search-row">
-        <div class="search-input-wrap">
-          <i class="fas fa-magnifying-glass search-icon"></i>
-          <input type="text" id="searchInput" placeholder="Search on Audius…" />
-        </div>
-        <button id="searchBtn" class="search-submit">Go</button>
-      </div>
-
-      <!-- Tabs -->
-      <div class="tabs">
-        <button class="tab tab--active" data-tab="playlist">Playlist</button>
-        <button class="tab" data-tab="lyrics">Lyrics</button>
-      </div>
-
-      <!-- Playlist -->
-      <div class="tab-panel tab-panel--active" id="tab-playlist">
-        <div class="playlist" id="playlist">
-          <div class="loading-state">
-            <div class="spinner"></div>
-            <p>Fetching tracks…</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lyrics -->
-      <div class="tab-panel" id="tab-lyrics">
-        <div class="lyrics-box" id="lyricsBox">Lyrics will appear here…</div>
-      </div>
-
-    </div><!-- /panel--side -->
-
-  </div><!-- /app -->
-
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
-
-  <script src="script.js"></script>
+    <audio id="audioPlayer" preload="metadata"></audio>
+    <script src="script.js"></script>
 </body>
+
 </html>

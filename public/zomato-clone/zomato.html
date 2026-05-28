@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -21,6 +21,8 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
   <header>
     <nav>
       <div class="user-icon">
@@ -61,9 +63,16 @@
         <div class="search_container">
           <div class="location">
             <i data-feather="map-pin"></i>
-            <input placeholder="Ywca, 1, Ashoka Rd, Hanuman Road Area, Connaught Place, New Delhi, Delhi"
+            <input placeholder="Enter Location"
               class="location-input" />
-            <i class="fa fa-chevron-down"></i>
+            <i class="fa fa-chevron-down dropdown-toggle"></i>
+            <div class="location-dropdown hidden">
+              <!-- <div class="dropdown-item">Delhi NCR</div>
+              <div class="dropdown-item">Mumbai</div>
+              <div class="dropdown-item">Kolkata</div>
+              <div class="dropdown-item">Bangalore</div>
+              <div class="dropdown-item">Chennai</div> -->
+            </div>
           </div>
           <div class="line"></div>
           <div class="search">
