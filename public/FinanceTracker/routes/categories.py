@@ -97,12 +97,11 @@ def update_category(cat_id):
 def delete_category(cat_id):
     """Delete a category by ID."""
     try:
+        import data_store
         original_len = len(CATEGORIES)
-        new_list = [c for c in CATEGORIES if c["id"] != cat_id]
-        if len(new_list) == original_len:
+        data_store.CATEGORIES = [c for c in CATEGORIES if c["id"] != cat_id]
+        if len(data_store.CATEGORIES) == original_len:
             return jsonify({"success": False, "error": "Category not found"}), 404
-        CATEGORIES.clear()
-        CATEGORIES.extend(new_list)
         return jsonify({"success": True})
 
     except Exception as e:

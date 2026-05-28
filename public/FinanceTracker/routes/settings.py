@@ -3,7 +3,7 @@ routes/settings.py — Settings and data management routes
 """
 
 from flask import Blueprint, request, jsonify
-from data_store import SETTINGS, TRANSACTIONS, BUDGETS
+from data_store import SETTINGS
 
 settings_bp = Blueprint("settings", __name__)
 
@@ -44,8 +44,9 @@ def reset_data():
     Categories and settings are preserved.
     """
     try:
-        TRANSACTIONS.clear()
-        BUDGETS.clear()
+        import data_store
+        data_store.TRANSACTIONS = []
+        data_store.BUDGETS = []
         return jsonify({"success": True})
 
     except Exception as e:

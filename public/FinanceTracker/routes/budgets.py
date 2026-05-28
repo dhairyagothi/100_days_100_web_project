@@ -89,12 +89,11 @@ def add_budget():
 def delete_budget(budget_id):
     """Delete a budget by ID."""
     try:
+        import data_store
         original_len = len(BUDGETS)
-        new_list = [b for b in BUDGETS if b["id"] != budget_id]
-        if len(new_list) == original_len:
+        data_store.BUDGETS = [b for b in BUDGETS if b["id"] != budget_id]
+        if len(data_store.BUDGETS) == original_len:
             return jsonify({"success": False, "error": "Budget not found"}), 404
-        BUDGETS.clear()
-        BUDGETS.extend(new_list)
         return jsonify({"success": True})
 
     except Exception as e:

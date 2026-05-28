@@ -6,12 +6,15 @@
   --text-secondary: #555555;
   --border-color: #d0d0d0;
 
-  --sidebar-bg: #ffffff;
-  --sidebar-text: #000000;
-  --sidebar-hover: rgba(0, 0, 0, 0.06);
-  --sidebar-active: rgba(0, 0, 0, 0.06);
+--sidebar-bg: #ffffff;
+--sidebar-text: #000000;
+--sidebar-hover: rgba(0, 0, 0, 0.06);
+--sidebar-active: rgba(0, 0, 0, 0.06);
+--accent-color: #000000;
+
 
   --income-color: #16da04;
+
   --income-bg: rgba(0, 0, 0, 0.07);
   --expense-color: #e40808;
   --expense-bg: rgba(0, 0, 0, 0.07);
@@ -77,10 +80,11 @@ body {
 }
 
 /* Text selection */
-::selection {
+/*::selection {
   background-color: var(--text-primary);
   color: var(--bg-primary);
 }
+  */
 
 
 /* ============ APP LAYOUT (CSS GRID) ============ */
@@ -122,11 +126,15 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Logo */
+/* Logo with gradient text effect */
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
+  background:none;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--sidebar-text);
   color: var(--sidebar-text);
+  background-clip: text;
 }
 
 /* Sidebar toggle button (visible on mobile only) */
@@ -181,8 +189,17 @@ body {
   color: var(--sidebar-text);
 }
 
-/* Active link left accent bar — hidden by default */
+/* Subtle glow on active link */
 .nav-link.active::before {
+ /* content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent-color);
+  box-shadow: 0 0 12px var(--accent-color);
+  */
   display: none;
 }
 
