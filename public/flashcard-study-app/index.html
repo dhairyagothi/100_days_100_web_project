@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Study App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="../../index.html" class="back-button">← Back to Home</a>
+    
+    <div class="container">
+        <header class="header">
+            <h1>📚 Flashcard Study App</h1>
+            <p class="subtitle">Create, study, and master your flashcards</p>
+            <div class="card-count">
+                Total Cards: <span id="cardCount">0</span>
+            </div>
+        </header>
+
+        <div class="add-card-section">
+            <h2>Add New Flashcard</h2>
+            <form id="flashcardForm">
+                <div class="form-group">
+                    <label for="question">Question</label>
+                    <textarea 
+                        id="question" 
+                        placeholder="Enter your question here..."
+                        rows="3"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="answer">Answer</label>
+                    <textarea 
+                        id="answer" 
+                        placeholder="Enter the answer here..."
+                        rows="3"
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <span>+ Add Flashcard</span>
+                </button>
+            </form>
+        </div>
+
+        <div class="cards-section">
+            <div class="section-header">
+                <h2>Your Flashcards</h2>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">📝</div>
+                <h3>No flashcards yet</h3>
+                <p>Create your first flashcard to start studying!</p>
+            </div>
+
+            <div id="cardsContainer" class="cards-container"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
