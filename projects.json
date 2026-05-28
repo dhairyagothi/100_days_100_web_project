@@ -1790,6 +1790,16 @@
 "techStack":["game","html","css","javascript"],
 "difficulty":"intermediate",
 "projectPath":"./public/CYBER TYPE BATTLE/index.html"
+},
+
+{
+  "projectNo": 179,
+  "projectName": "NovaAI - Virtual Startup Pitch Website",
+  "projectType": "Website",
+  "projectDesc": "Futuristic AI startup pitch website with modern UI/UX, animated sections, custom cursor effects, startup metrics, funding showcase, and interactive storytelling.",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/NovaAI/NovaAI.html"
 }
 
 ]
