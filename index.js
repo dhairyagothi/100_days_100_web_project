@@ -236,7 +236,7 @@ getProjectDescription(project);
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                 </button>
             </div>
@@ -278,9 +278,8 @@ function normalizeTech(tech) {
 }
 
 /**
- * Check if project matches the active tech stack filters.
- * Each filter must match a complete tag token, not a substring of another tag.
- * Example: searching "java" must not return projects tagged "javascript".
+ * Check if project matches the active tech stack filters
+ * EFFICIENT APPROACH: Direct string matching without complex transformations
  * @param {string|array} projectTags - Project tags (space-separated string or array)
  * @returns {boolean} True if project matches all active filters
  */
@@ -291,17 +290,12 @@ function matchesTechStack(projectTags) {
   // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Normalize to a set of individual lowercase tokens for whole-word matching.
-  // Using a Set avoids repeated linear scans for each filter.
-  const tagSet = new Set(
-    (Array.isArray(projectTags) ? projectTags : String(projectTags).split(/\s+/))
-      .map((t) => t.toLowerCase().trim())
-      .filter(Boolean)
-  );
+  // Convert to single lowercase string for efficient matching
+  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
 
-  // Every active filter must match an exact token in the tag set (AND logic).
-  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
-  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
+  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
+  // Uses simple includes() - O(n*m) where n=filters, m=tag length
+  return techStackFilters.every(filter => tagsLower.includes(filter));
 }
 
 
@@ -390,15 +384,8 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
-let bookmarkedProjects = [];
-let recentProjects = [];
-
-try {
-  bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-  recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
-} catch (error) {
-  console.warn('localStorage is not available or access is denied:', error.message);
-}
+let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
+let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -550,61 +537,10 @@ let sortOption = 'default';
 let techStackFilter = 'all';
 let difficultyFilter = 'all';
 
-function syncStateToURL() {
-  const url = new URL(window.location);
-  
-  if (searchQuery) {
-    url.searchParams.set('search', searchQuery);
-  } else {
-    url.searchParams.delete('search');
-  }
-
-  if (activeFilter && activeFilter !== 'all') {
-    url.searchParams.set('category', activeFilter);
-  } else {
-    url.searchParams.delete('category');
-  }
-
-  if (currentPage > 1) {
-    url.searchParams.set('page', currentPage);
-  } else {
-    url.searchParams.delete('page');
-  }
-
-  window.history.replaceState({}, '', url);
-}
-
-function readStateFromURL() {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  if (urlParams.has('search')) {
-    searchQuery = urlParams.get('search');
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-      searchInput.value = searchQuery;
-    }
-  }
-  
-  if (urlParams.has('category')) {
-    activeFilter = urlParams.get('category');
-  }
-  
-  if (urlParams.has('page')) {
-    const page = parseInt(urlParams.get('page'), 10);
-    if (!isNaN(page) && page > 0) {
-      currentPage = page;
-    }
-  }
-}
-
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
-
-  if (typeof updateClearFiltersBtnVisibility === 'function') {
-    updateClearFiltersBtnVisibility();
-  }
 
   const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
@@ -698,8 +634,6 @@ function renderGrid() {
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
-  
-  syncStateToURL();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -860,11 +794,7 @@ function toggleBookmark(project) {
     showToast('Project bookmarked');
   }
 
-  try {
-    localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
-  } catch (error) {
-    console.warn('Could not save bookmark due to localStorage restrictions');
-  }
+  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
@@ -911,16 +841,12 @@ function trackRecentProject(project) {
   // Add to front
   recentProjects.unshift(projectObj);
 
-  // Keep only the 20 most recent entries (not filtered by time yet)
-  if (recentProjects.length > 20) {
+  // Keep only a rigid maximum limit of 4 entries
+  if (recentProjects.length > 4) {
     recentProjects.pop();
   }
 
-  try {
-    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
-  } catch (error) {
-    console.warn('Could not save recent projects due to localStorage restrictions');
-  }
+  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
   renderRecentProjects();
 }
 
@@ -946,6 +872,7 @@ function renderBookmarks() {
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1002,8 +929,8 @@ function renderRecentProjects() {
       url,
       tags,
       category,
-      isBookmarked,
-      showDescription: true,
+      isBookmarked: isBookmarked,
+      showDescription: false,
     });
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
@@ -1074,99 +1001,41 @@ function showToast(message) {
   }, 3000);
 }
 
-document.addEventListener('click', (e) => {
-  const bookmarkBtn = e.target.closest('.bookmark-btn');
-  if (!bookmarkBtn) return;
-
-  e.preventDefault();
-  const projectDay = bookmarkBtn.dataset.id;
-  const project = PROJECTS.find((item) => item[0] === projectDay);
-  if (!project) return;
-
-  toggleBookmark(project);
-});
-
-document.addEventListener('click', (e) => {
-  const projectLink = e.target.closest('.open-project');
-  if (!projectLink) return;
-
-  const projectDay = projectLink.dataset.id;
-  const project = PROJECTS.find((item) => item[0] === projectDay);
-  if (!project) return;
-
-  trackRecentProject(project);
-});
 
 /* ============================================================
-   CLEAR ALL FILTERS SYSTEM
+   CLICK EVENT DELEGATION SYSTEM
    ============================================================ */
-function updateClearFiltersBtnVisibility() {
-  const btn = document.getElementById('clearAllFiltersBtn');
-  if (!btn) return;
-
-  const input = document.getElementById('searchInput');
-  const techStack = document.getElementById('techStackFilter');
-  const difficultyElement = document.getElementById('difficultyFilter');
-
-  const hasSearch = input && input.value.trim() !== '';
-  const hasTech = techStack && techStack.value !== 'all';
-  const hasDiff = difficultyElement && difficultyElement.value !== 'all';
-  const hasCategory = activeFilter && activeFilter !== 'all';
-
-  if (hasSearch || hasTech || hasDiff || hasCategory) {
-    btn.style.display = 'inline-flex';
-  } else {
-    btn.style.display = 'none';
-  }
-}
-
-function resetAllFilters() {
-  // 1. Reset Category filter chips
-  const chips = document.querySelectorAll('.chip[data-filter]');
-  chips.forEach((c) => c.classList.remove('active'));
-  const allChip = document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
-  if (allChip) allChip.classList.add('active');
-  activeFilter = 'all';
-
-  // 2. Clear Search input
-  const input = document.getElementById('searchInput');
-  if (input) input.value = '';
-  searchQuery = '';
-
-  // 3. Reset Tech Stack dropdown select
-  const techStack = document.getElementById('techStackFilter');
-  if (techStack) techStack.value = 'all';
-  techStackFilter = 'all';
-
-  // 4. Reset Difficulty dropdown select
-  const difficultyElement = document.getElementById('difficultyFilter');
-  if (difficultyElement) difficultyElement.value = 'all';
-  difficultyFilter = 'all';
-
-  // 5. Reset Sorting to default
-  const sortSelect = document.getElementById('sortProjects');
-  if (sortSelect) sortSelect.value = 'default';
-  sortOption = 'default';
-
-  // 6. Sync URL
-  if (typeof updateURL === 'function') {
-    updateURL('', 'all');
+document.addEventListener('click', (e) => {
+  // 1. Handle Bookmark Button Clicking Securely
+  const bookmarkBtn = e.target.closest('.bookmark-btn');
+  if (bookmarkBtn) {
+    e.preventDefault();
+    e.stopPropagation(); // Stops parent card interaction from firing simultaneously
+    
+    const projectDay = bookmarkBtn.dataset.id;
+    // Cross-reference lookup directly with the synchronized PROJECTS array
+    const project = PROJECTS.find((item) => item[0] === projectDay);
+    
+    if (project) {
+      toggleBookmark(project);
+    } else {
+      console.warn(`Could not find project matching ID: ${projectDay}`);
+    }
+    return;
   }
 
-  // 7. Refresh grid and pagination
-  currentPage = 1;
-  renderGrid();
-  syncProjectCounts();
-
-  showToast('Filters cleared!');
-}
-
-function initClearAllFilters() {
-  const btn = document.getElementById('clearAllFiltersBtn');
-  if (btn) {
-    btn.addEventListener('click', resetAllFilters);
+  // 2. Handle Demo Link Action Tracking Securely
+  const projectLink = e.target.closest('.open-project');
+  if (projectLink) {
+    const projectDay = projectLink.dataset.id;
+    const project = PROJECTS.find((item) => item[0] === projectDay);
+    
+    if (project) {
+      trackRecentProject(project);
+    }
   }
-}
+});
+
 
 /* ============================================================
    FILTER CHIPS
@@ -1174,11 +1043,6 @@ function initClearAllFilters() {
 function initFilterChips() {
   const chips = document.querySelectorAll('.chip[data-filter]');
   chips.forEach((chip) => {
-    if (chip.dataset.filter === activeFilter) {
-      chips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
-    }
-
     chip.addEventListener('click', () => {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
@@ -1258,20 +1122,24 @@ function initTechStackSearch() {
 
   if (!input) return;
 
-  // Use the shared debounce utility instead of a manual inline timer
-  input.addEventListener('input', debounce((e) => {
-    const value = e.target.value.trim().toLowerCase();
+  let debounceTimer;
 
-    if (value) {
-      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-      techStackFilters = [...new Set(techs)];
-      updateTechFilterDisplay();
-      currentPage = 1;
-      renderGrid();
-    } else {
-      clearAllTechFilters();
-    }
-  }, 300));
+  input.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const value = e.target.value.trim().toLowerCase();
+
+      if (value) {
+        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+        techStackFilters = [...new Set(techs)];
+        updateTechFilterDisplay();
+        currentPage = 1;
+        renderGrid();
+      } else {
+        clearAllTechFilters();
+      }
+    }, 300);
+  });
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -1377,7 +1245,8 @@ syncProjectCounts();
 function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
-  const username = window.username || localStorage.getItem('loggedInUser') || null;   // Read logged-in user from localStorage so navbar consists of logged in user when page reloads
+
+  const username = window.username || null;
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
   const isLight = document.body.classList.contains('light-mode');
@@ -1403,11 +1272,10 @@ function updateNavbar() {
             </a>
             ${otherLink}
         `;
-      document.getElementById('logoutBtn').addEventListener('click', () => {
+    document.getElementById('logoutBtn').addEventListener('click', () => {
       window.username = null;
-      localStorage.removeItem('loggedInUser');  // cleared logged in info on logout
       updateNavbar();
-      });
+    });
   } else {
     container.innerHTML = `
             ${themeButton}
@@ -1415,11 +1283,8 @@ function updateNavbar() {
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-          <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-           <div class="auth-buttons">
-           <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
-           <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
-          </div>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
         `;
   }
 }
@@ -1489,9 +1354,6 @@ function initScrollBtn() {
       
       if (footerRect.top < windowHeight) {
         const overlap = windowHeight - footerRect.top;
-        // Cap the upward movement to a maximum of 120px.
-        // This ensures it dodges the important bottom footer links but 
-        // doesn't fly completely off the top of the screen when the footer is huge.
         const maxOverlap = Math.min(overlap, 120);
         btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
       } else {
@@ -1522,8 +1384,6 @@ function hasProjectGrid() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  readStateFromURL();
-
   initTheme();
   updateNavbar();
 
@@ -1532,10 +1392,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSearch();
   initSorting();
   initTechStackSearch();
-  initClearAllFilters();
 
   try {
-    // Await the projects to be fetched
+    // Await the projects to be fetched securely
     await loadProjects();
 
     syncProjectCounts();
@@ -1927,12 +1786,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput) {
-    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
-    searchInput.addEventListener('input', debounce(() => {
+    searchInput.addEventListener('input', () => {
       const { category } = getQueryParams();
       updateURL(searchInput.value, category);
       applyFilters(searchInput.value, category);
-    }, 200));
+    });
   }
   const categoryFilter = document.getElementById('category');
   if (categoryFilter) {
