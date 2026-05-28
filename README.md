@@ -73,7 +73,6 @@ The website features:
 | 1 | To-Do List | HTML, CSS, JS | 📝 Utility | [View Demo](https://100-days-100-web-project.vercel.app/public/TO_DO_LIST/todolist.html) |
 | 2 | Digital Clock | HTML, CSS, JS | ⏰ Widget | [View Demo](https://100-days-100-web-project.vercel.app/public/digital_clock/digitalclock.html) |
 | 3 | Indian Flag | HTML, CSS | 🎨 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/indianflag/flag.html) |
-| 4 | Dropdown Nav Bar | HTML, CSS, JS | 🧭 Navigation | [View Demo](https://100-days-100-web-project.vercel.app/public/dropdown_navbar) |
 | 4 | Dropdown Nav Bar | HTML, CSS, JS | 🧭 Navigation | [View Demo](https://100-days-100-web-project.vercel.app/public/dropdown_navbar/index.html) |
 | 5 | Animated Cursor | HTML, CSS, JS | ✨ Effect | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated-cursor/animated-cursor.html) |
 | 6 | Background Image Slider | HTML, CSS, JS | 🖼️ Slider | [View Demo](https://100-days-100-web-project.vercel.app/public/Background-Image-sider/slider.html) |
@@ -86,7 +85,6 @@ The website features:
 | 13 | MERN Login Form | MongoDB, Express, React, Node | 🔐 Full-Stack | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern) |
 | 14 | File Uploader | Node.js, Express | 📁 Utility | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader) |
 | 15 | Progress Bar | HTML, CSS, JS | 📊 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/progress_bar/progress_bar.html) |
-| 16 | Custom Scroll Bar | CSS | 🎨 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/) |
 | 16 | Custom Scroll Bar | CSS | 🎨 UI Component | [View Demo](https://100-days-100-web-project.vercel.app/public/Scroll%20Game%20Dark%20Run/index.html) |
 | 17 | Swiper API Slider | HTML, CSS, JS | 🖼️ Slider | [View Demo](https://100-days-100-web-project.vercel.app/public/slider%20box/index.html) |
 | 18 | Carousel Solar System | HTML, CSS, JS | 🪐 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/carousal/index.html) |

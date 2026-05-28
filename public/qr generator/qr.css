@@ -21,7 +21,7 @@
 }
 
 /* =========================================================
-   THEMES
+   AURORA THEME
 ========================================================= */
 
 [data-theme="aurora"] {
@@ -51,6 +51,105 @@
   --dropdown-text: #edf2ff;
 
   --btn-grad: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  --heading-grad: linear-gradient(135deg, #ffffff, #b7c5ff);
+}
+/* =========================================================
+   NEON THEME
+========================================================= */
+[data-theme="neon"] {
+  --grad-1: #03001e;
+  --grad-2: #120024;
+  --grad-3: #1a0033;
+
+  --blob-1: rgba(0, 242, 254, 0.4);
+  --blob-2: rgba(79, 70, 229, 0.3);
+  --blob-3: rgba(24d, 0, 180, 0.25);
+
+  --primary: #00f2fe;
+  --primary-glow: rgba(0, 242, 254, 0.35);
+
+  --text: #ffffff;
+  --text-muted: #9fa6b2;
+
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(0, 242, 254, 0.2);
+
+  --input-bg: rgba(0, 0, 0, 0.4);
+  --input-border: rgba(0, 242, 254, 0.3);
+
+  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+
+  --dropdown-bg: #120024;
+  --dropdown-text: #ffffff;
+
+  --btn-grad: linear-gradient(135deg, #00f2fe, #4f46e5);
+  --heading-grad: linear-gradient(135deg, #ffffff, #00f2fe);
+}
+
+/* =========================================================
+   DARK THEME (Deep Minimal Charcoal)
+========================================================= */
+[data-theme="dark"] {
+  --grad-1: #0f1115;
+  --grad-2: #14171c;
+  --grad-3: #1a1d24;
+
+  --blob-1: rgba(255, 255, 255, 0.03);
+  --blob-2: rgba(255, 255, 255, 0.02);
+  --blob-3: rgba(0, 0, 0, 0);
+
+  --primary: #e2e8f0;
+  --primary-glow: rgba(255, 255, 255, 0.1);
+
+  --text: #f1f5f9;
+  --text-muted: #64748b;
+
+  --glass-bg: #1e222b;
+  --glass-border: #2e3440;
+
+  --input-bg: #0f1115;
+  --input-border: #2a303c;
+
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  --dropdown-bg: #1e222b;
+  --dropdown-text: #f1f5f9;
+
+  --btn-grad: linear-gradient(135deg, #475569, #1e293b);
+  --heading-grad: linear-gradient(135deg, #ffffff, #94a3b8);
+}
+
+/* =========================================================
+   CANDY THEME (Vibrant Soft Pastel)
+========================================================= */
+[data-theme="candy"] {
+  --grad-1: #fff1f2;
+  --grad-2: #ffe4e6;
+  --grad-3: #fce7f3;
+
+  --blob-1: rgba(244, 63, 94, 0.15);
+  --blob-2: rgba(232, 121, 249, 0.15);
+  --blob-3: rgba(56, 189, 248, 0.12);
+
+  --primary: #f43f5e;
+  --primary-glow: rgba(244, 63, 94, 0.2);
+
+  --text: #1e293b;
+  --text-muted: #4e4f66;
+
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(244, 63, 94, 0.15);
+
+  --input-bg: #ffffff;
+  --input-border: rgba(0, 0, 0, 0.08);
+
+  --card-shadow: 0 10px 35px rgba(244, 63, 94, 0.06);
+
+  --dropdown-bg: #ffffff;
+  --dropdown-text: #1e293b;
+
+  --btn-grad: linear-gradient(135deg, #f43f5e, #ec4899);
+  --heading-grad: linear-gradient(135deg, #e11d48, #4f46e5);
 }
 
 /* =========================================================
@@ -371,19 +470,13 @@ body {
 
 .head {
   font-size: clamp(2.6rem, 6vw, 5rem);
-
   line-height: 1.1;
-
   font-weight: 800;
-
   margin-bottom: 16px;
-
-  background: linear-gradient(135deg, #ffffff, #b7c5ff);
-
+  background: var(--heading-grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 .subhead {
   max-width: 720px;
 

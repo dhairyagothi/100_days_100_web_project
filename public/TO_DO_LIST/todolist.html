@@ -73,6 +73,14 @@
             <option value="Fitness">💪 Fitness</option>
             <option value="Miscellaneous">📌 Miscellaneous</option>
           </select>
+          <label for="eisenhower-select" class="sr-only">Eisenhower Matrix priority</label>
+          <select id="eisenhower-select" aria-label="Eisenhower Matrix priority">
+            <option value="" disabled selected>Eisenhower Matrix</option>
+            <option value="urgent-important">Urgent &amp; Important</option>
+            <option value="important-only">Important Only</option>
+            <option value="urgent-only">Urgent Only</option>
+            <option value="neither">Neither</option>
+          </select>
           <label for="task" class="sr-only">Task description</label>
           <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
           <button type="submit" id="submittask">➕ Add Task</button>

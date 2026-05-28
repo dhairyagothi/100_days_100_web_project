@@ -1790,8 +1790,8 @@
 "techStack":["game","html","css","javascript"],
 "difficulty":"intermediate",
 "projectPath":"./public/CYBER TYPE BATTLE/index.html"
-},
-
+}
+,
 {
   "projectNo":180,
   "projectName":"RouteMaster",
@@ -1839,6 +1839,15 @@
 },
 {
   "projectNo": 185,
+  "projectName": "GitHub Repository Analyser",
+  "projectType": "Tool",
+  "projectDesc": "A modern tool to quickly analyse a github repo, provides detail stats about repo.",
+  "techStack": ["tool", "html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/github-repository-analyser/index.html"
+},
+{
+  "projectNo": 186,
   "projectName": "Cipher",
   "projectType": "Game",
   "projectDesc": "An interactive treasure hunt puzzle game where players solve coding challenges to uncover clues and unlock the final treasure.",

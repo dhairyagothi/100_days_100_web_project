@@ -15,9 +15,7 @@
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
   </div>
-
   <main class="container">
-
     <header>
       <div class="signal-bars" aria-hidden="true">
         <span></span><span></span><span></span><span></span>
@@ -25,12 +23,10 @@
       <h1>Morse Code Translator</h1>
       <p>Encode and decode messages — and hear them too</p>
     </header>
-
     <div class="mode-toggle" role="group" aria-label="Translation mode">
       <button class="mode-btn active" id="encode-btn">Text → Morse</button>
       <button class="mode-btn" id="decode-btn">Morse → Text</button>
     </div>
-
     <div class="panels">
       <div class="panel glass">
         <div class="panel-header">
@@ -46,10 +42,17 @@
         <div class="char-count"><span id="char-count">0</span> characters</div>
       </div>
 
+      <!-- ── NEW: swap button added inside existing divider ──────── -->
       <div class="divider" aria-hidden="true">
         <div class="arrow-wrap">
           <span class="arrow">→</span>
         </div>
+        <button
+          class="swap-btn"
+          id="swap-btn"
+          title="Swap panels"
+          aria-label="Swap input and output panels"
+        >⇄</button>
       </div>
 
       <div class="panel glass">
@@ -60,7 +63,6 @@
         <div id="output" class="output-area" role="status" aria-live="polite">—</div>
       </div>
     </div>
-
     <div class="audio-controls glass">
       <button class="play-btn" id="play-btn" aria-label="Play Morse audio">
         <span id="play-icon" aria-hidden="true">▶</span>
@@ -80,14 +82,11 @@
         <span class="speed-val" id="speed-val">15 WPM</span>
       </div>
     </div>
-
     <button class="ref-toggle glass" aria-expanded="false" id="ref-toggle-btn">
       Morse Reference <span id="ref-arrow">▾</span>
     </button>
     <div class="ref-table" id="ref-table" role="table" aria-label="Morse code reference chart"></div>
-
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>
