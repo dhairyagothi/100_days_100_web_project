@@ -2,18 +2,32 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Expense Tracker</title>
 
   <!-- GOOGLE FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+    rel="stylesheet"
+  />
 
   <!-- FONT AWESOME -->
   <link
@@ -22,16 +36,24 @@
   />
 
   <!-- STYLE -->
-  <link rel="stylesheet" href="style.css" />
+  <link
+    rel="stylesheet"
+    href="style.css"
+  />
+
 </head>
 
 <body>
 
   <!-- FLOATING BLOBS -->
   <div class="bg-animation">
+
     <span></span>
+
     <span></span>
+
     <span></span>
+
   </div>
 
   <!-- TOAST -->
@@ -39,7 +61,9 @@
 
   <!-- LOADER -->
   <div class="loader hidden">
+
     <div class="spinner"></div>
+
   </div>
 
   <!-- SUCCESS SOUND -->
@@ -53,13 +77,22 @@
 
     <!-- HEADER -->
     <header class="header">
-<a href="../../index.html" class="home-btn">
-    ← Back to Home
-</a>
+
+      <!-- HOME BUTTON -->
+      <a
+        href="../../index.html"
+        class="home-btn"
+      >
+        ← Back to Home
+      </a>
+
       <!-- LOGO -->
       <h1 class="main-heading">
+
         <i class="fa-solid fa-wallet"></i>
+
         Expense Tracker
+
       </h1>
 
       <!-- RIGHT SIDE -->
@@ -67,16 +100,23 @@
 
         <!-- LIVE CLOCK -->
         <div class="live-clock">
+
           <i class="fa-regular fa-clock"></i>
+
           <span id="clock"></span>
+
         </div>
 
-        <!-- TOGGLE -->
+        <!-- MODE -->
         <div class="mode-toggle">
 
+          <!-- DARK MODE -->
           <label class="toggle-switch">
 
-            <input type="checkbox" class="mode" />
+            <input
+              type="checkbox"
+              class="mode"
+            />
 
             <span class="slider"></span>
 
@@ -111,6 +151,7 @@
 
         </div>
 
+        <!-- FORM -->
         <form class="add-transaction">
 
           <!-- AMOUNT -->
@@ -123,6 +164,8 @@
               id="amt"
               placeholder="Enter Amount"
               required
+              min="1"
+              inputmode="numeric"
             />
 
           </div>
@@ -137,6 +180,7 @@
               id="desc"
               placeholder="Enter Description"
               required
+              autocomplete="off"
             />
 
           </div>
@@ -146,19 +190,34 @@
 
             <i class="fa-solid fa-layer-group"></i>
 
-            <select id="cat" required>
+            <select
+              id="cat"
+              required
+            >
 
-              <option value="">Select Category</option>
+              <option value="">
+                Select Category
+              </option>
 
-              <option value="food">Food</option>
+              <option value="food">
+                Food
+              </option>
 
-              <option value="travel">Travel</option>
+              <option value="travel">
+                Travel
+              </option>
 
-              <option value="shopping">Shopping</option>
+              <option value="shopping">
+                Shopping
+              </option>
 
-              <option value="income">Income</option>
+              <option value="income">
+                Income
+              </option>
 
-              <option value="other">Others</option>
+              <option value="other">
+                Others
+              </option>
 
             </select>
 
@@ -169,7 +228,11 @@
 
             <i class="fa-solid fa-calendar-days"></i>
 
-            <input type="date" id="date" required />
+            <input
+              type="date"
+              id="date"
+              required
+            />
 
           </div>
 
@@ -197,7 +260,7 @@
 
         <div class="insights-body">
 
-          <!-- HIGHEST -->
+          <!-- HIGHEST SPENDING -->
           <div class="insight-card">
 
             <span class="insight-icon">
@@ -214,7 +277,8 @@
 
               <p
                 class="insight-value"
-                id="highest-spending-cat">
+                id="highest-spending-cat"
+              >
 
                 None
 
@@ -224,7 +288,7 @@
 
           </div>
 
-          <!-- SMART -->
+          <!-- SMART SUGGESTION -->
           <div class="insight-card">
 
             <span class="insight-icon">
@@ -243,7 +307,8 @@
 
               <p
                 class="insight-value"
-                id="smart-suggestion">
+                id="smart-suggestion"
+              >
 
                 Add transactions to generate suggestions.
 
@@ -253,7 +318,7 @@
 
           </div>
 
-          <!-- STATUS -->
+          <!-- FINANCIAL STATUS -->
           <div class="insight-card">
 
             <span class="insight-icon">
@@ -272,7 +337,8 @@
 
               <p
                 class="insight-value"
-                id="financial-status">
+                id="financial-status"
+              >
 
                 No data available
 
@@ -289,22 +355,33 @@
       <!-- SUMMARY -->
       <section class="summary">
 
-        <!-- BALANCE -->
+        <!-- ACCOUNT BALANCE -->
         <div class="acc-balance">
 
           <div class="balance-header">
 
             <i class="fa-solid fa-wallet"></i>
 
-            <p class="label">Account Balance</p>
+            <p class="label">
+
+              Account Balance
+
+            </p>
 
           </div>
 
-          <p class="amount" id="curramt">₹0</p>
+          <p
+            class="amount"
+            id="curramt"
+          >
+
+            ₹0
+
+          </p>
 
         </div>
 
-        <!-- BODY -->
+        <!-- SUMMARY BODY -->
         <div class="summary-body">
 
           <!-- LEFT -->
@@ -320,11 +397,22 @@
 
                   <i class="fa-solid fa-arrow-trend-up"></i>
 
-                  <p class="label">Total Income</p>
+                  <p class="label">
+
+                    Total Income
+
+                  </p>
 
                 </div>
 
-                <p class="amount" id="income">₹0</p>
+                <p
+                  class="amount"
+                  id="income"
+                >
+
+                  ₹0
+
+                </p>
 
               </div>
 
@@ -335,17 +423,28 @@
 
                   <i class="fa-solid fa-arrow-trend-down"></i>
 
-                  <p class="label">Total Expenses</p>
+                  <p class="label">
+
+                    Total Expenses
+
+                  </p>
 
                 </div>
 
-                <p class="amount" id="expense">₹0</p>
+                <p
+                  class="amount"
+                  id="expense"
+                >
+
+                  ₹0
+
+                </p>
 
               </div>
 
             </div>
 
-            <!-- BUDGET -->
+            <!-- MONTHLY BUDGET -->
             <div class="monthly-budget">
 
               <div class="budget-header">
@@ -354,24 +453,38 @@
 
                   <i class="fa-solid fa-piggy-bank"></i>
 
-                  <p class="label">Monthly Budget</p>
+                  <p class="label">
+
+                    Monthly Budget
+
+                  </p>
 
                 </div>
 
+                <!-- BUDGET INPUT -->
                 <input
                   type="number"
                   id="budgetInput"
-                  placeholder="Set Budget"
+                  placeholder="Set Monthly Budget"
+                  min="0"
+                  inputmode="numeric"
+                  autocomplete="off"
                 />
 
               </div>
 
-              <p class="amount" id="budget">
+              <!-- BUDGET STATUS -->
+              <p
+                class="amount"
+                id="budget"
+                aria-live="polite"
+              >
 
                 ₹0 / ₹0
 
               </p>
 
+              <!-- PROGRESS BAR -->
               <div class="progress-bar">
 
                 <div class="progress-fill"></div>
@@ -382,7 +495,7 @@
 
           </div>
 
-          <!-- CATEGORY -->
+          <!-- CATEGORY BREAKDOWN -->
           <div class="category-breakdown">
 
             <div class="section-title">
@@ -393,35 +506,55 @@
 
             </div>
 
+            <!-- FOOD -->
             <div class="category-item">
 
               <p>🍔 Food</p>
 
-              <span data-cat="food">₹0</span>
+              <span data-cat="food">
+
+                ₹0
+
+              </span>
 
             </div>
 
+            <!-- TRAVEL -->
             <div class="category-item">
 
               <p>✈️ Travel</p>
 
-              <span data-cat="travel">₹0</span>
+              <span data-cat="travel">
+
+                ₹0
+
+              </span>
 
             </div>
 
+            <!-- SHOPPING -->
             <div class="category-item">
 
               <p>🛍️ Shopping</p>
 
-              <span data-cat="shopping">₹0</span>
+              <span data-cat="shopping">
+
+                ₹0
+
+              </span>
 
             </div>
 
+            <!-- OTHERS -->
             <div class="category-item">
 
               <p>📦 Others</p>
 
-              <span data-cat="other">₹0</span>
+              <span data-cat="other">
+
+                ₹0
+
+              </span>
 
             </div>
 
@@ -433,7 +566,7 @@
 
     </div>
 
-    <!-- RECENT -->
+    <!-- RECENT TRANSACTIONS -->
     <section class="recent-activity">
 
       <div class="section-title">
@@ -470,12 +603,16 @@
 
         </table>
 
-        <!-- EMPTY -->
+        <!-- EMPTY STATE -->
         <div class="empty-state">
 
           <i class="fa-solid fa-wallet"></i>
 
-          <p>No transactions added yet.</p>
+          <p>
+
+            No transactions added yet.
+
+          </p>
 
         </div>
 

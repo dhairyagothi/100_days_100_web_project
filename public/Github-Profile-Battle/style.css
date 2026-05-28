@@ -540,12 +540,43 @@ body {
     backdrop-filter: blur(8px);
 }
 .share-btn:hover { border-color: var(--accent-1); background: rgba(99, 102, 241, 0.1); }
+.share-btn:disabled {
+    opacity: 0.55;
+    cursor: wait;
+    transform: none;
+}
 .new-battle-btn {
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
     border-color: transparent;
     color: white;
 }
 .new-battle-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3); }
+
+/* ===== Toast ===== */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 10000;
+    max-width: min(420px, calc(100vw - 32px));
+    padding: 12px 18px;
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    background: rgba(15, 23, 42, 0.94);
+    color: #f8fafc;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 16px);
+    transition: opacity var(--transition), transform var(--transition);
+}
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
 
 /* ===== Animations ===== */
 @keyframes fadeInUp {
@@ -569,6 +600,8 @@ body {
     .profile-card { padding: 20px; }
     .chart-section { padding: 20px; }
     #radarChart { max-width: 300px; }
+    .share-actions { flex-direction: column; }
+    .share-btn { justify-content: center; width: 100%; }
 }
 
 @media (max-width: 480px) {
