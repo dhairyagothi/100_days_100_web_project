@@ -1,753 +1,500 @@
-const questions = [
-  "Tell me about yourself.",
-  "Why should we hire you?",
-  "What are your strengths and weaknesses?",
-  "Explain a challenging project you worked on.",
-  "Where do you see yourself in 5 years?"
-];
+const UI = {
+    themeToggle: document.getElementById('theme-toggle'),
+    roleSelect: document.getElementById('role-select'),
+    difficultySelect: document.getElementById('difficulty-select'),
+    interviewType: document.getElementById('interview-type'),
+    startBtn: document.getElementById('start-ai-btn'),
+    micBtn: document.getElementById('mic-btn'),
+    micStatus: document.getElementById('mic-status'),
+    recordingIndicator: document.getElementById('recording-indicator'),
+    answerInput: document.getElementById('answer'),
+    nextBtn: document.getElementById('next-btn'),
+    restartBtn: document.getElementById('restart-btn'),
+    chatContainer: document.getElementById('chat-container'),
+    questionCount: document.getElementById('question-count'),
+    questionProgress: document.getElementById('question-progress'),
+    stressLevel: document.getElementById('stress-level'),
+    stressProgress: document.getElementById('stress-progress'),
+    timer: document.getElementById('timer'),
+    timerProgress: document.getElementById('timer-progress'),
+    charCounter: document.getElementById('char-counter'),
+    prevBtn: document.getElementById('prev-btn'),
+    setupPanel: document.querySelector('.role-selection'),
+    interviewBox: document.querySelector('.interview-box'),
+    modal: document.getElementById('completion-modal'),
+    modalClose: document.getElementById('modal-close'),
+    summaryContent: document.getElementById('summary-content')
+};
 
-let selectedRole = "";
-let aiQuestions = [];
-let currentQuestion = 0;
-let stress = 0;
-let timeLeft = 60;
-let timer;
-let userAnswers = [];
+let state = {
+    isInterviewActive: false,
+    currentQuestionIndex: 0,
+    questions: [],
+    answers: {},
+    timerInterval: null,
+    timeLeft: 60,
+    maxTime: 60,
+    stressValue: 0,
+    recognition: null,
+    isRecording: false
+};
 
-const totalTime = 60;
+const DIFFICULTY_SETTINGS = {
+    Beginner: { time: 90, stressIncrement: 5 },
+    Intermediate: { time: 60, stressIncrement: 10 },
+    Advanced: { time: 45, stressIncrement: 15 }
+};
 
-const questionCount =
-  document.getElementById("question-count");
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    initPreferences();
+    initSpeechRecognition();
+    setupEventListeners();
+});
 
-const stressLevel =
-  document.getElementById("stress-level");
-
-const timerText =
-  document.getElementById("timer");
-
-const answerBox =
-  document.getElementById("answer");
-
-const nextBtn =
-  document.getElementById("next-btn");
-
-const restartBtn =
-  document.getElementById("restart-btn");
-
-const roleSelect =
-  document.getElementById("role-select");
-
-const startAiBtn =
-  document.getElementById("start-ai-btn");
-
-const difficultySelect =
-  document.getElementById("difficulty-select");
-
-const interviewType =
-  document.getElementById("interview-type");
-
-const chatContainer =
-  document.getElementById("chat-container");
-
-const questionProgress =
-  document.getElementById("question-progress");
-
-const stressProgress =
-  document.getElementById("stress-progress");
-
-const timerProgress =
-  document.getElementById("timer-progress");
-
-const micBtn =
-  document.getElementById("mic-btn");
-
-const micStatus =
-  document.getElementById("mic-status");
-
-const recordingIndicator =
-  document.getElementById("recording-indicator");
-
-const SpeechRecognition =
-  window.SpeechRecognition ||
-  window.webkitSpeechRecognition;
-
-let recognition;
-
-let isRecording = false;
-
-let finalTranscriptState = "";
-
-function addAIMessage(message) {
-
-  const msg =
-    document.createElement("div");
-
-  msg.className =
-    "ai-message";
-
-  msg.innerHTML =
-    `
-      <div class="message-label">
-        🤖 AI Interviewer
-      </div>
-
-      <div class="message-content">
-        ${formatMarkdown(message)}
-      </div>
-    `;
-
-  chatContainer.appendChild(msg);
-
-  chatContainer.scrollTop =
-    chatContainer.scrollHeight;
-
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeToggleIcon(savedTheme);
 }
 
-function addUserMessage(message) {
-
-  const msg =
-    document.createElement("div");
-
-  msg.className =
-    "user-message";
-
-  msg.innerHTML =
-    `
-      <div class="message-label">
-        👤 You
-      </div>
-
-      <div class="message-content">
-        ${formatMarkdown(message)}
-      </div>
-    `;
-
-  chatContainer.appendChild(msg);
-
-  chatContainer.scrollTop =
-    chatContainer.scrollHeight;
-
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeToggleIcon(newTheme);
 }
 
-function addThinkingMessage() {
-
-  const msg =
-    document.createElement("div");
-
-  msg.className =
-    "thinking-message";
-
-  msg.id =
-    "thinking-message";
-
-  msg.innerHTML =
-    `
-      <div class="message-label">
-        🤖 AI Interviewer
-      </div>
-
-      <div class="message-content">
-        AI is analyzing...
-      </div>
-    `;
-
-  chatContainer.appendChild(msg);
-
-  chatContainer.scrollTop =
-    chatContainer.scrollHeight;
-
+function updateThemeToggleIcon(theme) {
+    if (!UI.themeToggle) return;
+    const icon = UI.themeToggle.querySelector('i');
+    if (theme === 'light') {
+        icon.className = 'fa-solid fa-moon';
+    } else {
+        icon.className = 'fa-solid fa-sun';
+    }
 }
 
-function removeThinkingMessage() {
-
-  const thinking =
-    document.getElementById(
-      "thinking-message"
-    );
-
-  if (thinking) {
-    thinking.remove();
-  }
-
+function initPreferences() {
+    if (localStorage.getItem('pref-role')) UI.roleSelect.value = localStorage.getItem('pref-role');
+    if (localStorage.getItem('pref-difficulty')) UI.difficultySelect.value = localStorage.getItem('pref-difficulty');
+    if (localStorage.getItem('pref-type')) UI.interviewType.value = localStorage.getItem('pref-type');
 }
 
-async function generateAIQuestions() {
+function savePreferences() {
+    localStorage.setItem('pref-role', UI.roleSelect.value);
+    localStorage.setItem('pref-difficulty', UI.difficultySelect.value);
+    localStorage.setItem('pref-type', UI.interviewType.value);
+}
 
-  selectedRole =
-    roleSelect.value;
-
-  const difficulty =
-    difficultySelect.value;
-
-  const type =
-    interviewType.value;
-
-  startAiBtn.innerHTML =
-    "Generating...";
-
-  startAiBtn.disabled = true;
-
-  chatContainer.innerHTML = "";
-
-  addThinkingMessage();
-
-  try {
-
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-
-        method: "POST",
-
-        headers: {
-
-          "Content-Type":
-            "application/json",
-
-          "Authorization":
-            `Bearer ${GROQ_API_KEY}`
-
-        },
-
-        body: JSON.stringify({
-
-          model:
-            "llama-3.1-8b-instant",
-
-          messages: [
-
-            {
-
-              role: "system",
-
-              content:
-`You are a professional interviewer conducting a realistic ${type} interview for a ${selectedRole} role.
-
-Difficulty level: ${difficulty}
-
-Generate exactly 5 conversational interview questions.
-
-Structure:
-1. Friendly introduction
-2. Experience/project discussion
-3. Practical field-related question
-4. Scenario/problem-solving question
-5. Career/behavioral closing question
-
-Rules:
-- Human-like tone
-- Conversational style
-- Questions should smoothly transition naturally
-- Avoid textbook theory questions
-- Focus on realistic interviews
-- One question per line
-- No numbering
-- No explanations`
-
-            }
-
-          ]
-
-        })
-
-      }
-    );
-
-    const data =
-      await response.json();
-
-    removeThinkingMessage();
-
-    const content =
-      data.choices[0].message.content;
-
-    aiQuestions =
-      content
-      .split("\n")
-      .filter(q => q.trim() !== "");
-
-    questions.length = 0;
-
-    aiQuestions.forEach(q => {
-      questions.push(q);
+function setupEventListeners() {
+    if (UI.themeToggle) UI.themeToggle.addEventListener('click', toggleTheme);
+    UI.startBtn.addEventListener('click', startInterview);
+    UI.nextBtn.addEventListener('click', handleNextQuestion);
+    if (UI.prevBtn) UI.prevBtn.addEventListener('click', handlePreviousQuestion);
+    UI.restartBtn.addEventListener('click', resetInterview);
+    UI.micBtn.addEventListener('click', toggleVoiceInput);
+    
+    UI.answerInput.addEventListener('input', () => {
+        updateCharacterCount();
+        state.answers[state.currentQuestionIndex] = UI.answerInput.value;
     });
 
-    currentQuestion = 0;
+    if (UI.modalClose) UI.modalClose.addEventListener('click', closeModal);
+    window.addEventListener('click', (e) => { if (e.target === UI.modal) closeModal(); });
 
-    stress = 0;
-
-    userAnswers = [];
-
-    updateStress();
-
-    loadQuestion();
-
-    startAiBtn.innerHTML =
-      "Interview Ready";
-
-  }
-
-  catch(error) {
-
-    removeThinkingMessage();
-
-    console.error(error);
-
-    alert(
-      "Failed to generate AI questions."
-    );
-
-    startAiBtn.innerHTML =
-      "Start AI Interview";
-
-  }
-
+    document.addEventListener('keydown', (e) => {
+        if (!state.isInterviewActive) return;
+        if (e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
+            handleNextQuestion();
+        }
+        if (e.ctrlKey && e.key === 'ArrowLeft') {
+            e.preventDefault();
+            if (UI.prevBtn && !UI.prevBtn.disabled) handlePreviousQuestion();
+        }
+    });
 }
 
-if (SpeechRecognition) {
+function initSpeechRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+        state.recognition = new SpeechRecognition();
+        state.recognition.continuous = true;
+        state.recognition.interimResults = true;
+        state.recognition.lang = 'en-US';
 
-  recognition =
-    new SpeechRecognition();
+        state.recognition.onresult = (event) => {
+            let interimTranscript = '';
+            let finalTranscript = '';
 
-  recognition.continuous = true;
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                } else {
+                    interimTranscript += event.results[i][0].transcript;
+                }
+            }
 
-  recognition.interimResults = true;
+            if (finalTranscript) {
+                UI.answerInput.value += (UI.answerInput.value ? ' ' : '') + finalTranscript;
+                state.answers[state.currentQuestionIndex] = UI.answerInput.value;
+                updateCharacterCount();
+            }
+        };
 
-  recognition.lang = "en-US";
+        state.recognition.onerror = () => { stopRecording(); };
+        state.recognition.onend = () => { if (state.isRecording) stopRecording(); };
+    } else {
+        UI.micBtn.style.display = 'none';
+        UI.micStatus.textContent = 'Voice input not supported';
+    }
+}
 
-  recognition.onstart = () => {
+function toggleVoiceInput() {
+    if (!state.recognition) return;
+    if (state.isRecording) { stopRecording(); } else { startRecording(); }
+}
 
-    isRecording = true;
-
-    micBtn.classList.add(
-      "recording"
-    );
-
-    micStatus.innerText =
-      "Listening...";
-
-    recordingIndicator.classList.remove(
-      "hidden"
-    );
-
-    answerBox.focus();
-
-  };
-
-  recognition.onresult =
-    (event) => {
-
-      let interimTranscript = "";
-
-      let currentFinal = "";
-
-      for (
-        let i = event.resultIndex;
-        i < event.results.length;
-        i++
-      ) {
-
-        const transcript =
-          event.results[i][0].transcript;
-
-        if (
-          event.results[i].isFinal
-        ) {
-
-          currentFinal +=
-            transcript + " ";
-
-        }
-
-        else {
-
-          interimTranscript +=
-            transcript;
-
-        }
-
-      }
-
-      finalTranscriptState +=
-        currentFinal;
-
-      answerBox.value =
-        finalTranscriptState +
-        interimTranscript;
-
-    };
-
-  recognition.onend = () => {
-
-    stopRecording();
-
-  };
-
+function startRecording() {
+    state.isRecording = true;
+    UI.micBtn.classList.add('recording');
+    UI.recordingIndicator.classList.remove('hidden');
+    UI.micStatus.textContent = 'Listening...';
+    state.recognition.start();
 }
 
 function stopRecording() {
-
-  if (
-    isRecording &&
-    recognition
-  ) {
-
-    recognition.stop();
-
-  }
-
-  isRecording = false;
-
-  micBtn.classList.remove(
-    "recording"
-  );
-
-  micStatus.innerText =
-    "Click mic to speak";
-
-  recordingIndicator.classList.add(
-    "hidden"
-  );
-
+    state.isRecording = false;
+    UI.micBtn.classList.remove('recording');
+    UI.recordingIndicator.classList.add('hidden');
+    UI.micStatus.textContent = 'Click mic to speak';
+    state.recognition.stop();
 }
 
-micBtn.addEventListener(
-  "click",
-  () => {
+async function startInterview() {
+    savePreferences();
+    UI.startBtn.disabled = true;
+    UI.startBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generating...`;
+    
+    const questionsLoaded = await fetchQuestionsFromGroq();
+    
+    UI.startBtn.disabled = false;
+    UI.startBtn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Initialize Simulator`;
 
-    if (!SpeechRecognition) {
+    if (!questionsLoaded) return;
 
-      alert(
-        "Speech Recognition is not supported."
-      );
+    state.isInterviewActive = true;
+    state.currentQuestionIndex = 0;
+    state.answers = {};
+    state.stressValue = 0;
+    
+    UI.setupPanel.classList.add('hidden');
+    UI.interviewBox.classList.remove('hidden');
+    
+    displayQuestion();
+}
 
-      return;
+async function fetchQuestionsFromGroq() {
+    const role = UI.roleSelect.value;
+    const type = UI.interviewType.value;
+    const difficulty = UI.difficultySelect.value;
 
+    const systemPrompt = `You are an expert technical interviewer system. Generate exactly 5 targeted interview questions matching requested parameters. Return output strictly as a JSON object containing a property "questions" which maps to an array of strings. Do not include markdown codeblocks or wrapper prose. Example structure: {"questions": ["Q1", "Q2"]}`;
+    const userPrompt = `Generate a 5-question interview list for a ${role} position. Interview focus type: ${type}. Difficulty setting requirement: ${difficulty}.`;
+
+    try {
+        const response = await fetch(CONFIG.GROQ_API_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${CONFIG.GROQ_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: CONFIG.MODEL,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: userPrompt }
+                ],
+                temperature: 0.7,
+                response_format: { type: "json_object" }
+            })
+        });
+
+        if (!response.ok) throw new Error(`HTTP Error Status: ${response.status}`);
+
+        const data = await response.json();
+        const jsonResponse = JSON.parse(data.choices[0].message.content);
+        const questionsArray = jsonResponse.questions || Object.values(jsonResponse)[0];
+        
+        if (Array.isArray(questionsArray) && questionsArray.length > 0) {
+            state.questions = questionsArray;
+            return true;
+        }
+        throw new Error("Parsed object did not contain structural string matrix.");
+
+    } catch (error) {
+        console.error("Groq Engine Request Failure:", error);
+        alert("Unable to fetch dynamic queries. Falling back to internal defaults.");
+        state.questions = [
+            `Can you explain your core technical stack and background as a ${role}?`,
+            `Describe a complex problem you solved recently under a ${difficulty} environment context.`,
+            `How do you approach performance optimization when handling a ${type} delivery loop?`,
+            "What is your approach to handling cross-functional team disagreements?",
+            "Where do you see your engineering skills evolving over the next year?"
+        ];
+        return true;
     }
+}
 
-    if (isRecording) {
-
-      stopRecording();
-
-    }
-
-    else {
-
-      finalTranscriptState =
-        answerBox.value;
-
-      if (
-        finalTranscriptState.length > 0 &&
-        !finalTranscriptState.endsWith(" ")
-      ) {
-
-        finalTranscriptState += " ";
-
-      }
-
-      recognition.start();
-
-    }
-
-  }
-);
+function displayQuestion() {
+    stopRecording();
+    const currentQuestion = state.questions[state.currentQuestionIndex];
+    
+    UI.chatContainer.innerHTML = `
+        <div class="chat-message bot-message entry-animation">
+            <p>${currentQuestion}</p>
+        </div>
+    `;
+    
+    UI.answerInput.value = state.answers[state.currentQuestionIndex] || '';
+    updateCharacterCount();
+    updateProgress();
+    startTimer();
+}
 
 function startTimer() {
+    clearInterval(state.timerInterval);
+    const difficulty = UI.difficultySelect.value;
+    state.maxTime = DIFFICULTY_SETTINGS[difficulty]?.time || 60;
+    state.timeLeft = state.maxTime;
+    
+    updateTimerDisplay();
 
-  timer =
-    setInterval(() => {
+    state.timerInterval = setInterval(() => {
+        state.timeLeft--;
+        updateTimerDisplay();
 
-      timeLeft--;
-
-      timerText.innerText =
-        `${timeLeft}s`;
-
-      let timePercent =
-        (timeLeft / totalTime) * 100;
-
-      timerProgress.style.width =
-        `${timePercent}%`;
-
-      if (timeLeft <= 10) {
-
-        stress += 2;
-
-        updateStress();
-
-      }
-
-      if (timeLeft <= 0) {
-
-        clearInterval(timer);
-
-        nextQuestion();
-
-      }
-
+        if (state.timeLeft <= 0) {
+            clearInterval(state.timerInterval);
+            handleNextQuestion();
+        }
     }, 1000);
-
 }
 
-function resetTimer() {
+function updateTimerDisplay() {
+    UI.timer.textContent = `${state.timeLeft}s`;
+    const percentage = (state.timeLeft / state.maxTime) * 100;
+    UI.timerProgress.style.width = `${percentage}%`;
 
-  clearInterval(timer);
-
-  timeLeft = totalTime;
-
-  timerText.innerText =
-    `${timeLeft}s`;
-
-  timerProgress.style.width =
-    "100%";
-
-  startTimer();
-
+    if (percentage < 25) {
+        UI.timerProgress.className = 'progress-fill danger';
+    } else if (percentage < 60) {
+        UI.timerProgress.className = 'progress-fill warning';
+    } else {
+        UI.timerProgress.className = 'progress-fill success';
+    }
 }
 
-function updateStress() {
+function updateProgress() {
+    const total = state.questions.length;
+    const current = state.currentQuestionIndex + 1;
+    
+    UI.questionCount.textContent = `${current}/${total}`;
+    const percentage = (current / total) * 100;
+    UI.questionProgress.style.width = `${percentage}%`;
 
-  if (stress > 100)
-    stress = 100;
-
-  if (stress < 0)
-    stress = 0;
-
-  stressLevel.innerText =
-    `${stress}%`;
-
-  stressProgress.style.width =
-    `${stress}%`;
-
+    if (UI.prevBtn) UI.prevBtn.disabled = state.currentQuestionIndex === 0;
+    
+    if (state.currentQuestionIndex === total - 1) {
+        UI.nextBtn.querySelector('span').textContent = "Finish Interview";
+    } else {
+        UI.nextBtn.querySelector('span').textContent = "Send Answer";
+    }
 }
 
-function loadQuestion() {
-
-  addAIMessage(
-    questions[currentQuestion]
-  );
-
-  questionCount.innerText =
-    `${currentQuestion + 1}/${questions.length}`;
-
-  let qPercent =
-    (
-      (currentQuestion + 1)
-      /
-      questions.length
-    ) * 100;
-
-  questionProgress.style.width =
-    `${qPercent}%`;
-
-  answerBox.value = "";
-
-  finalTranscriptState = "";
-
-  stopRecording();
-
-  resetTimer();
-
-}
-function formatMarkdown(text) {
-
-  return text
-
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-
-    .replace(/\n/g, "<br>");
-
-}
-async function generateFinalReport() {
-
-  addThinkingMessage();
-
-  try {
-
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-
-        method: "POST",
-
-        headers: {
-
-          "Content-Type":
-            "application/json",
-
-          "Authorization":
-            `Bearer ${GROQ_API_KEY}`
-
-        },
-
-        body: JSON.stringify({
-
-          model:
-            "llama-3.1-8b-instant",
-
-          messages: [
-
-            {
-
-              role: "system",
-
-              content:
-`You are an expert interview evaluator.
-
-Analyze this mock interview.
-
-Give:
-1. Communication Score (/10)
-2. Technical Confidence (/10)
-3. Strengths
-4. Weaknesses
-5. Final Hiring Recommendation
-
-Rules:
-- concise
-- professional
-- realistic
-- recruiter-like
-- easy to read`
-
-            },
-
-            {
-
-              role: "user",
-
-              content:
-`
-Role: ${selectedRole}
-
-Answers:
-${userAnswers.join("\n\n")}
-`
-
-            }
-
-          ]
-
-        })
-
-      }
-    );
-
-    const data =
-      await response.json();
-
-    removeThinkingMessage();
-
-    addAIMessage(
-      data.choices[0].message.content
-    );
-
-  }
-
-  catch(error) {
-
-    removeThinkingMessage();
-
-    addAIMessage(
-      "Unable to generate final report."
-    );
-
-  }
-
+function updateCharacterCount() {
+    if (!UI.charCounter) return;
+    const count = UI.answerInput.value.length;
+    const words = UI.answerInput.value.trim() ? UI.answerInput.value.trim().split(/\s+/).length : 0;
+    UI.charCounter.textContent = `${count} characters | ${words} words`;
 }
 
-async function nextQuestion() {
+function handleNextQuestion() {
+    state.answers[state.currentQuestionIndex] = UI.answerInput.value;
+    calculateStress();
 
-  const answer =
-    answerBox.value.trim();
+    if (state.currentQuestionIndex < state.questions.length - 1) {
+        state.currentQuestionIndex++;
+        displayQuestion();
+    } else {
+        completeInterview();
+    }
+}
 
-  if (answer === "") return;
+function handlePreviousQuestion() {
+    if (state.currentQuestionIndex > 0) {
+        state.answers[state.currentQuestionIndex] = UI.answerInput.value;
+        state.currentQuestionIndex--;
+        displayQuestion();
+    }
+}
 
-  userAnswers.push(answer);
+function calculateStress() {
+    const difficulty = UI.difficultySelect.value;
+    const increment = DIFFICULTY_SETTINGS[difficulty]?.stressIncrement || 10;
+    const answer = state.answers[state.currentQuestionIndex] || "";
+    
+    if (answer.trim().length === 0) {
+        state.stressValue += increment;
+    } else if (state.timeLeft < 10) {
+        state.stressValue += Math.floor(increment / 2);
+    } else {
+        state.stressValue -= Math.floor(increment / 3);
+    }
 
-  addUserMessage(answer);
+    state.stressValue = Math.max(0, Math.min(100, state.stressValue));
+    
+    UI.stressLevel.textContent = `${state.stressValue}%`;
+    UI.stressProgress.style.width = `${state.stressValue}%`;
 
-  let answerLength =
-    answer.length;
+    if (state.stressValue > 70) {
+        UI.stressProgress.className = 'progress-fill danger';
+    } else if (state.stressValue > 40) {
+        UI.stressProgress.className = 'progress-fill warning';
+    } else {
+        UI.stressProgress.className = 'progress-fill success';
+    }
+}
 
-  if (answerLength < 20) {
-
-    stress += 15;
-
-  }
-
-  else {
-
-    stress -= 5;
-
-  }
-
-  updateStress();
-
-  currentQuestion++;
-
-  answerBox.value = "";
-
-  if (
-    currentQuestion >= questions.length
-  ) {
-
-    clearInterval(timer);
-
+async function completeInterview() {
+    clearInterval(state.timerInterval);
     stopRecording();
+    state.isInterviewActive = false;
 
-    addThinkingMessage();
+    // Trigger modal immediately with a skeleton loading state
+    if (UI.summaryContent) {
+        UI.summaryContent.innerHTML = `
+            <div style="text-align: center; padding: 40px 0;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: #7c63ff; margin-bottom: 16px;"></i>
+                <p>Analyzing candidate performance metrics and structuring evaluation responses via Groq AI...</p>
+            </div>
+        `;
+    }
+    openModal();
 
-    setTimeout(async () => {
+    // Prepare content diagnostics array for LLM processing
+    const breakdownArray = state.questions.map((q, idx) => ({
+        question: q,
+        candidateAnswer: state.answers[idx] || ""
+    }));
 
-      removeThinkingMessage();
+    const systemPrompt = `You are an elite, strict HR and technical evaluation engine. Analyze the given list of questions and candidate answers for a ${UI.roleSelect.value} position at a ${UI.difficultySelect.value} difficulty level.
+    You must compute an objective integer value for confidenceScore between 0 and 100 based on answer accuracy and completeness. CRITICAL: If all or most answers are empty string or represent minimal effort, your confidenceScore MUST be exceptionally low (e.g., 0 to 15%). Provide a constructive analysis text summary block detailing concrete assessment patterns. Return output strictly as a JSON object matching this schema:
+    {"confidenceScore": number, "evaluationAssessment": "string"}`;
 
-      addAIMessage(
-        "Interview completed successfully. Generating your final AI evaluation report..."
-      );
+    const userPrompt = `System UI measured runtime stress value was: ${state.stressValue}%. Here is the exact performance breakdown: ${JSON.stringify(breakdownArray)}`;
 
-      await generateFinalReport();
+    let confidenceScore = 100 - Math.floor(state.stressValue * 0.6);
+    let descriptiveMetrics = "Diagnostic complete. General performance criteria fulfilled.";
 
-    }, 1500);
+    try {
+        const response = await fetch(CONFIG.GROQ_API_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${CONFIG.GROQ_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: CONFIG.MODEL,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: userPrompt }
+                ],
+                temperature: 0.3,
+                response_format: { type: "json_object" }
+            })
+        });
 
-    return;
+        if (response.ok) {
+            const data = await response.json();
+            const parsedGrok = JSON.parse(data.choices[0].message.content);
+            confidenceScore = parsedGrok.confidenceScore ?? confidenceScore;
+            descriptiveMetrics = parsedGrok.evaluationAssessment ?? descriptiveMetrics;
+        }
+    } catch (e) {
+        console.error("Failed executing dynamic remote assessment analytics:", e);
+    }
 
-  }
+    // Render fully synchronized objective results to UI
+    let summaryHtml = `
+        <div class="metric-grid">
+            <div class="metric-card">
+                <h4>Composure Baseline</h4>
+                <p class="metric-val">${100 - state.stressValue}%</p>
+            </div>
+            <div class="metric-card">
+                <h4>Confidence Metric</h4>
+                <p class="metric-val">${confidenceScore}%</p>
+            </div>
+        </div>
+        <div class="analysis-box">
+            <h4>Evaluation Assessment</h4>
+            <p>${descriptiveMetrics}</p>
+        </div>
+        <div class="review-list">
+            <h4>Responses Diagnostic Breakdown</h4>
+    `;
 
-  setTimeout(() => {
+    state.questions.forEach((q, index) => {
+        const ans = state.answers[index] || "No input recorded inside the temporal limits.";
+        summaryHtml += `
+            <div class="review-item">
+                <p class="review-q"><strong>Q${index + 1}:</strong> ${q}</p>
+                <p class="review-a"><strong>Your Answer:</strong> ${ans}</p>
+            </div>
+        `;
+    });
 
-    loadQuestion();
-
-  }, 1200);
-
+    summaryHtml += `</div>`;
+    
+    if (UI.summaryContent) {
+        UI.summaryContent.innerHTML = summaryHtml;
+    }
 }
 
-restartBtn.addEventListener(
-  "click",
-  () => {
+function openModal() {
+    if (UI.modal) {
+        UI.modal.classList.add('active');
+        UI.modal.setAttribute('aria-hidden', 'false');
+    }
+}
 
-    currentQuestion = 0;
+function closeModal() {
+    if (UI.modal) {
+        UI.modal.classList.remove('active');
+        UI.modal.setAttribute('aria-hidden', 'true');
+    }
+    resetInterview();
+}
 
-    stress = 0;
-
-    userAnswers = [];
-
-    chatContainer.innerHTML = "";
-
-    updateStress();
-
-    loadQuestion();
-
-  }
-);
-
-nextBtn.addEventListener(
-  "click",
-  nextQuestion
-);
-
-startAiBtn.addEventListener(
-  "click",
-  generateAIQuestions
-);
-
-updateStress();
+function resetInterview() {
+    clearInterval(state.timerInterval);
+    stopRecording();
+    state.isInterviewActive = false;
+    state.currentQuestionIndex = 0;
+    state.answers = {};
+    state.stressValue = 0;
+    
+    UI.stressLevel.textContent = '0%';
+    UI.stressProgress.style.width = '0%';
+    UI.stressProgress.className = 'progress-fill success';
+    UI.timer.textContent = '60s';
+    UI.timerProgress.style.width = '100%';
+    UI.timerProgress.className = 'progress-fill success';
+    UI.answerInput.value = '';
+    
+    UI.interviewBox.classList.add('hidden');
+    UI.setupPanel.classList.remove('hidden');
+}

@@ -1,0 +1,8 @@
+# Auto normalize line endings
+* text=auto eol=lf
+
+# Custom overrides
+*.html text diff=html
+*.css text
+*.js text
+*.json text
