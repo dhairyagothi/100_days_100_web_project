@@ -417,11 +417,9 @@ function updateBudget(){
 
   const expense =
     transactions
-
       .filter(
         txn => txn.type === "expense"
       )
-
       .reduce(
         (sum,txn) =>
           sum + txn.amount,
@@ -432,33 +430,137 @@ function updateBudget(){
     `₹${expense} / ₹${monthlyBudget}`;
 
   const percentage =
-    monthlyBudget
-
-      ? Math.min(
-          (expense/monthlyBudget)
-            * 100,
-          100
-        )
-
+    monthlyBudget > 0
+      ? (expense / monthlyBudget) * 100
       : 0;
 
   progressFill.style.width =
-    `${percentage}%`;
+    `${Math.min(percentage,100)}%`;
+
+  const smartSuggestionEl =
+    document.getElementById(
+      "smart-suggestion"
+    );
+
+  const financialStatusEl =
+    document.getElementById(
+      "financial-status"
+    );
+
+  /* =========================================
+     NO BUDGET
+  ========================================= */
+
+  if(monthlyBudget <= 0){
+
+    progressFill.style.background =
+      "#6366f1";
+
+    budgetText.style.color =
+      "";
+
+    smartSuggestionEl.textContent =
+      "Set a monthly budget to track spending 📊";
+
+    financialStatusEl.textContent =
+      "Budget not configured";
+
+    return;
+  }
+
+  /* =========================================
+     SAFE ZONE
+  ========================================= */
 
   if(percentage < 50){
 
     progressFill.style.background =
       "#00c853";
 
-  }else if(percentage < 80){
+    budgetText.style.color =
+      "#00c853";
+
+    smartSuggestionEl.textContent =
+      "Great job! Your spending is well under control ✅";
+
+    financialStatusEl.textContent =
+      "Healthy financial condition 💰";
+  }
+
+  /* =========================================
+     CAUTION ZONE
+  ========================================= */
+
+  else if(
+    percentage >= 50 &&
+    percentage < 80
+  ){
 
     progressFill.style.background =
       "#ffb300";
 
-  }else{
+    budgetText.style.color =
+      "#ff9800";
+
+    smartSuggestionEl.textContent =
+      "Caution: Budget usage is increasing ⚠️";
+
+    financialStatusEl.textContent =
+      "Monitor expenses carefully 👀";
+  }
+
+  /* =========================================
+     WARNING ZONE
+  ========================================= */
+
+  else if(
+    percentage >= 80 &&
+    percentage < 100
+  ){
 
     progressFill.style.background =
-      "#ff3d00";
+      "#ff6d00";
+
+    budgetText.style.color =
+      "#ff6d00";
+
+    smartSuggestionEl.textContent =
+      "Warning: You are close to exceeding your budget 🚨";
+
+    financialStatusEl.textContent =
+      "Critical spending level ⚠️";
+  }
+
+  /* =========================================
+     BUDGET EXCEEDED
+  ========================================= */
+
+  else{
+
+    progressFill.style.background =
+      "#ff1744";
+
+    budgetText.style.color =
+      "#ff1744";
+
+    smartSuggestionEl.textContent =
+      "Budget exceeded! Reduce unnecessary expenses immediately ❌";
+
+    financialStatusEl.textContent =
+      "Over budget 🚫";
+
+    showToast(
+      "Monthly Budget Exceeded 🚨"
+    );
+
+    confetti({
+
+      particleCount:120,
+
+      spread:100,
+
+      origin:{ y:0.6 }
+    });
   }
 }
 
@@ -572,9 +674,6 @@ function updateInsights(){
       "Track miscellaneous expenses 📦";
   }
 
-  smartSuggestionEl.textContent =
-    suggestion;
-
   let status =
     "No financial data available.";
 
@@ -615,8 +714,14 @@ function updateInsights(){
     }
   }
 
-  financialStatusEl.textContent =
-    status;
+  if(monthlyBudget <= 0){
+
+    smartSuggestionEl.textContent =
+      suggestion;
+
+    financialStatusEl.textContent =
+      status;
+  }
 }
 
 /* =========================================================

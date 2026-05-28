@@ -1,8 +1,8 @@
 const categories = {
     length :{
         units :{
-            meter: { label: "Meter(m)", value: 1 },
             kilometer: { label: "Kilometer(km)", value: 1000 },
+            meter: { label: "Meter(m)", value: 1 },
             centimeter: { label: "Centimeter(cm)", value: 0.01 },
             millimeter: { label: "Millimeter(mm)", value: 0.001 },
             mile: { label: "Mile(mi)", value: 1609.344 },
@@ -51,8 +51,8 @@ const categories = {
     },
     time :{
         units: {
-            second: { label: "Second (s)", value: 1 },
             minute: { label: "Minute (min)", value: 60 },
+            second: { label: "Second (s)", value: 1 },  
             hour: { label: "Hour (hr)", value: 3600 },
             day: { label: "Day", value: 86400 },
             week: { label: "Week", value: 604800 },
@@ -88,7 +88,7 @@ const categories = {
 
 // DOM ITEMS //
 
-const categoryList = document.getElementById("categoryList")
+const categoryList = document.getElementById("category")
 
 const fromInput = document.getElementById("fromInput")
 const toInput = document.getElementById("toInput")
@@ -188,7 +188,7 @@ function convertTemperature(value, from, to) {
   } else if (to === "kelvin") {
     return celsius + 273.15;
   }
-}
+} 
 
 
 // FORMAR NUMBER //
@@ -213,21 +213,27 @@ fromUnit.addEventListener("change", convert);
 toUnit.addEventListener("change", convert);
 
 
-[fromUnit, toUnit].forEach((select) => {
-  select.addEventListener("keydown", (e) => {
-    if (
-      e.key === "ArrowUp" ||
-      e.key === "ArrowDown" ||
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight"
-    ) {
-      e.preventDefault();
-    }
-  });
+document.getElementById('category').addEventListener('click', e => {
+    const btn = e.target.closest('.categories');
+    if (!btn) return;
+    document.querySelectorAll('.categories').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    document.getElementById('fromInput').value = 1;
+    loadCategory(currentCat);
+    convert();
 });
-
 
 
 document.addEventListener("DOMContentLoaded", () => {
   loadCategory(currentCategory);
 });
+
+const toggle = document.getElementById('themeToggle');
+    toggle.addEventListener('click', () => {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      toggle.textContent = isDark ? '🌙' : '☀️';
+    }
+);

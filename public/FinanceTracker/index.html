@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Finance Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -809,7 +810,7 @@
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
     <button id="theme-toggle" aria-label="Toggle dark mode">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -859,6 +860,9 @@
             <input type="submit" value="Add Transaction">
             <button onclick="exportCSV()">
     Export CSV
+</button>
+<button onclick="exportPDF()">
+    Export PDF
 </button>
         </form>
 
@@ -1483,6 +1487,36 @@
         // ---- Init savings on page load ----
         renderGoals();
     </script>
+    async function exportPDF() {
+
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF();
+
+    doc.text("Finance Report", 20, 20);
+
+    let y = 40;
+
+    transactions.forEach((transaction, index) => {
+
+        doc.text(
+
+            `${index + 1}. 
+${transaction.title} 
+- ₹${transaction.amount} 
+(${transaction.type})`,
+
+            20,
+            y
+
+        );
+
+        y += 10;
+
+    });
+
+    doc.save("finance-report.pdf");
+}
     function exportCSV() {
 
     let csv =
