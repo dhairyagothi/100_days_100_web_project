@@ -2,6 +2,7 @@
 // 1. DOM Element References (match HTML ids/classes)
 const taskInput = document.getElementById("task");
 const taskTypeSelect = document.getElementById("task-category");
+const eisenhowerSelect = document.getElementById("eisenhower-select");
 const taskList = document.getElementById("notes-container");
 const emptyState = document.getElementById("emptyState");
 const documentsList = document.querySelector('.documents-list');
@@ -22,6 +23,7 @@ function addTask() {
   // Capture priority choice safely
   const priorityElement = document.getElementById("prioritySelect");
   const priorityValue = priorityElement ? priorityElement.value : "medium";
+  const eisenhower = eisenhowerSelect.value;
 
   if (!text) {
     showToast("⚠️ Please enter a task description!");
@@ -42,6 +44,12 @@ function addTask() {
           dateStyle: "medium",
           timeStyle: "short"
       })
+    id: Date.now(),
+    text: text,
+    category: category || "Misc",
+    eisenhower: eisenhower || "",
+    color: color,
+    completed: false
   };
 
   tasks.push(newTask);
@@ -50,6 +58,7 @@ function addTask() {
   if(priorityElement) priorityElement.value = "medium"; // Reset back to default
   
   taskTypeSelect.value = ""; // Reset dropdown
+  eisenhowerSelect.value = ""; // Reset Eisenhower dropdown
 
   renderTasks();
   showToast("✅ Task added successfully!");
@@ -153,6 +162,9 @@ function renderTasks() {
             <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
           </div>
           <div class="note-actions">
+            ${task.eisenhower ? `<span class="priority-tag ${task.eisenhower}">${
+              {"urgent-important":"Urgent & Important","important-only":"Important Only","urgent-only":"Urgent Only","neither":"Neither"}[task.eisenhower]
+            }</span>` : ""}
             <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
             <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
           </div>

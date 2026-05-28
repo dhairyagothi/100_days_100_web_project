@@ -14,6 +14,7 @@ let matched      = [];
 let moves        = 0;
 let seconds      = 0;
 let timerInterval = null;
+let previewInterval=null;
 let gameActive   = false;
 let lockBoard    = false;
 let hintUsed     = false;
@@ -29,6 +30,8 @@ const bestEl     = document.getElementById('bestVal');
 const progressEl = document.getElementById('progressBar');
 const winModal   = document.getElementById('winModal');
 const toastEl    = document.getElementById('toast');
+const startBtn   = document.getElementById('startBtn');
+const hintBtn    = document.getElementById('hintBtn');
 
 // ── Event Listeners ───────────────────────────────────────
 document.querySelectorAll('.diff-btn').forEach(btn => {
@@ -42,14 +45,14 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
   });
 });
 
-document.getElementById('startBtn').addEventListener('click', startGame);
-document.getElementById('hintBtn').addEventListener('click', useHint);
+startBtn.addEventListener('click', startGame);
+hintBtn.addEventListener('click', useHint);
+
 document.getElementById('playAgainBtn').addEventListener('click', () => {
   winModal.classList.remove('visible');
   setupPreview();
 });
 document.getElementById('restartBtn').addEventListener('click', setupPreview);
-
 
 // ── Utility Helpers ───────────────────────────────────────
 
@@ -129,9 +132,40 @@ function stopTimer() {
   clearInterval(timerInterval);
 }
 
+// ── Preview Countdown ─────────────────────────────────────
+ 
+/**
+ * Count down from 3 seconds while cards are face-up, then auto-start.
+ * The Start button label reflects the countdown and acts as a skip.
+ */
+function startPreviewCountdown() {
+  let countdown = 3;
+  startBtn.textContent = `Skip Preview (${countdown})`;
+ 
+  previewInterval = setInterval(() => {
+    countdown--;
+ 
+    if (countdown > 0) {
+      startBtn.textContent = `Skip Preview (${countdown})`;
+    } else {
+      // Countdown finished — auto-start the game
+      clearInterval(previewInterval);
+      previewInterval = null;
+      startGame();
+    }
+  }, 1000);
+}
+
 // ── Game Start ────────────────────────────────────────────
+
 function setupPreview() {
   const cfg = DIFFICULTIES[difficulty];
+
+  // Cancel any running preview countdown or game timer
+  if (previewInterval) {
+     clearInterval(previewInterval);
+     previewInterval = null;
+  }
 
   stopTimer();
   winModal.classList.remove('visible');
@@ -152,6 +186,9 @@ function setupPreview() {
 
   pairsEl.textContent = `0/${cfg.pairs}`;
   progressEl.style.width = '0%';
+
+  hintBtn.disabled    = true;
+  hintBtn.textContent = 'Hint';
 
   updateGridClass();
   updateBestDisplay();
@@ -181,11 +218,18 @@ function setupPreview() {
     grid.appendChild(card);
     cards.push(card);
   });
+  startPreviewCountdown();
 }
 /**
  * Initialise and start a fresh game
  */
 function startGame() {
+
+  if (previewInterval) {
+    clearInterval(previewInterval);
+    previewInterval = null;
+  }
+
   cards.forEach(card => {
     card.classList.remove('flipped');
   });
@@ -194,6 +238,10 @@ function startGame() {
 
   gameActive = true;
   lockBoard = false;
+
+  startBtn.textContent = 'New Game';
+  hintBtn.disabled     = false;
+  hintBtn.textContent  = 'Hint';
 
   startTimer();
 }
@@ -265,39 +313,52 @@ function checkMatch() {
  * Briefly reveal a matching pair (one use per game)
  */
 function useHint() {
-  if (!gameActive || hintUsed) {
-    showToast('Hint already used!');
+ if (hintUsed) {
+    showToast('💡 Hint already used!');
     return;
   }
-  hintUsed = true;
-
-  // Collect unmatched, unflipped cards
-  const unmatched = cards.filter(
-    c => !c.classList.contains('matched') && !c.classList.contains('flipped')
-  );
-  if (!unmatched.length) return;
-
-  // Group by emoji to find a valid pair
-  const emojiMap = {};
-  for (const c of unmatched) {
-    const e = c.dataset.emoji;
-    if (!emojiMap[e]) emojiMap[e] = [];
-    emojiMap[e].push(c);
+ 
+  // Guard: only works during an active game
+  if (!gameActive) return;
+ 
+  // Consume the hint
+  hintUsed            = true;
+  hintBtn.disabled    = true;
+  hintBtn.textContent = 'Hint Used';
+ 
+  const cols      = DIFFICULTIES[difficulty].cols;
+  const totalRows = Math.ceil(cards.length / cols);
+ 
+  // Collect row indices that still contain unmatched, unflipped cards
+  const validRows = [];
+  for (let r = 0; r < totalRows; r++) {
+    const rowSlice     = cards.slice(r * cols, (r + 1) * cols);
+    const hasCandidate = rowSlice.some(
+      c => !c.classList.contains('matched') && !c.classList.contains('flipped')
+    );
+    if (hasCandidate) validRows.push(r);
   }
-  const pair = Object.values(emojiMap).find(g => g.length >= 2);
-  if (!pair) return;
-
-  // Briefly show the pair
-  pair[0].classList.add('flipped');
-  pair[1].classList.add('flipped');
+ 
+  if (!validRows.length) return;   // nothing left to reveal
+ 
+  // Pick one random valid row
+  const rowIdx   = validRows[Math.floor(Math.random() * validRows.length)];
+  const rowCards = cards
+    .slice(rowIdx * cols, (rowIdx + 1) * cols)
+    .filter(c => !c.classList.contains('matched') && !c.classList.contains('flipped'));
+ 
+  // Briefly flip the row face-up
+  rowCards.forEach(c => c.classList.add('flipped'));
   showToast('💡 Hint used!');
-
+ 
+  // Flip back after 1.5 seconds (skip already-matched cards)
   setTimeout(() => {
-    if (!pair[0].classList.contains('matched')) {
-      pair[0].classList.remove('flipped');
-      pair[1].classList.remove('flipped');
-    }
-  }, 1200);
+    rowCards.forEach(c => {
+      if (!c.classList.contains('matched')) {
+        c.classList.remove('flipped');
+      }
+    });
+  }, 1500);
 }
 
 // ── Win Condition ─────────────────────────────────────────
