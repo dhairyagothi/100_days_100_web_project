@@ -68,101 +68,117 @@
       cell.addEventListener("click", function () { handleClick(i); });
       boardEl.appendChild(cell);
     });
-  }
 
-  /* ── Handle cell click ────────────────── */
-  function handleClick(i) {
-    if (gameOver || board[i]) return;
-    if (vsBot && current === botMark) return;   // block clicks on bot's turn
+    themeSelect.addEventListener("change", function () {
+        theme = this.value;
+        applyTheme(theme);
+    });
 
-    board[i] = current;
-    buildBoard();
-
-    var win = checkWin();
-    if (win) {
-      highlightWin(win);
-      scores[current]++;
-      updateScores();
-      setTimeout(function () { showWinOverlay(current); }, 320);
-      gameOver = true;
-    } else if (board.every(Boolean)) {
-      scores.D++;
-      updateScores();
-      setTimeout(showDrawOverlay, 200);
-      gameOver = true;
-    } else {
-      current = current === "X" ? "O" : "X";
-      setUI(current);
-      if (vsBot && current === botMark) setTimeout(doBotMove, 480);
+    /* ── Render board ────────────────────── */
+    function renderBoard() {
+        boardEl.innerHTML = "";
+        board.forEach(function (val, i) {
+            var btn = document.createElement("button");
+            btn.className = "cell";
+            if (val) {
+                btn.classList.add(val === "O" ? "mark-o" : "mark-x");
+                btn.textContent = val;
+                btn.disabled = true;
+            }
+            btn.addEventListener("click", function () { handleClick(i); });
+            boardEl.appendChild(btn);
+        });
     }
-  }
 
-  /* ── Bot move ─────────────────────────── */
-  function doBotMove() {
-    if (gameOver) return;
-    var move = getBotMove();
-    if (move === -1) return;
-    board[move] = botMark;
-    buildBoard();
-
-    var win = checkWin();
-    if (win) {
-      highlightWin(win);
-      scores[botMark]++;
-      updateScores();
-      setTimeout(function () { showWinOverlay(botMark); }, 320);
-      gameOver = true;
-    } else if (board.every(Boolean)) {
-      scores.D++;
-      updateScores();
-      setTimeout(showDrawOverlay, 200);
-      gameOver = true;
-    } else {
-      current = current === "X" ? "O" : "X";
-      setUI(current);
+    /* ── Handle player click ─────────────── */
+    function handleClick(i) {
+        if (gameOver || board[i]) return;
+        if (mode !== "pvp" && current === "X") return;
+        placeMove(i, current);
     }
-  }
 
-  /* ── Pick best move (minimax) ─────────── */
-  function getBotMove() {
-    var bestScore = -Infinity;
-    var bestMove  = -1;
-    for (var i = 0; i < 9; i++) {
-      if (!board[i]) {
-        board[i] = botMark;
-        var score = minimax(board, 0, false);
-        board[i] = null;
-        if (score > bestScore) { bestScore = score; bestMove = i; }
-      }
+    /* ── Place a move ────────────────────── */
+    function placeMove(i, mark) {
+        board[i] = mark;
+        moveHistory.push({ index: i, mark: mark });
+        renderBoard();
+        updateHistory();
+
+        var win = checkWin();
+        if (win) {
+            highlightWin(win);
+            scores[mark]++;
+            updateScores();
+            gameOver = true;
+            stopTimer();
+            setTimeout(function () { showWinModal(mark); }, 400);
+        } else if (board.every(Boolean)) {
+            scores.D++;
+            updateScores();
+            gameOver = true;
+            stopTimer();
+            setTimeout(showDrawModal, 300);
+        } else {
+            current = current === "O" ? "X" : "O";
+            updateStatus();
+            if (mode !== "pvp" && current === "X") {
+                setTimeout(doCpuMove, 480);
+            }
+        }
     }
-    return bestMove;
-  }
 
-  /* ── Minimax ──────────────────────────── */
-  function minimax(b, depth, isMax) {
-    var human  = botMark === "O" ? "X" : "O";
-    var winner = scanWinner(b);
-    if (winner === botMark) return 10 - depth;
-    if (winner === human)   return depth - 10;
-    if (b.every(Boolean))   return 0;
+    /* ── CPU move ────────────────────────── */
+    function doCpuMove() {
+        if (gameOver) return;
+        var avail = board.map(function (v, i) { return v ? null : i; }).filter(function (v) { return v !== null; });
+        if (!avail.length) return;
 
-    var best = isMax ? -Infinity : Infinity;
-    for (var i = 0; i < 9; i++) {
-      if (!b[i]) {
-        b[i] = isMax ? botMark : human;
-        var score = minimax(b, depth + 1, !isMax);
-        b[i] = null;
-        best = isMax ? Math.max(best, score) : Math.min(best, score);
-      }
+        var move;
+        if (mode === "cpu-easy") {
+            move = avail[Math.floor(Math.random() * avail.length)];
+        } else if (mode === "cpu-medium") {
+            move = Math.random() < 0.6 ? bestMove() : avail[Math.floor(Math.random() * avail.length)];
+        } else {
+            move = bestMove();
+        }
+
+        boardEl.classList.add("thinking");
+        setTimeout(function () {
+            boardEl.classList.remove("thinking");
+            placeMove(move, "X");
+        }, 0);
     }
-    return best;
-  }
 
-  /* ── Scan board for a winner ──────────── */
-  function scanWinner(b) {
-    for (var i = 0; i < WIN_LINES.length; i++) {
-      var l = WIN_LINES[i];
-      if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[0]] === b[l[2]]) return b[l[0]];
+    /* ── Minimax best move ───────────────── */
+    function bestMove() {
+        var best = -Infinity, mv = -1;
+        board.forEach(function (v, i) {
+            if (!v) {
+                board[i] = "X";
+                var s = minimax(board, 0, false);
+                board[i] = null;
+                if (s > best) { best = s; mv = i; }
+            }
+        });
+        return mv;
+    }
+
+    function minimax(b, depth, isMax) {
+        var w = scanWinner(b);
+        if (w === "X") return 10 - depth;
+        if (w === "O") return depth - 10;
+        if (b.every(Boolean)) return 0;
+
+        var best = isMax ? -Infinity : Infinity;
+        b.forEach(function (v, i) {
+            if (!v) {
+                b[i] = isMax ? "X" : "O";
+                var s = minimax(b, depth + 1, !isMax);
+                b[i] = null;
+                best = isMax ? Math.max(best, s) : Math.min(best, s);
+            }
+        });
+        return best;
     }
     return null;
   }
