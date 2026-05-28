@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>🎲 Ludo 4 Player</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -241,9 +242,16 @@ h1{
 #w-menu{background:rgba(255,255,255,.1);color:#ccc;border:1px solid rgba(255,255,255,.2);}
 #w-menu:hover{color:#fff;}
 .w-stars{font-size:1.4rem;letter-spacing:4px;margin-bottom:4px;}
+.current-turn {
+  border: 3px solid #FFD700 !important;
+  box-shadow: 0 0 25px rgba(255,215,0,0.9);
+  transform: scale(1.05);
+}
 </style>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
 
 <h1>🎲 LUDO</h1>
 
@@ -346,12 +354,12 @@ h1{
 <!-- ④ WIN OVERLAY -->
 <div id="win-ov">
   <div id="wcard">
-    <span id="w-trophy">🏆</span>
+    <span id="w-trophy"><i class="fas fa-trophy fa-bounce" style="color: #FFD700; font-size: 5rem; display: block; margin-bottom: 12px;"></i></span>
     <div id="w-congrats">Congratulations!</div>
     <div id="w-name">Player 1</div>
     <span id="w-color-badge">🔴 Red</span>
     <div class="w-stars">⭐⭐⭐</div>
-    <div id="w-subtitle">All tokens recieved<br>Congratulations you win the game🎉</div>
+    <div id="w-subtitle">All tokens received<br>Congratulations you win the game!</div>
     <div class="w-btns">
       <button class="w-btn" id="w-play-again" onclick="playAgain()">🔄 Play Again</button>
       <button class="w-btn" id="w-menu" onclick="backToMenu()">🏠 Menu</button>
@@ -394,7 +402,10 @@ const YARD = [
   [[10,2],[10,4],[12,2],[12,4]],
 ];
 
-const SAFE = new Set(['6,1','1,8','8,13','13,6','8,3','11,8','6,11','3,6']);
+const SAFE = new Set([
+  '6,1','1,8','8,13','13,6',  // starting safe cells
+  '2,6','6,12','12,8','8,2'   // middle safe cells (corrected middle safe cells for better compatibility)
+]);
 const isSafe = (r,c) => SAFE.has(r+','+c);
 
 const DEFAULT_NAMES = ['Player 1','Player 2','Player 3','Player 4'];
@@ -533,7 +544,9 @@ function canMove(pi,ti){
   const s=tokens[pi][ti].step;
   if(s===57)return false;
   if(s===-1)return diceVal===6;
-  return(s+diceVal)<=57;
+  //Exact match required
+  if (s + diceVal > 57) return false;
+  return true;
 }
 function anyCanMove(pi){return tokens[pi].some((_,ti)=>canMove(pi,ti));}
 
@@ -543,7 +556,13 @@ function doMove(pi,ti){
   const tok=tokens[pi][ti];
   const nm=NAMES[pi];
   if(tok.step===-1){tok.step=0;addLog(nm+': Token '+(ti+1)+' started moving from the Yard🏠',pi);}
-  else{tok.step+=diceVal;addLog(nm+': Token '+(ti+1)+' → step '+tok.step,pi);}
+  else{
+    if(tok.step + diceVal <= 57)
+      tok.step += diceVal;
+    else
+    return; //invalid move
+}
+  addLog(nm+': Token '+(ti+1)+' → step '+tok.step,pi);
   if(tok.step===57){
     addLog(nm+': Token '+(ti+1)+' recieved! 🎉',pi);
     playSound('tok');render();updatePanels();
@@ -580,7 +599,9 @@ function afterMove(pi){
     if(vsAI&&pi!==0)setTimeout(()=>aiTurn(pi),800);
     return;
   }
-  cur=(pi+1)%4;rolled=false;updatePanels();
+  cur=(pi+1)%4;
+  animateTurnChange();
+  rolled=false;updatePanels();
   setStatus(NAMES[cur]+' chance!');
   resetTimer();
   if(vsAI&&cur!==0)setTimeout(()=>aiTurn(cur),800);
@@ -703,7 +724,13 @@ function updTimer(){
 // ── UI HELPERS ────────────────────────────────────────
 function updatePanels(){
   for(let i=0;i<4;i++){
-    document.getElementById(PPIDS[i]).classList.toggle('active',i===cur);
+    const panel = document.getElementById(PPIDS[i]);
+    panel.classList.remove('active');
+    panel.classList.remove('current-turn');
+    if(i===cur){
+      panel.classList.add('active');
+      panel.classList.add('current-turn');
+    }
     const y=tokens[i].filter(t=>t.step===-1).length;
     const d=tokens[i].filter(t=>t.step===57).length;
     document.getElementById('st'+i).textContent='Yard:'+y+' Done:'+d;
@@ -745,6 +772,16 @@ function playSound(t){
     else if(t==='win'){o.type='square';o.frequency.setValueAtTime(523,ctx.currentTime);o.frequency.setValueAtTime(659,ctx.currentTime+.18);o.frequency.setValueAtTime(784,ctx.currentTime+.36);g.gain.setValueAtTime(.12,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.7);}
     o.start();o.stop(ctx.currentTime+.8);
   }catch(e){}
+}
+
+//Turn highlight on each Player's turn accordingly
+function animateTurnChange() {
+  const panel = document.getElementById(PPIDS[cur]);
+  panel.style.transition = "all 0.3s ease";
+  panel.style.transform = "scale(1.08)";
+  setTimeout(() => {
+    panel.style.transform = "scale(1)";
+  }, 300);
 }
 
 // Enter key on name inputs → start game

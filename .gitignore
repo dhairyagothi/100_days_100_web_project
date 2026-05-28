@@ -177,3 +177,4 @@ dmypy.json
 # Docker
 *.tar
 docker-compose.override.yml
+.vercel
