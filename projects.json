@@ -1844,5 +1844,13 @@
   "techStack":["tool","html","css","javascript"],
   "difficulty":"intermediate",
   "projectPath":"./public/github-repository-analyser/index.html"
+},{
+  "projectNo":185,
+  "projectName":"GitHub Repo Analyzer",
+  "projectType":"tool",
+  "projectDesc":"A modern web application to analyze GitHub repositories.",
+  "techStack":["tool","html","css","javascript"],
+  "difficulty":"intermediate",
+  "projectPath":"./public/github-repo-analyzer/index.html"
 }
 ]
