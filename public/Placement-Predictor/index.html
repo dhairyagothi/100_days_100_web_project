@@ -4,14 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Placement Predictor</title>
+  <link rel="icon" type="image/png" href="logo.png">
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
 
   <button id="themeToggle" class="theme-toggle">🌙</button>
 
   <div class="container">
-    <h1>🎓 Placement Predictor</h1>
+    <h1 class="main-title">
+      <img src="logo.png" alt="logo" class="title-logo">
+      Placement Predictor
+  </h1>
 
     <p class="subtitle">
       Predict your placement chances and expected package based on your profile
@@ -121,6 +127,32 @@
     <button id="predictBtn">Predict Placement</button>
 
     <div class="result-box" id="resultBox">
+
+      <div class="meter-wrapper">
+        <div class="progress-ring" id="progressRing">
+          <svg class="progress-svg" width="180" height="180">
+            <circle
+              class="progress-bg"
+              cx="90"
+              cy="90"
+              r="75"
+            ></circle>
+            <circle
+              class="progress-circle"
+              id="progressCircle"
+              cx="90"
+              cy="90"
+              r="75"
+            ></circle>
+          </svg>
+
+        <div class="meter-content">
+          <h2 id="meterScore">0%</h2>
+          <p>Placement Chance</p>
+        </div>
+      </div>
+    </div>
+    
       <h2>Your Prediction</h2>
 
       <div class="result-card">
@@ -137,10 +169,21 @@
         <span>Suggested Focus Area</span>
         <h3 id="suggestion">-</h3>
       </div>
+
+
+      <div class="charts-container">
+        <div class="chart-card">
+          <canvas id="placementChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <canvas id="skillsChart"></canvas>
+        </div>
+      </div>
     </div>
 
   </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

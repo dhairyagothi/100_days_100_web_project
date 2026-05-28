@@ -452,6 +452,93 @@ let moonFetchController = null;
 
 // --- Shared helpers ----------------------------------------------------------
 
+// Shared skeleton delay constant
+const SKELETON_DELAY = 200;
+
+// Active delayed skeleton timers store to prevent race conditions
+const skeletonTimers = {};
+
+/**
+ * Centralized skeleton loader controller
+ */
+function applySkeletons(elements, isText = false) {
+    elements.forEach(el => {
+        if (el) {
+            el.classList.add(isText ? "skeleton-text" : "skeleton");
+        }
+    });
+}
+
+function clearSkeletons(elements) {
+    elements.forEach(el => {
+        if (el) {
+            el.classList.remove("skeleton", "skeleton-text");
+        }
+    });
+}
+
+/**
+ * Schedules a delayed skeleton loader, clearing any active overlapping timers.
+ */
+function scheduleSkeletonDelay(key, elements, isText = false, delayMs = SKELETON_DELAY) {
+    if (skeletonTimers[key]) {
+        clearTimeout(skeletonTimers[key]);
+    }
+
+    skeletonTimers[key] = setTimeout(() => {
+        applySkeletons(elements, isText);
+        delete skeletonTimers[key];
+    }, delayMs);
+
+    return skeletonTimers[key];
+}
+
+function clearActiveTimer(key) {
+    if (skeletonTimers[key]) {
+        clearTimeout(skeletonTimers[key]);
+        delete skeletonTimers[key];
+    }
+}
+
+/**
+ * Reusable list skeleton generator to eliminate redundant JS markup
+ */
+function renderSkeletonList(container, count, templateFunc) {
+    if (container) {
+        container.innerHTML = Array.from({ length: count }).map(templateFunc).join("");
+    }
+}
+
+/**
+ * Fetch wrapper with AbortController-driven active connection cancellation.
+ */
+async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    let abortHandler;
+    if (options.signal) {
+        if (options.signal.aborted) {
+            controller.abort();
+        } else {
+            abortHandler = () => controller.abort();
+            options.signal.addEventListener("abort", abortHandler);
+        }
+    }
+
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        const response = await fetch(url, { ...options, signal });
+        return response;
+    } finally {
+        clearTimeout(timeoutId);
+        if (options.signal && abortHandler) {
+            options.signal.removeEventListener("abort", abortHandler);
+        }
+    }
+}
+
 function escapeHtml(value) {
     return String(value || "").replace(/[&<>"']/g, (char) => ({
         "&": "&amp;",
@@ -568,6 +655,10 @@ function setApodBackground(imageUrl) {
 }
 
 function renderApod(data, isFallback = false) {
+    clearActiveTimer("apod_block");
+    clearActiveTimer("apod_text");
+    clearSkeletons([apodTitle, apodDescription, apodDate, apodSource]);
+
     const imageUrl = resolveApodImageUrl(data);
     const title = data.title || FALLBACK_APOD.title;
     const explanation = data.explanation || FALLBACK_APOD.explanation;
@@ -576,6 +667,22 @@ function renderApod(data, isFallback = false) {
     apodImg.alt = title;
     apodImg.referrerPolicy = "no-referrer";
     apodImg.src = imageUrl;
+
+    if (apodImg.complete) {
+        clearSkeletons([apodImage]);
+    } else {
+        apodImg.onload = () => {
+            clearSkeletons([apodImage]);
+            apodImg.onload = null;
+            apodImg.onerror = null;
+        };
+        apodImg.onerror = () => {
+            clearSkeletons([apodImage]);
+            apodImg.onload = null;
+            apodImg.onerror = null;
+        };
+    }
+
     setApodBackground(imageUrl);
     apodTitle.textContent = title;
     apodDescription.textContent = trimText(explanation, 230);
@@ -589,6 +696,7 @@ function renderApod(data, isFallback = false) {
 }
 
 apodImg.addEventListener("error", () => {
+    clearSkeletons([apodImage]);
     if (!apodImg.src.includes("images.unsplash.com")) {
         apodImg.src = FALLBACK_APOD.url;
         setApodBackground(FALLBACK_APOD.url);
@@ -613,7 +721,7 @@ async function fetchNasaApodForDate(date) {
         params.set("date", date);
     }
 
-    const response = await fetch(`${NASA_APOD_BASE}?${params}`);
+    const response = await fetchWithTimeout(`${NASA_APOD_BASE}?${params}`);
 
     if (!response.ok) {
         throw new Error("NASA APOD request failed");
@@ -636,17 +744,27 @@ async function loadNasaApod() {
     apodTitle.textContent = "Loading NASA Picture of the Day…";
     apodDescription.textContent = "Fetching today's image from NASA.";
 
-    for (const date of getApodDatesToTry()) {
-        try {
-            const data = await fetchNasaApodForDate(date);
-            renderApod(data, false);
-            return;
-        } catch (error) {
-            continue;
-        }
-    }
+    scheduleSkeletonDelay("apod_block", [apodImage], false, SKELETON_DELAY);
+    scheduleSkeletonDelay("apod_text", [apodTitle, apodDescription, apodDate, apodSource], true, SKELETON_DELAY);
 
-    renderApod(FALLBACK_APOD, true);
+    try {
+        for (const date of getApodDatesToTry()) {
+            try {
+                const data = await fetchNasaApodForDate(date);
+                renderApod(data, false);
+                return;
+            } catch (error) {
+                continue;
+            }
+        }
+        renderApod(FALLBACK_APOD, true);
+    } catch (globalError) {
+        renderApod(FALLBACK_APOD, true);
+    } finally {
+        // Clear block and text skeleton delay timers to guarantee safety
+        clearActiveTimer("apod_block");
+        clearActiveTimer("apod_text");
+    }
 }
 
 // --- Daily space facts -------------------------------------------------------
@@ -658,7 +776,7 @@ function decodeHtmlEntities(value) {
 }
 
 async function fetchOpenTdbSpaceFact() {
-    const response = await fetch(OPENTDB_FACT_URL);
+    const response = await fetchWithTimeout(OPENTDB_FACT_URL);
 
     if (!response.ok) {
         throw new Error("Open Trivia DB request failed");
@@ -688,7 +806,7 @@ async function fetchNasaNeoFact() {
         end_date: today,
         api_key: NASA_API_KEY
     });
-    const response = await fetch(`${NASA_NEO_FEED_BASE}?${params}`);
+    const response = await fetchWithTimeout(`${NASA_NEO_FEED_BASE}?${params}`);
 
     if (!response.ok) {
         throw new Error("NASA NEO request failed");
@@ -738,11 +856,16 @@ async function loadDailyFact() {
     spaceFact.textContent = "Loading today's space fact…";
     factSource.textContent = "Source: loading…";
 
+    scheduleSkeletonDelay("fact_text", [spaceFact, factSource], true, SKELETON_DELAY);
+
     try {
         const fact = await fetchOnlineSpaceFact();
         showFact(fact);
     } catch (error) {
         loadStaticFact();
+    } finally {
+        // Safe timeout cleanup inside finally block
+        clearActiveTimer("fact_text");
     }
 }
 
@@ -750,6 +873,8 @@ async function shuffleFact() {
     const current = spaceFact.textContent;
     spaceFact.textContent = "Loading another space fact…";
     factSource.textContent = "Source: loading…";
+
+    scheduleSkeletonDelay("fact_text", [spaceFact, factSource], true, SKELETON_DELAY);
 
     try {
         const fact = await fetchOnlineSpaceFact();
@@ -762,10 +887,16 @@ async function shuffleFact() {
         showFact(fact);
     } catch (error) {
         loadStaticFact(current);
+    } finally {
+        // Safe timeout cleanup inside finally block
+        clearActiveTimer("fact_text");
     }
 }
 
 function showFact(fact) {
+    clearActiveTimer("fact_text");
+    clearSkeletons([spaceFact, factSource]);
+
     spaceFact.classList.add("is-changing");
     factSource.classList.add("is-changing");
 
@@ -801,7 +932,7 @@ function formatUsnoDate(date) {
 
 async function fetchUsnoMoonPhaseName(date, signal) {
     const params = new URLSearchParams({ date: formatUsnoDate(date) });
-    const response = await fetch(`${USNO_MOON_PHASE_DATE_URL}?${params}`, { signal });
+    const response = await fetchWithTimeout(`${USNO_MOON_PHASE_DATE_URL}?${params}`, { signal });
 
     if (!response.ok) {
         throw new Error("USNO moon phase request failed");
@@ -819,7 +950,7 @@ async function fetchUsnoMoonPhaseName(date, signal) {
 }
 
 async function fetchFarmsenseMoonPhaseName(date, signal) {
-    const response = await fetch(`${FARMSENSE_MOON_URL}?d=${date.getTime()}`, { signal });
+    const response = await fetchWithTimeout(`${FARMSENSE_MOON_URL}?d=${date.getTime()}`, { signal });
 
     if (!response.ok) {
         throw new Error("Farmsense moon phase request failed");
@@ -913,6 +1044,10 @@ function renderMoonPhaseVisual(phase) {
 }
 
 function renderMoonMetrics(phase, sourceLabel) {
+    clearActiveTimer("moon_block");
+    clearActiveTimer("moon_text");
+    clearSkeletons([moonName, moonPhaseSource, moonOrb, illumination, lunarAge]);
+
     illumination.textContent = `${phase.illumination.toFixed(1)}%`;
     lunarAge.textContent = `${phase.age.toFixed(1)} days`;
     renderMoonPhaseVisual(phase);
@@ -932,7 +1067,7 @@ async function fetchOpenMeteoMoonData(date, signal) {
         start_date: dateStr,
         end_date: dateStr
     });
-    const response = await fetch(`${OPEN_METEO_URL}?${params}`, { signal });
+    const response = await fetchWithTimeout(`${OPEN_METEO_URL}?${params}`, { signal });
 
     if (!response.ok) {
         throw new Error("Open-Meteo moon request failed");
@@ -978,43 +1113,53 @@ async function updateMoon() {
         moonPhaseSource.textContent = "Fetching live moon data…";
     }
 
-    if (!observerState.ready) {
-        await resolveObserverLocation();
-    }
+    scheduleSkeletonDelay("moon_block", [moonOrb], false, SKELETON_DELAY);
+    scheduleSkeletonDelay("moon_text", [moonName, moonPhaseSource, illumination, lunarAge], true, SKELETON_DELAY);
 
     try {
-        const [onlinePhase, openMeteoMoon] = await Promise.all([
-            fetchOnlineMoonPhaseName(selected, signal),
-            fetchOnlineMoonMetrics(selected, signal)
-        ]);
-
-        moonName.textContent = onlinePhase.name;
-        renderMoonMetrics(
-            openMeteoMoon.metrics,
-            `Phase: ${onlinePhase.source} · Metrics: ${openMeteoMoon.source}`
-        );
-    } catch (error) {
-        if (error.name === "AbortError") {
-            return;
+        if (!observerState.ready) {
+            await resolveObserverLocation();
         }
 
         try {
-            const onlinePhase = await fetchOnlineMoonPhaseName(selected, signal);
+            const [onlinePhase, openMeteoMoon] = await Promise.all([
+                fetchOnlineMoonPhaseName(selected, signal),
+                fetchOnlineMoonMetrics(selected, signal)
+            ]);
+
             moonName.textContent = onlinePhase.name;
-            renderMoonMetrics(localPhase, `Phase: ${onlinePhase.source} · Metrics: local fallback`);
-        } catch (innerError) {
-            if (innerError.name === "AbortError") {
+            renderMoonMetrics(
+                openMeteoMoon.metrics,
+                `Phase: ${onlinePhase.source} · Metrics: ${openMeteoMoon.source}`
+            );
+        } catch (error) {
+            if (error.name === "AbortError") {
                 return;
             }
 
-            moonName.textContent = localPhase.name;
-            renderMoonMetrics(localPhase, "Offline fallback");
+            try {
+                const onlinePhase = await fetchOnlineMoonPhaseName(selected, signal);
+                moonName.textContent = onlinePhase.name;
+                renderMoonMetrics(localPhase, `Phase: ${onlinePhase.source} · Metrics: local fallback`);
+            } catch (innerError) {
+                if (innerError.name === "AbortError") {
+                    return;
+                }
+
+                moonName.textContent = localPhase.name;
+                renderMoonMetrics(localPhase, "Offline fallback");
+            }
+        }
+    } finally {
+        if (!signal.aborted) {
+            clearActiveTimer("moon_block");
+            clearActiveTimer("moon_text");
         }
     }
 }
 
 async function fetchWikipediaSummary(wikiTitle, signal) {
-    const response = await fetch(`${WIKIPEDIA_SUMMARY_BASE}/${encodeURIComponent(wikiTitle)}`, { signal });
+    const response = await fetchWithTimeout(`${WIKIPEDIA_SUMMARY_BASE}/${encodeURIComponent(wikiTitle)}`, { signal });
 
     if (!response.ok) {
         throw new Error("Wikipedia summary request failed");
@@ -1066,6 +1211,23 @@ async function enrichScientistFromWikipedia(scientist, signal) {
 
 async function loadDynamicTopics() {
     setPanelLoading(topicList, "Loading astronomy topics…");
+    
+    if (skeletonTimers["topics"]) {
+        clearTimeout(skeletonTimers["topics"]);
+    }
+    skeletonTimers["topics"] = setTimeout(() => {
+        renderSkeletonList(topicList, 2, () => `
+            <div class="topic-item skeleton-card s-pointer-none s-opacity-85" aria-hidden="true">
+                <span class="topic-icon skeleton s-no-border"></span>
+                <span class="s-flex-1">
+                    <span class="topic-title skeleton-text s-w-50 s-h-14 s-mb-6"></span>
+                    <span class="topic-copy skeleton-text s-w-80 s-h-12"></span>
+                </span>
+                <span aria-hidden="true" class="s-color-soft">></span>
+            </div>
+        `);
+    }, SKELETON_DELAY);
+
     const controller = new AbortController();
 
     try {
@@ -1075,6 +1237,8 @@ async function loadDynamicTopics() {
         activeTopics = enriched;
     } catch (error) {
         activeTopics = STATIC_TOPICS.map((topic) => ({ ...topic }));
+    } finally {
+        clearActiveTimer("topics");
     }
 
     topicState.start = 0;
@@ -1083,6 +1247,22 @@ async function loadDynamicTopics() {
 
 async function loadDynamicScientists() {
     setPanelLoading(scientistList, "Loading scientists & astronauts…");
+    
+    if (skeletonTimers["scientists"]) {
+        clearTimeout(skeletonTimers["scientists"]);
+    }
+    skeletonTimers["scientists"] = setTimeout(() => {
+        renderSkeletonList(scientistList, 2, () => `
+            <div class="scientist-item skeleton-card s-pointer-none s-opacity-85" aria-hidden="true">
+                <span class="scientist-avatar skeleton s-no-border"></span>
+                <span class="s-flex-1">
+                    <span class="scientist-name skeleton-text s-w-45 s-h-14 s-mb-6"></span>
+                    <span class="scientist-field skeleton-text s-w-75 s-h-12"></span>
+                </span>
+            </div>
+        `);
+    }, SKELETON_DELAY);
+
     const controller = new AbortController();
 
     try {
@@ -1092,6 +1272,8 @@ async function loadDynamicScientists() {
         activeScientists = enriched;
     } catch (error) {
         activeScientists = STATIC_SCIENTISTS.map((scientist) => ({ ...scientist }));
+    } finally {
+        clearActiveTimer("scientists");
     }
 
     scientistState.start = 0;
@@ -1238,7 +1420,7 @@ async function fetchUsnoSunMoonRiseSet(date) {
         coords: `${observerState.lat},${observerState.lon}`,
         tz: "5.5"
     });
-    const response = await fetch(`${USNO_RISESET_URL}?${params}`);
+    const response = await fetchWithTimeout(`${USNO_RISESET_URL}?${params}`);
 
     if (!response.ok) {
         throw new Error("USNO rise/set request failed");
@@ -1267,7 +1449,7 @@ async function fetchVisiblePlanetsTonight() {
         latitude: String(observerState.lat),
         longitude: String(observerState.lon)
     });
-    const response = await fetch(`${VISIBLE_PLANETS_URL}?${params}`);
+    const response = await fetchWithTimeout(`${VISIBLE_PLANETS_URL}?${params}`);
 
     if (!response.ok) {
         throw new Error("Visible Planets API request failed");
@@ -1330,6 +1512,21 @@ async function loadSkyTonight() {
     setSkyLoading("Loading tonight's sky from live sources…");
     const date = new Date();
 
+    if (skeletonTimers["sky_tonight"]) {
+        clearTimeout(skeletonTimers["sky_tonight"]);
+    }
+    skeletonTimers["sky_tonight"] = setTimeout(() => {
+        renderSkeletonList(skyList, 3, () => `
+            <div class="sky-item skeleton-card s-pointer-none" aria-hidden="true">
+                <span class="sky-dot skeleton s-circle-23"></span>
+                <span class="s-flex-1 s-flex-col-gap6">
+                    <span class="sky-name skeleton-text s-w-30 s-h-14"></span>
+                    <span class="sky-meta skeleton-text s-w-65 s-h-12"></span>
+                </span>
+            </div>
+        `);
+    }, SKELETON_DELAY);
+
     if (!observerState.ready) {
         await resolveObserverLocation();
     }
@@ -1385,6 +1582,8 @@ async function loadSkyTonight() {
             color: getSkyBodyColor("Moon")
         });
         skyLocation.textContent = `${observerState.label} · partial fallback`;
+    } finally {
+        clearActiveTimer("sky_tonight");
     }
 
     renderSky(items.slice(0, 8));
@@ -1460,9 +1659,27 @@ async function loadSpaceNews() {
         return;
     }
 
+    if (newsState.items.length === 0) {
+        if (skeletonTimers["news_feed"]) {
+            clearTimeout(skeletonTimers["news_feed"]);
+        }
+        skeletonTimers["news_feed"] = setTimeout(() => {
+            renderSkeletonList(newsList, 3, () => `
+                <div class="news-item skeleton-card s-pointer-none" aria-hidden="true">
+                    <span class="news-thumb skeleton s-no-border"></span>
+                    <span class="s-flex-1">
+                        <span class="news-title skeleton-text s-w-85 s-h-14 s-mb-6"></span>
+                        <span class="news-title skeleton-text s-w-60 s-h-14"></span>
+                        <span class="news-meta skeleton-text s-w-35 s-h-10 s-mt-10"></span>
+                    </span>
+                </div>
+            `);
+        }, SKELETON_DELAY);
+    }
+
     try {
         const url = `${SPACE_NEWS_API}?limit=${NEWS_BATCH_SIZE}&offset=${newsState.offset}`;
-        const response = await fetch(url);
+        const response = await fetchWithTimeout(url);
 
         if (!response.ok) {
             throw new Error("Space news request failed");
@@ -1481,6 +1698,7 @@ async function loadSpaceNews() {
         newsState.offset = newsState.items.length;
         loadFallbackNewsBatch();
     } finally {
+        clearActiveTimer("news_feed");
         newsState.isLoading = false;
     }
 }
@@ -1549,7 +1767,7 @@ function normalizeUsnoPhase(phase) {
 
 async function fetchUsnoMoonPhases() {
     const year = new Date().getFullYear();
-    const response = await fetch(`${USNO_MOON_PHASES_URL}?year=${year}`);
+    const response = await fetchWithTimeout(`${USNO_MOON_PHASES_URL}?year=${year}`);
 
     if (!response.ok) {
         throw new Error("USNO moon phases request failed");
@@ -1582,7 +1800,7 @@ async function fetchNasaNeoUpcomingEvents() {
         end_date: range.end,
         api_key: NASA_API_KEY
     });
-    const response = await fetch(`${NASA_NEO_FEED_BASE}?${params}`);
+    const response = await fetchWithTimeout(`${NASA_NEO_FEED_BASE}?${params}`);
 
     if (!response.ok) {
         throw new Error("NASA NEO events request failed");
@@ -1616,6 +1834,21 @@ async function fetchNasaNeoUpcomingEvents() {
 async function loadUpcomingEvents() {
     setEventsLoading("Loading upcoming events from live sources…");
 
+    if (skeletonTimers["upcoming_events"]) {
+        clearTimeout(skeletonTimers["upcoming_events"]);
+    }
+    skeletonTimers["upcoming_events"] = setTimeout(() => {
+        renderSkeletonList(eventList, 3, () => `
+            <div class="event-item skeleton-card s-pointer-none" aria-hidden="true">
+                <span class="event-date skeleton s-h-36 s-rounded-999 s-w-68"></span>
+                <span class="s-flex-1 s-flex-col-gap6 s-ml-14">
+                    <span class="event-title skeleton-text s-w-55 s-h-14"></span>
+                    <span class="event-time skeleton-text s-w-35 s-h-12"></span>
+                </span>
+            </div>
+        `);
+    }, SKELETON_DELAY);
+
     try {
         const [usnoEvents, neoEvents] = await Promise.all([
             fetchUsnoMoonPhases(),
@@ -1625,6 +1858,8 @@ async function loadUpcomingEvents() {
         renderEvents(events);
     } catch (error) {
         renderEvents(buildUpcomingEvents());
+    } finally {
+        clearActiveTimer("upcoming_events");
     }
 }
 
@@ -1725,7 +1960,7 @@ function populatePlanetSelects(planetNames) {
 
 async function fillPlanetSelects() {
     try {
-        const response = await fetch(LE_SYSTEME_BODIES_URL);
+        const response = await fetchWithTimeout(LE_SYSTEME_BODIES_URL);
 
         if (!response.ok) {
             throw new Error("Solar system bodies request failed");
@@ -1792,7 +2027,7 @@ async function fetchLeSystemeDistance(fromName, toName) {
         return { km: 0, au: 0, source: "Le Système Solaire API" };
     }
 
-    const response = await fetch(`${LE_SYSTEME_BODIES_URL}/${fromId}`);
+    const response = await fetchWithTimeout(`${LE_SYSTEME_BODIES_URL}/${fromId}`);
 
     if (!response.ok) {
         throw new Error("Le Système Solaire distance request failed");
@@ -1825,6 +2060,15 @@ async function calculateDistance() {
         distanceSource.textContent = "Fetching live distance…";
     }
 
+    const targets = [
+        distanceKm.querySelector(".stat-num"),
+        distanceAu.querySelector(".stat-num"),
+        lightTime.querySelector(".stat-num"),
+        distanceSource
+    ];
+
+    scheduleSkeletonDelay("distance_text", targets, true, SKELETON_DELAY);
+
     try {
         const live = await fetchLeSystemeDistance(fromName, toName);
         const lightSeconds = live.km / LIGHT_SPEED_KM_S;
@@ -1848,6 +2092,9 @@ async function calculateDistance() {
         if (distanceSource) {
             distanceSource.textContent = `Source: ${fallback.source}`;
         }
+    } finally {
+        clearActiveTimer("distance_text");
+        clearSkeletons(targets);
     }
 }
 
@@ -2075,11 +2322,11 @@ function lsSet(key, value) {
 
 function loadThemePreference() {
     const saved = lsGet(LS_KEYS.theme);
-    if (saved === "light-mode") applyLightMode(true);
+    if (saved === "light-theme" || saved === "light-mode") applyLightTheme(true);
 }
 
-function applyLightMode(on) {
-    document.body.classList.toggle("light-mode", on);
+function applyLightTheme(on) {
+    document.body.classList.toggle("light-theme", on);
     const iconDark  = document.getElementById("themeIconDark");
     const iconLight = document.getElementById("themeIconLight");
     if (iconDark)  iconDark.hidden  = on;
@@ -2090,9 +2337,9 @@ function bindThemeToggle() {
     const btn = document.getElementById("themeToggle");
     if (!btn) return;
     btn.addEventListener("click", () => {
-        const isLight = document.body.classList.toggle("light-mode");
-        applyLightMode(isLight);
-        lsSet(LS_KEYS.theme, isLight ? "light-mode" : "dark-mode");
+        const isLight = document.body.classList.toggle("light-theme");
+        applyLightTheme(isLight);
+        lsSet(LS_KEYS.theme, isLight ? "light-theme" : "dark-theme");
     });
 }
 
