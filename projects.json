@@ -1844,5 +1844,14 @@
   "techStack":["tool","html","css","javascript"],
   "difficulty":"intermediate",
   "projectPath":"./public/github-repository-analyser/index.html"
+},
+{
+  "projectNo":185,
+  "projectName":"GitHub Repo Analyzer (3D UI)",
+  "projectType":"tool",
+  "projectDesc":"A premium, highly interactive 3D web application utilizing the GitHub API to deeply analyze repositories and user profiles with smooth glassmorphism UI.",
+  "techStack":["api","html","css","javascript"],
+  "difficulty":"intermediate",
+  "projectPath":"./public/github-repo-analyzer/index.html"
 }
 ]
