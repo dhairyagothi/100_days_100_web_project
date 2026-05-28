@@ -2,8 +2,8 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  top: 55px;
-  background-color: white;
+  top: 55px; /* Sits flush under the fixed utility bar layer */
+  background-color: #ffffff;
   width: 72px;
   z-index: 250;
   padding-top: 5px;
@@ -21,6 +21,7 @@
   transition: height 0.3s ease, background-color 0.15s ease;
 }
 
+/* Real-time Interaction Engine: Applies background capsule highlights exclusively on hover states */
 .sidebar-link:hover {
   background-color: rgb(240, 240, 240);
 }
