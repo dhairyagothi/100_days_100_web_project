@@ -215,13 +215,13 @@ const PROJECT_DATA = [
   ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
   ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
   ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
-  ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
+  ['Day 146', 'Data Structures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
   
 
 
-  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
+  ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
   ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
   ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
