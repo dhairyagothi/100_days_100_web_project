@@ -51,9 +51,9 @@ const encodeToMorse = (text) => {
   const upper  = text.toUpperCase();
   for (let i = 0; i < upper.length; i++) {
     const ch = upper[i];
-    if (ch === ' ')       result.push('/');
+    if (ch === ' ')         result.push('/');
     else if (MORSE_MAP[ch]) result.push(MORSE_MAP[ch]);
-    else                  result.push('?');
+    else                    result.push('?');
   }
   return result.join(' ');
 };
@@ -73,12 +73,36 @@ const decodeFromMorse = (morse) => {
   return decoded.join(' ');
 };
 
+
+const buildOutputSpans = (morseText) => {
+  const output = el('output');
+  output.innerHTML = '';
+  morseText.split(' ').forEach((tok, i, arr) => {
+    const span = document.createElement('span');
+    span.className   = 'morse-token';
+    span.dataset.idx = i;
+    span.textContent = tok;
+    output.appendChild(span);
+    if (i < arr.length - 1) output.appendChild(document.createTextNode(' '));
+  });
+};
+
 const translate = () => {
   const input = el('input').value;
   el('char-count').textContent = input.length;
   const output = el('output');
-  if (!input.trim()) { output.textContent = '—'; return; }
-  output.textContent = mode === 'encode' ? encodeToMorse(input) : decodeFromMorse(input);
+  if (!input.trim()) {
+    output.innerHTML     = '';
+    output.textContent   = '—';
+    return;
+  }
+  if (mode === 'encode') {
+    // render as spans for visual playback highlight
+    buildOutputSpans(encodeToMorse(input));
+  } else {
+    // decode mode — plain text, exactly as original
+    output.textContent = decodeFromMorse(input);
+  }
 };
 
 const clearInput = () => {
@@ -87,7 +111,7 @@ const clearInput = () => {
   el('char-count').textContent = '0';
 };
 
-// ── Copy ──────────────────────────────────────────────────────────
+
 
 const copyOutput = () => {
   const text = el('output').textContent;
@@ -115,7 +139,7 @@ const copyOutput = () => {
 };
 
 const fallbackCopy = (text) => {
-  const ta = document.createElement('textarea');
+  const ta          = document.createElement('textarea');
   ta.value          = text;
   ta.style.position = 'fixed';
   ta.style.opacity  = '0';
@@ -128,7 +152,7 @@ const fallbackCopy = (text) => {
 const showToast = (msg) => {
   let toast = el('toast');
   if (!toast) {
-    toast = document.createElement('div');
+    toast           = document.createElement('div');
     toast.id        = 'toast';
     toast.className = 'toast';
     document.body.appendChild(toast);
@@ -162,7 +186,7 @@ const playTone = (ctx, durationMs, freq = 620) => new Promise((resolve) => {
   const gain = ctx.createGain();
   osc.connect(gain);
   gain.connect(ctx.destination);
-  osc.type = 'sine';
+  osc.type            = 'sine';
   osc.frequency.value = freq;
 
   const t    = ctx.currentTime;
@@ -195,10 +219,22 @@ const setPlayState = (playing) => {
   }
 };
 
+// ──  highlight/clear helpers for visual playback ──────────────
+const highlightToken = (idx) => {
+  document.querySelectorAll('.morse-token').forEach((s, i) => {
+    s.classList.toggle('active-token', i === idx);
+  });
+};
+
+const clearHighlight = () => {
+  document.querySelectorAll('.morse-token')
+    .forEach(s => s.classList.remove('active-token'));
+};
+
+
 const togglePlay = async () => {
   if (isPlaying) { stopFlag = true; return; }
 
-  // encode mode: output panel holds morse; decode mode: input panel holds morse
   const morseText = mode === 'encode'
     ? el('output').textContent
     : el('input').value;
@@ -212,7 +248,7 @@ const togglePlay = async () => {
   const wordGap   = dot * 7;
 
   const ctx = getCtx();
-  stopFlag = false;
+  stopFlag  = false;
   setPlayState(true);
 
   const tokens = morseText.split(' ');
@@ -220,6 +256,8 @@ const togglePlay = async () => {
   for (let i = 0; i < tokens.length; i++) {
     if (stopFlag) break;
     const tok = tokens[i];
+
+    highlightToken(i); 
 
     if (tok === '/') {
       await sleep(wordGap - letterGap);
@@ -236,28 +274,49 @@ const togglePlay = async () => {
     }
   }
 
+  clearHighlight(); 
   stopFlag = false;
   setPlayState(false);
 };
 
 // ── Reference table ───────────────────────────────────────────────
+// Each ref-item is now clickable — inserts char into input.
+// Only addEventListener added.
 
 const buildRefTable = () => {
   const table = el('ref-table');
   for (const char in MORSE_MAP) {
     const item = document.createElement('div');
     item.className = 'ref-item';
+    item.title     = `Click to insert "${char}"`;
 
-    const charEl = document.createElement('span');
+    const charEl       = document.createElement('span');
     charEl.className   = 'ref-char';
     charEl.textContent = char;
 
-    const codeEl = document.createElement('span');
+    const codeEl       = document.createElement('span');
     codeEl.className   = 'ref-code';
     codeEl.textContent = MORSE_MAP[char];
 
     item.appendChild(charEl);
     item.appendChild(codeEl);
+
+    // NEW: click inserts character (encode mode) or morse (decode mode)
+    item.addEventListener('click', () => {
+      const inputEl = el('input');
+      if (mode === 'encode') {
+        inputEl.value += char;
+      } else {
+        const current = inputEl.value;
+        inputEl.value = current
+          ? current.trimEnd() + ' ' + MORSE_MAP[char]
+          : MORSE_MAP[char];
+      }
+      inputEl.dispatchEvent(new Event('input'));
+      inputEl.focus();
+      showToast(`Inserted "${char}"`);
+    });
+
     table.appendChild(item);
   }
 };
@@ -271,6 +330,29 @@ const toggleRef = () => {
   arrow.textContent = open ? '▴' : '▾';
 };
 
+// ──  Swap panels ──────────────────────────────────────────────
+// Moves output → input and flips mode.
+const swapPanels = () => {
+  const outputText = el('output').textContent;
+  if (!outputText || outputText === '—') return;
+
+  const newMode = mode === 'encode' ? 'decode' : 'encode';
+  mode = newMode;
+
+  el('encode-btn').classList.toggle('active', mode === 'encode');
+  el('decode-btn').classList.toggle('active', mode === 'decode');
+  el('input-label').textContent  = mode === 'encode' ? 'Text' : 'Morse Code';
+  el('output-label').textContent = mode === 'encode' ? 'Morse Code' : 'Text';
+  el('input').placeholder = mode === 'encode'
+    ? 'Type your message...'
+    : 'Enter Morse code — space between letters, / between words...';
+
+  el('input').value            = outputText;
+  el('char-count').textContent = outputText.length;
+  el('input').dispatchEvent(new Event('input'));
+  showToast('Panels swapped!');
+};
+
 // ── Init ──────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -282,6 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
   el('ref-toggle-btn').addEventListener('click', toggleRef);
   el('encode-btn').addEventListener('click', () => setMode('encode'));
   el('decode-btn').addEventListener('click', () => setMode('decode'));
-
+  el('swap-btn').addEventListener('click', swapPanels); // NEW
   buildRefTable();
 });
