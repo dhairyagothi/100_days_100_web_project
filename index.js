@@ -444,21 +444,53 @@ function getAllTechnologies() {
 }
 
 /* ============================================================
-   BOOKMARK + RECENT SYSTEM
-============================================================ */
+   ROBUST STORAGE PERSISTENCE MANAGER
+   ============================================================ */
+const StorageManager = {
+  isAvailable() {
+    try {
+      const testKey = '__storage_test__';
+      localStorage.setItem(testKey, testKey);
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+  getItem(key) {
+    if (this.isAvailable()) {
+      try {
+        return localStorage.getItem(key);
+      } catch (e) {
+        console.warn(`[StorageManager] Failed to read key "${key}":`, e.message);
+      }
+    }
+    return this._memoryStorage[key] || null;
+  },
+  setItem(key, value) {
+    if (this.isAvailable()) {
+      try {
+        localStorage.setItem(key, value);
+        return;
+      } catch (e) {
+        console.warn(`[StorageManager] Failed to write key "${key}":`, e.message);
+      }
+    }
+    this._memoryStorage[key] = String(value);
+  },
+  _memoryStorage: {}
+};
 
 let bookmarkedProjects = [];
 let recentProjects = [];
 
 try {
-  bookmarkedProjects =
-    JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
-  recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
+  bookmarkedProjects = JSON.parse(StorageManager.getItem('bookmarkedProjects')) || [];
+  recentProjects = JSON.parse(StorageManager.getItem('recentProjects')) || [];
 } catch (error) {
-  console.warn(
-    "localStorage is not available or access is denied:",
-    error.message,
-  );
+  console.warn('StorageManager failed to load initial state:', error.message);
+  bookmarkedProjects = [];
+  recentProjects = [];
 }
 
 let showAllBookmarks = false;
@@ -493,7 +525,7 @@ function migrateRecentProjects() {
     return project;
   });
 
-  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  StorageManager.setItem('recentProjects', JSON.stringify(recentProjects));
 }
 
 // Migrate on load
@@ -508,7 +540,7 @@ function cleanupExpiredRecentProjects() {
   recentProjects = getRecentProjectsWithinWindow();
 
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    StorageManager.setItem('recentProjects', JSON.stringify(recentProjects));
     renderRecentProjects();
   }
 }
@@ -988,12 +1020,9 @@ function toggleBookmark(project) {
   updateBookmarkURL();
 
   try {
-    localStorage.setItem(
-      "bookmarkedProjects",
-      JSON.stringify(bookmarkedProjects),
-    );
+    StorageManager.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
   } catch (error) {
-    console.warn("Could not save bookmark due to localStorage restrictions");
+    console.warn('Could not save bookmark due to StorageManager restrictions');
   }
   renderBookmarks();
   renderGrid();
@@ -1027,10 +1056,7 @@ function loadBookmarksFromURL() {
     bookmarkIds.includes(project[0]),
   );
 
-  localStorage.setItem(
-    "bookmarkedProjects",
-    JSON.stringify(bookmarkedProjects),
-  );
+  StorageManager.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
 }
 
 function getRecentProjectsWithinWindow() {
@@ -1078,11 +1104,9 @@ function trackRecentProject(project) {
   }
 
   try {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    StorageManager.setItem('recentProjects', JSON.stringify(recentProjects));
   } catch (error) {
-    console.warn(
-      "Could not save recent projects due to localStorage restrictions",
-    );
+    console.warn('Could not save recent projects due to StorageManager restrictions');
   }
   renderRecentProjects();
 }
