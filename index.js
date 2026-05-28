@@ -1370,9 +1370,20 @@ window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
 // Particle Network Background
+// =============================================
+// Particle Network Background (Audio Reactive)
+// =============================================
 (function () {
   const canvas = document.getElementById('particleCanvas');
+  if (!canvas) {
+    console.warn('Particle canvas not found. Skipping particle animation initialization.');
+    return;
+  }
   const ctx = canvas.getContext('2d');
+
+  let audioContext;
+  let analyser;
+  let frequencyData;
   let W, H, particles = [];
   const minParticles = 30;
   const maxParticles = 120;
@@ -1380,6 +1391,8 @@ window.clearAllTechFilters = clearAllTechFilters;
   let particleCount = 60;
   let linkDistance = 120;
   let dpr = 1;
+  let waveOffset = 0; // For wave distortion effect
+  let animationSpeedMultiplier = 1; // For silent audio handling
 
   function resize() {
     W = window.innerWidth;
@@ -1397,6 +1410,35 @@ window.clearAllTechFilters = clearAllTechFilters;
     linkDistance = Math.max(90, Math.min(150, Math.round(Math.min(W, H) / 6)));
   }
 
+  function initAudio() {
+    const audio = document.getElementById('audioSource');
+    if (!audio) {
+      console.warn('Audio source element with ID "audioSource" not found. Particle animation will not be audio-reactive.');
+      return;
+    }
+
+    try {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaElementSource(audio);
+      source.connect(analyser);
+      analyser.connect(audioContext.destination);
+
+      analyser.fftSize = 256; // Fast Fourier Transform size
+      frequencyData = new Uint8Array(analyser.frequencyBinCount);
+
+      // Start playing audio if not already playing (e.g., if user interaction is required)
+      if (audio.paused) {
+        audio.play().catch(e => console.warn('Autoplay prevented or failed:', e));
+      }
+
+      console.log('Audio context and analyser initialized.');
+    } catch (e) {
+      console.error('Web Audio API not supported or failed to initialize:', e);
+      audioContext = null; // Disable audio reactivity
+    }
+  }
+
   function init() {
     particles = [];
     for (let i = 0; i < particleCount; i++) {
@@ -1407,6 +1449,7 @@ window.clearAllTechFilters = clearAllTechFilters;
         vy: (Math.random() - 0.5) * 0.3,
         r: Math.random() * 3 + 1,
         hue: [220, 260, 280][Math.floor(Math.random() * 3)],
+        baseHue: [220, 260, 280][Math.floor(Math.random() * 3)], // Store base hue
         alpha: Math.random() * 0.8 + 0.4,
       });
     }
@@ -1414,21 +1457,66 @@ window.clearAllTechFilters = clearAllTechFilters;
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
+    let bassAverage = 0;
+    let trebleAverage = 0;
+
+    if (analyser && frequencyData) {
+      analyser.getByteFrequencyData(frequencyData);
+
+      const bass = frequencyData.slice(0, 5); // Lower frequencies
+      const treble = frequencyData.slice(40, 80); // Higher frequencies
+
+      bassAverage = bass.reduce((a, b) => a + b, 0) / bass.length;
+      trebleAverage = treble.reduce((a, b) => a + b, 0) / treble.length;
+
+      // Adjust animation speed for silent audio
+      if (bassAverage < 5 && trebleAverage < 5) {
+        animationSpeedMultiplier = 0.2; // Calm wave behavior
+      } else {
+        animationSpeedMultiplier = 1; // Normal speed
+      }
+
+      // Treble frequencies increase wave movement
+      waveOffset += trebleAverage * 0.0005 * animationSpeedMultiplier;
+    } else {
+      // If no audio context, simulate calm movement
+      animationSpeedMultiplier = 0.2;
+      waveOffset += 0.0005 * animationSpeedMultiplier;
+    }
+
+    ctx.clearRect(0, 0, W, H); // Clear canvas
+
     particles.forEach(p => {
       p.x += p.vx; p.y += p.vy;
+      // Apply base velocity
+      p.x += p.vx * animationSpeedMultiplier;
+      p.y += p.vy * animationSpeedMultiplier;
+
+      // Apply wave distortion based on treble and waveOffset
+      // This creates a subtle horizontal ripple effect
+      p.x += Math.sin(p.y * 0.01 + waveOffset) * (trebleAverage * 0.005 || 0.5) * animationSpeedMultiplier;
+
+      // Wrap particles around screen edges
       if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
       if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
     });
+
     for (let i = 0; i < particleCount; i++) {
       for (let j = i + 1; j < particleCount; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
         const d = Math.sqrt(dx * dx + dy * dy);
         if (d < linkDistance) {
+          // Dynamic link color based on audio
+          const linkHue = (particles[i].baseHue + trebleAverage * 0.5) % 360;
+          const linkSaturation = 80 + bassAverage * 0.2;
+          const linkLightness = 72 + trebleAverage * 0.1;
+
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
           ctx.strokeStyle = `rgba(59,130,246,${(1 - d / linkDistance) * 0.35})`;
+          ctx.strokeStyle = `hsla(${linkHue}, ${linkSaturation}%, ${linkLightness}%, ${(1 - d / linkDistance) * 0.35})`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -1438,6 +1526,12 @@ window.clearAllTechFilters = clearAllTechFilters;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = `hsla(${p.hue},80%,72%,${p.alpha})`;
+      // Bass frequencies expand particles
+      const particleRadius = p.r + bassAverage * 0.08;
+      // Dynamic particle color based on audio
+      const particleHue = (p.baseHue + trebleAverage * 0.5) % 360;
+      ctx.arc(p.x, p.y, particleRadius, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${particleHue},80%,72%,${p.alpha})`;
       ctx.fill();
     });
     requestAnimationFrame(draw);
@@ -1455,6 +1549,11 @@ window.clearAllTechFilters = clearAllTechFilters;
 
   window.addEventListener('resize', handleResize);
   resize(); init(); draw();
+  resize();
+  init();
+  initAudio(); // Initialize audio context
+  draw(); // Start animation loop
+
 })();
 
 // =============================================
