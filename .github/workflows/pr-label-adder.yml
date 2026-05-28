@@ -66,6 +66,7 @@ jobs:
               pr.labels.map(
                 l => l.name
               )
+              
 
               const alreadyProcessed =
                 existing.includes("gssoc:approved") ||
