@@ -147,7 +147,11 @@ function resolveProjectUrls(day, name, url, tags) {
 
   if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
     try {
-      demoUrl = new URL(demoUrl, window.location.href).href;
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const basePrefix = isRoot ? '' : '../';
+      if (demoUrl.startsWith('./')) {
+        demoUrl = basePrefix + demoUrl.substring(2);
+      }
     } catch (error) {
       // Graceful fallback
     }
@@ -181,7 +185,6 @@ function buildProjectCardHTML({
   
   const sourceOnlyBadge = sourceOnly ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>' : '';
   
-  // FIXED: Integrated explicit event.stopPropagation() locks to eliminate accidental redirection loops
   const primaryLink = sourceOnly
     ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
           <i class="fab fa-github"></i> Source
@@ -239,11 +242,21 @@ function normalizeTech(tech) {
   return TECH_ALIASES[lower] || lower;
 }
 
+/**
+ * Check if project matches the active tech stack filters.
+ * Each filter must match a complete tag token, not a substring of another tag.
+ */
 function matchesTechStack(projectTags) {
   if (techStackFilters.length === 0) return true;
   if (!projectTags) return false;
-  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+
+  const tagSet = new Set(
+    (Array.isArray(projectTags) ? projectTags : String(projectTags).split(/\s+/))
+      .map((t) => t.toLowerCase().trim())
+      .filter(Boolean)
+  );
+
+  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
 function removeTechFilter(tech) {
@@ -300,10 +313,18 @@ function getAllTechnologies() {
 }
 
 /* ============================================================
-   BOOKMARK & HISTORICAL TEMPORAL TRACKS
-   ============================================================ */
-let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+   BOOKMARK + RECENT SYSTEM
+============================================================ */
+let bookmarkedProjects = [];
+let recentProjects = [];
+
+try {
+  bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
+  recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+} catch (error) {
+  console.warn('localStorage is not available or access is denied:', error.message);
+}
+
 let showAllBookmarks = false;
 let showAllRecent = false;
 const INITIAL_VISIBLE_ITEMS = 3;
@@ -325,7 +346,11 @@ function migrateRecentProjects() {
     }
     return project;
   });
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  } catch (e) {
+    console.warn('Failed to save migrated history.');
+  }
 }
 migrateRecentProjects();
 
@@ -333,7 +358,11 @@ function cleanupExpiredRecentProjects() {
   const initialLength = recentProjects.length;
   recentProjects = getRecentProjectsWithinWindow();
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    try {
+      localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    } catch (e) {
+      console.warn('Cleaned records could not be updated in local environment.');
+    }
     renderRecentProjects();
   }
 }
@@ -408,10 +437,61 @@ let sortOption = 'default';
 let techStackFilter = 'all';
 let difficultyFilter = 'all';
 
+function syncStateToURL() {
+  const url = new URL(window.location);
+  
+  if (searchQuery) {
+    url.searchParams.set('search', searchQuery);
+  } else {
+    url.searchParams.delete('search');
+  }
+
+  if (activeFilter && activeFilter !== 'all') {
+    url.searchParams.set('category', activeFilter);
+  } else {
+    url.searchParams.delete('category');
+  }
+
+  if (currentPage > 1) {
+    url.searchParams.set('page', currentPage);
+  } else {
+    url.searchParams.delete('page');
+  }
+
+  window.history.replaceState({}, '', url);
+}
+
+function readStateFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (urlParams.has('search')) {
+    searchQuery = urlParams.get('search');
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.value = searchQuery;
+    }
+  }
+  
+  if (urlParams.has('category')) {
+    activeFilter = urlParams.get('category');
+  }
+  
+  if (urlParams.has('page')) {
+    const page = parseInt(urlParams.get('page'), 10);
+    if (!isNaN(page) && page > 0) {
+      currentPage = page;
+    }
+  }
+}
+
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
+
+  if (typeof updateClearFiltersBtnVisibility === 'function') {
+    updateClearFiltersBtnVisibility();
+  }
 
   const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     const category = getCategoryFromTags(tags, name);
@@ -481,6 +561,8 @@ function renderGrid() {
   
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
+  
+  syncStateToURL();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -503,6 +585,17 @@ function renderPagination(totalItems, totalPages) {
 
   const controlsDiv = document.createElement('div');
   controlsDiv.className = 'pagination-controls';
+
+  const firstBtn = document.createElement('button');
+  firstBtn.className = 'first-btn'; firstBtn.innerHTML = '⏮ First';
+  firstBtn.disabled = currentPage === 1;
+  firstBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== 1) {
+      currentPage = 1; renderGrid(); setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+  controlsDiv.appendChild(firstBtn);
 
   const prevBtn = document.createElement('button');
   prevBtn.className = 'prev-btn'; prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
@@ -538,6 +631,17 @@ function renderPagination(totalItems, totalPages) {
   });
   controlsDiv.appendChild(nextBtn);
 
+  const lastBtn = document.createElement('button');
+  lastBtn.className = 'last-btn'; lastBtn.innerHTML = 'Last ⏭';
+  lastBtn.disabled = currentPage === totalPages;
+  lastBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== totalPages) {
+      currentPage = totalPages; renderGrid(); setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+  controlsDiv.appendChild(lastBtn);
+
   container.appendChild(controlsDiv);
   grid.appendChild(container);
 }
@@ -545,6 +649,9 @@ function renderPagination(totalItems, totalPages) {
 function scrollToProjectSection() {
   const header = document.querySelector('.projects-header');
   if (!header) return;
+
+  if (header.getBoundingClientRect().top < window.innerHeight) return;
+
   const navbar = document.querySelector('.navbar');
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
   const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
@@ -572,8 +679,15 @@ function toggleBookmark(project) {
     bookmarkedProjects.push(project);
     showToast('Project bookmarked');
   }
-  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
-  renderBookmarks(); renderGrid(); renderRecentProjects();
+
+  try {
+    localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  } catch (error) {
+    console.warn('Could not save bookmark due to localStorage restrictions');
+  }
+  renderBookmarks();
+  renderGrid();
+  renderRecentProjects();
 }
 
 function getRecentProjectsWithinWindow() {
@@ -585,8 +699,16 @@ function trackRecentProject(project) {
   let projectObj = Array.isArray(project) ? { day: project[0], name: project[1], url: project[2], tags: project[3], timestamp: Date.now() } : { ...project, timestamp: Date.now() };
   recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
   recentProjects.unshift(projectObj);
-  if (recentProjects.length > 20) recentProjects.pop();
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+
+  if (recentProjects.length > 20) {
+    recentProjects.pop();
+  }
+
+  try {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn('Could not save recent projects due to localStorage restrictions');
+  }
   renderRecentProjects();
 }
 
@@ -627,7 +749,10 @@ function renderRecentProjects() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({ day, name, url, tags, category, isBookmarked, showDescription: false });
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day, name, url, tags, category, isBookmarked, showDescription: true,
+    });
+
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
@@ -636,7 +761,68 @@ function renderRecentProjects() {
 }
 
 /* ============================================================
-   INTERFACE LOGIC ACTIONS & DELEGATION (CLEAN REFACTOR)
+   CLEAR ALL FILTERS SYSTEM
+   ============================================================ */
+function updateClearFiltersBtnVisibility() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (!btn) return;
+
+  const input = document.getElementById('searchInput');
+  const techStack = document.getElementById('techStackFilter');
+  const difficultyElement = document.getElementById('difficultyFilter');
+
+  const hasSearch = input && input.value.trim() !== '';
+  const hasTech = techStack && techStack.value !== 'all';
+  const hasDiff = difficultyElement && difficultyElement.value !== 'all';
+  const hasCategory = activeFilter && activeFilter !== 'all';
+
+  if (hasSearch || hasTech || hasDiff || hasCategory) {
+    btn.style.display = 'inline-flex';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+function resetAllFilters() {
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((c) => c.classList.remove('active'));
+  const allChip = document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
+  if (allChip) allChip.classList.add('active');
+  activeFilter = 'all';
+
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  searchQuery = '';
+
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) techStack.value = 'all';
+  techStackFilter = 'all';
+
+  const difficultyElement = document.getElementById('difficultyFilter');
+  if (difficultyElement) difficultyElement.value = 'all';
+  difficultyFilter = 'all';
+
+  const sortSelect = document.getElementById('sortProjects');
+  if (sortSelect) sortSelect.value = 'default';
+  sortOption = 'default';
+
+  if (typeof updateURL === 'function') {
+    updateURL('', 'all');
+  }
+
+  currentPage = 1;
+  renderGrid();
+  syncProjectCounts();
+  showToast('Filters cleared!');
+}
+
+function initClearAllFilters() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (btn) btn.addEventListener('click', resetAllFilters);
+}
+
+/* ============================================================
+   INTERFACE LOGIC ACTIONS & DELEGATION
    ============================================================ */
 const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
 const recentToggleBtn = document.getElementById('recentToggleBtn');
@@ -668,7 +854,6 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// FIXED: Consolidated high-overhead memory structures into a clean global atomic capturing layout handler
 document.addEventListener('click', (e) => {
   const bookmarkBtn = e.target.closest('.bookmark-btn');
   if (bookmarkBtn) {
@@ -688,12 +873,16 @@ document.addEventListener('click', (e) => {
 function initFilterChips() {
   const chips = document.querySelectorAll('.chip[data-filter]');
   chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+
     chip.addEventListener('click', () => {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
       activeFilter = chip.dataset.filter;
       
-      // FIXED: Push filter mutations up to URLs smoothly
       const searchInput = document.getElementById('searchInput');
       updateURL(searchInput ? searchInput.value.trim() : '', activeFilter);
       currentPage = 1; renderGrid();
@@ -710,7 +899,7 @@ function initSearch() {
   if (input) {
     input.addEventListener('input', debounce(() => {
       searchQuery = input.value.trim();
-      updateURL(searchQuery, activeFilter); // FIXED: Keep query parameter variables bound on key inputs
+      updateURL(searchQuery, activeFilter); 
       currentPage = 1; renderGrid();
     }, 180));
   }
@@ -732,19 +921,25 @@ function initSorting() {
 function initTechStackSearch() {
   const input = document.getElementById('techStackSearch');
   if (!input) return;
-  let debounceTimer;
 
-  input.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      const value = e.target.value.trim().toLowerCase();
-      if (value) {
-        techStackFilters = [...new Set(value.split(/[,\s]+/).filter(t => t.length > 0))];
-        updateTechFilterDisplay(); currentPage = 1; renderGrid();
-      } else { clearAllTechFilters(); }
-    }, 300);
-  });
+  input.addEventListener('input', debounce((e) => {
+    const value = e.target.value.trim().toLowerCase();
+    if (value) {
+      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+      techStackFilters = [...new Set(techs)];
+      updateTechFilterDisplay(); currentPage = 1; renderGrid();
+    } else {
+      clearAllTechFilters();
+    }
+  }, 300));
+
   document.getElementById('clearTechFilter')?.addEventListener('click', () => clearAllTechFilters());
+
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); input.blur();
+    }
+  });
 }
 
 /* ============================================================
@@ -780,113 +975,134 @@ if (searchInput && clearSearchBtn) {
 }
 
 function updateNavbar() {
-  const container = document.getElementById('navButtons'); if (!container) return;
-  const username = window.username || null, isRoot = !window.location.pathname.includes('/contributors/'), base = isRoot ? '' : '../', isLight = document.body.classList.contains('light-mode');
+  const container = document.getElementById('navButtons');
+  if (!container) return;
+  const username = window.username || localStorage.getItem('loggedInUser') || null; 
+  const isRoot = !window.location.pathname.includes('/contributors/');
+  const base = isRoot ? '' : '../';
+  const isLight = document.body.classList.contains('light-mode');
   const themeButton = `<button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme"><i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme</button>`;
-  const otherLink = isRoot 
-    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a><a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a><a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
+  const otherLink = isRoot
+    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
+       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
 
   if (username) {
-    container.innerHTML = `${themeButton} <span class="welcome-text">Hi, ${username}</span> <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button> <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a> <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a> ${otherLink}`;
-    document.getElementById('logoutBtn').addEventListener('click', () => { window.username = null; updateNavbar(); });
+    container.innerHTML = `
+        ${themeButton}
+        <span class="welcome-text">Hi, ${username}</span>
+        <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+        <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        ${otherLink}
+    `;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.username = null;
+      localStorage.removeItem('loggedInUser'); 
+      updateNavbar();
+    });
   } else {
-    container.innerHTML = `${themeButton} ${otherLink} <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a> <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a> <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>`;
+    container.innerHTML = `
+        ${themeButton}
+        ${otherLink}
+        <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+        <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+        <div class="auth-buttons">
+          <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
+          <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
+        </div>
+    `;
   }
 }
 
-function initTheme() {
-  const saved = localStorage.getItem('theme') || 'dark'; let transitionTimer = null;
-  const syncIcons = () => {
-    const isLight = document.body.classList.contains('light-mode');
-    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(i => i.className = isLight ? 'fas fa-sun' : 'fas fa-moon');
-  };
-  if (saved === 'light') document.body.classList.add('light-mode');
-  syncIcons();
-
-  document.body.addEventListener('click', (e) => {
-    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav'); if (!target) return;
-    document.body.classList.toggle('light-mode'); localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-    syncIcons(); document.body.classList.add('theme-transitioning');
-    clearTimeout(transitionTimer); transitionTimer = setTimeout(() => document.body.classList.remove('theme-transitioning'), 400);
-  });
-}
-
-function initScrollBtn() {
-  const btn = document.getElementById('scrollBtn'), ring = document.getElementById('ringFill'); if (!btn) return;
-  const circumference = 2 * Math.PI * 22;
-
-  const updateProgress = () => {
-    const scrollTop = window.scrollY, docHeight = document.documentElement.scrollHeight - window.innerHeight, progress = docHeight > 0 ? scrollTop / docHeight : 0;
-    btn.classList.toggle('show', scrollTop > 400);
-    if (ring) ring.style.strokeDashoffset = circumference * (1 - progress);
-
-    const footer = document.querySelector('.footer');
-    if (footer) {
-      const footerRect = footer.getBoundingClientRect(), windowHeight = window.innerHeight;
-      if (footerRect.top < windowHeight) {
-        btn.style.bottom = `calc(2rem + ${Math.min(windowHeight - footerRect.top, 120)}px)`;
-      } else { btn.style.bottom = '2rem'; }
-    }
-  };
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-}
-
-function initCurrentYear() {
-  document.querySelectorAll('[data-current-year], #Current-Year').forEach(n => n.textContent = new Date().getFullYear());
-}
-
 /* ============================================================
-   PERSISTENT FILTERS & SEARCH MODULE — Issue #3320 (REFACTORED)
-   ============================================================ */
-function getQueryParams() {
-  const params = new URLSearchParams(window.location.search);
-  return { search: params.get('search') || '', category: params.get('category') || 'all' };
-}
-
-function updateURL(search, category) {
-  const params = new URLSearchParams();
-  if (search) params.set('search', search);
-  if (category && category !== 'all') params.set('category', category);
-  const newURL = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
-  history.pushState({ search, category }, '', newURL);
-}
-
-function restoreStateFromURL() {
-  const { search, category } = getQueryParams();
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput && search) searchInput.value = search;
-
-  searchQuery = search || '';
-  activeFilter = category || 'all';
-  currentPage = 1;
-
-  // FIXED: Dynamic chip toggle mapping alignment pass matching layout tokens
-  const chips = document.querySelectorAll('.chip[data-filter]');
-  chips.forEach((chip) => {
-    if (chip.dataset.filter === activeFilter) chip.classList.add('active');
-    else chip.classList.remove('active');
-  });
-
-  if (hasProjectGrid()) renderGrid();
-}
-
-/* ============================================================
-   GLOBAL DOM LIFECYCLE INITIALIZER ENTRY POINT
+   GLOBAL INITIALIZER SETUP
    ============================================================ */
 document.addEventListener('DOMContentLoaded', async () => {
-  initTheme(); updateNavbar(); initCurrentYear(); initFilterChips(); initSearch(); initSorting(); initTechStackSearch();
+  readStateFromURL();
+  initTheme();
+  updateNavbar();
+  initCurrentYear();
+  initFilterChips();
+  initSearch();
+  initSorting();
+  initTechStackSearch();
+  initClearAllFilters();
 
   try {
-    await loadProjects(); // Await asynchronous JSON content arrays safely
-    restoreStateFromURL();
-    syncProjectCounts(); fetchRepoStats(); initScrollBtn();
+    await loadProjects();
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+
+    if (hasProjectGrid()) {
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+    }
   } catch (error) {
-    console.error('Failed initialization routine:', error);
+    console.error('Failed to load projects:', error);
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+    }
   }
-  window.addEventListener('popstate', () => restoreStateFromURL());
 });
+
+(() => {
+  const initDirectMobileMenu = () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const navButtons = document.getElementById('navButtons');
+
+    if (!menuToggle || !navButtons) return;
+
+    const closeMenu = () => {
+      menuToggle.classList.remove('active');
+      navButtons.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = navButtons.classList.toggle('active');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        closeMenu(); menuToggle.focus();
+      }
+    });
+
+    navButtons.addEventListener('click', (e) => {
+      if (e.target.closest('.btn, a, button')) {
+        closeMenu();
+      }
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+  } else {
+    initDirectMobileMenu();
+  }
+})();
+
+window.addEventListener('resize', debounce(() => { if (hasProjectGrid()) renderGrid(); }, 180));
+window.removeTechFilter = removeTechFilter;
+window.clearAllTechFilters = clearAllTechFilters;
 
 // Custom UI cursor engine block
 (function () {
@@ -978,21 +1194,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
   window.addEventListener('resize', () => requestAnimationFrame(rebuild), { passive: true });
   rebuild();
-})();
-
-(() => {
-  const initMenu = () => {
-    const toggle = document.getElementById('menuToggle'), btns = document.getElementById('navButtons');
-    if (!toggle || !btns) return;
-    const close = () => { toggle.classList.remove('active'); btns.classList.remove('active'); toggle.setAttribute('aria-expanded', 'false'); };
-
-    toggle.addEventListener('click', (e) => {
-      e.stopPropagation(); const open = btns.classList.toggle('active');
-      toggle.classList.toggle('active', open); toggle.setAttribute('aria-expanded', String(open));
-    });
-    document.addEventListener('click', (e) => { if (!btns.contains(e.target) && !toggle.contains(e.target)) close(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && btns.classList.contains('active')) { close(); toggle.focus(); } });
-    btns.addEventListener('click', (e) => { if (e.target.closest('.btn, a, button')) close(); });
-  };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initMenu); else initMenu();
 })();
