@@ -209,7 +209,6 @@ header p {
   align-items: center;
   justify-content: center;
   transition: color .2s, background .2s, border-color .2s, box-shadow .2s;
-  /* neumorphic feel */
   box-shadow: var(--neo-shadow);
 }
 
@@ -257,8 +256,10 @@ textarea#input::placeholder { color: var(--text-dim); opacity: .7; }
 /* ── Divider arrow ─────────────────────────────────────────────── */
 .divider {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
 .arrow-wrap {
@@ -274,6 +275,30 @@ textarea#input::placeholder { color: var(--text-dim); opacity: .7; }
   color: var(--text-dim);
   font-size: 1rem;
   flex-shrink: 0;
+}
+
+/* ── NEW: Swap button ──────────────────────────────────────────── */
+.swap-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-accent);
+  border-radius: 50%;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-size: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: var(--neo-shadow);
+  transition: background .2s, box-shadow .2s, transform .2s;
+}
+
+.swap-btn:hover {
+  background: rgba(100,255,218,.2);
+  box-shadow: 0 0 14px var(--accent-glow), var(--neo-shadow);
+  transform: rotate(180deg);
 }
 
 /* ── Audio controls ────────────────────────────────────────────── */
@@ -428,6 +453,13 @@ input[type="range"]::-moz-range-thumb {
   border-color: rgba(100,255,218,.15);
 }
 
+/* ── NEW: Clickable ref item active state ──────────────────────── */
+.ref-item:active {
+  transform: scale(0.95);
+  background: rgba(100,255,218,.2);
+  border-color: var(--border-accent);
+}
+
 .ref-char {
   font-weight: 700;
   color: var(--text-bright);
@@ -439,6 +471,21 @@ input[type="range"]::-moz-range-thumb {
   font-size: .7rem;
   color: var(--accent);
   letter-spacing: .1em;
+}
+
+/* ── NEW: Visual playback highlight ────────────────────────────── */
+.morse-token {
+  display: inline;
+  border-radius: 3px;
+  transition: background .08s, color .08s;
+}
+
+.morse-token.active-token {
+  background: var(--accent);
+  color: #06080f;
+  border-radius: 3px;
+  padding: 0 2px;
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 /* ── Toast notification ────────────────────────────────────────── */
@@ -474,8 +521,10 @@ input[type="range"]::-moz-range-thumb {
   }
 
   .divider {
+    flex-direction: row;
     justify-content: center;
     padding: .2rem 0;
+    gap: 12px;
   }
 
   .arrow-wrap {
