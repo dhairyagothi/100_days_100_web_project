@@ -2638,3 +2638,29 @@ body > header {
   position: relative;
   z-index: 999999 !important;
 }
+
+/* ============================================================
+   THEME SWITCHER PREMIUM TRANSITIONS
+   ============================================================ */
+body.theme-transitioning,
+body.theme-transitioning * {
+  transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#themeToggleNav i,
+#themeToggle i {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#themeToggleNav:hover i,
+#themeToggle:hover i {
+  transform: rotate(20deg) scale(1.15);
+}
+
+#themeToggleNav:active i,
+#themeToggle:active i {
+  transform: rotate(-30deg) scale(0.9);
+}
