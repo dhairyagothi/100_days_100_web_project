@@ -11,6 +11,8 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="analytics-nav.css" />
+
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
@@ -42,6 +44,13 @@
       </div>
     </header>
 
+  <button id="analytics-btn" type="button" title="View analytics">
+    📊 Analytics
+  </button>
+
+
+  <div class="container">
+    <h1>Habit Tracker</h1>
     <main class="container">
       <section class="card hero-card">
         <h2>Create a habit</h2>
@@ -347,6 +356,16 @@
     </div>
   </div>
 
+  <script>
+    (function () {
+      const btn = document.getElementById('analytics-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        window.location.href = 'analytics.html';
+      });
+    })();
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
+

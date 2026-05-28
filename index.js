@@ -160,9 +160,12 @@ function resolveProjectUrls(day, name, url, tags) {
 
   if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
     try {
-      demoUrl = new URL(demoUrl, window.location.href).href;
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const basePrefix = isRoot ? '' : '../';
+      if (demoUrl.startsWith('./')) {
+        demoUrl = basePrefix + demoUrl.substring(2);
+      }
     } catch (error) {
-      // Keep the original path if URL normalization fails.
     }
   }
 
@@ -171,8 +174,8 @@ function resolveProjectUrls(day, name, url, tags) {
 
 function getProjectDescription(project) {
   return (
-      project[5] ||
-      'Explore this project to discover interactive functionality.'
+    (project && project[5]) ||
+    'Explore this project to discover interactive functionality.'
   );
 }
 
@@ -815,6 +818,10 @@ function renderPagination(totalItems, totalPages) {
 function scrollToProjectSection() {
   const header = document.querySelector('.projects-header');
   if (!header) return;
+
+  // Only scroll if the projects section is fully below the viewport.
+  // If the user is already within or past the project grid, don't move them.
+  if (header.getBoundingClientRect().top < window.innerHeight) return;
 
   const navbar = document.querySelector('.navbar');
   // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
