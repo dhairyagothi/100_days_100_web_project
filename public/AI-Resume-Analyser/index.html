@@ -13,14 +13,51 @@
   <link rel="stylesheet" href="style.css"/>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .header-icon {
+      width: 32px;
+      height: 32px;
+      fill: #ff6a9b;
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .insight-icon {
+      width: 24px;
+      height: 24px;
+      fill: #7c6aff;
+      margin-right: 8px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .suggestion-icon-svg {
+      width: 24px;
+      height: 24px;
+      fill: #6affcb;
+      margin-right: 8px;
+      display: inline-block;
+      vertical-align: middle;
+      animation: pulseGlow 1.8s infinite alternate ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0% { filter: drop-shadow(0 0 1px rgba(106, 255, 203, 0.4)); transform: scale(1); }
+      100% { filter: drop-shadow(0 0 5px rgba(106, 255, 203, 0.8)); transform: scale(1.05); }
+    }
+    h1, h2 {
+      display: flex;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
-
+<a href="../../index.html" class="home-btn">
+    ← Back to Home
+</a>
   <div class="container">
 
     <header class="hero">
 
-      <h1>🤖 AI Resume Analyzer</h1>
+      <h1><svg class="header-icon" viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l2.79-2.79C10.07 18.67 11.01 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zm-3-8c-.83 0-1.5.67-1.5 1.5S8.17 12 9 12s1.5-.67 1.5-1.5S9.83 9 9 9zm6 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S15.83 9 15 9z"/></svg> AI Resume Analyzer</h1>
 
       <p>
         Analyze your resume and improve your ATS score
@@ -119,7 +156,7 @@
 
     <section class="insights-section">
 
-      <h2>📊 Resume Insights</h2>
+      <h2><svg class="insight-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg> Resume Insights</h2>
 
       <div class="insights-grid">
 
@@ -157,7 +194,7 @@
 
     <section class="suggestions-section">
 
-      <h2>💡 AI Suggestions</h2>
+      <h2><svg class="suggestion-icon-svg" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg> AI Suggestions</h2>
 
       <div class="suggestions-grid">
 
