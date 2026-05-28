@@ -6,28 +6,28 @@ class AgeCalculator {
   }
 
   setDefaultDate() {
-    const todayInput = document.getElementById('dob');
+    const todayInput = document.getElementById("dob");
     const today = new Date();
     const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
     todayInput.value = `${yyyy}-${mm}-${dd}`;
   }
 
   getZodiacSign(month, day) {
     const zodiac = [
-      { sign: '♈ Aries', start: [3, 21], end: [4, 19] },
-      { sign: '♉ Taurus', start: [4, 20], end: [5, 20] },
-      { sign: '♊ Gemini', start: [5, 21], end: [6, 20] },
-      { sign: '♋ Cancer', start: [6, 21], end: [7, 22] },
-      { sign: '♌ Leo', start: [7, 23], end: [8, 22] },
-      { sign: '♍ Virgo', start: [8, 23], end: [9, 22] },
-      { sign: '♎ Libra', start: [9, 23], end: [10, 22] },
-      { sign: '♏ Scorpio', start: [10, 23], end: [11, 21] },
-      { sign: '♐ Sagittarius', start: [11, 22], end: [12, 21] },
-      { sign: '♑ Capricorn', start: [12, 22], end: [1, 19] },
-      { sign: '♒ Aquarius', start: [1, 20], end: [2, 18] },
-      { sign: '♓ Pisces', start: [2, 19], end: [3, 20] },
+      { sign: "♈ Aries", start: [3, 21], end: [4, 19] },
+      { sign: "♉ Taurus", start: [4, 20], end: [5, 20] },
+      { sign: "♊ Gemini", start: [5, 21], end: [6, 20] },
+      { sign: "♋ Cancer", start: [6, 21], end: [7, 22] },
+      { sign: "♌ Leo", start: [7, 23], end: [8, 22] },
+      { sign: "♍ Virgo", start: [8, 23], end: [9, 22] },
+      { sign: "♎ Libra", start: [9, 23], end: [10, 22] },
+      { sign: "♏ Scorpio", start: [10, 23], end: [11, 21] },
+      { sign: "♐ Sagittarius", start: [11, 22], end: [12, 21] },
+      { sign: "♑ Capricorn", start: [12, 22], end: [1, 19] },
+      { sign: "♒ Aquarius", start: [1, 20], end: [2, 18] },
+      { sign: "♓ Pisces", start: [2, 19], end: [3, 20] },
     ];
 
     for (let z of zodiac) {
@@ -39,7 +39,7 @@ class AgeCalculator {
         return z.sign;
       }
     }
-    return '♑ Capricorn';
+    return "♑ Capricorn";
   }
 
   calculateAge(birthDate) {
@@ -131,9 +131,9 @@ class AgeCalculator {
   }
 
   calculate() {
-    const dobInput = document.getElementById('dob').value;
+    const dobInput = document.getElementById("dob").value;
     if (!dobInput) {
-      alert('Please select your date of birth');
+      alert("Please select your date of birth");
       return;
     }
 
@@ -141,7 +141,7 @@ class AgeCalculator {
     const today = new Date();
 
     if (birthDate > today) {
-      alert('Date of birth cannot be in the future!');
+      alert("Date of birth cannot be in the future!");
       return;
     }
 
@@ -149,34 +149,34 @@ class AgeCalculator {
     const nextBirthday = this.getNextBirthday(birthDate);
     const zodiac = this.getZodiacSign(
       birthDate.getMonth() + 1,
-      birthDate.getDate()
+      birthDate.getDate(),
     );
     const totalDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
     const { weeks, hours } = this.getAgeInWeeksAndHours(totalDays);
 
-    document.getElementById('years').textContent = age.years;
-    document.getElementById('months').textContent = age.months;
-    document.getElementById('days').textContent = age.days;
-    document.getElementById('next-birthday').textContent =
+    document.getElementById("years").textContent = age.years;
+    document.getElementById("months").textContent = age.months;
+    document.getElementById("days").textContent = age.days;
+    document.getElementById("next-birthday").textContent =
       nextBirthday.date.toLocaleDateString();
-    document.getElementById('days-until').textContent =
+    document.getElementById("days-until").textContent =
       `${nextBirthday.days} days`;
-    document.getElementById('zodiac').textContent = zodiac;
-    document.getElementById('weeks').textContent =
+    document.getElementById("zodiac").textContent = zodiac;
+    document.getElementById("weeks").textContent =
       `${weeks.toLocaleString()} weeks`;
-    document.getElementById('hours').textContent =
+    document.getElementById("hours").textContent =
       `${hours.toLocaleString()} hours`;
 
-    document.getElementById('result').style.display = 'block';
+    document.getElementById("result").style.display = "block";
   }
 
   setupEventListeners() {
-    const calculateBtn = document.getElementById('calculate-btn');
-    calculateBtn.addEventListener('click', () => this.calculate());
+    const calculateBtn = document.getElementById("calculate-btn");
+    calculateBtn.addEventListener("click", () => this.calculate());
 
-    const dobInput = document.getElementById('dob');
-    dobInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
+    const dobInput = document.getElementById("dob");
+    dobInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
         this.calculate();
       }
     });

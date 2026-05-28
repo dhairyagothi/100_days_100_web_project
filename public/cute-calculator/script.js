@@ -14,7 +14,7 @@ function deleteLast() {
 
 function calculate() {
   try {
-    const result = Function('"use strict"; return (' + display.value + ')')();
+    const result = Function('"use strict"; return (' + display.value + ")")();
     display.value = result;
   } catch (error) {
     display.value = "Error";

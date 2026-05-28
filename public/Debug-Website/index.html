@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -47,7 +47,29 @@
     </style>
   </head>
   <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(124, 99, 255, 0.14),
+          rgba(79, 141, 255, 0.1)
+        );
+        color: #fff;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+      "
+      >← Back to Home</a
+    >
 
     <div
       class="key-fragment"
@@ -67,7 +89,14 @@
     ></div>
 
     <div class="nav">
-      <button onclick="startRotation(); playSpinSound()">O for Orange</button>
+      <button
+        onclick="
+          startRotation();
+          playSpinSound();
+        "
+      >
+        O for Orange
+      </button>
       <h1 class="logo">Debug Quest | Level 2</h1>
       <div class="score">Score: <span id="score">0</span>/10</div>
     </div>
@@ -142,7 +171,13 @@
           🎈 Bouncing around with no sense of space,<br />
           🚀 I zoom through your screen, leaving no trace!
         </p>
-        <button class="action-btn" onclick="distortScreen(); playDisSound();">
+        <button
+          class="action-btn"
+          onclick="
+            distortScreen();
+            playDisSound();
+          "
+        >
           🚀 Launch Into Chaos! 🎉
         </button>
       </div>
@@ -167,7 +202,7 @@
         <button
           class="action-btn"
           id="disturbance-btn"
-          onclick="triggerDisturbance(),moveCardAround(), playAmogus();"
+          onclick="(triggerDisturbance(), moveCardAround(), playAmogus())"
         >
           Tap If You Dare
         </button>

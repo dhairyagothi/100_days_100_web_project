@@ -430,10 +430,7 @@ const targetRole = document.getElementById("targetRole");
         element.download = "resume.html";
         element.click();
         URL.revokeObjectURL(url);
-        calculateATSScore();
-            <ul>${skills.split(",").map(s => `<li>${s.trim()}</li>`).join("")}</ul>
-            <h4>Experience</h4><p>${experience}</p>
-
+    });
     function renderModernTemplate(v) {
         const skillsArr = v.skills ? v.skills.split(",").map(s => s.trim()).filter(Boolean) : [];
         

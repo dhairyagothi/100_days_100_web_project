@@ -1,9 +1,21 @@
-const habitInput = document.getElementById("habitInput");
-const habitTags = document.getElementById("habitTags");
-const habitNotes = document.getElementById("habitNotes");
-const habitGoal = document.getElementById("habitGoal");
-const habitReminder = document.getElementById("habitReminder");
-const addHabitBtn = document.getElementById("addHabitBtn");
+const getTodayStr = () => new Date().toISOString().split("T")[0];
+
+// State
+let habits = JSON.parse(localStorage.getItem("habits")) || [];
+let userStats = JSON.parse(localStorage.getItem("userStats")) || {
+  totalCompletions: 0,
+};
+let currentFilter = "all";
+let searchQuery = "";
+let selectedHabitIndex = null;
+let editingIndex = null;
+let habitToDeleteIndex = null;
+let quill;
+
+// NEW: Calendar state
+let currentCalendarDate = new Date();
+
+// DOM Elements
 const habitList = document.getElementById("habitList");
 const totalHabits = document.getElementById("totalHabits");
 const completedHabits = document.getElementById("completedHabits");
@@ -18,8 +30,64 @@ const deleteConfirmBtn = document.getElementById("delete-confirm-btn");
 const deleteCancelBtn = document.getElementById("delete-cancel-btn");
 const deleteCloseBtn = document.getElementById("delete-close-btn");
 
-let habits = JSON.parse(localStorage.getItem("habits")) || [];
-let pendingDeleteIndex = null;
+// Panels
+const overviewContext = document.getElementById("overviewContext");
+const habitDetailsSection = document.getElementById("habitDetailsSection");
+const closeDetailsBtn = document.getElementById("closeDetailsBtn");
+const detailsTitle = document.getElementById("detailsTitle");
+const detailsStatus = document.getElementById("detailsStatus");
+
+// NEW: Calendar Elements
+const calendarGrid = document.getElementById("calendarGrid");
+const calendarMonth = document.getElementById("calendarMonthLabel");
+const prevMonthBtn = document.getElementById("prevMonthBtn");
+const nextMonthBtn = document.getElementById("nextMonthBtn");
+
+// Modals / Drawers
+const fabAdd = document.getElementById("fabAdd");
+const addModal = document.getElementById("addModal");
+const editDrawer = document.getElementById("editDrawer");
+const editDrawerOverlay = document.getElementById("editDrawerOverlay");
+const deleteModal = document.getElementById("deleteModal");
+
+// Mobile sidebar
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+const closeMenuBtn = document.getElementById("closeMenuBtn");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+// Add Inputs
+const addHabitInput = document.getElementById("addHabitInput");
+const addHabitCategory = document.getElementById("addHabitCategory");
+const addHabitTimeLabel = document.getElementById("addHabitTimeLabel");
+const addHabitPriority = document.getElementById("addHabitPriority");
+
+// Edit Inputs
+const editHabitInput = document.getElementById("editHabitInput");
+const editHabitCategory = document.getElementById("editHabitCategory");
+const editHabitTimeLabel = document.getElementById("editHabitTimeLabel");
+const editHabitPriority = document.getElementById("editHabitPriority");
+
+/* SAVE HABITS */
+function saveData() {
+  localStorage.setItem("habits", JSON.stringify(habits));
+  localStorage.setItem("userStats", JSON.stringify(userStats));
+}
+
+// Data Migration — normalize legacy schema
+habits = habits.map((h) => {
+  const todayStr = getTodayStr();
+  let hnew = { ...h };
+  hnew.category = hnew.category || "Personal";
+  hnew.timeLabel = hnew.timeLabel || "Anytime";
+  hnew.priority = hnew.priority || false;
+  hnew.createdAt = hnew.createdAt || todayStr;
+  hnew.notes = hnew.notes || "";
+  hnew.history = hnew.history || [];
+
+  if (hnew.completed && hnew.history.length === 0) {
+    hnew.history.push(todayStr);
+  }
 
   hnew.completed = hnew.history.includes(todayStr);
   return hnew;
@@ -32,74 +100,29 @@ function getTodayString() {
   return adjusted.toISOString().split("T")[0];
 }
 
-function getYesterdayString() {
-  const d = new Date(Date.now() - 86400000);
-  const offset = d.getTimezoneOffset();
-  const adjusted = new Date(d.getTime() - (offset * 60 * 1000));
-  return adjusted.toISOString().split("T")[0];
-}
+/* QUILL */
+function initQuill() {
+  quill = new Quill("#editor", {
+    theme: "snow",
+    placeholder: "Write your notes or reflections here...",
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["clean"],
+      ],
+    },
+  });
 
-function getDateMs(dateString) {
-  return new Date(`${dateString}T00:00:00`).getTime();
-}
-
-function getLast7Dates() {
-  const dates = [];
-  for (let i = 6; i >= 0; i -= 1) {
-    const d = new Date(Date.now() - i * 86400000);
-    const offset = d.getTimezoneOffset();
-    const adjusted = new Date(d.getTime() - (offset * 60 * 1000));
-    dates.push(adjusted.toISOString().split("T")[0]);
-  }
-  return dates;
-}
-
-/* DATA HELPERS */
-
-function parseTags(value) {
-  if (!value) return [];
-  return value
-    .split(",")
-    .map(tag => tag.trim())
-    .filter(Boolean);
-}
-
-function getSelectedSchedule() {
-  const selected = Array.from(document.querySelectorAll(".schedule-day:checked"))
-    .map(input => Number(input.value));
-  return selected.length ? selected : [0, 1, 2, 3, 4, 5, 6];
-}
-
-function isScheduledForDay(habit, dayIndex) {
-  if (!habit.schedule || habit.schedule.length === 0) return true;
-  return habit.schedule.includes(dayIndex);
-}
-
-function getLatestCompletionDate(habit) {
-  if (!habit.completionDates || habit.completionDates.length === 0) return "";
-  return habit.completionDates
-    .slice()
-    .sort()
-    .pop();
-}
-
-function normalizeCompletionDates(habit) {
-  const uniqueDates = Array.from(new Set(habit.completionDates || []));
-  habit.completionDates = uniqueDates.sort();
-}
-
-function calculateCurrentStreak(habit) {
-  if (!habit.completionDates || habit.completionDates.length === 0) return 0;
-  const set = new Set(habit.completionDates);
-  let streak = 0;
-  const today = getTodayString();
-  for (let i = 0; i < 365; i += 1) {
-    const date = new Date(getDateMs(today) - i * 86400000);
-    const dateStr = date.toISOString().split("T")[0];
-    if (set.has(dateStr)) {
-      streak += 1;
-    } else {
-      break;
+  quill.on("text-change", (delta, oldDelta, source) => {
+    if (
+      source === "user" &&
+      selectedHabitIndex !== null &&
+      habits[selectedHabitIndex]
+    ) {
+      habits[selectedHabitIndex].notes = quill.root.innerHTML;
+      saveData();
     }
   }
   return streak;
@@ -199,7 +222,7 @@ function renderCalendar() {
 
   calendarMonth.textContent = currentCalendarDate.toLocaleDateString("en-US", {
     month: "long",
-    year: "numeric"
+    year: "numeric",
   });
 
   const firstDay = new Date(year, month, 1).getDay();
@@ -218,13 +241,13 @@ function renderCalendar() {
 
     // FIXED DATE FORMAT
     const localDate = new Date(
-      date.getTime() - date.getTimezoneOffset() * 60000
+      date.getTime() - date.getTimezoneOffset() * 60000,
     );
 
     const dateStr = localDate.toISOString().split("T")[0];
 
-    const completedCount = habits.filter(h =>
-      h.history.includes(dateStr)
+    const completedCount = habits.filter((h) =>
+      h.history.includes(dateStr),
     ).length;
 
     const dayCell = document.createElement("div");
@@ -263,10 +286,8 @@ function openDeleteModal(index) {
   deleteModal.classList.add("show");
 }
 
-function closeDeleteModal() {
-  pendingDeleteIndex = null;
-  deleteModal.classList.remove("show");
-}
+  habits.forEach((h) => {
+    if (h.completed) todayCompleted++;
 
 /* TOGGLE COMPLETE LOGIC */
 
@@ -309,14 +330,67 @@ function getWeeklyProgress(habit) {
     }
   });
 
-  const percent = scheduledCount === 0
-    ? 0
-    : Math.round((completedCount / scheduledCount) * 100);
+  let progressRatio =
+    totalHabits > 0 ? Math.round((todayCompleted / totalHabits) * 100) : 0;
+  let overallRate =
+    totalPossibleDays > 0
+      ? Math.round((totalHistoricalCompletions / totalPossibleDays) * 100)
+      : 0;
 
-  return { scheduledCount, completedCount, percent };
-}
+  kpiCompletedRatio.textContent = `${todayCompleted}/${totalHabits} Habits`;
+  kpiCurrentStreak.textContent = `${maxStreak} Days`;
+  kpiCompletionRate.textContent = `${overallRate}%`;
 
-  filteredHabits.forEach(habitItem => {
+  userStats.bestStreak = Math.max(userStats.bestStreak || 0, maxStreak);
+  kpiBestStreak.textContent = `${userStats.bestStreak} Days`;
+
+  saveData();
+
+  progressRing.setAttribute("stroke-dasharray", `${progressRatio}, 100`);
+  progressText.textContent = `${progressRatio}%`;
+
+  if (totalHabits === 0)
+    motivationalBanner.textContent = "Start your journey by creating a habit.";
+  else if (progressRatio === 100)
+    motivationalBanner.textContent =
+      "Incredible! You've crushed everything today.";
+  else if (progressRatio >= 50)
+    motivationalBanner.textContent = "You're halfway there, keep it up!";
+  else
+    motivationalBanner.textContent =
+      "Every small step counts towards your goals.";
+
+  renderHeatmap();
+  renderWeeklyChart();
+  renderAchievements(maxStreak, totalHistoricalCompletions, totalHabits);
+
+  // NEW
+  renderCalendar();
+
+  const filteredHabits = habits
+    .map((habit, index) => ({ ...habit, originalIndex: index }))
+    .filter((habit) => {
+      if (searchQuery && !habit.name.toLowerCase().includes(searchQuery))
+        return false;
+      if (currentFilter === "all" || currentFilter === "dashboard") return true;
+      if (currentFilter === "today")
+        return habit.timeLabel !== "Anytime" || !habit.completed;
+      if (currentFilter === "completed") return habit.completed;
+      if (currentFilter === "missed")
+        return !habit.completed && habit.history.length > 0;
+      if (currentFilter === "high-priority") return habit.priority;
+      if (["Health", "Work", "Personal"].includes(currentFilter))
+        return habit.category === currentFilter;
+      return true;
+    });
+
+  if (filteredHabits.length === 0) {
+    emptyState.classList.remove("hidden");
+  } else {
+    emptyState.classList.add("hidden");
+  }
+
+  filteredHabits.forEach((habitItem) => {
     const index = habitItem.originalIndex;
     const habit = habits[index];
     const streak = getHabitStreak(habit.history);
@@ -324,36 +398,48 @@ function getWeeklyProgress(habit) {
     const li = document.createElement("li");
     li.className = `habit-card fade-in ${index === selectedHabitIndex ? "active-card" : ""}`;
 
-  habits.forEach((habit, index) => {
-    const li = document.createElement("li");
-    li.className = "habit-item";
+    let catColor =
+      habit.category === "Health"
+        ? "var(--danger-color)"
+        : habit.category === "Work"
+          ? "var(--accent-primary)"
+          : "#f59e0b";
 
     const streakHtml = habit.streak && habit.streak > 0
       ? `<span class="streak-badge">🔥 ${habit.streak} day${habit.streak > 1 ? "s" : ""}</span>`
       : "";
 
-    const tagsHtml = habit.tags
-      .map(tag => `<span class="tag">${tag}</span>`)
-      .join("");
+    let timeBadge =
+      habit.timeLabel !== "Anytime"
+        ? `<span class="time-badge">${habit.timeLabel}</span>`
+        : "";
 
-    const scheduleLabel = habit.schedule
-      .map(day => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][day])
-      .join(" ");
-
-    const weekly = getWeeklyProgress(habit);
+    let streakBadge =
+      streak > 0 ? `<span class="streak-badge">🔥 ${streak}</span>` : "";
 
     li.innerHTML = `
-      <div class="habit-main">
-        <div class="habit-details">
-          <span class="habit-title ${habit.completed ? "completed" : ""}">
-            ${habit.name}
-          </span>
-          <div class="habit-meta">
-            ${tagsHtml}
-            <span>Schedule: ${scheduleLabel || "Daily"}</span>
-            ${habit.goalText ? `<span>Goal: ${habit.goalText}</span>` : ""}
-            ${habit.reminderTime ? `<span>Reminder: ${habit.reminderTime}</span>` : ""}
-            <span>Weekly: ${weekly.completedCount}/${weekly.scheduledCount}</span>
+      <div class="habit-left">
+        <button class="checkbox-btn ${habit.completed ? "checked" : ""}" title="Mark as done">
+          ${
+            habit.completed
+              ? '<i data-lucide="check-circle-2"></i>'
+              : '<i data-lucide="circle"></i>'
+          }
+        </button>
+
+        <div class="habit-details-wrap">
+          <div class="habit-title-row">
+            ${priorityFlag}
+            <span class="habit-name ${habit.completed ? "completed" : ""}">
+              ${habit.name}
+            </span>
+          </div>
+
+          <div class="habit-meta-row">
+            <span class="category-dot" style="background:${catColor}"></span>
+            ${timeBadge}
+            ${streakBadge}
+            ${generateHistoryDots(habit.history)}
           </div>
           ${habit.notes ? `<p class="habit-note">${habit.notes}</p>` : ""}
           ${streakHtml}
@@ -368,24 +454,39 @@ function getWeeklyProgress(habit) {
       </div>
     `;
 
-    li.addEventListener("click", e => {
-      if (e.target.closest(".checkbox-btn") || e.target.closest(".habit-actions")) return;
+    li.addEventListener("click", (e) => {
+      if (
+        e.target.closest(".checkbox-btn") ||
+        e.target.closest(".habit-actions")
+      )
+        return;
       selectHabit(index);
     });
 
     const checkboxBtn = li.querySelector(".checkbox-btn");
-    checkboxBtn.addEventListener("click", e => {
+    checkboxBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       habit.completed = !habit.completed;
 
-    completeBtn.addEventListener("click", () => {
-      toggleComplete(index);
-      saveHabits();
-      renderAll();
+      if (habit.completed) {
+        if (!habit.history.includes(todayStr)) habit.history.push(todayStr);
+        userStats.totalCompletions = (userStats.totalCompletions || 0) + 1;
+      } else {
+        habit.history = habit.history.filter((d) => d !== todayStr);
+        userStats.totalCompletions = Math.max(
+          0,
+          (userStats.totalCompletions || 0) - 1,
+        );
+      }
+
+      saveData();
+      renderDashboard();
     });
 
-    deleteBtn.addEventListener("click", () => {
-      openDeleteModal(index);
+    const editBtn = li.querySelector(".edit-btn");
+    editBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openEditDrawer(index);
     });
 
     habitList.appendChild(li);
@@ -395,14 +496,126 @@ function getWeeklyProgress(habit) {
 function renderProgressCharts() {
   progressList.innerHTML = "";
 
-  habits.forEach(habit => {
-    const weekly = getWeeklyProgress(habit);
-    const card = document.createElement("div");
-    card.className = "progress-card";
-    card.innerHTML = `
-      <div class="habit-title">${habit.name}</div>
-      <div class="habit-meta">Weekly completion: ${weekly.percent}%</div>
-      <div class="progress-bar"><span style="width: ${weekly.percent}%"></span></div>
+  document.querySelectorAll(".sidebar-nav .nav-item").forEach((nav) => {
+    nav.classList.remove("active");
+    if (nav.dataset.filter === filterId || nav.dataset.category === filterId) {
+      nav.classList.add("active");
+      viewTitle.textContent = nav.textContent.trim();
+    }
+  });
+
+  document.querySelectorAll(".filter-chip").forEach((chip) => {
+    chip.classList.remove("active");
+    if (chip.dataset.qf === filterId) chip.classList.add("active");
+  });
+
+  if (filterId === "high-priority") viewTitle.textContent = "High Priority";
+
+  renderDashboard();
+}
+
+/* SIDEBAR */
+function openSidebar() {
+  sidebar.classList.add("open");
+  sidebarOverlay.classList.remove("hidden");
+}
+
+function closeSidebar() {
+  sidebar.classList.remove("open");
+  sidebarOverlay.classList.add("hidden");
+}
+
+mobileMenuBtn?.addEventListener("click", openSidebar);
+closeMenuBtn?.addEventListener("click", closeSidebar);
+sidebarOverlay?.addEventListener("click", closeSidebar);
+
+document.querySelectorAll(".sidebar-nav .nav-item").forEach((item) => {
+  item.addEventListener("click", (e) => {
+    e.preventDefault();
+    handleFilterChange(item.dataset.filter || item.dataset.category);
+    closeSidebar();
+  });
+});
+
+document.querySelectorAll(".filter-chip").forEach((chip) => {
+  chip.addEventListener("click", () => handleFilterChange(chip.dataset.qf));
+});
+
+searchInput?.addEventListener("input", (e) => {
+  searchQuery = e.target.value.toLowerCase();
+  renderDashboard();
+});
+
+/* NEW: CALENDAR NAVIGATION */
+prevMonthBtn?.addEventListener("click", () => {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+  renderCalendar();
+});
+
+nextMonthBtn?.addEventListener("click", () => {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+  renderCalendar();
+});
+
+/* DETAILS PANEL */
+function showOverview() {
+  overviewContext.classList.remove("hidden");
+  habitDetailsSection.classList.add("hidden");
+  selectedHabitIndex = null;
+}
+
+function selectHabit(index) {
+  selectedHabitIndex = index;
+  const habit = habits[index];
+
+  if (!habit) {
+    showOverview();
+    return;
+  }
+
+  overviewContext.classList.add("hidden");
+  habitDetailsSection.classList.remove("hidden");
+
+  detailsTitle.textContent = habit.name;
+  detailsStatus.textContent = habit.completed ? "Completed" : "Pending";
+  detailsStatus.className =
+    "status-badge " + (habit.completed ? "completed" : "pending");
+
+  quill.root.innerHTML = habit.notes || "";
+
+  renderDashboard();
+}
+
+closeDetailsBtn?.addEventListener("click", showOverview);
+
+/* ANALYTICS */
+function renderWeeklyChart() {
+  const chartContainer = document.getElementById("weeklyChart");
+  chartContainer.innerHTML = "";
+
+  const today = new Date();
+  let maxCompletions = 1;
+  let daysData = [];
+
+  for (let i = 6; i >= 0; i--) {
+    let d = new Date(today);
+    d.setDate(d.getDate() - i);
+    let dStr = d.toISOString().split("T")[0];
+    let count = habits.filter((h) => h.history.includes(dStr)).length;
+    if (count > maxCompletions) maxCompletions = count;
+    daysData.push({
+      day: d.toLocaleDateString("en-US", { weekday: "short" }),
+      count,
+    });
+  }
+
+  daysData.forEach((data) => {
+    let heightPerc = (data.count / maxCompletions) * 100;
+    chartContainer.innerHTML += `
+      <div class="chart-col" title="${data.count} habits">
+        <div class="chart-bar" style="height:${heightPerc}%"></div>
+        <span class="chart-label">${data.day.charAt(0)}</span>
+      </div>
     `;
     progressList.appendChild(card);
   });
@@ -417,14 +630,20 @@ function updateStats() {
   let totalScheduledWeek = 0;
   let totalCompletedWeek = 0;
 
-  habits.forEach(habit => {
-    if (habit.completed) completedCount += 1;
-    if (isScheduledForDay(habit, todayDay)) scheduledCount += 1;
+  for (let i = 27; i >= 0; i--) {
+    let d = new Date(today);
+    d.setDate(d.getDate() - i);
+    let dStr = d.toISOString().split("T")[0];
+    let count = habits.filter((h) => h.history.includes(dStr)).length;
 
-    const weekly = getWeeklyProgress(habit);
-    totalScheduledWeek += weekly.scheduledCount;
-    totalCompletedWeek += weekly.completedCount;
-  });
+    let intensity =
+      count === 0
+        ? "level-0"
+        : count < 3
+          ? "level-1"
+          : count < 5
+            ? "level-2"
+            : "level-3";
 
   const overallWeeklyRate = totalScheduledWeek === 0
     ? 0
@@ -436,11 +655,28 @@ function updateStats() {
   weeklyRate.textContent = `${overallWeeklyRate}%`;
 }
 
-function renderAll() {
-  renderHabits();
-  renderProgressCharts();
-  updateStats();
-  checkMilestones();
+function renderAchievements(maxStreak, totalCompletions, totalHabits) {
+  const grid = document.getElementById("achievementsGrid");
+  grid.innerHTML = "";
+
+  const achievements = [
+    { name: "7 Day Warrior", icon: "sword", achieved: maxStreak >= 7 },
+    {
+      name: "Consistency Master",
+      icon: "award",
+      achieved: totalCompletions >= 30,
+    },
+    { name: "Habit Builder", icon: "hammer", achieved: totalHabits >= 5 },
+  ];
+
+  achievements.forEach((a) => {
+    grid.innerHTML += `
+      <div class="achievement-badge ${a.achieved ? "unlocked" : "locked"}">
+        <i data-lucide="${a.icon}"></i>
+        <span>${a.name}</span>
+      </div>
+    `;
+  });
 }
 
 /* ADD HABIT */
@@ -456,7 +692,7 @@ document.getElementById("cancelAddBtn")?.addEventListener("click", () => {
 });
 
 // Enter key support in add modal
-addHabitInput?.addEventListener("keypress", e => {
+addHabitInput?.addEventListener("keypress", (e) => {
   if (e.key === "Enter") document.getElementById("confirmAddBtn")?.click();
 });
 
@@ -477,24 +713,12 @@ document.getElementById("confirmAddBtn")?.addEventListener("click", () => {
     schedule: getSelectedSchedule(),
     completionDates: [],
     completed: false,
-    streak: 0,
-    maxStreak: 0,
-    lastCompleted: "",
-    createdAt: getTodayString()
-  };
-
-  habits.push(newHabit);
-
-  saveHabits();
-  renderAll();
-
-  habitInput.value = "";
-  habitTags.value = "";
-  habitNotes.value = "";
-  habitGoal.value = "";
-  habitReminder.value = "";
-  document.querySelectorAll(".schedule-day").forEach(input => {
-    input.checked = true;
+    notes: "",
+    category: addHabitCategory.value,
+    timeLabel: addHabitTimeLabel.value,
+    priority: addHabitPriority.checked,
+    createdAt: getTodayStr(),
+    history: [],
   });
 });
 
@@ -503,10 +727,10 @@ function openEditDrawer(index) {
   editingIndex = index;
   const habit = habits[index];
 
-  editHabitInput.value        = habit.name;
-  editHabitCategory.value     = habit.category;
-  editHabitTimeLabel.value    = habit.timeLabel;
-  editHabitPriority.checked   = habit.priority;
+  editHabitInput.value = habit.name;
+  editHabitCategory.value = habit.category;
+  editHabitTimeLabel.value = habit.timeLabel;
+  editHabitPriority.checked = habit.priority;
 
   editDrawer.classList.remove("hidden");
   editDrawerOverlay.classList.remove("hidden");
@@ -524,7 +748,9 @@ function closeEditDrawer() {
   }, 300);
 }
 
-document.getElementById("closeDrawerBtn")?.addEventListener("click", closeEditDrawer);
+document
+  .getElementById("closeDrawerBtn")
+  ?.addEventListener("click", closeEditDrawer);
 editDrawerOverlay?.addEventListener("click", closeEditDrawer);
 
 document.getElementById("saveEditBtn")?.addEventListener("click", () => {
@@ -536,10 +762,10 @@ document.getElementById("saveEditBtn")?.addEventListener("click", () => {
     return;
   }
 
-  habits[editingIndex].name      = newName;
-  habits[editingIndex].category  = editHabitCategory.value;
+  habits[editingIndex].name = newName;
+  habits[editingIndex].category = editHabitCategory.value;
   habits[editingIndex].timeLabel = editHabitTimeLabel.value;
-  habits[editingIndex].priority  = editHabitPriority.checked;
+  habits[editingIndex].priority = editHabitPriority.checked;
 
   saveData();
   renderDashboard();
@@ -582,40 +808,18 @@ document.getElementById("confirmDeleteBtn")?.addEventListener("click", () => {
 function setTheme(theme) {
   const isDark = theme === "dark";
   document.body.classList.toggle("dark-mode", isDark);
-  document.getElementById("theme-text").textContent = isDark ? "Light Mode" : "Dark Mode";
+  document.getElementById("theme-text").textContent = isDark
+    ? "Light Mode"
+    : "Dark Mode";
   localStorage.setItem("theme", theme);
 }
 
 /* DELETE MODAL EVENT LISTENERS */
 
-if (deleteCloseBtn) {
-  deleteCloseBtn.addEventListener("click", closeDeleteModal);
-}
-
-if (deleteCancelBtn) {
-  deleteCancelBtn.addEventListener("click", closeDeleteModal);
-}
-
-if (deleteConfirmBtn) {
-  deleteConfirmBtn.addEventListener("click", () => {
-    if (pendingDeleteIndex !== null) {
-      habits.splice(pendingDeleteIndex, 1);
-      saveHabits();
-      renderAll();
-    }
-    closeDeleteModal();
-  });
-}
-
-if (deleteModal) {
-  deleteModal.addEventListener("click", (event) => {
-    if (event.target === deleteModal) {
-      closeDeleteModal();
-    }
-  });
-}
-
-/* INITIAL RENDER & DAILY CHECK */
-
-updateHabitsDailyStatus();
-renderAll();
+/* INIT */
+document.addEventListener("DOMContentLoaded", () => {
+  setTheme(localStorage.getItem("theme") || "light");
+  initQuill();
+  lucide.createIcons();
+  renderDashboard();
+});

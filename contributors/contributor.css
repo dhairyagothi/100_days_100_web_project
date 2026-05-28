@@ -44,7 +44,7 @@ body {
 
 body {
   font-family:
-    'Inter Tight',
+    "Inter Tight",
     system-ui,
     -apple-system,
     sans-serif;
@@ -66,8 +66,6 @@ body {
   z-index: 100 !important;
 }
 
-
-
 /* Header */
 .contributor-header {
   text-align: center;
@@ -75,7 +73,7 @@ body {
 }
 
 .contributor-header h1 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 900;
   color: var(--text-primary);
@@ -116,7 +114,7 @@ body {
 }
 
 .stat-item .value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 2rem;
   font-weight: 700;
   color: var(--accent-color);
@@ -168,7 +166,7 @@ body {
 }
 
 .contributor-card h3 {
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -182,7 +180,7 @@ body {
 }
 
 .contributor-stats .value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 700;
   font-size: 1.2rem;
   color: var(--accent-color);
@@ -274,7 +272,7 @@ body {
 }
 
 .footer h3 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
@@ -311,7 +309,7 @@ body {
 }
 
 .footer-link {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 1.1rem;
@@ -394,55 +392,44 @@ body {
    CONTRIBUTOR MODAL
 ============================================ */
 
-
 .modal-overlay {
+  display: none;
 
-    display: none;
+  position: fixed;
 
-    position: fixed;
+  top: 0;
+  left: 0;
 
-    top: 0;
-    left: 0;
+  width: 100vw;
+  height: 100vh;
 
-    width: 100vw;
-    height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
 
-    background:
-    rgba(0,0,0,.85);
+  z-index: 99999999;
 
-    z-index: 99999999;
+  justify-content: center;
 
-    justify-content: center;
-
-    align-items: center;
+  align-items: center;
 }
 
-
 .modal-content {
+  background: #111827;
 
-    background: #111827;
+  width: 90%;
 
-    width: 90%;
+  max-width: 500px;
 
-    max-width: 500px;
+  padding: 30px;
 
-    padding: 30px;
+  border-radius: 20px;
 
-    border-radius: 20px;
+  color: white;
 
-    color: white;
+  text-align: center;
 
-    text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 
-    border:
-    1px solid rgba(
-    255,
-    255,
-    255,
-    .1
-    );
-
-    position: relative;
+  position: relative;
 }
 
 #modalBody {
@@ -462,7 +449,7 @@ body {
 #modalBody h2 {
   margin-bottom: 1rem;
 
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
 }
 
 #modalBody p {
@@ -684,7 +671,7 @@ body {
 }
 
 .contributor-card h3 {
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -698,7 +685,7 @@ body {
 }
 
 .contributor-stats .value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 700;
   font-size: 1.2rem;
   color: var(--accent-color);
@@ -768,7 +755,7 @@ body {
 }
 
 .footer h3 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
@@ -1063,7 +1050,9 @@ body {
 
 #themeToggle i,
 #themeToggleNav i {
-  transition: transform 0.25s var(--t), color 0.25s var(--t);
+  transition:
+    transform 0.25s var(--t),
+    color 0.25s var(--t);
 }
 
 #themeToggle:hover,
@@ -1081,170 +1070,171 @@ body {
 }
 
 .menu-toggle {
-    display: none;
-    background: transparent;
-    border: none;
-    color: var(--text-primary);
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    transition: var(--t);
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: var(--t);
 }
 
 @media (max-width: 768px) {
-    .navbar {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 60px !important;
-        padding: 0 1.5rem !important;
-        z-index: 99999 !important; 
-    }
+  .navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 60px !important;
+    padding: 0 1.5rem !important;
+    z-index: 99999 !important;
+  }
 
-    .menu-toggle {
-        display: block !important;
-        z-index: 100000 !important;
-    }
+  .menu-toggle {
+    display: block !important;
+    z-index: 100000 !important;
+  }
 
-    .menu-toggle.active i::before {
-        content: "\f00d" !important; 
-    }
+  .menu-toggle.active i::before {
+    content: "\f00d" !important;
+  }
 
-    
-    .nav-buttons.mobile-drawer-layer {
-        display: none !important; 
-        position: fixed !important;
-        top: 60px !important; 
-        left: 0 !important;
-        width: 100vw !important; 
-        height: calc(100vh - 60px) !important; 
-        background-color: #0b0d0f !important; 
-        padding: 3rem 2rem !important;
-        flex-direction: column !important; 
-        align-items: center !important;
-        justify-content: flex-start !important;
-        gap: 1.5rem !important;
-        z-index: 99998 !important; 
-        box-sizing: border-box !important;
-        overflow-y: auto !important;
-    }
+  .nav-buttons.mobile-drawer-layer {
+    display: none !important;
+    position: fixed !important;
+    top: 60px !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 60px) !important;
+    background-color: #0b0d0f !important;
+    padding: 3rem 2rem !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 1.5rem !important;
+    z-index: 99998 !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+  }
 
-    body.light-mode .nav-buttons.mobile-drawer-layer {
-        background-color: #f4f6f9 !important;
-    }
+  body.light-mode .nav-buttons.mobile-drawer-layer {
+    background-color: #f4f6f9 !important;
+  }
 
-    .nav-buttons.mobile-drawer-layer.active {
-        display: flex !important;
-    }
+  .nav-buttons.mobile-drawer-layer.active {
+    display: flex !important;
+  }
 
-    .nav-buttons.mobile-drawer-layer .btn {
-        width: 100% !important;
-      max-width: none !important;
-        justify-content: center !important;
-        text-align: center !important;
-        padding: 0.8rem 1rem !important;
-    }
+  .nav-buttons.mobile-drawer-layer .btn {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 0.8rem 1rem !important;
+  }
 
-    .nav-buttons.mobile-drawer-layer .welcome-text {
-        width: 100% !important;
-        text-align: center !important;
-        color: var(--text-primary) !important;
-        margin-bottom: 0.5rem !important;
-    }
+  .nav-buttons.mobile-drawer-layer .welcome-text {
+    width: 100% !important;
+    text-align: center !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 0.5rem !important;
+  }
 }
-
 
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
 #scrollBtn {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 48px;
-    height: 48px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transform: translateY(16px);
-    pointer-events: none;
-    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
-                border-color 0.2s ease, color 0.2s ease;
-    z-index: 50;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease),
+    border-color 0.2s ease,
+    color 0.2s ease;
+  z-index: 50;
 }
 
 #scrollBtn.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 #scrollBtn:hover {
-    border-color: var(--border-accent);
-    color: var(--accent);
+  border-color: var(--border-accent);
+  color: var(--accent);
 }
 
 #scrollBtn:hover .scroll-arrow {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 #scrollBtn .scroll-arrow {
-    transition: transform 0.2s var(--ease);
-    position: relative;
-    z-index: 1;
+  transition: transform 0.2s var(--ease);
+  position: relative;
+  z-index: 1;
 }
 
 #scrollBtn svg.progress-ring {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 48px;
-    height: 48px;
-    transform: rotate(-90deg);
-    pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 48px;
+  transform: rotate(-90deg);
+  pointer-events: none;
 }
 
 #scrollBtn svg.progress-ring .ring-track {
-    fill: none;
-    stroke: var(--border);
-    stroke-width: 2;
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 2;
 }
 
 #scrollBtn svg.progress-ring .ring-fill {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-dasharray: 138.2;
-    stroke-dashoffset: 138.2;
-    transition: stroke-dashoffset 0.1s linear;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 138.2;
+  stroke-dashoffset: 138.2;
+  transition: stroke-dashoffset 0.1s linear;
 }
 
 #scrollBtn .scroll-tooltip {
-    position: absolute;
-    bottom: 54px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 4px 10px;
-    font-size: 0.7rem;
-    white-space: nowrap;
-    color: var(--text-secondary);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
+  position: absolute;
+  bottom: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
 #scrollBtn:hover .scroll-tooltip {
-    opacity: 1;
+  opacity: 1;
 }

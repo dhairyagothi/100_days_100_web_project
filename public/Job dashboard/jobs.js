@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = href;
             } else {
                 alert('Invalid URL!');
+            }
+        });
+    });
     if (form) {
         // Add event listeners to form elements
         form.title.addEventListener('input', filterJobs);
@@ -386,4 +389,4 @@ window.addEventListener('load', () => {
 
     loadSavedJobs();
 });
-}
+

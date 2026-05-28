@@ -1,0 +1,7 @@
+# Ignore all node_modules directories
+node_modules
+
+# Ignore the pastebin SvelteKit subproject (has its own .prettierrc requiring prettier-plugin-svelte)
+public/pastebin
+
+public/Contact Book/**

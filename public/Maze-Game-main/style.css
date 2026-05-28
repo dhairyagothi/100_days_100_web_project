@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
   --bg-start: #090a14;
@@ -23,18 +23,27 @@ body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--text);
-  background: radial-gradient(circle at top left, rgba(96, 212, 255, 0.14), transparent 22%),
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(96, 212, 255, 0.14),
+      transparent 22%
+    ),
     linear-gradient(180deg, var(--bg-start), var(--bg-end));
   overflow-x: hidden;
 }
 
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(96, 212, 255, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    rgba(96, 212, 255, 0.08) 1px,
+    transparent 1px
+  );
   background-size: 60px 60px;
   pointer-events: none;
   opacity: 0.45;
@@ -44,7 +53,11 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.18) 1px,
+    transparent 1px
+  );
   background-size: 100px 100px;
   opacity: 0.15;
 }
@@ -52,7 +65,7 @@ body::before {
 body,
 button,
 select {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 #page {
@@ -85,7 +98,7 @@ select {
   place-items: center;
   background: linear-gradient(135deg, #34d1ff, #9c6cff);
   color: #0b1221;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1.75rem;
   font-weight: 700;
   box-shadow: 0 0 22px rgba(96, 212, 255, 0.35);
@@ -164,7 +177,7 @@ select {
 }
 
 .custom-select::after {
-  content: '▾';
+  content: "▾";
   position: absolute;
   right: 18px;
   top: 50%;
@@ -189,7 +202,10 @@ button {
   font-weight: 600;
   letter-spacing: 0.01em;
   color: #09101f;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
   background: linear-gradient(135deg, #60d4ff, #9c6cff);
   box-shadow: 0 18px 50px rgba(96, 212, 255, 0.22);
 }
@@ -218,7 +234,9 @@ button:disabled {
   background: rgba(9, 12, 28, 0.9);
   border: 1px solid rgba(96, 212, 255, 0.12);
   box-shadow: var(--shadow);
-  transition: transform 0.3s ease, opacity 0.4s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.4s ease;
 }
 
 .card.visible {
@@ -231,7 +249,12 @@ button:disabled {
   height: auto;
   display: block;
   border-radius: 20px;
-  background: radial-gradient(circle at 30% 30%, rgba(96, 212, 255, 0.12), transparent 25%),
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(96, 212, 255, 0.12),
+      transparent 25%
+    ),
     linear-gradient(180deg, rgba(15, 22, 56, 0.98), rgba(8, 10, 20, 0.98));
 }
 
@@ -272,7 +295,9 @@ button:disabled {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .toast.visible {
@@ -302,7 +327,9 @@ button:disabled {
   place-items: center;
   background: rgba(4, 8, 20, 0.85);
   backdrop-filter: blur(6px);
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
   z-index: 80;
 }
 

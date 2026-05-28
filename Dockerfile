@@ -12,16 +12,12 @@ LABEL org.opencontainers.image.source="https://github.com/dhairyagothi/100_days_
 # Remove default nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # Copy the entire static site
 COPY . /usr/share/nginx/html/
 
 # Remove files that shouldn't be in the served content
 RUN rm -f /usr/share/nginx/html/Dockerfile \
     /usr/share/nginx/html/docker-compose.yml \
-    /usr/share/nginx/html/nginx.conf \
     /usr/share/nginx/html/.dockerignore \
     /usr/share/nginx/html/Makefile \
     /usr/share/nginx/html/.htmlhintrc \

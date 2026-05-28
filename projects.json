@@ -1845,21 +1845,12 @@
     "projectPath": "./public/canvas_multitrack_sequencer/index.html"
   },
   {
-      "projectNo": 187,
-      "projectName": "Image Compressor Web App",
-      "projectType": "Tool",
-      "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
-      "techStack": ["tool", "html", "css", "javascript", "ui"],
-      "difficulty": "intermediate",
-      "projectPath": "./public/ImageCompressor/index.html"
-    },
-    {
-      "projectNo": 188,
-      "projectName": "Leetcode Streak Visualizer",
-      "projectType": "Tool",
-      "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
-      "techStack": ["tool", "html", "css", "javascript"],
-      "difficulty": "advanced",
-      "projectPath": "./public/Streak-Visualizer/index.html"
-    }
+    "projectNo": 187,
+    "projectName": "Image Compressor Web App",
+    "projectType": "Tool",
+    "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
+    "techStack": ["tool", "html", "css", "javascript", "ui"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/ImageCompressor/index.html"
+  }
 ]

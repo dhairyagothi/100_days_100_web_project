@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,29 @@
     <link rel="stylesheet" href="styles/visualizer.css" />
   </head>
   <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(124, 99, 255, 0.14),
+          rgba(79, 141, 255, 0.1)
+        );
+        color: #fff;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+      "
+      >← Back to Home</a
+    >
 
     <header class="topbar">
       <div class="brand">
@@ -30,8 +52,12 @@
     <main class="layout">
       <section class="panel controls-panel" aria-label="Controls">
         <div class="controls-grid">
-          <button id="generate-btn" class="btn btn-secondary">Random Array</button>
-          <button id="comparison-mode-btn" class="btn">Enable Comparison Mode</button>
+          <button id="generate-btn" class="btn btn-secondary">
+            Random Array
+          </button>
+          <button id="comparison-mode-btn" class="btn">
+            Enable Comparison Mode
+          </button>
           <div class="array-tools" aria-label="Custom array input">
             <label for="custom-array-input">Custom array</label>
             <div class="array-input-row">
@@ -43,11 +69,15 @@
                 spellcheck="false"
                 placeholder="e.g. 8, 3, 10, 1, 6"
               />
-              <button id="apply-array-btn" class="btn btn-secondary">Apply</button>
+              <button id="apply-array-btn" class="btn btn-secondary">
+                Apply
+              </button>
             </div>
             <div class="array-preset-row" aria-label="Array presets">
               <button id="reversed-array-btn" class="btn">Reversed</button>
-              <button id="nearly-sorted-array-btn" class="btn">Nearly Sorted</button>
+              <button id="nearly-sorted-array-btn" class="btn">
+                Nearly Sorted
+              </button>
             </div>
             <p id="array-status" class="array-status" aria-live="polite">
               Use comma-separated numbers to build a custom array.
@@ -55,7 +85,13 @@
           </div>
           <div class="speed-control">
             <label for="speed-slider">Speed</label>
-            <input id="speed-slider" type="range" min="1" max="100" value="50" />
+            <input
+              id="speed-slider"
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+            />
             <span id="speed-label">275ms</span>
           </div>
           <div class="button-row">
@@ -75,7 +111,9 @@
         <div class="panel-head">
           <div>
             <h2>Performance Graph</h2>
-            <p id="performance-summary">Charts update after each completed run.</p>
+            <p id="performance-summary">
+              Charts update after each completed run.
+            </p>
           </div>
         </div>
         <div class="chart-wrap">
@@ -92,11 +130,18 @@
         <div class="comparison-head">
           <div>
             <h2>Dual Algorithm Comparison</h2>
-            <p>Run two algorithms on the same array and compare their live metrics.</p>
+            <p>
+              Run two algorithms on the same array and compare their live
+              metrics.
+            </p>
           </div>
           <div class="comparison-actions">
-            <button id="comparison-run-btn" class="btn btn-primary">Run Comparison</button>
-            <button id="comparison-reset-btn" class="btn">Reset Comparison</button>
+            <button id="comparison-run-btn" class="btn btn-primary">
+              Run Comparison
+            </button>
+            <button id="comparison-reset-btn" class="btn">
+              Reset Comparison
+            </button>
           </div>
         </div>
         <div class="comparison-config">
@@ -120,7 +165,11 @@
               <option value="quick">Quick Sort</option>
             </select>
           </label>
-          <p id="comparison-status" class="comparison-status" aria-live="polite">
+          <p
+            id="comparison-status"
+            class="comparison-status"
+            aria-live="polite"
+          >
             Enable comparison mode to run two algorithms side by side.
           </p>
         </div>
@@ -131,13 +180,18 @@
                 <h3 id="comparison-left-title">Bubble Sort</h3>
                 <p id="comparison-left-subtitle">Left visualizer</p>
               </div>
-              <span id="comparison-left-time" class="comparison-time">Time: 0ms</span>
+              <span id="comparison-left-time" class="comparison-time"
+                >Time: 0ms</span
+              >
             </div>
             <div class="comparison-stats">
               <span id="comparison-left-comparisons">Comparisons: 0</span>
               <span id="comparison-left-swaps">Swaps: 0</span>
             </div>
-            <div id="comparison-left-bars" class="bars-container comparison-bars"></div>
+            <div
+              id="comparison-left-bars"
+              class="bars-container comparison-bars"
+            ></div>
           </article>
           <article class="comparison-card">
             <div class="comparison-card-head">
@@ -145,30 +199,51 @@
                 <h3 id="comparison-right-title">Quick Sort</h3>
                 <p id="comparison-right-subtitle">Right visualizer</p>
               </div>
-              <span id="comparison-right-time" class="comparison-time">Time: 0ms</span>
+              <span id="comparison-right-time" class="comparison-time"
+                >Time: 0ms</span
+              >
             </div>
             <div class="comparison-stats">
               <span id="comparison-right-comparisons">Comparisons: 0</span>
               <span id="comparison-right-swaps">Swaps: 0</span>
             </div>
-            <div id="comparison-right-bars" class="bars-container comparison-bars"></div>
+            <div
+              id="comparison-right-bars"
+              class="bars-container comparison-bars"
+            ></div>
           </article>
         </div>
       </section>
 
-      <section id="main-visualizer-panel" class="panel visualizer-panel" aria-label="Sorting visualizer">
+      <section
+        id="main-visualizer-panel"
+        class="panel visualizer-panel"
+        aria-label="Sorting visualizer"
+      >
         <div id="bars-container" class="bars-container"></div>
       </section>
 
-      <aside id="main-explanation-panel" class="panel explanation-panel" aria-live="polite">
+      <aside
+        id="main-explanation-panel"
+        class="panel explanation-panel"
+        aria-live="polite"
+      >
         <h2>Explanation</h2>
-        <p id="explanation-text">Generate an array and press Play to start learning.</p>
+        <p id="explanation-text">
+          Generate an array and press Play to start learning.
+        </p>
       </aside>
 
-      <section id="main-guide-panel" class="panel guide-panel" aria-label="Algorithm guide">
+      <section
+        id="main-guide-panel"
+        class="panel guide-panel"
+        aria-label="Algorithm guide"
+      >
         <div class="guide-head">
           <h2 id="guide-title">Bubble Sort Guide</h2>
-          <p>Learn both theory and implementation for the selected algorithm.</p>
+          <p>
+            Learn both theory and implementation for the selected algorithm.
+          </p>
         </div>
         <div class="guide-grid">
           <article class="guide-card">
@@ -187,12 +262,17 @@
         <div class="panel-head">
           <div>
             <h2>Quiz Mode</h2>
-            <p>Check your understanding of complexity, stability, and best/worst cases.</p>
+            <p>
+              Check your understanding of complexity, stability, and best/worst
+              cases.
+            </p>
           </div>
         </div>
         <form id="quiz-form" class="quiz-form"></form>
         <div class="quiz-actions">
-          <button id="quiz-submit-btn" class="btn btn-primary" type="button">Submit Quiz</button>
+          <button id="quiz-submit-btn" class="btn btn-primary" type="button">
+            Submit Quiz
+          </button>
           <span id="quiz-score" class="quiz-score">Score: 0/5</span>
         </div>
         <p id="quiz-feedback" class="quiz-feedback" aria-live="polite">

@@ -46,7 +46,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100dvh; 
+  min-height: 100dvh;
   padding: 40px;
   gap: 60px;
   box-sizing: border-box;
@@ -55,9 +55,9 @@ body {
 /* Flex assembly ties pole and flag side-by-side */
 .flag-assembly {
   position: relative;
-  width: 480px;  
-  height: 480px; 
-  display: block
+  width: 480px;
+  height: 480px;
+  display: block;
 }
 
 /* ================= FLAG POLE ================= */
@@ -82,9 +82,21 @@ body {
   border: 1px solid white;
 }
 
-.bar .bar-1 { width: 60px; left: -24px; bottom: 40px; }
-.bar .bar-2 { width: 100px; left: -44px; bottom: 20px; }
-.bar .bar-3 { width: 140px; left: -64px; bottom: 0px; }
+.bar .bar-1 {
+  width: 60px;
+  left: -24px;
+  bottom: 40px;
+}
+.bar .bar-2 {
+  width: 100px;
+  left: -44px;
+  bottom: 20px;
+}
+.bar .bar-3 {
+  width: 140px;
+  left: -64px;
+  bottom: 0px;
+}
 
 /* ================= FLAG ================= */
 
@@ -101,11 +113,21 @@ body {
 }
 
 @keyframes wave {
-  0% { transform: skewY(0deg) translateX(0px); }
-  25% { transform: skewY(1.5deg) translateX(1px); }
-  50% { transform: skewY(0deg) translateX(0px); }
-  75% { transform: skewY(-1.5deg) translateX(-1px); }
-  100% { transform: skewY(0deg) translateX(0px); }
+  0% {
+    transform: skewY(0deg) translateX(0px);
+  }
+  25% {
+    transform: skewY(1.5deg) translateX(1px);
+  }
+  50% {
+    transform: skewY(0deg) translateX(0px);
+  }
+  75% {
+    transform: skewY(-1.5deg) translateX(-1px);
+  }
+  100% {
+    transform: skewY(0deg) translateX(0px);
+  }
 }
 
 .flag::after {
@@ -122,8 +144,14 @@ body {
   );
 }
 
-.top { height: 33.33%; background-color: #FF671F; }
-.bottom { height: 33.33%; background-color: #046A38; }
+.top {
+  height: 33.33%;
+  background-color: #ff671f;
+}
+.bottom {
+  height: 33.33%;
+  background-color: #046a38;
+}
 
 .middle {
   height: 33.33%;
@@ -140,8 +168,12 @@ body {
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ================= QUOTE ================= */
@@ -166,7 +198,7 @@ body {
   height: 140px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #FF671F;
+  border: 3px solid #ff671f;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background: #eee;
 }
@@ -191,7 +223,7 @@ body {
 
 .author {
   font-size: 1.1em;
-  color: #046A38;
+  color: #046a38;
   font-weight: 600;
 }
 
@@ -203,7 +235,7 @@ body {
 }
 
 .quote-nav button {
-  background-color: #FF671F;
+  background-color: #ff671f;
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -248,9 +280,24 @@ body {
     margin-top: -40px;
   }
 
-  .bar .bar-1 { width: 40px; left: -16px; bottom: 24px; height: 12px; }
-  .bar .bar-2 { width: 64px; left: -28px; bottom: 12px; height: 12px; }
-  .bar .bar-3 { width: 88px; left: -40px; bottom: 0px; height: 12px; }
+  .bar .bar-1 {
+    width: 40px;
+    left: -16px;
+    bottom: 24px;
+    height: 12px;
+  }
+  .bar .bar-2 {
+    width: 64px;
+    left: -28px;
+    bottom: 12px;
+    height: 12px;
+  }
+  .bar .bar-3 {
+    width: 88px;
+    left: -40px;
+    bottom: 0px;
+    height: 12px;
+  }
 
   /* Perfectly balances the 3:2 flag size aspect ratio on small screens */
   .flag {
@@ -316,7 +363,9 @@ body {
   backdrop-filter: blur(10px);
   color: white;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
 }
 
 .info-card:hover {
@@ -337,7 +386,7 @@ body {
 /* Card Accent Colors */
 
 .saffron {
-  border-top: 5px solid #FF671F;
+  border-top: 5px solid #ff671f;
 }
 
 .white {
@@ -345,7 +394,7 @@ body {
 }
 
 .green {
-  border-top: 5px solid #046A38;
+  border-top: 5px solid #046a38;
 }
 
 .chakra {

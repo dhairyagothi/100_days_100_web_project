@@ -1,54 +1,54 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Global states
   let registryData = null;
   let activeTopic = null;
   let allTopics = []; // Flattened array of all topics for navigation and search
 
-  const sidebarTree = document.getElementById('sidebarTree');
-  const contentViewport = document.getElementById('contentViewport');
-  const prevTopicBtn = document.getElementById('prevTopic');
-  const nextTopicBtn = document.getElementById('nextTopic');
-  const prevTopicTitle = document.getElementById('prevTopicTitle');
-  const nextTopicTitle = document.getElementById('nextTopicTitle');
-  const topicSearch = document.getElementById('topicSearch');
-  const clearSearch = document.getElementById('clearSearch');
-  const menuToggle = document.getElementById('menuToggle');
-  const navButtons = document.getElementById('navButtons');
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const learningSidebar = document.getElementById('learningSidebar');
+  const sidebarTree = document.getElementById("sidebarTree");
+  const contentViewport = document.getElementById("contentViewport");
+  const prevTopicBtn = document.getElementById("prevTopic");
+  const nextTopicBtn = document.getElementById("nextTopic");
+  const prevTopicTitle = document.getElementById("prevTopicTitle");
+  const nextTopicTitle = document.getElementById("nextTopicTitle");
+  const topicSearch = document.getElementById("topicSearch");
+  const clearSearch = document.getElementById("clearSearch");
+  const menuToggle = document.getElementById("menuToggle");
+  const navButtons = document.getElementById("navButtons");
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const learningSidebar = document.getElementById("learningSidebar");
 
   /* ============================================================
      THEME STORAGE & SYNC
      ============================================================ */
   function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem("theme") || "dark";
     const syncThemeIcons = () => {
-      const isLight = document.body.classList.contains('light-mode');
-      const icon = document.querySelector('#themeToggleNav i');
+      const isLight = document.body.classList.contains("light-mode");
+      const icon = document.querySelector("#themeToggleNav i");
       if (icon) {
-        icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+        icon.className = isLight ? "fas fa-sun" : "fas fa-moon";
       }
     };
 
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-mode');
+    if (savedTheme === "light") {
+      document.body.classList.add("light-mode");
     } else {
-      document.body.classList.remove('light-mode');
+      document.body.classList.remove("light-mode");
     }
     syncThemeIcons();
 
-    document.body.addEventListener('click', (e) => {
-      const target = e.target.closest('#themeToggleNav');
+    document.body.addEventListener("click", (e) => {
+      const target = e.target.closest("#themeToggleNav");
       if (!target) return;
 
-      document.body.classList.toggle('light-mode');
-      const isLight = document.body.classList.contains('light-mode');
-      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      document.body.classList.toggle("light-mode");
+      const isLight = document.body.classList.contains("light-mode");
+      localStorage.setItem("theme", isLight ? "light" : "dark");
       syncThemeIcons();
 
-      document.body.classList.add('theme-transitioning');
+      document.body.classList.add("theme-transitioning");
       setTimeout(() => {
-        document.body.classList.remove('theme-transitioning');
+        document.body.classList.remove("theme-transitioning");
       }, 400);
     });
   }
@@ -58,42 +58,46 @@ document.addEventListener('DOMContentLoaded', async () => {
      ============================================================ */
   function initMobileMenu() {
     if (menuToggle && navButtons) {
-      menuToggle.addEventListener('click', (e) => {
+      menuToggle.addEventListener("click", (e) => {
         e.stopPropagation();
-        menuToggle.classList.toggle('active');
-        navButtons.classList.toggle('active');
+        menuToggle.classList.toggle("active");
+        navButtons.classList.toggle("active");
       });
 
-      document.addEventListener('click', (e) => {
+      document.addEventListener("click", (e) => {
         if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-          menuToggle.classList.remove('active');
-          navButtons.classList.remove('active');
+          menuToggle.classList.remove("active");
+          navButtons.classList.remove("active");
         }
       });
     }
 
     if (sidebarToggle && learningSidebar) {
-      sidebarToggle.addEventListener('click', (e) => {
+      sidebarToggle.addEventListener("click", (e) => {
         e.stopPropagation();
-        learningSidebar.classList.toggle('active');
-        const icon = sidebarToggle.querySelector('i');
+        learningSidebar.classList.toggle("active");
+        const icon = sidebarToggle.querySelector("i");
         if (icon) {
-          if (learningSidebar.classList.contains('active')) {
-            icon.className = 'fas fa-chevron-left';
-            sidebarToggle.style.left = '260px';
+          if (learningSidebar.classList.contains("active")) {
+            icon.className = "fas fa-chevron-left";
+            sidebarToggle.style.left = "260px";
           } else {
-            icon.className = 'fas fa-chevron-right';
-            sidebarToggle.style.left = '1.5rem';
+            icon.className = "fas fa-chevron-right";
+            sidebarToggle.style.left = "1.5rem";
           }
         }
       });
 
       // Close sidebar drawer when clicking outside it on mobile
-      document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 992 && !learningSidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-          learningSidebar.classList.remove('active');
-          const icon = sidebarToggle.querySelector('i');
-          if (icon) icon.className = 'fas fa-chevron-right';
+      document.addEventListener("click", (e) => {
+        if (
+          window.innerWidth <= 992 &&
+          !learningSidebar.contains(e.target) &&
+          !sidebarToggle.contains(e.target)
+        ) {
+          learningSidebar.classList.remove("active");
+          const icon = sidebarToggle.querySelector("i");
+          if (icon) icon.className = "fas fa-chevron-right";
         }
       });
     }
@@ -104,18 +108,18 @@ document.addEventListener('DOMContentLoaded', async () => {
      ============================================================ */
   async function loadRegistry() {
     try {
-      const response = await fetch('registry.json');
-      if (!response.ok) throw new Error('Failed to load curriculum registry');
+      const response = await fetch("registry.json");
+      if (!response.ok) throw new Error("Failed to load curriculum registry");
       registryData = await response.json();
 
       // Flatten topics list for simple sequential traversal
       allTopics = [];
-      registryData.categories.forEach(cat => {
-        cat.topics.forEach(topic => {
+      registryData.categories.forEach((cat) => {
+        cat.topics.forEach((topic) => {
           allTopics.push({
             ...topic,
             categoryId: cat.id,
-            categoryTitle: cat.title
+            categoryTitle: cat.title,
           });
         });
       });
@@ -136,43 +140,43 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderSidebar() {
     if (!sidebarTree || !registryData) return;
 
-    sidebarTree.innerHTML = '';
+    sidebarTree.innerHTML = "";
     const fragment = document.createDocumentFragment();
 
-    registryData.categories.forEach(cat => {
-      const catGroup = document.createElement('div');
-      catGroup.className = 'category-group';
+    registryData.categories.forEach((cat) => {
+      const catGroup = document.createElement("div");
+      catGroup.className = "category-group";
       catGroup.id = `cat-${cat.id}`;
 
-      const header = document.createElement('button');
-      header.className = 'category-header';
-      header.setAttribute('aria-expanded', 'true');
+      const header = document.createElement("button");
+      header.className = "category-header";
+      header.setAttribute("aria-expanded", "true");
       header.innerHTML = `
         <span class="category-title">
-          <i class="${cat.icon || 'fa-solid fa-folder'}"></i>
+          <i class="${cat.icon || "fa-solid fa-folder"}"></i>
           <span>${cat.title}</span>
         </span>
         <i class="fas fa-chevron-down category-arrow"></i>
       `;
 
-      const list = document.createElement('ul');
-      list.className = 'topic-list';
+      const list = document.createElement("ul");
+      list.className = "topic-list";
 
-      cat.topics.forEach(topic => {
-        const item = document.createElement('li');
-        item.className = 'topic-item';
+      cat.topics.forEach((topic) => {
+        const item = document.createElement("li");
+        item.className = "topic-item";
         item.id = `item-${cat.id}-${topic.id}`;
-        
-        const link = document.createElement('a');
+
+        const link = document.createElement("a");
         link.href = `#${cat.id}/${topic.id}`;
         link.textContent = topic.title;
-        
+
         // Mobile layout: dismiss sidebar drawer upon clicking a link
-        link.addEventListener('click', () => {
+        link.addEventListener("click", () => {
           if (window.innerWidth <= 992 && learningSidebar) {
-            learningSidebar.classList.remove('active');
-            const icon = sidebarToggle.querySelector('i');
-            if (icon) icon.className = 'fas fa-chevron-right';
+            learningSidebar.classList.remove("active");
+            const icon = sidebarToggle.querySelector("i");
+            if (icon) icon.className = "fas fa-chevron-right";
           }
         });
 
@@ -181,10 +185,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       // Sidebar category accordion toggle collapse state
-      header.addEventListener('click', () => {
-        catGroup.classList.toggle('collapsed');
-        const isCollapsed = catGroup.classList.contains('collapsed');
-        header.setAttribute('aria-expanded', !isCollapsed);
+      header.addEventListener("click", () => {
+        catGroup.classList.toggle("collapsed");
+        const isCollapsed = catGroup.classList.contains("collapsed");
+        header.setAttribute("aria-expanded", !isCollapsed);
       });
 
       catGroup.appendChild(header);
@@ -199,49 +203,49 @@ document.addEventListener('DOMContentLoaded', async () => {
      REAL-TIME TOPICS FILTER / SEARCH
      ============================================================ */
   if (topicSearch) {
-    topicSearch.addEventListener('input', () => {
+    topicSearch.addEventListener("input", () => {
       const query = topicSearch.value.trim().toLowerCase();
       if (clearSearch) {
-        clearSearch.style.display = query ? 'block' : 'none';
+        clearSearch.style.display = query ? "block" : "none";
       }
 
-      const categories = document.querySelectorAll('.category-group');
+      const categories = document.querySelectorAll(".category-group");
 
-      categories.forEach(catGroup => {
-        const topics = catGroup.querySelectorAll('.topic-item');
+      categories.forEach((catGroup) => {
+        const topics = catGroup.querySelectorAll(".topic-item");
         let visibleCount = 0;
 
-        topics.forEach(item => {
-          const title = item.querySelector('a').textContent.toLowerCase();
+        topics.forEach((item) => {
+          const title = item.querySelector("a").textContent.toLowerCase();
           if (title.includes(query)) {
-            item.style.display = '';
+            item.style.display = "";
             visibleCount++;
           } else {
-            item.style.display = 'none';
+            item.style.display = "none";
           }
         });
 
         // Expand categories containing matching items automatically, collapse otherwise
         if (query) {
           if (visibleCount > 0) {
-            catGroup.classList.remove('collapsed');
-            catGroup.style.display = '';
+            catGroup.classList.remove("collapsed");
+            catGroup.style.display = "";
           } else {
-            catGroup.classList.add('collapsed');
-            catGroup.style.display = 'none';
+            catGroup.classList.add("collapsed");
+            catGroup.style.display = "none";
           }
         } else {
-          catGroup.classList.remove('collapsed');
-          catGroup.style.display = '';
+          catGroup.classList.remove("collapsed");
+          catGroup.style.display = "";
         }
       });
     });
   }
 
   if (clearSearch) {
-    clearSearch.addEventListener('click', () => {
-      topicSearch.value = '';
-      topicSearch.dispatchEvent(new Event('input'));
+    clearSearch.addEventListener("click", () => {
+      topicSearch.value = "";
+      topicSearch.dispatchEvent(new Event("input"));
       topicSearch.focus();
     });
   }
@@ -257,8 +261,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    const [catId, topicId] = hash.split('/');
-    const topic = allTopics.find(t => t.categoryId === catId && t.id === topicId);
+    const [catId, topicId] = hash.split("/");
+    const topic = allTopics.find(
+      (t) => t.categoryId === catId && t.id === topicId,
+    );
 
     if (topic) {
       loadTopic(topic);
@@ -268,22 +274,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  window.addEventListener('hashchange', handleRouting);
+  window.addEventListener("hashchange", handleRouting);
 
   /* ============================================================
      MARKDOWN PARSING & POST-PROCESSING
      ============================================================ */
   async function loadTopic(topic) {
     activeTopic = topic;
-    
+
     // Highlight selected item in sidebar list
-    document.querySelectorAll('.topic-item').forEach(item => item.classList.remove('active'));
-    const activeItem = document.getElementById(`item-${topic.categoryId}-${topic.id}`);
+    document
+      .querySelectorAll(".topic-item")
+      .forEach((item) => item.classList.remove("active"));
+    const activeItem = document.getElementById(
+      `item-${topic.categoryId}-${topic.id}`,
+    );
     if (activeItem) {
-      activeItem.classList.add('active');
+      activeItem.classList.add("active");
       // Ensure category parent is expanded
-      const parentGroup = activeItem.closest('.category-group');
-      if (parentGroup) parentGroup.classList.remove('collapsed');
+      const parentGroup = activeItem.closest(".category-group");
+      if (parentGroup) parentGroup.classList.remove("collapsed");
     }
 
     if (contentViewport) {
@@ -297,50 +307,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
       const response = await fetch(topic.file);
-      if (!response.ok) throw new Error('Markdown file not found');
+      if (!response.ok) throw new Error("Markdown file not found");
       const markdownText = await response.text();
 
       // Configure marked parser option (gfm enabled)
       marked.setOptions({
         gfm: true,
-        breaks: true
+        breaks: true,
       });
 
       let htmlContent = marked.parse(markdownText);
 
       // Post-process HTML for custom styles (Alerts, Code Wrappers, Copy buttons, solution collapsible details)
-      const parsedContainer = document.createElement('div');
-      parsedContainer.className = 'rendered-markdown';
+      const parsedContainer = document.createElement("div");
+      parsedContainer.className = "rendered-markdown";
       parsedContainer.innerHTML = htmlContent;
 
       // 1. Add Category Meta Badge & Title layout
-      const firstH1 = parsedContainer.querySelector('h1');
+      const firstH1 = parsedContainer.querySelector("h1");
       if (firstH1) {
-        const metaDiv = document.createElement('div');
-        metaDiv.className = 'topic-meta';
+        const metaDiv = document.createElement("div");
+        metaDiv.className = "topic-meta";
         metaDiv.innerHTML = `
           <span class="meta-badge">${topic.categoryTitle}</span>
           <span><i class="far fa-clock"></i> 5 min read</span>
           <span><i class="fas fa-graduation-cap"></i> Beginner Friendly</span>
         `;
-        firstH1.insertAdjacentElement('afterend', metaDiv);
+        firstH1.insertAdjacentElement("afterend", metaDiv);
       }
 
       // 2. Pre-code highlighting wrappers & Copy to clipboard buttons
-      const preElements = parsedContainer.querySelectorAll('pre');
-      preElements.forEach(pre => {
-        const codeElement = pre.querySelector('code');
+      const preElements = parsedContainer.querySelectorAll("pre");
+      preElements.forEach((pre) => {
+        const codeElement = pre.querySelector("code");
         if (!codeElement) return;
 
         // Get language class
-        const langClass = Array.from(codeElement.classList).find(c => c.startsWith('language-'));
-        const langName = langClass ? langClass.replace('language-', '') : 'code';
+        const langClass = Array.from(codeElement.classList).find((c) =>
+          c.startsWith("language-"),
+        );
+        const langName = langClass
+          ? langClass.replace("language-", "")
+          : "code";
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block-wrapper";
 
-        const header = document.createElement('div');
-        header.className = 'code-block-header';
+        const header = document.createElement("div");
+        header.className = "code-block-header";
         header.innerHTML = `
           <span class="code-lang-label">${langName}</span>
           <button class="copy-code-btn" aria-label="Copy code block">
@@ -354,8 +368,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         wrapper.appendChild(pre);
 
         // Wire copy button functionality
-        const copyBtn = header.querySelector('.copy-code-btn');
-        copyBtn.addEventListener('click', async () => {
+        const copyBtn = header.querySelector(".copy-code-btn");
+        copyBtn.addEventListener("click", async () => {
           const rawCode = codeElement.textContent;
           try {
             await navigator.clipboard.writeText(rawCode);
@@ -364,44 +378,49 @@ document.addEventListener('DOMContentLoaded', async () => {
               copyBtn.innerHTML = `<i class="far fa-copy"></i> Copy`;
             }, 2000);
           } catch (err) {
-            console.error('Failed to copy code', err);
+            console.error("Failed to copy code", err);
           }
         });
       });
 
       // 3. GitHub Alert box callouts parsing [!NOTE], [!TIP], [!WARNING], [!CAUTION], [!MISTAKE]
-      const blockquotes = parsedContainer.querySelectorAll('blockquote');
-      blockquotes.forEach(bq => {
-        const firstP = bq.querySelector('p');
+      const blockquotes = parsedContainer.querySelectorAll("blockquote");
+      blockquotes.forEach((bq) => {
+        const firstP = bq.querySelector("p");
         if (!firstP) return;
 
         const contentHTML = bq.innerHTML;
-        const noteMatch = contentHTML.match(/^\[!(NOTE|TIP|WARNING|CAUTION|MISTAKE)\]\s*(<br>)?/i);
+        const noteMatch = contentHTML.match(
+          /^\[!(NOTE|TIP|WARNING|CAUTION|MISTAKE)\]\s*(<br>)?/i,
+        );
 
         if (noteMatch) {
           const type = noteMatch[1].toUpperCase();
-          const cleanHTML = contentHTML.replace(/^\[!(NOTE|TIP|WARNING|CAUTION|MISTAKE)\]\s*(<br>)?/i, '');
-          
-          let iconClass = 'fa-info-circle';
-          let customTypeClass = 'callout-note';
+          const cleanHTML = contentHTML.replace(
+            /^\[!(NOTE|TIP|WARNING|CAUTION|MISTAKE)\]\s*(<br>)?/i,
+            "",
+          );
 
-          if (type === 'TIP') {
-            iconClass = 'fa-lightbulb';
-            customTypeClass = 'callout-tip';
-          } else if (type === 'WARNING' || type === 'CAUTION') {
-            iconClass = 'fa-exclamation-triangle';
-            customTypeClass = 'callout-warning';
-          } else if (type === 'MISTAKE') {
-            iconClass = 'fa-times-circle';
-            customTypeClass = 'callout-mistake';
+          let iconClass = "fa-info-circle";
+          let customTypeClass = "callout-note";
+
+          if (type === "TIP") {
+            iconClass = "fa-lightbulb";
+            customTypeClass = "callout-tip";
+          } else if (type === "WARNING" || type === "CAUTION") {
+            iconClass = "fa-exclamation-triangle";
+            customTypeClass = "callout-warning";
+          } else if (type === "MISTAKE") {
+            iconClass = "fa-times-circle";
+            customTypeClass = "callout-mistake";
           }
 
-          const callout = document.createElement('div');
+          const callout = document.createElement("div");
           callout.className = `callout ${customTypeClass}`;
           callout.innerHTML = `
             <div class="callout-icon"><i class="fas ${iconClass}"></i></div>
             <div class="callout-content">
-              <strong>${type === 'MISTAKE' ? 'Common Mistake' : type}</strong>
+              <strong>${type === "MISTAKE" ? "Common Mistake" : type}</strong>
               <div style="margin-top: 0.25rem;">${cleanHTML}</div>
             </div>
           `;
@@ -410,37 +429,46 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       // 4. solution collapsible block parsing
-      const solutionHeaders = parsedContainer.querySelectorAll('h5');
-      solutionHeaders.forEach(h5 => {
-        if (h5.textContent.toLowerCase().includes('solution') || h5.textContent.toLowerCase().includes('answer')) {
-          const accordion = document.createElement('div');
-          accordion.className = 'collapsible-solution';
-          
-          const trigger = document.createElement('button');
-          trigger.className = 'solution-trigger';
+      const solutionHeaders = parsedContainer.querySelectorAll("h5");
+      solutionHeaders.forEach((h5) => {
+        if (
+          h5.textContent.toLowerCase().includes("solution") ||
+          h5.textContent.toLowerCase().includes("answer")
+        ) {
+          const accordion = document.createElement("div");
+          accordion.className = "collapsible-solution";
+
+          const trigger = document.createElement("button");
+          trigger.className = "solution-trigger";
           trigger.innerHTML = `
             <span><i class="fas fa-key"></i> View Solution & Explanation</span>
             <i class="fas fa-chevron-down"></i>
           `;
 
-          const content = document.createElement('div');
-          content.className = 'solution-content';
+          const content = document.createElement("div");
+          content.className = "solution-content";
 
           // Gather all siblings until next major heading/block is found
           let sibling = h5.nextElementSibling;
           const siblingsToMove = [];
-          while (sibling && sibling.tagName !== 'H2' && sibling.tagName !== 'H3' && sibling.tagName !== 'H4' && sibling.tagName !== 'H5') {
+          while (
+            sibling &&
+            sibling.tagName !== "H2" &&
+            sibling.tagName !== "H3" &&
+            sibling.tagName !== "H4" &&
+            sibling.tagName !== "H5"
+          ) {
             siblingsToMove.push(sibling);
             sibling = sibling.nextElementSibling;
           }
 
-          siblingsToMove.forEach(sib => content.appendChild(sib));
+          siblingsToMove.forEach((sib) => content.appendChild(sib));
 
           accordion.appendChild(trigger);
           accordion.appendChild(content);
 
-          trigger.addEventListener('click', () => {
-            accordion.classList.toggle('open');
+          trigger.addEventListener("click", () => {
+            accordion.classList.toggle("open");
           });
 
           h5.parentNode.replaceChild(accordion, h5);
@@ -448,14 +476,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       // Inject beautifully parsed content
-      contentViewport.innerHTML = '';
+      contentViewport.innerHTML = "";
       contentViewport.appendChild(parsedContainer);
 
       // Perform Prism.js highlighting
       Prism.highlightAllUnder(parsedContainer);
 
       // Reset viewport scroll to top snappily
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      window.scrollTo({ top: 0, behavior: "instant" });
 
       // Update next/prev footer cards
       updateNavigationFooter();
@@ -478,28 +506,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   function updateNavigationFooter() {
     if (!activeTopic || !prevTopicBtn || !nextTopicBtn) return;
 
-    const currentIndex = allTopics.findIndex(t => t.categoryId === activeTopic.categoryId && t.id === activeTopic.id);
+    const currentIndex = allTopics.findIndex(
+      (t) => t.categoryId === activeTopic.categoryId && t.id === activeTopic.id,
+    );
 
     // Set Previous button state
     if (currentIndex > 0) {
       const prevTopic = allTopics[currentIndex - 1];
       prevTopicBtn.href = `#${prevTopic.categoryId}/${prevTopic.id}`;
-      prevTopicBtn.classList.remove('disabled');
+      prevTopicBtn.classList.remove("disabled");
       if (prevTopicTitle) prevTopicTitle.textContent = prevTopic.title;
     } else {
-      prevTopicBtn.classList.add('disabled');
-      if (prevTopicTitle) prevTopicTitle.textContent = 'None';
+      prevTopicBtn.classList.add("disabled");
+      if (prevTopicTitle) prevTopicTitle.textContent = "None";
     }
 
     // Set Next button state
     if (currentIndex < allTopics.length - 1) {
       const nextTopic = allTopics[currentIndex + 1];
       nextTopicBtn.href = `#${nextTopic.categoryId}/${nextTopic.id}`;
-      nextTopicBtn.classList.remove('disabled');
+      nextTopicBtn.classList.remove("disabled");
       if (nextTopicTitle) nextTopicTitle.textContent = nextTopic.title;
     } else {
-      nextTopicBtn.classList.add('disabled');
-      if (nextTopicTitle) nextTopicTitle.textContent = 'End of Course';
+      nextTopicBtn.classList.add("disabled");
+      if (nextTopicTitle) nextTopicTitle.textContent = "End of Course";
     }
   }
 
@@ -507,43 +537,50 @@ document.addEventListener('DOMContentLoaded', async () => {
      READING PROGRESS BAR SCROLL MONITOR
      ============================================================ */
   function initReadingProgress() {
-    const readingProgress = document.getElementById('readingProgress');
+    const readingProgress = document.getElementById("readingProgress");
     if (!readingProgress) return;
 
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      // Scroll limit
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-      readingProgress.style.width = `${progress}%`;
-    }, { passive: true });
+    window.addEventListener(
+      "scroll",
+      () => {
+        const scrollTop = window.scrollY;
+        // Scroll limit
+        const scrollHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const progress =
+          scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        readingProgress.style.width = `${progress}%`;
+      },
+      { passive: true },
+    );
   }
 
   /* ============================================================
      SCROLL TO TOP BUTTON SYSTEM
      ============================================================ */
   function initScrollBtn() {
-    const btn = document.getElementById('scrollBtn');
-    const ring = document.getElementById('ringFill');
+    const btn = document.getElementById("scrollBtn");
+    const ring = document.getElementById("ringFill");
     if (!btn) return;
 
     const circumference = 2 * Math.PI * 22;
     const updateProgress = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-      btn.classList.toggle('show', scrollTop > 400);
+      btn.classList.toggle("show", scrollTop > 400);
       if (ring) {
         ring.style.strokeDashoffset = circumference * (1 - progress);
       }
     };
 
     updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener("scroll", updateProgress, { passive: true });
 
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 
@@ -551,14 +588,14 @@ document.addEventListener('DOMContentLoaded', async () => {
      PARTICLE CANVAS BACKGROUND
      ============================================================ */
   function initParticles() {
-    const canvas = document.getElementById('particleCanvas');
+    const canvas = document.getElementById("particleCanvas");
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const coarsePointer = window.matchMedia('(pointer: coarse)');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const coarsePointer = window.matchMedia("(pointer: coarse)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const palette = [220, 250, 280]; // Hue values (Blues & Cyans)
 
     let W = window.innerWidth;
@@ -589,13 +626,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           vy: (Math.random() - 0.5) * 0.25,
           r: Math.random() * 2 + 1,
           hue: palette[Math.floor(Math.random() * palette.length)],
-          alpha: Math.random() * 0.35 + 0.15
+          alpha: Math.random() * 0.35 + 0.15,
         });
       }
     }
 
     function update() {
-      particles.forEach(p => {
+      particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
 
@@ -633,7 +670,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       // Draw particles
-      particles.forEach(p => {
+      particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `hsla(${p.hue}, 80%, 72%, ${p.alpha})`;
@@ -643,7 +680,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       requestAnimationFrame(draw);
     }
 
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       resize();
       createParticles();
     });

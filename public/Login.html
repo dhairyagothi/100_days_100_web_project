@@ -71,7 +71,9 @@
           </form>
 
           <p class="already-signed-up">
-            <a href="./ForgotPassword.html" id="forgotPasswordLink">Forgot Password?</a>
+            <a href="./ForgotPassword.html" id="forgotPasswordLink"
+              >Forgot Password?</a
+            >
           </p>
 
           <p class="already-signed-up">
@@ -88,16 +90,16 @@
         const toggleIcon = document.querySelector(".toggle-password");
 
         if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            toggleIcon.classList.add("active");
-            // toggleIcon.textContent = "..";
+          passwordInput.type = "text";
+          toggleIcon.classList.add("active");
+          // toggleIcon.textContent = "..";
         } else {
-            passwordInput.type = "password";
-            toggleIcon.classList.remove("active");
-            // toggleIcon.textContent = "👁";
+          passwordInput.type = "password";
+          toggleIcon.classList.remove("active");
+          // toggleIcon.textContent = "👁";
         }
       }
-      
+
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (event) {

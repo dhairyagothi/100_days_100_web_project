@@ -1042,7 +1042,6 @@ body.dark .ats-feedback li {
 }
     transition: all 0.2s;
     border: none;
-}
 
 .action-btn.outline {
     background-color: var(--bg-card);
@@ -1473,7 +1472,6 @@ body.dark footer { background: #0a0d1a; border-top-color: #1a1e30; color: #2e355
         background: white !important;
         color: black !important;
     }
-}
 
 /* PDF GENERATION LOADER OVERLAY */
 .loader-overlay {

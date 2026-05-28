@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,7 +7,29 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(124, 99, 255, 0.14),
+          rgba(79, 141, 255, 0.1)
+        );
+        color: #fff;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+      "
+      >← Back to Home</a
+    >
 
     <div class="container">
       <header class="header">
@@ -24,7 +46,14 @@
         <div class="control-group">
           <label for="speedSlider">Speed</label>
           <div class="slider-row">
-            <input type="range" id="speedSlider" min="1" max="10" value="4" step="1" />
+            <input
+              type="range"
+              id="speedSlider"
+              min="1"
+              max="10"
+              value="4"
+              step="1"
+            />
             <span id="speedVal">4</span>
           </div>
         </div>
@@ -32,7 +61,14 @@
         <div class="control-group">
           <label for="countSlider">Particles</label>
           <div class="slider-row">
-            <input type="range" id="countSlider" min="30" max="250" value="120" step="10" />
+            <input
+              type="range"
+              id="countSlider"
+              min="30"
+              max="250"
+              value="120"
+              step="10"
+            />
             <span id="countVal">120</span>
           </div>
         </div>
@@ -40,7 +76,14 @@
         <div class="control-group">
           <label for="sizeSlider">Size</label>
           <div class="slider-row">
-            <input type="range" id="sizeSlider" min="1" max="7" value="2" step="1" />
+            <input
+              type="range"
+              id="sizeSlider"
+              min="1"
+              max="7"
+              value="2"
+              step="1"
+            />
             <span id="sizeVal">2</span>
           </div>
         </div>
@@ -48,7 +91,14 @@
         <div class="control-group">
           <label for="connectSlider">Connect Range</label>
           <div class="slider-row">
-            <input type="range" id="connectSlider" min="0" max="150" value="80" step="10" />
+            <input
+              type="range"
+              id="connectSlider"
+              min="0"
+              max="150"
+              value="80"
+              step="10"
+            />
             <span id="connectVal">80</span>
           </div>
         </div>

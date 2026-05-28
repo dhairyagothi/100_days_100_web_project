@@ -346,14 +346,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-<<<<<<< HEAD:public/Medical_App/js/script.js
-            statusMessage.textContent = `Consultation requested for Dr.${doctorName} regarding ${patientCondition}.            
-            Specialist type: ${specialistType}.`;
-            specialistResponseSection.style.display = 'block';
-            buttons.style.display = 'flex';
-            requestForm.reset();
-        }, 2000);
-    });
+
+    
     if(responseForm){    
         responseForm.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -380,45 +374,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 2000);
         });
     }
-    
-    feedbackForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const feedbackMessage = document.getElementById('feedbackMessage').value;
-=======
-    function saveHistory() {
-        localStorage.setItem(
-            'medConsultHistoryV2',
-            JSON.stringify(consultationHistory)
-        );
-    }
-
-    function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-
-        const icon =
-            type === 'success'
-                ? 'ph-check-circle'
-                : 'ph-warning-circle';
-
-        toast.innerHTML = `
-            <i class="ph ${icon}"></i>
-            <span>${message}</span>
-        `;
-
-        toastContainer.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.animation =
-                'slideOut 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
->>>>>>> 9398ffd3b288433a29a8baedf3de5c3e4ed2a480:public/Medical_App/script.js
 
             setTimeout(() => {
                 toast.remove();
             }, 300);
         }, 3000);
     }
-<<<<<<< HEAD:public/Medical_App/js/script.js
 }
 
 // Bind open events to booking buttons

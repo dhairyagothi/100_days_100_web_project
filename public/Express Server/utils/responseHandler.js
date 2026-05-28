@@ -3,7 +3,7 @@ const sendResponse = (res, statusCode, success, message, data = null) => {
     success,
     message,
     data,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 };
 

@@ -1,43 +1,55 @@
 // ── Config ────────────────────────────────────────────────
-const EMOJIS = ['🦊','🐬','🦋','🌸','🍄','⚡','🎸','🔮','🦄','🌈','🎯','🍀'];
+const EMOJIS = [
+  "🦊",
+  "🐬",
+  "🦋",
+  "🌸",
+  "🍄",
+  "⚡",
+  "🎸",
+  "🔮",
+  "🦄",
+  "🌈",
+  "🎯",
+  "🍀",
+];
 
 const DIFFICULTIES = {
-  easy:   { cols: 4, pairs: 8,  label: '4×4' },
-  medium: { cols: 5, pairs: 10, label: '5×4' },
-  hard:   { cols: 6, pairs: 12, label: '6×4' }
+  easy: { cols: 4, pairs: 8, label: "4×4" },
+  medium: { cols: 5, pairs: 10, label: "5×4" },
+  hard: { cols: 6, pairs: 12, label: "6×4" },
 };
 
 // ── State ─────────────────────────────────────────────────
-let cards        = [];
-let flipped      = [];
-let matched      = [];
-let moves        = 0;
-let seconds      = 0;
+let cards = [];
+let flipped = [];
+let matched = [];
+let moves = 0;
+let seconds = 0;
 let timerInterval = null;
-let previewInterval=null;
-let gameActive   = false;
-let lockBoard    = false;
-let hintUsed     = false;
-let difficulty   = 'easy';
-let highScores   = JSON.parse(localStorage.getItem('mmHighScores') || '{}');
+let gameActive = false;
+let lockBoard = false;
+let hintUsed = false;
+let difficulty = "easy";
+let highScores = JSON.parse(localStorage.getItem("mmHighScores") || "{}");
 
 // ── DOM References ─────────────────────────────────────────
-const grid       = document.getElementById('gameGrid');
-const movesEl    = document.getElementById('movesVal');
-const timerEl    = document.getElementById('timerVal');
-const pairsEl    = document.getElementById('pairsVal');
-const bestEl     = document.getElementById('bestVal');
-const progressEl = document.getElementById('progressBar');
-const winModal   = document.getElementById('winModal');
-const toastEl    = document.getElementById('toast');
-const startBtn   = document.getElementById('startBtn');
-const hintBtn    = document.getElementById('hintBtn');
+const grid = document.getElementById("gameGrid");
+const movesEl = document.getElementById("movesVal");
+const timerEl = document.getElementById("timerVal");
+const pairsEl = document.getElementById("pairsVal");
+const bestEl = document.getElementById("bestVal");
+const progressEl = document.getElementById("progressBar");
+const winModal = document.getElementById("winModal");
+const toastEl = document.getElementById("toast");
 
 // ── Event Listeners ───────────────────────────────────────
-document.querySelectorAll('.diff-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+document.querySelectorAll(".diff-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document
+      .querySelectorAll(".diff-btn")
+      .forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
     difficulty = btn.dataset.diff;
     updateGridClass();
     updateBestDisplay();
@@ -45,14 +57,13 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
   });
 });
 
-startBtn.addEventListener('click', startGame);
-hintBtn.addEventListener('click', useHint);
-
-document.getElementById('playAgainBtn').addEventListener('click', () => {
-  winModal.classList.remove('visible');
+document.getElementById("startBtn").addEventListener("click", startGame);
+document.getElementById("hintBtn").addEventListener("click", useHint);
+document.getElementById("playAgainBtn").addEventListener("click", () => {
+  winModal.classList.remove("visible");
   setupPreview();
 });
-document.getElementById('restartBtn').addEventListener('click', setupPreview);
+document.getElementById("restartBtn").addEventListener("click", setupPreview);
 
 // ── Utility Helpers ───────────────────────────────────────
 
@@ -73,7 +84,7 @@ function shuffle(arr) {
  */
 function fmt(s) {
   const m = Math.floor(s / 60);
-  return `${m}:${String(s % 60).padStart(2, '0')}`;
+  return `${m}:${String(s % 60).padStart(2, "0")}`;
 }
 
 /**
@@ -89,7 +100,7 @@ function updateGridClass() {
  */
 function updateBestDisplay() {
   const hs = highScores[difficulty];
-  bestEl.textContent = hs ? `${hs.moves}m` : '—';
+  bestEl.textContent = hs ? `${hs.moves}m` : "—";
 }
 
 /**
@@ -97,8 +108,8 @@ function updateBestDisplay() {
  */
 function showToast(msg, dur = 1800) {
   toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  setTimeout(() => toastEl.classList.remove('show'), dur);
+  toastEl.classList.add("show");
+  setTimeout(() => toastEl.classList.remove("show"), dur);
 }
 
 // ── Timer ─────────────────────────────────────────────────
@@ -109,8 +120,8 @@ function showToast(msg, dur = 1800) {
 function startTimer() {
   clearInterval(timerInterval);
   seconds = 0;
-  timerEl.textContent = '0:00';
-  timerEl.className = 'stat-value';
+  timerEl.textContent = "0:00";
+  timerEl.className = "stat-value";
 
   timerInterval = setInterval(() => {
     seconds++;
@@ -118,9 +129,9 @@ function startTimer() {
 
     // Color-coded warning states
     if (seconds >= 60 && seconds < 120) {
-      timerEl.className = 'stat-value timer-warning';
+      timerEl.className = "stat-value timer-warning";
     } else if (seconds >= 120) {
-      timerEl.className = 'stat-value timer-danger';
+      timerEl.className = "stat-value timer-danger";
     }
   }, 1000);
 }
@@ -168,7 +179,7 @@ function setupPreview() {
   }
 
   stopTimer();
-  winModal.classList.remove('visible');
+  winModal.classList.remove("visible");
 
   cards = [];
   flipped = [];
@@ -180,12 +191,12 @@ function setupPreview() {
   gameActive = false;
   lockBoard = true;
 
-  movesEl.textContent = '0';
-  timerEl.textContent = '0:00';
-  timerEl.className = 'stat-value';
+  movesEl.textContent = "0";
+  timerEl.textContent = "0:00";
+  timerEl.className = "stat-value";
 
   pairsEl.textContent = `0/${cfg.pairs}`;
-  progressEl.style.width = '0%';
+  progressEl.style.width = "0%";
 
   hintBtn.disabled    = true;
   hintBtn.textContent = 'Hint';
@@ -196,12 +207,12 @@ function setupPreview() {
   const pool = shuffle(EMOJIS).slice(0, cfg.pairs);
   const deck = shuffle([...pool, ...pool]);
 
-  grid.innerHTML = '';
+  grid.innerHTML = "";
 
   deck.forEach((emoji, i) => {
-    const card = document.createElement('div');
+    const card = document.createElement("div");
 
-    card.className = 'card flipped';
+    card.className = "card flipped";
 
     card.dataset.emoji = emoji;
     card.dataset.idx = i;
@@ -213,7 +224,7 @@ function setupPreview() {
       </div>
     `;
 
-    card.addEventListener('click', () => onCardClick(card));
+    card.addEventListener("click", () => onCardClick(card));
 
     grid.appendChild(card);
     cards.push(card);
@@ -224,14 +235,8 @@ function setupPreview() {
  * Initialise and start a fresh game
  */
 function startGame() {
-
-  if (previewInterval) {
-    clearInterval(previewInterval);
-    previewInterval = null;
-  }
-
-  cards.forEach(card => {
-    card.classList.remove('flipped');
+  cards.forEach((card) => {
+    card.classList.remove("flipped");
   });
 
   flipped = [];
@@ -252,12 +257,12 @@ function startGame() {
  * Handle a card click event
  */
 function onCardClick(card) {
-  if (!gameActive || lockBoard)               return;
-  if (card.classList.contains('matched'))     return;
-  if (flipped.includes(card))                 return;
-  if (flipped.length === 2)                   return;
+  if (!gameActive || lockBoard) return;
+  if (card.classList.contains("matched")) return;
+  if (flipped.includes(card)) return;
+  if (flipped.length === 2) return;
 
-  card.classList.add('flipped');
+  card.classList.add("flipped");
   flipped.push(card);
 
   if (flipped.length === 2) {
@@ -277,31 +282,30 @@ function checkMatch() {
   if (a.dataset.emoji === b.dataset.emoji) {
     // ✓ Matched
     setTimeout(() => {
-      a.classList.add('matched');
-      b.classList.add('matched');
+      a.classList.add("matched");
+      b.classList.add("matched");
       matched.push(a, b);
-      flipped   = [];
+      flipped = [];
       lockBoard = false;
 
-      const cfg      = DIFFICULTIES[difficulty];
+      const cfg = DIFFICULTIES[difficulty];
       const pairsDone = matched.length / 2;
 
       // Update pairs counter and progress bar
-      pairsEl.textContent    = `${pairsDone}/${cfg.pairs}`;
+      pairsEl.textContent = `${pairsDone}/${cfg.pairs}`;
       progressEl.style.width = `${(pairsDone / cfg.pairs) * 100}%`;
 
-      if (pairsDone < cfg.pairs) showToast('✓ Match!');
+      if (pairsDone < cfg.pairs) showToast("✓ Match!");
       if (matched.length === cards.length) onWin();
     }, 300);
-
   } else {
     // ✗ No match — shake and flip back
-    a.classList.add('wrong');
-    b.classList.add('wrong');
+    a.classList.add("wrong");
+    b.classList.add("wrong");
     setTimeout(() => {
-      a.classList.remove('flipped', 'wrong');
-      b.classList.remove('flipped', 'wrong');
-      flipped   = [];
+      a.classList.remove("flipped", "wrong");
+      b.classList.remove("flipped", "wrong");
+      flipped = [];
       lockBoard = false;
     }, 900);
   }
@@ -313,52 +317,39 @@ function checkMatch() {
  * Briefly reveal a matching pair (one use per game)
  */
 function useHint() {
- if (hintUsed) {
-    showToast('💡 Hint already used!');
+  if (!gameActive || hintUsed) {
+    showToast("Hint already used!");
     return;
   }
- 
-  // Guard: only works during an active game
-  if (!gameActive) return;
- 
-  // Consume the hint
-  hintUsed            = true;
-  hintBtn.disabled    = true;
-  hintBtn.textContent = 'Hint Used';
- 
-  const cols      = DIFFICULTIES[difficulty].cols;
-  const totalRows = Math.ceil(cards.length / cols);
- 
-  // Collect row indices that still contain unmatched, unflipped cards
-  const validRows = [];
-  for (let r = 0; r < totalRows; r++) {
-    const rowSlice     = cards.slice(r * cols, (r + 1) * cols);
-    const hasCandidate = rowSlice.some(
-      c => !c.classList.contains('matched') && !c.classList.contains('flipped')
-    );
-    if (hasCandidate) validRows.push(r);
+  hintUsed = true;
+
+  // Collect unmatched, unflipped cards
+  const unmatched = cards.filter(
+    (c) => !c.classList.contains("matched") && !c.classList.contains("flipped"),
+  );
+  if (!unmatched.length) return;
+
+  // Group by emoji to find a valid pair
+  const emojiMap = {};
+  for (const c of unmatched) {
+    const e = c.dataset.emoji;
+    if (!emojiMap[e]) emojiMap[e] = [];
+    emojiMap[e].push(c);
   }
- 
-  if (!validRows.length) return;   // nothing left to reveal
- 
-  // Pick one random valid row
-  const rowIdx   = validRows[Math.floor(Math.random() * validRows.length)];
-  const rowCards = cards
-    .slice(rowIdx * cols, (rowIdx + 1) * cols)
-    .filter(c => !c.classList.contains('matched') && !c.classList.contains('flipped'));
- 
-  // Briefly flip the row face-up
-  rowCards.forEach(c => c.classList.add('flipped'));
-  showToast('💡 Hint used!');
- 
-  // Flip back after 1.5 seconds (skip already-matched cards)
+  const pair = Object.values(emojiMap).find((g) => g.length >= 2);
+  if (!pair) return;
+
+  // Briefly show the pair
+  pair[0].classList.add("flipped");
+  pair[1].classList.add("flipped");
+  showToast("💡 Hint used!");
+
   setTimeout(() => {
-    rowCards.forEach(c => {
-      if (!c.classList.contains('matched')) {
-        c.classList.remove('flipped');
-      }
-    });
-  }, 1500);
+    if (!pair[0].classList.contains("matched")) {
+      pair[0].classList.remove("flipped");
+      pair[1].classList.remove("flipped");
+    }
+  }, 1200);
 }
 
 // ── Win Condition ─────────────────────────────────────────
@@ -368,32 +359,39 @@ function useHint() {
  */
 function onWin() {
   stopTimer();
-  gameActive             = false;
-  progressEl.style.width = '100%';
+  gameActive = false;
+  progressEl.style.width = "100%";
 
   // Check and save high score
-  const hs        = highScores[difficulty];
-  const isNewBest = !hs || moves < hs.moves || (moves === hs.moves && seconds < hs.seconds);
+  const hs = highScores[difficulty];
+  const isNewBest =
+    !hs || moves < hs.moves || (moves === hs.moves && seconds < hs.seconds);
 
   if (isNewBest) {
     highScores[difficulty] = { moves, seconds };
-    localStorage.setItem('mmHighScores', JSON.stringify(highScores));
+    localStorage.setItem("mmHighScores", JSON.stringify(highScores));
   }
   updateBestDisplay();
 
   // Populate modal
   const rating =
-    moves <= 12 ? 'Incredible!' :
-    moves <= 18 ? 'Great job!'  :
-    moves <= 25 ? 'Well done!'  : 'You did it!';
+    moves <= 12
+      ? "Incredible!"
+      : moves <= 18
+        ? "Great job!"
+        : moves <= 25
+          ? "Well done!"
+          : "You did it!";
 
-  document.getElementById('modalSub').textContent        = rating;
-  document.getElementById('modalMoves').textContent      = moves;
-  document.getElementById('modalTime').textContent       = fmt(seconds);
-  document.getElementById('newBest').style.display       = isNewBest ? 'block' : 'none';
+  document.getElementById("modalSub").textContent = rating;
+  document.getElementById("modalMoves").textContent = moves;
+  document.getElementById("modalTime").textContent = fmt(seconds);
+  document.getElementById("newBest").style.display = isNewBest
+    ? "block"
+    : "none";
 
   setTimeout(() => {
-    winModal.classList.add('visible');
+    winModal.classList.add("visible");
     launchConfetti();
   }, 400);
 }
@@ -404,20 +402,28 @@ function onWin() {
  * Spawn animated confetti particles on win
  */
 function launchConfetti() {
-  const container = document.getElementById('confettiContainer');
-  container.innerHTML = '';
+  const container = document.getElementById("confettiContainer");
+  container.innerHTML = "";
 
-  const colors = ['#7c3aed','#a855f7','#f59e0b','#10b981','#ef4444','#60a5fa','#f472b6'];
+  const colors = [
+    "#7c3aed",
+    "#a855f7",
+    "#f59e0b",
+    "#10b981",
+    "#ef4444",
+    "#60a5fa",
+    "#f472b6",
+  ];
 
   for (let i = 0; i < 70; i++) {
-    const p = document.createElement('div');
-    p.className  = 'confetti-particle';
+    const p = document.createElement("div");
+    p.className = "confetti-particle";
     p.style.cssText = `
       left: ${Math.random() * 100}%;
       background: ${colors[Math.floor(Math.random() * colors.length)]};
       width: ${4 + Math.random() * 8}px;
       height: ${4 + Math.random() * 8}px;
-      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      border-radius: ${Math.random() > 0.5 ? "50%" : "2px"};
       animation-duration: ${1.5 + Math.random() * 2}s;
       animation-delay: ${Math.random() * 0.8}s;
     `;
@@ -425,7 +431,9 @@ function launchConfetti() {
   }
 
   // Clean up particles after animation completes
-  setTimeout(() => { container.innerHTML = ''; }, 4000);
+  setTimeout(() => {
+    container.innerHTML = "";
+  }, 4000);
 }
 
 // ── Initialise ────────────────────────────────────────────

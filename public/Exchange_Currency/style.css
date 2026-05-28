@@ -239,12 +239,6 @@
   font-size: 1rem;
 }
 
-#historyChart {
-  width: 100% !important;
-  max-height: 250px;
-}
-    background-color: #513a29;
-  }
 
   .reset-btn {
     margin-top: 1rem;

@@ -1,54 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Protected Page</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Protected Page</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-</head>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(124, 99, 255, 0.14),
+          rgba(79, 141, 255, 0.1)
+        );
+        color: #fff;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+      "
+      >← Back to Home</a
+    >
 
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
-
-  <main class="page-wrap">
-    <section class="page-panel">
-      <div class="toolbar">
-        <div class="brand">
-          <div class="brand-badge">A</div>
-          <div>
-            <div class="pill">Protected area</div>
-            <h2>Authenticated dashboard</h2>
-          </div>
-        </div>
-        <a href="/" class="btn btn-secondary">Home</a>
-      </div>
-
-      <div class="page-hero">
-        <div class="page-panel" style="background: rgba(15, 23, 42, 0.45);">
-          <span class="eyebrow">Hello</span>
-          <h1>Welcome, {{ current_user.name }}.</h1>
-          <p>
-            This page is only visible after login because the Flask server checks the JWT cookie before rendering it.
-          </p>
-          <div class="hero-metric">
-            <div class="metric">
-              <strong>Signed in</strong>
-              <span>Session verified by the server.</span>
+    <main class="page-wrap">
+      <section class="page-panel">
+        <div class="toolbar">
+          <div class="brand">
+            <div class="brand-badge">A</div>
+            <div>
+              <div class="pill">Protected area</div>
+              <h2>Authenticated dashboard</h2>
             </div>
-            <div class="metric">
-              <strong>{{ users|length }} users</strong>
-              <span>Records currently stored in SQLite.</span>
-            </div>
           </div>
+          <a href="/" class="btn btn-secondary">Home</a>
         </div>
 
-        <div class="page-panel" style="background: rgba(15, 23, 42, 0.45);">
-          <span class="eyebrow">Users</span>
-          <h2 style="margin-top: 14px;">Registered accounts</h2>
-          {% if users %}
-          <ul class="list-card">
-            {% for user in users %}
+        <div class="page-hero">
+          <div class="page-panel" style="background: rgba(15, 23, 42, 0.45)">
+            <span class="eyebrow">Hello</span>
+            <h1>Welcome, {{ current_user.name }}.</h1>
+            <p>
+              This page is only visible after login because the Flask server
+              checks the JWT cookie before rendering it.
+            </p>
+            <div class="hero-metric">
+              <div class="metric">
+                <strong>Signed in</strong>
+                <span>Session verified by the server.</span>
+              </div>
+              <div class="metric">
+                <strong>{{ users|length }} users</strong>
+                <span>Records currently stored in SQLite.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="page-panel" style="background: rgba(15, 23, 42, 0.45)">
+            <span class="eyebrow">Users</span>
+            <h2 style="margin-top: 14px">Registered accounts</h2>
+            {% if users %}
+            <ul class="list-card">
+              {% for user in users %}
               <li>
                 <div>
                   <div class="name">{{ user.name }}</div>
@@ -56,17 +81,17 @@
                 </div>
                 <span class="pill">ID {{ loop.index }}</span>
               </li>
-            {% endfor %}
-          </ul>
-          {% else %}
-          <div class="empty-state">
-            No users are registered yet. Sign up from the home page to populate this list.
+              {% endfor %}
+            </ul>
+            {% else %}
+            <div class="empty-state">
+              No users are registered yet. Sign up from the home page to
+              populate this list.
+            </div>
+            {% endif %}
           </div>
-          {% endif %}
         </div>
-      </div>
-    </section>
-  </main>
-</body>
-
+      </section>
+    </main>
+  </body>
 </html>

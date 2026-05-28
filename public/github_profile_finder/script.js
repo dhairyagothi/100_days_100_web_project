@@ -1,7 +1,13 @@
 const UI = {
-  form: document.getElementById("searchForm") || document.querySelector(".modern-search-form"),
-  input: document.getElementById("usernameInput") || document.querySelector(".search-input-container input"),
-  statusBox: document.getElementById("statusBox") || document.querySelector(".status-banner"),
+  form:
+    document.getElementById("searchForm") ||
+    document.querySelector(".modern-search-form"),
+  input:
+    document.getElementById("usernameInput") ||
+    document.querySelector(".search-input-container input"),
+  statusBox:
+    document.getElementById("statusBox") ||
+    document.querySelector(".status-banner"),
   profileCard: document.getElementById("profileCard"),
   metricsPanel: document.getElementById("metricsPanel"),
   reposSection: document.getElementById("reposSection"),
@@ -9,7 +15,7 @@ const UI = {
   themeToggle: document.getElementById("themeToggle"),
   themeIcon: document.getElementById("themeIcon"),
   offlineIndicator: document.getElementById("offlineIndicator"),
-  exportPdfBtn: document.getElementById("exportPdfBtn")
+  exportPdfBtn: document.getElementById("exportPdfBtn"),
 };
 
 const Nodes = {
@@ -25,7 +31,7 @@ const Nodes = {
   followers: document.getElementById("followers"),
   following: document.getElementById("following"),
   gists: document.getElementById("gists"),
-  profileLink: document.getElementById("profileLink")
+  profileLink: document.getElementById("profileLink"),
 };
 
 let searchResultsContainer = document.getElementById("searchResultsContainer");
@@ -41,7 +47,7 @@ if (!searchResultsContainer) {
     border: 1px solid var(--card-border);
     box-shadow: var(--shadow);
   `;
-  
+
   const targetWorkspace = document.querySelector(".search-workspace");
   if (targetWorkspace) {
     targetWorkspace.appendChild(searchResultsContainer);
@@ -102,7 +108,7 @@ class DataCacheEngine {
     try {
       const entry = localStorage.getItem(`gh_dash_${storageKey}`);
       if (!entry) return null;
-      
+
       const payload = JSON.parse(entry);
       if (Date.now() > payload.expiresAt) {
         localStorage.removeItem(`gh_dash_${storageKey}`);
@@ -118,7 +124,7 @@ class DataCacheEngine {
     try {
       const payload = {
         data: dataValue,
-        expiresAt: Date.now() + CACHE_DURATION
+        expiresAt: Date.now() + CACHE_DURATION,
       };
       localStorage.setItem(`gh_dash_${storageKey}`, JSON.stringify(payload));
     } catch (error) {
@@ -133,14 +139,24 @@ function syncNetworkStatus() {
     UI.offlineIndicator.classList.toggle("hidden", isOnline);
   }
   if (!isOnline && UI.statusBox) {
-    showStatus("Offline state detected. Serving data exclusively from client memory layers.", "offline");
-  } else if (isOnline && UI.statusBox && !UI.statusBox.classList.contains("hidden") && UI.statusBox.classList.contains("offline")) {
+    showStatus(
+      "Offline state detected. Serving data exclusively from client memory layers.",
+      "offline",
+    );
+  } else if (
+    isOnline &&
+    UI.statusBox &&
+    !UI.statusBox.classList.contains("hidden") &&
+    UI.statusBox.classList.contains("offline")
+  ) {
     hideStatus();
   }
 }
 
 function updateThemeIcon() {
-  const isDark = document.documentElement.getAttribute("data-theme") === "dark" || !document.documentElement.hasAttribute("data-theme");
+  const isDark =
+    document.documentElement.getAttribute("data-theme") === "dark" ||
+    !document.documentElement.hasAttribute("data-theme");
   if (UI.themeIcon) {
     UI.themeIcon.textContent = isDark ? "☀" : "☾";
   }
@@ -151,8 +167,13 @@ function initTheme() {
   if (savedTheme) {
     document.documentElement.setAttribute("data-theme", savedTheme);
   } else {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    document.documentElement.setAttribute(
+      "data-theme",
+      prefersDark ? "dark" : "light",
+    );
   }
   updateThemeIcon();
 }
@@ -169,7 +190,10 @@ function hideStatus() {
 }
 
 function showLoading() {
-  showStatus("Syncing workspace records and evaluating analytics models...", "success");
+  showStatus(
+    "Syncing workspace records and evaluating analytics models...",
+    "success",
+  );
   if (UI.profileCard) UI.profileCard.classList.add("hidden");
   if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
   if (UI.reposSection) UI.reposSection.classList.add("hidden");
@@ -180,7 +204,7 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString(undefined, {
     year: "numeric",
     month: "short",
-    day: "numeric"
+    day: "numeric",
   });
 }
 
@@ -190,10 +214,13 @@ function safeText(value, fallback = "—") {
 
 function computeAccountHealthIndex(user, metrics) {
   const repoFactor = user.public_repos * 1.5;
-  const tractionFactor = (metrics.stars * 2.5) + (metrics.forks * 1.2);
+  const tractionFactor = metrics.stars * 2.5 + metrics.forks * 1.2;
   const networkFactor = user.followers * 0.8;
-  const matrixScore = Math.min(100, Math.round((repoFactor + tractionFactor + networkFactor) / 12));
-  
+  const matrixScore = Math.min(
+    100,
+    Math.round((repoFactor + tractionFactor + networkFactor) / 12),
+  );
+
   if (matrixScore > 75) return "Enterprise Authority";
   if (matrixScore > 40) return "Core Contributor";
   return "Active Developer";
@@ -202,15 +229,17 @@ function computeAccountHealthIndex(user, metrics) {
 function renderVisualInsightsCharts(metrics) {
   const langContainer = document.getElementById("languageDistributionChart");
   const tractionContainer = document.getElementById("systemTractionChart");
-  
+
   if (langContainer) {
     langContainer.innerHTML = "";
     if (metrics.distribution.length === 0) {
-      langContainer.innerHTML = '<span class="meta-output" style="text-align:left;">Insufficient environment distribution metrics.</span>';
+      langContainer.innerHTML =
+        '<span class="meta-output" style="text-align:left;">Insufficient environment distribution metrics.</span>';
     } else {
-      metrics.distribution.forEach(item => {
+      metrics.distribution.forEach((item) => {
         const layoutRow = document.createElement("div");
-        layoutRow.style.cssText = "display:flex; flex-direction:column; gap:4px; width:100%;";
+        layoutRow.style.cssText =
+          "display:flex; flex-direction:column; gap:4px; width:100%;";
         layoutRow.innerHTML = `
           <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600;">
             <span>${item.language}</span>
@@ -228,11 +257,13 @@ function renderVisualInsightsCharts(metrics) {
   if (tractionContainer) {
     tractionContainer.innerHTML = "";
     if (metrics.rawMetrics.length === 0) {
-      tractionContainer.innerHTML = '<span class="meta-output" style="text-align:left;">No tracking metrics registered.</span>';
+      tractionContainer.innerHTML =
+        '<span class="meta-output" style="text-align:left;">No tracking metrics registered.</span>';
     } else {
-      metrics.rawMetrics.forEach(repo => {
+      metrics.rawMetrics.forEach((repo) => {
         const layoutRow = document.createElement("div");
-        layoutRow.style.cssText = "display:flex; align-items:center; justify-content:space-between; font-size:0.85rem; padding: 4px 0;";
+        layoutRow.style.cssText =
+          "display:flex; align-items:center; justify-content:space-between; font-size:0.85rem; padding: 4px 0;";
         layoutRow.innerHTML = `
           <span style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px;">${repo.name}</span>
           <div style="display:flex; gap:8px;">
@@ -253,11 +284,11 @@ function animateCounter(element, targetValue) {
     element.textContent = "0";
     return;
   }
-  
+
   let start = 0;
   const duration = 1000;
   const startTime = performance.now();
-  
+
   function updateNumber(currentTime) {
     const elapsedTime = currentTime - startTime;
     if (elapsedTime >= duration) {
@@ -280,18 +311,23 @@ function renderProfile(user, metrics) {
   Nodes.username.textContent = `@${user.login}`;
 
   const architectureClassification = computeAccountHealthIndex(user, metrics);
-  const ecosystemSummary = metrics.languages.length > 0 
-    ? `Specializes in ${metrics.languages.join(", ")} environments.`
-    : "Maintains a diversified structural codebase.";
+  const ecosystemSummary =
+    metrics.languages.length > 0
+      ? `Specializes in ${metrics.languages.join(", ")} environments.`
+      : "Maintains a diversified structural codebase.";
 
-  const baselineBio = user.bio ? user.bio : "Independent open source developer profile dashboard.";
+  const baselineBio = user.bio
+    ? user.bio
+    : "Independent open source developer profile dashboard.";
   Nodes.bio.textContent = `${baselineBio} [Rank: ${architectureClassification}] — ${ecosystemSummary}`;
-  
+
   Nodes.location.textContent = safeText(user.location, "Distributed/Remote");
   Nodes.company.textContent = safeText(user.company, "Independent Workspace");
 
   if (user.blog) {
-    const blogUrl = user.blog.startsWith("http") ? user.blog : `https://${user.blog}`;
+    const blogUrl = user.blog.startsWith("http")
+      ? user.blog
+      : `https://${user.blog}`;
     Nodes.website.innerHTML = `<a href="${blogUrl}" target="_blank" rel="noreferrer" class="repo-link">${user.blog.replace(/^https?:\/\//, "")}</a>`;
   } else {
     Nodes.website.textContent = "—";
@@ -323,9 +359,10 @@ function renderRepos(repos) {
   repos.forEach((repo) => {
     const card = document.createElement("article");
     card.className = "repo-card";
-    
-    const operationalIndex = repo.stargazers_count + (repo.forks_count * 2);
-    const engineeringStatus = operationalIndex > 100 ? "Production System" : "Stable Archive";
+
+    const operationalIndex = repo.stargazers_count + repo.forks_count * 2;
+    const engineeringStatus =
+      operationalIndex > 100 ? "Production System" : "Stable Archive";
 
     card.innerHTML = `
       <div class="repo-top">
@@ -360,7 +397,8 @@ function renderSearchResults(users) {
 
   const heading = document.createElement("p");
   heading.textContent = `${users.length} unique indices discovered. Select terminal connection:`;
-  heading.style.cssText = "padding: 1rem; font-weight: 700; margin: 0; color: var(--muted); font-size: 0.9rem;";
+  heading.style.cssText =
+    "padding: 1rem; font-weight: 700; margin: 0; color: var(--muted); font-size: 0.9rem;";
   searchResultsContainer.appendChild(heading);
 
   users.forEach((user) => {
@@ -383,8 +421,11 @@ function renderSearchResults(users) {
       </div>
       <span class="badge" style="margin:0; font-size:0.65rem;">Connect</span>
     `;
-    item.addEventListener("mouseover", () => item.style.background = "var(--bg-secondary)");
-    item.addEventListener("mouseout", () => item.style.background = "");
+    item.addEventListener(
+      "mouseover",
+      () => (item.style.background = "var(--bg-secondary)"),
+    );
+    item.addEventListener("mouseout", () => (item.style.background = ""));
     item.addEventListener("click", () => {
       if (UI.input) UI.input.value = user.login;
       searchResultsContainer.style.display = "none";
@@ -411,7 +452,9 @@ async function executeTypeaheadLookup(queryString) {
   }
 
   try {
-    const response = await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`);
+    const response = await fetch(
+      `https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`,
+    );
     if (response.ok) {
       const searchData = await response.json();
       const outputItems = searchData.items || [];
@@ -427,7 +470,10 @@ async function fetchUser(username) {
   const cleanName = username.trim().replace(/^@/, "");
 
   if (!cleanName) {
-    showStatus("Operational exception parameter failure: target handle required.", "error");
+    showStatus(
+      "Operational exception parameter failure: target handle required.",
+      "error",
+    );
     return;
   }
 
@@ -449,28 +495,33 @@ async function fetchUser(username) {
     if (UI.profileCard) UI.profileCard.classList.add("hidden");
     if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
     if (UI.reposSection) UI.reposSection.classList.add("hidden");
-    showStatus("Identity registry mapping unavailable while completely disconnected from remote tracking cluster.", "error");
+    showStatus(
+      "Identity registry mapping unavailable while completely disconnected from remote tracking cluster.",
+      "error",
+    );
     return;
   }
 
   try {
-    const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
+    const userResponse = await fetch(
+      `https://api.github.com/users/${encodeURIComponent(cleanName)}`,
+    );
 
     if (userResponse.ok) {
       const user = await userResponse.json();
       const repoResponse = await fetch(
-        `https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`
+        `https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`,
       );
       const repos = await repoResponse.json();
       const verifiedRepos = Array.isArray(repos) ? repos : [];
-      
+
       const sortedRepos = verifiedRepos
         .sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count)
         .slice(0, 6);
 
-      metricsWorker.onmessage = function(e) {
+      metricsWorker.onmessage = function (e) {
         const structuralMetrics = e.data;
-        
+
         DataCacheEngine.set(`profile_${cleanName}`, user);
         DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
         DataCacheEngine.set(`metrics_${cleanName}`, structuralMetrics);
@@ -483,11 +534,13 @@ async function fetchUser(username) {
       metricsWorker.postMessage(sortedRepos);
     } else {
       const searchResponse = await fetch(
-        `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`
+        `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`,
       );
 
       if (!searchResponse.ok) {
-        throw new Error("Unable to parse identity coordinates over upstream paths.");
+        throw new Error(
+          "Unable to parse identity coordinates over upstream paths.",
+        );
       }
 
       const searchData = await searchResponse.json();
@@ -511,7 +564,10 @@ async function fetchUser(username) {
     if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
     if (UI.reposSection) UI.reposSection.classList.add("hidden");
     searchResultsContainer.style.display = "none";
-    showStatus(error.message || "An unexpected cluster mapping event occurred.", "error");
+    showStatus(
+      error.message || "An unexpected cluster mapping event occurred.",
+      "error",
+    );
   }
 }
 
@@ -543,23 +599,33 @@ document.querySelectorAll(".tag-btn").forEach((btn) => {
 });
 
 document.addEventListener("click", (event) => {
-  if (UI.form && !UI.form.contains(event.target) && !searchResultsContainer.contains(event.target)) {
+  if (
+    UI.form &&
+    !UI.form.contains(event.target) &&
+    !searchResultsContainer.contains(event.target)
+  ) {
     searchResultsContainer.style.display = "none";
   }
 });
 
-document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(tabBtn => {
-  tabBtn.addEventListener("click", () => {
-    const activePaneId = tabBtn.getAttribute("data-pane");
-    
-    document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-    
-    tabBtn.classList.add("active");
-    const targetPane = document.getElementById(activePaneId);
-    if (targetPane) targetPane.classList.add("active");
+document
+  .querySelectorAll(".workspace-tabs-nav .tab-nav-item")
+  .forEach((tabBtn) => {
+    tabBtn.addEventListener("click", () => {
+      const activePaneId = tabBtn.getAttribute("data-pane");
+
+      document
+        .querySelectorAll(".workspace-tabs-nav .tab-nav-item")
+        .forEach((b) => b.classList.remove("active"));
+      document
+        .querySelectorAll(".tab-pane")
+        .forEach((p) => p.classList.remove("active"));
+
+      tabBtn.classList.add("active");
+      const targetPane = document.getElementById(activePaneId);
+      if (targetPane) targetPane.classList.add("active");
+    });
   });
-});
 
 if (UI.exportPdfBtn) {
   UI.exportPdfBtn.addEventListener("click", () => {

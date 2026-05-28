@@ -10,44 +10,46 @@ function shuffle(array) {
   return array;
 }
 
-function showToast(message, type = 'info', duration = 2600) {
-  const toastContainer = document.getElementById('toastContainer');
-  const toast = document.createElement('div');
+function showToast(message, type = "info", duration = 2600) {
+  const toastContainer = document.getElementById("toastContainer");
+  const toast = document.createElement("div");
   toast.className = `toast toast-${type}`;
   toast.textContent = message;
   toastContainer.appendChild(toast);
 
-  requestAnimationFrame(() => toast.classList.add('visible'));
+  requestAnimationFrame(() => toast.classList.add("visible"));
 
   setTimeout(() => {
-    toast.classList.remove('visible');
+    toast.classList.remove("visible");
     setTimeout(() => toast.remove(), 300);
   }, duration);
 }
 
 function updateStatus(message) {
-  const statusText = document.getElementById('statusText');
+  const statusText = document.getElementById("statusText");
   if (statusText) statusText.textContent = message;
 }
 
 function updateLevelText(level) {
-  const levelText = document.getElementById('levelText');
+  const levelText = document.getElementById("levelText");
   if (levelText) levelText.textContent = level;
 }
 
 function updateMoveDisplay(count) {
-  const moveCount = document.getElementById('moveCount');
+  const moveCount = document.getElementById("moveCount");
   if (moveCount) moveCount.textContent = count;
 }
 
 function formatTime(seconds) {
-  const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
-  const secs = (seconds % 60).toString().padStart(2, '0');
+  const minutes = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs = (seconds % 60).toString().padStart(2, "0");
   return `${minutes}:${secs}`;
 }
 
 function updateTimerDisplay(seconds) {
-  const timerText = document.getElementById('timerText');
+  const timerText = document.getElementById("timerText");
   if (timerText) timerText.textContent = formatTime(seconds);
 }
 
@@ -73,16 +75,16 @@ function startTimer() {
 }
 
 function showModal(title, message, moves) {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalText').textContent = message;
-  document.getElementById('moves').textContent = `Moves: ${moves}`;
-  document.getElementById('Message-Container').classList.add('visible');
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalText").textContent = message;
+  document.getElementById("moves").textContent = `Moves: ${moves}`;
+  document.getElementById("Message-Container").classList.add("visible");
 }
 
 function closeModal() {
-  const modal = document.getElementById('Message-Container');
+  const modal = document.getElementById("Message-Container");
   if (modal) {
-    modal.classList.remove('visible');
+    modal.classList.remove("visible");
   }
 
   if (isGameOver) {
@@ -94,18 +96,18 @@ function closeModal() {
 function toggleVisibility(id) {
   const element = document.getElementById(id);
   if (element) {
-    element.classList.toggle('visible');
+    element.classList.toggle("visible");
   }
 }
 
 function Maze(width, height) {
   let mazeMap;
-  const dirs = ['n', 's', 'e', 'w'];
+  const dirs = ["n", "s", "e", "w"];
   const modDir = {
-    n: { y: -1, x: 0, o: 's' },
-    s: { y: 1, x: 0, o: 'n' },
-    e: { y: 0, x: 1, o: 'w' },
-    w: { y: 0, x: -1, o: 'e' }
+    n: { y: -1, x: 0, o: "s" },
+    s: { y: 1, x: 0, o: "n" },
+    e: { y: 0, x: 1, o: "w" },
+    w: { y: 0, x: -1, o: "e" },
   };
   let startCoord, endCoord;
 
@@ -121,8 +123,8 @@ function Maze(width, height) {
         e: false,
         w: false,
         visited: false,
-        priorPos: null
-      }))
+        priorPos: null,
+      })),
     );
   }
 
@@ -148,7 +150,13 @@ function Maze(width, height) {
         const direction = dirs[index];
         const nx = pos.x + modDir[direction].x;
         const ny = pos.y + modDir[direction].y;
-        if (nx >= 0 && nx < width && ny >= 0 && ny < height && !mazeMap[nx][ny].visited) {
+        if (
+          nx >= 0 &&
+          nx < width &&
+          ny >= 0 &&
+          ny < height &&
+          !mazeMap[nx][ny].visited
+        ) {
           mazeMap[pos.x][pos.y][direction] = true;
           mazeMap[nx][ny][modDir[direction].o] = true;
           mazeMap[nx][ny].priorPos = pos;
@@ -200,7 +208,7 @@ function DrawMaze(maze, ctx, cellSize) {
   const map = maze.map();
   let size = cellSize;
   ctx.lineWidth = size / 40;
-  ctx.strokeStyle = '#7fd5ff';
+  ctx.strokeStyle = "#7fd5ff";
 
   this.redrawMaze = function (newSize) {
     size = newSize;
@@ -240,7 +248,7 @@ function DrawMaze(maze, ctx, cellSize) {
   function drawMap() {
     ctx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
     ctx.save();
-    ctx.shadowColor = 'rgba(96, 212, 255, 0.25)';
+    ctx.shadowColor = "rgba(96, 212, 255, 0.25)";
     ctx.shadowBlur = size / 14;
     for (let x = 0; x < map.length; x++) {
       for (let y = 0; y < map[x].length; y++) {
@@ -257,35 +265,48 @@ function DrawMaze(maze, ctx, cellSize) {
     const pulse = 4 + Math.sin(time / 300) * 2;
     const radius = size * 0.28;
 
-    const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius + pulse);
-    gradient.addColorStop(0, 'rgba(152, 128, 255, 0.9)');
-    gradient.addColorStop(0.4, 'rgba(96, 212, 255, 0.35)');
-    gradient.addColorStop(1, 'rgba(15, 22, 56, 0)');
+    const gradient = ctx.createRadialGradient(
+      centerX,
+      centerY,
+      radius * 0.2,
+      centerX,
+      centerY,
+      radius + pulse,
+    );
+    gradient.addColorStop(0, "rgba(152, 128, 255, 0.9)");
+    gradient.addColorStop(0.4, "rgba(96, 212, 255, 0.35)");
+    gradient.addColorStop(1, "rgba(15, 22, 56, 0)");
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius + pulse, 0, 2 * Math.PI);
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    ctx.strokeStyle = '#8e6cff';
+    ctx.strokeStyle = "#8e6cff";
     ctx.lineWidth = size * 0.05;
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     ctx.stroke();
 
     ctx.lineWidth = 2;
-    ctx.strokeStyle = '#d3f1ff';
+    ctx.strokeStyle = "#d3f1ff";
     for (let i = 0; i < 5; i++) {
-      const angle = i * (Math.PI * 2) / 5 + time / 800;
+      const angle = (i * (Math.PI * 2)) / 5 + time / 800;
       ctx.beginPath();
-      ctx.moveTo(centerX + Math.cos(angle) * radius * 0.6, centerY + Math.sin(angle) * radius * 0.6);
-      ctx.lineTo(centerX + Math.cos(angle) * radius * 0.95, centerY + Math.sin(angle) * radius * 0.95);
+      ctx.moveTo(
+        centerX + Math.cos(angle) * radius * 0.6,
+        centerY + Math.sin(angle) * radius * 0.6,
+      );
+      ctx.lineTo(
+        centerX + Math.cos(angle) * radius * 0.95,
+        centerY + Math.sin(angle) * radius * 0.95,
+      );
       ctx.stroke();
     }
   }
 
   function drawMapBackground() {
-    ctx.fillStyle = 'rgba(5, 10, 25, 0.12)';
+    ctx.fillStyle = "rgba(5, 10, 25, 0.12)";
     ctx.fillRect(0, 0, mazeCanvas.width, mazeCanvas.height);
   }
 
@@ -299,7 +320,7 @@ function DrawMaze(maze, ctx, cellSize) {
 }
 
 function Player(maze, canvas, cellSize, onComplete) {
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   const self = this;
   const map = maze.map();
   let cellCoords = { x: maze.startCoord().x, y: maze.startCoord().y };
@@ -318,26 +339,30 @@ function Player(maze, canvas, cellSize, onComplete) {
     const y = coord.y * size + size / 2;
     const radius = Math.max(size * 0.16, 6);
     const gradient = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
-    gradient.addColorStop(0, 'rgba(255, 249, 196, 0.95)');
-    gradient.addColorStop(0.6, 'rgba(255, 162, 59, 0.85)');
-    gradient.addColorStop(1, 'rgba(255, 72, 103, 0.55)');
+    gradient.addColorStop(0, "rgba(255, 249, 196, 0.95)");
+    gradient.addColorStop(0.6, "rgba(255, 162, 59, 0.85)");
+    gradient.addColorStop(1, "rgba(255, 72, 103, 0.55)");
 
     ctx.beginPath();
     ctx.fillStyle = gradient;
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.fill();
 
-    ctx.strokeStyle = 'rgba(255, 196, 129, 0.85)';
+    ctx.strokeStyle = "rgba(255, 196, 129, 0.85)";
     ctx.lineWidth = Math.max(size * 0.015, 1.5);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
     ctx.lineWidth = 1.5;
     ctx.arc(x, y, radius * 0.6, 0, 2 * Math.PI);
     ctx.stroke();
 
-    if (!hasWon && coord.x === maze.endCoord().x && coord.y === maze.endCoord().y) {
+    if (
+      !hasWon &&
+      coord.x === maze.endCoord().x &&
+      coord.y === maze.endCoord().y
+    ) {
       hasWon = true;
       onComplete(moves);
       self.unbindKeyDown();
@@ -351,7 +376,7 @@ function Player(maze, canvas, cellSize, onComplete) {
       coord.x * size + offsetLeft,
       coord.y * size + offsetLeft,
       size - offsetRight,
-      size - offsetRight
+      size - offsetRight,
     );
   }
 
@@ -361,7 +386,10 @@ function Player(maze, canvas, cellSize, onComplete) {
     }
 
     const keyCode = e.keyCode || e.which;
-    if ([37, 38, 39, 40, 65, 68, 83, 87].includes(keyCode) && typeof e.preventDefault === 'function') {
+    if (
+      [37, 38, 39, 40, 65, 68, 83, 87].includes(keyCode) &&
+      typeof e.preventDefault === "function"
+    ) {
       e.preventDefault();
     }
 
@@ -409,41 +437,43 @@ function Player(maze, canvas, cellSize, onComplete) {
 
     if (moved) {
       moves++;
-      updateMoveDisplay(moves);      ensurePlayerVisible(cellCoords);    } else if ([65, 68, 83, 87, 37, 38, 39, 40].includes(e.keyCode)) {
-      showToast('Blocked! You cannot move through a wall.', 'warning');
+      updateMoveDisplay(moves);
+      ensurePlayerVisible(cellCoords);
+    } else if ([65, 68, 83, 87, 37, 38, 39, 40].includes(e.keyCode)) {
+      showToast("Blocked! You cannot move through a wall.", "warning");
     }
   }
 
   this.bindKeyDown = function () {
-    window.addEventListener('keydown', check, false);
-    if (window.jQuery && typeof $.fn.swipe === 'function') {
-      $('#view').swipe({
+    window.addEventListener("keydown", check, false);
+    if (window.jQuery && typeof $.fn.swipe === "function") {
+      $("#view").swipe({
         swipe: function (event, direction) {
           switch (direction) {
-            case 'up':
+            case "up":
               check({ keyCode: 38 });
               break;
-            case 'down':
+            case "down":
               check({ keyCode: 40 });
               break;
-            case 'left':
+            case "left":
               check({ keyCode: 37 });
               break;
-            case 'right':
+            case "right":
               check({ keyCode: 39 });
               break;
           }
         },
-        threshold: 0
+        threshold: 0,
       });
     }
   };
 
   this.unbindKeyDown = function () {
-    window.removeEventListener('keydown', check, false);
-    if (window.jQuery && typeof $.fn.swipe === 'function') {
+    window.removeEventListener("keydown", check, false);
+    if (window.jQuery && typeof $.fn.swipe === "function") {
       try {
-        $('#view').swipe('destroy');
+        $("#view").swipe("destroy");
       } catch (error) {
         // swipe may not be initialized yet
       }
@@ -454,27 +484,27 @@ function Player(maze, canvas, cellSize, onComplete) {
   this.bindKeyDown();
 }
 
-const mazeCanvas = document.getElementById('mazeCanvas');
-const ctx = mazeCanvas.getContext('2d');
+const mazeCanvas = document.getElementById("mazeCanvas");
+const ctx = mazeCanvas.getContext("2d");
 let maze;
 let draw;
 let player;
 let cellSize = 0;
 let difficulty = 10;
 let animationFrameId = null;
-let currentLevel = 'Easy';
+let currentLevel = "Easy";
 let isGameActive = false;
 let isGameOver = false;
 let elapsedSeconds = 0;
 let timerIntervalId = null;
 
-const startButton = document.getElementById('startMazeBtn');
-const restartButton = document.getElementById('restartMazeBtn');
-const diffSelect = document.getElementById('diffSelect');
-const okBtn = document.getElementById('okBtn');
+const startButton = document.getElementById("startMazeBtn");
+const restartButton = document.getElementById("restartMazeBtn");
+const diffSelect = document.getElementById("diffSelect");
+const okBtn = document.getElementById("okBtn");
 
 function resizeCanvas() {
-  const board = document.getElementById('view');
+  const board = document.getElementById("view");
   const availableWidth = board.clientWidth - 36;
   const availableHeight = window.innerHeight - 280;
   const size = Math.min(availableWidth, availableHeight, 860);
@@ -490,7 +520,7 @@ function resizeCanvas() {
 }
 
 function ensurePlayerVisible(coord) {
-  const container = document.getElementById('mazeContainer');
+  const container = document.getElementById("mazeContainer");
   if (!container || !coord) {
     return;
   }
@@ -498,12 +528,24 @@ function ensurePlayerVisible(coord) {
   const playerCenterX = coord.x * cellSize + cellSize / 2;
   const playerCenterY = coord.y * cellSize + cellSize / 2;
 
-  const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
-  const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
-  const targetLeft = Math.max(0, Math.min(maxScrollLeft, playerCenterX - container.clientWidth / 2));
-  const targetTop = Math.max(0, Math.min(maxScrollTop, playerCenterY - container.clientHeight / 2));
+  const maxScrollLeft = Math.max(
+    0,
+    container.scrollWidth - container.clientWidth,
+  );
+  const maxScrollTop = Math.max(
+    0,
+    container.scrollHeight - container.clientHeight,
+  );
+  const targetLeft = Math.max(
+    0,
+    Math.min(maxScrollLeft, playerCenterX - container.clientWidth / 2),
+  );
+  const targetTop = Math.max(
+    0,
+    Math.min(maxScrollTop, playerCenterY - container.clientHeight / 2),
+  );
 
-  container.scrollTo({ left: targetLeft, top: targetTop, behavior: 'smooth' });
+  container.scrollTo({ left: targetLeft, top: targetTop, behavior: "smooth" });
 }
 
 function resetGameState() {
@@ -521,20 +563,20 @@ function resetGameState() {
   updateMoveDisplay(0);
   updateTimerDisplay(elapsedSeconds);
   ctx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
-  updateStatus('Ready to start');
+  updateStatus("Ready to start");
 }
 
 function handleDifficultyChange() {
   const selectedDifficulty = Number(diffSelect.value);
   if (!selectedDifficulty || selectedDifficulty <= 0) {
-    showToast('Please select a valid difficulty level.', 'warning');
+    showToast("Please select a valid difficulty level.", "warning");
     return;
   }
 
   currentLevel = diffSelect.options[diffSelect.selectedIndex].text;
   updateLevelText(currentLevel);
   updateStatus(`Selected ${currentLevel}`);
-  showToast(`Difficulty set to ${currentLevel}`, 'info');
+  showToast(`Difficulty set to ${currentLevel}`, "info");
 
   difficulty = selectedDifficulty;
   cellSize = mazeCanvas.width / difficulty;
@@ -554,9 +596,9 @@ function onMazeComplete(moves) {
   isGameOver = true;
   isGameActive = false;
   stopTimer();
-  updateStatus('Maze completed! Ready for another run.');
-  showModal('Congratulations!', 'You escaped the maze.', moves);
-  showToast('Maze completed successfully 🎉', 'success');
+  updateStatus("Maze completed! Ready for another run.");
+  showModal("Congratulations!", "You escaped the maze.", moves);
+  showToast("Maze completed successfully 🎉", "success");
 }
 
 function cancelRenderLoop() {
@@ -589,7 +631,7 @@ function startRenderLoop() {
 function startGame() {
   const selectedDifficulty = Number(diffSelect.value);
   if (!selectedDifficulty || selectedDifficulty <= 0) {
-    showToast('Please select a valid difficulty level.', 'warning');
+    showToast("Please select a valid difficulty level.", "warning");
     return;
   }
 
@@ -610,43 +652,43 @@ function startGame() {
   updateStatus(`Playing ${currentLevel} mode`);
   updateMoveDisplay(0);
   startTimer();
-  showToast(`Game started: ${currentLevel}`, 'success');
-  startButton.textContent = 'Restart';
+  showToast(`Game started: ${currentLevel}`, "success");
+  startButton.textContent = "Restart";
   restartButton.disabled = false;
   diffSelect.blur();
   startRenderLoop();
 }
 
 function initialize() {
-  const modalOverlay = document.getElementById('Message-Container');
+  const modalOverlay = document.getElementById("Message-Container");
 
   resizeCanvas();
   handleDifficultyChange();
   startButton.disabled = false;
   restartButton.disabled = true;
-  startButton.addEventListener('click', startGame);
-  restartButton.addEventListener('click', startGame);
-  diffSelect.addEventListener('change', handleDifficultyChange);
+  startButton.addEventListener("click", startGame);
+  restartButton.addEventListener("click", startGame);
+  diffSelect.addEventListener("change", handleDifficultyChange);
 
   if (okBtn) {
-    okBtn.addEventListener('click', closeModal);
+    okBtn.addEventListener("click", closeModal);
   }
 
   if (modalOverlay) {
-    modalOverlay.addEventListener('click', (event) => {
+    modalOverlay.addEventListener("click", (event) => {
       if (event.target === modalOverlay) {
         closeModal();
       }
     });
   }
 
-  window.addEventListener('resize', resizeCanvas);
-  window.addEventListener('beforeunload', stopTimer);
-  showToast('Ready to play! Select a difficulty and start.', 'info', 3200);
+  window.addEventListener("resize", resizeCanvas);
+  window.addEventListener("beforeunload", stopTimer);
+  showToast("Ready to play! Select a difficulty and start.", "info", 3200);
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('load', initialize);
+if (document.readyState === "loading") {
+  window.addEventListener("load", initialize);
 } else {
   initialize();
 }

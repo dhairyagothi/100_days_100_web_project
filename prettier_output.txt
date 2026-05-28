@@ -1,0 +1,799 @@
+﻿Checking formatting...
+node.exe : [[31merror[39m] public/3d profile Card/index.html: SyntaxError: Unexpected closing tag "body". It may 
+happen when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (287:1)
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\USER\AppData\Roaming\n ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([[31merror[39...nd-tags (287:1):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[[31merror[39m] [0m [90m 285 |[39m
+[[31merror[39m]  [90m 286 |[39m   [33m<[39m[33mscript[39m 
+[33msrc[39m[33m=[39m[32m"script.js"[39m[33m>[39m[33m<[39m[33m/[39m[33mscript[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 287 |[39m [33m<[39m[33m/[39m[33mbody[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 288 |[39m
+[[31merror[39m]  [90m 289 |[39m [33m<[39m[33m/[39m[33mhtml[39m[33m>[39m
+[[31merror[39m]  [90m 290 |[39m[0m
+[[31merror[39m] public/Amazon-App/index.html: SyntaxError: Unable to parse entity "&#8592<" - decimal character 
+reference entities must end with ";" (231:87)
+[[31merror[39m] [0m [90m 229 |[39m
+[[31merror[39m]  [90m 230 |[39m     [33m<[39m[33mdiv[39m 
+[33mclass[39m[33m=[39m[32m"header-slider"[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 231 |[39m         [33m<[39m[33mbutton[39m 
+[33mtype[39m[33m=[39m[32m"button"[39m [33mclass[39m[33m=[39m[32m"control_prev"[39m 
+[33maria-label[39m[33m=[39m[32m"Previous 
+Image"[39m[33m>[39m&#8592[33m<[39m[33m/[39m[33mbutton[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m                                                                                    
+   [31m[1m^[22m[39m
+[[31merror[39m]  [90m 232 |[39m         [33m<[39m[33mbutton[39m [33mtype[39m[33m=[39m[32m"button"[39m 
+[33mclass[39m[33m=[39m[32m"control_next"[39m [33maria-label[39m[33m=[39m[32m"Next 
+Image"[39m[33m>[39m&#8594[33m<[39m[33m/[39m[33mbutton[39m[33m>[39m
+[[31merror[39m]  [90m 233 |[39m         [33m<[39m[33mul[39m[33m>[39m
+[[31merror[39m]  [90m 234 |[39m             [33m<[39m[33mimg[39m 
+[33msrc[39m[33m=[39m[32m"./assets/header1.jpg"[39m [33mclass[39m[33m=[39m[32m"header-img"[39m 
+[33malt[39m[33m=[39m[32m"Header Banner 1"[39m[33m>[39m[0m
+[[31merror[39m] public/Blog Page/hl.html: SyntaxError: Void elements do not have end tags "br" (55:20)
+[[31merror[39m] [0m [90m 53 |[39m   [33m<[39m[33mp[39m[33m>[39m1. Measure and Watch Your Weight
+[[31merror[39m]  [90m 54 |[39m Keeping track of your body weight on a daily or weekly basis will help you see what 
+youΓÇÖre losing and/or what
+[[31merror[39m] [31m[1m>[22m[39m[90m 55 |[39m youΓÇÖre 
+gaining.[33m<[39m[33mbr[39m[33m>[39m[33m<[39m[33m/[39m[33mbr[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m                    
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 56 |[39m 2. Limit Unhealthy Foods and Eat Healthy Meals
+[[31merror[39m]  [90m 57 |[39m Do not forget to eat breakfast and choose a nutritious meal with more protein and 
+fiber and less fat, sugar, and
+[[31merror[39m]  [90m 58 |[39m calories. For more information on weight-control foods and dietary recommendations, 
+please check the following[0m
+[[31merror[39m] public/Blog Page/wd.html: SyntaxError: Unexpected closing tag "p". It may happen when the tag has 
+already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (58:5)
+[[31merror[39m] [0m [90m 56 |[39m JS (JavaScript): JavaScript adds life to web pages by making them interactive. 
+It handles things like buttons, animations, and form checks.
+[[31merror[39m]  [90m 57 |[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 58 |[39m     
+[33m<[39m[33m/[39m[33mp[39m[33m>[39m[33m<[39m[33mh1[39m[33m>[39mBackend 
+Development[33m<[39m[33m/[39m[33mh1[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 59 |[39m In this module, we will explore the technologies that work behind the scenes on the 
+server to handle data, run the website, and store information.
+[[31merror[39m]  [90m 60 |[39m
+[[31merror[39m]  [90m 61 |[39m     [33m<[39m[33mp[39m[33m>[39m[33m<[39m[33mh3[39m[33m>[39mServer-Side 
+Programming Languages[33m<[39m[33m/[39m[33mh3[39m[33m>[39m[0m
+[[31merror[39m] public/blog/blog.html: SyntaxError: Unexpected closing tag "i". It may happen when the tag has 
+already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (109:113)
+[[31merror[39m] [0m [90m 107 |[39m                 [33m<[39m[33mdiv[39m 
+[33mclass[39m[33m=[39m[32m"social-icons"[39m[33m>[39m
+[[31merror[39m]  [90m 108 |[39m                     [33m<[39m[33ma[39m 
+[33mhref[39m[33m=[39m[32m"https://linkedin.com/in/ayushcarpenter"[39m 
+[33mtarget[39m[33m=[39m[32m"_blank"[39m[33m>[39m[33m<[39m[33mimg[39m 
+[33msrc[39m[33m=[39m[32m"./assets/linkedin.png"[39m[33m>[39m[33m<[39m[33m/[39m[33ma[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 109 |[39m                     [33m<[39m[33ma[39m 
+[33mhref[39m[33m=[39m[32m"https://twitter.com/carpenterAyush"[39m 
+[33mtarget[39m[33m=[39m[32m"_blank"[39m[33m>[39m[33m<[39m[33mimg[39m [33msrc[39m[33m=[39m[32m"./assets
+/github.png"[39m[33m>[39m[33m<[39m[33m/[39m[33mi[39m[33m>[39m[33m<[39m[33m/[39m[33ma[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m                                                                                    
+                             [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 110 |[39m                     [33m<[39m[33ma[39m 
+[33mhref[39m[33m=[39m[32m"https://github.com/Ayushswirlon"[39m 
+[33mtarget[39m[33m=[39m[32m"_blank"[39m[33m>[39m[33m<[39m[33mimg[39m [33msrc[39m[33m=[39m[32m"./assets
+/icons8-facebook-96.png"[39m[33m>[39m[33m<[39m[33m/[39m[33ma[39m[33m>[39m
+[[31merror[39m]  [90m 111 |[39m                     [33m<[39m[33ma[39m 
+[33mhref[39m[33m=[39m[32m"https://github.com/Ayushswirlon"[39m 
+[33mtarget[39m[33m=[39m[32m"_blank"[39m[33m>[39m[33m<[39m[33mimg[39m [33msrc[39m[33m=[39m[32m"./assets
+/icons8-youtube-96.png"[39m[33m>[39m[33m<[39m[33m/[39m[33ma[39m[33m>[39m
+[[31merror[39m]  [90m 112 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[31merror[39m] public/blog/main.html: SyntaxError: Unexpected closing tag "i". It may happen when the tag has 
+already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (77:117)
+[[31merror[39m] [0m [90m 75 |[39m                     [33m<[39m[33mdiv[39m 
+[33mclass[39m[33m=[39m[32m"social-icons"[39m [33mstyle[39m[33m=[39m[32m"justify-content: center;margin: 
+34px;"[39m[33m>[39m
+[[31merror[39m]  [90m 76 |[39m                         [33m<[39m[33ma[39m 
+[33mhref[39m[33m=[39m[32m"https://linkedin.com/in/ayushcarpenter"[39m 
+[33mtarget[39m[33m=[39m[32m"_blank"[39m[33m>[39m[33m<[39m[33mimg[39m 
+[33msrc[39m[33m=[39m[32m"./assets/linkedin.png"[39m[33m>[39m[33m<[39m[33m/[39m[33ma[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 77 |[39m                         [33m<[39m[33ma[39m 
+[33mhref[39m[33m=[39m[32m"https://twitter.com/carpenterAyush"[39m 
+[33mtarget[39m[33m=[39m[32m"_blank"[39m[33m>[39m[33m<[39m[33mimg[39m [33msrc[39m[33m=[39m[32m"./assets
+/github.png"[39m[33m>[39m[33m<[39m[33m/[39m[33mi[39m[33m>[39m[33m<[39m[33m/[39m[33ma[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m                                                                                     
+                                [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 78 |[39m                         [33m<[39m[33ma[39m 
+[33mhref[39m[33m=[39m[32m"https://github.com/Ayushswirlon"[39m 
+[33mtarget[39m[33m=[39m[32m"_blank"[39m[33m>[39m[33m<[39m[33mimg[39m 
+[33msrc[39m[33m=[39m[32m"./assets/discord.png"[39m[33m>[39m[33m<[39m[33m/[39m[33ma[39m[33m>[39m
+[[31merror[39m]  [90m 79 |[39m                         
+[[31merror[39m]  [90m 80 |[39m                     [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[31merror[39m] public/BMI_Calculator/index.html: SyntaxError: Unexpected closing tag "div". It may happen when the 
+tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (273:3)
+[[31merror[39m] [0m [90m 271 |[39m       [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 272 |[39m     [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 273 |[39m   [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 274 |[39m
+[[31merror[39m]  [90m 275 |[39m   [33m<[39m[33mscript[39m [33msrc[39m[33m=[39m[32m"https://cdn.jsdelivr.ne
+t/npm/chart.js@4.4.1/dist/chart.umd.min.js"[39m[33m>[39m[33m<[39m[33m/[39m[33mscript[39m[33m>[39m
+[[31merror[39m]  [90m 276 |[39m   [33m<[39m[33mscript[39m 
+[33msrc[39m[33m=[39m[32m"script.js"[39m[33m>[39m[33m<[39m[33m/[39m[33mscript[39m[33m>[39m[0m
+[[31merror[39m] public/Contact Book/templates/merge_form.html: SyntaxError: Opening tag "button" not terminated. 
+(60:17)
+[[31merror[39m] [0m [90m 58 |[39m             [33m<[39m[33minput[39m 
+[33mtype[39m[33m=[39m[32m"text"[39m [33mid[39m[33m=[39m[32m"name"[39m 
+[33mname[39m[33m=[39m[32m"name"[39m [33mvalue[39m[33m=[39m[32m"{{ prefilled.name }}"[39m 
+[33mclass[39m[33m=[39m[32m"w-full p-3 border border-gray-300 rounded focus:ring-blue-500 
+focus:border-blue-500"[39m [33mrequired[39m[33m>[39m
+[[31merror[39m]  [90m 59 |[39m             [33m<[39m[33mdiv[39m [33mclass[39m[33m=[39m[32m"flex space-x-2 
+mt-1 text-xs text-blue-600"[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 60 |[39m                 [33m<[39m[33mbutton[39m 
+[33mtype[39m[33m=[39m[32m"button"[39m [33mclass[39m[33m=[39m[32m"underline hover:text-blue-800"[39m 
+[33monclick[39m[33m=[39m[32m"document.getElementById('name').value='{{ contact1.name | replace("[39m[32m'", 
+"\\'[39m[32m") }}'"[39m[33m>[39mUse Contact A's[33m<[39m[33m/[39m[33mbutton[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m                 [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39
+m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[
+39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 61 |[39m                 
+[33m<[39m[33mspan[39m[33m>[39m|[33m<[39m[33m/[39m[33mspan[39m[33m>[39m
+[[31merror[39m]  [90m 62 |[39m                 [33m<[39m[33mbutton[39m 
+[33mtype[39m[33m=[39m[32m"button"[39m [33mclass[39m[33m=[39m[32m"underline hover:text-blue-800"[39m 
+[33monclick[39m[33m=[39m[32m"document.getElementById('name').value='{{ contact2_data.name | 
+replace("[39m[32m'", "\\'[39m[32m") }}'"[39m[33m>[39mUse Contact 
+B's[33m<[39m[33m/[39m[33mbutton[39m[33m>[39m
+[[31merror[39m]  [90m 63 |[39m             [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[31merror[39m] public/Dental Care Services/Setup/about.html: SyntaxError: Unexpected closing tag "p". It may happen 
+when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (242:21)
+[[31merror[39m] [0m [90m 240 |[39m                   
+[[31merror[39m]  [90m 241 |[39m                        
+[[31merror[39m] [31m[1m>[22m[39m[90m 242 |[39m                     [33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m                     
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 243 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 244 |[39m             [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 245 |[39m         [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[31merror[39m] public/Dental Care Services/Setup/appointment.html: SyntaxError: Unexpected closing tag "p". It may 
+happen when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (271:21)
+[[31merror[39m] [0m [90m 269 |[39m                
+[[31merror[39m]  [90m 270 |[39m                         
+[[31merror[39m] [31m[1m>[22m[39m[90m 271 |[39m                     [33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m                     
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 272 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 273 |[39m             [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 274 |[39m         [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[31merror[39m] public/Dental Care Services/Setup/contact.html: SyntaxError: Unexpected closing tag "p". It may 
+happen when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (274:21)
+[[31merror[39m] [0m [90m 272 |[39m                                
+[[31merror[39m]  [90m 273 |[39m                     
+[[31merror[39m] [31m[1m>[22m[39m[90m 274 |[39m                     [33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m                     
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 275 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 276 |[39m             [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 277 |[39m         [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[31merror[39m] public/Dental Care Services/Setup/index.html: SyntaxError: Unexpected closing tag "p". It may happen 
+when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (677:21)
+[[31merror[39m] [0m [90m 675 |[39m                   
+[[31merror[39m]  [90m 676 |[39m                                   
+[[31merror[39m] [31m[1m>[22m[39m[90m 677 |[39m                     [33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m                     
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 678 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 679 |[39m             [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 680 |[39m         [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[33mwarn[39m] public/Dental Care Services/Setup/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js
+[[31merror[39m] public/Dental Care Services/Setup/price.html: SyntaxError: Unexpected closing tag "p". It may happen 
+when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (278:21)
+[[31merror[39m] [0m [90m 276 |[39m                
+[[31merror[39m]  [90m 277 |[39m                       
+[[31merror[39m] [31m[1m>[22m[39m[90m 278 |[39m                     [33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m                     
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 279 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 280 |[39m             [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 281 |[39m         [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[31merror[39m] public/Dental Care Services/Setup/team.html: SyntaxError: Unexpected closing tag "p". It may happen 
+when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (309:21)
+[[31merror[39m] [0m [90m 307 |[39m       
+[[31merror[39m]  [90m 308 |[39m                       
+[[31merror[39m] [31m[1m>[22m[39m[90m 309 |[39m                     [33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m                     
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 310 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 311 |[39m             [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 312 |[39m         [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+[[31merror[39m] public/Exchange_Currency/app.js: SyntaxError: Unexpected token (68:4)
+[[31merror[39m] [0m [90m 66 |[39m     updateFlag(evt[33m.[39mtarget)[33m;[39m
+[[31merror[39m]  [90m 67 |[39m     updateExchangeRate()[33m;[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 68 |[39m   })[33m;[39m
+[[31merror[39m]  [90m    |[39m    [31m[1m^[22m[39m
+[[31merror[39m]  [90m 69 |[39m }
+[[31merror[39m]  [90m 70 |[39m [36mconst[39m loadHistoricalChart [33m=[39m [36masync[39m () [33m=>[39m {
+[[31merror[39m]  [90m 71 |[39m   [36mtry[39m {[0m
+[[31merror[39m] public/Exchange_Currency/style.css: SyntaxError: CssSyntaxError: Unexpected } (247:3)
+[[31merror[39m] [0m [90m 245 |[39m }
+[[31merror[39m]  [90m 246 |[39m     background[33m-[39mcolor[33m:[39m 
+[37m[41m[1m#[22m[49m[39m[35m513[39ma29[33m;[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 247 |[39m   }
+[[31merror[39m]  [90m     |[39m   [31m[1m^[22m[39m
+[[31merror[39m]  [90m 248 |[39m
+[[31merror[39m]  [90m 249 |[39m   [33m.[39mreset[33m-[39mbtn {
+[[31merror[39m]  [90m 250 |[39m     margin[33m-[39mtop[33m:[39m [35m1[39mrem[33m;[39m[0m
+[[31merror[39m] public/Insect-Catch-Game/style.css: SyntaxError: CssSyntaxError: Unclosed block (276:1)
+[[31merror[39m] [0m [90m 274 |[39m }
+[[31merror[39m]  [90m 275 |[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 276 |[39m 
+#volume[33m-[39mslider[33m:[39m[33m:[39m[33m-[39mwebkit[33m-[39mslider[33m-[39mthumb {
+[[31merror[39m]  [90m     |[39m [31m[1m^[22m[39m
+[[31merror[39m]  [90m 277 |[39m     [33m-[39mwebkit[33m-[39mappearance[33m:[39m none[33m;[39m
+[[31merror[39m]  [90m 278 |[39m     appearance[33m:[39m none[33m;[39m
+[[31merror[39m]  [90m 279 |[39m     width[33m:[39m [35m16[39mpx[33m;[39m[0m
+[[31merror[39m] public/Job dashboard/jobs.html: SyntaxError: Unexpected closing tag "div". It may happen when the 
+tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (244:3)
+[[31merror[39m] [0m [90m 242 |[39m  
+[[31merror[39m]  [90m 243 |[39m  
+[[31merror[39m] [31m[1m>[22m[39m[90m 244 |[39m   [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 245 |[39m  
+[[31merror[39m]  [90m 246 |[39m  [33m<[39m[33m/[39m[33msection[39m[33m>[39m
+[[31merror[39m]  [90m 247 |[39m  
+[33m<[39m[37m[41m[1m![22m[49m[39m[37m[41m[1m-[22m[49m[39m[37m[41m[1m-[22m[49m[39m [33mall[39m 
+[33mjobs[39m [33msection[39m [33mend[39m 
+[37m[41m[1m-[22m[49m[39m[37m[41m[1m-[22m[49m[39m[33m>[39m[0m
+[[31merror[39m] public/Job dashboard/jobs.js: SyntaxError: Unexpected token (392:1)
+[[31merror[39m] [0m [90m 390 |[39m     loadSavedJobs()[33m;[39m
+[[31merror[39m]  [90m 391 |[39m })[33m;[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 392 |[39m }
+[[31merror[39m]  [90m     |[39m [31m[1m^[22m[39m
+[[31merror[39m]  [90m 393 |[39m[0m
+[[31merror[39m] public/Medical_App/css/styles.css: SyntaxError: CssSyntaxError: Unknown word HEAD (113:9)
+[[31merror[39m] [0m [90m 111 |[39m
+[[31merror[39m]  [90m 112 |[39m body {
+[[31merror[39m] [31m[1m>[22m[39m[90m 113 |[39m [33m<<[39m[33m<<[39m[33m<<[39m[33m<[39m [33mHEAD[39m[
+33m:[39m[33mpublic[39m[33m/[39m[33mMedical_App[39m[33m/[39m[33mcss[39m[33m/[39m[33mstyles[39m[33m.[39m
+[33mcss[39m
+[[31merror[39m]  [90m     |[39m         [31m[1m^[22m[39m
+[[31merror[39m]  [90m 114 |[39m     [33mfont-family[39m[33m:[39m [33mArial[39m[37m[41m[1m,[22m[49m[39m 
+[33msans-serif[39m[37m[41m[1m;[22m[49m[39m
+[[31merror[39m]  [90m 115 |[39m
+[[31merror[39m]  [90m 116 |[39m     [33mbackground[39m[33m:[39m[0m
+[[31merror[39m] public/Medical_App/index.html: SyntaxError: Unexpected closing tag "form". It may happen when the 
+tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (49:9)
+[[31merror[39m] [0m [90m 47 |[39m             [33m<[39m[33m/[39m[33mbutton[39m[33m>[39m
+[[31merror[39m]  [90m 48 |[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 49 |[39m         [33m<[39m[33m/[39m[33mform[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m         [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 50 |[39m     [33m<[39m[33m/[39m[33msection[39m[33m>[39m
+[[31merror[39m]  [90m 51 |[39m
+[[31merror[39m]  [90m 52 |[39m     [33m<[39m[33msection[39m 
+[33mclass[39m[33m=[39m[32m"card"[39m[33m>[39m[0m
+[[31merror[39m] public/Medical_App/js/script.js: SyntaxError: Unexpected token (349:2)
+[[31merror[39m] [0m [90m 347 |[39m     }[33m;[39m
+[[31merror[39m]  [90m 348 |[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 349 |[39m [33m<<[39m[33m<<[39m[33m<<[39m[33m<[39m [33mHEAD[39m[
+33m:[39m[33mpublic[39m[33m/[39m[33mMedical_App[39m[33m/[39m[33mjs[39m[33m/[39m[33mscript[39m[33m.[39m
+[33mjs[39m
+[[31merror[39m]  [90m     |[39m  [31m[1m^[22m[39m
+[[31merror[39m]  [90m 350 |[39m             [33mstatusMessage[39m[33m.[39m[33mtextContent[39m [33m=[39m 
+[37m[41m[1m`[22m[49m[39m[33mConsultation[39m [33mrequested[39m [33mfor[39m 
+[33mDr[39m[33m.[39m[33m$[39m[33m{[39mdoctorName[33m}[39m [33mregarding[39m 
+[33m$[39m[33m{[39mpatientCondition[33m}[39m[33m.[39m            
+[[31merror[39m]  [90m 351 |[39m             [33mSpecialist[39m [33mtype[39m[33m:[39m 
+[33m$[39m[33m{[39mspecialistType[33m}[39m[33m.[39m[37m[41m[1m`[22m[49m[39m[37m[41m[1m;[22m[49m[39m
+[[31merror[39m]  [90m 352 |[39m             
+[33mspecialistResponseSection[39m[33m.[39m[33mstyle[39m[33m.[39m[33mdisplay[39m [33m=[39m 
+[32m'block'[39m[37m[41m[1m;[22m[49m[39m[0m
+[[31merror[39m] public/New-AmazonClone/index.html: SyntaxError: Unexpected closing tag "p". It may happen when the 
+tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (21:91)
+[[31merror[39m] [0m [90m 19 |[39m             [33m<[39m[33mi[39m [33mclass[39m[33m=[39m[32m"fa-solid 
+fa-location-dot"[39m[33m>[39m[33m<[39m[33m/[39m[33mi[39m[33m>[39m
+[[31merror[39m]  [90m 20 |[39m             [33m<[39m[33msection[39m 
+[33mclass[39m[33m=[39m[32m"text"[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 21 |[39m             [33m<[39m[33mp[39m 
+[33mstyle[39m[33m=[39m[32m"font-size:12px;"[39m[33m>[39mDeliver to 
+[33m<[39m[33m/[39m[33mp[39m[33m>[39m[33m<[39m[33mp[39m 
+[33mstyle[39m[33m=[39m[32m"font-size:16px"[39m[33m>[39m[33m<[39m[33m/[39m[33mp[39m[33m>[39m 
+India[33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m                                                                                     
+      [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 22 |[39m             [33m<[39m[33m/[39m[33msection[39m[33m>[39m
+[[31merror[39m]  [90m 23 |[39m         [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 24 |[39m         [33m<[39m[33mdiv[39m 
+[33mclass[39m[33m=[39m[32m"search"[39m[33m>[39m[0m
+[[31merror[39m] public/pageloader/pageloader.css: SyntaxError: CssSyntaxError: Unclosed block (37:1)
+[[31merror[39m] [0m [90m 35 |[39m
+[[31merror[39m]  [90m 36 |[39m [90m/* --- Navigation Layout --- */[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 37 |[39m [33m.[39mnavbar {
+[[31merror[39m]  [90m    |[39m [31m[1m^[22m[39m
+[[31merror[39m]  [90m 38 |[39m     margin[33m-[39mbottom[33m:[39m [35m20[39mpx[33m;[39m
+[[31merror[39m]  [90m 39 |[39m     border[33m-[39mbottom[33m:[39m [35m1[39mpx solid 
+rgba([35m255[39m[33m,[39m [35m255[39m[33m,[39m [35m255[39m[33m,[39m [35m0.1[39m)[33m;[39m
+[[31merror[39m]  [90m 40 |[39m     padding[33m-[39mbottom[33m:[39m [35m15[39mpx[33m;[39m[0m
+[[31merror[39m] public/pageloader/pageloader.html: SyntaxError: Unexpected closing tag "html". It may happen when 
+the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (99:1)
+[[31merror[39m] [0m [90m 97 |[39m     [33m<[39m[33m/[39m[33mscript[39m[33m>[39m
+[[31merror[39m]  [90m 98 |[39m [33m<[39m[33m/[39m[33mbody[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 99 |[39m [33m<[39m[33m/[39m[33mhtml[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+[[33mwarn[39m] public/PerfectSlice/index.html
+[[33mwarn[39m] public/PerfectSlice/script.js
+[[33mwarn[39m] public/PerfectSlice/style.css
+[[33mwarn[39m] public/Periodic Table/index.html
+[[33mwarn[39m] public/Periodic Table/script.js
+[[33mwarn[39m] public/Periodic Table/styles.css
+[[33mwarn[39m] public/Personal_website/index.html
+[[33mwarn[39m] public/Personal_website/style.css
+[[33mwarn[39m] public/PhysicsBallSimulation/index.html
+[[33mwarn[39m] public/PhysicsBallSimulation/script.js
+[[33mwarn[39m] public/PhysicsBallSimulation/style.css
+[[33mwarn[39m] public/pig_game/ex.html
+[[33mwarn[39m] public/pig_game/firecrackers.html
+[[33mwarn[39m] public/pig_game/index.html
+[[33mwarn[39m] public/pig_game/index.js
+[[33mwarn[39m] public/pig_game/style.css
+[[33mwarn[39m] public/ping/index.html
+[[33mwarn[39m] public/ping/script.js
+[[33mwarn[39m] public/ping/style.css
+[[33mwarn[39m] public/PlaceMate/index.html
+[[33mwarn[39m] public/PlaceMate/script.js
+[[33mwarn[39m] public/PlaceMate/style.css
+[[33mwarn[39m] public/Placement-Predictor/index.html
+[[33mwarn[39m] public/Placement-Predictor/script.js
+[[33mwarn[39m] public/Placement-Predictor/style.css
+[[33mwarn[39m] public/Plane Take Off Simulation/index.html
+[[33mwarn[39m] public/Plane Take Off Simulation/style.css
+[[33mwarn[39m] public/Plant/main.html
+[[33mwarn[39m] public/Plant/script.js
+[[33mwarn[39m] public/Plant/style.css
+[[33mwarn[39m] public/Plants Website/index.html
+[[33mwarn[39m] public/Plants Website/script.js
+[[33mwarn[39m] public/Plants Website/style.css
+[[33mwarn[39m] public/plantwebsite/plant.css
+[[33mwarn[39m] public/plantwebsite/plant.html
+[[33mwarn[39m] public/plantwebsite/script.js
+[[33mwarn[39m] public/Pokedex/index.html
+[[33mwarn[39m] public/Pokedex/script.js
+[[33mwarn[39m] public/Pokedex/style.css
+[[33mwarn[39m] public/Pomodoro_Timer/index.html
+[[33mwarn[39m] public/Pomodoro_Timer/script.js
+[[33mwarn[39m] public/Pomodoro_Timer/style.css
+[[33mwarn[39m] public/progress_bar/progress_bar.css
+[[33mwarn[39m] public/progress_bar/progress_bar.html
+[[33mwarn[39m] public/progress_bar/progress_bar.js
+[[33mwarn[39m] public/qr generator/qr.css
+[[33mwarn[39m] public/qr generator/qr.html
+[[33mwarn[39m] public/qr generator/qr.js
+[[33mwarn[39m] public/qr_generator/qr.js
+[[33mwarn[39m] public/QuizeApp Timer/app.css
+[[33mwarn[39m] public/QuizeApp Timer/index1.html
+[[33mwarn[39m] public/QuizeApp Timer/script.js
+[[33mwarn[39m] public/Quotely-Laughs/index.html
+[[33mwarn[39m] public/Quotely-Laughs/script.js
+[[33mwarn[39m] public/racing game/index.html
+[[33mwarn[39m] public/RandomJokeGenerator/index.html
+[[33mwarn[39m] public/RandomJokeGenerator/script.js
+[[33mwarn[39m] public/RandomJokeGenerator/style.css
+[[33mwarn[39m] public/Razorpay/dashboard.html
+[[33mwarn[39m] public/Razorpay/index.html
+[[33mwarn[39m] public/Razorpay/output.css
+[[33mwarn[39m] public/Razorpay/style.css
+[[33mwarn[39m] public/Razorpay/tailwind.config.js
+[[33mwarn[39m] public/reaction-time-tester/main.html
+[[33mwarn[39m] public/reaction-time-tester/script.js
+[[33mwarn[39m] public/reaction-time-tester/style.css
+[[33mwarn[39m] public/Recipe Genie/vite.config.js
+[[33mwarn[39m] public/recipe/main.html
+[[31merror[39m] public/recipe/rec.html: SyntaxError: Unexpected closing tag "nav". It may happen when the tag has 
+already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (19:5)
+[[31merror[39m] [0m [90m 17 |[39m     [33m<[39m[33m/[39m[33mnav[39m[33m>[39m
+[[31merror[39m]  [90m 18 |[39m     
+[[31merror[39m] [31m[1m>[22m[39m[90m 19 |[39m     [33m<[39m[33m/[39m[33mnav[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 20 |[39m     [33m<[39m[33mdiv[39m [33mclass[39m[33m=[39m[32m"test"[39m[33m>[39m
+[[31merror[39m]  [90m 21 |[39m         
+[[31merror[39m]  [90m 22 |[39m         [33m<[39m[33mp[39m 
+[33mid[39m[33m=[39m[32m"text-display"[39m[33m>[39m[33m<[39m[33m/[39m[33mp[39m[33m>[39m[0m
+[[33mwarn[39m] public/recipe/style.css
+[[33mwarn[39m] public/ResumeStudio/index.html
+[[31merror[39m] public/ResumeStudio/script.js: SyntaxError: Adjacent JSX elements must be wrapped in an enclosing 
+tag. Did you want a JSX fragment <>...</>? (435:13)
+[[31merror[39m] [0m [90m 433 |[39m         calculateATSScore()[33m;[39m
+[[31merror[39m]  [90m 434 |[39m             
+[33m<[39m[33mul[39m[33m>[39m$[33m{[39mskills[33m.[39msplit([32m","[39m)[33m.[39mmap(s [33m=>[39m [32m`
+<li>[39m[33m${[39ms[33m.[39mtrim()[33m}[39m[32m</li>`[39m)[33m.[39mjoin([32m""[39m)[33m}[39m[33m<[39m
+[33m/[39m[33mul[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 435 |[39m             
+[33m<[39mh4[33m>[39m[33mExperience[39m[33m<[39m[35m/h4><p>${experience}</p[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m             [31m[1m^[22m[39m
+[[31merror[39m]  [90m 436 |[39m
+[[31merror[39m]  [90m 437 |[39m     [36mfunction[39m renderModernTemplate(v) {
+[[31merror[39m]  [90m 438 |[39m         [36mconst[39m skillsArr [33m=[39m v[33m.[39mskills [33m?[39m 
+v[33m.[39mskills[33m.[39msplit([32m","[39m)[33m.[39mmap(s [33m=>[39m 
+s[33m.[39mtrim())[33m.[39mfilter([33mBoolean[39m) [33m:[39m [][33m;[39m[0m
+[[31merror[39m] public/ResumeStudio/style.css: SyntaxError: CssSyntaxError: Unexpected } (1045:1)
+[[31merror[39m] [0m [90m 1043 |[39m     transition[33m:[39m all [35m0.2[39ms[33m;[39m
+[[31merror[39m]  [90m 1044 |[39m     border[33m:[39m none[33m;[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 1045 |[39m }
+[[31merror[39m]  [90m      |[39m [31m[1m^[22m[39m
+[[31merror[39m]  [90m 1046 |[39m
+[[31merror[39m]  [90m 1047 |[39m [33m.[39maction[33m-[39mbtn[33m.[39moutline {
+[[31merror[39m]  [90m 1048 |[39m     background[33m-[39mcolor[33m:[39m 
+[36mvar[39m([33m--[39mbg[33m-[39mcard)[33m;[39m[0m
+[[33mwarn[39m] public/RetroHighwayRacer/index.html
+[[33mwarn[39m] public/RetroHighwayRacer/script.js
+[[33mwarn[39m] public/RetroHighwayRacer/style.css
+[[33mwarn[39m] public/scam-sms-detector/index.html
+[[33mwarn[39m] public/scam-sms-detector/script.js
+[[33mwarn[39m] public/scam-sms-detector/style.css
+[[33mwarn[39m] public/Scroll Game Dark Run/index.html
+[[33mwarn[39m] public/Scroll Game Dark Run/main.js
+[[33mwarn[39m] public/Scroll Game Dark Run/style.css
+[[33mwarn[39m] public/Self-Improvement/index.html
+[[33mwarn[39m] public/Self-Improvement/responsive.css
+[[33mwarn[39m] public/Self-Improvement/script.js
+[[33mwarn[39m] public/Self-Improvement/style.css
+[[33mwarn[39m] public/shooting game/index.html
+[[33mwarn[39m] public/shooting game/script.js
+[[33mwarn[39m] public/shooting game/style.css
+[[33mwarn[39m] public/SignUp.html
+[[33mwarn[39m] public/Simon_Says_Game/index.html
+[[33mwarn[39m] public/Simon_Says_Game/script.js
+[[33mwarn[39m] public/Simon_Says_Game/style.css
+[[33mwarn[39m] public/Slide puzzle Game/index.html
+[[33mwarn[39m] public/Slide puzzle Game/puzzle.css
+[[33mwarn[39m] public/Slide puzzle Game/puzzle.js
+[[33mwarn[39m] public/slider box/index.css
+[[33mwarn[39m] public/slider box/index.html
+[[33mwarn[39m] public/slider box/index.js
+[[33mwarn[39m] public/slider box/swiper-bundle.min.css
+[[33mwarn[39m] public/slider box/swiper-bundle.min.js
+[[33mwarn[39m] public/snake_game/index.html
+[[33mwarn[39m] public/snake_game/script.js
+[[31merror[39m] public/snake_game/style.css: SyntaxError: CssSyntaxError: Unexpected } (261:1)
+[[31merror[39m] [0m [90m 259 |[39m     font[33m-[39msize[33m:[39m [35m1[39mrem[33m;[39m
+[[31merror[39m]  [90m 260 |[39m   }
+[[31merror[39m] [31m[1m>[22m[39m[90m 261 |[39m }
+[[31merror[39m]  [90m     |[39m [31m[1m^[22m[39m
+[[31merror[39m]  [90m 262 |[39m [90m/* Improve mobile responsiveness */[39m
+[[31merror[39m]  [90m 263 |[39m [33m@[39mmedia screen and (max[33m-[39mwidth[33m:[39m [35m500[39mpx) {
+[[31merror[39m]  [90m 264 |[39m   [33m.[39mwrapper {[0m
+[[33mwarn[39m] public/snakeladder/index.html
+[[33mwarn[39m] public/snakeladder/script.js
+[[33mwarn[39m] public/snakeladder/style.css
+[[33mwarn[39m] public/Social Media Glowing/glow.css
+[[33mwarn[39m] public/Social Media Glowing/index.html
+[[33mwarn[39m] public/Social Media Glowing/style.css
+[[33mwarn[39m] public/Solar System Explorer in CSS only haml/style.css
+[[33mwarn[39m] public/Solar System Explorer in CSS only haml/temp_style.css
+[[33mwarn[39m] public/Solar System Explorer in CSS only haml/template.html
+[[33mwarn[39m] public/SpendSense/index.html
+[[33mwarn[39m] public/spotify clone/index.html
+[[33mwarn[39m] public/spotify clone/login.html
+[[33mwarn[39m] public/spotify clone/styles.css
+[[33mwarn[39m] public/spotify-clone -project/index.html
+[[33mwarn[39m] public/spotify-clone -project/script.js
+[[33mwarn[39m] public/spotify-clone -project/styles.css
+[[33mwarn[39m] public/stock-market-simulator/index.html
+[[33mwarn[39m] public/stock-market-simulator/marketEngine.js
+[[33mwarn[39m] public/stock-market-simulator/script.js
+[[33mwarn[39m] public/stock-market-simulator/style.css
+[[33mwarn[39m] public/Stock-Profit-Calculator/index.html
+[[33mwarn[39m] public/Stock-Profit-Calculator/script.js
+[[33mwarn[39m] public/Stock-Profit-Calculator/style.css
+[[33mwarn[39m] public/Stone-Paper-Scissor/index.html
+[[33mwarn[39m] public/story/main.html
+[[33mwarn[39m] public/story/script.js
+[[33mwarn[39m] public/story/story.html
+[[33mwarn[39m] public/story/style.css
+[[33mwarn[39m] public/StudentCommandCenter/index.html
+[[33mwarn[39m] public/StudentCommandCenter/script.js
+[[33mwarn[39m] public/StudentCommandCenter/style.css
+[[33mwarn[39m] public/style.css
+[[33mwarn[39m] public/subscriptiontracker/tracker.css
+[[33mwarn[39m] public/subscriptiontracker/tracker.html
+[[33mwarn[39m] public/subscriptiontracker/tracker.js
+[[33mwarn[39m] public/sudoku-solver/index.html
+[[33mwarn[39m] public/sudoku-solver/script.js
+[[33mwarn[39m] public/sudoku-solver/style.css
+[[33mwarn[39m] public/SVGPathBuilder/index.html
+[[33mwarn[39m] public/SVGPathBuilder/script.js
+[[33mwarn[39m] public/SVGPathBuilder/style.css
+[[33mwarn[39m] public/swiggy/insta.css
+[[33mwarn[39m] public/swiggy/insta.js
+[[33mwarn[39m] public/swiggy/instamart.html
+[[31merror[39m] public/TemperatureConverter/index.html: SyntaxError: Unexpected closing tag "html". It may happen 
+when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (34:1)
+[[31merror[39m] [0m [90m 32 |[39m [33m<[39m[33m/[39m[33mbody[39m[33m>[39m
+[[31merror[39m]  [90m 33 |[39m [33m<[39m[33m/[39m[33mhtml[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 34 |[39m [33m<[39m[33m/[39m[33mhtml[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+[[33mwarn[39m] public/TemperatureConverter/script.js
+[[33mwarn[39m] public/TemperatureConverter/style.css
+[[33mwarn[39m] public/TENZI-GAME/eslint.config.js
+[[33mwarn[39m] public/TENZI-GAME/index.html
+[[33mwarn[39m] public/TENZI-GAME/src/index.css
+[[33mwarn[39m] public/TENZI-GAME/vite.config.js
+[[33mwarn[39m] public/Text_Saver_Ext/background.js
+[[33mwarn[39m] public/Text_Saver_Ext/content.js
+[[33mwarn[39m] public/Text_Saver_Ext/popup.html
+[[33mwarn[39m] public/Text_Saver_Ext/popup.js
+[[33mwarn[39m] public/text-to-readme/public/index.html
+[[33mwarn[39m] public/text-to-readme/src/App.css
+[[33mwarn[39m] public/text-to-readme/src/App.js
+[[33mwarn[39m] public/text-to-readme/src/components/alert/alertbox.css
+[[33mwarn[39m] public/text-to-readme/src/components/editor/editor.css
+[[33mwarn[39m] public/text-to-readme/src/components/navbar/navbar.css
+[[33mwarn[39m] public/text-to-readme/src/components/templates/readmeTemplates.js
+[[33mwarn[39m] public/text-to-readme/src/index.js
+[[33mwarn[39m] public/TextToVoiceConverter/index.html
+[[33mwarn[39m] public/TextToVoiceConverter/script.js
+[[33mwarn[39m] public/TextToVoiceConverter/styles.css
+[[33mwarn[39m] public/Textutils/public/index.html
+[[33mwarn[39m] public/Textutils/src/App.css
+[[33mwarn[39m] public/Textutils/src/App.js
+[[33mwarn[39m] public/Textutils/src/App.test.js
+[[33mwarn[39m] public/Textutils/src/components/Alert.js
+[[33mwarn[39m] public/Textutils/src/components/Navbar.js
+[[33mwarn[39m] public/Textutils/src/components/textForm.css
+[[33mwarn[39m] public/Textutils/src/components/TextForm.js
+[[33mwarn[39m] public/Textutils/src/index.css
+[[33mwarn[39m] public/Textutils/src/index.js
+[[33mwarn[39m] public/Textutils/src/reportWebVitals.js
+[[33mwarn[39m] public/Textutils/src/setupTests.js
+[[33mwarn[39m] public/The Cube/index.html
+[[33mwarn[39m] public/The Cube/main.js
+[[33mwarn[39m] public/The Cube/style.css
+[[33mwarn[39m] public/TheLastTab/index.html
+[[33mwarn[39m] public/TicTacToe/index.html
+[[33mwarn[39m] public/TicTacToe/script.js
+[[33mwarn[39m] public/TicTacToe/style.css
+[[33mwarn[39m] public/Time-Capsule/index.html
+[[33mwarn[39m] public/Time-Capsule/script.js
+[[33mwarn[39m] public/Time-Capsule/style.css
+[[33mwarn[39m] public/TO_DO_LIST/todolist.css
+[[31merror[39m] public/TO_DO_LIST/todolist.html: SyntaxError: Unexpected closing tag "nav". It may happen when the 
+tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (44:5)
+[[31merror[39m] [0m [90m 42 |[39m         [33m<[39m[33m/[39m[33mli[39m[33m>[39m
+[[31merror[39m]  [90m 43 |[39m       [33m<[39m[33m/[39m[33mul[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 44 |[39m     [33m<[39m[33m/[39m[33mnav[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 45 |[39m   [33m<[39m[33m/[39m[33mheader[39m[33m>[39m
+[[31merror[39m]  [90m 46 |[39m
+[[31merror[39m]  [90m 47 |[39m   
+[33m<[39m[37m[41m[1m![22m[49m[39m[37m[41m[1m-[22m[49m[39m[37m[41m[1m-[22m[49m[39m [33mMain[39m 
+[33mContent[39m [37m[41m[1m-[22m[49m[39m[37m[41m[1m-[22m[49m[39m[33m>[39m[0m
+[[33mwarn[39m] public/TO_DO_LIST/todolist.js
+[[33mwarn[39m] public/TodoList-React-TS-Tailwind/eslint.config.js
+[[33mwarn[39m] public/TodoList-React-TS-Tailwind/index.html
+[[33mwarn[39m] public/TodoList-React-TS-Tailwind/postcss.config.js
+[[33mwarn[39m] public/TodoList-React-TS-Tailwind/src/App.css
+[[33mwarn[39m] public/TodoList-React-TS-Tailwind/src/components/TodolistItem.css
+[[33mwarn[39m] public/TodoList-React-TS-Tailwind/src/index.css
+[[33mwarn[39m] public/TodoList-React-TS-Tailwind/tailwind.config.js
+[[33mwarn[39m] public/Travel_booking_website/auth.html
+[[33mwarn[39m] public/Travel_booking_website/auth.js
+[[33mwarn[39m] public/Travel_booking_website/chatbot.css
+[[33mwarn[39m] public/Travel_booking_website/config.example.js
+[[31merror[39m] public/Travel_booking_website/index.html: SyntaxError: Unexpected closing tag "ul". It may happen 
+when the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (99:7)
+[[31merror[39m] [0m [90m  97 |[39m         [33m<[39m[33mli[39m[33m>[39m[33m<[39m[33ma[39m 
+[33mhref[39m[33m=[39m[32m"auth.html"[39m [33mclass[39m[33m=[39m[32m"btn"[39m 
+[33mid[39m[33m=[39m[32m"auth-open-btn"[39m[33m>[39mSign In / 
+Up[33m<[39m[33m/[39m[33ma[39m[33m>[39m[33m<[39m[33m/[39m[33mli[39m[33m>[39m 
+[[31merror[39m]  [90m  98 |[39m [33m<[39m[33m/[39m[33mul[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m  99 |[39m       [33m<[39m[33m/[39m[33mul[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m       
+[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 100 |[39m     [33m<[39m[33m/[39m[33mnav[39m[33m>[39m
+[[31merror[39m]  [90m 101 |[39m     [33m<[39m[33mdiv[39m [33mclass[39m[33m=[39m[32m"section_container 
+header_container"[39m [33mid[39m[33m=[39m[32m"home"[39m[33m>[39m
+[[31merror[39m]  [90m 102 |[39m       [33m<[39m[33mh1[39m[33m>[39mNo Matter Where You Are Going, We Take You 
+There[33m<[39m[33m/[39m[33mh1[39m[33m>[39m[0m
+[[31merror[39m] public/Travel_booking_website/index.js: SyntaxError: Unexpected token (269:2)
+[[31merror[39m] [0m [90m 267 |[39m     
+formSignInContainer[33m.[39mclassList[33m.[39mremove([32m"active"[39m)[33m;[39m
+[[31merror[39m]  [90m 268 |[39m   })[33m;[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 269 |[39m }
+[[31merror[39m]  [90m     |[39m  [31m[1m^[22m[39m[0m
+[[33mwarn[39m] public/Travel_booking_website/style.css
+[[33mwarn[39m] public/travel_website/index.html
+[[33mwarn[39m] public/travel_website/src/style.css
+[[33mwarn[39m] public/travel_website/vite.config.js
+[[33mwarn[39m] public/Travelling_Breakthroughs/index.html
+[[33mwarn[39m] public/Travelling_Breakthroughs/style.css
+[[33mwarn[39m] public/Twitter-clone/index.html
+[[33mwarn[39m] public/Twitter-clone/src/input.css
+[[33mwarn[39m] public/Twitter-clone/src/output.css
+[[33mwarn[39m] public/typewriter/typewriter.css
+[[33mwarn[39m] public/typewriter/typewriter.html
+[[33mwarn[39m] public/typewriter/typewriter.js
+[[33mwarn[39m] public/typing_test/index.html
+[[33mwarn[39m] public/typing_test/script.js
+[[33mwarn[39m] public/Unit-Converter/index.html
+[[33mwarn[39m] public/Unit-Converter/script.js
+[[33mwarn[39m] public/Unit-Converter/style.css
+[[33mwarn[39m] public/Unit-Kitchen/index.html
+[[33mwarn[39m] public/Unit-Kitchen/script.js
+[[33mwarn[39m] public/Unit-Kitchen/style.css
+[[33mwarn[39m] public/url_shortener/backend/config/MongoDB_setup.js
+[[33mwarn[39m] public/url_shortener/backend/controllers/Auth/User_route.js
+[[33mwarn[39m] public/url_shortener/backend/controllers/Auth/verify_link.js
+[[33mwarn[39m] public/url_shortener/backend/controllers/Login_controller.js
+[[33mwarn[39m] public/url_shortener/backend/controllers/redirect_window.js
+[[33mwarn[39m] public/url_shortener/backend/controllers/Response_API.js
+[[33mwarn[39m] public/url_shortener/backend/controllers/SignUP_controller.js
+[[33mwarn[39m] public/url_shortener/backend/middlewares/errorHandler.js
+[[33mwarn[39m] public/url_shortener/backend/middlewares/JWT_auth.js
+[[33mwarn[39m] public/url_shortener/backend/middlewares/rateLimiter.js
+[[33mwarn[39m] public/url_shortener/backend/middlewares/signUP_validator.js
+[[33mwarn[39m] public/url_shortener/backend/models/CicksLogs.js
+[[33mwarn[39m] public/url_shortener/backend/models/FormData.js
+[[33mwarn[39m] public/url_shortener/backend/models/LinksData.js
+[[33mwarn[39m] public/url_shortener/backend/models/Login_data.js
+[[33mwarn[39m] public/url_shortener/backend/routes/Auth/JWT_login.js
+[[33mwarn[39m] public/url_shortener/backend/routes/Auth/User_route.js
+[[33mwarn[39m] public/url_shortener/backend/routes/Login_route.js
+[[33mwarn[39m] public/url_shortener/backend/routes/redirect_window.js
+[[33mwarn[39m] public/url_shortener/backend/routes/response.js
+[[33mwarn[39m] public/url_shortener/backend/routes/SignUP_route.js
+[[33mwarn[39m] public/url_shortener/backend/server.js
+[[33mwarn[39m] public/url_shortener/frontend/postcss.config.js
+[[33mwarn[39m] public/url_shortener/frontend/public/index.html
+[[33mwarn[39m] public/url_shortener/frontend/src/App.css
+[[33mwarn[39m] public/url_shortener/frontend/src/App.js
+[[33mwarn[39m] public/url_shortener/frontend/src/App.test.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/contact.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/Error404.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/HomePage.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/HPhero.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/HPnav.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/Login.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/Passwordredirect.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/Redirecterror.js
+[[33mwarn[39m] public/url_shortener/frontend/src/Components/SignUp.js
+[[33mwarn[39m] public/url_shortener/frontend/src/index.css
+[[33mwarn[39m] public/url_shortener/frontend/src/index.js
+[[33mwarn[39m] public/url_shortener/frontend/src/reportWebVitals.js
+[[33mwarn[39m] public/url_shortener/frontend/src/setupTests.js
+[[33mwarn[39m] public/url_shortener/frontend/src/utils/api.js
+[[33mwarn[39m] public/url_shortener/frontend/tailwind.config.js
+[[33mwarn[39m] public/Vanilla-JavaScript-Calculator-master/index.html
+[[33mwarn[39m] public/Vanilla-JavaScript-Calculator-master/script.js
+[[33mwarn[39m] public/Vanilla-JavaScript-Calculator-master/styles.css
+[[33mwarn[39m] public/Vector-Map-Route-Tracer/index.html
+[[33mwarn[39m] public/VectorFlowchartDesigner/index.html
+[[33mwarn[39m] public/VectorFlowchartDesigner/script.js
+[[33mwarn[39m] public/VectorFlowchartDesigner/style.css
+[[33mwarn[39m] public/Virtual_Piano/index.html
+[[33mwarn[39m] public/Virtual_Piano/index.js
+[[33mwarn[39m] public/Virtual_Piano/style.css
+[[33mwarn[39m] public/Voting_Application_Backend/index.html
+[[33mwarn[39m] public/Voting_Application_Backend/server/db.js
+[[33mwarn[39m] public/Voting_Application_Backend/server/jwt.js
+[[33mwarn[39m] public/Voting_Application_Backend/server/models/candidate.js
+[[33mwarn[39m] public/Voting_Application_Backend/server/models/user.js
+[[33mwarn[39m] public/Voting_Application_Backend/server/routes/candidateRoutes.js
+[[33mwarn[39m] public/Voting_Application_Backend/server/routes/userRoutes.js
+[[33mwarn[39m] public/Voting_Application_Backend/server/server.js
+[[31merror[39m] public/Weather Forcasting/index.html: SyntaxError: Unexpected closing tag "div". It may happen when 
+the tag has already been closed by another tag. For more info see 
+https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags (328:1)
+[[31merror[39m] [0m [90m 326 |[39m [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 327 |[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 328 |[39m [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m     |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31m[1m^[22m[39m
+[[31merror[39m]  [90m 329 |[39m    [33m<[39m[33mscript[39m[33m>[39m
+[[31merror[39m]  [90m 330 |[39m   if ("serviceWorker" in navigator) [33m{[39m
+[[31merror[39m]  [90m 331 |[39m     window[33m.[39maddEventListener([32m"load"[39m[33m,[39m () [33m=>[39m 
+{[0m
+[[33mwarn[39m] public/Weather Forcasting/script.js
+[[33mwarn[39m] public/Weather Forcasting/style.css
+[[33mwarn[39m] public/WebsitePersonalizer/index.html
+[[33mwarn[39m] public/WebsitePersonalizer/script.js
+[[33mwarn[39m] public/WebsitePersonalizer/style.css
+[[33mwarn[39m] public/Whack-a-Mole Game/index.html
+[[33mwarn[39m] public/Whack-a-Mole Game/mole.css
+[[33mwarn[39m] public/Whack-a-Mole Game/mole.js
+[[33mwarn[39m] public/Word_dictionary/app.js
+[[33mwarn[39m] public/Word_dictionary/index.html
+[[33mwarn[39m] public/Word_dictionary/style.css
+[[33mwarn[39m] public/WORDLE/assets/css/style.css
+[[33mwarn[39m] public/WORDLE/assets/js/script.js
+[[33mwarn[39m] public/WORDLE/assets/js/words.js
+[[31merror[39m] public/WORDLE/index.html: SyntaxError: Unable to parse entity "&#9587<" - decimal character 
+reference entities must end with ";" (34:75)
+[[31merror[39m] [0m [90m 32 |[39m     [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[[31merror[39m]  [90m 33 |[39m     [33m<[39m[33mdiv[39m [33mclass[39m[33m=[39m[32m'infoCard popup'[39m 
+[33mid[39m[33m=[39m[32m"rules"[39m[33m>[39m
+[[31merror[39m] [31m[1m>[22m[39m[90m 34 |[39m         [33m<[39m[33mp[39m 
+[33mclass[39m[33m=[39m[32m'crossOuter'[39m[33m>[39m[33m<[39m[33mbutton[39m 
+[33mclass[39m[33m=[39m[32m'cross'[39m [33mid[39m[33m=[39m[32m'closeInfo'[39m[33m>[39m&#9587[33m<[39m[3
+3m/[39m[33mbutton[39m[33m>[39m[33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m    |[39m                                                                           
+[31m[1m^[22m[39m
+[[31merror[39m]  [90m 35 |[39m         [33m<[39m[33mp[39m[33m>[39mGuess the 
+[33m<[39m[33mstrong[39m[33m>[39mWORDLE[33m<[39m[33m/[39m[33mstrong[39m[33m>[39m in six 
+tries.[33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m 36 |[39m         [33m<[39m[33mp[39m[33m>[39mEach guess must be a valid five-letter 
+word. Hit the enter button to submit.[33m<[39m[33m/[39m[33mp[39m[33m>[39m
+[[31merror[39m]  [90m 37 |[39m         [33m<[39m[33mp[39m[33m>[39mAfter each guess, the color of the tiles 
+will change to show how close your guess was to the word.[33m<[39m[33m/[39m[33mp[39m[33m>[39m[0m
+[[33mwarn[39m] public/youtube clone/flexbox.html
+[[33mwarn[39m] public/youtube clone/grid.html
+[[33mwarn[39m] public/youtube clone/index.html
+[[33mwarn[39m] public/youtube clone/position.html
+[[33mwarn[39m] public/youtube clone/styles/general.css
+[[33mwarn[39m] public/youtube clone/styles/header.css
+[[33mwarn[39m] public/youtube clone/styles/sidebar.css
+[[33mwarn[39m] public/youtube clone/styles/video.css
+[[33mwarn[39m] public/ZEN_TIMER/index.html
+[[33mwarn[39m] public/ZEN_TIMER/script.js
+[[33mwarn[39m] public/ZEN_TIMER/style.css
+[[33mwarn[39m] public/zomato-clone/accordion.js
+[[33mwarn[39m] public/zomato-clone/app.css
+[[33mwarn[39m] public/zomato-clone/brands.css
+[[33mwarn[39m] public/zomato-clone/explore.css
+[[33mwarn[39m] public/zomato-clone/footer.css
+[[33mwarn[39m] public/zomato-clone/index.css
+[[33mwarn[39m] public/zomato-clone/main.css
+[[33mwarn[39m] public/zomato-clone/nav.css
+[[33mwarn[39m] public/zomato-clone/top.css
+[[33mwarn[39m] public/zomato-clone/zomato.html
+[[33mwarn[39m] service-worker.js
+[[31merror[39m] style.css: SyntaxError: CssSyntaxError: Unclosed block (2353:1)
+[[31merror[39m] [0m [90m 2351 |[39m   opacity[33m:[39m [35m0.15[39m[33m;[39m
+[[31merror[39m]  [90m 2352 |[39m }
+[[31merror[39m] [31m[1m>[22m[39m[90m 2353 |[39m [33m@[39mmedia (max[33m-[39mwidth[33m:[39m 
+[35m768[39mpx) {
+[[31merror[39m]  [90m      |[39m [31m[1m^[22m[39m
+[[31merror[39m]  [90m 2354 |[39m
+[[31merror[39m]  [90m 2355 |[39m   [33m.[39mprojects[33m-[39mheader {
+[[31merror[39m]  [90m 2356 |[39m     align[33m-[39mitems[33m:[39m stretch[33m;[39m[0m
+Error occurred when checking code style in 36 files.

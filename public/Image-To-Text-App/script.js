@@ -130,20 +130,13 @@ if (copyBtn) {
 
       copyBtn.innerHTML = "✅ Copied";
 
-      copyBtn.classList.add(
-        "bg-emerald-500/20",
-        "text-emerald-300"
-      );
+      copyBtn.classList.add("bg-emerald-500/20", "text-emerald-300");
 
       setTimeout(() => {
         copyBtn.innerHTML = "Copy";
 
-        copyBtn.classList.remove(
-          "bg-emerald-500/20",
-          "text-emerald-300"
-        );
+        copyBtn.classList.remove("bg-emerald-500/20", "text-emerald-300");
       }, 2000);
-
     } catch (error) {
       console.error("Copy failed:", error);
     }
@@ -154,7 +147,6 @@ if (copyBtn) {
 const uploadBox = document.querySelector("label");
 
 if (uploadBox) {
-
   ["dragenter", "dragover"].forEach((eventName) => {
     uploadBox.addEventListener(eventName, (e) => {
       e.preventDefault();
@@ -163,7 +155,7 @@ if (uploadBox) {
       uploadBox.classList.add(
         "border-cyan-400",
         "bg-cyan-500/10",
-        "scale-[1.02]"
+        "scale-[1.02]",
       );
     });
   });
@@ -176,7 +168,7 @@ if (uploadBox) {
       uploadBox.classList.remove(
         "border-cyan-400",
         "bg-cyan-500/10",
-        "scale-[1.02]"
+        "scale-[1.02]",
       );
     });
   });
@@ -195,11 +187,8 @@ if (uploadBox) {
 }
 
 // Auto Preview on File Select
-document
-  .getElementById("fileInput")
-  .addEventListener("change", function () {
-
-    if (this.files && this.files[0]) {
-      showImagePreview(this.files[0]);
-    }
-  });
+document.getElementById("fileInput").addEventListener("change", function () {
+  if (this.files && this.files[0]) {
+    showImagePreview(this.files[0]);
+  }
+});

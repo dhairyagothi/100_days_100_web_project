@@ -5,7 +5,8 @@ const defaultNotes = [
   {
     id: crypto.randomUUID(),
     title: "Welcome to Notes App",
-    content: "Create notes, mark favorites, archive finished ideas, and export a JSON backup. Everything is stored locally in this browser.",
+    content:
+      "Create notes, mark favorites, archive finished ideas, and export a JSON backup. Everything is stored locally in this browser.",
     tag: "Ideas",
     color: "teal",
     favorite: true,
@@ -77,7 +78,9 @@ function normalizeNote(note) {
     title: String(note.title || "Untitled note"),
     content: String(note.content || ""),
     tag: String(note.tag || "Personal"),
-    color: ["teal", "violet", "amber", "rose"].includes(note.color) ? note.color : "teal",
+    color: ["teal", "violet", "amber", "rose"].includes(note.color)
+      ? note.color
+      : "teal",
     favorite: Boolean(note.favorite),
     archived: Boolean(note.archived),
     trashed: Boolean(note.trashed || note.trash),
@@ -107,7 +110,9 @@ function getVisibleNotes() {
     .filter((note) => {
       const query = state.query.trim().toLowerCase();
       if (!query) return true;
-      return [note.title, note.content, note.tag].some((value) => value.toLowerCase().includes(query));
+      return [note.title, note.content, note.tag].some((value) =>
+        value.toLowerCase().includes(query),
+      );
     })
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 }
@@ -121,10 +126,18 @@ function render() {
 
 function renderNavigation() {
   const activeNotes = state.notes.filter((note) => !note.trashed);
-  elements.allCount.textContent = activeNotes.filter((note) => !note.archived).length;
-  elements.favoriteCount.textContent = activeNotes.filter((note) => note.favorite).length;
-  elements.archivedCount.textContent = activeNotes.filter((note) => note.archived).length;
-  elements.trashCount.textContent = state.notes.filter((note) => note.trashed).length;
+  elements.allCount.textContent = activeNotes.filter(
+    (note) => !note.archived,
+  ).length;
+  elements.favoriteCount.textContent = activeNotes.filter(
+    (note) => note.favorite,
+  ).length;
+  elements.archivedCount.textContent = activeNotes.filter(
+    (note) => note.archived,
+  ).length;
+  elements.trashCount.textContent = state.notes.filter(
+    (note) => note.trashed,
+  ).length;
 
   document.querySelectorAll(".nav-item").forEach((button) => {
     button.classList.toggle("active", button.dataset.filter === state.filter);
@@ -132,7 +145,12 @@ function renderNavigation() {
 }
 
 function renderTags() {
-  const tags = ["all", ...new Set(state.notes.filter((note) => !note.trashed).map((note) => note.tag))];
+  const tags = [
+    "all",
+    ...new Set(
+      state.notes.filter((note) => !note.trashed).map((note) => note.tag),
+    ),
+  ];
   elements.tagList.innerHTML = tags
     .map((tag) => {
       const label = tag === "all" ? "All tags" : tag;
@@ -143,7 +161,9 @@ function renderTags() {
 
 function renderStats() {
   const activeNotes = state.notes.filter((note) => !note.trashed);
-  const latestNote = [...activeNotes].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))[0];
+  const latestNote = [...activeNotes].sort(
+    (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+  )[0];
   const viewLabel = {
     all: "All notes",
     favorites: "Favorites",
@@ -156,11 +176,16 @@ function renderStats() {
     month: "short",
     day: "numeric",
   });
-  elements.viewTitle.textContent = state.tag === "all" ? viewLabel : `${state.tag} notes`;
+  elements.viewTitle.textContent =
+    state.tag === "all" ? viewLabel : `${state.tag} notes`;
   elements.summaryText.textContent = `${getVisibleNotes().length} note${getVisibleNotes().length === 1 ? "" : "s"} in this view. Changes save automatically to local storage.`;
   elements.statTotal.textContent = activeNotes.length;
-  elements.statFavorites.textContent = activeNotes.filter((note) => note.favorite).length;
-  elements.statEdited.textContent = latestNote ? formatDate(latestNote.updatedAt) : "None";
+  elements.statFavorites.textContent = activeNotes.filter(
+    (note) => note.favorite,
+  ).length;
+  elements.statEdited.textContent = latestNote
+    ? formatDate(latestNote.updatedAt)
+    : "None";
 }
 
 function renderNotes() {
@@ -279,7 +304,9 @@ function handleSubmit(event) {
 
 function updateNote(id, updater, message) {
   state.notes = state.notes.map((note) =>
-    note.id === id ? { ...updater(note), updatedAt: new Date().toISOString() } : note,
+    note.id === id
+      ? { ...updater(note), updatedAt: new Date().toISOString() }
+      : note,
   );
   saveNotes();
   render();
@@ -295,10 +322,22 @@ function handleCardAction(event) {
   if (!note) return;
 
   if (action === "edit") openEditor(note);
-  if (action === "favorite") updateNote(id, (item) => ({ ...item, favorite: !item.favorite }), "Favorite updated.");
-  if (action === "archive") updateNote(id, (item) => ({ ...item, archived: !item.archived }), "Archive updated.");
-  if (action === "trash") updateNote(id, (item) => ({ ...item, trashed: true }), "Moved to trash.");
-  if (action === "restore") updateNote(id, (item) => ({ ...item, trashed: false }), "Note restored.");
+  if (action === "favorite")
+    updateNote(
+      id,
+      (item) => ({ ...item, favorite: !item.favorite }),
+      "Favorite updated.",
+    );
+  if (action === "archive")
+    updateNote(
+      id,
+      (item) => ({ ...item, archived: !item.archived }),
+      "Archive updated.",
+    );
+  if (action === "trash")
+    updateNote(id, (item) => ({ ...item, trashed: true }), "Moved to trash.");
+  if (action === "restore")
+    updateNote(id, (item) => ({ ...item, trashed: false }), "Note restored.");
   if (action === "delete") {
     state.notes = state.notes.filter((item) => item.id !== id);
     saveNotes();
@@ -314,7 +353,9 @@ function setTheme(theme) {
 }
 
 function exportNotes() {
-  const blob = new Blob([JSON.stringify(state.notes, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(state.notes, null, 2)], {
+    type: "application/json",
+  });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;

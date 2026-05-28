@@ -59,12 +59,9 @@ for (let select of dropdowns) {
   }
 
   select.addEventListener("change", (evt) => {
-  updateFlag(evt.target);
-  updateExchangeRate();
-  loadHistoricalChart();
-});
     updateFlag(evt.target);
     updateExchangeRate();
+    loadHistoricalChart();
   });
 }
 const loadHistoricalChart = async () => {

@@ -1,66 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEND-MAIL</title>
-<link rel="stylesheet" href="mail.css">
-<link rel="icon" href="../../favv.png" type="image/x-icon" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEND-MAIL</title>
+    <link rel="stylesheet" href="mail.css" />
+    <link rel="icon" href="../../favv.png" type="image/x-icon" />
+  </head>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(124, 99, 255, 0.14),
+          rgba(79, 141, 255, 0.1)
+        );
+        color: #fff;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+      "
+      >← Back to Home</a
+    >
 
-</head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <div class="contact">
+      <h3>Subscribe to our emails</h3>
 
-
-<div class="contact">
-    <h3>Subscribe to our emails</h3>
-
-    <p class="form-subtitle">
+      <p class="form-subtitle">
         Stay updated with our latest news, updates, and exclusive content.
-    </p>
+      </p>
 
-    <form method="POST" action="/">
-
+      <form method="POST" action="/">
         <div class="contact01">
+          <label for="name">Full Name</label>
 
-            <label for="name">Full Name</label>
+          <input
+            class="email"
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Enter your full name"
+            required
+            autocomplete="off"
+          />
 
-            <input
-                class="email"
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter your full name"
-                required
-                autocomplete="off"
-            >
+          <label for="email">Email Address</label>
 
-            <label for="email">Email Address</label>
-
-            <input
-                class="email"
-                id="email"
-                name="emailid"
-                type="email"
-                placeholder="Enter your email address"
-                required
-                autocomplete="off"
-            >
-
+          <input
+            class="email"
+            id="email"
+            name="emailid"
+            type="email"
+            placeholder="Enter your email address"
+            required
+            autocomplete="off"
+          />
         </div>
 
         <div class="contact02">
-            <input
-                class="submit"
-                type="submit"
-                name="submit"
-                value="Subscribe Now"
-            >
+          <input
+            class="submit"
+            type="submit"
+            name="submit"
+            value="Subscribe Now"
+          />
         </div>
-
-    </form>
-</div>
-
-
-</body>
+      </form>
+    </div>
+  </body>
 </html>

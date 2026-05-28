@@ -220,12 +220,12 @@ input[type="text"],
 input[type="number"] {
   width: 100%;
   background: var(--navy-3);
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
-  padding: .75rem 3rem .75rem 2.8rem;
+  padding: 0.75rem 3rem 0.75rem 2.8rem;
   color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .95rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
   padding: 10px 12px;
   background: var(--surface);
   border: 1px solid var(--rule);
@@ -247,7 +247,7 @@ input:hover {
 }
 .field-icon {
   position: absolute;
-  left: .9rem;
+  left: 0.9rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--muted);
@@ -264,7 +264,7 @@ input:hover {
   right: 2rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -808,7 +808,7 @@ input:focus::placeholder {
 }
 
 .post-calc {
-  animation: fadeUp .35s ease both;
+  animation: fadeUp 0.35s ease both;
 }
 
 @keyframes fadeUp {
@@ -903,7 +903,7 @@ input:focus::placeholder {
 }
 
 .goal-progress-fill::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -919,8 +919,12 @@ input:focus::placeholder {
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .goal-progress-text {
@@ -981,13 +985,13 @@ body.dark .goal-metric:hover {
 
 /* Confetti Animation for Goal Achievement */
 @keyframes confetti {
-  0% { 
-    transform: translateY(0) rotate(0deg); 
-    opacity: 1; 
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
   }
-  100% { 
-    transform: translateY(-100vh) rotate(720deg); 
-    opacity: 0; 
+  100% {
+    transform: translateY(-100vh) rotate(720deg);
+    opacity: 0;
   }
 }
 
@@ -1007,25 +1011,35 @@ body.dark .goal-metric:hover {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
+
   .goal-progress-bar {
     height: 20px;
   }
-  
+
   .goal-metric-value {
     font-size: 18px;
   }
-  
+
   .goal-section {
     margin-top: 18px;
     padding-top: 18px;
   }
 }
 
-.card, .full-card, .hero-text { animation: fadeUp .5s ease both; }
-.main-grid .card:nth-child(2) { animation-delay: .1s; }
-.main-grid .card:nth-child(3) { animation-delay: .15s; }
-.main-grid .card:nth-child(4) { animation-delay: .2s; }
+.card,
+.full-card,
+.hero-text {
+  animation: fadeUp 0.5s ease both;
+}
+.main-grid .card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.main-grid .card:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.main-grid .card:nth-child(4) {
+  animation-delay: 0.2s;
+}
 
 /* ===============================
    GLASSMORPHISM ENHANCEMENT
@@ -1037,21 +1051,21 @@ body.dark .goal-metric:hover {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-shadow:
-    0 10px 40px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.03);
+    0 10px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
   transition:
-    transform .3s ease,
-    border-color .3s ease,
-    box-shadow .3s ease;
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .card:hover,
 .full-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(15,191,173,.35);
+  border-color: rgba(15, 191, 173, 0.35);
   box-shadow:
-    0 14px 45px rgba(0,0,0,.45),
-    0 0 0 1px rgba(15,191,173,.1);
+    0 14px 45px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(15, 191, 173, 0.1);
 }
 
 /* ===============================
@@ -1067,15 +1081,14 @@ body.dark .goal-metric:hover {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      120deg,
-      transparent 20%,
-      rgba(255,255,255,.25) 50%,
-      transparent 80%
-    );
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 80%
+  );
   transform: translateX(-120%);
-  transition: transform .7s ease;
+  transition: transform 0.7s ease;
 }
 
 .calc-btn:hover::before {
@@ -1083,8 +1096,7 @@ body.dark .goal-metric:hover {
 }
 
 .calc-btn:hover {
-  box-shadow:
-    0 10px 30px rgba(15,191,173,.35);
+  box-shadow: 0 10px 30px rgba(15, 191, 173, 0.35);
 }
 
 /* ===============================
@@ -1092,8 +1104,8 @@ body.dark .goal-metric:hover {
 ================================= */
 
 .field input:hover {
-  border-color: rgba(15,191,173,.25);
-  background: rgba(255,255,255,.02);
+  border-color: rgba(15, 191, 173, 0.25);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 /* ===============================
@@ -1101,14 +1113,20 @@ body.dark .goal-metric:hover {
 ================================= */
 
 @keyframes floatCard {
-  0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .body-card {
   animation:
-    fadeUp .6s ease,
+    fadeUp 0.6s ease,
     floatCard 5s ease-in-out infinite;
 }
 
@@ -1129,11 +1147,7 @@ body.dark .goal-metric:hover {
   width: 60%;
   height: 3px;
   border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    var(--teal),
-    transparent
-  );
+  background: linear-gradient(90deg, var(--teal), transparent);
 }
 
 /* ===============================
@@ -1142,12 +1156,12 @@ body.dark .goal-metric:hover {
 
 .bmi-table tbody tr {
   transition:
-    background .2s ease,
-    transform .2s ease;
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .bmi-table tbody tr:hover {
-  background: rgba(255,255,255,.02);
+  background: rgba(255, 255, 255, 0.02);
   transform: scale(1.01);
 }
 
@@ -1164,12 +1178,12 @@ body.dark .goal-metric:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(15,191,173,.35);
+  background: rgba(15, 191, 173, 0.35);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(15,191,173,.55);
+  background: rgba(15, 191, 173, 0.55);
 }
 
 /* ===============================
@@ -1178,13 +1192,13 @@ body.dark .goal-metric:hover {
 
 @keyframes pulseGlow {
   0% {
-    box-shadow: 0 0 0 rgba(15,191,173,.0);
+    box-shadow: 0 0 0 rgba(15, 191, 173, 0);
   }
   50% {
-    box-shadow: 0 0 18px rgba(15,191,173,.18);
+    box-shadow: 0 0 18px rgba(15, 191, 173, 0.18);
   }
   100% {
-    box-shadow: 0 0 0 rgba(15,191,173,.0);
+    box-shadow: 0 0 0 rgba(15, 191, 173, 0);
   }
 }
 
@@ -1197,7 +1211,6 @@ body.dark .goal-metric:hover {
 ================================= */
 
 @media (max-width: 900px) {
-
   .main-grid {
     grid-template-columns: 1fr;
   }
@@ -1221,7 +1234,6 @@ body.dark .goal-metric:hover {
 }
 
 @media (max-width: 500px) {
-
   .page {
     padding: 1.2rem;
   }
@@ -1240,12 +1252,12 @@ body.dark .goal-metric:hover {
   }
 
   .calc-btn {
-    font-size: .9rem;
-    padding: .9rem;
+    font-size: 0.9rem;
+    padding: 0.9rem;
   }
 
   .field input {
-    font-size: .88rem;
+    font-size: 0.88rem;
   }
 }
 
@@ -1254,7 +1266,6 @@ body.dark .goal-metric:hover {
 ================================= */
 
 @media (prefers-color-scheme: light) {
-
   :root {
     --navy: #f4f7fb;
     --navy-2: #ffffff;
@@ -1263,7 +1274,7 @@ body.dark .goal-metric:hover {
     --card2: #f6f9fc;
     --text: #081120;
     --muted: #5b6b84;
-    --border: rgba(0,0,0,.08);
+    --border: rgba(0, 0, 0, 0.08);
   }
 
   body {
@@ -1279,4 +1290,3 @@ body.dark .goal-metric:hover {
     color: #081120;
   }
 }
-

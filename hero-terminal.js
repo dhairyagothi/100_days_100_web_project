@@ -475,7 +475,6 @@ function FaultyTerminal({
         1,
         container.clientHeight || container.offsetHeight || 1,
       );
-      renderer.setSize(cssWidth, cssHeight);
       const maxCssWidth = Math.max(1, Math.floor(MAX_CANVAS_SIZE / useDpr));
       const maxCssHeight = Math.max(1, Math.floor(MAX_CANVAS_SIZE / useDpr));
       const clampedCssWidth = Math.min(cssWidth, maxCssWidth);
@@ -595,7 +594,6 @@ function FaultyTerminal({
             1,
             container.clientHeight || container.offsetHeight || 1,
           );
-          renderer.setSize(cssWidth, cssHeight);
           const maxCssWidth = Math.max(1, Math.floor(MAX_CANVAS_SIZE / useDpr));
           const maxCssHeight = Math.max(
             1,

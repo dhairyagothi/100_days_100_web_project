@@ -712,7 +712,7 @@ select {
   color: var(--text-muted);
   margin-top: 7px;
 }
-.settings-hint a{
+.settings-hint a {
   margin-left: 5px;
 }
 .settings-toggle-row {

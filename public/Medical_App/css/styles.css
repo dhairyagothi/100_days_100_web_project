@@ -110,7 +110,6 @@ body,
 }
 
 body {
-<<<<<<< HEAD:public/Medical_App/css/styles.css
     font-family: Arial, sans-serif;
 
     background:
@@ -126,12 +125,6 @@ body {
 
     color: #1e293b;
     line-height: 1.6;
-=======
-    font-family: 'Inter', sans-serif;
-    background-color: var(--clr-bg);
-    color: var(--clr-text-main);
-    line-height: 1.5;
->>>>>>> 9398ffd3b288433a29a8baedf3de5c3e4ed2a480:public/Medical_App/styles.css
 }
 .logo{
     display:flex;
@@ -139,56 +132,10 @@ body {
     gap:10px;
 }
 
-<<<<<<< HEAD:public/Medical_App/css/styles.css
 .logo img{
     width:40px;
     height:40px;
 }
-=======
-/* ==========================================================================
-   Navigation
-   ========================================================================== */
-.navbar {
-    background: var(--clr-surface);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: var(--shadow-sm);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--clr-primary);
-}
-
-.brand-icon { font-size: 1.5rem; display: flex; align-items: center; }
-
-.nav-links { display: flex; gap: 1.5rem; }
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--clr-text-muted);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: var(--transition);
-}
-
-.nav-links a:hover, .nav-links a.active { color: var(--clr-primary); }
-
-/* ==========================================================================
-   Hero
-   ========================================================================== */
->>>>>>> 9398ffd3b288433a29a8baedf3de5c3e4ed2a480:public/Medical_App/styles.css
 .hero {
     background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-hover));
     color: white;
@@ -209,7 +156,6 @@ body {
 .hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
 .hero p { font-size: 1.1rem; opacity: 0.9; }
 
-<<<<<<< HEAD:public/Medical_App/css/styles.css
 .hero h1 {
     font-size: 2.5rem;
     margin-bottom: 10px;
@@ -793,7 +739,7 @@ body{
 
     font-size:2.5rem;
     font-weight:bold;
-=======
+}
 /* Theme Toggle Button (hero-style, from Main) */
 .theme-toggle-btn {
     background: rgba(255,255,255,0.15);
@@ -1177,6 +1123,4 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 480px) {
     .doctor-profile { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
     .specialty-badge { align-self: center; }
-    .doctor-meta { flex-direction: column; gap: 6px; align-items: center; }
->>>>>>> 9398ffd3b288433a29a8baedf3de5c3e4ed2a480:public/Medical_App/styles.css
 }

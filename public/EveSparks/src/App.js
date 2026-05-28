@@ -1,15 +1,12 @@
-import './App.css';
-import React, { useEffect, useState } from 'react';
+import "./App.css";
+import React, { useEffect, useState } from "react";
 
-import Header from './MyComponents/header';
-import Footer from './MyComponents/footer';
-import Product from './MyComponents/product';
+import Header from "./MyComponents/header";
+import Footer from "./MyComponents/footer";
+import Product from "./MyComponents/product";
 
 function App() {
-
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "light"
-  );
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   useEffect(() => {
     document.body.className = theme;

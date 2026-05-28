@@ -1,71 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="../../favv.png" type="image/x-icon" />
     <title>Contact Book</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📞</text></svg>">
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📞</text></svg>"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+  </head>
+  <body class="bg-gray-100">
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(124, 99, 255, 0.14),
+          rgba(79, 141, 255, 0.1)
+        );
+        color: #fff;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+      "
+      >← Back to Home</a
+    >
 
     <header class="bg-blue-600 p-4 md:p-6 rounded-b-lg shadow-lg">
-  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-    
-    <h1 class="text-white text-2xl md:text-3xl font-bold">
-      📚 Contact Book
-    </h1>
+      <div
+        class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4"
+      >
+        <h1 class="text-white text-2xl md:text-3xl font-bold">
+          📚 Contact Book
+        </h1>
 
-    <nav class="flex flex-wrap justify-center gap-4 text-sm md:text-base">
-      <a href="{{ url_for('home') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Home
-      </a>
+        <nav class="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+          <a
+            href="{{ url_for('home') }}"
+            class="text-white hover:text-blue-200 transition duration-300"
+          >
+            Home
+          </a>
 
-      {% if 'user_id' in session %}
+          {% if 'user_id' in session %}
 
-      <a href="{{ url_for('dashboard') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Dashboard
-      </a>
+          <a
+            href="{{ url_for('dashboard') }}"
+            class="text-white hover:text-blue-200 transition duration-300"
+          >
+            Dashboard
+          </a>
 
-      <a href="{{ url_for('logout') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Logout
-      </a>
+          <a
+            href="{{ url_for('logout') }}"
+            class="text-white hover:text-blue-200 transition duration-300"
+          >
+            Logout
+          </a>
 
-      {% else %}
+          {% else %}
 
-      <a href="{{ url_for('login') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Login
-      </a>
+          <a
+            href="{{ url_for('login') }}"
+            class="text-white hover:text-blue-200 transition duration-300"
+          >
+            Login
+          </a>
 
-      <a href="{{ url_for('register') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Register
-      </a>
+          <a
+            href="{{ url_for('register') }}"
+            class="text-white hover:text-blue-200 transition duration-300"
+          >
+            Register
+          </a>
 
-      {% endif %}
-    </nav>
-
-  </div>
-</header>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
     <div class="container mx-auto p-4">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="mb-4">
-                    {% for category, message in messages %}
-                        <div class="p-4 mb-2 text-sm text-{{ 'green-600' if category == 'success' else 'red-600' }} bg-{{ 'green-100' if category == 'success' else 'red-100' }} rounded-lg">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <div class="mb-4">
+        {% for category, message in messages %}
+        <div
+          class="p-4 mb-2 text-sm text-{{ 'green-600' if category == 'success' else 'red-600' }} bg-{{ 'green-100' if category == 'success' else 'red-100' }} rounded-lg"
+        >
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %} {% block content %}{% endblock %}
     </div>
-</body>
+  </body>
 </html>

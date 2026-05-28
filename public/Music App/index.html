@@ -1,106 +1,212 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pulse Music</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
-</head>
+  </head>
 
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;color:black ;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(124, 99, 255, 0.14),
+          rgba(79, 141, 255, 0.1)
+        );
+        color: #fff;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+      "
+      >← Back to Home</a
+    >
 
     <div class="app-shell">
-        <aside class="sidebar" aria-label="Music categories">
-            <a class="brand" href="#" aria-label="Pulse Music home">
-                <span class="brand-mark">P</span>
-                <span>
-                    <strong>Pulse</strong>
-                    <small>Music App</small>
-                </span>
-            </a>
+      <aside class="sidebar" aria-label="Music categories">
+        <a class="brand" href="#" aria-label="Pulse Music home">
+          <span class="brand-mark">P</span>
+          <span>
+            <strong>Pulse</strong>
+            <small>Music App</small>
+          </span>
+        </a>
 
-            <nav class="category-nav" id="categoryNav" aria-label="Browse by category"></nav>
-        </aside>
+        <nav
+          class="category-nav"
+          id="categoryNav"
+          aria-label="Browse by category"
+        ></nav>
+      </aside>
 
-        <main class="main-view">
-            <header class="topbar">
-                <div>
-                    <p class="eyebrow">Now streaming</p>
-                    <h1>Discover your next favorite track</h1>
-                </div>
+      <main class="main-view">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Now streaming</p>
+            <h1>Discover your next favorite track</h1>
+          </div>
 
-                <div class="topbar-actions">
-                    <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme">Light</button>
-                    <label class="search-box" for="searchInput">
-                        <span aria-hidden="true">Search</span>
-                        <input id="searchInput" type="search" placeholder="Song, artist, album..." autocomplete="off" />
-                    </label>
-                </div>
-            </header>
+          <div class="topbar-actions">
+            <button
+              class="icon-button theme-toggle"
+              id="themeToggle"
+              type="button"
+              aria-label="Switch to light theme"
+            >
+              Light
+            </button>
+            <label class="search-box" for="searchInput">
+              <span aria-hidden="true">Search</span>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Song, artist, album..."
+                autocomplete="off"
+              />
+            </label>
+          </div>
+        </header>
 
-            <section class="hero-player" aria-label="Featured track">
-                <div class="hero-copy">
-                    <p class="eyebrow" id="heroCategory">Trending</p>
-                    <h2 id="heroTitle">Select a track</h2>
-                    <p id="heroMeta">Choose any song from the library to start listening.</p>
-                </div>
-                <img id="heroCover" class="hero-cover" src="" alt="" />
-            </section>
+        <section class="hero-player" aria-label="Featured track">
+          <div class="hero-copy">
+            <p class="eyebrow" id="heroCategory">Trending</p>
+            <h2 id="heroTitle">Select a track</h2>
+            <p id="heroMeta">
+              Choose any song from the library to start listening.
+            </p>
+          </div>
+          <img id="heroCover" class="hero-cover" src="" alt="" />
+        </section>
 
-            <section class="library-section" aria-label="Song library">
-                <div class="section-heading">
-                    <div>
-                        <p class="eyebrow" id="libraryLabel">All songs</p>
-                        <h2>Library</h2>
-                    </div>
-                    <p id="resultCount">0 songs</p>
-                </div>
-
-                <div class="song-grid" id="songGrid"></div>
-                <p class="empty-state" id="emptyState">No songs match your search.</p>
-            </section>
-        </main>
-
-        <footer class="player-bar" aria-label="Music player">
-            <div class="track-summary">
-                <img id="playerCover" src="" alt="" />
-                <div>
-                    <strong id="playerTitle">Nothing playing</strong>
-                    <span id="playerArtist">Pick a track to begin</span>
-                </div>
-                <button class="like-button player-like" id="playerLikeBtn" type="button" aria-label="Like current song">♡</button>
+        <section class="library-section" aria-label="Song library">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" id="libraryLabel">All songs</p>
+              <h2>Library</h2>
             </div>
+            <p id="resultCount">0 songs</p>
+          </div>
 
-            <div class="player-center">
-                <div class="controls">
-                    <button class="icon-button mode-button" id="shuffleBtn" type="button" aria-label="Turn shuffle on">Shuffle</button>
-                    <button class="icon-button" id="prevBtn" type="button" aria-label="Previous song">Prev</button>
-                    <button class="play-button" id="playBtn" type="button" aria-label="Play song">Play</button>
-                    <button class="icon-button" id="nextBtn" type="button" aria-label="Next song">Next</button>
-                    <button class="icon-button mode-button" id="repeatBtn" type="button" aria-label="Turn repeat on">Repeat</button>
-                </div>
+          <div class="song-grid" id="songGrid"></div>
+          <p class="empty-state" id="emptyState">No songs match your search.</p>
+        </section>
+      </main>
 
-                <div class="timeline">
-                    <span id="currentTime">0:00</span>
-                    <input id="progressInput" type="range" min="0" max="100" value="0" step="0.1" aria-label="Song progress" />
-                    <span id="durationTime">0:00</span>
-                </div>
-            </div>
+      <footer class="player-bar" aria-label="Music player">
+        <div class="track-summary">
+          <img id="playerCover" src="" alt="" />
+          <div>
+            <strong id="playerTitle">Nothing playing</strong>
+            <span id="playerArtist">Pick a track to begin</span>
+          </div>
+          <button
+            class="like-button player-like"
+            id="playerLikeBtn"
+            type="button"
+            aria-label="Like current song"
+          >
+            ♡
+          </button>
+        </div>
 
-            <div class="volume-control">
-                <button class="icon-button" id="muteBtn" type="button" aria-label="Mute volume">Vol</button>
-                <input id="volumeInput" type="range" min="0" max="1" value="0.8" step="0.01" aria-label="Volume" />
-            </div>
-        </footer>
+        <div class="player-center">
+          <div class="controls">
+            <button
+              class="icon-button mode-button"
+              id="shuffleBtn"
+              type="button"
+              aria-label="Turn shuffle on"
+            >
+              Shuffle
+            </button>
+            <button
+              class="icon-button"
+              id="prevBtn"
+              type="button"
+              aria-label="Previous song"
+            >
+              Prev
+            </button>
+            <button
+              class="play-button"
+              id="playBtn"
+              type="button"
+              aria-label="Play song"
+            >
+              Play
+            </button>
+            <button
+              class="icon-button"
+              id="nextBtn"
+              type="button"
+              aria-label="Next song"
+            >
+              Next
+            </button>
+            <button
+              class="icon-button mode-button"
+              id="repeatBtn"
+              type="button"
+              aria-label="Turn repeat on"
+            >
+              Repeat
+            </button>
+          </div>
+
+          <div class="timeline">
+            <span id="currentTime">0:00</span>
+            <input
+              id="progressInput"
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              step="0.1"
+              aria-label="Song progress"
+            />
+            <span id="durationTime">0:00</span>
+          </div>
+        </div>
+
+        <div class="volume-control">
+          <button
+            class="icon-button"
+            id="muteBtn"
+            type="button"
+            aria-label="Mute volume"
+          >
+            Vol
+          </button>
+          <input
+            id="volumeInput"
+            type="range"
+            min="0"
+            max="1"
+            value="0.8"
+            step="0.01"
+            aria-label="Volume"
+          />
+        </div>
+      </footer>
     </div>
 
     <audio id="audioPlayer" preload="metadata"></audio>
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

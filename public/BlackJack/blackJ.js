@@ -8,14 +8,58 @@
  * Defined at module level to prevent accidental mutation during resets.
  */
 const CARD_VALUES = {
-  '2C':2,  '3C':3,  '4C':4,  '5C':5,  '6C':6,  '7C':7,  '8C':8,  '9C':9,
-  '10C':10,'KC':10, 'QC':10, 'JC':10, 'AC':[1,11],
-  '2D':2,  '3D':3,  '4D':4,  '5D':5,  '6D':6,  '7D':7,  '8D':8,  '9D':9,
-  '10D':10,'KD':10, 'QD':10, 'JD':10, 'AD':[1,11],
-  '2H':2,  '3H':3,  '4H':4,  '5H':5,  '6H':6,  '7H':7,  '8H':8,  '9H':9,
-  '10H':10,'KH':10, 'QH':10, 'JH':10, 'AH':[1,11],
-  '2S':2,  '3S':3,  '4S':4,  '5S':5,  '6S':6,  '7S':7,  '8S':8,  '9S':9,
-  '10S':10,'KS':10, 'QS':10, 'JS':10, 'AS':[1,11]
+  "2C": 2,
+  "3C": 3,
+  "4C": 4,
+  "5C": 5,
+  "6C": 6,
+  "7C": 7,
+  "8C": 8,
+  "9C": 9,
+  "10C": 10,
+  KC: 10,
+  QC: 10,
+  JC: 10,
+  AC: [1, 11],
+  "2D": 2,
+  "3D": 3,
+  "4D": 4,
+  "5D": 5,
+  "6D": 6,
+  "7D": 7,
+  "8D": 8,
+  "9D": 9,
+  "10D": 10,
+  KD: 10,
+  QD: 10,
+  JD: 10,
+  AD: [1, 11],
+  "2H": 2,
+  "3H": 3,
+  "4H": 4,
+  "5H": 5,
+  "6H": 6,
+  "7H": 7,
+  "8H": 8,
+  "9H": 9,
+  "10H": 10,
+  KH: 10,
+  QH: 10,
+  JH: 10,
+  AH: [1, 11],
+  "2S": 2,
+  "3S": 3,
+  "4S": 4,
+  "5S": 5,
+  "6S": 6,
+  "7S": 7,
+  "8S": 8,
+  "9S": 9,
+  "10S": 10,
+  KS: 10,
+  QS: 10,
+  JS: 10,
+  AS: [1, 11],
 };
 
 /**
@@ -24,32 +68,80 @@ const CARD_VALUES = {
  */
 function freshDeck() {
   return [
-    '2C','3C','4C','5C','6C','7C','8C','9C','10C','KC','QC','JC','AC',
-    '2D','3D','4D','5D','6D','7D','8D','9D','10D','KD','QD','JD','AD',
-    '2H','3H','4H','5H','6H','7H','8H','9H','10H','KH','QH','JH','AH',
-    '2S','3S','4S','5S','6S','7S','8S','9S','10S','KS','QS','JS','AS'
+    "2C",
+    "3C",
+    "4C",
+    "5C",
+    "6C",
+    "7C",
+    "8C",
+    "9C",
+    "10C",
+    "KC",
+    "QC",
+    "JC",
+    "AC",
+    "2D",
+    "3D",
+    "4D",
+    "5D",
+    "6D",
+    "7D",
+    "8D",
+    "9D",
+    "10D",
+    "KD",
+    "QD",
+    "JD",
+    "AD",
+    "2H",
+    "3H",
+    "4H",
+    "5H",
+    "6H",
+    "7H",
+    "8H",
+    "9H",
+    "10H",
+    "KH",
+    "QH",
+    "JH",
+    "AH",
+    "2S",
+    "3S",
+    "4S",
+    "5S",
+    "6S",
+    "7S",
+    "8S",
+    "9S",
+    "10S",
+    "KS",
+    "QS",
+    "JS",
+    "AS",
   ];
 }
 
 /** Central game state. CARD_VALUES is excluded to prevent reset overwrites. */
 const BJgame = {
   you: {
-    scoreSpan:     '#yourscore',
-    cardContainer: '#your-cards',
-    score: 0
+    scoreSpan: "#yourscore",
+    cardContainer: "#your-cards",
+    score: 0,
   },
   dealer: {
-    scoreSpan:     '#dealerscore',
-    cardContainer: '#dealer-cards',
-    score: 0
+    scoreSpan: "#dealerscore",
+    cardContainer: "#dealer-cards",
+    score: 0,
   },
-  cards:  freshDeck(),
-  wins:   0,
+  cards: freshDeck(),
+  wins: 0,
   losses: 0,
-  draws:  0
+  draws: 0,
 };
 
-const You    = BJgame.you;
+const You = BJgame.you;
 const Dealer = BJgame.dealer;
 
 /**
@@ -60,37 +152,37 @@ const Dealer = BJgame.dealer;
 let gameActive = false;
 
 // Audio — declared at module level; const is not hoisted so order matters.
-const hitsound  = new Audio('./static/sounds/swish.m4a');
-const tink      = new Audio('./static/sounds/tink.wav');
-const winSound  = new Audio('./static/sounds/cash.mp3');
-const cheers    = new Audio('./static/sounds/cheer.wav');
-const loseSound = new Audio('./static/sounds/aww.mp3');
-const drawSound = new Audio('./static/sounds/ohh.mp3');
+const hitsound = new Audio("./static/sounds/swish.m4a");
+const tink = new Audio("./static/sounds/tink.wav");
+const winSound = new Audio("./static/sounds/cash.mp3");
+const cheers = new Audio("./static/sounds/cheer.wav");
+const loseSound = new Audio("./static/sounds/aww.mp3");
+const drawSound = new Audio("./static/sounds/ohh.mp3");
 
 /** @param {string} selector @returns {Element|null} */
-const $ = selector => document.querySelector(selector);
+const $ = (selector) => document.querySelector(selector);
 
 // ── Button helpers ───────────────────────────────────────────────────────────
 
 /** Disables Hit and Stand at round end so stale clicks are rejected. */
 function disableGameButtons() {
-  ['#hit', '#stand'].forEach(sel => {
+  ["#hit", "#stand"].forEach((sel) => {
     const btn = $(sel);
     btn.disabled = true;
-    btn.setAttribute('aria-disabled', 'true');
-    btn.style.opacity = '0.4';
-    btn.style.cursor  = 'not-allowed';
+    btn.setAttribute("aria-disabled", "true");
+    btn.style.opacity = "0.4";
+    btn.style.cursor = "not-allowed";
   });
 }
 
 /** Re-enables Hit and Stand at the start of each new round. */
 function enableGameButtons() {
-  ['#hit', '#stand'].forEach(sel => {
+  ["#hit", "#stand"].forEach((sel) => {
     const btn = $(sel);
     btn.disabled = false;
-    btn.setAttribute('aria-disabled', 'false');
-    btn.style.opacity = '';
-    btn.style.cursor  = '';
+    btn.setAttribute("aria-disabled", "false");
+    btn.style.opacity = "";
+    btn.style.cursor = "";
   });
 }
 
@@ -102,13 +194,13 @@ function enableGameButtons() {
  * @param {Object} activePlayer - You or Dealer state object.
  */
 function drawCard(activePlayer) {
-  const randomIndex   = Math.floor(Math.random() * BJgame.cards.length);
+  const randomIndex = Math.floor(Math.random() * BJgame.cards.length);
   const [currentCard] = BJgame.cards.splice(randomIndex, 1);
 
-  const cardImg = document.createElement('img');
-  cardImg.src   = `./static/${currentCard}.png`;
-  cardImg.alt   = currentCard;
-  cardImg.setAttribute('role', 'listitem');
+  const cardImg = document.createElement("img");
+  cardImg.src = `./static/${currentCard}.png`;
+  cardImg.alt = currentCard;
+  cardImg.setAttribute("role", "listitem");
   $(activePlayer.cardContainer).appendChild(cardImg);
 
   hitsound.currentTime = 0;
@@ -129,7 +221,7 @@ function updateScore(card, activePlayer) {
 
   if (Array.isArray(value)) {
     activePlayer.score +=
-      (activePlayer.score + value[1] <= 21) ? value[1] : value[0];
+      activePlayer.score + value[1] <= 21 ? value[1] : value[0];
   } else {
     activePlayer.score += value;
   }
@@ -142,11 +234,11 @@ function updateScore(card, activePlayer) {
 function showScore(activePlayer) {
   const el = $(activePlayer.scoreSpan);
   if (activePlayer.score > 21) {
-    el.textContent = 'BUST!';
-    el.style.color = '#e05252';
+    el.textContent = "BUST!";
+    el.style.color = "#e05252";
   } else {
     el.textContent = activePlayer.score;
-    el.style.color = '';
+    el.style.color = "";
   }
 }
 
@@ -157,7 +249,7 @@ function showScore(activePlayer) {
  * @returns {Object|undefined} Winning player object, or undefined on a draw.
  */
 function findWinner() {
-  const youBust    = You.score > 21;
+  const youBust = You.score > 21;
   const dealerBust = Dealer.score > 21;
 
   if (!youBust && (dealerBust || Dealer.score < You.score)) {
@@ -181,21 +273,21 @@ function findWinner() {
  * @param {Object|undefined} winner
  */
 function showResults(winner) {
-  const el = $('#command');
+  const el = $("#command");
 
   if (winner === You) {
-    el.textContent = '🏆 You Won!';
-    el.style.color = '#4caf7d';
+    el.textContent = "🏆 You Won!";
+    el.style.color = "#4caf7d";
     winSound.play().catch(() => {});
     cheers.volume = 0.4; // Must be set before play() to avoid volume spike
     cheers.play().catch(() => {});
   } else if (winner === Dealer) {
-    el.textContent = '😔 You Lost!';
-    el.style.color = '#e05252';
+    el.textContent = "😔 You Lost!";
+    el.style.color = "#e05252";
     loseSound.play().catch(() => {});
   } else {
     el.textContent = "🤝 It's a Draw!";
-    el.style.color = '#f0b429';
+    el.style.color = "#f0b429";
     drawSound.play().catch(() => {});
   }
 }
@@ -203,14 +295,16 @@ function showResults(winner) {
 /** Animates the wins/losses/draws counters after each round. */
 function updateScoreboard() {
   [
-    ['#wins',   BJgame.wins],
-    ['#losses', BJgame.losses],
-    ['#draws',  BJgame.draws]
+    ["#wins", BJgame.wins],
+    ["#losses", BJgame.losses],
+    ["#draws", BJgame.draws],
   ].forEach(([sel, val]) => {
     const el = $(sel);
-    el.textContent     = val;
-    el.style.transform = 'scale(1.3)';
-    setTimeout(() => { el.style.transform = ''; }, 250);
+    el.textContent = val;
+    el.style.transform = "scale(1.3)";
+    setTimeout(() => {
+      el.style.transform = "";
+    }, 250);
   });
 }
 
@@ -261,12 +355,17 @@ function BJstand() {
  */
 function BJdeal() {
   if (gameActive) {
-    alert('Finish your current turn first — Hit or Stand before dealing.');
+    alert("Finish your current turn first — Hit or Stand before dealing.");
     return;
   }
-  if (You.score === 0 && Dealer.score === 0 &&
-      BJgame.wins === 0 && BJgame.losses === 0 && BJgame.draws === 0) {
-    alert('Hit some cards to start playing!');
+  if (
+    You.score === 0 &&
+    Dealer.score === 0 &&
+    BJgame.wins === 0 &&
+    BJgame.losses === 0 &&
+    BJgame.draws === 0
+  ) {
+    alert("Hit some cards to start playing!");
     return;
   }
   startNewRound();
@@ -277,22 +376,24 @@ function BJdeal() {
  * Extracted from BJdeal() so Play Again can call it without triggering deal guards.
  */
 function startNewRound() {
-  ['#your-cards', '#dealer-cards'].forEach(sel => {
-    $(sel).querySelectorAll('img').forEach(img => img.remove());
+  ["#your-cards", "#dealer-cards"].forEach((sel) => {
+    $(sel)
+      .querySelectorAll("img")
+      .forEach((img) => img.remove());
   });
 
   BJgame.cards = freshDeck();
 
-  [You, Dealer].forEach(player => {
+  [You, Dealer].forEach((player) => {
     player.score = 0;
     const el = $(player.scoreSpan);
     el.textContent = 0;
-    el.style.color = '';
+    el.style.color = "";
   });
 
-  const commandEl = $('#command');
+  const commandEl = $("#command");
   commandEl.textContent = "Let's Play!";
-  commandEl.style.color = '';
+  commandEl.style.color = "";
 
   enableGameButtons();
   gameActive = true;
@@ -302,30 +403,30 @@ function startNewRound() {
 
 /** Toggles the rules panel and keeps aria-expanded in sync. */
 function toggleRules() {
-  const box      = $('#rules-box');
-  const btn      = $('#rules-btn');
-  const isHidden = box.hasAttribute('hidden');
+  const box = $("#rules-box");
+  const btn = $("#rules-btn");
+  const isHidden = box.hasAttribute("hidden");
 
-  box[isHidden ? 'removeAttribute' : 'setAttribute']('hidden', '');
-  btn.setAttribute('aria-expanded', String(isHidden));
+  box[isHidden ? "removeAttribute" : "setAttribute"]("hidden", "");
+  btn.setAttribute("aria-expanded", String(isHidden));
 }
 
 // ── Event listeners ──────────────────────────────────────────────────────────
 
-$('#hit').addEventListener('click',   BJhit);
-$('#stand').addEventListener('click', BJstand);
-$('#deal').addEventListener('click',  BJdeal);
-$('#rules-btn').addEventListener('click', toggleRules);
-$('#play-again').addEventListener('click', startNewRound);
+$("#hit").addEventListener("click", BJhit);
+$("#stand").addEventListener("click", BJstand);
+$("#deal").addEventListener("click", BJdeal);
+$("#rules-btn").addEventListener("click", toggleRules);
+$("#play-again").addEventListener("click", startNewRound);
 
-$('#reset-score').addEventListener('click', () => {
+$("#reset-score").addEventListener("click", () => {
   BJgame.wins = BJgame.losses = BJgame.draws = 0;
   updateScoreboard();
 });
 
 // Hover sound delegated to the button group to avoid per-button listeners
-document.querySelector('.action-buttons').addEventListener('mouseover', e => {
-  if (e.target.classList.contains('btn') && !e.target.disabled) {
+document.querySelector(".action-buttons").addEventListener("mouseover", (e) => {
+  if (e.target.classList.contains("btn") && !e.target.disabled) {
     tink.currentTime = 0;
     tink.play().catch(() => {});
   }

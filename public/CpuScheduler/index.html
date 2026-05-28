@@ -21,17 +21,20 @@
   </head>
 
   <body class="min-h-screen text-slate-100">
-<a href="/" class="back-button">← Home</a>
+    <a href="/" class="back-button">← Home</a>
 
     <!-- Header -->
     <header class="py-10 border-b border-white/10">
       <div class="text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-3 leading-tight text-white">
+        <h1
+          class="text-4xl md:text-5xl font-bold mb-3 leading-tight text-white"
+        >
           CPU Scheduler Simulator
         </h1>
 
         <p class="text-base md:text-lg text-slate-400 leading-relaxed">
-          Visualize and analyze eight different CPU scheduling algorithms with interactive simulations and real-time Gantt charts.
+          Visualize and analyze eight different CPU scheduling algorithms with
+          interactive simulations and real-time Gantt charts.
         </p>
       </div>
     </header>
@@ -128,7 +131,9 @@
               class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
               placeholder="Enter number of processes"
             />
-            <p class="text-xs text-slate-400 mt-2">Between 1 and 20 processes</p>
+            <p class="text-xs text-slate-400 mt-2">
+              Between 1 and 20 processes
+            </p>
           </div>
 
           <!-- Time Quantum (Round Robin Only) -->
@@ -147,7 +152,9 @@
               class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
               placeholder="Enter time quantum"
             />
-            <p class="text-xs text-slate-400 mt-2">CPU time slice per process</p>
+            <p class="text-xs text-slate-400 mt-2">
+              CPU time slice per process
+            </p>
           </div>
 
           <!-- Load Sample Data Button -->
@@ -161,7 +168,10 @@
       </section>
 
       <!-- Error Message -->
-      <section id="errorMessage" class="hidden mb-8 p-4 rounded-lg border border-red-500/30 bg-red-500/10">
+      <section
+        id="errorMessage"
+        class="hidden mb-8 p-4 rounded-lg border border-red-500/30 bg-red-500/10"
+      >
         <div class="flex items-start gap-3">
           <div class="text-lg font-bold text-red-400 flex-shrink-0">!</div>
           <div>
@@ -174,14 +184,12 @@
       <!-- Process Form Container -->
       <div id="processFormContainer" class="mb-8">
         <div class="flex flex-col items-center mb-6">
-          <h2 class="text-2xl font-bold text-white mb-2">
-            Process Details
-          </h2>
+          <h2 class="text-2xl font-bold text-white mb-2">Process Details</h2>
           <p class="text-slate-400 text-sm">
             Enter arrival time and burst time for each process
           </p>
         </div>
-        
+
         <!-- Dynamic Process Form -->
         <div id="processForm" class="space-y-4"></div>
       </div>
@@ -213,7 +221,7 @@
             Key scheduling performance indicators
           </p>
         </div>
-        
+
         <div
           id="metricsPanel"
           class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
@@ -236,15 +244,16 @@
         <!-- Gantt Chart -->
         <div class="card mb-8">
           <div class="flex flex-col items-center mb-6">
-            <h2 class="text-2xl font-bold text-white mb-1">
-              Gantt Chart
-            </h2>
+            <h2 class="text-2xl font-bold text-white mb-1">Gantt Chart</h2>
             <p class="text-slate-400 text-sm">
               Visual timeline of process execution
             </p>
           </div>
 
-          <div id="ganttChart" class="overflow-x-auto mb-6 bg-white/2 p-4 rounded-lg border border-slate-600/20"></div>
+          <div
+            id="ganttChart"
+            class="overflow-x-auto mb-6 bg-white/2 p-4 rounded-lg border border-slate-600/20"
+          ></div>
 
           <div
             id="processLegend"
@@ -266,7 +275,7 @@
           <div id="analysisContent"></div>
         </div>
       </section>
-      
+
       <section id="comparisonResults" class="hidden fade-in mt-8">
         <div class="card">
           <div class="flex flex-col items-center mb-8">
@@ -277,10 +286,16 @@
               Side-by-side comparison of all algorithms
             </p>
           </div>
-          
+
           <div id="comparisonTable" class="overflow-x-auto mb-8"></div>
-          <div id="comparisonCharts" class="grid md:grid-cols-2 gap-6 mb-8"></div>
-          <div id="recommendationBox" class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4"></div>
+          <div
+            id="comparisonCharts"
+            class="grid md:grid-cols-2 gap-6 mb-8"
+          ></div>
+          <div
+            id="recommendationBox"
+            class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4"
+          ></div>
         </div>
       </section>
     </main>

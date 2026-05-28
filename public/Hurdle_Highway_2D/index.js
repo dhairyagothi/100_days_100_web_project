@@ -51,7 +51,8 @@ let currentDifficulty = "medium";
 let baseSpeed = difficultySettings[currentDifficulty].baseSpeed;
 let speedOffsetMin = difficultySettings[currentDifficulty].speedOffsetMin;
 let speedOffsetMax = difficultySettings[currentDifficulty].speedOffsetMax;
-let maxActiveObstacles = difficultySettings[currentDifficulty].maxActiveObstacles;
+let maxActiveObstacles =
+  difficultySettings[currentDifficulty].maxActiveObstacles;
 let minSpawnGap = difficultySettings[currentDifficulty].minSpawnGap;
 let moveCooldown = difficultySettings[currentDifficulty].moveCooldown;
 
@@ -85,7 +86,7 @@ const obstacles = Array.from(document.querySelectorAll(".obstacle")).map(
     y: 0,
     speed: baseSpeed,
     active: true,
-  })
+  }),
 );
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -162,7 +163,7 @@ document.addEventListener("keyup", (e) => {
 function updateScale() {
   const scale = Math.min(
     window.innerWidth / BASE_WIDTH,
-    window.innerHeight / BASE_HEIGHT
+    window.innerHeight / BASE_HEIGHT,
   );
   stage.style.setProperty("--game-scale", scale.toFixed(3));
 }
@@ -332,10 +333,7 @@ function applyDifficulty(level) {
   moveCooldown = settings.moveCooldown;
 
   difficultyButtons.forEach((button) => {
-    button.classList.toggle(
-      "active",
-      button.dataset.difficulty === level
-    );
+    button.classList.toggle("active", button.dataset.difficulty === level);
   });
 }
 
@@ -385,10 +383,7 @@ function checkCollisions() {
 
 function rectsOverlap(a, b) {
   return (
-    a.x < b.x + b.w &&
-    a.x + a.w > b.x &&
-    a.y < b.y + b.h &&
-    a.y + a.h > b.y
+    a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
   );
 }
 

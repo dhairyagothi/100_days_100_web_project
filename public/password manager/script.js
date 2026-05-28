@@ -27,20 +27,19 @@ hamburger.addEventListener("click", () => {
 /* -------------------- */
 
 function showToast(message, type = "success") {
+  toast.textContent = message;
 
-    toast.textContent = message;
+  if (type === "success") {
+    toast.style.background = "#22c55e";
+  } else {
+    toast.style.background = "#ef4444";
+  }
 
-    if (type === "success") {
-        toast.style.background = "#22c55e";
-    } else {
-        toast.style.background = "#ef4444";
-    }
+  toast.classList.add("show");
 
-    toast.classList.add("show");
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2500);
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
 }
 
 /* -------------------- */
@@ -48,8 +47,7 @@ function showToast(message, type = "success") {
 /* -------------------- */
 
 function getPasswords() {
-
-    return JSON.parse(localStorage.getItem("passwords")) || [];
+  return JSON.parse(localStorage.getItem("passwords")) || [];
 }
 
 /* -------------------- */
@@ -57,11 +55,7 @@ function getPasswords() {
 /* -------------------- */
 
 function savePasswords(passwords) {
-
-    localStorage.setItem(
-        "passwords",
-        JSON.stringify(passwords)
-    );
+  localStorage.setItem("passwords", JSON.stringify(passwords));
 }
 
 /* -------------------- */
@@ -69,8 +63,7 @@ function savePasswords(passwords) {
 /* -------------------- */
 
 function maskPassword(password) {
-
-    return "*".repeat(password.length);
+  return "*".repeat(password.length);
 }
 
 /* -------------------- */
@@ -78,27 +71,24 @@ function maskPassword(password) {
 /* -------------------- */
 
 function renderPasswords() {
+  const passwords = getPasswords();
 
-    const passwords = getPasswords();
+  passwordTable.innerHTML = "";
 
-    passwordTable.innerHTML = "";
+  /* Empty State */
 
-    /* Empty State */
+  if (passwords.length === 0) {
+    emptyState.style.display = "block";
 
-    if (passwords.length === 0) {
+    return;
+  }
 
-        emptyState.style.display = "block";
+  emptyState.style.display = "none";
 
-        return;
-    }
+  passwords.forEach((item, index) => {
+    const row = document.createElement("tr");
 
-    emptyState.style.display = "none";
-
-    passwords.forEach((item, index) => {
-
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
+    row.innerHTML = `
 
             <td>
                 ${item.website}
@@ -150,8 +140,8 @@ function renderPasswords() {
             </td>
         `;
 
-        passwordTable.appendChild(row);
-    });
+    passwordTable.appendChild(row);
+  });
 }
 
 /* -------------------- */
@@ -159,44 +149,37 @@ function renderPasswords() {
 /* -------------------- */
 
 passwordForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    e.preventDefault();
+  const website = websiteInput.value.trim();
 
-    const website = websiteInput.value.trim();
+  const username = usernameInput.value.trim();
 
-    const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
 
-    const password = passwordInput.value.trim();
+  /* Validation */
 
-    /* Validation */
+  if (!website || !username || !password) {
+    showToast("Please fill all fields", "error");
 
-    if (!website || !username || !password) {
+    return;
+  }
 
-        showToast(
-            "Please fill all fields",
-            "error"
-        );
+  const passwords = getPasswords();
 
-        return;
-    }
+  passwords.push({
+    website,
+    username,
+    password,
+  });
 
-    const passwords = getPasswords();
+  savePasswords(passwords);
 
-    passwords.push({
-        website,
-        username,
-        password
-    });
+  renderPasswords();
 
-    savePasswords(passwords);
+  passwordForm.reset();
 
-    renderPasswords();
-
-    passwordForm.reset();
-
-    showToast(
-        "Password saved successfully"
-    );
+  showToast("Password saved successfully");
 });
 
 /* -------------------- */
@@ -204,24 +187,19 @@ passwordForm.addEventListener("submit", (e) => {
 /* -------------------- */
 
 function deletePassword(index) {
+  const confirmDelete = confirm("Delete this password?");
 
-    const confirmDelete = confirm(
-        "Delete this password?"
-    );
+  if (!confirmDelete) return;
 
-    if (!confirmDelete) return;
+  const passwords = getPasswords();
 
-    const passwords = getPasswords();
+  passwords.splice(index, 1);
 
-    passwords.splice(index, 1);
+  savePasswords(passwords);
 
-    savePasswords(passwords);
+  renderPasswords();
 
-    renderPasswords();
-
-    showToast(
-        "Password deleted successfully"
-    );
+  showToast("Password deleted successfully");
 }
 
 /* -------------------- */
@@ -229,16 +207,11 @@ function deletePassword(index) {
 /* -------------------- */
 
 function copyPassword(index) {
+  const passwords = getPasswords();
 
-    const passwords = getPasswords();
+  navigator.clipboard.writeText(passwords[index].password);
 
-    navigator.clipboard.writeText(
-        passwords[index].password
-    );
-
-    showToast(
-        "Password copied"
-    );
+  showToast("Password copied");
 }
 
 /* -------------------- */
@@ -246,27 +219,17 @@ function copyPassword(index) {
 /* -------------------- */
 
 function toggleViewPassword(index) {
+  const passwords = getPasswords();
 
-    const passwords = getPasswords();
+  const passwordCell = document.getElementById(`password-${index}`);
 
-    const passwordCell =
-        document.getElementById(`password-${index}`);
+  const currentText = passwordCell.textContent;
 
-    const currentText =
-        passwordCell.textContent;
-
-    if (currentText.includes("*")) {
-
-        passwordCell.textContent =
-            passwords[index].password;
-
-    } else {
-
-        passwordCell.textContent =
-            maskPassword(
-                passwords[index].password
-            );
-    }
+  if (currentText.includes("*")) {
+    passwordCell.textContent = passwords[index].password;
+  } else {
+    passwordCell.textContent = maskPassword(passwords[index].password);
+  }
 }
 
 /* -------------------- */
@@ -274,26 +237,21 @@ function toggleViewPassword(index) {
 /* -------------------- */
 
 togglePassword.addEventListener("click", () => {
+  const icon = togglePassword.querySelector("i");
 
-    const icon =
-        togglePassword.querySelector("i");
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
 
-    if (passwordInput.type === "password") {
+    icon.classList.remove("fa-eye");
 
-        passwordInput.type = "text";
+    icon.classList.add("fa-eye-slash");
+  } else {
+    passwordInput.type = "password";
 
-        icon.classList.remove("fa-eye");
+    icon.classList.remove("fa-eye-slash");
 
-        icon.classList.add("fa-eye-slash");
-
-    } else {
-
-        passwordInput.type = "password";
-
-        icon.classList.remove("fa-eye-slash");
-
-        icon.classList.add("fa-eye");
-    }
+    icon.classList.add("fa-eye");
+  }
 });
 
 /* -------------------- */

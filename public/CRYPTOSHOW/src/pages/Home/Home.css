@@ -26,7 +26,7 @@
 
 .hero-eyebrow::before,
 .hero-eyebrow::after {
-  content: '';
+  content: "";
   display: block;
   width: 24px;
   height: 1px;
@@ -137,7 +137,7 @@
   grid-template-columns: 0.4fr 2.5fr 1.2fr 1fr 1.5fr;
   padding: 14px 24px;
   align-items: center;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   transition: background 0.15s;
   cursor: pointer;
 }
@@ -147,7 +147,7 @@
 }
 
 .table-layout:hover {
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .table-layout p:first-child {
@@ -224,18 +224,24 @@
 }
 
 @media (max-width: 768px) {
-  .home { padding: 0 20px 80px; }
+  .home {
+    padding: 0 20px 80px;
+  }
 
   .table-heading,
   .table-layout {
     grid-template-columns: 0.4fr 2.5fr 1.2fr 1fr;
   }
 
-  .market-cap { display: none; }
+  .market-cap {
+    display: none;
+  }
 }
 
 @media (max-width: 500px) {
-  .hero h1 { font-size: 2rem; }
+  .hero h1 {
+    font-size: 2rem;
+  }
 
   .table-heading,
   .table-layout {
@@ -244,5 +250,8 @@
     font-size: 0.8rem;
   }
 
-  .table-layout div img { width: 24px; height: 24px; }
+  .table-layout div img {
+    width: 24px;
+    height: 24px;
+  }
 }

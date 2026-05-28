@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 body {
@@ -86,7 +86,9 @@ h1 {
   color: #666;
 }
 
-.magnifier, .mic-icon, .clear-icon {
+.magnifier,
+.mic-icon,
+.clear-icon {
   color: #ffa31a;
   cursor: pointer;
   font-size: 20px;
@@ -95,13 +97,17 @@ h1 {
   border-radius: 50%;
 }
 
-.magnifier:hover, .mic-icon:hover, .clear-icon:hover {
+.magnifier:hover,
+.mic-icon:hover,
+.clear-icon:hover {
   color: #ffb84d;
   transform: scale(1.1);
   background: rgba(255, 163, 26, 0.1);
 }
 
-.magnifier:active, .mic-icon:active, .clear-icon:active {
+.magnifier:active,
+.mic-icon:active,
+.clear-icon:active {
   transform: scale(0.95);
 }
 
@@ -294,7 +300,8 @@ h1 {
 }
 
 @keyframes micPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -313,7 +320,9 @@ h1 {
     margin: 0 10px;
   }
 
-  .magnifier, .mic-icon, .clear-icon {
+  .magnifier,
+  .mic-icon,
+  .clear-icon {
     font-size: 18px;
   }
 

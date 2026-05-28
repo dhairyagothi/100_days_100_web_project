@@ -1,87 +1,148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="../../favv.png" type="image/x-icon" />
     <title>Contact Book</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📞</text></svg>" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📞</text></svg>"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-100">
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(124, 99, 255, 0.14),
+          rgba(79, 141, 255, 0.1)
+        );
+        color: #fff;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+      "
+      >← Back to Home</a
+    >
 
     <div class="flex flex-col min-h-screen">
       <header class="bg-blue-600 p-4 md:p-6 rounded-b-lg shadow-lg">
-  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div
+          class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4"
+        >
+          <h1 class="text-white text-2xl md:text-3xl font-bold">
+            📚 Contact Book
+          </h1>
 
-    <h1 class="text-white text-2xl md:text-3xl font-bold">
-      📚 Contact Book
-    </h1>
+          <nav class="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+            <a
+              href="{{ url_for('home') }}"
+              class="text-white hover:text-blue-200 transition duration-300"
+            >
+              Home
+            </a>
 
-    <nav class="flex flex-wrap justify-center gap-4 text-sm md:text-base">
-      <a href="{{ url_for('home') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Home
-      </a>
+            {% if 'user_id' in session %}
 
-      {% if 'user_id' in session %}
+            <a
+              href="{{ url_for('dashboard') }}"
+              class="text-white hover:text-blue-200 transition duration-300"
+            >
+              Dashboard
+            </a>
 
-      <a href="{{ url_for('dashboard') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Dashboard
-      </a>
+            <a
+              href="{{ url_for('logout') }}"
+              class="text-white hover:text-blue-200 transition duration-300"
+            >
+              Logout
+            </a>
 
-      <a href="{{ url_for('logout') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Logout
-      </a>
+            {% else %}
 
-      {% else %}
+            <a
+              href="{{ url_for('login') }}"
+              class="text-white hover:text-blue-200 transition duration-300"
+            >
+              Login
+            </a>
 
-      <a href="{{ url_for('login') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Login
-      </a>
+            <a
+              href="{{ url_for('register') }}"
+              class="text-white hover:text-blue-200 transition duration-300"
+            >
+              Register
+            </a>
 
-      <a href="{{ url_for('register') }}"
-         class="text-white hover:text-blue-200 transition duration-300">
-         Register
-      </a>
-
-      {% endif %}
-    </nav>
-
-  </div>
-</header>
+            {% endif %}
+          </nav>
+        </div>
+      </header>
 
       <main class="flex-1">
         <section class="w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div class="container mx-auto px-4 md:px-6">
-            <div class="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+            <div
+              class="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]"
+            >
               <div class="flex flex-col justify-center space-y-4">
                 <div class="space-y-2">
-                  <h1 class="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl">Effortless Contact Management</h1>
-                  <p class="max-w-[600px] text-gray-700 md:text-xl">Streamline your contacts with our powerful contact book app. Create, update, and manage your contacts with ease.</p>
+                  <h1
+                    class="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl"
+                  >
+                    Effortless Contact Management
+                  </h1>
+                  <p class="max-w-[600px] text-gray-700 md:text-xl">
+                    Streamline your contacts with our powerful contact book app.
+                    Create, update, and manage your contacts with ease.
+                  </p>
                 </div>
                 <div class="flex flex-col gap-2 min-[400px]:flex-row">
-                  <a href="/register" class="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-300 disabled:pointer-events-none disabled:opacity-50">Get Started</a>
+                  <a
+                    href="/register"
+                    class="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-300 disabled:pointer-events-none disabled:opacity-50"
+                    >Get Started</a
+                  >
                 </div>
               </div>
               <div class="flex flex-col items-start space-y-4">
-                <div class="inline-block rounded-lg bg-gray-200 px-3 py-1 text-sm">Why Use Contact Book</div>
+                <div
+                  class="inline-block rounded-lg bg-gray-200 px-3 py-1 text-sm"
+                >
+                  Why Use Contact Book
+                </div>
                 <div class="grid gap-4">
                   <div class="grid gap-1">
                     <h3 class="text-xl font-bold">Centralized Contacts</h3>
-                    <p class="text-gray-700">Keep all your contacts in one place, accessible from any device.</p>
+                    <p class="text-gray-700">
+                      Keep all your contacts in one place, accessible from any
+                      device.
+                    </p>
                   </div>
                   <div class="grid gap-1">
                     <h3 class="text-xl font-bold">Effortless CRUD</h3>
-                    <p class="text-gray-700">Easily create, read, update, and delete contacts with our intuitive interface.</p>
+                    <p class="text-gray-700">
+                      Easily create, read, update, and delete contacts with our
+                      intuitive interface.
+                    </p>
                   </div>
                   <div class="grid gap-1">
                     <h3 class="text-xl font-bold">Secure Storage</h3>
-                    <p class="text-gray-700">Your contacts are stored securely in a SQLite database, ensuring your data is safe.</p>
+                    <p class="text-gray-700">
+                      Your contacts are stored securely in a SQLite database,
+                      ensuring your data is safe.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -89,13 +150,28 @@
           </div>
         </section>
         <section class="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
-          <div class="container mx-auto grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
+          <div
+            class="container mx-auto grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10"
+          >
             <div class="space-y-2">
-              <h2 class="text-3xl font-bold tracking-tighter md:text-4xl">Get Started with Contact Book</h2>
-              <p class="max-w-[600px] text-gray-700 md:text-xl lg:text-base xl:text-xl">Streamline your contact management with our powerful app. Start organizing your contacts today.</p>
+              <h2 class="text-3xl font-bold tracking-tighter md:text-4xl">
+                Get Started with Contact Book
+              </h2>
+              <p
+                class="max-w-[600px] text-gray-700 md:text-xl lg:text-base xl:text-xl"
+              >
+                Streamline your contact management with our powerful app. Start
+                organizing your contacts today.
+              </p>
             </div>
-            <div class="flex flex-col gap-2 min-[400px]:flex-row lg:justify-end">
-              <a href="/register" class="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-300 disabled:pointer-events-none disabled:opacity-50">Get Started</a>
+            <div
+              class="flex flex-col gap-2 min-[400px]:flex-row lg:justify-end"
+            >
+              <a
+                href="/register"
+                class="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-300 disabled:pointer-events-none disabled:opacity-50"
+                >Get Started</a
+              >
             </div>
           </div>
         </section>
@@ -103,7 +179,9 @@
 
       <footer class="bg-gray-200 p-6 rounded-t-lg">
         <div class="container mx-auto text-center">
-          <p class="text-gray-600 mt-2">&copy; 2024 Contact Book. All rights reserved.</p>
+          <p class="text-gray-600 mt-2">
+            &copy; 2024 Contact Book. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

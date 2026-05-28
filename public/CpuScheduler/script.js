@@ -262,7 +262,9 @@ function collectInputData() {
     timeQuantum = parseInt(elements.timeQuantum.value);
 
     if (!timeQuantum || timeQuantum < 1) {
-      showError("Time quantum must be a positive number for Round Robin scheduling.");
+      showError(
+        "Time quantum must be a positive number for Round Robin scheduling.",
+      );
       return null;
     }
   }

@@ -34,7 +34,51 @@
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
 
-    <div id="navbar-container"></div>
+    <nav class="navbar" id="navbar">
+      <a
+        class="navbar-brand"
+        href="../index.html"
+        style="text-decoration: none"
+      >
+        <span class="brand-mark" aria-hidden="true">100</span>
+        <span class="brand-copy">
+          <span class="brand-kicker">Open Source Archive</span>
+          <strong>100 Days · 100 Web Projects</strong>
+        </span>
+      </a>
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Toggle navigation menu"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+        <a class="btn btn-ghost btn-sm" href="../index.html"
+          ><i class="fas fa-home"></i> Home</a
+        >
+        <a
+          class="btn btn-primary btn-sm"
+          href="https://www.github-readme.tech"
+          target="_blank"
+          ><i class="fas fa-rocket"></i> Generate README</a
+        >
+        <a
+          class="btn btn-ghost btn-sm"
+          href="https://github.com/dhairyagothi/100_days_100_web_project"
+          target="_blank"
+          ><i class="fab fa-github"></i> GitHub</a
+        >
+        <button
+          class="btn btn-ghost btn-sm"
+          id="themeToggle"
+          aria-label="Toggle theme"
+        >
+          <i class="fas fa-moon"></i> Theme
+        </button>
+      </div>
+    </nav>
 
     <div class="container">
       <div class="contributor-header">
@@ -125,8 +169,11 @@
             basic to intermediate using HTML, CSS, and JS.
           </p>
           <p>
-            <strong>&copy; <span id="Current-Year"></span> 100 Days, 100 Projects</strong> by Dhairya and
-            Contributors.
+            <strong
+              >&copy; <span id="Current-Year"></span> 100 Days, 100
+              Projects</strong
+            >
+            by Dhairya and Contributors.
           </p>
         </div>
         <div>
@@ -184,12 +231,12 @@
       </div>
     </div>
     <button id="scrollBtn" aria-label="Back to top">
-        <svg class="progress-ring" viewBox="0 0 48 48">
-            <circle class="ring-track" cx="24" cy="24" r="22"/>
-            <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22"/>
-        </svg>
-        <i class="fas fa-arrow-up scroll-arrow"></i>
-        <span class="scroll-tooltip">Back to top</span>
+      <svg class="progress-ring" viewBox="0 0 48 48">
+        <circle class="ring-track" cx="24" cy="24" r="22" />
+        <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
+      </svg>
+      <i class="fas fa-arrow-up scroll-arrow"></i>
+      <span class="scroll-tooltip">Back to top</span>
     </button>
     <div class="toast" id="toast"></div>
 
@@ -199,7 +246,8 @@ https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></s
     <script src="../index.js"></script>
     <script src="contributor.js"></script>
     <script>
-      document.getElementById("Current-Year").textContent=new Date().getFullYear();
+      document.getElementById("Current-Year").textContent =
+        new Date().getFullYear();
     </script>
     <script src="../navbar.js"></script>
   </body>

@@ -1,33 +1,24 @@
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
-let darkMode =
-    JSON.parse(localStorage.getItem("darkMode")) || false;
+let darkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
 
 const updateTheme = () => {
-
-    if (darkMode) {
-
-        document.body.classList.add("dark-mode");
-        themeIcon.innerHTML = "🌙";
-
-    } else {
-
-        document.body.classList.remove("dark-mode");
-        themeIcon.innerHTML = "☀️";
-    }
+  if (darkMode) {
+    document.body.classList.add("dark-mode");
+    themeIcon.innerHTML = "🌙";
+  } else {
+    document.body.classList.remove("dark-mode");
+    themeIcon.innerHTML = "☀️";
+  }
 };
 
 themeToggle.addEventListener("click", () => {
+  darkMode = !darkMode;
 
-    darkMode = !darkMode;
+  localStorage.setItem("darkMode", JSON.stringify(darkMode));
 
-    localStorage.setItem(
-        "darkMode",
-        JSON.stringify(darkMode)
-    );
-
-    updateTheme();
+  updateTheme();
 });
 
 const commentsElement = document.querySelector("#comments");
@@ -40,16 +31,14 @@ const usernameInput = document.querySelector("#username");
 
 let liked = JSON.parse(localStorage.getItem("liked")) || false;
 
-let bookmarked =
-    JSON.parse(localStorage.getItem("bookmarked")) || false;
+let bookmarked = JSON.parse(localStorage.getItem("bookmarked")) || false;
 
-let comments =
-    JSON.parse(localStorage.getItem("comments")) || [];
+let comments = JSON.parse(localStorage.getItem("comments")) || [];
 
 // Restore saved username so users don't have to retype it
 const savedUsername = localStorage.getItem("username") || "";
 if (usernameInput && savedUsername) {
-    usernameInput.value = savedUsername;
+  usernameInput.value = savedUsername;
 }
 
 // =======================
@@ -62,37 +51,37 @@ if (usernameInput && savedUsername) {
  * @param {"success"|"info"|"error"} type - Controls icon and color
  */
 const showToast = (message, type = "success") => {
-    const toastContainer = document.getElementById("toastContainer");
+  const toastContainer = document.getElementById("toastContainer");
 
-    const icons = {
-        success: "✅",
-        info: "ℹ️",
-        error: "❌",
-    };
+  const icons = {
+    success: "✅",
+    info: "ℹ️",
+    error: "❌",
+  };
 
-    const toast = document.createElement("div");
+  const toast = document.createElement("div");
 
-    toast.className = `
+  toast.className = `
         flex items-center gap-2 px-5 py-3 rounded-xl shadow-lg text-sm font-medium
         text-white bg-gray-800 dark:bg-gray-700
         animate-[fadeInUp_0.3s_ease]
         transition-all duration-300
     `;
 
-    toast.innerHTML = `
+  toast.innerHTML = `
         <span>${icons[type] || icons.success}</span>
         <span>${message}</span>
     `;
 
-    toastContainer.appendChild(toast);
+  toastContainer.appendChild(toast);
 
-    // Fade out and remove after 2.8 seconds
-    setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transform = "translateY(8px)";
+  // Fade out and remove after 2.8 seconds
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(8px)";
 
-        setTimeout(() => toast.remove(), 300);
-    }, 2800);
+    setTimeout(() => toast.remove(), 300);
+  }, 2800);
 };
 
 // =======================
@@ -102,12 +91,11 @@ const showToast = (message, type = "success") => {
 const progressBar = document.getElementById("progressBar");
 
 window.addEventListener("scroll", () => {
-    const scrollTop = window.scrollY;
-    const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
-    progressBar.style.width = `${progress}%`;
+  progressBar.style.width = `${progress}%`;
 });
 
 // =======================
@@ -118,31 +106,31 @@ const likeOutline = document.getElementById("like");
 const likeFill = document.getElementById("liked");
 
 const updateLikeUI = () => {
-    if (liked) {
-        likeOutline.classList.add("hidden");
-        likeFill.classList.remove("hidden");
-    } else {
-        likeOutline.classList.remove("hidden");
-        likeFill.classList.add("hidden");
-    }
+  if (liked) {
+    likeOutline.classList.add("hidden");
+    likeFill.classList.remove("hidden");
+  } else {
+    likeOutline.classList.remove("hidden");
+    likeFill.classList.add("hidden");
+  }
 };
 
 updateLikeUI();
 
 likeOutline.addEventListener("click", () => {
-    liked = true;
+  liked = true;
 
-    localStorage.setItem("liked", JSON.stringify(liked));
-    updateLikeUI();
-    showToast("You liked this post!");
+  localStorage.setItem("liked", JSON.stringify(liked));
+  updateLikeUI();
+  showToast("You liked this post!");
 });
 
 likeFill.addEventListener("click", () => {
-    liked = false;
+  liked = false;
 
-    localStorage.setItem("liked", JSON.stringify(liked));
-    updateLikeUI();
-    showToast("Like removed.", "info");
+  localStorage.setItem("liked", JSON.stringify(liked));
+  updateLikeUI();
+  showToast("Like removed.", "info");
 });
 
 // =======================
@@ -153,39 +141,33 @@ const bookmarkOutline = document.getElementById("bookmark");
 const bookmarkFill = document.getElementById("bookmarked");
 
 const updateBookmarkUI = () => {
-    if (bookmarked) {
-        bookmarkOutline.classList.add("hidden");
-        bookmarkFill.classList.remove("hidden");
-    } else {
-        bookmarkOutline.classList.remove("hidden");
-        bookmarkFill.classList.add("hidden");
-    }
+  if (bookmarked) {
+    bookmarkOutline.classList.add("hidden");
+    bookmarkFill.classList.remove("hidden");
+  } else {
+    bookmarkOutline.classList.remove("hidden");
+    bookmarkFill.classList.add("hidden");
+  }
 };
 
 updateBookmarkUI();
 
 bookmarkOutline.addEventListener("click", () => {
-    bookmarked = true;
+  bookmarked = true;
 
-    localStorage.setItem(
-        "bookmarked",
-        JSON.stringify(bookmarked)
-    );
+  localStorage.setItem("bookmarked", JSON.stringify(bookmarked));
 
-    updateBookmarkUI();
-    showToast("Post bookmarked!");
+  updateBookmarkUI();
+  showToast("Post bookmarked!");
 });
 
 bookmarkFill.addEventListener("click", () => {
-    bookmarked = false;
+  bookmarked = false;
 
-    localStorage.setItem(
-        "bookmarked",
-        JSON.stringify(bookmarked)
-    );
+  localStorage.setItem("bookmarked", JSON.stringify(bookmarked));
 
-    updateBookmarkUI();
-    showToast("Bookmark removed.", "info");
+  updateBookmarkUI();
+  showToast("Bookmark removed.", "info");
 });
 
 // =======================
@@ -195,24 +177,22 @@ bookmarkFill.addEventListener("click", () => {
 const shareButton = document.getElementById("share");
 
 shareButton.addEventListener("click", async () => {
-    try {
-        if (navigator.share) {
-            await navigator.share({
-                title: "Organic Farming Blog",
-                text: "Check out this blog page!",
-                url: window.location.href,
-            });
-            showToast("Thanks for sharing!");
-        } else {
-            await navigator.clipboard.writeText(
-                window.location.href
-            );
-            showToast("Link copied to clipboard!", "info");
-        }
-    } catch (error) {
-        // User cancelled the share dialog — no need to show an error
-        console.log(error);
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: "Organic Farming Blog",
+        text: "Check out this blog page!",
+        url: window.location.href,
+      });
+      showToast("Thanks for sharing!");
+    } else {
+      await navigator.clipboard.writeText(window.location.href);
+      showToast("Link copied to clipboard!", "info");
     }
+  } catch (error) {
+    // User cancelled the share dialog — no need to show an error
+    console.log(error);
+  }
 });
 
 // =======================
@@ -220,23 +200,23 @@ shareButton.addEventListener("click", async () => {
 // =======================
 
 const renderComments = () => {
-    commentsElement.innerHTML = "";
+  commentsElement.innerHTML = "";
 
-    if (comments.length === 0) {
-        commentsElement.innerHTML = `
+  if (comments.length === 0) {
+    commentsElement.innerHTML = `
             <p id="emptyMessage">No comments yet</p>
         `;
 
-        return;
-    }
+    return;
+  }
 
-    comments.forEach((commentObj, index) => {
-        const commentElement = document.createElement("div");
+  comments.forEach((commentObj, index) => {
+    const commentElement = document.createElement("div");
 
-        commentElement.className =
-            "bg-gray-100 dark:bg-gray-700 rounded-xl p-4 shadow-sm transition duration-300";
+    commentElement.className =
+      "bg-gray-100 dark:bg-gray-700 rounded-xl p-4 shadow-sm transition duration-300";
 
-        commentElement.innerHTML = `
+    commentElement.innerHTML = `
             <div class="flex justify-between items-start gap-2">
                 <div class="flex-1 min-w-0">
                     <p class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
@@ -304,122 +284,104 @@ const renderComments = () => {
             </div>
         `;
 
-        commentsElement.appendChild(commentElement);
+    commentsElement.appendChild(commentElement);
+  });
+
+  // =======================
+  // DELETE COMMENT
+  // =======================
+
+  document.querySelectorAll(".delete-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = button.dataset.index;
+
+      comments.splice(index, 1);
+
+      localStorage.setItem("comments", JSON.stringify(comments));
+
+      renderComments();
+      showToast("Comment deleted.", "info");
     });
+  });
 
-    // =======================
-    // DELETE COMMENT
-    // =======================
+  // =======================
+  // LIKE COMMENT
+  // =======================
 
-    document.querySelectorAll(".delete-btn")
-        .forEach((button) => {
-            button.addEventListener("click", () => {
-                const index = button.dataset.index;
+  document.querySelectorAll(".like-comment").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = button.dataset.index;
 
-                comments.splice(index, 1);
+      comments[index].likes++;
 
-                localStorage.setItem(
-                    "comments",
-                    JSON.stringify(comments)
-                );
+      localStorage.setItem("comments", JSON.stringify(comments));
 
-                renderComments();
-                showToast("Comment deleted.", "info");
-            });
-        });
+      renderComments();
+    });
+  });
 
-    // =======================
-    // LIKE COMMENT
-    // =======================
+  // =======================
+  // EDIT COMMENT
+  // =======================
 
-    document.querySelectorAll(".like-comment")
-        .forEach((button) => {
-            button.addEventListener("click", () => {
-                const index = button.dataset.index;
+  document.querySelectorAll(".edit-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = button.dataset.index;
 
-                comments[index].likes++;
+      // Toggle into edit mode
+      document.getElementById(`comment-text-${index}`).classList.add("hidden");
+      document.getElementById(`edit-input-${index}`).classList.remove("hidden");
+      const actions = document.getElementById(`edit-actions-${index}`);
+      actions.classList.remove("hidden");
+      actions.classList.add("flex", "gap-2");
 
-                localStorage.setItem(
-                    "comments",
-                    JSON.stringify(comments)
-                );
+      // Focus the textarea and move cursor to end
+      const editInput = document.getElementById(`edit-input-${index}`);
+      editInput.focus();
+      editInput.setSelectionRange(
+        editInput.value.length,
+        editInput.value.length,
+      );
+    });
+  });
 
-                renderComments();
-            });
-        });
+  document.querySelectorAll(".save-edit-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = button.dataset.index;
+      const newText = document
+        .getElementById(`edit-input-${index}`)
+        .value.trim();
 
-    // =======================
-    // EDIT COMMENT
-    // =======================
+      if (newText === "") {
+        showToast("Comment cannot be empty.", "error");
+        return;
+      }
 
-    document.querySelectorAll(".edit-btn")
-        .forEach((button) => {
-            button.addEventListener("click", () => {
-                const index = button.dataset.index;
+      comments[index].text = newText;
 
-                // Toggle into edit mode
-                document.getElementById(`comment-text-${index}`)
-                    .classList.add("hidden");
-                document.getElementById(`edit-input-${index}`)
-                    .classList.remove("hidden");
-                const actions = document.getElementById(`edit-actions-${index}`);
-                actions.classList.remove("hidden");
-                actions.classList.add("flex", "gap-2");
+      localStorage.setItem("comments", JSON.stringify(comments));
 
-                // Focus the textarea and move cursor to end
-                const editInput = document.getElementById(
-                    `edit-input-${index}`
-                );
-                editInput.focus();
-                editInput.setSelectionRange(
-                    editInput.value.length,
-                    editInput.value.length
-                );
-            });
-        });
+      renderComments();
+      showToast("Comment updated!");
+    });
+  });
 
-    document.querySelectorAll(".save-edit-btn")
-        .forEach((button) => {
-            button.addEventListener("click", () => {
-                const index = button.dataset.index;
-                const newText = document
-                    .getElementById(`edit-input-${index}`)
-                    .value.trim();
+  document.querySelectorAll(".cancel-edit-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = button.dataset.index;
 
-                if (newText === "") {
-                    showToast("Comment cannot be empty.", "error");
-                    return;
-                }
-
-                comments[index].text = newText;
-
-                localStorage.setItem(
-                    "comments",
-                    JSON.stringify(comments)
-                );
-
-                renderComments();
-                showToast("Comment updated!");
-            });
-        });
-
-    document.querySelectorAll(".cancel-edit-btn")
-        .forEach((button) => {
-            button.addEventListener("click", () => {
-                const index = button.dataset.index;
-
-                // Restore original text and hide edit mode
-                document.getElementById(`edit-input-${index}`)
-                    .value = comments[index].text;
-                document.getElementById(`comment-text-${index}`)
-                    .classList.remove("hidden");
-                document.getElementById(`edit-input-${index}`)
-                    .classList.add("hidden");
-                const actions = document.getElementById(`edit-actions-${index}`);
-                actions.classList.add("hidden");
-                actions.classList.remove("flex", "gap-2");
-            });
-        });
+      // Restore original text and hide edit mode
+      document.getElementById(`edit-input-${index}`).value =
+        comments[index].text;
+      document
+        .getElementById(`comment-text-${index}`)
+        .classList.remove("hidden");
+      document.getElementById(`edit-input-${index}`).classList.add("hidden");
+      const actions = document.getElementById(`edit-actions-${index}`);
+      actions.classList.add("hidden");
+      actions.classList.remove("flex", "gap-2");
+    });
+  });
 };
 
 // =======================
@@ -427,54 +389,51 @@ const renderComments = () => {
 // =======================
 
 const addComment = () => {
-    const comment = commentTextarea.value.trim();
+  const comment = commentTextarea.value.trim();
 
-    if (comment === "") {
-        showToast("Please write a comment first.", "error");
-        return;
-    }
+  if (comment === "") {
+    showToast("Please write a comment first.", "error");
+    return;
+  }
 
-    // Save username for next time
-    const author = usernameInput
-        ? usernameInput.value.trim() || "Anonymous"
-        : "Anonymous";
+  // Save username for next time
+  const author = usernameInput
+    ? usernameInput.value.trim() || "Anonymous"
+    : "Anonymous";
 
-    if (usernameInput && usernameInput.value.trim()) {
-        localStorage.setItem("username", usernameInput.value.trim());
-    }
+  if (usernameInput && usernameInput.value.trim()) {
+    localStorage.setItem("username", usernameInput.value.trim());
+  }
 
-    const now = new Date();
+  const now = new Date();
 
-    const currentTime = now.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-    });
+  const currentTime = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-    const currentDate = now.toLocaleDateString([], {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-    });
+  const currentDate = now.toLocaleDateString([], {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
-    const commentData = {
-        text: comment,
-        author: author,
-        time: currentTime,
-        date: currentDate,
-        likes: 0,
-    };
+  const commentData = {
+    text: comment,
+    author: author,
+    time: currentTime,
+    date: currentDate,
+    likes: 0,
+  };
 
-    comments.push(commentData);
+  comments.push(commentData);
 
-    localStorage.setItem(
-        "comments",
-        JSON.stringify(comments)
-    );
+  localStorage.setItem("comments", JSON.stringify(comments));
 
-    commentTextarea.value = "";
+  commentTextarea.value = "";
 
-    renderComments();
-    showToast("Comment added!");
+  renderComments();
+  showToast("Comment added!");
 };
 
 // =======================
@@ -482,7 +441,3 @@ const addComment = () => {
 // =======================
 
 renderComments();
-
-
-
-

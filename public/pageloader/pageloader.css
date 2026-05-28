@@ -13,24 +13,85 @@ body{
   overflow-x: hidden;
 }
 
+/* --- Navigation Layout --- */
+.navbar {
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+@import url("https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;600&family=Manrope:wght@300;400;600&display=swap");
 
-.loader-wrapper{
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(0,0,0,0.92);
+:root {
+    --bg-deep: #0c0f1a;
+    --bg-surface: #151b2c;
+    --accent: #5eead4;
+    --accent-strong: #38bdf8;
+    --text-main: #f8fafc;
+    --text-muted: rgba(248, 250, 252, 0.72);
+    --glass: rgba(15, 23, 42, 0.65);
+    --border: rgba(148, 163, 184, 0.2);
+    --shadow: 0 30px 80px rgba(15, 23, 42, 0.55);
+}
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
 
-  z-index: 9999;
+body {
+    font-family: "Manrope", sans-serif;
+    line-height: 1.6;
+    color: var(--text-main);
+    background: radial-gradient(circle at top, #1f2a44 0%, var(--bg-deep) 45%, #070912 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
 
-  backdrop-filter: blur(6px);
+    body{
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        background-color: #000000;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow: auto;
+        }
+    
 
-  transition: opacity 0.5s ease,
-              visibility 0.5s ease;
+    
+    #container {
+        margin: auto;
+        width: 80%;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #252323;
+        border-radius: 8px;
+        box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.3);
+}
+
+body::before {
+    background: radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.25), transparent 55%),
+        radial-gradient(circle at 85% 70%, rgba(94, 234, 212, 0.22), transparent 45%);
+    opacity: 0.9;
+}
+
+body::after {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 60px;
+    opacity: 0.3;
+}
+
+.page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .loader-wrapper.fade-out{
