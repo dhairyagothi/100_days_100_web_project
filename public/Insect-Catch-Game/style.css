@@ -233,9 +233,9 @@ h1 {
 }
 
 .insect img {
-<<<<<<< HEAD
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 0 12px rgba(255,140,0,0.8));
 }
 
 .sound-controls {
@@ -281,11 +281,8 @@ h1 {
     border-radius: 50%;
     background: #fff;
     cursor: pointer;
-=======
-  width: 120px;
-  height: 120px;
-  filter: drop-shadow(0 0 12px rgba(255,140,0,0.8));
 }
+
 @keyframes float {
   0% {
     transform: translate(-50%, -50%) translateY(0px);
@@ -331,7 +328,9 @@ h1 {
   .score {
     font-size: 0.8rem;
   }
-}.corner-design {
+}
+
+.corner-design {
   position: absolute;
   width: 200px;
   height: 200px;
@@ -361,5 +360,4 @@ h1 {
   bottom: -100px;
   right: -100px;
   border-radius: 100% 0 0 0;
->>>>>>> upstream/main
 }
