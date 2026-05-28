@@ -538,9 +538,10 @@ function generateReadme() {
     a.click();
     a.remove();
     URL.revokeObjectURL(a.href);
+    showToast('README generated and download started!');
   } catch (e) {
     console.error('Failed to generate README:', e);
-    alert('Could not generate README. See console for details.');
+    showToast('Failed to generate README. See console.');
   }
 }
 
