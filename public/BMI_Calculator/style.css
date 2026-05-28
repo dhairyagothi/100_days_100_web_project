@@ -219,6 +219,13 @@ select,
 input[type="text"],
 input[type="number"] {
   width: 100%;
+  background: var(--navy-3);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius-sm);
+  padding: .75rem 3rem .75rem 2.8rem;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
   padding: 10px 12px;
   background: var(--surface);
   border: 1px solid var(--rule);
@@ -237,6 +244,28 @@ input[type="number"] {
 select:hover,
 input:hover {
   border-color: var(--rule-strong);
+}
+.field-icon {
+  position: absolute;
+  left: .9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+.field-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+.field-unit {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .75rem;
+  color: var(--muted);
 }
 
 select:focus,
@@ -285,6 +314,10 @@ button#btn:active {
 /* =========================================
    Results
    ========================================= */
+.post-calc {
+  margin-top: 18px;
+}
+
 .result-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -774,6 +807,21 @@ input:focus::placeholder {
   animation: fadeSlide 0.5s ease;
 }
 
+.post-calc {
+  animation: fadeUp .35s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes fadeSlide {
   from {
     opacity: 0;
@@ -789,3 +837,446 @@ input:focus::placeholder {
   background: rgba(100, 100, 255, 0.08);
   transition: background 0.3s ease;
 }
+
+/* =========================================
+   Goal Tracker Section
+   ========================================= */
+.goal-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+
+.goal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.goal-status {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 2px;
+  font-family: var(--f-mono);
+  background: var(--blue-tint);
+  color: var(--blue);
+  transition: all 0.3s ease;
+}
+
+.goal-status.achieved {
+  background: var(--green-tint);
+  color: var(--green);
+}
+
+.goal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Progress Bar */
+.goal-progress-wrap {
+  position: relative;
+}
+
+.goal-progress-bar {
+  width: 100%;
+  height: 24px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.goal-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
+  width: 0%;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.goal-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.goal-progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  font-family: var(--f-mono);
+  letter-spacing: 0.05em;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Goal Metrics Grid */
+.goal-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.goal-metric {
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  transition: all 0.2s ease;
+}
+
+.goal-metric:hover {
+  border-color: var(--rule-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.dark .goal-metric:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.03);
+}
+
+.goal-metric-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+
+.goal-metric-value {
+  font-family: var(--f-serif);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+/* Confetti Animation for Goal Achievement */
+@keyframes confetti {
+  0% { 
+    transform: translateY(0) rotate(0deg); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateY(-100vh) rotate(720deg); 
+    opacity: 0; 
+  }
+}
+
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--green);
+  animation: confetti 3s ease-out forwards;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Mobile Responsive for Goal Section */
+@media (max-width: 768px) {
+  .goal-metrics {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .goal-progress-bar {
+    height: 20px;
+  }
+  
+  .goal-metric-value {
+    font-size: 18px;
+  }
+  
+  .goal-section {
+    margin-top: 18px;
+    padding-top: 18px;
+  }
+}
+
+.card, .full-card, .hero-text { animation: fadeUp .5s ease both; }
+.main-grid .card:nth-child(2) { animation-delay: .1s; }
+.main-grid .card:nth-child(3) { animation-delay: .15s; }
+.main-grid .card:nth-child(4) { animation-delay: .2s; }
+
+/* ===============================
+   GLASSMORPHISM ENHANCEMENT
+================================= */
+
+.card,
+.full-card,
+.body-card {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.03);
+  transition:
+    transform .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease;
+}
+
+.card:hover,
+.full-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(15,191,173,.35);
+  box-shadow:
+    0 14px 45px rgba(0,0,0,.45),
+    0 0 0 1px rgba(15,191,173,.1);
+}
+
+/* ===============================
+   BUTTON GLOW EFFECT
+================================= */
+
+.calc-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.calc-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(255,255,255,.25) 50%,
+      transparent 80%
+    );
+  transform: translateX(-120%);
+  transition: transform .7s ease;
+}
+
+.calc-btn:hover::before {
+  transform: translateX(120%);
+}
+
+.calc-btn:hover {
+  box-shadow:
+    0 10px 30px rgba(15,191,173,.35);
+}
+
+/* ===============================
+   INPUT HOVER EFFECT
+================================= */
+
+.field input:hover {
+  border-color: rgba(15,191,173,.25);
+  background: rgba(255,255,255,.02);
+}
+
+/* ===============================
+   FLOATING CARD ANIMATION
+================================= */
+
+@keyframes floatCard {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+.body-card {
+  animation:
+    fadeUp .6s ease,
+    floatCard 5s ease-in-out infinite;
+}
+
+/* ===============================
+   HERO TITLE EFFECT
+================================= */
+
+.hero-text h1 {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-text h1::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 60%;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--teal),
+    transparent
+  );
+}
+
+/* ===============================
+   TABLE ROW HOVER
+================================= */
+
+.bmi-table tbody tr {
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.bmi-table tbody tr:hover {
+  background: rgba(255,255,255,.02);
+  transform: scale(1.01);
+}
+
+/* ===============================
+   SCROLLBAR STYLING
+================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(15,191,173,.35);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15,191,173,.55);
+}
+
+/* ===============================
+   SOFT PULSE EFFECT
+================================= */
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(15,191,173,.0);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(15,191,173,.18);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(15,191,173,.0);
+  }
+}
+
+.gauge-center {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+/* ===============================
+   RESPONSIVE IMPROVEMENTS
+================================= */
+
+@media (max-width: 900px) {
+
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-text p {
+    margin: 0 auto;
+  }
+
+  .body-stats {
+    flex-direction: column;
+  }
+
+  .human-figures {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .page {
+    padding: 1.2rem;
+  }
+
+  .card,
+  .full-card {
+    padding: 1.2rem;
+  }
+
+  .hero-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .gauge-bmi {
+    font-size: 2rem;
+  }
+
+  .calc-btn {
+    font-size: .9rem;
+    padding: .9rem;
+  }
+
+  .field input {
+    font-size: .88rem;
+  }
+}
+
+/* ===============================
+   DARK/LIGHT MODE SUPPORT
+================================= */
+
+@media (prefers-color-scheme: light) {
+
+  :root {
+    --navy: #f4f7fb;
+    --navy-2: #ffffff;
+    --navy-3: #edf2f7;
+    --card: #ffffff;
+    --card2: #f6f9fc;
+    --text: #081120;
+    --muted: #5b6b84;
+    --border: rgba(0,0,0,.08);
+  }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+  }
+
+  .field input {
+    color: #081120;
+  }
+
+  .hero-text h1 {
+    color: #081120;
+  }
+}
+

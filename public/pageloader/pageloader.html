@@ -1,40 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="pageloader.css">
-<title>Pageloader</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Loader Demo</title>
+  <link rel="stylesheet" href="pageloader.css">
 </head>
-<body><div id="loading"></div>
+<body>
 
-    <div id="container">
-        <nav class="navbar">
-            <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-        <header id ="home">
-        <h1>Welcome to Pageloader!</h1>
-        </header>
-        <section id="about" class="content">
-            <h2>About Us</h2>
-            <p>Thank you for visiting our website. Here is a simple example of a pageloader.</p>
-        </section>
-        <footer id="contact">
-            <h2>Contact Us</h2>
-            <p>&copy; 2024 Your Company. All rights reserved.</p>
-        </footer>
+  <!-- Full-screen Preloader -->
+  <div class="loader-wrapper" id="loader">
+    <div class="loader-container">
+      <span class="loader"></span>
+      <h2>Loading...</h2>
+      <p>Please wait while we prepare everything for you.</p>
     </div>
-       <script>
-        window.addEventListener("load", function() {
-        setTimeout(function() { 
-        const loader = document.getElementById("loading");       
-        loader.style.display = "none";  
-        }, 1000);                      
-});
-    </script>
+  </div>
+
+  <!-- Main Website Content -->
+  <div class="content">
+
+    <nav class="navbar">
+      <h1 class="logo">Pageloader</h1>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <h1>Welcome to Pageloader!</h1>
+      <p>This is a simple example of a website featuring a smooth CSS page loader animation.</p>
+    </section>
+
+    <section class="showcase">
+      <div class="left-section">
+        <div class="info-box">
+          <h2>About Us</h2>
+          <p>Thank you for visiting our website. Here is a simple example of a clean, reusable pageloader component.</p>
+        </div>
+
+        <div class="info-box">
+          <h2>Contact Us</h2>
+          <p>Feel free to reach out to us for any queries.</p>
+          <p>Email: <a href="mailto:info@yourcompany.com">info@yourcompany.com</a></p>
+        </div>
+      </div>
+
+      <!-- Live Preview & Snippet Card -->
+      <div class="loader-card">
+        <div class="preview">
+          <h3>Current Pageloader</h3>
+          <div class="preview-box">
+            <span class="loader"></span>
+          </div>
+        </div>
+
+        <div class="code-box">
+          <div class="code-header">
+            <h3>Code Snippet</h3>
+            <button type="button" id="copyBtn">Copy</button>
+          </div>
+          <pre><code>&lt;span class="loader"&gt;&lt;/span&gt;
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: #FFF #FFF transparent transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+.loader::after,
+.loader::before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  margin: auto;
+  border: 3px solid;
+  border-radius: 50%;
+}
+
+.loader::after {
+  width: 40px;
+  height: 40px;
+  border-color: transparent transparent #FF3D00 #FF3D00;
+  animation: rotationBack 0.5s linear infinite;
+}
+
+.loader::before {
+  width: 32px;
+  height: 32px;
+  border-color: #FFF #FFF transparent transparent;
+  animation: rotation 1.5s linear infinite;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes rotationBack {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 All rights reserved.</p>
+    </footer>
+
+  </div>
+
+
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      setTimeout(() => {
+        loader.classList.add("fade-out");
+        setTimeout(() => {
+          loader.style.display = "none";
+        }, 500);
+
+      }, 2000);
+    });
+  </script>
+
 </body>
 </html>
