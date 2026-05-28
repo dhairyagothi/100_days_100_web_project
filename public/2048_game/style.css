@@ -308,14 +308,14 @@ body.dark .logo {
 .board {
   display: grid;
   grid-template-columns: repeat(4, var(--tile-size));
+  grid-template-rows: repeat(4, var(--tile-size));
   gap: var(--tile-gap);
   padding: var(--board-pad);
   border-radius: var(--radius-board);
   transition: background 0.3s;
   position: relative;
-  margin: 0 auto;
-  position: relative;
-  overflow: hidden;
+  width: fit-content;
+  height: fit-content;
 }
 
 body.light .board {
@@ -340,8 +340,7 @@ body.dark  .cell { background: rgba(255, 255, 255, 0.04); }
 /* ---------- Tiles layer ---------- */
 .tiles-layer {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   pointer-events: none;
   position: absolute;
   inset: 0;
@@ -793,9 +792,8 @@ body.dark  .stats-modal { background: rgba(0, 10, 25, 0.94); }
   }
 
   .tile[data-val="1024"],
-  .tile[data-val="2048"]{
-    font-size: 12px;
-  }
+.tile[data-val="2048"] {  font-size: 16px; }
+@media (max-width: 768px) {
 
 }
 
