@@ -182,6 +182,7 @@ The website features:
 | 110 | CRYPTOSHOW | HTML, CSS, JS | 💰 Crypto | [View Demo](https://100-days-100-web-project.vercel.app/public/CRYPTOSHOW) |
 | 111 | Whack-a-Mole Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Whack-a-Mole%20Game) |
 | 112 | Nykaa Clone | HTML, CSS, JS | 💄 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone) |
+| 113 | MERN Notes App | MongoDB, Express, React, Node | 📝 Full-Stack | [GitHub](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/MERN_Notes_App) |
 | 113 | CPU Scheduler | HTML, CSS, JS | ⚙️ Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler) |
 | 114 | EchoNotes | HTML, CSS, JS | 📝 App | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes) |
 | 115 | Event Registration System | API, JavaScript | ⚙️ Tool | [View Demo](https://100-days-100-web-project.vercel.app/public/Event-Registration-System/index.html) |

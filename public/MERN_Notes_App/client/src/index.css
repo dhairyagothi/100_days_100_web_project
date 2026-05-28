@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0a0a1a;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+input, textarea, button {
+  font-family: inherit;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #e94560;
+  outline-offset: 2px;
+}
+
+button {
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  opacity: 0.88;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a1a; }
+::-webkit-scrollbar-thumb { background: #e94560; border-radius: 3px; }
+
+/* Responsive breakpoints */
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+}
