@@ -185,21 +185,24 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 5px;
     z-index: 20;
+    width: 260px;
+    height: 120px;
 }
 
 .wave {
     width: 6px;
-    height: 20px;
+    height: 12px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255,255,255,0.8);
+    transition: height 0.05s ease;
 }
 
 .state-listening .orb, .state-speaking .orb {
-    opacity: 0.2;
-    transform: scale(0.8);
+    opacity: 0.15;
+    transform: scale(0.75);
 }
 
 .state-listening .waves, .state-speaking .waves {
@@ -216,20 +219,64 @@ body {
     box-shadow: 0 0 15px var(--primary-glow);
 }
 
+/* Set staggered animation delays dynamically for all 15 wave bars as defaults */
 .wave:nth-child(1) { animation-delay: 0.1s; }
 .wave:nth-child(2) { animation-delay: 0.3s; }
 .wave:nth-child(3) { animation-delay: 0.5s; }
 .wave:nth-child(4) { animation-delay: 0.2s; }
 .wave:nth-child(5) { animation-delay: 0.4s; }
+.wave:nth-child(6) { animation-delay: 0.6s; }
+.wave:nth-child(7) { animation-delay: 0.15s; }
+.wave:nth-child(8) { animation-delay: 0.35s; }
+.wave:nth-child(9) { animation-delay: 0.55s; }
+.wave:nth-child(10) { animation-delay: 0.25s; }
+.wave:nth-child(11) { animation-delay: 0.45s; }
+.wave:nth-child(12) { animation-delay: 0.05s; }
+.wave:nth-child(13) { animation-delay: 0.2s; }
+.wave:nth-child(14) { animation-delay: 0.4s; }
+.wave:nth-child(15) { animation-delay: 0.1s; }
 
 @keyframes wave-anim {
-    0%, 100% { height: 20px; }
-    50% { height: 60px; }
+    0%, 100% { height: 12px; }
+    50% { height: 50px; }
 }
 
 @keyframes speak-anim {
-    0%, 100% { height: 30px; }
-    50% { height: 90px; }
+    0%, 100% { height: 15px; }
+    50% { height: 75px; }
+}
+
+/* Transcript Bubble */
+.transcript-container {
+    width: 100%;
+    max-height: 80px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 12px 16px;
+    text-align: center;
+    margin: 15px 0;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.01);
+}
+
+#transcript-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+#transcript-text.active-speak {
+    color: #e0f2fe;
+    text-shadow: 0 0 8px rgba(14, 165, 233, 0.4);
+}
+
+#transcript-text.active-listen {
+    color: #fca5a5;
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
 }
 
 /* Mic Button Active State */
@@ -239,4 +286,179 @@ body {
 }
 .mic-active i {
     color: white;
+}
+
+/* Glassmorphic Settings Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 6, 23, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.settings-card {
+    width: 90%;
+    max-width: 380px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .settings-card {
+    transform: translateY(0);
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    background: linear-gradient(to right, #f8fafc, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.settings-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.setting-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.setting-group select, .setting-group input[type="password"] {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.setting-group select:focus, .setting-group input[type="password"]:focus {
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+}
+
+.setting-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.slider-val-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slider-val-wrapper input[type="range"] {
+    flex: 1;
+    accent-color: var(--primary-glow);
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.slider-val-wrapper span {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    min-width: 32px;
+    text-align: right;
+}
+
+.help-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+.settings-footer {
+    padding: 16px 24px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.settings-save-btn {
+    background: linear-gradient(135deg, var(--primary-glow), #0284c7);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+.settings-save-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3);
+}
+
+.settings-save-btn:active {
+    transform: translateY(0);
 }

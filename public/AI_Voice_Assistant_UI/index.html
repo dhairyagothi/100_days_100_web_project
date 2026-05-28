@@ -18,14 +18,29 @@
             <div class="ring ring-2"></div>
             <div class="ring ring-3"></div>
             
-            <!-- Voice Waves (Hidden by default) -->
+            <!-- Voice Waves (increased to 15 bars for higher resolution frequency mapping) -->
             <div class="waves" id="waves">
                 <div class="wave"></div>
                 <div class="wave"></div>
                 <div class="wave"></div>
                 <div class="wave"></div>
                 <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
             </div>
+        </div>
+
+        <!-- Dynamic Transcript Bubble -->
+        <div class="transcript-container" id="transcript-container">
+            <p id="transcript-text">Tap the mic to speak...</p>
         </div>
 
         <!-- Status Text -->
@@ -42,9 +57,67 @@
             <button class="btn main-btn" id="mic-btn" aria-label="Toggle Microphone">
                 <i class="ph-fill ph-microphone" aria-hidden="true" focusable="false"></i>
             </button>
-            <button class="btn icon-btn" title="Close" id="close-btn" aria-label="Close Dashboard">
-                <i class="ph ph-x" aria-hidden="true" focusable="false"></i>
+            <button class="btn icon-btn" title="Clear/Reset" id="clear-btn" aria-label="Clear Transcript and Reset">
+                <i class="ph ph-trash" aria-hidden="true" focusable="false"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- Glassmorphic Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="settings-card">
+            <div class="settings-header">
+                <h2>Assistant Settings</h2>
+                <button class="modal-close-btn" id="settings-close" aria-label="Close Settings">
+                    <i class="ph ph-x" aria-hidden="true" focusable="false"></i>
+                </button>
+            </div>
+            
+            <div class="settings-body">
+                <div class="setting-group">
+                    <label for="voice-select">Speech Synthesis Voice</label>
+                    <select id="voice-select">
+                        <option value="">Loading voices...</option>
+                    </select>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-group">
+                        <label for="rate-slider">Speed (Rate)</label>
+                        <div class="slider-val-wrapper">
+                            <input type="range" id="rate-slider" min="0.5" max="2" step="0.1" value="1">
+                            <span id="rate-val">1.0x</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="pitch-slider">Pitch</label>
+                        <div class="slider-val-wrapper">
+                            <input type="range" id="pitch-slider" min="0.5" max="2" step="0.1" value="1">
+                            <span id="pitch-val">1.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label for="provider-select">AI Provider</label>
+                    <select id="provider-select">
+                        <option value="local">Local Rules (Offline/No Key)</option>
+                        <option value="gemini">Gemini API</option>
+                        <option value="nvidia">NVIDIA NIM API</option>
+                    </select>
+                </div>
+
+                <div class="setting-group" id="key-group">
+                    <label id="key-label" for="api-key-input">API Key</label>
+                    <input type="password" id="api-key-input" placeholder="Enter API key...">
+                    <small class="help-text" id="key-help">Key is saved locally in your browser.</small>
+                </div>
+            </div>
+            
+            <div class="settings-footer">
+                <button class="settings-save-btn" id="settings-save">Save Settings</button>
+            </div>
         </div>
     </div>
 
