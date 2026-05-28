@@ -608,3 +608,60 @@ nav ul li{
 }
 
 }
+
+.project-back-button{
+  position: fixed;
+  top: 20px;
+  right: 450px;
+  z-index: 9999;
+
+  padding: 12px 22px;
+
+  border-radius: 50px;
+
+  background:
+    linear-gradient(135deg,#359381,#5ab89e);
+
+  color: white;
+  text-decoration: none;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  border: 1px solid rgba(255,255,255,0.15);
+
+  box-shadow:
+    0 10px 30px rgba(53,147,129,0.35);
+
+  backdrop-filter: blur(12px);
+
+  transition: all 0.35s ease;
+}
+
+.project-back-button:hover{
+  transform:
+    translateY(-3px)
+    scale(1.03);
+
+  background:
+    linear-gradient(135deg,#5ab89e,#a8e063);
+
+  box-shadow:
+    0 16px 40px rgba(168,224,99,0.35);
+}
+
+/* MOBILE */
+@media (max-width:768px){
+
+  .project-back-button{
+    top:18px;
+    right:18px;
+
+    padding:10px 18px;
+
+    font-size:0.78rem;
+  }
+
+}
