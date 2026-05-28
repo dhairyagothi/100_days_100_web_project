@@ -365,46 +365,18 @@ body {
     font-size: 34px;
   }
 }
-.theme-toggle {
-
-  position: fixed;
-
-  top: 20px;
-  right: 20px;
-
-  width: 55px;
-  height: 55px;
-
-  border-radius: 50%;
-
-  border: none;
-
-  background: white;
-
-  color: black;
-
-  font-size: 22px;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 4px 15px rgba(0,0,0,0.25);
-
-  transition: 0.3s ease;
-
-  z-index: 999;
+.home-btn{
+    display:inline-block;
+    margin-bottom:20px;
+    padding:10px 18px;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.2);
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    transition:.3s;
 }
 
-body.light-mode .theme-toggle {
-
-  background: #0f172a;
-
-  color: white;
-}
-
-.theme-toggle:hover {
-
-  transform:
-    scale(1.08)
-    rotate(8deg);
+.home-btn:hover{
+    transform:translateY(-2px);
 }

@@ -35,34 +35,7 @@
   </div>
 
   <!-- ── NAVBAR ──────────────────────────────────────────── -->
-  <header>
-    <nav class="navbar" id="navbar">
-      <a class="navbar-brand" href="../index.html" style="text-decoration:none;">
-        <span class="brand-mark" aria-label="100 Days logo">100</span>
-        <span class="brand-copy">
-          <span class="brand-kicker">Open Source Archive</span>
-          <strong>100 Days · 100 Web Projects</strong>
-        </span>
-      </a>
-
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-        <i class="fas fa-bars" aria-hidden="true"></i>
-      </button>
-
-      <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-        <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
-        <a class="btn btn-primary btn-sm active" href="learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
-        <a class="btn btn-ghost btn-sm" href="../contributors/contributor.html">Contributors</a>
-        <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-github"></i> GitHub
-        </a>
-        <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer">Generate README</a>
-        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-          <i class="fas fa-moon"></i> Theme
-        </button>
-      </div>
-    </nav>
-  </header>
+  <div id="navbar-container"></div>
 
   <!-- ── MAIN CONTAINER ─────────────────────────────────── -->
   <main class="learning-container">
@@ -168,6 +141,7 @@
   <script>
     document.getElementById("Current-Year").textContent = new Date().getFullYear();
   </script>
-</body>
+  <script src="../navbar.js"></script>
+  </body>
 
 </html>
