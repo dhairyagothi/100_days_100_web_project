@@ -68,6 +68,7 @@ let moves = 0;
 let combo = 0;
 let over = false;
 let won = false;
+let undoLocked = false;
 let dark = false;
 let soundOn = true;
 let mode = 'classic';
@@ -371,7 +372,9 @@ function doMove(dir) {
 
   if (isLost()) {
     over = true;
-    showToast(reviveChance > 0 ? `Chance left: ${reviveChance}` : 'No chances left');
+    undoLocked = true;
+
+    showToast('Game Over');
     if (mode === 'timed') clearInterval(timerInterval);
     stats.games++;
     stats.best = Math.max(stats.best, score);
@@ -411,6 +414,7 @@ function init(resume = false) {
     paused = false;
     over = false;
     won = false;
+    undoLocked = false;
     prevBoard = null;
     prevScore = 0;
     addTile();
@@ -780,22 +784,25 @@ document.getElementById('nb').addEventListener('click', () => {
 });
 
 document.getElementById('ub').addEventListener('click', () => {
+  if (undoLocked) {
+    showToast('Undo unavailable after game over');
+    return;
+  }
+
   if (!prevBoard) {
     showToast('Nothing to undo');
     return;
   }
 
-  board = prevBoard;
+  board = copyBoard(prevBoard);
   score = prevScore;
   prevBoard = null;
+
   moves = Math.max(0, moves - 1);
-  over = false;
-  won = false;
 
   renderBoard();
   renderTiles();
   updateUI();
-  document.getElementById('ov').style.display = 'none';
 
   showToast('Undone!');
 });
