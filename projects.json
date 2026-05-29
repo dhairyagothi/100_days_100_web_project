@@ -2337,10 +2337,9 @@
       "techStack": ["html", "css", "javascript", "webrtc", "api"],
       "difficulty": "advanced",
       "projectPath": "./public/webrtc-video-chat/index.html"
-    }
-  
-     {
-    "projectNo": 189,
+    },
+    {
+    "projectNo": 190,
      "projectName": "Endless train game",
     "projectType": "game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
@@ -2350,7 +2349,7 @@
   },
   
   {
-    "projectNo": 190,
+    "projectNo": 191,
     "projectName": "Saturn Particle Gesture",
     "projectType": "Animation",
     "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",

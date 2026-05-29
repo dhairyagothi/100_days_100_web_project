@@ -7,6 +7,7 @@
     "dev": "npx -y serve . -p 3000",
     "lint": "npx -y htmlhint index.html contributors/contributor.html",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
+    "validate:projects": "node scripts/validateProjects.js",
     "docker:build": "docker build -t 100days-web .",
     "docker:run": "docker run --rm -p 8080:80 100days-web",
     "docker:up": "docker compose up --build -d",
