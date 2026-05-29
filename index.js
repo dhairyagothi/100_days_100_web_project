@@ -430,8 +430,42 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
+/**
+ * Safely loads and validates recent projects from localStorage.
+ * Prevents crashes from corrupted data and enforces a 10-item limit.
+ */
+function loadRecentProjects() {
+  try {
+    const raw = localStorage.getItem('recentProjects');
+    if (!raw) return [];
+    
+    const stored = JSON.parse(raw);
+    if (!Array.isArray(stored)) return [];
+
+    return stored.filter(item => {
+      // Extract project data (handles legacy array format or new object format)
+      const data = Array.isArray(item) ? item : (item && item.data);
+      const viewedAt = item && item.viewedAt;
+
+      // Validate core project structure [day, name, url, ...]
+      if (!Array.isArray(data) || data.length < 3) return false;
+
+      // Validate viewedAt timestamp if present (Step 7)
+      if (viewedAt) {
+        const parsedDate = new Date(viewedAt);
+        if (isNaN(parsedDate.getTime())) return false;
+      }
+
+      return true;
+    }).slice(0, 10);
+  } catch (error) {
+    console.error("Corrupted recentProjects data found in localStorage:", error);
+    return [];
+  }
+}
+
 let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+let recentProjects = loadRecentProjects();
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -874,11 +908,20 @@ function toggleBookmark(project) {
 }
 
 function trackRecentProject(project) {
-  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
-  recentProjects.unshift(project);
+  // Step 6: Ensure uniqueness and limit to 10
+  recentProjects = recentProjects.filter((item) => {
+    const id = Array.isArray(item) ? item[0] : item.data[0];
+    return id !== project[0];
+  });
+
+  // Add metadata for better tracking and validation
+  recentProjects.unshift({
+    data: project,
+    viewedAt: new Date().toISOString()
+  });
 
   if (recentProjects.length > 10) {
-    recentProjects.pop();
+    recentProjects = recentProjects.slice(0, 10);
   }
 
   localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
@@ -962,7 +1005,9 @@ function renderRecentProjects() {
 
   const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
+  visibleRecent.forEach((item) => {
+    // Support both legacy array items and new object-wrapped items
+    const [day, name, url, tags] = Array.isArray(item) ? item : item.data;
     const sanitizedUrl = sanitizeProjectURL(url);
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
