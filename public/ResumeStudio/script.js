@@ -135,8 +135,25 @@ function initResumeStudio() {
             currentTemplate = btn.dataset.template;
             resumePreview.className = currentTemplate;
             updatePreview();
+            setResumeTemplate(btn.dataset.template);
         });
     });
+
+    /**
+     * Safely updates the resume template class while preserving other UI states.
+     */
+    function setResumeTemplate(templateName) {
+        if (!resumePreview) return;
+        const templates = ["modern", "classic", "minimal"];
+        templates.forEach(t => resumePreview.classList.remove(t));
+        resumePreview.classList.add(templateName);
+        currentTemplate = templateName;
+        
+        document.querySelectorAll(".tpl-btn").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.template === templateName);
+        });
+        updatePreview();
+    }
 
     // ==========================================
     // 3. THEME SWITCHER
@@ -181,11 +198,25 @@ function initResumeStudio() {
     // 4. REAL-TIME INPUTS & CHAR COUNTERS
     // ==========================================
 
+    function attachCharCounter(inputEl, counterEl) {
+        if (!inputEl || !counterEl) return;
+        
+        const updateCounter = () => {
+            counterEl.textContent = `${inputEl.value.length}/${inputEl.maxLength}`;
+            counterEl.style.color = inputEl.value.length >= inputEl.maxLength ? "red" : "";
+        };
+        
+        inputEl.addEventListener("input", updateCounter);
+        updateCounter();
+    }
+
     inputs.forEach(id => {
         const inputEl = document.getElementById(id);
         const counterEl = document.getElementById(`${id}Count`);
         
         if (inputEl) {
+            if (counterEl) attachCharCounter(inputEl, counterEl);
+
             // Listen on input to run preview update & ATS scores in real-time
             inputEl.addEventListener("input", () => {
                 if (counterEl) {
@@ -697,11 +728,15 @@ function initResumeStudio() {
         atsScoreValue.textContent = score;
         reportScore.textContent = `${score}%`;
         atsNavBadge.textContent = `${score}%`;
+        if (atsScoreValue) atsScoreValue.textContent = score;
+        if (reportScore) reportScore.textContent = `${score}%`;
+        if (atsNavBadge) atsNavBadge.textContent = `${score}%`;
         
         // Ring perimeter: radius is 25 in CSS, so 2 * PI * 25 = 157.08
         const perimeter = 157;
         const offset = perimeter - (score / 100) * perimeter;
         atsProgressCircle.style.strokeDashoffset = offset;
+        if (atsProgressCircle) atsProgressCircle.style.strokeDashoffset = offset;
     }
 
     function updateSidebarStatusIndicators(checks, v) {
@@ -755,6 +790,10 @@ function initResumeStudio() {
             readinessBadge.className = "status-badge readiness ready";
             atsStatusBadge.textContent = "ATS Ready";
             atsStatusBadge.style.color = "var(--success)";
+            if (atsStatusBadge) {
+                atsStatusBadge.textContent = "ATS Ready";
+                atsStatusBadge.style.color = "var(--success)";
+            }
         } else {
             const missing = [];
             if (!checks.personal) missing.push("Contact");
@@ -765,6 +804,10 @@ function initResumeStudio() {
             readinessBadge.className = "status-badge readiness";
             atsStatusBadge.textContent = "Optimizing";
             atsStatusBadge.style.color = "var(--warning)";
+            if (atsStatusBadge) {
+                atsStatusBadge.textContent = "Optimizing";
+                atsStatusBadge.style.color = "var(--warning)";
+            }
         }
 
         // Strength Badge
@@ -980,6 +1023,7 @@ function initResumeStudio() {
                     }
                 });
                 resumePreview.className = currentTemplate;
+                setResumeTemplate(data.template);
             }
 
             if (data.role) {
