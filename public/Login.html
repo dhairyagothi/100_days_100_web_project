@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sammu Trial Login Page</title>
+    <title>Login · 100 Days 100 Web Projects</title>
 
     <link
       rel="stylesheet"
@@ -38,6 +38,21 @@
         <div class="auth-card">
           <h2 class="auth-title-1">Login</h2>
 
+          <div id="authMessage" class="auth-message auth-message--error" hidden role="alert"></div>
+
+          <div class="oauth-buttons">
+            <a href="/api/auth/google" class="oauth-btn oauth-btn--google">
+              <i class="fa-brands fa-google" aria-hidden="true"></i>
+              Continue with Google
+            </a>
+            <a href="/api/auth/github" class="oauth-btn oauth-btn--github">
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
+              Continue with GitHub
+            </a>
+          </div>
+
+          <div class="auth-divider" aria-hidden="true"><span>or sign in with username</span></div>
+
           <form id="loginForm" class="auth-form">
             <div class="form-group">
               <i class="fa-solid fa-user"></i>
@@ -61,7 +76,7 @@
                 autocomplete="current-password"
                 required
               />
-              <span class="toggle-password" onclick="togglePassword()">👁</span>
+              <span class="toggle-password" role="button" tabindex="0" aria-label="Toggle password visibility">👁</span>
             </div>
 
             <button type="submit" class="button home-btn">
@@ -81,54 +96,46 @@
       </div>
     </section>
 
+    <script src="auth-common.js"></script>
     <script>
-      // Show password toggle
-      function togglePassword() {
-        const passwordInput = document.getElementById("password");
-        const toggleIcon = document.querySelector(".toggle-password");
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            toggleIcon.classList.add("active");
-            // toggleIcon.textContent = "..";
-        } else {
-            passwordInput.type = "password";
-            toggleIcon.classList.remove("active");
-            // toggleIcon.textContent = "👁";
+      document.querySelector('.toggle-password')?.addEventListener('click', togglePasswordField);
+      document.querySelector('.toggle-password')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          togglePasswordField();
         }
-      }
-      
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
+      });
 
-          const username = document.getElementById("username").value.trim();
-          const password = document.getElementById("password").value.trim();
+      document.getElementById('loginForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideAuthMessage();
 
-          // Get stored user
-          const storedUser = localStorage.getItem(username);
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
 
-          // Check if user exists
-          if (!storedUser) {
-            alert("User does not exist.");
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ username, password }),
+          });
+
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            showAuthMessage(data.message || 'Login failed. Please try again.', 'error');
             return;
           }
 
-          const userData = JSON.parse(storedUser);
-
-          // Password matching
-          if (password !== userData.password) {
-            alert("Incorrect password.");
-            return;
-          }
-
-          // Login successful
-          alert("Login successful!");
-
-          localStorage.setItem("loggedInUser", username);
-          window.location.href = "../index.html";
-        });
+          showAuthMessage(data.message || 'Login successful!', 'success');
+          setTimeout(() => {
+            window.location.href = '../index.html';
+          }, 800);
+        } catch {
+          showAuthMessage('Unable to reach the auth server. Run npm run dev and try again.', 'error');
+        }
+      });
     </script>
   </body>
 </html>
