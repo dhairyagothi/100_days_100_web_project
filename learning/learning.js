@@ -21,36 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      THEME STORAGE & SYNC
      ============================================================ */
   function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    const syncThemeIcons = () => {
-      const isLight = document.body.classList.contains('light-mode');
-      const icon = document.querySelector('#themeToggleNav i');
-      if (icon) {
-        icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
-      }
-    };
-
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-mode');
-    } else {
-      document.body.classList.remove('light-mode');
-    }
-    syncThemeIcons();
-
-    document.body.addEventListener('click', (e) => {
-      const target = e.target.closest('#themeToggleNav');
-      if (!target) return;
-
-      document.body.classList.toggle('light-mode');
-      const isLight = document.body.classList.contains('light-mode');
-      localStorage.setItem('theme', isLight ? 'light' : 'dark');
-      syncThemeIcons();
-
-      document.body.classList.add('theme-transitioning');
-      setTimeout(() => {
-        document.body.classList.remove('theme-transitioning');
-      }, 400);
-    });
+    window.ThemeManager?.init?.();
   }
 
   /* ============================================================

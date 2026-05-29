@@ -13,10 +13,17 @@
   --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+:root[data-theme="light"],
 body.light-mode {
   --bg-primary: #f4f6f9;
+  --bg-elevated: #ffffff;
+  --bg-surface: #eef2f7;
   --text-primary: #0f172a;
   --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border: rgba(15, 23, 42, 0.12);
+  --border-hover: rgba(15, 23, 42, 0.2);
+  --border-accent: rgba(37, 99, 235, 0.32);
   --accent-color: #2563eb;
   --accent-glow: rgba(37, 99, 235, 0.2);
   --glass-bg: rgba(255, 255, 255, 0.7);
@@ -1130,6 +1137,7 @@ body {
         overflow-y: auto !important;
     }
 
+    :root[data-theme="light"] .nav-buttons.mobile-drawer-layer,
     body.light-mode .nav-buttons.mobile-drawer-layer {
         background-color: #f4f6f9 !important;
     }

@@ -67,6 +67,16 @@ function getCategoryFromTags(tags, name) {
 let PROJECTS = [];
 let projectsPromise = null;
 
+function parseProjectsData(payload) {
+  try {
+    return JSON.parse(payload);
+  } catch (error) {
+    // Fallback for common malformed object separators in projects.json
+    const repairedPayload = String(payload).replace(/}\s*{/g, '},{');
+    return JSON.parse(repairedPayload);
+  }
+}
+
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
@@ -79,7 +89,8 @@ window.location.href).toString();
       if (!response.ok) {
         throw new Error(`Failed to load projects: ${response.statusText}`);
       }
-const data = await response.json();
+      const payload = await response.text();
+      const data = parseProjectsData(payload);
 
 PROJECTS = data.map(project => [
    `Day ${project.projectNo}`,
@@ -1418,7 +1429,7 @@ function updateNavbar() {
   const username = window.username || localStorage.getItem('loggedInUser') || null;   // Read logged-in user from localStorage so navbar consists of logged in user when page reloads
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
-  const isLight = document.body.classList.contains('light-mode');
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const themeButton = `
         <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
           <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
@@ -1465,39 +1476,7 @@ function updateNavbar() {
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
-function initTheme() {
-  const saved = localStorage.getItem('theme') || 'dark';
-  let transitionTimer = null;
-
-  const syncThemeIcons = () => {
-    const isLight = document.body.classList.contains('light-mode');
-    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-      icon.className = iconClass;
-    });
-  };
-
-  if (saved === 'light') {
-    document.body.classList.add('light-mode');
-  }
-  syncThemeIcons();
-
-  document.body.addEventListener('click', (e) => {
-    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-    if (!target) return;
-
-    document.body.classList.toggle('light-mode');
-    const isLight = document.body.classList.contains('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    syncThemeIcons();
-
-    document.body.classList.add('theme-transitioning');
-    if (transitionTimer) clearTimeout(transitionTimer);
-    transitionTimer = setTimeout(() => {
-      document.body.classList.remove('theme-transitioning');
-    }, 400);
-  });
-}
+// Implemented by the shared ThemeManager in theme.js.
 
 /* ============================================================
    SCROLL TO TOP
@@ -1564,6 +1543,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   initTheme();
   updateNavbar();
+  initScrollBtn();
+  fetchRepoStats();
 
   initCurrentYear();
   initFilterChips();
@@ -1577,8 +1558,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadProjects();
 
     syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
 
     if (hasProjectGrid()) {
       renderGrid();
@@ -1662,6 +1641,15 @@ window.addEventListener(
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
+/* ============================================================
+   THEME CORE ENGINE (Fixes Issue #4359)
+   ============================================================ */
+function initTheme() {
+  window.ThemeManager?.init?.();
+}
+
+// Initialize the theme engine
+initTheme();
 // Custom cursor
 (function () {
   const outerCursor = document.querySelector('.cursor-ring--outer');
