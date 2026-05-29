@@ -20,11 +20,13 @@
      transition: all .2s linear;
  }
 
- html {
+html {
      font-size: 62.5%;
      overflow-x: hidden;
  }
-
+html{
+    scroll-behavior: smooth;
+}
  /* website all heading  */
 
  .heading {
@@ -40,23 +42,25 @@
 
  /* website all btn  */
 
- .btn {
-     outline: none;
-     border: none;
-     border-radius: 5rem;
-     background-color: var(--green);
-     color: var(--wight);
-     cursor: pointer;
-     height: 3.5rem;
-     width: 15rem;
-     font-size: 1.7rem;
-     box-shadow: 0 .2rem .5rem rgba(0, 0, 0, .3);
- }
+ .btn{
+    outline: none;
+    border: none;
+    border-radius: 5rem;
+    background: linear-gradient(135deg, #65b741, #4d962f);
+    color: #fff;
+    cursor: pointer;
+    height: 4rem;
+    width: 16rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+    transition: all .3s ease;
+}
 
- .btn:hover {
-     letter-spacing: .1rem;
-     opacity: .8;
- }
+.btn:hover{
+    transform: translateY(-3px);
+    letter-spacing: .1rem;
+}
 
  /* header section start  */
  .header {
@@ -108,20 +112,22 @@
  /* header section end  */
 
  /* home section start  */
- .home {
-     min-height: 100vh;
-     width: 100vw;
-     background-image: url(./images/home.jpg);
-     background-size: cover;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     flex-flow: column;
-     text-align: center;
-     padding: 0 1rem;
-     position: relative;
-     overflow: hidden !important;
- }
+ .home{
+    min-height: 100vh;
+    width: 100vw;
+    background:
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url(./images/home.jpg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    text-align: center;
+    padding: 0 1rem;
+    position: relative;
+}
 
  .home .banner {
      color: var(--wight);
@@ -655,5 +661,90 @@
     }
  }
 
+.team .row .card{
+    transition: transform .3s ease, box-shadow .3s ease;
+}
 
- 
+.team .row .card:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 1rem 2rem rgba(0,0,0,.3);
+}
+.stats{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 5rem 2rem;
+    background: #f4fff0;
+}
+
+.stats .box{
+    background: white;
+    padding: 3rem;
+    width: 22rem;
+    border-radius: 1rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+}
+
+.stats .box h1{
+    color: var(--green);
+    font-size: 4rem;
+}
+
+.stats .box p{
+    font-size: 1.7rem;
+    margin-top: 1rem;
+}
+
+.project-back-button{
+    position: fixed;
+    top: 22px;
+    right: 24px;
+    z-index: 9999;
+
+    padding: 10px 20px;
+
+    border-radius: 50px;
+
+    background: linear-gradient(135deg,#00c853,#64dd17);
+
+    color: white;
+    text-decoration: none;
+
+    font-size: 0.9rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+
+    border: 2px solid white;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.35);
+
+    transition: all 0.3s ease;
+}
+
+.project-back-button:hover{
+    transform:
+        translateY(-3px)
+        scale(1.05);
+
+    background:
+        linear-gradient(135deg,#64dd17,#00e676);
+
+    box-shadow:
+        0 14px 30px rgba(100,221,23,0.4);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .project-back-button{
+        top:18px;
+        right:18px;
+
+        padding:8px 16px;
+
+        font-size:0.75rem;
+    }
+
+}

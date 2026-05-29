@@ -8,6 +8,7 @@ body {
     align-items: center;
     min-height: 100vh;
     color: #333;
+    overflow-x: hidden;
 }
 
 .main-container {
@@ -15,6 +16,7 @@ body {
     flex-direction: column;
     align-items: center;   
     justify-content: center;
+    width: 100%;
 }
 
 .table-container {

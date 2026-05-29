@@ -1,3 +1,8 @@
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f3f3f3;
@@ -33,10 +38,7 @@ body {
 .background-video::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.35);
 }
 
@@ -46,18 +48,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100dvh; 
+  min-height: 100dvh;
   padding: 40px;
   gap: 60px;
   box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
-/* Flex assembly ties pole and flag side-by-side */
 .flag-assembly {
   position: relative;
-  width: 480px;  
-  height: 480px; 
-  display: block
+  width: min(480px, 100%);
+  height: 480px;
+  display: block;
 }
 
 /* ================= FLAG POLE ================= */
@@ -74,7 +76,6 @@ body {
   margin-top: 0;
 }
 
-/* Anchoring the steps cleanly to the bottom using absolute positions */
 .bar div {
   background-color: #222;
   height: 20px;
@@ -82,9 +83,23 @@ body {
   border: 1px solid white;
 }
 
-.bar .bar-1 { width: 60px; left: -24px; bottom: 40px; }
-.bar .bar-2 { width: 100px; left: -44px; bottom: 20px; }
-.bar .bar-3 { width: 140px; left: -64px; bottom: 0px; }
+.bar .bar-1 {
+  width: 60px;
+  left: -24px;
+  bottom: 40px;
+}
+
+.bar .bar-2 {
+  width: 100px;
+  left: -44px;
+  bottom: 20px;
+}
+
+.bar .bar-3 {
+  width: 140px;
+  left: -64px;
+  bottom: 0px;
+}
 
 /* ================= FLAG ================= */
 
@@ -96,25 +111,37 @@ body {
   left: 12px;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
   transform-origin: left center;
-  animation: wave 2.5s infinite ease-in-out;
+  animation: wave 3.5s infinite ease-in-out;
+  will-change: transform;
   z-index: 1;
 }
 
 @keyframes wave {
-  0% { transform: skewY(0deg) translateX(0px); }
-  25% { transform: skewY(1.5deg) translateX(1px); }
-  50% { transform: skewY(0deg) translateX(0px); }
-  75% { transform: skewY(-1.5deg) translateX(-1px); }
-  100% { transform: skewY(0deg) translateX(0px); }
+  0% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+
+  25% {
+    transform: perspective(1000px) rotateY(-3deg);
+  }
+
+  50% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+
+  75% {
+    transform: perspective(1000px) rotateY(3deg);
+  }
+
+  100% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
 }
 
 .flag::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: linear-gradient(
     to right,
     rgba(255, 255, 255, 0.15),
@@ -122,8 +149,15 @@ body {
   );
 }
 
-.top { height: 33.33%; background-color: #FF671F; }
-.bottom { height: 33.33%; background-color: #046A38; }
+.top {
+  height: 33.33%;
+  background-color: #ff671f;
+}
+
+.bottom {
+  height: 33.33%;
+  background-color: #046a38;
+}
 
 .middle {
   height: 33.33%;
@@ -140,8 +174,13 @@ body {
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ================= QUOTE ================= */
@@ -151,7 +190,7 @@ body {
   background-color: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   text-align: center;
-  width: 400px;
+  width: min(400px, 100%);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(5px);
   display: flex;
@@ -160,13 +199,12 @@ body {
   gap: 15px;
 }
 
-/* Rounded frame container for patriot portraits */
 .image-wrapper {
   width: 140px;
   height: 140px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #FF671F;
+  border: 3px solid #ff671f;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background: #eee;
 }
@@ -174,7 +212,7 @@ body {
 #patriot-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Prevents squishing images */
+  object-fit: cover;
 }
 
 .quote {
@@ -183,7 +221,7 @@ body {
   color: #222;
   font-style: italic;
   line-height: 1.4;
-  min-height: 70px; /* Keeps card height stable when text changes */
+  min-height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,7 +229,7 @@ body {
 
 .author {
   font-size: 1.1em;
-  color: #046A38;
+  color: #046a38;
   font-weight: 600;
 }
 
@@ -200,21 +238,31 @@ body {
   justify-content: space-between;
   width: 100%;
   margin-top: 10px;
+  gap: 10px;
 }
 
 .quote-nav button {
-  background-color: #FF671F;
+  background-color: #ff671f;
   color: #fff;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 10px 18px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.2s;
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .quote-nav button:hover {
   background-color: #e05310;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.quote-nav button:active {
+  transform: scale(0.96);
 }
 
 /* ================= MUSIC ================= */
@@ -223,15 +271,109 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  width: min(90vw, 320px);
   background: rgba(255, 255, 255, 0.2);
-  padding: 8px;
+  padding: 10px;
   border-radius: 30px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 10;
 }
 
-/* ================= RESPONSIVE MOBILE VIEW ================= */
+.music-controls audio {
+  width: 100%;
+}
+
+/* ================= BACK BUTTON ================= */
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  color: #111;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+}
+
+.project-back-button:hover {
+  transform: translateY(-2px);
+  background: white;
+}
+
+/* ================= KNOW MORE SECTION ================= */
+
+.know-more-section {
+  padding: 60px 20px;
+  text-align: center;
+  color: white;
+}
+
+.know-more-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  color: #fff;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.info-container {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.info-card {
+  width: 240px;
+  padding: 25px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.info-card h3 {
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+.info-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.saffron {
+  border-top: 5px solid #ff671f;
+}
+
+.white {
+  border-top: 5px solid #ffffff;
+}
+
+.green {
+  border-top: 5px solid #046a38;
+}
+
+.chakra {
+  border-top: 5px solid #000080;
+}
+
+/* ================= RESPONSIVE ================= */
 
 @media screen and (max-width: 768px) {
   .wrapper {
@@ -241,22 +383,42 @@ body {
     padding: 30px 15px;
   }
 
-  /* Structural flagpole mobile overrides */
+  .flag-assembly {
+    width: 100%;
+    max-width: 260px;
+    height: 260px;
+  }
+
   .bar {
     height: 45vh;
     width: 8px;
     margin-top: -40px;
   }
 
-  .bar .bar-1 { width: 40px; left: -16px; bottom: 24px; height: 12px; }
-  .bar .bar-2 { width: 64px; left: -28px; bottom: 12px; height: 12px; }
-  .bar .bar-3 { width: 88px; left: -40px; bottom: 0px; height: 12px; }
+  .bar .bar-1 {
+    width: 40px;
+    left: -16px;
+    bottom: 24px;
+    height: 12px;
+  }
 
-  /* Perfectly balances the 3:2 flag size aspect ratio on small screens */
+  .bar .bar-2 {
+    width: 64px;
+    left: -28px;
+    bottom: 12px;
+    height: 12px;
+  }
+
+  .bar .bar-3 {
+    width: 88px;
+    left: -40px;
+    bottom: 0px;
+    height: 12px;
+  }
+
   .flag {
     width: 210px;
     height: 140px;
-    position: absolute;
     top: 0;
     left: 8px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
@@ -282,6 +444,22 @@ body {
   .music-controls {
     position: static;
     margin: 10px auto;
-    width: fit-content;
+    width: min(90vw, 320px);
+  }
+
+  .know-more-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .info-card {
+    width: 90%;
+    max-width: 320px;
+  }
+
+  .project-back-button {
+    left: 10px;
+    top: 10px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
 }

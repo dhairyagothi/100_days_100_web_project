@@ -16,7 +16,6 @@
       --red-dark: #B01E20;
       --red-light: #FF4547;
       --black: #0A0A0A;
-       background-color: #00000080;
       --warm-gray: #E8E4DE;
       --mid-gray: #8A8680;
       --card-bg: #FFFFFF;
@@ -42,7 +41,7 @@
     .navbar {
       display: flex;
       align-items: center;
-    background-color: rgba(18, 168, 192, 0.2);
+      background-color: rgba(18, 168, 192, 0.2);
       height: 72px;
       padding: 0 40px;
       border-bottom: 1px solid rgba(92, 184, 190, 0.548);
@@ -113,7 +112,6 @@
     .cart-overlay.active { display: block; }
 
     /* ── SIDE CART PANEL ── */
-    /* Fixed panel: header + scrollable body + footer — no overflow on the panel itself */
     .cart-panel {
       position: fixed;
       top: 0; right: -440px;
@@ -518,6 +516,22 @@
 
     .remove_icon { display: none; }
 
+    /* ── WISHLIST ── */
+    #wishlist-count {
+      position: absolute;
+      background-color: var(--red);
+      top: 0; right: 0;
+      width: 18px; height: 18px;
+      line-height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 500;
+      text-align: center;
+      color: #fff;
+      display: none;
+      z-index: 10;
+    }
+
     /* ── FOOTER ── */
     .site-footer {
       background-color: var(--black);
@@ -590,21 +604,25 @@
     <div class="navbar">
       <div class="website_title">Aero<span>Stride</span></div>
       <div class="button-container">
-        <button class="button"><img src="images_used/home_icon.png"/></button>
-        <button class="button"><img src="images_used/search_icon.png"/></button>
-        <button class="button"><img src="images_used/profile_icon.png"/></button>
+        <button class="button"><img src="images_used/home_icon.png" width="17px"/></button>
+        <button class="button"><img src="images_used/search_icon.png" width="17px"/></button>
+        <button class="button"><img src="images_used/profile_icon.png" width="19px"/></button>
+        <div class="box" id="wishlist-box">
+          <div class="cart-count" id="wishlist-count">0</div>
+          <span style="color:white;font-size:20px;">❤</span>
+        </div>
         <div class="box" id="open-cart">
           <div class="cart-count">0</div>
           <img src="images_used/cart_icon.png" id="cart-icon"/>
         </div>
       </div>
     </div>
-  </header>  
+  </header>
 
   <!-- Overlay (dims page when cart is open) -->
   <div class="cart-overlay" id="cart-overlay"></div>
 
-  <!-- Cart panel — lives outside header so z-index stacking is clean -->
+  <!-- Cart panel -->
   <div class="cart-panel" id="cart-panel">
     <!-- sticky header -->
     <div class="cart-header">
