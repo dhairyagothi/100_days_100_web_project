@@ -1,327 +1,545 @@
-(function () {
-  "use strict";
+ (function () {
+    "use strict";
 
-  var WIN_LINES = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8],
-    [0, 3, 6], [1, 4, 7], [2, 5, 8],
-    [0, 4, 8], [2, 4, 6]
-  ];
+    var WIN_LINES = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6]
+    ];
 
-  var board     = Array(9).fill(null);
-  var current   = "X";
-  var gameOver  = false;
-  var scores    = { X: 0, O: 0, D: 0 };
-  var particles = [];
-  var animFrame = null;
+    var CELL_LABELS = [
+      "top-left", "top-middle", "top-right",
+      "middle-left", "center", "middle-right",
+      "bottom-left", "bottom-middle", "bottom-right"
+    ];
 
-  /* ── Bot state ──────────────────────────*/
-  var vsBot   = false;
-  var botMark = "O";
+    var board = Array(9).fill(null);
+    var currentPlayer = "X";
+    var gameOver = false;
+    var sessionStarted = false;
+    var scores = { X: 0, O: 0, D: 0 };
+    var moveLog = [];
+    var stateStack = [];
+    var roundStartedAt = null;
+    var elapsedTimer = null;
+    var botTimer = null;
+    var lastMovePlayer = null;
 
-  var boardEl  = document.getElementById("board");
-  var gameEl   = document.getElementById("game");
-  var statusEl = document.getElementById("statusText");
-  var turnChip = document.getElementById("turnChip");
-  var scoreX   = document.getElementById("scoreX");
-  var scoreO   = document.getElementById("scoreO");
-  var scoreD   = document.getElementById("scoreD");
-  var overlay  = document.getElementById("winnerModal");
-  var winText  = document.getElementById("winnerTitle");
-  var winSub   = document.getElementById("winnerSubtitle");
-  var winBtn   = document.getElementById("winnerNext");
-  var canvas   = document.getElementById("confetti");
-  var ctx      = canvas.getContext("2d");
-  var startScreen = document.getElementById("startModal");
-  var startBtn   = document.getElementById("startGameBtn");
+    var boardEl = document.getElementById("board");
+    var gameEl = document.getElementById("game");
+    var statusEl = document.getElementById("statusText");
+    var turnChip = document.getElementById("turnChip");
+    var timerChip = document.getElementById("turnTimer");
+    var scoreX = document.getElementById("scoreX");
+    var scoreO = document.getElementById("scoreO");
+    var scoreD = document.getElementById("scoreD");
+    var historyList = document.getElementById("historyList");
+    var overlay = document.getElementById("winnerModal");
+    var winText = document.getElementById("winnerTitle");
+    var winSub = document.getElementById("winnerSubtitle");
+    var startModal = document.getElementById("startModal");
+    var startBtn = document.getElementById("startGameBtn");
+    var modeSelect = document.getElementById("modeSelect");
+    var themeSelect = document.getElementById("themeSelect");
+    var hintBtn = document.getElementById("hintBtn");
+    var undoBtn = document.getElementById("undoBtn");
+    var newRoundBtn = document.getElementById("newRoundBtn");
+    var resetAllBtn = document.getElementById("resetAllBtn");
+    var nextRoundBtn = document.getElementById("winnerNext");
+    var closeBtn = document.getElementById("winnerClose");
 
-  // ── Mode screen (injected) ─────────────
-  var modeScreen = document.createElement("div");
-  modeScreen.id = "mode-screen";
-  modeScreen.innerHTML = `
-    <h2 class="mode-title">Choose Mode</h2>
-    <p class="mode-sub">How do you want to play?</p>
-    <div class="mode-btns">
-      <button class="mode-btn" id="btn-2p">
-        <span class="mode-icon">👥</span>
-        <span class="mode-label">2 Players</span>
-        <span class="mode-desc">Play with a friend</span>
-      </button>
-      <button class="mode-btn" id="btn-bot">
-        <span class="mode-icon">🤖</span>
-        <span class="mode-label">vs Bot</span>
-        <span class="mode-desc">Challenge the AI</span>
-      </button>
-    </div>
-  `;
-  document.body.appendChild(modeScreen);
+    var gameMode = modeSelect.value;
+    var botMark = "O";
+    var humanMark = "X";
 
-  /* ── Build board ──────────────────────── */
-  function buildBoard() {
-    boardEl.innerHTML = "";
-    board.forEach(function (val, i) {
-      var cell = document.createElement("div");
-      cell.className = "cell";
-      if (val) {
-        cell.classList.add("taken", val === "X" ? "x-mark" : "o-mark");
-        cell.textContent = val === "X" ? "\u2715" : "\u25CB";
-      }
-      cell.addEventListener("click", function () { handleClick(i); });
-      boardEl.appendChild(cell);
-    });
-
-    themeSelect.addEventListener("change", function () {
-        theme = this.value;
-        applyTheme(theme);
-    });
-
-    /* ── Render board ────────────────────── */
-    function renderBoard() {
-        boardEl.innerHTML = "";
-        board.forEach(function (val, i) {
-            var btn = document.createElement("button");
-            btn.className = "cell";
-            if (val) {
-                btn.classList.add(val === "O" ? "mark-o" : "mark-x");
-                btn.textContent = val;
-                btn.disabled = true;
-            }
-            btn.addEventListener("click", function () { handleClick(i); });
-            boardEl.appendChild(btn);
-        });
+    function cloneBoard(value) {
+      return value.slice();
     }
 
-    /* ── Handle player click ─────────────── */
-    function handleClick(i) {
-        if (gameOver || board[i]) return;
-        if (mode !== "pvp" && current === "X") return;
-        placeMove(i, current);
-    }
-
-    /* ── Place a move ────────────────────── */
-    function placeMove(i, mark) {
-        board[i] = mark;
-        moveHistory.push({ index: i, mark: mark });
-        renderBoard();
-        updateHistory();
-
-        var win = checkWin();
-        if (win) {
-            highlightWin(win);
-            scores[mark]++;
-            updateScores();
-            gameOver = true;
-            stopTimer();
-            setTimeout(function () { showWinModal(mark); }, 400);
-        } else if (board.every(Boolean)) {
-            scores.D++;
-            updateScores();
-            gameOver = true;
-            stopTimer();
-            setTimeout(showDrawModal, 300);
-        } else {
-            current = current === "O" ? "X" : "O";
-            updateStatus();
-            if (mode !== "pvp" && current === "X") {
-                setTimeout(doCpuMove, 480);
-            }
-        }
-    }
-
-    /* ── CPU move ────────────────────────── */
-    function doCpuMove() {
-        if (gameOver) return;
-        var avail = board.map(function (v, i) { return v ? null : i; }).filter(function (v) { return v !== null; });
-        if (!avail.length) return;
-
-        var move;
-        if (mode === "cpu-easy") {
-            move = avail[Math.floor(Math.random() * avail.length)];
-        } else if (mode === "cpu-medium") {
-            move = Math.random() < 0.6 ? bestMove() : avail[Math.floor(Math.random() * avail.length)];
-        } else {
-            move = bestMove();
-        }
-
-        boardEl.classList.add("thinking");
-        setTimeout(function () {
-            boardEl.classList.remove("thinking");
-            placeMove(move, "X");
-        }, 0);
-    }
-
-    /* ── Minimax best move ───────────────── */
-    function bestMove() {
-        var best = -Infinity, mv = -1;
-        board.forEach(function (v, i) {
-            if (!v) {
-                board[i] = "X";
-                var s = minimax(board, 0, false);
-                board[i] = null;
-                if (s > best) { best = s; mv = i; }
-            }
-        });
-        return mv;
-    }
-
-    function minimax(b, depth, isMax) {
-        var w = scanWinner(b);
-        if (w === "X") return 10 - depth;
-        if (w === "O") return depth - 10;
-        if (b.every(Boolean)) return 0;
-
-        var best = isMax ? -Infinity : Infinity;
-        b.forEach(function (v, i) {
-            if (!v) {
-                b[i] = isMax ? "X" : "O";
-                var s = minimax(b, depth + 1, !isMax);
-                b[i] = null;
-                best = isMax ? Math.max(best, s) : Math.min(best, s);
-            }
-        });
-        return best;
-    }
-    return null;
-  }
-
-  /* ── Check win (uses scanWinner) ─────── */
-  function checkWin() {
-    return scanWinner(board) ? WIN_LINES.find(function (l) {
-      return board[l[0]] && board[l[0]] === board[l[1]] && board[l[0]] === board[l[2]];
-    }) : null;
-  }
-
-  /* ── Highlight winning cells ──────────── */
-  function highlightWin(line) {
-    var cells = boardEl.querySelectorAll(".cell");
-    line.forEach(function (i) { cells[i].classList.add("win-cell"); });
-  }
-
-  /* ── Update turn UI + background ─────── */
-  function setUI(player) {
-    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
-    turnChip.textContent = "Turn: " + (player ? label : "");
-    statusEl.textContent = player ? label + "'s turn!" : "";
-  }
-
-  /* ── Update scoreboard ────────────────── */
-  function updateScores() {
-    scoreX.textContent = scores.X;
-    scoreO.textContent = scores.O;
-    scoreD.textContent = scores.D;
-  }
-
-  /* ── Win overlay ──────────────────────── */
-  function showWinOverlay(player) {
-    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
-    winText.textContent = label + " wins the round!";
-    winSub.textContent  = "Great moves. Ready for the next round?";
-    overlay.classList.add("show");
-    overlay.setAttribute("aria-hidden", "false");
-    launchConfetti(player);
-  }
-
-  /* ── Draw overlay ─────────────────────── */
-  function showDrawOverlay() {
-    winText.textContent = "It's a draw!";
-    winSub.textContent  = "Nobody wins this round.";
-    overlay.classList.add("show");
-    overlay.setAttribute("aria-hidden", "false");
-  }
-
-  /* ── Next round ───────────────────────── */
-  function nextRound() {
-    board    = Array(9).fill(null);
-    current  = "X";
-    gameOver = false;
-    buildBoard();
-    setUI("X");
-    overlay.classList.remove("show");
-    overlay.setAttribute("aria-hidden", "true");
-    stopConfetti();
-    if (vsBot && current === botMark) setTimeout(doBotMove, 480);
-  }
-
-  /* ── Reset all ────────────────────────── */
-  function resetAll() {
-    scores = { X: 0, O: 0, D: 0 };
-    updateScores();
-    nextRound();
-  }
-
-  /* ── Launch confetti ─────────────────── */
-  function launchConfetti(player) {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-    particles = [];
-    var color = player === "X" ? "#ff7d7d" : "#40f5d2";
-    for (var i = 0; i < 100; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        r: Math.random() * 6 + 3,
-        d: Math.random() * 2 + 1,
-        color: Math.random() > 0.5 ? color : "#ffffff",
-        tilt: Math.random() * 10 - 5
+    function cloneLog(value) {
+      return value.map(function (entry) {
+        return { player: entry.player, index: entry.index };
       });
     }
-    animFrame = requestAnimationFrame(animateConfetti);
-  }
 
-  function animateConfetti() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(function (p) {
-      ctx.beginPath();
-      ctx.fillStyle = p.color;
-      ctx.ellipse(p.x, p.y, p.r, p.r * 0.4, p.tilt, 0, Math.PI * 2);
-      ctx.fill();
-      p.y += p.d + 1;
-      p.tilt += 0.05;
-      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
-    });
-    animFrame = requestAnimationFrame(animateConfetti);
-  }
+    function saveState() {
+      stateStack.push({
+        board: cloneBoard(board),
+        currentPlayer: currentPlayer,
+        gameOver: gameOver,
+        moveLog: cloneLog(moveLog),
+        lastMovePlayer: lastMovePlayer,
+        sessionStarted: sessionStarted
+      });
+    }
 
-  function stopConfetti() {
-    particles = [];
-    if (animFrame) cancelAnimationFrame(animFrame);
-    animFrame = null;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
+    function clearPendingBotMove() {
+      if (botTimer) {
+        clearTimeout(botTimer);
+        botTimer = null;
+      }
+      boardEl.classList.remove("thinking");
+    }
 
-  /* ── Button wiring ────────────────────── */
-  document.getElementById("resetAll").addEventListener("click", resetAll);
-  document.getElementById("resetRound").addEventListener("click", nextRound);
-  document.getElementById("winnerNext").addEventListener("click", nextRound);
-  document.getElementById("winnerClose").addEventListener("click", nextRound);
+    function startTimer() {
+      roundStartedAt = Date.now();
+      updateTimer();
+      if (elapsedTimer) clearInterval(elapsedTimer);
+      elapsedTimer = setInterval(updateTimer, 1000);
+    }
 
-  /* ── Start → mode screen ──────────────── */
-  startBtn.addEventListener("click", function () {
-    startScreen.classList.remove("show");
-    startScreen.setAttribute("aria-hidden", "true");
-    modeScreen.classList.add("show");
-  });
+    function stopTimer() {
+      if (elapsedTimer) {
+        clearInterval(elapsedTimer);
+        elapsedTimer = null;
+      }
+    }
 
-  document.getElementById("btn-2p").addEventListener("click", function () {
-    vsBot = false;
-    launchGame();
-  });
+    function updateTimer() {
+      var elapsed = roundStartedAt ? Math.floor((Date.now() - roundStartedAt) / 1000) : 0;
+      timerChip.textContent = "Time: " + elapsed + "s";
+    }
 
-  document.getElementById("btn-bot").addEventListener("click", function () {
-    vsBot = true;
-    launchGame();
-  });
+    function applyTheme() {
+      document.body.setAttribute("data-theme", themeSelect.value);
+    }
 
-  /* ── Mode screen → game ───────────────── */
-  function launchGame() {
-    modeScreen.classList.remove("show");
-    modeScreen.classList.add("hide");
-    setTimeout(function () {
-      modeScreen.style.display = "none";
-    }, 400);
-  }
+    function setMode() {
+      gameMode = modeSelect.value;
+      botMark = "O";
+      humanMark = "X";
+    }
 
-  /* ── Init ─────────────────────────────── */
-  buildBoard();
-  setUI("X");
+    function isBotTurn() {
+      return gameMode !== "pvp" && currentPlayer === botMark;
+    }
 
-})();
+    function winnerLabel(mark) {
+      return gameMode !== "pvp" && mark === botMark ? "Bot" : "Player " + mark;
+    }
+
+    function updateScores() {
+      scoreX.textContent = scores.X;
+      scoreO.textContent = scores.O;
+      scoreD.textContent = scores.D;
+    }
+
+    function updateStatus() {
+      if (!sessionStarted) {
+        statusEl.textContent = "Ready to play";
+        turnChip.textContent = "Turn: X";
+        return;
+      }
+
+      if (gameOver) {
+        statusEl.textContent = "Round complete";
+        return;
+      }
+
+      if (isBotTurn()) {
+        statusEl.textContent = "Bot is thinking";
+        turnChip.textContent = "Turn: Bot";
+      } else {
+        statusEl.textContent = "Player " + currentPlayer + "'s turn";
+        turnChip.textContent = "Turn: " + currentPlayer;
+      }
+    }
+
+    function updateHistory() {
+      historyList.innerHTML = "";
+      moveLog.slice(-10).forEach(function (entry, index) {
+        var item = document.createElement("li");
+        item.textContent = (moveLog.length - Math.min(10, moveLog.length) + index + 1) + ". " + entry.player + " on " + CELL_LABELS[entry.index];
+        historyList.appendChild(item);
+      });
+    }
+
+    function renderBoard() {
+      boardEl.innerHTML = "";
+
+      board.forEach(function (value, index) {
+        var cell = document.createElement("button");
+        cell.type = "button";
+        cell.className = "cell";
+
+        if (value) {
+          cell.classList.add("taken", value === "X" ? "x-mark" : "o-mark");
+          cell.textContent = value;
+          cell.disabled = true;
+        } else {
+          cell.setAttribute("aria-label", "Empty cell, " + CELL_LABELS[index]);
+        }
+
+        cell.addEventListener("click", function () {
+          handleCellClick(index);
+        });
+
+        boardEl.appendChild(cell);
+      });
+    }
+
+    function checkWinner(valueBoard) {
+      var lines = WIN_LINES;
+      var selectedBoard = valueBoard || board;
+
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        var a = selectedBoard[line[0]];
+        var b = selectedBoard[line[1]];
+        var c = selectedBoard[line[2]];
+
+        if (a && a === b && a === c) {
+          return { mark: a, line: line };
+        }
+      }
+
+      return null;
+    }
+
+    function highlightWin(line) {
+      var cells = boardEl.querySelectorAll(".cell");
+      line.forEach(function (index) {
+        if (cells[index]) {
+          cells[index].classList.add("win-cell");
+        }
+      });
+    }
+
+    function showResult(mark) {
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+      winText.textContent = winnerLabel(mark) + " wins!";
+      winSub.textContent = "Great moves. Ready for the next round?";
+    }
+
+    function showDrawResult() {
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+      winText.textContent = "It's a draw!";
+      winSub.textContent = "Nobody wins this round.";
+    }
+
+    function hideResultModal() {
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+
+    function endRound(result) {
+      gameOver = true;
+      stopTimer();
+      clearPendingBotMove();
+      renderBoard();
+
+      if (result.mark) {
+        scores[result.mark] += 1;
+        updateScores();
+        highlightWin(result.line);
+        setTimeout(function () {
+          showResult(result.mark);
+        }, 200);
+      } else {
+        scores.D += 1;
+        updateScores();
+        setTimeout(function () {
+          showDrawResult();
+        }, 200);
+      }
+
+      updateStatus();
+    }
+
+    function pushMove(player, index) {
+      saveState();
+      board[index] = player;
+      moveLog.push({ player: player, index: index });
+      lastMovePlayer = player;
+      renderBoard();
+      updateHistory();
+
+      var result = checkWinner(board);
+      if (result) {
+        endRound(result);
+        return;
+      }
+
+      if (board.every(function (cell) { return cell !== null; })) {
+        endRound({ mark: null, line: null });
+        return;
+      }
+
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
+      updateStatus();
+
+      if (isBotTurn()) {
+        scheduleBotMove();
+      }
+    }
+
+    function handleCellClick(index) {
+      if (!sessionStarted || gameOver || board[index]) return;
+      if (isBotTurn()) return;
+      pushMove(currentPlayer, index);
+    }
+
+    function availableMoves(valueBoard) {
+      var selectedBoard = valueBoard || board;
+      var moves = [];
+
+      selectedBoard.forEach(function (cell, index) {
+        if (!cell) moves.push(index);
+      });
+
+      return moves;
+    }
+
+    function bestMoveFor(mark, valueBoard) {
+      var selectedBoard = valueBoard ? cloneBoard(valueBoard) : cloneBoard(board);
+      var opponent = mark === "X" ? "O" : "X";
+      var bestScore = mark === "O" ? -Infinity : Infinity;
+      var move = -1;
+
+      availableMoves(selectedBoard).forEach(function (index) {
+        selectedBoard[index] = mark;
+        var score = minimax(selectedBoard, 0, false, mark, opponent);
+        selectedBoard[index] = null;
+
+        if (mark === "O") {
+          if (score > bestScore) {
+            bestScore = score;
+            move = index;
+          }
+        } else {
+          if (score < bestScore) {
+            bestScore = score;
+            move = index;
+          }
+        }
+      });
+
+      return move;
+    }
+
+    function minimax(valueBoard, depth, isBotMaximizing, botPlayer, humanPlayer) {
+      var result = checkWinner(valueBoard);
+      if (result) {
+        if (result.mark === botPlayer) return 10 - depth;
+        if (result.mark === humanPlayer) return depth - 10;
+      }
+
+      if (valueBoard.every(function (cell) { return cell !== null; })) {
+        return 0;
+      }
+
+      if (isBotMaximizing) {
+        var best = -Infinity;
+        availableMoves(valueBoard).forEach(function (index) {
+          valueBoard[index] = botPlayer;
+          best = Math.max(best, minimax(valueBoard, depth + 1, false, botPlayer, humanPlayer));
+          valueBoard[index] = null;
+        });
+        return best;
+      }
+
+      var worst = Infinity;
+      availableMoves(valueBoard).forEach(function (index) {
+        valueBoard[index] = humanPlayer;
+        worst = Math.min(worst, minimax(valueBoard, depth + 1, true, botPlayer, humanPlayer));
+        valueBoard[index] = null;
+      });
+      return worst;
+    }
+
+    function openMovesFor(mark) {
+      var moves = availableMoves();
+      if (!moves.length) return -1;
+
+      var winningMove = -1;
+      for (var i = 0; i < moves.length; i++) {
+        var index = moves[i];
+        board[index] = mark;
+        if (checkWinner(board)) {
+          winningMove = index;
+          board[index] = null;
+          break;
+        }
+        board[index] = null;
+      }
+      return winningMove;
+    }
+
+    function chooseBotMove() {
+      var empty = availableMoves();
+      if (!empty.length) return -1;
+
+      var mode = gameMode;
+      var move;
+
+      if (mode === "cpu-easy") {
+        move = empty[Math.floor(Math.random() * empty.length)];
+      } else if (mode === "cpu-medium") {
+        move = openMovesFor(botMark);
+        if (move === -1) {
+          move = openMovesFor(humanMark);
+        }
+        if (move === -1 || Math.random() < 0.35) {
+          move = empty[Math.floor(Math.random() * empty.length)];
+        }
+      } else {
+        move = openMovesFor(botMark);
+        if (move === -1) {
+          move = openMovesFor(humanMark);
+        }
+        if (move === -1) {
+          move = bestMoveFor(botMark);
+        }
+      }
+
+      return move;
+    }
+
+    function scheduleBotMove() {
+      clearPendingBotMove();
+      if (!sessionStarted || gameOver || !isBotTurn()) return;
+
+      boardEl.classList.add("thinking");
+      botTimer = setTimeout(function () {
+        boardEl.classList.remove("thinking");
+        botTimer = null;
+        if (!gameOver && isBotTurn()) {
+          var move = chooseBotMove();
+          if (move !== -1) {
+            pushMove(botMark, move);
+          }
+        }
+      }, 420);
+    }
+
+    function beginRound() {
+      clearPendingBotMove();
+      board = Array(9).fill(null);
+      currentPlayer = "X";
+      gameOver = false;
+      moveLog = [];
+      stateStack = [];
+      lastMovePlayer = null;
+      roundStartedAt = Date.now();
+      sessionStarted = true;
+
+      hideResultModal();
+      renderBoard();
+      updateHistory();
+      updateStatus();
+      startTimer();
+
+      if (isBotTurn()) {
+        scheduleBotMove();
+      }
+    }
+
+    function undoMove() {
+      clearPendingBotMove();
+
+      var steps = gameMode !== "pvp" && lastMovePlayer === botMark && stateStack.length >= 2 ? 2 : 1;
+      if (!stateStack.length) return;
+
+      while (steps > 0 && stateStack.length) {
+        var snapshot = stateStack.pop();
+        board = cloneBoard(snapshot.board);
+        currentPlayer = snapshot.currentPlayer;
+        gameOver = snapshot.gameOver;
+        moveLog = cloneLog(snapshot.moveLog);
+        lastMovePlayer = snapshot.lastMovePlayer;
+        sessionStarted = snapshot.sessionStarted;
+        steps -= 1;
+      }
+
+      hideResultModal();
+      renderBoard();
+      updateHistory();
+      updateStatus();
+
+      if (!gameOver) {
+        startTimer();
+        if (isBotTurn()) {
+          scheduleBotMove();
+        }
+      }
+    }
+
+    function resetScores() {
+      scores = { X: 0, O: 0, D: 0 };
+      updateScores();
+      beginRound();
+    }
+
+    function showHint() {
+      if (!sessionStarted || gameOver) return;
+
+      var cells = boardEl.querySelectorAll(".cell");
+      cells.forEach(function (cell) {
+        cell.classList.remove("hint-cell");
+      });
+
+      var hintIndex = gameMode === "pvp" ? bestMoveFor(currentPlayer) : chooseBotMove();
+      if (hintIndex < 0) return;
+
+      cells[hintIndex].classList.add("hint-cell");
+      window.setTimeout(function () {
+        if (cells[hintIndex]) {
+          cells[hintIndex].classList.remove("hint-cell");
+        }
+      }, 1200);
+    }
+
+    function bindEvents() {
+      startBtn.addEventListener("click", function () {
+        startModal.classList.remove("show");
+        startModal.setAttribute("aria-hidden", "true");
+        beginRound();
+      });
+
+      modeSelect.addEventListener("change", function () {
+        setMode();
+        if (sessionStarted && !gameOver) {
+          updateStatus();
+          if (isBotTurn()) {
+            scheduleBotMove();
+          } else {
+            clearPendingBotMove();
+            boardEl.classList.remove("thinking");
+          }
+        }
+      });
+
+      themeSelect.addEventListener("change", applyTheme);
+
+      hintBtn.addEventListener("click", showHint);
+      undoBtn.addEventListener("click", undoMove);
+      newRoundBtn.addEventListener("click", beginRound);
+      resetAllBtn.addEventListener("click", resetScores);
+      nextRoundBtn.addEventListener("click", function () {
+        hideResultModal();
+        beginRound();
+      });
+      closeBtn.addEventListener("click", function () {
+        hideResultModal();
+      });
+
+      window.addEventListener("resize", function () {
+        updateTimer();
+      });
+    }
+
+    function init() {
+      applyTheme();
+      setMode();
+      updateScores();
+      renderBoard();
+      updateHistory();
+      updateStatus();
+      updateTimer();
+      bindEvents();
+    }
+
+    init();
+  }());
