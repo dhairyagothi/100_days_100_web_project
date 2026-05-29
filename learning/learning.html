@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Dashboard · 100 Days · 100 Web Projects</title>
   <link rel="icon" type="image/x-icon" href="../fav.ico" />
-  <meta name="description" content="A dynamic markdown-powered learning portal for HTML, CSS, and JavaScript. Scale up your frontend skills with high-quality step-by-step guides, flowcharts, code examples, and best practices." />
+  <meta name="description" content="A dynamic markdown-powered learning portal for HTML, CSS, JavaScript, and React.js. Scale up your frontend skills with high-quality step-by-step guides, flowcharts, code examples, and best practices." />
 
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,34 +35,7 @@
   </div>
 
   <!-- ── NAVBAR ──────────────────────────────────────────── -->
-  <header>
-    <nav class="navbar" id="navbar">
-      <a class="navbar-brand" href="../index.html" style="text-decoration:none;">
-        <span class="brand-mark" aria-label="100 Days logo">100</span>
-        <span class="brand-copy">
-          <span class="brand-kicker">Open Source Archive</span>
-          <strong>100 Days · 100 Web Projects</strong>
-        </span>
-      </a>
-
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-        <i class="fas fa-bars" aria-hidden="true"></i>
-      </button>
-
-      <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-        <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
-        <a class="btn btn-primary btn-sm active" href="learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
-        <a class="btn btn-ghost btn-sm" href="../contributors/contributor.html">Contributors</a>
-        <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-github"></i> GitHub
-        </a>
-        <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer">Generate README</a>
-        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-          <i class="fas fa-moon"></i> Theme
-        </button>
-      </div>
-    </nav>
-  </header>
+  <div id="navbar-container"></div>
 
   <!-- ── MAIN CONTAINER ─────────────────────────────────── -->
   <main class="learning-container">
@@ -114,7 +87,7 @@
       <div>
         <h3>About the Portal</h3>
         <p>
-          A scalable, dynamic, markdown-powered education system inside the 100 Days · 100 Web Projects project, designed to teach HTML, CSS, and JS best practices.
+          A scalable, dynamic, markdown-powered education system inside the 100 Days · 100 Web Projects project, designed to teach HTML, CSS, JavaScript, and React.js best practices.
         </p>
         <p style="margin-top: 1rem;">
           <strong>&copy; <span id="Current-Year"></span> 100 Days, 100 Projects</strong> by Dhairya and Contributors.
@@ -162,12 +135,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
 
   <!-- Interactive Scripts -->
   <script src="learning.js"></script>
   <script>
     document.getElementById("Current-Year").textContent = new Date().getFullYear();
   </script>
-</body>
+  <script src="../navbar.js"></script>
+  </body>
 
 </html>

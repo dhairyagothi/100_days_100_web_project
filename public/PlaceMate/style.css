@@ -11,6 +11,7 @@
   --border-color: rgba(255,255,255,0.1);
   --text-color: #f8fafc;
   --subtitle-color: #cbd5e1;
+  --container-bg: #111827;
   --accent: #3b82f6;
   --green: #22c55e;
   --yellow: #eab308;
@@ -202,7 +203,7 @@ body {
 
   border-radius: 50%;
 
-  background: #111827;
+  background: var(--container-bg, #111827);
 
   z-index: -1;
 }
@@ -406,4 +407,74 @@ body {
   .stat-card h2 {
     font-size: 30px;
   }
+}
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light-mode {
+
+  --bg-gradient:
+    linear-gradient(135deg, #eef2ff, #ffffff);
+
+  --card-bg:
+    rgba(255,255,255,0.92);
+
+  --border-color:
+    rgba(0,0,0,0.08);
+
+  --text-color:
+    #111827;
+
+  --subtitle-color:
+    #475569;
+
+  --container-bg: white;
+}
+
+/* =========================
+   THEME TOGGLE BUTTON
+========================= */
+
+.theme-toggle {
+
+  position: fixed;
+
+  top: 20px;
+  right: 20px;
+
+  width: 55px;
+  height: 55px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: white;
+
+  color: black;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,0.25);
+
+  z-index: 1000;
+
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+
+  transform:
+    scale(1.08) rotate(8deg);
+}
+
+body.light-mode .theme-toggle {
+
+  background: #111827;
+
+  color: white;
 }
