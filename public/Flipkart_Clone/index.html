@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flipkart – India's #1 Online Shopping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --fk-blue: #2874f0;
+      --fk-yellow: #f0c040;
+      --fk-orange: #ff6161;
+      --fk-green: #388e3c;
+      --fk-light: #f1f3f6;
+      --fk-white: #ffffff;
+      --fk-text: #212121;
+      --fk-muted: #878787;
+      --fk-border: #e0e0e0;
+      --fk-shadow: 0 2px 8px rgba(0,0,0,.12);
+    }
+
+    body { font-family: 'Roboto', sans-serif; background: var(--fk-light); color: var(--fk-text); }
+
+    /* ── NAVBAR ── */
+    header {
+      background: var(--fk-blue);
+      position: sticky; top: 0; z-index: 999;
+      box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    }
+    .navbar {
+      max-width: 1280px; margin: auto;
+      display: flex; align-items: center; gap: 20px;
+      padding: 10px 16px;
+    }
+    .logo-wrap { display: flex; flex-direction: column; text-decoration: none; flex-shrink: 0; }
+    .logo-wrap span:first-child { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -.5px; }
+    .logo-wrap .tagline { font-size: 11px; color: var(--fk-yellow); font-style: italic; }
+    .logo-wrap .tagline em { color: #fff; font-style: normal; }
+
+    .search-bar {
+      flex: 1; display: flex; max-width: 600px;
+      background: #fff; border-radius: 2px; overflow: hidden;
+    }
+    .search-bar input {
+      flex: 1; border: none; outline: none; padding: 10px 14px;
+      font-size: 14px; color: var(--fk-text);
+    }
+    .search-bar button {
+      background: var(--fk-blue); border: none; cursor: pointer;
+      padding: 0 18px; color: #fff; font-size: 18px;
+      transition: background .2s;
+    }
+    .search-bar button:hover { background: #1a5fd8; }
+
+    .nav-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+    .nav-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: transparent; border: none; cursor: pointer;
+      color: #fff; font-size: 14px; font-weight: 500;
+      padding: 8px 12px; border-radius: 2px; transition: background .2s;
+      text-decoration: none;
+    }
+    .nav-btn:hover { background: rgba(255,255,255,.15); }
+    .nav-btn .icon { font-size: 18px; }
+    .cart-count {
+      background: var(--fk-yellow); color: #000;
+      font-size: 11px; font-weight: 700; padding: 1px 5px;
+      border-radius: 10px; min-width: 18px; text-align: center;
+    }
+
+    /* ── CATEGORY BAR ── */
+    .category-bar {
+      background: #fff; border-bottom: 1px solid var(--fk-border);
+      position: sticky; top: 56px; z-index: 99;
+    }
+    .cat-inner {
+      max-width: 1280px; margin: auto;
+      display: flex; gap: 0; overflow-x: auto; scrollbar-width: none;
+    }
+    .cat-inner::-webkit-scrollbar { display: none; }
+    .cat-item {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 10px 20px; cursor: pointer; font-size: 13px;
+      font-weight: 500; color: var(--fk-text); white-space: nowrap;
+      border-bottom: 3px solid transparent; transition: all .2s;
+      text-decoration: none;
+    }
+    .cat-item:hover, .cat-item.active { color: var(--fk-blue); border-bottom-color: var(--fk-blue); }
+    .cat-item .cat-icon { font-size: 22px; margin-bottom: 4px; }
+
+    /* ── HERO BANNER ── */
+    .banner-section { max-width: 1280px; margin: 16px auto; padding: 0 16px; display: flex; gap: 12px; }
+    .banner-slider { flex: 1; position: relative; border-radius: 4px; overflow: hidden; }
+    .slides { display: flex; transition: transform .4s ease; }
+    .slide {
+      min-width: 100%; height: 260px; display: flex; align-items: center;
+      justify-content: center; flex-direction: column; color: #fff;
+      text-align: center; padding: 24px;
+    }
+    .slide-1 { background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #1976d2 100%); }
+    .slide-2 { background: linear-gradient(135deg, #b71c1c 0%, #c62828 50%, #e53935 100%); }
+    .slide-3 { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #43a047 100%); }
+    .slide-4 { background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 50%, #8e24aa 100%); }
+    .slide h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,.3); }
+    .slide p { font-size: 14px; opacity: .9; margin-bottom: 16px; }
+    .slide .badge {
+      background: var(--fk-yellow); color: #000; font-weight: 700;
+      padding: 6px 20px; border-radius: 2px; font-size: 14px;
+    }
+    .sale-tag {
+      position: absolute; top: 16px; right: 16px;
+      background: var(--fk-orange); color: #fff;
+      font-size: 12px; font-weight: 700; padding: 4px 10px;
+      border-radius: 12px; animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+    .slider-btns { position: absolute; top: 50%; transform: translateY(-50%); width: 100%; display: flex; justify-content: space-between; pointer-events: none; padding: 0 8px; }
+    .slider-btn {
+      pointer-events: all; background: rgba(255,255,255,.9); border: none;
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      font-size: 16px; display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--fk-shadow); transition: background .2s;
+    }
+    .slider-btn:hover { background: #fff; }
+    .dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.5); cursor: pointer; transition: background .2s; }
+    .dot.active { background: #fff; }
+
+    .banner-sidebar { width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; }
+    .sidebar-card {
+      flex: 1; border-radius: 4px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: #fff; text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .sidebar-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.2); }
+    .sidebar-card .big-icon { font-size: 32px; }
+    .sc-1 { background: linear-gradient(135deg, #ff6f00, #ff8f00); }
+    .sc-2 { background: linear-gradient(135deg, #0277bd, #039be5); }
+
+    /* ── DEAL OF DAY TIMER ── */
+    .deal-section { max-width: 1280px; margin: 0 auto 16px; padding: 0 16px; }
+    .section-header {
+      background: #fff; padding: 16px 20px;
+      display: flex; align-items: center; gap: 16px;
+      border-radius: 4px 4px 0 0; border-bottom: 2px solid var(--fk-blue);
+    }
+    .section-title { font-size: 20px; font-weight: 700; color: var(--fk-text); }
+    .timer-wrap { display: flex; align-items: center; gap: 8px; margin-left: 16px; }
+    .timer-label { font-size: 13px; color: var(--fk-muted); }
+    .timer-box { display: flex; gap: 4px; }
+    .t-unit {
+      background: var(--fk-text); color: #fff;
+      padding: 4px 8px; border-radius: 4px; font-size: 16px;
+      font-weight: 700; min-width: 36px; text-align: center;
+    }
+    .t-sep { font-size: 18px; font-weight: 700; color: var(--fk-text); line-height: 1.8; }
+    .view-all-btn {
+      margin-left: auto; background: none; border: 1px solid var(--fk-blue);
+      color: var(--fk-blue); padding: 8px 18px; border-radius: 2px;
+      cursor: pointer; font-size: 13px; font-weight: 500; transition: all .2s;
+      text-decoration: none;
+    }
+    .view-all-btn:hover { background: var(--fk-blue); color: #fff; }
+
+    /* ── PRODUCT ROWS ── */
+    .products-row {
+      background: #fff; display: flex; gap: 0;
+      overflow-x: auto; scrollbar-width: none; padding: 16px;
+      border-radius: 0 0 4px 4px;
+    }
+    .products-row::-webkit-scrollbar { display: none; }
+
+    .product-card {
+      min-width: 180px; max-width: 200px; padding: 12px;
+      cursor: pointer; text-align: center; flex-shrink: 0;
+      transition: transform .2s, box-shadow .2s;
+      border: 1px solid transparent; border-radius: 4px;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,.14); border-color: var(--fk-border); }
+    .product-card img { width: 100%; height: 140px; object-fit: contain; margin-bottom: 8px; transition: transform .3s; }
+    .product-card:hover img { transform: scale(1.06); }
+    .product-card .p-name { font-size: 13px; color: var(--fk-text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .product-card .p-price { font-size: 15px; font-weight: 700; color: var(--fk-text); }
+    .product-card .p-old { font-size: 12px; color: var(--fk-muted); text-decoration: line-through; margin: 0 4px; }
+    .product-card .p-off { font-size: 12px; color: var(--fk-green); font-weight: 600; }
+    .product-card .p-rating { display: inline-flex; align-items: center; gap: 3px; background: var(--fk-green); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-bottom: 4px; }
+
+    /* ── CATEGORY GRID ── */
+    .cat-grid-section { max-width: 1280px; margin: 0 auto 16px; padding: 0 16px; }
+    .cat-grid-inner { background: #fff; border-radius: 4px; padding: 20px; }
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+    .cat-tile {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 16px 8px; border-radius: 8px; cursor: pointer; transition: background .2s;
+      text-decoration: none; color: var(--fk-text);
+    }
+    .cat-tile:hover { background: var(--fk-light); }
+    .cat-tile .ct-icon { font-size: 40px; }
+    .cat-tile span { font-size: 12px; font-weight: 500; text-align: center; }
+
+    /* ── OFFER BANNERS ── */
+    .offer-banners { max-width: 1280px; margin: 0 auto 16px; padding: 0 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .offer-card {
+      border-radius: 4px; padding: 24px 20px; display: flex; flex-direction: column; gap: 8px;
+      color: #fff; cursor: pointer; transition: transform .2s;
+    }
+    .offer-card:hover { transform: translateY(-3px); }
+    .oc-1 { background: linear-gradient(135deg, #e65100, #f57c00); }
+    .oc-2 { background: linear-gradient(135deg, #283593, #3949ab); }
+    .oc-3 { background: linear-gradient(135deg, #00695c, #00897b); }
+    .offer-card .oc-label { font-size: 11px; font-weight: 600; opacity: .8; text-transform: uppercase; letter-spacing: 1px; }
+    .offer-card .oc-title { font-size: 22px; font-weight: 700; }
+    .offer-card .oc-sub { font-size: 13px; opacity: .85; }
+    .offer-card .oc-cta { margin-top: 8px; align-self: flex-start; background: rgba(255,255,255,.25); padding: 6px 16px; border-radius: 2px; font-size: 13px; font-weight: 600; }
+
+    /* ── BEST SELLERS GRID ── */
+    .grid-section { max-width: 1280px; margin: 0 auto 16px; padding: 0 16px; }
+    .grid-header { background: var(--fk-blue); padding: 16px 20px; border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: space-between; }
+    .grid-header .section-title { color: #fff; }
+    .grid-header .view-all-btn { border-color: #fff; color: #fff; }
+    .grid-header .view-all-btn:hover { background: #fff; color: var(--fk-blue); }
+    .product-grid {
+      background: #fff; display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px; background-color: var(--fk-border);
+      border-radius: 0 0 4px 4px; overflow: hidden;
+    }
+    .grid-card {
+      background: #fff; padding: 16px; cursor: pointer;
+      transition: box-shadow .2s; text-align: center;
+    }
+    .grid-card:hover { box-shadow: inset 0 0 0 1px var(--fk-blue); z-index: 1; }
+    .grid-card img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 10px; transition: transform .3s; }
+    .grid-card:hover img { transform: scale(1.05); }
+    .grid-card .gc-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .gc-rating { display: inline-flex; align-items: center; gap: 3px; background: var(--fk-green); color: #fff; font-size: 12px; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-bottom: 6px; }
+    .gc-rating.med { background: #fb8c00; }
+    .gc-rating.low { background: #e53935; }
+    .gc-price { font-size: 16px; font-weight: 700; }
+    .gc-meta { font-size: 12px; color: var(--fk-muted); }
+    .gc-off { color: var(--fk-green); font-weight: 600; font-size: 13px; }
+    .add-cart-btn {
+      margin-top: 8px; width: 100%; background: #ff9f00; border: none;
+      color: #fff; font-size: 13px; font-weight: 700; padding: 8px;
+      border-radius: 2px; cursor: pointer; transition: background .2s;
+    }
+    .add-cart-btn:hover { background: #e65c00; }
+
+    /* ── FOOTER ── */
+    footer { background: #172337; color: #9e9e9e; padding: 40px 0 20px; margin-top: 24px; }
+    .footer-inner { max-width: 1280px; margin: auto; padding: 0 16px; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; margin-bottom: 32px; }
+    .footer-col h4 { font-size: 12px; font-weight: 700; color: #9e9e9e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li a { color: #fff; font-size: 13px; text-decoration: none; opacity: .8; transition: opacity .2s; }
+    .footer-col ul li a:hover { opacity: 1; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding-top: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; gap: 12px; }
+    .footer-bottom p { font-size: 13px; }
+    .payment-icons { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pay-icon { background: #fff; color: #000; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #333; color: #fff; padding: 12px 24px; border-radius: 4px;
+      font-size: 14px; z-index: 9999; transition: transform .3s ease;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast .check { color: #66bb6a; font-size: 18px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .banner-sidebar { display: none; }
+      .offer-banners { grid-template-columns: 1fr; }
+      .nav-btn span { display: none; }
+      .nav-actions { gap: 2px; }
+      .slide h2 { font-size: 20px; }
+    }
+    @media (max-width: 480px) {
+      .navbar { gap: 10px; padding: 8px; }
+      .logo-wrap span:first-child { font-size: 18px; }
+      .section-title { font-size: 16px; }
+      .product-card { min-width: 150px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<header>
+  <nav class="navbar">
+    <a class="logo-wrap" href="#">
+      <span>Flipkart</span>
+      <span class="tagline">Explore <em>Plus</em> ⭐</span>
+    </a>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for products, brands and more" />
+      <button onclick="handleSearch()">🔍</button>
+    </div>
+
+    <div class="nav-actions">
+      <button class="nav-btn" onclick="alert('Login feature coming soon!')">
+        <span class="icon">👤</span><span>Login</span>
+      </button>
+      <button class="nav-btn" onclick="alert('Go to Seller Hub')">
+        <span class="icon">🏪</span><span>Become a Seller</span>
+      </button>
+      <button class="nav-btn" id="cartBtn">
+        <span class="icon">🛒</span><span>Cart</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ═══ CATEGORY BAR ═══ -->
+<div class="category-bar">
+  <div class="cat-inner">
+    <a href="#" class="cat-item active" onclick="setActive(this)"><span class="cat-icon">📱</span>Mobiles</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">💻</span>Electronics</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">👕</span>Fashion</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">🏠</span>Home</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">✈️</span>Travel</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">🛍️</span>Grocery</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">🎮</span>Toys</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">🚗</span>Automotive</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">💊</span>Beauty</a>
+    <a href="#" class="cat-item" onclick="setActive(this)"><span class="cat-icon">📚</span>Books</a>
+  </div>
+</div>
+
+<!-- ═══ HERO BANNER ═══ -->
+<section class="banner-section">
+  <div class="banner-slider">
+    <div class="slides" id="slides">
+      <div class="slide slide-1">
+        <div class="sale-tag">LIVE NOW 🔥</div>
+        <h2>Big Billion Days</h2>
+        <p>India's biggest shopping festival • Up to 80% off</p>
+        <span class="badge">SHOP NOW</span>
+      </div>
+      <div class="slide slide-2">
+        <h2>Electronics Sale</h2>
+        <p>Latest smartphones, laptops & gadgets at jaw-drop prices</p>
+        <span class="badge">GRAB DEALS</span>
+      </div>
+      <div class="slide slide-3">
+        <h2>Fashion Week</h2>
+        <p>Trendy outfits, footwear & accessories for every occasion</p>
+        <span class="badge">EXPLORE NOW</span>
+      </div>
+      <div class="slide slide-4">
+        <h2>Gadget Carnival</h2>
+        <p>Smart watches, earbuds & home devices — next-gen living</p>
+        <span class="badge">DISCOVER</span>
+      </div>
+    </div>
+    <div class="slider-btns">
+      <button class="slider-btn" onclick="changeSlide(-1)">&#8249;</button>
+      <button class="slider-btn" onclick="changeSlide(1)">&#8250;</button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <div class="banner-sidebar">
+    <a href="#" class="sidebar-card sc-1">
+      <span class="big-icon">🔥</span>
+      <span>Today's Deals</span>
+    </a>
+    <a href="#" class="sidebar-card sc-2">
+      <span class="big-icon">🎁</span>
+      <span>Gift Cards</span>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ DEAL OF THE DAY ═══ -->
+<section class="deal-section">
+  <div class="section-header">
+    <span class="section-title">🔥 Deal of the Day</span>
+    <div class="timer-wrap">
+      <span class="timer-label">Ends in</span>
+      <div class="timer-box">
+        <span class="t-unit" id="th">00</span><span class="t-sep">:</span>
+        <span class="t-unit" id="tm">00</span><span class="t-sep">:</span>
+        <span class="t-unit" id="ts">00</span>
+      </div>
+    </div>
+    <a href="#" class="view-all-btn">View All</a>
+  </div>
+  <div class="products-row" id="dealRow"></div>
+</section>
+
+<!-- ═══ CATEGORY TILES ═══ -->
+<section class="cat-grid-section">
+  <div class="cat-grid-inner">
+    <div class="section-header" style="border-radius:0;margin:-20px -20px 20px -20px">
+      <span class="section-title">🛍️ Shop by Category</span>
+    </div>
+    <div class="cat-grid">
+      <a href="#" class="cat-tile"><span class="ct-icon">📱</span><span>Mobiles</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">💻</span><span>Laptops</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">📺</span><span>TVs</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">🎧</span><span>Audio</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">👟</span><span>Footwear</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">👗</span><span>Women</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">👔</span><span>Men</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">🧸</span><span>Kids</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">🛋️</span><span>Furniture</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">🍳</span><span>Kitchen</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">💄</span><span>Beauty</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">🏋️</span><span>Sports</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">📚</span><span>Books</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">🌱</span><span>Garden</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">🚗</span><span>Auto</span></a>
+      <a href="#" class="cat-tile"><span class="ct-icon">🎮</span><span>Gaming</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OFFER BANNERS ═══ -->
+<div class="offer-banners">
+  <div class="offer-card oc-1">
+    <span class="oc-label">Exclusive Offer</span>
+    <span class="oc-title">Up to 70% Off</span>
+    <span class="oc-sub">On Fashion & Apparel</span>
+    <span class="oc-cta">Shop Now →</span>
+  </div>
+  <div class="offer-card oc-2">
+    <span class="oc-label">Exchange Offer</span>
+    <span class="oc-title">Extra ₹5000 Off</span>
+    <span class="oc-sub">On Exchange of Old Smartphones</span>
+    <span class="oc-cta">Upgrade Now →</span>
+  </div>
+  <div class="offer-card oc-3">
+    <span class="oc-label">Bank Offer</span>
+    <span class="oc-title">10% Instant Off</span>
+    <span class="oc-sub">With SBI, HDFC & ICICI Cards</span>
+    <span class="oc-cta">Know More →</span>
+  </div>
+</div>
+
+<!-- ═══ BEST SELLERS GRID ═══ -->
+<section class="grid-section">
+  <div class="grid-header">
+    <span class="section-title">⭐ Best Sellers</span>
+    <a href="#" class="view-all-btn">View All</a>
+  </div>
+  <div class="product-grid" id="bestSellers"></div>
+</section>
+
+<!-- ═══ TRENDING ═══ -->
+<section class="deal-section">
+  <div class="section-header">
+    <span class="section-title">📈 Trending Now</span>
+    <a href="#" class="view-all-btn">View All</a>
+  </div>
+  <div class="products-row" id="trendingRow"></div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">About Flipkart</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Corporate Info</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Payments</a></li>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Cancellation & Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Policy</h4>
+        <ul>
+          <li><a href="#">Return Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Social</h4>
+        <ul>
+          <li><a href="#">📘 Facebook</a></li>
+          <li><a href="#">🐦 Twitter</a></li>
+          <li><a href="#">📸 Instagram</a></li>
+          <li><a href="#">▶️ YouTube</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Flipkart Ecosystem</h4>
+        <ul>
+          <li><a href="#">Flipkart Business</a></li>
+          <li><a href="#">Flipkart Wholesale</a></li>
+          <li><a href="#">Myntra</a></li>
+          <li><a href="#">Cleartrip</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Flipkart Clone · Built with ❤️ for Open Source</p>
+      <div class="payment-icons">
+        <span class="pay-icon">Visa</span>
+        <span class="pay-icon">MC</span>
+        <span class="pay-icon">UPI</span>
+        <span class="pay-icon">PayTM</span>
+        <span class="pay-icon">NetB</span>
+        <span class="pay-icon">COD</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast">
+  <span class="check">✔</span>
+  <span id="toastMsg">Added to cart!</span>
+</div>
+
+<script>
+  // ── DATA ──
+  const products = [
+    { id:1,  name:"Samsung Galaxy S24",    price:74999, old:89999, off:17, rating:4.5, img:"📱", cat:"mobile" },
+    { id:2,  name:"Apple iPhone 15",        price:79999, old:99999, off:20, rating:4.7, img:"📱", cat:"mobile" },
+    { id:3,  name:"OnePlus 12R",            price:39999, old:49999, off:20, rating:4.4, img:"📱", cat:"mobile" },
+    { id:4,  name:"Redmi Note 13 Pro",      price:24999, old:29999, off:17, rating:4.3, img:"📱", cat:"mobile" },
+    { id:5,  name:"Sony WH-1000XM5",        price:24990, old:34990, off:29, rating:4.6, img:"🎧", cat:"audio"  },
+    { id:6,  name:"boAt Airdopes 141",      price:1299,  old:3990,  off:67, rating:4.1, img:"🎧", cat:"audio"  },
+    { id:7,  name:"Samsung 65\" 4K QLED",   price:89990, old:139990,off:36, rating:4.5, img:"📺", cat:"tv"     },
+    { id:8,  name:"Dell Inspiron 15",       price:54990, old:74990, off:27, rating:4.2, img:"💻", cat:"laptop" },
+    { id:9,  name:"HP Pavilion x360",       price:64999, old:84999, off:24, rating:4.3, img:"💻", cat:"laptop" },
+    { id:10, name:"Nike Air Max 270",       price:8995,  old:12995, off:31, rating:4.4, img:"👟", cat:"shoe"   },
+    { id:11, name:"Adidas Ultraboost 22",   price:12999, old:18999, off:32, rating:4.5, img:"👟", cat:"shoe"   },
+    { id:12, name:"Levi's 511 Slim Jeans",  price:2699,  old:4499,  off:40, rating:4.2, img:"👖", cat:"fashion"},
+  ];
+
+  const trending = [
+    { id:13, name:"Apple Watch Series 9",   price:41900, old:52000, off:19, rating:4.6, img:"⌚", cat:"wear"   },
+    { id:14, name:"Kindle Paperwhite",      price:13999, old:17999, off:22, rating:4.7, img:"📖", cat:"book"   },
+    { id:15, name:"Instant Pot Duo",        price:7999,  old:12999, off:38, rating:4.5, img:"🍳", cat:"kitchen"},
+    { id:16, name:"Dyson V12 Vacuum",       price:44900, old:64900, off:31, rating:4.4, img:"🧹", cat:"home"   },
+    { id:17, name:"Canon EOS M50",          price:54990, old:72990, off:25, rating:4.6, img:"📷", cat:"camera" },
+    { id:18, name:"Nintendo Switch OLED",   price:33999, old:39999, off:15, rating:4.8, img:"🎮", cat:"gaming" },
+  ];
+
+  // ── CART ──
+  let cart = [];
+  function addToCart(id, name) {
+    cart.push(id);
+    document.getElementById('cartCount').textContent = cart.length;
+    showToast(`"${name.substring(0,22)}…" added to cart!`);
+  }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ── RENDER DEAL ROW ──
+  function renderProductRow(containerId, items) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = items.map(p => `
+      <div class="product-card" onclick="addToCart(${p.id},'${p.name}')">
+        <div style="font-size:80px;line-height:1;margin-bottom:8px">${p.img}</div>
+        <div class="p-rating">★ ${p.rating}</div>
+        <div class="p-name">${p.name}</div>
+        <div>
+          <span class="p-price">₹${p.price.toLocaleString('en-IN')}</span>
+          <span class="p-old">₹${p.old.toLocaleString('en-IN')}</span>
+          <span class="p-off">${p.off}% off</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── RENDER BEST SELLERS GRID ──
+  function renderGrid(containerId, items) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = items.map(p => {
+      const rClass = p.rating >= 4.5 ? '' : p.rating >= 4 ? 'med' : 'low';
+      return `
+        <div class="grid-card">
+          <div style="font-size:100px;line-height:1;margin-bottom:8px">${p.img}</div>
+          <div class="gc-name">${p.name}</div>
+          <div class="gc-rating ${rClass}">★ ${p.rating}</div><br>
+          <span class="gc-price">₹${p.price.toLocaleString('en-IN')}</span>
+          <div class="gc-meta">
+            <span style="text-decoration:line-through">₹${p.old.toLocaleString('en-IN')}</span>
+            &nbsp;<span class="gc-off">${p.off}% off</span>
+          </div>
+          <button class="add-cart-btn" onclick="event.stopPropagation();addToCart(${p.id},'${p.name}')">
+            🛒 ADD TO CART
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ── SLIDER ──
+  let current = 0;
+  const totalSlides = 4;
+  function initDots() {
+    const d = document.getElementById('dots');
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goTo(i);
+      d.appendChild(dot);
+    }
+  }
+  function goTo(n) {
+    current = (n + totalSlides) % totalSlides;
+    document.getElementById('slides').style.transform = `translateX(-${current * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i === current));
+  }
+  function changeSlide(dir) { goTo(current + dir); }
+  setInterval(() => changeSlide(1), 4000);
+
+  // ── TIMER ──
+  function startTimer() {
+    let end = new Date();
+    end.setHours(23, 59, 59, 0);
+    setInterval(() => {
+      const diff = end - new Date();
+      if (diff <= 0) { end = new Date(); end.setDate(end.getDate()+1); end.setHours(23,59,59,0); return; }
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('th').textContent = String(h).padStart(2,'0');
+      document.getElementById('tm').textContent = String(m).padStart(2,'0');
+      document.getElementById('ts').textContent = String(s).padStart(2,'0');
+    }, 1000);
+  }
+
+  // ── SEARCH ──
+  function handleSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) showToast(`Searching for "${q}"…`);
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSearch();
+  });
+
+  // ── CATEGORY ACTIVE ──
+  function setActive(el) {
+    document.querySelectorAll('.cat-item').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── CART BUTTON ──
+  document.getElementById('cartBtn').addEventListener('click', () => {
+    showToast(cart.length ? `You have ${cart.length} item(s) in your cart` : 'Your cart is empty');
+  });
+
+  // ── INIT ──
+  initDots();
+  startTimer();
+  renderProductRow('dealRow', products.slice(0, 6));
+  renderGrid('bestSellers', products);
+  renderProductRow('trendingRow', trending);
+</script>
+</body>
+</html>

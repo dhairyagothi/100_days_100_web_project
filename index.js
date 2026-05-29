@@ -1954,10 +1954,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 {
-  id: 160,  // use the next available number
-  title: "Password Generator & Saver",
-  description: "Generate strong passwords with custom options, strength indicator, copy to clipboard, and save passwords locally with labels.",
-  tags: ["HTML", "CSS", "JS", "Utility", "Security"],
-  path: "public/PasswordGenerator/index.html",
-  icon: "🔐"
-},
+  "id": 170,
+  "name": "Flipkart Clone",
+  "description": "Responsive Flipkart UI clone with search, category nav, deal timer, product grid and cart functionality.",
+  "link": "/public/Flipkart_Clone/index.html",
+  "tags": ["HTML", "CSS", "JS", "E-commerce", "Clone"]
+}
