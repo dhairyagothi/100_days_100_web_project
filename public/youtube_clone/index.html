@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="YouTube Clone - A pixel-perfect recreation of YouTube's homepage UI built with HTML and CSS." />
+    <title>YouTube Clone</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="styles/general.css" />
+    <link rel="stylesheet" href="styles/header.css" />
+    <link rel="stylesheet" href="styles/sidebar.css" />
+    <link rel="stylesheet" href="styles/video.css" />
+    <link rel="stylesheet" href="styles/chips.css" />
+  </head>
+  <body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+      <div class="left-section">
+        <button class="icon-btn hamburger-btn" id="hamburgerBtn" aria-label="Menu" title="Menu">
+          <img src="icons/menu.svg" alt="Menu" />
+        </button>
+        <a href="#" class="logo-link" aria-label="YouTube Home">
+          <img class="youtube-logo" src="icons/youtube-logo.svg" alt="YouTube" />
+        </a>
+      </div>
+
+      <div class="middle-section">
+        <div class="search-wrapper">
+          <input class="search-bar" id="searchBar" type="text" placeholder="Search" aria-label="Search YouTube" />
+          <button class="search-button" id="searchBtn" aria-label="Search">
+            <img class="search-icon" src="icons/search.svg" alt="Search" />
+            <div class="tooltip">Search</div>
+          </button>
+        </div>
+        <button class="icon-btn voice-search-button" aria-label="Search with your voice" title="Search with your voice">
+          <img class="voice-search-icon" src="icons/voice-search-icon.svg" alt="Voice search" />
+          <div class="tooltip">Search with your voice</div>
+        </button>
+      </div>
+
+      <div class="right-section">
+        <button class="icon-btn upload-icon-container" aria-label="Create" title="Create">
+          <img class="upload-icon" src="icons/upload.svg" alt="Upload" />
+          <div class="tooltip">Create</div>
+        </button>
+        <button class="icon-btn" aria-label="YouTube apps" title="YouTube apps">
+          <img class="youtube-apps-icon" src="icons/youtube-apps.svg" alt="Apps" />
+        </button>
+        <button class="icon-btn notifications-icon-container" id="notifBtn" aria-label="Notifications" title="Notifications">
+          <img class="notifications-icon" src="icons/notifications.svg" alt="Notifications" />
+          <div class="notifications-count" id="notifCount">3</div>
+          <div class="tooltip">Notifications</div>
+        </button>
+        <button class="avatar-btn" id="avatarBtn" aria-label="Account" title="Account">
+          <img class="current-user-picture" src="channel-pictures/my-channel.jpeg" alt="Your channel" />
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== SIDEBAR ===== -->
+    <nav class="sidebar" id="sidebar">
+      <a href="#" class="sidebar-link active" aria-label="Home">
+        <img src="icons/home-icon.svg" alt="" />
+        <div>Home</div>
+      </a>
+      <a href="#" class="sidebar-link" aria-label="Explore">
+        <img src="icons/explore.svg" alt="" />
+        <div>Explore</div>
+      </a>
+      <a href="#" class="sidebar-link" aria-label="Subscriptions">
+        <img src="icons/subscriptions.svg" alt="" />
+        <div>Subscriptions</div>
+      </a>
+      <a href="#" class="sidebar-link" aria-label="Originals">
+        <img src="icons/originals.svg" alt="" />
+        <div>Originals</div>
+      </a>
+      <a href="#" class="sidebar-link" aria-label="YouTube Music">
+        <img src="icons/youtube-music.svg" alt="" />
+        <div>Music</div>
+      </a>
+      <a href="#" class="sidebar-link" aria-label="Library">
+        <img src="icons/library.svg" alt="" />
+        <div>Library</div>
+      </a>
+    </nav>
+
+    <!-- ===== CATEGORY CHIPS ===== -->
+    <div class="chips-bar" id="chipsBar" role="navigation" aria-label="Filter videos by category">
+      <div class="chips-inner">
+        <button class="chip active" data-category="all">All</button>
+        <button class="chip" data-category="programming">Programming</button>
+        <button class="chip" data-category="gaming">Gaming</button>
+        <button class="chip" data-category="music">Music</button>
+        <button class="chip" data-category="science">Science</button>
+        <button class="chip" data-category="comedy">Comedy</button>
+        <button class="chip" data-category="tech">Tech</button>
+        <button class="chip" data-category="cooking">Cooking</button>
+        <button class="chip" data-category="sports">Sports</button>
+        <button class="chip" data-category="news">News</button>
+        <button class="chip" data-category="education">Education</button>
+        <button class="chip" data-category="lifestyle">Lifestyle</button>
+      </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="mainContent">
+      <section class="video-grid" id="videoGrid" aria-label="Video recommendations">
+
+        <!-- Video 1 -->
+        <div class="video-preview" data-category="tech" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-1.webp" alt="Talking Tech and AI with Google CEO Sundar Pichai" loading="lazy" />
+            <div class="video-time">14:20</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-1.jpeg" alt="Marques Brownlee channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">Talking Tech and AI with Google CEO Sundar Pichai!</p>
+              <p class="video-author">Marques Brownlee</p>
+              <p class="video-stats">3.4M views &middot; 6 months ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="video-preview" data-category="comedy" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-2.webp" alt="Try Not To Laugh Challenge #9" loading="lazy" />
+            <div class="video-time">8:22</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-2.jpeg" alt="Markiplier channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">Try Not To Laugh Challenge #9</p>
+              <p class="video-author">Markiplier</p>
+              <p class="video-stats">19M views &middot; 4 years ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 3 -->
+        <div class="video-preview" data-category="comedy" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-3.webp" alt="Crazy Tik Toks Taken Moments Before DISASTER" loading="lazy" />
+            <div class="video-time">9:13</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-3.jpeg" alt="SSSniperWolf channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">Crazy Tik Toks Taken Moments Before DISASTER</p>
+              <p class="video-author">SSSniperWolf</p>
+              <p class="video-stats">12M views &middot; 1 year ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 4 -->
+        <div class="video-preview" data-category="science" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-4.webp" alt="The Simplest Math Problem No One Can Solve - Collatz Conjecture" loading="lazy" />
+            <div class="video-time">22:09</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-4.jpeg" alt="Veritasium channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">The Simplest Math Problem No One Can Solve - Collatz Conjecture</p>
+              <p class="video-author">Veritasium</p>
+              <p class="video-stats">18M views &middot; 4 months ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 5 -->
+        <div class="video-preview" data-category="programming" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-5.webp" alt="Kadane's Algorithm to Maximum Sum Subarray Problem" loading="lazy" />
+            <div class="video-time">11:17</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-5.jpeg" alt="CS Dojo channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">Kadane's Algorithm to Maximum Sum Subarray Problem</p>
+              <p class="video-author">CS Dojo</p>
+              <p class="video-stats">519K views &middot; 5 years ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 6 -->
+        <div class="video-preview" data-category="comedy" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-6.webp" alt="Anything You Can Fit In The Circle I'll Pay For" loading="lazy" />
+            <div class="video-time">19:59</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-6.jpeg" alt="MrBeast channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">Anything You Can Fit In The Circle I'll Pay For</p>
+              <p class="video-author">MrBeast</p>
+              <p class="video-stats">141M views &middot; 1 year ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 7 (extra) -->
+        <div class="video-preview" data-category="programming" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-1.webp" alt="Learn JavaScript in 1 Hour" loading="lazy" />
+            <div class="video-time">48:32</div>
+            <div class="thumbnail-badge">New</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-2.jpeg" alt="Programming with Mosh" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">Learn JavaScript in 1 Hour</p>
+              <p class="video-author">Programming with Mosh</p>
+              <p class="video-stats">7.8M views &middot; 2 years ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 8 (extra) -->
+        <div class="video-preview" data-category="gaming" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-3.webp" alt="I Survived 100 Days in Hardcore Minecraft" loading="lazy" />
+            <div class="video-time">1:02:38</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-3.jpeg" alt="Dream channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">I Survived 100 Days in Hardcore Minecraft</p>
+              <p class="video-author">Dream</p>
+              <p class="video-stats">42M views &middot; 2 years ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 9 (extra) -->
+        <div class="video-preview" data-category="science" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-4.webp" alt="How NASA's Webb Telescope Will Unfold the Universe" loading="lazy" />
+            <div class="video-time">16:45</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-4.jpeg" alt="Kurzgesagt channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">How NASA's Webb Telescope Will Unfold the Universe</p>
+              <p class="video-author">Kurzgesagt – In a Nutshell</p>
+              <p class="video-stats">9.2M views &middot; 3 years ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 10 (extra) -->
+        <div class="video-preview" data-category="tech" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-5.webp" alt="I Built a PC in 30 Minutes and It Actually Works" loading="lazy" />
+            <div class="video-time">29:14</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-5.jpeg" alt="Linus Tech Tips" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">I Built a PC in 30 Minutes and It Actually Works</p>
+              <p class="video-author">Linus Tech Tips</p>
+              <p class="video-stats">5.1M views &middot; 8 months ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 11 (extra) -->
+        <div class="video-preview" data-category="music" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-6.webp" alt="Bohemian Rhapsody - Live Aid 1985" loading="lazy" />
+            <div class="video-time">5:55</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-6.jpeg" alt="Queen channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">Bohemian Rhapsody - Live Aid 1985</p>
+              <p class="video-author">Queen Official</p>
+              <p class="video-stats">88M views &middot; 6 years ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+        <!-- Video 12 (extra) -->
+        <div class="video-preview" data-category="education" tabindex="0">
+          <div class="thumbnail-row">
+            <img class="thumbnail" src="thumbnails/thumbnail-2.webp" alt="The Complete Machine Learning Roadmap" loading="lazy" />
+            <div class="video-time">37:02</div>
+          </div>
+          <div class="video-info-grid">
+            <div class="channel-picture">
+              <img class="profile-picture" src="channel-pictures/channel-1.jpeg" alt="Sentdex channel" loading="lazy" />
+            </div>
+            <div class="video-info">
+              <p class="video-title">The Complete Machine Learning Roadmap [2024]</p>
+              <p class="video-author">Sentdex</p>
+              <p class="video-stats">2.3M views &middot; 1 year ago</p>
+            </div>
+          </div>
+          <div class="video-hover-menu">⋮</div>
+        </div>
+
+      </section>
+
+      <!-- No results message -->
+      <div class="no-results" id="noResults" style="display:none">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="38" stroke="#e0e0e0" stroke-width="2"/><path d="M28 40h24M40 28v24" stroke="#e0e0e0" stroke-width="2" stroke-linecap="round"/></svg>
+        <p>No videos found in this category</p>
+      </div>
+    </main>
+
+    <script>
+      // ===== CHIP FILTERING =====
+      const chips = document.querySelectorAll('.chip');
+      const videos = document.querySelectorAll('.video-preview');
+      const noResults = document.getElementById('noResults');
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+
+          const category = chip.dataset.category;
+          let visible = 0;
+
+          videos.forEach(video => {
+            const match = category === 'all' || video.dataset.category === category;
+            video.style.display = match ? '' : 'none';
+            if (match) visible++;
+          });
+
+          noResults.style.display = visible === 0 ? 'flex' : 'none';
+        });
+      });
+
+      // ===== SIDEBAR TOGGLE =====
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const chipsBar = document.getElementById('chipsBar');
+      let sidebarOpen = true;
+
+      hamburgerBtn.addEventListener('click', () => {
+        sidebarOpen = !sidebarOpen;
+        sidebar.classList.toggle('collapsed', !sidebarOpen);
+        mainContent.classList.toggle('sidebar-collapsed-main', !sidebarOpen);
+        chipsBar.classList.toggle('sidebar-collapsed-chips', !sidebarOpen);
+      });
+
+      // ===== SEARCH FILTER =====
+      const searchBar = document.getElementById('searchBar');
+      const searchBtn = document.getElementById('searchBtn');
+
+      function filterBySearch() {
+        const q = searchBar.value.trim().toLowerCase();
+        if (!q) {
+          // re-apply chip filter
+          const activeChip = document.querySelector('.chip.active');
+          if (activeChip) activeChip.click();
+          return;
+        }
+        let visible = 0;
+        videos.forEach(video => {
+          const title = video.querySelector('.video-title').textContent.toLowerCase();
+          const author = video.querySelector('.video-author').textContent.toLowerCase();
+          const match = title.includes(q) || author.includes(q);
+          video.style.display = match ? '' : 'none';
+          if (match) visible++;
+        });
+        noResults.style.display = visible === 0 ? 'flex' : 'none';
+      }
+
+      searchBtn.addEventListener('click', filterBySearch);
+      searchBar.addEventListener('keydown', e => {
+        if (e.key === 'Enter') filterBySearch();
+      });
+
+      // ===== VIDEO CARD CLICK =====
+      videos.forEach(card => {
+        card.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') card.click();
+        });
+      });
+
+      // ===== NOTIFICATION BADGE =====
+      const notifBtn = document.getElementById('notifBtn');
+      const notifCount = document.getElementById('notifCount');
+      notifBtn.addEventListener('click', () => {
+        notifCount.style.display = 'none';
+      });
+    </script>
+  </body>
+</html>

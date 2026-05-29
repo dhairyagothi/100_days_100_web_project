@@ -1,0 +1,96 @@
+/* ========================================
+   CATEGORY CHIPS BAR
+   ======================================== */
+.chips-bar {
+  position: fixed;
+  top: 56px;          /* directly below header */
+  left: 240px;        /* after sidebar */
+  right: 0;
+  height: 56px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e5e5e5;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  transition: left 0.2s ease;
+}
+
+.chips-bar.sidebar-collapsed {
+  left: 72px;
+}
+
+.chips-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 24px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  white-space: nowrap;
+}
+
+.chips-inner::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== CHIP BUTTON ===== */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background-color: #0f0f0f;
+  color: #f1f1f1;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: 'Roboto', Arial, sans-serif;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.12s, color 0.12s, transform 0.1s;
+  user-select: none;
+}
+
+.chip:not(.active) {
+  background-color: #f2f2f2;
+  color: #0f0f0f;
+}
+
+.chip:not(.active):hover {
+  background-color: #e5e5e5;
+}
+
+.chip.active {
+  background-color: #0f0f0f;
+  color: #fff;
+}
+
+.chip:focus-visible {
+  outline: 2px solid #065fd4;
+  outline-offset: 2px;
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+/* Match sidebar auto-collapse at 1000px */
+@media (max-width: 1000px) {
+  .chips-bar {
+    left: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chips-bar {
+    left: 0;
+  }
+}
+
+/* JS-toggled class for hamburger collapse */
+.chips-bar.sidebar-collapsed-chips {
+  left: 72px !important;
+}

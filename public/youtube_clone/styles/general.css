@@ -1,0 +1,91 @@
+/* ========================================
+   GENERAL RESET & BASE STYLES
+   ======================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+}
+
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding-top: 112px; /* header (56px) + chips (56px) */
+  padding-right: 24px;
+  background-color: #f9f9f9;
+  color: #0f0f0f;
+  min-height: 100vh;
+}
+
+/* Icon button base */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.15s;
+  flex-shrink: 0;
+}
+.icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+.icon-btn:focus-visible {
+  outline: 2px solid #065fd4;
+  outline-offset: 2px;
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  background-color: rgba(96, 96, 96, 0.95);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  white-space: nowrap;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 1000;
+}
+.icon-btn:hover .tooltip,
+.upload-icon-container:hover .tooltip {
+  opacity: 1;
+}
+
+/* No results */
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px 24px;
+  color: #aaa;
+  font-size: 16px;
+  grid-column: 1 / -1;
+}

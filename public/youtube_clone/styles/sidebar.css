@@ -1,0 +1,125 @@
+/* ========================================
+   SIDEBAR
+   ======================================== */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 56px;       /* below header */
+  bottom: 0;
+  background-color: #fff;
+  width: 240px;
+  z-index: 200;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 0;
+  transition: width 0.2s ease;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 40px;
+  padding: 0 24px;
+  border-radius: 10px;
+  margin: 0 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color: #0f0f0f;
+  text-decoration: none;
+  transition: background-color 0.12s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-link.active {
+  background-color: rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}
+
+.sidebar-link img {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* ===== COLLAPSED SIDEBAR (icon-only, 72px) ===== */
+.sidebar.collapsed {
+  width: 72px;
+}
+
+.sidebar.collapsed .sidebar-link {
+  flex-direction: column;
+  gap: 4px;
+  height: 72px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  border-radius: 0;
+  margin: 0;
+}
+
+.sidebar.collapsed .sidebar-link img {
+  width: 22px;
+  height: 22px;
+}
+
+/* ===== JS TOGGLES: chips-bar and main adjust together ===== */
+/* Applied via JavaScript when hamburger is clicked */
+.sidebar-collapsed-main {
+  margin-left: 72px !important;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1000px) {
+  /* Auto-collapse at medium screens */
+  .sidebar {
+    width: 72px;
+  }
+
+  .sidebar .sidebar-link {
+    flex-direction: column;
+    gap: 4px;
+    height: 72px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    border-radius: 0;
+    margin: 0;
+  }
+
+  .sidebar .sidebar-link img {
+    width: 22px;
+    height: 22px;
+  }
+
+  main {
+    margin-left: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    display: none;
+  }
+
+  main {
+    margin-left: 0;
+  }
+}
