@@ -241,6 +241,29 @@ body {
   max-width: calc(100vw - 48px);
 }
 
+/* ================= BACK BUTTON ================= */
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  color: #111;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+}
+
+.project-back-button:hover {
+  transform: translateY(-2px);
+  background: white;
+}
+
 /* ================= RESPONSIVE MOBILE VIEW ================= */
 
 @media screen and (max-width: 768px) {
@@ -315,6 +338,13 @@ body {
     margin: 12px auto 8px;
     transform: translateY(clamp(18px, 5svh, 46px));
     width: fit-content;
+  }
+
+  .project-back-button {
+    left: 10px;
+    top: 10px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
 }
 
