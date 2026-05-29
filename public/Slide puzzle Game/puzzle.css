@@ -1,5 +1,5 @@
 body{
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     color: #0c67a6;
 }
@@ -14,19 +14,46 @@ body{
     height: 360px;
     background-color: lightblue;
     margin: 0 auto;
+
     border: 10px solid #0c67a6;
+
     display: flex;
     flex-wrap: wrap;
 }
+
 #board img{
     width: 118px;
     height: 118px;
-    border:1px solid #0c67a6;
-
+    border: 1px solid #0c67a6;
 }
 
-    #time {
-        /* margin: -31rem; */
-        margin-top: -34rem;
-        margin-left: 50rem;
-    }
+#shuffleBtn{
+    margin-top: 20px;
+
+    padding: 12px 25px;
+
+    font-size: 18px;
+
+    background-color: #0c67a6;
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+#shuffleBtn:hover{
+    background-color: #084d7c;
+}
+
+#turns{
+    margin-top: 20px;
+}
+
+#time{
+    margin-top: 10px;
+}

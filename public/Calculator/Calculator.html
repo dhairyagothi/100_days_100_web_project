@@ -1,47 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Calculator</title>
+
     <link rel="stylesheet" href="Calculator.css">
+
     <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
+
 <body>
-    <div class="calculator">
-        <input type="text" placeholder="0" id="inputBox">
-        <div>
-            <button class="Clear">AC</button>
-            <button class="Clear">DEL</button>
-            <button class="operators">%</button>
-            <button class="operators">/</button>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+
+    <div class="container">
+
+        <!-- Calculator -->
+        <div class="calculator">
+
+            <input type="text" placeholder="0" id="inputBox">
+
+            <div>
+                <button class="calculator-button">^</button>
+                <button class="calculator-button">sin</button>
+                <button class="calculator-button">cos</button>
+                <button class="calculator-button">tan</button>
+            </div>
+
+            <div>
+                <button class="calculator-button">sqrt</button>
+                <button class="calculator-button">pi</button>
+                <button class="calculator-button">ln</button>
+                <button class="calculator-button">log</button>
+            </div>
+
+            <div>
+                <button class="calculator-button">(</button>
+                <button class="calculator-button">)</button>
+                <button class="calculator-button"></button>
+                <button class="calculator-button"></button>
+            </div>
+
+            <div>
+                <button class="calculator-button Clear">AC</button>
+                <button class="calculator-button Clear">DEL</button>
+                <button class="calculator-button operators">%</button>
+                <button class="calculator-button operators">/</button>
+            </div>
+
+            <div>
+                <button class="calculator-button">7</button>
+                <button class="calculator-button">8</button>
+                <button class="calculator-button">9</button>
+                <button class="calculator-button operators">*</button>
+            </div>
+
+            <div>
+                <button class="calculator-button">4</button>
+                <button class="calculator-button">5</button>
+                <button class="calculator-button">6</button>
+                <button class="calculator-button operators">-</button>
+            </div>
+
+            <div>
+                <button class="calculator-button">1</button>
+                <button class="calculator-button">2</button>
+                <button class="calculator-button">3</button>
+                <button class="calculator-button operators">+</button>
+            </div>
+
+            <div>
+                <button class="calculator-button">00</button>
+                <button class="calculator-button">0</button>
+                <button class="calculator-button">.</button>
+                <button class="calculator-button equalTo">=</button>
+            </div>
+
         </div>
-        <div>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
-            <button class="operators">*</button>
+
+        <!-- History Panel -->
+        <div class="history-panel">
+
+            <h2>History</h2>
+
+            <div id="historyList"></div>
+
+            <button id="clearHistory">
+                Clear History
+            </button>
+
         </div>
-        <div>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
-            <button class="operators">-</button>
-        </div>
-        <div>
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button class="operators">+</button>
-        </div>
-        <div>
-            <button>00</button>
-            <button>0</button>
-            <button>.</button>
-            <button class="equalTo">=</button>
-        </div>
+
     </div>
+    <div class="toast-container"></div>
 
     <script src="Calculator.js"></script>
+
 </body>
+
 </html>

@@ -8,11 +8,13 @@
   <title>Document</title>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
   <h1 class='logo'>
     Solar explorer
     <span>in only CSS</span>
   </h1>
-  <input class='planet9' id='pluto' type='radio' name='planet'>
+  <input class='planet10' id='pluto' type='radio' name='planet'>
   <label class='menu pluto' for='pluto'>
     <div class='preview'></div>
     <div class='info'>
@@ -23,7 +25,7 @@
       <h3>39.5 AU</h3>
     </div>
   </label>
-  <input class='planet8' id='neptune' type='radio' name='planet'>
+  <input class='planet9' id='neptune' type='radio' name='planet'>
   <label class='menu neptune' for='neptune'>
     <div class='preview'></div>
     <div class='info'>
@@ -34,7 +36,7 @@
       <h3>30.06 AU</h3>
     </div>
   </label>
-  <input class='planet7' id='uranus' type='radio' name='planet'>
+  <input class='planet8' id='uranus' type='radio' name='planet'>
   <label class='menu uranus' for='uranus'>
     <div class='preview'></div>
     <div class='info'>
@@ -45,7 +47,7 @@
       <h3>19.18 AU</h3>
     </div>
   </label>
-  <input class='planet6' id='saturn' type='radio' name='planet'>
+  <input class='planet7' id='saturn' type='radio' name='planet'>
   <label class='menu saturn' for='saturn'>
     <div class='preview'></div>
     <div class='info'>
@@ -56,7 +58,7 @@
       <h3>9.539 AU</h3>
     </div>
   </label>
-  <input class='planet5' id='jupiter' type='radio' name='planet'>
+  <input class='planet6' id='jupiter' type='radio' name='planet'>
   <label class='jupiter menu' for='jupiter'>
     <div class='preview'></div>
     <div class='info'>
@@ -67,7 +69,7 @@
       <h3>5.203 AU</h3>
     </div>
   </label>
-  <input class='planet4' id='mars' type='radio' name='planet' checked='checked'>
+  <input class='planet5' id='mars' type='radio' name='planet' checked='checked'>
   <label class='mars menu' for='mars'>
     <div class='preview'></div>
     <div class='info'>
@@ -78,7 +80,7 @@
       <h3>1.524 AU</h3>
     </div>
   </label>
-  <input class='planet3' id='earth' type='radio' name='planet' checked='checked'>
+  <input class='planet4' id='earth' type='radio' name='planet' checked='checked'>
   <label class='earth menu' for='earth'>
     <div class='preview'></div>
     <div class='info'>
@@ -89,7 +91,7 @@
       <h3>1 AU</h3>
     </div>
   </label>
-  <input class='planet2' id='venus' type='radio' name='planet' checked='checked'>
+  <input class='planet3' id='venus' type='radio' name='planet' checked='checked'>
   <label class='menu venus' for='venus'>
     <div class='preview'></div>
     <div class='info'>
@@ -100,7 +102,7 @@
       <h3>0.723 AU</h3>
     </div>
   </label>
-  <input class='planet1' id='mercury' type='radio' name='planet' checked='checked'>
+  <input class='planet2' id='mercury' type='radio' name='planet' checked='checked'>
   <label class='menu mercury' for='mercury'>
     <div class='preview'></div>
     <div class='info'>
@@ -111,7 +113,34 @@
       <h3>0.39 AU</h3>
     </div>
   </label>
+  <input class='planet1' id='sun' type='radio' name='planet' checked='checked'>
+  <label class='menu sun' for='sun'>
+    <div class='preview'></div>
+    <div class='info'>
+      <h2>
+        <div class='pip'></div>
+        Sun
+      </h2>
+      <h3>0 AU</h3>
+    </div>
+  </label>
   <div class='solar'>
+    <div class='solar_systm'>
+      <div class='sun planet'>
+        <div class='sun planet_description'>
+          <h2>Star</h2>
+          <h1>Sun</h1>
+          <p>The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, central to the existence of life on Earth.</p>
+          <label for='readSun'>
+            <a>
+              Read Mor
+              <span>e</span>
+            </a>
+          </label>
+        </div>
+        <div class='overlay'></div>
+      </div>
+    </div>
     <div class='solar_systm'>
       <div class='mercury planet'>
         <div class='mercury planet_description'>
@@ -331,6 +360,17 @@
         <div class='overlay'>               </div>
       </div>
     </div>
+  </div>
+  <input class='read' id='readSun' type='radio' name='sunRead'>
+  <label class='closeBig' for='closeSun'></label>
+  <input class='read' id='closeSun' type='radio' name='sunRead'>
+  <div class='panel'>
+    <h1>Sun</h1>
+    <p>The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field via a dynamo process.</p>
+    <img src='https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg'>
+    <h2>The Sun accounts for 99.86% of the mass in the solar system.</h2>
+    <p>It has a mass of around 330,000 times that of Earth.</p>
+    <br>
   </div>
   <input class='read' id='readMercury' type='radio' name='mercuryRead'>
   <label class='closeBig' for='closeMercury'></label>

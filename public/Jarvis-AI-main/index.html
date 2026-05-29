@@ -5,16 +5,101 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JARVIS - Virtual Assistant</title>
-    <link rel="shortcut icon" href="avatar.png" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    <title>JARVIS - Virtual Assistant</title>
+
+    <link rel="shortcut icon" href="avatar.png" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
+
     <section class="main">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+    <div id="particles-js"></div>
+    <section class="main">
+        <div class="card"></div>
+
+        <div class="image-container">
+
+            <div class="image">
+                <img src="Jarvis.gif" alt="Jarvis AI"
+             </div>
+            
+            </div>
+
+            <h1>J A R V I S</h1>
+
+            <p class="subtitle">
+                Your Futuristic AI Virtual Assistant
+            </p>
+
+            <!-- Typing Animation Text -->
+            <p id="typing-text">
+                Initializing JARVIS...
+            </p>
+
+        </div>
+
+        <div class="input">
+
+            <button class="talk" aria-label="Start Voice Assistant">
+                <i class="fas fa-microphone-alt"></i>
+            </button>
+            <div class='status-container'>
+                <h1 class="content"> Click here to speak</h1>
+                <span class="status-text"> Idle </span>
+                <div class="wave-container">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS - Virtual Assistant</title>
+    <link rel="shortcut icon" href="avatar.png" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+    <div id="particles-js"></div>
+    <section class="main">
+        <div class="card"></div>
         <div class="image-container">
             <div class="image">
                 <img src="giphy.gif" alt="image">
@@ -24,9 +109,21 @@
         </div>
         <div class="input">
             <button class="talk"><i class="fas fa-microphone-alt"></i></button>
-            <h1 class="content"> Click here to speak</h1>
+            <div class='status-container'>
+                <h1 class="content"> Click here to speak</h1>
+                <span class="status-text"> Idle </span>
+                <div class="wave-container">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+            </div>
         </div>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
     <script src="app.js"></script>
 </body>
 

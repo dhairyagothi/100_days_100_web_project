@@ -1,0 +1,51 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: radial-gradient(ellipse at 50% 40%, #1b2a3b 0%, #0d1117 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@font-face {
+  font-family: "Flappy";
+  src: url("FlappyBirdRegular.ttf") format("truetype");
+  font-display: swap;
+}
+
+#gameCanvas {
+  display: block;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 0  0   1px rgba(255,255,255,0.04),
+    0 8px 32px rgba(0,0,0,0.70),
+    0 0 80px  rgba(100,200,255,0.07);
+  /* Responsive: shrink on small viewports without stretching */
+  max-width:  min(1000px, 100vw);
+  max-height: min(600px,  calc(100dvh - 52px));
+  aspect-ratio: 1000 / 600;
+  width: 100%;
+  touch-action: none;
+  cursor: pointer;
+  image-rendering: pixelated;
+}
+
+.hint {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: "Flappy", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* Mobile: stack nicely */
+@media (max-width: 600px) {
+  .hint { font-size: 11px; margin-top: 6px; }
+}
