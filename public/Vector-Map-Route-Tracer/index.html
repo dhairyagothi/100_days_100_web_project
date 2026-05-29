@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vector Route Tracer — Pathfinder OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #040b14;
+    --panel:     #070f1c;
+    --border:    #0d2035;
+    --cyan:      #00e5ff;
+    --cyan-dim:  #0097a7;
+    --green:     #39ff14;
+    --amber:     #ffab00;
+    --red:       #ff1744;
+    --white:     #e0f7fa;
+    --muted:     #455a64;
+    --node-idle: #0d2035;
+    --node-ring: #00e5ff;
+    --path-glow: 0 0 8px #00e5ff, 0 0 20px #00e5ff55;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── SCANLINE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,229,255,.015) 2px,
+      rgba(0,229,255,.015) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    flex-shrink: 0;
+  }
+  .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: .2em;
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+  }
+  .logo span { color: var(--green); }
+  .header-tag {
+    font-size: .65rem;
+    letter-spacing: .2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse-dot 1.4s ease-in-out infinite;
+    display: inline-block;
+    margin-right: 6px;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; }
+    50%      { opacity: .3; }
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .workspace {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 240px 1fr 240px;
+    overflow: hidden;
+  }
+
+  /* ── SIDE PANELS ── */
+  .side {
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+  }
+  .side:last-child { border-right: none; border-left: 1px solid var(--border); }
+
+  .panel-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: .6rem;
+    letter-spacing: .25em;
+    color: var(--cyan-dim);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+
+  /* ── CITY LIST ── */
+  .city-list { display: flex; flex-direction: column; gap: 6px; }
+  .city-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .15s;
+    font-size: .75rem;
+    color: var(--muted);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    letter-spacing: .05em;
+  }
+  .city-item:hover { border-color: var(--cyan-dim); color: var(--white); background: #0a1a2a; }
+  .city-item.source { border-color: var(--green); color: var(--green); background: #001a00; }
+  .city-item.dest   { border-color: var(--amber); color: var(--amber); background: #1a1000; }
+  .city-item.on-path { border-color: var(--cyan); color: var(--cyan); background: #001a22; }
+  .city-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+    transition: all .15s;
+  }
+  .city-item.source .city-dot { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .city-item.dest   .city-dot { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .city-item.on-path .city-dot { background: var(--cyan);  box-shadow: 0 0 6px var(--cyan);  }
+
+  /* ── ALGO SELECTOR ── */
+  .algo-btns { display: flex; flex-direction: column; gap: 6px; }
+  .algo-btn {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Orbitron', sans-serif;
+    font-size: .55rem;
+    letter-spacing: .12em;
+    cursor: pointer;
+    transition: all .15s;
+    text-align: left;
+  }
+  .algo-btn:hover { border-color: var(--cyan-dim); color: var(--white); }
+  .algo-btn.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: #001a22;
+    box-shadow: inset 0 0 12px #00e5ff18;
+  }
+
+  /* ── METRICS ── */
+  .metrics { display: flex; flex-direction: column; gap: 10px; }
+  .metric-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--cyan-dim);
+  }
+  .metric-label { font-size: .55rem; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+  .metric-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cyan);
+    transition: all .3s;
+  }
+  .metric-value.highlight { color: var(--green); text-shadow: 0 0 8px var(--green); }
+  .metric-row.warn .metric-value { color: var(--amber); }
+  .metric-row.path { border-left-color: var(--green); }
+
+  /* ── PATH SEQUENCE ── */
+  .path-seq {
+    font-size: .65rem;
+    color: var(--cyan-dim);
+    line-height: 1.8;
+    word-break: break-word;
+  }
+  .path-seq .arrow { color: var(--muted); }
+
+  /* ── INSTRUCTIONS ── */
+  .instr {
+    font-size: .65rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .instr strong { color: var(--green); }
+
+  /* ── RESET BTN ── */
+  .reset-btn {
+    padding: 10px;
+    border: 1px solid var(--red);
+    background: transparent;
+    color: var(--red);
+    font-family: 'Orbitron', sans-serif;
+    font-size: .55rem;
+    letter-spacing: .2em;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .reset-btn:hover { background: #1a0010; box-shadow: 0 0 10px #ff174430; }
+
+  /* ── SVG MAP ── */
+  #map-container {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 50% 50%, #071520 0%, #040b14 70%),
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+  }
+
+  #map-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ── EDGE LINES ── */
+  .edge {
+    stroke: var(--border);
+    stroke-width: 1.5;
+    fill: none;
+    transition: stroke .3s;
+  }
+  .edge.on-path {
+    stroke: var(--cyan);
+    stroke-width: 2.5;
+    filter: url(#glow);
+  }
+  .edge-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    fill: #1e3a4a;
+    text-anchor: middle;
+  }
+  .edge-label.on-path { fill: var(--cyan-dim); }
+
+  /* ANIMATED LASER LINE */
+  .laser-path {
+    fill: none;
+    stroke: var(--cyan);
+    stroke-width: 3;
+    stroke-linecap: round;
+    filter: url(#glow);
+    opacity: 0;
+  }
+  .laser-path.animating {
+    opacity: 1;
+    animation: dash-trace var(--trace-dur, 1.4s) ease-in-out forwards;
+  }
+  @keyframes dash-trace {
+    from { stroke-dashoffset: var(--dash-len, 2000); opacity: 1; }
+    to   { stroke-dashoffset: 0; opacity: 1; }
+  }
+
+  /* ── NODES ── */
+  .node-group { cursor: pointer; }
+  .node-ring {
+    fill: none;
+    stroke: var(--node-ring);
+    stroke-width: 1;
+    opacity: .3;
+    transition: all .2s;
+  }
+  .node-group:hover .node-ring,
+  .node-group.source .node-ring { opacity: .8; stroke-width: 2; }
+  .node-group.dest   .node-ring { opacity: .8; stroke-width: 2; stroke: var(--amber); }
+  .node-group.on-path .node-ring { opacity: 1; stroke-width: 2; animation: ring-pulse 1s ease-in-out infinite; }
+  @keyframes ring-pulse {
+    0%,100% { stroke-width: 2; opacity: 1; }
+    50%      { stroke-width: 3.5; opacity: .6; }
+  }
+
+  .node-core {
+    fill: var(--node-idle);
+    stroke: var(--cyan-dim);
+    stroke-width: 1.5;
+    transition: all .2s;
+  }
+  .node-group.source .node-core { fill: #003300; stroke: var(--green); filter: url(#glow-green); }
+  .node-group.dest   .node-core { fill: #1a1000; stroke: var(--amber); filter: url(#glow-amber); }
+  .node-group.on-path .node-core { fill: #001a22; stroke: var(--cyan); filter: url(#glow); }
+
+  .node-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    fill: var(--muted);
+    text-anchor: middle;
+    pointer-events: none;
+    transition: fill .2s;
+    letter-spacing: .05em;
+  }
+  .node-group.source .node-label { fill: var(--green); }
+  .node-group.dest   .node-label { fill: var(--amber); }
+  .node-group.on-path .node-label { fill: var(--white); }
+
+  .node-code {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 7px;
+    fill: var(--cyan-dim);
+    text-anchor: middle;
+    pointer-events: none;
+    opacity: .7;
+  }
+
+  /* ── CORNER BRACKETS ── */
+  .corner-bracket {
+    position: absolute;
+    width: 18px; height: 18px;
+    border-color: var(--cyan-dim);
+    border-style: solid;
+    opacity: .4;
+  }
+  .cb-tl { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
+  .cb-tr { top: 10px; right: 10px; border-width: 2px 2px 0 0; }
+  .cb-bl { bottom: 10px; left: 10px; border-width: 0 0 2px 2px; }
+  .cb-br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+
+  /* ── ALGO STATUS BAR ── */
+  #algo-status {
+    position: absolute;
+    bottom: 16px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 6px 18px;
+    font-size: .6rem;
+    letter-spacing: .2em;
+    color: var(--cyan-dim);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity .3s;
+    white-space: nowrap;
+  }
+  #algo-status.show { opacity: 1; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--panel); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+</style>
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+
+<header>
+  <div class="logo">PATH<span>FINDER</span> <span style="color:var(--muted);font-size:.7rem">OS</span></div>
+  <div class="header-tag"><span class="status-dot"></span>SYSTEM ONLINE — GRAPH ENGINE v2.4</div>
+  <div class="header-tag">100-DAY WEB PROJECT #∞</div>
+</header>
+
+<div class="workspace">
+
+  <!-- LEFT PANEL -->
+  <div class="side">
+    <div>
+      <div class="panel-title">// Network Nodes</div>
+      <div class="city-list" id="city-list"></div>
+    </div>
+
+    <div>
+      <div class="panel-title">// Algorithm</div>
+      <div class="algo-btns">
+        <button class="algo-btn active" data-algo="dijkstra">DIJKSTRA'S<br><span style="font-size:.5rem;color:var(--muted)">Weighted shortest path</span></button>
+        <button class="algo-btn" data-algo="astar">A* SEARCH<br><span style="font-size:.5rem;color:var(--muted)">Heuristic pathfinding</span></button>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-title">// Instructions</div>
+      <div class="instr">
+        <strong>01</strong> Click any node to set SOURCE<br>
+        <strong>02</strong> Click another node for DEST<br>
+        <strong>03</strong> Watch the algorithm trace the optimal route<br>
+        <strong>04</strong> Switch algorithms to compare
+      </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetAll()">⬛ RESET MAP</button>
+  </div>
+
+  <!-- MAP -->
+  <div id="map-container">
+    <div class="corner-bracket cb-tl"></div>
+    <div class="corner-bracket cb-tr"></div>
+    <div class="corner-bracket cb-bl"></div>
+    <div class="corner-bracket cb-br"></div>
+
+    <svg id="map-svg" viewBox="0 0 760 560" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feColorMatrix in="coloredBlur" type="matrix" values="0 1 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="greenBlur"/>
+          <feMerge><feMergeNode in="greenBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-amber" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#00e5ff" opacity=".5"/>
+        </marker>
+      </defs>
+
+      <!-- Edges rendered by JS -->
+      <g id="edges-layer"></g>
+      <!-- Laser path layer -->
+      <g id="laser-layer"></g>
+      <!-- Nodes rendered by JS -->
+      <g id="nodes-layer"></g>
+    </svg>
+
+    <div id="algo-status">READY</div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="side">
+    <div>
+      <div class="panel-title">// Metrics</div>
+      <div class="metrics">
+        <div class="metric-row">
+          <div class="metric-label">Total Distance</div>
+          <div class="metric-value" id="m-dist">—</div>
+        </div>
+        <div class="metric-row warn">
+          <div class="metric-label">Nodes Visited</div>
+          <div class="metric-value" id="m-nodes">—</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">Edges Relaxed</div>
+          <div class="metric-value" id="m-edges">—</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">Exec Time</div>
+          <div class="metric-value" id="m-time">—</div>
+        </div>
+        <div class="metric-row path">
+          <div class="metric-label">Algorithm</div>
+          <div class="metric-value" id="m-algo" style="font-size:.75rem">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-title">// Optimal Path</div>
+      <div class="path-seq" id="path-seq">Select source and destination to compute path…</div>
+    </div>
+
+    <div>
+      <div class="panel-title">// Graph Info</div>
+      <div class="metrics">
+        <div class="metric-row">
+          <div class="metric-label">Total Nodes</div>
+          <div class="metric-value" id="g-nodes">16</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">Total Edges</div>
+          <div class="metric-value" id="g-edges">—</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">Graph Type</div>
+          <div class="metric-value" style="font-size:.7rem">WEIGHTED<br>UNDIRECTED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  GRAPH DATA  —  cities with SVG coordinates + adjacency
+// ═══════════════════════════════════════════════════════════
+const CITIES = [
+  { id: 'DEL', name: 'Delhi',      x: 310, y:  75, code: 'DEL' },
+  { id: 'AMR', name: 'Amritsar',   x: 175, y:  60, code: 'AMR' },
+  { id: 'JAI', name: 'Jaipur',     x: 230, y: 165, code: 'JAI' },
+  { id: 'LKO', name: 'Lucknow',    x: 440, y: 130, code: 'LKO' },
+  { id: 'PAT', name: 'Patna',      x: 565, y: 145, code: 'PAT' },
+  { id: 'KOL', name: 'Kolkata',    x: 650, y: 250, code: 'KOL' },
+  { id: 'BHO', name: 'Bhopal',     x: 310, y: 255, code: 'BHO' },
+  { id: 'NGP', name: 'Nagpur',     x: 390, y: 310, code: 'NGP' },
+  { id: 'HYD', name: 'Hyderabad',  x: 380, y: 415, code: 'HYD' },
+  { id: 'MUM', name: 'Mumbai',     x: 200, y: 370, code: 'MUM' },
+  { id: 'PUN', name: 'Pune',       x: 230, y: 435, code: 'PUN' },
+  { id: 'BAN', name: 'Bengaluru',  x: 335, y: 490, code: 'BAN' },
+  { id: 'CHE', name: 'Chennai',    x: 460, y: 470, code: 'CHE' },
+  { id: 'VIZ', name: 'Vizag',      x: 530, y: 370, code: 'VIZ' },
+  { id: 'AHM', name: 'Ahmedabad',  x: 130, y: 255, code: 'AHM' },
+  { id: 'SUR', name: 'Surat',      x: 155, y: 320, code: 'SUR' },
+];
+
+// Weighted edges [cityA, cityB, weight(km approx/10)]
+const EDGE_DATA = [
+  ['DEL','AMR', 45], ['DEL','JAI', 28], ['DEL','LKO', 50],
+  ['AMR','JAI', 55], ['LKO','PAT', 42], ['PAT','KOL', 53],
+  ['DEL','BHO', 58], ['JAI','AHM', 52], ['JAI','BHO', 48],
+  ['AHM','SUR', 26], ['AHM','MUM', 53], ['SUR','MUM', 26],
+  ['BHO','NGP', 35], ['BHO','MUM', 65], ['MUM','PUN', 15],
+  ['NGP','HYD', 50], ['NGP','VIZ', 62], ['NGP','KOL', 72],
+  ['HYD','BAN', 57], ['HYD','CHE', 62], ['HYD','VIZ', 42],
+  ['PUN','BAN', 84], ['PUN','HYD', 56], ['BAN','CHE', 35],
+  ['CHE','VIZ', 38], ['KOL','VIZ', 68], ['LKO','KOL', 90],
+  ['LKO','PAT', 42], ['PAT','KOL', 53],
+];
+
+// ═══════════════════════════════════════════════════════════
+//  BUILD ADJACENCY LIST (graph as Map)
+// ═══════════════════════════════════════════════════════════
+const graph = new Map();
+CITIES.forEach(c => graph.set(c.id, []));
+EDGE_DATA.forEach(([a, b, w]) => {
+  graph.get(a).push({ to: b, weight: w });
+  graph.get(b).push({ to: a, weight: w });
+});
+
+document.getElementById('g-edges').textContent = EDGE_DATA.length;
+
+// ═══════════════════════════════════════════════════════════
+//  MIN-HEAP (Priority Queue) for Dijkstra / A*
+// ═══════════════════════════════════════════════════════════
+class MinHeap {
+  constructor() { this.data = []; }
+  push(item) {
+    this.data.push(item);
+    this._bubbleUp(this.data.length - 1);
+  }
+  pop() {
+    const top = this.data[0];
+    const last = this.data.pop();
+    if (this.data.length > 0) { this.data[0] = last; this._sinkDown(0); }
+    return top;
+  }
+  get size() { return this.data.length; }
+  _bubbleUp(i) {
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (this.data[p].priority <= this.data[i].priority) break;
+      [this.data[p], this.data[i]] = [this.data[i], this.data[p]];
+      i = p;
+    }
+  }
+  _sinkDown(i) {
+    const n = this.data.length;
+    while (true) {
+      let min = i, l = 2*i+1, r = 2*i+2;
+      if (l < n && this.data[l].priority < this.data[min].priority) min = l;
+      if (r < n && this.data[r].priority < this.data[min].priority) min = r;
+      if (min === i) break;
+      [this.data[min], this.data[i]] = [this.data[i], this.data[min]];
+      i = min;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  DIJKSTRA'S ALGORITHM
+// ═══════════════════════════════════════════════════════════
+function dijkstra(src, dst) {
+  const dist  = new Map(), prev = new Map();
+  let nodesVisited = 0, edgesRelaxed = 0;
+  CITIES.forEach(c => dist.set(c.id, Infinity));
+  dist.set(src, 0);
+
+  const pq = new MinHeap();
+  pq.push({ id: src, priority: 0 });
+
+  while (pq.size > 0) {
+    const { id: u } = pq.pop();
+    if (u === dst) break;
+    nodesVisited++;
+    for (const { to: v, weight: w } of graph.get(u)) {
+      edgesRelaxed++;
+      const alt = dist.get(u) + w;
+      if (alt < dist.get(v)) {
+        dist.set(v, alt);
+        prev.set(v, u);
+        pq.push({ id: v, priority: alt });
+      }
+    }
+  }
+
+  // Reconstruct path
+  const path = [];
+  let cur = dst;
+  while (cur !== undefined) { path.unshift(cur); cur = prev.get(cur); }
+  if (path[0] !== src) return null;
+
+  return { path, dist: dist.get(dst), nodesVisited, edgesRelaxed };
+}
+
+// ═══════════════════════════════════════════════════════════
+//  A* ALGORITHM  (Euclidean heuristic on SVG coords)
+// ═══════════════════════════════════════════════════════════
+function heuristic(a, b) {
+  const ca = CITIES.find(c => c.id === a), cb = CITIES.find(c => c.id === b);
+  const dx = ca.x - cb.x, dy = ca.y - cb.y;
+  return Math.sqrt(dx*dx + dy*dy) * 0.12; // scale to match weight domain
+}
+
+function astar(src, dst) {
+  const gScore = new Map(), fScore = new Map(), prev = new Map();
+  let nodesVisited = 0, edgesRelaxed = 0;
+  CITIES.forEach(c => { gScore.set(c.id, Infinity); fScore.set(c.id, Infinity); });
+  gScore.set(src, 0);
+  fScore.set(src, heuristic(src, dst));
+
+  const open = new MinHeap();
+  open.push({ id: src, priority: fScore.get(src) });
+  const openSet = new Set([src]);
+
+  while (open.size > 0) {
+    const { id: u } = open.pop();
+    if (!openSet.has(u)) continue; // stale entry
+    openSet.delete(u);
+    if (u === dst) break;
+    nodesVisited++;
+
+    for (const { to: v, weight: w } of graph.get(u)) {
+      edgesRelaxed++;
+      const tentG = gScore.get(u) + w;
+      if (tentG < gScore.get(v)) {
+        prev.set(v, u);
+        gScore.set(v, tentG);
+        fScore.set(v, tentG + heuristic(v, dst));
+        open.push({ id: v, priority: fScore.get(v) });
+        openSet.add(v);
+      }
+    }
+  }
+
+  const path = [];
+  let cur = dst;
+  while (cur !== undefined) { path.unshift(cur); cur = prev.get(cur); }
+  if (path[0] !== src) return null;
+
+  return { path, dist: gScore.get(dst), nodesVisited, edgesRelaxed };
+}
+
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+let srcId  = null, dstId = null;
+let selectedAlgo = 'dijkstra';
+let currentPath = [];
+
+// ═══════════════════════════════════════════════════════════
+//  SVG RENDERING
+// ═══════════════════════════════════════════════════════════
+const edgesLayer = document.getElementById('edges-layer');
+const laserLayer = document.getElementById('laser-layer');
+const nodesLayer = document.getElementById('nodes-layer');
+
+// Draw edges
+const edgeElements = {}; // key: "A-B"
+EDGE_DATA.forEach(([a, b, w]) => {
+  const ca = CITIES.find(c => c.id === a), cb = CITIES.find(c => c.id === b);
+  const mx = (ca.x + cb.x) / 2, my = (ca.y + cb.y) / 2;
+
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', ca.x); line.setAttribute('y1', ca.y);
+  line.setAttribute('x2', cb.x); line.setAttribute('y2', cb.y);
+  line.classList.add('edge');
+  edgesLayer.appendChild(line);
+
+  const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  label.setAttribute('x', mx); label.setAttribute('y', my - 4);
+  label.classList.add('edge-label');
+  label.textContent = w * 10 + 'km';
+  edgesLayer.appendChild(label);
+
+  const key = [a,b].sort().join('-');
+  edgeElements[key] = { line, label };
+});
+
+// Draw nodes
+const nodeElements = {};
+CITIES.forEach(city => {
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.classList.add('node-group');
+  g.dataset.id = city.id;
+
+  const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  ring.setAttribute('cx', city.x); ring.setAttribute('cy', city.y); ring.setAttribute('r', 18);
+  ring.classList.add('node-ring');
+
+  const core = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  core.setAttribute('cx', city.x); core.setAttribute('cy', city.y); core.setAttribute('r', 10);
+  core.classList.add('node-core');
+
+  const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  lbl.setAttribute('x', city.x); lbl.setAttribute('y', city.y + 28);
+  lbl.classList.add('node-label');
+  lbl.textContent = city.name;
+
+  const code = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  code.setAttribute('x', city.x); code.setAttribute('y', city.y + 4);
+  code.classList.add('node-code');
+  code.textContent = city.code;
+
+  g.appendChild(ring); g.appendChild(core); g.appendChild(lbl); g.appendChild(code);
+  g.addEventListener('click', () => onNodeClick(city.id));
+  nodesLayer.appendChild(g);
+  nodeElements[city.id] = g;
+});
+
+// ═══════════════════════════════════════════════════════════
+//  CITY LIST (left panel)
+// ═══════════════════════════════════════════════════════════
+const cityListEl = document.getElementById('city-list');
+CITIES.forEach(city => {
+  const div = document.createElement('div');
+  div.classList.add('city-item');
+  div.dataset.id = city.id;
+  div.innerHTML = `<span class="city-dot"></span>${city.name} <span style="color:var(--border);font-size:.6rem;margin-left:auto">${city.code}</span>`;
+  div.addEventListener('click', () => onNodeClick(city.id));
+  cityListEl.appendChild(div);
+});
+
+// ═══════════════════════════════════════════════════════════
+//  INTERACTION
+// ═══════════════════════════════════════════════════════════
+function onNodeClick(id) {
+  if (!srcId) {
+    srcId = id;
+    applyNodeState(id, 'source');
+    applyListState(id, 'source');
+    setStatus(`SOURCE SET: ${id} — Click destination node`);
+  } else if (!dstId && id !== srcId) {
+    dstId = id;
+    applyNodeState(id, 'dest');
+    applyListState(id, 'dest');
+    computeAndAnimate();
+  } else {
+    // re-click resets
+    resetAll();
+    srcId = id;
+    applyNodeState(id, 'source');
+    applyListState(id, 'source');
+    setStatus(`SOURCE SET: ${id} — Click destination node`);
+  }
+}
+
+function applyNodeState(id, state) {
+  // remove old states
+  nodeElements[id].classList.remove('source','dest','on-path');
+  if (state) nodeElements[id].classList.add(state);
+}
+function applyListState(id, state) {
+  const el = cityListEl.querySelector(`[data-id="${id}"]`);
+  if (!el) return;
+  el.classList.remove('source','dest','on-path');
+  if (state) el.classList.add(state);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  COMPUTE + ANIMATE
+// ═══════════════════════════════════════════════════════════
+function computeAndAnimate() {
+  const t0 = performance.now();
+  const result = selectedAlgo === 'dijkstra'
+    ? dijkstra(srcId, dstId)
+    : astar(srcId, dstId);
+  const elapsed = (performance.now() - t0).toFixed(4);
+
+  if (!result) {
+    setStatus('NO PATH FOUND');
+    return;
+  }
+
+  currentPath = result.path;
+
+  // Update metrics
+  document.getElementById('m-dist').textContent  = (result.dist * 10) + ' km';
+  document.getElementById('m-nodes').textContent = result.nodesVisited;
+  document.getElementById('m-edges').textContent = result.edgesRelaxed;
+  document.getElementById('m-time').textContent  = elapsed + ' ms';
+  document.getElementById('m-algo').textContent  = selectedAlgo === 'dijkstra' ? "DIJKSTRA'S" : 'A* SEARCH';
+
+  // Path sequence text
+  const seqEl = document.getElementById('path-seq');
+  seqEl.innerHTML = currentPath.map((id, i) => {
+    const city = CITIES.find(c => c.id === id);
+    return `<span style="color:var(--cyan)">${city.name}</span>` +
+           (i < currentPath.length-1 ? ` <span class="arrow">→</span> ` : '');
+  }).join('');
+
+  // Highlight path edges & nodes
+  currentPath.forEach((id, i) => {
+    if (id !== srcId && id !== dstId) {
+      applyNodeState(id, 'on-path');
+      applyListState(id, 'on-path');
+    }
+    if (i < currentPath.length - 1) {
+      const key = [id, currentPath[i+1]].sort().join('-');
+      if (edgeElements[key]) {
+        edgeElements[key].line.classList.add('on-path');
+        edgeElements[key].label.classList.add('on-path');
+      }
+    }
+  });
+
+  // Build SVG polyline for laser
+  animateLaser(currentPath, elapsed);
+  setStatus(`PATH FOUND — ${result.dist * 10}km — ${elapsed}ms`);
+}
+
+function animateLaser(path, elapsed) {
+  // Clear old laser
+  laserLayer.innerHTML = '';
+
+  // Build point string
+  const points = path.map(id => {
+    const c = CITIES.find(c => c.id === id);
+    return `${c.x},${c.y}`;
+  }).join(' ');
+
+  const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+  poly.setAttribute('points', points);
+  poly.classList.add('laser-path');
+  laserLayer.appendChild(poly);
+
+  // Measure total path length using SVG geometry
+  // We approximate by summing segment lengths
+  let totalLen = 0;
+  for (let i = 0; i < path.length - 1; i++) {
+    const ca = CITIES.find(c => c.id === path[i]);
+    const cb = CITIES.find(c => c.id === path[i+1]);
+    const dx = ca.x - cb.x, dy = ca.y - cb.y;
+    totalLen += Math.sqrt(dx*dx + dy*dy);
+  }
+
+  const duration = Math.max(0.8, totalLen / 300).toFixed(2);
+
+  poly.style.setProperty('--dash-len', totalLen + 10);
+  poly.style.setProperty('--trace-dur', duration + 's');
+  poly.style.strokeDasharray = totalLen + 10;
+  poly.style.strokeDashoffset = totalLen + 10;
+
+  // Trigger animation
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => poly.classList.add('animating'));
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RESET
+// ═══════════════════════════════════════════════════════════
+function resetAll() {
+  srcId = null; dstId = null; currentPath = [];
+
+  // Clear node states
+  Object.values(nodeElements).forEach(g => g.classList.remove('source','dest','on-path'));
+  cityListEl.querySelectorAll('.city-item').forEach(el => el.classList.remove('source','dest','on-path'));
+
+  // Clear edge highlights
+  Object.values(edgeElements).forEach(({ line, label }) => {
+    line.classList.remove('on-path');
+    label.classList.remove('on-path');
+  });
+
+  laserLayer.innerHTML = '';
+
+  document.getElementById('m-dist').textContent  = '—';
+  document.getElementById('m-nodes').textContent = '—';
+  document.getElementById('m-edges').textContent = '—';
+  document.getElementById('m-time').textContent  = '—';
+  document.getElementById('m-algo').textContent  = '—';
+  document.getElementById('path-seq').textContent = 'Select source and destination to compute path…';
+  setStatus('MAP RESET — Select source node');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ALGO TOGGLE
+// ═══════════════════════════════════════════════════════════
+document.querySelectorAll('.algo-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.algo-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedAlgo = btn.dataset.algo;
+    // Re-run if both selected
+    if (srcId && dstId) {
+      // clear path highlights but keep src/dst
+      currentPath = [];
+      Object.values(edgeElements).forEach(({ line, label }) => {
+        line.classList.remove('on-path');
+        label.classList.remove('on-path');
+      });
+      Object.values(nodeElements).forEach(g => {
+        if (!g.classList.contains('source') && !g.classList.contains('dest'))
+          g.classList.remove('on-path');
+      });
+      cityListEl.querySelectorAll('.city-item').forEach(el => {
+        if (!el.classList.contains('source') && !el.classList.contains('dest'))
+          el.classList.remove('on-path');
+      });
+      laserLayer.innerHTML = '';
+      computeAndAnimate();
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════
+//  STATUS BAR
+// ═══════════════════════════════════════════════════════════
+let statusTimer;
+function setStatus(msg) {
+  const el = document.getElementById('algo-status');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// Init
+setStatus('PATHFINDER OS READY — Select a source node');
+</script>
+</body>
+</html>

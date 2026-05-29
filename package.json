@@ -1,28 +1,34 @@
 {
   "name": "100-days-100-web-projects",
   "version": "1.0.0",
-  "description": "A repository containing 112+ web projects from basic to intermediate using HTML, CSS, and JavaScript",
-  "main": "index.html",
+  "private": true,
+  "description": "A curated open-source collection of 100+ frontend web projects",
   "scripts": {
-    "dev": "serve .",
-    "build": "echo 'No build step required for static site'"
+    "dev": "npx -y serve . -p 3000",
+    "lint": "npx -y htmlhint index.html contributors/contributor.html",
+    "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
+    "docker:build": "docker build -t 100days-web .",
+    "docker:run": "docker run --rm -p 8080:80 100days-web",
+    "docker:up": "docker compose up --build -d",
+    "docker:down": "docker compose down"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dhairyagothi/100_days_100_web_project.git"
+    "url": "https://github.com/dhairyagothi/100_days_100_web_project.git"
   },
   "keywords": [
     "html",
     "css",
     "javascript",
-    "web-development",
-    "projects",
-    "learning"
+    "web-projects",
+    "open-source",
+    "frontend"
   ],
-  "author": "Dhairya Gothi and Contributors",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dhairyagothi/100_days_100_web_project/issues"
+  "dependencies": {
+    "dotenv": "^17.4.2"
   },
-  "homepage": "https://github.com/dhairyagothi/100_days_100_web_project#readme"
+  "devDependencies": {
+    "serve": "^14.2.6"
+  }
 }
