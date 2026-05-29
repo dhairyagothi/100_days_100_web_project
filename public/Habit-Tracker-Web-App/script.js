@@ -1,156 +1,129 @@
-const habitInput = document.getElementById("habitInput");
-const habitTags = document.getElementById("habitTags");
-const habitNotes = document.getElementById("habitNotes");
-const habitGoal = document.getElementById("habitGoal");
-const habitReminder = document.getElementById("habitReminder");
-const addHabitBtn = document.getElementById("addHabitBtn");
-const habitList = document.getElementById("habitList");
-const totalHabits = document.getElementById("totalHabits");
-const completedHabits = document.getElementById("completedHabits");
-const scheduledToday = document.getElementById("scheduledToday");
-const weeklyRate = document.getElementById("weeklyRate");
-const progressList = document.getElementById("progressList");
-const themeToggle = document.getElementById("theme-toggle");
+const getTodayStr = () => new Date().toISOString().split('T')[0];
 
-const deleteModal = document.getElementById("delete-modal");
-const deleteMessage = document.getElementById("delete-message");
-const deleteConfirmBtn = document.getElementById("delete-confirm-btn");
-const deleteCancelBtn = document.getElementById("delete-cancel-btn");
-const deleteCloseBtn = document.getElementById("delete-close-btn");
-
+// State
 let habits = JSON.parse(localStorage.getItem("habits")) || [];
-let pendingDeleteIndex = null;
+let userStats = JSON.parse(localStorage.getItem("userStats")) || { totalCompletions: 0 };
+let currentFilter = "all";
+let searchQuery = "";
+let selectedHabitIndex = null;
+let editingIndex = null;
+let habitToDeleteIndex = null;
+let quill;
+
+// NEW: Calendar state
+let currentCalendarDate = new Date();
+
+// DOM Elements
+const habitList = document.getElementById("habitList");
+const emptyState = document.getElementById("emptyState");
+const searchInput = document.getElementById("searchInput");
+const viewTitle = document.getElementById("viewTitle");
+const motivationalBanner = document.getElementById("motivationalBanner");
+
+// KPI
+const kpiCompletedRatio = document.getElementById("kpiCompletedRatio");
+const kpiCurrentStreak = document.getElementById("kpiCurrentStreak");
+const kpiBestStreak = document.getElementById("kpiBestStreak");
+const kpiCompletionRate = document.getElementById("kpiCompletionRate");
+const progressRing = document.getElementById("progressRing");
+const progressText = document.getElementById("progressText");
+
+// Panels
+const overviewContext = document.getElementById("overviewContext");
+const habitDetailsSection = document.getElementById("habitDetailsSection");
+const closeDetailsBtn = document.getElementById("closeDetailsBtn");
+const detailsTitle = document.getElementById("detailsTitle");
+const detailsStatus = document.getElementById("detailsStatus");
+
+// NEW: Calendar Elements
+const calendarGrid = document.getElementById("calendarGrid");
+const calendarMonth = document.getElementById("calendarMonthLabel");
+const prevMonthBtn = document.getElementById("prevMonthBtn");
+const nextMonthBtn = document.getElementById("nextMonthBtn");
+
+// Modals / Drawers
+const fabAdd = document.getElementById("fabAdd");
+const addModal = document.getElementById("addModal");
+const editDrawer = document.getElementById("editDrawer");
+const editDrawerOverlay = document.getElementById("editDrawerOverlay");
+const deleteModal = document.getElementById("deleteModal");
+
+// Mobile sidebar
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+const closeMenuBtn = document.getElementById("closeMenuBtn");
+const sidebar = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+// Add Inputs
+const addHabitInput = document.getElementById("addHabitInput");
+const addHabitCategory = document.getElementById("addHabitCategory");
+const addHabitTimeLabel = document.getElementById("addHabitTimeLabel");
+const addHabitPriority = document.getElementById("addHabitPriority");
+
+// Edit Inputs
+const editHabitInput = document.getElementById("editHabitInput");
+const editHabitCategory = document.getElementById("editHabitCategory");
+const editHabitTimeLabel = document.getElementById("editHabitTimeLabel");
+const editHabitPriority = document.getElementById("editHabitPriority");
+
+/* SAVE HABITS */
+function saveData() {
+  localStorage.setItem("habits", JSON.stringify(habits));
+  localStorage.setItem("userStats", JSON.stringify(userStats));
+}
+
+// Data Migration — normalize legacy schema
+habits = habits.map(h => {
+  const todayStr = getTodayStr();
+  let hnew = { ...h };
+  hnew.category  = hnew.category  || "Personal";
+  hnew.timeLabel = hnew.timeLabel || "Anytime";
+  hnew.priority  = hnew.priority  || false;
+  hnew.createdAt = hnew.createdAt || todayStr;
+  hnew.notes     = hnew.notes     || "";
+  hnew.history   = hnew.history   || [];
+
+  if (hnew.completed && hnew.history.length === 0) {
+    hnew.history.push(todayStr);
+  }
 
   hnew.completed = hnew.history.includes(todayStr);
   return hnew;
 });
 
-function getTodayString() {
-  const d = new Date();
-  const offset = d.getTimezoneOffset();
-  const adjusted = new Date(d.getTime() - (offset * 60 * 1000));
-  return adjusted.toISOString().split("T")[0];
-}
+saveData();
 
-function getYesterdayString() {
-  const d = new Date(Date.now() - 86400000);
-  const offset = d.getTimezoneOffset();
-  const adjusted = new Date(d.getTime() - (offset * 60 * 1000));
-  return adjusted.toISOString().split("T")[0];
-}
-
-function getDateMs(dateString) {
-  return new Date(`${dateString}T00:00:00`).getTime();
-}
-
-function getLast7Dates() {
-  const dates = [];
-  for (let i = 6; i >= 0; i -= 1) {
-    const d = new Date(Date.now() - i * 86400000);
-    const offset = d.getTimezoneOffset();
-    const adjusted = new Date(d.getTime() - (offset * 60 * 1000));
-    dates.push(adjusted.toISOString().split("T")[0]);
-  }
-  return dates;
-}
-
-/* DATA HELPERS */
-
-function parseTags(value) {
-  if (!value) return [];
-  return value
-    .split(",")
-    .map(tag => tag.trim())
-    .filter(Boolean);
-}
-
-function getSelectedSchedule() {
-  const selected = Array.from(document.querySelectorAll(".schedule-day:checked"))
-    .map(input => Number(input.value));
-  return selected.length ? selected : [0, 1, 2, 3, 4, 5, 6];
-}
-
-function isScheduledForDay(habit, dayIndex) {
-  if (!habit.schedule || habit.schedule.length === 0) return true;
-  return habit.schedule.includes(dayIndex);
-}
-
-function getLatestCompletionDate(habit) {
-  if (!habit.completionDates || habit.completionDates.length === 0) return "";
-  return habit.completionDates
-    .slice()
-    .sort()
-    .pop();
-}
-
-function normalizeCompletionDates(habit) {
-  const uniqueDates = Array.from(new Set(habit.completionDates || []));
-  habit.completionDates = uniqueDates.sort();
-}
-
-function calculateCurrentStreak(habit) {
-  if (!habit.completionDates || habit.completionDates.length === 0) return 0;
-  const set = new Set(habit.completionDates);
-  let streak = 0;
-  const today = getTodayString();
-  for (let i = 0; i < 365; i += 1) {
-    const date = new Date(getDateMs(today) - i * 86400000);
-    const dateStr = date.toISOString().split("T")[0];
-    if (set.has(dateStr)) {
-      streak += 1;
-    } else {
-      break;
+/* QUILL */
+function initQuill() {
+  quill = new Quill("#editor", {
+    theme: "snow",
+    placeholder: "Write your notes or reflections here...",
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["clean"]
+      ]
     }
-  }
-  return streak;
-}
+  });
 
-function calculateMaxStreak(habit) {
-  if (!habit.completionDates || habit.completionDates.length === 0) return 0;
-  const dates = habit.completionDates.slice().sort();
-  let max = 1;
-  let current = 1;
-  for (let i = 1; i < dates.length; i += 1) {
-    const prev = getDateMs(dates[i - 1]);
-    const curr = getDateMs(dates[i]);
-    if (curr - prev === 86400000) {
-      current += 1;
-    } else {
-      current = 1;
+  quill.on("text-change", (delta, oldDelta, source) => {
+    if (source === "user" && selectedHabitIndex !== null && habits[selectedHabitIndex]) {
+      habits[selectedHabitIndex].notes = quill.root.innerHTML;
+      saveData();
     }
-    if (current > max) max = current;
-  }
-  return max;
+  });
 }
 
 /* STREAK HELPERS */
 function getHabitStreak(history) {
   if (!history || history.length === 0) return 0;
 
-/* MIGRATION */
-
-habits.forEach(habit => {
-  if (habit.tags === undefined) habit.tags = [];
-  if (habit.notes === undefined) habit.notes = "";
-  if (habit.goalText === undefined) habit.goalText = "";
-  if (habit.reminderTime === undefined) habit.reminderTime = "";
-  if (habit.schedule === undefined) habit.schedule = [0, 1, 2, 3, 4, 5, 6];
-  if (habit.completionDates === undefined) habit.completionDates = [];
-  if (habit.streak === undefined) habit.streak = 0;
-  if (habit.maxStreak === undefined) habit.maxStreak = habit.completed ? 1 : 0;
-  if (habit.lastCompleted === undefined) habit.lastCompleted = "";
-  if (habit.createdAt === undefined) habit.createdAt = getTodayString();
-
-  if (habit.lastCompleted && !habit.completionDates.includes(habit.lastCompleted)) {
-    habit.completionDates.push(habit.lastCompleted);
-  }
-
-  normalizeCompletionDates(habit);
-  habit.lastCompleted = getLatestCompletionDate(habit);
-});
-saveHabits();
-
-/* DAILY RESET / RESET BROKEN STREAKS */
+  const sorted = [...new Set(history)].sort((a, b) => b.localeCompare(a));
+  let streak = 0;
+  let currentCheckDate = new Date();
+  let currentStr = currentCheckDate.toISOString().split("T")[0];
 
   if (sorted.includes(currentStr)) {
     streak++;
@@ -159,11 +132,21 @@ saveHabits();
     currentCheckDate.setDate(currentCheckDate.getDate() - 1);
     let yesterdayStr = currentCheckDate.toISOString().split("T")[0];
 
-  habits.forEach(habit => {
-    habit.completed = habit.completionDates.includes(todayStr);
+    if (sorted.includes(yesterdayStr)) {
+      streak++;
+      currentCheckDate.setDate(currentCheckDate.getDate() - 1);
+    } else {
+      return 0;
+    }
+  }
 
-    if (!habit.completed && habit.lastCompleted !== yesterdayStr) {
-      habit.streak = 0;
+  while (true) {
+    let checkStr = currentCheckDate.toISOString().split("T")[0];
+    if (sorted.includes(checkStr)) {
+      streak++;
+      currentCheckDate.setDate(currentCheckDate.getDate() - 1);
+    } else {
+      break;
     }
   }
 
@@ -182,11 +165,9 @@ function generateHistoryDots(history) {
     html += `<span class="history-dot ${isDone ? "done" : ""}" title="${dStr}"></span>`;
   }
 
-  habits.forEach(habit => {
-    if (habit.maxStreak && habit.maxStreak > maxStreakAcrossAll) {
-      maxStreakAcrossAll = habit.maxStreak;
-    }
-  });
+  html += "</div>";
+  return html;
+}
 
 /* NEW: CALENDAR VIEW */
 function renderCalendar() {
@@ -254,67 +235,81 @@ function renderCalendar() {
   }
 }
 
-/* DELETE MODAL */
+/* RENDER DASHBOARD */
+function renderDashboard() {
+  const todayStr = getTodayStr();
+  habitList.innerHTML = "";
 
-function openDeleteModal(index) {
-  const habit = habits[index];
-  pendingDeleteIndex = index;
-  deleteMessage.textContent = `Delete "${habit.name}"? This action cannot be undone.`;
-  deleteModal.classList.add("show");
-}
+  let totalHabits = habits.length;
+  let todayCompleted = 0;
+  let maxStreak = 0;
+  let totalHistoricalCompletions = 0;
+  let totalPossibleDays = 0;
 
-function closeDeleteModal() {
-  pendingDeleteIndex = null;
-  deleteModal.classList.remove("show");
-}
+  habits.forEach(h => {
+    if (h.completed) todayCompleted++;
 
-/* TOGGLE COMPLETE LOGIC */
+    const streak = getHabitStreak(h.history);
+    if (streak > maxStreak) maxStreak = streak;
 
-function toggleComplete(index) {
-  const habit = habits[index];
-  const todayStr = getTodayString();
+    totalHistoricalCompletions += h.history.length;
 
-  if (!habit.completed) {
-    habit.completed = true;
-    habit.completionDates.push(todayStr);
-  } else {
-    habit.completed = false;
-    habit.completionDates = habit.completionDates.filter(date => date !== todayStr);
-  }
-
-  normalizeCompletionDates(habit);
-  habit.lastCompleted = getLatestCompletionDate(habit);
-  habit.streak = calculateCurrentStreak(habit);
-  habit.maxStreak = Math.max(habit.maxStreak || 0, calculateMaxStreak(habit));
-
-  if (habit.streak > 0) {
-    checkMilestoneUnlocked(habit.name, habit.streak);
-  }
-}
-
-/* PROGRESS */
-
-function getWeeklyProgress(habit) {
-  const weekDates = getLast7Dates();
-  let scheduledCount = 0;
-  let completedCount = 0;
-
-  weekDates.forEach(dateStr => {
-    const dayIndex = new Date(`${dateStr}T00:00:00`).getDay();
-    if (isScheduledForDay(habit, dayIndex)) {
-      scheduledCount += 1;
-    }
-    if (habit.completionDates.includes(dateStr)) {
-      completedCount += 1;
-    }
+    let createdDate = new Date(h.createdAt);
+    let today = new Date();
+    let diffTime = Math.abs(today - createdDate);
+    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    totalPossibleDays += diffDays || 1;
   });
 
-  const percent = scheduledCount === 0
-    ? 0
-    : Math.round((completedCount / scheduledCount) * 100);
+  let progressRatio = totalHabits > 0 ? Math.round((todayCompleted / totalHabits) * 100) : 0;
+  let overallRate   = totalPossibleDays > 0 ? Math.round((totalHistoricalCompletions / totalPossibleDays) * 100) : 0;
 
-  return { scheduledCount, completedCount, percent };
-}
+  kpiCompletedRatio.textContent  = `${todayCompleted}/${totalHabits} Habits`;
+  kpiCurrentStreak.textContent   = `${maxStreak} Days`;
+  kpiCompletionRate.textContent  = `${overallRate}%`;
+
+  userStats.bestStreak = Math.max(userStats.bestStreak || 0, maxStreak);
+  kpiBestStreak.textContent = `${userStats.bestStreak} Days`;
+
+  saveData();
+
+  progressRing.setAttribute("stroke-dasharray", `${progressRatio}, 100`);
+  progressText.textContent = `${progressRatio}%`;
+
+  if (totalHabits === 0)
+    motivationalBanner.textContent = "Start your journey by creating a habit.";
+  else if (progressRatio === 100)
+    motivationalBanner.textContent = "Incredible! You've crushed everything today.";
+  else if (progressRatio >= 50)
+    motivationalBanner.textContent = "You're halfway there, keep it up!";
+  else
+    motivationalBanner.textContent = "Every small step counts towards your goals.";
+
+  renderHeatmap();
+  renderWeeklyChart();
+  renderAchievements(maxStreak, totalHistoricalCompletions, totalHabits);
+
+  // NEW
+  renderCalendar();
+
+  const filteredHabits = habits
+    .map((habit, index) => ({ ...habit, originalIndex: index }))
+    .filter(habit => {
+      if (searchQuery && !habit.name.toLowerCase().includes(searchQuery)) return false;
+      if (currentFilter === "all" || currentFilter === "dashboard") return true;
+      if (currentFilter === "today")         return habit.timeLabel !== "Anytime" || !habit.completed;
+      if (currentFilter === "completed")     return habit.completed;
+      if (currentFilter === "missed")        return !habit.completed && habit.history.length > 0;
+      if (currentFilter === "high-priority") return habit.priority;
+      if (["Health", "Work", "Personal"].includes(currentFilter)) return habit.category === currentFilter;
+      return true;
+    });
+
+  if (filteredHabits.length === 0) {
+    emptyState.classList.remove("hidden");
+  } else {
+    emptyState.classList.add("hidden");
+  }
 
   filteredHabits.forEach(habitItem => {
     const index = habitItem.originalIndex;
@@ -324,47 +319,53 @@ function getWeeklyProgress(habit) {
     const li = document.createElement("li");
     li.className = `habit-card fade-in ${index === selectedHabitIndex ? "active-card" : ""}`;
 
-  habits.forEach((habit, index) => {
-    const li = document.createElement("li");
-    li.className = "habit-item";
+    let catColor =
+      habit.category === "Health" ? "var(--danger-color)" :
+      habit.category === "Work"   ? "var(--accent-primary)" :
+      "#f59e0b";
 
-    const streakHtml = habit.streak && habit.streak > 0
-      ? `<span class="streak-badge">🔥 ${habit.streak} day${habit.streak > 1 ? "s" : ""}</span>`
+    let priorityFlag = habit.priority
+      ? `<i data-lucide="star" class="priority-icon" fill="currentColor"></i>`
       : "";
 
-    const tagsHtml = habit.tags
-      .map(tag => `<span class="tag">${tag}</span>`)
-      .join("");
+    let timeBadge = habit.timeLabel !== "Anytime"
+      ? `<span class="time-badge">${habit.timeLabel}</span>`
+      : "";
 
-    const scheduleLabel = habit.schedule
-      .map(day => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][day])
-      .join(" ");
-
-    const weekly = getWeeklyProgress(habit);
+    let streakBadge = streak > 0
+      ? `<span class="streak-badge">🔥 ${streak}</span>`
+      : "";
 
     li.innerHTML = `
-      <div class="habit-main">
-        <div class="habit-details">
-          <span class="habit-title ${habit.completed ? "completed" : ""}">
-            ${habit.name}
-          </span>
-          <div class="habit-meta">
-            ${tagsHtml}
-            <span>Schedule: ${scheduleLabel || "Daily"}</span>
-            ${habit.goalText ? `<span>Goal: ${habit.goalText}</span>` : ""}
-            ${habit.reminderTime ? `<span>Reminder: ${habit.reminderTime}</span>` : ""}
-            <span>Weekly: ${weekly.completedCount}/${weekly.scheduledCount}</span>
+      <div class="habit-left">
+        <button class="checkbox-btn ${habit.completed ? "checked" : ""}" title="Mark as done">
+          ${habit.completed
+            ? '<i data-lucide="check-circle-2"></i>'
+            : '<i data-lucide="circle"></i>'
+          }
+        </button>
+
+        <div class="habit-details-wrap">
+          <div class="habit-title-row">
+            ${priorityFlag}
+            <span class="habit-name ${habit.completed ? "completed" : ""}">
+              ${habit.name}
+            </span>
           </div>
-          ${habit.notes ? `<p class="habit-note">${habit.notes}</p>` : ""}
-          ${streakHtml}
-        </div>
-        <div class="actions">
-          <button class="complete-btn">${habit.completed ? "Undo" : "Done"}</button>
-          <button class="delete-btn">Delete</button>
+
+          <div class="habit-meta-row">
+            <span class="category-dot" style="background:${catColor}"></span>
+            ${timeBadge}
+            ${streakBadge}
+            ${generateHistoryDots(habit.history)}
+          </div>
         </div>
       </div>
-      <div class="progress-bar">
-        <span style="width: ${weekly.percent}%"></span>
+
+      <div class="habit-actions">
+        <button class="icon-btn edit-btn" title="Edit Habit">
+          <i data-lucide="more-horizontal"></i>
+        </button>
       </div>
     `;
 
@@ -378,69 +379,195 @@ function getWeeklyProgress(habit) {
       e.stopPropagation();
       habit.completed = !habit.completed;
 
-    completeBtn.addEventListener("click", () => {
-      toggleComplete(index);
-      saveHabits();
-      renderAll();
+      if (habit.completed) {
+        if (!habit.history.includes(todayStr)) habit.history.push(todayStr);
+        userStats.totalCompletions = (userStats.totalCompletions || 0) + 1;
+      } else {
+        habit.history = habit.history.filter(d => d !== todayStr);
+        userStats.totalCompletions = Math.max(0, (userStats.totalCompletions || 0) - 1);
+      }
+
+      saveData();
+      renderDashboard();
     });
 
-    deleteBtn.addEventListener("click", () => {
-      openDeleteModal(index);
+    const editBtn = li.querySelector(".edit-btn");
+    editBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      openEditDrawer(index);
     });
 
     habitList.appendChild(li);
   });
+
+  lucide.createIcons();
 }
 
-function renderProgressCharts() {
-  progressList.innerHTML = "";
+/* FILTERS */
+function handleFilterChange(filterId) {
+  currentFilter = filterId;
 
-  habits.forEach(habit => {
-    const weekly = getWeeklyProgress(habit);
-    const card = document.createElement("div");
-    card.className = "progress-card";
-    card.innerHTML = `
-      <div class="habit-title">${habit.name}</div>
-      <div class="habit-meta">Weekly completion: ${weekly.percent}%</div>
-      <div class="progress-bar"><span style="width: ${weekly.percent}%"></span></div>
+  document.querySelectorAll(".sidebar-nav .nav-item").forEach(nav => {
+    nav.classList.remove("active");
+    if (nav.dataset.filter === filterId || nav.dataset.category === filterId) {
+      nav.classList.add("active");
+      viewTitle.textContent = nav.textContent.trim();
+    }
+  });
+
+  document.querySelectorAll(".filter-chip").forEach(chip => {
+    chip.classList.remove("active");
+    if (chip.dataset.qf === filterId) chip.classList.add("active");
+  });
+
+  if (filterId === "high-priority") viewTitle.textContent = "High Priority";
+
+  renderDashboard();
+}
+
+/* SIDEBAR */
+function openSidebar() {
+  sidebar.classList.add("open");
+  sidebarOverlay.classList.remove("hidden");
+}
+
+function closeSidebar() {
+  sidebar.classList.remove("open");
+  sidebarOverlay.classList.add("hidden");
+}
+
+mobileMenuBtn?.addEventListener("click", openSidebar);
+closeMenuBtn?.addEventListener("click", closeSidebar);
+sidebarOverlay?.addEventListener("click", closeSidebar);
+
+document.querySelectorAll(".sidebar-nav .nav-item").forEach(item => {
+  item.addEventListener("click", e => {
+    e.preventDefault();
+    handleFilterChange(item.dataset.filter || item.dataset.category);
+    closeSidebar();
+  });
+});
+
+document.querySelectorAll(".filter-chip").forEach(chip => {
+  chip.addEventListener("click", () => handleFilterChange(chip.dataset.qf));
+});
+
+searchInput?.addEventListener("input", e => {
+  searchQuery = e.target.value.toLowerCase();
+  renderDashboard();
+});
+
+/* NEW: CALENDAR NAVIGATION */
+prevMonthBtn?.addEventListener("click", () => {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+  renderCalendar();
+});
+
+nextMonthBtn?.addEventListener("click", () => {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+  renderCalendar();
+});
+
+/* DETAILS PANEL */
+function showOverview() {
+  overviewContext.classList.remove("hidden");
+  habitDetailsSection.classList.add("hidden");
+  selectedHabitIndex = null;
+}
+
+function selectHabit(index) {
+  selectedHabitIndex = index;
+  const habit = habits[index];
+
+  if (!habit) {
+    showOverview();
+    return;
+  }
+
+  overviewContext.classList.add("hidden");
+  habitDetailsSection.classList.remove("hidden");
+
+  detailsTitle.textContent = habit.name;
+  detailsStatus.textContent = habit.completed ? "Completed" : "Pending";
+  detailsStatus.className = "status-badge " + (habit.completed ? "completed" : "pending");
+
+  quill.root.innerHTML = habit.notes || "";
+
+  renderDashboard();
+}
+
+closeDetailsBtn?.addEventListener("click", showOverview);
+
+/* ANALYTICS */
+function renderWeeklyChart() {
+  const chartContainer = document.getElementById("weeklyChart");
+  chartContainer.innerHTML = "";
+
+  const today = new Date();
+  let maxCompletions = 1;
+  let daysData = [];
+
+  for (let i = 6; i >= 0; i--) {
+    let d = new Date(today);
+    d.setDate(d.getDate() - i);
+    let dStr = d.toISOString().split("T")[0];
+    let count = habits.filter(h => h.history.includes(dStr)).length;
+    if (count > maxCompletions) maxCompletions = count;
+    daysData.push({ day: d.toLocaleDateString("en-US", { weekday: "short" }), count });
+  }
+
+  daysData.forEach(data => {
+    let heightPerc = (data.count / maxCompletions) * 100;
+    chartContainer.innerHTML += `
+      <div class="chart-col" title="${data.count} habits">
+        <div class="chart-bar" style="height:${heightPerc}%"></div>
+        <span class="chart-label">${data.day.charAt(0)}</span>
+      </div>
     `;
-    progressList.appendChild(card);
   });
 }
 
-function updateStats() {
-  const todayStr = getTodayString();
-  const todayDay = new Date(`${todayStr}T00:00:00`).getDay();
+function renderHeatmap() {
+  const heatmapGrid = document.getElementById("heatmapGrid");
+  heatmapGrid.innerHTML = "";
 
-  let completedCount = 0;
-  let scheduledCount = 0;
-  let totalScheduledWeek = 0;
-  let totalCompletedWeek = 0;
+  const today = new Date();
 
-  habits.forEach(habit => {
-    if (habit.completed) completedCount += 1;
-    if (isScheduledForDay(habit, todayDay)) scheduledCount += 1;
+  for (let i = 27; i >= 0; i--) {
+    let d = new Date(today);
+    d.setDate(d.getDate() - i);
+    let dStr = d.toISOString().split("T")[0];
+    let count = habits.filter(h => h.history.includes(dStr)).length;
 
-    const weekly = getWeeklyProgress(habit);
-    totalScheduledWeek += weekly.scheduledCount;
-    totalCompletedWeek += weekly.completedCount;
-  });
+    let intensity =
+      count === 0 ? "level-0" :
+      count < 3   ? "level-1" :
+      count < 5   ? "level-2" : "level-3";
 
-  const overallWeeklyRate = totalScheduledWeek === 0
-    ? 0
-    : Math.round((totalCompletedWeek / totalScheduledWeek) * 100);
-
-  totalHabits.textContent = habits.length;
-  completedHabits.textContent = completedCount;
-  scheduledToday.textContent = scheduledCount;
-  weeklyRate.textContent = `${overallWeeklyRate}%`;
+    heatmapGrid.innerHTML += `
+      <div class="heat-square ${intensity}" title="${dStr}: ${count} habits"></div>
+    `;
+  }
 }
 
-function renderAll() {
-  renderHabits();
-  renderProgressCharts();
-  updateStats();
-  checkMilestones();
+function renderAchievements(maxStreak, totalCompletions, totalHabits) {
+  const grid = document.getElementById("achievementsGrid");
+  grid.innerHTML = "";
+
+  const achievements = [
+    { name: "7 Day Warrior",       icon: "sword",  achieved: maxStreak >= 7 },
+    { name: "Consistency Master",  icon: "award",  achieved: totalCompletions >= 30 },
+    { name: "Habit Builder",       icon: "hammer", achieved: totalHabits >= 5 }
+  ];
+
+  achievements.forEach(a => {
+    grid.innerHTML += `
+      <div class="achievement-badge ${a.achieved ? "unlocked" : "locked"}">
+        <i data-lucide="${a.icon}"></i>
+        <span>${a.name}</span>
+      </div>
+    `;
+  });
 }
 
 /* ADD HABIT */
@@ -468,34 +595,24 @@ document.getElementById("confirmAddBtn")?.addEventListener("click", () => {
     return;
   }
 
-  const newHabit = {
-    name: habitName,
-    tags: parseTags(habitTags.value),
-    notes: habitNotes.value.trim(),
-    goalText: habitGoal.value.trim(),
-    reminderTime: habitReminder.value,
-    schedule: getSelectedSchedule(),
-    completionDates: [],
+  habits.unshift({
+    name,
     completed: false,
-    streak: 0,
-    maxStreak: 0,
-    lastCompleted: "",
-    createdAt: getTodayString()
-  };
-
-  habits.push(newHabit);
-
-  saveHabits();
-  renderAll();
-
-  habitInput.value = "";
-  habitTags.value = "";
-  habitNotes.value = "";
-  habitGoal.value = "";
-  habitReminder.value = "";
-  document.querySelectorAll(".schedule-day").forEach(input => {
-    input.checked = true;
+    notes: "",
+    category:  addHabitCategory.value,
+    timeLabel: addHabitTimeLabel.value,
+    priority:  addHabitPriority.checked,
+    createdAt: getTodayStr(),
+    history:   []
   });
+
+  saveData();
+  addModal.classList.add("hidden");
+  addHabitInput.value = "";
+  addHabitPriority.checked = false;
+
+  renderDashboard();
+  selectHabit(0);
 });
 
 /* EDIT */
@@ -586,36 +703,14 @@ function setTheme(theme) {
   localStorage.setItem("theme", theme);
 }
 
-/* DELETE MODAL EVENT LISTENERS */
+document.getElementById("theme-toggle")?.addEventListener("click", () => {
+  setTheme(document.body.classList.contains("dark-mode") ? "light" : "dark");
+});
 
-if (deleteCloseBtn) {
-  deleteCloseBtn.addEventListener("click", closeDeleteModal);
-}
-
-if (deleteCancelBtn) {
-  deleteCancelBtn.addEventListener("click", closeDeleteModal);
-}
-
-if (deleteConfirmBtn) {
-  deleteConfirmBtn.addEventListener("click", () => {
-    if (pendingDeleteIndex !== null) {
-      habits.splice(pendingDeleteIndex, 1);
-      saveHabits();
-      renderAll();
-    }
-    closeDeleteModal();
-  });
-}
-
-if (deleteModal) {
-  deleteModal.addEventListener("click", (event) => {
-    if (event.target === deleteModal) {
-      closeDeleteModal();
-    }
-  });
-}
-
-/* INITIAL RENDER & DAILY CHECK */
-
-updateHabitsDailyStatus();
-renderAll();
+/* INIT */
+document.addEventListener("DOMContentLoaded", () => {
+  setTheme(localStorage.getItem("theme") || "light");
+  initQuill();
+  lucide.createIcons();
+  renderDashboard();
+});

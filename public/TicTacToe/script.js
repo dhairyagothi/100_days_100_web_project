@@ -1,492 +1,437 @@
-const board = document.getElementById("board");
+(function () {
+  "use strict";
 
-const statusText = document.getElementById("statusText");
-const turnChip = document.getElementById("turnChip");
+  var WIN_LINES = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
 
-const scoreX = document.getElementById("scoreX");
-const scoreO = document.getElementById("scoreO");
-const scoreD = document.getElementById("scoreD");
+  var board     = Array(9).fill(null);
+  var current   = "X";
+  var gameOver  = false;
+  var scores    = { X: 0, O: 0, D: 0 };
+  var particles = [];
+  var animFrame = null;
 
-const newRoundBtn = document.getElementById("newRoundBtn");
-const resetAllBtn = document.getElementById("resetAllBtn");
+  /* ── Bot state ──────────────────────────*/
+  var vsBot   = false;
+  var botMark = "O";
 
-const winnerModal = document.getElementById("winnerModal");
-const winnerTitle = document.getElementById("winnerTitle");
-const winnerSubtitle = document.getElementById("winnerSubtitle");
+  var boardEl  = document.getElementById("board");
+  var gameEl   = document.getElementById("game");
+  var statusEl = document.getElementById("status-bar");
+  var pillX    = document.getElementById("pill-x");
+  var pillO    = document.getElementById("pill-o");
+  var scoreX   = document.getElementById("score-x");
+  var scoreO   = document.getElementById("score-o");
+  var scoreD   = document.getElementById("score-d");
+  var overlay  = document.getElementById("win-overlay");
+  var winText  = document.getElementById("win-text");
+  var winSub   = document.getElementById("win-sub");
+  var winBtn   = document.getElementById("win-btn");
+  var canvas   = document.getElementById("confetti-canvas");
+  var ctx      = canvas.getContext("2d");
+  var startScreen = document.getElementById("start-screen");
+  var startBtn   = document.getElementById("start-btn");
 
-const winnerNext = document.getElementById("winnerNext");
-const winnerClose = document.getElementById("winnerClose");
+  // ── Mode screen (injected) ─────────────
+  var modeScreen = document.createElement("div");
+  modeScreen.id = "mode-screen";
+  modeScreen.innerHTML = `
+    <h2 class="mode-title">Choose Mode</h2>
+    <p class="mode-sub">How do you want to play?</p>
+    <div class="mode-btns">
+      <button class="mode-btn" id="btn-2p">
+        <span class="mode-icon">👥</span>
+        <span class="mode-label">2 Players</span>
+        <span class="mode-desc">Play with a friend</span>
+      </button>
+      <button class="mode-btn" id="btn-bot">
+        <span class="mode-icon">🤖</span>
+        <span class="mode-label">vs Bot</span>
+        <span class="mode-desc">Challenge the AI</span>
+      </button>
+    </div>
+  `;
+  document.body.appendChild(modeScreen);
 
-const modeSelect = document.getElementById("modeSelect");
-const themeSelect = document.getElementById("themeSelect");
-
-const hintBtn = document.getElementById("hintBtn");
-const undoBtn = document.getElementById("undoBtn");
-
-const historyList = document.getElementById("historyList");
-
-let gameBoard = Array(9).fill("");
-let currentPlayer = "X";
-let gameOver = false;
-
-let moveHistory = [];
-
-let scores = {
-X: 0,
-O: 0,
-D: 0
-};
-
-const WIN_LINES = [
-[0,1,2],
-[3,4,5],
-[6,7,8],
-[0,3,6],
-[1,4,7],
-[2,5,8],
-[0,4,8],
-[2,4,6]
-];
-
-function renderBoard() {
-
-
-board.innerHTML = "";
-
-gameBoard.forEach((value,index) => {
-
-    const cell = document.createElement("button");
-
-    cell.className = "cell";
-
-    if(value === "X") {
-        cell.classList.add("mark-x");
-    }
-
-    if(value === "O") {
-        cell.classList.add("mark-o");
-    }
-
-    cell.textContent = value;
-
-    cell.addEventListener("click", () => {
-        handleMove(index);
+  /* ── Build board ──────────────────────── */
+  function buildBoard() {
+    boardEl.innerHTML = "";
+    board.forEach(function (val, i) {
+      var cell = document.createElement("div");
+      cell.className = "cell";
+      if (val) {
+        cell.classList.add("taken", val === "X" ? "x-mark" : "o-mark");
+        cell.textContent = val === "X" ? "\u2715" : "\u25CB";
+      }
+      cell.addEventListener("click", function () { handleClick(i); });
+      boardEl.appendChild(cell);
     });
+  }
 
-    board.appendChild(cell);
-});
+  /* ── Handle cell click ────────────────── */
+  function handleClick(i) {
+    if (gameOver || board[i]) return;
+    if (vsBot && current === botMark) return;   // block clicks on bot's turn
 
+    board[i] = current;
+    buildBoard();
 
-}
-
-function handleMove(index){
-
-
-if(gameOver) return;
-
-if(gameBoard[index] !== "") return;
-
-gameBoard[index] = currentPlayer;
-
-moveHistory.push({
-    player: currentPlayer,
-    cell: index + 1
-});
-
-updateHistory();
-
-const winLine = getWinner();
-
-if(winLine){
-
-    highlightWin(winLine);
-
-    scores[currentPlayer]++;
-
-    updateScores();
-
-    gameOver = true;
-
-    showWinner(currentPlayer);
-
-    return;
-}
-
-if(gameBoard.every(cell => cell !== "")){
-
-    scores.D++;
-
-    updateScores();
-
-    gameOver = true;
-
-    showDraw();
-
-    return;
-}
-
-currentPlayer =
-    currentPlayer === "X" ? "O" : "X";
-
-updateStatus();
-
-renderBoard();
-
-const mode = modeSelect.value;
-
-if(
-    mode !== "pvp" &&
-    currentPlayer === "O" &&
-    !gameOver
-){
-    setTimeout(cpuMove,400);
-}
-
-
-}
-
-function cpuMove(){
-
-
-const available = [];
-
-gameBoard.forEach((cell,index)=>{
-    if(cell === "") {
-        available.push(index);
-    }
-});
-
-if(!available.length) return;
-
-const mode = modeSelect.value;
-
-let move;
-
-if(mode === "cpu-easy"){
-
-    move =
-        available[
-            Math.floor(
-                Math.random()*available.length
-            )
-        ];
-}
-
-else if(mode === "cpu-medium"){
-
-    if(Math.random() < 0.6){
-
-        move = getBestMove();
-
+    var win = checkWin();
+    if (win) {
+      highlightWin(win);
+      scores[current]++;
+      updateScores();
+      setTimeout(function () { showWinOverlay(current); }, 320);
+      gameOver = true;
+    } else if (board.every(Boolean)) {
+      scores.D++;
+      updateScores();
+      setTimeout(showDrawOverlay, 200);
+      gameOver = true;
     } else {
-
-        move =
-            available[
-                Math.floor(
-                    Math.random()*available.length
-                )
-            ];
+      current = current === "X" ? "O" : "X";
+      setUI(current);
+      if (vsBot && current === botMark) setTimeout(doBotMove, 480);
     }
-}
+  }
 
-else {
+  /* ── Bot move ─────────────────────────── */
+  function doBotMove() {
+    if (gameOver) return;
+    var move = getBotMove();
+    if (move === -1) return;
+    board[move] = botMark;
+    buildBoard();
 
-    move = getBestMove();
-}
-
-handleMove(move);
-
-
-}
-
-function getBestMove(){
-
-
-for(const line of WIN_LINES){
-
-    const [a,b,c] = line;
-
-    const cells = [
-        gameBoard[a],
-        gameBoard[b],
-        gameBoard[c]
-    ];
-
-    if(
-        cells.filter(v => v === "O").length === 2 &&
-        cells.includes("")
-    ){
-        return line[
-            cells.indexOf("")
-        ];
+    var win = checkWin();
+    if (win) {
+      highlightWin(win);
+      scores[botMark]++;
+      updateScores();
+      setTimeout(function () { showWinOverlay(botMark); }, 320);
+      gameOver = true;
+    } else if (board.every(Boolean)) {
+      scores.D++;
+      updateScores();
+      setTimeout(showDrawOverlay, 200);
+      gameOver = true;
+    } else {
+      current = current === "X" ? "O" : "X";
+      setUI(current);
     }
-}
+  }
 
-for(const line of WIN_LINES){
-
-    const [a,b,c] = line;
-
-    const cells = [
-        gameBoard[a],
-        gameBoard[b],
-        gameBoard[c]
-    ];
-
-    if(
-        cells.filter(v => v === "X").length === 2 &&
-        cells.includes("")
-    ){
-        return line[
-            cells.indexOf("")
-        ];
+  /* ── Pick best move (minimax) ─────────── */
+  function getBotMove() {
+    var bestScore = -Infinity;
+    var bestMove  = -1;
+    for (var i = 0; i < 9; i++) {
+      if (!board[i]) {
+        board[i] = botMark;
+        var score = minimax(board, 0, false);
+        board[i] = null;
+        if (score > bestScore) { bestScore = score; bestMove = i; }
+      }
     }
-}
+    return bestMove;
+  }
 
-if(gameBoard[4] === ""){
-    return 4;
-}
+  /* ── Minimax ──────────────────────────── */
+  function minimax(b, depth, isMax) {
+    var human  = botMark === "O" ? "X" : "O";
+    var winner = scanWinner(b);
+    if (winner === botMark) return 10 - depth;
+    if (winner === human)   return depth - 10;
+    if (b.every(Boolean))   return 0;
 
-const free = [];
-
-gameBoard.forEach((cell,index)=>{
-    if(cell === "") {
-        free.push(index);
+    var best = isMax ? -Infinity : Infinity;
+    for (var i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = isMax ? botMark : human;
+        var score = minimax(b, depth + 1, !isMax);
+        b[i] = null;
+        best = isMax ? Math.max(best, score) : Math.min(best, score);
+      }
     }
-});
+    return best;
+  }
 
-return free[
-    Math.floor(Math.random()*free.length)
-];
-
-
-}
-
-function getWinner(){
-
-
-for(const line of WIN_LINES){
-
-    const [a,b,c] = line;
-
-    if(
-        gameBoard[a] &&
-        gameBoard[a] === gameBoard[b] &&
-        gameBoard[a] === gameBoard[c]
-    ){
-        return line;
+  /* ── Scan board for a winner ──────────── */
+  function scanWinner(b) {
+    for (var i = 0; i < WIN_LINES.length; i++) {
+      var l = WIN_LINES[i];
+      if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[0]] === b[l[2]]) return b[l[0]];
     }
-}
+    return null;
+  }
 
-return null;
+const checkWinner = () => {
+    for (const pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        const pos1 = boardState[a];
+        const pos2 = boardState[b];
+        const pos3 = boardState[c];
+        if (pos1 && pos1 === pos2 && pos2 === pos3) {
+            setWinner(pos1, pattern);
+            return true;
+        }
+    }
+    return null;
+  }
 
+  /* ── Highlight winning cells ──────────── */
+  function highlightWin(line) {
+    var cells = boardEl.querySelectorAll(".cell");
+    line.forEach(function (i) { cells[i].classList.add("win-cell"); });
+  }
 
-}
+  /* ── Update turn UI + background ─────── */
+  function setUI(player) {
+    pillX.classList.toggle("active", player === "X");
+    pillO.classList.toggle("active", player === "O");
+    gameEl.className = player === "X" ? "turn-x" : "turn-o";
+    statusEl.className = player === "X" ? "sx" : "so";
+    var label = (vsBot && player === botMark) ? "Bot" : player;
+    statusEl.textContent = player ? label + "'s turn!" : "";
+  }
 
-function highlightWin(line){
+  /* ── Update scoreboard ────────────────── */
+  function updateScores() {
+    scoreX.textContent = scores.X;
+    scoreO.textContent = scores.O;
+    scoreD.textContent = scores.D;
+  }
 
+  /* ── Win overlay ──────────────────────── */
+  function showWinOverlay(player) {
+    winText.className   = player === "X" ? "col-x" : "col-o";
+    winText.textContent = "CONGRATULATIONS!";
+    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
+    winSub.textContent  = label + " wins the round!";
+    winBtn.className    = player === "X" ? "btn-x" : "btn-o";
+    overlay.className   = "show " + (player === "X" ? "ov-x" : "ov-o");
+    launchConfetti(player);
+  }
 
-renderBoard();
+  /* ── Draw overlay ─────────────────────── */
+  function showDrawOverlay() {
+    winText.className   = "col-d";
+    winText.textContent = "IT'S A DRAW!";
+    winSub.textContent  = "Nobody wins this round.";
+    winBtn.className    = "btn-d";
+    overlay.className   = "show ov-d";
+  }
 
-line.forEach(index => {
+  /* ── Next round ───────────────────────── */
+  function nextRound() {
+    board    = Array(9).fill(null);
+    current  = "X";
+    gameOver = false;
+    buildBoard();
+    setUI("X");
+    overlay.className = "";
+    stopConfetti();
+    if (vsBot && current === botMark) setTimeout(doBotMove, 480);
+  }
 
-    board.children[index]
-        .classList.add("win-cell");
-});
-
-
-}
-
-function updateStatus(){
-
-
-statusText.textContent =
-    currentPlayer + "'s Turn";
-
-turnChip.textContent =
-    "Turn: " + currentPlayer;
-
-
-}
-
-function updateScores(){
-
-scoreX.textContent = scores.X;
-scoreO.textContent = scores.O;
-scoreD.textContent = scores.D;
-
-}
-
-function updateHistory(){
-
-
-historyList.innerHTML = "";
-
-moveHistory.slice(-10).forEach(move => {
-
-    const li =
-        document.createElement("li");
-
-    li.textContent =
-        move.player +
-        " → Cell " +
-        move.cell;
-
-    historyList.appendChild(li);
-});
-
-
-}
-
-function showWinner(player){
-
-
-winnerTitle.textContent =
-    "Player " + player + " Wins!";
-
-winnerSubtitle.textContent =
-    "Ready for the next round?";
-
-winnerModal.classList.add("show");
-
-
-}
-
-function showDraw(){
-
-
-winnerTitle.textContent =
-    "Draw!";
-
-winnerSubtitle.textContent =
-    "Nobody wins this round.";
-
-winnerModal.classList.add("show");
-
-
-}
-
-function newRound(){
-
-
-gameBoard = Array(9).fill("");
-
-currentPlayer = "X";
-
-gameOver = false;
-
-moveHistory = [];
-
-updateHistory();
-
-updateStatus();
-
-winnerModal.classList.remove("show");
-
-renderBoard();
-
-
-}
-
-function resetScores(){
-
-
-scores = {
-    X:0,
-    O:0,
-    D:0
+  /* ── Reset all ────────────────────────── */
+  function resetAll() {
+    scores = { X: 0, O: 0, D: 0 };
+    updateScores();
+    turnO = true;
+    resetRound();
+    updateStatus("Scores reset. Ready to play");
 };
 
-updateScores();
+const setModalState = (modal, isOpen) => {
+    if (!modal) {
+        return;
+    }
+    modal.classList.toggle("show", isOpen);
+    modal.setAttribute("aria-hidden", String(!isOpen));
+};
 
-newRound();
+const showWinnerModal = (winner, isSetWin) => {
+    const winnerLabel = `Player ${winner}`;
+    winnerBadge.textContent = "Winner";
+    winnerTitle.textContent = isSetWin ? `${winnerLabel} wins the set!` : `${winnerLabel} wins the round!`;
+    winnerSubtitle.textContent = isSetWin
+        ? "Champion vibes. Reset scores to play a new set."
+        : "Great moves. Ready for the next round?";
+    setModalState(winnerModal, true);
+};
 
+const hideWinnerModal = () => {
+    setModalState(winnerModal, false);
+};
 
-}
+const showStartModal = () => {
+    gameStarted = false;
+    setModalState(startModal, true);
+    boardLocked = true;
+    stopTurnTimer();
+};
 
-function undoMove(){
+const hideStartModal = () => {
+    setModalState(startModal, false);
+};
 
+const updateHistory = () => {
+    historyList.innerHTML = "";
+    const recent = moveHistory.slice(-10);
+    recent.forEach((move, index) => {
+        const item = document.createElement("li");
+        const moveNumber = moveHistory.length - recent.length + index + 1;
+        item.textContent = `#${moveNumber} ${move.mark} to cell ${move.index + 1}`;
+        historyList.appendChild(item);
+    });
+};
 
-if(!moveHistory.length) return;
+const clearHints = () => {
+    boxes.forEach((box) => box.classList.remove("hint"));
+};
 
-const last = moveHistory.pop();
+const syncTurnFromBoard = () => {
+    const countO = boardState.filter((cell) => cell === "O").length;
+    const countX = boardState.filter((cell) => cell === "X").length;
+    turnO = countO === countX;
+};
 
-gameBoard[last.cell - 1] = "";
+const undoMove = () => {
+    if (!moveHistory.length) {
+        return;
+    }
 
-currentPlayer = last.player;
+    if (currentResult) {
+        if (currentResult.winner && currentResult.winner !== "D") {
+            scores[currentResult.winner] = Math.max(0, scores[currentResult.winner] - 1);
+        }
+        if (currentResult.winner === "D") {
+            scores.D = Math.max(0, scores.D - 1);
+        }
+        currentResult = null;
+        updateScores();
+    }
 
-gameOver = false;
+    const steps = mode === "pvp" ? 1 : 2;
+    for (let i = 0; i < steps; i += 1) {
+        const last = moveHistory.pop();
+        if (!last) {
+            break;
+        }
+        const box = boxes[last.index];
+        boardState[last.index] = "";
+        box.textContent = "";
+        box.disabled = false;
+        box.classList.remove("win", "mark-o", "mark-x");
+    }
 
-updateHistory();
+    boardLocked = false;
+    boxes.forEach((box) => box.classList.remove("win"));
+    hideWinLine();
+    clearHints();
+    syncTurnFromBoard();
+    updateHistory();
+    updateStatus("Undo applied");
+    triggerCpuMove();
+};
 
-updateStatus();
+// Run the CPU move with a short delay for pacing.
+const triggerCpuMove = () => {
+    if (mode === "pvp" || boardLocked || turnO) {
+        return;
+    }
+    const available = getAvailableMoves(boardState);
+    if (!available.length) {
+        return;
+    }
+    updateStatus("CPU is thinking...");
+    boardLocked = true;
+    boardEl.classList.add("thinking");
+    setTimeout(() => {
+        let bestMove = null;
+        if (mode === "cpu-easy") {
+            bestMove = randomMove(available);
+        } else if (mode === "cpu-medium") {
+            bestMove = Math.random() < 0.6 ? bestMoveFor(boardState, "X") : randomMove(available);
+        } else {
+            bestMove = bestMoveFor(boardState, "X");
+        }
+        boardLocked = false;
+        boardEl.classList.remove("thinking");
+        placeMark(bestMove, "X", true);
+    }, 450);
+};
 
-renderBoard();
+const getAvailableMoves = (state) => state
+    .map((cell, index) => (cell ? null : index))
+    .filter((value) => value !== null);
 
+const randomMove = (moves) => moves[Math.floor(Math.random() * moves.length)];
 
-}
+const bestMoveFor = (state, player) => {
+    let bestScore = -Infinity;
+    let move = null;
+    const opponent = player === "O" ? "X" : "O";
+    getAvailableMoves(state).forEach((index) => {
+        const next = [...state];
+        next[index] = player;
+        const score = minimax(next, false, player, opponent, 0);
+        if (score > bestScore) {
+            bestScore = score;
+            move = index;
+        }
+    });
+    animFrame = requestAnimationFrame(animateConfetti);
+  }
 
-function showHint(){
+  function stopConfetti() {
+    particles = [];
+    if (animFrame) cancelAnimationFrame(animFrame);
+    animFrame = null;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 
+  /* ── Button wiring ────────────────────── */
+  document.getElementById("btn-reset").addEventListener("click", resetAll);
+  document.getElementById("btn-restart").addEventListener("click", nextRound);
+  document.getElementById("win-btn").addEventListener("click", nextRound);
 
-const move = getBestMove();
+  /* ── Start → mode screen ──────────────── */
+  startBtn.addEventListener("click", function () {
+    startScreen.classList.add("hide-screen");
+    setTimeout(function () {
+      startScreen.style.display = "none";
+      modeScreen.classList.add("show");
+    }, 600);
+  });
 
-renderBoard();
+  document.getElementById("btn-2p").addEventListener("click", function () {
+    vsBot = false;
+    launchGame();
+  });
 
-if(board.children[move]){
+  document.getElementById("btn-bot").addEventListener("click", function () {
+    vsBot = true;
+    launchGame();
+  });
 
-    board.children[move]
-        .classList.add("hint-cell");
-}
+  /* ── Mode screen → game ───────────────── */
+  function launchGame() {
+    modeScreen.classList.remove("show");
+    modeScreen.classList.add("hide");
+    setTimeout(function () {
+      modeScreen.style.display = "none";
+      gameEl.classList.remove("hidden");
+      gameEl.classList.add("show-game");
+    }, 400);
+  }
 
+  /* ── Init ─────────────────────────────── */
+  buildBoard();
+  setUI("X");
 
-}
-
-themeSelect.addEventListener(
-"change",
-function(){
-
-
-    document.body.setAttribute(
-        "data-theme",
-        this.value
-    );
-}
-
-
-);
-
-newRoundBtn.addEventListener(
-"click",
-newRound
-);
-
-resetAllBtn.addEventListener(
-"click",
-resetScores
-);
-
-undoBtn.addEventListener(
-"click",
-undoMove
-);
-
-hintBtn.addEventListener(
-"click",
-showHint
-);
-
-winnerNext.addEventListener(
-"click",
-newRound
-);
-
-winnerClose.addEventListener(
-"click",
-()=>{
-winnerModal.classList.remove("show");
-}
-);
-
-updateStatus();
-updateScores();
-renderBoard();
+})();

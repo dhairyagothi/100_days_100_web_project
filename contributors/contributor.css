@@ -608,13 +608,6 @@ body {
   padding-right: 3rem;
 }
 
-/* Dropdown Options Styling */
-
-.contributors-controls option {
-  background-color: var(--bg-elevated);
-  color: var(--text-primary);
-}
-
 /* Empty State */
 
 .empty-state {

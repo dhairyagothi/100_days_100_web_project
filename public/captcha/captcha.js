@@ -6,6 +6,7 @@ const textInput = document.querySelector(".textcaptcha input");
 const refreshButton = document.querySelector(".refresh");
 const resultMessage = document.querySelector(".result");
 const submitButton = document.querySelector(".button button");
+
 let currentCaptcha = null;
 let attempts = 0;
 const maxAttempts = 3;
@@ -189,17 +190,6 @@ const generateCaptcha = () => {
             break;
     }
 };
-
-//math captcha numeric input validation
-textInput.addEventListener("input", () => {
-
-    // Restrict only for Math CAPTCHA
-    if (selectedType === "math") {
-
-        textInput.value =
-        textInput.value.replace(/[^0-9-]/g, "");
-    }
-});
 
 const lockoutUser = () => {
     const lockoutDuration = 60;
