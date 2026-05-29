@@ -1,56 +1,452 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    color: #fff;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+/* LIGHT MODE */
+
+body{
+
+  font-family:'Poppins',sans-serif;
+
+  min-height:100vh;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:flex-start;
+
+  overflow-x:hidden;
+
+  overflow-y:auto;
+
+  padding:40px 20px;
+
+  color:white;
+
+  transition:0.4s;
+
+  background:
+  linear-gradient(
+    135deg,
+    #667eea,
+    #764ba2
+  );
+}
+
+/* DARK MODE */
+
+body.dark{
+
+  background:
+  linear-gradient(
+    135deg,
+    #0f0c29,
+    #302b63,
+    #24243e
+  );
+}
+
+/* BACKGROUND BLOBS */
+
+.background-animation span{
+
+  position:absolute;
+
+  width:300px;
+
+  height:300px;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,0.08);
+
+  animation:float 10s infinite;
+}
+
+.background-animation span:nth-child(1){
+
+  top:-80px;
+  left:-50px;
+}
+
+.background-animation span:nth-child(2){
+
+  bottom:-100px;
+  right:-50px;
+}
+
+.background-animation span:nth-child(3){
+
+  top:50%;
+  left:20%;
+}
+
+.background-animation span:nth-child(4){
+
+  top:20%;
+  right:15%;
+}
+
+@keyframes float{
+
+  0%{
+    transform:translateY(0px);
   }
-  
-  .countdown-container {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 20px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+  50%{
+    transform:translateY(-30px);
   }
-  
-  h1 {
-    margin-bottom: 20px;
+
+  100%{
+    transform:translateY(0px);
   }
-  
-  #countdown {
-    font-size: 2rem;
-    margin-bottom: 20px;
+}
+
+.container{
+
+  width:100%;
+
+  max-width:850px;
+
+  z-index:2;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+}
+
+/* TOP */
+
+.top-bar{
+
+  width:100%;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:20px;
+}
+
+.top-bar h1{
+
+  font-size:2.5rem;
+
+  font-weight:700;
+}
+
+.theme-btn{
+
+  width:60px;
+
+  height:60px;
+
+  border:none;
+
+  border-radius:50%;
+
+  cursor:pointer;
+
+  font-size:1.3rem;
+
+  transition:0.3s;
+}
+
+.theme-btn:hover{
+
+  transform:scale(1.1) rotate(20deg);
+}
+
+/* CARD */
+
+.timer-card{
+
+  width:100%;
+
+  background:rgba(255,255,255,0.1);
+
+  backdrop-filter:blur(18px);
+
+  border:1px solid rgba(255,255,255,0.2);
+
+  border-radius:30px;
+
+  padding:35px;
+
+  text-align:center;
+
+  box-shadow:0 8px 30px rgba(0,0,0,0.2);
+
+  margin-bottom:40px;
+}
+
+/* POMODORO */
+
+.pomodoro-buttons{
+
+  display:flex;
+
+  justify-content:center;
+
+  gap:15px;
+
+  margin-bottom:30px;
+
+  flex-wrap:wrap;
+}
+
+.pomodoro-buttons button{
+
+  padding:12px 20px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,0.15);
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:0.3s;
+
+  font-weight:500;
+}
+
+.pomodoro-buttons button:hover{
+
+  transform:scale(1.08);
+
+  background:rgba(255,255,255,0.25);
+}
+
+/* INPUTS */
+
+.inputs{
+
+  display:flex;
+
+  justify-content:center;
+
+  gap:20px;
+
+  margin-bottom:35px;
+
+  flex-wrap:wrap;
+}
+
+.input-box{
+
+  display:flex;
+
+  flex-direction:column;
+}
+
+.input-box label{
+
+  margin-bottom:8px;
+
+  font-weight:500;
+}
+
+.input-box input{
+
+  width:110px;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:14px;
+
+  text-align:center;
+
+  font-size:1rem;
+
+  outline:none;
+}
+
+/* CIRCULAR TIMER */
+
+.progress-ring{
+
+  position:relative;
+
+  width:260px;
+
+  height:260px;
+
+  margin:0 auto 35px;
+}
+
+.progress-ring svg{
+
+  transform:rotate(-90deg);
+}
+
+.bg-circle{
+
+  fill:none;
+
+  stroke:rgba(255,255,255,0.15);
+
+  stroke-width:14;
+}
+
+.progress-circle{
+
+  fill:none;
+
+  stroke:#00ffae;
+
+  stroke-width:14;
+
+  stroke-linecap:round;
+
+  stroke-dasharray:691;
+
+  stroke-dashoffset:0;
+
+  transition:stroke-dashoffset 1s linear;
+
+  filter:drop-shadow(0 0 10px #00ffae);
+}
+
+.timer-display{
+
+  position:absolute;
+
+  top:50%;
+
+  left:50%;
+
+  transform:translate(-50%,-50%);
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+}
+
+.timer-display h2{
+
+  font-size:4rem;
+
+  font-weight:700;
+}
+
+.timer-display span{
+
+  font-size:3rem;
+}
+
+/* BUTTONS */
+
+.controls{
+
+  display:flex;
+
+  justify-content:center;
+
+  gap:15px;
+
+  flex-wrap:wrap;
+}
+
+.controls button{
+
+  padding:14px 26px;
+
+  border:none;
+
+  border-radius:14px;
+
+  font-size:1rem;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  color:white;
+
+  transition:0.3s;
+}
+
+.controls button:hover{
+
+  transform:scale(1.08);
+
+  box-shadow:0 0 20px rgba(255,255,255,0.4);
+}
+
+.start-btn{
+  background:#22c55e;
+}
+
+.pause-btn{
+  background:#facc15;
+  color:black;
+}
+
+.reset-btn{
+  background:#ef4444;
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .top-bar{
+
+    flex-direction:column;
+
+    gap:20px;
   }
-  
-  #countdown span {
-    font-weight: bold;
-    margin: 0 5px;
+
+  .top-bar h1{
+
+    font-size:2rem;
+
+    text-align:center;
   }
-  
-  .controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+
+  .timer-display h2{
+
+    font-size:3rem;
   }
-  
-  button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #0078ff;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
+}
+
+@media(max-width:480px){
+
+  .controls{
+
+    flex-direction:column;
   }
-  
-  button:hover {
-    background-color: #005ecb;
+
+  .controls button{
+
+    width:100%;
   }
-  
+
+  .progress-ring{
+
+    width:220px;
+
+    height:220px;
+  }
+
+  .input-box input{
+
+    width:90px;
+  }
+}

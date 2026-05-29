@@ -2,67 +2,316 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PassX-Personal Password Manager</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PassX - Password Manager</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 </head>
 
 <body>
-    <nav>
-        <div class="logo">PassX</div>
-        <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>Contact</li>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
+
+    <!-- Toast Notification -->
+
+    <div id="toast"></div>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>PassX</span>
+        </div>
+
+        <!-- Hamburger Icon -->
+        <div class="hamburger" id="hamburger">
+            <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
+
+            <li>
+                <a href="#home">Home</a>
+            </li>
+
+            <li>
+                <a href="#features">Features</a>
+            </li>
+
+            <li>
+                <a href="#contact">Contact</a>
+            </li>
 
         </ul>
+
     </nav>
-    <div class="container">
-        <h1>Password Manager</h1>
-        <p>We're thrilled to have you here, and we're committed to making your online security a top priority. Your
-            digital world is full of passwords and sensitive information, and we're here to help you keep it safe and
-            organized.</p>
-        <h2>Your Password <span id="alert">(Copied)</span></h2>
-        <p>Your password has been copied</p>
-        <table>
-            <tr>
-                <th>Website</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Delete</th>
-            </tr>
 
+    <!-- Main Container -->
 
-        </table>
+    <main class="container">
 
-        <h2>Add a password</h2>
-        <form action="/submit" method="post">
-            <!-- Text input for Website -->
-            <label for="Website">Website:</label>
-            <input type="text" id="Website" name="Website" required>
-            <br><br>
-            <!-- Text input for username -->
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <br><br>
+        <!-- Hero Section -->
 
-            <!-- Password input -->
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
+        <section class="hero" id="home">
 
+            <h1>Password Manager</h1>
 
-            <!-- Submit button -->
-            <button class="btn" type="submit">Submit</button>
-           
-              
-        </form>
-    </div>
-    
+            <p>
+                Securely store, manage, and access your passwords in one place.
+                Fast, simple, and safe.
+            </p>
+
+        </section>
+
+        <!-- Password List -->
+
+        <section class="password-section" id="features">
+
+            <div class="section-title">
+                <h2>Saved Passwords</h2>
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Website</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="passwordTable">
+
+                        <!-- Dynamic Data -->
+
+                    </tbody>
+
+                </table>
+
+                <!-- Empty State -->
+
+                <div id="emptyState">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <p>No passwords saved yet</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Add Password -->
+
+        <section class="form-section">
+
+            <div class="section-title">
+                <h2>Add Password</h2>
+            </div>
+
+            <form id="passwordForm">
+
+                <!-- Website -->
+
+                <div class="input-group">
+
+                    <label for="website">Website</label>
+
+                    <input
+                        type="text"
+                        id="website"
+                        placeholder="Enter website"
+                        required
+                    />
+
+                </div>
+
+                <!-- Username -->
+
+                <div class="input-group">
+
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter username"
+                        required
+                    />
+
+                </div>
+
+                <!-- Password -->
+
+                <div class="input-group">
+
+                    <label for="password">Password</label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter password"
+                            required
+                        />
+
+                        <span id="togglePassword">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Submit Button -->
+
+                <button type="submit" class="submit-btn">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Save Password
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+
+    <footer class="footer" id="contact">
+
+        <div class="footer-content">
+
+            <!-- About -->
+
+            <div class="footer-section">
+
+                <h3>PassX</h3>
+
+                <p>
+                    Secure and modern password management experience.
+                </p>
+
+            </div>
+
+            <!-- Contact -->
+
+            <div class="footer-section">
+
+                <h3>Contact</h3>
+
+                <p>
+                    <a href="mailto:dhairyag31@gmail.com">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        dhairyag31@gmail.com
+
+                    </a>
+                </p>
+
+                <p>
+                    <a
+                        href="https://www.dhairyagothiportfolio.live"
+                        target="_blank"
+                    >
+
+                        <i class="fa-solid fa-globe"></i>
+
+                        Portfolio Website
+
+                    </a>
+                </p>
+
+                <p>
+                    <a
+                        href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
+                        target="_blank"
+                    >
+
+                        <i class="fa-brands fa-linkedin"></i>
+
+                        LinkedIn
+
+                    </a>
+                </p>
+
+                <p>
+                    <a
+                        href="https://www.instagram.com/dhairyaa__31?igsh=MXNkZHg0ZzB4OGg1Mg=="
+                        target="_blank"
+                    >
+
+                        <i class="fa-brands fa-instagram"></i>
+
+                        Instagram
+
+                    </a>
+                </p>
+
+            </div>
+
+            <!-- Support -->
+
+            <div class="footer-section">
+
+                <h3>Support</h3>
+
+                <p>
+                    ⭐ Support this project by starring the repository
+                </p>
+
+                <a
+                    href="https://github.com/dhairyagothi/100_days_100_web_project"
+                    target="_blank"
+                    class="footer-btn"
+                >
+
+                    Star Repository
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Bottom -->
+
+        <div class="footer-bottom">
+
+            <p>
+                Made with ❤️ for open source contributors
+            </p>
+
+        </div>
+
+    </footer>
 
     <script src="script.js"></script>
+
 </body>
 
 </html>

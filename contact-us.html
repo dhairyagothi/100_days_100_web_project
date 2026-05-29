@@ -1,0 +1,1088 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Get in touch with the 100 Days · 100 Web Projects team — report bugs, suggest features, ask questions, or collaborate." />
+  <meta name="keywords"
+    content="contact, 100 days, 100 web projects, open source, contribute, feedback, Dhairya Gothi" />
+  <meta name="author" content="Dhairya Gothi and Contributors" />
+  <meta name="theme-color" content="#0a0a1a" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Contact Us · 100 Days 100 Web Projects" />
+  <meta property="og:description" content="Reach out to the team — bugs, ideas, collabs, or just to say hi." />
+  <meta property="og:url" content="https://100-days-100-web-project.vercel.app/contact.html" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact Us · 100 Days 100 Web Projects" />
+  <meta name="twitter:description" content="Reach out to the team — bugs, ideas, collabs, or just to say hi." />
+
+  <title>Contact Us · 100 Days · 100 Web Projects</title>
+  <link rel="icon" type="image/x-icon" href="fav.ico" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+  <!-- Pull in the shared stylesheet so navbar / footer / tokens match -->
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ══════════════════════════════════════════════════════════
+       CONTACT PAGE — scoped styles
+       All colour tokens mirror the main site's dark palette.
+    ══════════════════════════════════════════════════════════ */
+
+    /* ── Reset / base ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-bg:        #0a0a1a;
+      --c-surface:   #0f0f1f;
+      --c-card:      #12121f;
+      --c-border:    rgba(255,255,255,0.08);
+      --c-border-hi: rgba(99,179,237,0.35);
+      --c-text:      rgba(255,255,255,0.85);
+      --c-muted:     rgba(255,255,255,0.45);
+      --c-accent:    #63b3ed;
+      --c-accent-2:  #a78bfa;
+      --c-success:   #34d399;
+      --c-error:     #f87171;
+      --font-sans:   'Inter Tight', sans-serif;
+      --font-mono:   'JetBrains Mono', monospace;
+      --font-orb:    'Orbitron', sans-serif;
+      --radius-sm:   6px;
+      --radius-md:   12px;
+      --radius-lg:   20px;
+      --shadow-card: 0 2px 24px rgba(0,0,0,0.45);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--c-bg);
+      color: var(--c-text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Ambient blobs (match homepage) ────────────────────── */
+    .ambient {
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.18;
+    }
+    .ambient-left  { background: radial-gradient(circle, #3b82f6, transparent 70%); top: -80px;  left: -120px; }
+    .ambient-right { background: radial-gradient(circle, #a78bfa, transparent 70%); bottom: 0;   right: -140px; }
+    .noise-layer {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* ── Navbar link injected on this page ─────────────────── */
+    .nav-contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: var(--c-accent);
+      text-decoration: none;
+      border: 1px solid var(--c-border-hi);
+      background: rgba(99,179,237,0.08);
+      pointer-events: none; /* already on this page */
+      white-space: nowrap;
+    }
+    .nav-contact-link i { font-size: 0.75rem; }
+
+    @media (max-width: 768px) {
+      .nav-contact-link { width: 100%; justify-content: center; padding: 0.65rem 1rem; font-size: 0.9rem; border-radius: 8px; }
+    }
+
+    /* ── Page wrapper ───────────────────────────────────────── */
+    .contact-page {
+      position: relative;
+      z-index: 1;
+      padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 5vw, 2rem) 0;
+    }
+
+    /* ── Page header ────────────────────────────────────────── */
+    .contact-header {
+      max-width: 680px;
+      margin: 0 auto 4rem;
+      text-align: center;
+    }
+    .contact-overline {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--c-accent);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .contact-header h1 {
+      font-family: var(--font-orb);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .contact-header h1 span {
+      background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .contact-header p {
+      color: var(--c-muted);
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Layout grid ────────────────────────────────────────── */
+    .contact-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.55fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Left column: info cards ────────────────────────────── */
+    .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+
+    .info-card {
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .info-card:hover {
+      border-color: var(--c-border-hi);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+    .info-card-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .icon-blue   { background: rgba(99,179,237,0.12); color: var(--c-accent); }
+    .icon-purple { background: rgba(167,139,250,0.12); color: var(--c-accent-2); }
+    .icon-green  { background: rgba(52,211,153,0.12);  color: var(--c-success); }
+    .icon-orange { background: rgba(251,146,60,0.12);  color: #fb923c; }
+
+    .info-card-body h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2rem;
+      letter-spacing: 0.02em;
+    }
+    .info-card-body p {
+      font-size: 0.8rem;
+      color: var(--c-muted);
+      line-height: 1.5;
+    }
+    .info-card-body a {
+      color: var(--c-accent);
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+    .info-card-body a:hover { text-decoration: underline; }
+
+    /* Social row inside info column */
+    .social-row {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .social-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--c-border);
+      background: rgba(255,255,255,0.03);
+      color: var(--c-muted);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .social-pill:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
+    .social-pill i { font-size: 0.85rem; }
+
+    /* FAQ accordion */
+    .faq-section { margin-top: 1.5rem; }
+    .faq-section h2 {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 0.75rem;
+    }
+    .faq-item {
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    .faq-question {
+      width: 100%;
+      background: var(--c-card);
+      color: var(--c-text);
+      border: none;
+      padding: 0.9rem 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+    }
+    .faq-question:hover { background: rgba(255,255,255,0.04); }
+    .faq-question .faq-chevron { font-size: 0.7rem; color: var(--c-muted); transition: transform 0.25s ease; flex-shrink: 0; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      font-size: 0.8rem;
+      color: var(--c-muted);
+      line-height: 1.6;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: var(--c-surface);
+      padding: 0 1rem;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+      padding: 0.75rem 1rem;
+    }
+    .faq-answer a { color: var(--c-accent); text-decoration: none; }
+    .faq-answer a:hover { text-decoration: underline; }
+
+    /* ── Right column: form card ────────────────────────────── */
+    .contact-form-card {
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      box-shadow: var(--shadow-card);
+    }
+
+    .form-heading {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .form-subheading {
+      font-size: 0.8rem;
+      color: var(--c-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    /* Reason chips */
+    .reason-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .reason-chip {
+      padding: 0.35rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--c-border);
+      background: transparent;
+      color: var(--c-muted);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .reason-chip:hover,
+    .reason-chip.active {
+      color: var(--c-accent);
+      border-color: var(--c-border-hi);
+      background: rgba(99,179,237,0.08);
+    }
+
+    /* Form fields */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--c-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .form-group label span.required {
+      color: var(--c-error);
+      margin-left: 2px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.9rem;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      color: var(--c-text);
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+      resize: none;
+    }
+    .form-control::placeholder { color: rgba(255,255,255,0.2); }
+    .form-control:focus {
+      border-color: var(--c-border-hi);
+      background: rgba(99,179,237,0.04);
+      box-shadow: 0 0 0 3px rgba(99,179,237,0.1);
+    }
+    .form-control.error { border-color: var(--c-error); }
+    .form-control.error:focus { box-shadow: 0 0 0 3px rgba(248,113,113,0.12); }
+    .field-error {
+      font-size: 0.72rem;
+      color: var(--c-error);
+      display: none;
+    }
+    .field-error.visible { display: block; }
+
+    textarea.form-control { min-height: 120px; line-height: 1.6; }
+
+    /* Character counter */
+    .char-counter {
+      font-size: 0.7rem;
+      color: var(--c-muted);
+      text-align: right;
+      margin-top: -0.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .char-counter.warn { color: var(--c-error); }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2));
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(99,179,237,0.3);
+    }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-submit .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success / error banners */
+    .form-banner {
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 1rem;
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .form-banner.visible { display: flex; }
+    .banner-success {
+      background: rgba(52,211,153,0.1);
+      border: 1px solid rgba(52,211,153,0.3);
+      color: var(--c-success);
+    }
+    .banner-error-global {
+      background: rgba(248,113,113,0.1);
+      border: 1px solid rgba(248,113,113,0.3);
+      color: var(--c-error);
+    }
+
+    /* ── Divider ────────────────────────────────────────────── */
+    .section-divider {
+      max-width: 1100px;
+      margin: 3rem auto 0;
+      height: 1px;
+      background: var(--c-border);
+    }
+
+    /* ── Stats row ──────────────────────────────────────────── */
+    .contact-stats {
+      max-width: 1100px;
+      margin: 2.5rem auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 700px) { .contact-stats { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 420px) { .contact-stats { grid-template-columns: 1fr; } }
+
+    .contact-stat-card {
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .contact-stat-card:hover { border-color: var(--c-border-hi); transform: translateY(-2px); }
+    .contact-stat-card .stat-value {
+      font-family: var(--font-orb);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .contact-stat-card .stat-label { font-size: 0.75rem; color: var(--c-muted); margin-top: 0.25rem; }
+
+    /* ── Toast (reuse homepage pattern) ────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.65rem 1.25rem;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      z-index: 9999;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ── Scroll-to-top (mirrors homepage) ───────────────────── */
+    #scrollBtn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+    #scrollBtn.visible { display: flex; }
+    #scrollBtn:hover { background: #2d3f55; transform: scale(1.05); }
+    #scrollBtn i { color: #e2e8f0; font-size: 0.85rem; }
+
+    /* ── Page-entry animation ───────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 0.55s ease forwards;
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.18s; }
+    .delay-3 { animation-delay: 0.28s; }
+    .delay-4 { animation-delay: 0.38s; }
+
+  </style>
+</head>
+
+<body>
+  <div class="ambient ambient-left" aria-hidden="true"></div>
+  <div class="ambient ambient-right" aria-hidden="true"></div>
+  <div class="noise-layer" aria-hidden="true"></div>
+
+  <!-- ── NAVBAR ──────────────────────────────────────────── -->
+  <header>
+    <nav class="navbar" id="navbar" aria-label="Main Navigation">
+      <a class="navbar-brand" href="index.html" style="text-decoration:none;">
+        <span class="brand-mark" aria-label="100 Days logo">100</span>
+        <span class="brand-copy">
+          <span class="brand-kicker">Open Source Archive</span>
+          <strong>100 Days · 100 Web Projects</strong>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons"
+        aria-expanded="false">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+        <!-- Active state — already on Contact page -->
+        <a href="contact.html" class="nav-contact-link" aria-current="page" aria-label="Contact Us">
+          <i class="fas fa-envelope" aria-hidden="true"></i>
+          Contact Us
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── CONTACT PAGE ────────────────────────────────────── -->
+  <main class="contact-page" id="main">
+
+    <!-- Page header -->
+    <div class="contact-header fade-up">
+      <span class="contact-overline">Get in Touch · Open Source Community</span>
+      <h1>Let's <span>Connect</span></h1>
+      <p>
+        Questions, bug reports, feature ideas, or just want to say hi — we'd love to hear from you.
+        The community is always open.
+      </p>
+    </div>
+
+    <!-- Stats row -->
+    <div class="contact-stats fade-up delay-1" aria-label="Community stats">
+      <div class="contact-stat-card">
+        <div class="stat-value">112+</div>
+        <div class="stat-label">Projects in Archive</div>
+      </div>
+      <div class="contact-stat-card">
+        <div class="stat-value">48h</div>
+        <div class="stat-label">Avg. Response Time</div>
+      </div>
+      <div class="contact-stat-card">
+        <div class="stat-value">100%</div>
+        <div class="stat-label">Open Source</div>
+      </div>
+      <div class="contact-stat-card">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Ideas Welcome</div>
+      </div>
+    </div>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <!-- Two-column layout -->
+    <div class="contact-grid" style="margin-top: 3rem;">
+
+      <!-- ── Left: info + FAQ ──────────────────────────────── -->
+      <aside class="contact-info fade-up delay-2" aria-label="Contact information">
+
+        <!-- Email -->
+        <div class="info-card">
+          <div class="info-card-icon icon-blue"><i class="fas fa-envelope" aria-hidden="true"></i></div>
+          <div class="info-card-body">
+            <h3>Email Us</h3>
+            <p>For partnerships, sponsorships, or general inquiries.</p>
+            <a href="mailto:dhairyagothi@example.com">dhairyagothi@example.com</a>
+          </div>
+        </div>
+
+        <!-- GitHub -->
+        <div class="info-card">
+          <div class="info-card-icon icon-purple"><i class="fab fa-github" aria-hidden="true"></i></div>
+          <div class="info-card-body">
+            <h3>Open an Issue</h3>
+            <p>Bug reports and feature requests are best tracked on GitHub.</p>
+            <a href="https://github.com/dhairyagothi/100_days_100_web_project/issues" target="_blank"
+              rel="noopener noreferrer">
+              Open GitHub Issues →
+            </a>
+          </div>
+        </div>
+
+        <!-- Discord / community -->
+        <div class="info-card">
+          <div class="info-card-icon icon-green"><i class="fas fa-users" aria-hidden="true"></i></div>
+          <div class="info-card-body">
+            <h3>Join the Community</h3>
+            <p>Connect with other contributors, share your builds, and get feedback.</p>
+            <a href="contributors/contributor.html">Meet all contributors →</a>
+          </div>
+        </div>
+
+        <!-- Response time -->
+        <div class="info-card">
+          <div class="info-card-icon icon-orange"><i class="fas fa-clock" aria-hidden="true"></i></div>
+          <div class="info-card-body">
+            <h3>Response Time</h3>
+            <p>We aim to respond within <strong style="color:#fff;">24–48 hours</strong> on weekdays.
+              GitHub issues usually get faster attention.</p>
+          </div>
+        </div>
+
+        <!-- Social row -->
+        <div class="social-row" aria-label="Social media links">
+          <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer"
+            class="social-pill">
+            <i class="fab fa-instagram" aria-hidden="true"></i> Instagram
+          </a>
+          <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
+            rel="noopener noreferrer" class="social-pill">
+            <i class="fab fa-github" aria-hidden="true"></i> GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer"
+            class="social-pill">
+            <i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn
+          </a>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-section" aria-label="Frequently asked questions">
+          <h2>Quick Answers</h2>
+
+          <div class="faq-item" id="faq1">
+            <button class="faq-question" aria-expanded="false" aria-controls="faq1-answer"
+              onclick="toggleFaq('faq1')">
+              How do I contribute a new project?
+              <i class="fas fa-chevron-down faq-chevron" aria-hidden="true"></i>
+            </button>
+            <div class="faq-answer" id="faq1-answer" role="region">
+              Fork the repo, add your project under the correct day folder, and open a Pull Request on
+              <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
+                rel="noopener noreferrer">GitHub</a>. Full guidelines are in the repo's <code>CONTRIBUTING.md</code>.
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq2">
+            <button class="faq-question" aria-expanded="false" aria-controls="faq2-answer"
+              onclick="toggleFaq('faq2')">
+              Can I suggest a project idea?
+              <i class="fas fa-chevron-down faq-chevron" aria-hidden="true"></i>
+            </button>
+            <div class="faq-answer" id="faq2-answer" role="region">
+              Absolutely! Use the contact form on this page or open a
+              <a href="https://github.com/dhairyagothi/100_days_100_web_project/issues/new" target="_blank"
+                rel="noopener noreferrer">GitHub Issue</a> labelled <em>idea</em>.
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq3">
+            <button class="faq-question" aria-expanded="false" aria-controls="faq3-answer"
+              onclick="toggleFaq('faq3')">
+              Is this part of GSSoC / Hacktoberfest?
+              <i class="fas fa-chevron-down faq-chevron" aria-hidden="true"></i>
+            </button>
+            <div class="faq-answer" id="faq3-answer" role="region">
+              Yes, this repository actively participates in open-source programs. Check the GitHub repo's README
+              for the current program badges and participation details.
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq4">
+            <button class="faq-question" aria-expanded="false" aria-controls="faq4-answer"
+              onclick="toggleFaq('faq4')">
+              I found a bug — what should I do?
+              <i class="fas fa-chevron-down faq-chevron" aria-hidden="true"></i>
+            </button>
+            <div class="faq-answer" id="faq4-answer" role="region">
+              Please open an
+              <a href="https://github.com/dhairyagothi/100_days_100_web_project/issues" target="_blank"
+                rel="noopener noreferrer">Issue on GitHub</a> with steps to reproduce, your browser/OS,
+              and a screenshot if possible. You can also use the form below.
+            </div>
+          </div>
+        </div>
+        <!-- /faq -->
+
+      </aside>
+      <!-- /left column -->
+
+      <!-- ── Right: Contact form ───────────────────────────── -->
+      <section class="contact-form-card fade-up delay-3" aria-labelledby="formTitle">
+        <p class="form-heading" id="formTitle">Send a Message</p>
+        <p class="form-subheading">Fill out the form and we'll get back to you as soon as possible.</p>
+
+        <!-- Reason chips -->
+        <div class="reason-chips" role="group" aria-label="Select a reason">
+          <button type="button" class="reason-chip active" data-reason="General Question">General Question</button>
+          <button type="button" class="reason-chip" data-reason="Bug Report">Bug Report</button>
+          <button type="button" class="reason-chip" data-reason="Feature Request">Feature Request</button>
+          <button type="button" class="reason-chip" data-reason="Collaboration">Collaboration</button>
+          <button type="button" class="reason-chip" data-reason="Other">Other</button>
+        </div>
+
+        <form id="contactForm" novalidate>
+          <!-- Hidden reason field populated by chip selection -->
+          <input type="hidden" id="reasonField" value="General Question" />
+
+          <!-- Name + Email row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contactName">Name <span class="required" aria-hidden="true">*</span></label>
+              <input type="text" id="contactName" name="name" class="form-control"
+                placeholder="Your name" autocomplete="name" required />
+              <span class="field-error" id="nameError" role="alert">Please enter your name.</span>
+            </div>
+            <div class="form-group">
+              <label for="contactEmail">Email <span class="required" aria-hidden="true">*</span></label>
+              <input type="email" id="contactEmail" name="email" class="form-control"
+                placeholder="you@example.com" autocomplete="email" required />
+              <span class="field-error" id="emailError" role="alert">Please enter a valid email.</span>
+            </div>
+          </div>
+
+          <!-- Subject -->
+          <div class="form-group">
+            <label for="contactSubject">Subject <span class="required" aria-hidden="true">*</span></label>
+            <input type="text" id="contactSubject" name="subject" class="form-control"
+              placeholder="Brief subject line" required />
+            <span class="field-error" id="subjectError" role="alert">Please enter a subject.</span>
+          </div>
+
+          <!-- GitHub handle (optional) -->
+          <div class="form-group">
+            <label for="contactGithub">GitHub Username <span style="color:var(--c-muted);font-weight:400;">(optional)</span></label>
+            <input type="text" id="contactGithub" name="github" class="form-control"
+              placeholder="@yourusername" autocomplete="off" />
+          </div>
+
+          <!-- Message -->
+          <div class="form-group">
+            <label for="contactMessage">Message <span class="required" aria-hidden="true">*</span></label>
+            <textarea id="contactMessage" name="message" class="form-control"
+              placeholder="Describe your question, idea, or issue in detail…" required
+              maxlength="1000"></textarea>
+            <span class="field-error" id="messageError" role="alert">Please enter a message (at least 20 characters).</span>
+          </div>
+          <div class="char-counter" id="charCounter">0 / 1000</div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="btn-text"><i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+
+          <!-- Banners -->
+          <div class="form-banner banner-success" id="successBanner" role="status" aria-live="polite">
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            Message sent! We'll get back to you within 24–48 hours.
+          </div>
+          <div class="form-banner banner-error-global" id="errorBanner" role="alert" aria-live="assertive">
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            Something went wrong. Please try again or reach out on GitHub.
+          </div>
+        </form>
+      </section>
+      <!-- /form card -->
+
+    </div>
+    <!-- /contact-grid -->
+
+  </main>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer class="footer homepage-footer" style="margin-top: 5rem;">
+    <div class="homepage-footer-shell">
+      <div class="homepage-footer-brand">
+        <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
+        <h2>Open-source builds for daily practice and creative frontend exploration.</h2>
+        <p class="homepage-footer-copy">
+          Explore a growing archive of UI studies, games, tools, API demos, and full-stack ideas —
+          all designed to help contributors learn by building.
+        </p>
+        <div class="homepage-footer-pills">
+          <span class="homepage-footer-pill">Open Source</span>
+          <span class="homepage-footer-pill">HTML · CSS · JavaScript</span>
+          <span class="homepage-footer-pill">Mobile-friendly archive</span>
+        </div>
+      </div>
+
+      <div class="homepage-footer-grid">
+        <section class="homepage-footer-card" aria-labelledby="footerExploreTitle">
+          <h3 id="footerExploreTitle">Explore</h3>
+          <ul class="footer-link-list">
+            <li><a href="index.html#projects">Browse all projects</a></li>
+            <li><a href="contributors/contributor.html">Meet contributors</a></li>
+            <li><a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
+                rel="noopener noreferrer">View repository</a></li>
+          </ul>
+        </section>
+
+        <section class="homepage-footer-card" aria-labelledby="footerConnectTitle">
+          <h3 id="footerConnectTitle">Connect</h3>
+          <p>Follow updates, share ideas, and stay connected with the community.</p>
+          <div class="social-links">
+            <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer"
+              class="social-btn" aria-label="Follow on Instagram">
+              <i class="fab fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"
+              rel="noopener noreferrer" class="social-btn" aria-label="Open GitHub repository">
+              <i class="fab fa-github" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer"
+              class="social-btn" aria-label="Connect on LinkedIn">
+              <i class="fab fa-linkedin" aria-hidden="true"></i>
+            </a>
+          </div>
+        </section>
+
+        <section class="homepage-footer-card" aria-labelledby="footerFeaturedTitle">
+          <h3 id="footerFeaturedTitle">Featured Tool</h3>
+          <p>Create polished GitHub README profiles in minutes with the featured generator.</p>
+          <a href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer" class="featured-btn">
+            <i class="fas fa-magic" aria-hidden="true"></i> Try README Generator
+          </a>
+        </section>
+      </div>
+
+      <div class="homepage-footer-bottom">
+        <p>
+          <strong>&copy; <span id="footerYear"></span> 100 Days · 100 Web Projects</strong>
+          by Dhairya and Contributors.
+        </p>
+        <div class="homepage-footer-bottom-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#projects">Browse Projects</a>
+          <a href="contributors/contributor.html">Contributors</a>
+          
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll-to-top -->
+  <button id="scrollBtn" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <script>
+    /* ── Footer year ─────────────────────────────────────── */
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+    /* ── Mobile menu toggle ──────────────────────────────── */
+    const menuToggle = document.getElementById('menuToggle');
+    const navButtons = document.getElementById('navButtons');
+    if (menuToggle && navButtons) {
+      menuToggle.addEventListener('click', () => {
+        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', String(!expanded));
+        navButtons.classList.toggle('open');
+      });
+    }
+
+    /* ── FAQ accordion ───────────────────────────────────── */
+    function toggleFaq(id) {
+      const item = document.getElementById(id);
+      const btn  = item.querySelector('.faq-question');
+      const isOpen = item.classList.contains('open');
+
+      // Close all
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      });
+
+      // Open clicked (unless it was already open)
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    /* ── Reason chip selection ───────────────────────────── */
+    document.querySelectorAll('.reason-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        document.getElementById('reasonField').value = chip.dataset.reason;
+      });
+    });
+
+    /* ── Character counter ───────────────────────────────── */
+    const msgArea  = document.getElementById('contactMessage');
+    const counter  = document.getElementById('charCounter');
+    msgArea.addEventListener('input', () => {
+      const len = msgArea.value.length;
+      counter.textContent = `${len} / 1000`;
+      counter.classList.toggle('warn', len > 900);
+    });
+
+    /* ── Form validation & (demo) submission ─────────────── */
+    const form        = document.getElementById('contactForm');
+    const submitBtn   = document.getElementById('submitBtn');
+    const successBanner = document.getElementById('successBanner');
+    const errorBanner   = document.getElementById('errorBanner');
+
+    function setError(inputId, errorId, show) {
+      const input = document.getElementById(inputId);
+      const err   = document.getElementById(errorId);
+      if (show) {
+        input.classList.add('error');
+        err.classList.add('visible');
+      } else {
+        input.classList.remove('error');
+        err.classList.remove('visible');
+      }
+    }
+
+    function validateForm() {
+      let valid = true;
+      const name    = document.getElementById('contactName').value.trim();
+      const email   = document.getElementById('contactEmail').value.trim();
+      const subject = document.getElementById('contactSubject').value.trim();
+      const message = document.getElementById('contactMessage').value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      setError('contactName',    'nameError',    name.length < 2);
+      setError('contactEmail',   'emailError',   !emailRe.test(email));
+      setError('contactSubject', 'subjectError', subject.length < 3);
+      setError('contactMessage', 'messageError', message.length < 20);
+
+      if (name.length < 2 || !emailRe.test(email) || subject.length < 3 || message.length < 20) {
+        valid = false;
+      }
+      return valid;
+    }
+
+    /* Clear error on input */
+    ['contactName', 'contactEmail', 'contactSubject', 'contactMessage'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        document.getElementById(id).classList.remove('error');
+        // hide corresponding error
+        const errMap = {
+          contactName: 'nameError', contactEmail: 'emailError',
+          contactSubject: 'subjectError', contactMessage: 'messageError'
+        };
+        document.getElementById(errMap[id]).classList.remove('visible');
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      successBanner.classList.remove('visible');
+      errorBanner.classList.remove('visible');
+
+      if (!validateForm()) return;
+
+      /* ── Simulated async submission ──────────────────────
+         Replace this block with your real fetch() / EmailJS /
+         Formspree / Netlify Forms call.
+      ────────────────────────────────────────────────────── */
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1600)); // demo delay
+
+        /* Swap to real endpoint:
+        const res = await fetch('https://formspree.io/f/YOUR_ID', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            name:    document.getElementById('contactName').value,
+            email:   document.getElementById('contactEmail').value,
+            subject: document.getElementById('contactSubject').value,
+            github:  document.getElementById('contactGithub').value,
+            reason:  document.getElementById('reasonField').value,
+            message: document.getElementById('contactMessage').value,
+          })
+        });
+        if (!res.ok) throw new Error('Network error');
+        */
+
+        form.reset();
+        counter.textContent = '0 / 1000';
+        document.querySelectorAll('.reason-chip').forEach((c, i) => c.classList.toggle('active', i === 0));
+        document.getElementById('reasonField').value = 'General Question';
+        successBanner.classList.add('visible');
+        successBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      } catch (_) {
+        errorBanner.classList.add('visible');
+      } finally {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+      }
+    });
+
+    /* ── Scroll-to-top button ─────────────────────────────── */
+    const scrollBtn = document.getElementById('scrollBtn');
+    window.addEventListener('scroll', () => {
+      scrollBtn.classList.toggle('visible', window.scrollY > 300);
+    });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  </script>
+</body>
+
+</html>

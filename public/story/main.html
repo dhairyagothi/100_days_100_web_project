@@ -3,33 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story</title>
+    <title>Story Animations</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="height: 100%;
-    margin: 10px;
-    padding: 10px;
-    background: linear-gradient(0deg, #000046, #1CB5E0);
-    background-attachment: fixed;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    color: white;">
-    <h1>Story Animations</h1>
-    <h4 style="text-align: center;">Step into a world where stories come to life! Our Interactive Storyteller transforms classic tales into an engaging experience where you can click, explore, and make choices that shape the journey.</h4>
-    <div class="box1">
-        <h3>The clever Rabbit and the Lion</h3>
-        <img src="images/poster.jpeg" alt="Rabbit and the Lion" title="The clever Rabbit and the Lion" width="200" >
-        <br>
-        <button id="start">Start</button>
-    </div>
-    <script>
-        document.getElementById("start").addEventListener("click", Changes);
+<body class="landing-page">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-function Changes(){
-    console.log("Redirecting...");
-    window.location.href="story.html";
-}
+    <main class="landing-container">
+        <h1>Story Animations</h1>
+        <p class="lead">
+            Step into a world where stories come to life. Listen, follow each scene, and enjoy this
+            interactive version of <strong>The Clever Rabbit and the Lion</strong>.
+        </p>
+
+        <section class="story-card">
+            <h2>The Clever Rabbit and the Lion</h2>
+            <img
+                class="cover-image"
+                src="images/poster.jpeg"
+                alt="Poster of The Clever Rabbit and the Lion"
+                title="The Clever Rabbit and the Lion"
+            >
+            <button id="start" class="btn-primary">Start Story</button>
+        </section>
+    </main>
+    <script>
+        document.getElementById("start").addEventListener("click", goToStory);
+
+        function goToStory() {
+            window.location.href = "story.html";
+        }
     </script>
 </body>
 </html>

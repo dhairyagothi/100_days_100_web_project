@@ -139,7 +139,17 @@ startBtn.addEventListener("click", startGame);
 strictToggle.addEventListener("change", (e) => {
   strictMode = e.target.checked;
 });
+
+const themeIcon = document.querySelector(".theme-icon");
+
 themeToggle.addEventListener("change", () => {
   document.body.classList.toggle("dark");
+
+  if (document.body.classList.contains("dark")) {
+    themeIcon.innerText = "☀️";
+  } else {
+    themeIcon.innerText = "🌙";
+  }
 });
+
 allBtns.forEach((btn) => btn.addEventListener("click", btnPress));
