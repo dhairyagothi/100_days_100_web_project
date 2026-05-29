@@ -807,3 +807,4 @@ document.getElementById('wr').addEventListener('touchend', e => {
 loadStats();
 best = loadBest();
 init(true);
+
