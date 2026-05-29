@@ -1,25 +1,39 @@
-
 var numOfKeys = $(".key").length;
 
-for(var i=0; i<numOfKeys; i++) {
-    $(".key")[i].addEventListener("click", function() {
+/* KEY CLICK EVENTS */
+
+for (var i = 0; i < numOfKeys; i++) {
+
+    $(".key")[i].addEventListener("click", function () {
+
         var keyInnerHTML = this.innerHTML;
+
         playNote(keyInnerHTML);
+
         pressAnimation(keyInnerHTML);
-    })
+
+    });
+
 }
 
+/* KEYBOARD EVENTS */
 
-$(document).keydown(function(event) {
+$(document).keydown(function (event) {
+
     playNote(event.key);
+
     pressAnimation(event.key);
-})
+
+});
+
+/* PLAY SOUND */
 
 function playNote(note) {
 
     note = note.toUpperCase();
 
-    switch(note) {
+    switch (note) {
+
         case "A":
             var A = new Audio("./PianoNotes/key08.mp3");
             A.play();
@@ -105,9 +119,14 @@ function playNote(note) {
             last.play();
             break;
 
-        default: console.log(note);
+        default:
+            console.log(note);
+
     }
+
 }
+
+/* KEY PRESS ANIMATION */
 
 function pressAnimation(key) {
 
@@ -117,7 +136,84 @@ function pressAnimation(key) {
 
     $("#" + inputKey).addClass("pressed");
 
-    setTimeout(function() {
+    setTimeout(function () {
+
         $("#" + inputKey).removeClass("pressed");
+
     }, 100);
+
 }
+
+/* MENU */
+
+const menuBtn = document.getElementById("menuBtn");
+
+const menuPanel = document.getElementById("menuPanel");
+
+const closeMenuBtn = document.getElementById("closeMenuBtn");
+
+const infoBtn = document.getElementById("infoBtn");
+
+const neonBtn = document.getElementById("neonBtn");
+
+const darkModeBtn = document.getElementById("darkModeBtn");
+
+
+/* OPEN MENU */
+
+menuBtn.addEventListener("click", () => {
+
+    menuPanel.classList.add("active");
+
+    menuBtn.classList.add("hide-menu-btn");
+
+});
+
+/* CLOSE MENU */
+
+closeMenuBtn.addEventListener("click", () => {
+
+    menuPanel.classList.remove("active");
+    
+    menuBtn.classList.remove("hide-menu-btn");
+
+});
+
+/* INFO POPUP */
+
+infoBtn.addEventListener("click", () => {
+
+    alert(
+`🎹 Welcome to Virtual Piano ✨
+
+Feel the rhythm.
+Touch the keys.
+Create your own melody.
+
+Features:
+🌈 RGB Neon Effects
+🎼 Real Piano Notes
+✨ Smooth Animations
+🖤 Modern UI
+🎵 Interactive Keyboard
+
+Play • Relax • Enjoy 💫`
+    );
+
+});
+
+/* NEON TOGGLE */
+
+neonBtn.addEventListener("click", () => {
+
+    document.body.classList.toggle("neon-off");
+
+});
+
+/* DARK MODE TOGGLE */
+
+darkModeBtn.addEventListener("click", () => {
+
+    document.body.classList.toggle("light-mode");
+
+});
