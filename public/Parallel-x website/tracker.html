@@ -250,10 +250,63 @@
             padding: 20px 0;
             font-style: italic;
         }
+
+        /* Back to Home Button */
+        .back-home-btn {
+            position: fixed;
+            left: 24px;
+            top: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 30px;
+            background-color: var(--bg-card);
+            color: var(--emerald-dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(6, 95, 70, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .back-home-btn:hover {
+            background-color: var(--emerald);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+            border-color: transparent;
+        }
+
+        .back-home-btn .back-icon {
+            width: 16px;
+            height: 16px;
+            transition: var(--transition);
+        }
+
+        .back-home-btn:hover .back-icon {
+            transform: translateX(-3px);
+        }
+
+        /* Responsive configuration for Back to Home on small screens */
+        @media (max-width: 600px) {
+            .back-home-btn {
+                position: static;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                display: inline-flex;
+                box-shadow: var(--shadow);
+            }
+        }
     </style>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="parallal.html" class="back-home-btn">
+    <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    <span>Back to Home</span>
+</a>
 
 
     <div class="container">

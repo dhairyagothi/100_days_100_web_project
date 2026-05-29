@@ -101,6 +101,44 @@
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
+body.light-mode {
+  background: radial-gradient(circle at top, #f0f4f8, #ffffff);
+  color: #111827;
+}
+
+body.light-mode .clock-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .soft-text,
+body.light-mode .date-display {
+  color: #4b5563;
+}
+
+body.light-mode .info-box {
+  background: rgba(0, 0, 0, 0.07);
+  color: #111827;
+}
+
+.dark-mode-btn {
+  margin-top: 2px;
+  padding: 20px 34px;
+  border-radius: 9px;
+  border: 2px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.dark-mode-btn:hover {
+  background: var(--primary);
+  color: #000;
+}
+
 body {
   min-height: 100vh;
   font-family: var(--font-sans);
