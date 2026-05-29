@@ -2256,6 +2256,15 @@
   },
   {
     "projectNo": 183,
+    "projectName": "SnapScribe",
+    "projectType": "Tool",
+    "projectDesc": "AI-powered social media caption generator with image upload, camera capture, platform-aware captions, tone selection, and user-provided API key support.",
+    "techStack": ["tool", "react", "javascript", "css", "ai", "vite"],
+    "difficulty": "advanced",
+    "projectPath": "./public/SnapScribe/dist/index.html"
+  },
+  {
+    "projectNo": 184,
     "projectName": "LeetCode Progress Tracker",
     "projectType": "Tool",
     "projectDesc": "Track solved LeetCode problems, coding streaks, difficulty-wise progress and coding analytics through an interactive dashboard.",
@@ -2270,7 +2279,7 @@
     "projectPath": "./public/leetcode-progress-tracker/index.html"
   },
   {
-    "projectNo": 184,
+    "projectNo": 185,
     "projectName": "Minesweeper",
     "projectType": "Game",
     "projectDesc": "Classic Minesweeper game with a modern twist.",
@@ -2284,7 +2293,7 @@
     "projectPath": "./public/Minesweeper/index.html"
   },
   {
-    "projectNo": 185,
+    "projectNo": 186,
     "projectName": "GitHub Repository Analyser",
     "projectType": "tool",
     "projectDesc": "A modern tool to quickly analyse a github repo , provides detail stats about repo.",
@@ -2298,7 +2307,7 @@
     "projectPath": "./public/github-repository-analyser/index.html"
   },
   {
-    "projectNo": 186,
+    "projectNo": 187,
     "projectName": "Multi-Track Video and Audio Editor",
     "projectType": "Tool",
     "projectDesc": "A browser-native media sequencer featuring multi-track composition, real-time clip trimming, transform controls, and high-performance canvas rendering.",
@@ -2312,7 +2321,7 @@
     "projectPath": "./public/canvas_multitrack_sequencer/index.html"
   },
   {
-      "projectNo": 187,
+      "projectNo": 188,
       "projectName": "Image Compressor Web App",
       "projectType": "Tool",
       "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
@@ -2321,7 +2330,7 @@
       "projectPath": "./public/ImageCompressor/index.html"
     },
     {
-      "projectNo": 188,
+      "projectNo": 189,
       "projectName": "Leetcode Streak Visualizer",
       "projectType": "Tool",
       "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
@@ -2331,7 +2340,7 @@
     },
   
      {
-    "projectNo": 189,
+    "projectNo": 190,
      "projectName": "Endless train game",
     "projectType": "game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
@@ -2341,7 +2350,7 @@
   },
   
   {
-    "projectNo": 190,
+    "projectNo": 191,
     "projectName": "Saturn Particle Gesture",
     "projectType": "Animation",
     "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",
