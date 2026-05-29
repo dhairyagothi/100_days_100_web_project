@@ -26,6 +26,10 @@
   --theme-toggle-border: rgba(255, 103, 31, 0.45);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: var(--page-bg);
@@ -860,6 +864,13 @@ body.dark-mode .music-note {
   .music-note {
     display: none;
   }
+
+  .project-back-button {
+    left: 10px;
+    top: 10px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
 }
 
 @media screen and (max-width: 768px) and (max-height: 760px) {
@@ -876,6 +887,35 @@ body.dark-mode .music-note {
   .bar .bar-1 { width: 34px; left: -13px; }
   .bar .bar-2 { width: 54px; left: -23px; }
   .bar .bar-3 { width: 74px; left: -33px; }
+}
+
+/* ================= BACK BUTTON ================= */
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  color: #111;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+}
+
+.project-back-button:hover {
+  transform: translateY(-2px);
+  background: white;
+}
+
+body.dark-mode .project-back-button {
+  background: rgba(15, 23, 42, 0.92);
+  color: #f8fafc;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 /* ================= KNOW MORE SECTION ================= */

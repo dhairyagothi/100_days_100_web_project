@@ -20,29 +20,57 @@
   --t: all 0.2s var(--ease);
 }
 
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+ 
+  font-family: "Inter Tight", system-ui, sans-serif;
+  background: #0b0d0f;
+  color: #f0f4f8;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: 0 2rem;
+
+
+  background: rgba(11, 13, 15, 0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid #1b1f24;
+}
+
+
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  padding: 80px 20px;
+}
 html {
   scroll-behavior: smooth;
 }
 
-body {
-  font-family: "Inter Tight", system-ui, -apple-system, sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition:
-    background 0.4s ease,
-    color 0.4s ease;
-  position: relative;
-}
 
 body::before,
 body::after {
@@ -77,13 +105,8 @@ body::after {
   animation: ambientFloat 16s ease-in-out infinite alternate;
 }
 
-body > *:not(.ambient):not(.noise-layer) {
-  position: relative;
-}
 
-body > *:not(.ambient):not(.noise-layer):not(header) {
-  z-index: 1;
-}
+
 
 .ambient,
 .noise-layer {
@@ -146,7 +169,7 @@ input {
 }
 
 header {
-  position: fixed;
+  position: static;
   top: 0;
   left: 0;
   width: 100%;
@@ -154,35 +177,8 @@ header {
   pointer-events: auto;
 }
 
-.navbar {
-  isolation: isolate;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100000;
-  background: rgba(11, 13, 15, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  transition: var(--t);
-}
 
-.hero-section {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 100px 20px 80px;
-  position: relative;
-}
+
 
 .hero-title {
   font-family: "Orbitron", sans-serif;
@@ -404,12 +400,13 @@ header {
 .bg-blur {
   position: fixed;
   width: 500px;
-  height: 500px;
+  height: 5px;
   background: rgba(59, 130, 246, 0.12);
   filter: blur(120px);
-  top: -100px;
-  left: -100px;
+  top: -250px;
+  left: -250px;
   z-index: -1;
+  pointer-events: none;
 }
 
 .fp-step {
