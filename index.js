@@ -61,6 +61,16 @@ function getCategoryFromTags(tags, name) {
 let PROJECTS = [];
 let projectsPromise = null;
 
+function parseProjectsData(payload) {
+  try {
+    return JSON.parse(payload);
+  } catch (error) {
+    // Fallback for common malformed object separators in projects.json
+    const repairedPayload = String(payload).replace(/}\s*{/g, '},{');
+    return JSON.parse(repairedPayload);
+  }
+}
+
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
@@ -71,7 +81,8 @@ function loadProjects() {
       if (!response.ok) {
         throw new Error(`Failed to load projects: ${response.statusText}`);
       }
-      const data = await response.json();
+      const payload = await response.text();
+      const data = parseProjectsData(payload);
 
       PROJECTS = data.map(project => [
          `Day ${project.projectNo}`,
@@ -242,10 +253,6 @@ function normalizeTech(tech) {
   return TECH_ALIASES[lower] || lower;
 }
 
-/**
- * Check if project matches the active tech stack filters.
- * Each filter must match a complete tag token, not a substring of another tag.
- */
 function matchesTechStack(projectTags) {
   if (techStackFilters.length === 0) return true;
   if (!projectTags) return false;
@@ -265,6 +272,9 @@ function removeTechFilter(tech) {
   renderGrid();
 }
 
+// Global window reference assignments
+window.removeTechFilter = removeTechFilter;
+
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = '';
@@ -273,6 +283,8 @@ function clearAllTechFilters() {
   updateTechFilterDisplay();
   renderGrid();
 }
+
+window.clearAllTechFilters = clearAllTechFilters;
 
 function updateTechFilterDisplay() {
   const container = document.getElementById('activeTechFilters');
@@ -980,8 +992,12 @@ function updateNavbar() {
   const username = window.username || localStorage.getItem('loggedInUser') || null; 
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
-  const isLight = document.body.classList.contains('light-mode');
-  const themeButton = `<button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme"><i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme</button>`;
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const themeButton = `
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
+        </button>
+        `;
   const otherLink = isRoot
     ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
        <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
@@ -1021,12 +1037,101 @@ function updateNavbar() {
 }
 
 /* ============================================================
-   GLOBAL INITIALIZER SETUP
+   SCROLL TO TOP
+   ============================================================ */
+function initScrollBtn() {
+  const btn = document.getElementById('scrollBtn');
+  const ring = document.getElementById('ringFill');
+  if (!btn) return;
+
+  const circumference = 2 * Math.PI * 22;
+  const updateScrollProgress = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+    btn.classList.toggle('show', scrollTop > 400);
+
+    if (ring) {
+      ring.style.strokeDashoffset = circumference * (1 - progress);
+    }
+
+    // Footer collision avoidance
+    const footer = document.querySelector('.footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = '2rem';
+      }
+    }
+  };
+
+  updateScrollProgress();
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+function initCurrentYear() {
+  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
+    node.textContent = new Date().getFullYear();
+  });
+}
+
+/* ============================================================
+   THEME CORE ENGINE (Fixes Issue #4359)
+   ============================================================ */
+function initTheme() {
+  const root = document.documentElement;
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  let transitionTimer = null;
+
+  const applyTheme = (theme) => {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    const iconClass = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach((icon) => {
+      icon.className = iconClass;
+    });
+  };
+
+  const toggleTheme = () => {
+    const currentTheme = root.getAttribute('data-theme') || 'dark';
+    const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+    applyTheme(nextTheme);
+
+    root.setAttribute('data-theme-transitioning', 'true');
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      root.removeAttribute('data-theme-transitioning');
+    }, 400);
+  };
+
+  document.querySelectorAll('#themeToggle, #themeToggleNav').forEach((button) => {
+    button.addEventListener('click', toggleTheme);
+  });
+
+  applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+}
+
+/* ============================================================
+   GLOBAL INITIALIZER SETUP & DOM LIFECYCLE
    ============================================================ */
 document.addEventListener('DOMContentLoaded', async () => {
   readStateFromURL();
   initTheme();
   updateNavbar();
+  initScrollBtn();
+  fetchRepoStats();
   initCurrentYear();
   initFilterChips();
   initSearch();
@@ -1037,8 +1142,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     await loadProjects();
     syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
 
     if (hasProjectGrid()) {
       renderGrid();
@@ -1101,8 +1204,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 })();
 
 window.addEventListener('resize', debounce(() => { if (hasProjectGrid()) renderGrid(); }, 180));
-window.removeTechFilter = removeTechFilter;
-window.clearAllTechFilters = clearAllTechFilters;
 
 // Custom UI cursor engine block
 (function () {
