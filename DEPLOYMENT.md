@@ -15,7 +15,13 @@
    - Output Directory: **`.`** (current directory)
    - Install Command: **Leave empty**
 
-3. **Redeploy:**
+3. **Add a Gemini API secret:**
+   - Go to your Vercel project dashboard
+   - Open **Settings → Environment Variables**
+   - Add `GEMINI_API_KEY` with your Gemini API key
+   - Deploy to the **Production** environment (or add the same variable for Preview)
+
+4. **Redeploy:**
    - Go to your Vercel dashboard
    - Click "Redeploy" on the latest deployment
    - Or trigger a new deployment by pushing to GitHub

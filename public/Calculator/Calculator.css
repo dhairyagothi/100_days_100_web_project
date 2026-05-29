@@ -12,11 +12,26 @@
     --shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
 }
 
+fix/button
+/* Body */
+body{
+    width:100%;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    background:#121214;
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+ Main
 }
 
 body {
