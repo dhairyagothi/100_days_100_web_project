@@ -60,9 +60,7 @@ function generateGallery() {
 
     const rotation = angleStep * index;
 
-    const radius = getComputedStyle(document.documentElement).getPropertyValue(
-      '--radius'
-    );
+    const radius = getComputedStyle(document.documentElement).getPropertyValue('--radius');
 
     card.style.transform = `
   rotateY(${rotation}deg) translateZ(${radius})
@@ -102,9 +100,7 @@ function getCurrentAngle() {
   const style = window.getComputedStyle(slider);
   const matrix = new DOMMatrixReadOnly(style.transform);
 
-  const angle = Math.round(
-    Math.atan2(matrix.m13, matrix.m11) * (180 / Math.PI)
-  );
+  const angle = Math.round(Math.atan2(matrix.m13, matrix.m11) * (180 / Math.PI));
 
   return ((angle % 360) + 360) % 360;
 }
@@ -126,9 +122,7 @@ function resume(fromAngle, reverse) {
   const endAngle = reverse ? fromAngle - 360 : fromAngle + 360;
 
   const duration =
-    getComputedStyle(document.documentElement)
-      .getPropertyValue('--duration')
-      .trim() || '18s';
+    getComputedStyle(document.documentElement).getPropertyValue('--duration').trim() || '18s';
 
   const style = document.createElement('style');
 
@@ -201,17 +195,31 @@ directionBtn.addEventListener('click', () => {
 });
 
 /* =========================
-   THEME BUTTON
+   THEME PERSISTENCE
 ========================= */
 
+function applyTheme(theme) {
+  const isLight = theme === 'light';
+
+  document.body.classList.toggle('light-theme', isLight);
+
+  themeBtn.querySelector('.btn-label').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+}
+
+/* Load saved theme on page load */
+const savedTheme = localStorage.getItem('gallery-theme') || 'dark';
+
+applyTheme(savedTheme);
+
+/* Theme toggle button */
 themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('light-theme');
+  const isCurrentlyLight = document.body.classList.contains('light-theme');
 
-  const isLight = document.body.classList.contains('light-theme');
+  const newTheme = isCurrentlyLight ? 'dark' : 'light';
 
-  themeBtn.querySelector('.btn-label').textContent = isLight
-    ? 'Dark Mode'
-    : 'Light Mode';
+  applyTheme(newTheme);
+
+  localStorage.setItem('gallery-theme', newTheme);
 });
 
 /* =========================
