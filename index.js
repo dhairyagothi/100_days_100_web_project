@@ -67,6 +67,16 @@ function getCategoryFromTags(tags, name) {
 let PROJECTS = [];
 let projectsPromise = null;
 
+function parseProjectsData(payload) {
+  try {
+    return JSON.parse(payload);
+  } catch (error) {
+    // Fallback for common malformed object separators in projects.json
+    const repairedPayload = String(payload).replace(/}\s*{/g, '},{');
+    return JSON.parse(repairedPayload);
+  }
+}
+
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
@@ -79,7 +89,8 @@ window.location.href).toString();
       if (!response.ok) {
         throw new Error(`Failed to load projects: ${response.statusText}`);
       }
-const data = await response.json();
+      const payload = await response.text();
+      const data = parseProjectsData(payload);
 
 PROJECTS = data.map(project => [
    `Day ${project.projectNo}`,
@@ -737,6 +748,22 @@ function renderPagination(totalItems, totalPages) {
   const controlsDiv = document.createElement('div');
   controlsDiv.className = 'pagination-controls';
 
+  const firstBtn = document.createElement('button');
+  firstBtn.className = 'first-btn';
+  firstBtn.innerHTML = '⏮ First';
+  firstBtn.disabled = currentPage === 1;
+
+  firstBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(firstBtn);
+
   const prevBtn = document.createElement('button');
   prevBtn.className = 'prev-btn';
   prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
@@ -808,6 +835,21 @@ function renderPagination(totalItems, totalPages) {
     }
   });
   controlsDiv.appendChild(nextBtn);
+  const lastBtn = document.createElement('button');
+  lastBtn.className = 'last-btn';
+  lastBtn.innerHTML =  'Last ⏭';
+  lastBtn.disabled = currentPage === totalPages;
+
+  lastBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(lastBtn);
 
   container.appendChild(controlsDiv);
 
@@ -1387,7 +1429,7 @@ function updateNavbar() {
   const username = window.username || localStorage.getItem('loggedInUser') || null;   // Read logged-in user from localStorage so navbar consists of logged in user when page reloads
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
-  const isLight = document.body.classList.contains('light-mode');
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const themeButton = `
         <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
           <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
@@ -1435,35 +1477,33 @@ function updateNavbar() {
    THEME TOGGLE
    ============================================================ */
 function initTheme() {
+  const root = document.documentElement;
   const saved = localStorage.getItem('theme') || 'dark';
   let transitionTimer = null;
 
-  const syncThemeIcons = () => {
-    const isLight = document.body.classList.contains('light-mode');
-    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
+  const applyTheme = (theme) => {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    const iconClass = theme === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
     document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
       icon.className = iconClass;
     });
   };
 
-  if (saved === 'light') {
-    document.body.classList.add('light-mode');
-  }
-  syncThemeIcons();
+  applyTheme(saved === 'light' ? 'light' : 'dark');
 
-  document.body.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
     if (!target) return;
 
-    document.body.classList.toggle('light-mode');
-    const isLight = document.body.classList.contains('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    syncThemeIcons();
+    const nextTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    applyTheme(nextTheme);
 
-    document.body.classList.add('theme-transitioning');
+    root.dataset.themeTransitioning = 'true';
     if (transitionTimer) clearTimeout(transitionTimer);
     transitionTimer = setTimeout(() => {
-      document.body.classList.remove('theme-transitioning');
+      delete root.dataset.themeTransitioning;
     }, 400);
   });
 }
@@ -1533,6 +1573,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   initTheme();
   updateNavbar();
+  initScrollBtn();
+  fetchRepoStats();
 
   initCurrentYear();
   initFilterChips();
@@ -1546,8 +1588,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadProjects();
 
     syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
 
     if (hasProjectGrid()) {
       renderGrid();
@@ -1631,6 +1671,49 @@ window.addEventListener(
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
+/* ============================================================
+   THEME CORE ENGINE (Fixes Issue #4359)
+   ============================================================ */
+function initTheme() {
+  const root = document.documentElement;
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  let transitionTimer = null;
+
+  const applyTheme = (theme) => {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    // Syncs both desktop and navbar toggle icons at the same time
+    const iconClass = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach((icon) => {
+      icon.className = iconClass;
+    });
+  };
+
+  const toggleTheme = () => {
+    const currentTheme = root.getAttribute('data-theme') || 'dark';
+    const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+    applyTheme(nextTheme);
+
+    // Triggers the repaint guard to keep background transitions smooth
+    root.setAttribute('data-theme-transitioning', 'true');
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      root.removeAttribute('data-theme-transitioning');
+    }, 400);
+  };
+
+  // Attach click events to both possible button IDs
+  document.querySelectorAll('#themeToggle, #themeToggleNav').forEach((button) => {
+    button.addEventListener('click', toggleTheme);
+  });
+
+  // Run initial theme application on load
+  applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+}
+
+// Initialize the theme engine
+initTheme();
 // Custom cursor
 (function () {
   const outerCursor = document.querySelector('.cursor-ring--outer');
