@@ -138,7 +138,6 @@ const PROJECT_DATA = [
     ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
     ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
     ['Day 116', 'AI Image Classifier', './public/AI Image Classifier/index.html', 'api javascript', 'intermediate']
-    ['Day 117', 'Minesweeper', './public/minesweeper/index.html', 'game javascript', 'intermediate'],
 ];
 
 // ============================================
