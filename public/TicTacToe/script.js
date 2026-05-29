@@ -303,6 +303,7 @@
         var score = minimax(selectedBoard, 0, false, mark, opponent);
         selectedBoard[index] = null;
 
+// sourcery skip: merge-else-if
         if (mark === "O") {
           if (score > bestScore) {
             bestScore = score;
