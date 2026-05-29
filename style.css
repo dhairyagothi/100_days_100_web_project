@@ -2638,3 +2638,57 @@ body > header {
   position: relative;
   z-index: 999999 !important;
 }
+
+/* ============================================================
+   PULSING SKELETON LOADERS
+   ============================================================ */
+.skeleton-card {
+  pointer-events: none !important;
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  padding: 24px !important;
+  border-radius: var(--radius-lg) !important;
+  min-height: 220px !important;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--border) 25%, var(--border-hover) 50%, var(--border) 75%) !important;
+  background-size: 200% 100% !important;
+  animation: skeletonPulse 1.6s infinite linear !important;
+  border-radius: 4px !important;
+}
+
+.skeleton-meta {
+  width: 40% !important;
+  height: 14px !important;
+}
+
+.skeleton-title {
+  width: 75% !important;
+  height: 22px !important;
+  margin-top: 8px !important;
+}
+
+.skeleton-desc {
+  width: 100% !important;
+  height: 48px !important;
+  margin-top: 12px !important;
+}
+
+.skeleton-tags {
+  width: 60% !important;
+  height: 14px !important;
+  margin-top: auto !important;
+}
+
+@keyframes skeletonPulse {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
