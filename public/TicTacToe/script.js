@@ -171,7 +171,7 @@ function checkWinner(){
 
     }
 
-}
+
 
 function randomMove(){
 
@@ -229,7 +229,7 @@ function findWinningMove(player){
 
     return null;
 
-}
+
 
 function takeCenter(){
 
