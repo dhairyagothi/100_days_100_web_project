@@ -1006,11 +1006,9 @@ color: var(--text-primary);
   .banner { margin: 30px 0; }
   
   .slider-container {
-    display: flex;
     align-items: center;
     gap: 10px;
     border-radius: var(--border-radius-md);
-    overflow: auto hidden;
     scroll-snap-type: inline mandatory;
     overscroll-behavior-inline: contain;
   }
@@ -1033,7 +1031,6 @@ color: var(--text-primary);
   }
   
   .banner-content {
-    background: hsla(0, 0%, 100%, 0.8);
     position: absolute;
     bottom: 25px;
     left: 25px;
@@ -3889,96 +3886,73 @@ body.dark .showcase {
     #BANNER
   \*-----------------------------------*/
   
-  .banner { margin: 30px 0; }
-  
-  .slider-container {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-    gap: 10px;
-    -webkit-border-radius: var(--border-radius-md);
-            border-radius: var(--border-radius-md);
-    overflow: auto hidden;
-    -webkit-scroll-snap-type: inline mandatory;
-        -ms-scroll-snap-type: inline mandatory;
-            scroll-snap-type: inline mandatory;
-    overscroll-behavior-inline: contain;
-  }
-  
-  .slider-item {
-    position: relative;
-    min-width: 100%;
-    max-height: 450px;
-    aspect-ratio: 1 / 1;
-    -webkit-border-radius: var(--border-radius-md);
-            border-radius: var(--border-radius-md);
-    overflow: hidden;
-    scroll-snap-align: start;
-  }
-  
-  .slider-item .banner-img {
-    width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
-    -o-object-position: right;
-       object-position: right;
-  }
-  
-  .banner-content {
-    background: hsla(0, 0%, 100%, 0.8);
-    position: absolute;
-    bottom: 25px;
-    left: 25px;
-    right: 25px;
-    padding: 20px 25px;
-    -webkit-border-radius: var(--border-radius-md);
-            border-radius: var(--border-radius-md);
-  }
-  
-  .banner-subtitle {
-    color: var(--salmon-pink);
-    font-size: var(--fs-7);
-    font-weight: var(--weight-500);
-    text-transform: capitalize;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-  }
-  
-  .banner-title {
-    color: var(--text-primary);
-    font-size: var(--fs-1);
-    text-transform: uppercase;
-    line-height: 1;
-    margin-bottom: 10px;
-  }
-  
-  .banner-text { display: none; }
-  
-  .banner-btn {
-    background: var(--salmon-pink);
-    color: var(--bg-card);
-    width: -webkit-max-content;
-    width: -moz-max-content;
-    width: max-content;
-    font-size: var(--fs-11);
-    font-weight: var(--weight-600);
-    text-transform: uppercase;
-    padding: 4px 10px;
-    -webkit-border-radius: var(--border-radius-sm);
-            border-radius: var(--border-radius-sm);
-    -webkit-transition: var(--transition-timing);
-    -o-transition: var(--transition-timing);
-    transition: var(--transition-timing);
-  }
-  
-  .banner-btn:hover { background: var(--eerie-black); }
-  
+  .banner {
+  margin: 30px 0;
+}
+
+.slider-item {
+  position: relative;
+  height: 65vh;
+  min-height: 450px;
+  max-height: 700px;
+  overflow: hidden;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.slider-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1;
+}
+
+
+.banner-content {
+  position: absolute;
+  top: 50%;
+  left: 80px;
+  transform: translateY(-50%);
+  max-width: 550px;
+  z-index: 2;
+  background: transparent;
+}
+
+.banner-subtitle {
+  color: #ff8fa8;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.banner-title {
+  color: white;
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.banner-text {
+  display: block;
+  color: rgba(255,255,255,0.9);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.banner-btn {
+  background: #ff7b9c;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: 0.3s ease;
+}
+
+.banner-btn:hover {
+  transform: translateY(-3px);
+}
   
   
   
@@ -6809,4 +6783,130 @@ body.light small {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* HERO BANNER IMPROVEMENT */
+
+.banner {
+  margin: 30px 0;
+}
+
+.slider-item {
+  position: relative;
+  height: 540px !important;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.slider-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1;
+}
+
+.banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.banner-content {
+  position: absolute;
+  top: 50%;
+  left: 120px;
+  transform: translateY(-50%);
+
+  z-index: 2;
+
+  max-width: 550px;
+
+  background: transparent !important;
+}
+
+.banner-subtitle {
+  color: #ff8fa8 !important;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.banner-title {
+  color: white !important;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 15px;
+
+  text-shadow: 0 3px 12px rgba(0,0,0,0.6);
+}
+
+.banner-text {
+  display: block !important;
+  color: rgba(255,255,255,0.95) !important;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.banner-btn {
+  background: #ff7b9c !important;
+  color: white !important;
+
+  padding: 14px 28px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  transition: all 0.3s ease;
+}
+
+.banner-btn:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 10px 25px rgba(255,123,156,0.4);
+}
+
+@media (max-width: 768px) {
+  .slider-item {
+    height: 420px !important;
+  }
+
+  .banner-content {
+    left: 30px;
+    right: 30px;
+  }
+
+  .banner-title {
+    font-size: 2.3rem;
+  }
+
+  .banner-text {
+    font-size: 1rem;
+  }
+}
+
+.slick-dots li button:before {
+  color: white !important;
+  font-size: 12px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #ff7b9c !important;
+}
+
+.banner-img {
+  transition: transform 8s ease;
+}
+
+.slider-item:hover .banner-img {
+  transform: scale(1.05);
+}
+
+.banner-img {
+  object-position: center center;
 }
