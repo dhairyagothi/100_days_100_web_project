@@ -2,6 +2,7 @@ const { nanoid } = require("nanoid");
 const bcrypt = require('bcrypt');
 const LinksData = require('../models/LinksData');
 const QRCode = require('qrcode');
+const { AppError } = require('../middlewares/errorHandler');
 
 exports.Response_POST_API = async (req, res) => {
 
@@ -10,7 +11,7 @@ exports.Response_POST_API = async (req, res) => {
     const BASE_URL = process.env.SERVER_URL || "http://localhost:5000";
 
     if (!originalURL) {
-        return res.status(400).json({ msg: "Enter URL first" });
+        throw new AppError("Enter URL first", 400);
     }
 
     let Shortcode;

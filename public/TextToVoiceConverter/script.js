@@ -1,30 +1,38 @@
 const textInput = document.getElementById('text-input');
 const convertBtn = document.getElementById('convert-btn');
-const stopBtn = document.getElementById('stop-btn');
+const stopBtnText = document.getElementById('stop-btn-text');
+const stopBtnVoice = document.getElementById('stop-btn-voice');
+const langSelect = document.getElementById("language");
 
 let speechSynthesis = window.speechSynthesis;
 let speechSynthesisUtterance = new SpeechSynthesisUtterance();
+speechSynthesisUtterance.onend = () => {
+    convertBtn.disabled = false;
+    stopBtnText.disabled = false;
+};
 
 convertBtn.addEventListener('click', () => {
     let text = textInput.value.trim();
     if (text !== '') {
         speechSynthesisUtterance.text = text;
+        speechSynthesisUtterance.lang = langSelect.value;
+
         speechSynthesis.speak(speechSynthesisUtterance);
         convertBtn.disabled = true;
-        stopBtn.disabled = false;
+        stopBtnText.disabled = false;
     }
 });
-
-stopBtn.addEventListener('click', () => {
+stopBtnText.addEventListener('click', () => {
     speechSynthesis.cancel();
     convertBtn.disabled = false;
-    stopBtn.disabled = true;
+    stopBtnText.disabled = true;
 });
+
 
 // speech to text
 document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('start-btn');
-    const stopBtn = document.getElementById('stop-btn');
+    const stopBtn = document.getElementById('stop-btn-voice');
     const output = document.getElementById('output');
     
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -32,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = 'en-US';
+    recognition.lang = langSelect.value;
 
     recognition.onresult = (event) => {
         let transcript = '';
@@ -47,10 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     startBtn.addEventListener('click', () => {
-        recognition.start();
+    recognition.lang = langSelect.value; // dynamic language
+    recognition.start();
+    startBtn.disabled = true;     
+    stopBtnVoice.disabled = false; 
     });
 
-    stopBtn.addEventListener('click', () => {
-        recognition.stop();
+    stopBtnVoice.addEventListener('click', () => {
+    recognition.stop();
+    startBtn.disabled = false;     
+    stopBtnVoice.disabled = true;
     });
 });
