@@ -72,3 +72,20 @@ This project can be extended by improving UI, logic, or adding new analysis rule
 ## ⚠️ Disclaimer
 
 This tool is for educational purposes only and does not guarantee accurate phishing detection.
+
+---
+
+
+## 👩‍💻 Author
+
+**Sapna Jha**
+
+* GitHub: https://github.com/sapnajha757
+
+* LinkedIn: https://in.linkedin.com/in/sapna-jha-672598387 
+
+---
+
+## ⭐ Support
+
+If you like this project, give it a ⭐ on GitHub.
