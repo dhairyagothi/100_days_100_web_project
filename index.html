@@ -3,7 +3,6 @@
 
 <head>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0f172a" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
@@ -19,7 +18,7 @@
   <meta property="og:description"
     content="A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript." />
   <meta property="og:url" content="https://100-days-100-web-project.vercel.app/" />
-<meta name="google-site-verification" content="FZFMJENRD-9I74GAks_nhLVOOiqqnlsPU-JDtRCYXpc" />
+  <meta name="google-site-verification" content="FZFMJENRD-9I74GAks_nhLVOOiqqnlsPU-JDtRCYXpc" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="100 Days · 100 Web Projects" />
@@ -44,27 +43,10 @@
   <div class="noise-layer" aria-hidden="true"></div>
   <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
   <div class="cursor-ring cursor-ring--inner" aria-hidden="true"></div>
-  <canvas id="particleCanvas" aria-hidden="true"></canvas>
+  <canvas id="particleCanvas" aria-hidden="true" style="position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; z-index: 0 !important; display: block !important;"></canvas>
 
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
-  <header>
-      <nav class="navbar" id="navbar" aria-label="Main Navigation">
-        <a class="navbar-brand" href="index.html" style="text-decoration:none;">
-          <span class="brand-mark" aria-label="100 Days logo">100</span>
-            <span class="brand-copy">
-            <span class="brand-kicker">Open Source Archive</span>
-            <strong>100 Days · 100 Web Projects</strong>
-          </span>
-        </a>
-
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-          <i class="fas fa-bars" aria-hidden="true"></i>
-        </button>
-
-        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-      </div>
-    </nav>
-  </header>     
+  <div id="navbar-container"></div>     
     <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
@@ -127,7 +109,7 @@
         <div class="section-heading-row">
           <h2 class="section-title">Recently Viewed</h2>
 
-          <button class="view-all-btn" id="recentToggleBtn">View All</button>
+          <button class="view-all-btn" id="recentToggleBtn" aria-label="View all recent projects">View All</button>
         </div>
       </div>
 
@@ -144,10 +126,10 @@
           <h2 class="section-title">Bookmarked Projects</h2>
 
           <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <button class="view-all-btn" id="copyBookmarksBtn" title="Copy Bookmarks">
+            <button class="view-all-btn" id="copyBookmarksBtn" title="Copy Bookmarks" aria-label="Copy bookmarks">
               <i class="fas fa-copy"></i>
             </button>
-            <button class="view-all-btn" id="bookmarkToggleBtn">
+            <button class="view-all-btn" id="bookmarkToggleBtn" aria-label="View bookmarked projects">
               View All
             </button>
           </div>
@@ -169,22 +151,24 @@
       <div class="projects-header">
         <!-- Filter Chips -->
         <div class="filter-chips" id="filterChips" style="margin-bottom: 20px;">
-          <button class="chip active" data-filter="all" id="filterAll">
+          <button class="chip active" data-filter="all" id="filterAll" aria-label="Show all projects">
             All <span class="chip-count" id="allCount">Projects</span>
           </button>
-          <button class="chip" data-filter="game" id="filterGame">
+          <button class="chip" data-filter="game" id="filterGame" aria-label="Show game projects">
             Games <span class="category-count" id="gameCount"></span>
           </button>
-          <button class="chip" data-filter="clone" id="filterClone">
+          <button class="chip" data-filter="clone" id="filterClone" aria-label="Show clone projects">
             Clones <span class="category-count" id="cloneCount"></span>
           </button>
-          <button class="chip" data-filter="tool" id="filterTool">
+          <button class="chip" data-filter="tool" id="filterTool" aria-label="Show tool projects">
             Tools <span class="category-count" id="toolCount"></span>
           </button>
-          <button class="chip" data-filter="ui" id="filterUI">
+          <button class="chip" data-filter="ui" id="filterUI" aria-label="Show UI animation projects">
             UI / Animation <span class="category-count" id="uiCount"></span>
           </button>
-          <button class="chip" data-filter="api" id="filterAPI">APIs <span class="category-count" id="apiCount"></span></button>
+          <button class="chip" data-filter="api" id="filterAPI" aria-label="Show API projects">
+            APIs <span class="category-count" id="apiCount"></span>
+          </button>
         </div>
 
         <div class="search-bar">
@@ -195,6 +179,7 @@
             class="search-input"
             placeholder="Search projects…"
             autocomplete="off"
+            aria-label="Search projects"
           />
           <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
             &times;
@@ -214,19 +199,22 @@
         </div>
       </div>
 
-<!-- Tech Stack Dropdown - Only technologies that exist in projects -->
-<div style="margin: 20px 0 10px 0; display: flex; justify-content: flex-start; width: 100%;">
-  <select id="techStackFilter" style="width: 280px; padding: 12px 20px; border-radius: 30px; border: 1px solid #333; background: #1a1a1a; color: white; cursor: pointer; font-size: 14px;">
-    <option value="all">Filter by Tech Stack (All)</option>
-    <option value="javascript">JavaScript</option>
-    <option value="css">CSS</option>
-    <option value="html">HTML</option>
-    <option value="react">React</option>
-    <option value="python">Python</option>
-    <option value="typescript">TypeScript</option>
-    <option value="tailwindcss">Tailwind CSS</option>
-  </select>
-</div>
+      <!-- Tech Stack Dropdown & Clear Filters -->
+      <div style="margin: 20px 0 10px 0; display: flex; justify-content: flex-start; align-items: center; gap: 15px; width: 100%; flex-wrap: wrap;">
+        <select id="techStackFilter" style="width: 280px; padding: 12px 20px; border-radius: 30px; border: 1px solid #333; background: #1a1a1a; color: white; cursor: pointer; font-size: 14px;" aria-label="Filter by tech stack">
+          <option value="all">Filter by Tech Stack (All)</option>
+          <option value="javascript">JavaScript</option>
+          <option value="css">CSS</option>
+          <option value="html">HTML</option>
+          <option value="react">React</option>
+          <option value="python">Python</option>
+          <option value="typescript">TypeScript</option>
+          <option value="tailwindcss">Tailwind CSS</option>
+        </select>
+        <button id="clearAllFiltersBtn" class="clear-filters-btn" style="display: none; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 30px; border: 1px dashed var(--accent); background: var(--accent-dim); color: var(--accent); font-weight: 500; font-size: 14px; cursor: pointer; transition: var(--t);">
+          <i class="fas fa-filter-circle-xmark"></i> Clear Filters
+        </button>
+      </div>
 
     <!-- Project Grid -->
     <div class="project-grid" id="projectGrid"></div>
@@ -321,6 +309,7 @@
         </p>
         <div class="homepage-footer-bottom-links">
           <a href="#hero">Back to top</a>
+          <a href="contact-us.html">Contact Us</a>
           <a href="contributors/contributor.html">Contributors</a>
           <a href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer">README Generator</a>
         </div>
@@ -340,6 +329,7 @@
   <div class="toast" id="toast"></div>
   <script type="module" src="hero-terminal.js"></script>
   <script src="index.js?v=3"></script>
-</body>
+  <script src="navbar.js"></script>
+  </body>
 
 </html>

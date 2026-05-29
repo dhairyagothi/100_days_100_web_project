@@ -12,6 +12,16 @@ const togglePassword = document.getElementById("togglePassword");
 
 const toast = document.getElementById("toast");
 
+// hamburger menu toggle nav links on mobile
+const hamburger = document.getElementById("hamburgerIcon");
+const navLinks = document.getElementById("navLinks");
+
+hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+    hamburger.classList.toggle("fa-bars");
+    hamburger.classList.toggle("fa-xmark");
+});
+
 /* -------------------- */
 /* Toast Notification */
 /* -------------------- */
