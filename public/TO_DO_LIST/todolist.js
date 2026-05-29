@@ -363,3 +363,10 @@ try {
 } catch (e) {
   applyTheme('theme1');
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const submitTaskBtn = document.getElementById("submittask");
+  const savePdfBtn = document.getElementById("savepdf");
+
+  if (submitTaskBtn) submitTaskBtn.addEventListener("click", Add);
+  if (savePdfBtn) savePdfBtn.addEventListener("click", saveAsPDF);
+});
