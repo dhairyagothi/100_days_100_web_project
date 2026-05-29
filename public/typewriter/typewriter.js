@@ -217,11 +217,10 @@ document.addEventListener("keydown",(e)=>{
     if(e.key.length===1){
         e.preventDefault();
         let charToAdd;
-        if (capsLockEnabled) {
-            charToAdd = e.key.toUpperCase();
-        } else {
-            charToAdd = e.key.toLowerCase();
-        }
+        // e.shiftKey tells us if Shift is held at the moment of the keypress.
+        // CapsLock XOR Shift gives the correct case behaviour:
+        const shouldBeUpper = capsLockEnabled !== e.shiftKey; // XOR
+        charToAdd = shouldBeUpper ? e.key.toUpperCase() : e.key.toLowerCase();
         addCharToPaper(charToAdd);
     }
 });
