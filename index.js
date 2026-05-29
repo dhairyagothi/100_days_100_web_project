@@ -630,6 +630,55 @@ function renderGrid() {
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
 
+  const sortValue =
+  document.getElementById("sortSelect")?.value || "default";
+
+const difficultyValue =
+  document.getElementById("difficultySelect")?.value || "all";
+
+  const techStackValue =
+  document.getElementById("techStackFilter")?.value || "all";
+
+let finalProjects = [...filtered];
+
+if (difficultyValue !== "all") {
+
+  finalProjects =
+    finalProjects.filter(
+      ([day, name, url, tags, cat]) =>
+        cat.toLowerCase() === difficultyValue
+    );
+}
+
+if (techStackValue !== "all") {
+
+  finalProjects =
+    finalProjects.filter(
+      ([day, name, url, tags]) =>
+
+        tags
+          .toLowerCase()
+          .includes(
+            techStackValue.toLowerCase()
+          )
+    );
+}
+
+if (sortValue === "az") {
+
+  finalProjects.sort((a, b) =>
+    a[1].localeCompare(b[1])
+  );
+}
+
+if (sortValue === "za") {
+
+  finalProjects.sort((a, b) =>
+    b[1].localeCompare(a[1])
+  );
+}
+
+  const totalPages = Math.ceil(finalProjects.length / itemsPerPage);
     // Difficulty filter
     let matchesDifficulty = true;
     if (difficultyFilter && difficultyFilter !== 'all') {
@@ -659,7 +708,7 @@ function renderGrid() {
 
   grid.innerHTML = '';
 
-  if (filtered.length === 0) {
+  if (finalProjects.length === 0) {
     grid.style.display = 'none';
     if (noResults) noResults.style.display = 'block';
     const container = document.getElementById('paginationContainer');
@@ -676,6 +725,7 @@ function renderGrid() {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
+  const pageItems = finalProjects.slice(startIndex, endIndex);
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
@@ -699,6 +749,8 @@ function renderGrid() {
 
     fragment.appendChild(card);
   });
+
+  renderPagination(finalProjects.length, totalPages);
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
   
@@ -1568,6 +1620,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   initCurrentYear();
   initFilterChips();
   initSearch();
+
+  const sortSelect =
+  document.getElementById("sortSelect");
+
+if (sortSelect) {
+
+  sortSelect.addEventListener(
+    "change",
+    () => {
+
+      currentPage = 1;
+      renderGrid();
+    }
+  );
+}
+const techStackFilter =
+  document.getElementById("techStackFilter");
+
+if (techStackFilter) {
+
+  techStackFilter.addEventListener(
+    "change",
+    () => {
+
+      currentPage = 1;
+      renderGrid();
+    }
+  );
+}
+
+
+const difficultySelect =
+  document.getElementById("difficultySelect");
+
+if (difficultySelect) {
+
+  difficultySelect.addEventListener(
+    "change",
+    () => {
+
+      currentPage = 1;
+      renderGrid();
+    }
+  );
+}
   initSorting();
   initTechStackSearch();
   initClearAllFilters();
