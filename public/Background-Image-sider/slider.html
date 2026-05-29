@@ -12,9 +12,6 @@
 </head>
 <body id="top">
 
-    <!-- Back to Home -->
-    <a href="/" class="project-back-button">← Back to Home</a>
-
     <!-- Header -->
     <header>
         <nav class="navbar">
@@ -104,6 +101,10 @@
 
         placeSelector.addEventListener('change', function () {
             updatePlace(placeSelector.value);
+        });
+
+        bookingButton.addEventListener('click', function () {
+            alert(`🎉 Booking inquiry received! We are preparing your itinerary for ${placeSelector.value}.`);
         });
 
         window.onload = function () {
