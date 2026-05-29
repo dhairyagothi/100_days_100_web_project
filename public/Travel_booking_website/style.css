@@ -601,6 +601,161 @@ nav {
     text-align: center;
 }
 
+/* ==========================================================================
+   AUTHENTICATION MODAL OVERLAY STYLES (#3793)
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(17, 43, 90, 0.7); /* Using your --primary-color-dark with alpha opacity */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999; /* Higher stack layer than navigation and chatbot layers */
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+}
+
+/* State management modifier */
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-container {
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    position: relative;
+    transform: scale(1);
+    transition: transform 0.25s ease-in-out;
+}
+
+.modal-overlay.hidden .modal-container {
+    transform: scale(0.95);
+}
+
+.modal-close-x {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close-x:hover {
+    color: var(--text-dark);
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.modal-header p {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin-bottom: 1.75rem;
+}
+
+#signUpForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.input-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-dark);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    border: 2px solid var(--extra-light);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+}
+
+.error-msg {
+    font-size: 0.75rem;
+    color: #ef4444; /* Standard web semantic error red */
+    font-weight: 500;
+    min-height: 1rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.success-banner {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.success-banner.hidden, .spinner.hidden {
+    display: none !important;
+}
+
+/* Loader Animation component */
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--white);
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
 
 
 @media (min-width: 576px) {
@@ -684,3 +839,64 @@ nav {
         grid-template-columns: 1fr 1fr 1fr auto;
     }
 }
+
+
+/* Hide containers by default */
+.auth-form-container {
+    display: none;
+}
+
+/* Show only the active container */
+.auth-form-container.active {
+    display: block;
+    animation: fadeInForm 0.3s ease forwards;
+}
+
+@keyframes fadeInForm {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.faq_container {
+  background-color: var(--extra-light);
+}
+
+.faq_grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+
+
+.faq_item {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border: 2px solid var(--primary-color); /* blue border added */
+}
+
+.faq_question {
+  width: 100%;
+  text-align: left;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--white);
+  border: none;
+  cursor: pointer;
+}
+
+.faq_answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1rem;
+  color: var(--text-light);
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.faq_item.active .faq_answer {
+  max-height: 200px;
+  padding: 0 1rem 1rem;
+}
+

@@ -1,110 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./pageloader.css">
-        <title>Page Loader</title>
-    </head>
-    <body class="is-loading">
-        <div id="preloader" aria-live="polite" aria-busy="true">
-            <div class="loader-card" role="status" aria-label="Loading content">
-                <div class="spinner" aria-hidden="true"></div>
-                <div class="progress" aria-hidden="true">
-                    <span class="progress-bar"></span>
-                </div>
-                <p class="loading-text">
-                    Loading your experience
-                    <span class="dots" aria-hidden="true"></span>
-                </p>
-            </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Loader Demo</title>
+  <link rel="stylesheet" href="pageloader.css">
+</head>
+<body>
+
+  <!-- Full-screen Preloader -->
+  <div class="loader-wrapper" id="loader">
+    <div class="loader-container">
+      <span class="loader"></span>
+      <h2>Loading...</h2>
+      <p>Please wait while we prepare everything for you.</p>
+    </div>
+  </div>
+
+  <!-- Main Website Content -->
+  <div class="content">
+
+    <nav class="navbar">
+      <h1 class="logo">Pageloader</h1>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <h1>Welcome to Pageloader!</h1>
+      <p>This is a simple example of a website featuring a smooth CSS page loader animation.</p>
+    </section>
+
+    <section class="showcase">
+      <div class="left-section">
+        <div class="info-box">
+          <h2>About Us</h2>
+          <p>Thank you for visiting our website. Here is a simple example of a clean, reusable pageloader component.</p>
         </div>
 
-        <div id="page" class="page">
-            <nav class="navbar">
-                <div class="brand">NovaLoad</div>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+        <div class="info-box">
+          <h2>Contact Us</h2>
+          <p>Feel free to reach out to us for any queries.</p>
+          <p>Email: <a href="mailto:info@yourcompany.com">info@yourcompany.com</a></p>
+        </div>
+      </div>
 
-            <header id="home" class="hero">
-                <div class="hero-content">
-                    <p class="eyebrow">Modern Preloader Demo</p>
-                    <h1>Build focus while your content gets ready.</h1>
-                    <p class="subtext">
-                        A lightweight, glassmorphic loader with smooth transitions and
-                        responsive styling for every screen.
-                    </p>
-                    <div class="cta-group">
-                        <button class="cta primary">Explore</button>
-                        <button class="cta ghost">View Docs</button>
-                    </div>
-                </div>
-                <div class="hero-panel">
-                    <div class="panel-card">
-                        <p class="panel-title">Performance First</p>
-                        <p class="panel-body">
-                            Optimized animation curves and minimal DOM to keep things
-                            smooth.
-                        </p>
-                        <div class="panel-metrics">
-                            <div>
-                                <span class="metric">1.2s</span>
-                                <span class="label">Avg load</span>
-                            </div>
-                            <div>
-                                <span class="metric">98%</span>
-                                <span class="label">Smoothness</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <section id="about" class="content">
-                <h2>About the Loader</h2>
-                <p>
-                    This preloader blends a gradient backdrop, a glassy loader card,
-                    and a simple progress animation to keep users informed without
-                    heavy scripts.
-                </p>
-                <div class="feature-grid">
-                    <article>
-                        <h3>Balanced Motion</h3>
-                        <p>Soft easing and layered animation keep the visuals calm.</p>
-                    </article>
-                    <article>
-                        <h3>Responsive Layout</h3>
-                        <p>Built with fluid spacing for phones, tablets, and desktop.</p>
-                    </article>
-                    <article>
-                        <h3>Clean Structure</h3>
-                        <p>Modular CSS makes the loader easy to tweak or reuse.</p>
-                    </article>
-                </div>
-            </section>
-
-            <footer id="contact" class="footer">
-                <div>
-                    <h2>Contact Us</h2>
-                    <p>hello@novaload.example</p>
-                </div>
-                <p class="copyright">&copy; 2026 NovaLoad Studio. All rights reserved.</p>
-            </footer>
+      <!-- Live Preview & Snippet Card -->
+      <div class="loader-card">
+        <div class="preview">
+          <h3>Current Pageloader</h3>
+          <div class="preview-box">
+            <span class="loader"></span>
+          </div>
         </div>
 
-        <script>
-            window.addEventListener("load", function () {
-                const preloader = document.getElementById("preloader");
-                document.body.classList.add("is-loaded");
+        <div class="code-box">
+          <div class="code-header">
+            <h3>Code Snippet</h3>
+            <button type="button" id="copyBtn">Copy</button>
+          </div>
+          <pre><code>&lt;span class="loader"&gt;&lt;/span&gt;
 
-                preloader.addEventListener("transitionend", function () {
-                    preloader.remove();
-                }, { once: true });
-            });
-        </script>
-    </body>
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: #FFF #FFF transparent transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+.loader::after,
+.loader::before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  margin: auto;
+  border: 3px solid;
+  border-radius: 50%;
+}
+
+.loader::after {
+  width: 40px;
+  height: 40px;
+  border-color: transparent transparent #FF3D00 #FF3D00;
+  animation: rotationBack 0.5s linear infinite;
+}
+
+.loader::before {
+  width: 32px;
+  height: 32px;
+  border-color: #FFF #FFF transparent transparent;
+  animation: rotation 1.5s linear infinite;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes rotationBack {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 All rights reserved.</p>
+    </footer>
+
+  </div>
+
+
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      setTimeout(() => {
+        loader.classList.add("fade-out");
+        setTimeout(() => {
+          loader.style.display = "none";
+        }, 500);
+
+      }, 2000);
+    });
+  </script>
+
+</body>
 </html>

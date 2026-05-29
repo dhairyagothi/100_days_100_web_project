@@ -1,189 +1,429 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-    background: black;
-    color: white;
-    background-image:placebackground;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    min-height: 100vh;
-    width: 100%;
-    animation: bg-change 40s infinite ;
+body {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.6s ease-in-out;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
-ul{
-    list-style-type: none;
-    display: flex;
-    flex-direction: row;
-    gap: 40px; 
-
+/* ───── BACK BUTTON ───── */
+.project-back-button {
+  position: fixed;
+  right: 5px;
+  top: 12px;
+  z-index: 9999;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  font-family: inherit;
+  box-shadow: 0 8px 20px rgba(0, 0, 0);
+  transition: all 0.3s ease;
 }
 
-.navbar{
-      font-size: x-large;
-    display: flex;
-    flex-direction: row;
-    padding: 20px;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 550px;
-    
-    
+.project-back-button:hover {
+  background: #f5f5f5;
+  transform: translateY(-1px);
 }
-.navbar ul li {
+
+/* ───── HEADER ───── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 20, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 40px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #f5af19, #f12711);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  font-weight: 500;
   position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
 }
 
-.navbar ul li a{
-  text-decoration:none;
-  color: white;
-  
-}
-
-
-ul li::after{
-  content: '';
-  height: 3px;
-  width: 0;
-  background-color: green;
+.navbar ul li a::after {
+  content: "";
   position: absolute;
- left: 0;
- bottom: -10px;
- transition: 0.5s;
-  
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #f5af19, #f12711);
+  transition: width 0.3s ease;
+  border-radius: 2px;
 }
 
-ul li:hover::after{
+.navbar ul li a:hover {
+  color: #fff;
+}
+
+.navbar ul li a:hover::after {
   width: 100%;
 }
 
+/* ───── HERO / CONTENT ───── */
 .content {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-/* @keyframes bg-change {
-  0%, 5%, 10% {
-    background-image: url(images/iceland.jpg);
-  }
-  15%, 20%, 25% {
-    background-image: url(images/Brooke-Holm.jpeg);
-  }
-  30%, 35%, 40% {
-    background-image: url(images/Jennifer.avif);
-  }
-  45%, 50%, 55% {
-    background-image: url(images/Daniel.jpeg);
-  }
-  60%, 65%, 70% {
-    background-image: url(images/kai.jpg);
-  }
-  75%, 80%, 85% {
-    background-image: url(images/Hannes-Becker4.jpg);
-  }
-  90%, 95%, 100% {
-    background-image: url(images/Tobias-Hagg.jpg);
-  }
-}
-
-@keyframes text-change {
-  0%, 10% {
-    content: "Iceland - Explore the beauty of glaciers";
-  }
-  15%, 25% {
-    content: "Iceland By: Brooke Holm";
-  }
-  30%, 40% {
-    content: "Switzerland By: Jennifer Esseiva";
-  }
-  45%, 55% {
-    content: "Scotland By: Daniel Casson";
-  }
-  60%, 70% {
-    content: "Ireland By: Kai Hornung";
-  }
-  75%, 85% {
-    content: "Germany By: Hannes Becker";
-  }
-  90%, 100% {
-    content: "Snowfields - Dive into the serene whites";
-  }
-} */
-
-.container {
-  width: 100%;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  animation: bg-change 40s infinite;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
   position: relative;
 }
 
-.container::after {
-  content: "Iceland - Explore the beauty of glaciers"; /* Default text */
-  animation: text-change 40s infinite;
+.content::before {
+  content: "";
   position: absolute;
-  bottom: 10%;
-  left: 10%;
-  font-size: 1.5em;
-  color: white;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 0;
 }
 
-.booking{
-  background-color: rgba(0, 0, 0, 0.45);
-  color: white;
-  font-weight: bold;
-  padding: 10px;
-  width: 40%;
-  margin-right: 30px;
-  border-radius: 100px ;
-  border: solid 2px white;
+.content > * {
+  position: relative;
+  z-index: 1;
 }
 
-@media only screen and (max-width: 768px) {
+/* Glass card */
+.hero-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: 48px 56px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  animation: fadeUp 0.8s ease-out;
+}
 
-    
-    ul {
-        flex-direction: column;
-        width: auto;
-        gap: 10px;
-    }
-    .navbar{
-        font-size: large;
-      align-items: baseline;
-      gap: 100px
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  .content{
-    width: auto;
-    top: 40vh;
-    padding-left: 10px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-}
-
-
-#placeDescription {
-  font-size: 1.2em;
-  margin-bottom: 50px; 
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.671);
 }
 
 #placeTitle {
-  font-size: 2.5em;
-  margin-bottom: 50px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-  color: white;
-  font-family: Georgia,serif;
-  font-style: italic;
-  background-color: rgba(0, 0, 0, 0.45);
-  padding: 15px;
-  border-radius: 10px;
-  border: solid 3px white;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+#placeDescription {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 32px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ───── DROPDOWN ───── */
+#placeSelector {
+  padding: 14px 24px;
+  font-size: 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  min-width: 260px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='white' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+#placeSelector:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+#placeSelector:focus {
+  border-color: #f5af19;
+  box-shadow: 0 0 0 3px rgba(245, 175, 25, 0.2);
+}
+
+#placeSelector option {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+/* ───── BUTTON ───── */
+.booking {
+  margin-top: 20px;
+  padding: 14px 36px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f5af19, #f12711);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 28px rgba(241, 39, 17, 0.3);
+  font-family: inherit;
+}
+
+.booking:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 36px rgba(241, 39, 17, 0.45);
+}
+
+.booking:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ───── DESTINATION INDICATORS ───── */
+.destination-indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 8px;
+  padding: 0;
+}
+
+.destination-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  outline: none;
+  position: relative;
+}
+
+.destination-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.destination-dot:focus {
+  box-shadow: 0 0 0 3px rgba(245, 175, 25, 0.5);
+  border-color: #f5af19;
+}
+
+.destination-dot.active {
+  background: linear-gradient(135deg, #f5af19, #f12711);
+  border-color: #f5af19;
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 12px rgba(245, 175, 25, 0.6);
+}
+
+.destination-dot.active::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 175, 25, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.5;
+  }
+}
+
+/* ───── FOOTER ───── */
+footer {
+  background: rgba(10, 10, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 56px 40px 32px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+footer h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #f5af19, #f12711);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+footer p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 6px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ───── RESPONSIVE ───── */
+@media screen and (max-width: 768px) {
+  header {
+    padding: 0 16px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .navbar ul {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .navbar ul li a {
+    font-size: 0.85rem;
+  }
+
+  .hero-card {
+    padding: 32px 24px;
+  }
+
+  #placeTitle {
+    font-size: 2rem;
+  }
+
+  #placeDescription {
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  #placeSelector {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .booking {
+    width: 100%;
+  }
+
+  .destination-indicators {
+    gap: 10px;
+    margin: 20px 0 6px;
+  }
+
+  .destination-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .destination-dot.active {
+    width: 12px;
+    height: 12px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  footer {
+    padding: 40px 24px 24px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .hero-card {
+    padding: 24px 16px;
+    border-radius: 16px;
+  }
+
+  #placeTitle {
+    font-size: 1.6rem;
+  }
+
+  .navbar .logo {
+    font-size: 1.2rem;
+  }
 }

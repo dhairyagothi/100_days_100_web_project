@@ -361,6 +361,16 @@ header {
   color: var(--text);
 }
 
+/* ── Disabled Button State ────────────────────────────── */
+/* Applied to Hint button after use, and during the preview phase */
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 /* ── Win Modal ────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
