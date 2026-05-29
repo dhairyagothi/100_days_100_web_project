@@ -11,6 +11,8 @@ canvas.height = ROWS * CELL;
 let snake, dir, nextDir, food, score, level, speed, gameLoop, running, paused;
 
 let highScore = 0;
+let isGameOver = false; // FIX 1: new flag — single source of truth for dead state
+let finalScore = 0;     // FIX 2: captures score the instant collision occurs 
 
 function initGame() {
   
@@ -188,6 +190,14 @@ function startGame() {
   document.getElementById('startOverlay').classList.add('hidden');
   document.getElementById('gameOverOverlay').classList.add('hidden');
   cancelAnimationFrame(animFrame); // stop idle animation
+
+  isGameOver = false; // FIX 1: clear the flag so inputs can be taken again
+ 
+  // FIX 3: re-attach the listener as the player has restarted the game
+  document.removeEventListener('keydown', handleKeyDown);
+  document.addEventListener('keydown', handleKeyDown);
+
+  
   initGame();
   running = true;
   draw();
@@ -195,8 +205,16 @@ function startGame() {
 }
 
 function endGame() {
+
+  // FIX 2: Changes finalScore early
+  finalScore = score;
+
   running = false;
+  isGameOver = true; // FIX 1: raises the dead flag
   clearInterval(gameLoop);
+
+  // FIX 3: remove the listener when game ends so no more inputs are taken after death
+  document.removeEventListener('keydown', handleKeyDown);
 
   
   let flashes = 0;
@@ -207,7 +225,7 @@ function endGame() {
       clearInterval(flash);
       draw();
       document.getElementById('finalScore').textContent =
-        `SCORE: ${score}  |  BEST: ${highScore}`;
+        `SCORE: ${finalScore}  |  BEST: ${highScore}`; // FIX 2: Chooses between finalScore and highScore (Not score, which could have changed at death)
       document.getElementById('gameOverOverlay').classList.remove('hidden');
     }
   }, 80);
@@ -228,8 +246,11 @@ const KEY_MAP = {
   A: { x: -1, y:  0 },
   D: { x:  1, y:  0 },
 };
+function handleKeyDown(e) { // FIX 3: Named the function so it can be added/removed cleanly
 
-document.addEventListener('keydown', e => {
+  // FIX 1: If the game is over, dont take any key input
+  if (isGameOver) return;
+
   
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     e.preventDefault();
@@ -257,17 +278,21 @@ document.addEventListener('keydown', e => {
       restartLoop();
     }
   }
-});
+};
 
+// Attach the named listener on start screen
+document.addEventListener('keydown', handleKeyDown);
 
+// FIX 4: Play Again button is the only restart path
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
 
-document.addEventListener('mousedown', e => {
-  if (!running && e.target.id !== 'startBtn' && e.target.id !== 'restartBtn') {
-    startGame();
-  }
-});
+//NOTE: the mousedown "click anywhere to start" listener has been intentionally removed.
+// document.addEventListener('mousedown', e => {
+//   if (!running && e.target.id !== 'startBtn' && e.target.id !== 'restartBtn') {
+//     startGame();
+//   }
+// });
 
 let animFrame;
 
@@ -281,3 +306,113 @@ function animateIdle() {
 
 initGame();
 animateIdle();
+
+// ========== MOBILE TOUCH CONTROLS ==========
+(function() {
+  const mobileCanvas = document.getElementById('gameCanvas');
+  const controls = document.getElementById('mobileControls');
+  
+  if (!controls) return;
+  
+  let lastTouch = 0;
+  let startX = 0, startY = 0;
+  
+  const setDir = (direction) => {
+    // Direct variable access - no stale snapshots
+    if (typeof isGameOver !== 'undefined' && isGameOver) return;
+    
+    const now = Date.now();
+    if (now - lastTouch < 80) return;
+    lastTouch = now;
+    
+    const dirMap = { 
+      up: {x: 0, y: -1}, 
+      down: {x: 0, y: 1}, 
+      left: {x: -1, y: 0}, 
+      right: {x: 1, y: 0} 
+    };
+    
+    const newDir = dirMap[direction];
+    if (!newDir) return;
+    
+    // Game not started yet
+    if (typeof running !== 'undefined' && !running) {
+      if (typeof startGame === 'function') {
+        startGame();
+      }
+      // Direct assignment - no setTimeout needed
+      if (typeof nextDir !== 'undefined' && typeof dir !== 'undefined') {
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+          nextDir = newDir;
+        }
+      }
+      return;
+    }
+    
+    // Game is running
+    if (typeof running !== 'undefined' && running && typeof paused !== 'undefined' && !paused) {
+      if (typeof dir !== 'undefined' && typeof nextDir !== 'undefined') {
+        // Prevent 180-degree turns
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+          nextDir = newDir;
+          // Haptic feedback
+          if ('vibrate' in navigator) {
+            navigator.vibrate(20);
+          }
+        }
+      }
+    }
+  };
+  
+  // Button controls
+  const buttons = document.querySelectorAll('.dpad-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      setDir(btn.dataset.dir);
+    });
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDir(btn.dataset.dir);
+    });
+  });
+  
+  // Swipe controls
+  if (mobileCanvas) {
+    mobileCanvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: false });
+    
+    mobileCanvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      
+      if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
+      
+      const swipe = Math.abs(dx) > Math.abs(dy) 
+        ? (dx > 0 ? 'right' : 'left') 
+        : (dy > 0 ? 'down' : 'up');
+      
+      setDir(swipe);
+    });
+    
+    mobileCanvas.addEventListener('contextmenu', (e) => e.preventDefault());
+  }
+  
+  // Auto show/hide on mobile
+  const isMobile = () => window.innerWidth <= 768 || 'ontouchstart' in window;
+  const toggle = () => {
+    if (controls) {
+      controls.style.display = isMobile() ? 'flex' : 'none';
+    }
+  };
+  
+  toggle();
+  window.addEventListener('resize', toggle);
+  
+  console.log('✅ Mobile touch controls loaded');
+})();

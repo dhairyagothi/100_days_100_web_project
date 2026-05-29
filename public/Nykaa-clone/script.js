@@ -4,7 +4,7 @@ import hardtoResistDeals from "./hardtoResistDeals.js";
 
 const btnPreve = document.querySelector(".btn-container-prev");
 const btnNext = document.querySelector(".btn-container-next");
-const ImageContainerSlider = document.querySelector("#imageSlideContaienr");
+const ImageContainerSlider = document.querySelector("#imageSlideContainer");
 
 // Balanced slider track navigation logic jump steps
 btnNext.addEventListener("click", () => {
@@ -23,7 +23,7 @@ let listofProductHTMl = "";
 for (let i = 0; i < listofProduct.length; i++) {
     listofProductHTMl += `
     <a href="#">
-        <img src="${listofProduct[i].img}" alt="Product image"/>
+        <img src="${listofProduct[i].img}" alt="${listofProduct[i].dis}"/>
         <p>${listofProduct[i].dis}</p>
     </a>`;
 }

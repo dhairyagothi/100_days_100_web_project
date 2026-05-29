@@ -153,8 +153,15 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 20px 20px 0;
+  padding: 16px 20px 16px 170px;
+  background: var(--page-bg-mid);
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 60px 16px 16px 16px;
   }
+}
 
 .navbar {
   display: flex;
@@ -181,6 +188,7 @@ header {
   flex-wrap: wrap;
   gap: 8px;
 }
+
 
 /* Remove list styling from nested navigation lists */
 .nav-left ul,
@@ -424,6 +432,47 @@ section {
   padding-right: 36px;
   cursor: pointer;
 }
+#eisenhower-select {
+  flex: 0 0 200px;
+  min-width: 160px;
+  height: 52px;
+  padding: 0 36px 0 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background-color: rgba(255, 255, 255, 0.96);
+  color: #121212;
+  font-size: 15px;
+  font-family: var(--font-family);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#eisenhower-select:focus {
+  border-color: rgba(124, 99, 255, 0.55);
+  box-shadow: 0 0 0 4px rgba(124, 99, 255, 0.12);
+}
+
+.priority-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.priority-tag.urgent-important { background: #ffe5e5; color: #c0392b; }
+.priority-tag.important-only   { background: #fff8e1; color: #b7790a; }
+.priority-tag.urgent-only      { background: #fff3e0; color: #c0650a; }
+.priority-tag.neither          { background: #f0f0f0; color: #5a6475; }
 
 #task {
   flex: 1;
@@ -610,10 +659,14 @@ section {
   border: 1px solid rgba(16, 24, 56, 0.06);
   outline: none;
   min-height: 44px;
-  /* FIX 2: textarea elements show a browser resized handle by default. resize: none removes it entirely. */
-  resize: none;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  /*Lock width to 100% of the card, but allow pulling it down vertically */
+  max-width: 100%;
+  min-width: 100%;
+  resize: vertical;
+
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
+
 
 .note-text:focus {
   border-color: rgba(124, 99, 255, 0.45);
@@ -981,8 +1034,9 @@ section {
 
 @media (max-width: 480px) {
   header {
-    padding: 10px 10px 0;
+    padding: 65px 10px 16px 10px;
   }
+
 
   .navbar {
     flex-direction: column;
