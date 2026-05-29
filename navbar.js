@@ -29,12 +29,9 @@
   // FIX: Avoid appending "index.html" on web servers to prevent 308 Redirect lag.
   // We only append it if we detect the file:// protocol (for local double-click testing).
   const isLocalFile = window.location.protocol === "file:";
-  const homeHref = isHome ? "#" : isLocalFile ? `${base}index.html` : base;
-
-  const learnHref = isLearn ? "#" : `${base}learning/learning.html`;
-  const contributorsHref = isContributors
-    ? "#"
-    : `${base}contributors/contributor.html`;
+  const homeHref = isLocalFile ? `${base}index.html` : base;
+  const learnHref = `${base}learning/learning.html`;
+  const contributorsHref = `${base}contributors/contributor.html`;
 
   const themeBtn = `<button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme"><i class="fas ${themeIcon}"></i> Theme</button>`;
   const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}"><i class="fas fa-home"></i> Home</a>`;
@@ -76,14 +73,6 @@
           </nav>
       </header>
   `;
-
-  // Prevent refresh & Smooth scroll to top for self-referencing links
-  container.querySelectorAll('a[href="#"]').forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  });
 
   // Theme Toggle Logic
   const themeToggleBtn = document.getElementById("themeToggleNav");

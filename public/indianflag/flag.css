@@ -1,3 +1,8 @@
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f3f3f3;
@@ -46,17 +51,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100dvh; 
   padding: 40px 60px;
   gap: 90px;
   box-sizing: border-box;
 }
 
-/* Flex assembly ties pole and flag side-by-side */
 .flag-assembly {
   position: relative;
-  width: 500px;  
-  height: 500px; 
+  width: 500px;
+  height: 500px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -88,12 +91,10 @@ body {
     rgba(255,255,255,0.12),
     rgba(255,255,255,0.28)
   );
-
   border-radius: 10px;
   pointer-events: none;
-  }
+}
 
-/* Anchoring the steps cleanly to the bottom using absolute positions */
 .bar div {
   background: linear-gradient(to right, #111, #333, #111);
   height: 20px;
@@ -102,9 +103,23 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0,0.25);
 }
 
-.bar .bar-1 { width: 60px; left: -24px; bottom: 40px; }
-.bar .bar-2 { width: 100px; left: -44px; bottom: 20px; }
-.bar .bar-3 { width: 140px; left: -64px; bottom: 0px; }
+.bar .bar-1 {
+  width: 60px;
+  left: -24px;
+  bottom: 40px;
+}
+
+.bar .bar-2 {
+  width: 100px;
+  left: -44px;
+  bottom: 20px;
+}
+
+.bar .bar-3 {
+  width: 140px;
+  left: -64px;
+  bottom: 0px;
+}
 
 /* ================= FLAG ================= */
 
@@ -124,11 +139,25 @@ body {
 }
 
 @keyframes wave {
-  0% { transform: skewY(0deg) translateX(0px); }
-  25% { transform: skewY(1.5deg) translateX(1px); }
-  50% { transform: skewY(0deg) translateX(0px); }
-  75% { transform: skewY(-1.5deg) translateX(-1px); }
-  100% { transform: skewY(0deg) translateX(0px); }
+  0% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+
+  25% {
+    transform: perspective(1000px) rotateY(-3deg);
+  }
+
+  50% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+
+  75% {
+    transform: perspective(1000px) rotateY(3deg);
+  }
+
+  100% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
 }
 
 .flag::before {
@@ -158,8 +187,15 @@ body {
   );
 }
 
-.top { height: 33.33%; background-color: #FF671F; }
-.bottom { height: 33.33%; background-color: #046A38; }
+.top {
+  height: 33.33%;
+  background-color: #ff671f;
+}
+
+.bottom {
+  height: 33.33%;
+  background-color: #046a38;
+}
 
 .middle {
   height: 33.33%;
@@ -176,8 +212,13 @@ body {
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 
@@ -202,9 +243,6 @@ body {
   transition: all 0.3s ease;
 }
 
-
-
-/* Rounded frame container for patriot portraits */
 .image-wrapper {
   width: 140px;
   height: 140px;
@@ -218,7 +256,7 @@ body {
 #patriot-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Prevents squishing images */
+  object-fit: cover;
 }
 
 .quote {
@@ -228,7 +266,7 @@ body {
   font-style: italic;
   text-shadow: 0 2px 8px rgba(0,0,0,0.25);
   line-height: 1.4;
-  min-height: 70px; /* Keeps card height stable when text changes */
+  min-height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -250,6 +288,7 @@ transition: all 0.4s ease;
   justify-content: space-between;
   width: 100%;
   margin-top: 10px;
+  gap: 10px;
 }
 
 .quote-nav button {
@@ -257,7 +296,7 @@ transition: all 0.4s ease;
   color: #fff;
   border: none;
   padding: 8px 16px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   transition: background 0.2s;
@@ -269,6 +308,10 @@ transition: all 0.4s ease;
   box-shadow:
     0 6px 16px rgba(0,0,0,0.22),
     0 0 10px rgba(255,103,31,0.22);
+ }
+
+.quote-nav button:active {
+  transform: scale(0.96);
 }
 
 /* ================= MUSIC ================= */
@@ -368,6 +411,31 @@ transition: all 0.4s ease;
   margin: 8px auto 20px;
   width: fit-content;
   }
+=======
+  width: 100%;
+}
+
+/* ================= BACK BUTTON ================= */
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  color: #111;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+}
+
+.project-back-button:hover {
+  transform: translateY(-2px);
+  background: white;
 }
 
 /* ================= KNOW MORE SECTION ================= */
@@ -400,11 +468,13 @@ transition: all 0.4s ease;
   backdrop-filter: blur(10px);
   color: white;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
 }
 
 .info-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-8px) scale(1.02);
   background: rgba(255, 255, 255, 0.22);
 }
 
@@ -418,10 +488,8 @@ transition: all 0.4s ease;
   line-height: 1.6;
 }
 
-/* Card Accent Colors */
-
 .saffron {
-  border-top: 5px solid #FF671F;
+  border-top: 5px solid #ff671f;
 }
 
 .white {
@@ -429,16 +497,87 @@ transition: all 0.4s ease;
 }
 
 .green {
-  border-top: 5px solid #046A38;
+  border-top: 5px solid #046a38;
 }
 
 .chakra {
   border-top: 5px solid #000080;
 }
 
-/* ================= MOBILE RESPONSIVE ================= */
+/* ================= RESPONSIVE ================= */
 
 @media screen and (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 35px;
+    padding: 30px 15px;
+  }
+
+  .flag-assembly {
+    width: 100%;
+    max-width: 260px;
+    height: 260px;
+  }
+
+  .bar {
+    height: 45vh;
+    width: 8px;
+    margin-top: -40px;
+  }
+
+  .bar .bar-1 {
+    width: 40px;
+    left: -16px;
+    bottom: 24px;
+    height: 12px;
+  }
+
+  .bar .bar-2 {
+    width: 64px;
+    left: -28px;
+    bottom: 12px;
+    height: 12px;
+  }
+
+  .bar .bar-3 {
+    width: 88px;
+    left: -40px;
+    bottom: 0px;
+    height: 12px;
+  }
+
+  .flag {
+    width: 210px;
+    height: 140px;
+    top: 0;
+    left: 8px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .quote-container {
+    width: 100%;
+    max-width: 320px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .image-wrapper {
+    width: 110px;
+    height: 110px;
+  }
+
+  .quote {
+    font-size: 1.1em;
+    min-height: 60px;
+  }
+
+  .music-controls {
+    position: static;
+    margin: 10px auto;
+    width: min(90vw, 320px);
+  }
+
   .know-more-section h2 {
     font-size: 1.8rem;
   }
@@ -446,5 +585,12 @@ transition: all 0.4s ease;
   .info-card {
     width: 90%;
     max-width: 320px;
+  }
+
+  .project-back-button {
+    left: 10px;
+    top: 10px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
 }

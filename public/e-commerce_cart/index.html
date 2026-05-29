@@ -590,6 +590,24 @@
     <div class="navbar">
       <div class="website_title">Aero<span>Stride</span></div>
       <div class="button-container">
+        <button class="button">
+          <img src="images_used/home_icon.png" width="17px"/>
+        </button>
+        <button class="button">
+          <img src="images_used/search_icon.png" width="17px"/>
+        </button>
+        <button class="button">
+          <img src="images_used/profile_icon.png" width="19px"/>
+        </button>
+        <div class="box" id="wishlist-box">
+  <div class="cart-count" id="wishlist-count">0</div>
+  <span style="color:white;font-size:20px;">❤</span>
+</div>
+
+<div class="box">
+  <div class="cart-count">0</div>
+  <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
+</div>
         <button class="button"><img src="images_used/home_icon.png"/></button>
         <button class="button"><img src="images_used/search_icon.png"/></button>
         <button class="button"><img src="images_used/profile_icon.png"/></button>
@@ -601,6 +619,42 @@
     </div>
   </header>  
 
+    <div class="nav">
+      <div class="cart">
+        <div class="cart-title">Cart Items</div>
+        <div class="cart-content">
+          <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <div class="total">
+          <div class="total-title">Total</div>
+          <div class="total-price">Rs.0</div>
+        </div>
+        <button class="btn-buy">Place Order</button>
+        <div class="checkout-modal">
+  <div class="checkout-content">
+
+    <span class="close-checkout">&times;</span>
+
+    <h2>Checkout</h2>
+
+    <input type="text" id="full-name" placeholder="Full Name">
+
+    <input type="text" id="address" placeholder="Address">
+
+    <input type="text" id="phone" placeholder="Phone Number">
+
+    <select id="payment-method">
+      <option value="">Select Payment Method</option>
+      <option>UPI</option>
+      <option>Cash on Delivery</option>
+      <option>Card</option>
+    </select>
+
+    <button id="submit-order">Submit Order</button>
+
+  </div>
+</div>
+        <img src="images_used/cross.png" name="close" id="cart-close"/>
   <!-- Overlay (dims page when cart is open) -->
   <div class="cart-overlay" id="cart-overlay"></div>
 
@@ -672,42 +726,140 @@
 
       <div class="shoe-box">
         <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
+        <h2 class="shoe-title">CR7</h2>
+        <span class="shoe-price">Rs.3000</span>
+        <div class="product-actions">
+  <button class="wishlist-btn">❤</button>
+
+  <img src="images_used/cart_icon.png"
+       name="cart"
+       class="add-cart">
+</div>
+
+<img src="images_used/cross.png"
+     width="0px"
+     name="cart"
+     class="remove_icon"/>
         <div class="shoe-info"><h2 class="shoe-title">CR7</h2><span class="shoe-price">Rs.3000</span></div>
         <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
 
       <div class="shoe-box">
         <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
+        <h2 class="shoe-title">The Greek Freak</h2>
+        <span class="shoe-price">Rs.2500</span>
+        <div class="product-actions">
+  <button class="wishlist-btn">❤</button>
+
+  <img src="images_used/cart_icon.png"
+       name="cart"
+       class="add-cart">
+</div>
+
+<img src="images_used/cross.png"
+     width="0px"
+     name="cart"
+     class="remove_icon"/>
         <div class="shoe-info"><h2 class="shoe-title">The Greek Freak</h2><span class="shoe-price">Rs.2500</span></div>
         <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
 
       <div class="shoe-box">
         <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
+        <h2 class="shoe-title">Sewy</h2>
+        <span class="shoe-price">Rs.1500</span>
+      <div class="product-actions">
+  <button class="wishlist-btn">❤</button>
+
+  <img src="images_used/cart_icon.png"
+       name="cart"
+       class="add-cart">
+</div>
+
+<img src="images_used/cross.png"
+     width="0px"
+     name="cart"
+     class="remove_icon"/>
         <div class="shoe-info"><h2 class="shoe-title">Sewy</h2><span class="shoe-price">Rs.1500</span></div>
         <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
 
       <div class="shoe-box">
         <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
+        <h2 class="shoe-title">Black Mamba</h2>
+        <span class="shoe-price">Rs.3000</span>
+        <div class="product-actions">
+  <button class="wishlist-btn">❤</button>
+
+  <img src="images_used/cart_icon.png"
+       name="cart"
+       class="add-cart">
+</div>
+
+<img src="images_used/cross.png"
+     width="0px"
+     name="cart"
+     class="remove_icon"/>
         <div class="shoe-info"><h2 class="shoe-title">Black Mamba</h2><span class="shoe-price">Rs.3000</span></div>
         <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
 
       <div class="shoe-box">
         <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
+        <h2 class="shoe-title">Jordan X</h2>
+        <span class="shoe-price">Rs.2500</span>
+        <div class="product-actions">
+  <button class="wishlist-btn">❤</button>
+
+  <img src="images_used/cart_icon.png"
+       name="cart"
+       class="add-cart">
+</div>
+
+<img src="images_used/cross.png"
+     width="0px"
+     name="cart"
+     class="remove_icon"/>
         <div class="shoe-info"><h2 class="shoe-title">Jordan X</h2><span class="shoe-price">Rs.2500</span></div>
         <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
 
       <div class="shoe-box">
         <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
+        <h2 class="shoe-title">KING</h2>
+        <span class="shoe-price">Rs.5000</span>
+        <div class="product-actions">
+  <button class="wishlist-btn">❤</button>
+
+  <img src="images_used/cart_icon.png"
+       name="cart"
+       class="add-cart">
+</div>
+
+<img src="images_used/cross.png"
+     width="0px"
+     name="cart"
+     class="remove_icon"/>
         <div class="shoe-info"><h2 class="shoe-title">KING</h2><span class="shoe-price">Rs.5000</span></div>
         <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
 
       <div class="shoe-box">
         <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
+        <h2 class="shoe-title">Mr.360</h2>
+        <span class="shoe-price">Rs.5000</span>
+        <div class="product-actions">
+  <button class="wishlist-btn">❤</button>
+
+  <img src="images_used/cart_icon.png"
+       name="cart"
+       class="add-cart">
+</div>
+
+<img src="images_used/cross.png"
+     width="0px"
+     name="cart"
+     class="remove_icon"/>
         <div class="shoe-info"><h2 class="shoe-title">Mr.360</h2><span class="shoe-price">Rs.5000</span></div>
         <button class="add-cart"><img src="images_used/cart_icon.png"></button>
       </div>
