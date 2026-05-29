@@ -1,138 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Loader Demo</title>
-  <link rel="stylesheet" href="pageloader.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pageloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="pageloader.css" />
 </head>
 <body>
 
-  <!-- Full-screen Preloader -->
-  <div class="loader-wrapper" id="loader">
-    <div class="loader-container">
-      <span class="loader"></span>
-      <h2>Loading...</h2>
-      <p>Please wait while we prepare everything for you.</p>
+  <!-- ── PRELOADER ── -->
+  <div id="preloader" aria-hidden="true">
+    <div class="loader-card">
+      <div class="spinner"></div>
+      <div class="progress"><span class="progress-bar"></span></div>
+      <p class="loading-text">Loading<span class="dots"></span></p>
     </div>
   </div>
 
-  <!-- Main Website Content -->
-  <div class="content">
+  <!-- ── MAIN PAGE ── -->
+  <div class="page" id="page">
 
-    <nav class="navbar">
-      <h1 class="logo">Pageloader</h1>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <span class="brand">PL<span class="accent-dot">.</span></span>
+      <ul class="nav-links">
+        <li><a href="#home"    class="nav-link">Home</a></li>
+        <li><a href="#about"   class="nav-link">About</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
     </nav>
 
-    <section class="hero">
-      <h1>Welcome to Pageloader!</h1>
-      <p>This is a simple example of a website featuring a smooth CSS page loader animation.</p>
-    </section>
+    <!-- Content Wrapper -->
+    <main class="content-wrapper">
 
-    <section class="showcase">
-      <div class="left-section">
-        <div class="info-box">
-          <h2>About Us</h2>
-          <p>Thank you for visiting our website. Here is a simple example of a clean, reusable pageloader component.</p>
+      <!-- Home Section -->
+      <section id="home" class="page-section active">
+        <span class="eyebrow">Welcome</span>
+        <h1>Built to <em>Load</em><br>Fast &amp; Smooth.</h1>
+        <p class="subtext">A clean, minimal pageloader demo. Navigate between sections and watch the preloader in action.</p>
+        <div class="cta-group">
+          <a href="#about"   class="cta primary">Learn More</a>
+          <a href="#contact" class="cta ghost">Contact Us</a>
         </div>
-
-        <div class="info-box">
-          <h2>Contact Us</h2>
-          <p>Feel free to reach out to us for any queries.</p>
-          <p>Email: <a href="mailto:info@yourcompany.com">info@yourcompany.com</a></p>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num"><span id="loadTimeStat">—</span><small>ms</small></span><span class="stat-label">Load Time</span></div>
+          <div class="stat"><span class="stat-num">100<small>%</small></span><span class="stat-label">Smooth</span></div>
+          <div class="stat"><span class="stat-num">0<small>px</small></span><span class="stat-label">Layout Shift</span></div>
         </div>
-      </div>
+      </section>
 
-      <!-- Live Preview & Snippet Card -->
-      <div class="loader-card">
-        <div class="preview">
-          <h3>Current Pageloader</h3>
-          <div class="preview-box">
-            <span class="loader"></span>
+      <!-- About Section -->
+      <section id="about" class="page-section">
+        <span class="eyebrow">About</span>
+        <h2>What Is a Pageloader?</h2>
+        <p class="subtext">A pageloader masks the initial network &amp; render delay, giving users a polished first impression instead of a blank screen.</p>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Instant Feedback</h3>
+            <p>Users see activity immediately, so the wait feels shorter.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Brand Aligned</h3>
+            <p>Your loader can reflect the brand colours and personality.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">♿</div>
+            <h3>Accessible</h3>
+            <p>Built with <code>aria-hidden</code> and reduced-motion support.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">📦</div>
+            <h3>Zero Deps</h3>
+            <p>Pure HTML, CSS and vanilla JS — no frameworks needed.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="page-section">
+        <span class="eyebrow">Contact</span>
+        <h2>Get In Touch</h2>
+        <p class="subtext">Have a question or want to collaborate? Drop us a message and we'll get back to you shortly.</p>
+        <div class="contact-form">
+          <div class="form-row">
+            <input type="text"  id="fname"   class="form-input" placeholder="Your Name"  />
+            <input type="email" id="femail"  class="form-input" placeholder="Email Address" />
           </div>
+          <textarea id="fmsg" class="form-input form-textarea" placeholder="Your message…"></textarea>
+          <button class="cta primary" id="sendBtn" type="button">Send Message</button>
+          <div id="successMsg" class="success-msg" aria-live="polite"></div>
         </div>
+      </section>
 
-        <div class="code-box">
-          <div class="code-header">
-            <h3>Code Snippet</h3>
-            <button type="button" id="copyBtn">Copy</button>
-          </div>
-          <pre><code>&lt;span class="loader"&gt;&lt;/span&gt;
+    </main>
 
-.loader {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: inline-block;
-  position: relative;
-  border: 3px solid;
-  border-color: #FFF #FFF transparent transparent;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
-}
-
-.loader::after,
-.loader::before {
-  content: '';
-  box-sizing: border-box;
-  position: absolute;
-  left: 0; right: 0; top: 0; bottom: 0;
-  margin: auto;
-  border: 3px solid;
-  border-radius: 50%;
-}
-
-.loader::after {
-  width: 40px;
-  height: 40px;
-  border-color: transparent transparent #FF3D00 #FF3D00;
-  animation: rotationBack 0.5s linear infinite;
-}
-
-.loader::before {
-  width: 32px;
-  height: 32px;
-  border-color: #FFF #FFF transparent transparent;
-  animation: rotation 1.5s linear infinite;
-}
-
-@keyframes rotation {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes rotationBack {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(-360deg); }
-}</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <p>&copy; 2026 All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="footer">
+      <span class="brand">PL<span class="accent-dot">.</span></span>
+      <p>&copy; 2026 Pageloader Demo. All rights reserved.</p>
     </footer>
 
-  </div>
+  </div><!-- /.page -->
 
-
-  <script>
-    window.addEventListener("load", () => {
-      const loader = document.getElementById("loader");
-      setTimeout(() => {
-        loader.classList.add("fade-out");
-        setTimeout(() => {
-          loader.style.display = "none";
-        }, 500);
-
-      }, 2000);
-    });
-  </script>
-
+  <script src="pageloader.js"></script>
 </body>
 </html>
