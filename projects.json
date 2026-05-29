@@ -1,3 +1,4 @@
+
 [
   {
     "projectNo": 1,
@@ -2330,12 +2331,48 @@
       "projectPath": "./public/Streak-Visualizer/index.html"
     },
     {
-      "projectNo":189,
-      "projectName":"CyberTrack 2077",
-      "projectType":"Tool",
-      "projectDesc":"A cyberpunk-style productivity dashboard that gamifies coding activity with GitHub analytics, streak tracking, dopamine graphs, focus scoring, and achievement systems.",
-      "techStack":["tool","javascript","html","css","chartjs","github-api"],
-      "difficulty":"advanced",
-      "projectPath":"./public/cyberpunk-productivity-dashboard/index.html"
+      "projectNo": 189,
+      "projectName": "PeerRTC Video Chat",
+      "projectType": "Tool",
+      "projectDesc": "Advanced Peer-to-Peer video conferencing app using WebRTC and PeerJS with screen sharing and media controls.",
+      "techStack": ["html", "css", "javascript", "webrtc", "api"],
+      "difficulty": "advanced",
+      "projectPath": "./public/webrtc-video-chat/index.html"
+    }
+  
+     {
+    "projectNo": 189,
+     "projectName": "Endless train game",
+    "projectType": "game",
+    "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
+    "techStack": [ "html", "css", "javascript"],
+    "difficulty": "advanced",
+    "projectPath": "./public/endless_train_game/index.html"
+  },
+  
+  {
+    "projectNo": 190,
+    "projectName": "Saturn Particle Gesture",
+    "projectType": "Animation",
+    "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas",
+      "mediapipe",
+      "gesture"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Planet_gesture_formation/index.html"
+  },
+  {
+"projectNo":182,
+"projectName":"CyberTrack 2077",
+"projectType":"Tool",
+"projectDesc":"A cyberpunk-style productivity dashboard that gamifies coding activity with GitHub analytics, streak tracking, dopamine graphs, focus scoring, and achievement systems.",
+"techStack":["tool","javascript","html","css","chartjs","github-api"],
+"difficulty":"advanced",
+"projectPath":"./public/cyberpunk-productivity-dashboard/index.html"
 }
 ]
