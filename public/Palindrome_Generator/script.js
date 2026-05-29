@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return str;
     };
 
-    const palindromeResult = makeShortestPalindrome(val.toLowerCase());
-
+   const reversedValue = val.toLowerCase().split('').reverse().join('');
+   const palindromeResult = val.toLowerCase() + reversedValue;
     // Update UI
     resultBox.className = "result-container mt-4 text-center success-bg";
     resultText.innerText = `Result: ${palindromeResult}`;
