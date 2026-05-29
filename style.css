@@ -162,6 +162,21 @@ body::after {
   height: 32vw;
 }
 
+@media (max-width: 1200px), (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after,
+  .ambient,
+  .noise-layer {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .ambient,
+  .noise-layer {
+    display: none !important;
+  }
+}
+
 .noise-layer {
   opacity: 0.035;
   background-image:
@@ -1874,7 +1889,11 @@ body.light-mode .footer.homepage-footer .social-btn {
     }
 
     .nav-buttons.mobile-drawer-layer {
+<<<<<<< HEAD
         display: none !important;
+=======
+        display: flex !important;
+>>>>>>> upstream/Main
         position: fixed !important;
         top: 60px !important;
         left: 0 !important;
@@ -1889,6 +1908,17 @@ body.light-mode .footer.homepage-footer .social-btn {
         z-index: 99998 !important;
         box-sizing: border-box !important;
         overflow-y: auto !important;
+<<<<<<< HEAD
+=======
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(-8px) !important;
+        transition:
+          opacity 0.2s var(--ease),
+          transform 0.2s var(--ease),
+          visibility 0.2s var(--ease) !important;
+>>>>>>> upstream/Main
     }
 
     [data-theme="light"] .nav-buttons.mobile-drawer-layer {
@@ -1897,6 +1927,13 @@ body.light-mode .footer.homepage-footer .social-btn {
 
     .nav-buttons.mobile-drawer-layer.active {
         display: flex !important;
+<<<<<<< HEAD
+=======
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
+>>>>>>> upstream/Main
     }
 
     .nav-buttons.mobile-drawer-layer .btn {

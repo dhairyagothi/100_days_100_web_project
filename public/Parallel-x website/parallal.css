@@ -109,10 +109,12 @@ nav ul li a:hover {
   align-items: center;
   position: relative;
 }
+
 .parallal img {
   position: absolute;
   /* object-fit: cover; */
   width: 100%;
+<<<<<<< HEAD
   top: 0; left: 0;
 
 }
@@ -130,6 +132,77 @@ nav ul li a:hover {
   animation: heroFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 4px;
+  margin: 0;
+  text-shadow: 0 4px 32px rgba(0,0,0,0.6), 0 0 80px rgba(53,147,129,0.4);
+  line-height: 1;
+}
+.hero-subtitle {
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  line-height: 1.6;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.5px;
+}
+.hero-cta.primary {
+  background: var(--lime);
+  color: var(--green-deep);
+  box-shadow: 0 8px 30px rgba(168, 224, 99, 0.4);
+}
+.hero-cta.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(168, 224, 99, 0.6);
+  background: #bbee77;
+}
+.hero-cta.secondary {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+}
+.hero-cta.secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+ @keyframes heroFadeIn {
+  from { opacity:0; transform:translateY(-30px); }
+  to   { opacity:1; transform:translateY(0); }
+} 
+=======
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+>>>>>>> upstream/Main
+
+.text {
   font-family: 'Playfair Display', serif;
   font-size: clamp(3.5rem, 10vw, 8rem);
   font-weight: 900;
@@ -856,12 +929,35 @@ nav ul li {
     box-shadow: 0 8px 24px rgba(53, 147, 129, 0.2);
 }
 
+<<<<<<< HEAD
 .contact-form button:hover {
     background: var(--green-light);
     transform: translateY(-2px);
     box-shadow: 0 16px 36px rgba(53, 147, 129, 0.4);
+=======
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .content-grid { grid-template-columns: 1fr; gap: 24px; }
+>>>>>>> upstream/Main
 }
+@media (max-width: 768px) {
+  header { padding: 16px 5%; }
+  nav { display:none; position:absolute; top:100%; left:0; right:0; background:rgba(1,55,45,0.97); padding:20px 5%; }
+  nav.open { display:block; }
+  nav ul { flex-direction:column; gap:4px; }
+  nav ul li a { display:block; padding:12px 16px; }
+  .hamburger { display:flex; }
+  .text { font-size: clamp(2.5rem, 12vw, 5rem); }
+  .stats-band { padding:40px 5%; }
+  .content { padding:70px 5%; }
+  .eco-section { padding:70px 5%; }
+  .did-you-know { padding:60px 5%; }
+  .tracker-cta { padding:80px 5%; }
+  .footer { flex-direction:column; text-align:center; }
 
+<<<<<<< HEAD
 /* ================= MOBILE CONTACT ================= */
 
 @media (max-width: 768px) {
@@ -877,4 +973,33 @@ nav ul li {
       font-size: 1rem;
       margin-bottom: 30px;
   }
+=======
+
+    .parallal {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #plant,
+  #leaf {
+    top: auto;
+    bottom: 0;
+  }
+
+  #hill1,
+  #hill2,
+  #hill3,
+  #hill4,
+  #hill5,
+  #tree {
+    top: 0;
+  }
+}
+
+ 
+@media (max-width: 480px) {
+  .text { font-size: 2.4rem; letter-spacing:1px; }
+  .section-heading { font-size:2rem; }
+  .eco-card { padding:28px 22px; }
+>>>>>>> upstream/Main
 }

@@ -57,7 +57,7 @@
                   </span>
               </a>
 
-              <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
+              <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
                   <i class="fas fa-bars" aria-hidden="true"></i>
               </button>
 
@@ -74,22 +74,42 @@
   const menuToggle = document.getElementById("menuToggle");
   const navButtonsDiv = document.getElementById("navButtons");
   if (menuToggle && navButtonsDiv) {
+    if (menuToggle.dataset.mobileNavBound === "true") return;
+    menuToggle.dataset.mobileNavBound = "true";
+
     const closeMenu = () => {
       menuToggle.classList.remove("active");
       navButtonsDiv.classList.remove("active");
       menuToggle.setAttribute("aria-expanded", "false");
     };
 
+    const openMenu = () => {
+      menuToggle.classList.add("active");
+      navButtonsDiv.classList.add("active");
+      menuToggle.setAttribute("aria-expanded", "true");
+      const firstLink = navButtonsDiv.querySelector("a, button");
+      firstLink?.focus({ preventScroll: true });
+    };
+
     menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      const isOpen = navButtonsDiv.classList.toggle("active");
-      menuToggle.classList.toggle("active", isOpen);
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      if (navButtonsDiv.classList.contains("active")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
     document.addEventListener("click", (e) => {
       if (!navButtonsDiv.contains(e.target) && !menuToggle.contains(e.target)) {
         closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navButtonsDiv.classList.contains("active")) {
+        closeMenu();
+        menuToggle.focus({ preventScroll: true });
       }
     });
 

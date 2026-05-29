@@ -1581,6 +1581,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navButtons = document.getElementById('navButtons');
 
     if (!menuToggle || !navButtons) return;
+    if (menuToggle.dataset.mobileNavBound === 'true') return;
+    menuToggle.dataset.mobileNavBound = 'true';
 
     const closeMenu = () => {
       menuToggle.classList.remove('active');
@@ -1588,11 +1590,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       menuToggle.setAttribute('aria-expanded', 'false');
     };
 
+    const openMenu = () => {
+      menuToggle.classList.add('active');
+      navButtons.classList.add('active');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      const firstLink = navButtons.querySelector('a, button');
+      firstLink?.focus({ preventScroll: true });
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isOpen = navButtons.classList.toggle('active');
-      menuToggle.classList.toggle('active', isOpen);
-      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      if (navButtons.classList.contains('active')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
     document.addEventListener('click', (e) => {
@@ -1654,8 +1666,15 @@ initTheme();
 (function () {
   const outerCursor = document.querySelector('.cursor-ring--outer');
   const innerCursor = document.querySelector('.cursor-ring--inner');
-
   if (!outerCursor || !innerCursor) return;
+
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (coarsePointer || prefersReducedMotion) {
+    outerCursor.style.display = 'none';
+    innerCursor.style.display = 'none';
+    return;
+  }
 
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
@@ -1708,7 +1727,7 @@ initTheme();
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
   const palette = [220, 250, 280];
-  const DEFAULT_PARTICLE_FPS = 36;
+  const DEFAULT_PARTICLE_FPS = 24;
   let W = 0;
   let H = 0;
   let dpr = 1;
@@ -1725,16 +1744,17 @@ initTheme();
     const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
     const reducedMotion = reducedMotionQuery.matches;
     const disableAnimation = smallScreen || reducedMotion;
+    const largeScreen = window.innerWidth > 1280;
 
     return {
-      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
-      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 72,
-      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 26000,
-      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 120,
-      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.3,
-      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
-      fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
-      showLinks: !reducedMotion && !smallScreen,
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 18,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 48,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 32000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 100,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.24,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 3.2,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 24,
+      showLinks: !reducedMotion && !smallScreen && largeScreen,
       disableAnimation,
     };
   };

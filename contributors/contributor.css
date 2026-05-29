@@ -1120,7 +1120,7 @@ body {
 
     
     .nav-buttons.mobile-drawer-layer {
-        display: none !important; 
+        display: flex !important; 
         position: fixed !important;
         top: 60px !important; 
         left: 0 !important;
@@ -1135,6 +1135,14 @@ body {
         z-index: 99998 !important; 
         box-sizing: border-box !important;
         overflow-y: auto !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(-8px) !important;
+        transition:
+          opacity 0.2s var(--ease),
+          transform 0.2s var(--ease),
+          visibility 0.2s var(--ease) !important;
     }
 
     :root[data-theme="light"] .nav-buttons.mobile-drawer-layer,
@@ -1144,6 +1152,10 @@ body {
 
     .nav-buttons.mobile-drawer-layer.active {
         display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
     }
 
     .nav-buttons.mobile-drawer-layer .btn {
