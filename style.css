@@ -2347,7 +2347,7 @@ body.light-mode .noise-layer {
   .projects-header {
     align-items: stretch;
   }
-
+}
   body.light-mode .stats-strip {
     background: rgba(255, 255, 255, 0.85);
     box-shadow:
@@ -2359,7 +2359,7 @@ body.light-mode .noise-layer {
     background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(255, 255, 255, 0.9));
     border: 1px solid rgba(0, 0, 0, 0.08);
   }
-}
+
 
 @media (prefers-reduced-motion: reduce) {
   html {

@@ -20,7 +20,7 @@
         <nav class="navbar">
             <span class="logo">✈ Wanderlust</span>
             <ul>
-                <li><a href="#top" onclick="updatePlace('Iceland'); placeSelector.value='Iceland';">HOME</a></li>
+                <li><a href="#top" id="homeLink">HOME</a></li>
                 <li><a href="#contact">CONTACT</a></li>
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#services">SERVICES</a></li>
@@ -41,7 +41,10 @@
                 <option value="Ireland">Ireland</option>
                 <option value="Germany">Germany</option>
             </select>
-            <br />
+            
+            <!-- Destination Indicators -->
+            <div id="destinationIndicators" class="destination-indicators" role="navigation" aria-label="Destination navigation"></div>
+            
             <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
         </div>
     </div>
@@ -72,45 +75,6 @@
         </div>
     </footer>
 
-    <script>
-        const placeBackgrounds = {
-            "Iceland": "url('images/iceland.jpg')",
-            "Switzerland": "url('images/Jennifer.avif')",
-            "Scotland": "url('images/Daniel.jpeg')",
-            "Ireland": "url('images/kai.jpg')",
-            "Germany": "url('images/Hannes-Becker4.jpg')"
-        };
-
-        const placeDescriptions = {
-            "Iceland": "Explore the beauty of glaciers and the breathtaking landscapes of Iceland.",
-            "Switzerland": "Experience the serene beauty of the Swiss Alps and picturesque villages.",
-            "Scotland": "Discover the rich history and stunning highlands of Scotland.",
-            "Ireland": "Immerse yourself in the lush green landscapes and vibrant culture of Ireland.",
-            "Germany": "Explore Germany's charming cities and stunning countryside."
-        };
-
-        const placeSelector = document.getElementById('placeSelector');
-        const bookingButton = document.getElementById('bookingButton');
-        const placeTitle = document.getElementById('placeTitle');
-        const placeDescription = document.getElementById('placeDescription');
-        const body = document.body;
-
-        function updatePlace(place) {
-            body.style.backgroundImage = placeBackgrounds[place];
-            placeTitle.textContent = place;
-            placeDescription.textContent = placeDescriptions[place];
-            bookingButton.textContent = `Book a Trip to ${place}`;
-        }
-
-        placeSelector.addEventListener('change', function () {
-            updatePlace(placeSelector.value);
-        });
-
-        window.onload = function () {
-            const defaultPlace = "Iceland";
-            updatePlace(defaultPlace);
-            placeSelector.value = defaultPlace;
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
