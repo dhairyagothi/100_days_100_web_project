@@ -97,6 +97,47 @@ textarea {
     background: var(--accent);
 }
 
+.project-back-button {
+    position: fixed !important;
+    top: 90px !important;
+    right: 25px !important;
+    left: auto !important;
+
+    width: auto !important;
+    max-width: max-content !important;
+
+    z-index: 9999 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+
+    padding: 8px 8px !important;
+
+    background: #2563eb !important;
+    color: #ffffff !important;
+
+    border: 2px solid #22c55e !important;
+    border-radius: 12px !important;
+
+    text-decoration: none !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    font-family: 'Inter', system-ui, sans-serif !important;
+
+    white-space: nowrap !important;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+
+    transition: all 0.3s ease !important;
+}
+
+.project-back-button:hover {
+    background: #1d4ed8 !important;
+    transform: translateY(-2px) !important;
+}
+
 .hero {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);

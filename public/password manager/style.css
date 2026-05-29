@@ -56,6 +56,13 @@ body{
     color: var(--primary);
 }
 
+.hamburger{
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: white;
+}
+
 .nav-links{
     display: flex;
     list-style: none;
@@ -428,12 +435,31 @@ tr:hover{
     }
 
     .navbar{
-        flex-direction: column;
-        gap: 20px;
+    padding: 20px 6%;
+    position: relative;
+    }
+
+    .hamburger{
+        display: block;
     }
 
     .nav-links{
+        position: absolute;
+        top: 80px;
+        right: 20px;
+        background: rgba(15, 23, 42, 0.98);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        width: 220px;
+        padding: 20px;
+        flex-direction: column;
         gap: 20px;
+        display: none;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .nav-links.active{
+        display: flex;
     }
 }
 
@@ -467,11 +493,6 @@ tr:hover{
 
     .hero h1{
         font-size: 2rem;
-    }
-
-    .nav-links{
-        flex-direction: column;
-        align-items: center;
     }
 
     .submit-btn{
