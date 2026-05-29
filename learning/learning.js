@@ -21,36 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      THEME STORAGE & SYNC
      ============================================================ */
   function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    const syncThemeIcons = () => {
-      const isLight = document.body.classList.contains('light-mode');
-      const icon = document.querySelector('#themeToggleNav i');
-      if (icon) {
-        icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
-      }
-    };
-
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-mode');
-    } else {
-      document.body.classList.remove('light-mode');
-    }
-    syncThemeIcons();
-
-    document.body.addEventListener('click', (e) => {
-      const target = e.target.closest('#themeToggleNav');
-      if (!target) return;
-
-      document.body.classList.toggle('light-mode');
-      const isLight = document.body.classList.contains('light-mode');
-      localStorage.setItem('theme', isLight ? 'light' : 'dark');
-      syncThemeIcons();
-
-      document.body.classList.add('theme-transitioning');
-      setTimeout(() => {
-        document.body.classList.remove('theme-transitioning');
-      }, 400);
-    });
+    window.ThemeManager?.init?.();
   }
 
   /* ============================================================
@@ -58,18 +29,51 @@ document.addEventListener('DOMContentLoaded', async () => {
      ============================================================ */
   function initMobileMenu() {
     if (menuToggle && navButtons) {
+      if (menuToggle.dataset.mobileNavBound !== 'true') {
+        menuToggle.dataset.mobileNavBound = 'true';
+
+        const closeMenu = () => {
+          menuToggle.classList.remove('active');
+          navButtons.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        };
+
+        const openMenu = () => {
+          menuToggle.classList.add('active');
+          navButtons.classList.add('active');
+          menuToggle.setAttribute('aria-expanded', 'true');
+          const firstLink = navButtons.querySelector('a, button');
+          firstLink?.focus({ preventScroll: true });
+        };
+
       menuToggle.addEventListener('click', (e) => {
         e.stopPropagation();
-        menuToggle.classList.toggle('active');
-        navButtons.classList.toggle('active');
+          if (navButtons.classList.contains('active')) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
       });
 
       document.addEventListener('click', (e) => {
         if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-          menuToggle.classList.remove('active');
-          navButtons.classList.remove('active');
+            closeMenu();
         }
       });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+            closeMenu();
+            menuToggle.focus({ preventScroll: true });
+          }
+        });
+
+        navButtons.addEventListener('click', (e) => {
+          if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+            closeMenu();
+          }
+        });
+      }
     }
 
     if (sidebarToggle && learningSidebar) {

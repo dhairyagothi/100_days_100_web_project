@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allContests = [];
     let timerInterval;
+
     let loadingFrames = ['|', '/', '-', '\\'];
     let loadingFrameIndex = 0;
     let loadingInterval;
@@ -66,6 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }));
 
             if (allContests.length === 0) throw new Error('Empty');
+
+
 
         } catch (error) {
             console.warn('[SYS.WARN] LIVE API UNREACHABLE. LOADING VERIFIED CACHE DATA...');
@@ -222,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filtered.sort((a, b) => a.start_time - b.start_time);
         }
 
+
         renderContests(filtered);
     };
 
@@ -229,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sortFilter.addEventListener('change', handleFilterChange);
 
     // Initial boot
+
     fetchContests();
     setInterval(fetchContests, 5 * 60 * 1000); // 5 min auto-refresh
 });

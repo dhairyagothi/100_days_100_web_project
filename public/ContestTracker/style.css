@@ -25,6 +25,22 @@
     box-sizing: border-box;
 }
 
+body.light-mode {
+    --bg-main: #e8f5e2;
+    --text-glow: #1a6b0a;
+    --text-dim: #2d8c1a;
+    --border-color: #1a6b0a;
+    --card-bg: rgba(220, 240, 220, 0.9);
+}
+
+body.light-mode .timer-element {
+    text-shadow: none;
+}
+
+body.light-mode .hero-title {
+    text-shadow: 0 0 6px rgba(26, 107, 10, 0.3);
+}
+
 body {
     font-family: 'Fira Code', monospace;
     background-color: var(--bg-main);
@@ -52,8 +68,10 @@ body {
 .hero-section {
     padding: 3rem 1rem;
     text-align: center;
+
     border-bottom: 1px solid var(--border-color);
     background: linear-gradient(180deg, #000000 0%, #031203 100%);
+
     text-transform: uppercase;
     position: relative;
     box-shadow: 0 4px 20px rgba(0, 255, 0, 0.05);
@@ -107,6 +125,7 @@ body {
 .controls-group {
     display: flex;
     align-items: center;
+
     gap: 1rem;
     flex-grow: 1;
 }
@@ -122,13 +141,16 @@ body {
     position: relative;
     flex-grow: 1;
     max-width: 300px;
+
 }
 
 .filter-dropdown {
     width: 100%;
     padding: 0.75rem 1rem;
     font-family: 'Fira Code', monospace;
+
     background-color: var(--bg-main);
+
     color: var(--text-glow);
     border: 1px solid var(--border-color);
     outline: none;
@@ -143,7 +165,9 @@ body {
     border-color: var(--text-glow);
 }
 
+
 .status-message {
+
     text-align: center;
     font-size: 1.2rem;
     padding: 3rem;
@@ -235,8 +259,10 @@ body {
     padding: 1.2rem;
     border: 1px solid var(--text-dim);
     text-align: center;
+
     background: #000;
     position: relative;
+
 }
 
 .timer-label {
@@ -310,4 +336,5 @@ body {
     .controls-group { flex-direction: column; align-items: flex-start; }
     .select-wrapper { max-width: 100%; }
     .hero-title { font-size: 2.2rem; }
+
 }
