@@ -52,7 +52,6 @@ window.addEventListener('scroll', () => {
   }
 });
 
-console.log(window.innerWidth)
 // ── Scroll reveal ──
 const revealEls = document.querySelectorAll('.reveal');
 const observer  = new IntersectionObserver(entries => {

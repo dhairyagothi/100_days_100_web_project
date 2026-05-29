@@ -108,14 +108,6 @@ function logoutUser() {
     localStorage.removeItem('currentUser');
 }
 
-// ============= HELPER: Check if form has data ============= 
-function hasFormData(formId) {
-    const form = document.getElementById(formId);
-    if (!form) return false;
-    const inputs = form.querySelectorAll('input');
-    return Array.from(inputs).some(input => input.value.trim() !== '');
-}
-
 // ============= MODAL FUNCTIONS ============= 
 function openSignupModal() {
     document.getElementById('signupModal').classList.add('active');
@@ -145,31 +137,16 @@ function switchToSignIn() {
     openSigninModal();
 }
 
-// ✅ FIX: Close modals when clicking outside — with confirmation if form has data
+// Close modals when clicking outside
 window.addEventListener('click', (event) => {
     const signupModal = document.getElementById('signupModal');
     const signinModal = document.getElementById('signinModal');
-
+    
     if (event.target === signupModal) {
-        if (hasFormData('signupForm')) {
-            const confirmClose = confirm('Are you sure you want to leave? Your entered data will be lost.');
-            if (confirmClose) {
-                closeSignupModal();
-            }
-        } else {
-            closeSignupModal();
-        }
+        closeSignupModal();
     }
-
     if (event.target === signinModal) {
-        if (hasFormData('signinForm')) {
-            const confirmClose = confirm('Are you sure you want to leave? Your entered data will be lost.');
-            if (confirmClose) {
-                closeSigninModal();
-            }
-        } else {
-            closeSigninModal();
-        }
+        closeSigninModal();
     }
 });
 

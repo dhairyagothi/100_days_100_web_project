@@ -437,7 +437,6 @@ function startGame() {
     restartBtn.style.display = "none";
     gameOverText.classList.remove("over");
     dino.classList.add("running");
-    gameCanvas.classList.remove("is-paused");
     clearObstacles();
     clearPowerups();
     clearActivePower();
@@ -619,11 +618,9 @@ function togglePause() {
     if (!paused) {
         lastTime = 0;
         dino.classList.add("running");
-        gameCanvas.classList.remove("is-paused"); // Clear CSS pause state
         requestAnimationFrame(gameLoop);
     } else {
         dino.classList.remove("running");
-        gameCanvas.classList.add("is-paused"); // Trigger O(1) CSS engine halt
     }
 }
 

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boredom Buster</title>
+  <script>
+    // Ensure trailing slash for correct relative asset loading on static hosts
+    if (!window.location.pathname.endsWith('/') && !window.location.pathname.match(/\.[a-zA-Z0-9]+$/)) {
+      window.location.pathname = window.location.pathname + '/';
+    }
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="noise"></div>
+
+  <div class="card">
+    <div class="card-accent-bar"></div>
+
+    <header class="header">
+      <div class="header-top">
+        <div class="logo-icon">⚡</div>
+        <h1>Boredom Buster</h1>
+      </div>
+      <p>Nothing to do? Let's fix that instantly.</p>
+    </header>
+
+    <section class="controls">
+      <div class="input-row">
+        <div class="field">
+          <label>Category</label>
+          <select id="category">
+            <option value="">Surprise Me</option>
+            <option value="education">Education</option>
+            <option value="recreational">Recreational</option>
+            <option value="social">Social</option>
+            <option value="diy">DIY</option>
+            <option value="charity">Charity</option>
+            <option value="cooking">Cooking</option>
+            <option value="relaxation">Relaxation</option>
+            <option value="music">Music</option>
+            <option value="busywork">Busywork</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Group Size</label>
+          <input type="number" id="participants" min="1" max="10" placeholder="Solo or group?">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Budget</label>
+        <select id="budget">
+          <option value="">Any Budget</option>
+          <option value="free">Free — Zero spend</option>
+          <option value="cheap">Cheap — Spare change</option>
+          <option value="expensive">Splurge — Treat yourself</option>
+        </select>
+      </div>
+
+      <button class="btn-find" id="fetch-btn">
+        <span id="btn-label">Find Something to Do</span>
+      </button>
+    </section>
+
+    <div class="divider" id="result-divider" style="display:none"></div>
+
+    <section class="result-section hidden" id="result-container">
+      <div class="result-label">Your Activity</div>
+      <div class="activity-name" id="activity-name"></div>
+
+      <div class="tags" id="tag-container">
+        <span class="tag tag-type" id="activity-type"></span>
+        <span class="tag tag-people" id="activity-participants"></span>
+        <span class="tag tag-cost" id="activity-price"></span>
+      </div>
+
+      <div class="error-box hidden" id="error-message"></div>
+    </section>
+
+    <footer class="card-footer" id="card-footer" style="display:none">
+      <span class="footer-hint">Powered by Bored API</span>
+      <button class="try-again-btn" id="try-again-btn">Try another →</button>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -128,7 +128,7 @@ function calculateLove() {
         // Result categories
         if (loveIndex <= 30) {
 
-            emoji = '<i class="fas fa-heart-broken fa-beat" style="color: #ef4444;"></i>';
+            emoji = "💔";
 
             msg = lowMessages[
                 Math.floor(Math.random() * lowMessages.length)
@@ -136,7 +136,7 @@ function calculateLove() {
 
         } else if (loveIndex <= 60) {
 
-            emoji = '<i class="fas fa-heart fa-bounce" style="color: #fbbf24;"></i>';
+            emoji = "💛";
 
             msg = mediumMessages[
                 Math.floor(Math.random() * mediumMessages.length)
@@ -144,7 +144,7 @@ function calculateLove() {
 
         } else if (loveIndex <= 90) {
 
-            emoji = '<i class="fas fa-heart fa-pulse" style="color: #ec4899;"></i>';
+            emoji = "💕";
 
             msg = highMessages[
                 Math.floor(Math.random() * highMessages.length)
@@ -152,7 +152,7 @@ function calculateLove() {
 
         } else {
 
-            emoji = '<i class="fas fa-fire fa-flashing" style="color: #f97316;"></i>';
+            emoji = "❤️‍🔥";
 
             msg = soulmateMessages[
                 Math.floor(Math.random() * soulmateMessages.length)
@@ -160,8 +160,8 @@ function calculateLove() {
         }
 
         // Display result
-        const resultMsgEl = document.getElementById("result-message");
-        resultMsgEl.innerHTML = `${emoji} <span style="font-size: 3rem; margin: 0 15px;">${loveIndex}%</span> ${emoji}`;
+        document.getElementById("result-message").textContent =
+            `${emoji} ${loveIndex}% ${emoji}`;
 
         document.getElementById("result-percentage").textContent =
             `${yourName} & ${crushName} — ${msg}`;
