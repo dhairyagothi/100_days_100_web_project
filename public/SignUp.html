@@ -3,14 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sammu Trial Login Page</title>
+    <title>Sign Up – 100 Days 100 Web Projects</title>
 
     <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
-     rel="stylesheet" href="style.css" />
-  
+    />
+    <link rel="stylesheet" href="style.css" />
 
     <style>
       /* ── Reset & Base ── */
@@ -26,12 +27,14 @@
       /* ── Navbar ── */
       .navbar {
         padding: 16px 24px;
-        background: linear-gradient(135deg, #0f172a, #1e293b, #2563eb);
+        background: rgba(15,23,42,0.8);
         backdrop-filter: blur(8px);
         position: sticky;
         top: 0;
         z-index: 10;
         border-bottom: 1px solid rgba(255,255,255,0.07);
+        display: flex;
+        gap: 12px;
       }
 
       .button {
@@ -53,6 +56,7 @@
         color: #fff;
       }
       .home-btn:hover { background: #4f46e5; transform: translateY(-1px); }
+      .home-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
       /* ── Hero ── */
       .hero-section {
@@ -95,16 +99,15 @@
         text-align: center;
       }
 
-      /* ── Field wrapper: stable height ── */
+      /* ── Field wrapper ── */
       .field-wrap {
-        margin-bottom: 8px; /* gap between fields */
+        margin-bottom: 8px;
       }
 
       .form-group {
         display: flex;
         align-items: center;
         gap: 10px;
-        background:;
         border: 1.5px solid #334155;
         border-radius: 10px;
         padding: 11px 14px;
@@ -134,17 +137,27 @@
 
       .form-input::placeholder { color: #475569; }
 
-      /* ── Error message: fixed height so form never jumps ── */
+      /* ── Error message ── */
       .error-msg {
         display: block;
         font-size: 11.5px;
-        height: 18px;           /* always occupies this space */
+        height: 18px;
         line-height: 18px;
         padding-left: 4px;
         color: #f87171;
         transition: opacity 0.2s;
       }
       .error-msg:empty { opacity: 0; }
+
+      /* ── Status banner ── */
+      #statusMsg {
+        display: none;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 16px;
+        text-align: center;
+      }
 
       /* ── Submit ── */
       .signup-btn {
@@ -173,32 +186,81 @@
     </style>
   </head>
   <body>
-            <!-- Password -->
-            <div class="field-wrap">
-              <div class="form-group" id="grp-password">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="password" placeholder="Password" class="form-input" autocomplete="new-password" />
-              </div>
-              <span class="error-msg" id="err-password"></span>
+    <nav class="navbar">
+      <a href="../index.html" class="button home-btn">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+      <a href="./Login.html" class="button home-btn" style="background:#334155;">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </a>
+    </nav>
+
+    <section class="hero-section">
+      <h1 class="hero-title">100 Days 100 Web Projects</h1>
+      <p class="hero-desc">
+        Create your free account to explore 100+ exciting web experiments
+        crafted for learning and inspiration.
+      </p>
+
+      <div class="auth-card">
+        <h2 class="auth-title-1">Sign Up</h2>
+
+        <!-- Status message -->
+        <div id="statusMsg"></div>
+
+        <form id="signupForm" novalidate>
+
+          <!-- Name -->
+          <div class="field-wrap">
+            <div class="form-group" id="grp-name">
+              <i class="fa-solid fa-id-card"></i>
+              <input type="text" id="name" placeholder="Full Name" class="form-input" autocomplete="name" />
             </div>
+            <span class="error-msg" id="err-name"></span>
+          </div>
 
-            <button type="submit" class="button home-btn signup-btn">
-              Sign Up <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </form>
+          <!-- Username -->
+          <div class="field-wrap">
+            <div class="form-group" id="grp-username">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" id="username" placeholder="Username" class="form-input" autocomplete="username" />
+            </div>
+            <span class="error-msg" id="err-username"></span>
+          </div>
 
-          <p class="already-signed-up">
-            Already signed up? <a href="Login.html">Login</a>
-          </p>
-          
-        </div>
+          <!-- Email -->
+          <div class="field-wrap">
+            <div class="form-group" id="grp-email">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" id="email" placeholder="Email Address" class="form-input" autocomplete="email" />
+            </div>
+            <span class="error-msg" id="err-email"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="field-wrap">
+            <div class="form-group" id="grp-password">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="password" placeholder="Password" class="form-input" autocomplete="new-password" />
+            </div>
+            <span class="error-msg" id="err-password"></span>
+          </div>
+
+          <button type="submit" class="button home-btn signup-btn" id="signupBtn">
+            Sign Up <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <p class="already-signed-up">
+          Already signed up? <a href="Login.html">Login</a>
+        </p>
       </div>
     </section>
 
     <script>
       /* ─── helpers ─── */
       const $ = id => document.getElementById(id);
-      const emailRx   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRx    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const passwordRx = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
 
       function setField(grpId, errId, msg) {
@@ -208,11 +270,26 @@
         grp.classList.toggle('success', !msg && grp.querySelector('input').value.trim() !== '');
       }
 
+      function showStatus(message, type) {
+        const el = $('statusMsg');
+        el.textContent = message;
+        el.style.display = 'block';
+        if (type === 'error') {
+          el.style.background = 'rgba(248,113,113,0.15)';
+          el.style.color = '#f87171';
+          el.style.border = '1px solid rgba(248,113,113,0.3)';
+        } else {
+          el.style.background = 'rgba(52,211,153,0.15)';
+          el.style.color = '#34d399';
+          el.style.border = '1px solid rgba(52,211,153,0.3)';
+        }
+      }
+
       /* ─── live validation ─── */
       $('name').addEventListener('input', () => {
         const v = $('name').value.trim();
         setField('grp-name', 'err-name',
-          v.length === 0 ? '' :                     // blank while untouched — no error yet
+          v.length === 0 ? '' :
           v.length < 3   ? 'Name must be at least 3 characters' : '');
       });
 
@@ -235,10 +312,10 @@
         const v = $('password').value;
         if (v.length === 0) { setField('grp-password', 'err-password', ''); return; }
         const hints = [];
-        if (!/[A-Z]/.test(v))          hints.push('uppercase letter');
-        if (!/[0-9]/.test(v))          hints.push('number');
-        if (!/[!@#$%^&*]/.test(v))     hints.push('special char (!@#$%^&*)');
-        if (v.length < 6)              hints.push('6+ characters');
+        if (!/[A-Z]/.test(v))       hints.push('uppercase letter');
+        if (!/[0-9]/.test(v))       hints.push('number');
+        if (!/[!@#$%^&*]/.test(v))  hints.push('special char (!@#$%^&*)');
+        if (v.length < 6)            hints.push('6+ characters');
         setField('grp-password', 'err-password',
           hints.length ? 'Needs: ' + hints.join(', ') : '');
       });
@@ -281,9 +358,15 @@
           return;
         }
 
+        // Store user data (keyed by username — matches Login.html lookup)
         localStorage.setItem(username, JSON.stringify({ name, email, password }));
-        alert('Signup successful!');
-        window.location.href = 'Login.html';
+
+        showStatus('Account created successfully! Redirecting to login…', 'success');
+        $('signupBtn').disabled = true;
+
+        setTimeout(() => {
+          window.location.href = 'Login.html';
+        }, 1200);
       });
     </script>
   </body>

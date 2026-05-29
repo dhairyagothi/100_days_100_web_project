@@ -17,7 +17,7 @@
         <nav class="navbar">
             <span class="logo">✈ Wanderlust</span>
             <ul>
-                <li><a href="#top" onclick="updatePlace('Iceland'); placeSelector.value='Iceland';">HOME</a></li>
+                <li><a href="#top" id="homeLink">HOME</a></li>
                 <li><a href="#contact">CONTACT</a></li>
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#services">SERVICES</a></li>
@@ -38,7 +38,10 @@
                 <option value="Ireland">Ireland</option>
                 <option value="Germany">Germany</option>
             </select>
-            <br />
+            
+            <!-- Destination Indicators -->
+            <div id="destinationIndicators" class="destination-indicators" role="navigation" aria-label="Destination navigation"></div>
+            
             <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
         </div>
     </div>
