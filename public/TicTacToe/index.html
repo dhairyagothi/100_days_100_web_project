@@ -4,77 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TicTacToe - Neon</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/public/TicTacToe/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Unbounded:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 <header class="hero">
     <h1 class="heading">Tic<span>Tac</span>Toe</h1>
-    <p class="subheading">Neon grid. Smart moves. First to three wins the set.</p>
+    <p class="subheading">Neon grid · Smart moves · First to three wins the set</p>
 </header>
 
 <main class="container" id="game">
     <section class="panel">
-        <div class="status-row">
-            <div class="status" id="statusText">Ready to play</div>
-            <div class="turn-chip" id="turnChip">Turn: X</div>
-            <div class="timer-chip" id="turnTimer">Time: 0s</div>
-        </div>
+        <aside class="side-panel" aria-label="Game status and controls">
+            <div class="status-row">
+                <div class="status" id="statusText">Ready to play</div>
+                <div class="turn-chip" id="turnChip">Turn: X</div>
+                <div class="timer-chip" id="turnTimer">Time: 0s</div>
+            </div>
 
-        <div class="toolbar">
-            <div class="field">
-                <span>Mode</span>
-                <select id="modeSelect">
-                    <option value="pvp">Player vs Player</option>
-                    <option value="cpu-easy">Vs CPU (Easy)</option>
-                    <option value="cpu-medium">Vs CPU (Medium)</option>
-                    <option value="cpu-hard">Vs CPU (Hard)</option>
-                </select>
+            <div class="toolbar">
+                <div class="field">
+                    <span>Mode</span>
+                    <select id="modeSelect">
+                        <option value="pvp">Player vs Player</option>
+                        <option value="cpu-easy">Vs CPU (Easy)</option>
+                        <option value="cpu-medium">Vs CPU (Medium)</option>
+                        <option value="cpu-hard">Vs CPU (Hard)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <span>Theme</span>
+                    <select id="themeSelect">
+                        <option value="neon">Neon</option>
+                        <option value="pastel">Pastel</option>
+                        <option value="mono">Mono</option>
+                    </select>
+                </div>
+                <div class="toolbar-actions">
+                    <button class="btn-ghost" id="hintBtn">Hint</button>
+                    <button class="btn-ghost" id="undoBtn">Undo</button>
+                </div>
             </div>
-            <div class="field">
-                <span>Theme</span>
-                <select id="themeSelect">
-                    <option value="neon">Neon</option>
-                    <option value="pastel">Pastel</option>
-                    <option value="mono">Mono</option>
-                </select>
-            </div>
-            <div class="toolbar-actions">
-                <button class="btn-ghost" id="hintBtn">Hint</button>
-                <button class="btn-ghost" id="undoBtn">Undo</button>
-            </div>
-        </div>
 
-        <div class="scoreboard">
-            <div class="score-card" data-player="X">
-                <span>Player X</span>
-                <strong id="scoreX">0</strong>
+            <div class="scoreboard">
+                <div class="score-card" data-player="X">
+                    <span>Player X</span>
+                    <strong id="scoreX">0</strong>
+                </div>
+                <div class="score-card" data-player="O">
+                    <span>Player O</span>
+                    <strong id="scoreO">0</strong>
+                </div>
+                <div class="score-card" data-player="D">
+                    <span>Draws</span>
+                    <strong id="scoreD">0</strong>
+                </div>
             </div>
-            <div class="score-card" data-player="O">
-                <span>Player O</span>
-                <strong id="scoreO">0</strong>
-            </div>
-            <div class="score-card" data-player="D">
-                <span>Draws</span>
-                <strong id="scoreD">0</strong>
-            </div>
-        </div>
 
-        <div class="board" id="board"></div>
-
-        <div class="controls">
-            <button class="btn-primary" id="newRoundBtn">New Round</button>
-            <button class="btn-ghost" id="resetAllBtn">Reset Scores</button>
-        </div>
-
-        <div class="history">
-            <div class="history-hdr">
-                <h3>Move History</h3>
-                <span>Last 10 moves</span>
+            <div class="controls">
+                <button class="btn-primary" id="newRoundBtn">New Round</button>
+                <button class="btn-ghost" id="resetAllBtn">Reset Scores</button>
             </div>
-            <ol id="historyList"></ol>
-        </div>
+
+            <div class="history">
+                <div class="history-hdr">
+                    <h3>Move History</h3>
+                    <span>Last 10 moves</span>
+                </div>
+                <ol id="historyList"></ol>
+            </div>
+        </aside>
+
+        <section class="game-stage" aria-label="TicTacToe game board">
+            <div class="board-shell">
+                <div class="board" id="board"></div>
+            </div>
+        </section>
     </section>
 </main>
 
@@ -104,9 +110,9 @@
 <canvas id="confetti" aria-hidden="true"></canvas>
 
 <footer class="footer">
-    <span>A TIC TAC TOE GAME TO PLAY WHEN BORED</span>
+    <span>Play sharp · Win clean</span>
 </footer>
 
-<script src="script.js"></script>
+<script src="/public/TicTacToe/script.js"></script>
 </body>
 </html>
