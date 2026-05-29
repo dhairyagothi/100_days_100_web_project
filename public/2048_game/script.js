@@ -603,6 +603,7 @@ function showOverlay(type) {
     <button class="btn" id="ov-replay-btn">Play Again</button>
   `;
   ov.style.display = 'flex';
+  ov.style.zIndex = '9999';
   // FIX: Clear out any previous listeners using a fresh replacement element reference
   const replayBtn = document.getElementById('ov-replay-btn');
   replayBtn.onclick = () => init();
