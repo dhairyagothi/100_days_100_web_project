@@ -265,6 +265,35 @@ function getSourceUrl(url) {
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
 
+/**
+ * Sanitizes and validates project URLs to prevent broken navigation.
+ * Handles relative paths, external links, and provides safe fallbacks.
+ */
+function sanitizeProjectURL(path) {
+  if (!path || typeof path !== 'string') {
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}`;
+  }
+
+  try {
+    const cleanedPath = path.trim();
+
+    if (
+      cleanedPath.startsWith("http://") ||
+      cleanedPath.startsWith("https://")
+    ) {
+      return cleanedPath;
+    }
+
+    // Sanitize relative paths by collapsing multiple slashes
+    if (cleanedPath.startsWith("./") || cleanedPath.startsWith("public/")) {
+      return cleanedPath.replace(/\/+/g, '/');
+    }
+
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${cleanedPath.replace(/^\/+/, "")}`;
+  } catch (error) {
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}`;
+  }
+}
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
@@ -591,12 +620,13 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
 
   pageItems.forEach(([day, name, url, tags]) => {
+    const sanitizedUrl = sanitizeProjectURL(url);
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
 
     card.className = 'project-card';
     card.style.cursor = 'pointer';
-    card.onclick = () => window.open(url.trim(), '_blank');
+    card.onclick = () => window.open(sanitizedUrl, '_blank');
 
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
@@ -613,7 +643,7 @@ function renderGrid() {
       <div class="card-tags">${tagsHTML}</div>
       <div class="card-footer">
         <div class="card-actions-left">
-          <a href="${url.trim()}" target="_blank" rel="noopener noreferrer" class="card-link open-project" data-id="${day}">
+          <a href="${sanitizedUrl}" target="_blank" rel="noopener noreferrer" class="card-link open-project" data-id="${day}">
             Demo <i class="fas fa-arrow-right"></i>
           </a>
           <a href="${sourceUrl}" target="_blank" class="card-link view-code-link">
@@ -875,6 +905,7 @@ function renderBookmarks() {
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleBookmarks.forEach(([day, name, url, tags]) => {
+    const sanitizedUrl = sanitizeProjectURL(url);
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
@@ -895,7 +926,7 @@ function renderBookmarks() {
             <p class="card-description">${description}</p>
             <div class="card-footer">
                 <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                    <a href="${sanitizedUrl}" target="_blank" class="card-link open-project" data-id="${day}">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>
                     <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
@@ -932,6 +963,7 @@ function renderRecentProjects() {
   const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleRecent.forEach(([day, name, url, tags]) => {
+    const sanitizedUrl = sanitizeProjectURL(url);
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
@@ -948,7 +980,7 @@ function renderRecentProjects() {
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
+                    <a href="${sanitizedUrl}" target="_blank" class="card-link open-project" data-id="${day}">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>
                     <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
