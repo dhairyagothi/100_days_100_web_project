@@ -21,136 +21,101 @@
   </head>
 
   <body class="min-h-screen text-slate-100">
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="/" class="back-button">← Home</a>
 
     <!-- Header -->
-    <header class="py-12 shadow-2xl border-b border-white/10">
-      <div class="max-w-7xl mx-auto px-6 text-center">
-        <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
-          🚀 CPU Scheduling Simulator
+    <header class="py-10 border-b border-white/10">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-3 leading-tight text-white">
+          CPU Scheduler Simulator
         </h1>
 
-        <p
-          class="text-lg md:text-xl text-slate-300 max-w-4xl mx-auto leading-relaxed"
-        >
-          Interactive Operating Systems simulator with dynamic Gantt charts,
-          performance analytics, and support for eight essential CPU scheduling
-          algorithms.
+        <p class="text-base md:text-lg text-slate-400 leading-relaxed">
+          Visualize and analyze eight different CPU scheduling algorithms with interactive simulations and real-time Gantt charts.
         </p>
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 md:px-6 py-8">
-      <!-- Algorithm Selection -->
-      <section class="algorithm-card p-8 rounded-3xl mb-8 fade-in">
+    <main class="py-12">
+      <!-- Algorithm Selection Section -->
+      <section class="card mb-8 fade-in">
+        <div class="flex flex-col items-center mb-8">
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Select Scheduling Algorithm
+          </h2>
+          <p class="text-slate-400 text-sm">
+            Choose from 8 different scheduling algorithms
+          </p>
+        </div>
+
+        <div class="max-w-sm mx-auto mb-6">
+          <label
+            for="algorithm"
+            class="block text-sm font-semibold text-slate-300 mb-3"
+          >
+            Algorithm
+          </label>
+
+          <select
+            id="algorithm"
+            class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white text-base focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
+          >
+            <option value="fcfs" class="text-gray-800">
+              FCFS - First Come First Serve
+            </option>
+            <option value="sjf" class="text-gray-800">
+              SJF - Shortest Job First
+            </option>
+            <option value="srtf" class="text-gray-800">
+              SRTF - Shortest Remaining Time First
+            </option>
+            <option value="rr" class="text-gray-800">Round Robin</option>
+            <option value="priority" class="text-gray-800">
+              Priority Scheduling (Non-Preemptive)
+            </option>
+            <option value="priority_preemptive" class="text-gray-800">
+              Priority Scheduling (Preemptive)
+            </option>
+            <option value="hrrn" class="text-gray-800">
+              HRRN - Highest Response Ratio Next
+            </option>
+            <option value="multilevel" class="text-gray-800">
+              Multilevel Queue Scheduling
+            </option>
+          </select>
+        </div>
+
+        <!-- Algorithm Info -->
         <div
-          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6"
+          id="algorithmInfo"
+          class="bg-white/3 border border-slate-600/20 rounded-lg p-4 max-w-sm mx-auto"
         >
-          <div>
-            <h2 class="text-3xl font-bold mb-2">
-              🎯 Select Scheduling Algorithm
-            </h2>
-            <p class="text-slate-300">
-              Choose an algorithm to simulate and compare scheduling behavior.
-            </p>
-          </div>
-
-          <div
-            class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10"
+          <p
+            id="algorithmDescription"
+            class="text-sm text-slate-300 leading-relaxed"
           >
-            <span class="text-cyan-300">⚡</span>
-            <span class="text-sm font-medium"> 8 Algorithms Supported </span>
-          </div>
-        </div>
-
-        <div class="grid lg:grid-cols-2 gap-6">
-          <!-- Algorithm Dropdown -->
-          <div>
-            <label
-              for="algorithm"
-              class="block text-sm font-semibold uppercase tracking-wider mb-3 text-slate-200"
-            >
-              Scheduling Algorithm
-            </label>
-
-            <select
-              id="algorithm"
-              class="w-full p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white text-lg focus:outline-none focus:ring-4 focus:ring-cyan-400/30"
-            >
-              <option value="fcfs" class="text-gray-800">
-                FCFS - First Come First Serve
-              </option>
-              <option value="sjf" class="text-gray-800">
-                SJF - Shortest Job First
-              </option>
-              <option value="srtf" class="text-gray-800">
-                SRTF - Shortest Remaining Time First
-              </option>
-              <option value="rr" class="text-gray-800">Round Robin</option>
-              <option value="priority" class="text-gray-800">
-                Priority Scheduling (Non-Preemptive)
-              </option>
-              <option value="priority_preemptive" class="text-gray-800">
-                Priority Scheduling (Preemptive)
-              </option>
-              <option value="hrrn" class="text-gray-800">
-                HRRN - Highest Response Ratio Next
-              </option>
-              <option value="multilevel" class="text-gray-800">
-                Multilevel Queue Scheduling
-              </option>
-            </select>
-          </div>
-
-          <!-- Algorithm Info -->
-          <div
-            id="algorithmInfo"
-            class="bg-white/5 border border-white/10 rounded-2xl p-5"
-          >
-            <h3 class="font-bold text-lg mb-3">📘 Algorithm Information</h3>
-            <p
-              id="algorithmDescription"
-              class="text-sm text-slate-300 leading-relaxed"
-            >
-              Select an algorithm to view its description, advantages, and
-              behavior.
-            </p>
-          </div>
+            Select an algorithm to view its description.
+          </p>
         </div>
       </section>
-      <section class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-8 fade-in">
-          <div class="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <h2 class="text-2xl font-bold">⚖️ Algorithm Comparison Mode</h2>
-              <p class="text-slate-400 mt-1">Run all algorithms on the same input and compare side-by-side.</p>
-            </div>
-            <button id="compareToggle" class="px-6 py-3 rounded-2xl font-semibold border border-cyan-400/30 text-cyan-300 hover:bg-cyan-400/10 transition-all">
-              Enable Compare Mode
-            </button>
-          </div>
-      </section>
 
-      <!-- Process Configuration -->
-      <section
-        class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 mb-8 shadow-2xl fade-in"
-      >
-        <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-          <div>
-            <h2 class="text-3xl font-bold text-white">
-              ⚙️ Process Configuration
-            </h2>
-            <p class="text-slate-400 mt-1">
-              Define process attributes and scheduler-specific parameters.
-            </p>
-          </div>
+      <!-- Process Configuration Section -->
+      <section class="card mb-8 fade-in">
+        <div class="flex flex-col items-center mb-8">
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Configure Processes
+          </h2>
+          <p class="text-slate-400 text-sm">
+            Set the number of processes and algorithm parameters
+          </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
+        <div class="max-w-sm mx-auto">
           <!-- Number of Processes -->
-          <div>
+          <div class="mb-6">
             <label
               for="numProcesses"
-              class="block text-sm font-semibold uppercase tracking-wide text-slate-300 mb-2"
+              class="block text-sm font-semibold text-slate-300 mb-2"
             >
               Number of Processes
             </label>
@@ -160,16 +125,17 @@
               min="1"
               max="20"
               value="3"
-              class="w-full p-4 rounded-2xl bg-white/10 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30"
+              class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
               placeholder="Enter number of processes"
             />
+            <p class="text-xs text-slate-400 mt-2">Between 1 and 20 processes</p>
           </div>
 
           <!-- Time Quantum (Round Robin Only) -->
-          <div id="timeQuantumDiv" class="hidden">
+          <div id="timeQuantumDiv" class="hidden mb-6">
             <label
               for="timeQuantum"
-              class="block text-sm font-semibold uppercase tracking-wide text-slate-300 mb-2"
+              class="block text-sm font-semibold text-slate-300 mb-2"
             >
               Time Quantum
             </label>
@@ -178,110 +144,144 @@
               id="timeQuantum"
               min="1"
               value="2"
-              class="w-full p-4 rounded-2xl bg-white/10 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30"
+              class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
               placeholder="Enter time quantum"
             />
+            <p class="text-xs text-slate-400 mt-2">CPU time slice per process</p>
           </div>
-        </div>
 
-        <!-- Dynamic Process Form -->
-        <div id="processForm" class="space-y-6"></div>
+          <!-- Load Sample Data Button -->
+          <button
+            id="sampleBtn"
+            class="btn-secondary text-white font-semibold py-3 px-6 rounded-lg text-sm w-full"
+          >
+            📝 Load Sample Data
+          </button>
+        </div>
       </section>
 
       <!-- Error Message -->
-      <section id="errorMessage" class="hidden rounded-2xl p-5 mb-8">
+      <section id="errorMessage" class="hidden mb-8 p-4 rounded-lg border border-red-500/30 bg-red-500/10">
         <div class="flex items-start gap-3">
-          <div class="text-2xl">⚠️</div>
+          <div class="text-lg font-bold text-red-400 flex-shrink-0">!</div>
           <div>
-            <h3 class="font-bold mb-1">Input Error</h3>
-            <p id="errorText" class="text-sm"></p>
+            <h3 class="font-semibold text-red-300 text-sm">Validation Error</h3>
+            <p id="errorText" class="text-sm text-red-300/80 mt-1"></p>
           </div>
         </div>
       </section>
 
+      <!-- Process Form Container -->
+      <div id="processFormContainer" class="mb-8">
+        <div class="flex flex-col items-center mb-6">
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Process Details
+          </h2>
+          <p class="text-slate-400 text-sm">
+            Enter arrival time and burst time for each process
+          </p>
+        </div>
+        
+        <!-- Dynamic Process Form -->
+        <div id="processForm" class="space-y-4"></div>
+      </div>
+
       <!-- Action Buttons -->
       <section class="text-center mb-10">
-        <button
-          id="sampleBtn"
-          class="text-white font-semibold py-4 px-8 rounded-2xl shadow-xl mr-4 mb-4 md:mb-0"
-        >
-          📝 Load Sample Data
-        </button>
-
-        <button
-          id="runSimulation"
-          class="btn-primary text-white font-bold py-4 px-12 rounded-2xl text-lg md:text-xl shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <span id="buttonText">🚀 Run Simulation</span>
-          <span
-            id="loadingSpinner"
-            class="loading-spinner hidden inline-block ml-3"
-          ></span>
-        </button>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <button
+            id="runSimulation"
+            class="btn-primary text-white font-bold py-3 px-6 rounded-lg text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+          >
+            <span id="buttonText">🚀 Run Simulation</span>
+            <span
+              id="loadingSpinner"
+              class="loading-spinner hidden inline-block ml-2"
+            ></span>
+          </button>
+        </div>
       </section>
 
       <!-- Results Section -->
       <section id="results" class="hidden fade-in">
         <!-- Metrics Dashboard -->
+        <div class="flex flex-col items-center mb-8">
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Performance Metrics
+          </h2>
+          <p class="text-slate-400 text-sm mb-6">
+            Key scheduling performance indicators
+          </p>
+        </div>
+        
         <div
           id="metricsPanel"
-          class="grid sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8"
+          class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
         ></div>
 
         <!-- Results Table -->
-        <div class="results-table rounded-3xl p-8 mb-8">
-          <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-            <h2 class="text-3xl font-bold">📊 Simulation Results</h2>
-            <span
-              class="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-sm text-slate-300"
-            >
-              Detailed Process Metrics
-            </span>
+        <div class="card mb-8">
+          <div class="flex flex-col items-center mb-6">
+            <h2 class="text-2xl font-bold text-white mb-1">
+              Simulation Results
+            </h2>
+            <p class="text-slate-400 text-sm">
+              Detailed metrics for each process
+            </p>
           </div>
 
-          <div id="outputTable" class="overflow-x-auto"></div>
+          <div id="outputTable" class="overflow-x-auto w-full"></div>
         </div>
 
         <!-- Gantt Chart -->
-        <div class="gantt-container p-8 mb-8">
-          <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-            <h2 class="text-3xl font-bold">📈 Interactive Gantt Chart</h2>
-            <span
-              class="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-sm text-slate-300"
-            >
-              Timeline Visualization
-            </span>
+        <div class="card mb-8">
+          <div class="flex flex-col items-center mb-6">
+            <h2 class="text-2xl font-bold text-white mb-1">
+              Gantt Chart
+            </h2>
+            <p class="text-slate-400 text-sm">
+              Visual timeline of process execution
+            </p>
           </div>
 
-          <div id="ganttChart" class="overflow-x-auto"></div>
+          <div id="ganttChart" class="overflow-x-auto mb-6 bg-white/2 p-4 rounded-lg border border-slate-600/20"></div>
 
           <div
             id="processLegend"
-            class="mt-6 flex flex-wrap gap-4 justify-center"
+            class="flex flex-wrap gap-4 justify-center border-t border-slate-600/20 pt-6"
           ></div>
         </div>
 
         <!-- Analysis Panel -->
-        <div id="analysisPanel" class="rounded-3xl p-8">
-          <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-            <h2 class="text-3xl font-bold">🔍 Performance Analysis</h2>
-            <span
-              class="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-sm text-slate-300"
-            >
-              Insights & Recommendations
-            </span>
+        <div class="card">
+          <div class="flex flex-col items-center mb-6">
+            <h2 class="text-2xl font-bold text-white mb-1">
+              Performance Analysis
+            </h2>
+            <p class="text-slate-400 text-sm">
+              Algorithm insights and recommendations
+            </p>
           </div>
 
           <div id="analysisContent"></div>
         </div>
       </section>
+      
       <section id="comparisonResults" class="hidden fade-in mt-8">
-          <div class="bg-white/5 border border-white/10 rounded-3xl p-8 mb-8">
-            <h2 class="text-3xl font-bold mb-6">⚖️ Algorithm Comparison Dashboard</h2>
-            <div id="comparisonTable" class="overflow-x-auto mb-8"></div>
-            <div id="comparisonCharts" class="grid md:grid-cols-2 gap-6 mb-8"></div>
-            <div id="recommendationBox" class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-6"></div>
+        <div class="card">
+          <div class="flex flex-col items-center mb-8">
+            <h2 class="text-2xl font-bold text-white mb-1">
+              Algorithm Comparison
+            </h2>
+            <p class="text-slate-400 text-sm">
+              Side-by-side comparison of all algorithms
+            </p>
           </div>
+          
+          <div id="comparisonTable" class="overflow-x-auto mb-8"></div>
+          <div id="comparisonCharts" class="grid md:grid-cols-2 gap-6 mb-8"></div>
+          <div id="recommendationBox" class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4"></div>
+        </div>
       </section>
     </main>
 

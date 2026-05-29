@@ -98,7 +98,7 @@ nav ul li a:hover {
    PARALLAX HERO
 ══════════════════════════════════════ */
 .parallal {
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -108,6 +108,7 @@ nav ul li a:hover {
 
 .parallal img {
   position: absolute;
+  /* object-fit: cover; */
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -120,20 +121,20 @@ nav ul li a:hover {
   font-family: 'Playfair Display', serif;
   font-size: clamp(4rem, 10vw, 9rem);
   font-weight: 900;
-  position: relative;
+  position: absolute;
   z-index: 10;
   color: var(--white);
   letter-spacing: 4px;
   text-shadow: 0 4px 32px rgba(0,0,0,0.5), 0 0 80px rgba(53,147,129,0.4);
   animation: heroFadeIn 1.2s ease forwards;
 }
-@keyframes heroFadeIn {
-  from { opacity:0; transform:translateY(30px); }
+ @keyframes heroFadeIn {
+  from { opacity:0; transform:translateY(-30px); }
   to   { opacity:1; transform:translateY(0); }
-}
+} 
 
 /* scroll indicator */
-.scroll-hint {
+ .scroll-hint {
   position: absolute;
   bottom: 32px;
   left: 50%;
@@ -148,7 +149,7 @@ nav ul li a:hover {
   text-transform: uppercase;
   z-index: 20;
   animation: bounce 2s infinite;
-}
+} 
 .scroll-hint::after {
   content: '';
   width: 1px;

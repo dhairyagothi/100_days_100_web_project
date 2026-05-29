@@ -15,7 +15,7 @@ progressCircle.style.strokeDasharray =
 progressCircle.style.strokeDashoffset =
   circumference;
 
-const readinessScore = 82;
+let readinessScore = 82;
 
 const offset =
   circumference -
@@ -50,7 +50,7 @@ if (readinessScore >= 80) {
 const ctx =
   document.getElementById("skillsChart");
 
-new Chart(ctx, {
+const skillsChart = new Chart(ctx, {
 
   type: "radar",
 
@@ -241,4 +241,151 @@ goalCheckboxes.forEach((checkbox) => {
       }
     }
   );
+});
+const updateBtn =
+  document.getElementById("updateBtn");
+
+updateBtn.addEventListener("click", () => {
+
+  const dsa =
+    parseInt(
+      document.getElementById("dsaInput").value
+    );
+
+  const mock =
+    parseInt(
+      document.getElementById("mockInput").value
+    );
+
+  const aptitude =
+    parseInt(
+      document.getElementById("aptitudeInput").value
+    );
+
+  const resume =
+    parseInt(
+      document.getElementById("resumeInput").value
+    );
+
+  const communication =
+    parseInt(
+      document.getElementById("communicationInput").value
+    );
+
+  const development =
+    parseInt(
+      document.getElementById("developmentInput").value
+    );
+
+  document.getElementById("dsaSolved")
+    .textContent = dsa;
+
+  document.getElementById("mockSolved")
+    .textContent = mock;
+
+  document.getElementById("aptitudeScore")
+    .textContent = `${aptitude}%`;
+
+  document.getElementById("resumeScore")
+    .textContent = `${resume}%`;
+
+  readinessScore = Math.round(
+    (
+      aptitude +
+      resume +
+      communication +
+      development
+    ) / 4
+  );
+
+  const offset =
+    circumference -
+    (readinessScore / 100) * circumference;
+
+  progressCircle.style.strokeDashoffset =
+    offset;
+
+  meterScore.textContent =
+    `${readinessScore}%`;
+
+  const statusText =
+    document.getElementById("statusText");
+
+  if (readinessScore >= 80) {
+
+    progressCircle.style.stroke =
+      "#22c55e";
+
+    statusText.textContent =
+      "Placement Ready";
+
+  } else if (readinessScore >= 60) {
+
+    progressCircle.style.stroke =
+      "#eab308";
+
+    statusText.textContent =
+      "Almost Ready";
+
+  } else {
+
+    progressCircle.style.stroke =
+      "#ef4444";
+
+    statusText.textContent =
+      "Need Improvement";
+  }
+
+  skillsChart.data.datasets[0].data = [
+    dsa > 100 ? 100 : dsa,
+    development,
+    aptitude,
+    communication,
+    resume
+  ];
+
+  skillsChart.update();
+
+  const companyGrid =
+    document.getElementById("companyGrid");
+
+  if (readinessScore >= 80) {
+
+    companyGrid.innerHTML = `
+      <div class="company-card">
+        <h3>Google</h3>
+        <p>Focus: DSA + System Design</p>
+      </div>
+
+      <div class="company-card">
+        <h3>Microsoft</h3>
+        <p>Focus: Core CS + Problem Solving</p>
+      </div>
+
+      <div class="company-card">
+        <h3>Adobe</h3>
+        <p>Focus: Development + Projects</p>
+      </div>
+    `;
+
+  } else {
+
+    companyGrid.innerHTML = `
+      <div class="company-card">
+        <h3>TCS</h3>
+        <p>Focus: Aptitude + Communication</p>
+      </div>
+
+      <div class="company-card">
+        <h3>Infosys</h3>
+        <p>Focus: Resume + HR Round</p>
+      </div>
+
+      <div class="company-card">
+        <h3>Wipro</h3>
+        <p>Focus: Basics + Coding</p>
+      </div>
+    `;
+  }
+
 });
