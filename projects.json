@@ -2340,20 +2340,33 @@
     "projectPath": "./public/endless_train_game/index.html"
   },
   
-  {
-    "projectNo": 190,
-    "projectName": "Saturn Particle Gesture",
-    "projectType": "Animation",
-    "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",
-    "techStack": [
-      "html",
-      "css",
-      "javascript",
-      "canvas",
-      "mediapipe",
-      "gesture"
-    ],
-    "difficulty": "advanced",
-    "projectPath": "./public/Planet_gesture_formation/index.html"
-  }
+ {
+  "projectNo": 190,
+  "projectName": "Saturn Particle Gesture",
+  "projectType": "Animation",
+  "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "canvas",
+    "mediapipe",
+    "gesture"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/Planet_gesture_formation/index.html"
+},
+{
+  "projectNo": 191,
+  "projectName": "Clean City",
+  "projectType": "Civic Management",
+  "projectDesc": "A complaint management system where users report city cleanliness issues with photos, admins assign collectors, and collectors upload cleaned-area proof images after completing the task.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/CLEAN_CITY/index.html"
+}
 ]
