@@ -67,10 +67,29 @@
 </div>
       <h3 id="time" class="time">Time: 00:00</h3>
       <h3 id="score" class="score">Score: 0</h3>
+      <button id="end-btn" class="end-btn">End Game</button>
       <h5 id="message" class="message">
         Are you annoyed yet? <br>
         You are playing an impossible game!!
       </h5>
+      <div id="game-over" class="game-over-container">
+        <div class="game-over-box">
+          <h2>Are you sure you want to end the game?</h2>
+          <div class="game-over-buttons">
+            <button id="yes-btn" class="btn">Yes</button>
+            <button id="no-btn" class="btn">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="final-result" class="final-result-container">
+      <div class="final-result-box">
+        <h1>Game Over</h1>
+        <p id="final-score"></p>
+        <p id="final-time"></p>
+        <button onclick="location.reload()" class="btn">Play Again</button>
+      </div>
     </div>
 
     <script src="script.js"></script>
