@@ -85,19 +85,6 @@ body {
     opacity: 0.12; /* Slightly brighter in dark mode for contrast */
 }
 
-body {
-    background-color: var(--page-bg);
-    color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    min-height: 100vh;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Forces frame to hold true center alignment instantly on paint */
-    justify-content: flex-start;
-    transition: background-color 0.2s, color 0.2s;
-}
-
 .app-container {
     width: 100%;
     max-width: 1440px; /* Expanded from 1200px to sit beautifully on wider viewports */
@@ -331,6 +318,7 @@ button { font-family: inherit; font-weight: 500; border-radius: 8px; cursor: poi
 .text-green { color: var(--green-success); }
 .text-red { color: var(--red-error); }
 .text-blue { color: var(--blue-info); }
+.color-neutral { color: var(--text-main); }
 
 @media (min-width: 576px) {
     .dashboard-stats { grid-template-columns: repeat(4, 1fr); gap: 16px; }
