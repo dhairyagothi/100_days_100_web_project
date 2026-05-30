@@ -29,7 +29,7 @@ function addTask() {
   // Find category color from the dropdown configuration (fallback)
   const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
   const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
-
+ let idx = tasks.length;
   // Create local task object
   const newTask = {
     id: Date.now(),
@@ -37,7 +37,8 @@ function addTask() {
     category: category || "Misc",
     eisenhower: eisenhower || "",
     color: color,
-    completed: false
+    completed: false,
+    task_no: tasks.length+ 1
   };
 
   tasks.push(newTask);
@@ -64,6 +65,9 @@ function deleteTask(id) {
     card.style.animation = "fadeOut 0.25s ease forwards";
     setTimeout(() => {
       tasks = tasks.filter(task => task.id !== id);
+      tasks.forEach((task, index) => {
+        task.task_no = index + 1;
+      });
       renderTasks();
     }, 250);
   }
@@ -75,6 +79,10 @@ function clearDone() {
   if (tasks.length === previousLength) {
     showToast("ℹ️ No completed tasks to clear.");
   } else {
+    // Re-number tasks sequentially after clearing
+    tasks.forEach((task, index) => {
+      task.task_no = index + 1;
+    });
     renderTasks();
     showToast("🧹 Cleared all finished tasks!");
   }
@@ -121,12 +129,14 @@ function renderTasks() {
         <div class="note-row">
           <textarea class="note-text" onchange="updateTaskText(${task.id}, this.value)">${task.text}</textarea>
           <div class="note-actions">
+          <span class="task-number">${task.task_no}</span>
             <div class="category-badge">${task.category}</div>
             ${task.eisenhower ? `<span class="priority-tag ${task.eisenhower}">${
               {"urgent-important":"Urgent & Important","important-only":"Important Only","urgent-only":"Urgent Only","neither":"Neither"}[task.eisenhower]
             }</span>` : ""}
             <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
             <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
+            
           </div>
         </div>
       `;
