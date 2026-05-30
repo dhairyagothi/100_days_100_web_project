@@ -1,29 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Countdown Timer</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="../favv.png" type="image/x-icon" />
-</head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-  <div class="countdown-container">
-    <h1>Countdown Timer</h1>
-    <div id="countdown">
-      <span id="days">00</span> Days
-      <span id="hours">00</span> Hours
-      <span id="minutes">00</span> Minutes
-      <span id="seconds">00</span> Seconds
-    </div>
-    <div class="controls">
-      <button id="start">Start</button>
-      <button id="pause">Pause</button>
-      <button id="reset">Reset</button>
-    </div>
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Productivity Timer</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Back Button -->
+  <a
+    href="/"
+    class="project-back-button"
+    style="
+      position:fixed;
+      left:18px;
+      top:18px;
+      padding:8px 12px;
+      border-radius:8px;
+      background:white;
+      text-decoration:none;
+      z-index:9999;
+      font-weight:700;
+      font-family:Inter, system-ui, sans-serif;
+      box-shadow:0 8px 20px rgba(0, 0, 0);">
+    ">
+    ← Back to Home
+  </a>
+
+  <!-- Background Animation -->
+  <div class="background-animation">
+
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
   </div>
+
+  <div class="container">
+
+    <!-- Top -->
+    <div class="top-bar">
+
+      <h1>⏳ Productivity Timer</h1>
+
+      <div class="top-actions">
+
+        <button id="themeToggle" class="theme-btn">
+          🌙
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Main Card -->
+    <div class="timer-card">
+
+      <!-- Pomodoro Buttons -->
+      <div class="pomodoro-buttons">
+
+        <button onclick="setPreset(1500)">
+          Focus
+        </button>
+
+        <button onclick="setPreset(300)">
+          Short Break
+        </button>
+
+        <button onclick="setPreset(900)">
+          Long Break
+        </button>
+
+      </div>
+
+      <!-- Inputs -->
+      <div class="inputs">
+
+        <div class="input-box">
+
+          <label>Hours</label>
+
+          <input type="number" id="inputHours" value="0">
+
+        </div>
+
+        <div class="input-box">
+
+          <label>Minutes</label>
+
+          <input type="number" id="inputMinutes" value="0">
+
+        </div>
+
+        <div class="input-box">
+
+          <label>Seconds</label>
+
+          <input type="number" id="inputSeconds" value="0">
+
+        </div>
+
+      </div>
+
+      <!-- Circular Timer -->
+      <div class="progress-ring">
+
+        <svg width="260" height="260">
+
+          <circle
+            class="bg-circle"
+            cx="130"
+            cy="130"
+            r="110">
+          </circle>
+
+          <circle
+            class="progress-circle"
+            cx="130"
+            cy="130"
+            r="110">
+          </circle>
+
+        </svg>
+
+        <div class="timer-display">
+
+          <h2 id="minutes">00</h2>
+
+          <span>:</span>
+
+          <h2 id="seconds">00</h2>
+
+        </div>
+
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+
+        <button id="start" class="start-btn">
+          Start
+        </button>
+
+        <button id="pause" class="pause-btn">
+          Pause
+        </button>
+
+        <button id="reset" class="reset-btn">
+          Reset
+        </button>
+
+      </div>
+
+      
+
+    </div>
+
+  </div>
+
+  <!-- Alarm -->
+  <audio id="alarmSound">
+    <source
+      src="https://www.soundjay.com/buttons/sounds/beep-07.mp3"
+      type="audio/mpeg">
+  </audio>
+
   <script src="script.js"></script>
+
 </body>
+
 </html>

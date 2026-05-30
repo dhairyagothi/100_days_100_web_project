@@ -5,6 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allContests = [];
     let timerInterval;
+    
+    // Fetch CodeChef contests
+const fetchCodeChefContests = async () => {
+    const response = await fetch('https://kontests.net/api/v1/code_chef');
+    const data = await response.json();
+    console.log(data);
+
+    return data
+        .filter(contest => contest.status === 'BEFORE')
+        .map(contest => ({
+            site: 'CodeChef',
+            name: contest.name,
+            start_time: new Date(contest.start_time).getTime(),
+            url: contest.url
+        }));
+};
+
 
     const fetchContests = async () => {
         //Fetch API
@@ -14,15 +31,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (data.status === 'OK') {
                 
-                allContests = data.result
-                    .filter(contest => contest.phase === 'BEFORE')
-                    .map(contest => ({
-                        site: 'Codeforces',
-                        name: contest.name,
-                        start_time: contest.startTimeSeconds * 1000,
-                        url: `https://codeforces.com/contestRegistration/${contest.id}`
-                    }))
-                    .sort((a, b) => a.start_time - b.start_time);
+                // Codeforces contests
+const codeforcesContests = data.result
+    .filter(contest => contest.phase === 'BEFORE')
+    .map(contest => ({
+        site: 'Codeforces',
+        name: contest.name,
+        start_time: contest.startTimeSeconds * 1000,
+        url: `https://codeforces.com/contestRegistration/${contest.id}`
+    }));
+
+// CodeChef contests
+let codechefContests = [];
+
+try {
+    codechefContests = await fetchCodeChefContests();
+} catch (error) {
+    console.error('CodeChef fetch failed:', error);
+}
+
+// Merge contests
+allContests = [...codeforcesContests, ...codechefContests]
+    .sort((a, b) => a.start_time - b.start_time);
                 
                 populateFilters(allContests);
                 renderContests(allContests);
@@ -120,6 +150,20 @@ document.addEventListener('DOMContentLoaded', () => {
             renderContests(filtered);
         }
     });
+
+// ---- Theme Toggle ----
+
+const themeBtn = document.getElementById('theme-toggle');
+
+themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+
+    if (document.body.classList.contains('light-mode')) {
+        themeBtn.textContent = '🌙 Dark Mode';
+    } else {
+        themeBtn.textContent = '☀️ Light Mode';
+    }
+});  
 
     fetchContests();
 });

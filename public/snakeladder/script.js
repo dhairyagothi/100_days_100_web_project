@@ -5,8 +5,8 @@ const LADDERS = { 2:38, 7:14, 8:31, 15:26, 21:42, 28:84, 36:44, 51:67, 71:91 };
 const DICE_FACES = ['⚀','⚁','⚂','⚃','⚄','⚅'];
 
 let players = [
-  { name: 'Player 1', pos: 0, moves: 0, token: '🔴', color: '#ff6b6b', id: 0 },
-  { name: 'Player 2', pos: 0, moves: 0, token: '🔵', color: '#4ecdc4', id: 1 }
+  { name: 'Player 1', pos: 1, moves: 0, token: '🔴', color: '#ff6b6b', id: 0 },
+  { name: 'Player 2', pos: 1, moves: 0, token: '🔵', color: '#4ecdc4', id: 1 }
 ];
 let currentPlayer = 0;
 let gameActive = false;
@@ -262,8 +262,7 @@ function renderTokens() {
   const size = cs * 10;
   grid.style.width = size + 'px';
   grid.style.height = size + 'px';
-  grid.style.gridTemplateColumns = `repeat(10, ${cs}px)`;
-  grid.style.gridTemplateRows = `repeat(10, ${cs}px)`;
+  grid.style.display = 'block'; // Override grid layout for O(1) absolute positioning
 
   const tokensByPos = {};
   players.forEach(p => {
@@ -276,19 +275,18 @@ function renderTokens() {
   Object.entries(tokensByPos).forEach(([pos, ps]) => {
     const xy = cellToXY(parseInt(pos));
     if (!xy) return;
-    const col = Math.floor((xy.x - cs / 2) / cs);
-    const row = Math.floor((xy.y - cs / 2) / cs);
-    const idx = row * 10 + col;
 
+    // Anchor exactly to the math vector provided by cellToXY
     const cell = document.createElement('div');
-    cell.style.gridColumn = (col + 1) + '';
-    cell.style.gridRow = (row + 1) + '';
-    cell.style.position = 'relative';
+    cell.style.position = 'absolute';
+    cell.style.left = (xy.x - cs / 2) + 'px';
+    cell.style.top = (xy.y - cs / 2) + 'px';
+    cell.style.width = cs + 'px';
+    cell.style.height = cs + 'px';
     cell.style.display = 'flex';
     cell.style.alignItems = 'center';
     cell.style.justifyContent = 'center';
-    cell.style.width = cs + 'px';
-    cell.style.height = cs + 'px';
+    cell.style.zIndex = '20';
 
     ps.forEach(p => {
       const tok = document.createElement('div');
@@ -297,7 +295,7 @@ function renderTokens() {
         background:${p.color};display:flex;align-items:center;justify-content:center;
         font-size:${cs*0.25}px;box-shadow:0 2px 8px rgba(0,0,0,0.5),0 0 12px ${p.color}88;
         border:2px solid rgba(255,255,255,0.6);animation:tokenJump 0.4s ease;
-        z-index:10;margin:1px;flex-shrink:0;
+        margin:1px;flex-shrink:0;
       `;
       tok.textContent = p.token;
       cell.appendChild(tok);
@@ -305,6 +303,14 @@ function renderTokens() {
     grid.appendChild(cell);
   });
 }
+
+// ===== ENVIRONMENT & LOGGING =====
+const ENV = 'production'; // Toggle to 'development' during local testing
+const sysLogger = {
+  log: (...args) => { if (ENV === 'development') console.log('[GameDebug]:', ...args); },
+  warn: (...args) => { if (ENV === 'development') console.warn('[GameWarn]:', ...args); },
+  error: (...args) => { if (ENV === 'development') console.error('[GameError]:', ...args); }
+};
 
 // ===== GAME LOGIC =====
 function startGame() {
@@ -321,7 +327,7 @@ function startGame() {
 
   gameActive = true;
   currentPlayer = 0;
-  players.forEach(p => { p.pos = 0; p.moves = 0; });
+  players.forEach(p => { p.pos = 1; p.moves = 0; });
 
   setTimeout(() => {
     drawBoard();
@@ -369,28 +375,43 @@ function rollDice() {
 async function processMove(roll) {
   const p = players[currentPlayer];
   const pClass = `p${currentPlayer + 1}`;
-  const newPos = Math.min(p.pos + roll, 100);
 
-  addLog(`🎲 ${p.name} rolled a ${roll}! (${p.pos} → ${newPos})`, pClass);
-  p.moves++;
+  // 1. Calculate theoretical next position
+  let newPos = p.pos + roll;
 
-  // Highlight destination
-  highlightCell(newPos, 'safe-highlight');
+  // 2. Strict State Machine: Exact Roll to Win Boundary Rule
+  if (newPos > 100) {
+    addLog(`🎲 ${p.name} rolled ${roll}, but needs exactly ${100 - p.pos}. Bounce back!`, pClass);
+    const overshoot = newPos - 100;
+    newPos = 100 - overshoot; // Calculate bounce vector
+    
+    // Animate forward to 100, then bounce back the remaining steps
+    await animateMove(p, p.pos, 100);
+    await animateMove(p, 100, newPos);
+    p.pos = newPos;
+    p.moves++;
+  } else {
+    addLog(`🎲 ${p.name} rolled a ${roll}! (${p.pos} → ${newPos})`, pClass);
+    p.moves++;
+    highlightCell(newPos, 'safe-highlight');
 
-  // Animate step-by-step movement
-  await animateMove(p, p.pos, newPos);
-  p.pos = newPos;
+    // Linear path traversal O(n)
+    await animateMove(p, p.pos, newPos);
+    p.pos = newPos;
+  }
+
   renderTokens();
   updateUI();
 
-  // Check snake or ladder
+  // 3. Graph Edge Translation O(1) - FIX FOR "RANDOM JUMP" BUG
   if (SNAKES[newPos]) {
     await sleep(400);
     playSound('snake');
     const snakeTo = SNAKES[newPos];
     addLog(`🐍 Oh no! ${p.name} got bitten! ${newPos} → ${snakeTo}`, 'snake');
-    await animateMove(p, newPos, snakeTo);
-    p.pos = snakeTo;
+    
+    // Directly translate position coordinates. DO NOT use animateMove here.
+    p.pos = snakeTo; 
     renderTokens();
     updateUI();
   } else if (LADDERS[newPos]) {
@@ -398,14 +419,15 @@ async function processMove(roll) {
     playSound('ladder');
     const ladderTo = LADDERS[newPos];
     addLog(`🪜 Yay! ${p.name} climbed a ladder! ${newPos} → ${ladderTo}`, 'ladder');
-    await animateMove(p, newPos, ladderTo);
-    p.pos = ladderTo;
+    
+    // Directly translate position coordinates. DO NOT use animateMove here.
+    p.pos = ladderTo; 
     renderTokens();
     updateUI();
   }
 
-  // Check win
-  if (p.pos >= 100) {
+  // Check win validation
+  if (p.pos === 100) {
     await sleep(400);
     playSound('win');
     gameActive = false;
@@ -481,7 +503,7 @@ function showWinner(player) {
 function newGame() {
   document.getElementById('winner-screen').classList.remove('active');
   document.getElementById('setup-screen').classList.add('active');
-  players.forEach(p => { p.pos = 0; p.moves = 0; });
+  players.forEach(p => { p.pos = 1; p.moves = 0; });
   document.getElementById('history-log').innerHTML = '';
   document.getElementById('p1-name').value = '';
   document.getElementById('p2-name').value = '';
@@ -490,7 +512,7 @@ function newGame() {
 function restartGame() {
   document.getElementById('winner-screen').classList.remove('active');
   document.getElementById('game-screen').classList.add('active');
-  players.forEach(p => { p.pos = 0; p.moves = 0; });
+  players.forEach(p => { p.pos = 1; p.moves = 0; });
   currentPlayer = 0;
   gameActive = true;
   isAnimating = false;
