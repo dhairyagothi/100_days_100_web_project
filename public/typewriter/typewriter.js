@@ -49,19 +49,22 @@ function type() {
     }
 }
 
-addTextButton.addEventListener("click", () => {
+// FIX: Use addEventListener with preventDefault to stop form submission reload (closes #856)
+addTextButton.addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent any form submission / page reload
+
     const newText = userInput.value.trim();
-    if (newText) {
-        phrases.push(newText);
-        userInput.value = '';
-        isPaused = false; 
-        isDeleting = false;
-        charIndex = 0;
-        phraseIndex = phrases.length - 1;
-        clearTimeout(typingTimeout);
-        type();
-        pauseResumeButton.textContent = "Pause";
-    }
+    if (!newText) return; // Do nothing if empty
+
+    phrases.push(newText);
+    userInput.value = '';
+    isPaused = false;
+    isDeleting = false;
+    charIndex = 0;
+    phraseIndex = phrases.length - 1;
+    clearTimeout(typingTimeout);
+    type();
+    pauseResumeButton.textContent = "Pause";
 });
 
 deleteTextButton.addEventListener("click", () => {
