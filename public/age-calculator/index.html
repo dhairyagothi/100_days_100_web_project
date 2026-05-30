@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
-
     <div class="container">
         <h1>📅 Age Calculator</h1>
         <p class="subtitle">Calculate your exact age in years, months, and days</p>
@@ -57,6 +55,52 @@
                 <div class="info-item">
                     <span class="info-label">Total Hours:</span>
                     <span id="hours">-</span>
+                </div>
+            </div>
+
+            <!-- Chinese Zodiac Section -->
+            <div class="zodiac-section">
+                <h3>🇨🇳 Chinese Zodiac Animal</h3>
+                <div class="zodiac-card">
+                    <span id="chinese-zodiac-sign" class="zodiac-emoji">—</span>
+                    <span id="chinese-zodiac-name" class="zodiac-name">—</span>
+                </div>
+            </div>
+
+            <!-- Cosmic Age Section -->
+            <div class="cosmic-section">
+                <h3>🌌 Your Cosmic Age (Other Planets)</h3>
+                <div class="cosmic-grid">
+                    <div class="cosmic-card mercury">
+                        <span class="planet-icon">☿</span>
+                        <span class="planet-name">Mercury</span>
+                        <span class="planet-age" id="age-mercury">—</span>
+                        <span class="planet-sub">Years Old</span>
+                    </div>
+                    <div class="cosmic-card venus">
+                        <span class="planet-icon">♀</span>
+                        <span class="planet-name">Venus</span>
+                        <span class="planet-age" id="age-venus">—</span>
+                        <span class="planet-sub">Years Old</span>
+                    </div>
+                    <div class="cosmic-card mars">
+                        <span class="planet-icon">♂</span>
+                        <span class="planet-name">Mars</span>
+                        <span class="planet-age" id="age-mars">—</span>
+                        <span class="planet-sub">Years Old</span>
+                    </div>
+                    <div class="cosmic-card jupiter">
+                        <span class="planet-icon">♃</span>
+                        <span class="planet-name">Jupiter</span>
+                        <span class="planet-age" id="age-jupiter">—</span>
+                        <span class="planet-sub">Years Old</span>
+                    </div>
+                    <div class="cosmic-card saturn">
+                        <span class="planet-icon">♄</span>
+                        <span class="planet-name">Saturn</span>
+                        <span class="planet-age" id="age-saturn">—</span>
+                        <span class="planet-sub">Years Old</span>
+                    </div>
                 </div>
             </div>
         </div>

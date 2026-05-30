@@ -11,6 +11,22 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+body.light-mode {
+    --bg-main: #e8f5e2;
+    --text-glow: #1a6b0a;
+    --text-dim: #2d8c1a;
+    --border-color: #1a6b0a;
+    --card-bg: rgba(220, 240, 220, 0.9);
+}
+
+body.light-mode .timer-element {
+    text-shadow: none;
+}
+
+body.light-mode .hero-title {
+    text-shadow: 0 0 6px rgba(26, 107, 10, 0.3);
+}
+
 body {
     font-family: 'Fira Code', monospace;
     background-color: var(--bg-main);
@@ -25,7 +41,7 @@ body {
     padding: 3rem 1rem;
     text-align: center;
     border-bottom: 2px solid var(--border-color);
-    background: #000;
+    background-color: var(--bg-main);
     text-transform: uppercase;
     box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);
 }
@@ -65,14 +81,14 @@ body {
     margin-bottom: 2.5rem;
     padding: 1rem;
     border: 1px dashed var(--border-color);
-    background: #000;
+    background: var(--bg-main);
 }
 
 .filter-dropdown {
     padding: 0.5rem;
     font-family: 'Fira Code', monospace;
     margin-left: 1rem;
-    background-color: #000;
+   background-color: var(--bg-main);
     color: var(--text-glow);
     border: 1px solid var(--border-color);
     outline: none;
@@ -82,6 +98,18 @@ body {
 
 .filter-dropdown:focus {
     box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+}
+
+.theme-btn {
+    padding: 0.5rem 1rem;
+    margin-left: 1rem;
+    font-family: 'Fira Code', monospace;
+    background-color: var(--bg-main);
+    color: var(--text-glow);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    text-transform: uppercase;
+    outline: none;
 }
 
 .loading {
@@ -157,7 +185,7 @@ body {
     padding: 1rem;
     border: 1px solid var(--text-dim);
     text-align: center;
-    background: #000;
+    background: var(--bg-main);
 }
 
 .timer-label {
@@ -191,4 +219,22 @@ body {
     background: var(--text-glow);
     color: #000;
     box-shadow: 0 0 15px var(--text-glow);
+}
+/* ── Mobile: stack controls vertically on small screens ── */
+@media (max-width: 480px) {
+
+    .dashboard-controls {
+        flex-direction: column;  /* stack items top to bottom */
+        align-items: stretch;    /* make each item full width */
+        gap: 0.75rem;            /* even spacing between items */
+        padding: 1rem;           /* keep existing padding */
+    }
+
+    .filter-dropdown,
+    .theme-btn {
+        margin-left: 0;          /* remove the left margin meant for desktop row layout */
+        width: 100%;             /* stretch to full container width */
+        text-align: center;      /* center the text inside each control */
+        box-sizing: border-box;  /* padding stays inside the width, no overflow */
+    }
 }
