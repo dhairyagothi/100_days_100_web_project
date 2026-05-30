@@ -1,0 +1,349 @@
+/* ==========================================
+   1. GLOBAL RESET & BASE RULES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --road-speed: 1s;
+    --grass-speed: 1.5s;
+}
+
+body {
+    background-color: #121212;
+    font-family: 'Arial', -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    color: #fff;
+}
+
+/* ==========================================
+   2. MAIN CONTAINERS & FRAMES
+   ========================================== */
+.game-container {
+    position: relative;
+    width: 100vw;
+    max-width: 500px;
+    height: 100vh;
+    max-height: 700px;
+    background-color: #555;
+    /* OVERHAUL: Premium Slate/Dark Steel frame instead of neon green */
+    border: 4px solid #2c3e50;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.game-arena {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* ==========================================
+   3. GAMEPLAY ASSETS & ENVIRONMENT
+   ========================================== */
+.grass {
+    width: 80px;
+    height: 100%;
+    background-color: #8cc63f; 
+    background-image: url('images/grass_texture.png'); 
+    background-size: 100% 80px; 
+    background-repeat: repeat-y; 
+    z-index: 1;
+}
+
+.highway {
+    flex: 1;
+    position: relative;
+    background-color: #6a737b;
+    background-image: 
+        linear-gradient(to bottom, #e74c3c 50%, #fff 50%),
+        linear-gradient(to bottom, #e74c3c 50%, #fff 50%),
+        linear-gradient(to bottom, #fff 50%, transparent 50%);
+    background-position: 
+        0px 0px,    /* Left Curb */
+        100% 0px,   /* Right Curb */
+        50% 0px;    /* Center Line */
+    background-size: 
+        15px 80px,  
+        15px 80px,  
+        10px 80px;  
+    background-repeat: repeat-y;
+}
+
+.player-car {
+    position: absolute;
+    bottom: 170px; 
+    width: 50px;
+    height: 100px;
+    z-index: 15; 
+    transition: left 0.08s ease-out;
+    background-image: url('images/player.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.enemy {
+    position: absolute;
+    width: 50px;
+    height: 100px;
+    z-index: 4;
+    background-color: transparent; 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    will-change: transform; 
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.type-car   { background-image: url('images/enemy_car.png'); } 
+.type-truck { background-image: url('images/truck.png'); height: 140px; }
+.type-bus   { background-image: url('images/bus.png'); height: 150px; }
+.type-bike  { background-image: url('images/bike.png'); }
+.type-stone { background-image: url('images/stone.png'); width: 35px; height: 35px; }
+
+/* ==========================================
+   4. CONSOLIDATED CONSOLE DASHBOARD
+   ========================================== */
+.ui-panel {
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 140px;
+    /* OVERHAUL: Solid console base blocks muddy visual bleeds */
+    background: #1a1a1a; 
+    border-top: 3px solid #34495e; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 20px; 
+    z-index: 10; 
+    pointer-events: none;
+}
+
+.score-board, .distance-board {
+    background: #2c3e50; 
+    padding: 10px 15px; 
+    border-radius: 6px; 
+    font-weight: bold; 
+    /* OVERHAUL: Steel borders with clean, high-visibility digital racing yellow */
+    border: 1px solid #455a64; 
+    color: #f1c40f; 
+    font-family: 'Courier New', Courier, monospace; /* Kept only for numbers to look digital */
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
+    pointer-events: all;
+}
+
+.speedometer { 
+    width: 90px; 
+    height: 90px; 
+    background: #2c3e50; 
+    border: 3px solid #f1c40f; /* Matched to the score-board accent theme */
+    border-radius: 50%; 
+    padding: 5px; 
+    pointer-events: all; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+#speed-hand {
+    transform-origin: 50px 50px; 
+    transition: transform 0.5s ease-out; 
+}
+
+/* ==========================================
+   5. INTERACTIVE CONTROLS & OVERLAYS
+   ========================================== */
+.pause-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px; 
+    height: 50px; 
+    /* OVERHAUL: Changed from random blue to professional racing yellow/slate combo */
+    background: #f1c40f; 
+    border: 2px solid #2c3e50; 
+    color: #1a1a1a;
+    font-size: 1.4rem; 
+    font-weight: bold; 
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 25;
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+}
+
+.pause-btn:hover {
+    background: #d4ac0d; 
+    transform: scale(1.1);
+}
+
+.mobile-controls {
+    position: absolute; bottom: 150px; left: 0; width: 100%;
+    display: flex; justify-content: space-between; padding: 0 20px; z-index: 15;
+}
+
+@media (min-width: 768px) {
+    .mobile-controls { display: none; }
+    .player-car { bottom: 160px; }
+}
+
+.ctrl-btn {
+    background: rgba(44, 62, 80, 0.6); 
+    border: 2px solid #f1c40f;
+    color: #f1c40f; 
+    width: 60px; 
+    height: 60px; 
+    border-radius: 50%;
+    font-size: 1.5rem; 
+    cursor: pointer; 
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.ctrl-btn:active { background: rgba(241, 196, 15, 0.6); color: #1a1a1a; }
+
+/* ==========================================
+   6. MENUS, SCREENS, & RULES
+   ========================================== */
+.overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    /* OVERHAUL: Soft deep slate tint instead of pitch-black abyss */
+    background: rgba(26, 37, 48, 0.95); 
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center; z-index: 20; padding: 20px; text-align: center;
+}
+
+#game-title { 
+    font-size: 2.5rem; 
+    color: #f1c40f; 
+    margin-bottom: 20px; 
+    text-transform: uppercase; 
+    letter-spacing: 2px;
+}
+#game-instruction { color: #bdc3c7; margin-bottom: 30px; font-size: 1.2rem; }
+
+.rules-box {
+    background: #2c3e50;
+    border: 1px solid #455a64;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: left;
+    width: 80%;
+    max-width: 300px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.rules-box h3 {
+    color: #f1c40f;
+    margin-bottom: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.rules-box li {
+    color: #ecf0f1;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Buttons inside menus */
+.start-btn {
+    background: #f1c40f; 
+    color: #1a1a1a; 
+    border: none; 
+    padding: 15px 30px;
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    cursor: pointer; 
+    border-radius: 4px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+.start-btn:hover { background: #d4ac0d; transform: scale(1.05); }
+
+.menu-btn {
+    background: transparent; 
+    color: #f1c40f; 
+    border: 2px solid #f1c40f;
+    padding: 12px 30px; 
+    font-size: 1.1rem; 
+    font-weight: bold; 
+    cursor: pointer;
+    border-radius: 4px; 
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+.menu-btn:hover { background: rgba(241, 196, 15, 0.1); }
+
+/* Custom states */
+.crash-title { font-size: 3.5rem; color: #e74c3c; margin-bottom: 20px; text-transform: uppercase; text-shadow: 0 0 20px rgba(231, 76, 60, 0.8); }
+
+.final-stats {
+    background: #2c3e50; 
+    border: 1px solid #455a64;
+    padding: 20px 40px; 
+    border-radius: 8px; 
+    margin-bottom: 30px;
+}
+.final-stats h2 { color: #f1c40f; font-size: 1.8rem; margin-bottom: 10px; }
+.final-stats p { color: #ecf0f1; font-size: 1.2rem; }
+
+.button-group { display: flex; flex-direction: column; gap: 15px; width: 220px; }
+
+#resume-btn {
+    background: #f1c40f;
+    color: #1a1a1a;
+    border: 2px solid #f1c40f;
+    box-shadow: 0 4px 15px rgba(241, 196, 15, 0.3); 
+}
+#resume-btn:hover {
+    background: #d4ac0d;
+    border-color: #d4ac0d;
+    transform: scale(1.05);
+}
+
+#pause-restart-btn {
+    background: transparent;
+    color: #f1c40f;
+    border: 2px solid #f1c40f;
+}
+#pause-restart-btn:hover {
+    background: rgba(241, 196, 15, 0.15); 
+    transform: scale(1.05);
+}
+
+#pause-menu-btn {
+    background: transparent;
+    color: #bdc3c7; 
+    border: 2px solid #7f8c8d; 
+}
+#pause-menu-btn:hover {
+    color: #e74c3c; 
+    border-color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
+}
+
+/* Animations kept for backend tracking reference */
+@keyframes scrollRoad {
+    0% { background-position-y: 0px; }
+    100% { background-position-y: 400px; }
+}
+@keyframes scrollGrass {
+    0% { background-position-y: 0px, 0px, 0px; }
+    100% { background-position-y: 80px, 160px, 160px; } 
+}

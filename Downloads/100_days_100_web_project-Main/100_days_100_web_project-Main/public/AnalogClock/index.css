@@ -1,0 +1,768 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+    /* Color Palette */
+    --bg-color: #f3f4f6; /* Cleaner, modern off-white */
+    --text-primary: #111827; /* Deepest ink gray */
+    --text-secondary: #4b5563; /* Medium slate gray */
+    
+    /* Neumorphic Shadows (Warm, Soft, & Feathery) */
+    --shadow-outer: 12px 12px 24px rgba(166, 180, 200, 0.3), -12px -12px 24px rgba(255, 255, 255, 0.95);
+    --shadow-outer-hover: 16px 16px 32px rgba(166, 180, 200, 0.4), -16px -16px 32px rgba(255, 255, 255, 1);
+    --shadow-inner: inset 6px 6px 12px rgba(166, 180, 200, 0.3), inset -6px -6px 12px rgba(255, 255, 255, 0.95);
+    
+    /* Button Shadows */
+    --shadow-btn: 6px 6px 12px rgba(166, 180, 200, 0.25), -6px -6px 12px rgba(255, 255, 255, 0.95);
+    --shadow-btn-hover: 8px 8px 16px rgba(166, 180, 200, 0.35), -8px -8px 16px rgba(255, 255, 255, 1);
+    --shadow-btn-active: inset 4px 4px 8px rgba(166, 180, 200, 0.3), inset -4px -4px 8px rgba(255, 255, 255, 0.95);
+    
+    /* Clock Components */
+    --clock-bezel: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
+    --clock-face-bg: #f3f4f6;
+    --clock-face-shadow: inset 10px 10px 20px rgba(166, 180, 200, 0.35), inset -10px -10px 20px rgba(255, 255, 255, 0.95);
+    --clock-tick: #9ca3af;
+    --clock-tick-major: #374151;
+    
+    /* Watch Hands & Shadows */
+    --hand-hour: #111827;
+    --hand-minute: #374151;
+    --hand-second: #f97316; /* Vibrant safety orange */
+    --hand-shadow: rgba(17, 24, 39, 0.12); /* Casts onto dial face */
+    
+    /* Center Cap (Brass/Gold cap) */
+    --pin-cap-bg: radial-gradient(circle at 30% 30%, #fbbf24 0%, #d97706 70%, #78350f 100%);
+    --pin-cap-border: #b45309;
+    
+    /* Extras */
+    --accent-color: #4f46e5; /* Deep Indigo */
+    --accent-color-hover: #4338ca;
+    --accent-glow: rgba(79, 70, 229, 0.15);
+    --card-bg: #f3f4f6;
+    --card-border: rgba(255, 255, 255, 0.6);
+    
+    /* Toggle Icon */
+    --toggle-sun-color: #d97706;
+    --toggle-moon-color: #4b5563;
+}
+
+body.dark-theme {
+    --bg-color: #080c14; /* Much deeper midnight black-blue */
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    
+    /* Neumorphic Shadows (Dark, Tactile, Smooth transitions) */
+    --shadow-outer: 12px 12px 24px rgba(2, 3, 6, 0.7), -12px -12px 24px rgba(20, 32, 54, 0.35);
+    --shadow-outer-hover: 16px 16px 32px rgba(2, 3, 6, 0.8), -16px -16px 32px rgba(20, 32, 54, 0.45);
+    --shadow-inner: inset 6px 6px 12px rgba(2, 3, 6, 0.7), inset -6px -6px 12px rgba(20, 32, 54, 0.35);
+    
+    /* Button Shadows (Dark) */
+    --shadow-btn: 6px 6px 12px rgba(2, 3, 6, 0.6), -6px -6px 12px rgba(20, 32, 54, 0.3);
+    --shadow-btn-hover: 8px 8px 16px rgba(2, 3, 6, 0.7), -8px -8px 16px rgba(20, 32, 54, 0.4);
+    --shadow-btn-active: inset 4px 4px 8px rgba(2, 3, 6, 0.7), inset -4px -4px 8px rgba(20, 32, 54, 0.35);
+    
+    /* Clock Components (Dark) */
+    --clock-bezel: linear-gradient(135deg, #1f2937 0%, #0b0f17 100%);
+    --clock-face-bg: #0f172a;
+    --clock-face-shadow: inset 10px 10px 20px rgba(2, 3, 6, 0.8), inset -10px -10px 20px rgba(20, 32, 54, 0.35);
+    --clock-tick: #4b5563;
+    --clock-tick-major: #9ca3af;
+    
+    /* Watch Hands (Dark) */
+    --hand-hour: #ffffff;
+    --hand-minute: #e5e7eb;
+    --hand-second: #06b6d4; /* Electric Cyan */
+    --hand-shadow: rgba(0, 0, 0, 0.45);
+    
+    /* Center Cap (Silver/Steel cap) */
+    --pin-cap-bg: radial-gradient(circle at 30% 30%, #f9fafb 0%, #9ca3af 60%, #4b5563 100%);
+    --pin-cap-border: #4b5563;
+    
+    /* Extras (Dark) */
+    --accent-color: #6366f1;
+    --accent-color-hover: #4f46e5;
+    --accent-glow: rgba(99, 102, 241, 0.25);
+    --card-bg: #0f172a;
+    --card-border: rgba(255, 255, 255, 0.03);
+}
+
+/* Global Reset & Transition System */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dashboard Container */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Header Section */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.brand-section h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+}
+
+.brand-section p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+/* Theme Switch Button */
+.theme-toggle-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-btn);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-primary);
+}
+
+.theme-toggle-btn:hover {
+    box-shadow: var(--shadow-btn-hover);
+    transform: translateY(-2px);
+}
+
+.theme-toggle-btn:active {
+    box-shadow: var(--shadow-btn-active);
+    transform: translateY(0);
+}
+
+.theme-toggle-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle-btn:hover svg {
+    transform: rotate(30deg);
+}
+
+/* Dashboard Core Layout */
+.main-dashboard {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: stretch;
+}
+
+@media (max-width: 968px) {
+    .main-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Neumorphic Plate Base */
+.neumorphic-plate {
+    position: relative;
+    overflow: hidden; /* Important for banner images rounded crop */
+    background-color: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: var(--shadow-outer);
+    border: 1px solid var(--card-border);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neumorphic-plate:hover {
+    box-shadow: var(--shadow-outer-hover);
+    transform: translateY(-2px);
+}
+
+/* CARD MONUMENT BANNERS */
+.clock-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 180px; /* Taller for local clock */
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    opacity: 0.85;
+    z-index: 1;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Top-down dark vignette to ensure text contrast on ANY image background */
+.clock-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.08) 50%, transparent 80%);
+    z-index: 1;
+}
+
+/* Mask overlay to smoothly blend background into neumorphic background */
+.clock-banner::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(to bottom, transparent, var(--card-bg));
+    transition: background 0.4s ease;
+    z-index: 2;
+}
+
+/* Dark mode atmospheric dimming and high-contrast tuning */
+body.dark-theme .clock-banner {
+    filter: brightness(0.55) contrast(1.2) saturate(0.8);
+    opacity: 0.75;
+}
+
+/* Shorter banner for smaller world clock cards */
+.world-clock-card .clock-banner {
+    height: 120px;
+}
+
+/* Layered text positioning over banners */
+.clock-header {
+    position: relative;
+    z-index: 3; /* Positioned above all dark vignette & blending overlays */
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+/* Ensure absolute contrast by utilizing white header typography in both themes */
+.clock-header .clock-label {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.clock-header .clock-sublabel {
+    color: rgba(255, 255, 255, 0.82) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* MAIN CLOCK UNIT */
+.main-clock-section {
+    position: relative;
+    padding-top: 35px !important;
+    padding-bottom: 40px;
+}
+
+/* Premium Skeuomorphic Clock Frame */
+.clock-frame {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: var(--clock-bezel);
+    /* Layered bezel shadow to simulate structural depth */
+    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.12),
+                0 5px 15px -5px rgba(0, 0, 0, 0.05),
+                var(--shadow-outer);
+    padding: 18px; /* Bezel size */
+    margin-bottom: 25px;
+    transition: all 0.4s ease;
+    z-index: 2;
+}
+
+.clock-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--clock-face-bg);
+    box-shadow: var(--clock-face-shadow);
+    overflow: hidden;
+}
+
+/* Curved Sapphire Glass reflection */
+.clock-glass {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.01) 60%, rgba(255, 255, 255, 0.05) 100%);
+    z-index: 15;
+    pointer-events: none;
+}
+
+/* Clock Dial Tick Marks */
+.tick {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    left: calc(50% - 1px);
+    top: 0;
+    transform-origin: center center;
+}
+
+.tick::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background-color: var(--clock-tick);
+    border-radius: 1px;
+    transition: background-color 0.4s ease;
+}
+
+.tick.major::before {
+    height: 14px;
+    width: 4px;
+    left: -1px;
+    top: 6px;
+    background-color: var(--clock-tick-major);
+}
+
+/* Beautiful Hands Styling */
+.hand {
+    position: absolute;
+    transform-origin: bottom center;
+    will-change: transform;
+}
+
+/* Hour hand - Sword/Tapered design */
+.hand.hour {
+    bottom: 50%;
+    left: calc(50% - 5px);
+    width: 10px;
+    height: 25%;
+    background-color: var(--hand-hour);
+    border-radius: 6px 6px 2px 2px;
+    clip-path: polygon(50% 0%, 100% 12%, 80% 100%, 20% 100%, 0% 12%);
+    /* Use drop-shadow filter to apply shadow to clipped shapes */
+    filter: drop-shadow(0 2px 4px var(--hand-shadow));
+    z-index: 10;
+    transition: background-color 0.4s ease;
+}
+
+/* Minute hand - Elegant longer sword */
+.hand.minute {
+    bottom: 50%;
+    left: calc(50% - 3.5px);
+    width: 7px;
+    height: 38%;
+    background-color: var(--hand-minute);
+    border-radius: 4px 4px 1.5px 1.5px;
+    clip-path: polygon(50% 0%, 100% 8%, 80% 100%, 20% 100%, 0% 8%);
+    filter: drop-shadow(0 3px 6px var(--hand-shadow));
+    z-index: 11;
+    transition: background-color 0.4s ease;
+}
+
+/* Second hand - Thin sweep with counterweight */
+.hand.second {
+    bottom: 35%; /* starts 15% below pivot */
+    left: calc(50% - 1px);
+    width: 2px;
+    height: 55%; /* total height */
+    background-color: var(--hand-second);
+    transform-origin: center 72.72%; /* (55% total, starts 15% below. 15/55 = 27.27% from bottom. origin 100-27.27 = 72.72%) */
+    z-index: 13;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.hand.second::before {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    left: calc(50% - 4px);
+    width: 8px;
+    height: 8px;
+    background-color: var(--hand-second);
+    border-radius: 50%;
+}
+
+/* Metallic Center Cap Pin */
+.center-pin {
+    position: absolute;
+    top: calc(50% - 7px);
+    left: calc(50% - 7px);
+    width: 14px;
+    height: 14px;
+    background: var(--pin-cap-bg);
+    border: 1px solid var(--pin-cap-border);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 14;
+    transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.center-pin::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 3.5px;
+    height: 3.5px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+}
+
+/* Clock Labels & Digital readouts */
+.clock-label {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    letter-spacing: -0.03em;
+}
+
+.clock-sublabel {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.digital-readout {
+    position: relative;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-inner);
+    border: 1px solid var(--card-border);
+    padding: 8px 20px;
+    border-radius: 12px;
+    color: var(--accent-color);
+    letter-spacing: -0.02em;
+    transition: all 0.4s ease;
+    z-index: 2;
+}
+
+.clock-date {
+    position: relative;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    z-index: 2;
+}
+
+/* COUNTDOWN TIMER STYLING */
+.timer-section {
+    padding: 30px;
+    justify-content: flex-start;
+}
+
+.timer-section h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 6px;
+    letter-spacing: -0.03em;
+}
+
+.timer-section .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.timer-inputs-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.timer-input {
+    width: 76px;
+    height: 60px;
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    background-color: var(--input-bg);
+    box-shadow: var(--input-shadow);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.timer-input:focus {
+    box-shadow: var(--input-shadow), 0 0 0 2px var(--accent-color);
+}
+
+/* Hide spin arrows */
+.timer-input::-webkit-outer-spin-button,
+.timer-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.timer-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.timer-display-box {
+    width: 100%;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-inner);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#countdownDisplay {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.02);
+}
+.btn:disabled::after { opacity: 0; }
+
+.timer-controls {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.btn {
+    flex: 1;
+    height: 52px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-btn);
+    border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-btn-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+    box-shadow: var(--shadow-btn-active);
+    transform: translateY(0);
+}
+
+/* Pulsing red alarm state */
+.timer-up-container {
+    margin-top: 20px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    font-weight: 600;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    animation: pulseAlarm 1.5s infinite;
+}
+
+@keyframes pulseAlarm {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 0.7; }
+}
+
+/* WORLD CLOCKS SECTION */
+.world-clocks-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.world-clocks-section h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+}
+
+.world-clocks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 868px) {
+    .world-clocks-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.world-clock-card {
+    padding-top: 25px !important;
+    padding-bottom: 24px;
+}
+
+.world-clock-card .clock-frame {
+    width: 160px;
+    height: 160px;
+    padding: 10px;
+    margin-bottom: 15px;
+    /* Scaled suspension shadow for smaller location clocks */
+    box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12),
+                0 3px 8px -4px rgba(0, 0, 0, 0.05),
+                var(--shadow-outer);
+}
+
+.world-clock-card .tick::before {
+    top: 4px;
+    height: 5px;
+}
+
+.world-clock-card .tick.major::before {
+    height: 9px;
+    top: 3px;
+}
+
+/* Scale world clocks hands appropriately */
+.world-clock-card .hand.hour {
+    width: 5px;
+    left: calc(50% - 2.5px);
+}
+
+.world-clock-card .hand.minute {
+    width: 3.5px;
+    left: calc(50% - 1.75px);
+}
+
+.world-clock-card .hand.second {
+    width: 1px;
+}
+
+.world-clock-card .hand.second::before {
+    width: 5px;
+    height: 5px;
+    left: calc(50% - 2.5px);
+    bottom: 4px;
+}
+
+.world-clock-card .center-pin {
+    width: 10px;
+    height: 10px;
+    top: calc(50% - 5px);
+    left: calc(50% - 5px);
+}
+
+.world-clock-card .center-pin::after {
+    width: 2px;
+    height: 2px;
+}
+
+.world-clock-card .clock-label {
+    font-size: 1.15rem;
+}
+
+.world-clock-card .clock-sublabel {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+}
+
+.world-clock-card .digital-readout {
+    font-size: 1.15rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+}
