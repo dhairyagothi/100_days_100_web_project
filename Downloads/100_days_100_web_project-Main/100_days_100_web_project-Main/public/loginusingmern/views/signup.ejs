@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Register</title>
+    
+</head>
+
+<body>
+    <div class="container">
+        <form>
+            <h1>Register</h1>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username">
+                <div class="error"></div>
+            </div>
+            <div class="input-group">
+                <label for="email" >Email</label>
+                <input type="email" id="email" name="email" autocomplete="email">
+                <div class="error"></div>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"  autocomplete="new-password">
+                <div class="error"></div>
+            </div>
+            <div class="input-group">
+                <label for="cpassword">Confirm Password</label>
+                <input type="password" id="cpassword" name="cpassword"  autocomplete="new-password">
+                <div class="error"></div>
+            </div>
+
+            <button type="button" onclick="getDetails()">Register</button>
+            <p style="text-align:center; color:#888; font-size:13px;">or</p>
+            <button type="button" class="google-btn"><i class="fa-brands fa-google"></i>Continue with Google</button>
+            <p class="register">Already a member? <a href="/">Login here!</a></p>
+
+        
+        </form>
+      
+
+    </div>
+</body>
+
+<script>
+
+    async function postRequest(data) {
+        try {
+            const res = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const text = await res.text();
+
+            if (!res.ok) {
+                alert(text);
+                return;
+            }
+
+            alert(text);
+
+            window.location.href = "/";
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+
+
+    function getDetails() {
+  const username = document.getElementById('username').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const cpassword = document.getElementById('cpassword').value;
+
+  if (!username || !email || !password || !cpassword) {
+    alert("All fields are required");
+    return;
+  }
+
+  if (password !== cpassword) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  postRequest({ username, email, password });
+}
+function togglePassword(id, element) {
+
+    const input = document.getElementById(id);
+    const icon = element.querySelector("i");
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+</script>
+
+</html>

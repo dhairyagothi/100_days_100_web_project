@@ -3,111 +3,184 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
-    <link rel="stylesheet" href="login.css" />
-    <link rel="icon" href="favv.png" type="image/x-icon" />
+    <title>Sammu Trial Login Page</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Navigation -->
-    <header class="navbar">
-      <a href="../index.html" class="nav-link">← Back to Home</a>
-    </header>
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+    <div class="ambient ambient-right" aria-hidden="true"></div>
+    <div class="noise-layer" aria-hidden="true"></div>
 
-    <!-- Main Container -->
-    <main class="container">
-      <!-- Left Animated Text Section -->
-      <section class="left">
-        <p class="subtitle">Welcome Back</p>
+    <div class="bg-blur"></div>
 
-        <h1>
-          Build Something
-          <span class="highlight">Amazing</span>
-        </h1>
+    <nav class="navbar">
+      <a href="../index.html" class="button home-btn">Home</a>
+    </nav>
 
-        <p class="description">
-          Sign in to continue your journey through
-          <strong>100 Days • 100 Web Projects</strong>. Explore creative
-          designs, animations, and real-world projects.
-        </p>
+    <section class="hero-section">
+      <h1 class="hero-title">100 Days 100 Web Projects</h1>
+      <p class="auth-title">
+        Dive in to explore a seamless access to 100+ exciting web experiments
+        crafted for learning and inspiration. Log in to continue building,
+        exploring, and creating amazing web experiences every day.
+      </p>
 
-        <div class="feature-list">
-          <div class="feature-card">✨ Modern UI</div>
-          <div class="feature-card">⚡ Fast Projects</div>
-          <div class="feature-card">🚀 Learn by Building</div>
+      <div class="auth-container">
+        <div class="auth-card">
+          <h2 class="auth-title-1">Login</h2>
+
+          <!-- Status message area -->
+          <div id="statusMsg" style="
+            display:none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            text-align: center;
+          "></div>
+
+          <form id="loginForm" class="auth-form">
+            <div class="form-group">
+              <i class="fa-solid fa-user"></i>
+              <input
+                type="text"
+                id="username"
+                placeholder="Username"
+                class="form-input"
+                autocomplete="username"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <i class="fa-solid fa-lock"></i>
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                class="form-input"
+                autocomplete="current-password"
+                required
+              />
+              <span class="toggle-password" onclick="togglePassword()" title="Show/hide password">👁</span>
+            </div>
+
+            <button type="submit" class="button home-btn" id="loginBtn">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              Login
+            </button>
+          </form>
+
+          <p class="already-signed-up">
+            <a href="./ForgotPassword.html" id="forgotPasswordLink">Forgot Password?</a>
+          </p>
+
+          <p class="already-signed-up">
+            Not signed up? <a href="./SignUp.html">Sign Up</a>
+          </p>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Right Login Form -->
-      <section class="form-box">
-        <!-- Small Back Button -->
-        <button
-          class="back-button"
-          type="button"
-          onclick="window.location.href = '../index.html'"
-          aria-label="Back to Home"
-        >
-          ←
-        </button>
+    <script>
+      // ── Helper: show status message ──
+      function showStatus(message, type) {
+        const el = document.getElementById("statusMsg");
+        el.textContent = message;
+        el.style.display = "block";
+        if (type === "error") {
+          el.style.background = "rgba(248, 113, 113, 0.15)";
+          el.style.color = "#f87171";
+          el.style.border = "1px solid rgba(248, 113, 113, 0.3)";
+        } else if (type === "success") {
+          el.style.background = "rgba(52, 211, 153, 0.15)";
+          el.style.color = "#34d399";
+          el.style.border = "1px solid rgba(52, 211, 153, 0.3)";
+        }
+      }
 
-        <h2>Login</h2>
-        <p class="form-subtitle">
-          Enter your credentials to access your account.
-        </p>
+      // ── Password visibility toggle ──
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.querySelector(".toggle-password");
 
-        <form id="loginForm">
-          <div class="form-group">
-            <input type="text" id="username" placeholder="Username" required />
-          </div>
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleIcon.classList.add("active");
+        } else {
+          passwordInput.type = "password";
+          toggleIcon.classList.remove("active");
+        }
+      }
 
-          <div class="form-group">
-            <input
-              type="password"
-              id="password"
-              placeholder="Password"
-              required
-            />
-          </div>
-
-          <button type="submit" class="login-btn">Login</button>
-        </form>
-
-        <!-- New User Link -->
-        <p class="signup-text">
-          New here?
-          <a href="./signup.html">Sign Up</a>
-        </p>
-      </section>
-    </main>
-
-  <script>
-    // Transition effect for images
-    const images = document.querySelectorAll(".transition-image");
-    let currentImageIndex = 0;
-
-    function showNextImage() {
-      images[currentImageIndex].style.opacity = 0;
-      currentImageIndex = (currentImageIndex + 1) % images.length;
-      images[currentImageIndex].style.opacity = 1;
-    }
-
-    setInterval(showNextImage, 3000);
-
-    // Login form submission
-    document.getElementById("loginForm").addEventListener("submit", function (event) {
-      event.preventDefault();
+      // ── Login form submission ──
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
 
           const username = document.getElementById("username").value.trim();
-
           const password = document.getElementById("password").value.trim();
 
-      if (username && password) {
-        localStorage.setItem("username", username);
-        window.location.pathname = "/index.html";
-      } else {
-        alert("Invalid credentials. Please try again.");
-      }
-    });
-  </script>
-</body>
-</html>
+          // Basic empty-field guard
+          if (!username || !password) {
+            showStatus("Please enter both username and password.", "error");
+            return;
+          }
 
+          // Look up user stored by SignUp.html (keyed by username)
+          const storedRaw = localStorage.getItem(username);
+
+          if (!storedRaw) {
+            showStatus("No account found for that username. Please sign up first.", "error");
+            return;
+          }
+
+          let userData;
+          try {
+            userData = JSON.parse(storedRaw);
+          } catch (e) {
+            showStatus("Account data is corrupted. Please sign up again.", "error");
+            return;
+          }
+
+          // Password check
+          if (password !== userData.password) {
+            showStatus("Incorrect password. Please try again.", "error");
+            return;
+          }
+
+          // ── Login successful ──
+          // Persist the session
+          localStorage.setItem("loggedInUser", username);
+          localStorage.setItem(
+            "loggedInUserData",
+            JSON.stringify({
+              username,
+              name: userData.name || username,
+              email: userData.email || "",
+              loginTime: Date.now(),
+            })
+          );
+
+          showStatus("Login successful! Redirecting…", "success");
+
+          // Disable the button to prevent double-submit
+          document.getElementById("loginBtn").disabled = true;
+
+          // Redirect after a short delay so the user sees the success message
+          setTimeout(function () {
+            window.location.href = "../index.html";
+          }, 1000);
+        });
+    </script>
+  </body>
+</html>  i solving it for gssoc   and the problem in there is an empty space on top 

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Streak Visualizer & Comparator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="lc-container">
+        <div class="lc-header">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--lc-orange)">
+                <path d="M16.102 17.93l-2.697 2.607c-.466.467-1.111.662-1.823.662s-1.357-.195-1.824-.662l-4.332-4.363c-.467-.467-.7-.111-.7-.824s.233-.357.7-.824l2.392-2.392c.467-.467 1.112-.662 1.824-.662s1.357.195 1.824.662l2.184 2.184 2.45-2.45c.467-.467 1.112-.662 1.824-.662s1.357.195 1.824.662l2.697 2.697c.467.467.662 1.112.662 1.824s-.195 1.357-.662 1.824l-4.332 4.332z"/>
+            </svg>
+            <h1>Streak Visualizer</h1>
+        </div>
+        
+        <div class="input-container">
+            <div class="input-group">
+                <input type="text" id="user1" placeholder="Player 1 Username" />
+                <span class="vs-text">VS</span>
+                <input type="text" id="user2" placeholder="Player 2 (Optional)" />
+            </div>
+            <button id="fetchBtn">Visualize / Compare</button>
+        </div>
+
+        <div id="error-message" class="hidden"></div>
+        <div id="loading" class="hidden">Fetching data...</div>
+
+        <div id="stats-wrapper" class="stats-wrapper hidden">
+            
+            <div id="card1" class="user-card">
+                <div class="profile-card">
+                    <img src="" alt="Avatar" id="avatar1" class="avatar">
+                    <div class="profile-info">
+                        <h2 id="name1">User 1</h2>
+                        <p class="rank-text">Solved: <span id="solved1" class="highlight-green">0</span> <span id="solvedCrown1" class="hidden">👑</span></p>
+                    </div>
+                </div>
+                <div class="streak-card">
+                    <h3 class="streak-title">Streak: <span id="streak1" class="highlight-orange">0 Days</span> <span id="streakCrown1" class="hidden">👑</span></h3>
+                    <div class="battery-wrapper">
+                        <div class="battery-body">
+                            <div id="battery-level1" class="battery-level"></div>
+                        </div>
+                        <div class="battery-cap"></div>
+                    </div>
+                    <p id="battery-text1" class="battery-status">Power: 0%</p>
+                </div>
+            </div>
+
+            <div id="card2" class="user-card hidden">
+                <div class="profile-card">
+                    <img src="" alt="Avatar" id="avatar2" class="avatar">
+                    <div class="profile-info">
+                        <h2 id="name2">User 2</h2>
+                        <p class="rank-text">Solved: <span id="solved2" class="highlight-green">0</span> <span id="solvedCrown2" class="hidden">👑</span></p>
+                    </div>
+                </div>
+                <div class="streak-card">
+                    <h3 class="streak-title">Streak: <span id="streak2" class="highlight-orange">0 Days</span> <span id="streakCrown2" class="hidden">👑</span></h3>
+                    <div class="battery-wrapper">
+                        <div class="battery-body">
+                            <div id="battery-level2" class="battery-level"></div>
+                        </div>
+                        <div class="battery-cap"></div>
+                    </div>
+                    <p id="battery-text2" class="battery-status">Power: 0%</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

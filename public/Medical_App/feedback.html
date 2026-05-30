@@ -2,35 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FeedBack</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-</head>
-<body style="background: url(pngtree-medical-device-line-draft-border-png-image_2392872.jpg);">
-    <div  class="feedbackmain">
-        <h2>FeedBack</h2>
-        <p>Help us help you.</p>
 
-        
-            <form id="feedbackform">
-                <label for="feedbackMessage">Your Feedback:</label>
-                <br><br>
-                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
-                <br><br>
-                <button type="submit">Submit Feedback</button>
-            </form>
-            <a href="index.html" class="back"><button>Back To the Main</button></a>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Feedback | MedConsult</title>
+
+    <link
+        rel="stylesheet"
+        href="css/feedback.css"
+    >
+
+    <link
+        rel="icon"
+        href="assets/logo.png"
+    >
+</head>
+<body>
+
+    <div class="feedbackmain">
+
+        <h2>⭐ Feedback</h2>
+
+        <p>
+            Help us improve your healthcare experience.
+        </p>
+
+        <form id="feedbackform">
+
+            <label for="feedbackMessage">
+                Your Feedback
+            </label>
+
+            <textarea
+                id="feedbackMessage"
+                name="feedbackMessage"
+                placeholder="Write your feedback here..."
+                required
+            ></textarea>
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                Submit Feedback
+            </button>
+
+        </form>
+
+        <button
+            class="back"
+            onclick="window.location.href='index.html'"
+        >
+            ← Back To Dashboard
+        </button>
+
     </div>
-    <script>
-        
-        document.getElementById("feedbackform").addEventListener("submit", function(event) {
-            event.preventDefault(); 
-            
-            const feedbackMessage = document.getElementById("feedbackMessage").value;
-            console.log("User Feedback:", feedbackMessage);
-            alert("Thank you for your feedback: " + feedbackMessage);
-        });
-    </script>
+
+    <div id="toast-container"></div>
+
+    <script src="js/feedback.js"></script>
+
 </body>
 </html>
