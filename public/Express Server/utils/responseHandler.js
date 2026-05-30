@@ -1,14 +1,9 @@
-const sendResponse = (
-  res,
-  statusCode,
-  success,
-  message,
-  data = null
-) => {
+const sendResponse = (res, statusCode, success, message, data = null) => {
   return res.status(statusCode).json({
     success,
     message,
-    data
+    data,
+    timestamp: new Date().toISOString()
   });
 };
 

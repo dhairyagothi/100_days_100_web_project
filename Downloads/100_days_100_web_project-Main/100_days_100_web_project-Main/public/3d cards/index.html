@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Dog Gallery</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="ambient-light"></div>
+
+    <div class="hero-content">
+      <h1>3D Dog Gallery</h1>
+      <p>Interactive cinematic 3D rotating cards experience</p>
+    </div>
+
+    <div class="scene">
+      <div class="box" id="slider"></div>
+    </div>
+
+    <div class="controls glass-panel">
+      <button class="ctrl-btn" id="directionBtn">
+        <span class="btn-label">Reverse Rotation</span>
+      </button>
+
+      <button class="ctrl-btn" id="pauseBtn">
+        <span class="btn-label">Pause Rotation</span>
+      </button>
+
+      <button class="ctrl-btn" id="themeBtn">
+        <span class="btn-label">Light Mode</span>
+      </button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

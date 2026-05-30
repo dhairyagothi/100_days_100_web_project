@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="transition-all duration-300">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
 <!-- ---navbar-- -->
 <!-- Navbar -->
 <nav class="navbar">
@@ -24,13 +26,13 @@
             <a href="#">Home</a>
         </li>
         <li>
-            <a href="#">Categories</a>
+            <a href="#categories">Categories</a>
         </li>
         <li>
-            <a href="#">Blogs</a>
+            <a href="#blogs">Blogs</a>
         </li>
         <li>
-            <a href="#">About</a>
+            <a href="#about">About</a>
         </li>
     </ul>
     <!-- Right Side -->
@@ -42,10 +44,9 @@
             class="nav-search"
         >
         <!-- Dark Mode Button -->
-        <button id="themeToggle">
-            ☀️
-            <!-- 🌙 -->
-        </button>
+<button id="themeToggle">
+   <span id="themeIcon">☀️</span>
+</button>
     </div>
 </nav>
 
@@ -53,7 +54,7 @@
 
     <div class="flex flex-col md:flex-row justify-center gap-10 md:gap-20 p-6 bg-gray-50 min-h-screen">
       
-<div class="blog-container" id="blogCards">
+<div class="blog-container" id="blogCards" id="blogs">
 
     <!-- Organic Farming -->
     <div class="blog-card">
@@ -353,15 +354,43 @@
         </div>
     </div>
 
-
     <script src="script.js"></script>
+
+<!--About Section -->
+<section id="about" class="about-section">
+    <h2>About GreenBlog</h2>
+
+    <p>
+        GreenBlog is a platform dedicated to sharing informative and engaging
+        content across technology, lifestyle, travel, agriculture, and web
+        development. Our goal is to provide readers with valuable insights,
+        practical knowledge, and inspiring stories in an easy-to-read format.
+    </p>
+
+    <div class="about-features">
+        <div class="feature-card">
+            <h3>Quality Content</h3>
+            <p>Well-researched articles across multiple categories.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Knowledge Sharing</h3>
+            <p>Helping readers learn and grow every day.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Modern Experience</h3>
+            <p>Clean design with smooth navigation and responsiveness.</p>
+        </div>
+    </div>
+</section>
 
 <!-- Footer Section -->
 <footer class="footer">
   <div class="footer-container">
 
     <!-- Brand -->
-    <div class="footer-section">
+    <div class="footer-section" id="categories">
       <h2 class="logo">GreenBlog</h2>
       <p>
         Discover inspiring articles on technology, lifestyle,
@@ -373,10 +402,10 @@
     <div class="footer-section">
       <h3>Quick Links</h3>
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Blogs</a></li>
-        <li><a href="#">Categories</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#blogs">Blogs</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#about">About</a></li>
       </ul>
     </div>
 
