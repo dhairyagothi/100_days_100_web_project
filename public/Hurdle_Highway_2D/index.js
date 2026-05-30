@@ -77,7 +77,7 @@ stage.addEventListener(
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
   },
-  { passive: true },
+  { passive: true }
 );
 
 stage.addEventListener(
@@ -100,7 +100,7 @@ stage.addEventListener(
       }
     }
   },
-  { passive: true },
+  { passive: true }
 );
 // ─────────────────────────────────────────────────────────────────────────────
 
