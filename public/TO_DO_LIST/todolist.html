@@ -6,7 +6,6 @@
 
   <title>To-Do List | Modern Productivity App</title>
 
-  <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -15,16 +14,13 @@
     rel="stylesheet"
   />
 
-  <!-- CSS -->
   <link rel="stylesheet" href="todolist.css" />
 
-  <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
 
-  <!-- BACK BUTTON -->
   <a
     href="/"
     class="project-back-button"
@@ -46,7 +42,6 @@
     ← Back to Home
   </a>
 
-  <!-- FLOATING SHAPES -->
   <div class="floating-shapes" aria-hidden="true">
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
@@ -54,12 +49,10 @@
     <div class="shape shape-4"></div>
   </div>
 
-  <!-- HEADER (CLEAN VERSION) -->
   <header>
 
     <ul class="navbar">
 
-      <!-- LEFT NAV -->
       <li class="nav-left">
 
         <ul>
@@ -80,7 +73,6 @@
 
       </li>
 
-      <!-- RIGHT NAV -->
       <li class="nav-right">
 
         <span class="theme-label">Theme</span>
@@ -101,10 +93,8 @@
 
   </header>
 
-  <!-- MAIN -->
   <main>
 
-    <!-- HOME TAB -->
     <section id="home-tab">
 
       <div class="hero">
@@ -131,7 +121,6 @@
 
       </div>
 
-      <!-- INPUT -->
       <form class="input-panel" id="task-form">
 
         <div class="input-group">
@@ -186,7 +175,6 @@
 
     </section>
 
-    <!-- DOCUMENTS TAB -->
     <section id="documents-tab" hidden>
 
       <div class="documents-header">
@@ -207,7 +195,6 @@
 
   </main>
 
-  <!-- PDF Notification -->
   <div
     id="pdfMessage"
     class="pdf-message"
@@ -215,7 +202,6 @@
     aria-live="polite"
   ></div>
 
-  <!-- JS -->
   <script src="todolist.js"></script>
 
 </body>
