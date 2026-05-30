@@ -1,0 +1,275 @@
+footer{
+    width: 100%;
+    margin-top: 40px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.05);
+}
+
+/* ================= TOP PANEL ================= */
+
+.footpannell0{
+    background-color: #3f414d;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 25px 20px;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.footerBox{
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    max-width: 320px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.footerBox:hover{
+    background: rgba(255,255,255,0.05);
+}
+
+.footerBox i{
+    font-size: 22px;
+    margin-top: 3px;
+    transition: 0.3s ease;
+}
+
+.footerBox:hover i{
+    color: #fc2779;
+    transform: scale(1.1);
+}
+
+/* ================= TEXT ================= */
+
+.footerText p{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 22px;
+}
+
+.footerText h4{
+    margin: 5px 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* ================= INPUT ================= */
+
+.footerInput{
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.footerInput input{
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    outline: none;
+    border-radius: 6px;
+    width: 180px;
+    transition: 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.footerInput input:focus{
+    border-color: #fc2779;
+    box-shadow: 0 0 8px rgba(252,39,121,0.3);
+}
+
+.footerInput button{
+    border: none;
+    background: #fc2779;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.footerInput button:hover{
+    background-color: #e91e63;
+    transform: translateY(-2px);
+}
+
+/* ================= APP LINKS ================= */
+
+.appLinks{
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.appLinks img{
+    width: 110px;
+    height: auto;
+    object-fit: contain;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.appLinks img:hover{
+    transform: scale(1.05);
+}
+
+/* ================= MIDDLE FOOTER ================= */
+
+.foot-pannell1{
+    background-color: #4a4c57;
+    color: white;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 30px;
+    padding: 40px 30px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.footerColumn{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footerColumn h3{
+    margin-bottom: 14px;
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+    width: fit-content;
+}
+
+.footerColumn h3::after{
+    content: "";
+    width: 35px;
+    height: 2px;
+    background: #fc2779;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+}
+
+.footerColumn a{
+    font-size: 14px;
+    color: #f1f1f1;
+    transition: all 0.3s ease;
+    width: fit-content;
+}
+
+.footerColumn a:hover{
+    color: #fc2779;
+    transform: translateX(5px);
+}
+
+/* ================= FOOTER LOGO ================= */
+
+.logo img{
+    width: 120px;
+    height: auto;
+    margin-bottom: 15px;
+    object-fit: contain;
+}
+
+/* ================= COPYRIGHT ================= */
+
+.foot-pannell2{
+    background: linear-gradient(to right,#fc2779,#ff4d94);
+    color: white;
+    text-align: center;
+    padding: 18px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* ================= POPULAR LINKS ================= */
+
+.foot-pannell3{
+    background: #f7f7f7;
+    padding: 25px 30px;
+}
+
+.foot-pannell3 p{
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #333;
+    font-size: 18px;
+}
+
+.popularLinks{
+    color: #666;
+    line-height: 32px;
+    font-size: 14px;
+}
+
+.popularLinks a{
+    text-decoration: none;
+    color: #555;
+    transition: 0.3s ease;
+}
+
+.popularLinks a:hover{
+    color: #fc2779;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+    .footpannell0{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+    }
+
+    .footerBox{
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .footerInput{
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .footerInput input{
+        width: 100%;
+    }
+
+    .foot-pannell1{
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .appLinks img{
+        width: 100px;
+    }
+}
+
+@media(max-width:480px){
+
+    .foot-pannell1{
+        grid-template-columns: 1fr;
+    }
+
+    .popularLinks{
+        font-size: 13px;
+        line-height: 28px;
+    }
+
+    .footerText h4{
+        font-size: 20px;
+    }
+
+    .appLinks img{
+        width: 90px;
+    }
+
+    .foot-pannell2{
+        font-size: 12px;
+    }
+}

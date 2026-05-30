@@ -1,0 +1,72 @@
+{
+  "categories": [
+    {
+      "id": "html",
+      "title": "HTML Basics",
+      "icon": "fa-brands fa-html5",
+      "topics": [
+        { "id": "introduction", "title": "Introduction to HTML", "file": "topics/html/introduction.md" },
+        { "id": "elements", "title": "HTML Elements & Attributes", "file": "topics/html/elements.md" },
+        { "id": "headings", "title": "Headings & Paragraphs", "file": "topics/html/headings.md" },
+        { "id": "links", "title": "Links & Images", "file": "topics/html/links.md" },
+        { "id": "tables", "title": "HTML Tables", "file": "topics/html/tables.md" },
+        { "id": "forms", "title": "HTML Forms & Input", "file": "topics/html/forms.md" },
+        { "id": "semantic-html", "title": "Semantic HTML", "file": "topics/html/semantic-html.md" }
+      ]
+    },
+    {
+      "id": "css",
+      "title": "CSS Styling",
+      "icon": "fa-brands fa-css3-alt",
+      "topics": [
+        { "id": "selectors", "title": "CSS Selectors & Specificity", "file": "topics/css/selectors.md" },
+        { "id": "colors", "title": "Colors & Backgrounds", "file": "topics/css/colors.md" },
+        { "id": "box-model", "title": "CSS Box Model", "file": "topics/css/box-model.md" },
+        { "id": "flexbox", "title": "CSS Flexbox Layout", "file": "topics/css/flexbox.md" },
+        { "id": "grid", "title": "CSS Grid Layout", "file": "topics/css/grid.md" },
+        { "id": "animations", "title": "Transitions & Animations", "file": "topics/css/animations.md" },
+        { "id": "responsive-design", "title": "Responsive Design & Media Queries", "file": "topics/css/responsive-design.md" }
+      ]
+    },
+    {
+      "id": "javascript",
+      "title": "JavaScript Programming",
+      "icon": "fa-brands fa-js",
+      "topics": [
+        { "id": "variables", "title": "Variables & Scope", "file": "topics/js/variables.md" },
+        { "id": "data-types", "title": "Data Types & Operators", "file": "topics/js/data-types.md" },
+        { "id": "functions", "title": "Functions & Arrow Syntax", "file": "topics/js/functions.md" },
+        { "id": "arrays", "title": "Arrays & Array Methods", "file": "topics/js/arrays.md" },
+        { "id": "objects", "title": "Objects & JSON", "file": "topics/js/objects.md" },
+        { "id": "loops", "title": "Loops & Iteration", "file": "topics/js/loops.md" },
+        { "id": "dom", "title": "DOM Manipulation", "file": "topics/js/dom.md" },
+        { "id": "events", "title": "Event Handling", "file": "topics/js/events.md" }
+      ]
+    },
+    {
+      "id": "react",
+      "title": "React.js",
+      "icon": "fa-brands fa-react",
+      "topics": [
+        { "id": "introduction", "title": "Introduction to React", "file": "topics/react/introduction.md" },
+        { "id": "why-react", "title": "Why React?", "file": "topics/react/why-react.md" },
+        { "id": "setup", "title": "React Setup", "file": "topics/react/setup.md" },
+        { "id": "jsx", "title": "JSX", "file": "topics/react/jsx.md" },
+        { "id": "components", "title": "Components", "file": "topics/react/components.md" },
+        { "id": "props", "title": "Props", "file": "topics/react/props.md" },
+        { "id": "state", "title": "State", "file": "topics/react/state.md" },
+        { "id": "event-handling", "title": "Event Handling", "file": "topics/react/event-handling.md" },
+        { "id": "conditional-rendering", "title": "Conditional Rendering", "file": "topics/react/conditional-rendering.md" },
+        { "id": "lists-and-keys", "title": "Lists and Keys", "file": "topics/react/lists-and-keys.md" },
+        { "id": "forms", "title": "Forms", "file": "topics/react/forms.md" },
+        { "id": "hooks-overview", "title": "Hooks Overview", "file": "topics/react/hooks-overview.md" },
+        { "id": "use-state", "title": "useState", "file": "topics/react/use-state.md" },
+        { "id": "use-effect", "title": "useEffect", "file": "topics/react/use-effect.md" },
+        { "id": "project-structure", "title": "React Project Structure", "file": "topics/react/project-structure.md" },
+        { "id": "api-fetching", "title": "API Fetching Basics", "file": "topics/react/api-fetching.md" },
+        { "id": "best-practices", "title": "Best Practices", "file": "topics/react/best-practices.md" },
+        { "id": "mini-project", "title": "Mini Project Overview", "file": "topics/react/mini-project.md" }
+      ]
+    }
+  ]
+}

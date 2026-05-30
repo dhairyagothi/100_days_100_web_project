@@ -1,0 +1,27 @@
+.dark-mode {
+    background: #0f172a;
+    color: white;
+}
+
+.dark-mode .card {
+    background: #1e293b;
+    color: white;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+    background: #334155;
+    color: white;
+    border: 1px solid #475569;
+}
+
+.theme-btn{
+    position:absolute;
+    right:20px;
+    top:20px;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+}

@@ -1,0 +1,119 @@
+/* General page styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #9C27B0, #E040FB);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transition: background 0.6s ease;
+}
+
+/* Main container */
+.container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.6s ease;
+}
+
+/* Heading */
+h1 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+/* Palette grid */
+.palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+/* Color box */
+.color {
+    height: 100px;
+    border-radius: 12px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.color:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Generate button */
+button {
+    background: white;
+    color: #9C27B0;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #9C27B0;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Message (copy confirmation) */
+.message {
+    color: white;
+    margin-top: 15px;
+    font-size: 0.95rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.message.show {
+    opacity: 1;
+}
+
+/* Responsive tweaks */
+@media (max-width: 500px) {
+    .container {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    .color {
+        height: 80px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,50 +1,39 @@
 ## Related Issue
 
-[Cite any related issue(s) this pull request addresses. If none, simply state "None”]
-write issue no. here
+Closes #ISSUE_NUMBER
 
+## Summary
 
+Provide a short, reviewer-friendly summary of what changed and why.
 
+## Changes Made
 
-## Description
+- Change 1
+- Change 2
+- Change 3
 
-[Please include a brief description of the changes or features added]
+## Testing
 
-## Type of PR
+- [ ] Tested locally
+- [ ] Verified responsive behavior where applicable
+- [ ] Checked accessibility impact where applicable
+- [ ] Confirmed there are no unrelated changes in the branch
 
-- [ ] Bug fix
-- [ ] Feature enhancement
-- [ ] Documentation update
-- [ ] Security enhancement
-- [ ] Other (specify): _______________
+## Screenshots
 
+Add screenshots or short recordings when the pull request changes UI.
 
-check in issue by entering [X] in boxes
+## Impact
 
-## Screenshots / Videos (if applicable)
-
-[Attach any relevant screenshots or videos demonstrating the changes]
+Explain how this improves the project for users or maintainers.
 
 ## Checklist
-- [ ] I have performed a self-review of my code.
-- [ ] I have read and followed the Contribution Guidelines.
-- [ ] I have tested the changes thoroughly before submitting this pull request.
-- [ ] I have provided relevant issue numbers, screenshots, and videos after making the changes.
-- [ ] I have commented my code, particularly in hard-to-understand areas.
-- [ ] I have followed the code style guidelines of this project.
-- [ ] I have checked for any existing open issues that my pull request may address.
-- [ ] I have ensured that my changes do not break any existing functionality.
-- [ ] Each contributor is allowed to create a maximum of 4 issues per day. This helps us manage and address issues efficiently.
-- [ ] I have read the resources for guidance listed below.
-- [ ] I have followed security best practices in my code changes.
 
-check in issue by entering [X] in boxes
-## Additional Context
-
-[Include any additional information or context that might be helpful for reviewers.]
-
-
-
+- [ ] Code follows project standards
+- [ ] Tested locally
+- [ ] No unrelated changes included
+- [ ] Responsive behavior verified
+- [ ] Accessibility considered
 
 ## Contribution Guidelines
 
