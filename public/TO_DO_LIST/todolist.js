@@ -11,7 +11,12 @@ const documentsList = document.querySelector(".documents-list");
 const progressFill = document.getElementById("progressFill");
 const progressText = document.getElementById("progressText");
 
-// Data State
+const toast = document.getElementById("toast");
+
+// ============================================
+// DATA STATE
+// ============================================
+
 let tasks = [];
 let savedDocs = [];
 let currentStatusFilter = "all";
@@ -126,6 +131,7 @@ function toggleInProgress(id) {
 
 function deleteTask(id) {
   const card = document.querySelector(`[data-id="${id}"]`);
+
   if (card) {
     card.style.animation = "fadeOut 0.2s ease forwards";
     setTimeout(() => {
@@ -290,7 +296,6 @@ document.querySelectorAll(".theme-btn").forEach((button) => {
     const theme = button.dataset.theme;
     if (theme) applyTheme(theme);
   });
-});
 
 // 8. PDF Exporter &Snapshots History
 function saveAsPDF() {
@@ -300,10 +305,12 @@ function saveAsPDF() {
   }
 
   const { jsPDF } = window.jspdf;
+
   const doc = new jsPDF();
 
   doc.setFont("Helvetica", "bold");
   doc.setFontSize(22);
+
   doc.text("TaskFlow Agenda Report", 20, 24);
 
   doc.setFont("Helvetica", "normal");
@@ -319,6 +326,7 @@ function saveAsPDF() {
   doc.line(20, 42, 190, 42);
 
   let verticalCursor = 52;
+
   doc.setFontSize(12);
 
   tasks.forEach((task, index) => {
@@ -415,6 +423,7 @@ const taskForm = document.getElementById("task-form");
 if (taskForm) {
   taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
+
     addTask();
   });
 }
@@ -426,6 +435,10 @@ if (savePdfBtn) {
 
 // Initial Loading Routines
 showHome();
+
+loadTasks();
+
+renderTasks();
 
 try {
   const savedTasks = localStorage.getItem("todo-tasks");

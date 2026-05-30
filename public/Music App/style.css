@@ -97,6 +97,11 @@ body.light-theme .player-bar {
 
 .sidebar {
     grid-row: 1;
+    position: sticky;
+    top: 1rem;
+    height: calc(100vh - 2rem);
+    overflow-y: auto;
+    align-self: start;
     border-radius: 1.25rem;
     padding: 1.1rem;
     display: flex;
@@ -601,6 +606,10 @@ input[type="range"] {
 
     .sidebar {
         grid-row: auto;
+        position: static;
+        top: auto;
+        height: auto;
+        overflow-y: visible;
         flex-direction: row;
         align-items: center;
         overflow-x: auto;
