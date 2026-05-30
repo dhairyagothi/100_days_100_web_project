@@ -232,12 +232,6 @@
   background-color: #faf6f0;
 }
 
-.chart-container h3 {
-  text-align: center;
-  margin-bottom: 1rem;
-  color: #513a29;
-  font-size: 1rem;
-}
 
 #historyChart {
   width: 100% !important;
