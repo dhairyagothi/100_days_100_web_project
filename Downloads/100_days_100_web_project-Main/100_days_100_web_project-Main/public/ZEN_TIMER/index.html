@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Timer - Focus Better</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Zen Timer</h1>
+            <div class="streak-badge" id="streakBadge">
+                <span class="fire">🔥</span>
+                <span id="streakCount">0</span> day streak
+            </div>
+        </header>
+
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="work">Focus</button>
+            <button class="mode-btn" data-mode="short">Short Break</button>
+            <button class="mode-btn" data-mode="long">Long Break</button>
+        </div>
+
+        <div class="timer-display">
+            <svg class="progress-ring" viewBox="0 0 200 200">
+                <circle class="progress-ring-bg" cx="100" cy="100" r="90"/>
+                <circle class="progress-ring-progress" cx="100" cy="100" r="90" id="progressCircle"/>
+            </svg>
+            <div class="time-text">
+                <span class="timer-label" id="timerLabel">Focus</span>
+                <span id="timeDisplay">25:00</span>
+            </div>
+            <div class="session-info">Session <span id="sessionCount">1</span></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-primary" id="startBtn">Start</button>
+            <button class="btn-secondary" id="resetBtn">Reset</button>
+        </div>
+
+        <div class="stats-section">
+            <h2>📊 Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalSessions">0</div>
+                    <div class="stat-label">Total Sessions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalHours">0h</div>
+                    <div class="stat-label">Focus Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgSession">0min</div>
+                    <div class="stat-label">Avg Session</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="bestStreak">0</div>
+                    <div class="stat-label">Best Streak</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="badges-section">
+            <h2>🏆 Achievements</h2>
+            <div class="badges-grid" id="badgesGrid">
+                <div class="badge locked" data-badge="first">
+                    <div class="badge-icon">🌟</div>
+                    <div class="badge-name">First Focus</div>
+                </div>
+                <div class="badge locked" data-badge="ten">
+                    <div class="badge-icon">🎯</div>
+                    <div class="badge-name">10 Sessions</div>
+                </div>
+                <div class="badge locked" data-badge="fifty">
+                    <div class="badge-icon">🔥</div>
+                    <div class="badge-name">50 Sessions</div>
+                </div>
+                <div class="badge locked" data-badge="hundred">
+                    <div class="badge-icon">👑</div>
+                    <div class="badge-name">100 Sessions</div>
+                </div>
+                <div class="badge locked" data-badge="streak3">
+                    <div class="badge-icon">⚡</div>
+                    <div class="badge-name">3 Day Streak</div>
+                </div>
+                <div class="badge locked" data-badge="streak7">
+                    <div class="badge-icon">🌈</div>
+                    <div class="badge-name">7 Day Streak</div>
+                </div>
+                <div class="badge locked" data-badge="streak30">
+                    <div class="badge-icon">🚀</div>
+                    <div class="badge-name">30 Day Streak</div>
+                </div>
+                <div class="badge locked" data-badge="hour">
+                    <div class="badge-icon">⏰</div>
+                    <div class="badge-name">1 Hour Focus</div>
+                </div>
+                <div class="badge locked" data-badge="early">
+                    <div class="badge-icon">🌅</div>
+                    <div class="badge-name">Early Bird</div>
+                </div>
+                <div class="badge locked" data-badge="marathon">
+                    <div class="badge-icon">🏃</div>
+                    <div class="badge-name">Focus Marathon</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="export-btn" id="exportBtn">📤 Export Stats</button>
+    </div>
+
+    <aside class="sidebar" id="sessionsSidebar">
+        <div class="sidebar-header">
+            <h3>Saved Sessions</h3>
+            <button id="closeSidebar">✕</button>
+        </div>
+        <div class="sidebar-body">
+            <div class="profile-row">
+                <label for="profileName">Your name</label>
+                <input id="profileName" placeholder="Enter your name" />
+            </div>
+            <ul class="session-list" id="sessionList"></ul>
+            <div class="sidebar-actions">
+                <button id="clearSessions">Clear Sessions</button>
+            </div>
+        </div>
+    </aside>
+
+    <button class="sidebar-toggle" id="sidebarToggle">📚 Sessions</button>
+
+    <audio id="alarmSound" src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleScAPZTW3oA3OTU+otPpcio2R2h6o9nZYzw5amWKuOPW6HY4L0Jph6/r5pBLPzxVgLbs5pI2U2yAuOPX6IovZ3qHsdvi6Ikvf4WCnJ6jnZqbop6bnKOempuim5qboZqZm6CYl5qtlpWVsJSUlbCRkZKvj4+PrY+Pj6yOjo+ri4uLqomIiKmHh4emh4aHpYaGhqSFhYWkhYWFpISFhKOEhISihISEooSEhKKDg4Oig4ODooKCgqKCgoKigoKCooKCgqKCgoKig"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
