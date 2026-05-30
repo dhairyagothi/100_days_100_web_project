@@ -1,5 +1,6 @@
 :root {
-  --theme-card-bg: rgba(232, 221, 227, 1); /* default: theme 1 */
+  --theme-card-bg: rgba(232, 221, 227, 1);
+  /* default: theme 1 */
   --theme-text: #1a1a2e;
   --nav-bg: rgba(225, 225, 225, 0.45);
   --nav-link-bg: rgba(20, 48, 65, 0.7);
@@ -12,6 +13,7 @@
   --transition: 0.28s ease;
   --font-main: 'Segoe UI', system-ui, sans-serif;
 }
+
 /* ============================================
    🎨 TO-DO LIST — COMPLETE UPDATED CSS
    ============================================ */
@@ -26,12 +28,10 @@
 }
 
 body {
-  background: linear-gradient(
-    135deg,
-    rgba(43, 48, 121, 1) 0%,
-    rgba(101, 78, 170, 0.97) 55%,
-    rgba(136, 136, 168, 1) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(43, 48, 121, 1) 0%,
+      rgba(101, 78, 170, 0.97) 55%,
+      rgba(136, 136, 168, 1) 100%);
   min-height: 100vh;
   font-family: var(--font-main);
   transition: background var(--transition);
@@ -484,12 +484,14 @@ main {
   gap: 8px;
   flex-wrap: wrap;
 }
+
 .theme-label {
   font-family: 'Space Mono', monospace;
   font-size: 10px;
   color: var(--text-muted);
   letter-spacing: 2px;
 }
+
 .theme-swatch {
   width: 28px;
   height: 28px;
@@ -498,23 +500,29 @@ main {
   border: 2px solid transparent;
   transition: all 0.3s;
 }
+
 .theme-swatch:hover,
 .theme-swatch.active {
   transform: scale(1.25);
   border-color: white;
 }
+
 #t1 {
   background: linear-gradient(135deg, #1a0533, #f5c842);
 }
+
 #t2 {
   background: linear-gradient(135deg, #0a1628, #00d4ff);
 }
+
 #t3 {
   background: linear-gradient(135deg, #0a1f0a, #7fff00);
 }
+
 #t4 {
   background: linear-gradient(135deg, #000, #a855f7);
 }
+
 #t5 {
   background: linear-gradient(135deg, #001a1a, #00ffcc);
 }
@@ -530,6 +538,7 @@ main {
 .page-header {
   margin-bottom: 40px;
 }
+
 .main-heading {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(60px, 12vw, 120px);
@@ -538,6 +547,7 @@ main {
   letter-spacing: 2px;
   position: relative;
 }
+
 .main-heading::after {
   content: '';
   display: block;
@@ -548,6 +558,7 @@ main {
   border-radius: 3px;
   box-shadow: 0 0 16px var(--accent);
 }
+
 .sub-heading {
   margin-top: 14px;
   font-size: 16px;
@@ -565,8 +576,8 @@ main {
   margin-bottom: 20px;
   backdrop-filter: blur(10px);
 }
-.input-row {
-}
+
+.input-row {}
 
 .input-actions {
   margin-top: 14px;
@@ -574,6 +585,7 @@ main {
   gap: 10px;
   flex-wrap: wrap;
 }
+
 #task-input {
   flex: 1;
   min-width: 180px;
@@ -589,10 +601,12 @@ main {
     border-color 0.2s,
     box-shadow 0.2s;
 }
+
 #task-input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(245, 200, 66, 0.15);
 }
+
 #task-input::placeholder {
   color: var(--text-muted);
 }
@@ -609,9 +623,11 @@ main {
   outline: none;
   transition: border-color 0.2s;
 }
+
 #task-type-select:focus {
   border-color: var(--accent);
 }
+
 #task-type-select option {
   background: #1a1a2e;
   color: #fff;
@@ -633,11 +649,13 @@ main {
   transition: all 0.2s;
   white-space: nowrap;
 }
+
 .btn-add:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(245, 200, 66, 0.4);
   filter: brightness(1.1);
 }
+
 .btn-add:active {
   transform: translateY(0);
 }
@@ -649,6 +667,7 @@ main {
   border-radius: 999px;
   overflow: hidden;
 }
+
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent), var(--accent2));
@@ -657,6 +676,7 @@ main {
   transition: width 0.5s ease;
   box-shadow: 0 0 10px var(--accent);
 }
+
 .progress-pct {
   font-family: 'Space Mono', monospace;
   font-size: 12px;
@@ -712,7 +732,7 @@ main {
   width: 100%;
   justify-content: center;
   padding: 0 0 20px;
-  
+
   gap: 18px;
 
   list-style: none;
@@ -996,6 +1016,7 @@ main {
   width: fit-content;
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
 
@@ -1081,6 +1102,7 @@ main {
 #empty-state {
   margin-top: 20px;
 }
+
 #task-input {
   background: rgba(255, 255, 255, 0.9) !important;
   color: #000000 !important;
@@ -1089,6 +1111,7 @@ main {
 #task-input::placeholder {
   color: #555555 !important;
 }
+
 .theme5 {
   --page-bg-start: #ef1414;
   --page-bg-mid: #7f1d1d;
