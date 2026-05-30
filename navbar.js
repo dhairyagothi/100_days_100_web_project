@@ -14,7 +14,7 @@
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
 
-  const username = window.username || null;
+  const username = window.username || localStorage.getItem('loggedInUser') || null;
 
   window.ThemeManager?.init?.();
   const isLight = window.ThemeManager?.currentTheme?.() === "light";
@@ -27,7 +27,20 @@
   const learnHref = `${base}learning/learning.html`;
   const contributorsHref = `${base}contributors/contributor.html`;
 
-  const themeBtn = `<button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme"><i class="fas ${themeIcon}"></i> Theme</button>`;
+  const themeBtn = `
+    <div class="theme-dropdown-container">
+      <button class="btn btn-ghost btn-sm dropdown-toggle" id="themeToggleNav" aria-label="Select theme" aria-haspopup="true" aria-expanded="false">
+        <i class="fas ${themeIcon}"></i> Theme
+      </button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" data-theme-value="light"><i class="fas fa-sun"></i> Light</button>
+        <button class="dropdown-item" data-theme-value="dark"><i class="fas fa-moon"></i> Dark</button>
+        <button class="dropdown-item" data-theme-value="sepia"><i class="fas fa-coffee"></i> Sepia</button>
+        <button class="dropdown-item" data-theme-value="cyberpunk"><i class="fas fa-bolt"></i> Cyberpunk</button>
+        <button class="dropdown-item" data-theme-value="nord"><i class="fas fa-snowflake"></i> Nord</button>
+      </div>
+    </div>
+  `;
   const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}"><i class="fas fa-home"></i> Home</a>`;
   const learnBtn = `<a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}"><i class="fas fa-graduation-cap"></i> Learn</a>`;
   const contributorsBtn = `<a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">Contributors</a>`;
@@ -129,7 +142,37 @@
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       window.username = null;
+      localStorage.removeItem('loggedInUser');
       location.reload();
+    });
+  }
+
+  // Dropdown Logic
+  const dropdownToggle = document.getElementById("themeToggleNav");
+  const dropdownMenu = dropdownToggle?.nextElementSibling;
+  
+  if (dropdownToggle && dropdownMenu) {
+    dropdownToggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = dropdownToggle.getAttribute("aria-expanded") === "true";
+      dropdownToggle.setAttribute("aria-expanded", !isExpanded);
+      dropdownMenu.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+      }
+    });
+    
+    // Close dropdown on item click
+    dropdownMenu.addEventListener("click", (e) => {
+      if (e.target.closest(".dropdown-item")) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+      }
     });
   }
 })();

@@ -436,7 +436,80 @@ function Player(maze, canvas, cellSize, onComplete) {
         },
         threshold: 0
       });
+
+    };
+  
+    this.unbindKeyDown = function() {
+      window.removeEventListener("keydown", check, false);
+      $("#view").swipe("destroy");
+    };
+  
+    drawSprite(maze.startCoord());
+  
+    this.bindKeyDown();
+  }
+  
+  var mazeCanvas = document.getElementById("mazeCanvas");
+  var ctx = mazeCanvas.getContext("2d");
+  var sprite;
+  var finishSprite;
+  var maze, draw, player;
+  var cellSize;
+  var difficulty;
+  // sprite.src = 'media/sprite.png';
+  
+  window.onload = function() {
+    document.getElementById("mazeContainer").classList.add("preview");
+    let viewWidth = $("#view").width();
+    let viewHeight = $("#view").height();
+    if (viewHeight < viewWidth) {
+      ctx.canvas.width = viewHeight - viewHeight / 100;
+      ctx.canvas.height = viewHeight - viewHeight / 100;
+    } else {
+      ctx.canvas.width = viewWidth - viewWidth / 100;
+      ctx.canvas.height = viewWidth - viewWidth / 100;
     }
+  
+    //Load and edit sprites
+    var completeOne = false;
+    var completeTwo = false;
+    var isComplete = () => {
+      if(completeOne === true && completeTwo === true)
+         {
+           console.log("Runs");
+          // setTimeout(function(){
+          //   makeMaze();
+           //}, 500);         
+         }
+    };
+    sprite = new Image();
+    sprite.src =
+      "./key.png" +
+      "?" +
+      new Date().getTime();
+    sprite.setAttribute("crossOrigin", " ");
+    sprite.onload = function() {
+      sprite = changeBrightness(1.2, sprite);
+      completeOne = true;
+      console.log(completeOne);
+      isComplete();
+    };
+  
+    finishSprite = new Image();
+    finishSprite.src = "./home.png"+
+    "?" +
+    new Date().getTime();
+    finishSprite.setAttribute("crossOrigin", " ");
+    finishSprite.onload = function() {
+      finishSprite = changeBrightness(1.1, finishSprite);
+      completeTwo = true;
+      console.log(completeTwo);
+      isComplete();
+    };
+    
+=======
+    }
+
   };
 
   this.unbindKeyDown = function () {
@@ -583,6 +656,36 @@ function startRenderLoop() {
     }
     animationFrameId = requestAnimationFrame(loop);
   };
+
+  
+  function makeMaze() {
+     const mazeContainer = document.getElementById("mazeContainer");
+
+    mazeContainer.classList.remove("preview");
+    mazeContainer.classList.add("active");
+    if (player != undefined) {
+      player.unbindKeyDown();
+      player = null;
+    }
+    var e = document.getElementById("diffSelect");
+    difficulty = e.options[e.selectedIndex].value;
+    cellSize = mazeCanvas.width / difficulty;
+    maze = new Maze(difficulty, difficulty);
+    draw = new DrawMaze(maze, ctx, cellSize, finishSprite);
+    player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, sprite);
+    if (document.getElementById("mazeContainer").style.opacity < "100") {
+      document.getElementById("mazeContainer").style.opacity = "100";
+    }
+  }
+
+  function startGame() {
+  const mazeContainer = document.getElementById("mazeContainer");
+
+  mazeContainer.classList.remove("preview");
+  mazeContainer.classList.add("active");
+
+  makeMaze();
+=======
   animationFrameId = requestAnimationFrame(loop);
 }
 
@@ -649,4 +752,5 @@ if (document.readyState === 'loading') {
   window.addEventListener('load', initialize);
 } else {
   initialize();
+
 }
