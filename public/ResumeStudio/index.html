@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume Studio</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -19,6 +21,16 @@
     <main>
         <section class="builder">
             <h2>Resume Builder</h2>
+
+            <div class="template-selector">
+                <label class="template-label">Choose Template:</label>
+                <div class="template-btns">
+                    <button class="tpl-btn active" data-template="modern">Modern</button>
+                    <button class="tpl-btn" data-template="classic">Classic</button>
+                    <button class="tpl-btn" data-template="minimal">Minimal</button>
+                </div>
+            </div>
+
             <form id="resumeForm">
                 <div class="form-row">
                     <div class="form-group">
@@ -67,7 +79,7 @@
                 <p class="error-msg" id="errorMsg">&#9888; Please fill in all fields before previewing.</p>
                 <div class="btn-row">
                     <button type="button" id="previewBtn">Live Preview</button>
-                    <button type="button" id="downloadBtn">Download PDF</button>
+                    <button type="button" id="downloadBtn">⬇ Download PDF</button>
                 </div>
             </form>
         </section>
@@ -76,8 +88,440 @@
             <div id="resumePreview">
                 <p class="placeholder">Fill the form to see live preview...</p>
             </div>
+            <div id="atsScoreBox">
+    <h3>ATS Resume Score</h3>
+    <div id="atsScore">0/100</div>
+
+    <div class="ats-feedback">
+        <h4>Strengths</h4>
+        <ul id="atsStrengths"></ul>
+
+        <h4>Suggestions</h4>
+        <ul id="atsSuggestions"></ul>
+    </div>
+</div>
         </section>
     </main>
+    <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Redirect to trailing slash to fix relative paths when loaded without index.html -->
+    <script>
+        if (window.location.pathname.endsWith('/ResumeStudio')) {
+            window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Studio - AI-Powered ATS Resume Builder</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- PDF Generation libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="dashboard-theme">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+    <div class="app-layout">
+        <!-- 1. LEFT SIDEBAR: Navigation & ATS Score -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <line x1="10" y1="9" x2="8" y2="9"/>
+                    </svg>
+                </div>
+                <span>Resume Studio</span>
+            </div>
+
+            <!-- Tab Navigation Links -->
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="personal">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Personal Info</span>
+                    <span class="status-indicator" id="status-personal"></span>
+                </button>
+
+                <button class="nav-item" data-tab="summary">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Summary</span>
+                    <span class="status-indicator" id="status-summary"></span>
+                </button>
+
+                <button class="nav-item" data-tab="experience">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Experience</span>
+                    <span class="status-indicator" id="status-experience"></span>
+                </button>
+
+                <button class="nav-item" data-tab="projects">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 22"/>
+                            <polyline points="2 17 12 22 22 17"/>
+                            <polyline points="2 12 12 17 22 12"/>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Projects</span>
+                    <span class="status-indicator" id="status-projects"></span>
+                </button>
+
+                <button class="nav-item" data-tab="education">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Education</span>
+                    <span class="status-indicator" id="status-education"></span>
+                </button>
+
+                <button class="nav-item" data-tab="skills">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="9"/>
+                            <rect x="14" y="3" width="7" height="5"/>
+                            <rect x="14" y="12" width="7" height="9"/>
+                            <rect x="3" y="16" width="7" height="5"/>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Skills & Keywords</span>
+                    <span class="status-indicator" id="status-skills"></span>
+                </button>
+
+                <button class="nav-item" data-tab="analyzer">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                    </span>
+                    <span class="nav-label">ATS Analyzer</span>
+                    <span class="status-badge" id="ats-nav-badge">0%</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar ATS Progress Circle -->
+            <div class="sidebar-ats-widget">
+                <div class="ats-circle-container">
+                    <svg class="progress-ring" width="60" height="60" viewBox="0 0 60 60">
+                        <defs>
+                            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff4757" id="grad-start" />
+                                <stop offset="100%" stop-color="#2ed573" id="grad-end" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="progress-ring-bg" stroke="rgba(255,255,255,0.06)" stroke-width="5" fill="transparent" r="25" cx="30" cy="30"/>
+                        <circle class="progress-ring-circle" stroke="url(#scoreGradient)" stroke-width="5" stroke-dasharray="157" stroke-dashoffset="157" stroke-linecap="round" fill="transparent" r="25" cx="30" cy="30"/>
+                    </svg>
+                    <div class="ats-score-text">
+                        <span id="atsScoreValue">0</span>
+                        <span class="ats-percent-sign">%</span>
+                    </div>
+                </div>
+                <div class="ats-widget-info">
+                    <div class="ats-widget-title">ATS MATCH SCORE</div>
+                    <div class="ats-widget-status" id="atsStatusBadge">Incomplete</div>
+                </div>
+            </div>
+
+            <!-- Theme Toggle & Help -->
+            <div class="sidebar-footer">
+                <button id="themeSwitcher" class="icon-btn-text" aria-label="Toggle Theme">
+                    <span id="themeIcon" style="display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                    <span id="themeLabel">Dark Mode</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- 2. CENTER PANEL: Form Workspace -->
+        <main class="workspace-panel">
+            <header class="panel-header">
+                <div class="header-title-container">
+                    <span class="section-subtitle">Resume Builder</span>
+                    <h2 id="currentSectionTitle">Personal Details</h2>
+                </div>
+                <div class="header-badges">
+                    <span class="status-badge strength" id="strengthBadge">Resume Strength: Weak</span>
+                    <span class="status-badge readiness" id="readinessBadge">Missing Info</span>
+                </div>
+            </header>
+
+            <div class="form-container">
+                <form id="resumeForm">
+                    <!-- PERSONAL DETAILS SECTION -->
+                    <div class="form-section active" data-section="personal">
+                        <div class="form-grid">
+                            <div class="form-group col-span-2">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" placeholder="John Doe" maxlength="60">
+                                <span class="char-count" id="nameCount">0/60</span>
+                            </div>
+                            <div class="form-group col-span-2">
+                                <label for="title">Professional Title</label>
+                                <input type="text" id="title" placeholder="Senior Frontend Engineer" maxlength="60">
+                                <span class="char-count" id="titleCount">0/60</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" placeholder="john.doe@example.com" maxlength="80">
+                                <span class="char-count" id="emailCount">0/80</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="+1 (555) 000-0000" maxlength="20">
+                                <span class="char-count" id="phoneCount">0/20</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" placeholder="San Francisco, CA" maxlength="60">
+                                <span class="char-count" id="locationCount">0/60</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="website">Portfolio / Website</label>
+                                <input type="url" id="website" placeholder="https://johndoe.dev" maxlength="80">
+                                <span class="char-count" id="websiteCount">0/80</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="linkedin">LinkedIn Profile URL</label>
+                                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/johndoe" maxlength="80">
+                                <span class="char-count" id="linkedinCount">0/80</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="github">GitHub Profile URL</label>
+                                <input type="url" id="github" placeholder="https://github.com/johndoe" maxlength="80">
+                                <span class="char-count" id="githubCount">0/80</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUMMARY SECTION -->
+                    <div class="form-section" data-section="summary">
+                        <div class="section-tips">
+                            <span class="tip-icon" style="font-weight: 700; color: var(--primary);">Tip:</span>
+                            <span class="tip-text">State your focus, target role, and what you enjoy building. Highlight a main skill and keep it conversational yet professional. Keep it to 2-3 sentences.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="summary">Professional Summary</label>
+                            <textarea id="summary" placeholder="Frontend engineer focused on building fast, accessible web interfaces. Over the past five years, I've specialized in React and Node.js, helping teams ship features that users love while keeping core web vitals in the green." maxlength="400"></textarea>
+                            <span class="char-count" id="summaryCount">0/400</span>
+                        </div>
+                    </div>
+
+                    <!-- WORK EXPERIENCE SECTION -->
+                    <div class="form-section" data-section="experience">
+                        <div class="section-tips">
+                            <span class="tip-icon" style="font-weight: 700; color: var(--primary);">Tip:</span>
+                            <span class="tip-text">Format your work history. Use <strong>dash (-) at the beginning of lines</strong> to create list items. Focus on what you actually did and the real-world impact.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">Work Experience Details</label>
+                            <textarea id="experience" placeholder="Senior Software Engineer | Tech Corp (2022 - Present)&#10;- Rewrote our main customer dashboard from scratch using React, which made the app feel much snappier and cut page load times in half.&#10;- Mentored junior developers and helped establish clean component design patterns across our repositories.&#10;&#10;Web Developer | Startup Hub (2020 - 2022)&#10;- Built and maintained REST APIs using Express and PostgreSQL, keeping data sync fast and reliable.&#10;- Styled responsive layouts with CSS grid and flexbox, ensuring smooth views on mobile devices." maxlength="600"></textarea>
+                            <span class="char-count" id="experienceCount">0/600</span>
+                        </div>
+                    </div>
+
+                    <!-- PROJECTS SECTION -->
+                    <div class="form-section" data-section="projects">
+                        <div class="section-tips">
+                            <span class="tip-icon" style="font-weight: 700; color: var(--primary);">Tip:</span>
+                            <span class="tip-text">Describe side projects or notable client works. Use <strong>dash (-) for bullets</strong>. Detail the technology stack used and what problem it solved.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="projects">Projects Developed</label>
+                            <textarea id="projects" placeholder="Resume Studio | HTML, CSS, JS (2026)&#10;- Built a browser-based resume builder with a live A4 preview and high-quality PDF downloads.&#10;- Coded a custom keyword scanner that checks your resume text against specific job descriptions.&#10;&#10;Task Master | React, Firebase (2025)&#10;- Created a shared kanban board app where multiple users can drag, drop, and edit tasks together in real time." maxlength="600"></textarea>
+                            <span class="char-count" id="projectsCount">0/600</span>
+                        </div>
+                    </div>
+
+                    <!-- EDUCATION SECTION -->
+                    <div class="form-section" data-section="education">
+                        <div class="form-group">
+                            <label for="education">Education details</label>
+                            <textarea id="education" placeholder="B.S. in Computer Science&#10;University of California, Berkeley (2016 - 2020)&#10;Focus on web technologies and software systems." maxlength="200"></textarea>
+                            <span class="char-count" id="educationCount">0/200</span>
+                        </div>
+                    </div>
+
+                    <!-- SKILLS & KEYWORDS SECTION -->
+                    <div class="form-section" data-section="skills">
+                        <div class="form-grid">
+                            <div class="form-group col-span-2">
+                                <label for="targetRole">Target Job Role (For ATS Analysis)</label>
+                                <select id="targetRole">
+                                    <option value="frontend">Frontend Developer</option>
+                                    <option value="backend">Backend Developer</option>
+                                    <option value="fullstack">Fullstack Developer</option>
+                                    <option value="datascience">Data Scientist</option>
+                                    <option value="pm">Product Manager</option>
+                                    <option value="custom">Custom / Other Role</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-span-2" id="customKeywordsGroup" style="display: none;">
+                                <label for="customKeywords">Custom Target Keywords (comma separated)</label>
+                                <input type="text" id="customKeywords" placeholder="e.g. AWS, Kubernetes, GraphQL, Golang">
+                            </div>
+                            <div class="form-group col-span-2">
+                                <label for="skills">Skills (separated with commas)</label>
+                                <textarea id="skills" placeholder="React, JavaScript, CSS Grid, HTML5, Git, REST API, UI/UX" maxlength="250"></textarea>
+                                <span class="char-count" id="skillsCount">0/250</span>
+                            </div>
+                        </div>
+                        <div class="role-keywords-suggestions">
+                            <strong>Recommended Keywords:</strong>
+                            <div id="recommendedKeywordsList" class="keywords-list-badges"></div>
+                        </div>
+                    </div>
+
+                    <!-- ATS ANALYZER REPORT SECTION -->
+                    <div class="form-section" data-section="analyzer">
+                        <div class="ats-report-card">
+                            <div class="ats-report-header">
+                                <div class="report-score-panel">
+                                    <span class="score-large" id="reportScore">0%</span>
+                                    <span class="score-label">Compatibility Score</span>
+                                </div>
+                                <div class="report-status-panel">
+                                    <span class="report-badge" id="reportBadge">Incomplete</span>
+                                    <p class="report-desc" id="reportDesc">Please add some details to trigger analysis.</p>
+                                </div>
+                            </div>
+                            <div class="ats-checklist-area">
+                                <h3>Completeness Checklist</h3>
+                                <div class="checklist-items" id="atsChecklistItems">
+                                    <!-- Checklist items are generated dynamically -->
+                                </div>
+                            </div>
+                            <div class="ats-suggestions-area">
+                                <h3>Smart Improvement Suggestions</h3>
+                                <ul class="suggestions-list" id="atsSuggestionsList">
+                                    <!-- Suggestions are generated dynamically -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="error-msg" id="errorMsg">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: text-bottom; margin-right: 4px;">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        Please fill in all fields before previewing.
+                    </p>
+
+                    <!-- Navigation Footer buttons -->
+                    <div class="workspace-footer">
+                        <div class="utility-links">
+                            <button type="button" id="fillDemoBtn" class="link-btn">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                Fill Demo Data
+                            </button>
+                            <button type="button" id="clearFormBtn" class="link-btn danger">Clear Form</button>
+                        </div>
+                        <div class="nav-buttons">
+                            <button type="button" id="prevSectionBtn" class="btn secondary" disabled>Previous</button>
+                            <button type="button" id="nextSectionBtn" class="btn primary">Next</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- 3. RIGHT PANEL: Live Preview Sheet -->
+        <section class="preview-panel">
+            <header class="preview-header">
+                <div class="template-selector">
+                    <label class="template-label">Template Style:</label>
+                    <div class="template-btns">
+                        <button class="tpl-btn active" data-template="modern">Modern</button>
+                        <button class="tpl-btn" data-template="classic">Classic</button>
+                        <button class="tpl-btn" data-template="minimal">Minimal</button>
+                    </div>
+                </div>
+                <div class="export-actions">
+                    <button type="button" id="printBtn" class="action-btn outline" title="Print as A4 Vector PDF">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 6 2 18 2 18 9"/>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                            <rect x="6" y="14" width="12" height="8"/>
+                        </svg>
+                        Print
+                    </button>
+                    <button type="button" id="downloadBtn" class="action-btn fill">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Download PDF
+                    </button>
+                </div>
+            </header>
+
+            <div class="preview-sheet-container">
+                <div id="resumePreview" class="modern">
+                    <div class="placeholder-container">
+                        <div class="placeholder-icon">
+                            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                        </div>
+                        <p class="placeholder">Type in the builder form or click "Fill Demo Data" to generate your live resume preview...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PDF GENERATION OVERLAY MODAL -->
+    <div class="loader-overlay" id="pdfLoader">
+        <div class="loader-card">
+            <div class="loader-spinner"></div>
+            <h3 class="loader-title">Generating PDF...</h3>
+            <p class="loader-subtitle" id="pdfLoaderProgress">Capturing high-resolution document layers...</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
