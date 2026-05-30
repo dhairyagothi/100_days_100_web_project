@@ -12,9 +12,12 @@ const MOCK_PROFILES = [
 const HERO_MOVIE = {
   id: 'st-4',
   title: 'STRANGER THINGS',
-  description: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl with telekinetic powers.',
-  backdropUrl: 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=1920&q=80',
-  thumbnailUrl: 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=600&h=340&q=80',
+  description:
+    'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl with telekinetic powers.',
+  backdropUrl:
+    'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=1920&q=80',
+  thumbnailUrl:
+    'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=600&h=340&q=80',
   releaseYear: 2026,
   ageRating: '16+',
   duration: '4 Seasons',
@@ -25,25 +28,29 @@ const HERO_MOVIE = {
   creators: ['The Duffer Brothers'],
   isOriginal: true,
   similarityMatch: 99,
-  videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',
+  videoUrl:
+    'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',
   subtitles: [
-    { time: 0, text: "[Eerie synthesizer ambient sound playing]" },
-    { time: 4, text: "Mike: \"Eleven, can you hear us? Speak to us!\"" },
-    { time: 8, text: "[Electricity crackles as walkie-talkie static noise buzzes]" },
-    { time: 12, text: "Dustin: \"There is something big moving in the demogorgon cave...\"" },
-    { time: 16, text: "[Deep growl echoes from the underground lab walls]" },
-    { time: 20, text: "Eleven: \"It is here. We must close the gate... right now.\"" },
-    { time: 25, text: "[Loud explosion sound, blinding crimson warning sirens flare]" }
-  ]
+    { time: 0, text: '[Eerie synthesizer ambient sound playing]' },
+    { time: 4, text: 'Mike: "Eleven, can you hear us? Speak to us!"' },
+    { time: 8, text: '[Electricity crackles as walkie-talkie static noise buzzes]' },
+    { time: 12, text: 'Dustin: "There is something big moving in the demogorgon cave..."' },
+    { time: 16, text: '[Deep growl echoes from the underground lab walls]' },
+    { time: 20, text: 'Eleven: "It is here. We must close the gate... right now."' },
+    { time: 25, text: '[Loud explosion sound, blinding crimson warning sirens flare]' },
+  ],
 };
 
 const ALL_MOVIES = [
   {
     id: '1',
     title: 'Arcane: League of Legends',
-    description: 'Amidst the stark discord of twin cities Piltover and Zaun, two sisters fight on rival sides of a war between magic technologies and clashing convictions.',
-    backdropUrl: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'Amidst the stark discord of twin cities Piltover and Zaun, two sisters fight on rival sides of a war between magic technologies and clashing convictions.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2024,
     ageRating: '16+',
     duration: '2 Seasons',
@@ -54,21 +61,25 @@ const ALL_MOVIES = [
     creators: ['Christian Linke', 'Alex Yee'],
     isOriginal: true,
     similarityMatch: 97,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-futuristic-scenery-of-a-neon-city-at-night-42415-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-futuristic-scenery-of-a-neon-city-at-night-42415-large.mp4',
     subtitles: [
-      { time: 0, text: "[Orchestral violins building up tension]" },
-      { time: 4, text: "Vi: \"You think you can just replace me? We are family, Jinx!\"" },
-      { time: 9, text: "Jinx: \"You changed, sis. But the monsters inside never did.\"" },
-      { time: 14, text: "[Gigantic blue magic explosion fires from a hextech crystal]" },
-      { time: 19, text: "Mel: \"Power is only dangerous in the hands of those who fear it.\"" }
-    ]
+      { time: 0, text: '[Orchestral violins building up tension]' },
+      { time: 4, text: 'Vi: "You think you can just replace me? We are family, Jinx!"' },
+      { time: 9, text: 'Jinx: "You changed, sis. But the monsters inside never did."' },
+      { time: 14, text: '[Gigantic blue magic explosion fires from a hextech crystal]' },
+      { time: 19, text: 'Mel: "Power is only dangerous in the hands of those who fear it."' },
+    ],
   },
   {
     id: '2',
     title: 'The Dark Horizon',
-    description: 'In a desolate futurescape, an elite spaceship pilot intercepts a rogue frequency originating from deep inside a stellar black hole.',
-    backdropUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'In a desolate futurescape, an elite spaceship pilot intercepts a rogue frequency originating from deep inside a stellar black hole.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2025,
     ageRating: '13+',
     duration: '2h 14m',
@@ -79,19 +90,26 @@ const ALL_MOVIES = [
     creators: ['Christopher Nolan'],
     isOriginal: false,
     similarityMatch: 94,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-neon-tunnel-42409-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-neon-tunnel-42409-large.mp4',
     subtitles: [
-      { time: 0, text: "[Deep engine resonance humming]" },
-      { time: 4, text: "Commander: \"We have reached the point of no return. Fuel is at 12%.\"" },
-      { time: 9, text: "Co-Pilot: \"Interstellar sensors are picking up a human trace... inside the singularity.\"" }
-    ]
+      { time: 0, text: '[Deep engine resonance humming]' },
+      { time: 4, text: 'Commander: "We have reached the point of no return. Fuel is at 12%."' },
+      {
+        time: 9,
+        text: 'Co-Pilot: "Interstellar sensors are picking up a human trace... inside the singularity."',
+      },
+    ],
   },
   {
     id: '3',
     title: 'Cyberpunk Chronicles',
-    description: 'A street kid trying to survive in a technology and body modification-obsessed city of the future. Having everything to lose, he chooses to stay alive by becoming an edgerunner mercenary.',
-    backdropUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'A street kid trying to survive in a technology and body modification-obsessed city of the future. Having everything to lose, he chooses to stay alive by becoming an edgerunner mercenary.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2025,
     ageRating: '18+',
     duration: '1 Season',
@@ -102,19 +120,23 @@ const ALL_MOVIES = [
     creators: ['Rafał Jaki'],
     isOriginal: true,
     similarityMatch: 99,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-man-playing-with-futuristic-neon-augmented-reality-glasses-43093-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-man-playing-with-futuristic-neon-augmented-reality-glasses-43093-large.mp4',
     subtitles: [
-      { time: 0, text: "[Fast-paced synthwave beat kicks in]" },
-      { time: 4, text: "David: \"I don't care about the corporate rules. I run this street!\"" },
-      { time: 8, text: "[Laser blasts and cybernetic weapon charging hums]" }
-    ]
+      { time: 0, text: '[Fast-paced synthwave beat kicks in]' },
+      { time: 4, text: 'David: "I don\'t care about the corporate rules. I run this street!"' },
+      { time: 8, text: '[Laser blasts and cybernetic weapon charging hums]' },
+    ],
   },
   {
     id: '4',
     title: 'Glass Onion',
-    description: 'World-famous detective Benoit Blanc heads to Greece to peel back the layers of a mystery involving a tech billionaire and his eclectic crew of friends.',
-    backdropUrl: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'World-famous detective Benoit Blanc heads to Greece to peel back the layers of a mystery involving a tech billionaire and his eclectic crew of friends.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2023,
     ageRating: '13+',
     duration: '2h 19m',
@@ -125,19 +147,23 @@ const ALL_MOVIES = [
     creators: ['Rian Johnson'],
     isOriginal: true,
     similarityMatch: 91,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-luxury-island-resort-aerial-view-39824-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-luxury-island-resort-aerial-view-39824-large.mp4',
     subtitles: [
-      { time: 0, text: "[Charming orchestral jazz music playing]" },
-      { time: 4, text: "Benoit: \"Every puzzle has a center. And every glass onion has a core.\"" },
-      { time: 10, text: "Miles: \"Welcome to paradise, guys! Let the murder mystery game begin!\"" }
-    ]
+      { time: 0, text: '[Charming orchestral jazz music playing]' },
+      { time: 4, text: 'Benoit: "Every puzzle has a center. And every glass onion has a core."' },
+      { time: 10, text: 'Miles: "Welcome to paradise, guys! Let the murder mystery game begin!"' },
+    ],
   },
   {
     id: '5',
     title: 'Midnight Detective',
-    description: 'In the rain-slicked neon streets of Tokyo, a cynical detective chases an legendary thief who only targets ancient hyper-tech artifacts.',
-    backdropUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'In the rain-slicked neon streets of Tokyo, a cynical detective chases an legendary thief who only targets ancient hyper-tech artifacts.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2026,
     ageRating: '16+',
     duration: '1 Season',
@@ -148,18 +174,25 @@ const ALL_MOVIES = [
     creators: ['J.T. Rogers'],
     isOriginal: true,
     similarityMatch: 95,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-car-driving-through-a-rainy-neon-city-screengrab-41712-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-car-driving-through-a-rainy-neon-city-screengrab-41712-large.mp4',
     subtitles: [
-      { time: 0, text: "[Rain falling on pavement, smooth saxophone playing]" },
-      { time: 5, text: "Ken: \"This city never sleeps. It just waits for the shadow to find the light.\"" }
-    ]
+      { time: 0, text: '[Rain falling on pavement, smooth saxophone playing]' },
+      {
+        time: 5,
+        text: 'Ken: "This city never sleeps. It just waits for the shadow to find the light."',
+      },
+    ],
   },
   {
     id: '6',
     title: 'Inception of Mind',
-    description: 'A professional thief steals corporate secrets through the use of dream-sharing technology. He is given the inverse task of planting an idea into the mind of a C.E.O.',
-    backdropUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'A professional thief steals corporate secrets through the use of dream-sharing technology. He is given the inverse task of planting an idea into the mind of a C.E.O.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2010,
     ageRating: '13+',
     duration: '2h 28m',
@@ -170,18 +203,22 @@ const ALL_MOVIES = [
     creators: ['Christopher Nolan'],
     isOriginal: false,
     similarityMatch: 96,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-tunnel-of-futuristic-circuits-and-connections-42171-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-tunnel-of-futuristic-circuits-and-connections-42171-large.mp4',
     subtitles: [
-      { time: 0, text: "[Deep brass wind horns blaring]" },
-      { time: 4, text: "Cobb: \"An idea is like a virus. Resilient. Highly contagious.\"" }
-    ]
+      { time: 0, text: '[Deep brass wind horns blaring]' },
+      { time: 4, text: 'Cobb: "An idea is like a virus. Resilient. Highly contagious."' },
+    ],
   },
   {
     id: '7',
     title: 'Retro Gaming Club',
-    description: 'A heart-warming look back at the origins of classic 1980s computer arcades, told through the perspectives of three brilliant teenagers who changed gaming history forever.',
-    backdropUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'A heart-warming look back at the origins of classic 1980s computer arcades, told through the perspectives of three brilliant teenagers who changed gaming history forever.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2024,
     ageRating: 'All',
     duration: '5 Episodes',
@@ -192,18 +229,25 @@ const ALL_MOVIES = [
     creators: ['Seth Gordon'],
     isOriginal: false,
     similarityMatch: 90,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-camera-pan-of-classic-videogame-controllers-and-keyboard-40439-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-camera-pan-of-classic-videogame-controllers-and-keyboard-40439-large.mp4',
     subtitles: [
-      { time: 0, text: "[Retro 8-bit chiptune sound waves rising]" },
-      { time: 4, text: "Speaker: \"We had quarters, a screen, and a whole universe in front of us.\"" }
-    ]
+      { time: 0, text: '[Retro 8-bit chiptune sound waves rising]' },
+      {
+        time: 4,
+        text: 'Speaker: "We had quarters, a screen, and a whole universe in front of us."',
+      },
+    ],
   },
   {
     id: '8',
     title: 'Into the Cosmic Abyss',
-    description: 'The voyage of an automated exploratory vessel takes a dark, irreversible turn when it approaches a supermassive singular phenomenon at the edge of the galaxy.',
-    backdropUrl: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'The voyage of an automated exploratory vessel takes a dark, irreversible turn when it approaches a supermassive singular phenomenon at the edge of the galaxy.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2026,
     ageRating: '13+',
     duration: '1h 52m',
@@ -214,18 +258,22 @@ const ALL_MOVIES = [
     creators: ['Danny Boyle'],
     isOriginal: true,
     similarityMatch: 92,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-abstract-glowing-digital-neurons-connection-background-42037-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-abstract-glowing-digital-neurons-connection-background-42037-large.mp4',
     subtitles: [
-      { time: 0, text: "[Radio static, distant alarms screaming]" },
-      { time: 4, text: "AI Computer: \"Warning. Event horizon breach detected. Systems critical.\"" }
-    ]
+      { time: 0, text: '[Radio static, distant alarms screaming]' },
+      { time: 4, text: 'AI Computer: "Warning. Event horizon breach detected. Systems critical."' },
+    ],
   },
   {
     id: '9',
     title: 'Cobra Kai',
-    description: 'Decades after the tournament that changed their lives, the rivalry between Johnny and Daniel reignites in this sequel series to the classic movies.',
-    backdropUrl: 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'Decades after the tournament that changed their lives, the rivalry between Johnny and Daniel reignites in this sequel series to the classic movies.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2024,
     ageRating: '13+',
     duration: '6 Seasons',
@@ -235,18 +283,22 @@ const ALL_MOVIES = [
     cast: ['Ralph Macchio', 'William Zabka', 'Xolo Maridueña'],
     isOriginal: true,
     similarityMatch: 98,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-close-up-of-classic-karate-belt-and-practitioner-42283-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-close-up-of-classic-karate-belt-and-practitioner-42283-large.mp4',
     subtitles: [
-      { time: 0, text: "[Guitar intro rocking]" },
-      { time: 4, text: "Johnny: \"Strike first. Strike hard. No mercy!\"" }
-    ]
+      { time: 0, text: '[Guitar intro rocking]' },
+      { time: 4, text: 'Johnny: "Strike first. Strike hard. No mercy!"' },
+    ],
   },
   {
     id: '10',
     title: 'Deep Mystery Ocean',
-    description: 'A deep-sea biological expedition recovers a biological structure completely unknown to modern terrestrial science, and accidentally brings it on board.',
-    backdropUrl: 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=1920&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=600&h=340&q=80',
+    description:
+      'A deep-sea biological expedition recovers a biological structure completely unknown to modern terrestrial science, and accidentally brings it on board.',
+    backdropUrl:
+      'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=1920&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=600&h=340&q=80',
     releaseYear: 2025,
     ageRating: '16+',
     duration: '2h 11m',
@@ -257,18 +309,27 @@ const ALL_MOVIES = [
     creators: ['William Eubank'],
     isOriginal: false,
     similarityMatch: 89,
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-underwater-sunbeams-shining-through-water-fluid-motion-42525-large.mp4',
+    videoUrl:
+      'https://assets.mixkit.co/videos/preview/mixkit-underwater-sunbeams-shining-through-water-fluid-motion-42525-large.mp4',
     subtitles: [
-      { time: 0, text: "[Deep underwater sonar sonar sounds bouncing]" },
-      { time: 4, text: "Captain: \"Hold tight! We're diving deeper than anyone's ever gone.\"" }
-    ]
-  }
+      { time: 0, text: '[Deep underwater sonar sonar sounds bouncing]' },
+      { time: 4, text: 'Captain: "Hold tight! We\'re diving deeper than anyone\'s ever gone."' },
+    ],
+  },
 ];
 
 const CATEGORIES = [
   { id: 'trending', name: 'Trending Now', filter: () => true },
   { id: 'originals', name: 'Netflix Originals Only', filter: (m) => !!m.isOriginal },
-  { id: 'action-scifi', name: 'Sci-Fi & Cyberpunk Hits', filter: (m) => m.tags.includes('Sci-Fi Drama') || m.tags.includes('Cyberpunk') || m.tags.includes('Sci-Fi Adventure') || m.tags.includes('Sci-Fi Anime') },
+  {
+    id: 'action-scifi',
+    name: 'Sci-Fi & Cyberpunk Hits',
+    filter: (m) =>
+      m.tags.includes('Sci-Fi Drama') ||
+      m.tags.includes('Cyberpunk') ||
+      m.tags.includes('Sci-Fi Adventure') ||
+      m.tags.includes('Sci-Fi Anime'),
+  },
   { id: 'movies', name: 'Blockbuster Movies', filter: (m) => m.genre === 'Movies' },
   { id: 'tvshows', name: 'Critically Acclaimed TV Shows', filter: (m) => m.genre === 'TV Shows' },
 ];
@@ -287,10 +348,10 @@ let state = {
   selectedMovieInfo: null,
   isProfileEditingMode: false,
   editingProfileId: null,
-  editingName: "",
+  editingName: '',
   isMobileMenuOpen: false,
   isNotificationsOpen: false,
-  isProfileDropdownOpen: false
+  isProfileDropdownOpen: false,
 };
 
 // ==========================================
@@ -333,7 +394,7 @@ function toggleMyList(movie, e) {
   if (!state.myLists[profileId]) {
     state.myLists[profileId] = [];
   }
-  
+
   const movieIdx = state.myLists[profileId].indexOf(movie.id);
   if (movieIdx > -1) {
     state.myLists[profileId].splice(movieIdx, 1);
@@ -342,13 +403,15 @@ function toggleMyList(movie, e) {
   }
   updateStorage();
   renderApp();
-  
+
   // Update details modal or rows dynamically if they are shown
   if (state.selectedMovieInfo && state.selectedMovieInfo.id === movie.id) {
     const modalButton = document.getElementById(`modal-list-btn-${movie.id}`);
     if (modalButton) {
       const isAdded = state.myLists[profileId].includes(movie.id);
-      modalButton.innerHTML = isAdded ? `<i data-lucide="check" class="text-green-505 w-5 h-5 text-green-500"></i>` : `<i data-lucide="plus" class="w-5 h-5"></i>`;
+      modalButton.innerHTML = isAdded
+        ? `<i data-lucide="check" class="text-green-505 w-5 h-5 text-green-500"></i>`
+        : `<i data-lucide="plus" class="w-5 h-5"></i>`;
       modalButton.title = isAdded ? 'Remove from My List' : 'Add to My List';
       lucide.createIcons();
     }
@@ -377,14 +440,18 @@ function renderApp() {
 
   // Record focused element before rendering to preserve cursor & keyboards
   const activeId = document.activeElement ? document.activeElement.id : null;
-  const activeSelectionStart = document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')
-    ? document.activeElement.selectionStart
-    : null;
-  const activeSelectionEnd = document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')
-    ? document.activeElement.selectionEnd
-    : null;
+  const activeSelectionStart =
+    document.activeElement &&
+    (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')
+      ? document.activeElement.selectionStart
+      : null;
+  const activeSelectionEnd =
+    document.activeElement &&
+    (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')
+      ? document.activeElement.selectionEnd
+      : null;
 
-  root.className = "min-h-screen text-white flex flex-col justify-between";
+  root.className = 'min-h-screen text-white flex flex-col justify-between';
 
   // CASE 1: PROFILE MANAGEMENT SELECTION VIEW
   if (!state.selectedProfile) {
@@ -396,13 +463,13 @@ function renderApp() {
 
   // CASE 2: MAIN USER MOUNT INTERFACE (HEADER + BODY + DRAWER OVERLAYS + FOOTER)
   let appHTML = '';
-  
+
   // Translucent Navigation Bar Header
   appHTML += renderHeader();
 
   // Primary content grid
   appHTML += `<main class="flex-grow select-text pb-20 mt-0">`;
-  
+
   if (state.searchQuery) {
     // Search Results Container
     appHTML += renderSearchResults();
@@ -413,20 +480,20 @@ function renderApp() {
     // Cinematic Homepage with Billboard slideshow and Rows
     appHTML += renderBillboardBanner(HERO_MOVIE);
     appHTML += `<div class="relative z-10 -mt-10 sm:-mt-16 md:-mt-20 flex flex-col gap-8 pb-10">`;
-    
+
     CATEGORIES.forEach((row) => {
       // Filter movies based on category requirement
       let filteredMovies = ALL_MOVIES.filter(row.filter);
-      
+
       // If we are looking for "TV Shows" specifically
       if (state.activeTab === 'TV Shows') {
-        filteredMovies = filteredMovies.filter(m => m.genre === 'TV Shows');
+        filteredMovies = filteredMovies.filter((m) => m.genre === 'TV Shows');
       } else if (state.activeTab === 'Movies') {
-        filteredMovies = filteredMovies.filter(m => m.genre === 'Movies');
+        filteredMovies = filteredMovies.filter((m) => m.genre === 'Movies');
       } else if (state.activeTab === 'New & Popular') {
-        filteredMovies = filteredMovies.filter(m => m.releaseYear >= 2025);
+        filteredMovies = filteredMovies.filter((m) => m.releaseYear >= 2025);
       }
-      
+
       if (filteredMovies.length > 0) {
         appHTML += renderMovieRow(row.name, filteredMovies, row.id);
       }
@@ -444,7 +511,7 @@ function renderApp() {
   if (state.selectedMovieInfo) {
     appHTML += renderDetailModal(state.selectedMovieInfo);
   }
-  
+
   if (state.playingMovie) {
     appHTML += renderVideoPlayer(state.playingMovie);
   }
@@ -469,7 +536,7 @@ function renderApp() {
   bindMovieRowEvents();
   bindModalEvents();
   bindSearchResultsEvents();
-  
+
   // Re-render Lucide CDN vector graphics
   lucide.createIcons();
 }
@@ -481,7 +548,7 @@ function renderApp() {
 /* PROFILE CHOICE */
 function renderProfileSelection() {
   const isEditing = state.isProfileEditingMode;
-  
+
   let cardsHTML = '';
   state.profiles.forEach((p) => {
     const isThisEditing = isEditing && state.editingProfileId === p.id;
@@ -495,28 +562,36 @@ function renderProfileSelection() {
               <path d="M8 15.5c2 2 6 2 8 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
             </svg>
           </div>
-          ${isEditing ? `
+          ${
+            isEditing
+              ? `
             <div class="profile-item-edit-btn absolute inset-0 bg-black/60 flex items-center justify-center hover:bg-black/40 transition-opacity" data-edit-profile-id="${p.id}">
               <div class="p-2.5 bg-black/75 rounded-full border border-white hover:scale-110 transition-transform">
                 <i data-lucide="edit-2" class="w-5 h-5 text-white"></i>
               </div>
             </div>
-          ` : ''}
+          `
+              : ''
+          }
         </div>
         
         <div class="mt-4 text-gray-400 group-hover:text-white text-sm sm:text-base tracking-wide flex items-center gap-2 max-w-full">
-          ${isThisEditing ? `
+          ${
+            isThisEditing
+              ? `
             <div class="flex items-center gap-1 bg-zinc-800 border border-zinc-700 rounded px-1.5 py-0.5" onclick="event.stopPropagation()">
               <input type="text" id="profile-edit-input-${p.id}" value="${state.editingName}" class="bg-transparent text-white border-none focus:outline-none py-0.5 px-1 text-xs sm:text-sm w-20 sm:w-28 text-center font-semibold" autoFocus />
               <button class="profile-save-btn text-green-500 hover:text-green-400 p-1 cursor-pointer" data-save-profile-id="${p.id}">
                 <i data-lucide="check" class="w-4 h-4"></i>
               </button>
             </div>
-          ` : `
+          `
+              : `
             <span class="truncate max-w-[100px] sm:max-w-[130px] font-medium tracking-wide">
               ${p.name}
             </span>
-          `}
+          `
+          }
         </div>
       </div>
     `;
@@ -549,7 +624,7 @@ function renderProfileSelection() {
 function renderHeader() {
   const profile = state.selectedProfile;
   const activeList = state.myLists[profile.id] || [];
-  
+
   let tabButtons = '';
   ['Home', 'TV Shows', 'Movies', 'New & Popular', 'My List'].forEach((tab) => {
     const isCurrent = state.activeTab === tab;
@@ -563,8 +638,8 @@ function renderHeader() {
 
   // Calculate scrolled background dynamically on immediate render context
   const isScrolled = window.scrollY > 20;
-  const scrollClasses = isScrolled 
-    ? 'bg-[#141414] shadow-md backdrop-blur-md bg-opacity-95' 
+  const scrollClasses = isScrolled
+    ? 'bg-[#141414] shadow-md backdrop-blur-md bg-opacity-95'
     : 'nav-gradient';
 
   return `
@@ -610,7 +685,9 @@ function renderHeader() {
             </span>
           </button>
 
-          ${state.isNotificationsOpen ? `
+          ${
+            state.isNotificationsOpen
+              ? `
             <div class="absolute right-0 mt-3 w-72 sm:w-80 bg-black/95 border border-zinc-800 rounded shadow-2xl p-2 z-[115] text-xs select-none animate-scale-up">
               <div class="py-2.5 px-3 text-zinc-400 font-bold border-b border-zinc-900 tracking-wider text-[11px]">
                 NEW RELEASES ON NETFLIX
@@ -638,7 +715,9 @@ function renderHeader() {
                 </div>
               </div>
             </div>
-          ` : ''}
+          `
+              : ''
+          }
         </div>
 
         <!-- Custom User Badge dropdown selector -->
@@ -650,7 +729,9 @@ function renderHeader() {
             <i data-lucide="chevron-down" class="w-4 h-4 text-white hover:text-zinc-300 transition-transform ${state.isProfileDropdownOpen ? 'rotate-180' : ''}"></i>
           </button>
 
-          ${state.isProfileDropdownOpen ? `
+          ${
+            state.isProfileDropdownOpen
+              ? `
             <div class="absolute right-0 mt-3 w-48 bg-black/95 border border-zinc-800 rounded shadow-2xl z-[115] py-1 overflow-hidden animate-scale-up">
               <div class="flex items-center gap-2.5 px-4 py-3 border-b border-zinc-900">
                 <div class="h-6 w-6 ${profile.colorClass} rounded flex items-center justify-center text-[10px] font-bold text-white">
@@ -666,21 +747,29 @@ function renderHeader() {
                 Switch Profile
               </button>
             </div>
-          ` : ''}
+          `
+              : ''
+          }
         </div>
       </div>
 
       <!-- Mobile drawer menu -->
-      ${state.isMobileMenuOpen ? `
+      ${
+        state.isMobileMenuOpen
+          ? `
         <div class="fixed inset-0 top-[56px] w-full bg-[#141414] z-[100] p-6 flex flex-col gap-6 animate-fade-in">
           <span class="text-[10px] text-zinc-500 font-extrabold tracking-widest uppercase border-b border-zinc-900 pb-2">
             Categories Directory
           </span>
-          ${['Home', 'TV Shows', 'Movies', 'New & Popular', 'My List'].map((tab) => `
+          ${['Home', 'TV Shows', 'Movies', 'New & Popular', 'My List']
+            .map(
+              (tab) => `
             <button class="mobile-nav-tab-btn text-left text-lg py-1 hover:text-[#E50914] transition-all cursor-pointer font-semibold ${state.activeTab === tab ? 'text-[#E50914] pl-3 border-l-2 border-[#E50914]' : 'text-white'}" data-tab="${tab}">
               ${tab}
             </button>
-          `).join('')}
+          `
+            )
+            .join('')}
           <div class="mt-auto border-t border-zinc-900 pt-6 flex items-center justify-between">
             <span class="text-sm font-semibold text-white">${profile.name}</span>
             <button id="mobile-signout" class="text-xs text-[#E50914] font-bold tracking-wider uppercase hover:underline cursor-pointer">
@@ -688,7 +777,9 @@ function renderHeader() {
             </button>
           </div>
         </div>
-      ` : ''}
+      `
+          : ''
+      }
     </header>
   `;
 }
@@ -710,7 +801,9 @@ function renderBillboardBanner(m) {
 
       <!-- Main content slider texts -->
       <div class="absolute bottom-[24%] sm:bottom-[20%] md:bottom-[18%] left-4 sm:left-12 max-w-[95%] sm:max-w-[48%] z-10 flex flex-col items-start text-white">
-        ${m.isOriginal ? `
+        ${
+          m.isOriginal
+            ? `
           <div class="flex items-center gap-1.5 mb-2 scale-90 sm:scale-100 origin-left">
             <svg class="h-5 sm:h-5.5 fill-[#E50914]" viewBox="0 0 24 24">
               <path d="M5.01 22V2h3.98l6 14.8V2h4.01v20h-3.98l-6-14.8V22H5.01z" />
@@ -719,7 +812,9 @@ function renderBillboardBanner(m) {
               O R I G I N A L
             </span>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
         <h1 class="font-display text-3xl sm:text-5xl lg:text-[5.5rem] font-bold sm:font-black tracking-tighter leading-none mb-3 sm:mb-4 select-all drop-shadow-[0_2px_15px_rgba(0,0,0,0.8)]">
           ${m.title}
@@ -871,17 +966,21 @@ function renderSearchResults() {
       <h2 class="text-white text-xl sm:text-2xl font-bold tracking-wide mb-8">
         Search results for <span class="text-zinc-400 font-medium">"${state.searchQuery}"</span>
       </h2>
-      ${matchedMovies.length > 0 ? `
+      ${
+        matchedMovies.length > 0
+          ? `
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           ${gridCardsHTML}
         </div>
-      ` : `
+      `
+          : `
         <div class="flex flex-col items-center justify-center py-20 text-center text-zinc-500">
           <i data-lucide="search" class="w-16 h-16 text-zinc-600 mb-4 animate-scale-up"></i>
           <p class="text-lg font-semibold text-zinc-300">Your search did not have any matches.</p>
           <span class="text-sm text-zinc-500 font-light mt-1.5 max-w-sm">Try using other terms, movie names, genre tags, or tv show titles.</span>
         </div>
-      `}
+      `
+      }
     </div>
   `;
 }
@@ -925,11 +1024,14 @@ function renderMyListTab() {
     <div class="px-4 sm:px-12 pt-28 select-none animate-fade-in min-h-[50vh]">
       <h2 class="text-white text-xl sm:text-2xl font-bold tracking-wide mb-8">My List</h2>
       
-      ${listMovies.length > 0 ? `
+      ${
+        listMovies.length > 0
+          ? `
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           ${listContent}
         </div>
-      ` : `
+      `
+          : `
         <div class="flex flex-col items-center justify-center p-16 border border-dashed border-zinc-800 rounded bg-zinc-900/10 text-center max-w-lg mx-auto">
           <div class="h-14 w-14 bg-zinc-900 border border-zinc-800 rounded-full flex items-center justify-center text-zinc-500 mb-4 animate-scale-up shadow-lg">
             <i data-lucide="plus" class="w-6 h-6"></i>
@@ -940,7 +1042,8 @@ function renderMyListTab() {
             Explore Homepage
           </button>
         </div>
-      `}
+      `
+      }
     </div>
   `;
 }
@@ -952,7 +1055,8 @@ function renderDetailModal(m) {
   const isAdded = myList.includes(m.id);
 
   const recommendations = ALL_MOVIES.filter(
-    (other) => other.id !== m.id && (other.genre === m.genre || other.tags.some((t) => m.tags.includes(t)))
+    (other) =>
+      other.id !== m.id && (other.genre === m.genre || other.tags.some((t) => m.tags.includes(t)))
   ).slice(0, 3);
 
   let recsHTML = '';
@@ -1050,12 +1154,16 @@ function renderDetailModal(m) {
               <span class="text-zinc-300 font-light ml-1">${m.cast.join(', ')}</span>
             </div>
 
-            ${m.creators ? `
+            ${
+              m.creators
+                ? `
               <div>
                 <span class="text-zinc-500 font-bold">Creators:</span>
                 <span class="text-zinc-300 font-light ml-1">${m.creators.join(', ')}</span>
               </div>
-            ` : ''}
+            `
+                : ''
+            }
 
             <div>
               <span class="text-zinc-500 font-bold">Genres:</span>
@@ -1070,7 +1178,9 @@ function renderDetailModal(m) {
         </div>
 
         <!-- Inline Recommendations Grid -->
-        ${recommendations.length > 0 ? `
+        ${
+          recommendations.length > 0
+            ? `
           <div class="px-6 sm:px-10 pb-8">
             <h3 class="text-white text-base sm:text-lg font-bold mb-4 tracking-wide border-t border-zinc-900 pt-6">
               More Like This
@@ -1080,7 +1190,9 @@ function renderDetailModal(m) {
               ${recsHTML}
             </div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
     </div>
   `;
@@ -1644,7 +1756,7 @@ function initVideoPlayerControls() {
   let isMuted = false;
   let seekValue = 0.8;
   let subtitleIndex = 0;
-  
+
   const movie = state.playingMovie;
   const subtitles = movie.subtitles || [];
 
@@ -1725,11 +1837,11 @@ function initVideoPlayerControls() {
   video.ontimeupdate = () => {
     bar.value = Math.floor(video.currentTime);
     currentText.innerText = formatVideoTextTime(video.currentTime);
-    
+
     // Track subtitles match
     const currSecs = Math.floor(video.currentTime);
     let matchedSubtitle = null;
-    
+
     for (let i = subtitles.length - 1; i >= 0; i--) {
       if (currSecs >= subtitles[i].time) {
         matchedSubtitle = subtitles[i].text;
@@ -1822,36 +1934,42 @@ function initVideoPlayerControls() {
         await document.exitPictureInPicture();
       }
     } catch (e) {
-      console.warn("PIP not supported by layout frames.", e);
+      console.warn('PIP not supported by layout frames.', e);
     }
   };
 
   // Full Screen canvas scaling
   fsBtn.onclick = () => {
     if (!document.fullscreenElement) {
-      overlayOverlay.requestFullscreen().then(() => {
-        fsIcon.setAttribute('data-lucide', 'minimize-2');
-        lucide.createIcons();
-      }).catch((e) => console.warn(e));
+      overlayOverlay
+        .requestFullscreen()
+        .then(() => {
+          fsIcon.setAttribute('data-lucide', 'minimize-2');
+          lucide.createIcons();
+        })
+        .catch((e) => console.warn(e));
     } else {
-      document.exitFullscreen().then(() => {
-        fsIcon.setAttribute('data-lucide', 'maximize-2');
-        lucide.createIcons();
-      }).catch((e) => console.warn(e));
+      document
+        .exitFullscreen()
+        .then(() => {
+          fsIcon.setAttribute('data-lucide', 'maximize-2');
+          lucide.createIcons();
+        })
+        .catch((e) => console.warn(e));
     }
   };
 
   // Hide overlay mouse controller idle states timers
   let overlayTimer;
   const overlayElements = document.querySelectorAll('.video-overlay-control');
-  
+
   const showHUD = () => {
-    overlayElements.forEach(item => item.classList.remove('opacity-0'));
+    overlayElements.forEach((item) => item.classList.remove('opacity-0'));
     document.body.style.cursor = 'default';
     clearTimeout(overlayTimer);
     if (!video.paused) {
       overlayTimer = setTimeout(() => {
-        overlayElements.forEach(item => item.classList.add('opacity-0'));
+        overlayElements.forEach((item) => item.classList.add('opacity-0'));
         document.body.style.cursor = 'none';
       }, 3500);
     }
