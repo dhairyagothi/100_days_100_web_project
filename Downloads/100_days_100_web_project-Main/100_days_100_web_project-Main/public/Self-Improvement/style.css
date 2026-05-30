@@ -1,0 +1,611 @@
+*
+{
+    margin:0px;
+    padding:0px;
+}
+.top
+{
+    margin:10px;
+    display: flex;
+    justify-content: space-evenly;
+    .acc
+    {
+        display: flex;
+        gap:5px;
+        font-family:arial;
+        font-weight:600;
+        margin:auto 5px;
+    }
+    .macbook-island {
+        height:30px;
+        width:100px;
+        background-color: rgb(28, 21, 21);
+        border-radius: 10px;
+        margin:Auto;
+        display: flex;
+        align-items: center;
+
+    }
+    .cam
+    {
+        height:20px;
+        width:20px;
+        border-radius: 50px;
+        background-color: rgba(88, 85, 85, 0.452);
+        margin-left:5px;
+        
+    }
+    .streak
+    {
+        display: flex;
+        font-family: sans-serif;
+        margin:auto 5px;
+        gap:5px;
+        i 
+        {
+            color:rgb(223, 116, 15);
+            font-size:20px;
+        }
+    }
+    .login
+    {
+      height:20px;
+      margin:-3px 25px;
+        .button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px 5px;
+            gap: 5px;
+            background-color: #181717;
+            outline: 3px #181717 solid;
+            outline-offset: -3px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: 400ms;
+        }
+        
+        .button .text {
+            color: white;
+            font-weight: 700;
+            font-size: 1em;
+            transition: 400ms;
+        }
+        
+        .button svg path {
+            transition: 400ms;
+        }
+        
+        .button:hover {
+            background-color: transparent;
+        }
+        
+        .button:hover .text {
+            color: #181717;
+        }
+        
+        .button:hover svg path {
+            fill: #181717;
+        } 
+            }
+        }
+.mid
+{
+    
+    height: 150px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding:10px;
+    .p1
+    {
+        height:80%;
+        width:25%;
+        
+        .card {
+            width: 250px;
+            height: 120px;
+            background: rgb(17, 4, 134);
+            border-radius: 15px;
+            box-shadow: rgba(202, 194, 194, 0.7) 5px 10px 50px ,rgba(202, 192, 192, 0.7) -5px 0px 250px;
+            display: flex;
+            color: white;
+            justify-content: center;
+            position: relative;
+            flex-direction: column;
+            background: linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85));
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            box-shadow: rgb(0,0,0) 5px 10px 50px ,rgb(0,0,0) -5px 0px 250px;
+        }
+        
+        .time-text {
+            font-size: 50px;
+            margin-top: 0px;
+            margin-left: 15px;
+            font-weight: 600;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        
+        .time-sub-text {
+            font-size: 15px;
+            margin-left: 5px;
+        }
+        
+        .day-text {
+            font-size: 18px;
+            margin-top: 0px;
+            margin-left: 15px;
+            font-weight: 500;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        
+        .moon {
+            font-size: 20px;
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .card:hover > .moon {
+            font-size: 23px;
+        }
+    }
+
+    .p2 {
+        background-color: rgb(161, 29, 29);
+        height: 80%;
+        width: 25%;
+        color:white;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+        .time_set
+        {
+            position:absolute;
+            padding: 5px;
+            top:0;
+            left:0;
+            font-size:12px;
+            display: flex;
+            gap:5px;
+            button
+            {
+                height: 5px;
+            }
+        }
+        
+    }
+    
+    .btns {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0px;
+    }
+    
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        position: relative; /* Necessary for position-based animations */
+    }
+    
+   
+    
+    .p3
+    {
+        margin-top:-35px;
+        height:80%;
+        width:35%;
+        position: relative;
+        border-radius:10px;
+        color:rgb(0, 0, 0);
+        font-family: 'Courier New', Courier, monospace;
+        table
+        {
+            margin-bottom:5px;
+            width:100%;
+            background-color:rgb(188, 103, 103);
+            border-radius: 5px;
+            padding:10px;
+        }
+        table tr th 
+        {
+            font-weight: 800;
+            color:white;
+        }
+        table tr td
+        {
+            background-color: rgb(94, 23, 2);
+            
+            color:white;
+            
+            text-align: center;
+            border-radius: 5px;
+            
+        }
+        
+    }
+}
+
+.mid .marquee {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: #bd555f;
+    padding: 10px 0;
+    margin-top:-40px;
+  }
+  
+  .mid .marquee p {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    font-size: 1.2rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgb(244, 241, 241);
+    font-weight: bold;
+    animation: scrollText 20s linear infinite;
+  }
+  
+  @keyframes scrollText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .todo
+  {
+    font-family:serif;
+        .container {
+            max-width: 800px;
+            font-family:sans-serif;
+            margin: 0 auto;
+            background:#d35c5c39;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        input[type="text"], input[type="date"], select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #345edb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        #progressContainer {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            height: 20px;
+            position: relative;
+        }
+
+        #progressBar {
+            background-color: #2ecc71;
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Task Table */
+        .task-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .task-table th, .task-table td {
+            border: 1px solid #ffffff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .completed-task {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background-color: #2ecc71;
+        }
+
+        .filter-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode .container {
+            background-color: #444;
+        }
+
+        body.dark-mode input, body.dark-mode select, body.dark-mode button {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .dark-mode-toggle {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+  }
+  .footer
+  {
+    width:100%;
+    height:40px; 
+    margin-top:20px;
+    
+    .footer-content
+    {
+        background-color: rgba(0, 0, 255, 0.452);
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+        padding:5px;
+        gap:40px;      
+    }
+    .socials
+    {
+        .share {
+            display: flex;
+            flex-direction: row;
+            gap: 1em;
+            transition: .4s ease-in-out;
+            
+        }
+        
+        .btn1 {
+            position: relative;
+            width: 3em;
+            height: 3em;
+            outline: none;
+            border: none;
+            border-radius: 50%;
+            background-color: white;
+            transition: .4s all;
+        }
+        
+        .btn1 .instagram {
+            margin-top: 0.1em;
+            fill: #cc39a4;
+        }
+        
+        .btn1 .tooltiptext1 {
+            visibility: hidden;
+            width: 6em;
+            height: 8em;
+            background-color: whitesmoke;
+            color: black;
+            text-align: center;
+            border-radius: 10px;
+            padding: 1em;
+            position: absolute;
+            left: -1.5em;
+            top: -8em;
+            z-index: 1;
+            transition: .1s ease-in-out;
+        }
+        
+        .btn1 .tooltiptext1 .card {
+            width: 4em;
+            height: 4em;
+            background-color: white;
+        }
+        
+        .btn1 .tooltiptext1 .account {
+            margin-top: 1em;
+        }
+        
+        .btn1 .tooltiptext1 .username {
+            font-size: 0.7em;
+            margin-top: 1.6em;
+            font-weight: bold;
+        }
+        
+        .btn1:hover .tooltiptext1 {
+            transform: translateY(-1em);
+            visibility: visible;
+        }
+        
+        .btn1:hover {
+            background-color: #cc39a4;
+        }
+        
+        .btn1:hover .instagram {
+            fill: white;
+        }
+        
+        .btn2 {
+            position: relative;
+            width: 3em;
+            height: 3em;
+            outline: none;
+            border: none;
+            border-radius: 50%;
+            background-color: white;
+            transition: .4s all;
+        }
+        
+        .btn2 .twitter {
+            margin-top: .25em;
+            margin-left: .1em;
+            fill: #2e30a1;
+        }
+        .btn2 .addcolor:hover
+        {
+            color:white;
+        }
+        .btn2 .tooltiptext2 {
+            visibility: hidden;
+            width: 6em;
+            height: 8em;
+            background-color: whitesmoke;
+            color: black;
+            text-align: center;
+            border-radius: 10px;
+            padding: 1em;
+            position: absolute;
+            left: -1.5em;
+            top: -8em;
+            z-index: 1;
+            transition: .1s ease-in-out;
+        }
+        
+        .btn2 .tooltiptext2 .card {
+            width: 4em;
+            height: 4em;
+            background-color: white;
+        }
+        
+        .btn2 .tooltiptext2 .account {
+            margin-top: 1em;
+        }
+        
+        .btn2 .tooltiptext2 .username {
+            font-size: 0.6em;
+            margin-top: 1.6em;
+            font-weight: bold;
+        }
+        
+        .btn2:hover .tooltiptext2 {
+            transform: translateY(-1em);
+            visibility: visible;
+        }
+        
+        .btn2:hover {
+            background-color: #03A9F4;
+        }
+        
+        .btn2:hover .twitter {
+            fill: white;
+        }
+        
+        .btn3 {
+            position: relative;
+            width: 3em;
+            height: 3em;
+            outline: none;
+            border: none;
+            border-radius: 50%;
+            background-color: white;
+            transition: .4s all;
+        }
+        
+        .btn3 .tooltiptext3 {
+            visibility: hidden;
+            width: 6em;
+            height: 8em;
+            background-color: whitesmoke;
+            color: black;
+            text-align: center;
+            border-radius: 10px;
+            padding: 1em;
+            position: absolute;
+            left: -1.5em;
+            top: -8em;
+            z-index: 1;
+            transition: .1s ease-in-out;
+        }
+        
+        .btn3 .tooltiptext3 .card {
+            width: 4em;
+            height: 4em;
+            background-color: white;
+        }
+        
+        .btn3 .tooltiptext3 .account {
+            margin-top: 1em;
+        }
+        
+        .btn3 .tooltiptext3 .username {
+            font-size: 0.7em;
+            margin-top: 1.6em;
+            font-weight: bold;
+        }
+        
+        .btn3:hover .tooltiptext3 {
+            transform: translateY(-1em);
+            visibility: visible;
+        }
+        
+        .btn3:hover {
+            background-color: black;
+        }
+        
+        .btn3:hover .git {
+            fill: white;
+        }
+    }
+  }
+
+.fa-brands
+{
+    font-size:22px;color:rgb(59, 59, 184); 
+    fa-brands:hover
+    {color:white;
+    background-color: blue;}
+}

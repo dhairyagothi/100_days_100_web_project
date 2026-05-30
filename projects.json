@@ -2312,36 +2312,64 @@
     "projectPath": "./public/canvas_multitrack_sequencer/index.html"
   },
   {
-      "projectNo": 187,
-      "projectName": "Image Compressor Web App",
-      "projectType": "Tool",
-      "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
-      "techStack": ["tool", "html", "css", "javascript", "ui"],
-      "difficulty": "intermediate",
-      "projectPath": "./public/ImageCompressor/index.html"
-    },
-    {
-      "projectNo": 188,
-      "projectName": "Leetcode Streak Visualizer",
-      "projectType": "Tool",
-      "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
-      "techStack": ["tool", "html", "css", "javascript"],
-      "difficulty": "advanced",
-      "projectPath": "./public/Streak-Visualizer/index.html"
-    },
-  
-     {
+    "projectNo": 187,
+    "projectName": "Image Compressor Web App",
+    "projectType": "Tool",
+    "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
+    "techStack": [
+      "tool",
+      "html",
+      "css",
+      "javascript",
+      "ui"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/ImageCompressor/index.html"
+  },
+  {
+    "projectNo": 188,
+    "projectName": "Leetcode Streak Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
+    "techStack": [
+      "tool",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Streak-Visualizer/index.html"
+  },
+  {
     "projectNo": 189,
-     "projectName": "Endless train game",
+    "projectName": "PeerRTC Video Chat",
+    "projectType": "Tool",
+    "projectDesc": "Advanced Peer-to-Peer video conferencing app using WebRTC and PeerJS with screen sharing and media controls.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "webrtc",
+      "api"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/webrtc-video-chat/index.html"
+  },
+  {
+    "projectNo": 190,
+    "projectName": "Endless train game",
     "projectType": "game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
-    "techStack": [ "html", "css", "javascript"],
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
     "difficulty": "advanced",
     "projectPath": "./public/endless_train_game/index.html"
   },
-  
   {
-    "projectNo": 190,
+    "projectNo": 191,
     "projectName": "Saturn Particle Gesture",
     "projectType": "Animation",
     "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",
@@ -2355,5 +2383,32 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Planet_gesture_formation/index.html"
+  },
+  {
+    "projectNo": 192,
+    "projectName": "Interactive Story Player",
+    "projectType": "UI / Animation",
+    "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
+    "techStack": [
+      "ui",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/story/main.html"
+  },
+  {
+    "projectNo": 193,
+    "projectName": "Escape Room",
+    "projectType": "Game",
+    "projectDesc": "A thrilling escape room experience in your browser.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Escape_Room/index.html"
   }
 ]

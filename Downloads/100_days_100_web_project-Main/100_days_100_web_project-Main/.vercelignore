@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# GitHub
+.github
+
+# Documentation
+README.md
+CONTRIBUTING.md
+SECURITY.md
+LICENSE
+
+# Development
+node_modules
+.vscode
+.idea
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
