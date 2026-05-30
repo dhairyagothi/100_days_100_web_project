@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,10 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
 
   <!-- CSS -->
   <link rel="stylesheet" href="todolist.css" />
@@ -25,24 +24,20 @@
 <body>
 
   <!-- BACK BUTTON -->
-  <a
-    href="/"
-    class="project-back-button"
-    style="
-      position:fixed;
-      left:18px;
-      top:18px;
-      padding:10px 14px;
-      border-radius:10px;
-      background:white;
-      color:#111827;
-      text-decoration:none;
-      z-index:9999;
-      font-weight:700;
-      font-family:Inter,sans-serif;
-      box-shadow:0 8px 20px rgba(0,0,0,.2);
-    "
-  >
+  <a href="/" class="project-back-button" style="
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: white;
+      color: #111827;
+      text-decoration: none;
+      z-index: 9999;
+      font-weight: 700;
+      font-family: Inter, sans-serif;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    ">
     ← Back to Home
   </a>
 
@@ -56,120 +51,55 @@
 
   <!-- HEADER -->
   <header>
-<<<<<<< HEAD
-
-    <ul class="navbar">
-
-      <!-- LEFT NAV -->
-      <li class="nav-left">
-
-        <ul>
-
-          <li>
-            <a
-              href="#"
-              id="nav-home"
-              class="active"
-              onclick="showHome(); return false;"
-            >
-              🏠 Home
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#"
-              id="nav-documents"
-              onclick="showDocuments(); return false;"
-            >
-              📄 Documents
-            </a>
-          </li>
-
-        </ul>
-
-      </li>
-
-      <!-- RIGHT NAV -->
-      <li class="nav-right">
-
-        <span class="theme-label">Theme</span>
-
-        <ul>
-
-          <li>
-            <button
-              id="colour1"
-              class="theme-btn active"
-              data-theme="theme1"
-              aria-label="Theme 1"
-            ></button>
-          </li>
-
-          <li>
-            <button
-              id="colour2"
-              class="theme-btn"
-              data-theme="theme2"
-              aria-label="Theme 2"
-            ></button>
-          </li>
-
-          <li>
-            <button
-              id="colour3"
-              class="theme-btn"
-              data-theme="theme3"
-              aria-label="Theme 3"
-            ></button>
-          </li>
-
-          <li>
-            <button
-              id="colour4"
-              class="theme-btn"
-              data-theme="theme4"
-              aria-label="Theme 4"
-            ></button>
-          </li>
-
-          <li>
-            <button
-              id="colour5"
-              class="theme-btn"
-              data-theme="theme5"
-              aria-label="Theme 5"
-            ></button>
-          </li>
-
-        </ul>
-
-      </li>
-
-    </ul>
-
-=======
     <nav>
       <ul class="navbar">
+
+        <!-- LEFT NAV -->
         <li class="nav-left">
           <ul>
-            <li><a href="#" id="nav-home"  " aria-current="page">🏠 Home</a></li>
-            <li><a href="#" id="nav-documents" >📄 Documents</a></li>
+            <li>
+              <a href="#" id="nav-home" class="active" aria-current="page" onclick="showHome(); return false;">
+                🏠 Home
+              </a>
+            </li>
+
+            <li>
+              <a href="#" id="nav-documents" onclick="showDocuments(); return false;">
+                📄 Documents
+              </a>
+            </li>
           </ul>
         </li>
+
+        <!-- RIGHT NAV -->
         <li class="nav-right">
           <span class="theme-label">Theme</span>
+
           <ul>
-            <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1"></button></li>
-            <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button></li>
-            <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button></li>
-            <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button></li>
-            <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button></li>
+            <li>
+              <button id="colour1" class="theme-btn active" data-theme="theme1" aria-label="Theme 1"></button>
+            </li>
+
+            <li>
+              <button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button>
+            </li>
+
+            <li>
+              <button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button>
+            </li>
+
+            <li>
+              <button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button>
+            </li>
+
+            <li>
+              <button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button>
+            </li>
           </ul>
         </li>
+
       </ul>
     </nav>
->>>>>>> upstream/main
   </header>
 
   <!-- MAIN -->
@@ -197,16 +127,10 @@
         <div class="progress-wrapper">
 
           <div class="progress-bar-track">
-            <div
-              class="progress-bar-fill"
-              id="progressFill"
-            ></div>
+            <div class="progress-bar-fill" id="progressFill"></div>
           </div>
 
-          <output
-            class="progress-text"
-            id="progressText"
-          >
+          <output class="progress-text" id="progressText">
             0 / 0 done
           </output>
 
@@ -215,10 +139,7 @@
       </div>
 
       <!-- INPUT PANEL -->
-      <form
-        class="input-panel"
-        id="task-form"
-      >
+      <form class="input-panel" id="task-form">
 
         <div class="input-group">
 
@@ -227,9 +148,7 @@
             Choose Category
           </label>
 
-          <select
-            id="task-category"
-          >
+          <select id="task-category">
             <option value="" disabled selected>
               📂 Category
             </option>
@@ -289,18 +208,10 @@
             Enter Task
           </label>
 
-          <input
-            type="text"
-            id="task"
-            placeholder="What do you need to do?"
-            autocomplete="off"
-          />
+          <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
 
           <!-- ADD BUTTON -->
-          <button
-            type="submit"
-            id="submittask"
-          >
+          <button type="submit" id="submittask">
             ➕ Add Task
           </button>
 
@@ -309,10 +220,7 @@
         <!-- ACTIONS -->
         <div class="input-actions">
 
-          <button
-            type="button"
-            id="savepdf"
-          >
+          <button type="button" id="savepdf">
             📥 Save as PDF
           </button>
 
@@ -321,10 +229,7 @@
       </form>
 
       <!-- EMPTY STATE -->
-      <div
-        class="empty-state"
-        id="emptyState"
-      >
+      <div class="empty-state" id="emptyState">
 
         <div class="empty-icon">
           📋
@@ -341,17 +246,12 @@
       </div>
 
       <!-- TASK LIST -->
-      <ul
-        id="notes-container"
-      ></ul>
+      <ul id="notes-container"></ul>
 
     </section>
 
     <!-- ================= DOCUMENTS TAB ================= -->
-    <section
-      id="documents-tab"
-      hidden
-    >
+    <section id="documents-tab" hidden>
 
       <div class="documents-header">
 
@@ -362,10 +262,7 @@
       </div>
 
       <!-- EMPTY DOCS -->
-      <div
-        class="empty-state"
-        id="emptyDocsState"
-      >
+      <div class="empty-state" id="emptyDocsState">
 
         <div class="empty-icon">
           📂
@@ -382,27 +279,18 @@
       </div>
 
       <!-- DOCUMENTS LIST -->
-      <div
-        class="documents-list"
-      ></div>
+      <div class="documents-list"></div>
 
     </section>
 
   </main>
 
-<<<<<<< HEAD
-  <!-- TOAST -->
-  <div
-    id="pdfMessage"
-    class="pdf-message"
-  ></div>
-=======
   <!-- PDF Notification -->
   <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite"></div>
->>>>>>> upstream/main
 
   <!-- JAVASCRIPT -->
   <script src="todolist.js"></script>
 
 </body>
+
 </html>

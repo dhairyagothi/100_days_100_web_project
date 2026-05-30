@@ -135,7 +135,7 @@ body {
 
 /* ---------- HEADER ---------- */
 header {
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 100;
   padding: 18px;
