@@ -1,5 +1,14 @@
-{
-  font-family: "Dangrek", "Roboto";
+/* ==========================================================================
+   1. GLOBAL STYLES & RESET
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Dangrek", "Roboto", sans-serif;
 }
 
 body {
@@ -11,18 +20,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  /* Spreads header, game area, and buttons out evenly */
-  height: 100vh;
-  /* Locks container to exactly the screen height */
-  box-sizing: border-box;
+  justify-content: space-between; /* Spreads header, game area, and buttons out evenly */
+  height: 100vh;                  /* Locks container to exactly the screen height */
   padding: 20px;
-  position: relative;
-  /* Lets us position the lower corner buttons cleanly */
-  overflow: hidden;
-  /* Prevents weird scrollbars */
+  position: relative;             /* Lets us position the lower corner buttons cleanly */
+  overflow: hidden;               /* Prevents weird scrollbars */
 }
 
+/* ==========================================================================
+   2. TYPOGRAPHY & BASIC ELEMENTS
+   ========================================================================== */
 h1 {
   color: #fff;
 }
@@ -41,6 +48,9 @@ button {
   font-size: 18px;
 }
 
+/* ==========================================================================
+   3. HEADER & SCOREBOARD
+   ========================================================================== */
 .display {
   margin-top: 30px;
   display: flex;
@@ -55,7 +65,7 @@ button {
 .heading {
   color: #fff;
   background-color: #000;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 30px;
   font-style: normal;
   font-weight: 600;
@@ -79,7 +89,7 @@ button {
   width: 125px;
   height: 110px;
   color: #656565;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 17px;
   font-style: normal;
   font-weight: 600;
@@ -88,12 +98,28 @@ button {
   text-align: center;
 }
 
+#comscore, 
+#youscore {
+  font-size: 45px;
+  font-weight: bold;
+  line-height: 2;
+  margin-bottom: 2%;
+  margin-top: 1%;
+  color: #000;
+}
+
+/* ==========================================================================
+   4. MAIN GAME PLAYGROUND (STONE, PAPER, SCISSORS)
+   ========================================================================== */
 .game {
   margin-top: 5vh;
 }
 
-.export {
-  display: none;
+.stone1, 
+.paper1, 
+.scissor1, 
+.line {
+  position: relative;
 }
 
 .line1 {
@@ -163,13 +189,15 @@ button {
   cursor: pointer;
 }
 
+.chart {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
 @keyframes example {
-  from {
-    background-color: #FF0099;
-  }
-  to {
-    background-color: #6f2a61;
-  }
+  from { background-color: #FF0099; }
+  to   { background-color: #6f2a61; }
 }
 
 .bg img {
@@ -178,16 +206,9 @@ button {
   animation-duration: 1s;
 }
 
-#rul {
-  color: #fff;
-  font-family: Roboto;
-  font-size: 21px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: 2.1px;
-}
-
+/* ==========================================================================
+   5. POPUP MODAL (RULES BOX)
+   ========================================================================== */
 .box {
   width: 278px;
   height: 325px;
@@ -203,7 +224,7 @@ button {
 
 .headline {
   color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 29px;
   font-style: normal;
   font-weight: 500;
@@ -214,7 +235,7 @@ button {
 
 .listrule {
   color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -255,62 +276,42 @@ ul li::before {
   background: none;
 }
 
-.symbol {
-  position: absolute;
-  color: #fff;
-  font-family: Dangrek;
-  font-size: 44px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  top: -7px;
-  right: 23px;
-  background: none;
-}
-
+/* ==========================================================================
+   6. GAME SCREENS (WIN / LOSE / TIE INFRASTRUCTURE)
+   ========================================================================== */
 .you-win,
 .you-lost,
 .tie-up {
-  display: none;
-  /* Kept for JS toggling */
+  display: none; /* Kept for JavaScript toggle operations */
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  /* Scaled down slightly so it fits smaller laptops */
-  margin: auto 0;
-  /* Centers the active screen vertically in available space */
+  gap: 40px;     /* Scaled down slightly so it fits smaller laptops */
+  margin: auto 0;/* Centers the active screen vertically in available space */
 }
 
 .you-picked {
   position: relative;
 }
 
-.ipt-U {
-  background: none;
+.ipt-U, .ipt-P {
   color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 17px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
   letter-spacing: 1.7px;
+  background: none;
 }
 
-.ipt-P {
-  color: #fff;
-  font-family: Roboto;
-  font-size: 17px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: 1.7px;
+.opt-U, .opt-P, .opt-U img, .opt-P img {
   background: none;
 }
 
 .result h2 {
   color: #fff;
   text-align: center;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 39px;
   font-style: normal;
   font-weight: 800;
@@ -322,7 +323,7 @@ ul li::before {
 .result h3 {
   color: #fff;
   text-align: center;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 25px;
   font-style: normal;
   font-weight: 800;
@@ -337,7 +338,7 @@ ul li::before {
   border-radius: 9px;
   background: #fff;
   color: #6b6b6b;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 15px;
   font-style: normal;
   font-weight: 600;
@@ -347,6 +348,7 @@ ul li::before {
   border: none;
 }
 
+/* Screen Configuration Variant 1 */
 .ipt-U1 {
   position: absolute;
   z-index: 1;
@@ -384,156 +386,5 @@ ul li::before {
   margin-left: 5px;
 }
 
-.ipt-U2 {
-  margin-top: -50px;
-  margin-left: 30px;
-}
+/* Screen Configuration Variant 2 */
 
-.opt-U2 {
-  margin-top: 40px;
-}
-
-.ipt-P2 {
-  position: absolute;
-  z-index: 1;
-  margin-top: 100px;
-  margin-left: 185px;
-}
-
-.opt-P2 {
-  position: absolute;
-  z-index: 1;
-  margin-top: -322px;
-  margin-left: 155px;
-}
-
-.result2 {
-  margin-right: -150px;
-  background: none;
-  z-index: 1;
-}
-
-.result2 h3 {
-  margin-top: -25px;
-}
-
-.result2 button {
-  margin-left: 15px;
-}
-
-.ipt-U3 {
-  margin-left: 50px;
-}
-
-.opt-U3 {
-  margin-left: 30px;
-  margin-top: 30px;
-}
-
-.ipt-P3 {
-  margin-left: 60px;
-}
-
-.opt-P3 {
-  margin-left: 30px;
-  margin-top: 30px;
-}
-
-.next {
-  border: 2px solid white;
-  color: white;
-  border-radius: 5px;
-  background-color: #8cc461;
-  padding: 5px 20px;
-  text-align: center;
-  font-family: "Roboto Mono", monospace;
-  letter-spacing: 3px;
-  font-weight: bold;
-}
-
-.btn {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
-  margin: 0;
-}
-
-.rules {
-  border: 2px solid white;
-  color: white;
-  border-radius: 5px;
-  background-color: purple;
-  padding: 5px 20px;
-  text-align: center;
-  font-family: "Roboto Mono", monospace;
-  letter-spacing: 3px;
-  font-weight: bold;
-  font-size: 20px;
-  height: 60px;
-}
-
-.btn1 {
-  position: absolute;
-  bottom: 30px;
-  right: 170px; /* Shifted left from 120px to prevent button collisions */
-  margin: 0;
-}
-
-#nxt {
-  color: #fff;
-  font-family: Roboto;
-  font-size: 21px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: 2.1px;
-}
-
-#comscore {
-  font-size: 45px;
-  font-weight: bold;
-  line-height: 2;
-  margin-bottom: 2%;
-  margin-top: 1%;
-  color: #000;
-}
-
-#youscore {
-  font-size: 45px;
-  font-weight: bold;
-  line-height: 2;
-  margin-bottom: 2%;
-  margin-top: 1%;
-  color: #000;
-}
-
-.symbol {
-  background-color: red;
-  border-radius: 100%;
-  border: 3px solid white;
-  height: 70px;
-  width: 60px;
-  margin-top: 3vh;
-  margin-left: 3vw;
-}
-
-.chart {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-}
-
-.reset {
-  position: absolute;
-  bottom: 30px;
-  left: 30px;
-}
-
-.reset_button {
-  background-color: purple;
-  color: white;
-  margin-top: 0;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}

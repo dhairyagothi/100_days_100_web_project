@@ -1,437 +1,647 @@
-(function () {
-  "use strict";
+const board = document.getElementById("board");
 
-  var WIN_LINES = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8],
-    [0, 3, 6], [1, 4, 7], [2, 5, 8],
-    [0, 4, 8], [2, 4, 6]
-  ];
+const statusText = document.getElementById("statusText");
+const turnChip = document.getElementById("turnChip");
 
-  var board     = Array(9).fill(null);
-  var current   = "X";
-  var gameOver  = false;
-  var scores    = { X: 0, O: 0, D: 0 };
-  var particles = [];
-  var animFrame = null;
+const scoreX = document.getElementById("scoreX");
+const scoreO = document.getElementById("scoreO");
+const scoreD = document.getElementById("scoreD");
 
-  /* ── Bot state ──────────────────────────*/
-  var vsBot   = false;
-  var botMark = "O";
+const newRoundBtn = document.getElementById("newRoundBtn");
+const resetAllBtn = document.getElementById("resetAllBtn");
 
-  var boardEl  = document.getElementById("board");
-  var gameEl   = document.getElementById("game");
-  var statusEl = document.getElementById("status-bar");
-  var pillX    = document.getElementById("pill-x");
-  var pillO    = document.getElementById("pill-o");
-  var scoreX   = document.getElementById("score-x");
-  var scoreO   = document.getElementById("score-o");
-  var scoreD   = document.getElementById("score-d");
-  var overlay  = document.getElementById("win-overlay");
-  var winText  = document.getElementById("win-text");
-  var winSub   = document.getElementById("win-sub");
-  var winBtn   = document.getElementById("win-btn");
-  var canvas   = document.getElementById("confetti-canvas");
-  var ctx      = canvas.getContext("2d");
-  var startScreen = document.getElementById("start-screen");
-  var startBtn   = document.getElementById("start-btn");
+const winnerModal = document.getElementById("winnerModal");
+const winnerTitle = document.getElementById("winnerTitle");
+const winnerSubtitle = document.getElementById("winnerSubtitle");
 
-  // ── Mode screen (injected) ─────────────
-  var modeScreen = document.createElement("div");
-  modeScreen.id = "mode-screen";
-  modeScreen.innerHTML = `
-    <h2 class="mode-title">Choose Mode</h2>
-    <p class="mode-sub">How do you want to play?</p>
-    <div class="mode-btns">
-      <button class="mode-btn" id="btn-2p">
-        <span class="mode-icon">👥</span>
-        <span class="mode-label">2 Players</span>
-        <span class="mode-desc">Play with a friend</span>
-      </button>
-      <button class="mode-btn" id="btn-bot">
-        <span class="mode-icon">🤖</span>
-        <span class="mode-label">vs Bot</span>
-        <span class="mode-desc">Challenge the AI</span>
-      </button>
-    </div>
-  `;
-  document.body.appendChild(modeScreen);
+const winnerNext = document.getElementById("winnerNext");
+const winnerClose = document.getElementById("winnerClose");
 
-  /* ── Build board ──────────────────────── */
-  function buildBoard() {
-    boardEl.innerHTML = "";
-    board.forEach(function (val, i) {
-      var cell = document.createElement("div");
-      cell.className = "cell";
-      if (val) {
-        cell.classList.add("taken", val === "X" ? "x-mark" : "o-mark");
-        cell.textContent = val === "X" ? "\u2715" : "\u25CB";
-      }
-      cell.addEventListener("click", function () { handleClick(i); });
-      boardEl.appendChild(cell);
+const modeSelect = document.getElementById("modeSelect");
+const themeSelect = document.getElementById("themeSelect");
+
+const hintBtn = document.getElementById("hintBtn");
+const undoBtn = document.getElementById("undoBtn");
+
+const historyList = document.getElementById("historyList");
+
+let gameBoard = Array(9).fill("");
+let currentPlayer = "X";
+let gameOver = false;
+
+let moveHistory = [];
+
+let scores = {
+X: 0,
+O: 0,
+D: 0
+};
+
+const WIN_LINES = [
+[0,1,2],
+[3,4,5],
+[6,7,8],
+[0,3,6],
+[1,4,7],
+[2,5,8],
+[0,4,8],
+[2,4,6]
+];
+
+function renderBoard() {
+
+
+board.innerHTML = "";
+
+gameBoard.forEach((value,index) => {
+
+    const cell = document.createElement("button");
+
+    cell.className = "cell";
+
+    if(value === "X") {
+        cell.classList.add("mark-x");
+    }
+
+    if(value === "O") {
+        cell.classList.add("mark-o");
+    }
+
+    cell.textContent = value;
+
+    cell.addEventListener("click", () => {
+        handleMove(index);
     });
-  }
 
-  /* ── Handle cell click ────────────────── */
-  function handleClick(i) {
-    if (gameOver || board[i]) return;
-    if (vsBot && current === botMark) return;   // block clicks on bot's turn
+    board.appendChild(cell);
+});
 
-    board[i] = current;
-    buildBoard();
 
-    var win = checkWin();
-    if (win) {
-      highlightWin(win);
-      scores[current]++;
-      updateScores();
-      setTimeout(function () { showWinOverlay(current); }, 320);
-      gameOver = true;
-    } else if (board.every(Boolean)) {
-      scores.D++;
-      updateScores();
-      setTimeout(showDrawOverlay, 200);
-      gameOver = true;
-    } else {
-      current = current === "X" ? "O" : "X";
-      setUI(current);
-      if (vsBot && current === botMark) setTimeout(doBotMove, 480);
-    }
-  }
+}
 
-  /* ── Bot move ─────────────────────────── */
-  function doBotMove() {
-    if (gameOver) return;
-    var move = getBotMove();
-    if (move === -1) return;
-    board[move] = botMark;
-    buildBoard();
+function handleMove(index){
 
-    var win = checkWin();
-    if (win) {
-      highlightWin(win);
-      scores[botMark]++;
-      updateScores();
-      setTimeout(function () { showWinOverlay(botMark); }, 320);
-      gameOver = true;
-    } else if (board.every(Boolean)) {
-      scores.D++;
-      updateScores();
-      setTimeout(showDrawOverlay, 200);
-      gameOver = true;
-    } else {
-      current = current === "X" ? "O" : "X";
-      setUI(current);
-    }
-  }
 
-  /* ── Pick best move (minimax) ─────────── */
-  function getBotMove() {
-    var bestScore = -Infinity;
-    var bestMove  = -1;
-    for (var i = 0; i < 9; i++) {
-      if (!board[i]) {
-        board[i] = botMark;
-        var score = minimax(board, 0, false);
-        board[i] = null;
-        if (score > bestScore) { bestScore = score; bestMove = i; }
-      }
-    }
-    return bestMove;
-  }
+if(gameOver) return;
 
-  /* ── Minimax ──────────────────────────── */
-  function minimax(b, depth, isMax) {
-    var human  = botMark === "O" ? "X" : "O";
-    var winner = scanWinner(b);
-    if (winner === botMark) return 10 - depth;
-    if (winner === human)   return depth - 10;
-    if (b.every(Boolean))   return 0;
+if(gameBoard[index] !== "") return;
 
-    var best = isMax ? -Infinity : Infinity;
-    for (var i = 0; i < 9; i++) {
-      if (!b[i]) {
-        b[i] = isMax ? botMark : human;
-        var score = minimax(b, depth + 1, !isMax);
-        b[i] = null;
-        best = isMax ? Math.max(best, score) : Math.min(best, score);
-      }
-    }
-    return best;
-  }
+gameBoard[index] = currentPlayer;
 
-  /* ── Scan board for a winner ──────────── */
-  function scanWinner(b) {
-    for (var i = 0; i < WIN_LINES.length; i++) {
-      var l = WIN_LINES[i];
-      if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[0]] === b[l[2]]) return b[l[0]];
-    }
-    return null;
-  }
+moveHistory.push({
+    player: currentPlayer,
+    cell: index + 1
+});
 
-const checkWinner = () => {
-    for (const pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        const pos1 = boardState[a];
-        const pos2 = boardState[b];
-        const pos3 = boardState[c];
-        if (pos1 && pos1 === pos2 && pos2 === pos3) {
-            setWinner(pos1, pattern);
-            return true;
-        }
-    }
-    return null;
-  }
+updateHistory();
 
-  /* ── Highlight winning cells ──────────── */
-  function highlightWin(line) {
-    var cells = boardEl.querySelectorAll(".cell");
-    line.forEach(function (i) { cells[i].classList.add("win-cell"); });
-  }
+const winLine = getWinner();
 
-  /* ── Update turn UI + background ─────── */
-  function setUI(player) {
-    pillX.classList.toggle("active", player === "X");
-    pillO.classList.toggle("active", player === "O");
-    gameEl.className = player === "X" ? "turn-x" : "turn-o";
-    statusEl.className = player === "X" ? "sx" : "so";
-    var label = (vsBot && player === botMark) ? "Bot" : player;
-    statusEl.textContent = player ? label + "'s turn!" : "";
-  }
+if(winLine){
 
-  /* ── Update scoreboard ────────────────── */
-  function updateScores() {
-    scoreX.textContent = scores.X;
-    scoreO.textContent = scores.O;
-    scoreD.textContent = scores.D;
-  }
+    highlightWin(winLine);
 
-  /* ── Win overlay ──────────────────────── */
-  function showWinOverlay(player) {
-    winText.className   = player === "X" ? "col-x" : "col-o";
-    winText.textContent = "CONGRATULATIONS!";
-    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
-    winSub.textContent  = label + " wins the round!";
-    winBtn.className    = player === "X" ? "btn-x" : "btn-o";
-    overlay.className   = "show " + (player === "X" ? "ov-x" : "ov-o");
-    launchConfetti(player);
-  }
+    scores[currentPlayer]++;
 
-  /* ── Draw overlay ─────────────────────── */
-  function showDrawOverlay() {
-    winText.className   = "col-d";
-    winText.textContent = "IT'S A DRAW!";
-    winSub.textContent  = "Nobody wins this round.";
-    winBtn.className    = "btn-d";
-    overlay.className   = "show ov-d";
-  }
-
-  /* ── Next round ───────────────────────── */
-  function nextRound() {
-    board    = Array(9).fill(null);
-    current  = "X";
-    gameOver = false;
-    buildBoard();
-    setUI("X");
-    overlay.className = "";
-    stopConfetti();
-    if (vsBot && current === botMark) setTimeout(doBotMove, 480);
-  }
-
-  /* ── Reset all ────────────────────────── */
-  function resetAll() {
-    scores = { X: 0, O: 0, D: 0 };
     updateScores();
-    turnO = true;
-    resetRound();
-    updateStatus("Scores reset. Ready to play");
-};
 
-const setModalState = (modal, isOpen) => {
-    if (!modal) {
-        return;
-    }
-    modal.classList.toggle("show", isOpen);
-    modal.setAttribute("aria-hidden", String(!isOpen));
-};
+    gameOver = true;
 
-const showWinnerModal = (winner, isSetWin) => {
-    const winnerLabel = `Player ${winner}`;
-    winnerBadge.textContent = "Winner";
-    winnerTitle.textContent = isSetWin ? `${winnerLabel} wins the set!` : `${winnerLabel} wins the round!`;
-    winnerSubtitle.textContent = isSetWin
-        ? "Champion vibes. Reset scores to play a new set."
-        : "Great moves. Ready for the next round?";
-    setModalState(winnerModal, true);
-};
+    showWinner(currentPlayer);
 
-const hideWinnerModal = () => {
-    setModalState(winnerModal, false);
-};
+    return;
+}
 
-const showStartModal = () => {
-    gameStarted = false;
-    setModalState(startModal, true);
-    boardLocked = true;
-    stopTurnTimer();
-};
+if(gameBoard.every(cell => cell !== "")){
 
-const hideStartModal = () => {
-    setModalState(startModal, false);
-};
+    scores.D++;
 
-const updateHistory = () => {
-    historyList.innerHTML = "";
-    const recent = moveHistory.slice(-10);
-    recent.forEach((move, index) => {
-        const item = document.createElement("li");
-        const moveNumber = moveHistory.length - recent.length + index + 1;
-        item.textContent = `#${moveNumber} ${move.mark} to cell ${move.index + 1}`;
-        historyList.appendChild(item);
+    updateScores();
+
+    gameOver = true;
+
+    showDraw();
+
+    return;
+}
+
+currentPlayer =
+    currentPlayer === "X" ? "O" : "X";
+
+updateStatus();
+
+renderBoard();
+
+const mode = modeSelect.value;
+
+if(
+    mode !== "pvp" &&
+    currentPlayer === "O" &&
+    !gameOver
+){
+    setTimeout(cpuMove,400);
+}
+
+
+}
+
+function cpuMove() {
+
+    if (gameOver) return;
+
+    const available = [];
+
+    gameBoard.forEach((cell, index) => {
+        if (cell === "") {
+            available.push(index);
+        }
     });
-};
 
-const clearHints = () => {
-    boxes.forEach((box) => box.classList.remove("hint"));
-};
+    if (!available.length) return;
 
-const syncTurnFromBoard = () => {
-    const countO = boardState.filter((cell) => cell === "O").length;
-    const countX = boardState.filter((cell) => cell === "X").length;
-    turnO = countO === countX;
-};
+    let move;
 
-const undoMove = () => {
-    if (!moveHistory.length) {
-        return;
+    const mode = modeSelect.value;
+
+if (mode === "cpu-easy") {
+
+    move = available[
+        Math.floor(Math.random() * available.length)
+    ];
+
+} else if (mode === "cpu-medium") {
+
+    if (Math.random() < 0.7) {
+
+        move = getBestMove();
+
+    } else {
+
+        move = available[
+            Math.floor(Math.random() * available.length)
+        ];
     }
 
-    if (currentResult) {
-        if (currentResult.winner && currentResult.winner !== "D") {
-            scores[currentResult.winner] = Math.max(0, scores[currentResult.winner] - 1);
-        }
-        if (currentResult.winner === "D") {
-            scores.D = Math.max(0, scores.D - 1);
-        }
-        currentResult = null;
-        updateScores();
-    }
+} else {
 
-    const steps = mode === "pvp" ? 1 : 2;
-    for (let i = 0; i < steps; i += 1) {
-        const last = moveHistory.pop();
-        if (!last) {
-            break;
-        }
-        const box = boxes[last.index];
-        boardState[last.index] = "";
-        box.textContent = "";
-        box.disabled = false;
-        box.classList.remove("win", "mark-o", "mark-x");
-    }
+    move = getBestMoveMinimax();
 
-    boardLocked = false;
-    boxes.forEach((box) => box.classList.remove("win"));
-    hideWinLine();
-    clearHints();
-    syncTurnFromBoard();
+    if (move === undefined) {
+        move = getBestMove();
+    }
+}
+
+gameBoard[move] = "O";
+
+    moveHistory.push({
+        player: "O",
+        cell: move + 1
+    });
+
     updateHistory();
-    updateStatus("Undo applied");
-    triggerCpuMove();
-};
 
-// Run the CPU move with a short delay for pacing.
-const triggerCpuMove = () => {
-    if (mode === "pvp" || boardLocked || turnO) {
+    const winLine = getWinner();
+
+    if (winLine) {
+
+        highlightWin(winLine);
+
+        scores.O++;
+
+        updateScores();
+
+        gameOver = true;
+
+        showWinner("O");
+
         return;
     }
-    const available = getAvailableMoves(boardState);
-    if (!available.length) {
+
+    if (gameBoard.every(cell => cell !== "")) {
+
+        scores.D++;
+
+        updateScores();
+
+        gameOver = true;
+
+        showDraw();
+
         return;
     }
-    updateStatus("CPU is thinking...");
-    boardLocked = true;
-    boardEl.classList.add("thinking");
-    setTimeout(() => {
-        let bestMove = null;
-        if (mode === "cpu-easy") {
-            bestMove = randomMove(available);
-        } else if (mode === "cpu-medium") {
-            bestMove = Math.random() < 0.6 ? bestMoveFor(boardState, "X") : randomMove(available);
-        } else {
-            bestMove = bestMoveFor(boardState, "X");
-        }
-        boardLocked = false;
-        boardEl.classList.remove("thinking");
-        placeMark(bestMove, "X", true);
-    }, 450);
-};
 
-const getAvailableMoves = (state) => state
-    .map((cell, index) => (cell ? null : index))
-    .filter((value) => value !== null);
+    currentPlayer = "X";
 
-const randomMove = (moves) => moves[Math.floor(Math.random() * moves.length)];
+    updateStatus();
 
-const bestMoveFor = (state, player) => {
+    renderBoard();
+}
+
+function getBestMove(){
+
+
+for(const line of WIN_LINES){
+
+    const [a,b,c] = line;
+
+    const cells = [
+        gameBoard[a],
+        gameBoard[b],
+        gameBoard[c]
+    ];
+
+    if(
+        cells.filter(v => v === "O").length === 2 &&
+        cells.includes("")
+    ){
+        return line[
+            cells.indexOf("")
+        ];
+    }
+}
+
+for(const line of WIN_LINES){
+
+    const [a,b,c] = line;
+
+    const cells = [
+        gameBoard[a],
+        gameBoard[b],
+        gameBoard[c]
+    ];
+
+    if(
+        cells.filter(v => v === "X").length === 2 &&
+        cells.includes("")
+    ){
+        return line[
+            cells.indexOf("")
+        ];
+    }
+}
+
+if(gameBoard[4] === ""){
+    return 4;
+}
+
+const free = [];
+
+gameBoard.forEach((cell,index)=>{
+    if(cell === "") {
+        free.push(index);
+    }
+});
+
+return free[
+    Math.floor(Math.random()*free.length)
+];
+
+
+}
+
+function getBestMoveMinimax() {
+
     let bestScore = -Infinity;
-    let move = null;
-    const opponent = player === "O" ? "X" : "O";
-    getAvailableMoves(state).forEach((index) => {
-        const next = [...state];
-        next[index] = player;
-        const score = minimax(next, false, player, opponent, 0);
-        if (score > bestScore) {
-            bestScore = score;
-            move = index;
+    let bestMove = 0;
+
+    for (let i = 0; i < 9; i++) {
+
+        if (gameBoard[i] === "") {
+
+            gameBoard[i] = "O";
+
+            let score = minimax(gameBoard, 0, false);
+
+            gameBoard[i] = "";
+
+            if (score > bestScore) {
+
+                bestScore = score;
+
+                bestMove = i;
+            }
         }
-    });
-    animFrame = requestAnimationFrame(animateConfetti);
-  }
+    }
 
-  function stopConfetti() {
-    particles = [];
-    if (animFrame) cancelAnimationFrame(animFrame);
-    animFrame = null;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
+    return bestMove;
+}
 
-  /* ── Button wiring ────────────────────── */
-  document.getElementById("btn-reset").addEventListener("click", resetAll);
-  document.getElementById("btn-restart").addEventListener("click", nextRound);
-  document.getElementById("win-btn").addEventListener("click", nextRound);
+function minimax(boardState, depth, isMaximizing) {
 
-  /* ── Start → mode screen ──────────────── */
-  startBtn.addEventListener("click", function () {
-    startScreen.classList.add("hide-screen");
-    setTimeout(function () {
-      startScreen.style.display = "none";
-      modeScreen.classList.add("show");
-    }, 600);
-  });
+    const winner = evaluateBoard(boardState);
 
-  document.getElementById("btn-2p").addEventListener("click", function () {
-    vsBot = false;
-    launchGame();
-  });
+    if (winner !== null) {
 
-  document.getElementById("btn-bot").addEventListener("click", function () {
-    vsBot = true;
-    launchGame();
-  });
+        if (winner === "O") return 10 - depth;
+        if (winner === "X") return depth - 10;
 
-  /* ── Mode screen → game ───────────────── */
-  function launchGame() {
-    modeScreen.classList.remove("show");
-    modeScreen.classList.add("hide");
-    setTimeout(function () {
-      modeScreen.style.display = "none";
-      gameEl.classList.remove("hidden");
-      gameEl.classList.add("show-game");
-    }, 400);
-  }
+        return 0;
+    }
 
-  /* ── Init ─────────────────────────────── */
-  buildBoard();
-  setUI("X");
+    if (isMaximizing) {
 
-})();
+        let bestScore = -Infinity;
+
+        for (let i = 0; i < 9; i++) {
+
+            if (boardState[i] === "") {
+
+                boardState[i] = "O";
+
+                let score =
+                    minimax(boardState, depth + 1, false);
+
+                boardState[i] = "";
+
+                bestScore = Math.max(score, bestScore);
+            }
+        }
+
+        return bestScore;
+
+    } else {
+
+        let bestScore = Infinity;
+
+        for (let i = 0; i < 9; i++) {
+
+            if (boardState[i] === "") {
+
+                boardState[i] = "X";
+
+                let score =
+                    minimax(boardState, depth + 1, true);
+
+                boardState[i] = "";
+
+                bestScore = Math.min(score, bestScore);
+            }
+        }
+
+        return bestScore;
+    }
+}
+
+function evaluateBoard(boardState) {
+
+    for (const line of WIN_LINES) {
+
+        const [a, b, c] = line;
+
+        if (
+            boardState[a] &&
+            boardState[a] === boardState[b] &&
+            boardState[a] === boardState[c]
+        ) {
+            return boardState[a];
+        }
+    }
+
+    if (boardState.every(cell => cell !== "")) {
+        return "draw";
+    }
+
+    return null;
+}
+
+function getWinner(){
+
+
+for(const line of WIN_LINES){
+
+    const [a,b,c] = line;
+
+    if(
+        gameBoard[a] &&
+        gameBoard[a] === gameBoard[b] &&
+        gameBoard[a] === gameBoard[c]
+    ){
+        return line;
+    }
+}
+
+return null;
+
+
+}
+
+function highlightWin(line){
+
+
+renderBoard();
+
+line.forEach(index => {
+
+    board.children[index]
+        .classList.add("win-cell");
+});
+
+
+}
+
+function updateStatus(){
+
+
+statusText.textContent =
+    currentPlayer + "'s Turn";
+
+turnChip.textContent =
+    "Turn: " + currentPlayer;
+
+
+}
+
+function updateScores(){
+
+scoreX.textContent = scores.X;
+scoreO.textContent = scores.O;
+scoreD.textContent = scores.D;
+
+}
+
+function updateHistory(){
+
+
+historyList.innerHTML = "";
+
+moveHistory.slice(-10).forEach(move => {
+
+    const li =
+        document.createElement("li");
+
+    li.textContent =
+        move.player +
+        " → Cell " +
+        move.cell;
+
+    historyList.appendChild(li);
+});
+
+
+}
+
+function showWinner(player){
+
+
+winnerTitle.textContent =
+    "Player " + player + " Wins!";
+
+winnerSubtitle.textContent =
+    "Ready for the next round?";
+
+winnerModal.classList.add("show");
+
+
+}
+
+function showDraw(){
+
+
+winnerTitle.textContent =
+    "Draw!";
+
+winnerSubtitle.textContent =
+    "Nobody wins this round.";
+
+winnerModal.classList.add("show");
+
+
+}
+
+function newRound(){
+
+
+gameBoard = Array(9).fill("");
+
+currentPlayer = "X";
+
+gameOver = false;
+
+moveHistory = [];
+
+updateHistory();
+
+updateStatus();
+
+winnerModal.classList.remove("show");
+
+renderBoard();
+
+
+}
+
+function resetScores(){
+
+
+scores = {
+    X:0,
+    O:0,
+    D:0
+};
+
+updateScores();
+
+newRound();
+
+
+}
+
+function undoMove(){
+
+    if(!moveHistory.length) return;
+
+    const mode = modeSelect.value;
+
+    if(mode !== "pvp" && moveHistory.length >= 2){
+
+        const cpuMove = moveHistory.pop();
+        gameBoard[cpuMove.cell - 1] = "";
+
+        const playerMove = moveHistory.pop();
+        gameBoard[playerMove.cell - 1] = "";
+
+        currentPlayer = "X";
+
+    } else {
+
+        const last = moveHistory.pop();
+
+        gameBoard[last.cell - 1] = "";
+
+        currentPlayer = last.player;
+    }
+
+    gameOver = false;
+
+    updateHistory();
+
+    updateStatus();
+
+    renderBoard();
+}
+
+function showHint(){
+
+
+const move = getBestMoveMinimax();
+
+renderBoard();
+
+if(board.children[move]){
+
+    board.children[move]
+        .classList.add("hint-cell");
+}
+
+
+}
+
+themeSelect.addEventListener(
+"change",
+function(){
+
+
+    document.body.setAttribute(
+        "data-theme",
+        this.value
+    );
+}
+
+
+);
+
+newRoundBtn.addEventListener(
+"click",
+newRound
+);
+
+resetAllBtn.addEventListener(
+"click",
+resetScores
+);
+
+undoBtn.addEventListener(
+"click",
+undoMove
+);
+
+hintBtn.addEventListener(
+"click",
+showHint
+);
+
+winnerNext.addEventListener(
+"click",
+newRound
+);
+
+winnerClose.addEventListener(
+"click",
+()=>{
+winnerModal.classList.remove("show");
+}
+);
+
+updateStatus();
+updateScores();
+renderBoard();
