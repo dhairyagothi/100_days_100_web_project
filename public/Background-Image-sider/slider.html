@@ -108,6 +108,25 @@
       &copy; 2026 Wanderlust. All rights reserved.
     </div>
   </footer>
+  <script>
+  const flags = {
+    Iceland: '🇮🇸',
+    Switzerland: '🇨🇭',
+    Scotland: '🏴',
+    Ireland: '🇮🇪',
+    Germany: '🇩🇪',
+  };
+
+  const placeTitle = document.getElementById('placeTitle');
+
+  function addFlag(place) {
+    placeTitle.textContent = `${flags[place]} ${place}`;
+  }
+
+  window.onload = function () {
+    addFlag('Iceland');
+  };
+</script>
  
   <script src="script.js"></script>
 
