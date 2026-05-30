@@ -22,6 +22,7 @@
         }());
     </script>
     <link rel="icon" href="nice-beach-suning-weather-hd-wallapaper.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
@@ -166,7 +167,20 @@
                     </div>
                 </div>
             </div>
-
+            <!-- Weather Forecast Charts -->
+            <div id="charts-section" style="display:none;" class="charts-section mb-4">
+            <div class="charts-header">
+                <h2 class="charts-title">📈 7-Day Forecast Trends</h2>
+                <div class="chart-tabs" role="tablist">
+                <button class="chart-tab active" data-metric="temperature" role="tab">🌡 Temperature</button>
+                <button class="chart-tab" data-metric="humidity" role="tab">💧 Humidity</button>
+                <button class="chart-tab" data-metric="wind" role="tab">💨 Wind Speed</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="weatherChart"></canvas>
+            </div>
+            </div>
             <h2 class="display-6 text-center mb-4" style="color: white;">Weather of other Common Places</h2>
 
             <div class="table-responsive">
