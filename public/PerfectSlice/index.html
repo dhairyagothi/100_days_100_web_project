@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Slice</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>Perfect Slice</h1>
+            <div class="stats">
+                <p>Lives: <span id="lives">3</span></p>
+                <p>Score: <span id="score">0</span></p>
+            </div>
+        </header>
+        
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="800" height="500"></canvas>
+            <div id="gameOver" class="hidden">
+                <h2>Game Over!</h2>
+                <button onclick="location.reload()">Play Again</button>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <p><strong>Controls:</strong> Use Arrow Keys or W, A, S, D to move and draw lines. Avoid the bouncing obstacles while drawing!</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

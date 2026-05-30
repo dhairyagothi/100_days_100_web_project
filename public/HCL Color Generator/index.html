@@ -8,6 +8,8 @@
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
 
   <div class="bg-orbs">
     <div class="orb orb1"></div>
@@ -36,7 +38,14 @@
       <span id="lightnessValue">50%</span>
     </div>
 
-    <div class="color-display" id="customColorDisplay"></div>
+    <div class="color-display" id="customColorDisplay">
+      <p id="colorValue">hsl(0, 100%, 50%)</p>
+    </div>
+
+    <div class="palette-container">
+      <div class="palette-title">Preset Swatches</div>
+      <div class="palette-grid" id="quickPalette"></div>
+    </div>
 
     <button id="copyBtn">Copy Color</button>
   </div>
