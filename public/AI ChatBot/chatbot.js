@@ -1,490 +1,373 @@
-/* ===========================
-   CONFIG
-=========================== */
-const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
-const STORAGE_KEY_API     = 'gemini_api_key';
-const STORAGE_KEY_HISTORY = 'gemini_chat_history';
-const STORAGE_KEY_THEME   = 'gemini_theme';
+// Initialize WebSockets connection to the Backend Server
+const socket = io('http://localhost:5000');
 
-/* ===========================
-   STATE
-=========================== */
-let geminiApiKey      = localStorage.getItem(STORAGE_KEY_API) || '';
-let selectedImageBase64 = null;
-let chatHistory       = [];   // [{role:"user"|"model", parts:[{text}]}]
-let sessions          = loadSessions();
-let activeSessionId   = null;
+// DOM Element Registry
+const promptInput = document.getElementById('prompt-input');
+const sendBtn = document.getElementById('send-btn');
+const messagesInner = document.getElementById('messages-inner');
+const emptyState = document.getElementById('empty-state');
+const collabBtn = document.getElementById('collab-btn');
+const collabCard = document.getElementById('collab-card');
+const shareUrlInput = document.getElementById('share-url-input');
+const copyRoomLinkBtn = document.getElementById('copy-room-link-btn');
+const roomStatusBadge = document.getElementById('room-status-badge');
 
-/* ===========================
-   DOM REFS
-=========================== */
-const apiModal        = document.getElementById('api-modal');
-const apiKeyInput     = document.getElementById('api-key-input');
-const saveKeyBtn      = document.getElementById('save-key-btn');
-const toggleKeyBtn    = document.getElementById('toggle-key-visibility');
-const changeKeyBtn    = document.getElementById('change-key-btn');
-const messagesInner   = document.getElementById('messages-inner');
-const viewport        = document.getElementById('messages-viewport');
-const promptInput     = document.getElementById('prompt-input');
-const sendBtn         = document.getElementById('send-btn');
-const imageInput      = document.getElementById('image-input');
-const previewImg      = document.getElementById('preview-img');
-const previewWrap     = document.getElementById('image-preview-wrap');
-const removeImgBtn    = document.getElementById('remove-image-btn');
-const emptyState      = document.getElementById('empty-state');
-const historyList     = document.getElementById('history-list');
-const newChatBtn      = document.getElementById('new-chat-btn');
+// Attachment Pipeline Elements
+const imageInput = document.getElementById('image-input');
+const imagePreviewWrap = document.getElementById('image-preview-wrap');
+const previewImg = document.getElementById('preview-img');
+const fileIconPlaceholder = document.getElementById('file-icon-placeholder');
+const fileNamePreview = document.getElementById('file-name-preview');
+const removeImageBtn = document.getElementById('remove-image-btn');
+
+// API Key Modal Elements
+const apiModal = document.getElementById('api-modal');
+const apiKeyInput = document.getElementById('api-key-input');
+const saveKeyBtn = document.getElementById('save-key-btn');
+const toggleKeyVisibility = document.getElementById('toggle-key-visibility');
+const eyeIcon = document.getElementById('eye-icon');
+const changeKeyBtn = document.getElementById('change-key-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
-const themeToggle     = document.getElementById('theme-toggle');
-const sidebarToggle   = document.getElementById('sidebar-toggle');
-const sidebar         = document.getElementById('sidebar');
-const sidebarClose    = document.getElementById('sidebar-close');
 
-/* ===========================
-   INIT
-=========================== */
-function init() {
-  const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'light';
-  document.documentElement.setAttribute('data-theme', savedTheme);
+// Room Session State Parsing
+const urlParams = new URLSearchParams(window.location.search);
+let currentRoomId = urlParams.get('room') || null;
 
-  if (!geminiApiKey) {
-    apiModal.classList.remove('hidden');
-  } else {
-    apiKeyInput.value = geminiApiKey;
+// Track active file details in memory
+let attachedFilePayload = null;
+
+// Initialize Session Syncing on Launch
+if (currentRoomId) {
+  socket.emit('join_room', currentRoomId);
+  setupCollaborationUI(currentRoomId);
+}
+
+// ----------------------------------------------------
+// ATTACHMENT PIPELINE EVENT HANDLERS
+// ----------------------------------------------------
+imageInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  
+  reader.onload = function(event) {
+    attachedFilePayload = {
+      name: file.name,
+      type: file.type,
+      dataUrl: event.target.result // Base64 encoding for synchronization
+    };
+
+    imagePreviewWrap.classList.remove('hidden');
+    sendBtn.disabled = false;
+
+    if (file.type.startsWith('image/')) {
+      fileIconPlaceholder.style.display = 'none';
+      previewImg.style.display = 'block';
+      previewImg.src = event.target.result;
+    } else {
+      previewImg.style.display = 'none';
+      fileIconPlaceholder.style.display = 'flex';
+      fileNamePreview.textContent = file.name;
+    }
+  };
+
+  reader.readAsDataURL(file);
+});
+
+removeImageBtn.addEventListener('click', clearAttachmentPreview);
+
+function clearAttachmentPreview() {
+  attachedFilePayload = null;
+  imageInput.value = '';
+  imagePreviewWrap.classList.add('hidden');
+  previewImg.src = '#';
+  if (promptInput.value.trim() === '') {
+    sendBtn.disabled = true;
+  }
+}
+
+// ----------------------------------------------------
+// LOCAL STORAGE & MODAL MANAGEMENT LOGIC
+// ----------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+  const savedKey = localStorage.getItem('gemini_api_key');
+  if (savedKey) {
     apiModal.classList.add('hidden');
+    apiModal.style.display = 'none'; 
   }
+});
 
-  renderHistoryList();
-
-  // Load most recent session or start fresh
-  if (sessions.length > 0) {
-    loadSession(sessions[0].id);
+saveKeyBtn.addEventListener('click', () => {
+  const keyValue = apiKeyInput.value.trim();
+  if (keyValue) {
+    localStorage.setItem('gemini_api_key', keyValue);
+    apiModal.classList.add('hidden');
+    apiModal.style.display = 'none';
   } else {
-    startNewChat();
+    alert("Please enter a valid API key to proceed.");
   }
-}
+});
 
-/* ===========================
-   API KEY MODAL
-=========================== */
-saveKeyBtn.addEventListener('click', saveApiKey);
-apiKeyInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveApiKey(); });
-
-function saveApiKey() {
-  const val = apiKeyInput.value.trim();
-  if (!val) {
-    apiKeyInput.style.borderColor = '#e05252';
-    setTimeout(() => { apiKeyInput.style.borderColor = ''; }, 1500);
-    return;
+toggleKeyVisibility.addEventListener('click', () => {
+  if (apiKeyInput.type === 'password') {
+    apiKeyInput.type = 'text';
+    eyeIcon.style.stroke = 'var(--accent)';
+  } else {
+    apiKeyInput.type = 'password';
+    eyeIcon.style.stroke = 'currentColor';
   }
-  geminiApiKey = val;
-  localStorage.setItem(STORAGE_KEY_API, geminiApiKey);
-  apiModal.classList.add('hidden');
-}
-
-toggleKeyBtn.addEventListener('click', () => {
-  apiKeyInput.type = apiKeyInput.type === 'password' ? 'text' : 'password';
 });
 
 changeKeyBtn.addEventListener('click', () => {
   apiModal.classList.remove('hidden');
+  apiModal.style.display = 'flex';
+  const savedKey = localStorage.getItem('gemini_api_key');
+  if (savedKey) apiKeyInput.value = savedKey;
 });
-
-/* ===========================
-   THEME
-=========================== */
-themeToggle.addEventListener('click', () => {
-  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem(STORAGE_KEY_THEME, next);
-});
-
-/* ===========================
-   SIDEBAR
-=========================== */
-sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
-sidebarClose.addEventListener('click',  () => sidebar.classList.remove('open'));
-
-/* ===========================
-   SESSIONS
-=========================== */
-function loadSessions() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)) || []; }
-  catch { return []; }
-}
-
-function saveSessions() {
-  localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(sessions));
-}
-
-function startNewChat() {
-  activeSessionId = Date.now().toString();
-  chatHistory = [];
-  sessions.unshift({ id: activeSessionId, title: 'New chat', messages: [] });
-  saveSessions();
-  renderHistoryList();
-  clearMessages();
-}
-
-function loadSession(id) {
-  const session = sessions.find(s => s.id === id);
-  if (!session) return;
-  activeSessionId = id;
-  // Rebuild API history — map stored role "ai" -> "model" for legacy data
-  chatHistory = session.messages
-    .filter(m => m.text)
-    .map(m => ({
-      role: m.role === 'ai' ? 'model' : m.role,
-      parts: [{ text: m.text }]
-    }));
-  clearMessages();
-  session.messages.forEach(m => renderMessage(m.role === 'ai' ? 'ai' : m.role, m.text, m.image, false));
-  renderHistoryList();
-  if (window.innerWidth <= 700) sidebar.classList.remove('open');
-}
-
-function getCurrentSession() {
-  return sessions.find(s => s.id === activeSessionId);
-}
-
-function deleteSession(id, e) {
-  e.stopPropagation();
-  if (sessions.length === 1) {
-    // Last session: just wipe it and start fresh
-    sessions = [];
-    saveSessions();
-    startNewChat();
-    return;
-  }
-  sessions = sessions.filter(s => s.id !== id);
-  saveSessions();
-  if (id === activeSessionId) {
-    loadSession(sessions[0].id);
-  } else {
-    renderHistoryList();
-  }
-}
-
-function renameSession(id, e) {
-  e.stopPropagation();
-  const session = sessions.find(s => s.id === id);
-  if (!session) return;
-  const newTitle = prompt('Rename chat:', session.title);
-  if (newTitle && newTitle.trim()) {
-    session.title = newTitle.trim().slice(0, 60);
-    saveSessions();
-    renderHistoryList();
-  }
-}
-
-function renderHistoryList() {
-  historyList.innerHTML = '';
-  sessions.forEach(session => {
-    const item = document.createElement('div');
-    item.className = 'history-item' + (session.id === activeSessionId ? ' active' : '');
-
-    item.innerHTML = `
-      <svg class="hist-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-      <span class="hist-title">${escapeHtml(session.title)}</span>
-      <div class="hist-actions">
-        <button class="hist-btn rename-btn" title="Rename">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-          </svg>
-        </button>
-        <button class="hist-btn delete-btn" title="Delete">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6l-1 14H6L5 6"/>
-            <path d="M10 11v6M14 11v6"/>
-            <path d="M9 6V4h6v2"/>
-          </svg>
-        </button>
-      </div>`;
-
-    item.querySelector('.rename-btn').addEventListener('click', e => renameSession(session.id, e));
-    item.querySelector('.delete-btn').addEventListener('click', e => deleteSession(session.id, e));
-    item.addEventListener('click', () => loadSession(session.id));
-    historyList.appendChild(item);
-  });
-}
-
-newChatBtn.addEventListener('click', startNewChat);
 
 clearHistoryBtn.addEventListener('click', () => {
-  if (confirm('Delete all chat history?')) {
-    sessions = [];
-    saveSessions();
-    startNewChat();
+  if (confirm("Are you sure you want to clear your chat environment data?")) {
+    localStorage.removeItem('gemini_api_key');
+    messagesInner.innerHTML = '';
+    if (emptyState) emptyState.style.display = 'flex';
+    window.location.reload();
   }
 });
 
-/* ===========================
-   IMAGE ATTACHMENT
-=========================== */
-imageInput.addEventListener('change', () => {
-  const file = imageInput.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    selectedImageBase64 = e.target.result.split(',')[1];
-    previewImg.src = e.target.result;
-    previewWrap.classList.remove('hidden');
-    updateSendBtn();
-  };
-  reader.readAsDataURL(file);
+// ----------------------------------------------------
+// WEBSOCKET BROADCAST LISTENERS
+// ----------------------------------------------------
+socket.on('receive_message', (data) => {
+  hideEmptyState();
+  if (data.isAI) {
+    appendMessageBubble(data.message, 'ai', data.sender, null);
+  } else {
+    appendMessageBubble(data.message, 'user', data.sender, data.file);
+  }
 });
 
-removeImgBtn.addEventListener('click', clearImage);
+socket.on('user_joined', (data) => {
+  roomStatusBadge.textContent = "👥 Connected Group";
+  roomStatusBadge.style.background = "#eefbf4";
+  roomStatusBadge.style.color = "#187741";
+  roomStatusBadge.style.borderColor = "#187741";
+});
 
-function clearImage() {
-  selectedImageBase64 = null;
-  imageInput.value = '';
-  previewWrap.classList.add('hidden');
-  previewImg.src = '#';
-  updateSendBtn();
+// ----------------------------------------------------
+// UI INTERACTION HANDLERS & HANDSHAKES
+// ----------------------------------------------------
+collabBtn.addEventListener('click', async () => {
+  try {
+    const response = await fetch('http://localhost:5000/api/room/create');
+    const data = await response.json();
+    window.location.search = `?room=${data.roomId}`;
+  } catch (err) {
+    console.error("Failed to generate collaborative room channel:", err);
+  }
+});
+
+copyRoomLinkBtn.addEventListener('click', () => {
+  shareUrlInput.select();
+  document.execCommand('copy');
+  copyRoomLinkBtn.textContent = "Copied link! ✔";
+  setTimeout(() => { copyRoomLinkBtn.textContent = "Copy Session Link"; }, 2000);
+});
+
+function setupCollaborationUI(roomId) {
+  collabCard.style.display = 'block';
+  shareUrlInput.value = window.location.href;
+  roomStatusBadge.style.display = 'inline-flex';
+  roomStatusBadge.textContent = "👤 Live Session Link";
 }
 
-/* ===========================
-   INPUT
-=========================== */
 promptInput.addEventListener('input', () => {
-  promptInput.style.height = 'auto';
-  promptInput.style.height = Math.min(promptInput.scrollHeight, 160) + 'px';
-  updateSendBtn();
+  sendBtn.disabled = promptInput.value.trim() === '' && !attachedFilePayload;
 });
 
-promptInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
+sendBtn.addEventListener('click', processOutgoingMessage);
+promptInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey && !sendBtn.disabled) {
     e.preventDefault();
-    if (!sendBtn.disabled) handleSend();
+    processOutgoingMessage();
   }
 });
 
-function updateSendBtn() {
-  sendBtn.disabled = !promptInput.value.trim() && !selectedImageBase64;
-}
+function processOutgoingMessage() {
+  const text = promptInput.value.trim();
+  if (!text && !attachedFilePayload) return;
 
-sendBtn.addEventListener('click', handleSend);
+  hideEmptyState();
+  
+  // 1. Render locally on sender's UI workspace instantly
+  appendMessageBubble(text, 'user', 'You', attachedFilePayload);
 
-// Suggestion chips
-document.querySelectorAll('.suggestion-chip').forEach(bindChip);
+  // 2. Broadcast data structure over WebSockets to partners
+  if (currentRoomId) {
+    socket.emit('send_message', {
+      room: currentRoomId,
+      message: text,
+      sender: `Peer (${socket.id.slice(0, 4)})`,
+      isAI: false,
+      file: attachedFilePayload
+    });
+  }
 
-function bindChip(chip) {
-  chip.addEventListener('click', () => {
-    promptInput.value = chip.dataset.text;
-    promptInput.dispatchEvent(new Event('input'));
-    promptInput.focus();
-  });
-}
-
-/* ===========================
-   SEND / RECEIVE
-=========================== */
-function handleSend() {
-  const text  = promptInput.value.trim();
-  const image = selectedImageBase64;
-  if (!text && !image) return;
-
-  if (!geminiApiKey) { apiModal.classList.remove('hidden'); return; }
-
-  renderMessage('user', text || 'Sent an image', image, true);
-
-  // Build parts for API
-  const parts = [];
-  if (text)  parts.push({ text });
-  if (image) parts.push({ inline_data: { mime_type: 'image/jpeg', data: image } });
-  chatHistory.push({ role: 'user', parts });
+  // Preserve attachment info pointer reference for API delivery call before clearing text field
+  const activeFileForAI = attachedFilePayload;
 
   promptInput.value = '';
-  promptInput.style.height = 'auto';
-  clearImage();
   sendBtn.disabled = true;
-
-  getAIResponse();
+  clearAttachmentPreview();
+  
+  // Execute LLM parsing pipeline connection
+  fetchGeminiResponse(text, activeFileForAI);
 }
 
-async function getAIResponse() {
-  const typingRow = showTyping();
+// ----------------------------------------------------
+// GEMINI API INTEGRATION WITH MULTIMODAL CAPABILITY
+// ----------------------------------------------------
+async function fetchGeminiResponse(userPrompt, fileAttachment) {
+  const savedKey = localStorage.getItem('gemini_api_key');
+  if (!savedKey) {
+    appendMessageBubble("Missing API Key! Click 'Change API Key' in the sidebar to configure it.", "ai", "System Error", null);
+    return;
+  }
+
+  showTypingIndicator();
 
   try {
-    const response = await fetch(`${API_URL}?key=${geminiApiKey}`, {
+    const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedKey}`;
+    
+    // Assemble multimodal parts collection array structure dynamically
+    let requestParts = [];
+
+    if (fileAttachment) {
+      // Split off metadata prefix to parse clean base64 data string
+      const base64CleanData = fileAttachment.dataUrl.split(',')[1];
+      
+      requestParts.push({
+        inlineData: {
+          mimeType: fileAttachment.type,
+          data: base64CleanData
+        }
+      });
+    }
+
+    // Append text prompt instruction block part if user entered text alongside document
+    requestParts.push({ text: userPrompt || `Analyze the attached file named ${fileAttachment.name}` });
+
+    const response = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: chatHistory })
+      body: JSON.stringify({
+        contents: [{ parts: requestParts }]
+      })
     });
-
-    removeTyping(typingRow);
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${response.status} — check your API key and try again.`);
-    }
 
     const data = await response.json();
-    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!aiText) throw new Error('Empty response from Gemini.');
+    removeTypingIndicator();
 
-    // Push with correct role "model"
-    chatHistory.push({ role: 'model', parts: [{ text: aiText }] });
-    renderMessage('ai', aiText, null, true);
+    if (data.candidates && data.candidates[0].content.parts[0].text) {
+      const aiReplyText = data.candidates[0].content.parts[0].text;
+      
+      appendMessageBubble(aiReplyText, 'ai', 'Gemini Engine', null);
 
-    // Auto-title after first reply
-    const session = getCurrentSession();
-    if (session && session.title === 'New chat') {
-      const firstUserText = chatHistory.find(m => m.role === 'user')?.parts?.[0]?.text || '';
-      if (firstUserText) {
-        session.title = firstUserText.slice(0, 40) + (firstUserText.length > 40 ? '…' : '');
+      if (currentRoomId) {
+        socket.emit('send_message', {
+          room: currentRoomId,
+          message: aiReplyText,
+          sender: 'Gemini Engine',
+          isAI: true,
+          file: null
+        });
       }
+    } else {
+      throw new Error("Invalid output format returned by API");
     }
-    saveSessions();
-    renderHistoryList();
 
-  } catch (err) {
-    removeTyping(typingRow);
-    renderMessage('ai', `**Error:** ${err.message}`, null, true);
-    console.error('Gemini error:', err);
+  } catch (error) {
+    console.error("Gemini API Request Failed:", error);
+    removeTypingIndicator();
+    appendMessageBubble("Failed to obtain context. Note: Gemini 2.5 Flash natively reads images, plain text files, and PDFs directly.", "ai", "Gemini Engine", null);
   }
 }
 
-/* ===========================
-   RENDER MESSAGE
-=========================== */
-function renderMessage(role, text, image, save) {
-  if (emptyState.parentNode) emptyState.remove();
+// ----------------------------------------------------
+// DOM INJECTION RENDER UTILITIES
+// ----------------------------------------------------
+function hideEmptyState() {
+  if (emptyState) emptyState.style.display = 'none';
+}
 
+function appendMessageBubble(text, type, senderName, fileInfo) {
   const row = document.createElement('div');
-  row.className = `message-row ${role}`;
+  row.className = `message-row ${type}`;
 
-  if (role === 'ai') {
-    row.innerHTML = `
+  let headerContext = '';
+  if (type === 'ai') {
+    headerContext = `
       <div class="ai-sender">
         <div class="ai-dot">
-          <svg width="10" height="10" viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white"/>
-          </svg>
+          <svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
         </div>
-        Gemini
-      </div>
-      <div class="bubble"></div>
-      <div class="msg-actions">
-        <button class="msg-action-btn copy-response-btn">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="9" y="9" width="13" height="13" rx="2"/>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-          </svg>
-          Copy
-        </button>
+        <span>${senderName}</span>
       </div>`;
-
-    const bubble = row.querySelector('.bubble');
-    bubble.innerHTML = marked.parse(text);
-
-    // Per-codeblock copy buttons
-    bubble.querySelectorAll('pre').forEach(pre => {
-      pre.style.position = 'relative';
-      const btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', () => {
-        const code = pre.querySelector('code');
-        navigator.clipboard.writeText(code ? code.innerText : pre.innerText);
-        btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-      });
-      pre.appendChild(btn);
-    });
-
-    row.querySelector('.copy-response-btn').addEventListener('click', function () {
-      navigator.clipboard.writeText(text);
-      this.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
-      setTimeout(() => {
-        this.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
-      }, 2000);
-    });
-
   } else {
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    if (image) {
-      const img = document.createElement('img');
-      img.src = `data:image/jpeg;base64,${image}`;
-      img.className = 'msg-image';
-      bubble.appendChild(img);
-    }
-    if (text) {
-      const p = document.createElement('p');
-      p.style.margin = '0';
-      p.textContent = text;
-      bubble.appendChild(p);
-    }
-    row.appendChild(bubble);
+    headerContext = `<div class="ai-sender" style="justify-content: flex-end; padding-right:4px;"><span>${senderName}</span></div>`;
   }
 
+  // Handle building rendering context structure block for attachments dynamically inside bubble
+  let attachmentMarkup = '';
+  if (fileInfo) {
+    if (fileInfo.type.startsWith('image/')) {
+      attachmentMarkup = `<img src="${fileInfo.dataUrl}" class="msg-image" alt="Attached Image Layer" style="max-width: 100%; border-radius: var(--radius-md); margin-bottom: 8px; display: block;" />`;
+    } else {
+      // Build an interactive download anchor link badge interface look for shared PDFs/documents
+      attachmentMarkup = `
+        <a href="${fileInfo.dataUrl}" download="${fileInfo.name}" style="display: flex; align-items: center; gap: 8px; background: rgba(232,103,58,0.12); border: 1px dashed var(--accent); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 8px; text-decoration: none; color: inherit; width: fit-content;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div style="display: flex; flex-direction: column; text-align: left;">
+            <span style="font-size: 0.82rem; font-weight: 600; text-decoration: underline;">${fileInfo.name}</span>
+            <span style="font-size: 0.7rem; color: var(--text-secondary);">Click to Download / View</span>
+          </div>
+        </a>`;
+    }
+  }
+
+  const formattedContent = text ? ((typeof marked !== 'undefined') ? marked.parse(text) : `<p>${text}</p>`) : '';
+
+  row.innerHTML = `
+    ${headerContext}
+    <div class="bubble">
+      ${attachmentMarkup}
+      ${formattedContent}
+    </div>
+  `;
+  
   messagesInner.appendChild(row);
-  scrollToBottom();
-
-  if (save) {
-    const session = getCurrentSession();
-    if (session) {
-      session.messages.push({ role, text, image: image || null });
-      saveSessions();
-    }
-  }
+  document.getElementById('messages-viewport').scrollTop = document.getElementById('messages-viewport').scrollHeight;
 }
 
-/* ===========================
-   TYPING INDICATOR
-=========================== */
-function showTyping() {
+function showTypingIndicator() {
+  const existing = document.getElementById('typing-indicator');
+  if (existing) return;
+
   const row = document.createElement('div');
   row.className = 'typing-row';
+  row.id = 'typing-indicator';
   row.innerHTML = `
-    <div class="ai-sender">
-      <div class="ai-dot">
-        <svg width="10" height="10" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="white"/></svg>
-      </div>
-      Gemini
-    </div>
     <div class="typing-bubble">
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
-    </div>`;
+    </div>
+  `;
   messagesInner.appendChild(row);
-  scrollToBottom();
-  return row;
+  document.getElementById('messages-viewport').scrollTop = document.getElementById('messages-viewport').scrollHeight;
 }
 
-function removeTyping(row) {
-  if (row?.parentNode) row.parentNode.removeChild(row);
+function removeTypingIndicator() {
+  const indicator = document.getElementById('typing-indicator');
+  if (indicator) indicator.remove();
 }
-
-/* ===========================
-   HELPERS
-=========================== */
-function clearMessages() {
-  messagesInner.innerHTML = '';
-  messagesInner.appendChild(emptyState);
-  // Re-bind chips after re-insert
-  emptyState.querySelectorAll('.suggestion-chip').forEach(bindChip);
-}
-
-function scrollToBottom() {
-  viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' });
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
-/* ===========================
-   START
-=========================== */
-init();

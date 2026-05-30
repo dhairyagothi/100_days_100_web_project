@@ -1,3 +1,4 @@
+let chartInstance = null;
 const BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies";
 const FALLBACK_URL = "https://latest.currency-api.pages.dev/v1/currencies";
 
@@ -5,6 +6,9 @@ const dropdowns = document.querySelectorAll(".dropdown select");
 const fromCurr = document.querySelector(".from select");
 const toCurr = document.querySelector(".to select");
 const msg = document.querySelector(".msg");
+const chartCanvas = document.getElementById("historyChart");
+let historyChart;
+const swapIcon = document.querySelector(".dropdown i");
 const amtInput = document.querySelector(".amount input");
 const convertedAmountField = document.querySelector(".converted-amount input");
 const swapIcon = document.querySelector(".dropdown i");
@@ -56,10 +60,65 @@ for (let select of dropdowns) {
   }
 
   select.addEventListener("change", (evt) => {
+  updateFlag(evt.target);
+  updateExchangeRate();
+  loadHistoricalChart();
+});
     updateFlag(evt.target);
     updateExchangeRate();
   });
 }
+const loadHistoricalChart = async () => {
+  try {
+    const today = new Date();
+    const pastDate = new Date();
+
+    // Last 7 days
+    pastDate.setDate(today.getDate() - 7);
+
+    const endDate = today.toISOString().split("T")[0];
+    const startDate = pastDate.toISOString().split("T")[0];
+
+    const historyURL =
+      `https://api.frankfurter.app/${startDate}..${endDate}?from=${fromCurr.value}&to=${toCurr.value}`;
+
+    const response = await fetch(historyURL);
+    const data = await response.json();
+
+    const labels = [];
+    const values = [];
+
+    for (let date in data.rates) {
+      labels.push(date);
+      values.push(data.rates[date][toCurr.value]);
+    }
+
+    // Remove old chart
+    if (historyChart) {
+      historyChart.destroy();
+    }
+
+    historyChart = new Chart(chartCanvas, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: `${fromCurr.value} to ${toCurr.value}`,
+          data: values,
+          borderWidth: 2,
+          tension: 0.3,
+          fill: false,
+        }],
+      },
+      options: {
+        responsive: true,
+      },
+    });
+
+  } catch (error) {
+    console.error("Error loading chart:", error);
+  }
+};
 
 const updateExchangeRate = async (forceDefault = false) => {
   // Clear any success/warning alert styles if we start calculations
@@ -114,6 +173,8 @@ const updateExchangeRate = async (forceDefault = false) => {
 
   let finalAmount = amtNum * rate;
   msg.innerText = `${amtVal} ${fromCurr.value} = ${finalAmount.toFixed(2)} ${toCurr.value}`;
+  // Temporary sample (until API history is added)
+renderChart(["Day1", "Day2", "Day3"], [1, 2, 3]);
   convertedAmountField.value = finalAmount.toFixed(2);
 };
 
@@ -124,7 +185,20 @@ const updateFlag = (element) => {
   let img = element.parentElement.querySelector("img");
   if (img) img.src = newSrc;
 };
+swapIcon.addEventListener("click", () => {
+  let temp = fromCurr.value;
 
+  fromCurr.value = toCurr.value;
+  toCurr.value = temp;
+
+  updateFlag(fromCurr);
+  updateFlag(toCurr);
+
+  updateExchangeRate();
+  loadHistoricalChart();
+});
+btn.addEventListener("click", (evt) => {
+  evt.preventDefault();
 window.addEventListener("load", () => {
   updateExchangeRate(true);
 });
@@ -152,6 +226,7 @@ amtInput.addEventListener("input", () => {
 
   clearError();
   updateExchangeRate();
+  loadHistoricalChart();
 });
 
 swapIcon.addEventListener("click", () => {
@@ -161,7 +236,47 @@ swapIcon.addEventListener("click", () => {
   updateFlag(fromCurr);
   updateFlag(toCurr);
   updateExchangeRate();
+  loadHistoricalChart();
 });
+// ===============================
+// 📊 HISTORICAL DATA PROCESSING
+// ===============================
+
+const formatHistoricalData = (data) => {
+    let labels = [];
+    let values = [];
+
+    // Convert API object → chart arrays
+    for (let date in data) {
+        labels.push(date);
+        values.push(data[date]);
+    }
+
+    return {
+        labels: labels,
+        values: values
+    };
+};
+const renderChart = (labels, values) => {
+    const ctx = document.getElementById("historyChart").getContext("2d");
+
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Exchange Rate History",
+                data: values,
+                borderWidth: 2,
+                fill: false
+            }]
+        }
+    });
+};
 
 resetBtn.addEventListener("click", () => {
   clearError();

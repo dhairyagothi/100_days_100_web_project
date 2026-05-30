@@ -27,12 +27,6 @@ const errorLogs = {
     description: document.getElementById('descriptionError'),
     category: document.getElementById('categoryError')
 };
-document.addEventListener('DOMContentLoaded', () => {
-    initializeThemeEngine();
-    setDefaultDateToToday();
-    setupUserInteractionEvents();
-    calculateAndRefreshSummary();
-});
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeThemeEngine();
@@ -137,7 +131,16 @@ function checkFormErrors() {
     if (dateInput && !dateInput.value) {
         if (errorLogs.date) errorLogs.date.textContent = 'Please select a date.';
         isValid = false;
+    }else if (dateInput && dateInput.value) {
+    const selectedDate = new Date(dateInput.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (selectedDate > today) {
+        if (errorLogs.date) errorLogs.date.textContent = 'Future dates are not allowed.';
+        isValid = false;
+        }
     }
+
     if (descriptionInput && !descriptionInput.value.trim()) {
         if (errorLogs.description) errorLogs.description.textContent = 'Please type a short description.';
         isValid = false;

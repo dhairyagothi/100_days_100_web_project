@@ -1,4 +1,461 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Mono", monospace;
+}
+
+body {
+
+    background: #000;
+    position: relative;
+
+    overflow: hidden;
+}
+
+/* Background Animation */
+
+.main {
+
+    min-height: 100vh;
+
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+ 
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+ 
+
+    background: linear-gradient(
+        135deg,
+        #ffd6e8,
+        #ffc2d1,
+        #d9b3ff,
+        #bde0fe
+    );
+
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+
+    padding: 20px;
+
+    padding: 10px;
+
+}
+
+/* Animated Gradient */
+
+@keyframes gradientBG {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Main Card */
+
+.main .image-container {
+
+    padding: 25px;
+
+    border-radius: 25px;
+
+    background: rgba(255, 255, 255, 0.18);
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 8px 32px rgba(31, 38, 135, 0.2);
+
+    text-align: center;
+}
+
+/* Image Section */
+
+.main .image-container .image {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Video / GIF */
+
+.main .image-container .image video,
+.main .image-container .image img {
+ 
+
+    width: 320px;
+    max-width: 90%;
+
+    border-radius: 20px;
+
+    filter: drop-shadow(
+        0 0 20px rgba(255,255,255,0.5)
+    );
+
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Floating Animation */
+
+@keyframes float {
+
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+
+    width: 320px;
+    max-width: 90%;
+    max-height: 40vh;
+    object-fit: contain;
+    align-items: center;
+
+}
+
+/* JARVIS Heading */
+
+.main .image-container h1 {
+
+
+    color: #ff4f81;
+
+    margin-top: 15px;
+    margin-bottom: 10px;
+
+    font-size: 45px;
+
+
+    color: #00bcd4;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 38px;
+
+    letter-spacing: 12px;
+
+    text-shadow:
+        0 0 10px rgba(255,79,129,0.6),
+        0 0 20px rgba(255,79,129,0.4);
+}
+
+/* Subtitle */
+
+.main .image-container p {
+
+    color: #5b4b6b;
+
+    margin-bottom: 15px;
+
+    font-size: 16px;
+
+    font-weight: 500;
+
+    line-height: 1.5;
+}
+
+/* Typing Animation Text */
+
+#typing-text {
+
+    color: #7b2cbf;
+
+
+    color: #7f8c8d;
+    text-align: center;
+
+    margin-bottom: 24px;
+
+
+    margin-bottom: 20px;
+
+    font-size: 15px;
+
+    min-height: 20px;
+
+    margin-top: 10px;
+
+    font-weight: bold;
+}
+
+/* Input Section */
+
+.main .input {
+
+    margin-top: 25px;
+
+    display: flex;
+    align-items: center;
+
+    justify-content: center;
+
+    width: 420px;
+    height: 65px;
+
+
+    width: min(500px, 90%);
+    min-height: 90px;
+    padding: 20px 25px;
+
+    border-radius: 40px;
+
+
+    background: rgba(255,255,255,0.2);
+
+    backdrop-filter: blur(12px);
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.15);
+
+    transition: 0.3s ease;
+
+    padding: 10px 20px;
+
+    gap: 15px;
+
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 188, 212, 0.2);
+    backdrop-filter: blur(10px);
+    gap: 18px;
+ 
+    margin-bottom: 10px;
+
+}
+
+/* Hover Effect */
+
+.main .input:hover {
+
+    transform: scale(1.03);
+
+    box-shadow:
+        0 10px 25px rgba(255,79,129,0.3);
+
+    margin-bottom: 20px;
+
+}
+
+/* Mic Button */
+
+.main .input .talk {
+
+    background: linear-gradient(
+        135deg,
+        #ff4f81,
+        #ff85a1
+    );
+
+    border: none;
+
+
+    width: 55px;
+    height: 55px;
+
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+    box-shadow:
+        0 0 15px rgba(255,79,129,0.5);
+
+    flex-shrink: 0;
+}
+
+/* Hover */
+
+.main .input .talk:hover {
+
+
+    transform: scale(1.1);
+
+    box-shadow
+        0 0 25px rgba(255,79,129,0.8);
+
+.main .input .talk i {
+    font-size: 16px;
+    color: #aed0d0;
+}
+
+.main .input .content {
+    color: #dfe6e9;
+    font-size: 16px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    line-height: 1.4;
+}
+@media (max-width: 768px) {
+    .main .image-container .image img {
+        width: 280px;
+        max-width: 85%;
+        align-items: center;
+    }
+    .main .image-container h1 {
+        color: #00bcd4;
+        text-align: center;
+        margin-top: 20px; /* Reduced from 35px */
+        margin-bottom: 8px; /* Reduced from 10px */
+        font-size: 42px; /* Slightly optimized from 48px */
+        letter-spacing: 12px;
+    }
+}
+@media (max-width: 500px) {
+    .main .input {
+        flex-direction: column;
+        border-radius: 25px;
+        padding: 30px 20px;
+        gap: 24px;
+    }
+    .main .input .content {
+        text-align: center;
+        justify-content: center;
+    }
+}
+.status-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+.status-text {
+    color: #7f8c8d;
+    font-size: 12px;
+    margin-top: 4px;
+
+}
+
+/* Active Listening */
+
+.main .input .talk.active {
+
+
+    animation: pulse 1s infinite;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff4d4d,
+            #ff0000
+        );
+    position: relative;
+    will-change: transform;
+}
+.main .input .talk.active::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid
+        rgba(255,0,0,0.7);
+    animation:
+        pulse 1.2s infinite;
+        backface-visibility: hidden;
+
+}
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Icon */
+
+.main .input .talk i {
+
+    font-size: 22px;
+
+    color: white;
+}
+
+/* Content Text */
+
+.main .input .content {
+
+    color: #5b4b6b;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+/* Responsive */
+
+@media screen and (max-width: 768px) {
+
+    .main .image-container .image video,
+    .main .image-container .image img {
+
+        width: 220px;
+    }
+
+    .main .image-container h1 {
+
+        font-size: 30px;
+
+        letter-spacing: 6px;
+    }
+
+    .main .input {
+
+        width: 95%;
+
+        height: auto;
+
+        padding: 15px;
+    }
+
+    .main .input .content {
+
+        font-size: 14px;
+    }
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap");
 * {
     margin: 0;
     padding: 0;
@@ -21,7 +478,7 @@ body {
 
 
 .main {
-    min-height: 100vh;
+    height: 100vh;
     position: relative;
     z-index: 2;
     width: 100%;
@@ -29,7 +486,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
 }
 
 
@@ -63,24 +520,26 @@ body {
 }
 
 .main .image-container .image img {
-    width: 350px;
+    width: 320px;
     max-width: 90%;
+    max-height: 40vh;
+    object-fit: contain;
     align-items: center;
 }
 
 .main .image-container h1 {
     color: #00bcd4;
     text-align: center;
-    margin-top: 35px;
-    margin-bottom: 10px;
-    font-size: 48px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 38px;
     letter-spacing: 12px;
 }
 
 .main .image-container p {
     color: #7f8c8d;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-size: 15px;
     max-width: 500px;
     margin-left: auto;
@@ -92,14 +551,14 @@ body {
     display: flex;
     align-items: center;
     width: min(500px, 90%);
-    min-height: 70px;
-    padding: 10px 20px;
+    min-height: 90px;
+    padding: 20px 25px;
     border-radius: 40px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(0, 188, 212, 0.2);
     backdrop-filter: blur(10px);
     gap: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .main .input .talk {
