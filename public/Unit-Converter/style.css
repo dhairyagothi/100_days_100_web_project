@@ -1,61 +1,114 @@
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    font-family: "Inter", "Segoe UI", sans-serif;
 }
 
 body {
-    background-color: #f4f7f6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: linear-gradient(to bottom right, #FF512F, #DD2476);
+    padding: 20px;
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.15), transparent 35%),
+        linear-gradient(135deg, #ff512f, #dd2476);
 }
 
 .converter-card {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     width: 100%;
-    max-width: 400px;
+    max-width: 430px;
+
+    padding: 2rem;
+    border-radius: 24px;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.08);
+
+    transition: transform 0.3s ease;
+}
+
+.converter-card:hover {
+    transform: translateY(-4px);
 }
 
 h2 {
-    color: #333;
-    margin-bottom: 1.5rem;
     text-align: center;
+    margin-bottom: 2rem;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
 }
 
 .input-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 label {
     display: block;
-    margin-bottom: 0.5rem;
-    color: #666;
-    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
-input, select {
+input,
+select {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 0.9rem 1rem;
+    margin: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+
     font-size: 1rem;
+    font-weight: 500;
+
     outline: none;
-    transition: border-color 0.2s;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease;
 }
 
-input:focus, select:focus {
-    border-color: #007bff;
+input:focus,
+select:focus {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.25);
+    transform: scale(1.01);
 }
 
 input[readonly] {
-    background-color: #e9ecef;
-    color: #495057;
+    background: rgba(240, 240, 240, 0.95);
+    color: #555;
+    font-weight: 600;
     cursor: not-allowed;
+}
+
+select {
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .converter-card {
+        padding: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
 }
