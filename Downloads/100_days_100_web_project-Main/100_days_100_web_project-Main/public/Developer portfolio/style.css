@@ -1,0 +1,423 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-color: #161513;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    min-height: 100vh;
+
+}
+
+.page1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.nav {
+
+    width: 100%;
+
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 300px;
+    position: fixed;
+    background-color: #222222;
+    margin-left: 0;
+    width: 100%;
+    opacity: 0.8;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+
+li {
+    color: white;
+    font-size: 15px;
+    padding: 5px 25px;
+}
+
+li:hover {
+    animation: zoomin ease-in 1s 1 forwards;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    gap: 35px;
+    text-align: center;
+}
+
+.intro img {
+    margin-top: 150px;
+    height: 223px;
+    width: 251px;
+}
+
+.intro img:hover {
+    animation: rotate ease-in-out 5s infinite;
+}
+
+.intro .mainText {
+    color: white;
+    text-align: center;
+    font-size: 55px;
+    font-weight: bolder;
+    line-height: 1.2;
+}
+
+.intro .mainText .highlight {
+    background: linear-gradient(to right, #ff7e5f, #8e44ad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.intro .text {
+    color: #C5C5C5;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 1px;
+    max-width: 750px;
+    font-weight: 300;
+}
+
+.btn {
+    padding: 10px 25px;
+    font-size: 21.83px;
+    font-weight: 600;
+    box-sizing: border-box;
+    border-radius: 50px;
+    margin: auto 5px;
+}
+
+.btn-light {
+    color: black;
+    background-color: white;
+}
+
+.btn-dark {
+    color: white;
+    background-color: #161513;
+    border: 3px solid white;
+}
+
+.skill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+}
+
+.skill h1 {
+    color: #C5C5C5;
+    font-size: 20px;
+    letter-spacing: 3px;
+    font-weight: 500;
+}
+
+.skills img {
+    height: 42px;
+    margin: 15px 25px;
+}
+
+.projects h1 {
+    background: linear-gradient(to bottom, rgba(255, 134, 96, 1) 0%, rgba(213, 73, 29, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    font-size: 35px;
+    font-weight: 900;
+}
+
+.projects .cards {
+    display: flex;
+    justify-content: center;
+    margin: 50px;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.projects .cards .card {
+    display: flex;
+    flex-direction: column;
+    background-color: #2A2A2A;
+    border-radius: 18px;
+}
+
+
+.projects .text {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.projects .element {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    padding-bottom: 10px;
+}
+
+.projects .element .text :nth-child(1) {
+    font-size: 10px;
+    font-weight: bolder;
+    color: #C5C5C5;
+}
+
+.projects .element .text :nth-child(2) {
+    font-size: 19px;
+    font-weight: bolder;
+    color: white;
+}
+
+.experience {
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.experience h1 {
+    background: linear-gradient(to bottom, rgba(91, 173, 255, 1) 0%, rgba(19, 115, 209, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    font-size: 35px;
+    font-weight: 900;
+}
+
+.experience .headline {
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.experience .lead {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.experience .lead span {
+    font-size: 21.74px;
+    font-weight: 600;
+    color: white;
+}
+
+.experience .headline .timeline {
+    color: #8491A0;
+    font-size: 14.49px;
+    font-weight: 400;
+}
+
+.company {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.company .description {
+    color: #8491A0;
+    font-size: 14.49px;
+    font-weight: 400;
+}
+
+.last {
+    background-color: #191919;
+    width: 100%;
+}
+
+.contact {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 950px;
+    margin: auto;
+    padding: 80px;
+
+
+}
+
+.contact h1 {
+    color: white;
+    font-size: 23.53;
+}
+
+.contact .description {
+    color: #C5C5C5;
+    font-size: 14.12px;
+    font-weight: 300;
+    max-width: 680px;
+}
+
+.contact .email {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact .email span {
+    color: #C5C5C5;
+    font-size: 14.12px;
+}
+
+.contact .social {
+    display: flex;
+    gap: 20px;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotateY(360deg)
+    }
+}
+
+@keyframes zoomin {
+    from {}
+
+    to {
+        font-size: 17px;
+        background-color: white;
+        color: #161513;
+        border-radius: 15px;
+
+    }
+}
+
+@media only screen and (max-width: 860px) {
+    nav {
+        gap: 40px;
+    }
+
+    ul {
+        gap: 20px;
+    }
+
+    li {
+        font-size: 12px;
+    }
+
+    .intro img {
+        height: 150px;
+        width: auto;
+    }
+
+    .intro .mainText {
+        font-size: 30px;
+    }
+
+    .intro .text {
+        font-size: 15px;
+        margin: 0 30px;
+    }
+
+    .btn {
+        font-size: 14px;
+    }
+
+    .skills img {
+        margin: 7px;
+    }
+
+    .projects .card {
+        width: 300px;
+    }
+
+    .experience .headline {
+        flex-direction: column;
+    }
+
+    .experience .lead {
+        gap: 2px;
+    }
+
+    .experience .lead span {
+        font-size: 18px;
+    }
+
+    .company .description {
+        text-align: center;
+        margin: 0 30px;
+    }
+}
+
+@media only screen and (max-width: 380px) {
+    nav {
+        gap: 20px;
+    }
+
+    ul {
+        gap: 10px;
+    }
+
+    .intro .mainText {
+        font-size: 25px;
+    }
+
+    .intro .text {
+        font-size: 12px;
+    }
+
+    .btn {
+        font-size: 12px;
+    }
+
+    .experience .headline .lead {
+        gap: 2px;
+    }
+
+    .experience .lead span {
+        font-size: 15px;
+    }
+
+    .company .description {
+        margin: 0 30px;
+        font-size: 14px;
+    }
+}

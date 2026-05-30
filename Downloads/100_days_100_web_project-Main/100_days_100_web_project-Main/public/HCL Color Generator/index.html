@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HSL Color Picker</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+</head>
+<body>
+
+  <div class="bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <div class="container">
+    <h1>HSL Color Picker</h1>
+
+    <div class="slider-container">
+      <label for="hue">Hue</label>
+      <input type="range" id="hue" class="slider" min="0" max="360" value="0">
+      <span id="hueValue">0</span>
+    </div>
+
+    <div class="slider-container">
+      <label for="saturation">Saturation</label>
+      <input type="range" id="saturation" class="slider" min="0" max="100" value="100">
+      <span id="saturationValue">100%</span>
+    </div>
+
+    <div class="slider-container">
+      <label for="lightness">Lightness</label>
+      <input type="range" id="lightness" class="slider" min="0" max="100" value="50">
+      <span id="lightnessValue">50%</span>
+    </div>
+
+    <div class="color-display" id="customColorDisplay">
+      <p id="colorValue">hsl(0, 100%, 50%)</p>
+    </div>
+
+    <div class="palette-container">
+      <div class="palette-title">Preset Swatches</div>
+      <div class="palette-grid" id="quickPalette"></div>
+    </div>
+
+    <button id="copyBtn">Copy Color</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

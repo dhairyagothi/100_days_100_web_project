@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missionaries and Cannibals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Missionaries and Cannibals</h1>
+    <div class="instructions">
+        <p>Use the boat to transfer missionaries and cannibals between the banks. The boat can carry two people at a time.</p>
+    </div>
+
+    <div class="game-container">
+        <!-- Left Bank -->
+        <div class="bank" id="left-bank">
+            <h2>Left Bank</h2>
+            <div class="people" id="left-people">
+                <!-- Missionaries and Cannibals -->
+            </div>
+        </div>
+
+        <!-- Boat -->
+        <div class="boat" id="boat">
+            <h2>Boat</h2>
+            <div class="people" id="boat-people">
+                <!-- Boat People -->
+            </div>
+        </div>
+
+        <!-- Right Bank -->
+        <div class="bank" id="right-bank">
+            <h2>Right Bank</h2>
+            <div class="people" id="right-people">
+                <!-- Missionaries and Cannibals -->
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="start-reset">Start Game</button>
+    </div>
+
+    <div id="message"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

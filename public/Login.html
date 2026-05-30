@@ -7,8 +7,7 @@
 
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
@@ -38,6 +37,16 @@
         <div class="auth-card">
           <h2 class="auth-title-1">Login</h2>
 
+          <!-- Status message area -->
+          <div id="statusMsg" style="
+            display:none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            text-align: center;
+          "></div>
+
           <form id="loginForm" class="auth-form">
             <div class="form-group">
               <i class="fa-solid fa-user"></i>
@@ -61,10 +70,10 @@
                 autocomplete="current-password"
                 required
               />
-              <span class="toggle-password" onclick="togglePassword()">👁</span>
+              <span class="toggle-password" onclick="togglePassword()" title="Show/hide password">👁</span>
             </div>
 
-            <button type="submit" class="button home-btn">
+            <button type="submit" class="button home-btn" id="loginBtn">
               <i class="fa-solid fa-right-to-bracket"></i>
               Login
             </button>
@@ -139,16 +148,15 @@
         const toggleIcon = document.querySelector(".toggle-password");
 
         if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            toggleIcon.classList.add("active");
-            // toggleIcon.textContent = "..";
+          passwordInput.type = "text";
+          toggleIcon.classList.add("active");
         } else {
-            passwordInput.type = "password";
-            toggleIcon.classList.remove("active");
-            // toggleIcon.textContent = "👁";
+          passwordInput.type = "password";
+          toggleIcon.classList.remove("active");
         }
       }
-      
+
+      // ── Login form submission ──
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (event) {
@@ -157,18 +165,29 @@
           const username = document.getElementById("username").value.trim();
           const password = document.getElementById("password").value.trim();
 
-          // Get stored user
-          const storedUser = localStorage.getItem(username);
+          // Basic empty-field guard
+          if (!username || !password) {
+            showStatus("Please enter both username and password.", "error");
+            return;
+          }
 
+          // Look up user stored by SignUp.html (keyed by username)
+          const storedRaw = localStorage.getItem(username);
           // Check if user exists
           if (!storedUser) {
             showToast("User does not exist.", "error");
             return;
           }
 
-          const userData = JSON.parse(storedUser);
+          let userData;
+          try {
+            userData = JSON.parse(storedRaw);
+          } catch (e) {
+            showStatus("Account data is corrupted. Please sign up again.", "error");
+            return;
+          }
 
-          // Password matching
+          // Password check
           if (password !== userData.password) {
             showToast("Incorrect password.", "error");
             return;
@@ -178,12 +197,38 @@
           showToast("Login successful!", "success");
 
           localStorage.setItem("loggedInUser", username);
-          
+       
           // Delay redirection to allow toast to be visible
           setTimeout(() => {
             window.location.href = "../index.html";
           }, 1200);
+            showStatus("Incorrect password. Please try again.", "error");
+            return;
+          }
+
+          // ── Login successful ──
+          // Persist the session
+          localStorage.setItem("loggedInUser", username);
+          localStorage.setItem(
+            "loggedInUserData",
+            JSON.stringify({
+              username,
+              name: userData.name || username,
+              email: userData.email || "",
+              loginTime: Date.now(),
+            })
+          );
+
+          showStatus("Login successful! Redirecting…", "success");
+
+          // Disable the button to prevent double-submit
+          document.getElementById("loginBtn").disabled = true;
+
+          // Redirect after a short delay so the user sees the success message
+          setTimeout(function () {
+            window.location.href = "../index.html";
+          }, 1000);
         });
     </script>
   </body>
-</html>
+</html> 
