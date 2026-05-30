@@ -130,6 +130,25 @@ class AgeCalculator {
     return { weeks, hours };
   }
 
+  getChineseZodiac(year) {
+    const animals = [
+      { name: "Rat 🐭", emoji: "🐭" },
+      { name: "Ox 🐂", emoji: "🐂" },
+      { name: "Tiger 🐅", emoji: "🐅" },
+      { name: "Rabbit 🐇", emoji: "🐇" },
+      { name: "Dragon 🐉", emoji: "🐉" },
+      { name: "Snake 🐍", emoji: "🐍" },
+      { name: "Horse 🐎", emoji: "🐎" },
+      { name: "Goat 🐐", emoji: "🐐" },
+      { name: "Monkey 🐒", emoji: "🐒" },
+      { name: "Rooster 🐓", emoji: "🐓" },
+      { name: "Dog 🐕", emoji: "🐕" },
+      { name: "Pig 🐖", emoji: "🐖" }
+    ];
+    const index = (year - 4) % 12;
+    return animals[index >= 0 ? index : index + 12];
+  }
+
   calculate() {
     const dobInput = document.getElementById('dob').value;
     if (!dobInput) {
@@ -166,6 +185,18 @@ class AgeCalculator {
       `${weeks.toLocaleString()} weeks`;
     document.getElementById('hours').textContent =
       `${hours.toLocaleString()} hours`;
+
+    // Chinese Zodiac Update
+    const chineseZodiac = this.getChineseZodiac(birthDate.getFullYear());
+    document.getElementById('chinese-zodiac-sign').textContent = chineseZodiac.emoji;
+    document.getElementById('chinese-zodiac-name').textContent = chineseZodiac.name;
+
+    // Cosmic Planet Ages Update
+    document.getElementById('age-mercury').textContent = (totalDays / 87.97).toFixed(2);
+    document.getElementById('age-venus').textContent = (totalDays / 224.7).toFixed(2);
+    document.getElementById('age-mars').textContent = (totalDays / 686.98).toFixed(2);
+    document.getElementById('age-jupiter').textContent = (totalDays / 4332.59).toFixed(2);
+    document.getElementById('age-saturn').textContent = (totalDays / 10759.22).toFixed(2);
 
     document.getElementById('result').style.display = 'block';
   }
