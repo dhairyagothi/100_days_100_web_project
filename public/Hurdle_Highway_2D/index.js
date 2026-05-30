@@ -12,8 +12,6 @@ const playagain = document.getElementById('playagain');
 const scoreb = document.getElementById('scorepara1');
 const speedb = document.getElementById('scorepara2');
 const scoreg = document.getElementById('scorepara');
-const highscoreg = document.getElementById('highscorepara');
-const highscoreb = document.getElementById('scorepara3');
 const gameover = document.getElementById('gameover');
 const car = document.getElementById('car');
 const stage = document.getElementById('gameStage');
@@ -67,23 +65,6 @@ let scoreTimer = 0;
 let speedTimer = 0;
 let spawnCursor = -200;
 
-// ─── High Score ───────────────────────────────────────────────────────────────
-let highScore = parseInt(localStorage.getItem('hh2d_highscore') || '0', 10);
-
-function updateHighScoreDisplay() {
-  highscoreb.textContent = `BEST - ${highScore}`;
-}
-
-function checkAndSaveHighScore() {
-  const current = Math.floor(score);
-  if (current > highScore) {
-    highScore = current;
-    localStorage.setItem('hh2d_highscore', highScore);
-  }
-  highscoreg.textContent = `BEST SCORE - ${highScore}`;
-}
-// ─────────────────────────────────────────────────────────────────────────────
-
 // ─── Touch / Swipe Support ───────────────────────────────────────────────────
 let touchStartX = 0;
 let touchStartY = 0;
@@ -96,13 +77,15 @@ stage.addEventListener(
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
   },
-  { passive: true }
+  { passive: true },
 );
 
 stage.addEventListener(
   'touchend',
   (e) => {
-    if (!gameStarted) return;
+    if (!gameStarted) {
+      return;
+    }
     const touch = e.changedTouches[0];
     const dx = touch.clientX - touchStartX;
     const dy = touch.clientY - touchStartY;
@@ -117,7 +100,7 @@ stage.addEventListener(
       }
     }
   },
-  { passive: true }
+  { passive: true },
 );
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -144,7 +127,6 @@ const obstacles = Array.from(document.querySelectorAll('.obstacle')).map((el) =>
 
 document.addEventListener('DOMContentLoaded', () => {
   intro2.play();
-  updateHighScoreDisplay();
 });
 
 window.addEventListener('load', () => {
@@ -156,7 +138,6 @@ window.addEventListener('load', () => {
   applyDifficulty(currentDifficulty);
   resetAllObstacles();
   placeCarInstant();
-  updateHighScoreDisplay();
   requestAnimationFrame(gameLoop);
 });
 
@@ -445,7 +426,6 @@ function triggerCrash() {
   carmoveaud.pause();
   crashaud.currentTime = 0;
   crashaud.play();
-  checkAndSaveHighScore();
   gameover.style.visibility = 'visible';
   scoreg.textContent = `YOUR SCORE - ${Math.floor(score)}`;
 }
