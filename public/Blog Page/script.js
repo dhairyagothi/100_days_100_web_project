@@ -1,3 +1,17 @@
+// ============================================================
+// GLOBAL XSS SANITIZATION UTILITY (Fixes Issue #4360)
+// ============================================================
+const sanitizeInput = (str) => {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/\//g, '&#x2F;');
+};
+
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
@@ -231,6 +245,9 @@ const renderComments = () => {
     }
 
     comments.forEach((commentObj, index) => {
+        const safeAuthor = sanitizeInput(commentObj.author || "Anonymous");
+        const safeText = sanitizeInput(commentObj.text);
+
         const commentElement = document.createElement("div");
 
         commentElement.className =
@@ -240,11 +257,11 @@ const renderComments = () => {
             <div class="flex justify-between items-start gap-2">
                 <div class="flex-1 min-w-0">
                     <p class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
-                        ${commentObj.author || "Anonymous"}
+                        ${safeAuthor}
                     </p>
 
                     <p class="text-gray-700 dark:text-gray-200 break-words" id="comment-text-${index}">
-                        ${commentObj.text}
+                        ${safeText}
                     </p>
 
                     <!-- Edit input (hidden by default) -->
@@ -254,7 +271,7 @@ const renderComments = () => {
                                rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400
                                bg-white dark:bg-gray-600 text-black dark:text-white resize-none"
                         rows="2"
-                    >${commentObj.text}</textarea>
+                    >${safeText}</textarea>
 
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
                         ${commentObj.date ? commentObj.date + " · " : ""}${commentObj.time}
@@ -391,7 +408,7 @@ const renderComments = () => {
                     return;
                 }
 
-                comments[index].text = newText;
+                comments[index].text = sanitizeInput(rawText);
 
                 localStorage.setItem(
                     "comments",
@@ -427,17 +444,21 @@ const renderComments = () => {
 // =======================
 
 const addComment = () => {
-    const comment = commentTextarea.value.trim();
+    const rawComment = commentTextarea.value.trim();
 
-    if (comment === "") {
+    if (rawComment === "") {
         showToast("Please write a comment first.", "error");
         return;
     }
 
-    // Save username for next time
-    const author = usernameInput
+    // Sanitize input comment message values
+    const comment = sanitizeInput(rawComment);
+
+    // Read and sanitize input author values
+    const rawAuthor = usernameInput
         ? usernameInput.value.trim() || "Anonymous"
         : "Anonymous";
+    const author = sanitizeInput(rawAuthor);
 
     if (usernameInput && usernameInput.value.trim()) {
         localStorage.setItem("username", usernameInput.value.trim());

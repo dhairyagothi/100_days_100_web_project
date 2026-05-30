@@ -188,7 +188,7 @@ function convertTemperature(value, from, to) {
   } else if (to === "kelvin") {
     return celsius + 273.15;
   }
-} 
+}
 
 
 // FORMAR NUMBER //
