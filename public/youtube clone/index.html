@@ -31,45 +31,43 @@
         </button>
       </div>
       <div class="right-section">
-        <div class="upload-icon-container">
-          <img class="upload-icon" src="icons/upload.svg">
-          <div class="tooltip">Create</div>
+        <button class="create-button">
+          <img class="create-plus-icon" src="icons/plus.svg" alt="">
+          <span>Create</span>
+        </button>
+
+        <div class="notifications-container">
+          <img class="bell-icon" src="icons/bell.svg" alt="Notifications">
+          <span class="badge">9+</span>
         </div>
-        <img class="youtube-apps-icon" src="icons/youtube-apps.svg">
-        <div class="notifications-icon-container">
-          <img class="notifications-icon" src="icons/notifications.svg">
-          <div class="notifications-count">3</div>
-        </div>
-        <img class="current-user-picture" src="channel-pictures/my-channel.jpeg">
+
+      <div class="avatar-container">
+        <img class="user-avatar" src="channel-pictures/my-channel.jpeg" alt="User Profile" onerror="this.src='https://ui-avatars.com/api/?name=User&background=db7c26&color=fff&rounded=true'">
+      </div>
       </div>
     </header>
 
-    <nav class="sidebar">
-      <div class="sidebar-link">
-        <img src="icons/home-icon.svg">
-        <div>Home</div>
-      </div>
-      <div class="sidebar-link">
-        <img src="icons/explore.svg">
-        <div>Explore</div>
-      </div>
-      <div class="sidebar-link">
-        <img src="icons/subscriptions.svg">
-        <div>Subscriptions</div>
-      </div>
-      <div class="sidebar-link">
-        <img src="icons/originals.svg">
-        <div>Originals</div>
-      </div>
-      <div class="sidebar-link">
-        <img src="icons/youtube-music.svg">
-        <div>YouTube Music</div>
-      </div>
-      <div class="sidebar-link">
-        <img src="icons/library.svg">
-        <div>Library</div>
-      </div>
-    </nav>
+<nav class="sidebar">
+  <div class="sidebar-link">
+    <img src="icons/home-icon.svg" alt="">
+    <div>Home</div>
+  </div>
+
+  <div class="sidebar-link">
+    <img src="icons/shorts.svg" alt="">
+    <div>Shorts</div>
+  </div>
+
+  <div class="sidebar-link is-active">
+    <img src="icons/subscriptions.svg" alt="">
+    <div>Subscriptions</div>
+  </div>
+
+  <div class="sidebar-link">
+    <img src="icons/you-profile.svg" alt="">
+    <div>You</div>
+  </div>
+</nav>
 
     <main>
       <section class="video-grid">
@@ -212,5 +210,15 @@
         </div>
       </section>
     </main>
+  <script>
+  const hamburgerMenu = document.querySelector('.hamburger-menu');
+  const sidebar = document.querySelector('.sidebar');
+  const body = document.body;
+
+  hamburgerMenu.addEventListener('click', () => {
+    sidebar.classList.toggle('hide-sidebar');
+    body.classList.toggle('full-width');
+  });
+</script>
   </body>
 </html>
