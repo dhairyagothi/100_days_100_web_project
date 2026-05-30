@@ -9,11 +9,10 @@
 </head>
 
 <body>
-    <h1>Missionaries and Cannibals</h1>
-    <div class="instructions">
-        <p>Use the boat to transfer missionaries and cannibals between the banks. The boat can carry two people at a time. Click a person to select them, then click the destination container (or click them again to deselect). Make sure missionaries are never outnumbered by cannibals on either bank!</p>
+    <div class="top-bar">
+        <h1>Missionaries and Cannibals</h1>
+        <button id="instructions-btn" class="instructions-btn">How to Play</button>
     </div>
-
 
     <div class="game-container">
         <div class="bank" id="left-bank" data-bank="left">
@@ -37,9 +36,10 @@
     <div class="controls">
         <button id="start-reset">Start Game</button>
         <button id="move-boat">Move Boat</button>
+        <button id="hint-btn" class="hint-btn">Get Hint (3 left)</button>
     </div>
 
-    <p id="hint-text" class="hint-display-text"></p>
+    <p id="hint-text" class="hint-display-text" style="display: none;"></p>
     <div id="message"></div>
 
     <div class="stats-container">
@@ -47,7 +47,7 @@
     </div>
 
     <div id="guidance" class="guidance-text">
-        Welcome! Move all Sheep and Tigers safely to the right bank.
+        Welcome! Move all Missionaries and Cannibals safely to the right bank.
     </div>
 
     <!-- Instructions/Welcome Modal -->
@@ -57,7 +57,7 @@
 
             <div class="modal-header">
                 <h2>The River Crossing Challenge</h2>
-                <p class="story-text">Three <strong>Sheep (Missionaries)</strong> and three <strong>Tigers (Cannibals)</strong> must cross a dangerous river. Help them reach the other side safely!</p>
+                <p class="story-text">Three <strong>Missionaries</strong> and three <strong>Cannibals</strong> must cross a dangerous river. Help them reach the other side safely!</p>
             </div>
 
             <div class="modal-section">
@@ -69,15 +69,15 @@
                 <div class="modal-section">
                     <h3><i class="icon">🎮</i> Characters</h3>
                     <ul>
-                        <li><span class="emoji-legend">🐑</span> <strong>Sheep:</strong> Peaceful travelers.</li>
-                        <li><span class="emoji-legend">🐯</span> <strong>Tigers:</strong> Hungry predators.</li>
+                        <li><span class="emoji-legend">M</span> <strong>Missionaries:</strong> Peaceful travelers.</li>
+                        <li><span class="emoji-legend">C</span> <strong>Cannibals:</strong> Dangerous travelers.</li>
                     </ul>
                 </div>
 
                 <div class="modal-section">
                     <h3><i class="icon">⚠️</i> Survival Rules</h3>
                     <ul>
-                        <li><strong>Safety:</strong> Never leave <strong>Sheep outnumbered</strong> by Tigers on either bank (unless no sheep are present).</li>
+                        <li><strong>Safety:</strong> Never leave <strong>Missionaries outnumbered</strong> by Cannibals on either bank (unless no missionaries are present).</li>
                         <li><strong>Capacity:</strong> Max 2 people in the boat.</li>
                     </ul>
                 </div>
