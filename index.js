@@ -64,8 +64,20 @@ function getCategoryFromTags(tags, name) {
   return 'Tools';
 }
 
+
+
 let PROJECTS = [];
 let projectsPromise = null;
+
+function parseProjectsData(payload) {
+  try {
+    return JSON.parse(payload);
+  } catch (error) {
+    // Fallback for common malformed object separators in projects.json
+    const repairedPayload = String(payload).replace(/}\s*{/g, '},{');
+    return JSON.parse(repairedPayload);
+  }
+}
 
 function loadProjects() {
   if (!projectsPromise) {
@@ -79,7 +91,8 @@ window.location.href).toString();
       if (!response.ok) {
         throw new Error(`Failed to load projects: ${response.statusText}`);
       }
-const data = await response.json();
+      const payload = await response.text();
+      const data = parseProjectsData(payload);
 
 PROJECTS = data.map(project => [
    `Day ${project.projectNo}`,
@@ -160,9 +173,12 @@ function resolveProjectUrls(day, name, url, tags) {
 
   if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
     try {
-      demoUrl = new URL(demoUrl, window.location.href).href;
+      const isRoot = !window.location.pathname.includes('/contributors/');
+      const basePrefix = isRoot ? '' : '../';
+      if (demoUrl.startsWith('./')) {
+        demoUrl = basePrefix + demoUrl.substring(2);
+      }
     } catch (error) {
-      // Keep the original path if URL normalization fails.
     }
   }
 
@@ -171,8 +187,8 @@ function resolveProjectUrls(day, name, url, tags) {
 
 function getProjectDescription(project) {
   return (
-      project[5] ||
-      'Explore this project to discover interactive functionality.'
+    (project && project[5]) ||
+    'Explore this project to discover interactive functionality.'
   );
 }
 
@@ -278,8 +294,9 @@ function normalizeTech(tech) {
 }
 
 /**
- * Check if project matches the active tech stack filters
- * EFFICIENT APPROACH: Direct string matching without complex transformations
+ * Check if project matches the active tech stack filters.
+ * Each filter must match a complete tag token, not a substring of another tag.
+ * Example: searching "java" must not return projects tagged "javascript".
  * @param {string|array} projectTags - Project tags (space-separated string or array)
  * @returns {boolean} True if project matches all active filters
  */
@@ -290,12 +307,17 @@ function matchesTechStack(projectTags) {
   // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Convert to single lowercase string for efficient matching
-  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  // Normalize to a set of individual lowercase tokens for whole-word matching.
+  // Using a Set avoids repeated linear scans for each filter.
+  const tagSet = new Set(
+    (Array.isArray(projectTags) ? projectTags : String(projectTags).split(/\s+/))
+      .map((t) => t.toLowerCase().trim())
+      .filter(Boolean)
+  );
 
-  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
-  // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  // Every active filter must match an exact token in the tag set (AND logic).
+  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
+  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
 
@@ -384,8 +406,15 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
-let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+let bookmarkedProjects = [];
+let recentProjects = [];
+
+try {
+  bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
+  recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+} catch (error) {
+  console.warn('localStorage is not available or access is denied:', error.message);
+}
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -537,10 +566,61 @@ let sortOption = 'default';
 let techStackFilter = 'all';
 let difficultyFilter = 'all';
 
+function syncStateToURL() {
+  const url = new URL(window.location);
+  
+  if (searchQuery) {
+    url.searchParams.set('search', searchQuery);
+  } else {
+    url.searchParams.delete('search');
+  }
+
+  if (activeFilter && activeFilter !== 'all') {
+    url.searchParams.set('category', activeFilter);
+  } else {
+    url.searchParams.delete('category');
+  }
+
+  if (currentPage > 1) {
+    url.searchParams.set('page', currentPage);
+  } else {
+    url.searchParams.delete('page');
+  }
+
+  window.history.replaceState({}, '', url);
+}
+
+function readStateFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (urlParams.has('search')) {
+    searchQuery = urlParams.get('search');
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.value = searchQuery;
+    }
+  }
+  
+  if (urlParams.has('category')) {
+    activeFilter = urlParams.get('category');
+  }
+  
+  if (urlParams.has('page')) {
+    const page = parseInt(urlParams.get('page'), 10);
+    if (!isNaN(page) && page > 0) {
+      currentPage = page;
+    }
+  }
+}
+
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
+
+  if (typeof updateClearFiltersBtnVisibility === 'function') {
+    updateClearFiltersBtnVisibility();
+  }
 
   const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
@@ -634,6 +714,8 @@ function renderGrid() {
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
+  
+  syncStateToURL();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -667,6 +749,22 @@ function renderPagination(totalItems, totalPages) {
 
   const controlsDiv = document.createElement('div');
   controlsDiv.className = 'pagination-controls';
+
+  const firstBtn = document.createElement('button');
+  firstBtn.className = 'first-btn';
+  firstBtn.innerHTML = '⏮ First';
+  firstBtn.disabled = currentPage === 1;
+
+  firstBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(firstBtn);
 
   const prevBtn = document.createElement('button');
   prevBtn.className = 'prev-btn';
@@ -739,6 +837,21 @@ function renderPagination(totalItems, totalPages) {
     }
   });
   controlsDiv.appendChild(nextBtn);
+  const lastBtn = document.createElement('button');
+  lastBtn.className = 'last-btn';
+  lastBtn.innerHTML =  'Last ⏭';
+  lastBtn.disabled = currentPage === totalPages;
+
+  lastBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(lastBtn);
 
   container.appendChild(controlsDiv);
 
@@ -749,6 +862,10 @@ function renderPagination(totalItems, totalPages) {
 function scrollToProjectSection() {
   const header = document.querySelector('.projects-header');
   if (!header) return;
+
+  // Only scroll if the projects section is fully below the viewport.
+  // If the user is already within or past the project grid, don't move them.
+  if (header.getBoundingClientRect().top < window.innerHeight) return;
 
   const navbar = document.querySelector('.navbar');
   // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
@@ -794,7 +911,11 @@ function toggleBookmark(project) {
     showToast('Project bookmarked');
   }
 
-  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  try {
+    localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  } catch (error) {
+    console.warn('Could not save bookmark due to localStorage restrictions');
+  }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
@@ -846,7 +967,11 @@ function trackRecentProject(project) {
     recentProjects.pop();
   }
 
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn('Could not save recent projects due to localStorage restrictions');
+  }
   renderRecentProjects();
 }
 
@@ -929,7 +1054,7 @@ function renderRecentProjects() {
       tags,
       category,
       isBookmarked,
-      showDescription: false,
+      showDescription: true,
     });
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
@@ -1024,11 +1149,87 @@ document.addEventListener('click', (e) => {
 });
 
 /* ============================================================
+   CLEAR ALL FILTERS SYSTEM
+   ============================================================ */
+function updateClearFiltersBtnVisibility() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (!btn) return;
+
+  const input = document.getElementById('searchInput');
+  const techStack = document.getElementById('techStackFilter');
+  const difficultyElement = document.getElementById('difficultyFilter');
+
+  const hasSearch = input && input.value.trim() !== '';
+  const hasTech = techStack && techStack.value !== 'all';
+  const hasDiff = difficultyElement && difficultyElement.value !== 'all';
+  const hasCategory = activeFilter && activeFilter !== 'all';
+
+  if (hasSearch || hasTech || hasDiff || hasCategory) {
+    btn.style.display = 'inline-flex';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+function resetAllFilters() {
+  // 1. Reset Category filter chips
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((c) => c.classList.remove('active'));
+  const allChip = document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
+  if (allChip) allChip.classList.add('active');
+  activeFilter = 'all';
+
+  // 2. Clear Search input
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  searchQuery = '';
+
+  // 3. Reset Tech Stack dropdown select
+  const techStack = document.getElementById('techStackFilter');
+  if (techStack) techStack.value = 'all';
+  techStackFilter = 'all';
+
+  // 4. Reset Difficulty dropdown select
+  const difficultyElement = document.getElementById('difficultyFilter');
+  if (difficultyElement) difficultyElement.value = 'all';
+  difficultyFilter = 'all';
+
+  // 5. Reset Sorting to default
+  const sortSelect = document.getElementById('sortProjects');
+  if (sortSelect) sortSelect.value = 'default';
+  sortOption = 'default';
+
+  // 6. Sync URL
+  if (typeof updateURL === 'function') {
+    updateURL('', 'all');
+  }
+
+  // 7. Refresh grid and pagination
+  currentPage = 1;
+  renderGrid();
+  syncProjectCounts();
+
+  showToast('Filters cleared!');
+}
+
+function initClearAllFilters() {
+  const btn = document.getElementById('clearAllFiltersBtn');
+  if (btn) {
+    btn.addEventListener('click', resetAllFilters);
+  }
+}
+
+/* ============================================================
    FILTER CHIPS
    ============================================================ */
 function initFilterChips() {
   const chips = document.querySelectorAll('.chip[data-filter]');
   chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+
     chip.addEventListener('click', () => {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
@@ -1108,24 +1309,20 @@ function initTechStackSearch() {
 
   if (!input) return;
 
-  let debounceTimer;
+  // Use the shared debounce utility instead of a manual inline timer
+  input.addEventListener('input', debounce((e) => {
+    const value = e.target.value.trim().toLowerCase();
 
-  input.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      const value = e.target.value.trim().toLowerCase();
-
-      if (value) {
-        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-        techStackFilters = [...new Set(techs)];
-        updateTechFilterDisplay();
-        currentPage = 1;
-        renderGrid();
-      } else {
-        clearAllTechFilters();
-      }
-    }, 300);
-  });
+    if (value) {
+      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+      techStackFilters = [...new Set(techs)];
+      updateTechFilterDisplay();
+      currentPage = 1;
+      renderGrid();
+    } else {
+      clearAllTechFilters();
+    }
+  }, 300));
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -1231,11 +1428,10 @@ syncProjectCounts();
 function updateNavbar() {
   const container = document.getElementById('navButtons');
   if (!container) return;
-
-  const username = window.username || null;
+  const username = window.username || localStorage.getItem('loggedInUser') || null;   // Read logged-in user from localStorage so navbar consists of logged in user when page reloads
   const isRoot = !window.location.pathname.includes('/contributors/');
   const base = isRoot ? '' : '../';
-  const isLight = document.body.classList.contains('light-mode');
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const themeButton = `
         <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
           <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
@@ -1258,10 +1454,11 @@ function updateNavbar() {
             </a>
             ${otherLink}
         `;
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+      document.getElementById('logoutBtn').addEventListener('click', () => {
       window.username = null;
+      localStorage.removeItem('loggedInUser');  // cleared logged in info on logout
       updateNavbar();
-    });
+      });
   } else {
     container.innerHTML = `
             ${themeButton}
@@ -1269,8 +1466,11 @@ function updateNavbar() {
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
                 <i class="fab fa-github"></i> GitHub
             </a>
-            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
+          <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+           <div class="auth-buttons">
+           <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
+           <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
+          </div>
         `;
   }
 }
@@ -1278,39 +1478,7 @@ function updateNavbar() {
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
-function initTheme() {
-  const saved = localStorage.getItem('theme') || 'dark';
-  let transitionTimer = null;
-
-  const syncThemeIcons = () => {
-    const isLight = document.body.classList.contains('light-mode');
-    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-      icon.className = iconClass;
-    });
-  };
-
-  if (saved === 'light') {
-    document.body.classList.add('light-mode');
-  }
-  syncThemeIcons();
-
-  document.body.addEventListener('click', (e) => {
-    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-    if (!target) return;
-
-    document.body.classList.toggle('light-mode');
-    const isLight = document.body.classList.contains('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    syncThemeIcons();
-
-    document.body.classList.add('theme-transitioning');
-    if (transitionTimer) clearTimeout(transitionTimer);
-    transitionTimer = setTimeout(() => {
-      document.body.classList.remove('theme-transitioning');
-    }, 400);
-  });
-}
+// Implemented by the shared ThemeManager in theme.js.
 
 /* ============================================================
    SCROLL TO TOP
@@ -1373,22 +1541,25 @@ function hasProjectGrid() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  readStateFromURL();
+
   initTheme();
   updateNavbar();
+  initScrollBtn();
+  fetchRepoStats();
 
   initCurrentYear();
   initFilterChips();
   initSearch();
   initSorting();
   initTechStackSearch();
+  initClearAllFilters();
 
   try {
     // Await the projects to be fetched
     await loadProjects();
 
     syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
 
     if (hasProjectGrid()) {
       renderGrid();
@@ -1412,6 +1583,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navButtons = document.getElementById('navButtons');
 
     if (!menuToggle || !navButtons) return;
+    if (menuToggle.dataset.mobileNavBound === 'true') return;
+    menuToggle.dataset.mobileNavBound = 'true';
 
     const closeMenu = () => {
       menuToggle.classList.remove('active');
@@ -1419,11 +1592,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       menuToggle.setAttribute('aria-expanded', 'false');
     };
 
+    const openMenu = () => {
+      menuToggle.classList.add('active');
+      navButtons.classList.add('active');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      const firstLink = navButtons.querySelector('a, button');
+      firstLink?.focus({ preventScroll: true });
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isOpen = navButtons.classList.toggle('active');
-      menuToggle.classList.toggle('active', isOpen);
-      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      if (navButtons.classList.contains('active')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
     document.addEventListener('click', (e) => {
@@ -1472,12 +1655,28 @@ window.addEventListener(
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
+/* ============================================================
+   THEME CORE ENGINE (Fixes Issue #4359)
+   ============================================================ */
+function initTheme() {
+  window.ThemeManager?.init?.();
+}
+
+// Initialize the theme engine
+initTheme();
 // Custom cursor
 (function () {
   const outerCursor = document.querySelector('.cursor-ring--outer');
   const innerCursor = document.querySelector('.cursor-ring--inner');
-
   if (!outerCursor || !innerCursor) return;
+
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (coarsePointer || prefersReducedMotion) {
+    outerCursor.style.display = 'none';
+    innerCursor.style.display = 'none';
+    return;
+  }
 
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
@@ -1530,7 +1729,7 @@ window.clearAllTechFilters = clearAllTechFilters;
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
   const palette = [220, 250, 280];
-  const DEFAULT_PARTICLE_FPS = 36;
+  const DEFAULT_PARTICLE_FPS = 24;
   let W = 0;
   let H = 0;
   let dpr = 1;
@@ -1547,16 +1746,17 @@ window.clearAllTechFilters = clearAllTechFilters;
     const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
     const reducedMotion = reducedMotionQuery.matches;
     const disableAnimation = smallScreen || reducedMotion;
+    const largeScreen = window.innerWidth > 1280;
 
     return {
-      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
-      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 72,
-      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 26000,
-      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 120,
-      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.3,
-      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
-      fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
-      showLinks: !reducedMotion && !smallScreen,
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 18,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 48,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 32000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 100,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.24,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 3.2,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 24,
+      showLinks: !reducedMotion && !smallScreen && largeScreen,
       disableAnimation,
     };
   };
@@ -1775,11 +1975,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput) {
-    searchInput.addEventListener('input', () => {
+    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
+    searchInput.addEventListener('input', debounce(() => {
       const { category } = getQueryParams();
       updateURL(searchInput.value, category);
       applyFilters(searchInput.value, category);
-    });
+    }, 200));
   }
   const categoryFilter = document.getElementById('category');
   if (categoryFilter) {
