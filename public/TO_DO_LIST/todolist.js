@@ -5,7 +5,7 @@ const taskPrioritySelect = document.getElementById("task-priority");
 const taskList = document.getElementById("notes-container");
 const emptyState = document.getElementById("emptyState");
 const statusTabsContainer = document.getElementById("statusTabs");
-const documentsList = document.querySelector('.documents-list');
+const documentsList = document.querySelector(".documents-list");
 
 // Progress / Stats Elements
 const progressFill = document.getElementById("progressFill");
@@ -45,11 +45,17 @@ function addTask() {
   }
 
   // Accent Colors
-  const selectedCatOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
-  const catColor = (selectedCatOption && selectedCatOption.getAttribute("data-color")) || "#7c63ff";
+  const selectedCatOption =
+    taskTypeSelect.options[taskTypeSelect.selectedIndex];
+  const catColor =
+    (selectedCatOption && selectedCatOption.getAttribute("data-color")) ||
+    "#7c63ff";
 
-  const selectedPriOption = taskPrioritySelect.options[taskPrioritySelect.selectedIndex];
-  const priColor = (selectedPriOption && selectedPriOption.getAttribute("data-color")) || "#3b82f6";
+  const selectedPriOption =
+    taskPrioritySelect.options[taskPrioritySelect.selectedIndex];
+  const priColor =
+    (selectedPriOption && selectedPriOption.getAttribute("data-color")) ||
+    "#3b82f6";
 
   const newTask = {
     id: Date.now(),
@@ -59,11 +65,11 @@ function addTask() {
     priority: priority || "Normal",
     priorityColor: priColor,
     status: "pending", // pending | inprogress | completed
-    completed: false
+    completed: false,
   };
 
   tasks.push(newTask);
-  
+
   // Reset Form Inputs
   taskInput.value = "";
   taskTypeSelect.value = "";
@@ -75,20 +81,20 @@ function addTask() {
 }
 
 function toggleComplete(id) {
-  tasks = tasks.map(task => {
+  tasks = tasks.map((task) => {
     if (task.id === id) {
       const isCompleted = task.status !== "completed";
       return {
         ...task,
         completed: isCompleted,
-        status: isCompleted ? "completed" : "pending"
+        status: isCompleted ? "completed" : "pending",
       };
     }
     return task;
   });
   saveTasks();
   renderTasks();
-  const task = tasks.find(t => t.id === id);
+  const task = tasks.find((t) => t.id === id);
   if (task.status === "completed") {
     showToast("✅ Task marked as Completed!");
   } else {
@@ -97,20 +103,20 @@ function toggleComplete(id) {
 }
 
 function toggleInProgress(id) {
-  tasks = tasks.map(task => {
+  tasks = tasks.map((task) => {
     if (task.id === id) {
       const isInProgress = task.status !== "inprogress";
       return {
         ...task,
         completed: false,
-        status: isInProgress ? "inprogress" : "pending"
+        status: isInProgress ? "inprogress" : "pending",
       };
     }
     return task;
   });
   saveTasks();
   renderTasks();
-  const task = tasks.find(t => t.id === id);
+  const task = tasks.find((t) => t.id === id);
   if (task.status === "inprogress") {
     showToast("⚡ Task marked as In Progress!");
   } else {
@@ -123,7 +129,7 @@ function deleteTask(id) {
   if (card) {
     card.style.animation = "fadeOut 0.2s ease forwards";
     setTimeout(() => {
-      tasks = tasks.filter(task => task.id !== id);
+      tasks = tasks.filter((task) => task.id !== id);
       saveTasks();
       renderTasks();
       showToast("🧹 Task deleted successfully!");
@@ -132,7 +138,7 @@ function deleteTask(id) {
 }
 
 function updateTaskText(id, newText) {
-  tasks = tasks.map(task => {
+  tasks = tasks.map((task) => {
     if (task.id === id) {
       return { ...task, text: newText.trim() || "Untitled Task" };
     }
@@ -144,9 +150,9 @@ function updateTaskText(id, newText) {
 // 4. Status Filtering
 function filterByStatus(status) {
   currentStatusFilter = status;
-  
+
   // Toggle Active Classes on Tab Buttons
-  document.querySelectorAll(".status-tab").forEach(tab => {
+  document.querySelectorAll(".status-tab").forEach((tab) => {
     if (tab.getAttribute("data-status") === status) {
       tab.classList.add("active");
     } else {
@@ -171,7 +177,7 @@ function renderTasks() {
     taskList.style.display = "grid";
 
     // Filter Tasks dynamically
-    const filteredTasks = tasks.filter(task => {
+    const filteredTasks = tasks.filter((task) => {
       if (currentStatusFilter === "all") return true;
       return task.status === currentStatusFilter;
     });
@@ -187,7 +193,8 @@ function renderTasks() {
     } else {
       filteredTasks.forEach((task, idx) => {
         const card = document.createElement("li");
-        card.className = "notes" + (task.status === "completed" ? " completed" : "");
+        card.className =
+          "notes" + (task.status === "completed" ? " completed" : "");
         card.setAttribute("data-id", task.id);
         card.style.setProperty("--i", idx);
 
@@ -206,11 +213,11 @@ function renderTasks() {
               </span>
             </div>
             <div class="note-actions">
-              <button class="note-check state-btn ${isInProgress ? 'active' : ''}" onclick="toggleInProgress(${task.id})" title="Toggle In Progress" style="background: ${isInProgress ? 'rgba(79, 141, 255, 0.2)' : ''}; color: ${isInProgress ? '#2563eb' : ''}">
+              <button class="note-check state-btn ${isInProgress ? "active" : ""}" onclick="toggleInProgress(${task.id})" title="Toggle In Progress" style="background: ${isInProgress ? "rgba(79, 141, 255, 0.2)" : ""}; color: ${isInProgress ? "#2563eb" : ""}">
                 ⚡
               </button>
-              <button class="note-check state-btn ${isCompleted ? 'active' : ''}" onclick="toggleComplete(${task.id})" title="Toggle Complete" style="background: ${isCompleted ? 'rgba(20, 184, 166, 0.2)' : ''}; color: ${isCompleted ? '#0d9488' : ''}">
-                ${isCompleted ? '↩️' : '✓'}
+              <button class="note-check state-btn ${isCompleted ? "active" : ""}" onclick="toggleComplete(${task.id})" title="Toggle Complete" style="background: ${isCompleted ? "rgba(20, 184, 166, 0.2)" : ""}; color: ${isCompleted ? "#0d9488" : ""}">
+                ${isCompleted ? "↩️" : "✓"}
               </button>
               <button class="note-delete" onclick="deleteTask(${task.id})" title="Delete Task">🗑️</button>
             </div>
@@ -226,7 +233,7 @@ function renderTasks() {
 
 function updateMetrics() {
   const total = tasks.length;
-  const done = tasks.filter(t => t.status === "completed").length;
+  const done = tasks.filter((t) => t.status === "completed").length;
   const pct = total === 0 ? 0 : Math.round((done / total) * 100);
 
   // Update progress bar
@@ -234,9 +241,11 @@ function updateMetrics() {
   if (progressText) progressText.innerText = `${done} / ${total} done`;
 
   // Update status tabs counts
-  const pendingCount = tasks.filter(t => t.status === "pending" || !t.status).length;
-  const inProgressCount = tasks.filter(t => t.status === "inprogress").length;
-  const completedCount = tasks.filter(t => t.status === "completed").length;
+  const pendingCount = tasks.filter(
+    (t) => t.status === "pending" || !t.status,
+  ).length;
+  const inProgressCount = tasks.filter((t) => t.status === "inprogress").length;
+  const completedCount = tasks.filter((t) => t.status === "completed").length;
 
   document.getElementById("count-all").innerText = total;
   document.getElementById("count-pending").innerText = pendingCount;
@@ -265,7 +274,9 @@ function applyTheme(themeName) {
   document.body.className = ""; // Reset body theme classes
   document.body.classList.add(themeName);
 
-  document.querySelectorAll(".theme-btn").forEach(btn => btn.classList.remove("active"));
+  document
+    .querySelectorAll(".theme-btn")
+    .forEach((btn) => btn.classList.remove("active"));
   const activeBtn = document.querySelector(`[data-theme="${themeName}"]`);
   if (activeBtn) activeBtn.classList.add("active");
 
@@ -274,7 +285,7 @@ function applyTheme(themeName) {
   } catch (e) {}
 }
 
-document.querySelectorAll(".theme-btn").forEach(button => {
+document.querySelectorAll(".theme-btn").forEach((button) => {
   button.addEventListener("click", () => {
     const theme = button.dataset.theme;
     if (theme) applyTheme(theme);
@@ -298,9 +309,13 @@ function saveAsPDF() {
   doc.setFont("Helvetica", "normal");
   doc.setFontSize(10);
   doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
-  
-  const completedCount = tasks.filter(t => t.status === "completed").length;
-  doc.text(`Tasks: ${tasks.length} total  |  ${completedCount} completed  |  ${tasks.length - completedCount} pending/in progress`, 20, 38);
+
+  const completedCount = tasks.filter((t) => t.status === "completed").length;
+  doc.text(
+    `Tasks: ${tasks.length} total  |  ${completedCount} completed  |  ${tasks.length - completedCount} pending/in progress`,
+    20,
+    38,
+  );
   doc.line(20, 42, 190, 42);
 
   let verticalCursor = 52;
@@ -326,8 +341,11 @@ function saveAsPDF() {
     url: fileURL,
     total: tasks.length,
     completed: completedCount,
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    date: new Date().toLocaleDateString()
+    time: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    date: new Date().toLocaleDateString(),
   };
 
   savedDocs.unshift(docItem);
@@ -414,7 +432,7 @@ try {
   if (savedTasks) {
     tasks = JSON.parse(savedTasks);
   }
-  
+
   const savedDocsData = localStorage.getItem("todo-documents");
   if (savedDocsData) {
     savedDocs = JSON.parse(savedDocsData);

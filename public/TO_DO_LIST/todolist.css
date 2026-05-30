@@ -14,16 +14,17 @@
 
 /* ---------- Custom Properties ---------- */
 :root {
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --page-bg-start: #201b44;
   --page-bg-mid: #0f122a;
   --page-bg-end: #080a1e;
 
   /* Glass panel base — overridden per theme */
-  --glass-bg: rgba(18, 32, 58, 0.70);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --glass-shadow: 0 24px 60px rgba(5, 9, 25, 0.40);
+  --glass-bg: rgba(18, 32, 58, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 24px 60px rgba(5, 9, 25, 0.4);
 
   /* Hero / input-panel tint — shifts with each theme */
   --hero-tint: rgba(28, 20, 70, 0.72);
@@ -44,7 +45,7 @@
   --danger: #ef4444;
   --warning: #f59e0b;
 
-  --transition: 0.30s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ---------- Base ---------- */
@@ -57,7 +58,12 @@ body {
   font-family: var(--font-family);
   line-height: 1.6;
   color: var(--text-primary);
-  background: linear-gradient(135deg, var(--page-bg-start) 0%, var(--page-bg-mid) 45%, var(--page-bg-end) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--page-bg-start) 0%,
+    var(--page-bg-mid) 45%,
+    var(--page-bg-end) 100%
+  );
   overflow-x: hidden;
   transition: background var(--transition);
 }
@@ -129,10 +135,19 @@ body {
 }
 
 @keyframes floatShape {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(30px, -40px) scale(1.05); }
-  50% { transform: translate(-20px, 20px) scale(0.95); }
-  75% { transform: translate(40px, 30px) scale(1.02); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+  75% {
+    transform: translate(40px, 30px) scale(1.02);
+  }
 }
 
 /* ---------- Header / Navigation ---------- */
@@ -189,7 +204,9 @@ header {
   padding: 10px 20px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.06);
-  transition: background var(--transition), transform var(--transition);
+  transition:
+    background var(--transition),
+    transform var(--transition);
   font-weight: 700;
   font-size: 15px;
   display: inline-block;
@@ -218,21 +235,34 @@ header {
 .theme-btn {
   height: 36px;
   width: 36px;
-  border: 2px solid rgba(255, 255, 255, 0.30);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   cursor: pointer;
-  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
 }
 
-#colour1 { background: #7c63ff; }
-#colour2 { background: #4f8dff; }
-#colour3 { background: #14b8a6; }
-#colour4 { background: #d57b1b; }
-#colour5 { background: #ef4444; }
+#colour1 {
+  background: #7c63ff;
+}
+#colour2 {
+  background: #4f8dff;
+}
+#colour3 {
+  background: #14b8a6;
+}
+#colour4 {
+  background: #d57b1b;
+}
+#colour5 {
+  background: #ef4444;
+}
 
 .theme-btn:hover {
-  transform: scale(1.20);
-  border-color: rgba(255, 255, 255, 0.80);
+  transform: scale(1.2);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .theme-btn.active {
@@ -318,7 +348,7 @@ section {
 .progress-bar-track {
   flex: 1;
   height: 8px;
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 100px;
   overflow: hidden;
 }
@@ -373,7 +403,9 @@ section {
   font-size: 15px;
   font-family: var(--font-family);
   outline: none;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
 }
 
 #task-category,
@@ -414,14 +446,16 @@ section {
   font-size: 15px;
   font-weight: 700;
   background: var(--accent-gradient);
-  box-shadow: 0 8px 24px rgba(78, 98, 254, 0.30);
-  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 8px 24px rgba(78, 98, 254, 0.3);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
   white-space: nowrap;
 }
 
 #submittask:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(78, 98, 254, 0.40);
+  box-shadow: 0 12px 32px rgba(78, 98, 254, 0.4);
 }
 
 .input-actions {
@@ -441,7 +475,9 @@ section {
   font-weight: 700;
   background: linear-gradient(135deg, #ff8276, #ffb86b);
   box-shadow: 0 8px 24px rgba(255, 128, 109, 0.24);
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
 }
 
 #savepdf:hover {
@@ -481,11 +517,14 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    transform var(--transition);
 }
 
 .status-tab:hover {
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
 }
 
@@ -526,9 +565,12 @@ section {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   padding: 16px;
-  box-shadow: 0 8px 30px rgba(9, 15, 45, 0.10);
+  box-shadow: 0 8px 30px rgba(9, 15, 45, 0.1);
   color: var(--text-dark);
-  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    opacity var(--transition);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -605,7 +647,11 @@ section {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--transition), background var(--transition), color var(--transition), border-color var(--transition);
+  transition:
+    transform var(--transition),
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition);
 }
 
 .note-check {
@@ -706,12 +752,12 @@ section {
 
 .doc-btn.del {
   background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.30);
+  border-color: rgba(239, 68, 68, 0.3);
   color: #fca5a5;
 }
 
 .doc-btn.del:hover {
-  background: rgba(239, 68, 68, 0.30);
+  background: rgba(239, 68, 68, 0.3);
 }
 
 /* ---------- Theme-matched sliding Toast ---------- */
@@ -728,7 +774,7 @@ section {
   z-index: 1000;
   font-weight: 700;
   font-size: 15px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
   transition: right 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
@@ -737,11 +783,21 @@ section {
 }
 
 /* Apply Theme colors on Toasts dynamically */
-.pdf-message.theme1 { background: rgba(124, 99, 255, 0.95); }
-.pdf-message.theme2 { background: rgba(79, 141, 255, 0.95); }
-.pdf-message.theme3 { background: rgba(20, 184, 166, 0.95); }
-.pdf-message.theme4 { background: rgba(213, 123, 27, 0.95); }
-.pdf-message.theme5 { background: rgba(239, 68, 68, 0.95); }
+.pdf-message.theme1 {
+  background: rgba(124, 99, 255, 0.95);
+}
+.pdf-message.theme2 {
+  background: rgba(79, 141, 255, 0.95);
+}
+.pdf-message.theme3 {
+  background: rgba(20, 184, 166, 0.95);
+}
+.pdf-message.theme4 {
+  background: rgba(213, 123, 27, 0.95);
+}
+.pdf-message.theme5 {
+  background: rgba(239, 68, 68, 0.95);
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 992px) {
@@ -780,7 +836,7 @@ section {
   --accent: #7c63ff;
   --accent-soft: rgba(124, 99, 255, 0.18);
   --accent-gradient: linear-gradient(135deg, #7c63ff, #4f8dff);
-  --glass-bg: rgba(18, 32, 58, 0.70);
+  --glass-bg: rgba(18, 32, 58, 0.7);
   --glass-border: rgba(124, 99, 255, 0.15);
   --hero-tint: rgba(28, 20, 70, 0.72);
 }
@@ -817,7 +873,7 @@ section {
   --accent-soft: rgba(255, 184, 107, 0.18);
   --accent-gradient: linear-gradient(135deg, #ffb86b, #f59e0b);
   --glass-bg: rgba(90, 35, 8, 0.72);
-  --glass-border: rgba(255, 184, 107, 0.20);
+  --glass-border: rgba(255, 184, 107, 0.2);
   --hero-tint: rgba(110, 42, 6, 0.75);
 }
 
@@ -863,7 +919,9 @@ section {
 
 /* ---------- Back Button Position Overrides ---------- */
 .project-back-button {
-  transition: transform var(--transition), opacity var(--transition);
+  transition:
+    transform var(--transition),
+    opacity var(--transition);
 }
 
 .project-back-button:hover {
