@@ -1,0 +1,7 @@
+.TodoIcons svg {
+    height: 1.125em;
+    width: 1.125em;
+}
+.TodoIcons .todoremove svg {
+    scale: 1.25;
+}
