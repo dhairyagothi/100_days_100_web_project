@@ -191,18 +191,34 @@
             <option value="latest">Latest Day</option>
             <option value="difficulty">Difficulty</option>
           </select>
-          <select id="difficultyFilter" aria-label="Filter projects by difficulty">
-            <option value="all">Difficulty (All)</option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
         </div>
       </div>
 
       <!-- Tech Stack Dropdown & Clear Filters -->
       <div class="filter-toolbar">
-        <select id="techStackFilter" aria-label="Filter by tech stack">
+        <div class="quick-pills-container" id="difficultyPillsContainer">
+          <span class="quick-pills-label">Difficulty:</span>
+          <button class="quick-pill active" data-type="difficulty" data-val="all" aria-label="Filter difficulty: All">All</button>
+          <button class="quick-pill" data-type="difficulty" data-val="beginner" aria-label="Filter difficulty: Beginner">Beginner</button>
+          <button class="quick-pill" data-type="difficulty" data-val="intermediate" aria-label="Filter difficulty: Intermediate">Intermediate</button>
+          <button class="quick-pill" data-type="difficulty" data-val="advanced" aria-label="Filter difficulty: Advanced">Advanced</button>
+        </div>
+        <div class="quick-pills-container" id="techPillsContainer">
+          <span class="quick-pills-label">Tech:</span>
+          <button class="quick-pill active" data-type="tech" data-val="all" aria-label="Filter tech: All">All</button>
+          <button class="quick-pill" data-type="tech" data-val="javascript" aria-label="Filter tech: JavaScript">JavaScript</button>
+          <button class="quick-pill" data-type="tech" data-val="css" aria-label="Filter tech: CSS">CSS</button>
+          <button class="quick-pill" data-type="tech" data-val="html" aria-label="Filter tech: HTML">HTML</button>
+          <button class="quick-pill" data-type="tech" data-val="react" aria-label="Filter tech: React">React</button>
+          <button class="quick-pill" data-type="tech" data-val="python" aria-label="Filter tech: Python">Python</button>
+        </div>
+        <select id="difficultyFilter" aria-label="Filter projects by difficulty" style="display: none;">
+          <option value="all">Difficulty (All)</option>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+        <select id="techStackFilter" aria-label="Filter by tech stack" style="display: none;">
           <option value="all">Filter by Tech Stack (All)</option>
           <option value="javascript">JavaScript</option>
           <option value="css">CSS</option>
