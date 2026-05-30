@@ -130,23 +130,69 @@ class AgeCalculator {
     return { weeks, hours };
   }
 
-  getChineseZodiac(year) {
-    const animals = [
-      { name: "Rat 🐭", emoji: "🐭" },
-      { name: "Ox 🐂", emoji: "🐂" },
-      { name: "Tiger 🐅", emoji: "🐅" },
-      { name: "Rabbit 🐇", emoji: "🐇" },
-      { name: "Dragon 🐉", emoji: "🐉" },
-      { name: "Snake 🐍", emoji: "🐍" },
-      { name: "Horse 🐎", emoji: "🐎" },
-      { name: "Goat 🐐", emoji: "🐐" },
-      { name: "Monkey 🐒", emoji: "🐒" },
-      { name: "Rooster 🐓", emoji: "🐓" },
-      { name: "Dog 🐕", emoji: "🐕" },
-      { name: "Pig 🐖", emoji: "🐖" }
+  getSleepTime(totalDays) {
+    const sleepDays = totalDays / 3;
+    if (sleepDays > 365) {
+      const sleepYears = (sleepDays / 365.25).toFixed(1);
+      return `${sleepYears} Years (~${Math.round(sleepDays).toLocaleString()} days)`;
+    }
+    return `${Math.round(sleepDays).toLocaleString()} days`;
+  }
+
+  getMilestones(birthDate, today) {
+    const milestones = [
+      { name: '10,000 Days', days: 10000 },
+      { name: '500,000 Hours', days: 500000 / 24 }
     ];
-    const index = (year - 4) % 12;
-    return animals[index >= 0 ? index : index + 12];
+
+    let html = '';
+    
+    milestones.forEach(m => {
+      const milestoneDate = new Date(birthDate.getTime() + m.days * 24 * 60 * 60 * 1000);
+      const diffTime = milestoneDate.getTime() - today.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      html += `<div class="milestone-item">
+        <span class="milestone-title">${m.name} Old</span>
+        <span class="milestone-desc">`;
+        
+      if (diffDays > 0) {
+        html += `Target date: ${milestoneDate.toLocaleDateString()} (${diffDays.toLocaleString()} days left!)`;
+      } else {
+        html += `🎉 You passed your ${m.name} milestone on ${milestoneDate.toLocaleDateString()}!`;
+      }
+      html += `</span></div>`;
+    });
+    
+    return html;
+  }
+
+  shareStats() {
+    const years = document.getElementById('years').textContent;
+    const months = document.getElementById('months').textContent;
+    const days = document.getElementById('days').textContent;
+    const zodiac = document.getElementById('zodiac').textContent;
+    const sleepTime = document.getElementById('sleep-time').textContent;
+    const currentUrl = window.location.href;
+
+    const textToShare = `📅 My Age Stats Summary:\n• Age: ${years} Years, ${months} Months, ${days} Days\n• Zodiac Sign: ${zodiac}\n• Time spent sleeping: ${sleepTime}\n\nCalculate yours here: ${currentUrl}`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToShare).then(() => {
+        const shareBtn = document.getElementById('share-btn');
+        const originalText = shareBtn.textContent;
+        shareBtn.textContent = '✅ Copied to Clipboard!';
+        
+        setTimeout(() => {
+          shareBtn.textContent = originalText;
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        alert('Failed to copy to clipboard');
+      });
+    } else {
+      alert('Clipboard API not supported in this browser.');
+    }
   }
 
   calculate() {
@@ -172,6 +218,8 @@ class AgeCalculator {
     );
     const totalDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
     const { weeks, hours } = this.getAgeInWeeksAndHours(totalDays);
+    const sleepTime = this.getSleepTime(totalDays);
+    const milestonesHtml = this.getMilestones(birthDate, today);
 
     document.getElementById('years').textContent = age.years;
     document.getElementById('months').textContent = age.months;
@@ -185,6 +233,8 @@ class AgeCalculator {
       `${weeks.toLocaleString()} weeks`;
     document.getElementById('hours').textContent =
       `${hours.toLocaleString()} hours`;
+    document.getElementById('sleep-time').textContent = sleepTime;
+    document.getElementById('milestones-list').innerHTML = milestonesHtml;
 
     // Chinese Zodiac Update
     const chineseZodiac = this.getChineseZodiac(birthDate.getFullYear());
@@ -204,6 +254,11 @@ class AgeCalculator {
   setupEventListeners() {
     const calculateBtn = document.getElementById('calculate-btn');
     calculateBtn.addEventListener('click', () => this.calculate());
+
+    const shareBtn = document.getElementById('share-btn');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', () => this.shareStats());
+    }
 
     const dobInput = document.getElementById('dob');
     dobInput.addEventListener('keypress', (e) => {

@@ -205,12 +205,10 @@
       <div class="auth-card">
         <h2 class="auth-title-1">Sign Up</h2>
 
-        <!-- Status message -->
         <div id="statusMsg"></div>
 
         <form id="signupForm" novalidate>
 
-          <!-- Name -->
           <div class="field-wrap">
             <div class="form-group" id="grp-name">
               <i class="fa-solid fa-id-card"></i>
@@ -219,7 +217,6 @@
             <span class="error-msg" id="err-name"></span>
           </div>
 
-          <!-- Username -->
           <div class="field-wrap">
             <div class="form-group" id="grp-username">
               <i class="fa-solid fa-user"></i>
@@ -228,7 +225,6 @@
             <span class="error-msg" id="err-username"></span>
           </div>
 
-          <!-- Email -->
           <div class="field-wrap">
             <div class="form-group" id="grp-email">
               <i class="fa-solid fa-envelope"></i>
@@ -237,13 +233,20 @@
             <span class="error-msg" id="err-email"></span>
           </div>
 
-          <!-- Password -->
           <div class="field-wrap">
             <div class="form-group" id="grp-password">
               <i class="fa-solid fa-lock"></i>
               <input type="password" id="password" placeholder="Password" class="form-input" autocomplete="new-password" />
             </div>
             <span class="error-msg" id="err-password"></span>
+          </div>
+
+          <div class="field-wrap">
+            <div class="form-group" id="grp-confirm-password">
+              <i class="fa-solid fa-lock-open"></i>
+              <input type="password" id="confirm-password" placeholder="Confirm Password" class="form-input" autocomplete="new-password" />
+            </div>
+            <span class="error-msg" id="err-confirm-password"></span>
           </div>
 
           <button type="submit" class="button home-btn signup-btn" id="signupBtn">
@@ -308,6 +311,27 @@
           !emailRx.test(v) ? 'Enter a valid email address' : '');
       });
 
+      const validateConfirmPassword = () => {
+        const pass = $('password').value;
+        const confirmPass = $('confirm-password').value;
+
+        if (confirmPass.length === 0) {
+          setField('grp-confirm-password', 'err-confirm-password', '');
+          $('signupBtn').disabled = false;
+          return true;
+        }
+
+        if (pass !== confirmPass) {
+          setField('grp-confirm-password', 'err-confirm-password', 'Passwords do not match');
+          $('signupBtn').disabled = true;
+          return false;
+        } else {
+          setField('grp-confirm-password', 'err-confirm-password', '');
+          $('signupBtn').disabled = false;
+          return true;
+        }
+      };
+
       $('password').addEventListener('input', () => {
         const v = $('password').value;
         if (v.length === 0) { setField('grp-password', 'err-password', ''); return; }
@@ -318,7 +342,13 @@
         if (v.length < 6)            hints.push('6+ characters');
         setField('grp-password', 'err-password',
           hints.length ? 'Needs: ' + hints.join(', ') : '');
+        
+        // Also evaluate confirm password matching instantly if user edits parent password field
+        validateConfirmPassword();
       });
+
+      // Track confirm password live entries
+      $('confirm-password').addEventListener('input', validateConfirmPassword);
 
       /* ─── submit ─── */
       $('signupForm').addEventListener('submit', e => {
@@ -328,6 +358,7 @@
         const username = $('username').value.trim();
         const email    = $('email').value.trim();
         const password = $('password').value;
+        const confirmPassword = $('confirm-password').value;
 
         let ok = true;
 
@@ -348,6 +379,10 @@
         }
         if (!passwordRx.test(password)) {
           setField('grp-password', 'err-password', 'Password does not meet requirements');
+          ok = false;
+        }
+        if (password !== confirmPassword) {
+          setField('grp-confirm-password', 'err-confirm-password', 'Passwords do not match');
           ok = false;
         }
 

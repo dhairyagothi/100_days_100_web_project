@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura — Music Player</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Aurora background layers -->
+  <div class="aurora">
+    <div class="aurora__layer aurora__layer--1"></div>
+    <div class="aurora__layer aurora__layer--2"></div>
+    <div class="aurora__layer aurora__layer--3"></div>
+  </div>
+
+  <div class="app">
+
+    <!-- ── LEFT PANEL ── -->
+    <div class="panel panel--player">
+
+      <!-- Top bar -->
+      <div class="panel__topbar">
+        <span class="logo">◈ aura</span>
+        <button id="likeBtn" class="icon-btn" title="Like">
+          <i class="far fa-heart"></i>
+        </button>
+      </div>
+
+      <!-- Cover art -->
+      <div class="cover-wrap" id="coverWrap">
+        <img id="cover" src="https://via.placeholder.com/400/1a1a2e/0fd5ca?text=♫" alt="Album Art" />
+        <div class="cover-ring cover-ring--outer"></div>
+        <div class="cover-ring cover-ring--inner"></div>
+        <!-- Equalizer bars (visible while playing) -->
+        <div class="eq" id="eq">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <!-- Track info -->
+      <div class="track-info">
+        <h2 id="title" class="track-title">Loading…</h2>
+        <p id="artist" class="track-artist">Artist</p>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-wrap" id="progressContainer">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress"></div>
+          <div class="progress-thumb" id="progressThumb"></div>
+        </div>
+      </div>
+      <div class="time-row">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="ctrl-btn ctrl-btn--sm" id="prev" title="Previous">
+          <i class="fas fa-backward-step"></i>
+        </button>
+        <button class="ctrl-btn ctrl-btn--lg" id="play" title="Play/Pause">
+          <i class="fas fa-play"></i>
+        </button>
+        <button class="ctrl-btn ctrl-btn--sm" id="next" title="Next">
+          <i class="fas fa-forward-step"></i>
+        </button>
+      </div>
+
+      <!-- Volume -->
+      <div class="volume-row">
+        <i class="fas fa-volume-low vol-icon"></i>
+        <div class="slider-track">
+          <input type="range" id="volume" min="0" max="1" step="0.01" value="1" />
+        </div>
+        <i class="fas fa-volume-high vol-icon"></i>
+      </div>
+
+    </div><!-- /panel--player -->
+
+    <!-- ── RIGHT PANEL ── -->
+    <div class="panel panel--side">
+
+      <!-- Search -->
+      <div class="search-row">
+        <div class="search-input-wrap">
+          <i class="fas fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Search on Audius…" />
+        </div>
+        <button id="searchBtn" class="search-submit">Go</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab tab--active" data-tab="playlist">Playlist</button>
+        <button class="tab" data-tab="lyrics">Lyrics</button>
+      </div>
+
+      <!-- Playlist -->
+      <div class="tab-panel tab-panel--active" id="tab-playlist">
+        <div class="playlist" id="playlist">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Fetching tracks…</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lyrics -->
+      <div class="tab-panel" id="tab-lyrics">
+        <div class="lyrics-box" id="lyricsBox">Lyrics will appear here…</div>
+      </div>
+
+    </div><!-- /panel--side -->
+
+  </div><!-- /app -->
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
