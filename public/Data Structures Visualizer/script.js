@@ -1169,6 +1169,11 @@ const switchStructureView = (structure) => {
         return;
     }
 
+    if (structure === 'linkedlist') {
+        renderLinkedListView();
+        return;
+    }
+
     renderQueueView();
 };
 
@@ -1259,3 +1264,672 @@ const handleInputBlur = (index) => {
         box.classList.remove('focused');
     }
 };
+
+// ==========================================================
+// LINKED LIST VISUALIZER MODULE
+// All code below is fully isolated — no existing logic touched
+// ==========================================================
+
+// -- Linked List State --
+const llState = {
+    nodes: [],              // Array of { id: string, value: number }
+    nodeIdCounter: 0,
+    isRunning: false,
+    definitionTypingToken: 0,
+    learnTypingToken: 0
+};
+
+const LL_MAX_DESKTOP = 7;
+const LL_MAX_MOBILE  = 4;
+
+// -- Definitions --
+const llDefinition = "A linked list is a linear data structure where elements are stored in nodes connected using pointers. It allows dynamic memory allocation and efficient insertions or deletions.";
+
+const llLearnDefinitions = {
+    linkedlist:  "A linked list stores elements in nodes, where each node holds data and a pointer to the next node in the chain.",
+    node:        "A node is the basic unit of a linked list. It contains a data field and a next pointer that links to the following node.",
+    head:        "The head is a pointer to the first node in the linked list. It serves as the entry point to traverse the entire list.",
+    tail:        "The tail is the last node in the linked list. Its next pointer holds null, indicating the end of the list.",
+    insertHead:  "Inserting at the head prepends a new node. The new node's next pointer links to the old head, and head is updated.",
+    insertTail:  "Inserting at the tail appends a new node. The old tail's next pointer links to the new node, which then points to null.",
+    insertIndex: "Inserting at an index traverses the list node by node to the target position, then links the new node between existing nodes.",
+    deleteHead:  "Deleting at the head removes the first node. The head pointer is updated to point to the second node, or null if the list becomes empty.",
+    deleteTail:  "Deleting at the tail removes the last node. The second-to-last node's next pointer is updated to null.",
+    deleteIndex: "Deleting at an index traverses to find the target node, then removes it by reconnecting the previous node to the next node.",
+    pointer:     "A pointer (next) stores the reference to the next node, creating the chain-like linked structure that gives the list its name."
+};
+
+// -- Cached DOM References (populated after DOMContentLoaded) --
+let llDefinitionText, llNodeList, llEmptyState, llNodeCount, llHeadTailDisplay;
+let llHeadInput, llInsertHeadBtn, llHeadError;
+let llTailInput, llInsertTailBtn, llTailError;
+let llIndexInput, llIndexValueInput, llInsertIndexBtn, llIndexError;
+let llDeleteHeadBtn, llDeleteHeadError;
+let llDeleteTailBtn, llDeleteTailError;
+let llDeleteIndexInput, llDeleteIndexBtn, llDeleteIndexError;
+let llStatus, llLearnPanel, llLearnBtns;
+let llVisualizationPanel;
+
+// -- Utilities --
+
+const getLLMaxNodes = () => window.innerWidth <= 480 ? LL_MAX_MOBILE : LL_MAX_DESKTOP;
+
+const initLLDOMRefs = () => {
+    llDefinitionText  = document.getElementById('llDefinitionText');
+    llNodeList        = document.getElementById('llNodeList');
+    llEmptyState      = document.getElementById('llEmptyState');
+    llNodeCount       = document.getElementById('llNodeCount');
+    llHeadTailDisplay = document.getElementById('llHeadTailDisplay');
+    llHeadInput       = document.getElementById('llHeadInput');
+    llInsertHeadBtn   = document.getElementById('llInsertHeadBtn');
+    llHeadError       = document.getElementById('llHeadError');
+    llTailInput       = document.getElementById('llTailInput');
+    llInsertTailBtn   = document.getElementById('llInsertTailBtn');
+    llTailError       = document.getElementById('llTailError');
+    llIndexInput      = document.getElementById('llIndexInput');
+    llIndexValueInput = document.getElementById('llIndexValueInput');
+    llInsertIndexBtn  = document.getElementById('llInsertIndexBtn');
+    llIndexError      = document.getElementById('llIndexError');
+    llDeleteHeadBtn   = document.getElementById('llDeleteHeadBtn');
+    llDeleteHeadError = document.getElementById('llDeleteHeadError');
+    llDeleteTailBtn   = document.getElementById('llDeleteTailBtn');
+    llDeleteTailError = document.getElementById('llDeleteTailError');
+    llDeleteIndexInput = document.getElementById('llDeleteIndexInput');
+    llDeleteIndexBtn  = document.getElementById('llDeleteIndexBtn');
+    llDeleteIndexError = document.getElementById('llDeleteIndexError');
+    llStatus          = document.getElementById('llStatus');
+    llLearnPanel      = document.getElementById('llLearnPanel');
+    llLearnBtns       = document.querySelectorAll('.ll-learn-btn');
+    llVisualizationPanel = document.querySelector('.ll-visualization-panel');
+};
+
+// -- Head / Tail Display --
+const updateLLHeadTailDisplay = () => {
+    if (!llHeadTailDisplay) return;
+    if (llState.nodes.length === 0) {
+        llHeadTailDisplay.innerHTML = `
+            <div class="ll-ht-item">
+                <span class="ll-ht-name">Head</span>
+                <span class="ll-ht-arrow">→</span>
+                <span class="ll-ht-value ll-ht-null">null</span>
+            </div>
+            <div class="ll-ht-sep">·</div>
+            <div class="ll-ht-item">
+                <span class="ll-ht-name">Tail</span>
+                <span class="ll-ht-arrow">→</span>
+                <span class="ll-ht-value ll-ht-null">null</span>
+            </div>`;
+    } else {
+        const headVal = llState.nodes[0].value;
+        const tailVal = llState.nodes[llState.nodes.length - 1].value;
+        llHeadTailDisplay.innerHTML = `
+            <div class="ll-ht-item">
+                <span class="ll-ht-name">Head</span>
+                <span class="ll-ht-arrow">→</span>
+                <span class="ll-ht-value">${headVal}</span>
+            </div>
+            <div class="ll-ht-sep">·</div>
+            <div class="ll-ht-item">
+                <span class="ll-ht-name">Tail</span>
+                <span class="ll-ht-arrow">→</span>
+                <span class="ll-ht-value">${tailVal}</span>
+            </div>`;
+    }
+};
+
+// -- Render Linked List --
+const renderLinkedList = (highlightIds = [], newNodeId = null) => {
+    if (!llNodeList) return;
+
+    const maxNodes = getLLMaxNodes();
+    if (llNodeCount) {
+        llNodeCount.textContent = `${llState.nodes.length} / ${maxNodes}`;
+        llNodeCount.classList.toggle('ll-count-full', llState.nodes.length >= maxNodes);
+        llNodeCount.classList.add('updated');
+        setTimeout(() => llNodeCount.classList.remove('updated'), 260);
+    }
+
+    updateLLHeadTailDisplay();
+
+    if (llState.nodes.length === 0) {
+        if (llEmptyState) llEmptyState.classList.remove('hidden');
+        llNodeList.innerHTML = '';
+        return;
+    }
+
+    if (llEmptyState) llEmptyState.classList.add('hidden');
+    llNodeList.innerHTML = '';
+
+    const fragment = document.createDocumentFragment();
+
+    llState.nodes.forEach((node, index) => {
+        const isFirst      = index === 0;
+        const isLast       = index === llState.nodes.length - 1;
+        const isHighlighted = highlightIds.includes(node.id);
+        const isNew        = node.id === newNodeId;
+
+        // ---- Node Wrapper (pointer label + node box) ----
+        const wrapper = document.createElement('div');
+        wrapper.className = 'll-node-wrapper';
+
+        // Pointer label row (HEAD / TAIL / spacer)
+        const ptrRow = document.createElement('div');
+        ptrRow.className = 'll-ptr-label-row';
+
+        if (isFirst && isLast) {
+            ptrRow.innerHTML = '<span class="ll-ptr-badge ll-head-badge">HEAD / TAIL</span>';
+        } else if (isFirst) {
+            ptrRow.innerHTML = '<span class="ll-ptr-badge ll-head-badge">HEAD</span>';
+        } else if (isLast) {
+            ptrRow.innerHTML = '<span class="ll-ptr-badge ll-tail-badge">TAIL</span>';
+        } else {
+            ptrRow.innerHTML = '&nbsp;';  // spacer keeps alignment consistent
+        }
+        wrapper.appendChild(ptrRow);
+
+        // Node box: [data | next]
+        const nodeEl = document.createElement('div');
+        nodeEl.className = 'll-node';
+        nodeEl.dataset.llId = node.id;
+        if (isHighlighted) nodeEl.classList.add('ll-node--traverse');
+        if (isNew)         nodeEl.classList.add('ll-node--new');
+        if (isFirst)       nodeEl.classList.add('ll-node--head');
+        if (isLast)        nodeEl.classList.add('ll-node--tail');
+
+        const dataDiv = document.createElement('div');
+        dataDiv.className = 'll-node__data';
+        dataDiv.textContent = node.value;
+
+        const sepDiv = document.createElement('div');
+        sepDiv.className = 'll-node__sep';
+
+        const nextDiv = document.createElement('div');
+        nextDiv.className = 'll-node__next';
+        nextDiv.textContent = isLast ? '∅' : '→';
+
+        nodeEl.appendChild(dataDiv);
+        nodeEl.appendChild(sepDiv);
+        nodeEl.appendChild(nextDiv);
+        wrapper.appendChild(nodeEl);
+
+        fragment.appendChild(wrapper);
+
+        // ---- Connector or null label ----
+        if (!isLast) {
+            const conn = document.createElement('div');
+            conn.className = 'll-connector';
+            fragment.appendChild(conn);
+        } else {
+            // null connector after last node
+            const nullConn = document.createElement('div');
+            nullConn.className = 'll-null-conn';
+
+            const nullLine = document.createElement('div');
+            nullLine.className = 'll-conn-line';
+
+            const nullLabel = document.createElement('span');
+            nullLabel.className = 'll-null-label';
+            nullLabel.textContent = 'null';
+
+            nullConn.appendChild(nullLine);
+            nullConn.appendChild(nullLabel);
+            fragment.appendChild(nullConn);
+        }
+    });
+
+    llNodeList.appendChild(fragment);
+};
+
+// -- Status / Error Helpers --
+const setLLStatus = (message, stateClass = '') => {
+    if (!llStatus) return;
+    llStatus.textContent = message;
+    llStatus.className = 'status-display';
+    if (stateClass) llStatus.classList.add(stateClass);
+    
+    // Auto-hide failure messages after 4 seconds for better UX
+    if (stateClass === 'failure') {
+        setTimeout(() => {
+            if (llStatus && llStatus.classList.contains('failure')) {
+                clearLLStatus();
+            }
+        }, 4000);
+    }
+};
+
+const clearLLStatus = () => {
+    if (!llStatus) return;
+    llStatus.textContent = '';
+    llStatus.className = 'status-display hidden';
+};
+
+const showLLFieldError = (element, message) => {
+    if (!element) return;
+    element.textContent = message;
+    element.classList.add('show');
+    setTimeout(() => element.classList.remove('show'), 3000);
+};
+
+const clearLLFieldError = (element) => {
+    if (element) element.classList.remove('show');
+};
+
+const triggerLLErrorGlow = () => {
+    if (!llVisualizationPanel) return;
+    llVisualizationPanel.classList.add('ll-error-state');
+    // Remove error state after delay to allow smooth fade-out transition
+    setTimeout(() => llVisualizationPanel.classList.remove('ll-error-state'), 900);
+};
+
+const resetLLInvalidInputs = () => {
+    if (llHeadInput) llHeadInput.value = '';
+    if (llTailInput) llTailInput.value = '';
+    if (llIndexInput) llIndexInput.value = '';
+    if (llIndexValueInput) llIndexValueInput.value = '';
+    if (llDeleteIndexInput) llDeleteIndexInput.value = '';
+};
+
+const setLLControlsDisabled = (disabled) => {
+    [llInsertHeadBtn, llInsertTailBtn, llInsertIndexBtn,
+     llDeleteHeadBtn, llDeleteTailBtn, llDeleteIndexBtn,
+     llHeadInput, llTailInput, llIndexInput, llIndexValueInput, llDeleteIndexInput
+    ].forEach(el => { if (el) el.disabled = disabled; });
+};
+
+// -- Operation: Insert at Head --
+const handleLLInsertHead = async () => {
+    if (llState.isRunning) return;
+    clearLLFieldError(llHeadError);
+    clearLLStatus();
+
+    const raw = llHeadInput ? llHeadInput.value.trim() : '';
+    if (raw === '' || isNaN(Number(raw)) || !Number.isInteger(Number(raw))) {
+        showLLFieldError(llHeadError, 'Please enter a valid integer');
+        triggerLLErrorGlow();
+        setLLStatus('Invalid input — please enter a valid integer', 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    const value = parseInt(raw, 10);
+    const maxNodes = getLLMaxNodes();
+
+    if (llState.nodes.length >= maxNodes) {
+        triggerLLErrorGlow();
+        setLLStatus(`Maximum node limit reached for smooth visualization (${maxNodes} nodes max)`, 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    llState.isRunning = true;
+    setLLControlsDisabled(true);
+    setLLStatus(`Inserting ${value} at the head...`, 'checking');
+
+    const newId = `ll-node-${llState.nodeIdCounter++}`;
+    llState.nodes.unshift({ id: newId, value });
+    renderLinkedList([], newId);
+
+    if (llHeadInput) llHeadInput.value = '';
+    await sleep(650);
+
+    setLLStatus(`${value} inserted at the head`, 'success');
+    llState.isRunning = false;
+    setLLControlsDisabled(false);
+    if (llHeadInput) llHeadInput.focus();
+};
+
+// -- Operation: Insert at Tail --
+const handleLLInsertTail = async () => {
+    if (llState.isRunning) return;
+    clearLLFieldError(llTailError);
+    clearLLStatus();
+
+    const raw = llTailInput ? llTailInput.value.trim() : '';
+    if (raw === '' || isNaN(Number(raw)) || !Number.isInteger(Number(raw))) {
+        showLLFieldError(llTailError, 'Please enter a valid integer');
+        triggerLLErrorGlow();
+        setLLStatus('Invalid input — please enter a valid integer', 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    const value = parseInt(raw, 10);
+    const maxNodes = getLLMaxNodes();
+
+    if (llState.nodes.length >= maxNodes) {
+        triggerLLErrorGlow();
+        setLLStatus(`Maximum node limit reached for smooth visualization (${maxNodes} nodes max)`, 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    llState.isRunning = true;
+    setLLControlsDisabled(true);
+    setLLStatus(`Inserting ${value} at the tail...`, 'checking');
+
+    // Briefly highlight the current tail node before linking
+    if (llState.nodes.length > 0) {
+        const currentTailId = llState.nodes[llState.nodes.length - 1].id;
+        renderLinkedList([currentTailId], null);
+        setLLStatus(`Linking from current tail (${llState.nodes[llState.nodes.length - 1].value})...`, 'checking');
+        await sleep(520);
+    }
+
+    const newId = `ll-node-${llState.nodeIdCounter++}`;
+    llState.nodes.push({ id: newId, value });
+    renderLinkedList([], newId);
+
+    if (llTailInput) llTailInput.value = '';
+    await sleep(650);
+
+    setLLStatus(`${value} inserted at the tail`, 'success');
+    llState.isRunning = false;
+    setLLControlsDisabled(false);
+    if (llTailInput) llTailInput.focus();
+};
+
+// -- Operation: Insert at Index --
+const handleLLInsertAtIndex = async () => {
+    if (llState.isRunning) return;
+    clearLLFieldError(llIndexError);
+    clearLLStatus();
+
+    const indexRaw = llIndexInput ? llIndexInput.value.trim() : '';
+    const valueRaw = llIndexValueInput ? llIndexValueInput.value.trim() : '';
+
+    if (indexRaw === '' || isNaN(Number(indexRaw)) || !Number.isInteger(Number(indexRaw))) {
+        showLLFieldError(llIndexError, 'Please enter a valid index (integer ≥ 0)');
+        triggerLLErrorGlow();
+        setLLStatus('Invalid index — please enter a valid integer', 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+    if (valueRaw === '' || isNaN(Number(valueRaw)) || !Number.isInteger(Number(valueRaw))) {
+        showLLFieldError(llIndexError, 'Please enter a valid integer value');
+        triggerLLErrorGlow();
+        setLLStatus('Invalid value — please enter a valid integer', 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    const index = parseInt(indexRaw, 10);
+    const value = parseInt(valueRaw, 10);
+    const maxNodes = getLLMaxNodes();
+
+    if (index < 0 || index > llState.nodes.length) {
+        triggerLLErrorGlow();
+        setLLStatus(
+            `Index out of bounds — valid range is 0 to ${llState.nodes.length}`,
+            'failure'
+        );
+        resetLLInvalidInputs();
+        return;
+    }
+
+    if (llState.nodes.length >= maxNodes) {
+        triggerLLErrorGlow();
+        setLLStatus(`Maximum node limit reached for smooth visualization (${maxNodes} nodes max)`, 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    llState.isRunning = true;
+    setLLControlsDisabled(true);
+
+    // Head shortcut (index 0)
+    if (index === 0) {
+        setLLStatus(`Inserting ${value} at index 0 (head)...`, 'checking');
+        const newId = `ll-node-${llState.nodeIdCounter++}`;
+        llState.nodes.unshift({ id: newId, value });
+        renderLinkedList([], newId);
+        if (llIndexInput) llIndexInput.value = '';
+        if (llIndexValueInput) llIndexValueInput.value = '';
+        await sleep(650);
+        setLLStatus(`${value} inserted at index 0 (head)`, 'success');
+        llState.isRunning = false;
+        setLLControlsDisabled(false);
+        return;
+    }
+
+    // Traversal animation — highlight nodes one by one
+    setLLStatus(`Traversing to find index ${index}...`, 'checking');
+    for (let i = 0; i < index; i++) {
+        renderLinkedList([llState.nodes[i].id], null);
+        setLLStatus(
+            `Visiting index ${i} → value: ${llState.nodes[i].value}${i === index - 1 ? ' (insertion point found!)' : ''}`,
+            'checking'
+        );
+        await sleep(430);
+    }
+
+    // Brief pause at insertion gap then insert
+    renderLinkedList([], null);
+    setLLStatus(`Inserting ${value} at index ${index}...`, 'checking');
+    await sleep(220);
+
+    const newId = `ll-node-${llState.nodeIdCounter++}`;
+    llState.nodes.splice(index, 0, { id: newId, value });
+    renderLinkedList([], newId);
+
+    if (llIndexInput) llIndexInput.value = '';
+    if (llIndexValueInput) llIndexValueInput.value = '';
+    await sleep(650);
+
+    setLLStatus(`${value} inserted at index ${index}`, 'success');
+    llState.isRunning = false;
+    setLLControlsDisabled(false);
+};
+
+// -- Operation: Delete at Head --
+const handleLLDeleteHead = async () => {
+    if (llState.isRunning) return;
+    clearLLFieldError(llDeleteHeadError);
+    clearLLStatus();
+
+    if (llState.nodes.length === 0) {
+        showLLFieldError(llDeleteHeadError, 'Cannot delete from empty list');
+        triggerLLErrorGlow();
+        setLLStatus('Cannot delete from an empty list', 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    llState.isRunning = true;
+    setLLControlsDisabled(true);
+    setLLStatus(`Deleting node at head...`, 'checking');
+
+    // Highlight head node to indicate deletion
+    const headNodeId = llState.nodes[0].id;
+    renderLinkedList([headNodeId], null);
+    await sleep(420);
+
+    // Remove head node
+    llState.nodes.shift();
+    renderLinkedList([], null);
+    await sleep(320);
+
+    setLLStatus(llState.nodes.length > 0 ? 'Node deleted from head' : 'Node deleted from head — list is now empty', 'success');
+    llState.isRunning = false;
+    setLLControlsDisabled(false);
+};
+
+// -- Operation: Delete at Tail --
+const handleLLDeleteTail = async () => {
+    if (llState.isRunning) return;
+    clearLLFieldError(llDeleteTailError);
+    clearLLStatus();
+
+    if (llState.nodes.length === 0) {
+        showLLFieldError(llDeleteTailError, 'Cannot delete from empty list');
+        triggerLLErrorGlow();
+        setLLStatus('Cannot delete from an empty list', 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    llState.isRunning = true;
+    setLLControlsDisabled(true);
+    setLLStatus(`Deleting node at tail...`, 'checking');
+
+    // Highlight tail node to indicate deletion
+    const tailNodeId = llState.nodes[llState.nodes.length - 1].id;
+    renderLinkedList([tailNodeId], null);
+    await sleep(420);
+
+    // Remove tail node
+    llState.nodes.pop();
+    renderLinkedList([], null);
+    await sleep(320);
+
+    setLLStatus(llState.nodes.length > 0 ? 'Node deleted from tail' : 'Node deleted from tail — list is now empty', 'success');
+    llState.isRunning = false;
+    setLLControlsDisabled(false);
+};
+
+// -- Operation: Delete at Index --
+const handleLLDeleteAtIndex = async () => {
+    if (llState.isRunning) return;
+    clearLLFieldError(llDeleteIndexError);
+    clearLLStatus();
+
+    const indexRaw = llDeleteIndexInput ? llDeleteIndexInput.value.trim() : '';
+
+    if (indexRaw === '' || isNaN(Number(indexRaw)) || !Number.isInteger(Number(indexRaw))) {
+        showLLFieldError(llDeleteIndexError, 'Please enter a valid index (integer ≥ 0)');
+        triggerLLErrorGlow();
+        setLLStatus('Invalid index — please enter a valid integer', 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    const index = parseInt(indexRaw, 10);
+
+    if (index < 0 || index >= llState.nodes.length) {
+        const maxIndex = Math.max(0, llState.nodes.length - 1);
+        showLLFieldError(llDeleteIndexError, `Invalid index — valid range is 0 to ${maxIndex}`);
+        triggerLLErrorGlow();
+        setLLStatus(`Invalid index — valid range is 0 to ${maxIndex}`, 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    if (llState.nodes.length === 0) {
+        showLLFieldError(llDeleteIndexError, 'Cannot delete from empty list');
+        triggerLLErrorGlow();
+        setLLStatus('Cannot delete from an empty list', 'failure');
+        resetLLInvalidInputs();
+        return;
+    }
+
+    llState.isRunning = true;
+    setLLControlsDisabled(true);
+
+    // Head shortcut (index 0)
+    if (index === 0) {
+        setLLStatus(`Deleting node at index 0 (head)...`, 'checking');
+        const headNodeId = llState.nodes[0].id;
+        renderLinkedList([headNodeId], null);
+        await sleep(420);
+        llState.nodes.shift();
+        renderLinkedList([], null);
+        if (llDeleteIndexInput) llDeleteIndexInput.value = '';
+        await sleep(320);
+        setLLStatus(`Node deleted at index 0 (head)${llState.nodes.length === 0 ? ' — list is now empty' : ''}`, 'success');
+        llState.isRunning = false;
+        setLLControlsDisabled(false);
+        return;
+    }
+
+    // Traversal animation — highlight nodes one by one to target
+    setLLStatus(`Traversing to index ${index}...`, 'checking');
+    for (let i = 0; i < index; i++) {
+        renderLinkedList([llState.nodes[i].id], null);
+        setLLStatus(
+            `Visiting index ${i} → value: ${llState.nodes[i].value}${i === index - 1 ? ' (target node found!)' : ''}`,
+            'checking'
+        );
+        await sleep(430);
+    }
+
+    // Highlight target node
+    renderLinkedList([llState.nodes[index].id], null);
+    setLLStatus(`Found target node at index ${index} (value: ${llState.nodes[index].value}) — deleting...`, 'checking');
+    await sleep(420);
+
+    // Remove node
+    llState.nodes.splice(index, 1);
+    renderLinkedList([], null);
+
+    if (llDeleteIndexInput) llDeleteIndexInput.value = '';
+    await sleep(320);
+
+    setLLStatus(`Node deleted at index ${index}${llState.nodes.length === 0 ? ' — list is now empty' : ''}`, 'success');
+    llState.isRunning = false;
+    setLLControlsDisabled(false);
+};
+
+// -- Typing Animation for LL Definition --
+const typeLLDefinition = async () => {
+    if (!llDefinitionText) return;
+    const token = ++llState.definitionTypingToken;
+    llDefinitionText.textContent = '';
+    for (let i = 0; i < llDefinition.length; i++) {
+        if (token !== llState.definitionTypingToken) return;
+        llDefinitionText.textContent += llDefinition[i];
+        await sleep(20);
+    }
+};
+
+// -- Learn Panel --
+const handleLLLearnClick = async (e) => {
+    const learnType = e.currentTarget.dataset.llLearn;
+    const text = llLearnDefinitions[learnType];
+    if (!text || !llLearnPanel) return;
+
+    const token = ++llState.learnTypingToken;
+
+    llLearnBtns.forEach(btn => btn.classList.toggle('active', btn === e.currentTarget));
+
+    llLearnPanel.classList.remove('hidden');
+    llLearnPanel.textContent = '';
+
+    for (let i = 0; i < text.length; i++) {
+        if (token !== llState.learnTypingToken) return;
+        llLearnPanel.textContent += text[i];
+        await sleep(22);
+    }
+};
+
+// -- View Renderer (called when switching to LL tab) --
+const renderLinkedListView = () => {
+    renderLinkedList();
+    clearLLStatus();
+    typeLLDefinition();
+};
+
+// -- Event Listener Setup --
+const setupLLEventListeners = () => {
+    if (!llInsertHeadBtn) return;  // guard: DOM refs not ready
+
+    llInsertHeadBtn.addEventListener('click', handleLLInsertHead);
+    llInsertTailBtn.addEventListener('click', handleLLInsertTail);
+    llInsertIndexBtn.addEventListener('click', handleLLInsertAtIndex);
+
+    llDeleteHeadBtn.addEventListener('click', handleLLDeleteHead);
+    llDeleteTailBtn.addEventListener('click', handleLLDeleteTail);
+    llDeleteIndexBtn.addEventListener('click', handleLLDeleteAtIndex);
+
+    llHeadInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleLLInsertHead(); });
+    llTailInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleLLInsertTail(); });
+    llIndexValueInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleLLInsertAtIndex(); });
+    llDeleteIndexInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleLLDeleteAtIndex(); });
+
+    llLearnBtns.forEach(btn => btn.addEventListener('click', handleLLLearnClick));
+};
+
+// -- Bootstrap on DOM ready --
+document.addEventListener('DOMContentLoaded', () => {
+    initLLDOMRefs();
+    setupLLEventListeners();
+    renderLinkedList(); // draw empty state
+});

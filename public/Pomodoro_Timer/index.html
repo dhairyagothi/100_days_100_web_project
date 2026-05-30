@@ -1,841 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" id="themeColorMeta" content="#ba4949">
     <title>Pomodoro Timer</title>
-
-    <style>
-
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial,sans-serif;
-        }
-
-        body{
-            background:#071739;
-            color:white;
-            min-height:100vh;
-
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-
-            transition:0.4s;
-
-            padding:40px 20px;
-        }
-
-        body.light{
-            background:#f3f4f6;
-            color:#111827;
-        }
-
-        .theme-toggle{
-            position:absolute;
-            top:25px;
-            right:25px;
-        }
-
-        .theme-toggle button{
-            border:none;
-
-            padding:12px 16px;
-
-            border-radius:12px;
-
-            cursor:pointer;
-
-            font-size:18px;
-
-            background:#1e293b;
-
-            color:white;
-        }
-
-        body.light .theme-toggle button{
-            background:white;
-            color:black;
-        }
-
-        .title{
-            font-size:64px;
-            font-weight:900;
-            letter-spacing:4px;
-
-            margin-bottom:35px;
-
-            text-align:center;
-        }
-
-        .container{
-
-            width:500px;
-
-            background:#1e293b;
-
-            border-radius:30px;
-
-            padding:35px;
-
-            box-shadow:0 0 30px rgba(0,0,0,0.4);
-
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-
-            gap:25px;
-
-            transition:0.4s;
-        }
-
-        body.light .container{
-            background:white;
-        }
-
-        .top-section{
-
-            width:100%;
-
-            display:flex;
-            flex-direction:column;
-
-            align-items:flex-start;
-
-            gap:18px;
-        }
-
-        #taskInput{
-
-            width:100%;
-
-            padding:16px;
-
-            border:none;
-
-            border-radius:16px;
-
-            outline:none;
-
-            background:#334155;
-
-            color:white;
-
-            font-size:17px;
-        }
-
-        body.light #taskInput{
-            background:#e5e7eb;
-            color:black;
-        }
-
-        .task-display{
-
-            width:100%;
-
-            background:#334155;
-
-            padding:18px;
-
-            border-radius:16px;
-
-            display:flex;
-
-            align-items:center;
-
-            gap:14px;
-
-            font-size:20px;
-
-            min-height:70px;
-        }
-
-        body.light .task-display{
-            background:#e5e7eb;
-        }
-
-        #taskCheck{
-            width:22px;
-            height:22px;
-
-            cursor:pointer;
-        }
-
-        .center-section{
-
-            width:100%;
-
-            display:flex;
-            flex-direction:column;
-
-            justify-content:center;
-            align-items:center;
-
-            gap:25px;
-        }
-
-        .mode{
-            display:flex;
-            gap:16px;
-        }
-
-        .mode button{
-
-            border:none;
-
-            padding:14px 32px;
-
-            border-radius:16px;
-
-            cursor:pointer;
-
-            font-size:20px;
-
-            transition:0.3s;
-        }
-
-        .active{
-            background:#38bdf8;
-            color:white;
-        }
-
-        .circle{
-
-            position:relative;
-
-            width:320px;
-            height:320px;
-
-            display:flex;
-            justify-content:center;
-            align-items:center;
-        }
-
-        svg{
-            width:320px;
-            height:320px;
-
-            transform:rotate(-90deg);
-        }
-
-        circle{
-            fill:none;
-            stroke-width:14;
-        }
-
-        .bg{
-            stroke:#334155;
-        }
-
-        body.light .bg{
-            stroke:#d1d5db;
-        }
-
-        .progress{
-            stroke:#38bdf8;
-
-            stroke-linecap:round;
-
-            stroke-dasharray:628;
-
-            stroke-dashoffset:0;
-
-            transition:1s linear;
-        }
-
-        #timer{
-
-            position:absolute;
-
-            top:50%;
-            left:50%;
-
-            transform:translate(-50%,-50%);
-
-            font-size:82px;
-
-            font-weight:bold;
-        }
-
-        .buttons{
-
-            display:flex;
-            gap:18px;
-
-            flex-wrap:wrap;
-
-            justify-content:center;
-        }
-
-        .buttons button,
-        #focusModeBtn{
-
-            border:none;
-
-            padding:15px 28px;
-
-            border-radius:14px;
-
-            cursor:pointer;
-
-            color:white;
-
-            font-size:20px;
-
-            transition:0.3s;
-        }
-
-        .buttons button:hover,
-        .mode button:hover,
-        #focusModeBtn:hover,
-        .theme-toggle button:hover{
-
-            transform:scale(1.05);
-        }
-
-        #start{
-            background:#22c55e;
-        }
-
-        #pause{
-            background:#f59e0b;
-        }
-
-        #reset{
-            background:#ef4444;
-        }
-
-        #focusModeBtn{
-            background:#8b5cf6;
-        }
-
-        .quote-banner{
-
-            margin-top:28px;
-
-            width:100%;
-
-            max-width:900px;
-
-            text-align:center;
-
-            font-size:26px;
-
-            color:#38bdf8;
-
-            font-family:cursive;
-
-            min-height:40px;
-
-            overflow:hidden;
-        }
-
-        body.light .quote-banner{
-            color:#2563eb;
-        }
-
-        .focus-mode .title,
-        .focus-mode .top-section,
-        .focus-mode .theme-toggle,
-        .focus-mode .quote-banner{
-            display:none;
-        }
-
-        .focus-mode .container{
-            transform:scale(1.1);
-        }
-
-        @media(max-width:600px){
-
-            .title{
-                font-size:40px;
-            }
-
-            .container{
-                width:100%;
-                padding:25px;
-            }
-
-            .circle,
-            svg{
-                width:240px;
-                height:240px;
-            }
-
-            #timer{
-                font-size:56px;
-            }
-
-            .buttons{
-                flex-direction:column;
-                width:100%;
-            }
-
-            .buttons button,
-            #focusModeBtn{
-                width:100%;
-            }
-
-            .mode{
-                flex-direction:column;
-                width:100%;
-            }
-
-            .mode button{
-                width:100%;
-            }
-
-            .quote-banner{
-                font-size:18px;
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <div class="theme-toggle">
-        <button id="themeBtn">🌙</button>
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-label="Settings">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>⚙️ Settings</h3>
+            <button class="modal-close" id="closeSettings" aria-label="Close settings">✕</button>
+        </div>
+        <div class="modal-body">
+            <label>Pomodoro (min)
+                <input type="number" id="setPomo" min="1" max="60" value="25">
+            </label>
+            <label>Short Break (min)
+                <input type="number" id="setShort" min="1" max="30" value="5">
+            </label>
+            <label>Long Break (min)
+                <input type="number" id="setLong" min="1" max="60" value="15">
+            </label>
+            <label>Long break after
+                <input type="number" id="setLongAfter" min="1" max="10" value="4">
+                <span class="input-hint">pomodoros</span>
+            </label>
+            <label class="toggle-label">
+                <span>Auto-start breaks</span>
+                <div class="toggle" id="autoBreakToggle" data-active="true"><div class="toggle-knob"></div></div>
+            </label>
+            <label class="toggle-label">
+                <span>Auto-start pomodoros</span>
+                <div class="toggle" id="autoPomoToggle" data-active="false"><div class="toggle-knob"></div></div>
+            </label>
+            <label class="toggle-label">
+                <span>Tick sound</span>
+                <div class="toggle" id="tickToggle" data-active="true"><div class="toggle-knob"></div></div>
+            </label>
+            <label class="toggle-label strict-row">
+                <span>🔒 Strict mode <small class="input-hint">— no pause or skip during focus</small></span>
+                <div class="toggle" id="strictToggle" data-active="false"><div class="toggle-knob"></div></div>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-save" id="saveSettings">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal-overlay" id="addTaskOverlay" role="dialog" aria-modal="true" aria-label="New Task">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>📝 New Task</h3>
+            <button class="modal-close" id="closeAddTask" aria-label="Close task dialog">✕</button>
+        </div>
+        <div class="modal-body">
+            <label>Task Name
+                <input type="text" id="taskNameInput" placeholder="What are you working on?" maxlength="60">
+            </label>
+            <label>Estimated Pomodoros
+                <input type="number" id="taskPomoInput" min="1" max="20" value="1">
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" id="cancelAddTask">Cancel</button>
+            <button class="btn-save" id="confirmAddTask">Add Task</button>
+        </div>
+    </div>
+</div>
+
+<!-- Music Dropdown -->
+<div class="music-dropdown" id="musicDropdown" role="dialog" aria-label="Focus Music">
+    <div class="music-dropdown-header">
+        <span>🎧 Focus Music</span>
+        <div class="music-vol-row">
+            <span>🔉</span>
+            <input type="range" id="musicVol" min="0" max="1" step="0.05" value="0.4" aria-label="Music volume">
+        </div>
     </div>
 
-    <div class="title">
-        POMODORO TIMER
+    <div class="music-category">
+        <div class="music-cat-label">Focus Music</div>
+        <div class="music-grid" id="focusMusicGrid"></div>
     </div>
 
-    <div class="container">
+    <div class="music-category">
+        <div class="music-cat-label">Science-Backed</div>
+        <div class="music-grid" id="scienceMusicGrid"></div>
+    </div>
 
-        <div class="top-section">
+    <button class="music-off-btn" id="musicOffBtn">⏹ Stop Music</button>
+</div>
 
-            <input
-                type="text"
-                id="taskInput"
-                placeholder="What are you working on?"
-            >
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-            <div class="task-display">
+<div class="app-container">
 
-                <input type="checkbox" id="taskCheck">
+    <!-- Header -->
+    <div class="app-header">
+        <span class="app-title">🍅 Pomodoro</span>
+        <div class="header-actions">
+            <span class="strict-badge" id="strictBadge" style="display:none">🔒 STRICT</span>
+            <button class="icon-btn music-header-btn" id="musicHeaderBtn" title="Focus Music" aria-label="Toggle focus music">🎧</button>
+            <button class="icon-btn" id="muteBtn" title="Mute tick" aria-label="Mute tick sound">🔊</button>
+            <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Open settings">⚙️</button>
+        </div>
+    </div>
 
-                <span id="currentTask">
-                    No current task
-                </span>
+    <!-- Stats bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-label">Today</span>
+            <span class="stat-value" id="statsToday">0</span> 🍅
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-label">Streak</span>
+            <span class="stat-value" id="statsStreak">0</span> 🔥
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-label">All time</span>
+            <span class="stat-value" id="statsTotal">0</span> 🍅
+        </div>
+    </div>
 
-            </div>
+    <!-- Weekly bar chart -->
+    <div class="weekly-chart" id="weeklyChart"></div>
 
+    <!-- Timer Card -->
+    <div class="timer-card" id="timerCard">
+        <div class="modes">
+            <button id="pomodoroBtn" class="mode-btn active">Pomodoro</button>
+            <button id="shortBreakBtn" class="mode-btn">Short Break</button>
+            <button id="longBreakBtn" class="mode-btn">Long Break</button>
         </div>
 
-        <div class="center-section">
-
-            <div class="mode">
-
-                <button id="workBtn" class="active">
-                    Work
-                </button>
-
-                <button id="breakBtn">
-                    Break
-                </button>
-
-            </div>
-
-            <button id="focusModeBtn">
-                Focus Mode
-            </button>
-
-            <div class="circle">
-
-                <svg>
-
-                    <circle
-                        class="bg"
-                        cx="160"
-                        cy="160"
-                        r="100">
-                    </circle>
-
-                    <circle
-                        class="progress"
-                        id="progressCircle"
-                        cx="160"
-                        cy="160"
-                        r="100">
-                    </circle>
-
-                </svg>
-
-                <div id="timer">25:00</div>
-
-            </div>
-
-            <div class="buttons">
-
-                <button id="start">
-                    Start
-                </button>
-
-                <button id="pause">
-                    Pause
-                </button>
-
-                <button id="reset">
-                    Reset
-                </button>
-
-            </div>
-
+        <div class="progress-ring-wrapper">
+            <svg class="progress-ring" viewBox="0 0 220 220" aria-hidden="true">
+                <circle class="progress-ring-bg" cx="110" cy="110" r="100"/>
+                <circle class="progress-ring-fill" id="progressRing" cx="110" cy="110" r="100"
+                    stroke-dasharray="628.3" stroke-dashoffset="0"/>
+            </svg>
+            <div class="time-display" id="timer" role="timer" aria-live="off">25:00</div>
         </div>
 
+        <div class="session-dots" id="sessionDots" aria-label="Session progress"></div>
+
+        <!-- Now-playing strip inside timer card -->
+        <div class="now-playing" id="nowPlaying" style="display:none" aria-live="polite">
+            <span class="np-dot"></span>
+            <span id="nowPlayingLabel">-</span>
+        </div>
+
+        <div class="controls">
+            <button class="ctrl-btn" id="resetBtn" title="Reset (R)" aria-label="Reset timer">↺</button>
+            <button id="startBtn" aria-label="Start or pause timer">START</button>
+            <button class="ctrl-btn" id="skipBtn" title="Skip (S)" aria-label="Skip session">⏭</button>
+        </div>
     </div>
 
-    <div class="quote-banner">
-
-        <marquee id="quoteText">
-            Stay focused and never give up
-        </marquee>
-
+    <!-- Task info -->
+    <div class="task-info">
+        <div class="task-number" id="sessionLabel">Session #1</div>
+        <div class="task-current" id="currentTaskDisplay">No task selected</div>
     </div>
 
-    <audio id="tickSound" loop>
-        <source
-            src="https://www.soundjay.com/clock/sounds/clock-ticking-2.mp3"
-            type="audio/mpeg">
-    </audio>
-
-    <script>
-
-        let workTime = 25 * 60;
-        let breakTime = 5 * 60;
-
-        let totalTime = workTime;
-        let time = workTime;
-
-        let timer = null;
-        let isRunning = false;
-
-        const timerDisplay =
-        document.getElementById("timer");
-
-        const progressCircle =
-        document.getElementById("progressCircle");
-
-        const workBtn =
-        document.getElementById("workBtn");
-
-        const breakBtn =
-        document.getElementById("breakBtn");
-
-        const tickSound =
-        document.getElementById("tickSound");
-
-        const taskInput =
-        document.getElementById("taskInput");
-
-        const currentTask =
-        document.getElementById("currentTask");
-
-        const taskCheck =
-        document.getElementById("taskCheck");
-
-        const quoteBanner =
-        document.querySelector(".quote-banner");
-
-        const taskDisplay =
-        document.querySelector(".task-display");
-
-        const quotes = [
-
-            "It's the job that's never started that takes longest to finish. — J.R.R. Tolkien",
-
-            "Someday is not a day of the week. — Janet Dailey",
-
-            "A year from now you may wish you had started today. — Karen Lamb",
-
-            "You may delay, but time will not. — Benjamin Franklin",
-
-            "You cannot escape the responsibility of tomorrow by evading it today. — Abraham Lincoln",
-
-            "Whatever you want to do, do it now. There are only so many tomorrows. — Michael Landon",
-
-            "Small progress is still progress",
-
-            "You don't have to see the whole staircase, just take the first step. — Martin Luther King Jr.",
-
-            "Discipline creates freedom",
-
-            "Stay consistent, not perfect"
-
-        ];
-
-        const quoteText =
-        document.getElementById("quoteText");
-
-        function changeQuote(){
-
-            if(totalTime === breakTime){
-                return;
-            }
-
-            const randomQuote =
-            quotes[Math.floor(Math.random() * quotes.length)];
-
-            quoteText.innerText = randomQuote;
-        }
-
-        setInterval(changeQuote,5000);
-
-        function updateDisplay(){
-
-            let minutes =
-            Math.floor(time / 60);
-
-            let seconds =
-            time % 60;
-
-            seconds =
-            seconds < 10
-            ? "0" + seconds
-            : seconds;
-
-            timerDisplay.innerText =
-            `${minutes}:${seconds}`;
-
-            let progress =
-            628 - (628 * time) / totalTime;
-
-            progressCircle.style.strokeDashoffset =
-            progress;
-        }
-
-        function startTimer(){
-
-            if(isRunning) return;
-
-            isRunning = true;
-
-            tickSound.play().catch(() => {});
-
-            timer = setInterval(()=>{
-
-                if(time > 0){
-
-                    time--;
-
-                    updateDisplay();
-                }
-
-                else{
-
-                    clearInterval(timer);
-
-                    tickSound.pause();
-
-                    isRunning = false;
-
-                    alert("Session Complete!");
-
-                    switchMode();
-
-                    startTimer();
-                }
-
-            },1000);
-        }
-
-        function pauseTimer(){
-
-            clearInterval(timer);
-
-            tickSound.pause();
-
-            isRunning = false;
-        }
-
-        function resetTimer(){
-
-            clearInterval(timer);
-
-            tickSound.pause();
-
-            isRunning = false;
-
-            time = totalTime;
-
-            updateDisplay();
-        }
-
-        function switchMode(){
-
-            if(totalTime === workTime){
-
-                totalTime = breakTime;
-                time = breakTime;
-
-                breakBtn.classList.add("active");
-                workBtn.classList.remove("active");
-
-                taskDisplay.style.display = "none";
-
-                quoteBanner.style.display = "none";
-            }
-
-            else{
-
-                totalTime = workTime;
-                time = workTime;
-
-                workBtn.classList.add("active");
-                breakBtn.classList.remove("active");
-
-                taskDisplay.style.display = "flex";
-
-                quoteBanner.style.display = "block";
-            }
-
-            updateDisplay();
-        }
-
-        taskInput.addEventListener("keypress",(e)=>{
-
-            if(e.key === "Enter"){
-
-                if(taskInput.value.trim() !== ""){
-
-                    currentTask.innerText =
-                    taskInput.value;
-
-                    taskCheck.checked = false;
-
-                    currentTask.style.textDecoration =
-                    "none";
-
-                    currentTask.style.opacity = "1";
-
-                    taskInput.value = "";
-                }
-            }
-        });
-
-        taskCheck.addEventListener("change",()=>{
-
-            if(taskCheck.checked){
-
-                currentTask.style.textDecoration =
-                "line-through";
-
-                currentTask.style.opacity = "0.6";
-
-                setTimeout(()=>{
-
-                    currentTask.innerText =
-                    "No current task";
-
-                    currentTask.style.textDecoration =
-                    "none";
-
-                    currentTask.style.opacity =
-                    "1";
-
-                    taskCheck.checked = false;
-
-                },1500);
-            }
-
-            else{
-
-                currentTask.style.textDecoration =
-                "none";
-
-                currentTask.style.opacity =
-                "1";
-            }
-        });
-
-        document
-        .getElementById("start")
-        .addEventListener("click",startTimer);
-
-        document
-        .getElementById("pause")
-        .addEventListener("click",pauseTimer);
-
-        document
-        .getElementById("reset")
-        .addEventListener("click",resetTimer);
-
-        workBtn.addEventListener("click",()=>{
-
-            totalTime = workTime;
-            time = workTime;
-
-            workBtn.classList.add("active");
-            breakBtn.classList.remove("active");
-
-            taskDisplay.style.display = "flex";
-
-            quoteBanner.style.display = "block";
-
-            resetTimer();
-        });
-
-        breakBtn.addEventListener("click",()=>{
-
-            totalTime = breakTime;
-            time = breakTime;
-
-            breakBtn.classList.add("active");
-            workBtn.classList.remove("active");
-
-            taskDisplay.style.display = "none";
-
-            quoteBanner.style.display = "none";
-
-            resetTimer();
-        });
-
-        const themeBtn =
-        document.getElementById("themeBtn");
-
-        themeBtn.addEventListener("click",()=>{
-
-            document.body.classList.toggle("light");
-
-            if(document.body.classList.contains("light")){
-
-                themeBtn.innerText = "☀️";
-            }
-
-            else{
-
-                themeBtn.innerText = "🌙";
-            }
-        });
-
-        const focusBtn =
-        document.getElementById("focusModeBtn");
-
-        focusBtn.addEventListener("click",()=>{
-
-            document.body.classList.toggle("focus-mode");
-
-            if(document.body.classList.contains("focus-mode")){
-
-                focusBtn.innerText = "Exit Focus Mode";
-            }
-
-            else{
-
-                focusBtn.innerText = "Focus Mode";
-            }
-        });
-
-        updateDisplay();
-
-    </script>
-
+    <!-- Task Section -->
+    <div class="task-section">
+        <div class="task-header">
+            <h2>Tasks</h2>
+            <button class="options-btn" id="clearDoneBtn" title="Clear completed" aria-label="Clear completed tasks">🗑</button>
+        </div>
+        <div class="task-list" id="taskList"></div>
+        <button class="add-task-btn" id="addTaskBtn" aria-label="Add new task">
+            <span class="icon">+</span> Add Task
+        </button>
+    </div>
+
+    <!-- Keyboard shortcuts hint -->
+    <div class="shortcut-hint" id="shortcutHint"></div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

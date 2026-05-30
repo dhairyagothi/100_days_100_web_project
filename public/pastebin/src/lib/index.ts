@@ -1,9 +1,9 @@
 import themeSettings from './themeSettings';
-import { newPaste } from './pastes';
+import { newPaste, deletePaste } from './pastes';
 
-export { themeSettings, newPaste };
+export { themeSettings, newPaste, deletePaste };
 
-export function generateRandomString(length: number) {
+export function generateRandomString(length: number): string {
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	let result = '';
 	for (let i = 0; i < length; i++) {
@@ -12,7 +12,7 @@ export function generateRandomString(length: number) {
 	return result;
 }
 
-export let languages: string[] = [
+export const languages: string[] = [
 	'python',
 	'javascript',
 	'typescript',
@@ -24,12 +24,7 @@ export let languages: string[] = [
 	'abap',
 	'actionscript-3',
 	'ada',
-	'angular-expression',
 	'angular-html',
-	'angular-inline-style',
-	'angular-inline-template',
-	'angular-template',
-	'angular-template-blocks',
 	'angular-ts',
 	'apache',
 	'apex',
@@ -56,7 +51,6 @@ export let languages: string[] = [
 	'codeql',
 	'coffee',
 	'common-lisp',
-	'cpp-macro',
 	'crystal',
 	'csharp',
 	'css',
@@ -89,8 +83,6 @@ export let languages: string[] = [
 	'git-commit',
 	'git-rebase',
 	'gleam',
-	'glimmer-js',
-	'glimmer-ts',
 	'glsl',
 	'gnuplot',
 	'go',
@@ -132,10 +124,8 @@ export let languages: string[] = [
 	'lua',
 	'make',
 	'markdown',
-	'markdown-vue',
 	'marko',
 	'matlab',
-	'mdc',
 	'mdx',
 	'mermaid',
 	'mojo',
@@ -186,7 +176,6 @@ export let languages: string[] = [
 	'shellsession',
 	'smalltalk',
 	'solidity',
-	'soy',
 	'sparql',
 	'splunk',
 	'sql',
@@ -214,9 +203,7 @@ export let languages: string[] = [
 	'vhdl',
 	'viml',
 	'vue',
-	'vue-directives',
 	'vue-html',
-	'vue-interpolations',
 	'vyper',
 	'wasm',
 	'wenyan',

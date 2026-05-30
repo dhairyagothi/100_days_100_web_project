@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Classifier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+</head>
+<body>
+    <div class="bg-blur blur1"></div>
+    <div class="bg-blur blur2"></div>
+    <div class="main-layout">
+        <div class="container">
+            <div class="top-section">
+                <div class="ai-badge">
+                    AI Powered
+                </div>
+                <h1>🧠 AI Image Classifier</h1>
+                <p class="subtitle">
+                    Upload any image and let AI identify objects instantly with smart AI predictions.
+                </p>
+            </div>
+            <div class="upload-area">
+                <img id="preview" src="" alt="Preview">
+                <div class="upload-content" id="uploadContent">
+                    <div class="upload-icon">
+                        📸
+                    </div>
+                    <h3>Upload Image</h3>
+                    <p>Choose any image to analyze</p>
+                </div>
+            </div>
+            <div class="btn-group">
+                <label for="imageUpload" class="upload-btn">
+                    Choose Image
+                </label>
+                <input type="file" id="imageUpload" accept="image/*" hidden>
+                <button id="classifyBtn">
+                    Analyze
+                </button>
+            </div>
+        </div>
+        <div class="prediction-panel" id="predictionPanel">
+            <div class="prediction-header">
+                <h2>✨ Predictions</h2>
+            </div>
+            <div id="result"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
