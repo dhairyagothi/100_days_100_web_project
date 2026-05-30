@@ -1,31 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Optimization -->
-    <title>Chronos - Premium Analog Clock & World Time Dashboard</title>
-    <meta name="description" content="A premium, dynamic analog clock web application featuring a skeuomorphic-neumorphic hybrid design, continuous sweep motions, daylight-savings aware world clocks (New York, London, Tokyo), and a sleek countdown timer.">
-    
-    <link rel="stylesheet" href="index.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="index.js" defer></script>
-</head>
+    <title>Chronos+ Premium Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="index.css" />
+  </head>
 
 <body>
+
     <div class="app-container">
         
         <!-- Header Banner & Theme Toggle -->
         <header>
             <div class="brand-section">
-                <h1>Chronos</h1>
-                <p>Premium Local &amp; World Clock Dashboard</p>
-            </div>
-            
-            <!-- Sleek Neumorphic Theme Switcher -->
-            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle visual theme">
+    <h1>Chronos</h1>
+    <p>Premium Local &amp; World Clock Dashboard</p>
+</div>
+
+<div class="header-actions">
+    <button
+        id="focusModeBtn"
+        class="btn btn-primary focus-btn"
+        aria-label="Toggle Focus Mode"
+    >
+        Focus Mode
+    </button>
+   <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle visual theme">
                 <!-- Sun Icon (Dark Mode Active: click to go Light) -->
                 <svg id="sunIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <circle cx="12" cy="12" r="5" />
@@ -43,7 +58,10 @@
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
             </button>
-        </header>
+
+</div>            
+            <!-- Sleek Neumorphic Theme Switcher -->
+                   </header>
 
         <!-- Main Workspace: Large Local Clock + Countdown Timer -->
         <main class="main-dashboard">
@@ -224,8 +242,17 @@
         
     </div>
 
-    <!-- Audio Element for Alarm Alert -->
+    <!-- AUDIO -->
     <audio id="timerSound" src="timer.mp3" preload="auto"></audio>
-</body>
 
+    <!-- LIBRARIES -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- MAIN JS -->
+    <script src="index.js"></script>
+  </body>
 </html>

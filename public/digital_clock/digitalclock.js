@@ -1,4 +1,7 @@
 // App configuration and state
+// Dark mode state
+let isDarkMode = localStorage.getItem("clockDarkMode") === "true";
+if (isDarkMode) document.body.classList.add("dark-mode");
 let activeTheme = localStorage.getItem("clockTheme") || "classic";
 let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
 let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
@@ -10,6 +13,9 @@ let lastCheckedMinute = "";
 let ringInterval = null;
 let audioCtx = null;
 let triggeredAlarms = new Set();
+let weatherCache = {};
+let currentTimeTheme = "";
+let is24HourFormat = localStorage.getItem("is24HourFormat") === "true"; 
 
 // DOM Selectors
 const hoursEl = document.getElementById("hours");
@@ -28,6 +34,7 @@ const popupAlarmLabel = document.getElementById("popup-alarm-label");
 const alarmSound = document.getElementById("alarm-sound");
 const historyHeader = document.getElementById("history-header");
 const historyChevron = document.getElementById("history-chevron");
+const formatToggleBtn = document.getElementById("format-toggle");
 
 // World Clock Modal DOM
 const worldModal = document.getElementById("world-clock-modal");
@@ -45,13 +52,47 @@ const TIMEZONES = [
   { id: "America/New_York", name: "New York", code: "EST" }
 ];
 
+// TIME-BASED THEME FUNCTIONS
+function getTimeBasedTheme(hour) {
+  if (hour >= 5 && hour < 11) {
+    return "morning";
+  } else if (hour >= 11 && hour < 17) {
+    return "afternoon";
+  } else if (hour >= 17 && hour < 20) {
+    return "evening";
+  } else {
+    return "night";
+  }
+}
+
+function applyTimeBasedTheme() {
+  const now = new Date();
+  const hour = now.getHours();
+  const newTimeTheme = getTimeBasedTheme(hour);
+  
+  if (newTimeTheme !== currentTimeTheme) {
+    currentTimeTheme = newTimeTheme;
+    
+    // Remove only time-based theme classes, keep manual theme class
+    document.body.classList.remove("morning-theme", "afternoon-theme", "evening-theme", "night-theme");
+    // Add the new time-based theme class
+    document.body.classList.add(`${currentTimeTheme}-theme`);
+  }
+}
+
 // INIT
 document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("dark-mode-toggle");
+  if (btn) btn.textContent = isDarkMode ? "☀️" : "🌙";
+  applyDarkMode(isDarkMode);
   setTheme(activeTheme);
+
+  formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
 
   populateTimezoneDropdown();
   renderAlarmsList();
   renderWorldClocks();
+  tickWorldClocks();
   renderHistoryLogs();
   updateAlarmSummary();
 
@@ -61,30 +102,30 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => {
     updateClock();
     tickWorldClocks();
+    applyTimeBasedTheme();
   }, 1000);
+    formatToggleBtn.addEventListener("click", () => {
+    is24HourFormat = !is24HourFormat;
+
+    formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
+
+    localStorage.setItem("is24HourFormat", is24HourFormat);
+
+    updateClock();
+    tickWorldClocks();
+});
 });
 
-// ================= THEME =================
-function setTheme(theme) {
-  activeTheme = theme;
-  localStorage.setItem("clockTheme", theme);
+// ================= ACCENT COLOR =================
+function setAccentColor(accent) {
+  activeAccent = accent;
+  localStorage.setItem("clockAccent", accent);
 
-  document.body.className = `${theme}-theme`;
+  document.body.className = `${theme}-theme${isDarkMode ? " dark-mode" : ""}`;
 
   document.querySelectorAll(".theme-swatch").forEach(swatch => {
-    swatch.classList.toggle("active", swatch.dataset.theme === theme);
+    swatch.classList.toggle("active", swatch.dataset.theme === accent);
   });
-
-  const labelMap = {
-    classic: "CLASSIC",
-    modern: "MODERN",
-    futuristic: "CYBER",
-    nebula: "NEBULA"
-  };
-  const badge = document.getElementById("theme-label");
-  if (badge) badge.textContent = labelMap[theme] || "CLASSIC";
-
-  showToast(`Theme: ${labelMap[theme] || theme}`);
 }
 
 // ================= CLOCK =================
@@ -100,12 +141,12 @@ function updateClock() {
   const s = now.getSeconds();
 
   const ampm = h >= 12 ? "PM" : "AM";
-  let hh = h % 12 || 12;
+  let hh = is24HourFormat ? h : (h % 12 || 12);
 
   hoursEl.textContent = String(hh).padStart(2, "0");
   minutesEl.textContent = String(m).padStart(2, "0");
   secondsEl.textContent = String(s).padStart(2, "0");
-  ampmEl.textContent = ampm;
+  ampmEl.textContent = is24HourFormat ? "" : ampm;
 
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   dayNameEl.textContent = days[now.getDay()];
@@ -222,6 +263,29 @@ function stopRinger() {
 }
 
 // ================= WORLD CLOCKS =================
+async function fetchWeather(city) {
+  try {
+    const response = await fetch(
+      `https://wttr.in/${city}?format=j1`
+    );
+
+    const data = await response.json();
+
+    return {
+      temperature: data.current_condition[0].temp_C,
+      icon: data.current_condition[0].weatherIconUrl[0].value,
+      condition: data.current_condition[0].weatherDesc[0].value
+    };
+  } catch (error) {
+    console.error("Weather fetch failed:", error);
+
+    return {
+      temperature: "--",
+      icon: "",
+      condition: "clear"
+    };
+  }
+}
 function toggleWorldClockModal() {
   if (worldModal.classList.contains("hidden")) {
     worldModal.classList.remove("hidden");
@@ -300,7 +364,24 @@ if (worldSearchInput) {
     renderCountryOptions(filtered);
   });
 }
+function getWeatherEmoji(condition, isDay) {
+  const weather = condition.toLowerCase();
 
+  if (weather.includes("clear")) {
+    return isDay ? "☀️" : "🌙";
+  }
+
+  if (weather.includes("cloud")) {
+    return isDay ? "⛅" : "☁️";
+  }
+
+  if (weather.includes("rain")) return "🌧️";
+  if (weather.includes("storm")) return "⛈️";
+  if (weather.includes("snow")) return "❄️";
+  if (weather.includes("mist")) return "🌫️";
+
+  return isDay ? "🌤️" : "🌌";
+}
 function addCountryClock(name, offset, flag) {
   const alreadyExists = worldClocks.some(item => item.name === name);
   if (alreadyExists) {
@@ -324,21 +405,49 @@ function renderWorldClocks() {
     return;
   }
 
-  worldClocks.forEach((clock, index) => {
+  worldClocks.forEach(async (clock, index) => {
+    if (!weatherCache[clock.name]) {
+      weatherCache[clock.name] = await fetchWeather(clock.name);
+    }
+
+    const weather = weatherCache[clock.name];
     const row = document.createElement("div");
     row.className = "world-clock-row";
     row.innerHTML = `
       <div class="world-clock-left">
         <img src="${clock.flag}" alt="${clock.name}" class="flag-img" loading="lazy" />
         <div>
-          <div class="world-city-name">${clock.name}</div>
+          <div class="world-city-name">
+            ${clock.name}
+            <span class="time-of-day-badge" data-offset="${clock.offset}"></span>
+          </div>
           <div class="world-offset-label">${clock.offset}</div>
         </div>
       </div>
       <div class="world-clock-right">
-        <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">00:00:00</span>
-        <button class="remove-btn" onclick="removeWorldClock(${index})" title="Remove">&times;</button>
-      </div>
+  <div class="world-time-weather">
+    <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">
+      00:00:00
+    </span>
+
+    <div class="world-weather-inline">
+  <span class="weather-emoji">
+    ${getWeatherEmoji(
+      weather.condition || "clear",
+      new Date().getHours() >= 6 && new Date().getHours() < 18
+    )}
+  </span>
+
+  <span class="weather-temp">
+    ${weather.temperature}°C
+  </span>
+  </div>
+  </div>
+
+  <button class="remove-btn" onclick="removeWorldClock(${index})" title="Remove">
+    &times;
+  </button>
+</div>
     `;
     container.appendChild(row);
   });
@@ -350,8 +459,59 @@ function removeWorldClock(index) {
   renderWorldClocks();
 }
 
+function getTimeOfDayInfo(hour) {
+  if (hour >= 5 && hour < 12) {
+    return {
+      label: "Morning",
+      emoji: "🌅",
+      class: "tod-morning"
+    };
+  } else if (hour >= 12 && hour < 16) {
+    return {
+      label: "Afternoon",
+      emoji: "☀️",
+      class: "tod-afternoon"
+    };
+  } else if (hour >= 16 && hour < 19) {
+    return {
+      label: "Evening",
+      emoji: "🌇",
+      class: "tod-evening"
+    };
+  } else {
+    return {
+      label: "Night",
+      emoji: "🌙",
+      class: "tod-night"
+    };
+  }
+}
+
 function tickWorldClocks() {
   const liveNodes = document.querySelectorAll(".ticking-world-time");
+  const badgeNodes = document.querySelectorAll(".time-of-day-badge");
+
+  badgeNodes.forEach(node => {
+    const offsetStr = node.getAttribute("data-offset");
+    const now = new Date();
+    const utcTimeMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+
+    let mathematicalHoursOffset = 0;
+    if (offsetStr.includes("+") || offsetStr.includes("-")) {
+      const modifier = offsetStr.includes("+") ? 1 : -1;
+      const cleanSegments = offsetStr.replace("UTC", "").replace("+", "").replace("-", "").split(":");
+      const hoursSegment = parseInt(cleanSegments[0]) || 0;
+      const minutesSegment = parseInt(cleanSegments[1]) || 0;
+      mathematicalHoursOffset = modifier * (hoursSegment + (minutesSegment / 60));
+    }
+
+    const targetedTime = new Date(utcTimeMs + (3600000 * mathematicalHoursOffset));
+    const hour = targetedTime.getHours();
+    const info = getTimeOfDayInfo(hour);
+
+    node.textContent = `${info.emoji} ${info.label}`;
+    node.className = `time-of-day-badge ${info.class}`;
+  });
 
   liveNodes.forEach(node => {
     const offsetStr = node.getAttribute("data-offset");
@@ -373,7 +533,7 @@ function tickWorldClocks() {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: true
+      hour12: !is24HourFormat
     });
   });
 }
@@ -393,17 +553,30 @@ function renderHistoryLogs() {
     .join("");
 }
 
-function addHistoryLog(text) {
-  historyLogs.unshift({ text });
-  if (historyLogs.length > 50) historyLogs.pop();
-  localStorage.setItem("clock_historyLogs", JSON.stringify(historyLogs));
-}
+ function toggleDarkMode() {
+    const isLight = document.body.classList.toggle('light-mode');
+    document.querySelector('.dark-mode-btn').textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
+    localStorage.setItem('lightMode', isLight);
+  }
 
-function toggleHistoryLogs() {
-  const logs = document.getElementById("history-logs");
-  if (!logs) return;
-  logs.classList.toggle("hidden");
-  if (historyHeader) historyHeader.classList.toggle("open");
+  if (localStorage.getItem('lightMode') === 'true') {
+    document.body.classList.add('light-mode');
+    document.querySelector('.dark-mode-btn').textContent = '🌙 Dark Mode';
+  } 
+function clearAlarm() {
+
+  localStorage.removeItem(
+    "alarmTime"
+  );
+
+  alarmTime = null;
+
+  alarmTriggered = false;
+
+  alarmStatus.textContent =
+    "Not Set";
+
+  showToast("Alarm cleared");
 }
 
 // ================= TIMEZONE DROPDOWN =================
@@ -554,4 +727,17 @@ function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text;
   return div.innerHTML;
+}
+
+// ================= DARK MODE =================
+function applyDarkMode(enabled) {
+  isDarkMode = enabled;
+  document.body.classList.toggle("dark-mode", enabled);
+  const btn = document.getElementById("dark-mode-toggle");
+  if (btn) btn.textContent = enabled ? "☀️" : "🌙";
+  localStorage.setItem("clockDarkMode", enabled);
+}
+
+function toggleDarkMode() {
+  applyDarkMode(!isDarkMode);
 }

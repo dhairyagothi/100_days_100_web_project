@@ -7,14 +7,30 @@
 </head>
 <body>
 
+  <a href="../../index.html" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0,0,0,0.15);color:#0b1220;">← Back to Home</a>
+
   <div class="container">
 
     <h1>🛡️ ScamShield Lite</h1>
     <p class="subtitle">Detect suspicious SMS messages instantly</p>
 
-    <textarea id="smsInput" placeholder="Paste your SMS here..."></textarea>
+    <textarea id="smsInput" placeholder="Paste your SMS here..." maxlength="500"></textarea>
+    
+    <div class="counter-container">
+      <span id="charCount">0</span> / 500 characters
+    </div>
 
-    <button onclick="analyzeSMS()">Analyze Message</button>
+    <div class="templates-section">
+      <p class="templates-title">Try Quick Templates:</p>
+      <div class="templates-grid">
+        <button class="template-btn scam" onclick="useTemplate(1)">🚨 Fake Bank</button>
+        <button class="template-btn reward" onclick="useTemplate(2)">🎁 Fake Reward</button>
+        <button class="template-btn otp" onclick="useTemplate(3)">🔐 OTP Alert</button>
+        <button class="template-btn safe" onclick="useTemplate(4)">💬 Safe Chat</button>
+      </div>
+    </div>
+
+    <button class="analyze-btn" onclick="analyzeSMS()">Analyze Message</button>
 
     <div class="output">
 

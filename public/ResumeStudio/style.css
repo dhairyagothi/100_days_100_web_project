@@ -1745,8 +1745,14 @@ body.dark footer { background: #0a0d1a; border-top-color: #1a1e30; color: #2e355
         background: white !important;
         color: black !important;
     }
+
+    .modern-section, .classic-section, .minimal-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
 }
 
+/* Final Dark Mode Overrides for Resume Preview */
 body.dark #resumePreview {
     background-color: #ffffff !important;
     color: #1e293b !important;
@@ -1755,61 +1761,6 @@ body.dark #resumePreview {
 body.dark .modern-sidebar-col {
     background-color: #f8fafc !important;
 }
-/* ATS Score Box */
-#atsScoreBox {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    border-radius: 10px;
-    background: #ffffff;
-    border: 1.5px solid #cfe8f5;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-#atsScoreBox h3 {
-    color: #0077b6;
-    margin-bottom: 0.8rem;
-}
-
-#atsScore {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #00b4d8;
-    margin-bottom: 1rem;
-}
-
-.ats-feedback h4 {
-    margin: 0.8rem 0 0.4rem;
-    color: #0077b6;
-    font-size: 0.9rem;
-}
-
-.ats-feedback ul {
-    padding-left: 1.2rem;
-}
-
-.ats-feedback li {
-    margin-bottom: 0.35rem;
-    font-size: 0.85rem;
-    line-height: 1.5;
-}
-
-/* Dark mode ATS */
-body.dark #atsScoreBox {
-    background: #1e2235;
-    border-color: #2e3350;
-}
-
-body.dark #atsScoreBox h3,
-body.dark .ats-feedback h4 {
-    color: #00b4d8;
-}
-
-body.dark #atsScore {
-    color: #4dd0e1;
-}
-
-body.dark .ats-feedback li {
-    color: #d0d5e8;
 
 body.dark #resumePreview h1,
 body.dark #resumePreview h2,

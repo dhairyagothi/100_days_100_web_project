@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Dice Roller</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-page:       #f0f0f0;
+            --bg-card:       #ffffff;
+            --bg-controls:   #f5f5f5;
+            --bg-stats:      #f5f5f5;
+            --text-primary:  #111111;
+            --text-secondary:#555555;
+            --text-label:    #333333;
+            --border:        #dddddd;
+            --stat-bg:       #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
+            --shadow-md: 0 8px 24px rgba(0,0,0,.12);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-page:       #000000;
+            --bg-card:       #111111;
+            --bg-controls:   #1e1e1e;
+            --bg-stats:      #1e1e1e;
+            --text-primary:  #f0f0f0;
+            --text-secondary:#aaaaaa;
+            --text-label:    #cccccc;
+            --border:        #333333;
+            --stat-bg:       #2a2a2a;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,.4);
+            --shadow-md: 0 8px 24px rgba(0,0,0,.5);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,.6);
+        }
+
+        body {
+            background: var(--bg-page);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-top: 70px; /* room for fixed toggle */
+            transition: background 0.3s ease;
+        }
+
+        /* ── Fixed page-level theme toggle (top-right of viewport) ── */
+        .theme-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 999;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            cursor: pointer;
+            font-size: 1.25em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+        .theme-toggle:hover { transform: scale(1.08); }
+
+        .container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            animation: slideUp 0.6s ease-out;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Header: icon + title SIDE BY SIDE ── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 36px;
+        }
+
+        .header-icon {
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+        }
+
+        .header-text { display: flex; flex-direction: column; gap: 4px; }
+
+        .header h1 {
+            font-size: 2.4em;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(90deg,
+                #ff0000, #ff7700, #ffdd00,
+                #00cc44, #0088ff, #6600cc, #cc00cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.82em;
+        }
+
+        /* ── Controls ── */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 28px;
+            background: var(--bg-controls);
+            padding: 18px;
+            border-radius: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .control-group { display: flex; flex-direction: column; gap: 8px; }
+
+        .control-group label {
+            font-weight: 700;
+            font-size: 0.8em;
+            color: var(--text-label);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .control-group input {
+            padding: 10px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95em;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        .control-group input:focus { outline: none; border-color: #888; }
+
+        .color-picker { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+
+        .color-option {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.25s ease;
+        }
+        .color-option:hover { transform: scale(1.12); }
+        .color-option.selected {
+            border-color: #333;
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px #333;
+        }
+        [data-theme="dark"] .color-option.selected {
+            border-color: #fff;
+            box-shadow: 0 0 0 2px #111, 0 0 0 4px #fff;
+        }
+
+        /* ── Buttons ── */
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 26px 0;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            font-size: 0.92em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Roll Dice & Reset Stats — equal width, flanking the sound btn */
+        .btn-roll,
+        .btn-reset {
+            flex: 1;          /* both grow equally */
+            padding: 15px 10px;
+        }
+
+        /* Roll Dice — black bg, white text */
+        .btn-roll {
+            background: #222222;
+            color: #ffffff;
+        }
+        /* dark mode: cream bg, black text */
+        [data-theme="dark"] .btn-roll { background: #f5f0e8; color: #111111; }
+        .btn-roll:hover   { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .btn-roll:active  { transform: translateY(0); }
+        .btn-roll:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+        /* Reset Stats — black bg, white text */
+        .btn-reset {
+            background: #111111;
+            color: #ffffff;
+        }
+        [data-theme="dark"] .btn-reset { background: #f5f0e8; color: #111111; }
+        .btn-reset:hover { opacity: 0.85; transform: translateY(-1px); }
+
+        /* Sound toggle — fixed square, centred between the two */
+        .btn-sound {
+            flex: 0 0 52px;   /* fixed width, no grow/shrink */
+            width: 52px;
+            height: 52px;
+            padding: 0;
+            font-size: 1.2em;
+            background: #e8e8e8;
+            color: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        [data-theme="dark"] .btn-sound { background: #2a2a2a; color: #cccccc; }
+        .btn-sound:hover { background: var(--border); }
+
+        /* ── Dice SVG faces ── */
+        .dice-display {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 32px 0;
+            flex-wrap: wrap;
+            min-height: 120px;
+        }
+
+        .dice-wrap {
+            width: 110px;
+            height: 110px;
+        }
+
+        .dice-wrap.rolling svg {
+            animation: rollDice 0.65s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        @keyframes rollDice {
+            0%   { transform: rotate(0deg) scale(1); }
+            20%  { transform: rotate(-25deg) scale(1.06); }
+            50%  { transform: rotate(370deg) scale(0.95); }
+            75%  { transform: rotate(340deg) scale(1.03); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .dice-wrap svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,.18));
+        }
+
+        /* ── Result message ── */
+        .result-message {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: var(--text-primary);
+            opacity: 0;
+            min-height: 26px;
+        }
+        .result-message.show { animation: fadeUp 0.45s ease forwards; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Stats ── */
+        .stats-section {
+            background: var(--bg-stats);
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 26px;
+            transition: background 0.3s ease;
+        }
+
+        .stats-title {
+            font-weight: 700;
+            font-size: 0.82em;
+            color: var(--text-label);
+            margin-bottom: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .stat-item {
+            background: var(--stat-bg);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .stat-label { font-size: 0.72em; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
+        .stat-value { font-size: 1.5em; font-weight: 800; color: var(--text-primary); margin-top: 2px; }
+
+        .distribution { display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; }
+        .dist-item {
+            background: var(--stat-bg);
+            padding: 8px 6px 10px;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .dist-number  { font-weight: 700; color: var(--text-primary); font-size: 0.9em; margin-bottom: 6px; }
+        .dist-tally   { display: flex; align-items: center; justify-content: center; min-height: 28px; }
+        .dist-tally svg line { stroke: var(--text-primary); }
+        .dist-zero    { font-size: 0.65em; color: var(--text-secondary); opacity: 0.4; }
+
+        @media (max-width: 520px) {
+            .container  { padding: 24px; }
+            .header h1  { font-size: 1.8em; }
+            .header-icon { width: 44px; height: 44px; }
+            .dice-wrap  { width: 90px; height: 90px; }
+            .controls   { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Fixed page-level toggle (top-right of screen) -->
+<button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">🌙</button>
+
+<div class="container">
+
+    <!-- Header: dice icon + rainbow title side by side -->
+    <div class="header">
+        <svg class="header-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="56" height="56" rx="12" ry="12" fill="white" stroke="#222" stroke-width="3"/>
+            <circle cx="20" cy="20" r="5" fill="#111"/>
+            <circle cx="44" cy="20" r="5" fill="#111"/>
+            <circle cx="32" cy="32" r="5" fill="#111"/>
+            <circle cx="20" cy="44" r="5" fill="#111"/>
+            <circle cx="44" cy="44" r="5" fill="#111"/>
+        </svg>
+        <div class="header-text">
+            <h1>Dice Roller</h1>
+            <p>Roll, track, and enjoy your lucky numbers</p>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <div class="control-group">
+            <label for="diceCount">Number of Dice</label>
+            <input type="number" id="diceCount" min="1" max="10" value="1">
+        </div>
+        <div class="control-group">
+            <label>Dice Color</label>
+            <div class="color-picker">
+                <div class="color-option selected" data-color="#FFB3BA" style="background:#FFB3BA" title="Pastel Pink"></div>
+                <div class="color-option"          data-color="#FFDBB5" style="background:#FFDBB5" title="Pastel Peach"></div>
+                <div class="color-option"          data-color="#FFFFBA" style="background:#FFFFBA" title="Pastel Yellow"></div>
+                <div class="color-option"          data-color="#BAFFC9" style="background:#BAFFC9" title="Pastel Green"></div>
+                <div class="color-option"          data-color="#BAE1FF" style="background:#BAE1FF" title="Pastel Blue"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <button class="btn-roll"  id="rollBtn">Roll Dice</button>
+        <button class="btn-sound" id="soundToggle" title="Toggle sound">🔊</button>
+        <button class="btn-reset" id="resetBtn">Reset Stats</button>
+    </div>
+
+    <!-- Dice faces -->
+    <div class="dice-display" id="diceDisplay"></div>
+
+    <!-- Result -->
+    <div class="result-message" id="resultMessage"></div>
+
+    <!-- Statistics -->
+    <div class="stats-section">
+        <div class="stats-title">Statistics</div>
+        <div class="stats-grid">
+            <div class="stat-item"><div class="stat-label">Total Rolls</div><div class="stat-value" id="totalRolls">0</div></div>
+            <div class="stat-item"><div class="stat-label">Average</div><div class="stat-value" id="avgRoll">0</div></div>
+            <div class="stat-item"><div class="stat-label">Min Roll</div><div class="stat-value" id="minRoll">—</div></div>
+            <div class="stat-item"><div class="stat-label">Max Roll</div><div class="stat-value" id="maxRoll">—</div></div>
+        </div>
+        <div class="stats-title">Distribution</div>
+        <div class="distribution" id="distribution"></div>
+    </div>
+</div>
+
+<audio id="soundSingle" src="dice-single.mp3" preload="auto"></audio>
+<audio id="soundMulti"  src="dice-multi.mp3"  preload="auto"></audio>
+
+<script>
+    // Pip positions for each face value
+    const PIP_LAYOUTS = {
+        1: [[50,50]],
+        2: [[28,28],[72,72]],
+        3: [[28,28],[50,50],[72,72]],
+        4: [[28,28],[72,28],[28,72],[72,72]],
+        5: [[28,28],[72,28],[50,50],[28,72],[72,72]],
+        6: [[28,25],[72,25],[28,50],[72,50],[28,75],[72,75]]
+    };
+
+    function buildDiceSVG(value, color) {
+        const isDark = document.documentElement.dataset.theme === 'dark';
+        // Always show the chosen pastel color as the face — dark or light
+        const face   = value ? (color || '#ffffff') : (isDark ? '#2a2a2a' : '#f0f0f0');
+        const stroke = isDark ? '#555' : '#bbbbbb';
+        // Pips: always dark so they show on the pastel background
+        const pip    = '#222222';
+        const pips   = value
+            ? (PIP_LAYOUTS[value] || []).map(([cx,cy]) => `<circle cx="${cx}" cy="${cy}" r="7" fill="${pip}"/>`).join('')
+            : `<text x="50" y="56" text-anchor="middle" font-size="30" fill="${isDark?'#555':'#ccc'}" font-family="sans-serif">?</text>`;
+        return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="94" height="94" rx="16" ry="16"
+                  fill="${face}" stroke="${stroke}" stroke-width="3"/>
+            ${pips}
+        </svg>`;
+    }
+
+    // ── State ──
+    const state = {
+        diceCount: 1,
+        diceColor: '#FFB3BA',
+        isRolling: false,
+        soundEnabled: true,
+        rolls: [],
+        distribution: {1:0,2:0,3:0,4:0,5:0,6:0}
+    };
+
+    const soundSingle = document.getElementById('soundSingle');
+    const soundMulti  = document.getElementById('soundMulti');
+
+    function playDiceSound(count) {
+        if (!state.soundEnabled) return;
+        // 1 die → single roll sound; 2-10 dice → multi-dice sound
+        const audio = count === 1 ? soundSingle : soundMulti;
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+    }
+
+    // ── Theme toggle ──
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const isDark = document.documentElement.dataset.theme === 'dark';
+        document.documentElement.dataset.theme = isDark ? 'light' : 'dark';
+        document.getElementById('themeToggle').textContent = isDark ? '🌙' : '☀️';
+        renderDice();
+    });
+
+    // ── Dice count ──
+    document.getElementById('diceCount').addEventListener('change', e => {
+        state.diceCount = Math.max(1, Math.min(10, parseInt(e.target.value) || 1));
+        state.rolls = [];
+        renderDice();
+    });
+
+    // ── Colour picker ──
+    document.querySelectorAll('.color-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            state.diceColor = opt.dataset.color;
+            renderDice();
+        });
+    });
+
+    // ── Sound toggle ──
+    document.getElementById('soundToggle').addEventListener('click', () => {
+        state.soundEnabled = !state.soundEnabled;
+        document.getElementById('soundToggle').textContent = state.soundEnabled ? '🔊' : '🔇';
+    });
+
+    // ── Reset ──
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        state.rolls = [];
+        state.distribution = {1:0,2:0,3:0,4:0,5:0,6:0};
+        updateStats();
+        renderDice();
+        const rm = document.getElementById('resultMessage');
+        rm.classList.remove('show');
+        rm.textContent = '';
+    });
+
+    // ── Roll ──
+    document.getElementById('rollBtn').addEventListener('click', rollDice);
+
+    function renderDice() {
+        const display = document.getElementById('diceDisplay');
+        display.innerHTML = '';
+        for (let i = 0; i < state.diceCount; i++) {
+            const wrap = document.createElement('div');
+            wrap.className = 'dice-wrap';
+            wrap.id = `dice-${i}`;
+            wrap.innerHTML = buildDiceSVG(state.rolls[i] || null, state.diceColor);
+            display.appendChild(wrap);
+        }
+    }
+
+    function rollDice() {
+        if (state.isRolling) return;
+        state.isRolling = true;
+        document.getElementById('rollBtn').disabled = true;
+
+        const rm = document.getElementById('resultMessage');
+        rm.classList.remove('show');
+
+        renderDice();
+
+        const wraps = document.querySelectorAll('.dice-wrap');
+        wraps.forEach(w => { w.classList.remove('rolling'); void w.offsetWidth; w.classList.add('rolling'); });
+
+        playDiceSound(state.diceCount);
+
+        setTimeout(() => {
+            const newRolls = [];
+            let total = 0;
+            wraps.forEach(wrap => {
+                const r = Math.floor(Math.random() * 6) + 1;
+                newRolls.push(r);
+                total += r;
+                state.distribution[r]++;
+                wrap.innerHTML = buildDiceSVG(r, state.diceColor);
+            });
+            state.rolls = newRolls;
+            updateStats();
+
+            rm.textContent = newRolls.length === 1
+                ? `You rolled a ${newRolls[0]}!`
+                : `Rolled: ${newRolls.join(', ')}  —  Total: ${total}`;
+            void rm.offsetWidth;
+            rm.classList.add('show');
+
+            state.isRolling = false;
+            document.getElementById('rollBtn').disabled = false;
+        }, 650);
+    }
+
+    // ── Tally mark SVG builder ──────────────────────────────────────────────────
+    // Renders count % 10 as classic tally marks (groups of 5 with diagonal cross).
+    // Returns an SVG string sized to fit the marks.
+    function buildTallySVG(count) {
+        const n = count % 10;
+        if (n === 0) return '<span class="dist-zero">—</span>';
+
+        const lines = [];
+        const y1 = 3, y2 = 25;           // top / bottom of each vertical stroke
+        const sp = 8;                      // spacing between strokes
+        let x = 6;
+
+        const fives     = Math.floor(n / 5);
+        const remainder = n % 5;
+
+        // Draw complete groups of 5
+        for (let g = 0; g < fives; g++) {
+            const gx = x;
+            for (let i = 0; i < 4; i++) {
+                lines.push(`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke-width="2" stroke-linecap="round"/>`);
+                x += sp;
+            }
+            // diagonal cross-stroke
+            lines.push(`<line x1="${gx - 3}" y1="${y2 + 3}" x2="${x + 1}" y2="${y1 - 3}" stroke-width="2" stroke-linecap="round"/>`);
+            x += 10;   // gap after the group
+        }
+
+        // Draw leftover individual marks
+        for (let i = 0; i < remainder; i++) {
+            lines.push(`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke-width="2" stroke-linecap="round"/>`);
+            x += sp;
+        }
+
+        const w = x + 4;
+        return `<svg viewBox="0 0 ${w} 30" width="${w}" height="28" style="overflow:visible">${lines.join('')}</svg>`;
+    }
+
+    function updateStats() {
+        const n   = state.rolls.length;
+        const sum = state.rolls.reduce((a,b) => a+b, 0);
+        document.getElementById('totalRolls').textContent = n;
+        document.getElementById('avgRoll').textContent    = n ? (sum/n).toFixed(2) : '0';
+        document.getElementById('minRoll').textContent    = n ? Math.min(...state.rolls) : '—';
+        document.getElementById('maxRoll').textContent    = n ? Math.max(...state.rolls) : '—';
+
+        const dist = document.getElementById('distribution');
+        dist.innerHTML = '';
+        for (let i = 1; i <= 6; i++) {
+            dist.innerHTML += `<div class="dist-item">
+                <div class="dist-number">${i}</div>
+                <div class="dist-tally">${buildTallySVG(state.distribution[i])}</div>
+            </div>`;
+        }
+    }
+
+    renderDice();
+    updateStats();
+</script>
+</body>
+</html>

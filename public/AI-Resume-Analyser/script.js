@@ -184,3 +184,41 @@ function generateChart(score) {
 }
 
 generateAnalysis();
+const themeToggle =
+  document.getElementById("themeToggle");
+
+const savedTheme =
+  localStorage.getItem("resumeTheme");
+
+if (savedTheme === "light") {
+
+  document.body.classList.add("light-mode");
+
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+
+  document.body.classList.toggle("light-mode");
+
+  if (
+    document.body.classList.contains("light-mode")
+  ) {
+
+    localStorage.setItem(
+      "resumeTheme",
+      "light"
+    );
+
+    themeToggle.textContent = "☀️";
+
+  } else {
+
+    localStorage.setItem(
+      "resumeTheme",
+      "dark"
+    );
+
+    themeToggle.textContent = "🌙";
+  }
+});
