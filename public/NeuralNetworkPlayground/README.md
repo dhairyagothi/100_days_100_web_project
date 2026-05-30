@@ -30,6 +30,7 @@ An interactive neural network visualizer built with vanilla JavaScript and HTML5
 ## Screenshots
 
 ### Decision Boundary + Network Architecture
+
 The left canvas shows the decision boundary heatmap (blue = class 0, red = class 1) with data points overlaid. The right canvas visualizes the network graph with weight-colored connections.
 
 ## How It Works
