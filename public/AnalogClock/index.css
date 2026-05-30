@@ -1,678 +1,863 @@
-/* ══════════════════════════════════════════════
-   DESIGN TOKENS
-══════════════════════════════════════════════ */
+/* =========================
+   ENHANCED CHRONOS+ CSS
+========================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
 :root {
-    /* Dark theme (default) */
-    --bg-primary:       #0d0f1a;
-    --bg-secondary:     #141728;
-    --bg-glass:         rgba(255, 255, 255, 0.04);
-    --bg-glass-hover:   rgba(255, 255, 255, 0.08);
-    --border-glass:     rgba(255, 255, 255, 0.10);
-    --text-primary:     #f0f2ff;
-    --text-secondary:   #8892b0;
-    --text-muted:       #4a5568;
-    --accent:           #7c3aed;
-    --accent-glow:      rgba(124, 58, 237, 0.4);
-    --accent2:          #06b6d4;
-    --accent2-glow:     rgba(6, 182, 212, 0.35);
-    --accent3:          #f43f5e;
-    --accent3-glow:     rgba(244, 63, 94, 0.4);
-    --hand-hour:        #f0f2ff;
-    --hand-minute:      #c4b5fd;
-    --hand-second:      #f43f5e;
-    --ring-track:       rgba(255, 255, 255, 0.08);
-    --ring-fill:        #7c3aed;
-    --shadow-card:      0 20px 60px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
-    --shadow-glow:      0 0 40px var(--accent-glow);
-    --radius-card:      24px;
-    --transition-fast:  0.15s ease;
-    --transition-base:  0.3s ease;
-    --transition-slow:  0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --bg-color: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+
+  --card-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg: rgba(255, 255, 255, 0.08);
+
+  --accent-color: #6366f1;
+  --accent-hover: #4f46e5;
+
+  --shadow-1:
+    12px 12px 24px rgba(166, 180, 200, 0.25),
+    -12px -12px 24px rgba(255, 255, 255, 0.9);
+
+  --shadow-2:
+    inset 6px 6px 12px rgba(166, 180, 200, 0.22),
+    inset -6px -6px 12px rgba(255, 255, 255, 0.9);
+
+  --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  --clock-face: #f9fafb;
+  --clock-tick: #9ca3af;
+  --clock-tick-major: #111827;
+
+  --hour-hand: #111827;
+  --minute-hand: #374151;
+  --second-hand: #ef4444;
+
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
+
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-[data-theme="light"] {
-    --bg-primary:       #f0f2ff;
-    --bg-secondary:     #e4e8ff;
-    --bg-glass:         rgba(255, 255, 255, 0.6);
-    --bg-glass-hover:   rgba(255, 255, 255, 0.8);
-    --border-glass:     rgba(124, 58, 237, 0.15);
-    --text-primary:     #0d0f1a;
-    --text-secondary:   #4a5568;
-    --text-muted:       #8892b0;
-    --accent:           #7c3aed;
-    --hand-hour:        #1e1e2e;
-    --hand-minute:      #7c3aed;
-    --ring-track:       rgba(0,0,0,0.08);
-    --shadow-card:      0 20px 60px rgba(124,58,237,0.12), 0 1px 0 rgba(255,255,255,0.8) inset;
+/* =========================
+   DARK THEME
+========================= */
+
+body.dark-theme {
+  --bg-color: #080c14;
+
+  --text-primary: #f9fafb;
+  --text-secondary: #94a3b8;
+
+  --card-bg: rgba(15, 23, 42, 0.85);
+
+  --glass-bg: rgba(255, 255, 255, 0.05);
+
+  --shadow-1:
+    14px 14px 30px rgba(0, 0, 0, 0.55), -12px -12px 30px rgba(25, 35, 55, 0.28);
+
+  --shadow-2:
+    inset 6px 6px 12px rgba(0, 0, 0, 0.55),
+    inset -6px -6px 12px rgba(25, 35, 55, 0.28);
+
+  --clock-face: #0f172a;
+  --clock-tick: #475569;
+  --clock-tick-major: #f8fafc;
+
+  --hour-hand: #ffffff;
+  --minute-hand: #d1d5db;
+  --second-hand: #22d3ee;
 }
 
-/* ══════════════════════════════════════════════
-   RESET & BASE
-══════════════════════════════════════════════ */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* =========================
+   RESET
+========================= */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html {
-    height: 100%;
-    scroll-behavior: smooth;
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 body {
-    min-height: 100vh;
-    background: var(--bg-primary);
-    background-image:
-        radial-gradient(ellipse 80% 60% at 20% 20%, rgba(124,58,237,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(6,182,212,0.10) 0%, transparent 60%);
-    font-family: 'Inter', sans-serif;
-    color: var(--text-primary);
-    transition: background var(--transition-base), color var(--transition-base);
-    overflow-x: hidden;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  transition: var(--transition);
+  position: relative;
 }
 
-/* ══════════════════════════════════════════════
-   THEME TOGGLE
-══════════════════════════════════════════════ */
-#themeToggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 1px solid var(--border-glass);
-    background: var(--bg-glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    cursor: pointer;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--transition-base);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+/* =========================
+   ANIMATED BACKGROUND
+========================= */
+
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: -2;
 }
 
-#themeToggle:hover {
-    background: var(--bg-glass-hover);
-    transform: scale(1.1) rotate(20deg);
-    box-shadow: 0 0 20px var(--accent-glow);
+.gradient-orb {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.25;
+  animation: floatOrb 18s infinite ease-in-out;
 }
 
-/* ══════════════════════════════════════════════
-   MAIN LAYOUT
-══════════════════════════════════════════════ */
-#appContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 32px;
-    min-height: 100vh;
-    padding: 60px 32px 40px;
-    flex-wrap: wrap;
+.orb1 {
+  top: -120px;
+  left: -100px;
+  background: #6366f1;
 }
 
-/* ══════════════════════════════════════════════
-   PANELS (glass cards)
-══════════════════════════════════════════════ */
-#clockPanel,
-#timerPanel,
-#stopwatchPanel {
-    background: var(--bg-glass);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--radius-card);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: var(--shadow-card);
-    padding: 36px 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    transition: all var(--transition-base);
-    animation: panelIn 0.7s var(--transition-slow) both;
+.orb2 {
+  bottom: -120px;
+  right: -100px;
+  background: #06b6d4;
 }
 
-#clockPanel { animation-delay: 0s; }
-#timerPanel { animation-delay: 0.15s; }
-#stopwatchPanel { animation-delay: 0.3s; }
+@keyframes floatOrb {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
 
-#clockPanel:hover,
-#timerPanel:hover,
-#stopwatchPanel:hover {
-    box-shadow: var(--shadow-card), var(--shadow-glow);
-    border-color: rgba(124, 58, 237, 0.25);
+  50% {
+    transform: translateY(40px) translateX(20px);
+  }
+
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
 }
 
-@keyframes panelIn {
-    from { opacity: 0; transform: translateY(30px) scale(0.97); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+/* =========================
+   NAVBAR
+========================= */
+
+.glass-navbar {
+  backdrop-filter: blur(18px);
+  background: var(--glass-bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* ══════════════════════════════════════════════
-   PANEL HEADINGS
-══════════════════════════════════════════════ */
-#clockTitle, #timerTitle, #stopwatchTitle {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    position: relative;
-    padding-bottom: 10px;
+.brand-section h1 {
+  font-weight: 800;
+  font-size: 2rem;
+
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-#clockTitle::after, #timerTitle::after, #stopwatchTitle::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 32px;
-    height: 2px;
-    border-radius: 99px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
+.brand-section p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
-/* ══════════════════════════════════════════════
-   CLOCK WRAPPER + TICK MARKS
-══════════════════════════════════════════════ */
-#clockWrapper {
-    position: relative;
-    width: min(56vw, 380px);
-    height: min(56vw, 380px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* =========================
+   HERO BANNER
+========================= */
+
+.hero-banner {
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.12),
+    rgba(6, 182, 212, 0.12)
+  );
+
+  backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow: var(--shadow-dark);
 }
 
-#tickMarks {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    circle at top left,
+    rgba(255, 255, 255, 0.15),
+    transparent 45%
+  );
 }
+
+/* =========================
+   MAIN DASHBOARD
+========================= */
+
+.main-dashboard {
+  align-items: stretch;
+}
+
+/* =========================
+   MAIN CARDS
+========================= */
+
+.neumorphic-plate {
+  background: var(--card-bg);
+
+  backdrop-filter: blur(16px);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-1);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  transition: var(--transition);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.neumorphic-plate:hover {
+  transform: translateY(-4px);
+}
+
+/* =========================
+   LEFT LOCAL CLOCK
+========================= */
+
+.main-clock-section {
+  height: 100%;
+  min-height: 1180px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.main-clock-section .clock-frame {
+  width: 340px;
+  height: 340px;
+}
+
+/* =========================
+   RIGHT COLUMN
+========================= */
+
+.col-lg-5.d-flex.flex-column.gap-4 {
+  height: 1180px;
+}
+
+.timer-section,
+.alarm-section,
+.stopwatch-section {
+  flex: 1;
+}
+
+/* =========================
+   CLOCK BANNER
+========================= */
+
+.clock-banner {
+  width: 100%;
+  height: 180px;
+
+  background-size: cover;
+  background-position: center;
+
+  position: relative;
+}
+
+.clock-banner::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45),
+    rgba(0, 0, 0, 0.12)
+  );
+}
+
+.banner-overlay {
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================
+   CLOCK FRAME
+========================= */
+
+.clock-wrapper {
+  width: 320px;
+  max-width: 100%;
+}
+
+.clock-frame {
+  width: 320px;
+  height: 320px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #ffffff, #dbe3ee);
+
+  padding: 18px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.12),
+    var(--shadow-1);
+
+  margin: auto;
+
+  position: relative;
+}
+
+body.dark-theme .clock-frame {
+  background: linear-gradient(135deg, #1e293b, #020617);
+}
+
+.clock-face {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 50%;
+
+  position: relative;
+
+  background: var(--clock-face);
+
+  box-shadow: var(--shadow-2);
+
+  overflow: hidden;
+}
+
+/* =========================
+   GLASS EFFECT
+========================= */
+
+.clock-glass {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+
+  z-index: 20;
+}
+
+/* =========================
+   TICKS
+========================= */
 
 .tick {
-    position: absolute;
-    left: 50%;
-    bottom: 50%;
-    transform-origin: bottom center;
-    border-radius: 99px;
-    transform: translateX(-50%) rotate(calc(var(--i) * 30deg)) translateY(-47%);
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  left: calc(50% - 1px);
+  top: 0;
 }
 
-.tick-major {
-    width: 3px;
-    height: 14px;
-    background: var(--accent);
-    opacity: 0.9;
+.tick::before {
+  content: "";
+
+  position: absolute;
+  top: 10px;
+
+  width: 100%;
+  height: 8px;
+
+  border-radius: 4px;
+
+  background: var(--clock-tick);
 }
 
-.tick-minor {
-    width: 2px;
-    height: 8px;
-    background: var(--text-muted);
-    opacity: 0.6;
+.tick.major::before {
+  height: 16px;
+  width: 4px;
+  left: -1px;
+
+  background: var(--clock-tick-major);
 }
 
-/* ══════════════════════════════════════════════
-   ANALOG CLOCK FACE
-══════════════════════════════════════════════ */
-#clockContainer {
-    position: relative;
-    width: 86%;
-    height: 86%;
-    background: url(./clock.png) no-repeat center / contain;
-    border-radius: 50%;
-    box-shadow:
-        0 0 0 2px var(--border-glass),
-        0 8px 32px rgba(0,0,0,0.4),
-        0 0 60px var(--accent-glow);
-    transition: box-shadow var(--transition-base);
+/* =========================
+   HANDS
+========================= */
+
+.hand {
+  position: absolute;
+  transform-origin: bottom center;
+  z-index: 12;
 }
 
-#clockContainer:hover {
-    box-shadow:
-        0 0 0 2px rgba(124,58,237,0.4),
-        0 8px 48px rgba(0,0,0,0.5),
-        0 0 80px var(--accent-glow);
+.hand.hour {
+  width: 10px;
+  height: 24%;
+
+  left: calc(50% - 5px);
+  bottom: 50%;
+
+  border-radius: 20px;
+
+  background: var(--hour-hand);
 }
 
-/* ── Clock Hands ── */
-#hour, #minute, #second {
-    position: absolute;
-    border-radius: 99px;
-    transform-origin: bottom center;
-    left: 50%;
-    transition: transform 0.25s cubic-bezier(0.4, 2.2, 0.6, 1);
+.hand.minute {
+  width: 6px;
+  height: 36%;
+
+  left: calc(50% - 3px);
+  bottom: 50%;
+
+  border-radius: 20px;
+
+  background: var(--minute-hand);
 }
 
-#hour {
-    width: 6px;
-    height: 26%;
-    bottom: 50%;
-    margin-left: -3px;
-    background: var(--hand-hour);
-    box-shadow: 0 0 12px rgba(240,242,255,0.4);
+.hand.second {
+  width: 2px;
+  height: 45%;
+
+  left: calc(50% - 1px);
+  bottom: 50%;
+
+  background: var(--second-hand);
+
+  z-index: 13;
 }
 
-#minute {
-    width: 4px;
-    height: 34%;
-    bottom: 50%;
-    margin-left: -2px;
-    background: var(--hand-minute);
-    box-shadow: 0 0 12px rgba(196,181,253,0.5);
+.hand.second::before {
+  content: "";
+
+  position: absolute;
+
+  width: 10px;
+  height: 10px;
+
+  background: var(--second-hand);
+
+  border-radius: 50%;
+
+  left: calc(50% - 5px);
+
+  bottom: 6px;
 }
 
-#second {
-    width: 2px;
-    height: 42%;
-    bottom: 50%;
-    margin-left: -1px;
-    background: var(--hand-second);
-    box-shadow: 0 0 10px var(--accent3-glow);
-    transition: transform 0.1s linear;
+/* =========================
+   CENTER PIN
+========================= */
+
+.center-pin {
+  width: 16px;
+  height: 16px;
+
+  background: radial-gradient(circle at top left, #fff, #9ca3af);
+
+  border-radius: 50%;
+
+  position: absolute;
+
+  top: calc(50% - 8px);
+  left: calc(50% - 8px);
+
+  z-index: 15;
 }
 
-/* Center jewel */
-#centerDot {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #fff, var(--accent));
-    box-shadow: 0 0 0 3px var(--bg-secondary), 0 0 16px var(--accent-glow);
-    z-index: 10;
+/* =========================
+   DIGITAL DISPLAY
+========================= */
+
+.digital-readout {
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 1.6rem;
+  font-weight: 700;
+
+  color: var(--accent-color);
+
+  background: var(--card-bg);
+
+  border-radius: 16px;
+
+  padding: 12px 22px;
+
+  margin-top: 20px;
+
+  box-shadow: var(--shadow-2);
+
+  text-align: center;
 }
 
-/* ══════════════════════════════════════════════
-   DIGITAL TIME + DATE
-══════════════════════════════════════════════ */
-#digitalTime {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
-    transition: color var(--transition-base);
+.clock-date {
+  margin-top: 12px;
+
+  color: var(--text-secondary);
+
+  font-weight: 600;
 }
 
-#digitalDate {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    letter-spacing: 0.06em;
-    font-weight: 500;
+/* =========================
+   TIMER
+========================= */
+
+.timer-section {
+  max-height: 360px;
 }
 
-/* ══════════════════════════════════════════════
-   COUNTDOWN: SVG PROGRESS RING
-══════════════════════════════════════════════ */
-#progressRingWrapper {
-    position: relative;
-    width: min(55vw, 220px);
-    height: min(55vw, 220px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#progressRing {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-}
-
-.ring-track {
-    fill: none;
-    stroke: var(--ring-track);
-    stroke-width: 10;
-}
-
-.ring-fill {
-    fill: none;
-    stroke: url(#ringGradient);
-    stroke-width: 10;
-    stroke-linecap: round;
-    stroke-dasharray: 553;   /* 2π × 88 */
-    stroke-dashoffset: 553;
-    transition: stroke-dashoffset 1s linear;
-    filter: drop-shadow(0 0 6px var(--accent-glow));
-}
-
-/* Gradient def is injected by JS */
 #countdownDisplay {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.4rem, 3.5vw, 2rem);
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.05em;
-    z-index: 1;
-    text-align: center;
-    line-height: 1;
+  font-size: 2rem;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
 }
 
-#timerStatusLabel {
-    position: absolute;
-    bottom: 14px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
+.timer-display-box {
+  padding: 18px;
+
+  border-radius: 24px;
+
+  background: var(--card-bg);
+
+  box-shadow: var(--shadow-2);
+
+  text-align: center;
 }
 
-#stopwatchDisplayWrapper {
-    position: relative;
-    width: min(55vw, 220px);
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    border-radius: 50%;
-    background:
-        radial-gradient(circle at 30% 30%, rgba(124,58,237,0.2), transparent 55%),
-        radial-gradient(circle at 70% 70%, rgba(6,182,212,0.16), transparent 50%),
-        var(--bg-glass);
-    border: 1px solid var(--border-glass);
-    box-shadow: inset 0 0 28px rgba(255,255,255,0.04), 0 0 32px var(--accent-glow);
-    overflow: hidden;
+/* =========================
+   STOPWATCH
+========================= */
+
+.stopwatch-section {
+  max-height: 360px;
 }
 
-#stopwatchDisplayWrapper::before {
-    content: '';
-    position: absolute;
-    inset: 14px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.08);
+.stopwatch-display h1 {
+  font-size: 2rem;
+  line-height: 1.1;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
 }
 
-#stopwatchDisplay {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.5rem, 3.3vw, 2.2rem);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--text-primary);
-    text-shadow: 0 0 24px var(--accent-glow);
-    z-index: 1;
+.stopwatch-section .btn {
+  padding: 10px 14px;
+  font-size: 0.9rem;
 }
 
-#stopwatchStatusLabel {
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    z-index: 1;
+/* =========================
+   INPUTS
+========================= */
+
+.form-control,
+.form-select {
+  background: var(--card-bg) !important;
+
+  border: none;
+
+  color: var(--text-primary) !important;
+
+  border-radius: 16px;
+
+  min-height: 52px;
+
+  box-shadow: var(--shadow-2);
+
+  padding-left: 16px;
 }
 
-/* ══════════════════════════════════════════════
-   TIME INPUTS
-══════════════════════════════════════════════ */
-#timeInput {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.form-control:focus,
+.form-select:focus {
+  border: none;
+
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
 }
 
-.time-input-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-}
-
-.time-label {
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-}
-
-.colon-sep {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    margin-top: 12px;
-    animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.2; }
-}
-
-input[type="number"] {
-    width: 68px;
-    padding: 10px 8px;
-    font-size: 1.1rem;
-    font-family: 'Orbitron', monospace;
-    font-weight: 700;
-    text-align: center;
-    background: var(--bg-glass);
-    border: 1px solid var(--border-glass);
-    border-radius: 12px;
-    color: var(--text-primary);
-    outline: none;
-    transition: all var(--transition-fast);
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button { display: none; }
-
-input[type="number"]:focus {
-    border-color: var(--accent);
-    background: var(--bg-glass-hover);
-    box-shadow: 0 0 0 3px var(--accent-glow), inset 0 0 12px rgba(124,58,237,0.06);
-}
-
-/* ══════════════════════════════════════════════
+/* =========================
    BUTTONS
-══════════════════════════════════════════════ */
+========================= */
+
 .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 28px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: 0.04em;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all var(--transition-base);
-    position: relative;
-    overflow: hidden;
+  border-radius: 16px !important;
+
+  font-weight: 600;
+
+  transition: var(--transition);
 }
 
-.btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.1);
-    opacity: 0;
-    transition: opacity var(--transition-fast);
+.btn:hover {
+  transform: translateY(-2px);
 }
 
-.btn:hover::after { opacity: 1; }
-.btn:active { transform: scale(0.97); }
-.btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
-    box-shadow: none;
-}
-.btn:disabled::after { opacity: 0; }
-
-.btn-icon { font-style: normal; }
-
-/* Primary: gradient fill */
 .btn-primary {
-    background: linear-gradient(135deg, var(--accent), #5b21b6);
-    color: #fff;
-    box-shadow: 0 4px 20px var(--accent-glow);
-    width: 100%;
-    justify-content: center;
-    font-size: 1rem;
-    padding: 14px 28px;
+  background: var(--accent-color);
+  border: none;
 }
 
 .btn-primary:hover {
-    box-shadow: 0 6px 30px var(--accent-glow);
-    transform: translateY(-1px);
+  background: var(--accent-hover);
 }
 
-/* Secondary: outlined accent */
-.btn-secondary {
-    background: rgba(124,58,237,0.12);
-    color: var(--accent);
-    border: 1px solid rgba(124,58,237,0.35);
-    flex: 1;
-    justify-content: center;
+/* =========================
+   LAP LIST
+========================= */
+
+.lap-container {
+  max-height: 120px;
+  overflow: auto;
 }
 
-.btn-secondary:hover {
-    background: rgba(124,58,237,0.22);
-    border-color: var(--accent);
-    box-shadow: 0 0 16px var(--accent-glow);
+.list-group-item {
+  background: var(--card-bg) !important;
+
+  color: var(--text-primary) !important;
+
+  border: none !important;
+
+  margin-bottom: 10px;
+
+  border-radius: 14px !important;
+
+  box-shadow: var(--shadow-2);
+
+  padding: 10px 14px;
+  font-size: 0.9rem;
 }
 
-/* Ghost: muted */
-.btn-ghost {
-    background: var(--bg-glass);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-glass);
-    flex: 1;
-    justify-content: center;
+/* =========================
+   WORLD CLOCKS
+========================= */
+
+.world-clocks-section {
+  margin-top: 40px;
 }
 
-.btn-ghost:hover {
-    background: var(--bg-glass-hover);
-    color: var(--text-primary);
-    border-color: rgba(255,255,255,0.2);
+.world-clock-card {
+  min-height: 520px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: var(--transition);
 }
 
-#timerControls,
-#stopwatchControls {
-    display: flex;
-    gap: 10px;
-    width: 100%;
+.world-clock-card:hover {
+  transform: translateY(-6px);
 }
 
-/* ══════════════════════════════════════════════
-   TOAST NOTIFICATION
-══════════════════════════════════════════════ */
-#toast {
-    position: fixed;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%) translateY(120px);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: linear-gradient(135deg, #7c3aed, #f43f5e);
-    color: #fff;
-    padding: 16px 28px;
-    border-radius: 16px;
-    font-weight: 600;
-    font-size: 1rem;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 40px var(--accent-glow);
-    z-index: 999;
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
-    opacity: 0;
-    pointer-events: none;
-    white-space: nowrap;
+.world-clock-card .clock-frame {
+  width: 160px;
+  height: 160px;
+  padding: 12px;
 }
 
-#toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-    pointer-events: auto;
+.world-clock-card .digital-readout {
+  font-size: 1rem;
+  padding: 10px 16px;
 }
 
-#toastIcon { font-size: 1.3rem; animation: bellRing 0.5s ease 0.3s both; }
-
-@keyframes bellRing {
-    0%, 100% { transform: rotate(0); }
-    25%  { transform: rotate(15deg); }
-    75%  { transform: rotate(-15deg); }
+.world-clock-card .clock-banner {
+  height: 130px;
 }
 
-/* ══════════════════════════════════════════════
-   COUNTDOWN URGENT FLASH (last 10s)
-══════════════════════════════════════════════ */
-@keyframes urgentPulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.4; }
+/* =========================
+   MODALS
+========================= */
+
+.modal-content {
+  border-radius: 28px !important;
+
+  border: none !important;
+
+  backdrop-filter: blur(18px);
 }
 
-.urgent #countdownDisplay {
-    color: var(--accent3) !important;
-    animation: urgentPulse 0.7s ease infinite;
+.modal-body {
+  padding: 2rem;
 }
 
-.urgent .ring-fill {
-    stroke: var(--accent3) !important;
-    filter: drop-shadow(0 0 8px var(--accent3-glow));
+/* =========================
+   LARGE FOCUS CLOCK
+========================= */
+
+.large-clock {
+  width: 500px !important;
+  height: 500px !important;
 }
 
-/* ══════════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════════ */
-@media (max-width: 760px) {
-    #appContainer {
-        flex-direction: column;
-        padding: 80px 20px 40px;
-        gap: 24px;
-    }
-
-    #clockPanel, #timerPanel, #stopwatchPanel {
-        width: 100%;
-        max-width: 420px;
-    }
-
-    #clockWrapper {
-        width: min(80vw, 320px);
-        height: min(80vw, 320px);
-    }
-
-    #progressRingWrapper {
-        width: min(70vw, 200px);
-        height: min(70vw, 200px);
-    }
-
-    #stopwatchDisplayWrapper {
-        width: min(70vw, 200px);
-    }
-}
-
-@media (max-width: 420px) {
-    input[type="number"] { width: 56px; font-size: 0.95rem; }
-    .btn { font-size: 0.82rem; padding: 11px 18px; }
-    #digitalTime { font-size: 1.4rem; }
-}
-
-/* ══════════════════════════════════════════════
+/* =========================
    SCROLLBAR
-══════════════════════════════════════════════ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
+========================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.4);
+  border-radius: 20px;
+}
+
+/* =========================
+   FOCUS MODE
+========================= */
+
+body.focus-mode .world-clocks-section,
+body.focus-mode .alarm-section,
+body.focus-mode .stopwatch-section {
+  display: none;
+}
+
+/* =========================
+   FIX OVERLAP ISSUE
+========================= */
+
+.stopwatch-section,
+.world-clock-card,
+.timer-section,
+.alarm-section {
+  overflow: hidden;
+}
+
+.row.g-4 > [class*="col-"] {
+  display: flex;
+}
+
+.row.g-4 > [class*="col-"] > div,
+.row.g-4 > [class*="col-"] > section {
+  width: 100%;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .main-clock-section {
+    min-height: auto;
+  }
+
+  .col-lg-5.d-flex.flex-column.gap-4 {
+    height: auto;
+  }
+
+  .main-clock-section .clock-frame {
+    width: 300px;
+    height: 300px;
+  }
+
+  .large-clock {
+    width: 420px !important;
+    height: 420px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-banner {
+    padding: 3rem 1.5rem !important;
+  }
+
+  .main-clock-section .clock-frame {
+    width: 260px;
+    height: 260px;
+  }
+
+  .digital-readout {
+    font-size: 1.25rem;
+  }
+
+  .stopwatch-display h1,
+  #countdownDisplay {
+    font-size: 1.8rem;
+  }
+
+  .world-clock-card {
+    min-height: auto;
+  }
+
+  .timer-section,
+  .alarm-section,
+  .stopwatch-section {
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-section h1 {
+    font-size: 1.7rem;
+  }
+
+  .main-clock-section .clock-frame {
+    width: 220px;
+    height: 220px;
+  }
+
+  .world-clock-card .clock-frame {
+    width: 140px;
+    height: 140px;
+  }
+
+  .large-clock {
+    width: 300px !important;
+    height: 300px !important;
+  }
+
+  .hero-banner h1 {
+    font-size: 2rem;
+  }
+
+  .stopwatch-display h1,
+  #countdownDisplay {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-banner {
+    padding: 2rem 1rem !important;
+  }
+
+  .main-clock-section .clock-frame {
+    width: 180px;
+    height: 180px;
+  }
+
+  .world-clock-card .clock-frame {
+    width: 120px;
+    height: 120px;
+  }
+
+  .digital-readout {
+    font-size: 1rem;
+  }
+
+  .stopwatch-display h1,
+  #countdownDisplay {
+    font-size: 1.2rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .world-clock-card {
+    min-height: auto;
+  }
+}

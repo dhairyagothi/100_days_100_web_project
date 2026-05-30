@@ -1,339 +1,329 @@
-// ─── Theme Toggle with localStorage persistence ───
-(function initTheme() {
-    const themeBtn = document.getElementById("theme-toggle");
-    const STORAGE_KEY = "bmi-theme";
+const calculateBtn = document.getElementById("calculate-btn");
+const resetBtn = document.getElementById("reset-btn");
 
-    // Resolve initial theme: saved preference → OS preference → light
-    function getPreferred() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) return saved;
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-    }
+const bmiValue = document.getElementById("bmi-value");
+const bmiBadge = document.getElementById("bmi-badge");
 
-    function applyTheme(theme) {
-        document.body.classList.toggle("dark", theme === "dark");
-    }
+const healthyRange = document.getElementById("healthy-range");
+const tipText = document.getElementById("tip-text");
 
-    // Apply on first load (runs synchronously before paint)
-    applyTheme(getPreferred());
+const results = document.getElementById("results");
 
-    // Toggle on click
-    themeBtn.addEventListener("click", () => {
-        const isDark = document.body.classList.toggle("dark");
-        localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
-    });
-})();
+const pointer = document.getElementById("pointer");
 
-const heightUnitEl = document.getElementById("height-unit");
-const weightUnitEl = document.getElementById("weight-unit");
-const heightLbl = document.getElementById("height-lbl");
-const weightLbl = document.getElementById("weight-lbl");
-const heightInp = document.getElementById("height");
-const weightInp = document.getElementById("weight");
-const btn = document.getElementById("btn");
-const errEl = document.getElementById("error-msg");
-const resultsEl = document.getElementById("results");
-const rangeVisEl = document.getElementById("range-vis");
+const bfPercent = document.getElementById("bf-percent");
+const bfProgress = document.getElementById("bf-progress");
+const bfBadge = document.getElementById("bf-badge");
+const bfDesc = document.getElementById("bf-desc");
 
-// WHO approved BMI categories
-const CATS = [
-    {
-        max: 18.5,
-        label: "Underweight",
-        color: "#378ADD",
-        bg: "#E6F1FB",
-        tip: "Consider increasing caloric intake with nutrient-dense foods. A dietitian can help.",
-    },
-    {
-        max: 25.0,
-        label: "Normal weight",
-        color: "#639922",
-        bg: "#EAF3DE",
-        tip: "Great — keep up balanced nutrition and regular activity.",
-    },
-    {
-        max: 30.0,
-        label: "Overweight",
-        color: "#BA7517",
-        bg: "#FAEEDA",
-        tip: "Regular exercise and a balanced diet can help. Even modest weight loss improves health.",
-    },
-    {
-        max: 35.0,
-        label: "Obese (class I)",
-        color: "#E24B4A",
-        bg: "#FCEBEB",
-        tip: "Consult a healthcare provider. Lifestyle changes and support programs are effective.",
-    },
-    {
-        max: 40.0,
-        label: "Obese (class II)",
-        color: "#A32D2D",
-        bg: "#FCEBEB",
-        tip: "Medical support is recommended. A GP can refer you to a specialist weight management team.",
-    },
-    {
-        max: Infinity,
-        label: "Obese (class III)",
-        color: "#501313",
-        bg: "#FCEBEB",
-        tip: "Please seek medical guidance — clinical interventions are available and effective.",
-    },
+const historyList = document.getElementById("history-list");
+
+const themeToggle = document.getElementById("theme-toggle");
+
+const STORAGE_KEY = "bmi-theme";
+const BMI_HISTORY = "bmi-history";
+
+const categories = [
+  {
+    max: 18.5,
+    label: "Underweight",
+    color: "#2f6fd8",
+    bg: "#e7f0ff",
+    tip: "Increase nutrient-rich calorie intake."
+  },
+  {
+    max: 25,
+    label: "Normal weight",
+    color: "#5d8d25",
+    bg: "#e8f0d8",
+    tip: "Great — keep up balanced nutrition and regular activity."
+  },
+  {
+    max: 30,
+    label: "Overweight",
+    color: "#c97317",
+    bg: "#faecd9",
+    tip: "Regular exercise and healthy diet are recommended."
+  },
+  {
+    max: 35,
+    label: "Obese (Class I)",
+    color: "#d92d2d",
+    bg: "#fdeaea",
+    tip: "Medical guidance is recommended."
+  },
+  {
+    max: 40,
+    label: "Obese (Class II)",
+    color: "#b02020",
+    bg: "#fdeaea",
+    tip: "Consult healthcare professionals."
+  },
+  {
+    max: 999,
+    label: "Obese (Class III)",
+    color: "#8b1111",
+    bg: "#fdeaea",
+    tip: "Immediate medical support is advised."
+  }
 ];
 
 function getCategory(bmi) {
-    return CATS.find((c) => bmi < c.max);
+  return categories.find(c => bmi < c.max);
 }
 
-function calcHealthyWeight(heightCm) {
-    const h = heightCm / 100;
-    return [
-        Math.round(18.5 * h * h * 10) / 10,
-        Math.round(24.9 * h * h * 10) / 10,
-    ];
+function calculateBMI(weight, heightCm) {
+  return weight / Math.pow(heightCm / 100, 2);
 }
 
-// Map BMI value to a percentage position on the range bar (10–45 scale)
-function bmiToPercent(bmi) {
-    const MIN = 10,
-        MAX = 45;
-    const clamped = Math.min(Math.max(bmi, MIN), MAX);
-    return ((clamped - MIN) / (MAX - MIN)) * 100;
+function healthyWeight(heightCm) {
+
+  const h = heightCm / 100;
+
+  return [
+    (18.5 * h * h).toFixed(1),
+    (24.9 * h * h).toFixed(1)
+  ];
 }
 
-// setup Chart.js
-const ctx = document.getElementById("bmiChart").getContext("2d");
+function updatePointer(bmi) {
+
+  const percent =
+    ((Math.min(Math.max(bmi, 10), 40) - 10) / 30) * 100;
+
+  pointer.style.left = `${percent}%`;
+}
+
+function clearActiveRows() {
+
+  document
+    .querySelectorAll(".bmi-table tbody tr")
+    .forEach(row => row.classList.remove("active-row"));
+}
+
+function highlightRow(label) {
+
+  const map = {
+    "Underweight": "underweight-row",
+    "Normal weight": "normal-row",
+    "Overweight": "overweight-row",
+    "Obese (Class I)": "obese1-row",
+    "Obese (Class II)": "obese2-row",
+    "Obese (Class III)": "obese3-row"
+  };
+
+  document
+    .getElementById(map[label])
+    ?.classList.add("active-row");
+}
+
+calculateBtn.addEventListener("click", () => {
+
+  const heightUnit =
+    document.getElementById("height-unit").value;
+
+  const weightUnit =
+    document.getElementById("weight-unit").value;
+
+  let height =
+    parseFloat(document.getElementById("height").value);
+
+  let weight =
+    parseFloat(document.getElementById("weight").value);
+
+  const age =
+    parseFloat(document.getElementById("age").value);
+
+  const gender =
+    document.getElementById("gender").value;
+
+  if (!height || !weight) {
+
+    document.getElementById("error-msg")
+      .textContent =
+      "Please enter valid values.";
+
+    return;
+  }
+
+  document.getElementById("error-msg")
+    .textContent = "";
+
+  if (weightUnit === "lb") {
+    weight *= 0.453592;
+  }
+
+  if (heightUnit === "feet") {
+    height *= 30.48;
+  }
+
+  const bmi = calculateBMI(weight, height);
+
+  const rounded = bmi.toFixed(1);
+
+  const category = getCategory(bmi);
+
+  bmiValue.textContent = rounded;
+
+  bmiBadge.textContent = category.label;
+
+  bmiBadge.style.background = category.bg;
+
+  bmiBadge.style.color = category.color;
+
+  tipText.textContent = category.tip;
+
+  const [low, high] = healthyWeight(height);
+
+  healthyRange.textContent =
+    `${low}-${high} kg`;
+
+  updatePointer(bmi);
+
+  clearActiveRows();
+
+  highlightRow(category.label);
+
+  const bodyFat =
+    (
+      (1.20 * bmi) +
+      (0.23 * age) -
+      (10.8 * (gender === "male" ? 1 : 0)) -
+      5.4
+    ).toFixed(1);
+
+  bfPercent.textContent = bodyFat;
+
+  const circumference = 326.7;
+
+  const offset =
+    circumference -
+    (bodyFat / 60) * circumference;
+
+  bfProgress.style.strokeDashoffset = offset;
+
+  bfDesc.textContent =
+    "Fitness range — a healthy body composition with good muscle definition.";
+
+  results.classList.remove("hidden");
+
+  addHistory(rounded, category.label);
+
+  updateChart(rounded);
+});
+
+resetBtn.addEventListener("click", () => {
+
+  document
+    .querySelectorAll("input")
+    .forEach(input => input.value = "");
+
+  results.classList.add("hidden");
+
+  clearActiveRows();
+});
+
+themeToggle.addEventListener("click", () => {
+
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    document.body.classList.contains("dark")
+  );
+});
+
+if (localStorage.getItem(STORAGE_KEY) === "true") {
+  document.body.classList.add("dark");
+}
+
+const ctx =
+  document.getElementById("bmiChart");
+
 const bmiChart = new Chart(ctx, {
-    type: "line",
-    data: {
-        labels: [],
-        datasets: [
-            {
-                label: "BMI",
-                data: [],
-                borderWidth: 2,
-                borderColor: "#7F77DD",
-                backgroundColor: "rgba(127,119,221,0.08)",
-                pointBackgroundColor: "#7F77DD",
-                pointRadius: 4,
-                tension: 0.35,
-                fill: true,
-            },
-        ],
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 400 },
-        plugins: {
-            legend: { display: false },
-            tooltip: {
-                callbacks: { label: (ctx) => ` BMI ${ctx.parsed.y}` },
-            },
-        },
-        scales: {
-            x: {
-                grid: { display: false },
-                ticks: { font: { size: 10 } },
-            },
-            y: {
-                beginAtZero: false,
-                min: 10,
-                grid: { color: "rgba(128,128,128,0.1)" },
-                ticks: { font: { size: 10 } },
-            },
-        },
-    },
-});
-
-// Unit label updates will be shown here
-heightUnitEl.addEventListener("change", () => {
-    if (heightUnitEl.value === "feet") {
-        heightLbl.textContent = "Height (ft/in)";
-        heightInp.placeholder = "e.g. 5/8";
-    } else {
-        heightLbl.textContent = "Height (cm)";
-        heightInp.placeholder = "e.g. 170";
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [{
+      data: [],
+      borderColor: "#7c6ae6",
+      backgroundColor: "rgba(124,106,230,.08)",
+      fill: true,
+      tension: .4,
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false
+      }
     }
+  }
 });
 
-weightUnitEl.addEventListener("change", () => {
-    weightLbl.textContent =
-        weightUnitEl.value === "lb" ? "Weight (lb)" : "Weight (kg)";
-    weightInp.placeholder = weightUnitEl.value === "lb" ? "e.g. 154" : "e.g. 70";
-});
+function updateChart(bmi) {
 
-function showError(msg) {
-    errEl.textContent = msg;
-    errEl.classList.remove("hidden");
+  const time =
+    new Date().toLocaleTimeString();
+
+  bmiChart.data.labels.push(time);
+
+  bmiChart.data.datasets[0].data.push(bmi);
+
+  bmiChart.update();
 }
 
-function clearError() {
-    errEl.classList.add("hidden");
-    errEl.textContent = "";
+function addHistory(bmi, label) {
+
+  const time =
+    new Date().toLocaleString();
+
+  const item = document.createElement("div");
+
+  item.className = "history-item";
+
+  item.innerHTML = `
+    <span>${time}</span>
+    <strong>BMI: ${bmi}</strong>
+  `;
+
+  historyList.prepend(item);
+
+  saveHistory();
 }
 
-btn.addEventListener("click", () => {
-    clearError();
+function saveHistory() {
 
-    const hRaw = heightInp.value.trim();
-    let w = parseFloat(weightInp.value);
-    const hUnit = heightUnitEl.value;
-    const wUnit = weightUnitEl.value;
+  localStorage.setItem(
+    BMI_HISTORY,
+    historyList.innerHTML
+  );
+}
 
-    if (!hRaw || isNaN(w) || w <= 0) {
-        showError("Please enter a valid height and weight.");
-        return;
-    }
+function loadHistory() {
 
-    let heightCm;
+  const saved =
+    localStorage.getItem(BMI_HISTORY);
 
-    if (hUnit === "feet") {
-        const parts = hRaw.split("/");
-        if (parts.length !== 2) {
-            showError("Use format feet/inches — e.g. 5/8");
-            return;
-        }
-        const ft = parseFloat(parts[0]);
-        const inc = parseFloat(parts[1]);
-        if (isNaN(ft) || isNaN(inc) || inc < 0 || inc >= 12) {
-            showError("Invalid feet/inches. Inches must be 0–11.");
-            return;
-        }
-        heightCm = ft * 30.48 + inc * 2.54;
-    } else {
-        heightCm = parseFloat(hRaw);
-        if (isNaN(heightCm) || heightCm <= 0) {
-            showError("Please enter a valid height in cm.");
-            return;
-        }
-    }
+  if (saved) {
+    historyList.innerHTML = saved;
+  }
+}
 
-    if (heightCm < 50 || heightCm > 280) {
-        showError("Height seems out of range (50–280 cm).");
-        return;
-    }
+loadHistory();
 
-    if (wUnit === "lb") w *= 0.453592;
+document
+  .getElementById("clear-history")
+  .addEventListener("click", () => {
 
-    if (w < 2 || w > 700) {
-        showError("Weight seems out of range.");
-        return;
-    }
+    historyList.innerHTML = "";
 
-    // Calculates BMI
-    const bmi = w / Math.pow(heightCm / 100, 2);
-    const bmiRounded = Math.round(bmi * 10) / 10;
-    const cat = getCategory(bmi);
+    bmiChart.data.labels = [];
+    bmiChart.data.datasets[0].data = [];
 
-    // Displays BMI + category
-    document.getElementById("bmi-val").textContent = bmiRounded.toFixed(1);
-
-    const badge = document.getElementById("cat-badge");
-    badge.textContent = cat.label;
-    badge.style.background = cat.bg;
-    badge.style.color = cat.color;
-
-    // Healthy weight range
-    const [wLow, wHigh] = calcHealthyWeight(heightCm);
-    const dispUnit = wUnit === "lb" ? "lb" : "kg";
-    const mult = wUnit === "lb" ? 2.20462 : 1;
-    document.getElementById("healthy-range").textContent =
-        `${(wLow * mult).toFixed(1)}–${(wHigh * mult).toFixed(1)} ${dispUnit}`;
-
-    document.getElementById("tip-text").textContent = cat.tip;
-
-    // Shows result sections
-    resultsEl.classList.remove("hidden");
-    resultsEl.style.display = "grid";
-
-    rangeVisEl.classList.remove("hidden");
-    rangeVisEl.style.display = "block";
-
-    // Moves range pointer
-    const pct = bmiToPercent(bmi);
-    document.getElementById("bmi-ptr").style.left = pct + "%";
-
-    // Updates chart data
-    const time = new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-    });
-    bmiChart.data.labels.push(time);
-    bmiChart.data.datasets[0].data.push(bmiRounded);
     bmiChart.update();
 
-    // ─── Body Fat % Estimate (Deurenberg formula) ───
-    const age = parseFloat(document.getElementById("age").value);
-    const gender = document.getElementById("gender").value;
-    const bfSection = document.getElementById("bf-section");
-
-    if (!isNaN(age) && age >= 2 && age <= 120) {
-        // Deurenberg et al. (1991): BF% = 1.20 × BMI + 0.23 × Age − 10.8 × Sex − 5.4
-        // Sex: male = 1, female = 0
-        const sexFactor = gender === "male" ? 1 : 0;
-        let bodyFat = 1.2 * bmi + 0.23 * age - 10.8 * sexFactor - 5.4;
-        bodyFat = Math.round(bodyFat * 10) / 10;
-        bodyFat = Math.max(2, Math.min(bodyFat, 65)); // clamp to sane range
-
-        // Classify body fat %
-        const bfCat = getBodyFatCategory(bodyFat, gender);
-
-        // Update gauge
-        const CIRCUMFERENCE = 326.73; // 2 × π × 52
-        const fraction = Math.min(bodyFat / 60, 1); // 60% = full ring
-        const offset = CIRCUMFERENCE * (1 - fraction);
-        const arc = document.getElementById("bf-arc");
-        arc.style.strokeDashoffset = offset;
-        arc.style.stroke = bfCat.color;
-
-        document.getElementById("bf-pct").textContent = bodyFat.toFixed(1);
-
-        const badge = document.getElementById("bf-badge");
-        badge.textContent = bfCat.label;
-        badge.style.background = bfCat.bg;
-        badge.style.color = bfCat.color;
-
-        document.getElementById("bf-desc").textContent = bfCat.tip;
-
-        bfSection.classList.remove("hidden");
-        bfSection.style.display = "block";
-    } else {
-        // Hide if age not provided
-        bfSection.classList.add("hidden");
-    }
-});
-
-// ─── Body Fat Classification ───
-function getBodyFatCategory(bf, gender) {
-    const ranges =
-        gender === "male"
-            ? [
-                  { max: 6,  label: "Essential",  color: "#2563b0", bg: "#eff4fc",
-                    tip: "Essential fat is the minimum needed for basic physiological function." },
-                  { max: 14, label: "Athletic",   color: "#16a34a", bg: "#edf6ef",
-                    tip: "Athletic range — typical of competitive athletes with rigorous training." },
-                  { max: 18, label: "Fitness",    color: "#0d9488", bg: "#f0fdfa",
-                    tip: "Fitness range — a healthy body composition with good muscle definition." },
-                  { max: 25, label: "Average",    color: "#d97706", bg: "#fef3e2",
-                    tip: "Average range — generally healthy, but there's room for improvement via exercise." },
-                  { max: Infinity, label: "Obese", color: "#dc2626", bg: "#fef2f2",
-                    tip: "Elevated body fat — consider consulting a healthcare professional for guidance." },
-              ]
-            : [
-                  { max: 14, label: "Essential",  color: "#2563b0", bg: "#eff4fc",
-                    tip: "Essential fat is the minimum needed for hormonal and reproductive health." },
-                  { max: 21, label: "Athletic",   color: "#16a34a", bg: "#edf6ef",
-                    tip: "Athletic range — typical of competitive female athletes." },
-                  { max: 25, label: "Fitness",    color: "#0d9488", bg: "#f0fdfa",
-                    tip: "Fitness range — a healthy and active body composition." },
-                  { max: 32, label: "Average",    color: "#d97706", bg: "#fef3e2",
-                    tip: "Average range — generally healthy, but regular exercise can improve outcomes." },
-                  { max: Infinity, label: "Obese", color: "#dc2626", bg: "#fef2f2",
-                    tip: "Elevated body fat — consider consulting a healthcare professional for guidance." },
-              ];
-    return ranges.find((r) => bf < r.max);
-}
+    localStorage.removeItem(BMI_HISTORY);
+  });

@@ -6,8 +6,39 @@
   <title>Custom Color Picker</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <style>
+    #saveColorBtn {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .btn-star-svg {
+      width: 15px;
+      height: 15px;
+      fill: #ffb800;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    #saveColorBtn:hover .btn-star-svg {
+      transform: rotate(72deg) scale(1.2);
+    }
+    .copy-hint {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .hint-svg {
+      width: 14px;
+      height: 14px;
+      fill: #ffcc00;
+    }
+  </style>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
   <div class="container">
 
     <h1>Custom Color Picker</h1>
@@ -47,7 +78,7 @@
 
 
 
-<button id="saveColorBtn">⭐ Save This Color</button>
+<button id="saveColorBtn"><svg class="btn-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> Save This Color</button>
 
 <h3>Saved Favorites</h3>
 <div id="favoritesContainer"></div>
@@ -55,7 +86,7 @@
 <hr class="section-divider">
 
     <h3>Generated Palette</h3>
-    <p class="copy-hint">💡 Click any color box to copy HEX value</p>
+    <p class="copy-hint"><svg class="hint-svg" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg> Click any color box to copy HEX value</p>
 
 <div class="palette-container">
   <div class="palette-box" id="color1"></div>
