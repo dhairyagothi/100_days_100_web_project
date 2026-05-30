@@ -34,17 +34,32 @@
                     </div>
             </div>
             <div class="keyboard">
+                <!-- Numbers row: keys show base char; Shift gives the symbol above -->
                 <div class="keyboard-row" id="row-numbers">
-                    <button type="button" class="key" data-char="1">1</button>
-                    <button type="button" class="key" data-char="2">2</button>
-                    <button type="button" class="key" data-char="3">3</button>
-                    <button type="button" class="key" data-char="4">4</button>
-                    <button type="button" class="key" data-char="5">5</button>
-                    <button type="button" class="key" data-char="6">6</button>
-                    <button type="button" class="key" data-char="7">7</button>
-                    <button type="button" class="key" data-char="8">8</button>
-                    <button type="button" class="key" data-char="9">9</button>
-                    <button type="button" class="key" data-char="0">0</button>
+                    <button type="button" class="key dual-key" data-char="1" data-shift="!"><span class="key-top">!</span><span class="key-bot">1</span></button>
+                    <button type="button" class="key dual-key" data-char="2" data-shift="@"><span class="key-top">@</span><span class="key-bot">2</span></button>
+                    <button type="button" class="key dual-key" data-char="3" data-shift="#"><span class="key-top">#</span><span class="key-bot">3</span></button>
+                    <button type="button" class="key dual-key" data-char="4" data-shift="$"><span class="key-top">$</span><span class="key-bot">4</span></button>
+                    <button type="button" class="key dual-key" data-char="5" data-shift="%"><span class="key-top">%</span><span class="key-bot">5</span></button>
+                    <button type="button" class="key dual-key" data-char="6" data-shift="^"><span class="key-top">^</span><span class="key-bot">6</span></button>
+                    <button type="button" class="key dual-key" data-char="7" data-shift="&amp;"><span class="key-top">&amp;</span><span class="key-bot">7</span></button>
+                    <button type="button" class="key dual-key" data-char="8" data-shift="*"><span class="key-top">*</span><span class="key-bot">8</span></button>
+                    <button type="button" class="key dual-key" data-char="9" data-shift="("><span class="key-top">(</span><span class="key-bot">9</span></button>
+                    <button type="button" class="key dual-key" data-char="0" data-shift=")"><span class="key-top">)</span><span class="key-bot">0</span></button>
+                </div>
+
+                <!-- Symbol row 1 -->
+                <div class="keyboard-row" id="row-symbols1">
+                    <button type="button" class="key sym-key dual-key" data-char="-" data-shift="_"><span class="key-top">_</span><span class="key-bot">-</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char="=" data-shift="+"><span class="key-top">+</span><span class="key-bot">=</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char="[" data-shift="{"><span class="key-top">{</span><span class="key-bot">[</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char="]" data-shift="}"><span class="key-top">}</span><span class="key-bot">]</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char="\" data-shift="|"><span class="key-top">|</span><span class="key-bot">\</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char=";" data-shift=":"><span class="key-top">:</span><span class="key-bot">;</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char="'" data-shift='"'><span class="key-top">"</span><span class="key-bot">'</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char="," data-shift="<"><span class="key-top">&lt;</span><span class="key-bot">,</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char="." data-shift=">"><span class="key-top">&gt;</span><span class="key-bot">.</span></button>
+                    <button type="button" class="key sym-key dual-key" data-char="/" data-shift="?"><span class="key-top">?</span><span class="key-bot">/</span></button>
                 </div>
 
                 <div class="keyboard-row" id="row1">
@@ -84,6 +99,8 @@
 
                 <div class="keyboard-row keyboard-row--functions">
                     <button type="button" class="key caps-lock" data-char="CAPSLOCK" aria-pressed="false">CAPS LOCK</button>
+                    <button type="button" class="key shift-key" data-char="SHIFT" aria-pressed="false">⇧ SHIFT</button>
+                    <button type="button" class="key tab-key" data-char="TAB">⇥ TAB</button>
                     <button type="button" class="key enter-key" data-char="ENTER">↵ RET</button>
                     <button type="button" class="key space" data-char="SPACE">SPACE</button>
                     <button type="button" class="key backspace" data-char="BACKSPACE">⌫ DEL</button>
