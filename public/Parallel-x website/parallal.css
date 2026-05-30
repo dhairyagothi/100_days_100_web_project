@@ -27,8 +27,8 @@ html {
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: #f5f2eb;
-  color: var(--text-dark);
+  background: var(--page-bg);
+  color: var(--page-text);
   overflow-x: hidden;
 }
 
@@ -73,11 +73,9 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px 5%;
-  background: rgba(1, 57, 47, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  transition: background 0.4s, padding 0.3s, box-shadow 0.3s;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--header-bg);
+  backdrop-filter: blur(14px);
+  transition: background 0.4s, padding 0.3s;
 }
 
 header.scrolled {
@@ -88,6 +86,7 @@ header.scrolled {
 }
 
 .name {
+  display: inline-block;
   font-family: 'Playfair Display', serif;
   font-size: 1.8rem;
   font-weight: 900;
@@ -118,6 +117,17 @@ nav ul li a:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
   color: var(--white);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
 }
 
 /* hamburger */
@@ -851,6 +861,29 @@ nav ul li a:hover {
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
+    gap: 15px;
+    text-align: center;
+  }
+
+  /* Show back button on small screens only */
+  .project-back-button {
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* ensure header leaves space for back button on small screens */
+  header {
+    padding-left: 60px;
+  }
+
+  .name {
+    font-size: 1.5rem;
+  }
+
+  nav ul {
     justify-content: center;
     transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 105;
@@ -884,6 +917,11 @@ nav ul li a:hover {
     flex-direction: row !important;
     justify-content: space-between !important;
     padding: 15px 6% !important;
+  }
+
+  /* prevent header content from overlapping the fixed back button on small screens */
+  header {
+    padding-left: 80px;
   }
 
   .parallal {
