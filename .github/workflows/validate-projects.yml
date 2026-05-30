@@ -3,7 +3,7 @@ name: Validate Projects JSON
 on:
   pull_request:
     branches:
-      - main
+      - Main
 
 jobs:
   validate-projects:

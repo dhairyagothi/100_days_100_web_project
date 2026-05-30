@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pageloader</title>
+  <title>Pageloader Gallery</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="pageloader.css" />
 </head>
+
 <body>
 
-  <!-- ── PRELOADER ── -->
   <div id="preloader" aria-hidden="true">
     <div class="loader-card">
       <div class="spinner"></div>
@@ -20,43 +23,126 @@
     </div>
   </div>
 
-  <!-- ── MAIN PAGE ── -->
   <div class="page" id="page">
 
-    <!-- Navbar -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
       <span class="brand">PL<span class="accent-dot">.</span></span>
       <ul class="nav-links">
-        <li><a href="#home"    class="nav-link">Home</a></li>
-        <li><a href="#about"   class="nav-link">About</a></li>
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#gallery" class="nav-link">Gallery</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
     </nav>
 
-    <!-- Content Wrapper -->
     <main class="content-wrapper">
 
-      <!-- Home Section -->
       <section id="home" class="page-section active">
         <span class="eyebrow">Welcome</span>
         <h1>Built to <em>Load</em><br>Fast &amp; Smooth.</h1>
-        <p class="subtext">A clean, minimal pageloader demo. Navigate between sections and watch the preloader in action.</p>
+        <p class="subtext">A clean, minimal pageloader demo. Navigate between sections and browse our gallery of
+          different loader styles.</p>
         <div class="cta-group">
-          <a href="#about"   class="cta primary">Learn More</a>
+          <a href="#gallery" class="cta primary">View Gallery</a>
           <a href="#contact" class="cta ghost">Contact Us</a>
         </div>
         <div class="hero-stats">
-          <div class="stat"><span class="stat-num"><span id="loadTimeStat">—</span><small>ms</small></span><span class="stat-label">Load Time</span></div>
-          <div class="stat"><span class="stat-num">100<small>%</small></span><span class="stat-label">Smooth</span></div>
-          <div class="stat"><span class="stat-num">0<small>px</small></span><span class="stat-label">Layout Shift</span></div>
+          <div class="stat"><span class="stat-num"><span id="loadTimeStat">—</span><small>ms</small></span><span
+              class="stat-label">Load Time</span></div>
+          <div class="stat"><span class="stat-num">100<small>%</small></span><span class="stat-label">Smooth</span>
+          </div>
+          <div class="stat"><span class="stat-num">0<small>px</small></span><span class="stat-label">Layout Shift</span>
+          </div>
         </div>
       </section>
 
-      <!-- About Section -->
+      <section id="gallery" class="page-section">
+        <span class="eyebrow">Showcase</span>
+        <h2>Loader Collection</h2>
+        <p class="subtext">A variety of CSS-only loading animations to fit different UI requirements and brand
+          aesthetics.</p>
+
+        <div class="loader-grid">
+          <article class="loader-showcase-card">
+            <div class="showcase-box">
+              <div class="spinner"></div>
+            </div>
+            <h3>Classic Spinner</h3>
+            <p>The standard dual-color rotating ring.</p>
+          </article>
+
+          <article class="loader-showcase-card">
+            <div class="showcase-box">
+              <div class="loader-dots">
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+            <h3>Bouncing Dots</h3>
+            <p>Playful and modern, great for chat or dynamic content.</p>
+          </article>
+
+          <article class="loader-showcase-card">
+            <div class="showcase-box">
+              <div class="loader-pulse"></div>
+            </div>
+            <h3>Radar Pulse</h3>
+            <p>Minimalist expanding ring for subtle background loading.</p>
+          </article>
+
+          <article class="loader-showcase-card">
+            <div class="showcase-box">
+              <div class="loader-double-ring"></div>
+            </div>
+            <h3>Double Ring</h3>
+            <p>Elegant, intersecting spinning paths.</p>
+          </article>
+
+          <article class="loader-showcase-card">
+            <div class="showcase-box">
+              <div class="loader-bars">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+            <h3>Wave Bars</h3>
+            <p>Smooth vertical scaling, perfect for media or audio loading.</p>
+          </article>
+
+          <article class="loader-showcase-card">
+            <div class="showcase-box">
+              <div class="loader-flip"></div>
+            </div>
+            <h3>Flipping Square</h3>
+            <p>A geometric 3D rotation effect for a sharp, modern feel.</p>
+          </article>
+
+          <article class="loader-showcase-card">
+            <div class="showcase-box">
+              <div class="loader-orbit"></div>
+            </div>
+            <h3>Orbit</h3>
+            <p>A continuous orbital path spinning around a solid core.</p>
+          </article>
+
+          <article class="loader-showcase-card">
+            <div class="showcase-box">
+              <div class="loader-glow"></div>
+            </div>
+            <h3>Glow Ring</h3>
+            <p>A neon-inspired pulsing gradient with dynamic shadows.</p>
+          </article>
+        </div>
+      </section>
+
       <section id="about" class="page-section">
         <span class="eyebrow">About</span>
         <h2>What Is a Pageloader?</h2>
-        <p class="subtext">A pageloader masks the initial network &amp; render delay, giving users a polished first impression instead of a blank screen.</p>
+        <p class="subtext">A pageloader masks the initial network &amp; render delay, giving users a polished first
+          impression instead of a blank screen.</p>
         <div class="feature-grid">
           <article class="feature-card">
             <div class="feature-icon">⚡</div>
@@ -81,15 +167,15 @@
         </div>
       </section>
 
-      <!-- Contact Section -->
       <section id="contact" class="page-section">
         <span class="eyebrow">Contact</span>
         <h2>Get In Touch</h2>
-        <p class="subtext">Have a question or want to collaborate? Drop us a message and we'll get back to you shortly.</p>
+        <p class="subtext">Have a question or want to collaborate? Drop us a message and we'll get back to you shortly.
+        </p>
         <div class="contact-form">
           <div class="form-row">
-            <input type="text"  id="fname"   class="form-input" placeholder="Your Name"  />
-            <input type="email" id="femail"  class="form-input" placeholder="Email Address" />
+            <input type="text" id="fname" class="form-input" placeholder="Your Name" />
+            <input type="email" id="femail" class="form-input" placeholder="Email Address" />
           </div>
           <textarea id="fmsg" class="form-input form-textarea" placeholder="Your message…"></textarea>
           <button class="cta primary" id="sendBtn" type="button">Send Message</button>
@@ -99,14 +185,13 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
       <span class="brand">PL<span class="accent-dot">.</span></span>
       <p>&copy; 2026 Pageloader Demo. All rights reserved.</p>
     </footer>
 
-  </div><!-- /.page -->
-
+  </div>
   <script src="pageloader.js"></script>
 </body>
+
 </html>

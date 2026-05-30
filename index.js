@@ -685,6 +685,10 @@ function toggleBookmark(project) {
     showToast('Project bookmarked');
   }
 
+  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+
+  updateBookmarkURL();
+
   try {
     localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
   } catch (error) {
@@ -764,7 +768,6 @@ function renderRecentProjects() {
     recentGrid.appendChild(card);
   });
 }
-
 /* ============================================================
    CLEAR ALL FILTERS SYSTEM
    ============================================================ */
@@ -1082,6 +1085,7 @@ function initScrollBtn() {
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
     btn.classList.toggle('show', scrollTop > 400);
+    btn.classList.toggle('completed', progress >= 0.98);
 
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
@@ -1137,15 +1141,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     syncProjectCounts();
 
     if (hasProjectGrid()) {
+      loadBookmarksFromURL();
+
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
     }
+
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+
   } catch (error) {
     console.error('Failed to load projects:', error);
+
     const grid = document.getElementById('projectGrid');
+
     if (grid) {
-      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+      grid.innerHTML = `
+        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+          Failed to load projects. Please try refreshing the page.
+        </div>
+      `;
     }
   }
 });

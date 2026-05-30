@@ -1,0 +1,19 @@
+{
+  "name": "nodemailer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "nodemailer": "^6.9.11",
+    "nodemon": "^3.1.0"
+  }
+}
