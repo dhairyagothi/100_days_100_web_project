@@ -1,0 +1,112 @@
+{
+  "generated_at": "2026-05-30T16:22:36.087Z",
+  "total_projects": 193,
+  "by_type": {
+    "tool": 70,
+    "ui": 19,
+    "website": 13,
+    "backend": 2,
+    "form": 1,
+    "authentication": 2,
+    "animation": 4,
+    "ai": 9,
+    "game": 47,
+    "api": 12,
+    "clone": 8,
+    "simulation": 4,
+    "productivity": 1,
+    "ui / animation": 1
+  },
+  "by_difficulty": {
+    "beginner": 45,
+    "advanced": 30,
+    "intermediate": 118
+  },
+  "top_tech_tags": [
+    {
+      "tag": "javascript",
+      "projects": 146
+    },
+    {
+      "tag": "css",
+      "projects": 80
+    },
+    {
+      "tag": "html",
+      "projects": 50
+    },
+    {
+      "tag": "tool",
+      "projects": 47
+    },
+    {
+      "tag": "game",
+      "projects": 40
+    },
+    {
+      "tag": "api",
+      "projects": 31
+    },
+    {
+      "tag": "ui",
+      "projects": 16
+    },
+    {
+      "tag": "canvas",
+      "projects": 13
+    },
+    {
+      "tag": "todo",
+      "projects": 10
+    },
+    {
+      "tag": "clone",
+      "projects": 7
+    }
+  ],
+  "tech_tag_counts": {
+    "javascript": 147,
+    "todo": 10,
+    "css": 80,
+    "ui": 16,
+    "html": 50,
+    "api": 31,
+    "source-only": 2,
+    "canvas": 13,
+    "game": 40,
+    "tool": 47,
+    "weather": 2,
+    "clone": 7,
+    "productivity": 2,
+    "animation": 2,
+    "simulation": 4,
+    "utility": 1,
+    "simulator": 1,
+    "asmr": 1,
+    "2d": 1,
+    "machine": 1,
+    "learning": 1,
+    "python": 1,
+    "map": 2,
+    "visualizer": 2,
+    "timer": 1,
+    "tasks": 1,
+    "ambient": 1,
+    "react": 2,
+    "typescript": 2,
+    "hangman": 1,
+    "vite": 1,
+    "algorithm": 1,
+    "edits": 1,
+    "images": 1,
+    "amazon": 1,
+    "tailwindcss": 1,
+    "education": 1,
+    "webrtc": 1,
+    "mediapipe": 1,
+    "gesture": 1
+  },
+  "external_demos": 5,
+  "local_demos": 188,
+  "source_only_count": 2
+}

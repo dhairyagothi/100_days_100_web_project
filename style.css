@@ -302,6 +302,44 @@ body > header {
   box-shadow: none;
 }
 
+/* Repository Insights section */
+.insights-section {
+  padding: 2.25rem 0;
+}
+.insights-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.insight-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--glass-border);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+.insight-label { color: var(--text-secondary); font-size: 0.9rem; }
+.insight-value { font-size: 1.45rem; font-weight: 700; margin-top: 0.25rem; }
+.category-distribution h3 { margin: 0.5rem 0 0.5rem; }
+.category-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.category-item { background: var(--bg-surface); padding: 0.45rem 0.6rem; border-radius: 8px; display:flex; gap:0.6rem; align-items:center; }
+.cat-name { color: var(--text-secondary); font-size: 0.9rem; text-transform: capitalize; }
+.cat-count { font-weight:700; color:var(--text-primary); }
+
+@media (max-width: 900px) {
+  .insights-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 520px) {
+  .insights-grid { grid-template-columns: 1fr; }
+}
+
 @media (hover: none), (pointer: coarse) {
   body {
     cursor: auto;
