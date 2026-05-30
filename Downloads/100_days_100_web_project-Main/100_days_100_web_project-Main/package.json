@@ -1,0 +1,31 @@
+{
+  "name": "100-days-100-web-projects",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A curated open-source collection of 100+ frontend web projects",
+  "scripts": {
+    "dev": "npx -y serve . -p 3000",
+    "lint": "npx -y htmlhint index.html contributors/contributor.html",
+    "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
+    "docker:build": "docker build -t 100days-web .",
+    "docker:run": "docker run --rm -p 8080:80 100days-web",
+    "docker:up": "docker compose up --build -d",
+    "docker:down": "docker compose down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhairyagothi/100_days_100_web_project.git"
+  },
+  "keywords": [
+    "html",
+    "css",
+    "javascript",
+    "web-projects",
+    "open-source",
+    "frontend"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}
