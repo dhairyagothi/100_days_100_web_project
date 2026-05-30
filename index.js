@@ -15,24 +15,7 @@ let projectData = [];
 let filteredProjectData = [];
 
 
-/* ============================================================
-   TECHNOLOGY STACK FILTERING VARIABLES
-   ============================================================ */
-let techStackFilters = []; // Array of active tech filters
-let techSearchQuery = ''; // Current tech search input
 
-// Technology normalization map (handles common variations)
-// Maps user input → actual tags in dataset
-const TECH_ALIASES = {
-  'js': 'javascript',
-  'react': 'javascript',
-  'node': 'javascript',
-  'vue': 'javascript',
-  'python': 'api',
-  'flask': 'api',
-  'game': 'game',
-  'games': 'game',
-};
 
 /* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
@@ -277,130 +260,8 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
 }
 
 
-/* ============================================================
-   TECHNOLOGY STACK FILTERING FUNCTIONS
-   ============================================================ */
-
-/**
- * Normalize technology name for consistent matching
- * SIMPLIFIED: Just lowercase, no complex aliases needed
- * @param {string} tech - Technology name to normalize
- * @returns {string} Normalized technology name
- */
-function normalizeTech(tech) {
-  const lower = tech.toLowerCase().trim();
-  // Only handle common variations
-  return TECH_ALIASES[lower] || lower;
-}
-
-/**
- * Check if project matches the active tech stack filters.
- * Each filter must match a complete tag token, not a substring of another tag.
- * Example: searching "java" must not return projects tagged "javascript".
- * @param {string|array} projectTags - Project tags (space-separated string or array)
- * @returns {boolean} True if project matches all active filters
- */
-function matchesTechStack(projectTags) {
-  // No filters = show all projects
-  if (techStackFilters.length === 0) return true;
-
-  // Handle empty or missing tags
-  if (!projectTags) return false;
-
-  // Normalize to a set of individual lowercase tokens for whole-word matching.
-  // Using a Set avoids repeated linear scans for each filter.
-  const tagSet = new Set(
-    (Array.isArray(projectTags) ? projectTags : String(projectTags).split(/\s+/))
-      .map((t) => t.toLowerCase().trim())
-      .filter(Boolean)
-  );
-
-  // Every active filter must match an exact token in the tag set (AND logic).
-  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
-  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
-}
 
 
-/**
- * Remove a specific technology filter
- * @param {string} tech - Technology to remove from filters
- */
-function removeTechFilter(tech) {
-  techStackFilters = techStackFilters.filter(t => t !== tech);
-  updateTechFilterDisplay();
-  renderGrid();
-}
-
-/**
- * Clear all technology filters
- */
-function clearAllTechFilters() {
-  techStackFilters = [];
-  techSearchQuery = '';
-
-  const input = document.getElementById('techStackSearch');
-  if (input) input.value = '';
-
-  updateTechFilterDisplay();
-  renderGrid();
-}
-
-/**
- * Update the visual display of active tech filters
- */
-function updateTechFilterDisplay() {
-  const container = document.getElementById('activeTechFilters');
-  const tagsContainer = document.getElementById('techFilterTags');
-  const clearBtn = document.getElementById('clearTechFilter');
-
-  if (!container || !tagsContainer) return;
-
-  // Show/hide clear button in search input
-  if (clearBtn) {
-    clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
-  }
-
-  // Show/hide active filters container
-  if (techStackFilters.length === 0) {
-    container.style.display = 'none';
-    return;
-  }
-
-  container.style.display = 'flex';
-
-  // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters.map(tech => `
-    <span class="tech-filter-tag">
-      ${tech}
-      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
-        <i class="fas fa-times"></i>
-      </button>
-    </span>
-  `).join('');
-}
-
-/**
- * Get all unique technologies from projects (optional utility)
- * EFFICIENT: Uses Set for O(1) lookups
- * @returns {array} Sorted array of unique technologies
- */
-function getAllTechnologies() {
-  const techSet = new Set();
-
-  PROJECTS.forEach(([, , , tags]) => {
-    if (tags) {
-      const tagArray = typeof tags === 'string'
-        ? tags.split(/\s+/).filter(t => t)
-        : tags;
-
-      tagArray.forEach(tag => {
-        techSet.add(tag.toLowerCase());
-      });
-    }
-  });
-
-  return Array.from(techSet).sort();
-}
 
 /* ============================================================
    BOOKMARK + RECENT SYSTEM
@@ -1335,43 +1196,8 @@ function initSorting() {
   });
 }
 
-/* ============================================================
-   TECH STACK SEARCH INITIALIZATION
-   ============================================================ */
-function initTechStackSearch() {
-  const input = document.getElementById('techStackSearch');
-  const clearBtn = document.getElementById('clearTechFilter');
 
-  if (!input) return;
 
-  // Use the shared debounce utility instead of a manual inline timer
-  input.addEventListener('input', debounce((e) => {
-    const value = e.target.value.trim().toLowerCase();
-
-    if (value) {
-      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-      techStackFilters = [...new Set(techs)];
-      updateTechFilterDisplay();
-      currentPage = 1;
-      renderGrid();
-    } else {
-      clearAllTechFilters();
-    }
-  }, 300));
-
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      clearAllTechFilters();
-    });
-  }
-
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      input.blur();
-    }
-  });
-}
 
 /* ============================================================
    SEARCH CONTROLS
@@ -1587,7 +1413,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   initFilterChips();
   initSearch();
   initSorting();
-  initTechStackSearch();
   initClearAllFilters();
 
   try {
@@ -1695,12 +1520,7 @@ window.addEventListener(
   }, 180)
 );
 
-/* ============================================================
-   EXPOSE FUNCTIONS TO GLOBAL SCOPE
-   (Required for HTML onclick handlers)
-   ============================================================ */
-window.removeTechFilter = removeTechFilter;
-window.clearAllTechFilters = clearAllTechFilters;
+
 
 /* ============================================================
    THEME CORE ENGINE (Fixes Issue #4359)
