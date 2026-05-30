@@ -1800,19 +1800,6 @@
   "difficulty": "intermediate",
   "projectPath": "./public/NovaAI/NovaAI.html"
 },
-
-{
-  "projectNo": 180,
-  "projectName": "SkinSense - Skin Based Recommendation System",
-  "projectType": "Website",
-  "projectDesc": "A modern skincare recommendation web app that analyzes skin type, concerns, hydration, and lifestyle habits to generate personalized skincare routines, ingredient suggestions, and skin health insights.",
-  "techStack": ["html", "css", "javascript"],
-  "difficulty": "intermediate",
-  "projectPath": "./public/SkinSense/index.html"
-}
-]
-
-=======
   {
     "projectNo": 1,
     "projectName": "To-Do List",
@@ -4224,5 +4211,14 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
-  }
+  },
+  {
+  "projectNo": 180,
+  "projectName": "SkinSense - Skin Based Recommendation System",
+  "projectType": "Website",
+  "projectDesc": "A modern skincare recommendation web app that analyzes skin type, concerns, hydration, and lifestyle habits to generate personalized skincare routines, ingredient suggestions, and skin health insights.",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/SkinSense/index.html"
+}
 ]
