@@ -1546,6 +1546,7 @@ input:focus,
   display: flex;
   align-items: center;
   justify-content: center;
+    pointer-events: auto;
 }
 
 .bookmark-btn:hover {

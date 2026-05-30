@@ -252,7 +252,7 @@ getProjectDescription(project);
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                 </button>
             </div>
@@ -264,16 +264,16 @@ getProjectDescription(project);
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = 'pointer';
-  card.onclick = (e) => {
-    if (e.target.closest('a, button')) return;
-    
-    // Track the project visit if projectData is provided
-    if (projectData) {
-      trackRecentProject(projectData);
-    }
-    
-    window.open(demoUrl, '_blank', 'noopener');
-  };
+card.addEventListener('click', (e) => {
+  if (e.target.closest('.bookmark-btn')) {
+    e.stopPropagation();
+    return;
+  }
+
+  if (e.target.closest('a')) {
+    return;
+  }
+});
 }
 
 
@@ -708,6 +708,21 @@ function renderGrid() {
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
+    const bookmarkBtn = card.querySelector('.bookmark-btn');
+
+if (bookmarkBtn) {
+  bookmarkBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    const project = PROJECTS.find(
+      (item) => item[0] === bookmarkBtn.dataset.id
+    );
+
+    if (!project) return;
+
+    toggleBookmark(project);
+  });
+}
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     fragment.appendChild(card);
@@ -1160,17 +1175,7 @@ function showToast(message) {
   }, 3000);
 }
 
-document.addEventListener('click', (e) => {
-  const bookmarkBtn = e.target.closest('.bookmark-btn');
-  if (!bookmarkBtn) return;
 
-  e.preventDefault();
-  const projectDay = bookmarkBtn.dataset.id;
-  const project = PROJECTS.find((item) => item[0] === projectDay);
-  if (!project) return;
-
-  toggleBookmark(project);
-});
 
 document.addEventListener('click', (e) => {
   const projectLink = e.target.closest('.open-project');
