@@ -38,6 +38,18 @@ module.exports = async (req, res) => {
     });
   }
 
+  // Bound the total serialised size of the contents array before forwarding.
+  // Without this check a single request containing a multi-megabyte payload
+  // can exhaust the token quota in one call. The limit of 32 KB is generous
+  // for normal chat turns and well within the UI's typical message sizes.
+  const MAX_CONTENTS_BYTES = 32 * 1024; // 32 KB
+  const contentsJson = JSON.stringify(contents);
+  if (contentsJson.length > MAX_CONTENTS_BYTES) {
+    return res.status(400).json({
+      error: `Request payload too large. The contents array must not exceed ${MAX_CONTENTS_BYTES} bytes when serialised.`,
+    });
+  }
+
   const payload = { contents };
   if (systemPrompt) {
     payload.systemInstruction = { parts: [{ text: systemPrompt }] };
