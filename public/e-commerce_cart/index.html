@@ -604,6 +604,10 @@
   <span style="color:white;font-size:20px;">❤</span>
 </div>
 
+<button id="dark-mode-btn" class="button">
+  🌙
+</button>
+
 <div class="box">
   <div class="cart-count">0</div>
   <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
@@ -629,7 +633,17 @@
           <div class="total-title">Total</div>
           <div class="total-price">Rs.0</div>
         </div>
-        <button class="btn-buy">Place Order</button>
+        <div class="cart-footer">
+
+  <button class="btn-buy">
+    Place Order
+  </button>
+
+  <button class="clear-cart-btn">
+    Clear Cart
+  </button>
+
+</div>
         <div class="checkout-modal">
   <div class="checkout-content">
 
@@ -712,6 +726,14 @@
     <div class="trending-line"></div>
     <div class="trending-text">Trending Right Now</div>
     <div class="trending-line"></div>
+</div>
+<div class="search-container">
+  <input type="text" id="search-input" placeholder="Search shoes...">
+</div>
+
+<p id="no-products-message" style="display:none; text-align:center; margin-top:20px;">
+  No products found
+</p>
   </div>
 
   <!-- Shoe Grid -->
@@ -891,6 +913,30 @@
     <div class="copyright_part">&copy; AeroStride 2024</div>
   </footer>
 
+  
+
+  <script src="js/script.js"></script>
+  <!-- Quick View Modal -->
+
+<div class="quick-view-modal">
+
+  <div class="quick-view-content">
+
+    <span class="close-quick-view">&times;</span>
+
+    <img id="quick-view-img" src="" alt="Product Image">
+
+    <h2 id="quick-view-title"></h2>
+
+    <p id="quick-view-price"></p>
+
+    <button id="quick-view-cart-btn">
+      Add To Cart
+    </button>
+
+  </div>
+
+</div>
   <script>
     /* ── Elements ── */
     const cartPanel   = document.getElementById('cart-panel');

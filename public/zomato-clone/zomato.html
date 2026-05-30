@@ -75,11 +75,11 @@
             </div>
           </div>
           <div class="line"></div>
-          <div class="search">
+          <div class="search" onclick="searchFood()">
             <div class="search_icon">
               <i data-feather="search"></i>
             </div>
-            <input placeholder="Search for restaurant, cuisine or a dish" class="search_box" value="" />
+            <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" class="search_box" value="" />
           </div>
         </div>
       </div>
@@ -670,6 +670,17 @@
   </script>
 
   <script src="accordion.js"></script>
+  <script>
+  function searchFood() {
+    let value = document.getElementById("searchInput").value;
+
+    if (value === "") {
+      alert("Please enter something!");
+    } else {
+      alert("You searched for: " + value);
+    }
+  }
+</script>
 </body>
 
 </html>
