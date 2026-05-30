@@ -1,0 +1,62 @@
+#aiInsights {
+
+  display: grid;
+
+  gap: 15px;
+
+  margin-top: 20px;
+}
+
+.insight-card {
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid
+    rgba(255,255,255,0.08);
+
+  color: white;
+
+  line-height: 1.7;
+}
+
+.score-card {
+
+  text-align: center;
+
+  padding: 50px;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(139,92,246,0.15),
+      rgba(6,182,212,0.12)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,0.08);
+}
+
+.score-card h1 {
+
+  font-size: 5rem;
+
+  font-weight: 800;
+
+  color: #8b5cf6;
+}
+
+.score-card p {
+
+  color: #94a3b8;
+
+  margin-top: 10px;
+}

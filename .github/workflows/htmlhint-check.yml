@@ -1,0 +1,24 @@
+name: "HTML Semantic Validation"
+
+on:
+  pull_request:
+    types: [opened, edited, synchronized]
+
+jobs:
+  lint-html:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install HTMLHint
+        run: npm install -g htmlhint
+
+      - name: Execute HTML Validation Rules
+        run: htmlhint "**/*.html" --config .htmlhintrc
