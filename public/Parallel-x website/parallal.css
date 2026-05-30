@@ -4,28 +4,12 @@
   --green-deep: #01372d;
   --green-mid: #1a5c48;
   --green-accent: #359381;
-  --green-light:  #5ab89e;
-  --lime:         #a8e063;
-  --cream:        #f5f2eb;
-  --white:        #ffffff;
-  --text-dark:    #0d1f1a;
-  --shadow-green: rgba(53,147,129,0.35);
-  
-  /* Themeable variables */
-  --page-bg: var(--cream);
-  --page-text: var(--text-dark);
-  --header-bg: rgba(1,57,47,0.5);
-  --card-bg: var(--white);
-  --muted: rgba(255,255,255,0.6);
-}
-
-/* Dark theme overrides */
-:root[data-theme="dark"], [data-theme="dark"] {
-  --page-bg: #0b1410;
-  --page-text: #e6f6ef;
-  --header-bg: rgba(3,42,35,0.9);
-  --card-bg: #081312;
-  --muted: rgba(255,255,255,0.5);
+  --green-light: #5ab89e;
+  --lime: #a8e063;
+  --cream: #f5f2eb;
+  --white: #ffffff;
+  --text-dark: #0d1f1a;
+  --shadow-green: rgba(53, 147, 129, 0.35);
 }
 
 *,
@@ -43,8 +27,8 @@ html {
 
 body {
   font-family: 'DM Sans', sans-serif;
-    background: var(--page-bg);
-    color: var(--page-text);
+  background: var(--page-bg);
+  color: var(--page-text);
   overflow-x: hidden;
 }
 
@@ -76,26 +60,6 @@ body {
   transition: all 0.25s ease;
 }
 
-/* Back button styling to avoid collisions with header */
-.project-back-button {
-  display: none;
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 6px 10px;
-  font-size: 0.95rem;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));
-  color: #fff;
-  text-decoration: none;
-  z-index: 10001;
-  font-weight: 700;
-  font-family: Inter, system-ui, sans-serif;
-  box-shadow: 0 8px 20px rgba(12,18,40,0.35);
-}
-.project-back-button:hover{ opacity:0.95 }
-
 /* ══════════════════════════════════════
    HEADER / NAV
 ══════════════════════════════════════ */
@@ -109,7 +73,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px 5%;
-    background: var(--header-bg);
+  background: var(--header-bg);
   backdrop-filter: blur(14px);
   transition: background 0.4s, padding 0.3s;
 }
@@ -150,15 +114,15 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-  background: rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
   color: var(--white);
 }
 
 /* Theme toggle button */
 .theme-toggle {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--white);
   padding: 8px 10px;
   border-radius: 10px;
@@ -218,6 +182,7 @@ nav ul li a:hover {
   left: 0;
   will-change: transform;
 }
+
 
 .text {
   font-family: 'Playfair Display', serif;
@@ -295,13 +260,6 @@ nav ul li a:hover {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-
-
-.nav-logo-btn {
-  gap: 18px;
-  display: flex;
 }
 
 /* scroll indicator */
@@ -905,19 +863,27 @@ nav ul li a:hover {
     align-items: center;
     gap: 15px;
     text-align: center;
-}
+  }
 
   /* Show back button on small screens only */
-  .project-back-button { display:block; position:absolute; left:12px; top:50%; transform:translateY(-50%); }
+  .project-back-button {
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 
   /* ensure header leaves space for back button on small screens */
-  header{ padding-left: 60px; }
+  header {
+    padding-left: 60px;
+  }
 
-.name{
+  .name {
     font-size: 1.5rem;
-}
+  }
 
-nav ul{
+  nav ul {
     justify-content: center;
     transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 105;
@@ -953,10 +919,12 @@ nav ul{
     padding: 15px 6% !important;
   }
 
-/* prevent header content from overlapping the fixed back button on small screens */
-header{ padding-left: 80px; }
+  /* prevent header content from overlapping the fixed back button on small screens */
+  header {
+    padding-left: 80px;
+  }
 
-.parallal{
+  .parallal {
     height: 90vh;
   }
 
