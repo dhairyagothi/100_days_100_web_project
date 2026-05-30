@@ -1,497 +1,212 @@
-const modal = document.getElementById("modal");
-const openModal = document.getElementById("openModal");
-const openCard = document.getElementById("openCard");
-const closeModal = document.getElementById("closeModal");
-const saveBtn = document.getElementById("saveBtn");
-const toast = document.getElementById("toast");
-const notesGrid = document.getElementById("notesGrid");
-const searchInput = document.getElementById("searchInput");
-const noteCount = document.getElementById("noteCount");
-const greeting = document.getElementById("greeting");
+const noteModal = document.getElementById('noteModal');
+const overlay = document.getElementById('overlay');
+const newNoteBtn = document.getElementById('newNoteBtn');
+const emptyAddBtn = document.getElementById('emptyAddBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const noteForm = document.getElementById('noteForm');
+const noteTitle = document.getElementById('noteTitle');
+const noteContent = document.getElementById('noteContent');
+const noteTag = document.getElementById('noteTag');
+const notesGrid = document.getElementById('notesGrid');
+const searchInput = document.getElementById('searchInput');
+const noteCount = document.getElementById('noteCount');
+const activeCount = document.getElementById('activeCount');
+const emptyState = document.getElementById('emptyState');
+const toast = document.getElementById('toast');
+const modalTitle = document.getElementById('modalTitle');
 
-let notes = JSON.parse(localStorage.getItem("notes")) || [];
+let notes = JSON.parse(localStorage.getItem('notes') || '[]');
+let editingNoteId = null;
 
-/* GREETING */
+function saveNotes() {
+  localStorage.setItem('notes', JSON.stringify(notes));
+}
 
-function setGreeting() {
-  const hour = new Date().getHours();
+function formatTimestamp(value) {
+  const date = new Date(value);
+  return date.toLocaleString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
 
-  if (hour < 12) {
-    greeting.innerText = "Good Morning 👋";
-  } else if (hour < 18) {
-    greeting.innerText = "Good Afternoon 👋";
+function openModal(editNote = null) {
+  noteModal.classList.add('open');
+  overlay.hidden = false;
+  overlay.classList.add('visible');
+  noteModal.setAttribute('aria-hidden', 'false');
+  noteTitle.focus();
+
+  if (editNote) {
+    modalTitle.textContent = 'Edit note';
+    noteTitle.value = editNote.title;
+    noteContent.value = editNote.content;
+    noteTag.value = editNote.tag;
+    editingNoteId = editNote.id;
   } else {
-    greeting.innerText = "Good Evening 👋";
+    modalTitle.textContent = 'New note';
+    noteTitle.value = '';
+    noteContent.value = '';
+    noteTag.value = 'Personal';
+    editingNoteId = null;
   }
 }
 
-setGreeting();
+function closeModal() {
+  noteModal.classList.remove('open');
+  overlay.classList.remove('visible');
+  overlay.hidden = true;
+  noteModal.setAttribute('aria-hidden', 'true');
+  noteForm.reset();
+  editingNoteId = null;
+}
 
-/* OPEN */
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add('show');
+  window.clearTimeout(showToast.timeoutId);
+  showToast.timeoutId = window.setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2200);
+}
 
-openModal.addEventListener("click", () => {
-  modal.classList.add("active");
-});
+function getFilteredNotes() {
+  const query = searchInput.value.trim().toLowerCase();
+  return notes.filter((note) => {
+    if (!note || note.trash) return false;
+    const titleMatch = note.title.toLowerCase().includes(query);
+    const contentMatch = note.content.toLowerCase().includes(query);
+    const tagMatch = note.tag.toLowerCase().includes(query);
+    return query === '' || titleMatch || contentMatch || tagMatch;
+  });
+}
 
-// document.addEventListener("click", (e) => {
+function renderNotes() {
+  const visibleNotes = getFilteredNotes();
+  notesGrid.innerHTML = '';
 
-//   if(e.target.id === "openCard"){
-//     modal.classList.add("active");
-//   }
-
-// });
-
-document.addEventListener("click", (e) => {
-  if (e.target.id === "openCard" || e.target.closest("#openCard")) {
-    modal.classList.add("active");
+  if (visibleNotes.length === 0) {
+    emptyState.style.display = 'block';
+    notesGrid.style.display = 'none';
+  } else {
+    emptyState.style.display = 'none';
+    notesGrid.style.display = 'grid';
+    visibleNotes.forEach((note) => {
+      const article = document.createElement('article');
+      article.className = 'note-card';
+      article.dataset.id = note.id;
+      article.innerHTML = `
+        <div class="note-meta">
+          <span class="note-tag">${note.tag}</span>
+          <span class="note-date">${formatTimestamp(note.createdAt)}</span>
+        </div>
+        <div>
+          <h2 class="note-title">${note.title}</h2>
+          <p class="note-content">${note.content.replace(/\n/g, '<br>')}</p>
+        </div>
+        <div class="note-actions">
+          <button class="secondary-btn edit-btn" type="button" data-action="edit">Edit</button>
+          <button class="secondary-btn delete-btn" type="button" data-action="delete">Delete</button>
+        </div>
+      `;
+      notesGrid.appendChild(article);
+    });
   }
-});
 
-/* CLOSE */
+  const totalNotes = notes.filter((note) => note && !note.trash).length;
+  noteCount.textContent = `${totalNotes} note${totalNotes === 1 ? '' : 's'}`;
+  activeCount.textContent = `${visibleNotes.length} visible`;
+}
 
-closeModal.addEventListener("click", () => {
-  modal.classList.remove("active");
-});
+function handleSave(event) {
+  event.preventDefault();
+  const titleValue = noteTitle.value.trim();
+  const contentValue = noteContent.value.trim();
+  const tagValue = noteTag.value;
 
-/* SAVE */
-
-// saveBtn.addEventListener("click", () => {
-
-//   const title = document.getElementById("title").value;
-//   const content = document.getElementById("content").value;
-//   const tag = document.getElementById("tag").value;
-//   const favorite = document.getElementById("favorite").checked;
-//   const locked = document.getElementById("locked").checked;
-
-//   if(title === "" || content === ""){
-//     alert("Please fill all fields");
-//     return;
-//   }
-
-//   const note = {
-//     id: Date.now(),
-//     title,
-//     content,
-//     tag,
-//     favorite,
-//     locked,
-//     trash:false,
-//     date:new Date().toLocaleDateString()
-//   };
-
-//   notes.push(note);
-
-//   localStorage.setItem("notes", JSON.stringify(notes));
-
-//   renderNotes();
-
-//   modal.classList.remove("active");
-
-//   document.getElementById("title").value = "";
-//   document.getElementById("content").value = "";
-//   document.getElementById("favorite").checked = false;
-//   document.getElementById("locked").checked = false;
-
-//   showToast();
-
-// });
-
-// saveBtn.addEventListener("click", () => {
-
-//   const title = document.getElementById("title").value.trim();
-//   const content = document.getElementById("content").value.trim();
-//   const tag = document.getElementById("tag").value;
-
-//   const favorite =
-//     document.getElementById("favorite").checked;
-
-//   const locked =
-//     document.getElementById("locked").checked;
-
-//   if(title === "" || content === ""){
-//     alert("Please fill all fields");
-//     return;
-//   }
-
-//   const note = {
-//     id: Date.now(),
-//     title,
-//     content,
-//     tag,
-//     favorite,
-//     locked,
-//     trash:false,
-//     date:new Date().toLocaleDateString()
-//   };
-
-//   notes.push(note);
-
-//   localStorage.setItem(
-//     "notes",
-//     JSON.stringify(notes)
-//   );
-
-//   renderNotes(currentView);
-
-//   modal.classList.remove("active");
-
-//   document.getElementById("title").value = "";
-//   document.getElementById("content").value = "";
-
-//   document.getElementById("tag").selectedIndex = 0;
-
-//   document.getElementById("favorite").checked = false;
-//   document.getElementById("locked").checked = false;
-
-//   showToast();
-
-// });
-
-saveBtn.addEventListener("click", () => {
-  const title = document.getElementById("title").value.trim();
-
-  const content = document.getElementById("content").value.trim();
-
-  const tag = document.getElementById("tag").value;
-
-  if (title === "" || content === "") {
-    alert("Please fill all fields");
+  if (!titleValue || !contentValue) {
+    showToast('Please add a title and content.');
     return;
   }
 
-  const note = {
-    id: Date.now(),
-    title,
-    content,
-    tag,
-    favorite: false,
-    locked: false,
-    trash: false,
-    date: new Date().toLocaleDateString(),
-  };
-
-  notes.push(note);
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes(currentView);
-
-  modal.classList.remove("active");
-
-  document.getElementById("title").value = "";
-  document.getElementById("content").value = "";
-  document.getElementById("tag").selectedIndex = 0;
-
-  showToast();
-});
-/* RENDER */
-
-function renderNotes(type = "all") {
-  notesGrid.innerHTML = `
-    <div class="card add-card" id="openCard">
-      <div class="plus">+</div>
-      <h2>Add New Note</h2>
-    </div>
-  `;
-
-  let filtered = notes;
-
-  if (type === "favorites") {
-    filtered = notes.filter((note) => note.favorite);
-  }
-
-  if (type === "locked") {
-    filtered = notes.filter((note) => note.locked);
-  }
-
-  if (type === "trash") {
-    filtered = notes.filter((note) => note.trash);
-  }
-
-  filtered.forEach((note) => {
-    if (type !== "trash" && note.trash) {
-      return;
-    }
-
-    notesGrid.innerHTML += `
-
-      <div class="card">
-
-        ${note.locked ? `<div class="lock-badge">🔒 Locked</div>` : ""}
-
-        <button
-          class="favorite-btn"
-          onclick="toggleFavorite(${note.id})"
-        >
-          ${note.favorite ? "⭐" : "☆"}
-        </button>
-
-
-        <button
-            class="lock-btn"
-            onclick="toggleLock(${note.id})"
-         >
-        ${note.locked ? "🔒" : "🔓"}
-        </button>
-
-        <h2>${note.title}</h2>
-
-        <p>
-${note.locked && currentView !== "locked" ? "🔒 Locked Note" : note.content}
-</p>
-
-        <div class="badge">${note.tag}</div>
-
-        
-
-       ${
-         type === "trash"
-           ? `
-  <div class="card-footer">
-
-      <div class="date">
-          ${note.date}
-      </div>
-
-      <div class="trash-actions">
-
-          <button
-              class="restore-btn"
-              onclick="restoreNote(${note.id})"
-          >
-              Restore
-          </button>
-
-          <button
-              class="delete-btn"
-              onclick="deleteForever(${note.id})"
-          >
-              Delete
-          </button>
-
-      </div>
-
-  </div>
-  `
-           : `
-  <div class="card-footer">
-
-      <div class="date">
-          ${note.date}
-      </div>
-
-      <button
-          class="delete-btn"
-          onclick="moveToTrash(${note.id})"
-      >
-          Trash
-      </button>
-
-  </div>
-  `
-       }
-
-      </div>
-    `;
-  });
-
-  //   noteCount.innerText = `You have ${filtered.length} notes`;
-  noteCount.innerText = `You have ${
-    filtered.filter((n) => !n.trash).length
-  } notes`;
-}
-
-/* FAVORITE */
-
-function toggleFavorite(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      note.favorite = !note.favorite;
-    }
-
-    return note;
-  });
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes(currentView);
-}
-
-function toggleLock(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      note.locked = !note.locked;
-    }
-
-    return note;
-  });
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes(currentView);
-}
-
-/* TRASH */
-
-function moveToTrash(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      note.trash = true;
-    }
-
-    return note;
-  });
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes(currentView);
-}
-function restoreNote(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      note.trash = false;
-    }
-    return note;
-  });
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes("trash");
-}
-
-/* DELETE */
-
-function deleteForever(id) {
-  notes = notes.filter((note) => note.id !== id);
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-
-  renderNotes("trash");
-}
-
-/* SEARCH */
-searchInput.addEventListener("keyup", () => {
-  const value = searchInput.value.toLowerCase();
-
-  const filtered = notes.filter(
-    (note) =>
-      !note.trash &&
-      (note.title.toLowerCase().includes(value) ||
-        note.content.toLowerCase().includes(value) ||
-        note.tag.toLowerCase().includes(value)),
-  );
-
-  notesGrid.innerHTML = `
-
-    <div class="card add-card" id="openCard">
-      <div class="plus">+</div>
-      <h2>Add New Note</h2>
-    </div>
-
-  `;
-
-  filtered.forEach((note) => {
-    notesGrid.innerHTML += `
-
-      <div class="card">
-
-        ${note.locked ? `<div class="lock-badge">🔒 Locked</div>` : ""}
-
-        <button
-          class="favorite-btn"
-          onclick="toggleFavorite(${note.id})"
-        >
-          ${note.favorite ? "⭐" : "☆"}
-        </button>
-
-        <h2>${note.title}</h2>
-
-        <p>${note.content}</p>
-
-        <div class="badge">${note.tag}</div>
-
-      </div>
-
-    `;
-  });
-});
-// searchInput.addEventListener("keyup", () => {
-
-//   const value = searchInput.value.toLowerCase();
-
-//   const filtered = notes.filter(note =>
-
-//     !note.trash &&
-
-//     (
-//       note.title.toLowerCase().includes(value)
-//       ||
-//       note.content.toLowerCase().includes(value)
-//       ||
-//       note.tag.toLowerCase().includes(value)
-//     )
-
-//   );
-
-//   notesGrid.innerHTML = "";
-
-//   filtered.forEach(note => {
-
-//     notesGrid.innerHTML += `
-//       <div class="card">
-//         <h2>${note.title}</h2>
-//         <p>${note.content}</p>
-//         <div class="badge">${note.tag}</div>
-//       </div>
-//     `;
-//   });
-
-// });
-
-/* TOAST */
-
-function showToast() {
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2500);
-}
-
-/* DARK MODE */
-
-const themeToggle = document.getElementById("themeToggle");
-
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("light");
-
-  const themeText = document.getElementById("themeText");
-
-  if (document.body.classList.contains("light")) {
-    themeText.innerHTML = "☀️ Light Mode";
+  if (editingNoteId) {
+    notes = notes.map((note) => {
+      if (note.id === editingNoteId) {
+        return {
+          ...note,
+          title: titleValue,
+          content: contentValue,
+          tag: tagValue,
+          updatedAt: new Date().toISOString(),
+        };
+      }
+      return note;
+    });
+    saveNotes();
+    showToast('Note updated successfully');
   } else {
-    themeText.innerHTML = "🌙 Dark Mode";
+    const newNote = {
+      id: Date.now(),
+      title: titleValue,
+      content: contentValue,
+      tag: tagValue,
+      createdAt: new Date().toISOString(),
+      updatedAt: null,
+      trash: false,
+    };
+    notes.unshift(newNote);
+    saveNotes();
+    showToast('Note created successfully');
+  }
+
+  closeModal();
+  renderNotes();
+}
+
+function handleNotesGridClick(event) {
+  const button = event.target.closest('button');
+  if (!button) return;
+  const article = event.target.closest('.note-card');
+  if (!article) return;
+  const noteId = Number(article.dataset.id);
+  const noteItem = notes.find((note) => note.id === noteId);
+  if (!noteItem) return;
+
+  if (button.dataset.action === 'edit') {
+    openModal(noteItem);
+  }
+
+  if (button.dataset.action === 'delete') {
+    notes = notes.filter((note) => note.id !== noteId);
+    saveNotes();
+    renderNotes();
+    showToast('Note deleted');
+  }
+}
+
+function closeModalOnOverlay(event) {
+  if (event.target === overlay) {
+    closeModal();
+  }
+}
+
+newNoteBtn.addEventListener('click', () => openModal());
+emptyAddBtn.addEventListener('click', () => openModal());
+closeModalBtn.addEventListener('click', closeModal);
+cancelBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModalOnOverlay);
+searchInput.addEventListener('input', renderNotes);
+noteForm.addEventListener('submit', handleSave);
+notesGrid.addEventListener('click', handleNotesGridClick);
+
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && noteModal.classList.contains('open')) {
+    closeModal();
   }
 });
-
-/* MENU */
-
-let currentView = "all";
-
-const menuItems = document.querySelectorAll(".menu-item");
-
-menuItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    menuItems.forEach((i) => i.classList.remove("active"));
-
-    item.classList.add("active");
-
-    currentView = item.dataset.filter;
-
-    renderNotes(currentView);
-  });
-});
-
-/* START */
 
 renderNotes();
