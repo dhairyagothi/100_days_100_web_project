@@ -1941,3 +1941,32 @@ body.light-mode .brand-mark {
   background-color: #007bff;
   transform: scale(1.1);
 }
+
+/* Custom Cursor */
+* { cursor: none !important; }
+
+#cur-dot, #cur-ring {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999999;
+  top: 0; left: 0;
+}
+
+#cur-dot {
+  width: 8px; height: 8px;
+  background: #4fc3f7;
+  box-shadow: 0 0 10px 3px rgba(79,195,247,0.8);
+  transition: transform 0.1s ease;
+}
+
+#cur-ring {
+  width: 36px; height: 36px;
+  border: 2px solid rgba(79,195,247,0.6);
+  transition: transform 0.08s ease;
+}
+
+@media (pointer: coarse) {
+  * { cursor: auto !important; }
+  #cur-dot, #cur-ring { display: none; }
+}

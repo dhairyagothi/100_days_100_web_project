@@ -1243,3 +1243,29 @@ window.addEventListener('resize', () => {
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
+
+// Custom Cursor 
+(function() {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  const dot  = document.createElement('div'); dot.id  = 'cur-dot';
+  const ring = document.createElement('div'); ring.id = 'cur-ring';
+  document.body.append(dot, ring);
+
+  let mx = 0, my = 0;
+  let rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+    dot.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+  });
+
+  function loop() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
