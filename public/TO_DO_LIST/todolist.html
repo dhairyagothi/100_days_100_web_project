@@ -23,6 +23,7 @@
 
   <!-- Header with Navigation -->
   <header>
+    <nav class="navbar-container" aria-label="Main Navigation">
       <ul class="navbar">
         <li class="nav-left">
           <ul>
@@ -33,11 +34,11 @@
         <li class="nav-right">
           <span class="theme-label">Theme</span>
           <ul>
-            <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1"></button></li>
-            <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button></li>
-            <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button></li>
-            <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button></li>
-            <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button></li>
+            <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Sunset Theme"></button></li>
+            <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Ocean Theme"></button></li>
+            <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Forest Theme"></button></li>
+            <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Midnight Theme"></button></li>
+            <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Aurora Theme"></button></li>
           </ul>
         </li>
       </ul>
@@ -67,12 +68,21 @@
           <label for="task-category" class="sr-only">Choose task category</label>
           <select id="task-category" aria-label="Choose task category">
             <option value="" disabled selected>📂 Category</option>
-            <option value="Work">💼 Work</option>
-            <option value="Personal">🧑 Personal</option>
-            <option value="Urgent">⚡ Urgent</option>
-            <option value="Fitness">💪 Fitness</option>
-            <option value="Miscellaneous">📌 Miscellaneous</option>
+            <option value="Work" data-color="#7c63ff">💼 Work</option>
+            <option value="Personal" data-color="#4f8dff">🧑 Personal</option>
+            <option value="Study" data-color="#ffb86b">📚 Study</option>
+            <option value="Health" data-color="#14b8a6">🍏 Health</option>
+            <option value="Others" data-color="#8e8e9c">📌 Others</option>
           </select>
+
+          <label for="task-priority" class="sr-only">Choose task priority</label>
+          <select id="task-priority" aria-label="Choose task priority">
+            <option value="" disabled selected>⭐ Priority</option>
+            <option value="High" data-color="#ef4444">🔥 High</option>
+            <option value="Medium" data-color="#f59e0b">⭐ Medium</option>
+            <option value="Low" data-color="#3b82f6">🟢 Low</option>
+          </select>
+
           <label for="task" class="sr-only">Task description</label>
           <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
           <button type="submit" id="submittask">➕ Add Task</button>
@@ -86,11 +96,27 @@
       <div class="empty-state" id="emptyState" role="status">
         <div class="empty-icon" aria-hidden="true">📋</div>
         <p class="empty-title">No tasks yet</p>
-        <p class="empty-desc">Add your first task above and get things done!</p>
+        <p class="empty-desc">Add your first task above and organize your day!</p>
       </div>
 
-      <!-- Task List Container -->
-      <ul id="notes-container" aria-label="Task list"></ul>
+      <!-- Status Filtering Tabs -->
+      <div class="status-tabs" id="statusTabs" style="display: none;">
+        <button class="status-tab active" data-status="all" onclick="filterByStatus('all')">
+          🌐 All <span class="tab-count" id="count-all">0</span>
+        </button>
+        <button class="status-tab" data-status="pending" onclick="filterByStatus('pending')">
+          📋 Pending <span class="tab-count" id="count-pending">0</span>
+        </button>
+        <button class="status-tab" data-status="inprogress" onclick="filterByStatus('inprogress')">
+          ⚡ In Progress <span class="tab-count" id="count-inprogress">0</span>
+        </button>
+        <button class="status-tab" data-status="completed" onclick="filterByStatus('completed')">
+          ✅ Completed <span class="tab-count" id="count-completed">0</span>
+        </button>
+      </div>
+
+      <!-- Task Cards Grid -->
+      <ul id="notes-container" class="task-grid" aria-label="Task list"></ul>
     </section>
 
     <!-- Documents Section -->
@@ -107,7 +133,7 @@
     </section>
   </main>
 
-  <!-- PDF Notification -->
+  <!-- Notification Toast -->
   <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
 
   <script src="todolist.js"></script>
