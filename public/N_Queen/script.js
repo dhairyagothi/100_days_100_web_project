@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         message.classList.remove("error");
 
         if (queens.length === boardSize) {
-            message.textContent = "🎉 Congratulations! You've placed all queens safely!";
+            message.textContent = "Congratulations! You've placed all queens safely!";
             message.classList.remove("error");
         }
     }
