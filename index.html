@@ -11,6 +11,7 @@
     content="web development, HTML, CSS, JavaScript, React, Node.js, projects, learning, 100 days, open source, GSSoC" />
   <meta name="author" content="Dhairya Gothi and Contributors" />
   <meta name="theme-color" content="#0a0a1a" />
+  <script src="theme.js"></script>
 
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website" />
@@ -200,8 +201,8 @@
       </div>
 
       <!-- Tech Stack Dropdown & Clear Filters -->
-      <div style="margin: 20px 0 10px 0; display: flex; justify-content: flex-start; align-items: center; gap: 15px; width: 100%; flex-wrap: wrap;">
-        <select id="techStackFilter" style="width: 280px; padding: 12px 20px; border-radius: 30px; border: 1px solid #333; background: #1a1a1a; color: white; cursor: pointer; font-size: 14px;" aria-label="Filter by tech stack">
+      <div class="filter-toolbar">
+        <select id="techStackFilter" aria-label="Filter by tech stack">
           <option value="all">Filter by Tech Stack (All)</option>
           <option value="javascript">JavaScript</option>
           <option value="css">CSS</option>
@@ -211,7 +212,7 @@
           <option value="typescript">TypeScript</option>
           <option value="tailwindcss">Tailwind CSS</option>
         </select>
-        <button id="clearAllFiltersBtn" class="clear-filters-btn" style="display: none; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 30px; border: 1px dashed var(--accent); background: var(--accent-dim); color: var(--accent); font-weight: 500; font-size: 14px; cursor: pointer; transition: var(--t);">
+        <button id="clearAllFiltersBtn" class="clear-filters-btn">
           <i class="fas fa-filter-circle-xmark"></i> Clear Filters
         </button>
       </div>
@@ -327,9 +328,9 @@
     <span class="scroll-tooltip">Back to top</span>
   </button>
   <div class="toast" id="toast"></div>
-  <script type="module" src="hero-terminal.js"></script>
-  <script src="index.js?v=3"></script>
-  <script src="navbar.js"></script>
+  <script type="module" src="hero-terminal.js" defer></script>
+  <script src="index.js?v=3" defer></script>
+  <script src="navbar.js" defer></script>
   </body>
 
 </html>
