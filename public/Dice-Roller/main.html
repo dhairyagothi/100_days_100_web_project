@@ -470,12 +470,22 @@
     });
 
     // ── Dice count ──
-    document.getElementById('diceCount').addEventListener('change', e => {
-        state.diceCount = Math.max(1, Math.min(10, parseInt(e.target.value) || 1));
-        state.rolls = [];
-        renderDice();
-    });
+document.getElementById('diceCount').addEventListener('change', e => {
+    let value = parseInt(e.target.value);
 
+    if (isNaN(value)) {
+        value = state.diceCount;
+    }
+
+    if (value < 1) value = 1;
+    if (value > 10) value = 10;
+
+    state.diceCount = value;
+    e.target.value = value;
+
+    state.rolls = [];
+    renderDice();
+});
     // ── Colour picker ──
     document.querySelectorAll('.color-option').forEach(opt => {
         opt.addEventListener('click', () => {
