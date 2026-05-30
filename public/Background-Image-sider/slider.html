@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,20 +8,20 @@
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="slider.css" />
 </head>
-<body id="top">
 
-    <!-- Back to Home -->
-    <a href="/" class="project-back-button">← Back to Home</a>
+<body id="top">
 
     <!-- Header -->
     <header>
         <nav class="navbar">
             <span class="logo">✈ Wanderlust</span>
             <ul>
-                <li><a href="#top" onclick="updatePlace('Iceland'); placeSelector.value='Iceland';">HOME</a></li>
+                <li><a href="#top" id="homeLink">HOME</a></li>
                 <li><a href="#contact">CONTACT</a></li>
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#services">SERVICES</a></li>
@@ -40,8 +41,20 @@
                 <option value="Scotland">Scotland</option>
                 <option value="Ireland">Ireland</option>
                 <option value="Germany">Germany</option>
+                <option value="India">India</option>
+                <option value="Korea">Korea</option>
+                <option value="Japan">Japan</option>
+                <option value="China">China</option>
+                <option value="Bali">Bali</option>
+                <option value="Italy">Italy</option>
+                <option value="France">France</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Dubai">Dubai</option>
             </select>
-            <br />
+            
+            <!-- Destination Indicators -->
+            <div id="destinationIndicators" class="destination-indicators" role="navigation" aria-label="Destination navigation"></div>
+            
             <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
         </div>
     </div>
@@ -57,7 +70,8 @@
             </div>
             <div id="about">
                 <h3>About Us</h3>
-                <p>We are a travel platform helping you discover the most beautiful destinations around the world. Our mission is to make travel planning simple, beautiful and inspiring.</p>
+                <p>We are a travel platform helping you discover the most beautiful destinations around the world. Our
+                    mission is to make travel planning simple, beautiful and inspiring.</p>
             </div>
             <div id="services">
                 <h3>Services</h3>
@@ -106,6 +120,10 @@
             updatePlace(placeSelector.value);
         });
 
+        bookingButton.addEventListener('click', function () {
+            alert(`🎉 Booking inquiry received! We are preparing your itinerary for ${placeSelector.value}.`);
+        });
+
         window.onload = function () {
             const defaultPlace = "Iceland";
             updatePlace(defaultPlace);
@@ -113,4 +131,5 @@
         };
     </script>
 </body>
+
 </html>

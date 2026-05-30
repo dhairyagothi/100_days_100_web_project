@@ -340,12 +340,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Request next frame at 60 FPS
-        requestAnimationFrame(animateClocks);
+    if (clock.digital) {
+      clock.digital.textContent =
+        `${String(time.getHours()).padStart(2, "0")}:` +
+        `${String(time.getMinutes()).padStart(2, "0")}:` +
+        `${String(time.getSeconds()).padStart(2, "0")}`;
     }
 
     // Launch sweep loops
     requestAnimationFrame(animateClocks);
+  }
 
     // ----------------------------------------------------
     // 5. Interactive Timezone Map Loader & Controller
@@ -730,75 +734,117 @@ document.addEventListener('DOMContentLoaded', () => {
             moonIcon.style.display = 'block';
         }
     }
+  }
 
-    function initTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = (savedTheme === 'dark') || (!savedTheme && systemPrefersDark);
-        updateThemeUI(isDark);
+  function initTheme() {
+    const saved = localStorage.getItem("chronos-theme");
+
+    if (saved) {
+      applyTheme(saved);
+    } else {
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+
+      applyTheme(prefersDark ? "dark" : "light");
     }
+  }
 
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => {
-            const willBeDark = !document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', willBeDark ? 'dark' : 'light');
-            updateThemeUI(willBeDark);
-        });
+  initTheme();
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const dark = document.body.classList.contains("dark-theme");
+
+      const next = dark ? "light" : "dark";
+
+      localStorage.setItem("chronos-theme", next);
+
+      applyTheme(next);
+    });
+  }
+
+  /* =========================================
+       COUNTDOWN TIMER
+    ========================================= */
+
+  let timerInterval = null;
+  let timerRemaining = 0;
+  let timerPaused = false;
+
+  const hoursInput = document.getElementById("hours");
+  const minutesInput = document.getElementById("minutes");
+  const secondsInput = document.getElementById("seconds");
+
+  const countdownDisplay = document.getElementById("countdownDisplay");
+
+  const timerUpMsg = document.getElementById("timerUpMsg");
+
+  const timerSound = document.getElementById("timerSound");
+
+  const pauseBtn = document.getElementById("pausebtn");
+
+  function renderTimer() {
+    const hrs = Math.floor(timerRemaining / 3600);
+    const mins = Math.floor((timerRemaining % 3600) / 60);
+    const secs = timerRemaining % 60;
+
+    countdownDisplay.textContent =
+      `${String(hrs).padStart(2, "0")}:` +
+      `${String(mins).padStart(2, "0")}:` +
+      `${String(secs).padStart(2, "0")}`;
+  }
+
+  function stopTimerSound() {
+    if (!timerSound) return;
+
+    timerSound.pause();
+    timerSound.currentTime = 0;
+  }
+
+  function finishTimer() {
+    clearInterval(timerInterval);
+
+    timerUpMsg.style.display = "flex";
+
+    if (timerSound) {
+      timerSound.currentTime = 0;
+
+      timerSound.play().catch(() => {});
     }
+  }
 
-    initTheme();
+  window.startCountdown = function () {
+    clearInterval(timerInterval);
 
-    // ----------------------------------------------------
-    // 6. Refactored Countdown Timer Engine
-    // Clean state transitions with neat UI interactions
-    // ----------------------------------------------------
-    let countdownInterval = null;
-    let countdownTime = 0; // remaining time in seconds
-    let isPaused = false;
+    timerUpMsg.style.display = "none";
 
-    const hoursInput = document.getElementById('hours');
-    const minutesInput = document.getElementById('minutes');
-    const secondsInput = document.getElementById('seconds');
-    const countdownDisplay = document.getElementById('countdownDisplay');
-    const timerUpMsg = document.getElementById('timerUpMsg');
-    const timerSound = document.getElementById('timerSound');
-    const pausebtn = document.getElementById('pausebtn');
+    stopTimerSound();
 
-    window.startCountdown = function() {
-        // Stop any running timer
-        clearInterval(countdownInterval);
-        timerUpMsg.style.display = 'none';
-        
-        // Load inputs
-        let h = parseInt(hoursInput.value) || 0;
-        let m = parseInt(minutesInput.value) || 0;
-        let s = parseInt(secondsInput.value) || 0;
+    const h = parseInt(hoursInput.value) || 0;
+    const m = parseInt(minutesInput.value) || 0;
+    const s = parseInt(secondsInput.value) || 0;
 
-        // Validation bounds
-        h = Math.max(0, Math.min(23, h));
-        m = Math.max(0, Math.min(59, m));
-        s = Math.max(0, Math.min(59, s));
+    timerRemaining = h * 3600 + m * 60 + s;
 
-        // Sync bounded values back to input fields
-        hoursInput.value = h > 0 ? h : '';
-        minutesInput.value = m > 0 ? m : '';
-        secondsInput.value = s > 0 ? s : '';
+    if (timerRemaining <= 0) {
+      alert("Please enter valid timer duration.");
 
-        countdownTime = (h * 3600) + (m * 60) + s;
-
-        if (countdownTime <= 0) {
-            alert('Please specify a duration greater than 0 seconds.');
-            return;
-        }
+      return;
+    }
 
         isPaused = false;
+        if(!pausebtn) return ;
         pausebtn.innerText = 'Pause';
         
         updateTimerDisplay();
         tickCountdown();
     };
 
-    function tickCountdown() {
+function tickCountdown() {
+
+    clearInterval(countdownInterval);
+
     updateTimerDisplay();
 
     countdownInterval = setInterval(() => {
@@ -808,70 +854,356 @@ document.addEventListener('DOMContentLoaded', () => {
             countdownTime--;
             updateTimerDisplay();
         }
+      }
     }, 1000);
-}
-    
+  };
 
-    function updateTimerDisplay() {
-        const leftH = Math.floor(countdownTime / 3600);
-        const leftM = Math.floor((countdownTime % 3600) / 60);
-        const leftS = countdownTime % 60;
+  window.pauseCountdown = function () {
+    if (timerRemaining <= 0) return;
 
-        const padH = String(leftH).padStart(2, '0');
-        const padM = String(leftM).padStart(2, '0');
-        const padS = String(leftS).padStart(2, '0');
-        countdownDisplay.textContent = `${padH}:${padM}:${padS}`;
+    timerPaused = !timerPaused;
+
+    pauseBtn.innerHTML = timerPaused ? "Resume" : "Pause";
+  };
+
+  window.restartCountdown = function () {
+    clearInterval(timerInterval);
+
+    timerRemaining = 0;
+
+    timerPaused = false;
+
+    renderTimer();
+
+    hoursInput.value = "";
+    minutesInput.value = "";
+    secondsInput.value = "";
+
+    pauseBtn.innerHTML = "Pause";
+
+    timerUpMsg.style.display = "none";
+
+    stopTimerSound();
+  };
+
+  renderTimer();
+
+  /* =========================================
+       MULTIPLE ALARMS SYSTEM
+    ========================================= */
+
+  let alarms = JSON.parse(localStorage.getItem("chronos-alarms")) || [];
+
+  const alarmList = document.getElementById("alarmList");
+
+  function saveAlarms() {
+    localStorage.setItem("chronos-alarms", JSON.stringify(alarms));
+  }
+
+  function renderAlarms() {
+    if (!alarmList) return;
+
+    alarmList.innerHTML = "";
+
+    if (!alarms.length) {
+      alarmList.innerHTML = `<div class="text-secondary text-center py-3">
+                    No alarms added
+                 </div>`;
+
+      return;
     }
 
-    function triggerTimerFinished() {
-        clearInterval(countdownInterval);
-        timerUpMsg.style.display = 'flex';
-        
-        // Play audio alarm safely
-        if (timerSound) {
-            timerSound.currentTime = 0;
-            timerSound.play().catch(e => console.log('Audio playback prevented by browser auto-play policy.', e));
-        }
+    alarms.forEach((alarm, index) => {
+      const item = document.createElement("div");
 
-        countdownDisplay.textContent = '00:00:00';
-        hoursInput.value = '';
-        minutesInput.value = '';
-        secondsInput.value = '';
-        pausebtn.innerText = 'Pause';
-        isPaused = false;
+      item.className =
+        "list-group-item d-flex justify-content-between align-items-center";
+
+      item.innerHTML = `
+                <div>
+                    <strong>${alarm.time}</strong>
+                    <div class="small text-secondary">
+                        ${alarm.label || "Alarm"}
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+
+                    <button class="btn btn-sm btn-warning snooze-btn">
+                        Snooze
+                    </button>
+
+                    <button class="btn btn-sm btn-danger delete-btn">
+                        Delete
+                    </button>
+
+                </div>
+            `;
+
+      item.querySelector(".delete-btn").addEventListener("click", () => {
+        alarms.splice(index, 1);
+
+        saveAlarms();
+
+        renderAlarms();
+      });
+
+      item.querySelector(".snooze-btn").addEventListener("click", () => {
+        const current = new Date();
+
+        current.setMinutes(current.getMinutes() + 5);
+
+        alarm.time =
+          `${String(current.getHours()).padStart(2, "0")}:` +
+          `${String(current.getMinutes()).padStart(2, "0")}`;
+
+        saveAlarms();
+
+        renderAlarms();
+      });
+
+      alarmList.appendChild(item);
+    });
+  }
+
+  renderAlarms();
+
+  const addAlarmBtn = document.getElementById("addAlarmBtn");
+
+  if (addAlarmBtn) {
+    addAlarmBtn.addEventListener("click", () => {
+      const alarmTime = document.getElementById("alarmTime").value;
+
+      const alarmLabel = document.getElementById("alarmLabel").value;
+
+      if (!alarmTime) {
+        alert("Select alarm time.");
+
+        return;
+      }
+
+      alarms.push({
+        time: alarmTime,
+        label: alarmLabel,
+      });
+
+      saveAlarms();
+
+      renderAlarms();
+
+      document.getElementById("alarmTime").value = "";
+      document.getElementById("alarmLabel").value = "";
+    });
+  }
+
+  setInterval(() => {
+    const now = new Date();
+
+    const current =
+      `${String(now.getHours()).padStart(2, "0")}:` +
+      `${String(now.getMinutes()).padStart(2, "0")}`;
+
+    alarms.forEach((alarm) => {
+      if (alarm.time === current && now.getSeconds() === 0) {
+        alert(`⏰ Alarm: ${alarm.label || alarm.time}`);
+
+        if (timerSound) {
+          timerSound.currentTime = 0;
+
+          timerSound.play().catch(() => {});
+        }
+      }
+    });
+  }, 1000);
+
+  /* =========================================
+       STOPWATCH SYSTEM
+    ========================================= */
+
+  let stopwatchInterval = null;
+  let stopwatchTime = 0;
+  let stopwatchRunning = false;
+
+  const stopwatchDisplay = document.getElementById("stopwatchDisplay");
+
+  const lapList = document.getElementById("lapList");
+
+  function updateStopwatchDisplay() {
+    const ms = stopwatchTime % 1000;
+
+    const totalSec = Math.floor(stopwatchTime / 1000);
+
+    const hrs = Math.floor(totalSec / 3600);
+    const mins = Math.floor((totalSec % 3600) / 60);
+    const secs = totalSec % 60;
+
+    stopwatchDisplay.textContent =
+      `${String(hrs).padStart(2, "0")}:` +
+      `${String(mins).padStart(2, "0")}:` +
+      `${String(secs).padStart(2, "0")}.` +
+      `${String(ms).padStart(3, "0")}`;
+  }
+
+  window.startStopwatch = function () {
+    if (stopwatchRunning) return;
+
+    stopwatchRunning = true;
+
+    let last = performance.now();
+
+    stopwatchInterval = setInterval(() => {
+      const now = performance.now();
+
+      stopwatchTime += now - last;
+
+      last = now;
+
+      updateStopwatchDisplay();
+    }, 10);
+  };
+
+  window.pauseStopwatch = function () {
+    stopwatchRunning = false;
+
+    clearInterval(stopwatchInterval);
+  };
+
+  window.resetStopwatch = function () {
+    stopwatchRunning = false;
+
+    clearInterval(stopwatchInterval);
+
+    stopwatchTime = 0;
+
+    updateStopwatchDisplay();
+
+    if (lapList) lapList.innerHTML = "";
+  };
+
+  window.addLap = function () {
+    if (!lapList) return;
+
+    const item = document.createElement("li");
+
+    item.className = "list-group-item";
+
+    item.textContent = stopwatchDisplay.textContent;
+
+    lapList.prepend(item);
+  };
+
+  updateStopwatchDisplay();
+
+  /* =========================================
+       DRAGGABLE CLOCK CARDS
+    ========================================= */
+
+  const grid = document.getElementById("worldClocksGrid");
+
+  if (grid && window.Sortable) {
+    Sortable.create(grid, {
+      animation: 200,
+      ghostClass: "sortable-ghost",
+    });
+  }
+
+  /* =========================================
+       CUSTOM BACKGROUND UPLOAD
+    ========================================= */
+
+  const bgUpload = document.getElementById("bgUpload");
+
+  if (bgUpload) {
+    bgUpload.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+
+      if (!file) return;
+
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        document.querySelectorAll(".clock-banner").forEach((banner) => {
+          banner.style.backgroundImage = `url(${event.target.result})`;
+        });
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* =========================================
+       FOCUS MODE
+    ========================================= */
+
+ const focusModeBtn = document.getElementById("focusModeBtn");
+
+if (focusModeBtn) {
+  focusModeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("focus-mode");
+
+    focusModeBtn.textContent =
+      document.body.classList.contains("focus-mode")
+        ? "Exit Focus Mode"
+        : "Focus Mode";
+  });
+}
+  /* =========================================
+       KEYBOARD SHORTCUTS
+    ========================================= */
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "t") {
+      themeToggleBtn.click();
     }
 
     window.pauseCountdown = function() {
         if (countdownTime <= 0) return;
 
-        if (!isPaused) {
-            clearInterval(countdownInterval);
-            pausebtn.innerText = 'Resume';
-            isPaused = true;
-        } else {
-            pausebtn.innerText = 'Pause';
-            isPaused = false;
-            tickCountdown();
-        }
-    };
+      if (stopwatchRunning) {
+        pauseStopwatch();
+      } else {
+        startStopwatch();
+      }
+    }
+  });
 
-    window.restartCountdown = function() {
-        clearInterval(countdownInterval);
-        countdownTime = 0;
-        countdownDisplay.textContent = '00:00:00';
+  /* =========================================
+       CLOCK MODAL VIEW
+    ========================================= */
 
-        hoursInput.value = '';
-        minutesInput.value = '';
-        secondsInput.value = '';
+  document.querySelectorAll(".world-clock-card").forEach((card) => {
+    card.addEventListener("dblclick", () => {
+      const modalClock = card.querySelector(".clock-frame").cloneNode(true);
 
-        pausebtn.innerText = 'Pause';
-        isPaused = false;
-        timerUpMsg.style.display = 'none';
+      const modalBody = document.getElementById("clockModalBody");
 
-        if (timerSound) {
-            timerSound.pause();
-            timerSound.currentTime = 0;
-        }
-    };
+      if (modalBody) {
+        modalBody.innerHTML = "";
 
+        modalClock.classList.add("large-clock");
+
+        modalBody.appendChild(modalClock);
+      }
+    });
+  });
+
+  /* =========================================
+       EXPORT DASHBOARD
+    ========================================= */
+
+  const exportBtn = document.getElementById("exportDashboardBtn");
+
+  if (exportBtn && window.html2canvas) {
+    exportBtn.addEventListener("click", () => {
+      html2canvas(document.body).then((canvas) => {
+        const link = document.createElement("a");
+
+        link.download = "chronos-dashboard.png";
+
+        link.href = canvas.toDataURL();
+
+        link.click();
+      });
+    });
+  }
 });

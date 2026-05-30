@@ -306,3 +306,113 @@ function animateIdle() {
 
 initGame();
 animateIdle();
+
+// ========== MOBILE TOUCH CONTROLS ==========
+(function() {
+  const mobileCanvas = document.getElementById('gameCanvas');
+  const controls = document.getElementById('mobileControls');
+  
+  if (!controls) return;
+  
+  let lastTouch = 0;
+  let startX = 0, startY = 0;
+  
+  const setDir = (direction) => {
+    // Direct variable access - no stale snapshots
+    if (typeof isGameOver !== 'undefined' && isGameOver) return;
+    
+    const now = Date.now();
+    if (now - lastTouch < 80) return;
+    lastTouch = now;
+    
+    const dirMap = { 
+      up: {x: 0, y: -1}, 
+      down: {x: 0, y: 1}, 
+      left: {x: -1, y: 0}, 
+      right: {x: 1, y: 0} 
+    };
+    
+    const newDir = dirMap[direction];
+    if (!newDir) return;
+    
+    // Game not started yet
+    if (typeof running !== 'undefined' && !running) {
+      if (typeof startGame === 'function') {
+        startGame();
+      }
+      // Direct assignment - no setTimeout needed
+      if (typeof nextDir !== 'undefined' && typeof dir !== 'undefined') {
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+          nextDir = newDir;
+        }
+      }
+      return;
+    }
+    
+    // Game is running
+    if (typeof running !== 'undefined' && running && typeof paused !== 'undefined' && !paused) {
+      if (typeof dir !== 'undefined' && typeof nextDir !== 'undefined') {
+        // Prevent 180-degree turns
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+          nextDir = newDir;
+          // Haptic feedback
+          if ('vibrate' in navigator) {
+            navigator.vibrate(20);
+          }
+        }
+      }
+    }
+  };
+  
+  // Button controls
+  const buttons = document.querySelectorAll('.dpad-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      setDir(btn.dataset.dir);
+    });
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDir(btn.dataset.dir);
+    });
+  });
+  
+  // Swipe controls
+  if (mobileCanvas) {
+    mobileCanvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: false });
+    
+    mobileCanvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      
+      if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
+      
+      const swipe = Math.abs(dx) > Math.abs(dy) 
+        ? (dx > 0 ? 'right' : 'left') 
+        : (dy > 0 ? 'down' : 'up');
+      
+      setDir(swipe);
+    });
+    
+    mobileCanvas.addEventListener('contextmenu', (e) => e.preventDefault());
+  }
+  
+  // Auto show/hide on mobile
+  const isMobile = () => window.innerWidth <= 768 || 'ontouchstart' in window;
+  const toggle = () => {
+    if (controls) {
+      controls.style.display = isMobile() ? 'flex' : 'none';
+    }
+  };
+  
+  toggle();
+  window.addEventListener('resize', toggle);
+  
+  console.log('✅ Mobile touch controls loaded');
+})();
