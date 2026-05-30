@@ -1,0 +1,93 @@
+body{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    background:linear-gradient(rgba(16, 1, 1, 0.5),rgba(0,0,0,0.5)),
+    url(image.jpg) center/cover no-repeat fixed;
+    color:aliceblue;
+    margin: 0;
+    padding: 0;
+}
+.data{
+    background-color: rgba(0, 0, 0, 0.573);
+    padding: 20px;
+    border-radius: 20px;
+    width: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+nav{
+    
+    flex-direction: row;
+    background-color: rgba(255, 255, 255, 0.509);
+    margin-top: 0;
+    border-radius: 0 0 20px 20px;
+    color: black;
+
+}
+nav a{
+    text-decoration: none;
+    color: black;
+    gap: 10px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+nav h2{
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+button{
+    background-color: yellow;
+    color: black;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+button:hover{
+    background-color: white;
+    color: black;
+}
+#dropdown,#difficulty{
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+}
+.test{
+    background-color: rgba(0, 0, 0, 0.573);
+    padding: 20px;
+    border-radius: 20px;
+    width: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#text-display{  
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#text-input{
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#timer{
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
