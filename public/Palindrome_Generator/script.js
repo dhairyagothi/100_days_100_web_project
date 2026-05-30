@@ -3,20 +3,20 @@
  * Triggered only on Button Click
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('inputString');
-  const checkBtn = document.getElementById('checkBtn');
-  const resultBox = document.getElementById('resultBox');
-  const resultText = document.getElementById('resultText');
-  const resultIcon = document.getElementById('resultIcon');
-  const clearBtn = document.getElementById('clearBtn');
-  const characterContainer = document.getElementById('characterContainer');
-  const processedText = document.getElementById('processedText');
-  const comparisonCount = document.getElementById('comparisonCount');
-  const educationalToggle = document.getElementById('educationalToggle');
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("inputString");
+  const checkBtn = document.getElementById("checkBtn");
+  const resultBox = document.getElementById("resultBox");
+  const resultText = document.getElementById("resultText");
+  const resultIcon = document.getElementById("resultIcon");
+  const clearBtn = document.getElementById("clearBtn");
+  const characterContainer = document.getElementById("characterContainer");
+  const processedText = document.getElementById("processedText");
+  const comparisonCount = document.getElementById("comparisonCount");
+  const educationalToggle = document.getElementById("educationalToggle");
 
   let educationalMode = true;
-  educationalToggle.addEventListener('click', () => {
+  educationalToggle.addEventListener("click", () => {
     educationalMode = !educationalMode;
 
     educationalToggle.innerText = educationalMode
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Action on Button Click
-  checkBtn.addEventListener('click', () => {
+  checkBtn.addEventListener("click", () => {
     const val = input.value.trim();
 
     if (!val) {
@@ -35,14 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to dynamically generate a palindrome
     const generatePalindrome = (str) => {
-      if (!str) return '';
-      const reversed = str.slice(0, -1).split('').reverse().join(''); //added .slice(0,-1) to remove the terminal letter in generated palindrome
+      if (!str) return "";
+      // Remove the terminal letter in generated palindrome
+      const reversed = str.slice(0, -1).split("").reverse().join("");
       return str + reversed;
     };
 
     const palindromeResult = generatePalindrome(val);
 
-    const cleanedText = palindromeResult.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const cleanedText = palindromeResult
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
 
     processedText.innerHTML = `Processed String: <strong>${cleanedText}</strong>`;
 
@@ -50,16 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let comparisons = 0;
 
-    cleanedText.split('').forEach((char) => {
-      const charBox = document.createElement('div');
+    cleanedText.split("").forEach((char) => {
+      const charBox = document.createElement("div");
 
-      charBox.classList.add('char-box');
+      charBox.classList.add("char-box");
       charBox.innerText = char;
 
       characterContainer.appendChild(charBox);
     });
 
-    const charBoxes = document.querySelectorAll('.char-box');
+    const charBoxes = document.querySelectorAll(".char-box");
 
     let left = 0;
     let right = cleanedText.length - 1;
@@ -73,20 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
       comparisons++;
 
-      charBoxes[left].classList.add('active');
-      charBoxes[right].classList.add('active');
+      charBoxes[left].classList.add("active");
+      charBoxes[right].classList.add("active");
 
       setTimeout(() => {
         if (cleanedText[left] === cleanedText[right]) {
-          charBoxes[left].classList.add('match');
-          charBoxes[right].classList.add('match');
+          charBoxes[left].classList.add("match");
+          charBoxes[right].classList.add("match");
         } else {
-          charBoxes[left].classList.add('mismatch');
-          charBoxes[right].classList.add('mismatch');
+          charBoxes[left].classList.add("mismatch");
+          charBoxes[right].classList.add("mismatch");
         }
 
-        charBoxes[left].classList.remove('active');
-        charBoxes[right].classList.remove('active');
+        charBoxes[left].classList.remove("active");
+        charBoxes[right].classList.remove("active");
 
         left++;
         right--;
@@ -107,8 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  clearBtn.addEventListener('click', () => {
-    input.value = '';
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
 
     resultBox.className = "result-container mt-4 text-center";
 
