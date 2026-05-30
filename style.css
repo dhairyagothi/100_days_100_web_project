@@ -2677,6 +2677,11 @@ body.light-mode .noise-layer {
 /* ==========================================================================
    Accessibility Fix: Low Color Contrast Ratio (#4358)
    ========================================================================== */
+.footer, 
+.footer, 
+footer p, 
+footer a {
+    color: #575757 !important;
 footer,
 .footer,
 footer p,
@@ -2873,4 +2878,7 @@ body::after {
 body > header {
   position: relative;
   z-index: 999999 !important;
+}
+
+    color:#575757 !important;
 }
