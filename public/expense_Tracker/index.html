@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,40 +10,38 @@
         @media (min-width: 992px) {
             .main-layout {
                 display: flex !important;
-                align-items: stretch !important; /* Forces uniform vertical card stretching */
+                align-items: stretch !important;
                 gap: 24px; 
             }
             .content-card.form-section {
-                flex: 0 0 420px !important;     /* Increased from 350px for a bit more room */
-                max-width: 450px !important;    /* Increased from 380px */
+                flex: 0 0 420px !important;
+                max-width: 450px !important;
                 margin: 0 !important;
-                height: auto !important;         /* Cancels out fit-content block from stylesheet */
+                height: auto !important;
                 display: flex !important;        
                 flex-direction: column !important;
             }
             .content-card.summary-section {
-                flex: 1 !important;             /* Let the summary panel stretch horizontally */
+                flex: 1 !important;
                 margin: 0 !important;
                 height: auto !important;
                 display: flex !important;
                 flex-direction: column !important;
             }
-            
-            /* Structural alignment mechanics to flush card bottoms identically */
             #transactionForm {
                 display: flex !important;
                 flex-direction: column !important;
-                flex-grow: 1 !important;         /* Stretches form internally to fill card bottom space */
+                flex-grow: 1 !important;
             }
-            /* Pushes the primary action button exactly to the matching bottom floor */
             #transactionForm .btn-primary {
-                margin-top: auto !important;     /* Locks button flush against the baseline */
+                margin-top: auto !important;
             }
         }
     </style>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">ΓåÉ Back to Home</a>
+
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
     <div class="app-container">
         <header class="app-header">
@@ -72,7 +70,7 @@
                 <form id="transactionForm" novalidate>
                     <div class="form-row">
                         <div class="form-input-group">
-                            <label for="amount">Amount (Γé╣) *</label>
+                            <label for="amount">Amount (₹) *</label>
                             <input type="number" id="amount" placeholder="0.00" min="0.01" required>
                             <span class="error-msg" id="amountError"></span>
                         </div>
@@ -122,19 +120,19 @@
                 <div class="dashboard-stats">
                     <div class="stat-box balance-box">
                         <span class="stat-title">Current Balance</span>
-                        <div id="accountBalance" class="stat-number color-neutral">Γé╣0.00</div>
+                        <div id="accountBalance" class="stat-number color-neutral">₹0.00</div>
                     </div>
                     <div class="stat-box">
                         <span class="stat-title">Total Earned</span>
-                        <div id="totalIncome" class="stat-number text-green">Γé╣0.00</div>
+                        <div id="totalIncome" class="stat-number text-green">₹0.00</div>
                     </div>
                     <div class="stat-box">
                         <span class="stat-title">Total Spent</span>
-                        <div id="totalExpense" class="stat-number text-red">Γé╣0.00</div>
+                        <div id="totalExpense" class="stat-number text-red">₹0.00</div>
                     </div>
                     <div class="stat-box">
                         <span class="stat-title">Average Entry</span>
-                        <div id="avgTransaction" class="stat-number">Γé╣0.00</div>
+                        <div id="avgTransaction" class="stat-number">₹0.00</div>
                     </div>
                     <div class="stat-box">
                         <span class="stat-title">Savings Rate</span>
@@ -156,23 +154,23 @@
 
                     <div class="progress-bars-container" id="categoriesList">
                         <div class="progress-bar-item" data-category="Food">
-                            <div class="progress-text"><span>Food & Dining</span><span id="cat-Food">Γé╣0.00</span></div>
+                            <div class="progress-text"><span>Food & Dining</span><span id="cat-Food">₹0.00</span></div>
                             <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #38BDF8;"></div></div>
                         </div>
                         <div class="progress-bar-item" data-category="Travel">
-                            <div class="progress-text"><span>Travel & Fuel</span><span id="cat-Travel">Γé╣0.00</span></div>
+                            <div class="progress-text"><span>Travel & Fuel</span><span id="cat-Travel">₹0.00</span></div>
                             <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #FB923C;"></div></div>
                         </div>
                         <div class="progress-bar-item" data-category="Shopping">
-                            <div class="progress-text"><span>Shopping & Clothes</span><span id="cat-Shopping">Γé╣0.00</span></div>
+                            <div class="progress-text"><span>Shopping & Clothes</span><span id="cat-Shopping">₹0.00</span></div>
                             <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #F43F5E;"></div></div>
                         </div>
                         <div class="progress-bar-item" data-category="Bills">
-                            <div class="progress-text"><span>Bills & Rent</span><span id="cat-Bills">Γé╣0.00</span></div>
+                            <div class="progress-text"><span>Bills & Rent</span><span id="cat-Bills">₹0.00</span></div>
                             <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #34D399;"></div></div>
                         </div>
                         <div class="progress-bar-item" data-category="Others">
-                            <div class="progress-text"><span>Others</span><span id="cat-Others">Γé╣0.00</span></div>
+                            <div class="progress-text"><span>Others</span><span id="cat-Others">₹0.00</span></div>
                             <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #A78BFA;"></div></div>
                         </div>
                     </div>
@@ -181,7 +179,7 @@
         </div>
     </div>
 
-    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">≡ƒîô</button>
+    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌙</button>
 
     <script src="expense.js" defer></script>
 </body>
