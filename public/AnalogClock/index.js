@@ -549,14 +549,18 @@ document.addEventListener("DOMContentLoaded", () => {
        FOCUS MODE
     ========================================= */
 
-  const focusModeBtn = document.getElementById("focusModeBtn");
+ const focusModeBtn = document.getElementById("focusModeBtn");
 
-  if (focusModeBtn) {
-    focusModeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("focus-mode");
-    });
-  }
+if (focusModeBtn) {
+  focusModeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("focus-mode");
 
+    focusModeBtn.textContent =
+      document.body.classList.contains("focus-mode")
+        ? "Exit Focus Mode"
+        : "Focus Mode";
+  });
+}
   /* =========================================
        KEYBOARD SHORTCUTS
     ========================================= */
