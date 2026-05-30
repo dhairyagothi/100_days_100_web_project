@@ -1,396 +1,779 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Clone</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netflix - Watch TV Shows &amp; Movies Online</title>
+
+    <!-- FIX 1: Link styles.css (landing page styles) -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- FIX 2: Font Awesome for icons used in landing page -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- FIX 3: Tailwind CDN — required by script.js which uses Tailwind utility classes throughout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { 'netflix-red': '#E50914' },
+            fontFamily: {
+              display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- FIX 4: Lucide icons CDN — script.js calls lucide.createIcons() throughout -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Google Fonts used by script.js's Space Grotesk and JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Poppins:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        .password-wrapper {
-            position: relative;
-            width: 100%;
+      /* Password toggle eye icon */
+      .password-wrapper {
+        position: relative;
+        width: 100%;
+      }
+      .password-wrapper input {
+        width: 100%;
+        padding-right: 42px;
+        box-sizing: border-box;
+      }
+      .toggle-eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #aaa;
+        font-size: 16px;
+        user-select: none;
+      }
+      .toggle-eye:hover {
+        color: #fff;
+      }
+
+      /* FIX 5: hero h1 fixed width removed — was 700px which broke mobile */
+      .hero h1 {
+        width: auto !important;
+        max-width: 700px;
+        padding-left: 0 !important;
+      }
+
+      /* FIX 6: Remove hacky relative positioning on .p1 */
+      .p1 {
+        position: static !important;
+        left: auto !important;
+      }
+
+      /* FIX 7: Trending section — reduce huge horizontal padding on small screens */
+      @media screen and (max-width: 1024px) {
+        .trending-section {
+          padding: 50px 40px !important;
         }
-        .password-wrapper input {
-            width: 100%;
-            padding-right: 42px;
-            box-sizing: border-box;
+      }
+      @media screen and (max-width: 768px) {
+        .trending-section {
+          padding: 40px 20px !important;
         }
-        .toggle-eye {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #aaa;
-            font-size: 16px;
-            user-select: none;
+      }
+
+      /* FIX 8: nav-gradient utility used by script.js */
+      .nav-gradient {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+      }
+
+      /* FIX 9: hero-gradient, netflix-gradient-bottom used by script.js */
+      .hero-gradient {
+        background:
+          linear-gradient(77deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 85%),
+          linear-gradient(0deg, rgba(20, 20, 20, 1) 0%, rgba(20, 20, 20, 0) 30%);
+      }
+      .netflix-gradient-bottom {
+        background: linear-gradient(
+          0deg,
+          rgba(20, 20, 20, 1) 0%,
+          rgba(20, 20, 20, 0.85) 20%,
+          rgba(20, 20, 20, 0.4) 60%,
+          rgba(20, 20, 20, 0) 100%
+        );
+      }
+
+      /* FIX 10: Scrollbar hide for row scroll containers (script.js class) */
+      .row-scroll-container {
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .row-scroll-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* FIX 11: Netflix card zoom — used by script.js */
+      .netflix-card-zoom {
+        background: linear-gradient(135deg, #232323 0%, #0c0c0c 100%);
+        border-radius: 4px;
+        border: 1px solid #2b2b2b;
+        transition:
+          transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
+        will-change: transform, box-shadow;
+      }
+      .netflix-card-zoom:hover {
+        transform: scale(1.08);
+        border-color: #444;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+        z-index: 50;
+      }
+
+      /* FIX 12: Animation classes used by script.js */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
-        .toggle-eye:hover {
-            color: #fff;
+        to {
+          opacity: 1;
         }
+      }
+      @keyframes scaleUp {
+        from {
+          transform: scale(0.95);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+      .animate-scale-up {
+        animation: scaleUp 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      }
+      .animate-slide-up {
+        animation: slideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      }
+
+      /* FIX 13: subtitle-text used by script.js video player */
+      .subtitle-text {
+        text-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.9),
+          0 0 12px rgba(0, 0, 0, 0.7);
+      }
+
+      /* FIX 14: custom range input styling */
+      input[type='range'] {
+        accent-color: #e50914;
+      }
+
+      /* Font families for script.js display headings */
+      h1,
+      h2,
+      h3,
+      .font-display {
+        font-family: 'Space Grotesk', system-ui, sans-serif;
+      }
+      .font-mono {
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      /* FIX 15: #root must fill viewport for script.js SPA rendering */
+      #root {
+        min-height: 100vh;
+        background: #141414;
+        color: #fff;
+      }
+
+      /* Profile smiley filter */
+      .profile-smiley {
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+      }
     </style>
-</head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:30px;top:100px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">Back to Home</a>
-
-    <!-- ============= LANDING PAGE ============= -->
+  </head>
+  <body>
+    <!-- ============================================================
+     LANDING PAGE — shown when user is not logged in to the SPA
+     The script.js SPA renders into #root, completely replacing
+     landingPage when a profile is selected.  The landing page
+     itself is controlled by vanilla JS below.
+     ============================================================ -->
     <div id="landingPage">
-        <!-- ============= NAVBAR ============= -->
-    <header class="navbar">
-    <img src="./img/logo.svg" alt="Netflix Logo" class="logo">
+      <!-- ============= NAVBAR ============= -->
+      <header class="navbar" id="landingNavbar">
+        <img
+          src="./img/logo.svg"
+          alt="Netflix Logo"
+          class="logo"
+          onerror="
+            this.style.display = 'none';
+            this.nextElementSibling.style.display = 'inline';
+          "
+        />
+        <!-- Fallback text logo if SVG is missing -->
+        <span
+          style="
+            display: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 900;
+            font-size: 28px;
+            color: #e50914;
+            letter-spacing: -1px;
+          "
+          >NETFLIX</span
+        >
 
-    <div class="nav-right">
-        
-        <!-- LANGUAGE DROPDOWN -->
-        <div class="language-dropdown">
+        <div class="nav-right">
+          <!-- LANGUAGE DROPDOWN -->
+          <div class="language-dropdown" id="languageDropdown">
             <button class="language-toggle" id="languageToggle">
-                <i class="fas fa-globe"></i>
-                <span id="languageText">English</span>
-                <i class="fas fa-caret-down"></i>
+              <i class="fas fa-globe"></i>
+              <span id="languageText">English</span>
+              <i class="fas fa-caret-down"></i>
             </button>
-
-            <div class="language-menu">
-                <div>English</div>
-                <div>हिन्दी</div>
+            <div class="language-menu" id="languageMenu">
+              <div data-lang="English">English</div>
+              <div data-lang="हिन्दी">हिन्दी</div>
             </div>
+          </div>
+
+          <button class="signin-btn" id="navSignInBtn">Sign In</button>
         </div>
+      </header>
 
-        <button class="signin-btn" id="navSignInBtn">
-            Sign In
-        </button>
-
-    </div>
-    </header>
-
-    <!-- ============= HERO SECTION ============= -->
-    <section class="hero">
+      <!-- ============= HERO SECTION ============= -->
+      <section class="hero">
         <h1>Unlimited movies, shows, and more</h1>
         <p class="p1">Starts at ₹149. Cancel at any time.</p>
-        <p style="font-size: 18px; color: rgba(255, 255, 255, 0.8); margin-bottom: 30px;">Ready to watch? Enter your email to create or restart your membership.</p>
-        
+        <p
+          style="
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            text-align: center;
+          "
+        >
+          Ready to watch? Enter your email to create or restart your membership.
+        </p>
         <form class="hero-form" id="emailForm">
-            <input type="email" id="heroEmail" placeholder="Email address" required>
-            <button type="submit" id="getStartedBtn">Get Started ></button>
+          <input type="email" id="heroEmail" placeholder="Email address" required />
+          <button type="submit" id="getStartedBtn">Get Started &gt;</button>
         </form>
-        
-    </section>
+      </section>
 
-    <!-- TRENDING NOW -->
-     <div class="top-glow"></div>
-     <div class="trending-section">
-
-            <h2>Trending Now</h2>
-
-            <div class="slider-btn left-btn">&#10094;</div>
-            <div class="slider-btn right-btn">&#10095;</div>
-
-            <div class="trending-slider">
-
-                <div class="trend-card">
-                    <span>1</span>
-                    <img src="./img/dhurandar.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>2</span>
-                    <img src="./img/Dhurandar2.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>3</span>
-                    <img src="./img/KapilSharma.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>4</span>
-                    <img src="./img/berlin.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>5</span>
-                    <img src="./img/Youth.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>6</span>
-                    <img src="./img/Kartavya.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>7</span>
-                    <img src="./img/DesiBling.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>8</span>
-                    <img src="./img/Mohiniyattam.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>9</span>
-                    <img src="./img/swapped.jpg">
-                </div>
-
-                <div class="trend-card">
-                    <span>10</span>
-                    <img src="./img/Stranger Things.jpg">
-                </div>
-            </div>
+      <!-- ============= TRENDING NOW ============= -->
+      <div class="top-glow"></div>
+      <div class="trending-section">
+        <h2>Trending Now</h2>
+        <div class="slider-btn left-btn" id="trendLeft">&#10094;</div>
+        <div class="slider-btn right-btn" id="trendRight">&#10095;</div>
+        <div class="trending-slider" id="trendingSlider">
+          <div class="trend-card">
+            <span>1</span
+            ><img
+              src="./img/dhurandar.jpg"
+              alt="Dhurandar"
+              onerror="this.style.background = '#222'"
+            />
+          </div>
+          <div class="trend-card">
+            <span>2</span
+            ><img
+              src="./img/Dhurandar2.jpg"
+              alt="Dhurandar 2"
+              onerror="this.style.background = '#222'"
+            />
+          </div>
+          <div class="trend-card">
+            <span>3</span
+            ><img
+              src="./img/KapilSharma.jpg"
+              alt="Kapil Sharma"
+              onerror="this.style.background = '#222'"
+            />
+          </div>
+          <div class="trend-card">
+            <span>4</span
+            ><img src="./img/berlin.jpg" alt="Berlin" onerror="this.style.background = '#222'" />
+          </div>
+          <div class="trend-card">
+            <span>5</span
+            ><img src="./img/Youth.jpg" alt="Youth" onerror="this.style.background = '#222'" />
+          </div>
+          <div class="trend-card">
+            <span>6</span
+            ><img
+              src="./img/Kartavya.jpg"
+              alt="Kartavya"
+              onerror="this.style.background = '#222'"
+            />
+          </div>
+          <div class="trend-card">
+            <span>7</span
+            ><img
+              src="./img/DesiBling.jpg"
+              alt="Desi Bling"
+              onerror="this.style.background = '#222'"
+            />
+          </div>
+          <div class="trend-card">
+            <span>8</span
+            ><img
+              src="./img/Mohiniyattam.jpg"
+              alt="Mohiniyattam"
+              onerror="this.style.background = '#222'"
+            />
+          </div>
+          <div class="trend-card">
+            <span>9</span
+            ><img src="./img/swapped.jpg" alt="Swapped" onerror="this.style.background = '#222'" />
+          </div>
+          <div class="trend-card">
+            <span>10</span
+            ><img
+              src="./img/Stranger Things.jpg"
+              alt="Stranger Things"
+              onerror="this.style.background = '#222'"
+            />
+          </div>
         </div>
+      </div>
 
+      <!-- ============= SEPARATION ============= -->
+      <div class="separation"></div>
 
-    <!-- ============= SEPARATION ============= -->
-    <div class="separation"></div>
-
-    <!-- ============= FEATURE SECTIONS ============= -->
-    <section class="feature">
+      <!-- ============= FEATURE SECTIONS ============= -->
+      <section class="feature">
         <div class="text">
-            <h2>Enjoy on your TV</h2>
-            <p>Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.</p>
+          <h2>Enjoy on your TV</h2>
+          <p>
+            Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.
+          </p>
         </div>
-        <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/tv.png" alt="TV">
-    </section>
-
-    <div class="separation"></div>
-
-    <section class="feature">
+        <img
+          src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/tv.png"
+          alt="TV"
+        />
+      </section>
+      <div class="separation"></div>
+      <section class="feature">
         <div class="text">
-            <h2>Download your shows to watch offline</h2>
-            <p>Save your favourites easily and always have something to watch.</p>
+          <h2>Download your shows to watch offline</h2>
+          <p>Save your favourites easily and always have something to watch.</p>
         </div>
-        <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/mobile-0819.jpg" alt="Mobile">
-    </section>
-
-    <div class="separation"></div>
-
-    <section class="feature">
+        <img
+          src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/mobile-0819.jpg"
+          alt="Mobile"
+        />
+      </section>
+      <div class="separation"></div>
+      <section class="feature">
         <div class="text">
-            <h2>Watch everywhere</h2>
-            <p>Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.</p>
+          <h2>Watch everywhere</h2>
+          <p>Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.</p>
         </div>
-        <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/device-pile-in.png" alt="Devices">
-    </section>
-
-    <div class="separation"></div>
-
-    <section class="feature">
+        <img
+          src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/device-pile-in.png"
+          alt="Devices"
+        />
+      </section>
+      <div class="separation"></div>
+      <section class="feature">
         <div class="text">
-            <h2>Create profiles for kids</h2>
-
-            <p>Send children on adventures with their favourite characters in a space made just for them—free with your membership.</p>
-
+          <h2>Create profiles for kids</h2>
+          <p>
+            Send children on adventures with their favourite characters in a space made just for
+            them—free with your membership.
+          </p>
         </div>
-        <img src="https://occ-0-2849-3646.1.nflxso.net/dnm/api/v6/19OhWN2dO19C9txTON9tvTFtefw/AAAABVr8nYuAg0xDpXDv0VI9HUoH7r2aGp4TKRCsKNQrMwxzTtr-NlwOHeS8bCI2oeZddmu3nMYr3j9MjYhHyjBASb1FaOGYZNYvPBCL.png?r=54d" alt="Kids">
-    </section>
+        <img
+          src="https://occ-0-2849-3646.1.nflxso.net/dnm/api/v6/19OhWN2dO19C9txTON9tvTFtefw/AAAABVr8nYuAg0xDpXDv0VI9HUoH7r2aGp4TKRCsKNQrMwxzTtr-NlwOHeS8bCI2oeZddmu3nMYr3j9MjYhHyjBASb1FaOGYZNYvPBCL.png?r=54d"
+          alt="Kids"
+        />
+      </section>
+      <div class="separation"></div>
 
-    <div class="separation"></div>
-
-    <!-- ============= FAQ SECTION ============= -->
-    <section class="faq">
+      <!-- ============= FAQ SECTION ============= -->
+      <section class="faq">
         <h2>Frequently Asked Questions</h2>
         <div class="faq-container">
-            <button class="faq-question">What is Netflix?</button>
+          <button class="faq-question">
+            What is Netflix?
             <div class="faq-answer">
-
-                Netflix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries and more on thousands of internet-connected devices. You can watch as much as you want, when you want without a single ad — all for one low monthly price.
-
+              Netflix is a streaming service that offers a wide variety of award-winning TV shows,
+              movies, anime, documentaries and more on thousands of internet-connected devices. You
+              can watch as much as you want, when you want without a single ad — all for one low
+              monthly price.
             </div>
-
-            <button class="faq-question">How much does Netflix cost?</button>
+          </button>
+          <button class="faq-question">
+            How much does Netflix cost?
             <div class="faq-answer">
-                Watch Netflix on your smartphone, tablet, Smart TV, laptop, or streaming device, all for one fixed monthly fee. Plans range from ₹149 to ₹649 a month. No extra costs, no contracts.
+              Watch Netflix on your smartphone, tablet, Smart TV, laptop, or streaming device, all
+              for one fixed monthly fee. Plans range from ₹149 to ₹649 a month. No extra costs, no
+              contracts.
             </div>
-
-            <button class="faq-question">What can I watch on Netflix?</button>
+          </button>
+          <button class="faq-question">
+            What can I watch on Netflix?
             <div class="faq-answer">
-                Netflix has an extensive library of feature films, documentaries, TV shows, anime, award-winning Netflix originals, and more. Watch as much as you want, anytime you want.
+              Netflix has an extensive library of feature films, documentaries, TV shows, anime,
+              award-winning Netflix originals, and more. Watch as much as you want, anytime you
+              want.
             </div>
-
-            <button class="faq-question">Is Netflix good for kids?</button>
+          </button>
+          <button class="faq-question">
+            Is Netflix good for kids?
             <div class="faq-answer">
-                Netflix has an extensive library of family-friendly TV shows and movies. With parental controls available on Netflix, parents can restrict the maturity rating of content kids are able to watch and control their ability to purchase or rent additional content.
+              Netflix has an extensive library of family-friendly TV shows and movies. With parental
+              controls available on Netflix, parents can restrict the maturity rating of content
+              kids are able to watch.
             </div>
-
-            <button class="faq-question">Why am I seeing this language?</button>
+          </button>
+          <button class="faq-question">
+            Why am I seeing this language?
             <div class="faq-answer">
-                This is the default language associated with your account. You can also change the language at any time in Account settings.
+              This is the default language associated with your account. You can also change the
+              language at any time in Account settings.
             </div>
+          </button>
         </div>
-    </section>
+      </section>
+      <div class="separation"></div>
 
-    <div class="separation"></div>
-
-    <!-- ============= FOOTER ============= -->
-    <footer>
-        <div class="questions">
-            Questions? Call 000-800-919-1694
-        </div>
+      <!-- ============= FOOTER ============= -->
+      <footer>
+        <div class="questions">Questions? Call 000-800-919-1694</div>
         <div class="footer">
-            <div class="footer-item">
-                <a href="#">FAQ</a>
-                <a href="#">Help Center</a>
-                <a href="#">Account</a>
-                <a href="#">Media Center</a>
-            </div>
-
-            <div class="footer-item">
-                <a href="#">Investor Relations</a>
-                <a href="#">Jobs</a>
-                <a href="#">Ways to Watch</a>
-                <a href="#">Terms of Use</a>
-            </div>
-
-            <div class="footer-item">
-                <a href="#">Privacy</a>
-                <a href="#">Cookie Preferences</a>
-                <a href="#">Corporate Information</a>
-                <a href="#">Contact Us</a>
-            </div>
-
-            <div class="footer-item">
-                <a href="#">Speed Test</a>
-                <a href="#">Legal Notices</a>
-                <a href="#">Account</a>
-                <a href="#">Only on Netflix</a>
-            </div>
+          <div class="footer-item">
+            <a href="#">FAQ</a><a href="#">Help Center</a> <a href="#">Account</a
+            ><a href="#">Media Center</a>
+          </div>
+          <div class="footer-item">
+            <a href="#">Investor Relations</a><a href="#">Jobs</a> <a href="#">Ways to Watch</a
+            ><a href="#">Terms of Use</a>
+          </div>
+          <div class="footer-item">
+            <a href="#">Privacy</a><a href="#">Cookie Preferences</a>
+            <a href="#">Corporate Information</a><a href="#">Contact Us</a>
+          </div>
+          <div class="footer-item">
+            <a href="#">Speed Test</a><a href="#">Legal Notices</a> <a href="#">Account</a
+            ><a href="#">Only on Netflix</a>
+          </div>
         </div>
-    </footer>
-    </div><!-- End of landing page -->
+      </footer>
+    </div>
+    <!-- /#landingPage -->
 
-    <!-- ============= AUTHENTICATION MODALS ============= -->
-    <!-- SIGN UP MODAL -->
+    <!-- ============================================================
+     FIX 16: #root div — CRITICAL MISSING ELEMENT
+     script.js renders the entire SPA into this div.
+     Without it, renderApp() silently returns on line 376
+     and the whole SPA never appears.
+     ============================================================ -->
+    <div id="root"></div>
+
+    <!-- ============= SIGN UP MODAL ============= -->
     <div id="signupModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeSignupModal()">&times;</button>
-            <div class="modal-header">
-                <h2>Create Your Account</h2>
-                <p>Join Netflix to start watching</p>
-            </div>
-            <form id="signupForm" class="auth-form">
-                <div class="form-group">
-                    <label for="signupName">Full Name</label>
-                    <input type="text" id="signupName" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupEmail">Email Address</label>
-                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
-                </div>
-                <!-- ✅ FIX: Password visibility toggle added in Sign Up form -->
-                <div class="form-group">
-                    <label for="signupPassword">Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="signupPassword" placeholder="Create a password" required>
-                        <span class="toggle-eye" onclick="togglePassword('signupPassword', this)" title="Show/Hide Password">
-                            <i class="fas fa-eye"></i>
-                        </span>
-                    </div>
-                </div>
-                <button type="submit" class="btn-primary">Create Account</button>
-            </form>
-            <p class="modal-footer-text">
-                Already have an account? 
-                <button type="button" class="link-btn" onclick="switchToSignIn()">Sign In</button>
-            </p>
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+        <div class="modal-header">
+          <h2>Create Your Account</h2>
+          <p>Join Netflix to start watching</p>
         </div>
+        <form id="signupForm" class="auth-form">
+          <div class="form-group">
+            <label for="signupName">Full Name</label>
+            <input type="text" id="signupName" placeholder="Enter your full name" required />
+          </div>
+          <div class="form-group">
+            <label for="signupEmail">Email Address</label>
+            <input type="email" id="signupEmail" placeholder="Enter your email" required />
+          </div>
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="signupPassword" placeholder="Create a password" required />
+              <span
+                class="toggle-eye"
+                onclick="togglePassword('signupPassword', this)"
+                title="Show/Hide Password"
+              >
+                <i class="fas fa-eye"></i>
+              </span>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Create Account</button>
+        </form>
+        <p class="modal-footer-text">
+          Already have an account?
+          <button type="button" class="link-btn" onclick="switchToSignIn()">Sign In</button>
+        </p>
+      </div>
     </div>
 
-    <!-- SIGN IN MODAL -->
+    <!-- ============= SIGN IN MODAL ============= -->
     <div id="signinModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeSigninModal()">&times;</button>
-            <div class="modal-header">
-                <h2>Sign In</h2>
-                <p>Welcome back to Netflix</p>
-            </div>
-            <form id="signinForm" class="auth-form">
-                <div class="form-group">
-                    <label for="signinEmail">Email Address</label>
-                    <input type="email" id="signinEmail" placeholder="Enter your email" required>
-                </div>
-                <!-- ✅ FIX: Password visibility toggle added in Sign In form -->
-                <div class="form-group">
-                    <label for="signinPassword">Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="signinPassword" placeholder="Enter your password" required>
-                        <span class="toggle-eye" onclick="togglePassword('signinPassword', this)" title="Show/Hide Password">
-                            <i class="fas fa-eye"></i>
-                        </span>
-                    </div>
-                </div>
-                <button type="submit" class="btn-primary">Sign In</button>
-            </form>
-            <p class="modal-footer-text">
-                Don't have an account? 
-                <button type="button" class="link-btn" onclick="switchToSignUp()">Sign Up</button>
-            </p>
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeSigninModal()">&times;</button>
+        <div class="modal-header">
+          <h2>Sign In</h2>
+          <p>Welcome back to Netflix</p>
         </div>
+        <form id="signinForm" class="auth-form">
+          <div class="form-group">
+            <label for="signinEmail">Email Address</label>
+            <input type="email" id="signinEmail" placeholder="Enter your email" required />
+          </div>
+          <div class="form-group">
+            <label for="signinPassword">Password</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="signinPassword"
+                placeholder="Enter your password"
+                required
+              />
+              <span
+                class="toggle-eye"
+                onclick="togglePassword('signinPassword', this)"
+                title="Show/Hide Password"
+              >
+                <i class="fas fa-eye"></i>
+              </span>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Sign In</button>
+        </form>
+        <p class="modal-footer-text">
+          Don't have an account?
+          <button type="button" class="link-btn" onclick="switchToSignUp()">Sign Up</button>
+        </p>
+      </div>
     </div>
 
-    <!-- ============= MOVIES PAGE (Hidden initially) ============= -->
-    <div id="moviesPage" class="hidden">
-        <!-- MOVIES NAVBAR -->
-        <header class="navbar movies-navbar">
-            <img src="./img/logo.svg" alt="Netflix Logo" class="logo">
-            <div class="navbar-right">
-                <input type="text" id="searchMovies" class="search-bar" placeholder="Search movies...">
-                <div class="user-menu">
-                    <span id="userGreeting"></span>
-                    <button id="logoutBtn" class="btn-logout">Log Out</button>
-                </div>
-            </div>
-        </header>
-
-        <!-- FEATURED SECTION -->
-        <section class="featured-section">
-            <div class="featured-content">
-                <h1 id="featuredTitle">Stranger Things</h1>
-                <p id="featuredDescription">When a young boy disappears, his friends, family and local police go on a search.</p>
-                <div class="featured-buttons">
-                    <button class="btn-play"><i class="fas fa-play"></i> Play</button>
-                    <button class="btn-info"><i class="fas fa-info-circle"></i> More Info</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- MOVIE CATEGORIES -->
-        <section class="movies-container">
-            <!-- <div class="category">
-                <h2>Trending Now</h2>
-                <div class="movies-grid" id="trendingMovies"></div>
-            </div> -->
-            <div class="category">
-                <h2>Action</h2>
-                <div class="movies-grid" id="actionMovies"></div>
-            </div>
-            <div class="category">
-                <h2>Drama</h2>
-                <div class="movies-grid" id="dramaMovies"></div>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="movies-footer">
-            <p>&copy; 2026 Netflix Clone. All rights reserved.</p>
-        </footer>
-    </div>
-
+    <!-- ============= SCRIPT LOAD ORDER ============= -->
+    <!-- FIX 17: script.js (SPA engine) loaded AFTER Tailwind + Lucide CDNs above -->
     <script src="script.js"></script>
+
     <script>
-        // ✅ FIX: Password visibility toggle function
-        function togglePassword(inputId, iconSpan) {
-            const input = document.getElementById(inputId);
-            const icon = iconSpan.querySelector('i');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
+      // ============================================================
+      // FIX 18: Landing page JS — all functions were missing.
+      // These control the landing page (FAQ, slider, modals, etc.)
+      // They are separate from script.js which handles the SPA.
+      // ============================================================
+
+      // --- Navbar scroll effect ---
+      window.addEventListener('scroll', function () {
+        const navbar = document.getElementById('landingNavbar');
+        if (!navbar) return;
+        if (window.scrollY > 50) {
+          navbar.classList.add('navbar-scrolled');
+        } else {
+          navbar.classList.remove('navbar-scrolled');
         }
+      });
+
+      // --- Language dropdown ---
+      document.getElementById('languageToggle').addEventListener('click', function (e) {
+        e.stopPropagation();
+        document.getElementById('languageDropdown').classList.toggle('active');
+      });
+
+      document.querySelectorAll('.language-menu div').forEach(function (item) {
+        item.addEventListener('click', function () {
+          document.getElementById('languageText').textContent = this.getAttribute('data-lang');
+          document.getElementById('languageDropdown').classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', function () {
+        document.getElementById('languageDropdown').classList.remove('active');
+      });
+
+      // --- FAQ accordion ---
+      // FIX 19: Original HTML had faq-answer as sibling div; restructured as child for simpler JS.
+      // The CSS already uses max-height transition. We toggle .active on both button and answer.
+      document.querySelectorAll('.faq-question').forEach(function (btn) {
+        // Move the embedded .faq-answer out as a sibling (original structure expected by CSS)
+        const answerDiv = btn.querySelector('.faq-answer');
+        if (answerDiv) {
+          btn.parentNode.insertBefore(answerDiv, btn.nextSibling);
+        }
+
+        btn.addEventListener('click', function () {
+          const answer = this.nextElementSibling;
+          const isOpen = this.classList.contains('active');
+
+          // Close all
+          document.querySelectorAll('.faq-question').forEach((q) => {
+            q.classList.remove('active');
+            if (q.nextElementSibling) q.nextElementSibling.classList.remove('active');
+          });
+
+          // Open this one if it was closed
+          if (!isOpen) {
+            this.classList.add('active');
+            if (answer) answer.classList.add('active');
+          }
+        });
+      });
+
+      // --- Trending slider buttons ---
+      var trendingSlider = document.getElementById('trendingSlider');
+      document.getElementById('trendLeft').addEventListener('click', function () {
+        trendingSlider.scrollBy({ left: -300, behavior: 'smooth' });
+      });
+      document.getElementById('trendRight').addEventListener('click', function () {
+        trendingSlider.scrollBy({ left: 300, behavior: 'smooth' });
+      });
+
+      // --- Modal helpers ---
+      function openSignupModal() {
+        document.getElementById('signupModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeSignupModal() {
+        document.getElementById('signupModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      function openSigninModal() {
+        document.getElementById('signinModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeSigninModal() {
+        document.getElementById('signinModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      function switchToSignIn() {
+        closeSignupModal();
+        openSigninModal();
+      }
+      function switchToSignUp() {
+        closeSigninModal();
+        openSignupModal();
+      }
+
+      // Close modals on backdrop click
+      ['signupModal', 'signinModal'].forEach(function (id) {
+        document.getElementById(id).addEventListener('click', function (e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      });
+
+      // --- Nav "Sign In" button ---
+      document.getElementById('navSignInBtn').addEventListener('click', openSigninModal);
+
+      // --- Hero email form → open Sign Up modal ---
+      document.getElementById('emailForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = document.getElementById('heroEmail').value.trim();
+        if (email) {
+          document.getElementById('signupEmail').value = email;
+          openSignupModal();
+        }
+      });
+
+      // --- FIX 20: Sign Up form submission ---
+      document.getElementById('signupForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('signupName').value.trim();
+        var email = document.getElementById('signupEmail').value.trim();
+        var pass = document.getElementById('signupPassword').value;
+        if (!name || !email || !pass) return;
+
+        // Store in localStorage and dismiss landing page → SPA takes over
+        localStorage.setItem('netflix_auth_user', JSON.stringify({ name, email }));
+        closeSignupModal();
+        showSPA();
+      });
+
+      // --- FIX 21: Sign In form submission ---
+      document.getElementById('signinForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = document.getElementById('signinEmail').value.trim();
+        var pass = document.getElementById('signinPassword').value;
+        if (!email || !pass) return;
+
+        localStorage.setItem('netflix_auth_user', JSON.stringify({ email }));
+        closeSigninModal();
+        showSPA();
+      });
+
+      // --- Password visibility toggle ---
+      function togglePassword(inputId, iconSpan) {
+        var input = document.getElementById(inputId);
+        var icon = iconSpan.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+      }
+
+      // --- FIX 22: showSPA / hideSPA coordination ---
+      // The SPA (script.js) renders into #root.
+      // When the user authenticates, we hide the landing page and show the SPA.
+      function showSPA() {
+        document.getElementById('landingPage').style.display = 'none';
+        document.getElementById('root').style.display = 'block';
+        // renderApp() is already defined by script.js; trigger it to reflect auth state
+        if (typeof renderApp === 'function') renderApp();
+      }
+
+      function hideSPA() {
+        document.getElementById('landingPage').style.display = 'block';
+        document.getElementById('root').style.display = 'none';
+      }
+
+      // --- FIX 23: On page load, decide which view to show ---
+      (function initView() {
+        var root = document.getElementById('root');
+        // Hide root initially; landing page is visible by default
+        root.style.display = 'none';
+
+        // If SPA already has a selected profile, skip landing page
+        var savedProfile = null;
+        try {
+          savedProfile = JSON.parse(localStorage.getItem('netflix_active_profile'));
+        } catch (e) {}
+
+        if (savedProfile) {
+          showSPA();
+        }
+
+        // If script.js's renderApp tries to show profile selection, the SPA will be revealed when
+        // user clicks "Sign In" or submits the email form.
+      })();
     </script>
-</body>
+  </body>
 </html>
