@@ -1,58 +1,10 @@
-
-const getWeather = (city) => {
-    cityName.innerHTML = city;
-
-    fetch(`https://wttr.in/${city}?format=j1`)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response);
-
-            temp.innerHTML =
-                response.current_condition[0].temp_C;
-
-            temp2.innerHTML =
-                response.current_condition[0].temp_C;
-
-            feels_like.innerHTML =
-                response.current_condition[0].FeelsLikeC;
-
-            humidity.innerHTML =
-                response.current_condition[0].humidity;
-
-            humidity2.innerHTML =
-                response.current_condition[0].humidity;
-
-            wind_speed.innerHTML =
-                response.current_condition[0].windspeedKmph;
-
-            wind_speed2.innerHTML =
-                response.current_condition[0].windspeedKmph;
-
-            wind_degrees.innerHTML =
-                response.current_condition[0].winddirDegree;
-
-            sunrise.innerHTML =
-                response.weather[0].astronomy[0].sunrise;
-
-            sunset.innerHTML =
-                response.weather[0].astronomy[0].sunset;
-
-            min_temp.innerHTML = "N/A";
-            max_temp.innerHTML = "N/A";
-        })
-
-        .catch((err) => console.error(err));
-};
-
-submit.addEventListener("click", (e) => {
-    e.preventDefault();
-    getWeather(city.value);
-});
-
 const GEOCODING_API = 'https://geocoding-api.open-meteo.com/v1/search';
 const WEATHER_API = 'https://api.open-meteo.com/v1/forecast';
 
 const COMMON_CITIES = ['Bengaluru', 'Chennai', 'Hyderabad', 'Pune', 'Noida', 'Delhi'];
+let weatherChart = null;
+let activeMetric  = 'temperature';
+let lastForecastData = null;
 let isCelsius = true;
 
 const weatherFields = {
@@ -190,7 +142,7 @@ async function fetchWeather(latitude, longitude) {
     latitude: String(latitude),
     longitude: String(longitude),
     current: 'temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,wind_speed_10m,wind_direction_10m',
-    daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset',
+    daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max,wind_speed_10m_max',
     timezone: 'auto'
   });
 
@@ -367,6 +319,143 @@ function renderRowWeather(row, data, cachedHeaders = null) {
   });
 }
 
+// ── Chart helpers ────────────────────────────────────────
+
+function buildChartDatasets(forecastData) {
+  const daily = forecastData?.daily || {};
+  const labels = (daily.time || []).map(d =>
+    new Intl.DateTimeFormat('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })
+      .format(new Date(d))
+  );
+
+  return {
+    labels,
+    temperature: {
+      label: isCelsius ? 'Temp (°C)' : 'Temp (°F)',
+      data: (daily.temperature_2m_max || []).map(t =>
+        isCelsius ? Math.round(t) : Math.round((t * 9 / 5) + 32)
+      ),
+      dataMin: (daily.temperature_2m_min || []).map(t =>
+        isCelsius ? Math.round(t) : Math.round((t * 9 / 5) + 32)
+      ),
+      color: '#f97316',
+      colorMin: '#facc15',
+      type: 'line'
+    },
+    humidity: {
+      label: 'Humidity (%)',
+      data: daily.precipitation_probability_max || [],
+      color: '#38bdf8',
+      type: 'bar'
+    },
+    wind: {
+      label: 'Wind Speed (km/h)',
+      data: daily.wind_speed_10m_max || [],
+      color: '#a78bfa',
+      type: 'line',
+      fill: true
+    }
+  };
+}
+
+function renderChart(forecastData) {
+  const section = document.getElementById('charts-section');
+  const ctx     = document.getElementById('weatherChart');
+  if (!ctx || !forecastData) return;
+
+  section.style.display = 'block';
+
+  const datasets = buildChartDatasets(forecastData);
+  const metric   = datasets[activeMetric];
+
+  const chartDatasets = [{
+    label: metric.label,
+    data: metric.data,
+    borderColor: metric.color,
+    backgroundColor: metric.type === 'bar'
+      ? metric.color + '99'
+      : metric.fill
+        ? metric.color + '33'
+        : metric.color + '22',
+    borderWidth: 2.5,
+    fill: metric.fill || false,
+    tension: 0.4,
+    pointBackgroundColor: metric.color,
+    pointRadius: 4,
+    pointHoverRadius: 7,
+    type: metric.type
+  }];
+
+  // For temperature, also add min line
+  if (activeMetric === 'temperature' && metric.dataMin) {
+    chartDatasets.push({
+      label: isCelsius ? 'Min Temp (°C)' : 'Min Temp (°F)',
+      data: metric.dataMin,
+      borderColor: metric.colorMin,
+      backgroundColor: metric.colorMin + '15',
+      borderWidth: 2,
+      fill: false,
+      tension: 0.4,
+      pointBackgroundColor: metric.colorMin,
+      pointRadius: 3,
+      pointHoverRadius: 6,
+      borderDash: [5, 4],
+      type: 'line'
+    });
+  }
+
+  if (weatherChart) {
+    weatherChart.destroy();
+    weatherChart = null;
+  }
+
+  weatherChart = new Chart(ctx, {
+    type: metric.type,
+    data: { labels: datasets.labels, datasets: chartDatasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          labels: { color: 'rgba(255,255,255,0.75)', font: { size: 12 } }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(17,24,39,0.95)',
+          titleColor: '#fff',
+          bodyColor: 'rgba(255,255,255,0.8)',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          padding: 10,
+          cornerRadius: 10
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: 'rgba(255,255,255,0.55)', font: { size: 11 } },
+          grid:  { color: 'rgba(255,255,255,0.05)' }
+        },
+        y: {
+          ticks: { color: 'rgba(255,255,255,0.55)', font: { size: 11 } },
+          grid:  { color: 'rgba(255,255,255,0.07)' }
+        }
+      }
+    }
+  });
+}
+
+function bindChartTabs() {
+  document.querySelectorAll('.chart-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeMetric = btn.dataset.metric;
+      if (lastForecastData) renderChart(lastForecastData);
+    });
+  });
+}
+
+
 async function loadCityWeather(city, options = {}) {
   const { updateTable = false } = options;
   const normalizedCity = normalizeCity(city);
@@ -399,6 +488,8 @@ async function loadCityWeather(city, options = {}) {
     if (weatherData && weatherData.current) {
       updateRecommendations(weatherData.current.temperature_2m, weatherData.current.weather_code);
     }
+      lastForecastData = weatherData;
+      renderChart(weatherData); 
 
     setStatus(updateTable ? `Updated ${label} and the comparison table.` : `Showing weather for ${label}.`, 'success');
 
@@ -503,10 +594,12 @@ commonCityRows.forEach((row) => {
 });
 
 await updateComparisonTable();
+if (lastForecastData) renderChart(lastForecastData)
 
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
+  bindChartTabs()
   bindSearchForm();
   bindPresetCityLinks();
   resetWeatherSummary();

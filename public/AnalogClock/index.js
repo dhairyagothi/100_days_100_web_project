@@ -253,20 +253,26 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    timerPaused = false;
+        isPaused = false;
+        if(!pausebtn) return ;
+        pausebtn.innerText = 'Pause';
+        
+        updateTimerDisplay();
+        tickCountdown();
+    };
 
-    pauseBtn.innerHTML = "Pause";
+function tickCountdown() {
 
-    renderTimer();
+    clearInterval(countdownInterval);
 
-    timerInterval = setInterval(() => {
-      if (!timerPaused) {
-        timerRemaining--;
+    updateTimerDisplay();
 
-        renderTimer();
-
-        if (timerRemaining <= 0) {
-          finishTimer();
+    countdownInterval = setInterval(() => {
+        if (countdownTime <= 0) {
+            triggerTimerFinished();
+        } else {
+            countdownTime--;
+            updateTimerDisplay();
         }
       }
     }, 1000);

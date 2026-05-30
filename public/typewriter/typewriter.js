@@ -93,89 +93,23 @@ function resetShift() {
     }
 }
 
-function createPage(){
-    paperContent = "";
-    currentPage++;
-    const page = document.createElement("div");
-    page.className = "paper-sheet page";
-    page.innerHTML = `<span class="typewriterText"></span><span class="cursor-paper"></span>`;
-    pagesContainer.appendChild(page);
-    pageCounter.innerText = `Page ${currentPage+1}`;
-}
+// FIX: Use addEventListener with preventDefault to stop form submission reload (closes #856)
+addTextButton.addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent any form submission / page reload
 
-/* ---------- AUDIO ---------- */
+    const newText = userInput.value.trim();
+    if (!newText) return; // Do nothing if empty
 
-function getAudioCtx(){
-    if(!audioCtx){
-        try{
-            audioCtx = 
-                new(
-                window.AudioContext ||
-                window.webkitAudioContext
-                )();
-        }
-        catch(e){}
-        }
-    return audioCtx;
-}
-
-
-function playClick(noiseVol,freq1,freq2,dur){
-    if(!soundEnabled) return;
-    const ctx = getAudioCtx();
-    if(!ctx) return;
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.setValueAtTime(freq1,now);
-    osc.frequency.exponentialRampToValueAtTime(freq2,now+dur);
-    gain.gain.setValueAtTime(noiseVol,now);
-    gain.gain.exponentialRampToValueAtTime(0.001,now+dur);
-    osc.start(now);
-    osc.stop(now+dur);
-}
-
-
-function playKeyClick(){
-    playClick(0.55,900,200,0.035);
-}
-
-function playHeavyKey(){
-    playClick(0.40,140,75,0.12);
-}
-
-function playSpaceClick(){
-    playHeavyKey();
-}
-
-function playReturn(){
-    playHeavyKey();
-}
-
-function playBackspace(){
-    playHeavyKey();
-}
-
-
-/* ---------- Typing ---------- */
-
-function addCharToPaper(ch){
-    paperContent += ch;
-    getCurrentText().textContent = paperContent;
-    if(ch===" ") {
-        playSpaceClick();
-        flashKey("SPACE");
-    }
-    else {
-        playKeyClick();
-        if(ch!=="\n")
-            flashKey(ch.toUpperCase());
-    }
-
-    /* overflow check */
-    let page = document.querySelectorAll(".paper-sheet")[currentPage];
+    phrases.push(newText);
+    userInput.value = '';
+    isPaused = false;
+    isDeleting = false;
+    charIndex = 0;
+    phraseIndex = phrases.length - 1;
+    clearTimeout(typingTimeout);
+    type();
+    pauseResumeButton.textContent = "Pause";
+});
 
     /* check actual page overflow */
     if(page.scrollHeight > page.clientHeight){
