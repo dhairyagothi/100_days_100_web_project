@@ -674,7 +674,17 @@ function renderGrid() {
 
   if (filtered.length === 0) {
     grid.style.display = 'none';
-    if (noResults) noResults.style.display = 'block';
+    if (noResults) {
+      noResults.style.display = 'block';
+      const searchKicker = noResults.querySelector('p');
+      if (searchKicker) {
+        if (searchQuery.trim() !== '') {
+          searchKicker.textContent = `No projects match your search for "${searchQuery}".`;
+        } else {
+          searchKicker.textContent = 'No projects match your search.';
+        }
+      }
+    }
     const container = document.getElementById('paginationContainer');
     if (container) container.remove();
     return;
