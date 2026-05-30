@@ -2,9 +2,9 @@ name: Code Linting and Formatting Check
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, Main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, Main ]
 
 jobs:
   check-code:
