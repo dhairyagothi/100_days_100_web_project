@@ -108,33 +108,7 @@
       &copy; 2026 Wanderlust. All rights reserved.
     </div>
   </footer>
-
-  <!-- Flag Script -->
-  <script>
-    const flags = {
-      "Iceland": "🇮🇸",
-      "Switzerland": "🇨🇭",
-      "Scotland": "🏴",
-      "Ireland": "🇮🇪",
-      "Germany": "🇩🇪"
-    };
-
-    const placeTitle = document.getElementById("placeTitle");
-    const placeSelector = document.getElementById("placeSelector");
-
-    function updateFlag(place) {
-      placeTitle.textContent = `${flags[place] || ""} ${place}`;
-    }
-
-    placeSelector.addEventListener("change", function () {
-      updateFlag(this.value);
-    });
-
-    window.onload = function () {
-      updateFlag("Iceland");
-    };
-  </script>
-
+ 
   <script src="script.js"></script>
 
 </body>
