@@ -1219,15 +1219,19 @@ function resetAllFilters() {
   if (input) input.value = '';
   searchQuery = '';
 
-  // 3. Reset Tech Stack dropdown select
+  // 3. Reset Tech Stack dropdown select and pills
   const techStack = document.getElementById('techStackFilter');
   if (techStack) techStack.value = 'all';
   techStackFilter = 'all';
 
-  // 4. Reset Difficulty dropdown select
+  // 4. Reset Difficulty dropdown select and pills
   const difficultyElement = document.getElementById('difficultyFilter');
   if (difficultyElement) difficultyElement.value = 'all';
   difficultyFilter = 'all';
+
+  // Reset quick pills active states
+  document.querySelectorAll('.quick-pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.quick-pill[data-val="all"]').forEach(p => p.classList.add('active'));
 
   // 5. Reset Sorting to default
   const sortSelect = document.getElementById('sortProjects');
@@ -1322,6 +1326,31 @@ function initSearch() {
       renderGrid();
     });
   }
+
+  // Quick pills filter listener
+  const quickPills = document.querySelectorAll('.quick-pill');
+  quickPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const type = pill.dataset.type;
+      const val = pill.dataset.val;
+
+      document.querySelectorAll(`.quick-pill[data-type="${type}"]`).forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      if (type === 'difficulty') {
+        difficultyFilter = val;
+        const select = document.getElementById('difficultyFilter');
+        if (select) select.value = val;
+      } else if (type === 'tech') {
+        techStackFilter = val;
+        const select = document.getElementById('techStackFilter');
+        if (select) select.value = val;
+      }
+
+      currentPage = 1;
+      renderGrid();
+    });
+  });
 }
 
 function initSorting() {

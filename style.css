@@ -2874,3 +2874,50 @@ body > header {
   position: relative;
   z-index: 999999 !important;
 }
+
+/* Quick Filter Pills Styling */
+.quick-pills-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-right: 1.5rem;
+}
+
+.quick-pills-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-right: 0.25rem;
+}
+
+.quick-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--t);
+}
+
+.quick-pill:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.quick-pill.active {
+  background: var(--accent-dim);
+  border-color: var(--border-accent);
+  color: var(--accent);
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.05);
+}
