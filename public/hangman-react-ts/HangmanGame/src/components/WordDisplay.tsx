@@ -2,7 +2,7 @@ import React from "react";
 
 type Props = {
   word: string;
-  guessed: Set<string>;
+  guessedLetters: string[];
   revealFirst?: boolean;
 };
 
@@ -10,7 +10,7 @@ function isLetter(ch: string) {
   return /^[a-zA-Z]$/.test(ch);
 }
 
-export default function WordDisplay({ word, guessed, revealFirst = false }: Props) {
+export default function WordDisplay({ word, guessedLetters, revealFirst = false }: Props) {
   const first = word[0]?.toLowerCase();
 
   return (
@@ -18,13 +18,19 @@ export default function WordDisplay({ word, guessed, revealFirst = false }: Prop
       {word.split("").map((ch, i) => {
         const lower = ch.toLowerCase();
         const isAlpha = isLetter(ch);
-        const revealed = isAlpha && (guessed.has(lower) || (revealFirst && lower === first));
-        const displayChar = !isAlpha ? ch : revealed ? ch : "_";
+        const revealed = isAlpha && (guessedLetters.includes(lower) || (revealFirst && lower === first));
+        const displayChar = !isAlpha ? ch : revealed ? ch : " ";
 
         return (
           <span
             key={i}
-            className={`slot ${isAlpha ? (revealed ? "slot--revealed" : "slot--hidden") : "slot--sep"}`}
+            className={`slot ${
+              isAlpha
+                ? revealed
+                  ? "slot--revealed animate-pop"
+                  : "slot--hidden"
+                : "slot--sep"
+            }`}
             aria-hidden={!isAlpha ? false : !revealed}
             title={!isAlpha ? (ch === " " ? "space" : ch) : undefined}
           >
@@ -35,3 +41,4 @@ export default function WordDisplay({ word, guessed, revealFirst = false }: Prop
     </div>
   );
 }
+

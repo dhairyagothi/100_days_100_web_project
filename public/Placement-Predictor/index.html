@@ -5,21 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Placement Predictor</title>
   <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-
-  <button id="themeToggle" class="theme-toggle">🌙</button>
+  <!-- Premium Theme Switcher Toggle -->
+  <div class="theme-switch-wrapper">
+    <label class="theme-switch" for="themeCheckbox">
+      <input type="checkbox" id="themeCheckbox" />
+      <div class="slider">
+        <span class="icon moon">🌙</span>
+        <span class="icon sun">☀️</span>
+        <div class="ball"></div>
+      </div>
+    </label>
+  </div>
 
   <div class="container">
-    <h1 class="main-title">
-      <img src="logo.png" alt="logo" class="title-logo">
-      Placement Predictor
-  </h1>
+    <!-- Perfectly Centered Hero Illustration -->
+    <div class="hero-wrapper">
+      <img src="hero_illustration.png" alt="Placement Predictor Career Success" class="hero-image">
+    </div>
 
-    <p class="subtitle">
+    <h1 class="main-title">Placement Predictor</h1>
       Predict your placement chances and expected package based on your profile
     </p>
 
@@ -168,6 +179,14 @@
       <div class="result-card">
         <span>Suggested Focus Area</span>
         <h3 id="suggestion">-</h3>
+      </div>
+
+      <!-- Personalized Recommendations & Actionable Resource Suggestions -->
+      <div class="recommendations-container" id="recommendationsContainer" style="display: none;">
+        <h3 class="recommendations-title">🎯 Areas for Improvement & Actionable Steps</h3>
+        <div class="recommendations-list" id="recommendationsList">
+          <!-- Dynamic recommendation items will be programmatically injected here -->
+        </div>
       </div>
 
 

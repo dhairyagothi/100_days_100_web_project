@@ -78,7 +78,7 @@ textarea {
 .eyebrow,
 .card-label {
   margin: 0 0 8px;
-  color: var(--theme);
+  color: var(--theme-text);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0;
@@ -294,6 +294,9 @@ h1 {
   display: grid;
   grid-template-columns: 0.86fr 1fr;
   min-height: 560px;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
   overflow: hidden;
   border-radius: 32px;
   background: var(--theme-soft);
@@ -307,8 +310,8 @@ h1 {
   position: relative;
   animation: fadeInUp 0.8s ease-out both;
   transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
+    transform 0.22s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.22s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .card::after {
@@ -386,18 +389,20 @@ h1 {
 
 .heading {
   margin-bottom: 10px;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: keep-all;
   color: var(--text);
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1;
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  line-height: 1.1;
 }
 
 .subhead {
   margin-bottom: 0;
-  color: var(--theme);
+  color: var(--theme-text);
   font-size: 1rem;
   font-weight: 800;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 .info {
@@ -614,6 +619,7 @@ h1 {
 
   .container1 {
     min-height: 300px;
+    align-items: center;
     justify-content: center;
   }
 

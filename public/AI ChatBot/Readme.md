@@ -25,6 +25,28 @@ A sleek, privacy-first AI chatbot powered by Google Gemini with dark mode, multi
 2. Place them in the **same folder**
 3. **Double-click `index.html`** to open in your browser
 
+### Optional: Use a local default Gemini API key
+
+If you want to keep a Gemini key locally without committing it to git, create `public/AI ChatBot/default-config.js` with:
+
+```js
+window.DEFAULT_GEMINI_API_KEY = "YOUR_GEMINI_KEY_HERE";
+```
+
+That file is already gitignored by the project.
+
+### Hosted default key on deployment
+
+If you deploy to Vercel, set the environment variable `GEMINI_API_KEY` in your Vercel project settings. The hosted app will automatically use that key as a default via `/api/gemini` when no local Gemini key is configured.
+
+For local development with the proxy, create a `.env.local` file with:
+
+```bash
+GEMINI_API_KEY=your_real_gemini_key_here
+```
+
+If you have a local key stored in the browser or in `default-config.js`, those will be used first instead.
+
 ### Step 4: Enter Your Keys
 
 1. The onboarding wizard will guide you through 4 steps

@@ -16,25 +16,16 @@
 
   const username = window.username || null;
 
-  // Initialize Theme based on localStorage before rendering
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  if (savedTheme === "light") {
-    document.body.classList.add("light-mode");
-  } else {
-    document.body.classList.remove("light-mode");
-  }
-  const isLight = document.body.classList.contains("light-mode");
+  window.ThemeManager?.init?.();
+  const isLight = window.ThemeManager?.currentTheme?.() === "light";
   const themeIcon = isLight ? "fa-sun" : "fa-moon";
 
   // FIX: Avoid appending "index.html" on web servers to prevent 308 Redirect lag.
   // We only append it if we detect the file:// protocol (for local double-click testing).
   const isLocalFile = window.location.protocol === "file:";
-  const homeHref = isHome ? "#" : isLocalFile ? `${base}index.html` : base;
-
-  const learnHref = isLearn ? "#" : `${base}learning/learning.html`;
-  const contributorsHref = isContributors
-    ? "#"
-    : `${base}contributors/contributor.html`;
+  const homeHref = isLocalFile ? `${base}index.html` : base;
+  const learnHref = `${base}learning/learning.html`;
+  const contributorsHref = `${base}contributors/contributor.html`;
 
   const themeBtn = `<button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme"><i class="fas ${themeIcon}"></i> Theme</button>`;
   const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}"><i class="fas fa-home"></i> Home</a>`;
@@ -66,7 +57,7 @@
                   </span>
               </a>
 
-              <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
+              <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
                   <i class="fas fa-bars" aria-hidden="true"></i>
               </button>
 
@@ -77,55 +68,48 @@
       </header>
   `;
 
-  // Prevent refresh & Smooth scroll to top for self-referencing links
-  container.querySelectorAll('a[href="#"]').forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  });
-
-  // Theme Toggle Logic
-  const themeToggleBtn = document.getElementById("themeToggleNav");
-  let transitionTimer;
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener("click", () => {
-      document.body.classList.toggle("light-mode");
-      const currentlyLight = document.body.classList.contains("light-mode");
-      localStorage.setItem("theme", currentlyLight ? "light" : "dark");
-
-      themeToggleBtn.querySelector("i").className = currentlyLight
-        ? "fas fa-sun"
-        : "fas fa-moon";
-
-      document.body.classList.add("theme-transitioning");
-      if (transitionTimer) clearTimeout(transitionTimer);
-      transitionTimer = setTimeout(() => {
-        document.body.classList.remove("theme-transitioning");
-      }, 400);
-    });
-  }
+  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), { persist: false });
 
   // Mobile Menu Logic
   const menuToggle = document.getElementById("menuToggle");
   const navButtonsDiv = document.getElementById("navButtons");
   if (menuToggle && navButtonsDiv) {
+    if (menuToggle.dataset.mobileNavBound === "true") return;
+    menuToggle.dataset.mobileNavBound = "true";
+
     const closeMenu = () => {
       menuToggle.classList.remove("active");
       navButtonsDiv.classList.remove("active");
       menuToggle.setAttribute("aria-expanded", "false");
     };
 
+    const openMenu = () => {
+      menuToggle.classList.add("active");
+      navButtonsDiv.classList.add("active");
+      menuToggle.setAttribute("aria-expanded", "true");
+      const firstLink = navButtonsDiv.querySelector("a, button");
+      firstLink?.focus({ preventScroll: true });
+    };
+
     menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      const isOpen = navButtonsDiv.classList.toggle("active");
-      menuToggle.classList.toggle("active", isOpen);
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      if (navButtonsDiv.classList.contains("active")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
     document.addEventListener("click", (e) => {
       if (!navButtonsDiv.contains(e.target) && !menuToggle.contains(e.target)) {
         closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navButtonsDiv.classList.contains("active")) {
+        closeMenu();
+        menuToggle.focus({ preventScroll: true });
       }
     });
 

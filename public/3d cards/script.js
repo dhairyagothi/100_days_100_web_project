@@ -275,9 +275,23 @@ directionBtn.addEventListener('click', () => {
 });
 
 /* =========================
-   THEME BUTTON
+   THEME PERSISTENCE
 ========================= */
 
+function applyTheme(theme) {
+  const isLight = theme === 'light';
+
+  document.body.classList.toggle('light-theme', isLight);
+
+  themeBtn.querySelector('.btn-label').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+}
+
+/* Load saved theme on page load */
+const savedTheme = localStorage.getItem('gallery-theme') || 'dark';
+
+applyTheme(savedTheme);
+
+/* Theme toggle button */
 themeBtn.addEventListener('click', () => {
   document.body.classList.toggle('light-theme');
   const isLight = document.body.classList.contains('light-theme');

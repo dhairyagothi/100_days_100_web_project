@@ -3,7 +3,20 @@ import css from "./complete.css";
 import { IoMdSearch } from "react-icons/io";
 import { FaStarHalf } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa6";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 function Product() {
+  const settings = {
+  dots: true,
+  infinite: true,
+  autoplay: true,
+  autoplaySpeed: 2500,
+  speed: 800,
+  pauseOnHover: true,
+  arrows: false,
+  fade: true
+};
     const eventpacks = [
   {
     img: "../image/b3.png",
@@ -62,7 +75,7 @@ function Product() {
 
                     <div class="container">
 
-                        <div class="slider-container has-scrollbar">
+                        <Slider {...settings}>
 
                             <div class="slider-item">
 
@@ -124,7 +137,7 @@ function Product() {
 
                             </div>
 
-                        </div>
+                        </Slider>
 
                     </div>
 
