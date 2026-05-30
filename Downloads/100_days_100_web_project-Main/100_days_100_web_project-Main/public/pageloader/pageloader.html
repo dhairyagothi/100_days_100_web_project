@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset= "UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="pageloader.css">
+<title>Pageloader</title>
+</head>
+<body><div id="loading"></div>
+
+    <div id="container">
+        <nav class="navbar">
+            <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <header id ="home">
+        <h1>Welcome to Pageloader!</h1>
+        </header>
+        <section id="about" class="content">
+            <h2>About Us</h2>
+            <p>Thank you for visiting our website. Here is a simple example of a pageloader.</p>
+        </section>
+        <footer id="contact">
+            <h2>Contact Us</h2>
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+        </footer>
+    </div>
+       <script>
+        window.addEventListener("load", function() {
+        setTimeout(function() { 
+        const loader = document.getElementById("loading");       
+        loader.style.display = "none";  
+        }, 1000);                      
+});
+    </script>
+</body>
+</html>
