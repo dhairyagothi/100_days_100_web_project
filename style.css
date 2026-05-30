@@ -2724,3 +2724,14 @@ body > header {
   position: relative;
   z-index: 999999 !important;
 }
+
+/* ============================================================
+   SEARCH HIGHLIGHT STYLES
+   ============================================================ */
+mark.search-highlight {
+  background: rgba(59, 130, 246, 0.35) !important;
+  color: var(--text-primary) !important;
+  border-radius: 3px;
+  padding: 0 2px;
+  font-weight: 600;
+}
