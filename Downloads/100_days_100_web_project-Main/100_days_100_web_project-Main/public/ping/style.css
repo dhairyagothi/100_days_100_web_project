@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: #2c3e50;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    overflow: hidden;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    background-color: #34495e;
+    border-bottom: 5px solid #ecf0f1;
+    animation: slide-down 0.5s ease-out;
+  }
+  
+  @keyframes slide-down {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  .header img {
+    width: 60px;
+    animation: spin 5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .buttons button {
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    color: #ecf0f1;
+    background-color: #e74c3c;
+    padding: 10px;
+    letter-spacing: 1px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .buttons button:hover {
+    text-decoration: underline;
+    font-size: 1.05em;
+    transform: scale(1.1);
+    background-color: #c0392b;
+  }
+  
+  .buttons button:active {
+    transform: scale(1.05);
+  }
+  
+  .pong-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3em;
+    animation: fade-in 1s ease-in;
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  #ping-pong {
+    width: 80%;
+    max-width: 680px;
+    border: 12px solid #ecf0f1;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    animation: grow 1s ease-in-out;
+  }
+  
+  @keyframes grow {
+    from {
+      transform: scale(0.8);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .header img {
+      width: 40px;
+    }
+  
+    .buttons button {
+      letter-spacing: 1px;
+      padding: 5px;
+      font-size: 0.7em;
+    }
+  
+    .buttons button:hover {
+      font-size: 0.75em;
+    }
+  
+    #ping-pong {
+      width: 90%;
+    }
+  }
+  

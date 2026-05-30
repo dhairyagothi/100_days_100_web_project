@@ -496,6 +496,8 @@ menuItems.forEach((item) => {
 
 renderNotes();
 
+/* EXPORT */
+
 const exportBtn = document.getElementById("exportBtn");
 const exportDropdown = document.getElementById("exportDropdown");
 const importBtn = document.getElementById("importBtn");
@@ -520,6 +522,8 @@ document.querySelectorAll(".export-option").forEach((opt) => {
     exportDropdown.classList.remove("open");
   });
 });
+
+/* IMPORT */
 
 importBtn.addEventListener("click", () => {
   importFile.click();

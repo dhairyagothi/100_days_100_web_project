@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app">
+        <section class="game-shell" aria-labelledby="game-title">
+            <div class="header">
+                <div>
+                    <p class="eyebrow">Classic Strategy</p>
+                    <h1 id="game-title">Chess Game</h1>
+                    <div class="feature-chips" aria-label="Game features">
+                        <span>Legal Moves</span>
+                        <span>Checkmate</span>
+                        <span>Undo</span>
+                    </div>
+                </div>
+                <div class="turn-card" id="turnCard">
+                    <span>Turn</span>
+                    <strong id="turnLabel">White</strong>
+                </div>
+            </div>
+
+            <div class="layout">
+                <section class="board-panel" aria-label="Chess board area">
+                    <div class="player-strip top-player">
+                        <span>Black</span>
+                        <strong>♚</strong>
+                    </div>
+                    <div class="board-frame">
+                        <div id="board" class="board" role="grid" aria-label="Chess board"></div>
+                    </div>
+                    <div class="player-strip bottom-player">
+                        <span>White</span>
+                        <strong>♔</strong>
+                    </div>
+                </section>
+
+                <aside class="side-panel">
+                    <div class="status-card">
+                        <span>Game Status</span>
+                        <p id="status" class="status" role="status" aria-live="polite">White to move.</p>
+                    </div>
+
+                    <div class="controls" aria-label="Game controls">
+                        <button id="newGame" type="button"><span aria-hidden="true">↻</span> New Game</button>
+                        <button id="undoMove" type="button"><span aria-hidden="true">↶</span> Undo</button>
+                        <button id="flipBoard" type="button"><span aria-hidden="true">⇅</span> Flip Board</button>
+                    </div>
+
+                    <div class="info-grid">
+                        <div>
+                            <span>White Captures</span>
+                            <p id="whiteCaptures" class="captures">None</p>
+                        </div>
+                        <div>
+                            <span>Black Captures</span>
+                            <p id="blackCaptures" class="captures">None</p>
+                        </div>
+                    </div>
+
+                    <div class="moves-box">
+                        <div class="moves-title">
+                            <span>Moves</span>
+                            <strong id="moveCount">0</strong>
+                        </div>
+                        <ol id="moveList" class="move-list"></ol>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

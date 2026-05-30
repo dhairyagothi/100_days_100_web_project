@@ -16,7 +16,8 @@ body { font-family: Arial; background: #f4f4f9; text-align: center; }
 #p3 { left:  64px; top: 245px; }
 #p4 { left:  17px; top: 100px; }
 
-/* Forks positions */#f0 { left: 221px; top:  89px; transform: rotate(306deg); }
+/* Forks positions */
+#f0 { left: 221px; top:  89px; transform: rotate(306deg); }
 #f1 { left: 252px; top: 184px; transform: rotate( 18deg); }
 #f2 { left: 171px; top: 243px; transform: rotate( 90deg); }
 #f3 { left:  90px; top: 184px; transform: rotate(162deg); }

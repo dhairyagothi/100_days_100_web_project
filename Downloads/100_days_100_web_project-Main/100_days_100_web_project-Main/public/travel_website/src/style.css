@@ -1,0 +1,167 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+#app {
+    height: 100%;
+  }
+  html,
+  body {
+    position: relative;
+    height: 100%;
+  }
+  
+  body {
+    background: #eee;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+
+  }
+  
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+  
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+    padding: 0; 
+    
+
+}
+.video :before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;    
+    height: 100%;
+    z-index: 111;
+    background-color: rgb(3 5 7 / 52%);
+}
+
+body{
+    z-index: 999;
+   padding: 0;
+   margin: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    background-color: rgba(75, 189, 251, 0.138);
+}
+
+content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: rgb(0, 77, 125);
+    color: white;
+}
+.navbar{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    color: white;
+    padding-top: 0;
+}
+.logo{
+  font: bolder;
+  font-size: x-large;
+  color: white;
+}
+ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: large;
+    font : bolder;
+}
+a{
+    color: white;
+    text-decoration: none;
+}
+.head{
+  position: absolute;
+  z-index: 999;
+  padding: 50px !important;
+  margin-left: 150px !important;
+  left: 0;
+  font-size: 50px;
+  color: white;
+  font-weight: 900;
+
+
+}
+@media screen and (max-width: 768px){
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+      padding: 0; 
+      
+  
+  }
+  ul {
+    display: none;
+  }
+  .navbar{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    color: white;
+    padding-top: 0px ;
+}
+content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    flex-direction: column;
+}
+.head{
+  text-align: center !important;
+  position: absolute;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 50%;
+  font-size: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+}
