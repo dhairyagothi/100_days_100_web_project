@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@200;400;500;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+html {
+  font-family: "Open Sans", sans-serif;
+  scroll-behavior: smooth;
+  font-size: 10px;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}

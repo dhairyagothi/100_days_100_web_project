@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,8 +11,9 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div class="container">
         <h1>Password Generator</h1>
         <div class="display-container">
@@ -28,57 +28,53 @@
                 </button>
             </div>
         </div>
-
         <div class="input-container">
-            <!--password length section-->
             <div class="length-container">
                 <p>Password Length</p>
                 <p data-lengthNumber>0</p>
             </div>
-            <!--slider-->
             <input type="range" min="1" max="20" class="slider" step="1" data-lengthSlider>
-
-            <!-- checkboxes-->
             <div class="check">
                 <input type="checkbox" id="uppercase">
                 <label for="uppercase">Includes Uppercase letters</label>
             </div>
-
             <div class="check">
                 <input type="checkbox" id="lowercase">
                 <label for="lowercase">Includes Lowercase letters</label>
             </div>
-
             <div class="check">
                 <input type="checkbox" id="numbers">
                 <label for="numbers">Includes Numbers </label>
             </div>
-
             <div class="check">
                 <input type="checkbox" id="symbols">
                 <label for="symbols">Includes Symbols </label>
             </div>
-
-            <!-- strength section-->
-            
-                        <div class="strength-container">
+            <div class="strength-container">
                 <p>Strength</p>
                 <div class="strength-info">
                   <div class="indicator" data-indicator></div>
                   <span class="strength-text" data-strengthText>Weak</span>
-
                 </div>
             </div>
-            
-                        <div id="suggestionBox" class="suggestion"></div>
+            <div id="suggestionBox" class="suggestion"></div>
             <p id="hideTimer"></p>
-
             <p id="warningMsg"></p>
-            <!-- generate password-->
+
+            <!-- Custom Word Mode -->
+            <div class="check">
+                <input type="checkbox" id="customWordMode">
+                <label for="customWordMode">Use Custom Word</label>
+            </div>
+            <div id="customWordSection" style="display:none;">
+                <input type="text" id="customWordInput" placeholder="Enter base word (e.g. shruti)"
+                style="width:100%; padding:8px; margin-top:8px; background:#333; color:#fff; border:1px solid #555; border-radius:4px;">
+            </div>
+
             <button class="generateButton">Generate Password</button>
         </div>
     </div>
-        <div class="history-container">
+    <div class="history-container">
         <h3>Recent Passwords</h3>
         <ul data-history-list></ul>
         <button data-clear-history>Clear History</button>

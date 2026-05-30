@@ -1,0 +1,248 @@
+.home {
+  padding: 0 48px 100px;
+}
+
+/* HERO */
+.hero {
+  max-width: 680px;
+  margin: 80px auto 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero p {
+  color: var(--text2);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  font-weight: 300;
+  max-width: 520px;
+}
+
+.hero form {
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.hero form:focus-within {
+  border-color: var(--accent);
+}
+
+.hero input {
+  border: none;
+  outline: none;
+  padding: 14px 20px;
+  flex: 1;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.hero input::placeholder {
+  color: var(--text3);
+}
+
+.hero button {
+  padding: 12px 24px;
+  border: none;
+  background: var(--accent);
+  color: #07080f;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.hero button:hover {
+  opacity: 0.88;
+}
+
+/* TABLE */
+.crypto-table {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.table-heading {
+  display: grid;
+  grid-template-columns: 0.4fr 2.5fr 1.2fr 1fr 1.5fr;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.table-heading p {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.table-heading p:not(:first-child):not(:nth-child(2)) {
+  text-align: right;
+}
+
+.table-layout {
+  display: grid;
+  grid-template-columns: 0.4fr 2.5fr 1.2fr 1fr 1.5fr;
+  padding: 14px 24px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+.table-layout:last-child {
+  border: none;
+}
+
+.table-layout:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+.table-layout p:first-child {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text3);
+}
+
+.table-layout div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.table-layout div img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.coin-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.coin-label .coin-name-text {
+  font-weight: 500;
+  font-size: 0.88rem;
+}
+
+.coin-label .coin-sym {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.table-layout .price {
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  text-align: right;
+}
+
+.table-layout .green {
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  text-align: right;
+  background: var(--green-dim);
+  padding: 3px 8px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-left: auto;
+}
+
+.table-layout .red {
+  color: var(--red);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  text-align: right;
+  background: var(--red-dim);
+  padding: 3px 8px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-left: auto;
+}
+
+.market-cap {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  text-align: right;
+  color: var(--text2);
+}
+
+@media (max-width: 768px) {
+  .home { padding: 0 20px 80px; }
+
+  .table-heading,
+  .table-layout {
+    grid-template-columns: 0.4fr 2.5fr 1.2fr 1fr;
+  }
+
+  .market-cap { display: none; }
+}
+
+@media (max-width: 500px) {
+  .hero h1 { font-size: 2rem; }
+
+  .table-heading,
+  .table-layout {
+    grid-template-columns: 0.4fr 2fr 1fr 1fr;
+    padding: 12px 16px;
+    font-size: 0.8rem;
+  }
+
+  .table-layout div img { width: 24px; height: 24px; }
+}

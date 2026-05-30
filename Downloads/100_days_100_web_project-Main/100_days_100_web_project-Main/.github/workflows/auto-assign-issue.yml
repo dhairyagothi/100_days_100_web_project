@@ -1,0 +1,149 @@
+name: Auto Assign and Label Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  check-duplicate:
+    runs-on: ubuntu-latest
+    outputs:
+      is_duplicate: ${{ steps.duplicate-check.outputs.is_duplicate }}
+      original_issue: ${{ steps.duplicate-check.outputs.original_issue }}
+
+    steps:
+      - name: Check for duplicate issues
+        id: duplicate-check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const newTitle = context.payload.issue.title.toLowerCase().trim();
+            const newNumber = context.issue.number;
+
+            const existingIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+
+            function similarity(a, b) {
+              const wordsA = new Set(a.split(/\s+/));
+              const wordsB = new Set(b.split(/\s+/));
+              const intersection = [...wordsA].filter(w => wordsB.has(w)).length;
+              const union = new Set([...wordsA, ...wordsB]).size;
+              return intersection / union;
+            }
+
+            let duplicateOf = null;
+            for (const issue of existingIssues.data) {
+              if (issue.number === newNumber) continue;
+              const existingTitle = issue.title.toLowerCase().trim();
+              if (similarity(newTitle, existingTitle) >= 0.6) {
+                duplicateOf = issue.number;
+                break;
+              }
+            }
+
+            if (duplicateOf) {
+              core.setOutput('is_duplicate', 'true');
+              core.setOutput('original_issue', duplicateOf.toString());
+            } else {
+              core.setOutput('is_duplicate', 'false');
+              core.setOutput('original_issue', '');
+            }
+
+  handle-duplicate:
+    runs-on: ubuntu-latest
+    needs: check-duplicate
+    if: needs.check-duplicate.outputs.is_duplicate == 'true'
+
+    steps:
+      - name: Label as duplicate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const originalIssue = '${{ needs.check-duplicate.outputs.original_issue }}';
+
+            try {
+              await github.rest.issues.getLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'duplicate'
+              });
+            } catch (e) {
+              if (e.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: 'duplicate',
+                  color: 'cfd3d7'
+                });
+              }
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['duplicate']
+            });
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `👋 This issue appears to be a duplicate of #${originalIssue}.\n\nPlease refer to the original issue. This issue will not be assigned to avoid duplicate work. ✅`
+            });
+
+  assign-and-label:
+    runs-on: ubuntu-latest
+    needs: check-duplicate
+    if: needs.check-duplicate.outputs.is_duplicate == 'false'
+
+    steps:
+      - name: Assign issue to creator
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              assignees: [context.payload.issue.user.login]
+            });
+
+      - name: Add gssoc labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = ["gssoc", "Gssoc'26"];
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label
+                });
+              } catch (e) {
+                if (e.status === 404) {
+                  await github.rest.issues.createLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: label,
+                    color: "e4e669"
+                  });
+                } else {
+                  core.warning(`Unexpected error checking label "${label}": ${e.message}`);
+                }
+              }
+            }
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: labels
+            });
