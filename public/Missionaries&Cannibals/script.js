@@ -80,15 +80,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const passengers = state.boatMissionaries + state.boatCannibals;
+
         if (passengers === 0) {
-            guidance.textContent = "Select passengers to board the boat.";
+            guidance.textContent =
+                "Select passengers and move everyone safely to the right bank.";
         } else if (passengers < MAX_BOAT_CAPACITY) {
-            guidance.textContent = `Boat has ${passengers} passenger. You can add one more or cross now.`;
+            guidance.textContent =
+                `Boat has ${passengers} passenger. Add one more or move the boat.`;
         } else {
-            guidance.textContent = "Boat is full! Click 'Move Boat' to cross the river.";
+            guidance.textContent =
+                "Boat is full! Click 'Move Boat' to cross the river.";
         }
     };
-
     const handleHint = () => {
         if (state.hintsUsed < 3) {
             hintText.textContent = hints[state.hintsUsed];
@@ -208,10 +211,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const handlePersonClick = (person) => {
         if (state.isGameOver) return;
-
+        person.classList.toggle("selected");
         const personBank = person.dataset.bank;
         const personType = person.dataset.type;
 
+    
         if (personBank === state.boatPosition) {
             movePerson(personBank, "boat", personType);
             return;
@@ -344,24 +348,41 @@ document.addEventListener("DOMContentLoaded", () => {
     leftBank.addEventListener("drop", (e) => onDrop(e, "left"));
     rightBank.addEventListener("drop", (e) => onDrop(e, "right"));
     boat.addEventListener("drop", (e) => onDrop(e, "boat"));
-
     const showModal = () => modal.classList.add("show");
-    const hideModal = () => modal.classList.remove("show");
+    const hideModal = () => {
+        modal.classList.remove("show");
+        document.body.style.overflow = "auto";
+    };
 
     const modalStartBtn = document.getElementById("modal-start-btn");
 
-    closeModal.addEventListener("click", hideModal);
-    instructionsBtn.addEventListener("click", showModal);
-    modalStartBtn.addEventListener("click", () => {
+    closeModal.addEventListener("click", () => {
         hideModal();
         startGame();
     });
+    instructionsBtn.addEventListener("click", showModal);
+    modalStartBtn.addEventListener("click", () => {
+        modal.classList.remove("show");
 
-    window.addEventListener("click", (e) => {
-        if (e.target === modal) hideModal();
-        if (e.target === resultsModal) resultsModal.classList.remove("show");
+        setTimeout(() => {
+            document.body.style.overflow = "auto";
+            startGame();
+        }, 300);
     });
 
+   window.addEventListener("click", (e) => {
+
+        // If modal background clicked
+        if (e.target === modal) {
+            hideModal();
+            startGame();
+        }
+
+        // Results modal
+        if (e.target === resultsModal) {
+            resultsModal.classList.remove("show");
+        }
+    });
     showModal();
     updateUI();
 });

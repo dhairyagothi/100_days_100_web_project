@@ -1,10 +1,7 @@
 ---
-name: "➕ Documentation Update "
-about: 'Adding a new project in repo '
-title: ''
-labels: ''
+name: 'Documentation update'
+about: Improve docs, setup guidance, or contribution instructions.
+title: '[Docs]: '
+labels: ['documentation']
 assignees: ''
-
 ---
-
-

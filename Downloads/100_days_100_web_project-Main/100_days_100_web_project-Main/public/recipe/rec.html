@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h2 style="margin-right: 10px;">Recipezzz</h2>
+        <a href="#">Home</a>
+        <a href="#">Recipes</a>
+        <a href="#">About us</a>
+    </nav>
+    
+    </nav>
+    <div class="test">
+        
+        <p id="text-display"></p>
+        
+        <button id="restart">Restart</button>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        const difficulty = sessionStorage.getItem('difficulty') || 'Grilled Cheese Sandwich';
+    
+        try {
+            const response = await fetch('text.json');
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            
+            const recipe = data.recipes.find(item => item.name === difficulty);
+    
+            if (!recipe) {
+                throw new Error(`Recipe not found for: ${difficulty}`);
+            }
+    
+            document.getElementById('text-display').innerHTML = `
+                <h2>${recipe.name}</h2>
+                <h3>Ingredients:</h3>
+                <ul>
+                    ${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                </ul>
+                <h3>Instructions:</h3>
+                <p>${recipe.instructions}</p>
+            `;
+        } catch (err) {
+            console.error('Error fetching JSON:', err);
+            document.getElementById('text-display').textContent = 'Error loading recipe!';
+        }
+    
+        document.getElementById('restart').addEventListener('click', function () {
+            window.location.href = 'main.html';
+        });
+    });
+    
+    
+</script>
+
+</html>
