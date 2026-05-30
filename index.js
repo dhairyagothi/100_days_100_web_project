@@ -272,7 +272,6 @@ function removeTechFilter(tech) {
   renderGrid();
 }
 
-// Global window reference assignments
 window.removeTechFilter = removeTechFilter;
 
 function clearAllTechFilters() {
@@ -834,7 +833,7 @@ function initClearAllFilters() {
 }
 
 /* ============================================================
-   INTERFACE LOGIC ACTIONS & DELEGATION
+   INTERFACE LOGIC ACTIONS & CENTRAL EVENT DELEGATION
    ============================================================ */
 const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
 const recentToggleBtn = document.getElementById('recentToggleBtn');
@@ -866,6 +865,7 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// ATOMIC DELEGATION SYSTEM: Sealing dynamic loop memory leaks
 document.addEventListener('click', (e) => {
   const bookmarkBtn = e.target.closest('.bookmark-btn');
   if (bookmarkBtn) {
@@ -977,13 +977,12 @@ function syncProjectCounts() {
   }
   const total = filtered.length.toLocaleString();
   [document.getElementById('projectCount'), document.getElementById('allCount')].forEach(n => { if (n) n.textContent = total; });
-  if (searchInput) searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
+  if (typeof searchInput !== 'undefined' && searchInput) searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   updateCategoryCounts();
 }
 
-const clearSearchBtn = document.getElementById('clearSearch');
-if (searchInput && clearSearchBtn) {
-  clearSearchBtn.addEventListener("click", () => { searchInput.value = ""; searchInput.dispatchEvent(new Event("input")); searchInput.focus(); });
+if (typeof searchInput !== 'undefined' && searchInput && document.getElementById('clearSearch')) {
+  document.getElementById('clearSearch').addEventListener("click", () => { searchInput.value = ""; searchInput.dispatchEvent(new Event("input")); searchInput.focus(); });
 }
 
 function updateNavbar() {
@@ -1143,7 +1142,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadProjects();
     syncProjectCounts();
 
-    if (hasProjectGrid()) {
+    if (typeof hasProjectGrid === 'function' && hasProjectGrid()) {
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+    } else if (document.getElementById('projectGrid')) {
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
@@ -1203,7 +1206,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 })();
 
-window.addEventListener('resize', debounce(() => { if (hasProjectGrid()) renderGrid(); }, 180));
+window.addEventListener('resize', debounce(() => { 
+  if (document.getElementById('projectGrid')) renderGrid(); 
+}, 180));
 
 // Custom UI cursor engine block
 (function () {
